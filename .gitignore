@@ -15,6 +15,7 @@ site/!.yarn/cache
 
 .terraform.lock.hcl
 terraform.tfplan
+bazel-project-planton-clone
 bazel-bin
 bazel-out
 bazel-testlogs

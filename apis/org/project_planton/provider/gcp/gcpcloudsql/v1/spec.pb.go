@@ -76,6 +76,60 @@ func (GcpCloudSqlDatabaseEngine) EnumDescriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+// GcpCloudSqlEdition defines the service tier/edition.
+type GcpCloudSqlEdition int32
+
+const (
+	// Unspecified edition (defaults to ENTERPRISE).
+	GcpCloudSqlEdition_EDITION_UNSPECIFIED GcpCloudSqlEdition = 0
+	// Enterprise edition: Standard tier with 99.95% SLA for Regional (HA) instances.
+	GcpCloudSqlEdition_ENTERPRISE GcpCloudSqlEdition = 1
+	// Enterprise Plus edition: Premium tier with 99.99% SLA, 4x read performance,
+	// and reduced maintenance downtime (<10 seconds vs ~60 seconds).
+	GcpCloudSqlEdition_ENTERPRISE_PLUS GcpCloudSqlEdition = 2
+)
+
+// Enum value maps for GcpCloudSqlEdition.
+var (
+	GcpCloudSqlEdition_name = map[int32]string{
+		0: "EDITION_UNSPECIFIED",
+		1: "ENTERPRISE",
+		2: "ENTERPRISE_PLUS",
+	}
+	GcpCloudSqlEdition_value = map[string]int32{
+		"EDITION_UNSPECIFIED": 0,
+		"ENTERPRISE":          1,
+		"ENTERPRISE_PLUS":     2,
+	}
+)
+
+func (x GcpCloudSqlEdition) Enum() *GcpCloudSqlEdition {
+	p := new(GcpCloudSqlEdition)
+	*p = x
+	return p
+}
+
+func (x GcpCloudSqlEdition) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GcpCloudSqlEdition) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (GcpCloudSqlEdition) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_enumTypes[1]
+}
+
+func (x GcpCloudSqlEdition) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GcpCloudSqlEdition.Descriptor instead.
+func (GcpCloudSqlEdition) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
 // GcpCloudSqlSpec defines the configuration for deploying a Google Cloud SQL instance.
 // This message specifies the necessary parameters to create and manage Cloud SQL instances within a
 // specified GCP project. By configuring settings such as database versions, instance sizes, and
@@ -95,16 +149,29 @@ type GcpCloudSqlSpec struct {
 	Tier string `protobuf:"bytes,5,opt,name=tier,proto3" json:"tier,omitempty"`
 	// Storage size in gigabytes for the database instance.
 	StorageGb int32 `protobuf:"varint,6,opt,name=storage_gb,json=storageGb,proto3" json:"storage_gb,omitempty"`
+	// Whether storage should automatically resize when approaching capacity.
+	// Enabled by default to prevent out-of-space issues.
+	DiskAutoresize bool `protobuf:"varint,7,opt,name=disk_autoresize,json=diskAutoresize,proto3" json:"disk_autoresize,omitempty"`
+	// Cloud SQL edition: ENTERPRISE (standard) or ENTERPRISE_PLUS (premium with 99.99% SLA).
+	// Defaults to ENTERPRISE if not specified.
+	Edition GcpCloudSqlEdition `protobuf:"varint,8,opt,name=edition,proto3,enum=org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlEdition" json:"edition,omitempty"`
+	// Whether to enable deletion protection. When enabled, prevents accidental deletion of the instance.
+	// Highly recommended for production instances.
+	DeletionProtection bool `protobuf:"varint,9,opt,name=deletion_protection,json=deletionProtection,proto3" json:"deletion_protection,omitempty"`
+	// Whether to enable Query Insights for performance monitoring and query analysis.
+	QueryInsightsEnabled bool `protobuf:"varint,10,opt,name=query_insights_enabled,json=queryInsightsEnabled,proto3" json:"query_insights_enabled,omitempty"`
+	// Maintenance window configuration for scheduling updates during off-peak hours.
+	MaintenanceWindow *GcpCloudSqlMaintenanceWindow `protobuf:"bytes,11,opt,name=maintenance_window,json=maintenanceWindow,proto3" json:"maintenance_window,omitempty"`
 	// Network configuration for the Cloud SQL instance.
-	Network *GcpCloudSqlNetwork `protobuf:"bytes,7,opt,name=network,proto3" json:"network,omitempty"`
+	Network *GcpCloudSqlNetwork `protobuf:"bytes,12,opt,name=network,proto3" json:"network,omitempty"`
 	// High availability configuration.
-	HighAvailability *GcpCloudSqlHighAvailability `protobuf:"bytes,8,opt,name=high_availability,json=highAvailability,proto3" json:"high_availability,omitempty"`
+	HighAvailability *GcpCloudSqlHighAvailability `protobuf:"bytes,13,opt,name=high_availability,json=highAvailability,proto3" json:"high_availability,omitempty"`
 	// Backup configuration settings.
-	Backup *GcpCloudSqlBackup `protobuf:"bytes,9,opt,name=backup,proto3" json:"backup,omitempty"`
+	Backup *GcpCloudSqlBackup `protobuf:"bytes,14,opt,name=backup,proto3" json:"backup,omitempty"`
 	// Database-specific configuration flags as key-value pairs.
-	DatabaseFlags map[string]string `protobuf:"bytes,10,rep,name=database_flags,json=databaseFlags,proto3" json:"database_flags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	DatabaseFlags map[string]string `protobuf:"bytes,15,rep,name=database_flags,json=databaseFlags,proto3" json:"database_flags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Initial root password for the database instance.
-	RootPassword  string `protobuf:"bytes,11,opt,name=root_password,json=rootPassword,proto3" json:"root_password,omitempty"`
+	RootPassword  string `protobuf:"bytes,16,opt,name=root_password,json=rootPassword,proto3" json:"root_password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -181,6 +248,41 @@ func (x *GcpCloudSqlSpec) GetStorageGb() int32 {
 	return 0
 }
 
+func (x *GcpCloudSqlSpec) GetDiskAutoresize() bool {
+	if x != nil {
+		return x.DiskAutoresize
+	}
+	return false
+}
+
+func (x *GcpCloudSqlSpec) GetEdition() GcpCloudSqlEdition {
+	if x != nil {
+		return x.Edition
+	}
+	return GcpCloudSqlEdition_EDITION_UNSPECIFIED
+}
+
+func (x *GcpCloudSqlSpec) GetDeletionProtection() bool {
+	if x != nil {
+		return x.DeletionProtection
+	}
+	return false
+}
+
+func (x *GcpCloudSqlSpec) GetQueryInsightsEnabled() bool {
+	if x != nil {
+		return x.QueryInsightsEnabled
+	}
+	return false
+}
+
+func (x *GcpCloudSqlSpec) GetMaintenanceWindow() *GcpCloudSqlMaintenanceWindow {
+	if x != nil {
+		return x.MaintenanceWindow
+	}
+	return nil
+}
+
 func (x *GcpCloudSqlSpec) GetNetwork() *GcpCloudSqlNetwork {
 	if x != nil {
 		return x.Network
@@ -222,9 +324,15 @@ type GcpCloudSqlNetwork struct {
 	// VPC network ID for private IP connectivity.
 	VpcId string `protobuf:"bytes,1,opt,name=vpc_id,json=vpcId,proto3" json:"vpc_id,omitempty"`
 	// Whether to enable private IP for the instance.
+	// Recommended for secure in-VPC access.
 	PrivateIpEnabled bool `protobuf:"varint,2,opt,name=private_ip_enabled,json=privateIpEnabled,proto3" json:"private_ip_enabled,omitempty"`
+	// Whether to enable public IP (IPv4) for the instance.
+	// Can be combined with private IP for "Smart Hybrid" pattern.
+	// When enabled with empty authorized_networks, access is via Cloud SQL Proxy only (IAM-based).
+	Ipv4Enabled bool `protobuf:"varint,3,opt,name=ipv4_enabled,json=ipv4Enabled,proto3" json:"ipv4_enabled,omitempty"`
 	// List of authorized networks (CIDR blocks) allowed to connect via public IP.
-	AuthorizedNetworks []string `protobuf:"bytes,3,rep,name=authorized_networks,json=authorizedNetworks,proto3" json:"authorized_networks,omitempty"`
+	// Leave empty for maximum security (Cloud SQL Proxy with IAM authentication only).
+	AuthorizedNetworks []string `protobuf:"bytes,4,rep,name=authorized_networks,json=authorizedNetworks,proto3" json:"authorized_networks,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -269,6 +377,13 @@ func (x *GcpCloudSqlNetwork) GetVpcId() string {
 func (x *GcpCloudSqlNetwork) GetPrivateIpEnabled() bool {
 	if x != nil {
 		return x.PrivateIpEnabled
+	}
+	return false
+}
+
+func (x *GcpCloudSqlNetwork) GetIpv4Enabled() bool {
+	if x != nil {
+		return x.Ipv4Enabled
 	}
 	return false
 }
@@ -344,8 +459,13 @@ type GcpCloudSqlBackup struct {
 	StartTime string `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// Number of days to retain automated backups.
 	RetentionDays int32 `protobuf:"varint,3,opt,name=retention_days,json=retentionDays,proto3" json:"retention_days,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Whether to enable Point-in-Time Recovery (PITR).
+	// Allows restoring to any specific second within the retention window.
+	// Requires automated backups to be enabled and uses transaction logs.
+	// Essential for protecting against human error (accidental deletes, bad migrations).
+	PointInTimeRecoveryEnabled bool `protobuf:"varint,4,opt,name=point_in_time_recovery_enabled,json=pointInTimeRecoveryEnabled,proto3" json:"point_in_time_recovery_enabled,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *GcpCloudSqlBackup) Reset() {
@@ -399,11 +519,83 @@ func (x *GcpCloudSqlBackup) GetRetentionDays() int32 {
 	return 0
 }
 
+func (x *GcpCloudSqlBackup) GetPointInTimeRecoveryEnabled() bool {
+	if x != nil {
+		return x.PointInTimeRecoveryEnabled
+	}
+	return false
+}
+
+// GcpCloudSqlMaintenanceWindow defines when Cloud SQL can perform maintenance updates.
+type GcpCloudSqlMaintenanceWindow struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Day of the week for maintenance (1=Monday, 7=Sunday).
+	Day int32 `protobuf:"varint,1,opt,name=day,proto3" json:"day,omitempty"`
+	// Hour of the day for maintenance start (0-23, UTC).
+	Hour int32 `protobuf:"varint,2,opt,name=hour,proto3" json:"hour,omitempty"`
+	// Update track: "canary" for early updates, "stable" for production (default).
+	UpdateTrack   string `protobuf:"bytes,3,opt,name=update_track,json=updateTrack,proto3" json:"update_track,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GcpCloudSqlMaintenanceWindow) Reset() {
+	*x = GcpCloudSqlMaintenanceWindow{}
+	mi := &file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GcpCloudSqlMaintenanceWindow) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GcpCloudSqlMaintenanceWindow) ProtoMessage() {}
+
+func (x *GcpCloudSqlMaintenanceWindow) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GcpCloudSqlMaintenanceWindow.ProtoReflect.Descriptor instead.
+func (*GcpCloudSqlMaintenanceWindow) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GcpCloudSqlMaintenanceWindow) GetDay() int32 {
+	if x != nil {
+		return x.Day
+	}
+	return 0
+}
+
+func (x *GcpCloudSqlMaintenanceWindow) GetHour() int32 {
+	if x != nil {
+		return x.Hour
+	}
+	return 0
+}
+
+func (x *GcpCloudSqlMaintenanceWindow) GetUpdateTrack() string {
+	if x != nil {
+		return x.UpdateTrack
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudsql/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudsql.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xc5\a\n" +
+	":org/project_planton/provider/gcp/gcpcloudsql/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudsql.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xda\n" +
+	"\n" +
 	"\x0fGcpCloudSqlSpec\x12G\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
@@ -416,37 +608,56 @@ const file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc = 
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x04tier\x123\n" +
 	"\n" +
 	"storage_gb\x18\x06 \x01(\x05B\x14\xbaH\v\xc8\x01\x01\x1a\x06\x18\x80\x80\x04(\n" +
-	"\x92\xa6\x1d\x0210R\tstorageGb\x12]\n" +
-	"\anetwork\x18\a \x01(\v2C.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetworkR\anetwork\x12y\n" +
-	"\x11high_availability\x18\b \x01(\v2L.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailabilityR\x10highAvailability\x12Z\n" +
-	"\x06backup\x18\t \x01(\v2B.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackupR\x06backup\x12z\n" +
-	"\x0edatabase_flags\x18\n" +
-	" \x03(\v2S.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntryR\rdatabaseFlags\x12,\n" +
-	"\rroot_password\x18\v \x01(\tB\a\xbaH\x04r\x02\x10\bR\frootPassword\x1a@\n" +
+	"\x92\xa6\x1d\x0210R\tstorageGb\x121\n" +
+	"\x0fdisk_autoresize\x18\a \x01(\bB\b\x92\xa6\x1d\x04trueR\x0ediskAutoresize\x12m\n" +
+	"\aedition\x18\b \x01(\x0e2C.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlEditionB\x0e\x92\xa6\x1d\n" +
+	"ENTERPRISER\aedition\x12:\n" +
+	"\x13deletion_protection\x18\t \x01(\bB\t\x92\xa6\x1d\x05falseR\x12deletionProtection\x124\n" +
+	"\x16query_insights_enabled\x18\n" +
+	" \x01(\bR\x14queryInsightsEnabled\x12|\n" +
+	"\x12maintenance_window\x18\v \x01(\v2M.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlMaintenanceWindowR\x11maintenanceWindow\x12]\n" +
+	"\anetwork\x18\f \x01(\v2C.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetworkR\anetwork\x12y\n" +
+	"\x11high_availability\x18\r \x01(\v2L.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailabilityR\x10highAvailability\x12Z\n" +
+	"\x06backup\x18\x0e \x01(\v2B.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackupR\x06backup\x12z\n" +
+	"\x0edatabase_flags\x18\x0f \x03(\v2S.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntryR\rdatabaseFlags\x12/\n" +
+	"\rroot_password\x18\x10 \x01(\tB\n" +
+	"\xbaH\a\xd8\x01\x01r\x02\x10\bR\frootPassword\x1a@\n" +
 	"\x12DatabaseFlagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd7\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xfa\x02\n" +
 	"\x12GcpCloudSqlNetwork\x12\x15\n" +
 	"\x06vpc_id\x18\x01 \x01(\tR\x05vpcId\x12,\n" +
-	"\x12private_ip_enabled\x18\x02 \x01(\bR\x10privateIpEnabled\x12j\n" +
-	"\x13authorized_networks\x18\x03 \x03(\tB9\xbaH6\xd8\x01\x01\x92\x010\x18\x01\",r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$R\x12authorizedNetworks:\x8f\x01\xbaH\x8b\x01\x1a\x88\x01\n" +
+	"\x12private_ip_enabled\x18\x02 \x01(\bR\x10privateIpEnabled\x12!\n" +
+	"\fipv4_enabled\x18\x03 \x01(\bR\vipv4Enabled\x12j\n" +
+	"\x13authorized_networks\x18\x04 \x03(\tB9\xbaH6\xd8\x01\x01\x92\x010\x18\x01\",r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$R\x12authorizedNetworks:\x8f\x01\xbaH\x8b\x01\x1a\x88\x01\n" +
 	"\x1fnetwork.private_ip_requires_vpc\x122vpc_id must be set when private_ip_enabled is true\x1a1!this.private_ip_enabled || size(this.vpc_id) > 0\"\xd8\x01\n" +
 	"\x1bGcpCloudSqlHighAvailability\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
 	"\x04zone\x18\x02 \x01(\tR\x04zone:\x8a\x01\xbaH\x86\x01\x1a\x83\x01\n" +
-	"'high_availability.enabled_requires_zone\x122zone must be set when high_availability is enabled\x1a$!this.enabled || size(this.zone) > 0\"\xe8\x02\n" +
+	"'high_availability.enabled_requires_zone\x122zone must be set when high_availability is enabled\x1a$!this.enabled || size(this.zone) > 0\"\xd9\x04\n" +
 	"\x11GcpCloudSqlBackup\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12I\n" +
 	"\n" +
 	"start_time\x18\x02 \x01(\tB*\xbaH'\xd8\x01\x01r\"2 ^([0-1][0-9]|2[0-3]):[0-5][0-9]$R\tstartTime\x129\n" +
 	"\x0eretention_days\x18\x03 \x01(\x05B\x12\xbaH\n" +
-	"\xd8\x01\x01\x1a\x05\x18\xed\x02(\x01\x92\xa6\x1d\x017R\rretentionDays:\xb2\x01\xbaH\xae\x01\x1a\xab\x01\n" +
-	"\x1ebackup.enabled_requires_config\x12@start_time and retention_days must be set when backup is enabled\x1aG!this.enabled || (size(this.start_time) > 0 && this.retention_days > 0)*W\n" +
+	"\xd8\x01\x01\x1a\x05\x18\xed\x02(\x01\x92\xa6\x1d\x017R\rretentionDays\x12B\n" +
+	"\x1epoint_in_time_recovery_enabled\x18\x04 \x01(\bR\x1apointInTimeRecoveryEnabled:\xdf\x02\xbaH\xdb\x02\x1a\xab\x01\n" +
+	"\x1ebackup.enabled_requires_config\x12@start_time and retention_days must be set when backup is enabled\x1aG!this.enabled || (size(this.start_time) > 0 && this.retention_days > 0)\x1a\xaa\x01\n" +
+	"#backup.pitr_requires_backup_enabled\x12Mautomated backups must be enabled when point_in_time_recovery_enabled is true\x1a4!this.point_in_time_recovery_enabled || this.enabled\"\x9f\x01\n" +
+	"\x1cGcpCloudSqlMaintenanceWindow\x12\x1e\n" +
+	"\x03day\x18\x01 \x01(\x05B\f\xbaH\t\xd8\x01\x01\x1a\x04\x18\a(\x01R\x03day\x12 \n" +
+	"\x04hour\x18\x02 \x01(\x05B\f\xbaH\t\xd8\x01\x01\x1a\x04\x18\x17(\x00R\x04hour\x12=\n" +
+	"\fupdate_track\x18\x03 \x01(\tB\x1a\xbaH\x17\xd8\x01\x01r\x12R\x06canaryR\x06stableR\x00R\vupdateTrack*W\n" +
 	"\x19GcpCloudSqlDatabaseEngine\x12\x1f\n" +
 	"\x1bDATABASE_ENGINE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05MYSQL\x10\x01\x12\x0e\n" +
 	"\n" +
-	"POSTGRESQL\x10\x02B\x8e\x03\n" +
+	"POSTGRESQL\x10\x02*R\n" +
+	"\x12GcpCloudSqlEdition\x12\x17\n" +
+	"\x13EDITION_UNSPECIFIED\x10\x00\x12\x0e\n" +
+	"\n" +
+	"ENTERPRISE\x10\x01\x12\x13\n" +
+	"\x0fENTERPRISE_PLUS\x10\x02B\x8e\x03\n" +
 	"3com.org.project_planton.provider.gcp.gcpcloudsql.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudsql/v1;gcpcloudsqlv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudsql.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudsql\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudsql\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudsql::V1b\x06proto3"
 
 var (
@@ -461,27 +672,31 @@ func file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescGZIP
 	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_goTypes = []any{
-	(GcpCloudSqlDatabaseEngine)(0),      // 0: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlDatabaseEngine
-	(*GcpCloudSqlSpec)(nil),             // 1: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec
-	(*GcpCloudSqlNetwork)(nil),          // 2: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork
-	(*GcpCloudSqlHighAvailability)(nil), // 3: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailability
-	(*GcpCloudSqlBackup)(nil),           // 4: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
-	nil,                                 // 5: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
+	(GcpCloudSqlDatabaseEngine)(0),       // 0: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlDatabaseEngine
+	(GcpCloudSqlEdition)(0),              // 1: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlEdition
+	(*GcpCloudSqlSpec)(nil),              // 2: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec
+	(*GcpCloudSqlNetwork)(nil),           // 3: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork
+	(*GcpCloudSqlHighAvailability)(nil),  // 4: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailability
+	(*GcpCloudSqlBackup)(nil),            // 5: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
+	(*GcpCloudSqlMaintenanceWindow)(nil), // 6: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlMaintenanceWindow
+	nil,                                  // 7: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
 }
 var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_depIdxs = []int32{
 	0, // 0: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_engine:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlDatabaseEngine
-	2, // 1: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.network:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork
-	3, // 2: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.high_availability:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailability
-	4, // 3: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.backup:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
-	5, // 4: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_flags:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 1: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.edition:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlEdition
+	6, // 2: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.maintenance_window:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlMaintenanceWindow
+	3, // 3: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.network:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork
+	4, // 4: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.high_availability:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailability
+	5, // 5: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.backup:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
+	7, // 6: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_flags:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_init() }
@@ -494,8 +709,8 @@ func file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   5,
+			NumEnums:      2,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

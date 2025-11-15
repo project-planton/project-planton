@@ -21,11 +21,36 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-cloud-function stack outputs
+// GcpCloudFunctionStackOutputs contains the output values from a deployed Cloud Function.
+// These outputs provide essential information about the deployed function, including
+// its URL, identity, and status.
 type GcpCloudFunctionStackOutputs struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The fully qualified resource name of the deployed function.
+	// Format: projects/{project}/locations/{region}/functions/{function-name}
+	// Example: "projects/my-project/locations/us-central1/functions/my-function"
+	FunctionId string `protobuf:"bytes,1,opt,name=function_id,json=functionId,proto3" json:"function_id,omitempty"`
+	// The HTTPS URL of the function. Only populated for HTTP-triggered functions.
+	// For event-driven functions, this field is empty.
+	// Example: "https://us-central1-my-project.cloudfunctions.net/my-function"
+	FunctionUrl string `protobuf:"bytes,2,opt,name=function_url,json=functionUrl,proto3" json:"function_url,omitempty"`
+	// The email of the service account that the function runs as.
+	// This is the runtime identity of the function.
+	// Format: "{service-account-id}@{project}.iam.gserviceaccount.com"
+	ServiceAccountEmail string `protobuf:"bytes,3,opt,name=service_account_email,json=serviceAccountEmail,proto3" json:"service_account_email,omitempty"`
+	// The current state of the function.
+	// Possible values: "ACTIVE", "OFFLINE", "DEPLOY_IN_PROGRESS", "DELETE_IN_PROGRESS", "UNKNOWN"
+	State string `protobuf:"bytes,4,opt,name=state,proto3" json:"state,omitempty"`
+	// The Cloud Run service name (Gen 2 functions are deployed as Cloud Run services).
+	// This can be used to access the function via Cloud Run APIs if needed.
+	// Format: "projects/{project}/locations/{region}/services/{service-name}"
+	CloudRunServiceId string `protobuf:"bytes,5,opt,name=cloud_run_service_id,json=cloudRunServiceId,proto3" json:"cloud_run_service_id,omitempty"`
+	// The Eventarc trigger ID for event-driven functions.
+	// Only populated for functions with EVENT_TRIGGER type.
+	// Format: "projects/{project}/locations/{region}/triggers/{trigger-name}"
+	EventarcTriggerId string `protobuf:"bytes,6,opt,name=eventarc_trigger_id,json=eventarcTriggerId,proto3" json:"eventarc_trigger_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *GcpCloudFunctionStackOutputs) Reset() {
@@ -58,12 +83,61 @@ func (*GcpCloudFunctionStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudfunction_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *GcpCloudFunctionStackOutputs) GetFunctionId() string {
+	if x != nil {
+		return x.FunctionId
+	}
+	return ""
+}
+
+func (x *GcpCloudFunctionStackOutputs) GetFunctionUrl() string {
+	if x != nil {
+		return x.FunctionUrl
+	}
+	return ""
+}
+
+func (x *GcpCloudFunctionStackOutputs) GetServiceAccountEmail() string {
+	if x != nil {
+		return x.ServiceAccountEmail
+	}
+	return ""
+}
+
+func (x *GcpCloudFunctionStackOutputs) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+func (x *GcpCloudFunctionStackOutputs) GetCloudRunServiceId() string {
+	if x != nil {
+		return x.CloudRunServiceId
+	}
+	return ""
+}
+
+func (x *GcpCloudFunctionStackOutputs) GetEventarcTriggerId() string {
+	if x != nil {
+		return x.EventarcTriggerId
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcpcloudfunction_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpcloudfunction_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/gcp/gcpcloudfunction/v1/stack_outputs.proto\x124org.project_planton.provider.gcp.gcpcloudfunction.v1\"\x1e\n" +
-	"\x1cGcpCloudFunctionStackOutputsB\xb9\x03\n" +
+	"Horg/project_planton/provider/gcp/gcpcloudfunction/v1/stack_outputs.proto\x124org.project_planton.provider.gcp.gcpcloudfunction.v1\"\x8d\x02\n" +
+	"\x1cGcpCloudFunctionStackOutputs\x12\x1f\n" +
+	"\vfunction_id\x18\x01 \x01(\tR\n" +
+	"functionId\x12!\n" +
+	"\ffunction_url\x18\x02 \x01(\tR\vfunctionUrl\x122\n" +
+	"\x15service_account_email\x18\x03 \x01(\tR\x13serviceAccountEmail\x12\x14\n" +
+	"\x05state\x18\x04 \x01(\tR\x05state\x12/\n" +
+	"\x14cloud_run_service_id\x18\x05 \x01(\tR\x11cloudRunServiceId\x12.\n" +
+	"\x13eventarc_trigger_id\x18\x06 \x01(\tR\x11eventarcTriggerIdB\xb9\x03\n" +
 	"8com.org.project_planton.provider.gcp.gcpcloudfunction.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1;gcpcloudfunctionv1\xa2\x02\x05OPPGG\xaa\x023Org.ProjectPlanton.Provider.Gcp.Gcpcloudfunction.V1\xca\x023Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Gcp::Gcpcloudfunction::V1b\x06proto3"
 
 var (

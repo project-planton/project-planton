@@ -1,404 +1,596 @@
-# Microservice Kubernetes Pulumi Module
+# GCP Cloud Storage Bucket Examples
 
-## Important Note
+This document provides practical examples of GCS bucket configurations using the `GcpGcsBucket` API resource. Each example demonstrates common deployment patterns with explanations of key design decisions.
 
-*This module is not completely implemented. Certain features may be missing or not fully functional. Future updates will address these limitations.*
+## Table of Contents
 
-## Overview
+- [Basic Examples](#basic-examples)
+  - [Minimal Private Bucket](#minimal-private-bucket)
+  - [Regional Bucket with Labels](#regional-bucket-with-labels)
+- [Access Control Examples](#access-control-examples)
+  - [Public Read Bucket](#public-read-bucket)
+  - [Service Account Access](#service-account-access)
+  - [Conditional IAM Access](#conditional-iam-access)
+- [Data Protection Examples](#data-protection-examples)
+  - [Versioned Bucket with Lifecycle](#versioned-bucket-with-lifecycle)
+  - [Compliance Archive Bucket](#compliance-archive-bucket)
+- [Cost Optimization Examples](#cost-optimization-examples)
+  - [Development Bucket with Cleanup](#development-bucket-with-cleanup)
+  - [Storage Tiering Strategy](#storage-tiering-strategy)
+- [Advanced Examples](#advanced-examples)
+  - [Static Website Hosting](#static-website-hosting)
+  - [CORS-Enabled Bucket](#cors-enabled-bucket)
+  - [CMEK-Encrypted Bucket](#cmek-encrypted-bucket)
+  - [Multi-Region Production Bucket](#multi-region-production-bucket)
 
-The **Microservice Kubernetes Pulumi Module** is designed to simplify the deployment and management of microservices on Kubernetes within a multi-cloud infrastructure. Leveraging Planton Cloud's unified API framework, this module models each API resource using a Kubernetes-like structure with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields. The `MicroserviceKubernetes` resource encapsulates the necessary specifications for provisioning Kubernetes-based microservices, enabling developers to manage their application infrastructure as code with ease and consistency.
+---
 
-By utilizing this Pulumi module, developers can automate the creation and configuration of Kubernetes deployments based on defined specifications such as container images, environment variables, resource allocations, and network protocols. The module seamlessly integrates with Kubernetes clusters and other cloud provider services specified in the resource definition, ensuring secure and authenticated interactions. Additionally, the outputs generated from the deployment, including service endpoints and resource identifiers, are captured in the resource's `status.outputs`. This facilitates effective monitoring and management of microservices directly through the `MicroserviceKubernetes` resource, enhancing operational efficiency and infrastructure visibility.
+## Basic Examples
 
-## Key Features
+### Minimal Private Bucket
 
-### API Resource Features
-
-- **Standardized Structure**: The `MicroserviceKubernetes` API resource adheres to a consistent schema with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields. This uniformity ensures compatibility and ease of integration within Kubernetes-like environments, promoting seamless workflow incorporation and tooling interoperability.
-
-- **Configurable Specifications**:
-    - **Environment Information**: Define the environment context (`envId`) to ensure that microservices are deployed within the correct organizational and production contexts.
-    - **Versioning**: Specify the version of the microservice to manage deployments and rollbacks effectively.
-    - **Container Configuration**:
-        - **Image Repository and Tag**: Define the container image repository and tag for deploying the microservice.
-        - **Environment Variables**: Configure environment variables to pass necessary configurations and secrets to the microservice.
-        - **Resource Allocation**: Set resource requests and limits for CPU and memory to ensure optimal performance and resource utilization.
-        - **Ports Configuration**: Define the ports used by the container, including ingress ports for external access.
-        - **Network Protocols**: Specify the network protocols (e.g., TCP, HTTP) used by the microservice to facilitate proper communication and service discovery.
-
-- **Validation and Compliance**: Incorporates stringent validation rules to ensure all configurations adhere to established standards and best practices, minimizing the risk of misconfigurations and enhancing overall system reliability.
-
-### Pulumi Module Features
-
-- **Automated Kubernetes Provider Setup**: Utilizes the provided Kubernetes credentials to automatically configure the Pulumi Kubernetes provider, enabling seamless and secure interactions with Kubernetes clusters.
-
-- **Microservice Management**: Streamlines the creation and management of Kubernetes deployments based on the provided specifications. This includes setting up deployment parameters, service configurations, and ingress rules to align with organizational requirements and performance standards.
-
-- **Environment Isolation**: Manages isolated environments within Kubernetes, ensuring resources are organized and segregated according to organizational needs, which aids in maintaining clear boundaries and reducing resource conflicts.
-
-- **Exported Stack Outputs**: Captures essential outputs such as service endpoints and resource identifiers in `status.outputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
-
-- **Scalability and Flexibility**: Designed to accommodate a wide range of microservice configurations, the module supports varying levels of complexity and can be easily extended to meet evolving infrastructure demands, ensuring long-term adaptability.
-
-- **Error Handling**: Implements robust error handling mechanisms to promptly identify and report issues encountered during deployment or configuration processes, aiding in swift troubleshooting and maintaining infrastructure integrity.
-
-## Installation
-
-To integrate the Microservice Kubernetes Pulumi Module into your project, retrieve it from the [GitHub repository](https://github.com/your-repo/microservice-kubernetes-pulumi-module). Ensure that you have both Pulumi and Go installed and properly configured in your development environment.
-
-```shell
-git clone https://github.com/your-repo/microservice-kubernetes-pulumi-module.git
-cd microservice-kubernetes-pulumi-module
-```
-
-## Usage
-
-Refer to the [example section](#examples) for usage instructions.
-
-## Examples
-
-### Basic Example
+A simple private bucket with default settings. Suitable for internal application storage.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: todo-list-api
+  name: my-app-data-prod
 spec:
-  version: main
-  container:
-    app:
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
 ```
 
-### Example with Environment Variables
+**Key Points:**
+- Minimal configuration using only required fields
+- UBLA enabled for simplified IAM-only access control
+- Defaults to STANDARD storage class
+- No public access (private by default)
+
+---
+
+### Regional Bucket with Labels
+
+A regional bucket co-located with GKE cluster, with custom labels for cost tracking.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: todo-list-api
+  name: gke-workload-storage
 spec:
-  version: main
-  container:
-    app:
-      env:
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  gcp_project_id: my-gcp-project-123
+  location: us-central1
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  gcp_labels:
+    team: platform-engineering
+    cost-center: engineering-prod
+    application: data-processing
+    environment: production
 ```
 
-### Example with Environment Secrets
+**Key Points:**
+- Regional placement co-located with compute resources (minimize latency & egress costs)
+- Custom labels for cost allocation and governance
+- STANDARD class appropriate for frequently accessed data
+- Labels enable filtering in billing reports
 
-The below example assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:ai.planton.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
+---
+
+## Access Control Examples
+
+### Public Read Bucket
+
+A bucket with public read access for serving open datasets or public website assets.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: todo-list-api
+  name: public-open-dataset
 spec:
-  version: main
-  container:
-    app:
-      env:
-        secrets:
-          # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-          # value after dot 'database-password' is one of the secrets list in 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-          DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  gcp_project_id: my-gcp-project-123
+  location: US  # Multi-region for global access
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  iam_bindings:
+    - role: "roles/storage.objectViewer"
+      members:
+        - "allUsers"
+  public_access_prevention: "inherited"  # Allow public access
 ```
 
-### Example with Multiple Containers
+**Key Points:**
+- Explicit IAM binding granting `objectViewer` to `allUsers`
+- Multi-region location for global content delivery
+- `public_access_prevention: inherited` to allow public access
+- UBLA enabled (required for IAM-only access control)
+- Clear, auditable access configuration
+
+**Security Note:** Never use this pattern for sensitive data. Consider Cloud CDN + Load Balancer for production websites.
+
+---
+
+### Service Account Access
+
+Grant specific service accounts access to the bucket for application workloads.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: multi-container-app
+  name: app-backend-storage
 spec:
-  environmentInfo:
-    envId: dev-env
-  version: v1.0.0
-  container:
-    app:
-      image:
-        repo: myapp/frontend
-        tag: v1.0.0
-      ports:
-        - appProtocol: http
-          containerPort: 80
-          isIngressPort: true
-          servicePort: 8080
-      resources:
-        requests:
-          cpu: 200m
-          memory: 256Mi
-        limits:
-          cpu: 1000m
-          memory: 1Gi
-    sidecar:
-      image:
-        repo: myapp/logging
-        tag: v1.0.0
-      ports:
-        - appProtocol: tcp
-          containerPort: 5000
-          isIngressPort: false
-          servicePort: 5000
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-        limits:
-          cpu: 500m
-          memory: 512Mi
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  versioning_enabled: true
+  iam_bindings:
+    # Application backend needs read/write access
+    - role: "roles/storage.objectAdmin"
+      members:
+        - "serviceAccount:backend-api@my-gcp-project-123.iam.gserviceaccount.com"
+    # Analytics pipeline needs read-only access
+    - role: "roles/storage.objectViewer"
+      members:
+        - "serviceAccount:analytics-etl@my-gcp-project-123.iam.gserviceaccount.com"
 ```
 
-### Example with Different Resource Limits
+**Key Points:**
+- Principle of least privilege (different roles for different needs)
+- Service accounts identified by full email address
+- Multiple IAM bindings for different access patterns
+- Versioning enabled to protect against accidental deletion
+
+---
+
+### Conditional IAM Access
+
+Use IAM conditions for time-based or attribute-based access control.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: high-memory-service
+  name: sensitive-project-data
 spec:
-  environmentInfo:
-    envId: staging-env
-  version: beta
-  container:
-    app:
-      image:
-        repo: highmemapp/backend
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 9090
-          isIngressPort: true
-          servicePort: 9090
-      resources:
-        requests:
-          cpu: 500m
-          memory: 512Mi
-        limits:
-          cpu: 4000m
-          memory: 8Gi
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  iam_bindings:
+    # Grant access only during business hours
+    - role: "roles/storage.objectViewer"
+      members:
+        - "group:contractors@example.com"
+      condition: |
+        request.time.getHours() >= 9 && request.time.getHours() <= 17
+    # Grant access only from specific IP ranges
+    - role: "roles/storage.objectViewer"
+      members:
+        - "group:external-auditors@example.com"
+      condition: |
+        origin.ip in ["203.0.113.0/24", "198.51.100.0/24"]
 ```
 
-### Example with Annotations and Labels
+**Key Points:**
+- IAM conditions enable dynamic access control
+- Time-based restrictions for contractor access
+- IP-based restrictions for external parties
+- Conditions evaluated at request time (no additional infrastructure)
+
+**Note:** IAM condition expressions use Common Expression Language (CEL).
+
+---
+
+## Data Protection Examples
+
+### Versioned Bucket with Lifecycle
+
+Enable versioning with lifecycle rules to prevent unbounded storage growth.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: annotated-service
-  labels:
-    app: annotated-app
-    tier: backend
-  annotations:
-    description: "This service handles user authentication."
+  name: critical-app-data
 spec:
-  environmentInfo:
-    envId: production-env
-  version: release
-  container:
-    app:
-      image:
-        repo: auth-service/image
-        tag: release
-      ports:
-        - appProtocol: https
-          containerPort: 8443
-          isIngressPort: true
-          servicePort: 443
-      resources:
-        requests:
-          cpu: 250m
-          memory: 256Mi
-        limits:
-          cpu: 1500m
-          memory: 2Gi
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  versioning_enabled: true
+  lifecycle_rules:
+    # Delete noncurrent versions after 30 days
+    - action:
+        type: "Delete"
+      condition:
+        num_newer_versions: 5
+    # Delete noncurrent versions older than 90 days regardless of count
+    - action:
+        type: "Delete"
+      condition:
+        age_days: 90
+        is_live: false
 ```
 
-### Example with Health Checks
+**Key Points:**
+- Versioning protects against accidental deletion/overwrite
+- Lifecycle rules prevent unbounded storage costs
+- Keep last 5 versions OR 90 days, whichever is shorter
+- Deletes noncurrent versions automatically
+
+**Cost Impact:** Without lifecycle rules, versioning can double storage costs over time.
+
+---
+
+### Compliance Archive Bucket
+
+A bucket with retention policy for regulatory compliance (e.g., FINRA, HIPAA).
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: healthcheck-service
+  name: financial-records-archive
 spec:
-  environmentInfo:
-    envId: test-env
-  version: test
-  container:
-    app:
-      image:
-        repo: healthapp/service
-        tag: test
-      ports:
-        - appProtocol: http
-          containerPort: 8000
-          isIngressPort: true
-          servicePort: 8000
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-        limits:
-          cpu: 500m
-          memory: 1Gi
-      livenessProbe:
-        httpGet:
-          path: /healthz
-          port: 8000
-        initialDelaySeconds: 30
-        periodSeconds: 10
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: 8000
-        initialDelaySeconds: 10
-        periodSeconds: 5
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  storage_class: ARCHIVE
+  versioning_enabled: true
+  retention_policy:
+    retention_period_seconds: 220752000  # 7 years (FINRA requirement)
+    is_locked: false  # Lock after initial validation
+  lifecycle_rules:
+    # Delete objects after 7 years + 30 day buffer
+    - action:
+        type: "Delete"
+      condition:
+        age_days: 2585  # 7 years + 30 days
+  iam_bindings:
+    # Write-only access for record ingestion
+    - role: "roles/storage.objectCreator"
+      members:
+        - "serviceAccount:records-ingest@my-gcp-project-123.iam.gserviceaccount.com"
+    # Read-only access for compliance team
+    - role: "roles/storage.objectViewer"
+      members:
+        - "group:compliance-team@example.com"
 ```
 
-### Example with Empty Spec
+**Key Points:**
+- ARCHIVE storage class for lowest storage cost
+- Retention policy enforces WORM (Write Once, Read Many) compliance
+- Objects cannot be deleted during 7-year retention period
+- Lifecycle rule cleans up after retention expires
+- Separate roles for ingestion vs. auditing
 
-*Note: This module is not completely implemented. Certain features may be missing or not fully functional. Future updates will address these limitations.*
+**Critical:** `is_locked: false` allows testing. Set to `true` in production (irreversible!).
+
+---
+
+## Cost Optimization Examples
+
+### Development Bucket with Cleanup
+
+Aggressive lifecycle policies for development/staging environments to minimize costs.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: incomplete-service
-spec: {}
+  name: dev-ephemeral-storage
+spec:
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  versioning_enabled: true
+  lifecycle_rules:
+    # Delete all objects after 30 days
+    - action:
+        type: "Delete"
+      condition:
+        age_days: 30
+    # Delete noncurrent versions after 7 days
+    - action:
+        type: "Delete"
+      condition:
+        num_newer_versions: 2
+  gcp_labels:
+    environment: development
+    auto-cleanup: enabled
 ```
+
+**Key Points:**
+- Automatic cleanup after 30 days (safe for ephemeral dev data)
+- Keep only 2 versions (balance protection vs. cost)
+- STANDARD class appropriate for active development
+- Labels indicate auto-cleanup for cost accountability
+
+**Cost Savings:** Can reduce storage costs by 90% compared to production buckets.
+
+---
+
+### Storage Tiering Strategy
+
+Automatically transition objects to cheaper storage classes based on age.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: GcpGcsBucket
 metadata:
-  name: another-incomplete-service
-spec: {}
+  name: tiered-backup-storage
+spec:
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD  # Initial storage class for new objects
+  versioning_enabled: true
+  lifecycle_rules:
+    # Transition to NEARLINE after 30 days (infrequent access)
+    - action:
+        type: "SetStorageClass"
+        storage_class: NEARLINE
+      condition:
+        age_days: 30
+        matches_storage_class:
+          - STANDARD
+    # Transition to COLDLINE after 90 days (quarterly access)
+    - action:
+        type: "SetStorageClass"
+        storage_class: COLDLINE
+      condition:
+        age_days: 90
+        matches_storage_class:
+          - NEARLINE
+    # Transition to ARCHIVE after 365 days (yearly access)
+    - action:
+        type: "SetStorageClass"
+        storage_class: ARCHIVE
+      condition:
+        age_days: 365
+        matches_storage_class:
+          - COLDLINE
+    # Delete after 7 years
+    - action:
+        type: "Delete"
+      condition:
+        age_days: 2555  # 7 years
 ```
 
-## Module Details
+**Key Points:**
+- Automatic cost optimization through storage class transitions
+- Matches actual access patterns (frequent → infrequent → rare → delete)
+- `matches_storage_class` prevents double-transitions
+- Significant cost savings for long-lived data
 
-### Input Configuration
+**Cost Comparison (per GB per month):**
+- STANDARD: $0.020 | NEARLINE: $0.010 | COLDLINE: $0.004 | ARCHIVE: $0.0012
 
-The module expects a `MicroserviceKubernetesStackInput` which includes:
+---
 
-- **Pulumi Input**: Configuration details required by Pulumi for managing the stack, such as stack names, project settings, and any necessary Pulumi configurations.
-- **Target API Resource**: The `MicroserviceKubernetes` resource defining the desired microservice configuration, including container specifications, environment variables, and resource allocations.
-- **Kubernetes Credential**: Specifications for the Kubernetes credentials used to authenticate and authorize Pulumi operations, ensuring secure interactions with Kubernetes clusters.
+## Advanced Examples
 
-### Exported Outputs
+### Static Website Hosting
 
-Upon successful execution, the module exports the following outputs to `status.outputs`:
+Host a static website directly from GCS (development/internal use only).
 
-- **Service URL**: The URL of the deployed microservice, facilitating client interactions and service accessibility.
-- **Resource ID**: The unique identifier assigned to the created Kubernetes resources, which can be used for management and monitoring purposes.
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: static-website-dev
+spec:
+  gcp_project_id: my-gcp-project-123
+  location: US  # Multi-region for better availability
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  website:
+    main_page_suffix: "index.html"
+    not_found_page: "404.html"
+  iam_bindings:
+    - role: "roles/storage.objectViewer"
+      members:
+        - "allUsers"
+```
 
-These outputs facilitate integration with other infrastructure components, provide essential information for monitoring and management, and enable automation workflows to utilize the deployed microservice resources effectively.
+**Key Points:**
+- Website configuration enables index page and custom 404
+- Public access via IAM binding
+- Multi-region for availability
 
-## Contributing
+**Production Alternative:** Use Cloud CDN + Load Balancer for:
+- HTTPS support with custom domains
+- CDN caching (reduced egress costs)
+- Better access logging and monitoring
+- DDoS protection
 
-We welcome contributions to enhance the Microservice Kubernetes Pulumi Module. Please refer to our [contribution guidelines](CONTRIBUTING.md) for more information on how to get involved, including coding standards, submission processes, and best practices.
+---
 
-## License
+### CORS-Enabled Bucket
 
-This project is licensed under the [MIT License](LICENSE), granting you the freedom to use, modify, and distribute the software with minimal restrictions. Please review the LICENSE file for more details.
+Enable CORS for buckets accessed from web browsers (e.g., font hosting, direct uploads).
 
-## Support
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: user-upload-storage
+spec:
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  cors_rules:
+    # Allow uploads from web application
+    - methods:
+        - "GET"
+        - "POST"
+        - "PUT"
+      origins:
+        - "https://app.example.com"
+        - "https://staging.example.com"
+      response_headers:
+        - "Content-Type"
+        - "x-goog-acl"
+      max_age_seconds: 3600  # Cache preflight for 1 hour
+  iam_bindings:
+    # Allow authenticated users to upload
+    - role: "roles/storage.objectCreator"
+      members:
+        - "allAuthenticatedUsers"
+```
 
-For support, please contact our [support team](mailto:support@planton.cloud). We are here to help you with any issues, questions, or feedback you may have regarding the Microservice Kubernetes Pulumi Module.
+**Key Points:**
+- CORS enables direct browser uploads (no backend proxy)
+- Restrict origins to your application domains
+- `max_age_seconds` reduces preflight requests
+- `objectCreator` allows uploads but not listing/deletion
 
-## Acknowledgements
+**Security:** Use signed URLs or Workload Identity Federation for production instead of `allAuthenticatedUsers`.
 
-Special thanks to all contributors and the Planton Cloud community for their ongoing support and feedback. Your efforts and dedication are instrumental in making this module robust and effective.
+---
 
-## Changelog
+### CMEK-Encrypted Bucket
 
-A detailed changelog is available in the [CHANGELOG.md](CHANGELOG.md) file. It documents all significant changes, enhancements, bug fixes, and updates made to the Microservice Kubernetes Pulumi Module over time.
+Use customer-managed encryption keys for compliance requirements.
 
-## Roadmap
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: highly-sensitive-data
+spec:
+  gcp_project_id: my-gcp-project-123
+  location: us-east1
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  versioning_enabled: true
+  encryption:
+    kms_key_name: "projects/my-gcp-project-123/locations/us-east1/keyRings/production-keys/cryptoKeys/bucket-encryption-key"
+  public_access_prevention: "enforced"  # Prevent accidental public access
+  gcp_labels:
+    data-classification: highly-sensitive
+    encryption: cmek
+    compliance: sox-hipaa
+```
 
-We are continuously working to enhance the Microservice Kubernetes Pulumi Module. Upcoming features include:
+**Key Points:**
+- CMEK provides audit trail of key usage via Cloud KMS
+- Key must exist before bucket creation (module doesn't create it)
+- Key location must match or encompass bucket location
+- Public access prevention enforced for extra security
 
-- **Advanced IAM Configurations**: Implementing more granular permission controls for Kubernetes resources to enhance security and compliance.
-- **Enhanced Monitoring Integrations**: Integrating with monitoring and logging tools such as Prometheus, Grafana, and the ELK stack for better observability and performance tracking.
-- **Support for Additional Cloud Providers**: Extending support to more cloud platforms to increase flexibility and accommodate diverse infrastructure requirements.
-- **Automated Scaling and Optimization**: Introducing automated scaling capabilities based on workload demands and performance metrics to optimize resource utilization.
-- **Comprehensive Documentation and Tutorials**: Expanding documentation and providing step-by-step tutorials to assist users in effectively leveraging the module's capabilities.
+**Prerequisites:**
+1. Create KMS key ring and key
+2. Grant GCS service account `roles/cloudkms.cryptoKeyEncrypterDecrypter` on the key
 
-Stay tuned for more updates as we continue to develop and refine the module to meet your infrastructure management needs.
+**Service Account Format:** `service-PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com`
 
-## Contact
+---
 
-For any inquiries or feedback, please reach out to us at [contact@planton.cloud](mailto:contact@planton.cloud). We value your input and are committed to providing the support you need to effectively manage your microservice infrastructure.
+### Multi-Region Production Bucket
 
-## Disclaimer
+High-availability bucket for globally distributed applications.
 
-*This project is maintained by Planton Cloud and is not affiliated with any third-party services unless explicitly stated. While we strive to ensure the accuracy and reliability of this module, users are encouraged to review and test configurations in their environments.*
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: global-cdn-content
+spec:
+  gcp_project_id: my-gcp-project-123
+  location: US  # Multi-region (auto-replication across US regions)
+  uniform_bucket_level_access_enabled: true
+  storage_class: STANDARD
+  versioning_enabled: true
+  lifecycle_rules:
+    # Keep last 10 versions
+    - action:
+        type: "Delete"
+      condition:
+        num_newer_versions: 10
+    # Delete noncurrent versions after 90 days
+    - action:
+        type: "Delete"
+      condition:
+        age_days: 90
+        is_live: false
+  iam_bindings:
+    # CDN origin fetch access
+    - role: "roles/storage.objectViewer"
+      members:
+        - "serviceAccount:cdn-backend@my-gcp-project-123.iam.gserviceaccount.com"
+    # Content management team write access
+    - role: "roles/storage.objectAdmin"
+      members:
+        - "group:content-managers@example.com"
+  gcp_labels:
+    application: cdn
+    tier: production
+    availability: multi-region
+```
 
-## Security
+**Key Points:**
+- Multi-region for automatic cross-region replication
+- Versioning protects against accidental content changes
+- Lifecycle rules prevent unbounded version growth
+- Separate read/write access for CDN vs. management
 
-If you discover any security vulnerabilities, please report them responsibly by contacting our security team at [security@planton.cloud](mailto:security@planton.cloud). We take security seriously and are committed to addressing any issues promptly to protect our users and their infrastructure.
+**Cost Consideration:** Multi-region storage costs ~20% more than regional, but eliminates single-region failure scenarios.
 
-## Code of Conduct
+---
 
-Please adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) when interacting with the project. We are committed to fostering an inclusive and respectful community where all contributors feel welcome and valued.
+## Best Practices Summary
 
-## References
+### Security
+1. ✅ Always enable UBLA (`uniform_bucket_level_access_enabled: true`)
+2. ✅ Use explicit IAM bindings instead of legacy ACLs
+3. ✅ Set `public_access_prevention: "enforced"` for private buckets
+4. ✅ Use service accounts with minimal permissions
+5. ✅ Enable versioning for critical data
 
-- [Pulumi Documentation](https://www.pulumi.com/docs/)
-- [Kubernetes Documentation](https://kubernetes.io/docs/)
-- [Planton Cloud APIs](https://buf.build/project-planton/apis/docs)
+### Cost Optimization
+1. ✅ Always configure lifecycle rules to prevent unbounded storage growth
+2. ✅ Use storage class transitions for infrequently accessed data
+3. ✅ Delete noncurrent versions automatically
+4. ✅ Use regional buckets co-located with compute resources
+5. ✅ Leverage labels for cost tracking and accountability
+
+### Reliability
+1. ✅ Enable versioning for important data
+2. ✅ Use regional buckets for latency-sensitive workloads
+3. ✅ Use multi-region buckets for high availability
+4. ✅ Implement retention policies for compliance requirements
+5. ✅ Use CMEK for regulatory compliance
+
+### Avoid These Anti-Patterns
+1. ❌ Using boolean "is_public" flags (unclear, not auditable)
+2. ❌ Disabling UBLA (complex dual-permission model)
+3. ❌ Enabling versioning without lifecycle cleanup
+4. ❌ Using ARCHIVE class without understanding minimum storage duration
+5. ❌ Multi-region placement when data is only accessed from one region
+
+---
+
+## Further Reading
+
+- [Component README](README.md) - Overview and features
+- [Pulumi Module README](iac/pulumi/README.md) - Implementation details
+- [Pulumi Module Overview](iac/pulumi/overview.md) - Architecture and design
+- [Research Document](docs/README.md) - Comprehensive analysis of GCS patterns
+- [GCS Best Practices (Google Cloud)](https://cloud.google.com/storage/docs/best-practices)
+- [Storage Classes Documentation](https://cloud.google.com/storage/docs/storage-classes)
+- [Lifecycle Management Guide](https://cloud.google.com/storage/docs/lifecycle)
+
+---
+
+## Need Help?
+
+For additional examples or specific use cases, consult:
+1. The [research document](docs/README.md) for design rationale
+2. The [audit report](docs/audit/) for component completeness
+3. The Project Planton community forums
