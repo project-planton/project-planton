@@ -460,6 +460,8 @@ func TestGcpCertManagerCertSpec_Validation(t *testing.T) {
 
 **Purpose:** The actual deployment logic (the "recipe")
 
+**CRITICAL:** Files must contain **actual implementation**, not empty stubs. Both audit and completion workflows must verify file content, not just existence.
+
 **Requirements:**
 
 - [ ] **main.go** - Controller/orchestrator that:
@@ -467,22 +469,32 @@ func TestGcpCertManagerCertSpec_Validation(t *testing.T) {
   - Sets up provider configuration (using credentials from stack input)
   - Calls resource-specific logic
   - Returns stack outputs
+  - **MUST NOT** be an empty stub that just returns `nil`
+  - **MUST** contain actual provider setup and resource creation calls
 - [ ] **locals.go** - Data transformations and computed values:
   - Transforms spec fields into provider-specific formats
   - Generates names, labels, tags
   - Computes derived values
+  - **MUST** contain actual field extraction and computation logic
+  - **MUST NOT** just define empty structs
 - [ ] **outputs.go** - Maps deployed resources to `<Kind>StackOutputs`:
   - Extracts resource IDs, ARNs, endpoints
   - Formats output structure matching `stack_outputs.proto`
+  - **MUST** contain actual `ctx.Export()` calls
+  - **MUST** map all fields from `stack_outputs.proto`
 - [ ] **Resource-Specific Files** - One or more `.go` files containing actual resource provisioning logic
   - Example: `cert_manager_cert.go` for the certificate resource
   - Example: `dns_authorization.go` for DNS validation resources
+  - **MUST** contain actual resource creation logic using provider SDK
+  - **MUST NOT** be empty or return nil without creating resources
 
 **Code Quality:**
 - [ ] **Uses Generated Stubs** - Imports and uses the generated protobuf Go stubs
 - [ ] **Provider Configuration** - Correctly configures the provider (AWS, GCP, etc.) using credentials
 - [ ] **Error Handling** - Proper error handling and propagation
 - [ ] **Resource Dependencies** - Explicit dependencies where needed (e.g., Pulumi `DependsOn`)
+- [ ] **Compiles Successfully** - `go build` succeeds without errors
+- [ ] **No Empty Stubs** - Functions return actual resources, not nil
 
 #### 4.2 Pulumi Entrypoint Files
 
@@ -525,6 +537,8 @@ func TestGcpCertManagerCertSpec_Validation(t *testing.T) {
 
 **Purpose:** Feature-parity Terraform implementation
 
+**CRITICAL:** Files must contain **actual implementation**, not empty stubs. Both audit and completion workflows must verify file content, not just existence.
+
 **Requirements:**
 
 - [ ] **variables.tf** - Input variables that mirror `spec.proto`:
@@ -533,6 +547,7 @@ func TestGcpCertManagerCertSpec_Validation(t *testing.T) {
   - Required fields are marked as required in Terraform
   - Optional fields have default values matching proto defaults
   - Variable descriptions match proto field comments
+  - **MUST** be generated and match spec.proto exactly
 
 **Critical:** The Project Planton CLI transforms the YAML manifest into Terraform variable format. If `variables.tf` doesn't match `spec.proto`, deployments will fail.
 
@@ -540,20 +555,29 @@ func TestGcpCertManagerCertSpec_Validation(t *testing.T) {
   - Configures the appropriate provider (AWS, GCP, Azure, etc.)
   - Uses credential information passed via variables
   - Sets provider version constraints
+  - **MUST NOT** be empty
+  - **MUST** contain actual provider configuration block
 
 - [ ] **locals.tf** - Local value transformations:
   - Transforms input variables into provider-specific formats
   - Computes derived values (names, labels, tags)
   - Centralizes repeated expressions
+  - **MUST** contain actual local value definitions
+  - **MUST NOT** be empty or missing
 
 - [ ] **main.tf** - Resource definitions:
   - Creates the primary resources
   - Creates supporting resources (networking, IAM, etc.)
   - Manages resource dependencies
+  - **MUST NOT** be empty (0 bytes) or contain only comments
+  - **MUST** contain actual `resource` blocks using provider SDK
+  - **MUST** implement all fields from spec.proto
 
 - [ ] **outputs.tf** - Output values matching `stack_outputs.proto`:
   - Every field in `<Kind>StackOutputs` has a corresponding Terraform output
   - Output descriptions match proto field comments
+  - **MUST** contain actual `output` blocks
+  - **MUST** extract values from created resources
 
 - [ ] **README.md** - Terraform-specific usage guide
 
@@ -563,6 +587,8 @@ func TestGcpCertManagerCertSpec_Validation(t *testing.T) {
 - [ ] **Feature Parity with Pulumi** - Creates the same resources as Pulumi module
 - [ ] **No Hardcoded Values** - All configuration comes from variables
 - [ ] **Proper Dependencies** - Uses `depends_on` where needed
+- [ ] **Not Empty** - main.tf has substantial content (>100 bytes minimum)
+- [ ] **Functional** - Can actually deploy resources, not just validate syntax
 
 **Example Structure:**
 
@@ -869,19 +895,34 @@ When reviewing a PR that adds or updates a deployment component, use this docume
 
 This document serves as the specification for an automated audit tool. The tool should:
 
-1. Check file existence for each required file
+1. **Check file existence AND content** for each required file:
+   - **CRITICAL:** Don't just check if file exists - verify it has actual implementation
+   - Check file size (e.g., main.tf with 0 bytes is incomplete)
+   - Check for empty stubs (e.g., Pulumi main.go that just returns nil)
+   - Verify functions contain actual resource creation logic
 2. Validate folder structure matches conventions
 3. Check proto stubs are current (compare timestamps)
 4. Validate terraform files with `terraform validate`
 5. Check that variables.tf fields match spec.proto fields
 6. Check that outputs.tf fields match stack_outputs.proto fields
 7. Run unit tests with `make test`
-8. Calculate completion percentage
-9. Generate a report showing:
-   - Overall completion percentage
+8. **Verify IaC module implementation completeness**:
+   - Pulumi module: Check main.go has provider setup and resource calls
+   - Pulumi module: Check locals.go extracts and computes values
+   - Pulumi module: Check outputs.go has ctx.Export() calls
+   - Terraform module: Check main.tf has resource blocks (not empty)
+   - Terraform module: Check provider.tf has provider configuration
+   - Terraform module: Check locals.tf has local value definitions
+   - Terraform module: Check outputs.tf has output blocks
+9. Calculate completion percentage based on **implementation**, not just file presence
+10. Generate a report showing:
+   - Overall completion percentage (considering implementation)
    - Missing items by category
-   - Quality issues (mismatches, outdated files)
+   - Empty/stub files that need implementation
+   - Quality issues (mismatches, outdated files, empty implementations)
    - Recommended next steps
+
+**Key Principle:** A component with all files present but empty implementations should score LOW, not high. Implementation matters more than file existence.
 
 ---
 

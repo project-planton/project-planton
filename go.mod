@@ -27,7 +27,9 @@ require (
 	github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.49.0
 	github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4
+	github.com/pulumi/pulumi-mongodbatlas/sdk/v3 v3.36.1
 	github.com/pulumi/pulumi-random/sdk/v4 v4.16.7
+	github.com/pulumi/pulumi-snowflake/sdk/v2 v2.9.1
 	github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.2.1
 	github.com/pulumi/pulumi/sdk/v3 v3.206.0
