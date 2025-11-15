@@ -12,8 +12,8 @@ func secret(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescor
 	dataMap := make(map[string]string)
 
 	//add all secrets to data map
-	if locals.KubernetesMicroservice.Spec.Container.App.Env != nil {
-		var secrets = locals.KubernetesMicroservice.Spec.Container.App.Env.Secrets
+	if locals.KubernetesDeployment.Spec.Container.App.Env != nil {
+		var secrets = locals.KubernetesDeployment.Spec.Container.App.Env.Secrets
 		if secrets != nil && len(secrets) > 0 {
 			// gather all provided secrets into a simple map
 			sortedSecretKeys := sortstringmap.SortMap(secrets)

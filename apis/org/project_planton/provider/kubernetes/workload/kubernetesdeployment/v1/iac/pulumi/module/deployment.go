@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 	kubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	kubernetesmicroservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesmicroservice/v1"
+	kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesdeployment/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -18,10 +18,10 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 
 	// create service account
 	createdServiceAccount, err := kubernetescorev1.NewServiceAccount(ctx,
-		locals.KubernetesMicroservice.Metadata.Name,
+		locals.KubernetesDeployment.Metadata.Name,
 		&kubernetescorev1.ServiceAccountArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesMicroservice.Metadata.Name),
+				Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 			}),
 		}, pulumi.Parent(createdNamespace))
@@ -50,27 +50,27 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		},
 	}))
 
-	if locals.KubernetesMicroservice.Spec.Container.App.Env != nil {
-		if locals.KubernetesMicroservice.Spec.Container.App.Env.Variables != nil {
-			sortedEnvVariableKeys := sortstringmap.SortMap(locals.KubernetesMicroservice.Spec.Container.App.Env.Variables)
+	if locals.KubernetesDeployment.Spec.Container.App.Env != nil {
+		if locals.KubernetesDeployment.Spec.Container.App.Env.Variables != nil {
+			sortedEnvVariableKeys := sortstringmap.SortMap(locals.KubernetesDeployment.Spec.Container.App.Env.Variables)
 
 			for _, environmentVariableKey := range sortedEnvVariableKeys {
 				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
 					Name:  pulumi.String(environmentVariableKey),
-					Value: pulumi.String(locals.KubernetesMicroservice.Spec.Container.App.Env.Variables[environmentVariableKey]),
+					Value: pulumi.String(locals.KubernetesDeployment.Spec.Container.App.Env.Variables[environmentVariableKey]),
 				}))
 			}
 		}
 
-		if locals.KubernetesMicroservice.Spec.Container.App.Env.Secrets != nil {
-			sortedEnvironmentSecretKeys := sortstringmap.SortMap(locals.KubernetesMicroservice.Spec.Container.App.Env.Secrets)
+		if locals.KubernetesDeployment.Spec.Container.App.Env.Secrets != nil {
+			sortedEnvironmentSecretKeys := sortstringmap.SortMap(locals.KubernetesDeployment.Spec.Container.App.Env.Secrets)
 
 			for _, environmentSecretKey := range sortedEnvironmentSecretKeys {
 				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
 					Name: pulumi.String(environmentSecretKey),
 					ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
 						SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
-							Name: pulumi.String(locals.KubernetesMicroservice.Spec.Version),
+							Name: pulumi.String(locals.KubernetesDeployment.Spec.Version),
 							Key:  pulumi.String(environmentSecretKey),
 						},
 					},
@@ -80,7 +80,7 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 	}
 
 	portsArray := make(kubernetescorev1.ContainerPortArray, 0)
-	for _, p := range locals.KubernetesMicroservice.Spec.Container.App.Ports {
+	for _, p := range locals.KubernetesDeployment.Spec.Container.App.Ports {
 		portsArray = append(portsArray, &kubernetescorev1.ContainerPortArgs{
 			Name:          pulumi.String(p.Name),
 			ContainerPort: pulumi.Int(p.ContainerPort),
@@ -93,23 +93,23 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		&kubernetescorev1.ContainerArgs{
 			Name: pulumi.String("microservice"),
 			Image: pulumi.String(fmt.Sprintf("%s:%s",
-				locals.KubernetesMicroservice.Spec.Container.App.Image.Repo,
-				locals.KubernetesMicroservice.Spec.Container.App.Image.Tag)),
+				locals.KubernetesDeployment.Spec.Container.App.Image.Repo,
+				locals.KubernetesDeployment.Spec.Container.App.Image.Tag)),
 			Env:   kubernetescorev1.EnvVarArray(envVarInputs),
 			Ports: portsArray,
 			Resources: kubernetescorev1.ResourceRequirementsArgs{
 				Limits: pulumi.ToStringMap(map[string]string{
-					"cpu":    locals.KubernetesMicroservice.Spec.Container.App.Resources.Limits.Cpu,
-					"memory": locals.KubernetesMicroservice.Spec.Container.App.Resources.Limits.Memory,
+					"cpu":    locals.KubernetesDeployment.Spec.Container.App.Resources.Limits.Cpu,
+					"memory": locals.KubernetesDeployment.Spec.Container.App.Resources.Limits.Memory,
 				}),
 				Requests: pulumi.ToStringMap(map[string]string{
-					"cpu":    locals.KubernetesMicroservice.Spec.Container.App.Resources.Requests.Cpu,
-					"memory": locals.KubernetesMicroservice.Spec.Container.App.Resources.Requests.Memory,
+					"cpu":    locals.KubernetesDeployment.Spec.Container.App.Resources.Requests.Cpu,
+					"memory": locals.KubernetesDeployment.Spec.Container.App.Resources.Requests.Memory,
 				}),
 			},
-			LivenessProbe:  buildProbe(locals.KubernetesMicroservice.Spec.Container.App.LivenessProbe),
-			ReadinessProbe: buildProbe(locals.KubernetesMicroservice.Spec.Container.App.ReadinessProbe),
-			StartupProbe:   buildProbe(locals.KubernetesMicroservice.Spec.Container.App.StartupProbe),
+			LivenessProbe:  buildProbe(locals.KubernetesDeployment.Spec.Container.App.LivenessProbe),
+			ReadinessProbe: buildProbe(locals.KubernetesDeployment.Spec.Container.App.ReadinessProbe),
+			StartupProbe:   buildProbe(locals.KubernetesDeployment.Spec.Container.App.StartupProbe),
 			Lifecycle: kubernetescorev1.LifecycleArgs{
 				PreStop: kubernetescorev1.LifecycleHandlerArgs{
 					Exec: kubernetescorev1.ExecActionArgs{
@@ -141,10 +141,10 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 
 	//create deployment
 	createdDeployment, err := appsv1.NewDeployment(ctx,
-		locals.KubernetesMicroservice.Spec.Version,
+		locals.KubernetesDeployment.Spec.Version,
 		&appsv1.DeploymentArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesMicroservice.Metadata.Name),
+				Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{
@@ -152,8 +152,8 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 				},
 			},
 			Spec: &appsv1.DeploymentSpecArgs{
-				Replicas: pulumi.Int(locals.KubernetesMicroservice.Spec.Availability.MinReplicas),
-				Strategy: buildDeploymentStrategy(locals.KubernetesMicroservice.Spec.Availability.DeploymentStrategy),
+				Replicas: pulumi.Int(locals.KubernetesDeployment.Spec.Availability.MinReplicas),
+				Strategy: buildDeploymentStrategy(locals.KubernetesDeployment.Spec.Availability.DeploymentStrategy),
 				Selector: &metav1.LabelSelectorArgs{
 					MatchLabels: pulumi.ToStringMap(locals.SelectorLabels),
 				},
@@ -282,7 +282,7 @@ func buildProbe(protoProbe *kubernetesv1.Probe) *kubernetescorev1.ProbeArgs {
 
 // buildDeploymentStrategy converts a proto DeploymentStrategy into Pulumi DeploymentStrategyArgs.
 // Returns nil if no strategy is configured (uses Kubernetes defaults).
-func buildDeploymentStrategy(protoStrategy *kubernetesmicroservicev1.KubernetesMicroserviceDeploymentStrategy) *appsv1.DeploymentStrategyArgs {
+func buildDeploymentStrategy(protoStrategy *kubernetesdeploymentv1.KubernetesDeploymentDeploymentStrategy) *appsv1.DeploymentStrategyArgs {
 	if protoStrategy == nil {
 		return nil
 	}

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.workload.kubernetesmicroservice.v1;
+package org.project_planton.provider.kubernetes.workload.kubernetesdeployment.v1;
 
 //microservice-kubernetes-stack outputs
-message KubernetesMicroserviceStackOutputs {
+message KubernetesDeploymentStackOutputs {
   //kubernetes namespace in which microservice-kubernetes is created.
   string namespace = 1;
 

@@ -142,7 +142,7 @@ const (
 	CloudResourceKind_KubernetesKafka              CloudResourceKind = 807
 	CloudResourceKind_KubernetesKeycloak           CloudResourceKind = 808
 	CloudResourceKind_KubernetesLocust             CloudResourceKind = 809
-	CloudResourceKind_KubernetesMicroservice       CloudResourceKind = 810
+	CloudResourceKind_KubernetesDeployment         CloudResourceKind = 810
 	CloudResourceKind_KubernetesMongodb            CloudResourceKind = 811
 	CloudResourceKind_KubernetesNeo4j              CloudResourceKind = 812
 	CloudResourceKind_KubernetesOpenFga            CloudResourceKind = 813
@@ -272,7 +272,7 @@ var (
 		807:  "KubernetesKafka",
 		808:  "KubernetesKeycloak",
 		809:  "KubernetesLocust",
-		810:  "KubernetesMicroservice",
+		810:  "KubernetesDeployment",
 		811:  "KubernetesMongodb",
 		812:  "KubernetesNeo4j",
 		813:  "KubernetesOpenFga",
@@ -396,7 +396,7 @@ var (
 		"KubernetesKafka":                      807,
 		"KubernetesKeycloak":                   808,
 		"KubernetesLocust":                     809,
-		"KubernetesMicroservice":               810,
+		"KubernetesDeployment":                 810,
 		"KubernetesMongodb":                    811,
 		"KubernetesNeo4j":                      812,
 		"KubernetesOpenFga":                    813,
@@ -668,7 +668,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\bcategory\x18\x02 \x01(\x0e2M.org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xdf)\n" +
+	"\x02v1\x10\x01*\xde)\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -754,8 +754,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\bkeycloak\x10\x02\x123\n" +
 	"\x10KubernetesLocust\x10\xa9\x06\x1a\x1c\xa2\xf7\x04\x18\b\x13\x10\x01\"\x06k8sloc2\n" +
 	"\n" +
-	"\x06locust\x10\x02\x12;\n" +
-	"\x16KubernetesMicroservice\x10\xaa\x06\x1a\x1e\xa2\xf7\x04\x1a\b\x13\x10\x01\"\x05k8sms(\x012\v\n" +
+	"\x06locust\x10\x02\x12:\n" +
+	"\x14KubernetesDeployment\x10\xaa\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x06k8sdpl(\x012\v\n" +
 	"\aservice\x10\x02\x123\n" +
 	"\x11KubernetesMongodb\x10\xab\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8smdb2\t\n" +
 	"\x05mongo\x10\x02\x121\n" +

@@ -1,4 +1,4 @@
-package kubernetesmicroservicev1
+package kubernetesdeploymentv1
 
 import (
 	"testing"
@@ -10,25 +10,25 @@ import (
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 )
 
-func TestKubernetesMicroservice(t *testing.T) {
+func TestKubernetesDeployment(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	ginkgo.RunSpecs(t, "KubernetesMicroservice Suite")
+	ginkgo.RunSpecs(t, "KubernetesDeployment Suite")
 }
 
-var _ = ginkgo.Describe("KubernetesMicroservice Custom Validation Tests", func() {
-	var input *KubernetesMicroservice
+var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
+	var input *KubernetesDeployment
 
 	ginkgo.BeforeEach(func() {
-		input = &KubernetesMicroservice{
+		input = &KubernetesDeployment{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "KubernetesMicroservice",
+			Kind:       "KubernetesDeployment",
 			Metadata: &shared.CloudResourceMetadata{
 				Name: "sample-k8sms",
 			},
-			Spec: &KubernetesMicroserviceSpec{
+			Spec: &KubernetesDeploymentSpec{
 				Version: "review-123", // Valid according to the custom regex checks
-				Container: &KubernetesMicroserviceContainer{
-					App: &KubernetesMicroserviceContainerApp{
+				Container: &KubernetesDeploymentContainer{
+					App: &KubernetesDeploymentContainerApp{
 						Image: &kubernetes.ContainerImage{
 							Repo: "example",
 							Tag:  "latest",
@@ -43,11 +43,11 @@ var _ = ginkgo.Describe("KubernetesMicroservice Custom Validation Tests", func()
 								Memory: "256Mi",
 							},
 						},
-						Env: &KubernetesMicroserviceContainerAppEnv{
+						Env: &KubernetesDeploymentContainerAppEnv{
 							Variables: map[string]string{"KEY": "value"},
 							Secrets:   map[string]string{"SECRET_KEY": "secret_value"},
 						},
-						Ports: []*KubernetesMicroserviceContainerAppPort{
+						Ports: []*KubernetesDeploymentContainerAppPort{
 							{
 								Name:            "web1",
 								ContainerPort:   8080,
@@ -62,9 +62,9 @@ var _ = ginkgo.Describe("KubernetesMicroservice Custom Validation Tests", func()
 				Ingress: &kubernetes.IngressSpec{
 					DnsDomain: "myapp.example.com",
 				},
-				Availability: &KubernetesMicroserviceAvailability{
+				Availability: &KubernetesDeploymentAvailability{
 					MinReplicas: 1,
-					HorizontalPodAutoscaling: &KubernetesMicroserviceAvailabilityHpa{
+					HorizontalPodAutoscaling: &KubernetesDeploymentAvailabilityHpa{
 						IsEnabled:                   true,
 						TargetCpuUtilizationPercent: 70,
 						TargetMemoryUtilization:     "512Mi",

@@ -12,12 +12,12 @@ func service(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace, createdDeployment *appsv1.Deployment) error {
 
 	//if the service ports are empty, we don't need to create a service
-	if len(locals.KubernetesMicroservice.Spec.Container.App.Ports) == 0 {
+	if len(locals.KubernetesDeployment.Spec.Container.App.Ports) == 0 {
 		return nil
 	}
 
 	portsArray := make(kubernetescorev1.ServicePortArray, 0)
-	for _, p := range locals.KubernetesMicroservice.Spec.Container.App.Ports {
+	for _, p := range locals.KubernetesDeployment.Spec.Container.App.Ports {
 		portsArray = append(portsArray, &kubernetescorev1.ServicePortArgs{
 			Name:        pulumi.String(p.Name),
 			Protocol:    pulumi.String(p.NetworkProtocol),
@@ -28,10 +28,10 @@ func service(ctx *pulumi.Context, locals *Locals,
 	}
 
 	_, err := kubernetescorev1.NewService(ctx,
-		locals.KubernetesMicroservice.Spec.Version,
+		locals.KubernetesDeployment.Spec.Version,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesMicroservice.Spec.Version),
+				Name:      pulumi.String(locals.KubernetesDeployment.Spec.Version),
 				Namespace: createdNamespace.Metadata.Name(),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

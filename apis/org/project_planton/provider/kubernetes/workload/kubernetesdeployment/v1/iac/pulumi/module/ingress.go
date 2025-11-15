@@ -147,7 +147,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 	}
 
 	var destinationServicePort = pulumi.Int(80)
-	for _, p := range locals.KubernetesMicroservice.Spec.Container.App.Ports {
+	for _, p := range locals.KubernetesDeployment.Spec.Container.App.Ports {
 		if p.IsIngressPort {
 			destinationServicePort = pulumi.Int(p.ServicePort)
 		}
