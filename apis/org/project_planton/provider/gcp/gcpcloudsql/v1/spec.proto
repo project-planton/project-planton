@@ -54,20 +54,41 @@ message GcpCloudSqlSpec {
     (org.project_planton.shared.options.recommended_default) = "10"
   ];
 
+  // Whether storage should automatically resize when approaching capacity.
+  // Enabled by default to prevent out-of-space issues.
+  bool disk_autoresize = 7 [(org.project_planton.shared.options.recommended_default) = "true"];
+
+  // Cloud SQL edition: ENTERPRISE (standard) or ENTERPRISE_PLUS (premium with 99.99% SLA).
+  // Defaults to ENTERPRISE if not specified.
+  GcpCloudSqlEdition edition = 8 [(org.project_planton.shared.options.recommended_default) = "ENTERPRISE"];
+
+  // Whether to enable deletion protection. When enabled, prevents accidental deletion of the instance.
+  // Highly recommended for production instances.
+  bool deletion_protection = 9 [(org.project_planton.shared.options.recommended_default) = "false"];
+
+  // Whether to enable Query Insights for performance monitoring and query analysis.
+  bool query_insights_enabled = 10;
+
+  // Maintenance window configuration for scheduling updates during off-peak hours.
+  GcpCloudSqlMaintenanceWindow maintenance_window = 11;
+
   // Network configuration for the Cloud SQL instance.
-  GcpCloudSqlNetwork network = 7;
+  GcpCloudSqlNetwork network = 12;
 
   // High availability configuration.
-  GcpCloudSqlHighAvailability high_availability = 8;
+  GcpCloudSqlHighAvailability high_availability = 13;
 
   // Backup configuration settings.
-  GcpCloudSqlBackup backup = 9;
+  GcpCloudSqlBackup backup = 14;
 
   // Database-specific configuration flags as key-value pairs.
-  map<string, string> database_flags = 10;
+  map<string, string> database_flags = 15;
 
   // Initial root password for the database instance.
-  string root_password = 11 [(buf.validate.field).string = {min_len: 8}];
+  string root_password = 16 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {min_len: 8}
+  ];
 }
 
 // GcpCloudSqlDatabaseEngine defines the supported database engines.
@@ -82,16 +103,36 @@ enum GcpCloudSqlDatabaseEngine {
   POSTGRESQL = 2;
 }
 
+// GcpCloudSqlEdition defines the service tier/edition.
+enum GcpCloudSqlEdition {
+  // Unspecified edition (defaults to ENTERPRISE).
+  EDITION_UNSPECIFIED = 0;
+
+  // Enterprise edition: Standard tier with 99.95% SLA for Regional (HA) instances.
+  ENTERPRISE = 1;
+
+  // Enterprise Plus edition: Premium tier with 99.99% SLA, 4x read performance,
+  // and reduced maintenance downtime (<10 seconds vs ~60 seconds).
+  ENTERPRISE_PLUS = 2;
+}
+
 // GcpCloudSqlNetwork defines network configuration for the Cloud SQL instance.
 message GcpCloudSqlNetwork {
   // VPC network ID for private IP connectivity.
   string vpc_id = 1;
 
   // Whether to enable private IP for the instance.
+  // Recommended for secure in-VPC access.
   bool private_ip_enabled = 2;
 
+  // Whether to enable public IP (IPv4) for the instance.
+  // Can be combined with private IP for "Smart Hybrid" pattern.
+  // When enabled with empty authorized_networks, access is via Cloud SQL Proxy only (IAM-based).
+  bool ipv4_enabled = 3;
+
   // List of authorized networks (CIDR blocks) allowed to connect via public IP.
-  repeated string authorized_networks = 3 [
+  // Leave empty for maximum security (Cloud SQL Proxy with IAM authentication only).
+  repeated string authorized_networks = 4 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).repeated = {
       unique: true
@@ -144,9 +185,54 @@ message GcpCloudSqlBackup {
     (org.project_planton.shared.options.recommended_default) = "7"
   ];
 
+  // Whether to enable Point-in-Time Recovery (PITR).
+  // Allows restoring to any specific second within the retention window.
+  // Requires automated backups to be enabled and uses transaction logs.
+  // Essential for protecting against human error (accidental deletes, bad migrations).
+  bool point_in_time_recovery_enabled = 4;
+
   option (buf.validate.message).cel = {
     id: "backup.enabled_requires_config"
     message: "start_time and retention_days must be set when backup is enabled"
     expression: "!this.enabled || (size(this.start_time) > 0 && this.retention_days > 0)"
   };
+
+  option (buf.validate.message).cel = {
+    id: "backup.pitr_requires_backup_enabled"
+    message: "automated backups must be enabled when point_in_time_recovery_enabled is true"
+    expression: "!this.point_in_time_recovery_enabled || this.enabled"
+  };
+}
+
+// GcpCloudSqlMaintenanceWindow defines when Cloud SQL can perform maintenance updates.
+message GcpCloudSqlMaintenanceWindow {
+  // Day of the week for maintenance (1=Monday, 7=Sunday).
+  int32 day = 1 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 7
+    }
+  ];
+
+  // Hour of the day for maintenance start (0-23, UTC).
+  int32 hour = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 23
+    }
+  ];
+
+  // Update track: "canary" for early updates, "stable" for production (default).
+  string update_track = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {
+      in: [
+        "canary",
+        "stable",
+        ""
+      ]
+    }
+  ];
 }

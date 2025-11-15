@@ -22,6 +22,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBuck
 
 	target := stackInput.Target
 
+	// Initialize standard GCP labels
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
@@ -38,6 +39,13 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBuck
 
 	if target.Metadata.Env != "" {
 		locals.GcpLabels[gcplabelkeys.Environment] = target.Metadata.Env
+	}
+
+	// Merge user-provided labels from spec (user labels take precedence for conflicts)
+	if target.Spec.GcpLabels != nil {
+		for key, value := range target.Spec.GcpLabels {
+			locals.GcpLabels[key] = value
+		}
 	}
 
 	return locals

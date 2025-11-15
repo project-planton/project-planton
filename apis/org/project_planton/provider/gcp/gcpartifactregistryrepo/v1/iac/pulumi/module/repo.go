@@ -10,8 +10,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// repo creates a repository and grants public access if enabled
-func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider) error {
+// repo creates a repository and configures IAM bindings based on public/private access
+func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider, serviceAccounts *ServiceAccounts) error {
 	//create a variable with descriptive name for the api-resource in the input
 	gcpArtifactRegistryRepo := locals.GcpArtifactRegistryRepo
 
@@ -35,7 +35,7 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider) 
 	if gcpArtifactRegistryRepo.Spec.EnablePublicAccess {
 		//grant "reader" role for all users on the repo to make it public
 		_, err = artifactregistry.NewRepositoryIamMember(ctx,
-			fmt.Sprintf("%s-reader-for-all-users", repoName),
+			fmt.Sprintf("%s-public-reader", repoName),
 			&artifactregistry.RepositoryIamMemberArgs{
 				Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
 				Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
@@ -44,10 +44,52 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider) 
 				//"allUsers" is a special identifier on google identity system which is used
 				//for granting permissions to for everyone.
 				Member: pulumi.Sprintf("allUsers"),
-			}, pulumi.Provider(gcpProvider))
+			}, pulumi.Provider(gcpProvider), pulumi.DependsOn([]pulumi.Resource{createdRepo}))
 		if err != nil {
 			return errors.Wrap(err, "failed to grant reader role on repo for all users")
 		}
+	} else {
+		//grant "reader" role to the reader service account for private repos
+		_, err = artifactregistry.NewRepositoryIamMember(ctx,
+			fmt.Sprintf("%s-reader-sa", repoName),
+			&artifactregistry.RepositoryIamMemberArgs{
+				Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+				Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
+				Repository: createdRepo.RepositoryId,
+				Role:       pulumi.String("roles/artifactregistry.reader"),
+				Member:     pulumi.Sprintf("serviceAccount:%s", serviceAccounts.ReaderAccount.Email),
+			}, pulumi.Provider(gcpProvider), pulumi.DependsOn([]pulumi.Resource{createdRepo, serviceAccounts.ReaderAccount}))
+		if err != nil {
+			return errors.Wrap(err, "failed to grant reader role on repo for reader service account")
+		}
+	}
+
+	//grant "writer" role to the writer service account (always, regardless of public/private)
+	_, err = artifactregistry.NewRepositoryIamMember(ctx,
+		fmt.Sprintf("%s-writer-sa", repoName),
+		&artifactregistry.RepositoryIamMemberArgs{
+			Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
+			Repository: createdRepo.RepositoryId,
+			Role:       pulumi.String("roles/artifactregistry.writer"),
+			Member:     pulumi.Sprintf("serviceAccount:%s", serviceAccounts.WriterAccount.Email),
+		}, pulumi.Provider(gcpProvider), pulumi.DependsOn([]pulumi.Resource{createdRepo, serviceAccounts.WriterAccount}))
+	if err != nil {
+		return errors.Wrap(err, "failed to grant writer role on repo for writer service account")
+	}
+
+	//grant "repoAdmin" role to the writer service account (for full repository management)
+	_, err = artifactregistry.NewRepositoryIamMember(ctx,
+		fmt.Sprintf("%s-admin-sa", repoName),
+		&artifactregistry.RepositoryIamMemberArgs{
+			Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
+			Repository: createdRepo.RepositoryId,
+			Role:       pulumi.String("roles/artifactregistry.repoAdmin"),
+			Member:     pulumi.Sprintf("serviceAccount:%s", serviceAccounts.WriterAccount.Email),
+		}, pulumi.Provider(gcpProvider), pulumi.DependsOn([]pulumi.Resource{createdRepo, serviceAccounts.WriterAccount}))
+	if err != nil {
+		return errors.Wrap(err, "failed to grant repoAdmin role on repo for writer service account")
 	}
 
 	//export important attributes of the repository as outputs

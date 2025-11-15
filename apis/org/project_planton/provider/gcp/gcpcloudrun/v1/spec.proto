@@ -34,11 +34,19 @@ message GcpCloudRunSpec {
     }
   ];
 
+  // Service account email that the Cloud Run service runs as.
+  // If not specified, uses the default Compute Engine service account.
+  string service_account = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?@[a-z0-9-]+\\.iam\\.gserviceaccount\\.com$"}
+  ];
+
   // Container configuration for the Cloud Run service.
   GcpCloudRunContainer container = 3 [(buf.validate.field).required = true];
 
   // Maximum concurrent requests handled by one instance.
   int32 max_concurrency = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).int32 = {
       gte: 1
       lte: 1000
@@ -46,10 +54,30 @@ message GcpCloudRunSpec {
     (org.project_planton.shared.options.recommended_default) = "80"
   ];
 
+  // Request timeout in seconds (1-3600). Default is 300 (5 minutes).
+  int32 timeout_seconds = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 3600
+    },
+    (org.project_planton.shared.options.recommended_default) = "300"
+  ];
+
+  // Ingress settings control which traffic sources can reach the service.
+  GcpCloudRunIngress ingress = 10 [(org.project_planton.shared.options.recommended_default) = "INGRESS_TRAFFIC_ALL"];
+
   // If true, the service is publicly invokable by unauthenticated callers.
   bool allow_unauthenticated = 5 [(org.project_planton.shared.options.recommended_default) = "true"];
 
-  //Custom DNS mapping for the Cloud Run service.
+  // VPC access configuration for private resource access.
+  GcpCloudRunVpcAccess vpc_access = 11;
+
+  // Execution environment generation (GEN1 or GEN2).
+  // GEN2 offers full Linux compatibility but slower cold starts.
+  GcpCloudRunExecutionEnvironment execution_environment = 12 [(org.project_planton.shared.options.recommended_default) = "EXECUTION_ENVIRONMENT_GEN2"];
+
+  // Custom DNS mapping for the Cloud Run service.
   GcpCloudRunDns dns = 6;
 }
 
@@ -164,4 +192,66 @@ message GcpCloudRunDns {
     message: "hostnames and managed_zone must be set when dns.enabled is true"
     expression: "!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')"
   };
+}
+
+/*
+ * GcpCloudRunIngress controls which traffic sources can reach the service.
+ */
+enum GcpCloudRunIngress {
+  // Unspecified, defaults to INGRESS_TRAFFIC_ALL
+  INGRESS_TRAFFIC_UNSPECIFIED = 0;
+
+  // Accept traffic from all sources (public internet)
+  INGRESS_TRAFFIC_ALL = 1;
+
+  // Accept traffic only from other Cloud Run services and Eventarc events
+  INGRESS_TRAFFIC_INTERNAL_ONLY = 2;
+
+  // Accept traffic from internal sources and Cloud Load Balancing
+  INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER = 3;
+}
+
+/*
+ * GcpCloudRunExecutionEnvironment defines the execution environment generation.
+ */
+enum GcpCloudRunExecutionEnvironment {
+  // Unspecified, defaults to GEN2
+  EXECUTION_ENVIRONMENT_UNSPECIFIED = 0;
+
+  // First generation execution environment
+  EXECUTION_ENVIRONMENT_GEN1 = 1;
+
+  // Second generation execution environment (full Linux compatibility)
+  EXECUTION_ENVIRONMENT_GEN2 = 2;
+}
+
+/*
+ * GcpCloudRunVpcAccess configures Direct VPC Egress for accessing private resources.
+ */
+message GcpCloudRunVpcAccess {
+  // VPC network name for Direct VPC Egress
+  string network = 1 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {min_len: 1}
+  ];
+
+  // VPC subnet name for Direct VPC Egress
+  string subnet = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {min_len: 1}
+  ];
+
+  // Egress setting: "ALL_TRAFFIC" or "PRIVATE_RANGES_ONLY"
+  // If "ALL_TRAFFIC", all egress goes through VPC
+  // If "PRIVATE_RANGES_ONLY", only private IP traffic uses VPC
+  string egress = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {
+      in: [
+        "",
+        "ALL_TRAFFIC",
+        "PRIVATE_RANGES_ONLY"
+      ]
+    }
+  ];
 }

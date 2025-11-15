@@ -21,11 +21,16 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpprojectv1.GcpProjectSt
 
 	target := stackInput.Target
 
-	locals.GcpLabels = map[string]string{
-		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpProject.String()),
+	// Start with user-provided labels from spec
+	locals.GcpLabels = make(map[string]string)
+	for k, v := range target.Spec.Labels {
+		locals.GcpLabels[k] = v
 	}
+
+	// Add Project Planton internal labels (these override user labels if there's a conflict)
+	locals.GcpLabels[gcplabelkeys.Resource] = strconv.FormatBool(true)
+	locals.GcpLabels[gcplabelkeys.ResourceName] = target.Metadata.Name
+	locals.GcpLabels[gcplabelkeys.ResourceKind] = strings.ToLower(cloudresourcekind.CloudResourceKind_GcpProject.String())
 
 	if target.Metadata.Id != "" {
 		locals.GcpLabels[gcplabelkeys.ResourceId] = target.Metadata.Id

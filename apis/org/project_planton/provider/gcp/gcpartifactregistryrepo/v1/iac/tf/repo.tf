@@ -42,24 +42,3 @@ resource "google_artifact_registry_repository_iam_member" "docker_repo_admin" {
   role     = "roles/artifactregistry.repoAdmin"
   member   = "serviceAccount:${google_service_account.writer.email}"
 }
-
-#############################
-# Outputs
-#############################
-
-output "repo_name" {
-  description = "The repository ID for the repository"
-  value       = google_artifact_registry_repository.repo.repository_id
-}
-
-# Example: us-west2-docker.pkg.dev
-output "repo_hostname" {
-  description = "The Repository hostname (region-docker.pkg.dev)"
-  value       = "${google_artifact_registry_repository.repo.location}-docker.pkg.dev"
-}
-
-# Example: us-west2-docker.pkg.dev/<project>/<repo-id>
-output "repo_url" {
-  description = "Full Repository URL"
-  value       = "${google_artifact_registry_repository.repo.location}-docker.pkg.dev/${google_artifact_registry_repository.repo.project}/${google_artifact_registry_repository.repo.repository_id}"
-}

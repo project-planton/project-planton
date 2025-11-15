@@ -27,8 +27,9 @@ var _ = ginkgo.Describe("GcpGcsBucketSpec Custom Validation Tests", func() {
 						Name: "test-gcs-bucket",
 					},
 					Spec: &GcpGcsBucketSpec{
-						GcpProjectId: "test-project-123",
-						GcpRegion:    "us-central1",
+						GcpProjectId:                    "test-project-123",
+						Location:                        "us-central1",
+						UniformBucketLevelAccessEnabled: true,
 					},
 				}
 				err := protovalidate.Validate(input)

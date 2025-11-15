@@ -35,6 +35,48 @@ func service(
 		serviceName = locals.GcpCloudRun.Spec.ServiceName
 	}
 
+	// Service account: use provided or default
+	var serviceAccountEmail pulumi.StringPtrInput
+	if locals.GcpCloudRun.Spec.ServiceAccount != "" {
+		serviceAccountEmail = pulumi.String(locals.GcpCloudRun.Spec.ServiceAccount)
+	}
+
+	// Max concurrency: use provided or default to 80
+	maxConcurrency := int32(80)
+	if locals.GcpCloudRun.Spec.MaxConcurrency != 0 {
+		maxConcurrency = locals.GcpCloudRun.Spec.MaxConcurrency
+	}
+
+	// Timeout: use provided or default to 300 seconds
+	timeout := int32(300)
+	if locals.GcpCloudRun.Spec.TimeoutSeconds != 0 {
+		timeout = locals.GcpCloudRun.Spec.TimeoutSeconds
+	}
+
+	// Ingress: convert enum to string value
+	ingressValue := toIngressString(locals.GcpCloudRun.Spec.Ingress)
+
+	// Execution environment: convert enum to string value
+	executionEnv := toExecutionEnvironmentString(locals.GcpCloudRun.Spec.ExecutionEnvironment)
+
+	// VPC access configuration
+	var vpcAccess *cloudrunv2.ServiceTemplateVpcAccessArgs
+	if locals.GcpCloudRun.Spec.VpcAccess != nil &&
+		(locals.GcpCloudRun.Spec.VpcAccess.Network != "" || locals.GcpCloudRun.Spec.VpcAccess.Subnet != "") {
+		vpcAccess = &cloudrunv2.ServiceTemplateVpcAccessArgs{}
+		if locals.GcpCloudRun.Spec.VpcAccess.Network != "" {
+			vpcAccess.NetworkInterfaces = cloudrunv2.ServiceTemplateVpcAccessNetworkInterfaceArray{
+				&cloudrunv2.ServiceTemplateVpcAccessNetworkInterfaceArgs{
+					Network:    pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Network),
+					Subnetwork: pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Subnet),
+				},
+			}
+		}
+		if locals.GcpCloudRun.Spec.VpcAccess.Egress != "" {
+			vpcAccess.Egress = pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Egress)
+		}
+	}
+
 	createdService, err := cloudrunv2.NewService(ctx,
 		locals.GcpCloudRun.Metadata.Name,
 		&cloudrunv2.ServiceArgs{
@@ -46,7 +88,16 @@ func service(
 			// Public access → disable Invoker IAM check
 			InvokerIamDisabled: pulumi.BoolPtr(locals.GcpCloudRun.Spec.AllowUnauthenticated),
 
+			// Ingress settings
+			Ingress: pulumi.String(ingressValue),
+
 			Template: &cloudrunv2.ServiceTemplateArgs{
+				ServiceAccount:                serviceAccountEmail,
+				Timeout:                       pulumi.String(fmt.Sprintf("%ds", timeout)),
+				ExecutionEnvironment:          pulumi.String(executionEnv),
+				MaxInstanceRequestConcurrency: pulumi.Int(maxConcurrency),
+				VpcAccess:                     vpcAccess,
+
 				Containers: cloudrunv2.ServiceTemplateContainerArray{
 					&cloudrunv2.ServiceTemplateContainerArgs{
 						Image: pulumi.String(image),
@@ -108,4 +159,26 @@ func toEnvArray(locals *Locals) cloudrunv2.ServiceTemplateContainerEnvArray {
 	}
 
 	return envs
+}
+
+// toIngressString converts the proto enum to the GCP API string value
+func toIngressString(ingress GcpCloudRunIngress) string {
+	switch ingress {
+	case GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_ONLY:
+		return "INGRESS_TRAFFIC_INTERNAL_ONLY"
+	case GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER:
+		return "INGRESS_TRAFFIC_INTERNAL_AND_CLOUD_LOAD_BALANCING"
+	default:
+		return "INGRESS_TRAFFIC_ALL"
+	}
+}
+
+// toExecutionEnvironmentString converts the proto enum to the GCP API string value
+func toExecutionEnvironmentString(env GcpCloudRunExecutionEnvironment) string {
+	switch env {
+	case GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN1:
+		return "EXECUTION_ENVIRONMENT_GEN1"
+	default:
+		return "EXECUTION_ENVIRONMENT_GEN2"
+	}
 }

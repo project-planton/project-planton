@@ -3,6 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "locals.go",
         "outputs.go",
         "resources.go",
     ],
@@ -10,8 +11,11 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/org/project_planton/provider/gcp/gcpcloudcdn/v1:gcpcloudcdn",
+        "//apis/org/project_planton/shared/cloudresourcekind",
+        "//pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys",
         "//pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider",
         "@com_github_pkg_errors//:errors",
+        "@com_github_pulumi_pulumi_gcp_sdk_v7//go/gcp/compute",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

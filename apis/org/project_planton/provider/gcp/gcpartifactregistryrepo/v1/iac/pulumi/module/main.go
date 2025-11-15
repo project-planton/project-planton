@@ -16,10 +16,22 @@ func Resources(ctx *pulumi.Context, stackInput *gcpartifactregistryrepov1.GcpArt
 		return errors.Wrap(err, "failed to create google provider")
 	}
 
-	//create docker repository with public access configuration
-	if err := repo(ctx, locals, googleProvider); err != nil {
+	//create service accounts for reader and writer access
+	serviceAccounts, err := createServiceAccounts(ctx, locals, googleProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create service accounts")
+	}
+
+	//create docker repository with public access configuration and IAM bindings
+	if err := repo(ctx, locals, googleProvider, serviceAccounts); err != nil {
 		return errors.Wrap(err, "failed to create docker repo")
 	}
+
+	//export service account outputs
+	ctx.Export(OpReaderServiceAccountEmail, serviceAccounts.ReaderAccount.Email)
+	ctx.Export(OpReaderServiceAccountKeyBase64, serviceAccounts.ReaderKey.PrivateKey)
+	ctx.Export(OpWriterServiceAccountEmail, serviceAccounts.WriterAccount.Email)
+	ctx.Export(OpWriterServiceAccountKeyBase64, serviceAccounts.WriterKey.PrivateKey)
 
 	return nil
 }

@@ -19,7 +19,7 @@ func iam(ctx *pulumi.Context, locals *Locals, createdProject *organizations.Proj
 			&projects.IAMMemberArgs{
 				Project: createdProject.ProjectId,
 				Role:    pulumi.String("roles/owner"),
-				Member:  pulumi.String("user:" + locals.GcpProject.Spec.OwnerMember),
+				Member:  pulumi.String(locals.GcpProject.Spec.OwnerMember),
 			},
 			pulumi.Provider(gcpProvider),
 			pulumi.DependsOn([]pulumi.Resource{createdProject}),
