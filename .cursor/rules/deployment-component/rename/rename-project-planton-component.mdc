@@ -106,6 +106,7 @@ Files will be modified in:
   - Component directory (copied to new name)
   - Documentation (site/public/docs/)
   - Registry (cloud_resource_kind.proto)
+  - Icon folder (site/public/images/providers/{provider}/{component}/, if exists)
 
 Build pipeline will run:
   1. make protos
@@ -124,10 +125,11 @@ If you confirm, the rule will:
 3. **Replace** - Apply all 7 naming pattern replacements
 4. **Update Registry** - Modify `cloud_resource_kind.proto`
 5. **Update Docs** - Update `site/public/docs/` references
-6. **Delete Source** - Remove old component directory
-7. **Build** - Run `make protos`
-8. **Verify** - Run `make build`
-9. **Test** - Run `make test`
+6. **Rename Icon Folder** - Rename `site/public/images/providers/{provider}/{component}/` if exists
+7. **Delete Source** - Remove old component directory
+8. **Build** - Run `make protos`
+9. **Verify** - Run `make build`
+10. **Test** - Run `make test`
 
 ### Step 4: Results
 
@@ -250,6 +252,7 @@ kubernetesmicroservice → kubernetesdeployment
 🔄 **Directory names** - `kubernetesmicroservice/` → `kubernetesdeployment/`
 🔄 **All code references** - Via 7 replacement patterns
 🔄 **Documentation** - All mentions in `site/public/docs/`
+🔄 **Icon folder** - `site/public/images/providers/{provider}/{oldname}/` → `{newname}/` (if exists)
 
 ## Safety Features
 
@@ -326,10 +329,16 @@ Proceed? yes
 [Executes rename]
 
 ✅ Success! 247 files modified, 1834 replacements made.
+✅ Icon folder renamed: kubernetes/kubernetesmicroservice → kubernetes/kubernetesdeployment
 ✅ Build pipeline passed (protos, build, test).
 
 Automatically creating changelog...
 @create-project-planton-changelog
+```
+
+**Note**: If the icon folder doesn't exist, you'll see:
+```
+ℹ️ Icon folder not found (skipped): site/public/images/providers/kubernetes/kubernetesmicroservice
 ```
 
 **Result**: Component renamed, all tests pass, changelog created.

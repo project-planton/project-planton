@@ -282,6 +282,47 @@ def update_registry_entry(
         f.write(content)
 
 
+def rename_icon_folder(repo_root: str, provider: str, old_folder: str, new_folder: str) -> Dict:
+    """
+    Rename icon folder if it exists.
+    Returns dict with: exists, old_path, new_path, renamed
+    """
+    # Map provider to icon directory structure
+    # For kubernetes/workload or kubernetes/addon, use just "kubernetes"
+    icon_provider = provider.split('/')[0]
+    
+    old_icon_path = os.path.join(
+        repo_root,
+        "site/public/images/providers",
+        icon_provider,
+        old_folder
+    )
+    
+    new_icon_path = os.path.join(
+        repo_root,
+        "site/public/images/providers", 
+        icon_provider,
+        new_folder
+    )
+    
+    result = {
+        'exists': os.path.exists(old_icon_path),
+        'old_path': old_icon_path,
+        'new_path': new_icon_path,
+        'renamed': False
+    }
+    
+    if result['exists']:
+        # Delete target if exists
+        if os.path.exists(new_icon_path):
+            shutil.rmtree(new_icon_path)
+        # Rename
+        shutil.move(old_icon_path, new_icon_path)
+        result['renamed'] = True
+    
+    return result
+
+
 def run_command(cmd: List[str], cwd: str) -> Tuple[int, str, str]:
     """Run a command and return (exit_code, stdout, stderr)"""
     try:
@@ -377,6 +418,7 @@ def main() -> int:
         'provider': None,
         'files_modified': 0,
         'replacements_made': 0,
+        'icon_folder_renamed': False,
         'protos_exit_code': 0,
         'build_exit_code': 0,
         'test_exit_code': 0,
@@ -462,10 +504,19 @@ def main() -> int:
             args.new_id_prefix
         )
         
-        # 9. Delete old component directory
+        # 9. Rename icon folder (if exists)
+        icon_result = rename_icon_folder(repo_root, provider, old_folder, new_folder)
+        result['icon_folder_renamed'] = icon_result['renamed']
+        
+        if icon_result['exists']:
+            print(f"Renamed icon folder: {icon_result['old_path']} -> {icon_result['new_path']}", file=sys.stderr)
+        else:
+            print(f"Icon folder not found (skipped): {icon_result['old_path']}", file=sys.stderr)
+        
+        # 10. Delete old component directory
         shutil.rmtree(old_dir)
         
-        # 10. Run build pipeline
+        # 11. Run build pipeline
         build_results = run_build_pipeline(repo_root)
         result.update(build_results)
         
