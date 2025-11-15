@@ -23,6 +23,116 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// GcpCloudRunIngress controls which traffic sources can reach the service.
+type GcpCloudRunIngress int32
+
+const (
+	// Unspecified, defaults to INGRESS_TRAFFIC_ALL
+	GcpCloudRunIngress_INGRESS_TRAFFIC_UNSPECIFIED GcpCloudRunIngress = 0
+	// Accept traffic from all sources (public internet)
+	GcpCloudRunIngress_INGRESS_TRAFFIC_ALL GcpCloudRunIngress = 1
+	// Accept traffic only from other Cloud Run services and Eventarc events
+	GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_ONLY GcpCloudRunIngress = 2
+	// Accept traffic from internal sources and Cloud Load Balancing
+	GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER GcpCloudRunIngress = 3
+)
+
+// Enum value maps for GcpCloudRunIngress.
+var (
+	GcpCloudRunIngress_name = map[int32]string{
+		0: "INGRESS_TRAFFIC_UNSPECIFIED",
+		1: "INGRESS_TRAFFIC_ALL",
+		2: "INGRESS_TRAFFIC_INTERNAL_ONLY",
+		3: "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER",
+	}
+	GcpCloudRunIngress_value = map[string]int32{
+		"INGRESS_TRAFFIC_UNSPECIFIED":            0,
+		"INGRESS_TRAFFIC_ALL":                    1,
+		"INGRESS_TRAFFIC_INTERNAL_ONLY":          2,
+		"INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER": 3,
+	}
+)
+
+func (x GcpCloudRunIngress) Enum() *GcpCloudRunIngress {
+	p := new(GcpCloudRunIngress)
+	*p = x
+	return p
+}
+
+func (x GcpCloudRunIngress) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GcpCloudRunIngress) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (GcpCloudRunIngress) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_enumTypes[0]
+}
+
+func (x GcpCloudRunIngress) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GcpCloudRunIngress.Descriptor instead.
+func (GcpCloudRunIngress) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// GcpCloudRunExecutionEnvironment defines the execution environment generation.
+type GcpCloudRunExecutionEnvironment int32
+
+const (
+	// Unspecified, defaults to GEN2
+	GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_UNSPECIFIED GcpCloudRunExecutionEnvironment = 0
+	// First generation execution environment
+	GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN1 GcpCloudRunExecutionEnvironment = 1
+	// Second generation execution environment (full Linux compatibility)
+	GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN2 GcpCloudRunExecutionEnvironment = 2
+)
+
+// Enum value maps for GcpCloudRunExecutionEnvironment.
+var (
+	GcpCloudRunExecutionEnvironment_name = map[int32]string{
+		0: "EXECUTION_ENVIRONMENT_UNSPECIFIED",
+		1: "EXECUTION_ENVIRONMENT_GEN1",
+		2: "EXECUTION_ENVIRONMENT_GEN2",
+	}
+	GcpCloudRunExecutionEnvironment_value = map[string]int32{
+		"EXECUTION_ENVIRONMENT_UNSPECIFIED": 0,
+		"EXECUTION_ENVIRONMENT_GEN1":        1,
+		"EXECUTION_ENVIRONMENT_GEN2":        2,
+	}
+)
+
+func (x GcpCloudRunExecutionEnvironment) Enum() *GcpCloudRunExecutionEnvironment {
+	p := new(GcpCloudRunExecutionEnvironment)
+	*p = x
+	return p
+}
+
+func (x GcpCloudRunExecutionEnvironment) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GcpCloudRunExecutionEnvironment) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (GcpCloudRunExecutionEnvironment) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_enumTypes[1]
+}
+
+func (x GcpCloudRunExecutionEnvironment) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GcpCloudRunExecutionEnvironment.Descriptor instead.
+func (GcpCloudRunExecutionEnvironment) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
 // GcpCloudRunSpec defines the configuration for deploying an HTTP service on
 // Google Cloud Run.  Container-related knobs are grouped under the
 // GcpCloudRunContainer message to keep naming and structure consistent with
@@ -36,12 +146,24 @@ type GcpCloudRunSpec struct {
 	// Name of the Cloud Run service to create on GCP.
 	// If not specified, defaults to metadata.name.
 	ServiceName string `protobuf:"bytes,7,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	// Service account email that the Cloud Run service runs as.
+	// If not specified, uses the default Compute Engine service account.
+	ServiceAccount string `protobuf:"bytes,8,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
 	// Container configuration for the Cloud Run service.
 	Container *GcpCloudRunContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// Maximum concurrent requests handled by one instance.
 	MaxConcurrency int32 `protobuf:"varint,4,opt,name=max_concurrency,json=maxConcurrency,proto3" json:"max_concurrency,omitempty"`
+	// Request timeout in seconds (1-3600). Default is 300 (5 minutes).
+	TimeoutSeconds int32 `protobuf:"varint,9,opt,name=timeout_seconds,json=timeoutSeconds,proto3" json:"timeout_seconds,omitempty"`
+	// Ingress settings control which traffic sources can reach the service.
+	Ingress GcpCloudRunIngress `protobuf:"varint,10,opt,name=ingress,proto3,enum=org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunIngress" json:"ingress,omitempty"`
 	// If true, the service is publicly invokable by unauthenticated callers.
 	AllowUnauthenticated bool `protobuf:"varint,5,opt,name=allow_unauthenticated,json=allowUnauthenticated,proto3" json:"allow_unauthenticated,omitempty"`
+	// VPC access configuration for private resource access.
+	VpcAccess *GcpCloudRunVpcAccess `protobuf:"bytes,11,opt,name=vpc_access,json=vpcAccess,proto3" json:"vpc_access,omitempty"`
+	// Execution environment generation (GEN1 or GEN2).
+	// GEN2 offers full Linux compatibility but slower cold starts.
+	ExecutionEnvironment GcpCloudRunExecutionEnvironment `protobuf:"varint,12,opt,name=execution_environment,json=executionEnvironment,proto3,enum=org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironment" json:"execution_environment,omitempty"`
 	// Custom DNS mapping for the Cloud Run service.
 	Dns           *GcpCloudRunDns `protobuf:"bytes,6,opt,name=dns,proto3" json:"dns,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -99,6 +221,13 @@ func (x *GcpCloudRunSpec) GetServiceName() string {
 	return ""
 }
 
+func (x *GcpCloudRunSpec) GetServiceAccount() string {
+	if x != nil {
+		return x.ServiceAccount
+	}
+	return ""
+}
+
 func (x *GcpCloudRunSpec) GetContainer() *GcpCloudRunContainer {
 	if x != nil {
 		return x.Container
@@ -113,11 +242,39 @@ func (x *GcpCloudRunSpec) GetMaxConcurrency() int32 {
 	return 0
 }
 
+func (x *GcpCloudRunSpec) GetTimeoutSeconds() int32 {
+	if x != nil {
+		return x.TimeoutSeconds
+	}
+	return 0
+}
+
+func (x *GcpCloudRunSpec) GetIngress() GcpCloudRunIngress {
+	if x != nil {
+		return x.Ingress
+	}
+	return GcpCloudRunIngress_INGRESS_TRAFFIC_UNSPECIFIED
+}
+
 func (x *GcpCloudRunSpec) GetAllowUnauthenticated() bool {
 	if x != nil {
 		return x.AllowUnauthenticated
 	}
 	return false
+}
+
+func (x *GcpCloudRunSpec) GetVpcAccess() *GcpCloudRunVpcAccess {
+	if x != nil {
+		return x.VpcAccess
+	}
+	return nil
+}
+
+func (x *GcpCloudRunSpec) GetExecutionEnvironment() GcpCloudRunExecutionEnvironment {
+	if x != nil {
+		return x.ExecutionEnvironment
+	}
+	return GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_UNSPECIFIED
 }
 
 func (x *GcpCloudRunSpec) GetDns() *GcpCloudRunDns {
@@ -449,19 +606,94 @@ func (x *GcpCloudRunDns) GetManagedZone() string {
 	return ""
 }
 
+// GcpCloudRunVpcAccess configures Direct VPC Egress for accessing private resources.
+type GcpCloudRunVpcAccess struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// VPC network name for Direct VPC Egress
+	Network string `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
+	// VPC subnet name for Direct VPC Egress
+	Subnet string `protobuf:"bytes,2,opt,name=subnet,proto3" json:"subnet,omitempty"`
+	// Egress setting: "ALL_TRAFFIC" or "PRIVATE_RANGES_ONLY"
+	// If "ALL_TRAFFIC", all egress goes through VPC
+	// If "PRIVATE_RANGES_ONLY", only private IP traffic uses VPC
+	Egress        string `protobuf:"bytes,3,opt,name=egress,proto3" json:"egress,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GcpCloudRunVpcAccess) Reset() {
+	*x = GcpCloudRunVpcAccess{}
+	mi := &file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GcpCloudRunVpcAccess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GcpCloudRunVpcAccess) ProtoMessage() {}
+
+func (x *GcpCloudRunVpcAccess) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GcpCloudRunVpcAccess.ProtoReflect.Descriptor instead.
+func (*GcpCloudRunVpcAccess) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GcpCloudRunVpcAccess) GetNetwork() string {
+	if x != nil {
+		return x.Network
+	}
+	return ""
+}
+
+func (x *GcpCloudRunVpcAccess) GetSubnet() string {
+	if x != nil {
+		return x.Subnet
+	}
+	return ""
+}
+
+func (x *GcpCloudRunVpcAccess) GetEgress() string {
+	if x != nil {
+		return x.Egress
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\x9c\x04\n" +
+	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xde\b\n" +
 	"\x0fGcpCloudRunSpec\x12G\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
 	"\x06region\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x14^[a-z]+-[a-z]+[0-9]$R\x06region\x12N\n" +
-	"\fservice_name\x18\a \x01(\tB+\xbaH(\xd8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12k\n" +
-	"\tcontainer\x18\x03 \x01(\v2E.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x129\n" +
-	"\x0fmax_concurrency\x18\x04 \x01(\x05B\x10\xbaH\a\x1a\x05\x18\xe8\a(\x01\x92\xa6\x1d\x0280R\x0emaxConcurrency\x12=\n" +
-	"\x15allow_unauthenticated\x18\x05 \x01(\bB\b\x92\xa6\x1d\x04trueR\x14allowUnauthenticated\x12Q\n" +
+	"\fservice_name\x18\a \x01(\tB+\xbaH(\xd8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12x\n" +
+	"\x0fservice_account\x18\b \x01(\tBO\xbaHL\xd8\x01\x01rG2E^[a-z0-9]([-a-z0-9]*[a-z0-9])?@[a-z0-9-]+\\.iam\\.gserviceaccount\\.com$R\x0eserviceAccount\x12k\n" +
+	"\tcontainer\x18\x03 \x01(\v2E.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12<\n" +
+	"\x0fmax_concurrency\x18\x04 \x01(\x05B\x13\xbaH\n" +
+	"\xd8\x01\x01\x1a\x05\x18\xe8\a(\x01\x92\xa6\x1d\x0280R\x0emaxConcurrency\x12=\n" +
+	"\x0ftimeout_seconds\x18\t \x01(\x05B\x14\xbaH\n" +
+	"\xd8\x01\x01\x1a\x05\x18\x90\x1c(\x01\x92\xa6\x1d\x03300R\x0etimeoutSeconds\x12v\n" +
+	"\aingress\x18\n" +
+	" \x01(\x0e2C.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunIngressB\x17\x92\xa6\x1d\x13INGRESS_TRAFFIC_ALLR\aingress\x12=\n" +
+	"\x15allow_unauthenticated\x18\x05 \x01(\bB\b\x92\xa6\x1d\x04trueR\x14allowUnauthenticated\x12d\n" +
+	"\n" +
+	"vpc_access\x18\v \x01(\v2E.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccessR\tvpcAccess\x12\xa5\x01\n" +
+	"\x15execution_environment\x18\f \x01(\x0e2P.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironmentB\x1e\x92\xa6\x1d\x1aEXECUTION_ENVIRONMENT_GEN2R\x14executionEnvironment\x12Q\n" +
 	"\x03dns\x18\x06 \x01(\v2?.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDnsR\x03dns\"\xbf\x03\n" +
 	"\x14GcpCloudRunContainer\x12`\n" +
 	"\x05image\x18\x01 \x01(\v2J.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImageR\x05image\x12Z\n" +
@@ -491,7 +723,22 @@ const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = 
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12p\n" +
 	"\thostnames\x18\x02 \x03(\tBR\xbaHO\xd8\x01\x01\x92\x01I\x18\x01\"ErC2A^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$R\thostnames\x12!\n" +
 	"\fmanaged_zone\x18\x03 \x01(\tR\vmanagedZone:\xad\x01\xbaH\xa9\x01\x1a\xa6\x01\n" +
-	"\x1bdns.enabled-requires-fields\x12?hostnames and managed_zone must be set when dns.enabled is true\x1aF!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')B\x8e\x03\n" +
+	"\x1bdns.enabled-requires-fields\x12?hostnames and managed_zone must be set when dns.enabled is true\x1aF!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')\"\xa6\x01\n" +
+	"\x14GcpCloudRunVpcAccess\x12$\n" +
+	"\anetwork\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xd8\x01\x01r\x02\x10\x01R\anetwork\x12\"\n" +
+	"\x06subnet\x18\x02 \x01(\tB\n" +
+	"\xbaH\a\xd8\x01\x01r\x02\x10\x01R\x06subnet\x12D\n" +
+	"\x06egress\x18\x03 \x01(\tB,\xbaH)\xd8\x01\x01r$R\x00R\vALL_TRAFFICR\x13PRIVATE_RANGES_ONLYR\x06egress*\x9d\x01\n" +
+	"\x12GcpCloudRunIngress\x12\x1f\n" +
+	"\x1bINGRESS_TRAFFIC_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13INGRESS_TRAFFIC_ALL\x10\x01\x12!\n" +
+	"\x1dINGRESS_TRAFFIC_INTERNAL_ONLY\x10\x02\x12*\n" +
+	"&INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER\x10\x03*\x88\x01\n" +
+	"\x1fGcpCloudRunExecutionEnvironment\x12%\n" +
+	"!EXECUTION_ENVIRONMENT_UNSPECIFIED\x10\x00\x12\x1e\n" +
+	"\x1aEXECUTION_ENVIRONMENT_GEN1\x10\x01\x12\x1e\n" +
+	"\x1aEXECUTION_ENVIRONMENT_GEN2\x10\x02B\x8e\x03\n" +
 	"3com.org.project_planton.provider.gcp.gcpcloudrun.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudrun.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"
 
 var (
@@ -506,30 +753,37 @@ func file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescGZIP
 	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_goTypes = []any{
-	(*GcpCloudRunSpec)(nil),              // 0: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec
-	(*GcpCloudRunContainer)(nil),         // 1: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer
-	(*GcpCloudRunContainerReplicas)(nil), // 2: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerReplicas
-	(*GcpCloudRunContainerImage)(nil),    // 3: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImage
-	(*GcpCloudRunContainerEnv)(nil),      // 4: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv
-	(*GcpCloudRunDns)(nil),               // 5: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDns
-	nil,                                  // 6: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
-	nil,                                  // 7: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
+	(GcpCloudRunIngress)(0),              // 0: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunIngress
+	(GcpCloudRunExecutionEnvironment)(0), // 1: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironment
+	(*GcpCloudRunSpec)(nil),              // 2: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec
+	(*GcpCloudRunContainer)(nil),         // 3: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer
+	(*GcpCloudRunContainerReplicas)(nil), // 4: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerReplicas
+	(*GcpCloudRunContainerImage)(nil),    // 5: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImage
+	(*GcpCloudRunContainerEnv)(nil),      // 6: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv
+	(*GcpCloudRunDns)(nil),               // 7: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDns
+	(*GcpCloudRunVpcAccess)(nil),         // 8: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess
+	nil,                                  // 9: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
+	nil,                                  // 10: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
 }
 var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.container:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer
-	5, // 1: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.dns:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDns
-	3, // 2: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.image:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImage
-	4, // 3: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.env:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv
-	2, // 4: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.replicas:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerReplicas
-	6, // 5: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.variables:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
-	7, // 6: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.secrets:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	3,  // 0: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.container:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer
+	0,  // 1: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.ingress:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunIngress
+	8,  // 2: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.vpc_access:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess
+	1,  // 3: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.execution_environment:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironment
+	7,  // 4: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.dns:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDns
+	5,  // 5: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.image:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImage
+	6,  // 6: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.env:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv
+	4,  // 7: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.replicas:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerReplicas
+	9,  // 8: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.variables:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
+	10, // 9: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.secrets:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_init() }
@@ -542,13 +796,14 @@ func file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   8,
+			NumEnums:      2,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_goTypes,
 		DependencyIndexes: file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_depIdxs,
+		EnumInfos:         file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_enumTypes,
 		MessageInfos:      file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_msgTypes,
 	}.Build()
 	File_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto = out.File

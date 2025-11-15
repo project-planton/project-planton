@@ -26,7 +26,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudfunctionv1.GcpCloudFunct
 
 	// Export stack outputs
 	ctx.Export(OpFunctionId, function.ID())
-	
+
 	// Function URL is only available for HTTP triggers
 	if locals.IsHttpTrigger {
 		ctx.Export(OpFunctionUrl, function.ServiceConfig.ApplyT(func(sc interface{}) string {
@@ -42,7 +42,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudfunctionv1.GcpCloudFunct
 	} else {
 		ctx.Export(OpFunctionUrl, pulumi.String(""))
 	}
-	
+
 	ctx.Export(OpServiceAccountEmail, function.ServiceConfig.ApplyT(func(sc interface{}) string {
 		if sc == nil {
 			return ""
@@ -53,10 +53,10 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudfunctionv1.GcpCloudFunct
 		}
 		return ""
 	}))
-	
+
 	ctx.Export(OpState, function.State)
 	ctx.Export(OpCloudRunServiceId, function.Name)
-	
+
 	// Eventarc trigger ID is only available for event-driven functions
 	if !locals.IsHttpTrigger {
 		ctx.Export(OpEventarcTriggerId, function.EventTrigger.ApplyT(func(et interface{}) string {

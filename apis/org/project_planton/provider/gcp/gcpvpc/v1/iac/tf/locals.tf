@@ -1,0 +1,20 @@
+locals {
+  # Create GCP labels from metadata
+  gcp_labels = {
+    resource     = var.metadata.name
+    resource-id  = var.metadata.id
+    resource-org = var.metadata.org != null ? var.metadata.org : ""
+    env          = var.metadata.env != null ? var.metadata.env : ""
+  }
+
+  # Map proto enum to GCP routing mode string
+  # 0=REGIONAL, 1=GLOBAL
+  routing_mode_map = {
+    0 = "REGIONAL"
+    1 = "GLOBAL"
+  }
+  
+  # Default to REGIONAL if routing_mode not specified
+  routing_mode = var.spec.routing_mode != null ? lookup(local.routing_mode_map, var.spec.routing_mode, "REGIONAL") : "REGIONAL"
+}
+

@@ -283,9 +283,9 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts Smart Hybrid pattern (private + public IP)", func() {
 			spec := makeValidSpec()
 			spec.Network = &GcpCloudSqlNetwork{
-				VpcId:            "projects/my-project/global/networks/my-vpc",
-				PrivateIpEnabled: true,
-				Ipv4Enabled:      true,
+				VpcId:              "projects/my-project/global/networks/my-vpc",
+				PrivateIpEnabled:   true,
+				Ipv4Enabled:        true,
 				AuthorizedNetworks: []string{},
 			}
 			err := validator.Validate(spec)
@@ -466,10 +466,10 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts PITR enabled when backup is enabled", func() {
 			spec := makeValidSpec()
 			spec.Backup = &GcpCloudSqlBackup{
-				Enabled:                     true,
-				StartTime:                   "02:00",
-				RetentionDays:               7,
-				PointInTimeRecoveryEnabled:  true,
+				Enabled:                    true,
+				StartTime:                  "02:00",
+				RetentionDays:              7,
+				PointInTimeRecoveryEnabled: true,
 			}
 			err := validator.Validate(spec)
 			Expect(err).To(BeNil())
@@ -478,8 +478,8 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("rejects PITR enabled when backup is disabled (CEL rule)", func() {
 			spec := makeValidSpec()
 			spec.Backup = &GcpCloudSqlBackup{
-				Enabled:                     false,
-				PointInTimeRecoveryEnabled:  true,
+				Enabled:                    false,
+				PointInTimeRecoveryEnabled: true,
 			}
 			err := validator.Validate(spec)
 			Expect(err).NotTo(BeNil())

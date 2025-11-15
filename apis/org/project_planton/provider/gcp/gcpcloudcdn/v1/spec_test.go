@@ -39,7 +39,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should not return validation error for GCS backend with full config", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -116,7 +116,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should not return validation error for Compute backend with health check", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -131,12 +131,12 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 								ComputeService: &ComputeBackendConfig{
 									InstanceGroupName: "webapp-mig",
 									HealthCheck: &HealthCheckConfig{
-										Path:                   ptrString("/healthz"),
-										Port:                   ptrInt32(8080),
-										CheckIntervalSeconds:   ptrInt32(10),
-										TimeoutSeconds:         ptrInt32(5),
-										HealthyThreshold:       ptrInt32(2),
-										UnhealthyThreshold:     ptrInt32(3),
+										Path:                 ptrString("/healthz"),
+										Port:                 ptrInt32(8080),
+										CheckIntervalSeconds: ptrInt32(10),
+										TimeoutSeconds:       ptrInt32(5),
+										HealthyThreshold:     ptrInt32(2),
+										UnhealthyThreshold:   ptrInt32(3),
 									},
 									Protocol: ptrBackendProtocol(BackendProtocol_HTTP),
 									Port:     ptrInt32(8080),
@@ -195,10 +195,10 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						},
 						AdvancedConfig: &GcpCloudCdnAdvancedConfig{
 							CacheKeyPolicy: &CacheKeyPolicy{
-								IncludeQueryString: ptrBool(true),
+								IncludeQueryString:   ptrBool(true),
 								QueryStringWhitelist: []string{"version", "lang"},
-								IncludeProtocol:    ptrBool(true),
-								IncludeHost:        ptrBool(true),
+								IncludeProtocol:      ptrBool(true),
+								IncludeHost:          ptrBool(true),
 							},
 						},
 					},
@@ -206,7 +206,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should not return validation error with negative caching policies", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -236,7 +236,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should not return validation error with signed URLs", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -329,7 +329,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should return validation error when backend is missing", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -344,7 +344,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should return validation error when GCS bucket_name is missing", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -377,7 +377,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "Invalid_Project_ID",  // Uppercase and underscores not allowed
+						GcpProjectId: "Invalid_Project_ID", // Uppercase and underscores not allowed
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -390,7 +390,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should return validation error for invalid bucket name pattern", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -403,7 +403,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
-									BucketName: "Invalid_Bucket_Name",  // Uppercase not allowed
+									BucketName: "Invalid_Bucket_Name", // Uppercase not allowed
 								},
 							},
 						},
@@ -412,7 +412,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should return validation error for TTL values out of range", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -429,13 +429,13 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 								},
 							},
 						},
-						DefaultTtlSeconds: ptrInt32(999999999),  // Too large (>31536000)
+						DefaultTtlSeconds: ptrInt32(999999999), // Too large (>31536000)
 					},
 				}
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
-			
+
 			ginkgo.It("should return validation error for invalid negative caching status code", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
@@ -454,7 +454,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						},
 						AdvancedConfig: &GcpCloudCdnAdvancedConfig{
 							NegativeCachingPolicies: []*NegativeCachingPolicy{
-								{Code: 200, TtlSeconds: 600},  // 200 is not an error code (must be 400-599)
+								{Code: 200, TtlSeconds: 600}, // 200 is not an error code (must be 400-599)
 							},
 						},
 					},

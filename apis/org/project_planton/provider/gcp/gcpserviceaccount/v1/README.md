@@ -1,67 +1,85 @@
 # Overview
 
-The GCP Service Account API resource offers a consistent and streamlined interface for creating and managing DNS zones
-and records within Google Cloud DNS, Google's scalable, reliable, and managed authoritative Domain Name System (DNS)
-service. By abstracting the complexities of DNS configurations, this resource allows you to define your DNS settings
-effortlessly while ensuring consistency and compliance across different environments.
+The GCP Service Account API resource provides a consistent and streamlined interface for creating and managing Google
+Cloud service accounts, their optional JSON keys, and IAM role bindings within Google Cloud Platform. By abstracting
+the complexities of service account provisioning and permission management, this resource allows you to define identity
+and access configurations effortlessly while ensuring consistency and compliance across different environments.
 
 ## Why We Created This API Resource
 
-Managing DNS zones and records can be intricate due to the complexities of DNS protocols, record types, and best
-practices. To simplify this process and promote a standardized approach, we developed this API resource. It enables you
-to:
+Managing GCP service accounts involves coordinating multiple steps: creating the account, optionally generating keys,
+and binding IAM roles at project or organization levels. This can become complex when dealing with multiple environments
+and requires careful security practices. To simplify this process and promote secure, standardized patterns, we
+developed this API resource. It enables you to:
 
-- **Simplify DNS Management**: Easily create and manage DNS zones and records without dealing with low-level GCP DNS
-  configurations.
-- **Ensure Consistency**: Maintain uniform DNS settings across different environments and applications.
-- **Enhance Security**: Control access to DNS records by specifying IAM service accounts with the necessary permissions.
-- **Improve Productivity**: Reduce the time and effort required to manage DNS configurations, allowing you to focus on
-  application development and deployment.
+- **Simplify Service Account Management**: Easily create and configure service accounts without dealing with low-level
+  GCP IAM configurations or multiple `gcloud` commands.
+- **Ensure Consistency**: Maintain uniform service account configurations across different environments and applications.
+- **Enhance Security**: Default to keyless authentication patterns while supporting key generation only when explicitly
+  needed, following modern cloud security best practices.
+- **Improve Productivity**: Reduce the time and effort required to manage service accounts and their permissions,
+  allowing you to focus on application development and deployment.
+- **Enable GitOps Workflows**: Define service accounts declaratively in version-controlled manifests that work with both
+  Pulumi and Terraform backends.
 
 ## Key Features
 
 ### Environment Integration
 
-- **Environment Info**: Integrates seamlessly with our environment management system to deploy DNS configurations within
-  specific environments.
+- **Environment Info**: Integrates seamlessly with ProjectPlanton's environment management system to deploy service
+  account configurations within specific environments.
 - **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Multi-Backend Support**: The same manifest works with both Pulumi and Terraform backends, providing flexibility in
+  tool choice.
 
-### GCP Credential Management
+### Service Account Creation
 
-- **GCP Credential ID**: Utilizes specified GCP credentials to ensure secure and authorized operations within Google
-  Cloud DNS.
-- **Project ID**: Automatically computes and uses the GCP project ID where the managed DNS zone will be created,
-  ensuring resources are correctly organized.
+- **Account Provisioning**: Creates a GCP service account with a specified `serviceAccountId` in the target GCP project.
+- **Display Name**: Automatically uses the metadata name as the display name for easy identification in the GCP Console.
+- **Project Scoping**: Specify the target `projectId` where the service account should be created, or use the provider's
+  default project.
 
-### Simplified DNS Zone and Record Management
+### Optional Key Generation
 
-- **IAM Service Accounts**: Specify a list of GCP service accounts (`iam_service_accounts`) to be granted permissions to
-  manage DNS records within the managed zone. This is particularly useful for workload identities like cert-manager.
-- **DNS Records Management**: Define DNS records within the zone, specifying record types, names, values, and TTLs.
-    - **Record Types Supported**: Supports various DNS record types as defined in the `DnsRecordType` enum, such as `A`,
-      `AAAA`, `CNAME`, `MX`, `TXT`, etc.
-    - **Record Names**: Specify the fully qualified domain name (FQDN) for each record. The name should end with a dot (
-      e.g., `example.com.`).
-    - **Record Values**: Provide the values for each DNS record. For `CNAME` records, each value should also end with a
-      dot.
-    - **TTL Configuration**: Set the Time-To-Live (TTL) for each DNS record in seconds, controlling how long the record
-      is cached by DNS resolvers.
+- **Keyless by Default**: The `createKey` field defaults to `false`, encouraging modern keyless authentication patterns
+  using Workload Identity, attached service accounts, or federated identity.
+- **Legacy Support**: When `createKey` is set to `true`, generates a JSON private key for scenarios requiring
+  traditional key-based authentication.
+- **Secure Key Handling**: Generated keys are base64-encoded in stack outputs and should be stored in secure secret
+  management systems.
+
+### IAM Role Management
+
+- **Project-Level Roles**: Grant IAM roles scoped to the service account's project via the `projectIamRoles` field.
+  Supports any valid GCP IAM role (e.g., `roles/logging.logWriter`, `roles/storage.admin`).
+- **Organization-Level Roles**: When `orgId` is provided, grant IAM roles at the organization level via the
+  `orgIamRoles` field, enabling cross-project permissions.
+- **Declarative Bindings**: All role bindings are managed declaratively, ensuring permissions match the desired state
+  defined in the manifest.
 
 ### Validation and Compliance
 
-- **Input Validation**: Implements validation rules to ensure that DNS names and record values conform to DNS standards.
-    - **DNS Name Validation**: Ensures that the domain names provided are valid DNS domain names using regular
-      expressions.
-    - **Required Fields**: Enforces the presence of essential fields like `record_type` and `name`.
+- **Input Validation**: Implements strict validation rules to ensure service account configurations meet GCP
+  requirements:
+    - **Account ID Validation**: Enforces `serviceAccountId` length between 6-30 characters, matching GCP naming rules.
+    - **Required Fields**: Ensures essential fields like `serviceAccountId` are always provided.
+    - **Org Role Validation**: Prevents configuration of `orgIamRoles` without a corresponding `orgId`.
+- **Proto-Defined Schema**: Uses Protocol Buffers with buf.validate rules to provide compile-time type safety and
+  runtime validation.
 
 ## Benefits
 
-- **Simplified Deployment**: Abstracts the complexities of Google Cloud DNS configurations into an easy-to-use API.
-- **Consistency**: Ensures all DNS zones and records adhere to organizational standards and best practices.
-- **Scalability**: Allows for efficient management of DNS settings as your application and infrastructure grow.
-- **Security**: Manages DNS configurations securely using specified GCP credentials and IAM service accounts, reducing
-  the risk of unauthorized changes.
-- **Flexibility**: Customize DNS records extensively to meet specific application requirements without compromising on
-  best practices.
-- **Compliance**: Helps maintain compliance with DNS standards and organizational policies through input validation and
-  enforced field requirements.
+- **Simplified Deployment**: Abstracts the complexities of GCP service account creation, key management, and IAM
+  bindings into a single, easy-to-use API.
+- **Security by Default**: Encourages keyless authentication patterns by making key creation opt-in rather than
+  automatic, reducing the risk of credential leaks.
+- **Consistency**: Ensures all service accounts adhere to organizational standards and best practices across
+  environments.
+- **Scalability**: Allows for efficient management of service account configurations as your infrastructure grows,
+  supporting both project-level and organization-level permissions.
+- **Auditability**: Declarative YAML manifests stored in Git provide a complete audit trail of service account
+  configurations and permission changes.
+- **Flexibility**: Supports both modern keyless patterns (recommended) and traditional key-based authentication (when
+  necessary) without compromising on best practices.
+- **Tool Agnostic**: The same manifest deploys with either Pulumi or Terraform, preventing vendor lock-in and supporting
+  gradual IaC tool migrations.

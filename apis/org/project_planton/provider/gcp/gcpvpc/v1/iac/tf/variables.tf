@@ -1,12 +1,20 @@
 variable "metadata" {
-  description = "Metadata for the resource, including name and labels"
+  description = "Metadata for the GCP VPC resource"
   type = object({
-    name = string,
-    id = optional(string),
-    org = optional(string),
-    env = optional(string),
-    labels = optional(map(string)),
-    tags = optional(list(string)),
-    version = optional(object({ id = string, message = string }))
+    name = string
+    id   = string
+    org  = optional(string)
+    env  = optional(string)
+  })
+}
+
+variable "spec" {
+  description = "Specification for the GCP VPC"
+  type = object({
+    project_id = object({
+      value = string
+    })
+    auto_create_subnetworks = optional(bool, false)
+    routing_mode            = optional(number, 0) # 0=REGIONAL (default), 1=GLOBAL
   })
 }

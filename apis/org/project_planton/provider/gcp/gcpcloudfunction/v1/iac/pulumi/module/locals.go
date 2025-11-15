@@ -38,7 +38,7 @@ func initializeLocals(stackInput *gcpcloudfunctionv1.GcpCloudFunctionStackInput)
 
 	// Determine if trigger is HTTP or Event-driven
 	// Default to HTTP if trigger is nil or trigger_type is 0 (HTTP)
-	locals.IsHttpTrigger = spec.Trigger == nil || 
+	locals.IsHttpTrigger = spec.Trigger == nil ||
 		spec.Trigger.TriggerType == gcpcloudfunctionv1.GcpCloudFunctionTriggerType_HTTP
 
 	// Build GCP labels
@@ -62,4 +62,3 @@ func initializeLocals(stackInput *gcpcloudfunctionv1.GcpCloudFunctionStackInput)
 
 	return locals
 }
-

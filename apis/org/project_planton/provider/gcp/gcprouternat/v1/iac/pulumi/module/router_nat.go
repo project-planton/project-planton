@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
+	gcprouternatv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -91,6 +92,36 @@ func routerNat(
 	}
 
 	// ---------------------------------------------------------------------
+	// Logging configuration
+	// ---------------------------------------------------------------------
+
+	var logConfig *compute.RouterNatLogConfigArgs
+	if locals.GcpRouterNat.Spec.LogFilter != nil {
+		switch *locals.GcpRouterNat.Spec.LogFilter {
+		case gcprouternatv1.GcpRouterNatLogFilter_ERRORS_ONLY:
+			logConfig = &compute.RouterNatLogConfigArgs{
+				Enable: pulumi.Bool(true),
+				Filter: pulumi.String("ERRORS_ONLY"),
+			}
+		case gcprouternatv1.GcpRouterNatLogFilter_ALL:
+			logConfig = &compute.RouterNatLogConfigArgs{
+				Enable: pulumi.Bool(true),
+				Filter: pulumi.String("ALL"),
+			}
+		case gcprouternatv1.GcpRouterNatLogFilter_DISABLED:
+			logConfig = &compute.RouterNatLogConfigArgs{
+				Enable: pulumi.Bool(false),
+			}
+		}
+	} else {
+		// Default to ERRORS_ONLY if not specified
+		logConfig = &compute.RouterNatLogConfigArgs{
+			Enable: pulumi.Bool(true),
+			Filter: pulumi.String("ERRORS_ONLY"),
+		}
+	}
+
+	// ---------------------------------------------------------------------
 	// CloudNAT
 	// ---------------------------------------------------------------------
 
@@ -104,6 +135,7 @@ func routerNat(
 			NatIps:                        natIps,
 			SourceSubnetworkIpRangesToNat: sourceRangeSetting,
 			Subnetworks:                   subnetworks,
+			LogConfig:                     logConfig,
 		},
 		pulumi.Provider(gcpProvider),
 		pulumi.Parent(createdRouter))

@@ -98,7 +98,7 @@ func createCloudFunction(
 		// VPC connector
 		if sc.VpcConnector != "" {
 			serviceConfig.VpcConnector = pulumi.String(sc.VpcConnector)
-			
+
 			// VPC egress settings (default PRIVATE_RANGES_ONLY)
 			vpcEgress := "PRIVATE_RANGES_ONLY"
 			if sc.VpcConnectorEgressSettings != nil {
@@ -161,7 +161,7 @@ func createCloudFunction(
 	// Add event trigger if this is an event-driven function
 	if !locals.IsHttpTrigger && spec.Trigger != nil && spec.Trigger.EventTrigger != nil {
 		et := spec.Trigger.EventTrigger
-		
+
 		eventTrigger := &cloudfunctionsv2.FunctionEventTriggerArgs{
 			EventType: pulumi.String(et.EventType),
 		}
@@ -221,11 +221,11 @@ func createCloudFunction(
 	}
 
 	// Add IAM policy binding for public access if required (HTTP only)
-	if locals.IsHttpTrigger && 
-		spec.ServiceConfig != nil && 
-		spec.ServiceConfig.AllowUnauthenticated != nil && 
+	if locals.IsHttpTrigger &&
+		spec.ServiceConfig != nil &&
+		spec.ServiceConfig.AllowUnauthenticated != nil &&
 		*spec.ServiceConfig.AllowUnauthenticated {
-		
+
 		_, err = cloudrunv2.NewServiceIamMember(
 			ctx,
 			fmt.Sprintf("%s-public-invoker", locals.FunctionName),
@@ -245,4 +245,3 @@ func createCloudFunction(
 
 	return function, nil
 }
-
