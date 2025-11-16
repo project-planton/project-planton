@@ -1,48 +1,31 @@
-# Create using CLI
+# Azure NAT Gateway - Pulumi Examples
 
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply.
-
-```shell
-planton apply -f <yaml-path>
-```
-
-# Basic Example
+## Minimal Configuration
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
 kind: AzureNatGateway
 metadata:
-  name: my-azure-nat-gateway
+  name: dev-nat
 spec:
-  azureProviderConfigId: my-azure-credential-id
+  subnet_id:
+    value: "/subscriptions/{sub-id}/resourceGroups/dev-rg/providers/Microsoft.Network/virtualNetworks/dev-vnet/subnets/nodes-subnet"
 ```
 
-# Example with Environment Info
+## Production with IP Prefix
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
 kind: AzureNatGateway
 metadata:
-  name: my-azure-nat-gateway
+  name: prod-nat
+  org: mycompany
+  env: production
 spec:
-  azureProviderConfigId: my-azure-credential-id
-  environmentInfo:
-    envId: production
+  subnet_id:
+    value: "/subscriptions/{sub-id}/resourceGroups/prod-rg/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/nodes-subnet"
+  idle_timeout_minutes: 10
+  public_ip_prefix_length: 28
+  tags:
+    cost-center: "infrastructure"
 ```
-
-# Example with Stack Job Settings
-
-```yaml
-apiVersion: azure.project-planton.org/v1
-kind: AzureNatGateway
-metadata:
-  name: my-azure-nat-gateway
-spec:
-  azureProviderConfigId: my-azure-credential-id
-  stackJobSettings:
-    jobTimeout: 3600
-```
-
-# Notes
-
-Since the `spec` is currently empty and the module is not completely implemented, these examples are provided for illustrative purposes. They demonstrate how you would structure your YAML configuration files to create an Azure AKS Cluster using the `AzureNatGateway` API resource once the module is fully implemented.

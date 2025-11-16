@@ -21,10 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-secrets-manager stack outputs
+// AwsSecretsManagerStackOutputs captures the infrastructure outputs after deploying AWS Secrets Manager resources.
+// These outputs are essential for integrating the created secrets with applications and other infrastructure components.
 type AwsSecretsManagerStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// map containing secret-name and its corresponding secret-arn on aws secrets-manager
+	// Map containing secret names and their corresponding ARNs in AWS Secrets Manager.
+	// Key: The logical secret name as specified in the spec (e.g., "DB_PASSWORD")
+	// Value: The full ARN of the secret in AWS (e.g., "arn:aws:secretsmanager:us-east-1:123456789012:secret:myapp-prod-secrets-abc123-DB_PASSWORD-XyZ789")
+	// Applications use these ARNs to fetch secret values via AWS SDK or service integrations (ECS, Lambda, Kubernetes External Secrets Operator).
 	SecretArnMap  map[string]string `protobuf:"bytes,1,rep,name=secret_arn_map,json=secretArnMap,proto3" json:"secret_arn_map,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

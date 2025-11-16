@@ -74,6 +74,58 @@ func (AzureAksNodePoolOsType) EnumDescriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+// Enum for node pool mode (System vs User).
+type AzureAksNodePoolMode int32
+
+const (
+	AzureAksNodePoolMode_azure_aks_node_pool_mode_unspecified AzureAksNodePoolMode = 0
+	// System mode: Hosts critical cluster components. Must be Linux. Cannot scale to zero.
+	AzureAksNodePoolMode_SYSTEM AzureAksNodePoolMode = 1
+	// User mode: Runs application workloads. Can be Linux or Windows. Can scale to zero.
+	AzureAksNodePoolMode_USER AzureAksNodePoolMode = 2
+)
+
+// Enum value maps for AzureAksNodePoolMode.
+var (
+	AzureAksNodePoolMode_name = map[int32]string{
+		0: "azure_aks_node_pool_mode_unspecified",
+		1: "SYSTEM",
+		2: "USER",
+	}
+	AzureAksNodePoolMode_value = map[string]int32{
+		"azure_aks_node_pool_mode_unspecified": 0,
+		"SYSTEM":                               1,
+		"USER":                                 2,
+	}
+)
+
+func (x AzureAksNodePoolMode) Enum() *AzureAksNodePoolMode {
+	p := new(AzureAksNodePoolMode)
+	*p = x
+	return p
+}
+
+func (x AzureAksNodePoolMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AzureAksNodePoolMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (AzureAksNodePoolMode) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_enumTypes[1]
+}
+
+func (x AzureAksNodePoolMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AzureAksNodePoolMode.Descriptor instead.
+func (AzureAksNodePoolMode) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
 // AzureAksNodePoolSpec defines the desired state of an AKS cluster node pool.
 type AzureAksNodePoolSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -94,8 +146,14 @@ type AzureAksNodePoolSpec struct {
 	AvailabilityZones []string `protobuf:"bytes,5,rep,name=availability_zones,json=availabilityZones,proto3" json:"availability_zones,omitempty"`
 	// Operating system type for nodes. Defaults to Linux. Use "WINDOWS" for a Windows node pool (requires a cluster with Windows support).
 	OsType *AzureAksNodePoolOsType `protobuf:"varint,6,opt,name=os_type,json=osType,proto3,enum=org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsType,oneof" json:"os_type,omitempty"`
+	// Node pool mode determines the pool's purpose.
+	// SYSTEM pools host critical cluster components (CoreDNS, metrics-server). Must be Linux. Cannot scale to zero.
+	// USER pools run application workloads. Can be Linux or Windows. Can scale to zero.
+	// Defaults to USER since most additional pools are for application workloads.
+	Mode *AzureAksNodePoolMode `protobuf:"varint,7,opt,name=mode,proto3,enum=org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolMode,oneof" json:"mode,omitempty"`
 	// Use Spot (preemptible) VMs for this node pool to reduce cost. Defaults to false (regular on-demand VMs).
-	SpotEnabled   bool `protobuf:"varint,7,opt,name=spot_enabled,json=spotEnabled,proto3" json:"spot_enabled,omitempty"`
+	// NOTE: Spot cannot be used for System mode pools.
+	SpotEnabled   bool `protobuf:"varint,8,opt,name=spot_enabled,json=spotEnabled,proto3" json:"spot_enabled,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -172,6 +230,13 @@ func (x *AzureAksNodePoolSpec) GetOsType() AzureAksNodePoolOsType {
 	return AzureAksNodePoolOsType_azure_aks_node_pool_os_type_unspecified
 }
 
+func (x *AzureAksNodePoolSpec) GetMode() AzureAksNodePoolMode {
+	if x != nil && x.Mode != nil {
+		return *x.Mode
+	}
+	return AzureAksNodePoolMode_azure_aks_node_pool_mode_unspecified
+}
+
 func (x *AzureAksNodePoolSpec) GetSpotEnabled() bool {
 	if x != nil {
 		return x.SpotEnabled
@@ -183,8 +248,9 @@ func (x *AzureAksNodePoolSpec) GetSpotEnabled() bool {
 type AzureAksNodePoolAutoscaling struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Minimum number of nodes for this pool when autoscaler is active. Can be 0 for user node pools to allow scale-to-zero.
+	// For system pools, minimum should be at least 1 (system pools cannot scale to zero).
 	MinNodes uint32 `protobuf:"varint,1,opt,name=min_nodes,json=minNodes,proto3" json:"min_nodes,omitempty"`
-	// Maximum number of nodes for this pool when autoscaler is active.
+	// Maximum number of nodes for this pool when autoscaler is active. Must be greater than or equal to min_nodes.
 	MaxNodes      uint32 `protobuf:"varint,2,opt,name=max_nodes,json=maxNodes,proto3" json:"max_nodes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -238,7 +304,7 @@ var File_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto proto
 
 const file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Aorg/project_planton/provider/azure/azureaksnodepool/v1/spec.proto\x126org.project_planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xf3\x04\n" +
+	"Aorg/project_planton/provider/azure/azureaksnodepool/v1/spec.proto\x126org.project_planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x87\x06\n" +
 	"\x14AzureAksNodePoolSpec\x12{\n" +
 	"\fcluster_name\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\x90\x03\x92\xd4a\rmetadata.nameR\vclusterName\x12\x1f\n" +
 	"\avm_size\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06vmSize\x128\n" +
@@ -246,17 +312,24 @@ const file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_raw
 	"\xbaH\a\xc8\x01\x01\x1a\x02 \x00R\x10initialNodeCount\x12u\n" +
 	"\vautoscaling\x18\x04 \x01(\v2S.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolAutoscalingR\vautoscaling\x12G\n" +
 	"\x12availability_zones\x18\x05 \x03(\tB\x18\xbaH\x15\xd8\x01\x01\x92\x01\x0f\b\x02\"\vr\tR\x011R\x012R\x013R\x11availabilityZones\x12\x93\x01\n" +
-	"\aos_type\x18\x06 \x01(\x0e2N.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsTypeB%\x8a\xa6\x1d!AZURE_AKS_NODE_POOL_OS_TYPE_LINUXH\x00R\x06osType\x88\x01\x01\x12!\n" +
-	"\fspot_enabled\x18\a \x01(\bR\vspotEnabledB\n" +
+	"\aos_type\x18\x06 \x01(\x0e2N.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsTypeB%\x8a\xa6\x1d!AZURE_AKS_NODE_POOL_OS_TYPE_LINUXH\x00R\x06osType\x88\x01\x01\x12\x88\x01\n" +
+	"\x04mode\x18\a \x01(\x0e2L.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolModeB!\x8a\xa6\x1d\x1dAZURE_AKS_NODE_POOL_MODE_USERH\x01R\x04mode\x88\x01\x01\x12!\n" +
+	"\fspot_enabled\x18\b \x01(\bR\vspotEnabledB\n" +
 	"\n" +
-	"\b_os_type\"g\n" +
-	"\x1bAzureAksNodePoolAutoscaling\x12#\n" +
-	"\tmin_nodes\x18\x01 \x01(\rB\x06\xbaH\x03\xc8\x01\x01R\bminNodes\x12#\n" +
-	"\tmax_nodes\x18\x02 \x01(\rB\x06\xbaH\x03\xc8\x01\x01R\bmaxNodes*]\n" +
+	"\b_os_typeB\a\n" +
+	"\x05_mode\"i\n" +
+	"\x1bAzureAksNodePoolAutoscaling\x12$\n" +
+	"\tmin_nodes\x18\x01 \x01(\rB\a\xbaH\x04*\x02(\x00R\bminNodes\x12$\n" +
+	"\tmax_nodes\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\bmaxNodes*]\n" +
 	"\x16AzureAksNodePoolOsType\x12+\n" +
 	"'azure_aks_node_pool_os_type_unspecified\x10\x00\x12\t\n" +
 	"\x05LINUX\x10\x01\x12\v\n" +
-	"\aWINDOWS\x10\x02B\xbd\x03\n" +
+	"\aWINDOWS\x10\x02*V\n" +
+	"\x14AzureAksNodePoolMode\x12(\n" +
+	"$azure_aks_node_pool_mode_unspecified\x10\x00\x12\n" +
+	"\n" +
+	"\x06SYSTEM\x10\x01\x12\b\n" +
+	"\x04USER\x10\x02B\xbd\x03\n" +
 	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
 
 var (
@@ -271,23 +344,25 @@ func file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawD
 	return file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_goTypes = []any{
 	(AzureAksNodePoolOsType)(0),         // 0: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsType
-	(*AzureAksNodePoolSpec)(nil),        // 1: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec
-	(*AzureAksNodePoolAutoscaling)(nil), // 2: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolAutoscaling
-	(*v1.StringValueOrRef)(nil),         // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(AzureAksNodePoolMode)(0),           // 1: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolMode
+	(*AzureAksNodePoolSpec)(nil),        // 2: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec
+	(*AzureAksNodePoolAutoscaling)(nil), // 3: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolAutoscaling
+	(*v1.StringValueOrRef)(nil),         // 4: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_depIdxs = []int32{
-	3, // 0: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec.cluster_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 1: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec.autoscaling:type_name -> org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolAutoscaling
+	4, // 0: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec.cluster_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 1: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec.autoscaling:type_name -> org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolAutoscaling
 	0, // 2: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec.os_type:type_name -> org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // 3: org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec.mode:type_name -> org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolMode
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_init() }
@@ -301,7 +376,7 @@ func file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_init
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,

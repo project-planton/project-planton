@@ -73,22 +73,25 @@ func (AzureContainerRegistrySku) EnumDescriptor() ([]byte, []int) {
 }
 
 // **AzureContainerRegistrySpec** defines the configuration for deploying an Azure Container Registry.
-// It allows specifying the registry name, tier (SKU), and optional settings like admin user access and geo-replication.
+// It allows specifying the registry name, region, tier (SKU), and optional settings like admin user access and geo-replication.
 type AzureContainerRegistrySpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// Azure region in which to create the container registry (e.g., "eastus", "westeurope").
+	// This is the primary location where the registry is deployed.
+	Region string `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
 	// The globally unique name of the container registry.
 	// Must be 5-50 characters of lowercase letters or numbers (per Azure naming rules).
-	RegistryName string `protobuf:"bytes,1,opt,name=registry_name,json=registryName,proto3" json:"registry_name,omitempty"`
+	RegistryName string `protobuf:"bytes,2,opt,name=registry_name,json=registryName,proto3" json:"registry_name,omitempty"`
 	// The pricing tier of the registry (Basic, Standard, or Premium).
 	// This influences features such as storage limits and geo-replication support.
 	// Defaults to STANDARD if not specified.
-	Sku AzureContainerRegistrySku `protobuf:"varint,2,opt,name=sku,proto3,enum=org.project_planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistrySku" json:"sku,omitempty"`
+	Sku AzureContainerRegistrySku `protobuf:"varint,3,opt,name=sku,proto3,enum=org.project_planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistrySku" json:"sku,omitempty"`
 	// Enables the admin user account for the registry.
 	// Default is false (admin user disabled). Enable only if needed for basic authentication scenarios.
-	AdminUserEnabled bool `protobuf:"varint,3,opt,name=admin_user_enabled,json=adminUserEnabled,proto3" json:"admin_user_enabled,omitempty"`
+	AdminUserEnabled bool `protobuf:"varint,4,opt,name=admin_user_enabled,json=adminUserEnabled,proto3" json:"admin_user_enabled,omitempty"`
 	// A list of additional Azure regions to replicate the registry (geo-replication).
 	// Only applicable for Premium SKU. Leave empty for Basic/Standard SKUs.
-	GeoReplicationRegions []string `protobuf:"bytes,4,rep,name=geo_replication_regions,json=geoReplicationRegions,proto3" json:"geo_replication_regions,omitempty"`
+	GeoReplicationRegions []string `protobuf:"bytes,5,rep,name=geo_replication_regions,json=geoReplicationRegions,proto3" json:"geo_replication_regions,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -123,6 +126,13 @@ func (*AzureContainerRegistrySpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_azure_azurecontainerregistry_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *AzureContainerRegistrySpec) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
 func (x *AzureContainerRegistrySpec) GetRegistryName() string {
 	if x != nil {
 		return x.RegistryName
@@ -155,12 +165,13 @@ var File_org_project_planton_provider_azure_azurecontainerregistry_v1_spec_proto
 
 const file_org_project_planton_provider_azure_azurecontainerregistry_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/azure/azurecontainerregistry/v1/spec.proto\x12<org.project_planton.provider.azure.azurecontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\"\xae\x02\n" +
-	"\x1aAzureContainerRegistrySpec\x12?\n" +
-	"\rregistry_name\x18\x01 \x01(\tB\x1a\xbaH\x17\xc8\x01\x01r\x122\x10^[a-z0-9]{5,50}$R\fregistryName\x12i\n" +
-	"\x03sku\x18\x02 \x01(\x0e2W.org.project_planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistrySkuR\x03sku\x12,\n" +
-	"\x12admin_user_enabled\x18\x03 \x01(\bR\x10adminUserEnabled\x126\n" +
-	"\x17geo_replication_regions\x18\x04 \x03(\tR\x15geoReplicationRegions*A\n" +
+	"Gorg/project_planton/provider/azure/azurecontainerregistry/v1/spec.proto\x12<org.project_planton.provider.azure.azurecontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\"\xce\x02\n" +
+	"\x1aAzureContainerRegistrySpec\x12\x1e\n" +
+	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12?\n" +
+	"\rregistry_name\x18\x02 \x01(\tB\x1a\xbaH\x17\xc8\x01\x01r\x122\x10^[a-z0-9]{5,50}$R\fregistryName\x12i\n" +
+	"\x03sku\x18\x03 \x01(\x0e2W.org.project_planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistrySkuR\x03sku\x12,\n" +
+	"\x12admin_user_enabled\x18\x04 \x01(\bR\x10adminUserEnabled\x126\n" +
+	"\x17geo_replication_regions\x18\x05 \x03(\tR\x15geoReplicationRegions*A\n" +
 	"\x19AzureContainerRegistrySku\x12\t\n" +
 	"\x05BASIC\x10\x00\x12\f\n" +
 	"\bSTANDARD\x10\x01\x12\v\n" +

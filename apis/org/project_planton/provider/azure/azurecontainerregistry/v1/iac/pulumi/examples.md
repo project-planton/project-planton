@@ -1,48 +1,86 @@
-# Create using CLI
+# Azure Container Registry - Pulumi Examples
 
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply.
+Examples of deploying Azure Container Registry using this Pulumi module.
+
+## Basic Registry
+
+Standard SKU registry for production workloads.
+
+```yaml
+apiVersion: azure.project-planton.org/v1
+kind: AzureContainerRegistry
+metadata:
+  name: basic-acr
+spec:
+  region: eastus
+  registryName: mycompanyacr
+  sku: STANDARD
+  adminUserEnabled: false
+```
+
+## Premium with Geo-Replication
+
+Multi-region deployment for global access.
+
+```yaml
+apiVersion: azure.project-planton.org/v1
+kind: AzureContainerRegistry
+metadata:
+  name: global-acr
+spec:
+  region: eastus
+  registryName: globalacr
+  sku: PREMIUM
+  adminUserEnabled: false
+  geoReplicationRegions:
+    - westeurope
+    - southeastasia
+```
+
+## Development Registry
+
+Basic SKU with admin user for local development.
+
+```yaml
+apiVersion: azure.project-planton.org/v1
+kind: AzureContainerRegistry
+metadata:
+  name: dev-acr
+spec:
+  region: eastus
+  registryName: devacr123
+  sku: BASIC
+  adminUserEnabled: true
+```
+
+## Deploying
+
+All examples above can be deployed using:
 
 ```shell
-planton apply -f <yaml-path>
+planton apply -f <manifest-file>.yaml
 ```
 
-# Basic Example
+## Accessing the Registry
 
-```yaml
-apiVersion: azure.project-planton.org/v1
-kind: AzureContainerRegistry
-metadata:
-  name: my-azure-container-registry
-spec:
-  azureProviderConfigId: my-azure-credential-id
+After deployment, authenticate and push images:
+
+```shell
+# Authenticate
+az acr login --name mycompanyacr
+
+# Tag and push
+docker tag myapp:latest mycompanyacr.azurecr.io/myapp:latest
+docker push mycompanyacr.azurecr.io/myapp:latest
+
+# Pull
+docker pull mycompanyacr.azurecr.io/myapp:latest
 ```
 
-# Example with Environment Info
+## For More Examples
 
-```yaml
-apiVersion: azure.project-planton.org/v1
-kind: AzureContainerRegistry
-metadata:
-  name: my-azure-container-registry
-spec:
-  azureProviderConfigId: my-azure-credential-id
-  environmentInfo:
-    envId: production
-```
-
-# Example with Stack Job Settings
-
-```yaml
-apiVersion: azure.project-planton.org/v1
-kind: AzureContainerRegistry
-metadata:
-  name: my-azure-container-registry
-spec:
-  azureProviderConfigId: my-azure-credential-id
-  stackJobSettings:
-    jobTimeout: 3600
-```
-
-# Notes
-
-Since the `spec` is currently empty and the module is not completely implemented, these examples are provided for illustrative purposes. They demonstrate how you would structure your YAML configuration files to create an Azure AKS Cluster using the `AzureContainerRegistry` API resource once the module is fully implemented.
+See the [main examples documentation](../../examples.md) for comprehensive scenarios including:
+- Production configurations
+- Multi-region deployments
+- Development setups
+- Integration with AKS

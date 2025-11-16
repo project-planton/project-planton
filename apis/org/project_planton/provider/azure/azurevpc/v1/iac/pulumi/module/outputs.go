@@ -1,5 +1,6 @@
 package module
 
 const (
-	OpOutputKey = "value"
+	OpVnetId        = "vnet_id"
+	OpNodesSubnetId = "nodes_subnet_id"
 )
