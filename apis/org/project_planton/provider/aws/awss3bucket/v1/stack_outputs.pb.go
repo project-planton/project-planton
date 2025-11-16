@@ -24,8 +24,21 @@ const (
 // aws-s3-bucket stack outputs
 type AwsS3BucketStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// id of the storage-bucket created on aws
-	BucketId      string `protobuf:"bytes,1,opt,name=bucket_id,json=bucketId,proto3" json:"bucket_id,omitempty"`
+	// id (name) of the S3 bucket created on AWS
+	BucketId string `protobuf:"bytes,1,opt,name=bucket_id,json=bucketId,proto3" json:"bucket_id,omitempty"`
+	// ARN (Amazon Resource Name) of the S3 bucket
+	// Format: arn:aws:s3:::bucket-name
+	// Used for IAM policies, bucket policies, and cross-account access
+	BucketArn string `protobuf:"bytes,2,opt,name=bucket_arn,json=bucketArn,proto3" json:"bucket_arn,omitempty"`
+	// AWS region where the bucket is created
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	// Regional domain name of the S3 bucket
+	// Format: bucket-name.s3.region.amazonaws.com
+	// Used for accessing bucket via regional endpoint
+	BucketRegionalDomainName string `protobuf:"bytes,4,opt,name=bucket_regional_domain_name,json=bucketRegionalDomainName,proto3" json:"bucket_regional_domain_name,omitempty"`
+	// Hosted zone ID for the S3 bucket's region
+	// Used for Route53 alias records pointing to S3 bucket
+	HostedZoneId  string `protobuf:"bytes,5,opt,name=hosted_zone_id,json=hostedZoneId,proto3" json:"hosted_zone_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -67,13 +80,46 @@ func (x *AwsS3BucketStackOutputs) GetBucketId() string {
 	return ""
 }
 
+func (x *AwsS3BucketStackOutputs) GetBucketArn() string {
+	if x != nil {
+		return x.BucketArn
+	}
+	return ""
+}
+
+func (x *AwsS3BucketStackOutputs) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *AwsS3BucketStackOutputs) GetBucketRegionalDomainName() string {
+	if x != nil {
+		return x.BucketRegionalDomainName
+	}
+	return ""
+}
+
+func (x *AwsS3BucketStackOutputs) GetHostedZoneId() string {
+	if x != nil {
+		return x.HostedZoneId
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_aws_awss3bucket_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_aws_awss3bucket_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Corg/project_planton/provider/aws/awss3bucket/v1/stack_outputs.proto\x12/org.project_planton.provider.aws.awss3bucket.v1\"6\n" +
+	"Corg/project_planton/provider/aws/awss3bucket/v1/stack_outputs.proto\x12/org.project_planton.provider.aws.awss3bucket.v1\"\xd2\x01\n" +
 	"\x17AwsS3BucketStackOutputs\x12\x1b\n" +
-	"\tbucket_id\x18\x01 \x01(\tR\bbucketIdB\x96\x03\n" +
+	"\tbucket_id\x18\x01 \x01(\tR\bbucketId\x12\x1d\n" +
+	"\n" +
+	"bucket_arn\x18\x02 \x01(\tR\tbucketArn\x12\x16\n" +
+	"\x06region\x18\x03 \x01(\tR\x06region\x12=\n" +
+	"\x1bbucket_regional_domain_name\x18\x04 \x01(\tR\x18bucketRegionalDomainName\x12$\n" +
+	"\x0ehosted_zone_id\x18\x05 \x01(\tR\fhostedZoneIdB\x96\x03\n" +
 	"3com.org.project_planton.provider.aws.awss3bucket.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
 var (

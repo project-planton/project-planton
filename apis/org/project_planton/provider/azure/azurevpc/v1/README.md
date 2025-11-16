@@ -1,36 +1,41 @@
 # Overview
 
-The **Azure Azure AKS Cluster API Resource** provides a consistent and standardized interface for deploying and managing Azure Kubernetes Service (AKS) clusters within our infrastructure. This resource simplifies the orchestration of Kubernetes clusters on Azure, allowing users to run containerized applications at scale without the complexity of manual setup and configuration.
+The **Azure VPC API Resource** provides a consistent and standardized interface for deploying and managing Azure Virtual Networks (VNets) within our infrastructure. This resource simplifies the creation of network foundations for Azure workloads, particularly for AKS clusters and private application deployments.
 
 ## Purpose
 
-We developed this API resource to streamline the deployment and management of AKS clusters on Azure. By offering a unified interface, it reduces the complexity involved in setting up Kubernetes environments on Azure, enabling users to:
+We developed this API resource to streamline the deployment and management of Azure Virtual Networks. By offering a unified interface, it reduces the complexity involved in setting up network infrastructure on Azure, enabling users to:
 
-- **Easily Deploy Azure AKS Clusters**: Quickly provision AKS clusters with minimal configuration.
-- **Customize Cluster Settings**: Configure cluster parameters such as credentials and environment settings.
-- **Integrate Seamlessly**: Utilize existing Azure credentials and integrate with other Azure services.
-- **Focus on Applications**: Allow developers to concentrate on deploying applications rather than managing infrastructure.
+- **Easily Deploy Virtual Networks**: Quickly provision VNets and subnets with minimal configuration
+- **Predictable Address Planning**: Define address spaces and subnet CIDRs declaratively
+- **Enable Outbound Connectivity**: Optionally attach NAT Gateways to eliminate SNAT port exhaustion
+- **Integrate Private DNS**: Link Private DNS zones for internal name resolution
+- **Version Control Networks**: Manage VNet configurations through GitOps workflows
 
 ## Key Features
 
-- **Consistent Interface**: Aligns with our existing APIs for deploying open-source software, microservices, and cloud infrastructure.
-- **Simplified Deployment**: Automates the provisioning of AKS clusters, including resource groups and network configurations.
-- **Flexible Configuration**: Supports specifying Azure credentials and integrating with existing environments.
-- **Scalability**: Leverages Azure AKS to manage Kubernetes clusters that can scale to meet application demands.
-- **Integration**: Works seamlessly with other Azure services and infrastructure components.
+- **Consistent Interface**: Aligns with our existing APIs for deploying cloud infrastructure across multiple providers
+- **Simplified Deployment**: Automates provisioning of resource groups, VNets, subnets, and optional NAT Gateways
+- **Production-Ready Defaults**: Follows Azure networking best practices for address planning and security
+- **Flexible Configuration**: Supports various deployment scenarios from simple dev environments to complex production networks
+- **NAT Gateway Integration**: Optional NAT Gateway attachment for scalable outbound internet connectivity
 
 ## Use Cases
 
-- **Container Orchestration**: Deploy and manage containerized applications using Kubernetes on Azure.
-- **Microservices Architecture**: Run microservices workloads with the flexibility and scalability of Kubernetes.
-- **Hybrid Deployments**: Integrate on-premises Kubernetes deployments with cloud-based AKS clusters.
-- **Development and Testing**: Provide scalable and consistent environments for development and testing purposes.
+- **AKS Cluster Networking**: Foundation for private AKS clusters with predictable egress IPs
+- **Private Application Subnets**: Isolated networks for VM-based applications
+- **Multi-Tier Architecture**: Segregated subnets for web, app, and database tiers
+- **Development Environments**: Quick VNet provisioning for isolated dev/test workloads
+- **Hybrid Connectivity**: VNets configured for VPN Gateway or ExpressRoute integration
+- **Compliance Scenarios**: Network isolation meeting security and compliance requirements
 
 ## Future Enhancements
 
-As this resource is currently in a partial implementation phase, future updates will include:
+Future updates will include:
 
-- **Advanced Configuration Options**: Support for node pools, networking policies, and access controls.
-- **Enhanced Security Features**: Integration with Azure Active Directory and security policies for cluster management.
-- **Monitoring and Logging**: Improved support for cluster monitoring and logging using Azure Monitor and other tools.
-- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
+- **Advanced Subnet Management**: Support for multiple subnets with different purposes
+- **NSG Integration**: Automated Network Security Group creation and association
+- **Peering Configuration**: VNet-to-VNet peering for hub-and-spoke architectures
+- **Route Table Management**: Custom routing for Azure Firewall or network appliances
+- **Availability Zone Support**: Zonal subnet deployment for high availability
+- **Comprehensive Documentation**: Expanded troubleshooting guides and migration patterns

@@ -1,118 +1,68 @@
-# MicroserviceKubernetes API Resource Examples
+# Azure Key Vault - Pulumi Examples
 
-This document provides multiple examples for the `MicroserviceKubernetes` API resource, showcasing different configurations such as basic setups, usage with environment variables, and secrets management using Planton Cloud's GCP Secrets Manager.
+Examples showing how to use the Azure Key Vault Pulumi module with various configurations.
 
-## Create using CLI
-
-To create and apply the `MicroserviceKubernetes` resource, follow the steps below:
-
-1. Create a YAML file using one of the examples provided.
-2. Apply the resource using the following command:
-
-```shell
-planton apply -f <yaml-path>
-```
-
-## Basic Example
-
-This basic example demonstrates how to define a `MicroserviceKubernetes` resource that deploys a simple containerized application using the `nginx` image. 
+## Minimal Configuration
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: AzureKeyVault
 metadata:
-  name: todo-list-api
+  name: myapp-dev-kv
 spec:
-  version: main
-  container:
-    app:
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  region: eastus
+  resource_group: dev-rg
+  secret_names:
+    - api-key
 ```
 
-## Example with Environment Variables
-
-This example extends the basic setup by introducing environment variables. The `DATABASE_NAME` environment variable is defined within the container configuration.
+## Production Configuration
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: AzureKeyVault
 metadata:
-  name: todo-list-api
+  name: myapp-prod-kv
+  org: mycompany
+  env: production
 spec:
-  version: main
-  container:
-    app:
-      env:
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  region: eastus
+  resource_group: prod-security-rg
+  sku: PREMIUM
+  enable_rbac_authorization: true
+  enable_purge_protection: true
+  soft_delete_retention_days: 90
+  network_acls:
+    default_action: DENY
+    bypass_azure_services: true
+    ip_rules:
+      - "203.0.113.0/24"
+  secret_names:
+    - database-connection-string
+    - api-key
+    - jwt-secret
 ```
 
-## Example with Environment Secrets
-
-This example shows how to integrate Planton Cloud's GCP Secrets Manager for managing sensitive data like database credentials. The `DATABASE_PASSWORD` secret is retrieved from the GCP Secrets Manager, while the `DATABASE_NAME` is provided as an environment variable.
+## Development Configuration
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: AzureKeyVault
 metadata:
-  name: todo-list-api
+  name: myapp-dev-kv
+  env: development
 spec:
-  version: main
-  container:
-    app:
-      env:
-        secrets:
-          DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  region: eastus
+  resource_group: dev-rg
+  sku: STANDARD
+  enable_rbac_authorization: true
+  enable_purge_protection: false
+  soft_delete_retention_days: 7
+  network_acls:
+    default_action: DENY
+    bypass_azure_services: true
+    ip_rules:
+      - "203.0.113.0/24"
+  secret_names:
+    - dev-api-key
 ```
-
-These examples show the flexibility of the `MicroserviceKubernetes` API resource, allowing you to customize deployments using environment variables and secrets management, while adhering to a standard API resource structure.

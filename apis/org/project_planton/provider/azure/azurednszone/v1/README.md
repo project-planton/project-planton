@@ -1,36 +1,40 @@
 # Overview
 
-The **Azure Azure AKS Cluster API Resource** provides a consistent and standardized interface for deploying and managing Azure Kubernetes Service (AKS) clusters within our infrastructure. This resource simplifies the orchestration of Kubernetes clusters on Azure, allowing users to run containerized applications at scale without the complexity of manual setup and configuration.
+The **Azure DNS Zone API Resource** provides a consistent and standardized interface for deploying and managing Azure DNS zones within our infrastructure. This resource simplifies the orchestration of public and private DNS zones on Azure, allowing users to manage domain name resolution with enterprise-grade reliability without the complexity of manual configuration.
 
 ## Purpose
 
-We developed this API resource to streamline the deployment and management of AKS clusters on Azure. By offering a unified interface, it reduces the complexity involved in setting up Kubernetes environments on Azure, enabling users to:
+We developed this API resource to streamline the deployment and management of Azure DNS zones. By offering a unified interface, it reduces the complexity involved in setting up DNS infrastructure on Azure, enabling users to:
 
-- **Easily Deploy Azure AKS Clusters**: Quickly provision AKS clusters with minimal configuration.
-- **Customize Cluster Settings**: Configure cluster parameters such as credentials and environment settings.
+- **Easily Deploy DNS Zones**: Quickly provision public or private DNS zones with minimal configuration.
+- **Manage DNS Records**: Configure DNS records (A, AAAA, CNAME, TXT, MX, CAA, etc.) declaratively as code.
 - **Integrate Seamlessly**: Utilize existing Azure credentials and integrate with other Azure services.
-- **Focus on Applications**: Allow developers to concentrate on deploying applications rather than managing infrastructure.
+- **Version Control DNS**: Manage DNS configurations through GitOps workflows with full audit trails.
 
 ## Key Features
 
-- **Consistent Interface**: Aligns with our existing APIs for deploying open-source software, microservices, and cloud infrastructure.
-- **Simplified Deployment**: Automates the provisioning of AKS clusters, including resource groups and network configurations.
-- **Flexible Configuration**: Supports specifying Azure credentials and integrating with existing environments.
-- **Scalability**: Leverages Azure AKS to manage Kubernetes clusters that can scale to meet application demands.
-- **Integration**: Works seamlessly with other Azure services and infrastructure components.
+- **Consistent Interface**: Aligns with our existing APIs for deploying cloud infrastructure across multiple providers.
+- **Simplified Deployment**: Automates the provisioning of DNS zones and records, including resource groups and zone configurations.
+- **Flexible Configuration**: Supports public DNS zones for internet-facing domains and private zones for internal VNet resolution.
+- **Comprehensive Record Types**: Support for all essential DNS record types (A, AAAA, CNAME, TXT, MX, CAA, SRV, NS).
+- **Security Best Practices**: Built-in support for CAA records to control certificate authority authorization.
+- **Integration**: Works seamlessly with Azure services like App Services, AKS, and Private Endpoints.
 
 ## Use Cases
 
-- **Container Orchestration**: Deploy and manage containerized applications using Kubernetes on Azure.
-- **Microservices Architecture**: Run microservices workloads with the flexibility and scalability of Kubernetes.
-- **Hybrid Deployments**: Integrate on-premises Kubernetes deployments with cloud-based AKS clusters.
-- **Development and Testing**: Provide scalable and consistent environments for development and testing purposes.
+- **Public Domain Hosting**: Host internet-facing domains with global anycast DNS resolution.
+- **Application DNS Management**: Manage DNS records for web applications, APIs, and microservices.
+- **Email Infrastructure**: Configure MX, SPF, DKIM, and DMARC records for email delivery.
+- **Private Zone Resolution**: Internal DNS for Azure Virtual Networks and private endpoints.
+- **Multi-Environment DNS**: Separate DNS zones for development, staging, and production environments.
+- **Domain Migration**: Migrate DNS from other providers (Route 53, Cloudflare, etc.) to Azure.
 
 ## Future Enhancements
 
-As this resource is currently in a partial implementation phase, future updates will include:
+Future updates will include:
 
-- **Advanced Configuration Options**: Support for node pools, networking policies, and access controls.
-- **Enhanced Security Features**: Integration with Azure Active Directory and security policies for cluster management.
-- **Monitoring and Logging**: Improved support for cluster monitoring and logging using Azure Monitor and other tools.
-- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
+- **DNSSEC Support**: Integration with Azure DNSSEC features for cryptographic DNS validation.
+- **Advanced Zone Features**: Support for alias records, zone delegation, and zone transfers.
+- **Enhanced Monitoring**: Integration with Azure Monitor for DNS query analytics and alerting.
+- **Private Zone Auto-Registration**: VNet linking with automatic VM registration for dynamic DNS.
+- **Comprehensive Documentation**: Expanded usage examples, migration guides, and best practices.

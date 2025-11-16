@@ -50,17 +50,25 @@ message AzureAksNodePoolSpec {
   // Operating system type for nodes. Defaults to Linux. Use "WINDOWS" for a Windows node pool (requires a cluster with Windows support).
   optional AzureAksNodePoolOsType os_type = 6 [(org.project_planton.shared.options.default) = "AZURE_AKS_NODE_POOL_OS_TYPE_LINUX"];
 
+  // Node pool mode determines the pool's purpose.
+  // SYSTEM pools host critical cluster components (CoreDNS, metrics-server). Must be Linux. Cannot scale to zero.
+  // USER pools run application workloads. Can be Linux or Windows. Can scale to zero.
+  // Defaults to USER since most additional pools are for application workloads.
+  optional AzureAksNodePoolMode mode = 7 [(org.project_planton.shared.options.default) = "AZURE_AKS_NODE_POOL_MODE_USER"];
+
   // Use Spot (preemptible) VMs for this node pool to reduce cost. Defaults to false (regular on-demand VMs).
-  bool spot_enabled = 7;
+  // NOTE: Spot cannot be used for System mode pools.
+  bool spot_enabled = 8;
 }
 
 // Autoscaling settings for an AKS node pool. Effective only if autoscaling is enabled.
 message AzureAksNodePoolAutoscaling {
   // Minimum number of nodes for this pool when autoscaler is active. Can be 0 for user node pools to allow scale-to-zero.
-  uint32 min_nodes = 1 [(buf.validate.field).required = true];
+  // For system pools, minimum should be at least 1 (system pools cannot scale to zero).
+  uint32 min_nodes = 1 [(buf.validate.field).uint32.gte = 0];
 
-  // Maximum number of nodes for this pool when autoscaler is active.
-  uint32 max_nodes = 2 [(buf.validate.field).required = true];
+  // Maximum number of nodes for this pool when autoscaler is active. Must be greater than or equal to min_nodes.
+  uint32 max_nodes = 2 [(buf.validate.field).uint32.gt = 0];
 }
 
 // Enum for OS types in an AKS node pool.
@@ -68,4 +76,13 @@ enum AzureAksNodePoolOsType {
   azure_aks_node_pool_os_type_unspecified = 0;
   LINUX = 1;
   WINDOWS = 2;
+}
+
+// Enum for node pool mode (System vs User).
+enum AzureAksNodePoolMode {
+  azure_aks_node_pool_mode_unspecified = 0;
+  // System mode: Hosts critical cluster components. Must be Linux. Cannot scale to zero.
+  SYSTEM = 1;
+  // User mode: Runs application workloads. Can be Linux or Windows. Can scale to zero.
+  USER = 2;
 }

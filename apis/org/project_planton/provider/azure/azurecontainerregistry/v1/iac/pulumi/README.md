@@ -1,75 +1,124 @@
-**Note:** This module is not completely implemented as the API resource specification is currently empty.
+# Azure Container Registry - Pulumi Module
 
-# Azure Azure AKS Cluster Pulumi Module
+This Pulumi module deploys an Azure Container Registry (ACR) instance using the Azure Native provider.
 
-## Introduction
+## Overview
 
-This Pulumi module provides a standardized way to manage Azure Kubernetes Service (AKS) clusters using our Unified APIs that mimic Kubernetes' resource modeling. It allows developers to define infrastructure configurations in a YAML file, simplifying the deployment and management of complex cloud resources across multiple providers.
+The module creates:
+- **Resource Group**: Dedicated resource group for the container registry
+- **Container Registry**: ACR instance with configurable SKU (Basic, Standard, Premium)
+- **Geo-Replications**: Optional multi-region replicas for Premium SKU
 
-## Key Features
+## Features
 
-- **Unified API Structure**: Adheres to a standardized API format with `apiVersion`, `kind`, `metadata`, `spec`, and `status`, ensuring consistency across different resources.
-- **Multi-Cloud Support**: Designed to work seamlessly in a multi-cloud environment, starting with Azure.
-- **Pulumi Integration**: Leverages Pulumi's infrastructure-as-code capabilities to automate resource provisioning.
-- **Credential Management**: Securely handles Azure credentials for authenticating with Azure services.
-- **Simplified Deployment**: Enables developers to deploy AKS clusters using a single YAML configuration file.
-- **Standardized Documentation**: Comprehensive documentation available via buf.build for easy reference.
+- **Multiple SKU Support**: Basic, Standard, and Premium tiers
+- **Geo-Replication**: Automatic setup of regional replicas for Premium
+- **Secure by Default**: Admin user disabled unless explicitly enabled
+- **Azure AD Integration**: Native support for managed identities and service principals
+- **Network Security**: Configurable network rules (handled via Azure-native settings)
 
 ## Usage
 
-Refer to the example section for usage instructions.
+This module is typically invoked through Project Planton's orchestration layer. For standalone usage:
 
-## Module Details
+```go
+import (
+    azurecontainerregistryv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1/iac/pulumi/module"
+)
 
-### API Resource Specification
+func main() {
+    pulumi.Run(func(ctx *pulumi.Context) error {
+        stackInput := &azurecontainerregistryv1.AzureContainerRegistryStackInput{
+            Target: &azurecontainerregistryv1.AzureContainerRegistry{
+                Metadata: &shared.CloudResourceMetadata{
+                    Name: "my-acr",
+                },
+                Spec: &azurecontainerregistryv1.AzureContainerRegistrySpec{
+                    Region:           "eastus",
+                    RegistryName:     "mycompanyacr",
+                    Sku:              azurecontainerregistryv1.AzureContainerRegistrySku_STANDARD,
+                    AdminUserEnabled: false,
+                },
+            },
+            ProviderConfig: &azureproviderv1.AzureProviderConfig{
+                // Provider credentials
+            },
+        }
+        return module.Resources(ctx, stackInput)
+    })
+}
+```
 
-The module expects an `api-resource.yaml` file defining the desired state of the AKS cluster. The key components of this file include:
+## Inputs
 
-- **`azure_credential_id`** (required): The identifier for the Azure credentials used to authenticate with Azure services.
-- **`environment_info`**: Contains environment-specific information (currently not implemented).
-- **`stack_job_settings`**: Settings related to the stack job execution (currently not implemented).
+See `spec.proto` for the complete specification. Key fields:
 
-### Pulumi Module Functionality
+- **region** (required): Azure region (e.g., "eastus")
+- **registry_name** (required): Globally unique registry name (5-50 lowercase alphanumeric)
+- **sku**: SKU tier (BASIC, STANDARD, PREMIUM)
+- **admin_user_enabled**: Enable admin user (default: false)
+- **geo_replication_regions**: List of regions for Premium geo-replication
 
-The core functionality of this module revolves around setting up the Azure provider within the Pulumi context using the provided Azure credentials. This setup is essential for any subsequent resource creation and management within Azure.
+## Outputs
 
-#### Steps Performed:
+- **registry_login_server**: Login server URL (e.g., "myacr.azurecr.io")
+- **registry_resource_id**: Azure Resource Manager ID
 
-1. **Azure Provider Initialization**:  
-   Initializes the Azure provider in Pulumi using credentials supplied in the `AzureContainerRegistryStackInput`. The credentials required are:
+## SKU Selection
 
-   - `ClientId`
-   - `ClientSecret`
-   - `SubscriptionId`
-   - `TenantId`
+- **Basic**: Dev/test only (~$5/month, 10 GB)
+- **Standard**: Production default (~$20/month, 100 GB)
+- **Premium**: Enterprise with geo-replication (~$20/month + $50/replica)
 
-2. **Resource Provisioning**:  
-   *(Not yet implemented)* The module will provision the AKS cluster and any associated resources based on the specifications provided in the `api-resource.yaml` file.
+## Geo-Replication
 
-3. **Output Handling**:  
-   *(Not yet implemented)* Captures the outputs from the Pulumi stack execution and stores them in `status.outputs` for later reference.
+Only available with Premium SKU. Specify additional regions to replicate:
 
-## Limitations
+```yaml
+sku: PREMIUM
+geoReplicationRegions:
+  - westeurope
+  - southeastasia
+```
 
-- **Incomplete Implementation**: The module currently does not implement resource creation due to the empty API resource specification.
-- **Unused Spec Fields**: Fields like `environment_info` and `stack_job_settings` are included in the spec but are not utilized in the current implementation.
-- **No Error Handling**: Advanced error handling and validation mechanisms are yet to be implemented.
+Azure automatically routes pulls to the nearest replica.
 
-## Future Enhancements
+## Authentication
 
-- **Implement Resource Creation**: Extend the module to create AKS clusters and related Azure resources based on the provided specifications.
-- **Utilize Spec Fields**: Make use of `environment_info` and `stack_job_settings` to allow for more granular control over the deployment environment and stack job configurations.
-- **Enhance Output Management**: Capture and expose essential output parameters such as cluster endpoints, credentials, and configuration details.
-- **Error Handling and Validation**: Introduce comprehensive error handling and input validation to improve reliability and user experience.
+### From Azure CLI
+```shell
+az acr login --name mycompanyacr
+```
 
-## Documentation
+### From AKS (Managed Identity)
+```shell
+az aks update \
+  --name my-cluster \
+  --resource-group rg-my-cluster \
+  --attach-acr mycompanyacr
+```
 
-For detailed API definitions and additional documentation, please refer to our resources available via [buf.build](https://buf.build).
+### From CI/CD
+Use Azure service principal or GitHub OIDC with AcrPush/AcrPull roles.
 
-## Contributing
+## Debugging
 
-Contributions are welcome! Please open issues or pull requests to help improve this module.
+Use the provided debug script:
 
-## License
+```shell
+cd iac/pulumi
+./debug.sh
+```
 
-This project is licensed under the [MIT License](LICENSE).
+## Module Structure
+
+- `main.go`: Core resource provisioning logic
+- `outputs.go`: Output constants matching stack_outputs.proto
+- `locals.go`: (Optional) Computed values and transformations
+
+## References
+
+- [Azure Container Registry Documentation](https://docs.microsoft.com/en-us/azure/container-registry/)
+- [Pulumi Azure Native Provider](https://www.pulumi.com/registry/packages/azure-native/)
+- [Research Documentation](../../docs/README.md)

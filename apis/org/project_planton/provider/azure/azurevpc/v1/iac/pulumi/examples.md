@@ -1,48 +1,45 @@
-# Create using CLI
+# Azure VPC - Pulumi Examples
 
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply.
-
-```shell
-planton apply -f <yaml-path>
-```
-
-# Basic Example
+## Minimal Configuration
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
 kind: AzureVpc
 metadata:
-  name: my-azure-vpc
+  name: dev-vpc
 spec:
-  azureProviderConfigId: my-azure-credential-id
+  address_space_cidr: "10.10.0.0/16"
+  nodes_subnet_cidr: "10.10.0.0/18"
 ```
 
-# Example with Environment Info
+## Production with NAT Gateway
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
 kind: AzureVpc
 metadata:
-  name: my-azure-vpc
+  name: prod-vpc
+  org: mycompany
+  env: production
 spec:
-  azureProviderConfigId: my-azure-credential-id
-  environmentInfo:
-    envId: production
+  address_space_cidr: "10.0.0.0/16"
+  nodes_subnet_cidr: "10.0.0.0/18"
+  is_nat_gateway_enabled: true
+  tags:
+    cost-center: "infrastructure"
 ```
 
-# Example with Stack Job Settings
+## With Private DNS Zone Links
 
 ```yaml
 apiVersion: azure.project-planton.org/v1
 kind: AzureVpc
 metadata:
-  name: my-azure-vpc
+  name: prod-vpc-dns
 spec:
-  azureProviderConfigId: my-azure-credential-id
-  stackJobSettings:
-    jobTimeout: 3600
+  address_space_cidr: "10.0.0.0/16"
+  nodes_subnet_cidr: "10.0.0.0/18"
+  is_nat_gateway_enabled: true
+  dns_private_zone_links:
+    - "/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
 ```
-
-# Notes
-
-Since the `spec` is currently empty and the module is not completely implemented, these examples are provided for illustrative purposes. They demonstrate how you would structure your YAML configuration files to create an Azure AKS Cluster using the `AzureVpc` API resource once the module is fully implemented.

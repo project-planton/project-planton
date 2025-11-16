@@ -26,4 +26,6 @@ enum DnsRecordType {
   SRV = 9;
   //descriptive text
   TXT = 10;
+  //certificate authority authorization
+  CAA = 11;
 }
