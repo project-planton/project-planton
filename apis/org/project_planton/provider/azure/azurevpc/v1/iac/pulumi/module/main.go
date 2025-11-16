@@ -149,12 +149,12 @@ func Resources(ctx *pulumi.Context, stackInput *azurevpcv1.AzureVpcStackInput) e
 		_, err := network.NewPrivateDnsZoneVirtualNetworkLink(ctx,
 			fmt.Sprintf("dns-link-%d", i),
 			&network.PrivateDnsZoneVirtualNetworkLinkArgs{
-				Name:              pulumi.String(fmt.Sprintf("%s-link-%d", locals.VNetName, i)),
-				ResourceGroupName: resourceGroup.Name,
-				PrivateDnsZoneName: pulumi.String(dnsZoneId), // This should be parsed
-				VirtualNetworkId:  vnet.ID(),
+				Name:                pulumi.String(fmt.Sprintf("%s-link-%d", locals.VNetName, i)),
+				ResourceGroupName:   resourceGroup.Name,
+				PrivateDnsZoneName:  pulumi.String(dnsZoneId), // This should be parsed
+				VirtualNetworkId:    vnet.ID(),
 				RegistrationEnabled: pulumi.Bool(false),
-				Tags:              pulumi.ToStringMap(locals.AzureTags),
+				Tags:                pulumi.ToStringMap(locals.AzureTags),
 			},
 			pulumi.Provider(azureProvider),
 			pulumi.Parent(vnet))

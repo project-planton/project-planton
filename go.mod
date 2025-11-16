@@ -19,8 +19,11 @@ require (
 	github.com/pulumi/pulumi-aws-native/sdk v1.14.0
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.83.2
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.3.0
+	github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v2 v2.90.0
 	github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3 v3.10.1
+	github.com/pulumi/pulumi-azure-native-sdk/resources/v2 v2.90.0
 	github.com/pulumi/pulumi-azure-native-sdk/resources/v3 v3.10.1
+	github.com/pulumi/pulumi-azure-native-sdk/v2 v2.90.0
 	github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0
 	github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8
@@ -129,9 +132,6 @@ require (
 	github.com/pseudomuto/protokit v0.2.0 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.17.0 // indirect
-	github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v2 v2.90.0 // indirect
-	github.com/pulumi/pulumi-azure-native-sdk/resources/v2 v2.90.0 // indirect
-	github.com/pulumi/pulumi-azure-native-sdk/v2 v2.90.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.0.0 // indirect

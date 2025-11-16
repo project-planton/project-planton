@@ -79,12 +79,12 @@ func Resources(ctx *pulumi.Context, stackInput *azurenatgatewayv1.AzureNatGatewa
 	natGateway, err := network.NewNatGateway(ctx,
 		locals.NatGatewayName,
 		&network.NatGatewayArgs{
-			Name:                pulumi.String(locals.NatGatewayName),
-			ResourceGroupName:   pulumi.String(locals.ResourceGroup),
-			Location:            pulumi.String(locals.Location),
+			Name:                 pulumi.String(locals.NatGatewayName),
+			ResourceGroupName:    pulumi.String(locals.ResourceGroup),
+			Location:             pulumi.String(locals.Location),
 			IdleTimeoutInMinutes: pulumi.Int(getIdleTimeoutMinutes(spec)),
-			SkuName:             pulumi.String("Standard"),
-			Tags:                pulumi.ToStringMap(locals.AzureTags),
+			SkuName:              pulumi.String("Standard"),
+			Tags:                 pulumi.ToStringMap(locals.AzureTags),
 		},
 		pulumi.Provider(azureProvider))
 	if err != nil {
@@ -96,8 +96,8 @@ func Resources(ctx *pulumi.Context, stackInput *azurenatgatewayv1.AzureNatGatewa
 		_, err = network.NewNatGatewayPublicIpPrefixAssociation(ctx,
 			fmt.Sprintf("%s-prefix-assoc", locals.NatGatewayName),
 			&network.NatGatewayPublicIpPrefixAssociationArgs{
-				NatGatewayId:      natGateway.ID(),
-				PublicIpPrefixId:  publicIpPrefixId,
+				NatGatewayId:     natGateway.ID(),
+				PublicIpPrefixId: publicIpPrefixId,
 			},
 			pulumi.Provider(azureProvider),
 			pulumi.Parent(natGateway))
@@ -109,7 +109,7 @@ func Resources(ctx *pulumi.Context, stackInput *azurenatgatewayv1.AzureNatGatewa
 		_, err = network.NewNatGatewayPublicIpAssociation(ctx,
 			fmt.Sprintf("%s-ip-assoc", locals.NatGatewayName),
 			&network.NatGatewayPublicIpAssociationArgs{
-				NatGatewayId: natGateway.ID(),
+				NatGatewayId:      natGateway.ID(),
 				PublicIpAddressId: publicIpIds.ToStringArrayOutput().Index(pulumi.Int(0)),
 			},
 			pulumi.Provider(azureProvider),
@@ -134,7 +134,7 @@ func Resources(ctx *pulumi.Context, stackInput *azurenatgatewayv1.AzureNatGatewa
 
 	// Export outputs
 	ctx.Export(OpNatGatewayId, natGateway.ID())
-	
+
 	if spec.PublicIpPrefixLength != nil && *spec.PublicIpPrefixLength > 0 {
 		ctx.Export(OpPublicIpPrefixId, publicIpPrefixId)
 		ctx.Export(OpPublicIpAddresses, pulumi.StringArray{})
