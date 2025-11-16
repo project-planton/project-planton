@@ -193,8 +193,8 @@ const (
 	CloudResourceKind_CivoIpAddress          CloudResourceKind = 1506
 	CloudResourceKind_CivoKubernetesCluster  CloudResourceKind = 1507
 	CloudResourceKind_CivoKubernetesNodePool CloudResourceKind = 1508
-	CloudResourceKind_CivoVolume             CloudResourceKind = 1510
-	CloudResourceKind_CivoVpc                CloudResourceKind = 1511
+	CloudResourceKind_CivoVolume             CloudResourceKind = 1509
+	CloudResourceKind_CivoVpc                CloudResourceKind = 1510
 	// 1800–2099: Cloudflare resources
 	CloudResourceKind_CloudflareDnsZone                    CloudResourceKind = 1800
 	CloudResourceKind_CloudflareKvNamespace                CloudResourceKind = 1801
@@ -320,8 +320,8 @@ var (
 		1506: "CivoIpAddress",
 		1507: "CivoKubernetesCluster",
 		1508: "CivoKubernetesNodePool",
-		1510: "CivoVolume",
-		1511: "CivoVpc",
+		1509: "CivoVolume",
+		1510: "CivoVpc",
 		1800: "CloudflareDnsZone",
 		1801: "CloudflareKvNamespace",
 		1802: "CloudflareR2Bucket",
@@ -443,8 +443,8 @@ var (
 		"CivoIpAddress":                        1506,
 		"CivoKubernetesCluster":                1507,
 		"CivoKubernetesNodePool":               1508,
-		"CivoVolume":                           1510,
-		"CivoVpc":                              1511,
+		"CivoVolume":                           1509,
+		"CivoVpc":                              1510,
 		"CloudflareDnsZone":                    1800,
 		"CloudflareKvNamespace":                1801,
 		"CloudflareR2Bucket":                   1802,
@@ -819,8 +819,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\b\x0e\x10\x01\"\x04cikc\x12,\n" +
 	"\x16CivoKubernetesNodePool\x10\xe4\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05ciknp\x12 \n" +
 	"\n" +
-	"CivoVolume\x10\xe6\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05civol\x12\x1d\n" +
-	"\aCivoVpc\x10\xe7\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05civpc\x12'\n" +
+	"CivoVolume\x10\xe5\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05civol\x12\x1d\n" +
+	"\aCivoVpc\x10\xe6\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05civpc\x12'\n" +
 	"\x11CloudflareDnsZone\x10\x88\x0e\x1a\x0f\xa2\xf7\x04\v\b\x0f\x10\x01\"\x05cfdns\x12+\n" +
 	"\x15CloudflareKvNamespace\x10\x89\x0e\x1a\x0f\xa2\xf7\x04\v\b\x0f\x10\x01\"\x05cfkvn\x12(\n" +
 	"\x12CloudflareR2Bucket\x10\x8a\x0e\x1a\x0f\xa2\xf7\x04\v\b\x0f\x10\x01\"\x05cfr2b\x12&\n" +

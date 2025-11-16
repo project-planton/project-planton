@@ -54,6 +54,7 @@ message DigitalOceanLoadBalancerSpec {
   // A Droplet tag name. All Droplets with this tag in the specified VPC will be attached to the Load Balancer.
   // Mutually exclusive with `droplet_ids`.
   string droplet_tag = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 255
   ];
@@ -97,6 +98,7 @@ message DigitalOceanLoadBalancerForwardingRule {
   // Required when entry_protocol is HTTPS. The certificate is used for SSL termination.
   // Use certificate name (not ID) to avoid breaking IaC state when Let's Encrypt auto-renews certificates.
   string certificate_name = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 255
   ];

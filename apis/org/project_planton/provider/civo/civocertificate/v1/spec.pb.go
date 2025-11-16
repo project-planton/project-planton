@@ -26,21 +26,25 @@ const (
 type CivoCertificateType int32
 
 const (
+	// Unspecified type (invalid).
+	CivoCertificateType_civo_certificate_type_unspecified CivoCertificateType = 0
 	// A free, auto‑managed Let's Encrypt certificate.
-	CivoCertificateType_letsEncrypt CivoCertificateType = 0
+	CivoCertificateType_letsEncrypt CivoCertificateType = 1
 	// A user‑provided custom certificate.
-	CivoCertificateType_custom CivoCertificateType = 1
+	CivoCertificateType_custom CivoCertificateType = 2
 )
 
 // Enum value maps for CivoCertificateType.
 var (
 	CivoCertificateType_name = map[int32]string{
-		0: "letsEncrypt",
-		1: "custom",
+		0: "civo_certificate_type_unspecified",
+		1: "letsEncrypt",
+		2: "custom",
 	}
 	CivoCertificateType_value = map[string]int32{
-		"letsEncrypt": 0,
-		"custom":      1,
+		"civo_certificate_type_unspecified": 0,
+		"letsEncrypt":                       1,
+		"custom":                            2,
 	}
 )
 
@@ -134,7 +138,7 @@ func (x *CivoCertificateSpec) GetType() CivoCertificateType {
 	if x != nil {
 		return x.Type
 	}
-	return CivoCertificateType_letsEncrypt
+	return CivoCertificateType_civo_certificate_type_unspecified
 }
 
 func (x *CivoCertificateSpec) GetCertificateSource() isCivoCertificateSpec_CertificateSource {
@@ -316,10 +320,10 @@ var File_org_project_planton_provider_civo_civocertificate_v1_spec_proto protore
 
 const file_org_project_planton_provider_civo_civocertificate_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?org/project_planton/provider/civo/civocertificate/v1/spec.proto\x124org.project_planton.provider.civo.civocertificate.v1\x1a\x1bbuf/validate/validate.proto\"\xfe\x03\n" +
+	"?org/project_planton/provider/civo/civocertificate/v1/spec.proto\x124org.project_planton.provider.civo.civocertificate.v1\x1a\x1bbuf/validate/validate.proto\"\x8b\x04\n" +
 	"\x13CivoCertificateSpec\x127\n" +
-	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12]\n" +
-	"\x04type\x18\x02 \x01(\x0e2I.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateTypeR\x04type\x12{\n" +
+	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12j\n" +
+	"\x04type\x18\x02 \x01(\x0e2I.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\x04type\x12{\n" +
 	"\flets_encrypt\x18\x03 \x01(\v2V.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateLetsEncryptParamsH\x00R\vletsEncrypt\x12k\n" +
 	"\x06custom\x18\x04 \x01(\v2Q.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateCustomParamsH\x00R\x06custom\x12*\n" +
 	"\vdescription\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\vdescription\x12\x1c\n" +
@@ -334,11 +338,12 @@ const file_org_project_planton_provider_civo_civocertificate_v1_spec_proto_rawDe
 	"\vprivate_key\x18\x02 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\n" +
 	"privateKey\x12+\n" +
-	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain*2\n" +
-	"\x13CivoCertificateType\x12\x0f\n" +
-	"\vletsEncrypt\x10\x00\x12\n" +
+	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain*Y\n" +
+	"\x13CivoCertificateType\x12%\n" +
+	"!civo_certificate_type_unspecified\x10\x00\x12\x0f\n" +
+	"\vletsEncrypt\x10\x01\x12\n" +
 	"\n" +
-	"\x06custom\x10\x01B\xb0\x03\n" +
+	"\x06custom\x10\x02B\xb0\x03\n" +
 	"8com.org.project_planton.provider.civo.civocertificate.v1B\tSpecProtoP\x01Zvgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
 
 var (

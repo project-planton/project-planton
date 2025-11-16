@@ -207,13 +207,10 @@ message GcpCloudSqlBackup {
 // GcpCloudSqlMaintenanceWindow defines when Cloud SQL can perform maintenance updates.
 message GcpCloudSqlMaintenanceWindow {
   // Day of the week for maintenance (1=Monday, 7=Sunday).
-  int32 day = 1 [
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).int32 = {
-      gte: 1
-      lte: 7
-    }
-  ];
+  int32 day = 1 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 7
+  }];
 
   // Hour of the day for maintenance start (0-23, UTC).
   int32 hour = 2 [

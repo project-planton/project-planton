@@ -14,7 +14,10 @@ message CivoCertificateSpec {
   ];
 
   // type must align with the branch chosen in certificate_source.
-  CivoCertificateType type = 2;
+  CivoCertificateType type = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).enum.defined_only = true
+  ];
 
   // Mutually exclusive parameter sets.
   oneof certificate_source {
@@ -33,10 +36,12 @@ message CivoCertificateSpec {
 
 // CivoCertificateType represents the certificate source.
 enum CivoCertificateType {
+  // Unspecified type (invalid).
+  civo_certificate_type_unspecified = 0;
   // A free, auto‑managed Let's Encrypt certificate.
-  letsEncrypt = 0;
+  letsEncrypt = 1;
   // A user‑provided custom certificate.
-  custom = 1;
+  custom = 2;
 }
 
 // Parameters specific to a Let's Encrypt certificate request.

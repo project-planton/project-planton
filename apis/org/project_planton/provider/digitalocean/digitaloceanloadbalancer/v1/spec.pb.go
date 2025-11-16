@@ -360,7 +360,7 @@ var File_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_s
 
 const file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x12Eorg.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/provider/digitalocean/region.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd7\x06\n" +
+	"Porg/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x12Eorg.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/provider/digitalocean/region.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xda\x06\n" +
 	"\x1cDigitalOceanLoadBalancerSpec\x12H\n" +
 	"\x12load_balancer_name\x18\x01 \x01(\tB\x1a\xbaH\x17\xc8\x01\x01r\x12\x10\x01\x18@2\f^[a-z0-9-]+$R\x10loadBalancerName\x12]\n" +
 	"\x06region\x18\x02 \x01(\x0e2=.org.project_planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12r\n" +
@@ -368,20 +368,20 @@ const file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1
 	"\x10forwarding_rules\x18\x04 \x03(\v2m.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerForwardingRuleB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x0fforwardingRules\x12\x8d\x01\n" +
 	"\fhealth_check\x18\x05 \x01(\v2j.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerHealthCheckR\vhealthCheck\x12\x7f\n" +
 	"\vdroplet_ids\x18\x06 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\"\x88\xd4a\xb5\t\x92\xd4a\x19status.outputs.droplet_idR\n" +
-	"dropletIds\x12+\n" +
-	"\vdroplet_tag\x18\a \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\n" +
+	"dropletIds\x12.\n" +
+	"\vdroplet_tag\x18\a \x01(\tB\r\xbaH\n" +
+	"\xd8\x01\x01r\x05\x10\x01\x18\xff\x01R\n" +
 	"dropletTag\x124\n" +
-	"\x16enable_sticky_sessions\x18\b \x01(\bR\x14enableStickySessions\"\xf3\x03\n" +
+	"\x16enable_sticky_sessions\x18\b \x01(\bR\x14enableStickySessions\"\xf6\x03\n" +
 	"&DigitalOceanLoadBalancerForwardingRule\x12-\n" +
 	"\n" +
 	"entry_port\x18\x01 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\tentryPort\x12\x96\x01\n" +
 	"\x0eentry_protocol\x18\x02 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\rentryProtocol\x12/\n" +
 	"\vtarget_port\x18\x03 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\n" +
 	"targetPort\x12\x98\x01\n" +
-	"\x0ftarget_protocol\x18\x04 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\x0etargetProtocol\x125\n" +
-	"\x10certificate_name\x18\x05 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x0fcertificateName\"\xa1\x02\n" +
+	"\x0ftarget_protocol\x18\x04 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\x0etargetProtocol\x128\n" +
+	"\x10certificate_name\x18\x05 \x01(\tB\r\xbaH\n" +
+	"\xd8\x01\x01r\x05\x10\x01\x18\xff\x01R\x0fcertificateName\"\xa1\x02\n" +
 	"#DigitalOceanLoadBalancerHealthCheck\x12\"\n" +
 	"\x04port\x18\x01 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\x04port\x12\x8b\x01\n" +
 	"\bprotocol\x18\x02 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\bprotocol\x12\x12\n" +

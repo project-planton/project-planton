@@ -639,12 +639,12 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "ciknp"
   }];
-  CivoVolume = 1510 [(kind_meta) = {
+  CivoVolume = 1509 [(kind_meta) = {
     provider: civo
     version: v1
     id_prefix: "civol"
   }];
-  CivoVpc = 1511 [(kind_meta) = {
+  CivoVpc = 1510 [(kind_meta) = {
     provider: civo
     version: v1
     id_prefix: "civpc"

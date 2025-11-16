@@ -643,9 +643,9 @@ const file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc = 
 	"\xd8\x01\x01\x1a\x05\x18\xed\x02(\x01\x92\xa6\x1d\x017R\rretentionDays\x12B\n" +
 	"\x1epoint_in_time_recovery_enabled\x18\x04 \x01(\bR\x1apointInTimeRecoveryEnabled:\xdf\x02\xbaH\xdb\x02\x1a\xab\x01\n" +
 	"\x1ebackup.enabled_requires_config\x12@start_time and retention_days must be set when backup is enabled\x1aG!this.enabled || (size(this.start_time) > 0 && this.retention_days > 0)\x1a\xaa\x01\n" +
-	"#backup.pitr_requires_backup_enabled\x12Mautomated backups must be enabled when point_in_time_recovery_enabled is true\x1a4!this.point_in_time_recovery_enabled || this.enabled\"\x9f\x01\n" +
-	"\x1cGcpCloudSqlMaintenanceWindow\x12\x1e\n" +
-	"\x03day\x18\x01 \x01(\x05B\f\xbaH\t\xd8\x01\x01\x1a\x04\x18\a(\x01R\x03day\x12 \n" +
+	"#backup.pitr_requires_backup_enabled\x12Mautomated backups must be enabled when point_in_time_recovery_enabled is true\x1a4!this.point_in_time_recovery_enabled || this.enabled\"\x9c\x01\n" +
+	"\x1cGcpCloudSqlMaintenanceWindow\x12\x1b\n" +
+	"\x03day\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18\a(\x01R\x03day\x12 \n" +
 	"\x04hour\x18\x02 \x01(\x05B\f\xbaH\t\xd8\x01\x01\x1a\x04\x18\x17(\x00R\x04hour\x12=\n" +
 	"\fupdate_track\x18\x03 \x01(\tB\x1a\xbaH\x17\xd8\x01\x01r\x12R\x06canaryR\x06stableR\x00R\vupdateTrack*W\n" +
 	"\x19GcpCloudSqlDatabaseEngine\x12\x1f\n" +
