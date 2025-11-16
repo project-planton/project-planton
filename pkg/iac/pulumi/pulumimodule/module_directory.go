@@ -87,10 +87,6 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 		"apis/project/planton/provider",
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
-	if kindProvider == cloudresourcekind.CloudResourceProvider_kubernetes {
-		kindDirPath = filepath.Join(kindDirPath, crkreflect.GetKubernetesResourceCategory(kind).String())
-	}
-
 	pulumiModulePath := filepath.Join(
 		kindDirPath,
 		strings.ToLower(kindName),

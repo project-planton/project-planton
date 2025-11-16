@@ -584,10 +584,8 @@ type KubernetesCloudResourceKindMeta struct {
 	// prefix to be used for kubernetes namespace
 	// this is only applicable when provider is kubernetes
 	NamespacePrefix string `protobuf:"bytes,1,opt,name=namespace_prefix,json=namespacePrefix,proto3" json:"namespace_prefix,omitempty"`
-	// category of the kubernetes cloud-resource kind
-	Category      KubernetesCloudResourceCategory `protobuf:"varint,2,opt,name=category,proto3,enum=org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategory" json:"category,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *KubernetesCloudResourceKindMeta) Reset() {
@@ -627,13 +625,6 @@ func (x *KubernetesCloudResourceKindMeta) GetNamespacePrefix() string {
 	return ""
 }
 
-func (x *KubernetesCloudResourceKindMeta) GetCategory() KubernetesCloudResourceCategory {
-	if x != nil {
-		return x.Category
-	}
-	return KubernetesCloudResourceCategory_kubernetes_cloud_resource_category_unspecified
-}
-
 var file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
@@ -655,20 +646,19 @@ var File_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto 
 
 const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12,org.project_planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aJorg/project_planton/shared/cloudresourcekind/cloud_resource_provider.proto\x1a=org/project_planton/shared/cloudresourcekind/kubernetes.proto\"\xab\x03\n" +
+	"Forg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12,org.project_planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aJorg/project_planton/shared/cloudresourcekind/cloud_resource_provider.proto\"\xab\x03\n" +
 	"\x15CloudResourceKindMeta\x12_\n" +
 	"\bprovider\x18\x01 \x01(\x0e2C.org.project_planton.shared.cloudresourcekind.CloudResourceProviderR\bprovider\x12`\n" +
 	"\aversion\x18\x02 \x01(\x0e2F.org.project_planton.shared.cloudresourcekind.CloudResourceKindVersionR\aversion\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1b\n" +
 	"\tid_prefix\x18\x04 \x01(\tR\bidPrefix\x12&\n" +
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind\x12v\n" +
-	"\x0fkubernetes_meta\x18\x06 \x01(\v2M.org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceKindMetaR\x0ekubernetesMeta\"\xb7\x01\n" +
+	"\x0fkubernetes_meta\x18\x06 \x01(\v2M.org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceKindMetaR\x0ekubernetesMeta\"L\n" +
 	"\x1fKubernetesCloudResourceKindMeta\x12)\n" +
-	"\x10namespace_prefix\x18\x01 \x01(\tR\x0fnamespacePrefix\x12i\n" +
-	"\bcategory\x18\x02 \x01(\x0e2M.org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
+	"\x10namespace_prefix\x18\x01 \x01(\tR\x0fnamespacePrefix*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xde)\n" +
+	"\x02v1\x10\x01*\xfc(\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -732,72 +722,71 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0eGcpGkeNodePool\x10\xe5\x04\x1a\x0f\xa2\xf7\x04\v\b\x12\x10\x01\"\x05gkenp\x12%\n" +
 	"\x11GcpServiceAccount\x10\xe6\x04\x1a\r\xa2\xf7\x04\t\b\x12\x10\x01\"\x03gsa\x124\n" +
 	"\x1dGcpGkeWorkloadIdentityBinding\x10\xe7\x04\x1a\x10\xa2\xf7\x04\f\b\x12\x10\x01\"\x06gkewib\x12*\n" +
-	"\x12GcpCertManagerCert\x10\xe8\x04\x1a\x11\xa2\xf7\x04\r\b\x12\x10\x01\"\agcpcert\x122\n" +
-	"\x10KubernetesArgocd\x10\xa0\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8sargo2\b\n" +
-	"\x04argo\x10\x02\x123\n" +
-	"\x11KubernetesCronJob\x10\xa1\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8scron2\b\n" +
-	"\x04cron\x10\x02\x12@\n" +
-	"\x17KubernetesElasticsearch\x10\xa2\x06\x1a\"\xa2\xf7\x04\x1e\b\x13\x10\x01\"\x05k8ses2\x11\n" +
-	"\relasticsearch\x10\x02\x122\n" +
-	"\x10KubernetesGitlab\x10\xa3\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x05k8sgl2\n" +
+	"\x12GcpCertManagerCert\x10\xe8\x04\x1a\x11\xa2\xf7\x04\r\b\x12\x10\x01\"\agcpcert\x120\n" +
+	"\x10KubernetesArgocd\x10\xa0\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\ak8sargo2\x06\n" +
+	"\x04argo\x121\n" +
+	"\x11KubernetesCronJob\x10\xa1\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\ak8scron2\x06\n" +
+	"\x04cron\x12>\n" +
+	"\x17KubernetesElasticsearch\x10\xa2\x06\x1a \xa2\xf7\x04\x1c\b\x13\x10\x01\"\x05k8ses2\x0f\n" +
+	"\relasticsearch\x120\n" +
+	"\x10KubernetesGitlab\x10\xa3\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\x05k8sgl2\b\n" +
+	"\x06gitlab\x123\n" +
+	"\x11KubernetesGrafana\x10\xa4\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8sgfn2\t\n" +
+	"\agrafana\x125\n" +
+	"\x15KubernetesHelmRelease\x10\xa5\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\ak8shelm2\x06\n" +
+	"\x04helm\x123\n" +
+	"\x11KubernetesJenkins\x10\xa6\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8sjkn2\t\n" +
+	"\ajenkins\x12/\n" +
+	"\x0fKubernetesKafka\x10\xa7\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\x06k8skaf2\a\n" +
+	"\x05kafka\x124\n" +
+	"\x12KubernetesKeycloak\x10\xa8\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x05k8skc2\n" +
 	"\n" +
-	"\x06gitlab\x10\x02\x125\n" +
-	"\x11KubernetesGrafana\x10\xa4\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x06k8sgfn2\v\n" +
-	"\agrafana\x10\x02\x127\n" +
-	"\x15KubernetesHelmRelease\x10\xa5\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8shelm2\b\n" +
-	"\x04helm\x10\x02\x125\n" +
-	"\x11KubernetesJenkins\x10\xa6\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x06k8sjkn2\v\n" +
-	"\ajenkins\x10\x02\x121\n" +
-	"\x0fKubernetesKafka\x10\xa7\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8skaf2\t\n" +
-	"\x05kafka\x10\x02\x126\n" +
-	"\x12KubernetesKeycloak\x10\xa8\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x05k8skc2\f\n" +
-	"\bkeycloak\x10\x02\x123\n" +
-	"\x10KubernetesLocust\x10\xa9\x06\x1a\x1c\xa2\xf7\x04\x18\b\x13\x10\x01\"\x06k8sloc2\n" +
+	"\bkeycloak\x121\n" +
+	"\x10KubernetesLocust\x10\xa9\x06\x1a\x1a\xa2\xf7\x04\x16\b\x13\x10\x01\"\x06k8sloc2\b\n" +
+	"\x06locust\x128\n" +
+	"\x14KubernetesDeployment\x10\xaa\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x06k8sdpl(\x012\t\n" +
+	"\aservice\x121\n" +
+	"\x11KubernetesMongodb\x10\xab\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\x06k8smdb2\a\n" +
+	"\x05mongo\x12/\n" +
+	"\x0fKubernetesNeo4j\x10\xac\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\x06k8sneo2\a\n" +
+	"\x05neo4j\x123\n" +
+	"\x11KubernetesOpenFga\x10\xad\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8sfga2\t\n" +
+	"\aopenfga\x124\n" +
+	"\x12KubernetesPostgres\x10\xae\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x05k8spg2\n" +
 	"\n" +
-	"\x06locust\x10\x02\x12:\n" +
-	"\x14KubernetesDeployment\x10\xaa\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x06k8sdpl(\x012\v\n" +
-	"\aservice\x10\x02\x123\n" +
-	"\x11KubernetesMongodb\x10\xab\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8smdb2\t\n" +
-	"\x05mongo\x10\x02\x121\n" +
-	"\x0fKubernetesNeo4j\x10\xac\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8sneo2\t\n" +
-	"\x05neo4j\x10\x02\x125\n" +
-	"\x11KubernetesOpenFga\x10\xad\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x06k8sfga2\v\n" +
-	"\aopenfga\x10\x02\x126\n" +
-	"\x12KubernetesPostgres\x10\xae\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x05k8spg2\f\n" +
-	"\bpostgres\x10\x02\x12<\n" +
-	"\x14KubernetesPrometheus\x10\xaf\x06\x1a!\xa2\xf7\x04\x1d\b\x13\x10\x01\"\ak8sprom2\x0e\n" +
+	"\bpostgres\x12:\n" +
+	"\x14KubernetesPrometheus\x10\xaf\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\ak8sprom2\f\n" +
 	"\n" +
-	"prometheus\x10\x02\x121\n" +
-	"\x0fKubernetesRedis\x10\xb0\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06k8sred2\t\n" +
-	"\x05redis\x10\x02\x123\n" +
-	"\x10KubernetesSignoz\x10\xb1\x06\x1a\x1c\xa2\xf7\x04\x18\b\x13\x10\x01\"\x06k8ssgz2\n" +
+	"prometheus\x12/\n" +
+	"\x0fKubernetesRedis\x10\xb0\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\x06k8sred2\a\n" +
+	"\x05redis\x121\n" +
+	"\x10KubernetesSignoz\x10\xb1\x06\x1a\x1a\xa2\xf7\x04\x16\b\x13\x10\x01\"\x06k8ssgz2\b\n" +
+	"\x06signoz\x12.\n" +
+	"\x0eKubernetesSolr\x10\xb2\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\ak8ssolr2\x06\n" +
+	"\x04solr\x126\n" +
+	"\x12KubernetesTemporal\x10\xb3\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\ak8stprl2\n" +
 	"\n" +
-	"\x06signoz\x10\x02\x120\n" +
-	"\x0eKubernetesSolr\x10\xb2\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8ssolr2\b\n" +
-	"\x04solr\x10\x02\x128\n" +
-	"\x12KubernetesTemporal\x10\xb3\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\ak8stprl2\f\n" +
-	"\btemporal\x10\x02\x120\n" +
-	"\x0eKubernetesNats\x10\xb4\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8snats2\b\n" +
-	"\x04nats\x10\x02\x12%\n" +
-	"\vCertManager\x10\xb5\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\x05k8scm2\x02\x10\x01\x12,\n" +
-	"\x0fElasticOperator\x10\xb6\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bk8selaop2\x02\x10\x01\x12)\n" +
-	"\vExternalDns\x10\xb7\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\tk8sextdns2\x02\x10\x01\x12'\n" +
-	"\fIngressNginx\x10\xb8\x06\x1a\x14\xa2\xf7\x04\x10\b\x13\x10\x01\"\x06k8sngx2\x02\x10\x01\x12*\n" +
-	"\x0fKubernetesIstio\x10\xb9\x06\x1a\x14\xa2\xf7\x04\x10\b\x13\x10\x01\"\x06k8sist2\x02\x10\x01\x121\n" +
-	"\x14StrimziKafkaOperator\x10\xba\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bk8sstzop2\x02\x10\x01\x123\n" +
-	"\x17ZalandoPostgresOperator\x10\xbb\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\ak8szlop2\x02\x10\x01\x12/\n" +
-	"\x12ApacheSolrOperator\x10\xbc\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bk8sslrop2\x02\x10\x01\x12-\n" +
-	"\x0fExternalSecrets\x10\xbd\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\tk8sextsec2\x02\x10\x01\x12=\n" +
-	"\x14KubernetesClickHouse\x10\xbe\x06\x1a\"\xa2\xf7\x04\x1e\b\x13\x10\x01\"\bk8sclkhs2\x0e\n" +
+	"\btemporal\x12.\n" +
+	"\x0eKubernetesNats\x10\xb4\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\ak8snats2\x06\n" +
+	"\x04nats\x12!\n" +
+	"\vCertManager\x10\xb5\x06\x1a\x0f\xa2\xf7\x04\v\b\x13\x10\x01\"\x05k8scm\x12(\n" +
+	"\x0fElasticOperator\x10\xb6\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8selaop\x12%\n" +
+	"\vExternalDns\x10\xb7\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sextdns\x12#\n" +
+	"\fIngressNginx\x10\xb8\x06\x1a\x10\xa2\xf7\x04\f\b\x13\x10\x01\"\x06k8sngx\x12&\n" +
+	"\x0fKubernetesIstio\x10\xb9\x06\x1a\x10\xa2\xf7\x04\f\b\x13\x10\x01\"\x06k8sist\x12-\n" +
+	"\x14StrimziKafkaOperator\x10\xba\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8sstzop\x12/\n" +
+	"\x17ZalandoPostgresOperator\x10\xbb\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8szlop\x12+\n" +
+	"\x12ApacheSolrOperator\x10\xbc\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8sslrop\x12)\n" +
+	"\x0fExternalSecrets\x10\xbd\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sextsec\x12;\n" +
+	"\x14KubernetesClickHouse\x10\xbe\x06\x1a \xa2\xf7\x04\x1c\b\x13\x10\x01\"\bk8sclkhs2\f\n" +
 	"\n" +
-	"clickhouse\x10\x02\x12-\n" +
-	"\x10AltinityOperator\x10\xbf\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bk8saltop2\x02\x10\x01\x129\n" +
-	"\x19PerconaPostgresqlOperator\x10\xc0\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\vk8sprcnpgop2\x02\x10\x01\x12=\n" +
-	"\x1cPerconaServerMongodbOperator\x10\xc1\x06\x1a\x1a\xa2\xf7\x04\x16\b\x13\x10\x01\"\fk8sprcnmdbop2\x02\x10\x01\x12:\n" +
-	"\x1aPerconaServerMysqlOperator\x10\xc2\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\vk8sprcnpgop2\x02\x10\x01\x124\n" +
-	"\x10KubernetesHarbor\x10\xc3\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\ak8shrbr2\n" +
-	"\n" +
-	"\x06harbor\x10\x02\x124\n" +
+	"clickhouse\x12)\n" +
+	"\x10AltinityOperator\x10\xbf\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8saltop\x125\n" +
+	"\x19PerconaPostgresqlOperator\x10\xc0\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\vk8sprcnpgop\x129\n" +
+	"\x1cPerconaServerMongodbOperator\x10\xc1\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\fk8sprcnmdbop\x126\n" +
+	"\x1aPerconaServerMysqlOperator\x10\xc2\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\vk8sprcnpgop\x122\n" +
+	"\x10KubernetesHarbor\x10\xc3\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8shrbr2\b\n" +
+	"\x06harbor\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05dobkt\x122\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x0e\xa2\xf7\x04\n" +
@@ -868,21 +857,19 @@ var file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_
 	(*CloudResourceKindMeta)(nil),           // 2: org.project_planton.shared.cloudresourcekind.CloudResourceKindMeta
 	(*KubernetesCloudResourceKindMeta)(nil), // 3: org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta
 	(CloudResourceProvider)(0),              // 4: org.project_planton.shared.cloudresourcekind.CloudResourceProvider
-	(KubernetesCloudResourceCategory)(0),    // 5: org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategory
-	(*descriptorpb.EnumValueOptions)(nil),   // 6: google.protobuf.EnumValueOptions
+	(*descriptorpb.EnumValueOptions)(nil),   // 5: google.protobuf.EnumValueOptions
 }
 var file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_depIdxs = []int32{
 	4, // 0: org.project_planton.shared.cloudresourcekind.CloudResourceKindMeta.provider:type_name -> org.project_planton.shared.cloudresourcekind.CloudResourceProvider
 	0, // 1: org.project_planton.shared.cloudresourcekind.CloudResourceKindMeta.version:type_name -> org.project_planton.shared.cloudresourcekind.CloudResourceKindVersion
 	3, // 2: org.project_planton.shared.cloudresourcekind.CloudResourceKindMeta.kubernetes_meta:type_name -> org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta
-	5, // 3: org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta.category:type_name -> org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategory
-	6, // 4: org.project_planton.shared.cloudresourcekind.kind_meta:extendee -> google.protobuf.EnumValueOptions
-	2, // 5: org.project_planton.shared.cloudresourcekind.kind_meta:type_name -> org.project_planton.shared.cloudresourcekind.CloudResourceKindMeta
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	5, // [5:6] is the sub-list for extension type_name
-	4, // [4:5] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 3: org.project_planton.shared.cloudresourcekind.kind_meta:extendee -> google.protobuf.EnumValueOptions
+	2, // 4: org.project_planton.shared.cloudresourcekind.kind_meta:type_name -> org.project_planton.shared.cloudresourcekind.CloudResourceKindMeta
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	4, // [4:5] is the sub-list for extension type_name
+	3, // [3:4] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_init() }
@@ -891,7 +878,6 @@ func file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto
 		return
 	}
 	file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_init()
-	file_org_project_planton_shared_cloudresourcekind_kubernetes_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

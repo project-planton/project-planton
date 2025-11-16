@@ -382,4 +382,3 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 		})
 	})
 })
-

@@ -26,7 +26,7 @@ message AzureKeyVaultSpec {
   // - STANDARD: Software-protected keys, suitable for most applications
   // - PREMIUM: HSM-backed keys, required for compliance (PCI-DSS, FIPS 140-2 Level 3)
   // Default: STANDARD
-  AzureKeyVaultSku sku = 3 [(org.project_planton.shared.options.default) = "STANDARD"];
+  optional AzureKeyVaultSku sku = 3 [(org.project_planton.shared.options.default) = "STANDARD"];
 
   // Enable Azure RBAC for authorization instead of vault access policies.
   // RBAC is the modern, recommended approach that integrates with Azure AD and PIM.

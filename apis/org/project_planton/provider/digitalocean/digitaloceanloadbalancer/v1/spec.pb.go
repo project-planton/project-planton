@@ -209,8 +209,12 @@ type DigitalOceanLoadBalancerForwardingRule struct {
 	TargetPort uint32 `protobuf:"varint,3,opt,name=target_port,json=targetPort,proto3" json:"target_port,omitempty"`
 	// Protocol for traffic between the load balancer and the Droplet (e.g., HTTP, HTTPS, TCP).
 	TargetProtocol DigitalOceanLoadBalancerProtocol `protobuf:"varint,4,opt,name=target_protocol,json=targetProtocol,proto3,enum=org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocol" json:"target_protocol,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// The name of a TLS certificate resource uploaded to DigitalOcean.
+	// Required when entry_protocol is HTTPS. The certificate is used for SSL termination.
+	// Use certificate name (not ID) to avoid breaking IaC state when Let's Encrypt auto-renews certificates.
+	CertificateName string `protobuf:"bytes,5,opt,name=certificate_name,json=certificateName,proto3" json:"certificate_name,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *DigitalOceanLoadBalancerForwardingRule) Reset() {
@@ -269,6 +273,13 @@ func (x *DigitalOceanLoadBalancerForwardingRule) GetTargetProtocol() DigitalOcea
 		return x.TargetProtocol
 	}
 	return DigitalOceanLoadBalancerProtocol_digitalocean_load_balancer_protocol_unspecified
+}
+
+func (x *DigitalOceanLoadBalancerForwardingRule) GetCertificateName() string {
+	if x != nil {
+		return x.CertificateName
+	}
+	return ""
 }
 
 // HealthCheck defines how the load balancer checks the health of attached Droplets.
@@ -361,14 +372,16 @@ const file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1
 	"\vdroplet_tag\x18\a \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\n" +
 	"dropletTag\x124\n" +
-	"\x16enable_sticky_sessions\x18\b \x01(\bR\x14enableStickySessions\"\xbc\x03\n" +
+	"\x16enable_sticky_sessions\x18\b \x01(\bR\x14enableStickySessions\"\xf3\x03\n" +
 	"&DigitalOceanLoadBalancerForwardingRule\x12-\n" +
 	"\n" +
 	"entry_port\x18\x01 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\tentryPort\x12\x96\x01\n" +
 	"\x0eentry_protocol\x18\x02 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\rentryProtocol\x12/\n" +
 	"\vtarget_port\x18\x03 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\n" +
 	"targetPort\x12\x98\x01\n" +
-	"\x0ftarget_protocol\x18\x04 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\x0etargetProtocol\"\xa1\x02\n" +
+	"\x0ftarget_protocol\x18\x04 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\x0etargetProtocol\x125\n" +
+	"\x10certificate_name\x18\x05 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x0fcertificateName\"\xa1\x02\n" +
 	"#DigitalOceanLoadBalancerHealthCheck\x12\"\n" +
 	"\x04port\x18\x01 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\x04port\x12\x8b\x01\n" +
 	"\bprotocol\x18\x02 \x01(\x0e2g.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\bprotocol\x12\x12\n" +

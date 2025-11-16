@@ -47,8 +47,18 @@ type DigitalOceanKubernetesNodePoolSpec struct {
 	// Maximum number of nodes when auto-scaling is enabled.
 	// Required if auto_scale is true.
 	MaxNodes uint32 `protobuf:"varint,7,opt,name=max_nodes,json=maxNodes,proto3" json:"max_nodes,omitempty"`
-	// A list of tags to apply to the node pool (for organizational purposes in DigitalOcean).
-	Tags          []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
+	// Kubernetes labels to apply to all nodes in this pool.
+	// Labels are key-value pairs used for node selection and workload scheduling.
+	// Example: {"workload": "web", "env": "production"}
+	Labels map[string]string `protobuf:"bytes,8,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Kubernetes taints to apply to all nodes in this pool.
+	// Taints prevent pods from being scheduled on these nodes unless they have matching tolerations.
+	// Commonly used for workload isolation (e.g., GPU nodes, dedicated system pools).
+	Taints []*DigitalOceanKubernetesNodePoolTaint `protobuf:"bytes,9,rep,name=taints,proto3" json:"taints,omitempty"`
+	// A list of DigitalOcean tags to apply to the node pool Droplets.
+	// Tags are used for cost attribution and organizational purposes in DigitalOcean's billing and management.
+	// Note: This is different from Kubernetes labels. Tags affect DO billing, labels affect K8s scheduling.
+	Tags          []string `protobuf:"bytes,10,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +142,20 @@ func (x *DigitalOceanKubernetesNodePoolSpec) GetMaxNodes() uint32 {
 	return 0
 }
 
+func (x *DigitalOceanKubernetesNodePoolSpec) GetLabels() map[string]string {
+	if x != nil {
+		return x.Labels
+	}
+	return nil
+}
+
+func (x *DigitalOceanKubernetesNodePoolSpec) GetTaints() []*DigitalOceanKubernetesNodePoolTaint {
+	if x != nil {
+		return x.Taints
+	}
+	return nil
+}
+
 func (x *DigitalOceanKubernetesNodePoolSpec) GetTags() []string {
 	if x != nil {
 		return x.Tags
@@ -139,11 +163,79 @@ func (x *DigitalOceanKubernetesNodePoolSpec) GetTags() []string {
 	return nil
 }
 
+// DigitalOcean Kubernetes Node Pool Taint
+// Taints prevent pods from being scheduled on nodes unless they tolerate the taint.
+type DigitalOceanKubernetesNodePoolTaint struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The taint key (e.g., "nvidia.com/gpu", "workload", "dedicated")
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// The taint value (e.g., "true", "gpu", "system")
+	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	// The taint effect: NoSchedule, PreferNoSchedule, or NoExecute
+	// - NoSchedule: Pods that don't tolerate this taint will not be scheduled on the node
+	// - PreferNoSchedule: Kubernetes will try to avoid scheduling pods that don't tolerate this taint
+	// - NoExecute: Pods that don't tolerate this taint will be evicted if already running
+	Effect        string `protobuf:"bytes,3,opt,name=effect,proto3" json:"effect,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DigitalOceanKubernetesNodePoolTaint) Reset() {
+	*x = DigitalOceanKubernetesNodePoolTaint{}
+	mi := &file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DigitalOceanKubernetesNodePoolTaint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DigitalOceanKubernetesNodePoolTaint) ProtoMessage() {}
+
+func (x *DigitalOceanKubernetesNodePoolTaint) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DigitalOceanKubernetesNodePoolTaint.ProtoReflect.Descriptor instead.
+func (*DigitalOceanKubernetesNodePoolTaint) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DigitalOceanKubernetesNodePoolTaint) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *DigitalOceanKubernetesNodePoolTaint) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+func (x *DigitalOceanKubernetesNodePoolTaint) GetEffect() string {
+	if x != nil {
+		return x.Effect
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto\x12Korg.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xfa\x02\n" +
+	"Vorg/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto\x12Korg.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xd6\x05\n" +
 	"\"DigitalOceanKubernetesNodePoolSpec\x12,\n" +
 	"\x0enode_pool_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fnodePoolName\x12r\n" +
 	"\acluster\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xb8\t\x92\xd4a\rmetadata.nameR\acluster\x12\x1a\n" +
@@ -154,8 +246,18 @@ const file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodep
 	"\n" +
 	"auto_scale\x18\x05 \x01(\bR\tautoScale\x12\x1b\n" +
 	"\tmin_nodes\x18\x06 \x01(\rR\bminNodes\x12\x1b\n" +
-	"\tmax_nodes\x18\a \x01(\rR\bmaxNodes\x12\x12\n" +
-	"\x04tags\x18\b \x03(\tR\x04tagsB\xca\x04\n" +
+	"\tmax_nodes\x18\a \x01(\rR\bmaxNodes\x12\x93\x01\n" +
+	"\x06labels\x18\b \x03(\v2{.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.LabelsEntryR\x06labels\x12\x88\x01\n" +
+	"\x06taints\x18\t \x03(\v2p.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolTaintR\x06taints\x12\x12\n" +
+	"\x04tags\x18\n" +
+	" \x03(\tR\x04tags\x1a9\n" +
+	"\vLabelsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"u\n" +
+	"#DigitalOceanKubernetesNodePoolTaint\x12\x18\n" +
+	"\x03key\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\x12\x1e\n" +
+	"\x06effect\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06effectB\xca\x04\n" +
 	"Ocom.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\tSpecProtoP\x01Z\x9c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
 var (
@@ -170,18 +272,22 @@ func file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepo
 	return file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_goTypes = []any{
-	(*DigitalOceanKubernetesNodePoolSpec)(nil), // 0: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec
-	(*v1.StringValueOrRef)(nil),                // 1: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*DigitalOceanKubernetesNodePoolSpec)(nil),  // 0: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec
+	(*DigitalOceanKubernetesNodePoolTaint)(nil), // 1: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolTaint
+	nil,                         // 2: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.LabelsEntry
+	(*v1.StringValueOrRef)(nil), // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.cluster:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 0: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.cluster:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 1: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.labels:type_name -> org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.LabelsEntry
+	1, // 2: org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec.taints:type_name -> org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolTaint
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() {
@@ -197,7 +303,7 @@ func file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepo
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -962,7 +962,7 @@ project-planton
 ```go
 // Internal registry
 var moduleRegistry = map[string]string{
-  "PostgresKubernetes": "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1/iac",
+  "PostgresKubernetes": "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/postgreskubernetes/v1/iac",
   "MongodbAtlas": "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1/iac",
   "AwsRdsInstance": "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1/iac",
   // ... 100+ components

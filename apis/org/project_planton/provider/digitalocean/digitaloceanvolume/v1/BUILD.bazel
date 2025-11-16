@@ -22,11 +22,11 @@ go_library(
 go_test(
     name = "digitaloceanvolume_test",
     srcs = ["spec_test.go"],
+    embed = [":digitaloceanvolume"],
     deps = [
-        ":digitaloceanvolume",
         "//apis/org/project_planton/provider/digitalocean",
         "//apis/org/project_planton/shared",
-        "@build_buf_protovalidate//",
+        "@build_buf_go_protovalidate//:protovalidate",
         "@com_github_onsi_ginkgo_v2//:ginkgo",
         "@com_github_onsi_gomega//:gomega",
     ],
