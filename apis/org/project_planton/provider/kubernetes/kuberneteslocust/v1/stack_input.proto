@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1;
+
+import "org/project_planton/provider/kubernetes/kuberneteslocust/v1/api.proto";
+import "org/project_planton/provider/kubernetes/provider.proto";
+
+//locust-kubernetes stack-input
+message KubernetesLocustStackInput {
+  //target cloud-resource
+  KubernetesLocust target = 1;
+  //provider-config
+  org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+  //kubernetes namespace
+  string kubernetes_namespace = 3;
+}

@@ -30,9 +30,7 @@ message DigitalOceanFirewallSpec {
 // Definition of an inbound (ingress) firewall rule.
 message DigitalOceanFirewallInboundRule {
   // "tcp", "udp", or "icmp". Required.
-  string protocol = 1 [
-    (buf.validate.field).string.min_len = 1
-  ];
+  string protocol = 1 [(buf.validate.field).string.min_len = 1];
 
   // Ports to allow (e.g., "80", "8000-9000", or "1-65535"; empty or "1-65535" means all ports for tcp/udp).
   string port_range = 2;
@@ -56,9 +54,7 @@ message DigitalOceanFirewallInboundRule {
 // Definition of an outbound (egress) firewall rule.
 message DigitalOceanFirewallOutboundRule {
   // "tcp", "udp", or "icmp". Required.
-  string protocol = 1 [
-    (buf.validate.field).string.min_len = 1
-  ];
+  string protocol = 1 [(buf.validate.field).string.min_len = 1];
 
   // Ports to allow (format as in inbound rules; required for tcp/udp).
   string port_range = 2;

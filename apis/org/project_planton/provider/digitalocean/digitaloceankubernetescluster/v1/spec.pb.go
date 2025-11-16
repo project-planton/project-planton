@@ -52,11 +52,24 @@ type DigitalOceanKubernetesClusterSpec struct {
 	// Whether to disable surge upgrades for the cluster.
 	// If false(default), cluster upgrades will temporarily provision extra nodes to minimize downtime during updates.
 	DisableSurgeUpgrade bool `protobuf:"varint,7,opt,name=disable_surge_upgrade,json=disableSurgeUpgrade,proto3" json:"disable_surge_upgrade,omitempty"`
+	// Scheduled maintenance window for cluster updates (format: "day=HH:MM" or "any=HH:MM").
+	// Examples: "sunday=02:00" or "any=00:00"
+	// If not specified, DigitalOcean will apply updates at any time.
+	MaintenanceWindow string `protobuf:"bytes,8,opt,name=maintenance_window,json=maintenanceWindow,proto3" json:"maintenance_window,omitempty"`
+	// Whether to enable DigitalOcean Container Registry (DOCR) integration.
+	// If true, automatically creates imagePullSecrets in the cluster for pulling private images from DOCR.
+	// Default: false.
+	RegistryIntegration bool `protobuf:"varint,9,opt,name=registry_integration,json=registryIntegration,proto3" json:"registry_integration,omitempty"`
+	// List of allowed IP addresses (CIDR notation) for control plane firewall.
+	// Restricts Kubernetes API server access to specified IPs for security.
+	// If empty, API server is publicly accessible (not recommended for production).
+	// Example: ["203.0.113.5/32", "198.51.100.0/24"]
+	ControlPlaneFirewallAllowedIps []string `protobuf:"bytes,10,rep,name=control_plane_firewall_allowed_ips,json=controlPlaneFirewallAllowedIps,proto3" json:"control_plane_firewall_allowed_ips,omitempty"`
 	// A list of tags to apply to the cluster.
 	// Tags help organize and identify the cluster within DigitalOcean.
-	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
+	Tags []string `protobuf:"bytes,11,rep,name=tags,proto3" json:"tags,omitempty"`
 	// Reference to the default node pool for the cluster.
-	DefaultNodePool *DigitalOceanKubernetesClusterDefaultNodePool `protobuf:"bytes,9,opt,name=default_node_pool,json=defaultNodePool,proto3" json:"default_node_pool,omitempty"`
+	DefaultNodePool *DigitalOceanKubernetesClusterDefaultNodePool `protobuf:"bytes,12,opt,name=default_node_pool,json=defaultNodePool,proto3" json:"default_node_pool,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -138,6 +151,27 @@ func (x *DigitalOceanKubernetesClusterSpec) GetDisableSurgeUpgrade() bool {
 		return x.DisableSurgeUpgrade
 	}
 	return false
+}
+
+func (x *DigitalOceanKubernetesClusterSpec) GetMaintenanceWindow() string {
+	if x != nil {
+		return x.MaintenanceWindow
+	}
+	return ""
+}
+
+func (x *DigitalOceanKubernetesClusterSpec) GetRegistryIntegration() bool {
+	if x != nil {
+		return x.RegistryIntegration
+	}
+	return false
+}
+
+func (x *DigitalOceanKubernetesClusterSpec) GetControlPlaneFirewallAllowedIps() []string {
+	if x != nil {
+		return x.ControlPlaneFirewallAllowedIps
+	}
+	return nil
 }
 
 func (x *DigitalOceanKubernetesClusterSpec) GetTags() []string {
@@ -245,7 +279,7 @@ var File_org_project_planton_provider_digitalocean_digitaloceankubernetescluster
 
 const file_org_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Uorg/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Jorg.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/provider/digitalocean/region.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa0\x05\n" +
+	"Uorg/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Jorg.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/provider/digitalocean/region.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xce\x06\n" +
 	"!DigitalOceanKubernetesClusterSpec\x12)\n" +
 	"\fcluster_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vclusterName\x12]\n" +
 	"\x06region\x18\x02 \x01(\x0e2=.org.project_planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x125\n" +
@@ -253,9 +287,13 @@ const file_org_project_planton_provider_digitalocean_digitaloceankubernetesclust
 	"\x03vpc\x18\x04 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\rmetadata.nameR\x03vpc\x124\n" +
 	"\x10highly_available\x18\x05 \x01(\bB\t\x92\xa6\x1d\x05falseR\x0fhighlyAvailable\x12!\n" +
 	"\fauto_upgrade\x18\x06 \x01(\bR\vautoUpgrade\x122\n" +
-	"\x15disable_surge_upgrade\x18\a \x01(\bR\x13disableSurgeUpgrade\x12\x12\n" +
-	"\x04tags\x18\b \x03(\tR\x04tags\x12\xac\x01\n" +
-	"\x11default_node_pool\x18\t \x01(\v2x.org.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterDefaultNodePoolB\x06\xbaH\x03\xc8\x01\x01R\x0fdefaultNodePool\"\xce\x01\n" +
+	"\x15disable_surge_upgrade\x18\a \x01(\bR\x13disableSurgeUpgrade\x12-\n" +
+	"\x12maintenance_window\x18\b \x01(\tR\x11maintenanceWindow\x121\n" +
+	"\x14registry_integration\x18\t \x01(\bR\x13registryIntegration\x12J\n" +
+	"\"control_plane_firewall_allowed_ips\x18\n" +
+	" \x03(\tR\x1econtrolPlaneFirewallAllowedIps\x12\x12\n" +
+	"\x04tags\x18\v \x03(\tR\x04tags\x12\xac\x01\n" +
+	"\x11default_node_pool\x18\f \x01(\v2x.org.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterDefaultNodePoolB\x06\xbaH\x03\xc8\x01\x01R\x0fdefaultNodePool\"\xce\x01\n" +
 	",DigitalOceanKubernetesClusterDefaultNodePool\x12\x1a\n" +
 	"\x04size\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12)\n" +
 	"\n" +

@@ -32,7 +32,15 @@ message DigitalOceanFunctionSpec {
   // Valid values: 128, 256, 512, 1024, 2048
   uint32 memory_mb = 6 [
     (org.project_planton.shared.options.recommended_default) = "256",
-    (buf.validate.field).uint32 = {in: [128, 256, 512, 1024, 2048]}
+    (buf.validate.field).uint32 = {
+      in: [
+        128,
+        256,
+        512,
+        1024,
+        2048
+      ]
+    }
   ];
 
   // timeout_ms is the maximum execution time for the function in milliseconds.

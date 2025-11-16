@@ -192,13 +192,8 @@ GcpCertManagerCert = 616 [(kind_meta) = {
   - `apis/org/project_planton/provider/aws/<component>/v1/`
   - `apis/org/project_planton/provider/gcp/<component>/v1/`
   - `apis/org/project_planton/provider/azure/<component>/v1/`
-  - `apis/org/project_planton/provider/kubernetes/<category>/<component>/v1/`
+  - `apis/org/project_planton/provider/kubernetes/<component>/v1/`
   - etc.
-
-- [ ] **Kubernetes Category Segregation (if applicable)** - For Kubernetes provider, component is under correct category:
-  - `apis/org/project_planton/provider/kubernetes/addon/<component>/v1/` - For cluster add-ons
-  - `apis/org/project_planton/provider/kubernetes/workload/<component>/v1/` - For workload resources
-  - `apis/org/project_planton/provider/kubernetes/config/<component>/v1/` - For configuration resources
 
 - [ ] **Lowercase Folder Naming** - Component folder name matches the `CloudResourceKind` enum value but in all lowercase
   - Enum: `GcpCertManagerCert` → Folder: `gcpcertmanagercert`

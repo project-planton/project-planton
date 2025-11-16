@@ -203,7 +203,7 @@ componentName: "${component}"
 
 /**
  * Scan a provider directory for components with docs
- * Handles nested directories (e.g., kubernetes/addon/, kubernetes/workload/)
+ * Handles both flat structures (e.g., aws/awsalb/) and any potential nested subdirectories
  */
 function scanProvider(providerPath: string, provider: string): ComponentDoc[] {
   const docs: ComponentDoc[] = [];
@@ -237,7 +237,7 @@ function scanProvider(providerPath: string, provider: string): ComponentDoc[] {
         title,
       });
     } else {
-      // If no docs at this level, check subdirectories (e.g., kubernetes/addon/, kubernetes/workload/)
+      // If no docs at this level, check subdirectories
       // Only scan one level deeper to avoid infinite recursion
       const subitems = fs.readdirSync(componentPath);
       for (const subitem of subitems) {

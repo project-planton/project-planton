@@ -36,9 +36,13 @@ type DigitalOceanVpcSpec struct {
 	// The DigitalOcean region where the VPC will be created.
 	// This determines the geographical location of the VPC.
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=org.project_planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
-	// The IP range for the VPC in CIDR notation.
+	// The IP range for the VPC in CIDR notation (optional).
 	// Only /16, /20, or /24 CIDR blocks are supported for VPCs on DigitalOcean.
 	// Example: "10.10.0.0/16"
+	//
+	// 80/20 Principle: When omitted, DigitalOcean auto-generates a non-conflicting /20 CIDR block (4,096 IPs).
+	// This is the recommended approach for dev/test environments and when explicit IP planning is not required.
+	// For production environments with specific IPAM requirements, explicitly specify the CIDR block.
 	IpRangeCidr string `protobuf:"bytes,3,opt,name=ip_range_cidr,json=ipRangeCidr,proto3" json:"ip_range_cidr,omitempty"`
 	// A boolean indicating whether this VPC should be set as the default for the specified region.
 	// Only one VPC can be the default for a given region.
@@ -110,11 +114,11 @@ var File_org_project_planton_provider_digitalocean_digitaloceanvpc_v1_spec_proto
 
 const file_org_project_planton_provider_digitalocean_digitaloceanvpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x12<org.project_planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/provider/digitalocean/region.proto\x1a0org/project_planton/shared/options/options.proto\"\xb5\x02\n" +
+	"Gorg/project_planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x12<org.project_planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/provider/digitalocean/region.proto\x1a0org/project_planton/shared/options/options.proto\"\xb2\x02\n" +
 	"\x13DigitalOceanVpcSpec\x12)\n" +
 	"\vdescription\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescription\x12]\n" +
-	"\x06region\x18\x02 \x01(\x0e2=.org.project_planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12V\n" +
-	"\rip_range_cidr\x18\x03 \x01(\tB2\xbaH/\xc8\x01\x01r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/(16|20|24)$R\vipRangeCidr\x12<\n" +
+	"\x06region\x18\x02 \x01(\x0e2=.org.project_planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12S\n" +
+	"\rip_range_cidr\x18\x03 \x01(\tB/\xbaH,r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/(16|20|24)$R\vipRangeCidr\x12<\n" +
 	"\x15is_default_for_region\x18\x04 \x01(\bB\t\x92\xa6\x1d\x05falseR\x12isDefaultForRegionB\xe0\x03\n" +
 	"@com.org.project_planton.provider.digitalocean.digitaloceanvpc.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvpc/v1;digitaloceanvpcv1\xa2\x02\x05OPPDD\xaa\x02;Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvpc.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvpc\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvpc\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Digitalocean::Digitaloceanvpc::V1b\x06proto3"
 

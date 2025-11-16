@@ -98,7 +98,6 @@ func main() {
 
 func run() error {
 	provEntries := map[string][]entry{} // provider raw name ("digital_ocean") → []entry
-	k8sAddon, k8sWorkload := []entry{}, []entry{}
 
 	imports := []importInfo{}
 	aliasByPath := map[string]string{}
@@ -122,27 +121,8 @@ func run() error {
 		lowerKind := lowerNoSep(kindName) // awsalb
 		importAlias := lowerKind + "v1"   // awsalbv1
 
-		// kubernetes special‑case
-		var importPath string
-		if provRaw == cloudresourcekind.CloudResourceProvider_kubernetes.String() {
-			kubernetesResourceType := crkreflect.GetKubernetesResourceCategory(cloudResourceKind)
-
-			importPath = fmt.Sprintf(
-				"github.com/project-planton/project-planton/apis/org/project_planton/provider/%s/%s/%s/v1",
-				provSlug, kubernetesResourceType, lowerKind)
-
-			putUniqueEntry(kubernetesResourceType == cloudresourcekind.KubernetesCloudResourceCategory_addon,
-				&k8sAddon, &k8sWorkload,
-				entry{
-					KindConst:   kindName,
-					Alias:       uniqueAlias(importPath, importAlias, &imports, aliasByPath),
-					MessageType: fixDigitCase(kindName),
-				})
-			continue
-		}
-
-		// non‑kubernetes
-		importPath = fmt.Sprintf(
+		// all providers use flat structure
+		importPath := fmt.Sprintf(
 			"github.com/project-planton/project-planton/apis/org/project_planton/provider/%s/%s/v1",
 			provSlug, lowerKind)
 
@@ -158,8 +138,6 @@ func run() error {
 	for _, list := range provEntries {
 		sort.Slice(list, func(i, j int) bool { return list[i].KindConst < list[j].KindConst })
 	}
-	sort.Slice(k8sAddon, func(i, j int) bool { return k8sAddon[i].KindConst < k8sAddon[j].KindConst })
-	sort.Slice(k8sWorkload, func(i, j int) bool { return k8sWorkload[i].KindConst < k8sWorkload[j].KindConst })
 	sort.Slice(imports, func(i, j int) bool { return imports[i].Alias < imports[j].Alias })
 
 	// render
@@ -167,14 +145,10 @@ func run() error {
 	if err := tpl.Execute(&buf, struct {
 		Imports     []importInfo
 		ProvEntries map[string][]entry
-		K8sAddon    []entry
-		K8sWorkload []entry
 		Providers   []string
 	}{
 		Imports:     imports,
 		ProvEntries: provEntries,
-		K8sAddon:    k8sAddon,
-		K8sWorkload: k8sWorkload,
 		Providers:   sortedKeys(provEntries),
 	}); err != nil {
 		return errors.Wrap(err, "execute template")
@@ -213,14 +187,6 @@ func aliasExists(imps []importInfo, a string) bool {
 		}
 	}
 	return false
-}
-
-func putUniqueEntry(isAddon bool, addon, workload *[]entry, e entry) {
-	if isAddon {
-		*addon = append(*addon, e)
-	} else {
-		*workload = append(*workload, e)
-	}
 }
 
 func sortedKeys(m map[string][]entry) []string {
@@ -275,25 +241,9 @@ var Provider{{ pascal $prov }}Map = map[cloudresourcekind.CloudResourceKind]prot
 }
 {{ end }}
 
-{{/* kubernetes */}}
-var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
-{{- range .K8sAddon }}
-	cloudresourcekind.CloudResourceKind_{{ .KindConst }}: &{{ .Alias }}.{{ .MessageType }}{},
-{{- end }}
-}
-
-var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
-{{- range .K8sWorkload }}
-	cloudresourcekind.CloudResourceKind_{{ .KindConst }}: &{{ .Alias }}.{{ .MessageType }}{},
-{{- end }}
-}
-
-var ProviderKubernetesMap = merge(ProviderKubernetesAddonMap, ProviderKubernetesWorkloadMap)
-
 var ToMessageMap = merge(
 {{- range .Providers }}
 	Provider{{ pascal . }}Map,
 {{- end }}
-	ProviderKubernetesMap,
 )
 `))

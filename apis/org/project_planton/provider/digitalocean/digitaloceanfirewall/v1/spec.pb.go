@@ -7,6 +7,7 @@
 package digitaloceanfirewallv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -21,7 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Cloud Firewall.
 type DigitalOceanFirewallSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Name of the firewall for identification (must be unique per account/project).
@@ -309,16 +310,17 @@ var File_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_
 
 const file_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/digitalocean/digitaloceanfirewall/v1/spec.proto\x12Aorg.project_planton.provider.digitalocean.digitaloceanfirewall.v1\"\xfa\x02\n" +
-	"\x18DigitalOceanFirewallSpec\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x87\x01\n" +
+	"Lorg/project_planton/provider/digitalocean/digitaloceanfirewall/v1/spec.proto\x12Aorg.project_planton.provider.digitalocean.digitaloceanfirewall.v1\x1a\x1bbuf/validate/validate.proto\"\x86\x03\n" +
+	"\x18DigitalOceanFirewallSpec\x12\x1e\n" +
+	"\x04name\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04name\x12\x87\x01\n" +
 	"\rinbound_rules\x18\x02 \x03(\v2b.org.project_planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallInboundRuleR\finboundRules\x12\x8a\x01\n" +
 	"\x0eoutbound_rules\x18\x03 \x03(\v2c.org.project_planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallOutboundRuleR\routboundRules\x12\x1f\n" +
 	"\vdroplet_ids\x18\x04 \x03(\x03R\n" +
 	"dropletIds\x12\x12\n" +
-	"\x04tags\x18\x05 \x03(\tR\x04tags\"\xc5\x02\n" +
-	"\x1fDigitalOceanFirewallInboundRule\x12\x1a\n" +
-	"\bprotocol\x18\x01 \x01(\tR\bprotocol\x12\x1d\n" +
+	"\x04tags\x18\x05 \x03(\tR\x04tags\"\xce\x02\n" +
+	"\x1fDigitalOceanFirewallInboundRule\x12#\n" +
+	"\bprotocol\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bprotocol\x12\x1d\n" +
 	"\n" +
 	"port_range\x18\x02 \x01(\tR\tportRange\x12)\n" +
 	"\x10source_addresses\x18\x03 \x03(\tR\x0fsourceAddresses\x12,\n" +
@@ -326,9 +328,9 @@ const file_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spe
 	"\vsource_tags\x18\x05 \x03(\tR\n" +
 	"sourceTags\x122\n" +
 	"\x15source_kubernetes_ids\x18\x06 \x03(\tR\x13sourceKubernetesIds\x129\n" +
-	"\x19source_load_balancer_uids\x18\a \x03(\tR\x16sourceLoadBalancerUids\"\xf8\x02\n" +
-	" DigitalOceanFirewallOutboundRule\x12\x1a\n" +
-	"\bprotocol\x18\x01 \x01(\tR\bprotocol\x12\x1d\n" +
+	"\x19source_load_balancer_uids\x18\a \x03(\tR\x16sourceLoadBalancerUids\"\x81\x03\n" +
+	" DigitalOceanFirewallOutboundRule\x12#\n" +
+	"\bprotocol\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bprotocol\x12\x1d\n" +
 	"\n" +
 	"port_range\x18\x02 \x01(\tR\tportRange\x123\n" +
 	"\x15destination_addresses\x18\x03 \x03(\tR\x14destinationAddresses\x126\n" +

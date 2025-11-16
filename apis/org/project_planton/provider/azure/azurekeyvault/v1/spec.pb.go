@@ -145,7 +145,7 @@ type AzureKeyVaultSpec struct {
 	// - STANDARD: Software-protected keys, suitable for most applications
 	// - PREMIUM: HSM-backed keys, required for compliance (PCI-DSS, FIPS 140-2 Level 3)
 	// Default: STANDARD
-	Sku AzureKeyVaultSku `protobuf:"varint,3,opt,name=sku,proto3,enum=org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSku" json:"sku,omitempty"`
+	Sku *AzureKeyVaultSku `protobuf:"varint,3,opt,name=sku,proto3,enum=org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSku,oneof" json:"sku,omitempty"`
 	// Enable Azure RBAC for authorization instead of vault access policies.
 	// RBAC is the modern, recommended approach that integrates with Azure AD and PIM.
 	// Default: true (strongly recommended for new deployments)
@@ -215,8 +215,8 @@ func (x *AzureKeyVaultSpec) GetResourceGroup() string {
 }
 
 func (x *AzureKeyVaultSpec) GetSku() AzureKeyVaultSku {
-	if x != nil {
-		return x.Sku
+	if x != nil && x.Sku != nil {
+		return *x.Sku
 	}
 	return AzureKeyVaultSku_SKU_UNSPECIFIED
 }
@@ -342,19 +342,20 @@ var File_org_project_planton_provider_azure_azurekeyvault_v1_spec_proto protoref
 
 const file_org_project_planton_provider_azure_azurekeyvault_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	">org/project_planton/provider/azure/azurekeyvault/v1/spec.proto\x123org.project_planton.provider.azure.azurekeyvault.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xc6\x05\n" +
+	">org/project_planton/provider/azure/azurekeyvault/v1/spec.proto\x123org.project_planton.provider.azure.azurekeyvault.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xd3\x05\n" +
 	"\x11AzureKeyVaultSpec\x12\"\n" +
 	"\x06region\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x06region\x121\n" +
 	"\x0eresource_group\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\rresourceGroup\x12e\n" +
-	"\x03sku\x18\x03 \x01(\x0e2E.org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSkuB\f\x8a\xa6\x1d\bSTANDARDR\x03sku\x12I\n" +
-	"\x19enable_rbac_authorization\x18\x04 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x00R\x17enableRbacAuthorization\x88\x01\x01\x12E\n" +
-	"\x17enable_purge_protection\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x01R\x15enablePurgeProtection\x88\x01\x01\x12Q\n" +
-	"\x1asoft_delete_retention_days\x18\x06 \x01(\x05B\x0f\xbaH\x06\x1a\x04\x18Z(\a\x8a\xa6\x1d\x0290H\x02R\x17softDeleteRetentionDays\x88\x01\x01\x12u\n" +
-	"\fnetwork_acls\x18\a \x01(\v2M.org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultNetworkAclsH\x03R\vnetworkAcls\x88\x01\x01\x12-\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\rresourceGroup\x12j\n" +
+	"\x03sku\x18\x03 \x01(\x0e2E.org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSkuB\f\x8a\xa6\x1d\bSTANDARDH\x00R\x03sku\x88\x01\x01\x12I\n" +
+	"\x19enable_rbac_authorization\x18\x04 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x01R\x17enableRbacAuthorization\x88\x01\x01\x12E\n" +
+	"\x17enable_purge_protection\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x02R\x15enablePurgeProtection\x88\x01\x01\x12Q\n" +
+	"\x1asoft_delete_retention_days\x18\x06 \x01(\x05B\x0f\xbaH\x06\x1a\x04\x18Z(\a\x8a\xa6\x1d\x0290H\x03R\x17softDeleteRetentionDays\x88\x01\x01\x12u\n" +
+	"\fnetwork_acls\x18\a \x01(\v2M.org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultNetworkAclsH\x04R\vnetworkAcls\x88\x01\x01\x12-\n" +
 	"\fsecret_names\x18\b \x03(\tB\n" +
-	"\xbaH\a\x92\x01\x04\b\x00\x10dR\vsecretNamesB\x1c\n" +
+	"\xbaH\a\x92\x01\x04\b\x00\x10dR\vsecretNamesB\x06\n" +
+	"\x04_skuB\x1c\n" +
 	"\x1a_enable_rbac_authorizationB\x1a\n" +
 	"\x18_enable_purge_protectionB\x1d\n" +
 	"\x1b_soft_delete_retention_daysB\x0f\n" +
