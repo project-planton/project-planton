@@ -43,7 +43,7 @@ func load_balancer(
 		poolOrigins = append(poolOrigins, cloudflare.LoadBalancerPoolOriginArgs{
 			Name:    pulumi.String(o.Name),
 			Address: pulumi.String(o.Address),
-			//Weight:  pulumi.Float64Ptr(o.Weight),
+			Weight:  pulumi.Float64Ptr(float64(o.Weight)),
 		})
 	}
 

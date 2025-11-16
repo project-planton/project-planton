@@ -73,7 +73,11 @@ func application(
 
 	var requireBlocks cloudflare.AccessPolicyRequireArray
 	if locals.CloudflareZeroTrustAccessApplication.Spec.RequireMfa {
-		requireBlocks = append(requireBlocks, &cloudflare.AccessPolicyRequireArgs{})
+		requireBlocks = append(requireBlocks, &cloudflare.AccessPolicyRequireArgs{
+			AuthMethod: &cloudflare.AccessPolicyRequireAuthMethodArgs{
+				AuthMethod: pulumi.String("mfa"),
+			},
+		})
 	}
 
 	decision := "allow"

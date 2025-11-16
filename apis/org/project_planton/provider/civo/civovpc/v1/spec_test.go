@@ -80,11 +80,11 @@ var _ = ginkgo.Describe("CivoVpcSpec Custom Validation Tests", func() {
 						Name: "default-network",
 					},
 					Spec: &CivoVpcSpec{
-						CivoCredentialId:     "civo-cred-123",
-						NetworkName:          "default-network",
-						Region:               "LON1",
-						IpRangeCidr:          "10.0.0.0/24",
-						IsDefaultForRegion:   true,
+						CivoCredentialId:   "civo-cred-123",
+						NetworkName:        "default-network",
+						Region:             "LON1",
+						IpRangeCidr:        "10.0.0.0/24",
+						IsDefaultForRegion: true,
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -281,4 +281,3 @@ var _ = ginkgo.Describe("CivoVpcSpec Custom Validation Tests", func() {
 		})
 	})
 })
-
