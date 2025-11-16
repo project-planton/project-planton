@@ -16,8 +16,8 @@ type locals struct {
 // newLocals creates computed values from stack input
 func newLocals(stackInput *kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKafkaOperatorStackInput) *locals {
 	operatorName := "strimzi-kafka-operator"
-	if stackInput.Metadata != nil && stackInput.Metadata.Name != "" {
-		operatorName = stackInput.Metadata.Name
+	if stackInput.Target != nil && stackInput.Target.Metadata != nil && stackInput.Target.Metadata.Name != "" {
+		operatorName = stackInput.Target.Metadata.Name
 	}
 
 	labels := pulumi.StringMap{
@@ -26,15 +26,15 @@ func newLocals(stackInput *kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKaf
 		"planton.cloud/resource-kind":  pulumi.String("kubernetes-strimzi-kafka-operator"),
 	}
 
-	if stackInput.Metadata != nil {
-		if stackInput.Metadata.Name != "" {
-			labels["planton.cloud/resource-id"] = pulumi.String(stackInput.Metadata.Name)
+	if stackInput.Target != nil && stackInput.Target.Metadata != nil {
+		if stackInput.Target.Metadata.Name != "" {
+			labels["planton.cloud/resource-id"] = pulumi.String(stackInput.Target.Metadata.Name)
 		}
-		if stackInput.Metadata.Org != "" {
-			labels["planton.cloud/organization"] = pulumi.String(stackInput.Metadata.Org)
+		if stackInput.Target.Metadata.Org != "" {
+			labels["planton.cloud/organization"] = pulumi.String(stackInput.Target.Metadata.Org)
 		}
-		if stackInput.Metadata.Env != "" {
-			labels["planton.cloud/environment"] = pulumi.String(stackInput.Metadata.Env)
+		if stackInput.Target.Metadata.Env != "" {
+			labels["planton.cloud/environment"] = pulumi.String(stackInput.Target.Metadata.Env)
 		}
 	}
 
@@ -42,7 +42,6 @@ func newLocals(stackInput *kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKaf
 		namespace:    vars.Namespace,
 		labels:       labels,
 		operatorName: operatorName,
-		chartVersion: vars.DefaultStableVersion,
+		chartVersion: vars.HelmChartVersion,
 	}
 }
-

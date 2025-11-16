@@ -99,7 +99,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesargocdv1.Kubern
 
 	// Handle ingress configuration
 	if target.Spec.Ingress == nil ||
-		!target.Spec.Ingress.IsEnabled ||
+		!target.Spec.Ingress.Enabled ||
 		target.Spec.Ingress.DnsDomain == "" {
 		// Export empty hostnames if ingress is not enabled
 		ctx.Export(ExternalHostname, pulumi.String(""))

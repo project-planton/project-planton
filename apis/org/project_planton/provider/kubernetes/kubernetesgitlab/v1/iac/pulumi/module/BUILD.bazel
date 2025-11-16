@@ -11,6 +11,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1:kubernetesgitlab",
+        "//apis/org/project_planton/shared",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",

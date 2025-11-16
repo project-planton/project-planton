@@ -8,7 +8,6 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 )
 
 func TestKubernetesExternalDns(t *testing.T) {
@@ -36,10 +35,14 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Gke{
 					Gke: &KubernetesExternalDnsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						DnsZoneId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-dns-zone",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-dns-zone",
+							},
 						},
 					},
 				}
@@ -53,7 +56,9 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Gke{
 					Gke: &KubernetesExternalDnsGkeConfig{
 						DnsZoneId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-dns-zone",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-dns-zone",
+							},
 						},
 					},
 				}
@@ -67,7 +72,9 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Gke{
 					Gke: &KubernetesExternalDnsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 					},
 				}
@@ -83,7 +90,9 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Eks{
 					Eks: &KubernetesExternalDnsEksConfig{
 						Route53ZoneId: &foreignkeyv1.StringValueOrRef{
-							Value: "Z123456789ABC",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "Z123456789ABC",
+							},
 						},
 					},
 				}
@@ -97,7 +106,9 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Eks{
 					Eks: &KubernetesExternalDnsEksConfig{
 						Route53ZoneId: &foreignkeyv1.StringValueOrRef{
-							Value: "Z123456789ABC",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "Z123456789ABC",
+							},
 						},
 						IrsaRoleArnOverride: "arn:aws:iam::123456789012:role/external-dns-role",
 					},
@@ -202,10 +213,14 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Gke{
 					Gke: &KubernetesExternalDnsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						DnsZoneId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-dns-zone",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-dns-zone",
+							},
 						},
 					},
 				}

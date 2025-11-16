@@ -167,4 +167,3 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 		})
 	})
 })
-

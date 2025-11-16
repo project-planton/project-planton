@@ -6,7 +6,6 @@ go_library(
         "locals.go",
         "main.go",
         "outputs.go",
-        "percona_operator.go",
         "vars.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/iac/pulumi/module",

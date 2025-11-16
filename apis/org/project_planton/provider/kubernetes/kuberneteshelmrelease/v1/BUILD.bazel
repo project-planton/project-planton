@@ -21,7 +21,7 @@ go_library(
 
 go_test(
     name = "kuberneteshelmrelease_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":kuberneteshelmrelease"],
     deps = [
         "//apis/org/project_planton/shared",

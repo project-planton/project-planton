@@ -24,8 +24,8 @@ type locals struct {
 func newLocals(stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackInput) *locals {
 	// Use metadata.name or default to "solr-operator"
 	operatorName := "solr-operator"
-	if stackInput.Metadata != nil && stackInput.Metadata.Name != "" {
-		operatorName = stackInput.Metadata.Name
+	if stackInput.Target != nil && stackInput.Target.Metadata != nil && stackInput.Target.Metadata.Name != "" {
+		operatorName = stackInput.Target.Metadata.Name
 	}
 
 	// Build common labels
@@ -36,15 +36,15 @@ func newLocals(stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackI
 	}
 
 	// Add metadata labels if provided
-	if stackInput.Metadata != nil {
-		if stackInput.Metadata.Name != "" {
-			labels["planton.cloud/resource-id"] = pulumi.String(stackInput.Metadata.Name)
+	if stackInput.Target != nil && stackInput.Target.Metadata != nil {
+		if stackInput.Target.Metadata.Name != "" {
+			labels["planton.cloud/resource-id"] = pulumi.String(stackInput.Target.Metadata.Name)
 		}
-		if stackInput.Metadata.Org != "" {
-			labels["planton.cloud/organization"] = pulumi.String(stackInput.Metadata.Org)
+		if stackInput.Target.Metadata.Org != "" {
+			labels["planton.cloud/organization"] = pulumi.String(stackInput.Target.Metadata.Org)
 		}
-		if stackInput.Metadata.Env != "" {
-			labels["planton.cloud/environment"] = pulumi.String(stackInput.Metadata.Env)
+		if stackInput.Target.Metadata.Env != "" {
+			labels["planton.cloud/environment"] = pulumi.String(stackInput.Target.Metadata.Env)
 		}
 	}
 
@@ -55,4 +55,3 @@ func newLocals(stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackI
 		chartVersion: vars.DefaultStableVersion,
 	}
 }
-

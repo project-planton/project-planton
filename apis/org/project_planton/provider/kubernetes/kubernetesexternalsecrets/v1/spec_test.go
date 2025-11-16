@@ -49,7 +49,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						GsaEmail: "external-secrets@my-project.iam.gserviceaccount.com",
 					},
@@ -76,7 +78,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 					},
 				}
@@ -168,7 +172,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						GsaEmail: "external-secrets@my-project.iam.gserviceaccount.com",
 					},
@@ -185,7 +191,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						GsaEmail: "external-secrets@my-project.iam.gserviceaccount.com",
 					},
@@ -203,7 +211,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						GsaEmail: "external-secrets@my-project.iam.gserviceaccount.com",
 					},
@@ -218,7 +228,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						GsaEmail: "external-secrets@my-project.iam.gserviceaccount.com",
 					},
@@ -235,7 +247,9 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalSecretsSpec_Gke{
 					Gke: &KubernetesExternalSecretsGkeConfig{
 						ProjectId: &foreignkeyv1.StringValueOrRef{
-							Value: "my-gcp-project",
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
 						},
 						GsaEmail: "external-secrets@my-project.iam.gserviceaccount.com",
 					},

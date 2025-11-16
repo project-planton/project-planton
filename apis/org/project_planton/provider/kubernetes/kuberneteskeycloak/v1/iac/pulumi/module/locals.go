@@ -49,7 +49,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskeycloakv1.Kube
 
 	// Ingress configuration
 	if stackInput.Target.Spec != nil && stackInput.Target.Spec.Ingress != nil {
-		locals.IngressEnabled = stackInput.Target.Spec.Ingress.IsEnabled
+		locals.IngressEnabled = stackInput.Target.Spec.Ingress.Enabled
 		locals.DnsDomain = stackInput.Target.Spec.Ingress.DnsDomain
 	}
 
