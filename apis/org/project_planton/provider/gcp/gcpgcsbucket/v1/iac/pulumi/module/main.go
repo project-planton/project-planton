@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 	gcpgcsbucketv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/storage"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -20,19 +20,18 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 
 	// Build bucket arguments
 	bucketArgs := &storage.BucketArgs{
-		ForceDestroy: pulumi.Bool(true),
-		Labels:       pulumi.ToStringMap(locals.GcpLabels),
-		Location:     pulumi.String(locals.GcpGcsBucket.Spec.Location),
-		Name:         pulumi.String(locals.GcpGcsBucket.Metadata.Name),
-		Project:      pulumi.String(locals.GcpGcsBucket.Spec.GcpProjectId),
-		UniformBucketLevelAccess: &storage.BucketUniformBucketLevelAccessArgs{
-			Enabled: pulumi.Bool(locals.GcpGcsBucket.Spec.UniformBucketLevelAccessEnabled),
-		},
+		ForceDestroy:             pulumi.Bool(true),
+		Labels:                   pulumi.ToStringMap(locals.GcpLabels),
+		Location:                 pulumi.String(locals.GcpGcsBucket.Spec.Location),
+		Name:                     pulumi.String(locals.GcpGcsBucket.Metadata.Name),
+		Project:                  pulumi.String(locals.GcpGcsBucket.Spec.GcpProjectId),
+		UniformBucketLevelAccess: pulumi.Bool(locals.GcpGcsBucket.Spec.UniformBucketLevelAccessEnabled),
 	}
 
 	// Set storage class if specified
-	if locals.GcpGcsBucket.Spec.StorageClass != gcpgcsbucketv1.GcpGcsStorageClass_GCP_GCS_STORAGE_CLASS_UNSPECIFIED {
-		bucketArgs.StorageClass = pulumi.String(storageClassToString(locals.GcpGcsBucket.Spec.StorageClass))
+	if locals.GcpGcsBucket.Spec.StorageClass != nil &&
+		*locals.GcpGcsBucket.Spec.StorageClass != gcpgcsbucketv1.GcpGcsStorageClass_GCP_GCS_STORAGE_CLASS_UNSPECIFIED {
+		bucketArgs.StorageClass = pulumi.String(storageClassToString(*locals.GcpGcsBucket.Spec.StorageClass))
 	}
 
 	// Configure versioning if enabled
@@ -44,11 +43,11 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 
 	// Configure lifecycle rules
 	if len(locals.GcpGcsBucket.Spec.LifecycleRules) > 0 {
-		var lifecycleRules storage.BucketLifecycleRuleArray
+		var lifecycleRules []storage.BucketLifecycleRuleInput
 		for _, rule := range locals.GcpGcsBucket.Spec.LifecycleRules {
 			lifecycleRules = append(lifecycleRules, buildLifecycleRule(rule))
 		}
-		bucketArgs.LifecycleRules = lifecycleRules
+		bucketArgs.LifecycleRules = storage.BucketLifecycleRuleArray(lifecycleRules)
 	}
 
 	// Configure encryption if specified
@@ -60,11 +59,11 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 
 	// Configure CORS if specified
 	if len(locals.GcpGcsBucket.Spec.CorsRules) > 0 {
-		var corsRules storage.BucketCorsArray
+		var corsRules []storage.BucketCorInput
 		for _, corsRule := range locals.GcpGcsBucket.Spec.CorsRules {
 			corsRules = append(corsRules, buildCorsRule(corsRule))
 		}
-		bucketArgs.Cors = corsRules
+		bucketArgs.Cors = storage.BucketCorArray(corsRules)
 	}
 
 	// Configure website if specified
@@ -78,7 +77,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 	// Configure retention policy if specified
 	if locals.GcpGcsBucket.Spec.RetentionPolicy != nil {
 		bucketArgs.RetentionPolicy = &storage.BucketRetentionPolicyArgs{
-			RetentionPeriod: pulumi.Int(int(locals.GcpGcsBucket.Spec.RetentionPolicy.RetentionPeriodSeconds)),
+			RetentionPeriod: pulumi.String(fmt.Sprintf("%d", locals.GcpGcsBucket.Spec.RetentionPolicy.RetentionPeriodSeconds)),
 			IsLocked:        pulumi.Bool(locals.GcpGcsBucket.Spec.RetentionPolicy.IsLocked),
 		}
 	}
@@ -160,43 +159,49 @@ func storageClassToString(class gcpgcsbucketv1.GcpGcsStorageClass) string {
 }
 
 // buildLifecycleRule converts proto lifecycle rule to Pulumi lifecycle rule
-func buildLifecycleRule(rule *gcpgcsbucketv1.GcpGcsLifecycleRule) storage.BucketLifecycleRuleArgs {
-	lifecycleRule := storage.BucketLifecycleRuleArgs{
-		Action: &storage.BucketLifecycleRuleActionArgs{
-			Type: pulumi.String(rule.Action.Type),
-		},
-		Condition: &storage.BucketLifecycleRuleConditionArgs{},
-	}
-
-	// Set storage class for SetStorageClass action
-	if rule.Action.StorageClass != gcpgcsbucketv1.GcpGcsStorageClass_GCP_GCS_STORAGE_CLASS_UNSPECIFIED {
-		lifecycleRule.Action.StorageClass = pulumi.String(storageClassToString(rule.Action.StorageClass))
-	}
+func buildLifecycleRule(rule *gcpgcsbucketv1.GcpGcsLifecycleRule) storage.BucketLifecycleRuleInput {
+	conditionArgs := &storage.BucketLifecycleRuleConditionArgs{}
 
 	// Set condition fields
 	if rule.Condition.AgeDays > 0 {
-		lifecycleRule.Condition.Age = pulumi.Int(int(rule.Condition.AgeDays))
+		conditionArgs.Age = pulumi.Int(int(rule.Condition.AgeDays))
 	}
 	if rule.Condition.CreatedBefore != "" {
-		lifecycleRule.Condition.CreatedBefore = pulumi.String(rule.Condition.CreatedBefore)
+		conditionArgs.CreatedBefore = pulumi.String(rule.Condition.CreatedBefore)
+	}
+	if rule.Condition.IsLive {
+		conditionArgs.WithState = pulumi.String("LIVE")
 	}
 	if rule.Condition.NumNewerVersions > 0 {
-		lifecycleRule.Condition.NumNewerVersions = pulumi.Int(int(rule.Condition.NumNewerVersions))
+		conditionArgs.NumNewerVersions = pulumi.Int(int(rule.Condition.NumNewerVersions))
 	}
 	if len(rule.Condition.MatchesStorageClass) > 0 {
-		var storageClasses pulumi.StringArray
+		var storageClasses []string
 		for _, class := range rule.Condition.MatchesStorageClass {
-			storageClasses = append(storageClasses, pulumi.String(storageClassToString(class)))
+			storageClasses = append(storageClasses, storageClassToString(class))
 		}
-		lifecycleRule.Condition.MatchesStorageClasses = storageClasses
+		conditionArgs.MatchesStorageClasses = pulumi.ToStringArray(storageClasses)
 	}
 
-	return lifecycleRule
+	actionArgs := &storage.BucketLifecycleRuleActionArgs{
+		Type: pulumi.String(rule.Action.Type),
+	}
+
+	// Set storage class for SetStorageClass action
+	if rule.Action.StorageClass != nil &&
+		*rule.Action.StorageClass != gcpgcsbucketv1.GcpGcsStorageClass_GCP_GCS_STORAGE_CLASS_UNSPECIFIED {
+		actionArgs.StorageClass = pulumi.String(storageClassToString(*rule.Action.StorageClass))
+	}
+
+	return &storage.BucketLifecycleRuleArgs{
+		Action:    actionArgs,
+		Condition: conditionArgs,
+	}
 }
 
 // buildCorsRule converts proto CORS rule to Pulumi CORS rule
-func buildCorsRule(corsRule *gcpgcsbucketv1.GcpGcsCorsRule) storage.BucketCorsArgs {
-	return storage.BucketCorsArgs{
+func buildCorsRule(corsRule *gcpgcsbucketv1.GcpGcsCorsRule) storage.BucketCorInput {
+	return &storage.BucketCorArgs{
 		Methods:         pulumi.ToStringArray(corsRule.Methods),
 		Origins:         pulumi.ToStringArray(corsRule.Origins),
 		ResponseHeaders: pulumi.ToStringArray(corsRule.ResponseHeaders),

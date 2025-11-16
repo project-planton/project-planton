@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 	azurenatgatewayv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/network"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/network"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

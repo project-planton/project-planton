@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	gcpcloudfunctionv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/cloudfunctionsv2"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/cloudrunv2"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudfunctionsv2"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudrunv2"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -19,21 +19,23 @@ func createCloudFunction(
 
 	spec := locals.GcpCloudFunction.Spec
 
-	// Build config
-	buildConfig := &cloudfunctionsv2.FunctionBuildConfigArgs{
-		Runtime:    pulumi.String(spec.BuildConfig.Runtime),
-		EntryPoint: pulumi.String(spec.BuildConfig.EntryPoint),
-		Source: &cloudfunctionsv2.FunctionBuildConfigSourceArgs{
-			StorageSource: &cloudfunctionsv2.FunctionBuildConfigSourceStorageSourceArgs{
-				Bucket: pulumi.String(spec.BuildConfig.Source.Bucket),
-				Object: pulumi.String(spec.BuildConfig.Source.Object),
-			},
-		},
+	// Build config - storage source
+	storageSourceArgs := &cloudfunctionsv2.FunctionBuildConfigSourceStorageSourceArgs{
+		Bucket: pulumi.String(spec.BuildConfig.Source.Bucket),
+		Object: pulumi.String(spec.BuildConfig.Source.Object),
 	}
 
 	// Add optional generation if specified
 	if spec.BuildConfig.Source.Generation != nil && *spec.BuildConfig.Source.Generation > 0 {
-		buildConfig.Source.StorageSource.Generation = pulumi.Int(*spec.BuildConfig.Source.Generation)
+		storageSourceArgs.Generation = pulumi.Int(*spec.BuildConfig.Source.Generation)
+	}
+
+	buildConfig := &cloudfunctionsv2.FunctionBuildConfigArgs{
+		Runtime:    pulumi.String(spec.BuildConfig.Runtime),
+		EntryPoint: pulumi.String(spec.BuildConfig.EntryPoint),
+		Source: &cloudfunctionsv2.FunctionBuildConfigSourceArgs{
+			StorageSource: storageSourceArgs,
+		},
 	}
 
 	// Add build environment variables if specified
@@ -52,22 +54,22 @@ func createCloudFunction(
 
 		// Memory (default 256MB)
 		memoryMb := int32(256)
-		if sc.AvailableMemoryMb != nil && *sc.AvailableMemoryMb > 0 {
-			memoryMb = *sc.AvailableMemoryMb
+		if sc.AvailableMemoryMb > 0 {
+			memoryMb = sc.AvailableMemoryMb
 		}
 		serviceConfig.AvailableMemory = pulumi.String(fmt.Sprintf("%dM", memoryMb))
 
 		// Timeout (default 60 seconds)
 		timeoutSeconds := int32(60)
-		if sc.TimeoutSeconds != nil && *sc.TimeoutSeconds > 0 {
-			timeoutSeconds = *sc.TimeoutSeconds
+		if sc.TimeoutSeconds > 0 {
+			timeoutSeconds = sc.TimeoutSeconds
 		}
 		serviceConfig.TimeoutSeconds = pulumi.Int(int(timeoutSeconds))
 
 		// Max concurrency (default 80)
 		maxConcurrency := int32(80)
-		if sc.MaxInstanceRequestConcurrency != nil && *sc.MaxInstanceRequestConcurrency > 0 {
-			maxConcurrency = *sc.MaxInstanceRequestConcurrency
+		if sc.MaxInstanceRequestConcurrency > 0 {
+			maxConcurrency = sc.MaxInstanceRequestConcurrency
 		}
 		serviceConfig.MaxInstanceRequestConcurrency = pulumi.Int(int(maxConcurrency))
 
@@ -101,39 +103,35 @@ func createCloudFunction(
 
 			// VPC egress settings (default PRIVATE_RANGES_ONLY)
 			vpcEgress := "PRIVATE_RANGES_ONLY"
-			if sc.VpcConnectorEgressSettings != nil {
-				if *sc.VpcConnectorEgressSettings == gcpcloudfunctionv1.GcpCloudFunctionVpcEgressSetting_ALL_TRAFFIC {
-					vpcEgress = "ALL_TRAFFIC"
-				}
+			if sc.VpcConnectorEgressSettings == gcpcloudfunctionv1.GcpCloudFunctionVpcEgressSetting_ALL_TRAFFIC {
+				vpcEgress = "ALL_TRAFFIC"
 			}
 			serviceConfig.VpcConnectorEgressSettings = pulumi.String(vpcEgress)
 		}
 
 		// Ingress settings (default ALLOW_ALL)
 		ingressSettings := "ALLOW_ALL"
-		if sc.IngressSettings != nil {
-			switch *sc.IngressSettings {
-			case gcpcloudfunctionv1.GcpCloudFunctionIngressSetting_ALLOW_INTERNAL_ONLY:
-				ingressSettings = "ALLOW_INTERNAL_ONLY"
-			case gcpcloudfunctionv1.GcpCloudFunctionIngressSetting_ALLOW_INTERNAL_AND_GCLB:
-				ingressSettings = "ALLOW_INTERNAL_AND_GCLB"
-			}
+		switch sc.IngressSettings {
+		case gcpcloudfunctionv1.GcpCloudFunctionIngressSetting_ALLOW_INTERNAL_ONLY:
+			ingressSettings = "ALLOW_INTERNAL_ONLY"
+		case gcpcloudfunctionv1.GcpCloudFunctionIngressSetting_ALLOW_INTERNAL_AND_GCLB:
+			ingressSettings = "ALLOW_INTERNAL_AND_GCLB"
 		}
 		serviceConfig.IngressSettings = pulumi.String(ingressSettings)
 
 		// Scaling configuration
 		if sc.Scaling != nil {
-			if sc.Scaling.MinInstanceCount != nil {
-				serviceConfig.MinInstanceCount = pulumi.Int(int(*sc.Scaling.MinInstanceCount))
-			} else {
-				serviceConfig.MinInstanceCount = pulumi.Int(0)
+			minInstances := int32(0)
+			if sc.Scaling.MinInstanceCount > 0 {
+				minInstances = sc.Scaling.MinInstanceCount
 			}
+			serviceConfig.MinInstanceCount = pulumi.Int(int(minInstances))
 
-			if sc.Scaling.MaxInstanceCount != nil {
-				serviceConfig.MaxInstanceCount = pulumi.Int(int(*sc.Scaling.MaxInstanceCount))
-			} else {
-				serviceConfig.MaxInstanceCount = pulumi.Int(100)
+			maxInstances := int32(100)
+			if sc.Scaling.MaxInstanceCount > 0 {
+				maxInstances = sc.Scaling.MaxInstanceCount
 			}
+			serviceConfig.MaxInstanceCount = pulumi.Int(int(maxInstances))
 		} else {
 			serviceConfig.MinInstanceCount = pulumi.Int(0)
 			serviceConfig.MaxInstanceCount = pulumi.Int(100)
@@ -180,7 +178,7 @@ func createCloudFunction(
 
 		// Retry policy (default DO_NOT_RETRY)
 		retryPolicy := "RETRY_POLICY_DO_NOT_RETRY"
-		if et.RetryPolicy != nil && *et.RetryPolicy == gcpcloudfunctionv1.GcpCloudFunctionRetryPolicy_RETRY_POLICY_RETRY {
+		if et.RetryPolicy == gcpcloudfunctionv1.GcpCloudFunctionRetryPolicy_RETRY_POLICY_RETRY {
 			retryPolicy = "RETRY_POLICY_RETRY"
 		}
 		eventTrigger.RetryPolicy = pulumi.String(retryPolicy)
@@ -223,8 +221,7 @@ func createCloudFunction(
 	// Add IAM policy binding for public access if required (HTTP only)
 	if locals.IsHttpTrigger &&
 		spec.ServiceConfig != nil &&
-		spec.ServiceConfig.AllowUnauthenticated != nil &&
-		*spec.ServiceConfig.AllowUnauthenticated {
+		spec.ServiceConfig.AllowUnauthenticated {
 
 		_, err = cloudrunv2.NewServiceIamMember(
 			ctx,

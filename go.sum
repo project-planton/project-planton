@@ -105,8 +105,8 @@ github.com/go-test/deep v1.1.1/go.mod h1:5C2ZWiW0ErCdrYzpqxLbTX7MG14M9iiw8DgHncV
 github.com/gogo/protobuf v1.3.1/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/gogo/protobuf v1.3.2 h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=
 github.com/gogo/protobuf v1.3.2/go.mod h1:P1XiOD3dCwIKUDQYPy72D8LYyHL2YPYrpS2s69NZV8Q=
-github.com/golang/glog v1.2.4 h1:CNNw5U8lSiiBk7druxtSHHTsRWcxKoac6kZKm2peBBc=
-github.com/golang/glog v1.2.4/go.mod h1:6AhwSGph0fcJtXVM/PEHPqZlFeoLxhs7/t5UDAwmO+w=
+github.com/golang/glog v1.2.5 h1:DrW6hGnjIhtvhOIiAKT6Psh/Kd/ldepEa81DKeiRJ5I=
+github.com/golang/glog v1.2.5/go.mod h1:6AhwSGph0fcJtXVM/PEHPqZlFeoLxhs7/t5UDAwmO+w=
 github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da h1:oI5xCqsCo564l8iNU+DwB5epxmsaqB+rhGL0m5jtYqE=
 github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da/go.mod h1:cIg4eruTrX1D+g88fzRXU5OdNfaM+9IcxsU14FzY7Hc=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
@@ -251,6 +251,8 @@ github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1 h1:INfe+W85JMlYYtckL6WOKk2u
 github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1/go.mod h1:Upo8fO/emGtgS6nyRajUVcgxOwboJk17JfwnHa38F/o=
 github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0 h1:pFvMC1CxlBMyuGfFjkUQa6IOf7gDLdCSlm403mvalSw=
 github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0/go.mod h1:tLdvJc363F0C07LR1BEs24Vh5g/yMno1atVIIjOuZms=
+github.com/pulumi/pulumi-azure/sdk/v6 v6.28.0 h1:4i7S+WskPi7H2N5u0DYQXXoZx70QKXvD1ECc7trcnCs=
+github.com/pulumi/pulumi-azure/sdk/v6 v6.28.0/go.mod h1:+jOmZ40lHkHaj8Y+eOvNJpV0VOtB5gaLgyEog1RS/dQ=
 github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8 h1:zRGPgqNtOS6Ij5tnthDRxS3f8SNxXIyGTOLCwpvrkqU=
 github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8/go.mod h1:DRBr39bxuuFE9OVNURT9o7phB5w/seS6DZ+j5TyCvKU=
 github.com/pulumi/pulumi-cloudflare/sdk/v6 v6.10.1 h1:maaP8Gpx0cdZLCgUK6QzCjc+9OgDfgsEwpw/MqiZb2M=
@@ -259,10 +261,8 @@ github.com/pulumi/pulumi-confluentcloud/sdk/v2 v2.49.0 h1:Aey8tTNX4x8Vk7GifErMqe
 github.com/pulumi/pulumi-confluentcloud/sdk/v2 v2.49.0/go.mod h1:x2Df59CSDJyMaGMJEAtyIQIuaEHesjJicU6XfBX8ktI=
 github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.49.0 h1:7mkHTeFgT+3zFvdQlHnKW1NcGKs/E+9NFLrAkN20ntk=
 github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.49.0/go.mod h1:cYq42QaPIr4lQZNKnBG9Ng5CPC8XX0BmzKK6NjZ6IKs=
-github.com/pulumi/pulumi-gcp/sdk/v7 v7.38.0 h1:21oSj+TKlKTzQcxN9Hik7iSNNHPUQXN4s3itOnahy/w=
-github.com/pulumi/pulumi-gcp/sdk/v7 v7.38.0/go.mod h1:YaEZms1NgXFqGhObKVofcAeWXu2V+3t/BAXdHQZq7fU=
-github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0 h1:pwxTKLi3EQU26q5GiHdNTOMrTzQTmv2gBPhK3008jEU=
-github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0/go.mod h1:BRlY8r2S8A8kDm8vnHGiw2GembbHbne/4vwaS/az6PQ=
+github.com/pulumi/pulumi-gcp/sdk/v9 v9.4.0 h1:Byz3mGwTjd2Zfh1F64lD0sUfF5bHSdzoVooKy5cqz+Y=
+github.com/pulumi/pulumi-gcp/sdk/v9 v9.4.0/go.mod h1:N0otheLPQncalSmpvmAchhG6jhq4va2NYvogqaH9dU0=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4 h1:HfKyJcM6v9tKSko+oVedD6M6s1VPIU7wxfwAhs4Gx+k=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4/go.mod h1:ATS+UN8pguMxypQAK+SaPewesU+UN5dpf93PNqVuHzs=
 github.com/pulumi/pulumi-mongodbatlas/sdk/v3 v3.36.1 h1:iyXdxSk0Ut4YRdOXvtabiQrmb+AONiendYLQ2PAuUb4=

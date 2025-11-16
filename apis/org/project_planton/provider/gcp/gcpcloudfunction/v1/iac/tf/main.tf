@@ -27,8 +27,8 @@ resource "google_cloudfunctions2_function" "function" {
   # Service configuration
   service_config {
     # Memory and timeout
-    available_memory   = "${local.available_memory_mb}M"
-    timeout_seconds    = local.timeout_seconds
+    available_memory = "${local.available_memory_mb}M"
+    timeout_seconds  = local.timeout_seconds
 
     # Concurrency and scaling
     max_instance_request_concurrency = local.max_instance_request_concurrency
@@ -53,8 +53,8 @@ resource "google_cloudfunctions2_function" "function" {
     }
 
     # VPC connector for private resource access
-    vpc_connector                  = try(local.service_config.vpc_connector, null)
-    vpc_connector_egress_settings  = try(local.service_config.vpc_connector, null) != null ? local.vpc_egress_settings : null
+    vpc_connector                 = try(local.service_config.vpc_connector, null)
+    vpc_connector_egress_settings = try(local.service_config.vpc_connector, null) != null ? local.vpc_egress_settings : null
 
     # Ingress settings (network access control)
     ingress_settings = local.ingress_settings

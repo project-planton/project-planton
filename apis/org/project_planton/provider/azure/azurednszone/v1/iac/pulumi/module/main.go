@@ -6,8 +6,8 @@ import (
 	"github.com/pkg/errors"
 	azurednszonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/dns"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/dns"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -70,9 +70,9 @@ func Resources(ctx *pulumi.Context, stackInput *azurednszonev1.AzureDnsZoneStack
 			}
 
 		case dnsrecordtype.DnsRecordType_AAAA:
-			_, err := dns.NewAAAARecord(ctx,
+			_, err := dns.NewAaaaRecord(ctx,
 				fmt.Sprintf("dns-aaaa-record-%d", index),
-				&dns.AAAARecordArgs{
+				&dns.AaaaRecordArgs{
 					Name:              pulumi.String(recordName),
 					ZoneName:          dnsZone.Name,
 					ResourceGroupName: pulumi.String(spec.ResourceGroup),
@@ -111,7 +111,7 @@ func Resources(ctx *pulumi.Context, stackInput *azurednszonev1.AzureDnsZoneStack
 				// MX records should be in format "priority hostname"
 				// For simplicity, we'll parse or use default priority 10
 				mxRecords = append(mxRecords, &dns.MxRecordRecordArgs{
-					Preference: pulumi.Int(10),
+					Preference: pulumi.String("10"),
 					Exchange:   pulumi.String(value),
 				})
 			}

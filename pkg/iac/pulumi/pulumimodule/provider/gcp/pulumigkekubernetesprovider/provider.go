@@ -2,8 +2,8 @@ package pulumigkekubernetesprovider
 
 import (
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/container"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/container"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

@@ -1,20 +1,22 @@
-# Google Cloud Run Service v2
+# main.tf - GCP Cloud Run service provisioning
+
+# Cloud Run v2 Service
 resource "google_cloud_run_v2_service" "main" {
   project  = var.spec.project_id
   location = var.spec.region
   name     = local.service_name
 
-  # Ingress settings
+  # Public access settings - disable invoker IAM check for unauthenticated access
   ingress = local.ingress
 
   labels = local.labels
 
   template {
     # Service account
-    service_account = local.service_account_email
+    service_account = local.service_account
 
     # Timeout
-    timeout = "${var.spec.timeout_seconds}s"
+    timeout = local.timeout
 
     # Execution environment
     execution_environment = local.execution_environment
@@ -28,7 +30,7 @@ resource "google_cloud_run_v2_service" "main" {
       max_instance_count = var.spec.container.replicas.max
     }
 
-    # VPC access configuration (if provided)
+    # VPC access configuration (conditional)
     dynamic "vpc_access" {
       for_each = local.has_vpc_access ? [1] : []
       content {
@@ -39,13 +41,13 @@ resource "google_cloud_run_v2_service" "main" {
             subnetwork = var.spec.vpc_access.subnet
           }
         }
-        egress = var.spec.vpc_access.egress != null ? var.spec.vpc_access.egress : "PRIVATE_RANGES_ONLY"
+        egress = var.spec.vpc_access.egress != null ? var.spec.vpc_access.egress : null
       }
     }
 
     # Container configuration
     containers {
-      image = local.container_image
+      image = local.image
 
       # Container port
       ports {
@@ -55,12 +57,12 @@ resource "google_cloud_run_v2_service" "main" {
       # Resource limits
       resources {
         limits = {
-          cpu    = local.cpu
           memory = local.memory
+          cpu    = local.cpu
         }
       }
 
-      # Plain environment variables
+      # Environment variables (plain)
       dynamic "env" {
         for_each = local.env_vars
         content {
@@ -69,7 +71,7 @@ resource "google_cloud_run_v2_service" "main" {
         }
       }
 
-      # Secret environment variables
+      # Environment variables (secrets from Secret Manager)
       dynamic "env" {
         for_each = local.env_secrets
         content {
@@ -84,30 +86,30 @@ resource "google_cloud_run_v2_service" "main" {
     }
   }
 
-  # Lifecycle management: prevent service deletion before creating new revision
+  # Lifecycle settings to prevent unnecessary recreations
   lifecycle {
     create_before_destroy = true
   }
 }
 
-# IAM policy for public access (if allow_unauthenticated is true)
+# IAM policy for unauthenticated access (if enabled)
 resource "google_cloud_run_v2_service_iam_member" "public_invoker" {
   count = var.spec.allow_unauthenticated ? 1 : 0
 
   project  = google_cloud_run_v2_service.main.project
   location = google_cloud_run_v2_service.main.location
   name     = google_cloud_run_v2_service.main.name
-  role     = "roles/run.invoker"
-  member   = "allUsers"
+
+  role   = "roles/run.invoker"
+  member = "allUsers"
 }
 
-# Custom DNS domain mappings (if DNS is enabled)
-resource "google_cloud_run_domain_mapping" "custom_domain" {
-  for_each = local.has_custom_dns ? toset(local.dns_hostnames) : []
+# Custom DNS Domain Mapping (if DNS is enabled)
+resource "google_cloud_run_domain_mapping" "main" {
+  count = local.dns_enabled && length(local.dns_hostnames) > 0 ? 1 : 0
 
-  project  = var.spec.project_id
-  location = var.spec.region
-  name     = each.value
+  location = google_cloud_run_v2_service.main.location
+  name     = local.dns_hostnames[0]
 
   metadata {
     namespace = var.spec.project_id
@@ -117,37 +119,18 @@ resource "google_cloud_run_domain_mapping" "custom_domain" {
   spec {
     route_name = google_cloud_run_v2_service.main.name
   }
-
-  # Wait for the service to be created before creating domain mappings
-  depends_on = [google_cloud_run_v2_service.main]
 }
 
-# DNS records for domain verification (if DNS is enabled)
-# Note: These need to be created after the domain mapping to retrieve verification records
-# The actual implementation would use data sources to retrieve domain mapping status
-# and create corresponding DNS records in Cloud DNS.
-# This is commented out as it requires additional data source lookups for domain verification codes.
-#
-# data "google_cloud_run_domain_mapping" "verification" {
-#   for_each = local.has_custom_dns ? toset(local.dns_hostnames) : []
-#   
-#   project  = var.spec.project_id
-#   location = var.spec.region
-#   name     = each.value
-#   
-#   depends_on = [google_cloud_run_domain_mapping.custom_domain]
-# }
-#
-# resource "google_dns_record_set" "verification" {
-#   for_each = local.has_custom_dns ? toset(local.dns_hostnames) : []
-#   
-#   managed_zone = var.spec.dns.managed_zone
-#   name         = "${each.value}."
-#   type         = "A"
-#   ttl          = 300
-#   
-#   rrdatas = [
-#     data.google_cloud_run_domain_mapping.verification[each.key].status[0].resource_records[0].rrdata
-#   ]
-# }
+# DNS TXT record for domain verification (if DNS is enabled)
+resource "google_dns_record_set" "domain_verification" {
+  count = local.dns_enabled && length(local.dns_hostnames) > 0 ? 1 : 0
 
+  managed_zone = local.dns_managed_zone
+  name         = "${local.dns_hostnames[0]}."
+  type         = "TXT"
+  ttl          = 300
+
+  rrdatas = [
+    google_cloud_run_domain_mapping.main[0].status[0].resource_records[0].rrdata
+  ]
+}

@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 	gcpcloudcdnv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudcdn/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -207,7 +207,7 @@ func createGcsBackendBucket(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCl
 
 	// Add advanced cache key policy if specified
 	if stackInput.Target.Spec.AdvancedConfig != nil && stackInput.Target.Spec.AdvancedConfig.CacheKeyPolicy != nil {
-		cdnPolicy.CacheKeyPolicy = buildCacheKeyPolicy(stackInput.Target.Spec.AdvancedConfig.CacheKeyPolicy)
+		cdnPolicy.CacheKeyPolicy = buildBackendBucketCacheKeyPolicy(stackInput.Target.Spec.AdvancedConfig.CacheKeyPolicy)
 	}
 
 	// Add negative caching policies if specified
@@ -265,15 +265,10 @@ func createComputeBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.
 		hasHealthCheck = true
 	}
 
-	// Determine protocol and port
+	// Determine protocol
 	protocol := "HTTP"
-	port := 80
 	if computeConfig.Protocol != nil && *computeConfig.Protocol == gcpcloudcdnv1.BackendProtocol_HTTPS {
 		protocol = "HTTPS"
-		port = 443
-	}
-	if computeConfig.Port != nil {
-		port = int(*computeConfig.Port)
 	}
 
 	// Build CDN policy
@@ -383,17 +378,9 @@ func createExternalBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1
 		return pulumi.StringOutput{}, pulumi.StringOutput{}, errors.Wrap(err, "failed to create Internet NEG")
 	}
 
-	// Add network endpoint (external hostname)
-	_, err = compute.NewNetworkEndpoint(ctx, locals.BackendServiceName+"-endpoint", &compute.NetworkEndpointArgs{
-		Project:              pulumi.String(stackInput.Target.Spec.GcpProjectId),
-		NetworkEndpointGroup: neg.Name,
-		Fqdn:                 pulumi.String(externalConfig.Hostname),
-		Port:                 pulumi.Int(port),
-	}, pulumi.Provider(gcpProvider))
-
-	if err != nil {
-		return pulumi.StringOutput{}, pulumi.StringOutput{}, errors.Wrap(err, "failed to add network endpoint")
-	}
+	// Note: For INTERNET_FQDN_PORT NEGs, the FQDN is configured via the NEG itself,
+	// not via individual NetworkEndpoint resources. The backend service will use
+	// the external hostname directly through the NEG configuration.
 
 	// Build CDN policy
 	cdnPolicy := buildBackendServiceCdnPolicy(stackInput, locals)
@@ -435,7 +422,7 @@ func buildBackendServiceCdnPolicy(stackInput *gcpcloudcdnv1.GcpCloudCdnStackInpu
 
 		// Cache key policy
 		if advancedConfig.CacheKeyPolicy != nil {
-			cdnPolicy.CacheKeyPolicy = buildCacheKeyPolicy(advancedConfig.CacheKeyPolicy)
+			cdnPolicy.CacheKeyPolicy = buildBackendServiceCacheKeyPolicy(advancedConfig.CacheKeyPolicy)
 		}
 
 		// Negative caching policies
@@ -460,9 +447,23 @@ func buildBackendServiceCdnPolicy(stackInput *gcpcloudcdnv1.GcpCloudCdnStackInpu
 	return cdnPolicy
 }
 
-// buildCacheKeyPolicy creates cache key policy configuration
-func buildCacheKeyPolicy(policy *gcpcloudcdnv1.CacheKeyPolicy) *compute.BackendBucketCdnPolicyCacheKeyPolicyArgs {
+// buildBackendBucketCacheKeyPolicy creates cache key policy configuration for Backend Buckets
+func buildBackendBucketCacheKeyPolicy(policy *gcpcloudcdnv1.CacheKeyPolicy) *compute.BackendBucketCdnPolicyCacheKeyPolicyArgs {
 	cacheKeyPolicy := &compute.BackendBucketCdnPolicyCacheKeyPolicyArgs{}
+
+	// Backend Bucket cache key policy only supports IncludeHttpHeaders and QueryStringWhitelists
+	if len(policy.QueryStringWhitelist) > 0 {
+		whitelist := make([]string, len(policy.QueryStringWhitelist))
+		copy(whitelist, policy.QueryStringWhitelist)
+		cacheKeyPolicy.QueryStringWhitelists = pulumi.ToStringArray(whitelist)
+	}
+
+	return cacheKeyPolicy
+}
+
+// buildBackendServiceCacheKeyPolicy creates cache key policy configuration for Backend Services
+func buildBackendServiceCacheKeyPolicy(policy *gcpcloudcdnv1.CacheKeyPolicy) *compute.BackendServiceCdnPolicyCacheKeyPolicyArgs {
+	cacheKeyPolicy := &compute.BackendServiceCdnPolicyCacheKeyPolicyArgs{}
 
 	if policy.IncludeQueryString != nil {
 		cacheKeyPolicy.IncludeQueryString = pulumi.Bool(*policy.IncludeQueryString)
@@ -490,24 +491,27 @@ func createHealthCheck(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCd
 	locals *Locals, healthCheckConfig *gcpcloudcdnv1.HealthCheckConfig,
 	gcpProvider pulumi.ProviderResource) (*compute.HealthCheck, error) {
 
-	healthCheckArgs := &compute.HealthCheckArgs{
-		Name:    pulumi.String(locals.HealthCheckName),
-		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId),
-		HttpHealthCheck: &compute.HealthCheckHttpHealthCheckArgs{
-			Port: pulumi.Int(80),
-		},
+	// Build HTTP health check configuration
+	httpHealthCheck := &compute.HealthCheckHttpHealthCheckArgs{
+		Port: pulumi.Int(80),
 	}
 
 	// Set path if specified
 	if healthCheckConfig.Path != nil && *healthCheckConfig.Path != "" {
-		healthCheckArgs.HttpHealthCheck.RequestPath = pulumi.String(*healthCheckConfig.Path)
+		httpHealthCheck.RequestPath = pulumi.String(*healthCheckConfig.Path)
 	} else {
-		healthCheckArgs.HttpHealthCheck.RequestPath = pulumi.String("/")
+		httpHealthCheck.RequestPath = pulumi.String("/")
 	}
 
 	// Set port if specified
 	if healthCheckConfig.Port != nil {
-		healthCheckArgs.HttpHealthCheck.Port = pulumi.Int(int(*healthCheckConfig.Port))
+		httpHealthCheck.Port = pulumi.Int(int(*healthCheckConfig.Port))
+	}
+
+	healthCheckArgs := &compute.HealthCheckArgs{
+		Name:            pulumi.String(locals.HealthCheckName),
+		Project:         pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		HttpHealthCheck: httpHealthCheck,
 	}
 
 	// Set intervals and thresholds

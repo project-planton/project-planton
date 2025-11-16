@@ -1,18 +1,28 @@
-# GCP Cloud Run Terraform Module - Examples
+# GCP Cloud Run Terraform Examples
 
-This document provides examples of using the GCP Cloud Run Terraform module with different configurations.
+This document provides comprehensive examples of using the GCP Cloud Run Terraform module for various deployment scenarios.
 
-## Example 1: Minimal Configuration
+## Table of Contents
 
-The simplest deployment with only required fields:
+1. [Minimal Configuration](#minimal-configuration)
+2. [Standard Configuration with Environment Variables](#standard-configuration-with-environment-variables)
+3. [Custom DNS Domain Mapping](#custom-dns-domain-mapping)
+4. [Private Service with VPC Access](#private-service-with-vpc-access)
+5. [High-Traffic Production Service](#high-traffic-production-service)
+6. [Multi-Region Deployment](#multi-region-deployment)
+
+---
+
+## Minimal Configuration
+
+The simplest Cloud Run deployment with required fields only.
 
 ```hcl
-module "cloud_run_minimal" {
-  source = "./path/to/module"
+module "minimal_cloudrun" {
+  source = "./iac/tf"
 
   metadata = {
-    name = "simple-api"
-    org  = "my-org"
+    name = "hello-world"
     env  = "dev"
   }
 
@@ -22,8 +32,8 @@ module "cloud_run_minimal" {
 
     container = {
       image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/my-app"
-        tag  = "1.0.0"
+        repo = "gcr.io/cloudrun/hello"
+        tag  = "latest"
       }
       cpu    = 1
       memory = 512
@@ -36,235 +46,346 @@ module "cloud_run_minimal" {
 }
 
 output "service_url" {
-  value = module.cloud_run_minimal.url
+  value = module.minimal_cloudrun.url
 }
 ```
 
-## Example 2: With Environment Variables
+**Use case:** Quick prototype or demo service with scale-to-zero capability.
 
-Deployment with plain environment variables:
+---
+
+## Standard Configuration with Environment Variables
+
+A production-ready service with environment variables and secrets.
 
 ```hcl
-module "cloud_run_with_env" {
-  source = "./path/to/module"
+module "api_service" {
+  source = "./iac/tf"
 
   metadata = {
-    name = "todo-api"
-    org  = "my-org"
+    name = "api-service"
+    id   = "api-svc-001"
+    org  = "acme-corp"
     env  = "production"
     labels = {
-      team = "platform"
-      cost-center = "engineering"
+      team    = "backend"
+      service = "api"
     }
   }
 
   spec = {
-    project_id = "my-gcp-project-123"
-    region     = "us-central1"
+    project_id     = "acme-prod-123"
+    region         = "us-west1"
+    service_name   = "acme-api"
+    service_account = "api-sa@acme-prod-123.iam.gserviceaccount.com"
 
     container = {
       image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/todo-api"
+        repo = "us-docker.pkg.dev/acme-prod-123/api/service"
         tag  = "v1.2.3"
       }
+
+      # Environment variables and secrets
       env = {
         variables = {
-          DATABASE_NAME = "todos"
-          DATABASE_HOST = "10.0.0.5"
-          LOG_LEVEL     = "info"
+          ENV           = "production"
           PORT          = "8080"
+          LOG_LEVEL     = "info"
+          FEATURE_FLAGS = "new_ui,analytics"
+        }
+        secrets = {
+          API_KEY          = "projects/123456/secrets/api-key:latest"
+          DATABASE_URL     = "projects/123456/secrets/db-url:1"
+          OAUTH_SECRET     = "projects/123456/secrets/oauth:latest"
         }
       }
+
       port   = 8080
       cpu    = 2
       memory = 1024
       replicas = {
-        min = 1
-        max = 50
-      }
-    }
-
-    max_concurrency = 100
-    timeout_seconds = 300
-  }
-}
-```
-
-## Example 3: With Secrets from Secret Manager
-
-Deployment with secrets from GCP Secret Manager:
-
-```hcl
-module "cloud_run_with_secrets" {
-  source = "./path/to/module"
-
-  metadata = {
-    name = "secure-api"
-    org  = "my-org"
-    env  = "production"
-  }
-
-  spec = {
-    project_id = "my-gcp-project-123"
-    region     = "us-central1"
-
-    container = {
-      image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/secure-api"
-        tag  = "v2.0.0"
-      }
-      env = {
-        variables = {
-          DATABASE_NAME = "production_db"
-          ENVIRONMENT   = "production"
-        }
-        secrets = {
-          DATABASE_PASSWORD = "projects/123456789/secrets/db-password/versions/latest"
-          API_KEY           = "projects/123456789/secrets/api-key/versions/1"
-          JWT_SECRET        = "projects/123456789/secrets/jwt-secret/versions/latest"
-        }
-      }
-      cpu    = 2
-      memory = 2048
-      replicas = {
-        min = 2
+        min = 2  # Always warm instances
         max = 100
       }
     }
 
-    max_concurrency = 80
-    timeout_seconds = 600
+    max_concurrency       = 100
+    timeout_seconds       = 300
+    allow_unauthenticated = true
   }
+}
+
+output "api_url" {
+  value = module.api_service.url
+}
+
+output "service_name" {
+  value = module.api_service.service_name
+}
+
+output "latest_revision" {
+  value = module.api_service.revision
 }
 ```
 
-## Example 4: Private Service with Custom Service Account
+**Use case:** Production API service with secrets management, custom service account, and predictable performance (min 2 instances).
 
-Internal-only service with a custom service account:
+---
+
+## Custom DNS Domain Mapping
+
+Deploy a service with custom domain mapping and SSL certificate.
 
 ```hcl
-module "cloud_run_private" {
-  source = "./path/to/module"
+module "custom_domain_service" {
+  source = "./iac/tf"
 
   metadata = {
-    name = "internal-api"
-    org  = "my-org"
+    name = "public-api"
     env  = "production"
   }
 
   spec = {
-    project_id      = "my-gcp-project-123"
-    region          = "us-central1"
-    service_account = "cloud-run-sa@my-gcp-project-123.iam.gserviceaccount.com"
+    project_id = "my-project-123"
+    region     = "us-east1"
 
     container = {
       image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/internal-api"
-        tag  = "v1.0.0"
-      }
-      cpu    = 1
-      memory = 512
-      replicas = {
-        min = 1
-        max = 20
-      }
-    }
-
-    ingress               = "INGRESS_TRAFFIC_INTERNAL_ONLY"
-    allow_unauthenticated = false
-  }
-}
-```
-
-## Example 5: With VPC Access (Direct VPC Egress)
-
-Service with access to private VPC resources:
-
-```hcl
-module "cloud_run_vpc" {
-  source = "./path/to/module"
-
-  metadata = {
-    name = "vpc-enabled-api"
-    org  = "my-org"
-    env  = "production"
-  }
-
-  spec = {
-    project_id = "my-gcp-project-123"
-    region     = "us-central1"
-
-    container = {
-      image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/api"
-        tag  = "v1.5.0"
-      }
-      env = {
-        variables = {
-          REDIS_HOST = "10.0.1.10"  # Private VPC IP
-          DB_HOST    = "10.0.1.20"  # Private VPC IP
-        }
+        repo = "us-docker.pkg.dev/my-project-123/apps/api"
+        tag  = "v2.0.0"
       }
       cpu    = 2
-      memory = 1024
+      memory = 2048
       replicas = {
         min = 1
         max = 50
       }
     }
 
-    vpc_access = {
-      network = "projects/my-gcp-project-123/global/networks/default"
-      subnet  = "projects/my-gcp-project-123/regions/us-central1/subnetworks/default"
-      egress  = "PRIVATE_RANGES_ONLY"
+    # Custom DNS configuration
+    dns = {
+      enabled      = true
+      hostnames    = ["api.example.com", "api-v2.example.com"]
+      managed_zone = "example-com-zone"
     }
+
+    max_concurrency       = 80
+    allow_unauthenticated = true
   }
+}
+
+# Note: Ensure DNS managed zone exists and is properly configured
+# The module will create the TXT record for domain verification
+
+output "custom_domain_url" {
+  value = "https://api.example.com"
+}
+
+output "cloudrun_url" {
+  value = module.custom_domain_service.url
 }
 ```
 
-## Example 6: Production-Ready with Custom DNS
+**Use case:** Public-facing service with branded custom domain and automatic SSL certificate provisioning.
 
-Full production configuration with custom domain:
+---
+
+## Private Service with VPC Access
+
+Deploy a private service accessible only within a VPC network.
 
 ```hcl
-module "cloud_run_production" {
-  source = "./path/to/module"
+module "internal_service" {
+  source = "./iac/tf"
 
   metadata = {
-    name = "production-api"
-    org  = "my-org"
+    name = "internal-processor"
+    env  = "production"
+  }
+
+  spec = {
+    project_id = "my-project-123"
+    region     = "us-central1"
+
+    container = {
+      image = {
+        repo = "us-docker.pkg.dev/my-project-123/internal/processor"
+        tag  = "v1.5.0"
+      }
+
+      env = {
+        variables = {
+          DATABASE_HOST = "10.0.0.5"
+          REDIS_HOST    = "10.0.0.10"
+        }
+      }
+
+      cpu    = 4
+      memory = 4096
+      replicas = {
+        min = 3
+        max = 20
+      }
+    }
+
+    # VPC access configuration for private resources
+    vpc_access = {
+      network = "projects/my-project-123/global/networks/private-vpc"
+      subnet  = "projects/my-project-123/regions/us-central1/subnetworks/cloudrun-subnet"
+      egress  = "PRIVATE_RANGES_ONLY"
+    }
+
+    # Internal traffic only
+    ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+    allow_unauthenticated = false
+
+    max_concurrency = 100
+    timeout_seconds = 600
+  }
+}
+
+# IAM binding for authorized services
+resource "google_cloud_run_v2_service_iam_member" "authorized_service" {
+  project  = module.internal_service.service_name
+  location = "us-central1"
+  name     = module.internal_service.service_name
+
+  role   = "roles/run.invoker"
+  member = "serviceAccount:frontend-sa@my-project-123.iam.gserviceaccount.com"
+}
+
+output "internal_url" {
+  value = module.internal_service.url
+}
+```
+
+**Use case:** Backend service that needs to access private databases or internal APIs within a VPC.
+
+---
+
+## High-Traffic Production Service
+
+Optimized configuration for high-throughput production workloads.
+
+```hcl
+module "high_traffic_service" {
+  source = "./iac/tf"
+
+  metadata = {
+    name = "video-transcoder"
+    id   = "vt-prod-001"
+    org  = "media-corp"
     env  = "production"
     labels = {
-      team        = "platform"
-      service     = "api"
-      criticality = "high"
+      tier        = "premium"
+      cost_center = "media"
     }
   }
 
   spec = {
-    project_id      = "my-gcp-project-123"
-    region          = "us-central1"
-    service_name    = "api"
-    service_account = "api-sa@my-gcp-project-123.iam.gserviceaccount.com"
+    project_id     = "media-prod-123"
+    region         = "us-west2"
+    service_account = "transcoder-sa@media-prod-123.iam.gserviceaccount.com"
 
     container = {
       image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/production-api"
-        tag  = "v3.2.1"
+        repo = "us-docker.pkg.dev/media-prod-123/services/transcoder"
+        tag  = "v3.1.2"
       }
+
       env = {
         variables = {
-          ENVIRONMENT = "production"
-          LOG_LEVEL   = "warn"
+          WORKER_THREADS    = "8"
+          MAX_FILE_SIZE_MB = "500"
+          OUTPUT_FORMAT    = "mp4,webm"
         }
         secrets = {
-          DATABASE_URL = "projects/123456789/secrets/prod-db-url/versions/latest"
-          API_KEY      = "projects/123456789/secrets/prod-api-key/versions/latest"
+          STORAGE_KEY      = "projects/media-prod-123/secrets/gcs-key:latest"
+          LICENSE_KEY      = "projects/media-prod-123/secrets/encoder-license:latest"
         }
       }
-      port   = 8080
-      cpu    = 4
-      memory = 4096
+
+      port = 8080
+      cpu  = 4  # Maximum CPU allocation
+      memory = 8192  # 8GB memory
+      replicas = {
+        min = 10  # Always warm for instant response
+        max = 200 # Scale to handle traffic spikes
+      }
+    }
+
+    max_concurrency = 50  # Lower to handle compute-intensive tasks
+    timeout_seconds = 3600  # 1 hour for long transcoding jobs
+
+    execution_environment = "EXECUTION_ENVIRONMENT_GEN2"
+    allow_unauthenticated = false  # Require authentication
+    ingress               = "INGRESS_TRAFFIC_ALL"
+  }
+}
+
+# Monitoring alert for high instance usage
+output "service_name" {
+  description = "Use this for Cloud Monitoring alerts"
+  value       = module.high_traffic_service.service_name
+}
+
+output "service_url" {
+  value = module.high_traffic_service.url
+}
+```
+
+**Use case:** Compute-intensive service with high memory requirements, long-running tasks, and predictable high traffic.
+
+---
+
+## Multi-Region Deployment
+
+Deploy the same service in multiple regions for global availability.
+
+```hcl
+# Define regions for deployment
+locals {
+  regions = {
+    us = "us-central1"
+    eu = "europe-west1"
+    asia = "asia-northeast1"
+  }
+}
+
+# Deploy to multiple regions
+module "global_api" {
+  source   = "./iac/tf"
+  for_each = local.regions
+
+  metadata = {
+    name = "global-api-${each.key}"
+    env  = "production"
+    labels = {
+      region = each.key
+    }
+  }
+
+  spec = {
+    project_id = "global-prod-123"
+    region     = each.value
+
+    container = {
+      image = {
+        repo = "us-docker.pkg.dev/global-prod-123/api/service"
+        tag  = "v1.0.0"
+      }
+
+      env = {
+        variables = {
+          REGION = each.key
+        }
+        secrets = {
+          API_KEY = "projects/global-prod-123/secrets/api-key:latest"
+        }
+      }
+
+      cpu    = 2
+      memory = 1024
       replicas = {
         min = 3
         max = 100
@@ -273,136 +394,107 @@ module "cloud_run_production" {
 
     max_concurrency       = 100
     timeout_seconds       = 300
-    ingress               = "INGRESS_TRAFFIC_ALL"
     allow_unauthenticated = true
-    execution_environment = "EXECUTION_ENVIRONMENT_GEN2"
-
-    vpc_access = {
-      network = "projects/my-gcp-project-123/global/networks/prod-vpc"
-      subnet  = "projects/my-gcp-project-123/regions/us-central1/subnetworks/prod-subnet"
-      egress  = "PRIVATE_RANGES_ONLY"
-    }
-
-    dns = {
-      enabled      = true
-      hostnames    = ["api.example.com", "api.example.org"]
-      managed_zone = "example-com-zone"
-    }
   }
 }
 
-output "production_api_url" {
-  value = module.cloud_run_production.url
+# Output all regional endpoints
+output "regional_urls" {
+  value = {
+    for region, service in module.global_api : region => service.url
+  }
 }
 
-output "production_api_revision" {
-  value = module.cloud_run_production.revision
-}
+# Example output:
+# regional_urls = {
+#   "asia" = "https://global-api-asia-abc123-an.a.run.app"
+#   "eu"   = "https://global-api-eu-abc123-ew.a.run.app"
+#   "us"   = "https://global-api-us-abc123-uc.a.run.app"
+# }
 ```
 
-## Example 7: GEN1 Execution Environment
+**Use case:** Global service requiring low latency access from multiple geographic regions, with the same configuration deployed everywhere.
 
-Service using the first-generation execution environment:
+---
 
-```hcl
-module "cloud_run_gen1" {
-  source = "./path/to/module"
+## Testing and Deployment
 
-  metadata = {
-    name = "legacy-api"
-    org  = "my-org"
-    env  = "staging"
-  }
+### Initialize and Validate
 
-  spec = {
-    project_id = "my-gcp-project-123"
-    region     = "us-central1"
-
-    container = {
-      image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/legacy-api"
-        tag  = "v0.9.0"
-      }
-      cpu    = 1
-      memory = 512
-      replicas = {
-        min = 0
-        max = 10
-      }
-    }
-
-    execution_environment = "EXECUTION_ENVIRONMENT_GEN1"
-  }
-}
+```bash
+cd iac/tf
+terraform init
+terraform validate
+terraform plan
 ```
 
-## Example 8: High-Concurrency Configuration
+### Deploy
 
-Service optimized for high concurrent requests:
-
-```hcl
-module "cloud_run_high_concurrency" {
-  source = "./path/to/module"
-
-  metadata = {
-    name = "high-throughput-api"
-    org  = "my-org"
-    env  = "production"
-  }
-
-  spec = {
-    project_id = "my-gcp-project-123"
-    region     = "us-central1"
-
-    container = {
-      image = {
-        repo = "us-docker.pkg.dev/my-project/my-repo/high-throughput-api"
-        tag  = "v2.0.0"
-      }
-      cpu    = 4
-      memory = 8192
-      replicas = {
-        min = 5
-        max = 200
-      }
-    }
-
-    max_concurrency = 250  # Higher than default
-    timeout_seconds = 60   # Short timeout for fast requests
-  }
-}
+```bash
+terraform apply
 ```
 
-## Provider Configuration
+### Verify Deployment
 
-Don't forget to configure the GCP provider in your root Terraform configuration:
+```bash
+# Get service URL
+terraform output url
 
-```hcl
-terraform {
-  required_version = ">= 1.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "google" {
-  project = "my-gcp-project-123"
-  region  = "us-central1"
-}
+# Test the service
+curl $(terraform output -raw url)
 ```
 
-## Notes
+### Clean Up
 
-1. **Image Repository**: Use Artifact Registry (`pkg.dev`) instead of the legacy Container Registry (`gcr.io`)
-2. **CPU Values**: Only 1, 2, or 4 vCPU are allowed
-3. **Memory Range**: Must be between 128 MiB and 32768 MiB (32 GiB)
-4. **Max Concurrency**: Must be between 1 and 1000
-5. **Timeout**: Must be between 1 and 3600 seconds
-6. **Scale to Zero**: Set `replicas.min = 0` to enable scale-to-zero for cost savings
-7. **Public Access**: Set `allow_unauthenticated = false` for private services
-8. **Secrets**: Use GCP Secret Manager format: `projects/{project}/secrets/{secret}/versions/{version}`
+```bash
+terraform destroy
+```
 
+---
+
+## Best Practices
+
+1. **Use specific image tags** instead of `latest` for reproducible deployments
+2. **Store secrets in Secret Manager** rather than environment variables
+3. **Set appropriate min_instances** for production services to avoid cold starts
+4. **Configure VPC access** for services that need private resource access
+5. **Use service accounts** with minimal required permissions
+6. **Enable custom domains** for user-facing services
+7. **Set realistic timeouts** based on your workload characteristics
+8. **Monitor costs** by tracking instance hours and request counts
+9. **Use labels** for resource organization and cost allocation
+10. **Test with terraform plan** before applying changes to production
+
+---
+
+## Troubleshooting
+
+### Service fails to start
+
+Check container logs in Cloud Console and verify:
+- Image is accessible and properly tagged
+- Environment variables and secrets are correctly configured
+- Container port matches the service configuration
+
+### Domain mapping not working
+
+Ensure:
+- DNS managed zone exists and is correctly configured
+- TXT record for verification is created
+- Domain ownership is verified in Cloud Console
+
+### VPC access issues
+
+Verify:
+- VPC network and subnet exist in the same project and region
+- Service account has necessary permissions
+- Egress setting matches your network requirements
+
+---
+
+## Additional Resources
+
+- [Cloud Run Documentation](https://cloud.google.com/run/docs)
+- [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
+- [Cloud Run Pricing](https://cloud.google.com/run/pricing)
+- [Best Practices for Cloud Run](https://cloud.google.com/run/docs/tips)

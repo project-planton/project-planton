@@ -1,30 +1,48 @@
+# locals.tf - Local value transformations for GCP Cloud Run deployment
+
 locals {
   # Service name: use spec.service_name if provided, otherwise metadata.name
   service_name = var.spec.service_name != null ? var.spec.service_name : var.metadata.name
 
-  # Construct full container image URI
-  container_image = "${var.spec.container.image.repo}:${var.spec.container.image.tag}"
+  # Container image URI
+  image = "${var.spec.container.image.repo}:${var.spec.container.image.tag}"
 
-  # Format memory with Mi suffix
+  # Memory in format expected by Cloud Run (e.g., "512Mi")
   memory = "${var.spec.container.memory}Mi"
 
   # CPU as string
   cpu = tostring(var.spec.container.cpu)
 
-  # Container port
+  # Container port (defaults to 8080)
   port = var.spec.container.port
 
-  # Labels: merge metadata labels with standard labels
+  # Timeout in format expected by Cloud Run (e.g., "300s")
+  timeout = "${var.spec.timeout_seconds}s"
+
+  # Service account: use provided or null for default
+  service_account = var.spec.service_account
+
+  # Convert enum values to GCP API strings
+  ingress = var.spec.ingress == "INGRESS_TRAFFIC_INTERNAL_ONLY" ? "INGRESS_TRAFFIC_INTERNAL_ONLY" : (
+    var.spec.ingress == "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" ? "INGRESS_TRAFFIC_INTERNAL_AND_CLOUD_LOAD_BALANCING" : "INGRESS_TRAFFIC_ALL"
+  )
+
+  execution_environment = var.spec.execution_environment == "EXECUTION_ENVIRONMENT_GEN1" ? "EXECUTION_ENVIRONMENT_GEN1" : "EXECUTION_ENVIRONMENT_GEN2"
+
+  # Labels for resource tagging
   labels = merge(
     {
-      "org"         = var.metadata.org != null ? var.metadata.org : "default"
-      "env"         = var.metadata.env != null ? var.metadata.env : "default"
-      "resource-id" = var.metadata.id != null ? var.metadata.id : var.metadata.name
+      resource      = "true"
+      resource_name = var.metadata.name
+      resource_kind = "gcpcloudrun"
     },
+    var.metadata.id != null ? { resource_id = var.metadata.id } : {},
+    var.metadata.org != null ? { organization = var.metadata.org } : {},
+    var.metadata.env != null ? { environment = var.metadata.env } : {},
     var.metadata.labels != null ? var.metadata.labels : {}
   )
 
-  # Environment variables: convert map to list of objects
+  # Environment variables: plain variables
   env_vars = var.spec.container.env != null && var.spec.container.env.variables != null ? [
     for k, v in var.spec.container.env.variables : {
       name  = k
@@ -32,7 +50,7 @@ locals {
     }
   ] : []
 
-  # Secret environment variables: convert map to list of objects
+  # Environment variables: secrets from Secret Manager
   env_secrets = var.spec.container.env != null && var.spec.container.env.secrets != null ? [
     for k, v in var.spec.container.env.secrets : {
       name   = k
@@ -40,30 +58,11 @@ locals {
     }
   ] : []
 
-  # Convert ingress enum to GCP API value
-  ingress_mapping = {
-    "INGRESS_TRAFFIC_ALL"                      = "INGRESS_TRAFFIC_ALL"
-    "INGRESS_TRAFFIC_INTERNAL_ONLY"           = "INGRESS_TRAFFIC_INTERNAL_ONLY"
-    "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" = "INGRESS_TRAFFIC_INTERNAL_AND_CLOUD_LOAD_BALANCING"
-  }
-  ingress = lookup(local.ingress_mapping, var.spec.ingress, "INGRESS_TRAFFIC_ALL")
+  # DNS configuration
+  dns_enabled      = var.spec.dns != null ? var.spec.dns.enabled : false
+  dns_hostnames    = var.spec.dns != null ? var.spec.dns.hostnames : []
+  dns_managed_zone = var.spec.dns != null ? var.spec.dns.managed_zone : ""
 
-  # Convert execution environment enum to GCP API value
-  execution_environment = var.spec.execution_environment
-
-  # Determine if VPC access is configured
-  has_vpc_access = var.spec.vpc_access != null && (
-    var.spec.vpc_access.network != null ||
-    var.spec.vpc_access.subnet != null
-  )
-
-  # Determine if custom DNS is enabled
-  has_custom_dns = var.spec.dns != null && var.spec.dns.enabled == true
-
-  # DNS hostnames (empty list if DNS not configured)
-  dns_hostnames = local.has_custom_dns ? var.spec.dns.hostnames : []
-
-  # Service account email
-  service_account_email = var.spec.service_account
+  # VPC access configuration
+  has_vpc_access = var.spec.vpc_access != null && (var.spec.vpc_access.network != null || var.spec.vpc_access.subnet != null)
 }
-

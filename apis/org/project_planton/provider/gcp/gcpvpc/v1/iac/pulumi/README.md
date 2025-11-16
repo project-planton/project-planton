@@ -335,7 +335,7 @@ In `go.mod`, pin Pulumi and GCP provider versions to avoid unexpected updates:
 
 ```go
 require (
-    github.com/pulumi/pulumi-gcp/sdk/v8 v8.0.0
+    github.com/pulumi/pulumi-gcp/sdk/v9 v8.0.0
     github.com/pulumi/pulumi/sdk/v3 v3.100.0
 )
 ```

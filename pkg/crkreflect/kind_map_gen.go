@@ -51,7 +51,6 @@ import (
 	civoipaddressv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civoipaddress/v1"
 	civokubernetesclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1"
 	civokubernetesnodepoolv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetesnodepool/v1"
-	civoloadbalancerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civoloadbalancer/v1"
 	civovolumev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovolume/v1"
 	civovpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovpc/v1"
 	cloudflared1databasev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1"
@@ -199,7 +198,6 @@ var ProviderCivoMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_CivoIpAddress:          &civoipaddressv1.CivoIpAddress{},
 	cloudresourcekind.CloudResourceKind_CivoKubernetesCluster:  &civokubernetesclusterv1.CivoKubernetesCluster{},
 	cloudresourcekind.CloudResourceKind_CivoKubernetesNodePool: &civokubernetesnodepoolv1.CivoKubernetesNodePool{},
-	cloudresourcekind.CloudResourceKind_CivoLoadBalancer:       &civoloadbalancerv1.CivoLoadBalancer{},
 	cloudresourcekind.CloudResourceKind_CivoVolume:             &civovolumev1.CivoVolume{},
 	cloudresourcekind.CloudResourceKind_CivoVpc:                &civovpcv1.CivoVpc{},
 }

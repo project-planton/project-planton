@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 	gcprouternatv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

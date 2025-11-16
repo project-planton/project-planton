@@ -82,9 +82,9 @@ variable "spec" {
 
     # Optional: Custom DNS mapping
     dns = optional(object({
-      enabled      = bool             # Enable custom domain mapping
-      hostnames    = list(string)     # List of custom hostnames
-      managed_zone = string           # Cloud DNS managed zone for verification
+      enabled      = bool         # Enable custom domain mapping
+      hostnames    = list(string) # List of custom hostnames
+      managed_zone = string       # Cloud DNS managed zone for verification
     }))
   })
 }

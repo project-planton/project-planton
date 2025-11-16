@@ -238,7 +238,7 @@ log_config {
 
 The module uses these Pulumi SDKs:
 
-- `github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp` - GCP provider
+- `github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp` - GCP provider
 - `github.com/pulumi/pulumi/sdk/v3/go/pulumi` - Pulumi core
 
 ## Error Handling
@@ -322,7 +322,7 @@ planton destroy gcprouternat test-nat
 
 ```bash
 # Update Pulumi GCP SDK
-go get -u github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp
+go get -u github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp
 
 # Update Pulumi SDK
 go get -u github.com/pulumi/pulumi/sdk/v3/go/pulumi

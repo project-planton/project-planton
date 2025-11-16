@@ -5,9 +5,10 @@ import (
 
 	"github.com/pkg/errors"
 	azurevpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/core"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/network"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/core"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/network"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/privatedns"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -146,9 +147,9 @@ func Resources(ctx *pulumi.Context, stackInput *azurevpcv1.AzureVpcStackInput) e
 
 	// Link Private DNS Zones if specified
 	for i, dnsZoneId := range spec.DnsPrivateZoneLinks {
-		_, err := network.NewPrivateDnsZoneVirtualNetworkLink(ctx,
+		_, err := privatedns.NewZoneVirtualNetworkLink(ctx,
 			fmt.Sprintf("dns-link-%d", i),
-			&network.PrivateDnsZoneVirtualNetworkLinkArgs{
+			&privatedns.ZoneVirtualNetworkLinkArgs{
 				Name:                pulumi.String(fmt.Sprintf("%s-link-%d", locals.VNetName, i)),
 				ResourceGroupName:   resourceGroup.Name,
 				PrivateDnsZoneName:  pulumi.String(dnsZoneId), // This should be parsed

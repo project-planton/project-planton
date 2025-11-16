@@ -6,6 +6,7 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
 )
 
 func TestDigitalOceanFunctionSpec(t *testing.T) {
@@ -19,7 +20,7 @@ var _ = ginkgo.Describe("DigitalOceanFunctionSpec validations", func() {
 	makeValidHttpFunctionSpec := func() *DigitalOceanFunctionSpec {
 		return &DigitalOceanFunctionSpec{
 			FunctionName: "api-handler",
-			Region:       DigitalOceanRegion_nyc1,
+			Region:       digitalocean.DigitalOceanRegion_nyc3,
 			Runtime:      DigitalOceanFunctionRuntime_nodejs_18,
 			GithubSource: &DigitalOceanFunctionGithubSource{
 				Repo:         "myorg/my-functions",
@@ -37,7 +38,7 @@ var _ = ginkgo.Describe("DigitalOceanFunctionSpec validations", func() {
 	makeValidScheduledFunctionSpec := func() *DigitalOceanFunctionSpec {
 		return &DigitalOceanFunctionSpec{
 			FunctionName: "nightly-cleanup",
-			Region:       DigitalOceanRegion_nyc1,
+			Region:       digitalocean.DigitalOceanRegion_nyc3,
 			Runtime:      DigitalOceanFunctionRuntime_python_311,
 			GithubSource: &DigitalOceanFunctionGithubSource{
 				Repo:   "myorg/my-functions",
@@ -73,7 +74,7 @@ var _ = ginkgo.Describe("DigitalOceanFunctionSpec validations", func() {
 
 		ginkgo.It("rejects spec with missing region", func() {
 			spec := makeValidHttpFunctionSpec()
-			spec.Region = DigitalOceanRegion_digital_ocean_region_unspecified
+			spec.Region = digitalocean.DigitalOceanRegion_digital_ocean_region_unspecified
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
@@ -423,7 +424,7 @@ var _ = ginkgo.Describe("DigitalOceanFunctionSpec validations", func() {
 		ginkgo.It("accepts production API function with secrets and monitoring", func() {
 			spec := &DigitalOceanFunctionSpec{
 				FunctionName: "prod-api",
-				Region:       DigitalOceanRegion_nyc1,
+				Region:       digitalocean.DigitalOceanRegion_nyc3,
 				Runtime:      DigitalOceanFunctionRuntime_nodejs_20,
 				GithubSource: &DigitalOceanFunctionGithubSource{
 					Repo:         "mycompany/production-apis",
@@ -452,7 +453,7 @@ var _ = ginkgo.Describe("DigitalOceanFunctionSpec validations", func() {
 		ginkgo.It("accepts background job with high memory and long timeout", func() {
 			spec := &DigitalOceanFunctionSpec{
 				FunctionName: "data-processor",
-				Region:       DigitalOceanRegion_sfo3,
+				Region:       digitalocean.DigitalOceanRegion_sfo3,
 				Runtime:      DigitalOceanFunctionRuntime_python_311,
 				GithubSource: &DigitalOceanFunctionGithubSource{
 					Repo:         "mycompany/data-jobs",
@@ -475,23 +476,23 @@ var _ = ginkgo.Describe("DigitalOceanFunctionSpec validations", func() {
 	})
 
 	ginkgo.Context("Region validation", func() {
-		ginkgo.It("accepts NYC1 region", func() {
+		ginkgo.It("accepts NYC3 region", func() {
 			spec := makeValidHttpFunctionSpec()
-			spec.Region = DigitalOceanRegion_nyc1
+			spec.Region = digitalocean.DigitalOceanRegion_nyc3
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})
 
 		ginkgo.It("accepts SFO3 region", func() {
 			spec := makeValidHttpFunctionSpec()
-			spec.Region = DigitalOceanRegion_sfo3
+			spec.Region = digitalocean.DigitalOceanRegion_sfo3
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})
 
 		ginkgo.It("accepts AMS3 region", func() {
 			spec := makeValidHttpFunctionSpec()
-			spec.Region = DigitalOceanRegion_ams3
+			spec.Region = digitalocean.DigitalOceanRegion_ams3
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})

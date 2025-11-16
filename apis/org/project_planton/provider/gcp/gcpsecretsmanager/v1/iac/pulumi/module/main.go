@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 	gcpsecretsmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/secretmanager"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/secretmanager"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

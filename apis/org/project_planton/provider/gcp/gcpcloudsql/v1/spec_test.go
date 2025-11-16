@@ -51,28 +51,28 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("rejects spec with missing database_engine", func() {
 			spec := makeValidSpec()
 			spec.DatabaseEngine = GcpCloudSqlDatabaseEngine_DATABASE_ENGINE_UNSPECIFIED
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects spec with missing database_version", func() {
 			spec := makeValidSpec()
 			spec.DatabaseVersion = ""
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects spec with missing tier", func() {
 			spec := makeValidSpec()
 			spec.Tier = ""
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects spec with storage_gb = 0", func() {
 			spec := makeValidSpec()
 			spec.StorageGb = 0
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -81,35 +81,35 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts valid project ID format", func() {
 			spec := makeValidSpec()
 			spec.ProjectId = "my-project-123"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("rejects project ID starting with number", func() {
 			spec := makeValidSpec()
 			spec.ProjectId = "123-project"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects project ID ending with hyphen", func() {
 			spec := makeValidSpec()
 			spec.ProjectId = "my-project-"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects project ID that is too short", func() {
 			spec := makeValidSpec()
 			spec.ProjectId = "proj"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects project ID with uppercase letters", func() {
 			spec := makeValidSpec()
 			spec.ProjectId = "My-Project"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -118,28 +118,28 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts valid region format", func() {
 			spec := makeValidSpec()
 			spec.Region = "us-west1"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts valid multi-region format", func() {
 			spec := makeValidSpec()
 			spec.Region = "europe-west2"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("rejects invalid region format without number", func() {
 			spec := makeValidSpec()
 			spec.Region = "us-central"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects invalid region format with uppercase", func() {
 			spec := makeValidSpec()
 			spec.Region = "US-CENTRAL1"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -148,21 +148,21 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts MYSQL engine", func() {
 			spec := makeValidSpec()
 			spec.DatabaseEngine = GcpCloudSqlDatabaseEngine_MYSQL
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts POSTGRESQL engine", func() {
 			spec := makeValidSpec()
 			spec.DatabaseEngine = GcpCloudSqlDatabaseEngine_POSTGRESQL
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("rejects unspecified engine", func() {
 			spec := makeValidSpec()
 			spec.DatabaseEngine = GcpCloudSqlDatabaseEngine_DATABASE_ENGINE_UNSPECIFIED
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -171,35 +171,35 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts minimum storage (10 GB)", func() {
 			spec := makeValidSpec()
 			spec.StorageGb = 10
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts maximum storage (65536 GB)", func() {
 			spec := makeValidSpec()
 			spec.StorageGb = 65536
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts mid-range storage (500 GB)", func() {
 			spec := makeValidSpec()
 			spec.StorageGb = 500
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("rejects storage below minimum (9 GB)", func() {
 			spec := makeValidSpec()
 			spec.StorageGb = 9
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("rejects storage above maximum (65537 GB)", func() {
 			spec := makeValidSpec()
 			spec.StorageGb = 65537
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -208,21 +208,21 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts ENTERPRISE edition", func() {
 			spec := makeValidSpec()
 			spec.Edition = GcpCloudSqlEdition_ENTERPRISE
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts ENTERPRISE_PLUS edition", func() {
 			spec := makeValidSpec()
 			spec.Edition = GcpCloudSqlEdition_ENTERPRISE_PLUS
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts EDITION_UNSPECIFIED (defaults to ENTERPRISE)", func() {
 			spec := makeValidSpec()
 			spec.Edition = GcpCloudSqlEdition_EDITION_UNSPECIFIED
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 	})
@@ -231,21 +231,21 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts password with minimum length (8 chars)", func() {
 			spec := makeValidSpec()
 			spec.RootPassword = "Password123"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("rejects password shorter than 8 characters", func() {
 			spec := makeValidSpec()
 			spec.RootPassword = "Pass123"
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
 		It("accepts spec without password (optional)", func() {
 			spec := makeValidSpec()
 			spec.RootPassword = ""
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 	})
@@ -257,7 +257,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				VpcId:            "projects/my-project/global/networks/my-vpc",
 				PrivateIpEnabled: true,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -267,7 +267,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				VpcId:            "",
 				PrivateIpEnabled: true,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -276,7 +276,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 			spec.Network = &GcpCloudSqlNetwork{
 				Ipv4Enabled: true,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -288,7 +288,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Ipv4Enabled:        true,
 				AuthorizedNetworks: []string{},
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -301,7 +301,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 					"192.168.1.0/16",
 				},
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -313,7 +313,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 					"10.0.0.0",
 				},
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -326,7 +326,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 					"10.0.0.0/24",
 				},
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -338,7 +338,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Enabled: true,
 				Zone:    "us-central1-a",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -348,7 +348,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Enabled: true,
 				Zone:    "",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -358,7 +358,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Enabled: false,
 				Zone:    "",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 	})
@@ -371,7 +371,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "02:00",
 				RetentionDays: 7,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -382,7 +382,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "",
 				RetentionDays: 7,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -393,7 +393,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "02:00",
 				RetentionDays: 0,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -404,7 +404,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "23:59",
 				RetentionDays: 30,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -415,7 +415,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "2:00",
 				RetentionDays: 7,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -426,7 +426,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "24:00",
 				RetentionDays: 7,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -437,7 +437,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "02:00",
 				RetentionDays: 1,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -448,7 +448,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "02:00",
 				RetentionDays: 365,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -459,7 +459,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				StartTime:     "02:00",
 				RetentionDays: 366,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -471,7 +471,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				RetentionDays:              7,
 				PointInTimeRecoveryEnabled: true,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -481,7 +481,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Enabled:                    false,
 				PointInTimeRecoveryEnabled: true,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -490,7 +490,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 			spec.Backup = &GcpCloudSqlBackup{
 				Enabled: false,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 	})
@@ -503,7 +503,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Hour:        3, // 3 AM UTC
 				UpdateTrack: "stable",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -513,7 +513,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  1,
 				Hour: 0,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -523,7 +523,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  7,
 				Hour: 0,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -533,7 +533,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  0,
 				Hour: 3,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -543,7 +543,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  8,
 				Hour: 3,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -553,7 +553,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  1,
 				Hour: 0,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -563,7 +563,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  1,
 				Hour: 23,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -573,7 +573,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Day:  1,
 				Hour: 24,
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
@@ -584,7 +584,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Hour:        3,
 				UpdateTrack: "canary",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -595,7 +595,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Hour:        3,
 				UpdateTrack: "stable",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -606,7 +606,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Hour:        3,
 				UpdateTrack: "",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
@@ -617,7 +617,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				Hour:        3,
 				UpdateTrack: "invalid",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 	})
@@ -629,14 +629,14 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				"slow_query_log": "on",
 				"log_output":     "FILE",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
 		It("accepts empty database flags", func() {
 			spec := makeValidSpec()
 			spec.DatabaseFlags = map[string]string{}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 	})
@@ -681,7 +681,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				},
 				RootPassword: "SuperSecurePassword123!",
 			}
-			err := validator.Validate(spec)
+			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 	})

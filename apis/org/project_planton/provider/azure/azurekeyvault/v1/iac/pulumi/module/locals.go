@@ -1,7 +1,6 @@
 package module
 
 import (
-	"fmt"
 	"strings"
 
 	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1"

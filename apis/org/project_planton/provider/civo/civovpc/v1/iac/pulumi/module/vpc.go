@@ -26,15 +26,15 @@ func vpc(
 		networkArgs.CidrV4 = pulumi.String(locals.CivoVpc.Spec.IpRangeCidr)
 	}
 
-	// Optional: Set as default network for the region
-	// Note: Only one network per region can be set as default
+	// Note: The 'is_default_for_region' field is not supported by Pulumi Civo SDK v2.
+	// The NetworkArgs struct doesn't have a 'Default' field as of v2.4.8.
+	// This feature may need to be set via Civo API directly or wait for provider support.
 	if locals.CivoVpc.Spec.IsDefaultForRegion {
-		networkArgs.Default = pulumi.Bool(true)
-		ctx.Log.Info(fmt.Sprintf(
-			"Network '%s' will be set as the default network for region '%s'. "+
-				"Note: Only one default network is allowed per region.",
+		ctx.Log.Warn(fmt.Sprintf(
+			"Network '%s' has 'is_default_for_region' set to true, but this is not supported by "+
+				"Pulumi Civo SDK v2.4.8. The network will be created without being set as default. "+
+				"To set a network as default, use the Civo CLI: 'civo network default <network-id>'",
 			locals.CivoVpc.Spec.NetworkName,
-			locals.CivoVpc.Spec.Region,
 		), nil)
 	}
 

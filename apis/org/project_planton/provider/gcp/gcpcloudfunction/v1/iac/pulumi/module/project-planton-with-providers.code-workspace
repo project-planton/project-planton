@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../../../../.."
+		},
+		{
+			"path": "../../../../../../../../../../../../pulumi/pulumi-gcp"
+		},
+		{
+			"path": "../../../../../../../../../../../../pulumi/pulumi-azure"
+		},
+		{
+			"path": "../../../../../../../../../../../../pulumi/pulumi-azure-native"
+		},
+		{
+			"path": "../../../../../../../../../../../../pulumi/pulumi-digitalocean"
+		},
+		{
+			"path": "../../../../../../../../../../../../civo/terraform-provider-civo"
+		}
+	],
+	"settings": {}
+}

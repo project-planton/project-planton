@@ -14,12 +14,23 @@ func function(
 	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.App, error) {
 
-	// 1. Translate the env map into the provider‑specific structure.
+	// 1. Translate the env maps into the provider‑specific structure.
 	var functionEnvs digitalocean.AppSpecFunctionEnvArray
-	for k, v := range locals.DigitalOceanFunction.Spec.Env {
+
+	// Add regular environment variables
+	for k, v := range locals.DigitalOceanFunction.Spec.EnvironmentVariables {
 		functionEnvs = append(functionEnvs, digitalocean.AppSpecFunctionEnvArgs{
 			Key:   pulumi.String(k),
 			Value: pulumi.String(v),
+		})
+	}
+
+	// Add secret environment variables
+	for k, v := range locals.DigitalOceanFunction.Spec.SecretEnvironmentVariables {
+		functionEnvs = append(functionEnvs, digitalocean.AppSpecFunctionEnvArgs{
+			Key:   pulumi.String(k),
+			Value: pulumi.String(v),
+			Type:  pulumi.String("SECRET"),
 		})
 	}
 
