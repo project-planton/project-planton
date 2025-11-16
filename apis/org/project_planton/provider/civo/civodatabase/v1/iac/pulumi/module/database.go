@@ -48,6 +48,11 @@ func database(
 			locals.CivoDatabase.Spec.FirewallIds[0].GetValue())
 	}
 
+	// Note: storage_gib and tags fields are defined in spec.proto but not currently
+	// supported by the pulumi-civo provider v2 for Database resources.
+	// These will be enabled when the provider is updated to support them.
+	// See: https://github.com/civo/terraform-provider-civo/blob/main/civo/database/resource_database.go
+
 	// 3. Provision the database.
 	createdDatabase, err := civo.NewDatabase(
 		ctx,

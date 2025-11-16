@@ -38,7 +38,7 @@ func Resources(ctx *pulumi.Context, stackInput *azurekeyvaultv1.AzureKeyVaultSta
 
 	if spec.NetworkAcls != nil {
 		networkAcls.DefaultAction = pulumi.String(getNetworkDefaultAction(spec.NetworkAcls.GetDefaultAction()))
-		
+
 		if spec.NetworkAcls.GetBypassAzureServices() {
 			networkAcls.Bypass = pulumi.String("AzureServices")
 		} else {
@@ -75,11 +75,11 @@ func Resources(ctx *pulumi.Context, stackInput *azurekeyvaultv1.AzureKeyVaultSta
 			SkuName:           pulumi.String(getSku(spec.Sku)),
 
 			// Security settings
-			EnableRbacAuthorization:  pulumi.Bool(spec.GetEnableRbacAuthorization()),
-			PurgeProtectionEnabled:   pulumi.Bool(spec.GetEnablePurgeProtection()),
-			SoftDeleteRetentionDays:  pulumi.Int(int(spec.GetSoftDeleteRetentionDays())),
-			EnabledForDeployment:     pulumi.Bool(false),
-			EnabledForDiskEncryption: pulumi.Bool(false),
+			EnableRbacAuthorization:      pulumi.Bool(spec.GetEnableRbacAuthorization()),
+			PurgeProtectionEnabled:       pulumi.Bool(spec.GetEnablePurgeProtection()),
+			SoftDeleteRetentionDays:      pulumi.Int(int(spec.GetSoftDeleteRetentionDays())),
+			EnabledForDeployment:         pulumi.Bool(false),
+			EnabledForDiskEncryption:     pulumi.Bool(false),
 			EnabledForTemplateDeployment: pulumi.Bool(false),
 
 			// Network ACLs
@@ -95,16 +95,16 @@ func Resources(ctx *pulumi.Context, stackInput *azurekeyvaultv1.AzureKeyVaultSta
 
 	// Create secrets (placeholder entries - actual values must be set separately)
 	secretIdMap := make(map[string]pulumi.StringOutput)
-	
+
 	for _, secretName := range spec.SecretNames {
 		// Create empty secret (value must be set separately via Azure SDK/CLI)
 		secret, err := keyvault.NewSecret(ctx,
 			fmt.Sprintf("secret-%s", secretName),
 			&keyvault.SecretArgs{
-				Name:        pulumi.String(secretName),
-				KeyVaultId:  vault.ID(),
-				Value:       pulumi.String(""), // Empty placeholder - must be set separately
-				Tags:        pulumi.ToStringMap(locals.AzureTags),
+				Name:       pulumi.String(secretName),
+				KeyVaultId: vault.ID(),
+				Value:      pulumi.String(""), // Empty placeholder - must be set separately
+				Tags:       pulumi.ToStringMap(locals.AzureTags),
 			},
 			pulumi.Provider(azureProvider),
 			pulumi.Parent(vault))

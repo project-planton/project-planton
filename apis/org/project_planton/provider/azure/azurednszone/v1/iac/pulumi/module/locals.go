@@ -41,4 +41,3 @@ func initializeLocals(ctx *pulumi.Context, stackInput *azurednszonev1.AzureDnsZo
 
 	return locals
 }
-

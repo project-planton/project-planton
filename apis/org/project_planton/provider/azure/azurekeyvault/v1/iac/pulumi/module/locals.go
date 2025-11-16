@@ -79,4 +79,3 @@ func getNetworkDefaultAction(action azurekeyvaultv1.AzureKeyVaultNetworkAction) 
 		return "Deny"
 	}
 }
-

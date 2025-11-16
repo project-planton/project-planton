@@ -55,25 +55,25 @@ func Resources(ctx *pulumi.Context, stackInput *azureaksnodepoolv1.AzureAksNodeP
 	nodePoolArgs := &containerservice.AgentPoolArgs{
 		// The cluster's resource group name (derived from cluster name)
 		ResourceGroupName: pulumi.String(fmt.Sprintf("rg-%s", clusterName)),
-		
+
 		// The parent cluster name
 		ResourceName: pulumi.String(clusterName),
-		
+
 		// Node pool name
 		AgentPoolName: pulumi.String(target.Metadata.Name),
-		
+
 		// VM size
 		VmSize: pulumi.String(spec.VmSize),
-		
+
 		// Node count
 		Count: pulumi.Int(int(spec.InitialNodeCount)),
-		
+
 		// Mode (System or User)
 		Mode: pulumi.String(mode),
-		
+
 		// OS type
 		OsType: pulumi.String(osType),
-		
+
 		// Availability zones
 		AvailabilityZones: availabilityZones,
 	}

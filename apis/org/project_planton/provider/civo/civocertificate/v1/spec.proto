@@ -14,10 +14,7 @@ message CivoCertificateSpec {
   ];
 
   // type must align with the branch chosen in certificate_source.
-  CivoCertificateType type = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).enum.defined_only = true
-  ];
+  CivoCertificateType type = 2;
 
   // Mutually exclusive parameter sets.
   oneof certificate_source {

@@ -79,4 +79,3 @@ func getIdleTimeoutMinutes(spec *azurenatgatewayv1.AzureNatGatewaySpec) int {
 	}
 	return 4 // Azure default
 }
-

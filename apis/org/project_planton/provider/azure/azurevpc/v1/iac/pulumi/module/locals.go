@@ -60,4 +60,3 @@ func initializeLocals(ctx *pulumi.Context, stackInput *azurevpcv1.AzureVpcStackI
 
 	return locals
 }
-
