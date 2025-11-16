@@ -26,12 +26,12 @@ require (
 	github.com/pulumi/pulumi-azure-native-sdk/v2 v2.90.0
 	github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0
+	github.com/pulumi/pulumi-azure/sdk/v6 v6.28.0
 	github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8
 	github.com/pulumi/pulumi-cloudflare/sdk/v6 v6.10.1
 	github.com/pulumi/pulumi-confluentcloud/sdk/v2 v2.49.0
 	github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.49.0
-	github.com/pulumi/pulumi-gcp/sdk/v7 v7.38.0
-	github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0
+	github.com/pulumi/pulumi-gcp/sdk/v9 v9.4.0
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4
 	github.com/pulumi/pulumi-mongodbatlas/sdk/v3 v3.36.1
 	github.com/pulumi/pulumi-random/sdk/v4 v4.16.7
@@ -90,7 +90,7 @@ require (
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/glog v1.2.4 // indirect
+	github.com/golang/glog v1.2.5 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/cel-go v0.26.1 // indirect

@@ -3,12 +3,12 @@ package module
 import (
 	"fmt"
 
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/cloudrun"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudrun"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/cloudrunv2"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/dns"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudrunv2"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/dns"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

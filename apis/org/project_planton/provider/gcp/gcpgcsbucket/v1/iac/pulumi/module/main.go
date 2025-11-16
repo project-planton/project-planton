@@ -77,7 +77,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 	// Configure retention policy if specified
 	if locals.GcpGcsBucket.Spec.RetentionPolicy != nil {
 		bucketArgs.RetentionPolicy = &storage.BucketRetentionPolicyArgs{
-			RetentionPeriod: pulumi.Int(int(locals.GcpGcsBucket.Spec.RetentionPolicy.RetentionPeriodSeconds)),
+			RetentionPeriod: pulumi.String(fmt.Sprintf("%d", locals.GcpGcsBucket.Spec.RetentionPolicy.RetentionPeriodSeconds)),
 			IsLocked:        pulumi.Bool(locals.GcpGcsBucket.Spec.RetentionPolicy.IsLocked),
 		}
 	}
@@ -178,7 +178,7 @@ func buildLifecycleRule(rule *gcpgcsbucketv1.GcpGcsLifecycleRule) storage.Bucket
 	if len(rule.Condition.MatchesStorageClass) > 0 {
 		var storageClasses []string
 		for _, class := range rule.Condition.MatchesStorageClass {
-			storageClasses = append(storageClasses, storageClassToString(*class))
+			storageClasses = append(storageClasses, storageClassToString(class))
 		}
 		conditionArgs.MatchesStorageClasses = pulumi.ToStringArray(storageClasses)
 	}

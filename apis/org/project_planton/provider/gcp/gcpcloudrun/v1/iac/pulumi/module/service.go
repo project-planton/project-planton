@@ -5,8 +5,9 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"            // provider
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/cloudrunv2" // Cloud Run v2
+	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"            // provider
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudrunv2" // Cloud Run v2
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -162,11 +163,11 @@ func toEnvArray(locals *Locals) cloudrunv2.ServiceTemplateContainerEnvArray {
 }
 
 // toIngressString converts the proto enum to the GCP API string value
-func toIngressString(ingress GcpCloudRunIngress) string {
+func toIngressString(ingress gcpcloudrunv1.GcpCloudRunIngress) string {
 	switch ingress {
-	case GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_ONLY:
+	case gcpcloudrunv1.GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_ONLY:
 		return "INGRESS_TRAFFIC_INTERNAL_ONLY"
-	case GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER:
+	case gcpcloudrunv1.GcpCloudRunIngress_INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER:
 		return "INGRESS_TRAFFIC_INTERNAL_AND_CLOUD_LOAD_BALANCING"
 	default:
 		return "INGRESS_TRAFFIC_ALL"
@@ -174,9 +175,9 @@ func toIngressString(ingress GcpCloudRunIngress) string {
 }
 
 // toExecutionEnvironmentString converts the proto enum to the GCP API string value
-func toExecutionEnvironmentString(env GcpCloudRunExecutionEnvironment) string {
+func toExecutionEnvironmentString(env gcpcloudrunv1.GcpCloudRunExecutionEnvironment) string {
 	switch env {
-	case GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN1:
+	case gcpcloudrunv1.GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN1:
 		return "EXECUTION_ENVIRONMENT_GEN1"
 	default:
 		return "EXECUTION_ENVIRONMENT_GEN2"

@@ -193,7 +193,6 @@ const (
 	CloudResourceKind_CivoIpAddress          CloudResourceKind = 1506
 	CloudResourceKind_CivoKubernetesCluster  CloudResourceKind = 1507
 	CloudResourceKind_CivoKubernetesNodePool CloudResourceKind = 1508
-	CloudResourceKind_CivoLoadBalancer       CloudResourceKind = 1509
 	CloudResourceKind_CivoVolume             CloudResourceKind = 1510
 	CloudResourceKind_CivoVpc                CloudResourceKind = 1511
 	// 1800–2099: Cloudflare resources
@@ -321,7 +320,6 @@ var (
 		1506: "CivoIpAddress",
 		1507: "CivoKubernetesCluster",
 		1508: "CivoKubernetesNodePool",
-		1509: "CivoLoadBalancer",
 		1510: "CivoVolume",
 		1511: "CivoVpc",
 		1800: "CloudflareDnsZone",
@@ -445,7 +443,6 @@ var (
 		"CivoIpAddress":                        1506,
 		"CivoKubernetesCluster":                1507,
 		"CivoKubernetesNodePool":               1508,
-		"CivoLoadBalancer":                     1509,
 		"CivoVolume":                           1510,
 		"CivoVpc":                              1511,
 		"CloudflareDnsZone":                    1800,
@@ -658,7 +655,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x10namespace_prefix\x18\x01 \x01(\tR\x0fnamespacePrefix*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xfc(\n" +
+	"\x02v1\x10\x01*\xd5(\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -820,9 +817,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\b\x0e\x10\x01\"\x04ciip\x12*\n" +
 	"\x15CivoKubernetesCluster\x10\xe3\v\x1a\x0e\xa2\xf7\x04\n" +
 	"\b\x0e\x10\x01\"\x04cikc\x12,\n" +
-	"\x16CivoKubernetesNodePool\x10\xe4\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05ciknp\x12%\n" +
-	"\x10CivoLoadBalancer\x10\xe5\v\x1a\x0e\xa2\xf7\x04\n" +
-	"\b\x0e\x10\x01\"\x04cilb\x12 \n" +
+	"\x16CivoKubernetesNodePool\x10\xe4\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05ciknp\x12 \n" +
 	"\n" +
 	"CivoVolume\x10\xe6\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05civol\x12\x1d\n" +
 	"\aCivoVpc\x10\xe7\v\x1a\x0f\xa2\xf7\x04\v\b\x0e\x10\x01\"\x05civpc\x12'\n" +

@@ -45,12 +45,6 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 
 		ginkgo.Context("valid HTTP function with service config", func() {
 			ginkgo.It("should not return a validation error", func() {
-				minInstances := int32(1)
-				maxInstances := int32(10)
-				memoryMb := int32(512)
-				timeoutSeconds := int32(120)
-				concurrency := int32(80)
-
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
@@ -70,9 +64,9 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						},
 						ServiceConfig: &GcpCloudFunctionServiceConfig{
 							ServiceAccountEmail:           "sa@test-project-123.iam.gserviceaccount.com",
-							AvailableMemoryMb:             &memoryMb,
-							TimeoutSeconds:                &timeoutSeconds,
-							MaxInstanceRequestConcurrency: &concurrency,
+							AvailableMemoryMb:             512,
+							TimeoutSeconds:                120,
+							MaxInstanceRequestConcurrency: 80,
 							EnvironmentVariables: map[string]string{
 								"LOG_LEVEL": "info",
 							},
@@ -80,8 +74,8 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 								"API_KEY": "api-key-secret",
 							},
 							Scaling: &GcpCloudFunctionScalingConfig{
-								MinInstanceCount: &minInstances,
-								MaxInstanceCount: &maxInstances,
+								MinInstanceCount: 1,
+								MaxInstanceCount: 10,
 							},
 						},
 					},
@@ -93,9 +87,6 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 
 		ginkgo.Context("valid event-driven function with Pub/Sub trigger", func() {
 			ginkgo.It("should not return a validation error", func() {
-				triggerType := GcpCloudFunctionTriggerType_EVENT_TRIGGER
-				retryPolicy := GcpCloudFunctionRetryPolicy_RETRY_POLICY_RETRY
-
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
@@ -114,11 +105,11 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 							},
 						},
 						Trigger: &GcpCloudFunctionTrigger{
-							TriggerType: &triggerType,
+							TriggerType: GcpCloudFunctionTriggerType_EVENT_TRIGGER,
 							EventTrigger: &GcpCloudFunctionEventTrigger{
 								EventType:   "google.cloud.pubsub.topic.v1.messagePublished",
 								PubsubTopic: "projects/test-project-123/topics/job-queue",
-								RetryPolicy: &retryPolicy,
+								RetryPolicy: GcpCloudFunctionRetryPolicy_RETRY_POLICY_RETRY,
 							},
 						},
 					},
@@ -148,7 +139,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 							},
 						},
 						ServiceConfig: &GcpCloudFunctionServiceConfig{
-							VpcConnector: "projects/test-project-123/locations/us-central1/connectors/my-connector",
+							AvailableMemoryMb:             256,
+							TimeoutSeconds:                60,
+							MaxInstanceRequestConcurrency: 80,
+							VpcConnector:                  "projects/test-project-123/locations/us-central1/connectors/my-connector",
 						},
 					},
 				}
@@ -256,8 +250,6 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 
 		ginkgo.Context("invalid memory value", func() {
 			ginkgo.It("should return a validation error", func() {
-				memoryMb := int32(300) // Invalid: not in allowed list
-
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
@@ -276,7 +268,7 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 							},
 						},
 						ServiceConfig: &GcpCloudFunctionServiceConfig{
-							AvailableMemoryMb: &memoryMb,
+							AvailableMemoryMb: 300, // Invalid: not in allowed list
 						},
 					},
 				}
@@ -287,9 +279,6 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 
 		ginkgo.Context("invalid scaling: min > max", func() {
 			ginkgo.It("should return a validation error", func() {
-				minInstances := int32(10)
-				maxInstances := int32(5) // Invalid: min > max
-
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
@@ -309,8 +298,8 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						},
 						ServiceConfig: &GcpCloudFunctionServiceConfig{
 							Scaling: &GcpCloudFunctionScalingConfig{
-								MinInstanceCount: &minInstances,
-								MaxInstanceCount: &maxInstances,
+								MinInstanceCount: 10, // Invalid: min > max
+								MaxInstanceCount: 5,
 							},
 						},
 					},
@@ -322,8 +311,6 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 
 		ginkgo.Context("event trigger without event_trigger config", func() {
 			ginkgo.It("should return a validation error", func() {
-				triggerType := GcpCloudFunctionTriggerType_EVENT_TRIGGER
-
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
@@ -342,7 +329,7 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 							},
 						},
 						Trigger: &GcpCloudFunctionTrigger{
-							TriggerType: &triggerType,
+							TriggerType: GcpCloudFunctionTriggerType_EVENT_TRIGGER,
 							// Missing EventTrigger config - should fail validation
 						},
 					},

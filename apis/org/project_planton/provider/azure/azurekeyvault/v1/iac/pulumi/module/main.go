@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/keyvault"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/keyvault"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -72,7 +72,7 @@ func Resources(ctx *pulumi.Context, stackInput *azurekeyvaultv1.AzureKeyVaultSta
 			Location:          pulumi.String(spec.Region),
 			ResourceGroupName: pulumi.String(spec.ResourceGroup),
 			TenantId:          pulumi.String(azureProviderConfig.TenantId),
-			SkuName:           pulumi.String(getSku(spec.Sku)),
+			SkuName:           pulumi.String(getSku(spec.GetSku())),
 
 			// Security settings
 			EnableRbacAuthorization:      pulumi.Bool(spec.GetEnableRbacAuthorization()),
@@ -112,7 +112,7 @@ func Resources(ctx *pulumi.Context, stackInput *azurekeyvaultv1.AzureKeyVaultSta
 			return errors.Wrapf(err, "failed to create secret %s", secretName)
 		}
 
-		secretIdMap[secretName] = secret.ID()
+		secretIdMap[secretName] = secret.ID().ToStringOutput()
 	}
 
 	// Export stack outputs

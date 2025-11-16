@@ -27,31 +27,31 @@ func cluster(
 		}
 	}
 
-	// 3. Build firewall configuration if IPs provided
-	var firewall *digitalocean.KubernetesClusterFirewallArgs
+	// 3. Build control plane firewall configuration if IPs provided
+	var controlPlaneFirewall *digitalocean.KubernetesClusterControlPlaneFirewallArgs
 	if len(locals.DigitalOceanKubernetesCluster.Spec.ControlPlaneFirewallAllowedIps) > 0 {
 		var allowedIPs pulumi.StringArray
 		for _, ip := range locals.DigitalOceanKubernetesCluster.Spec.ControlPlaneFirewallAllowedIps {
 			allowedIPs = append(allowedIPs, pulumi.String(ip))
 		}
-		firewall = &digitalocean.KubernetesClusterFirewallArgs{
+		controlPlaneFirewall = &digitalocean.KubernetesClusterControlPlaneFirewallArgs{
 			AllowedAddresses: allowedIPs,
 		}
 	}
 
 	// 4. Build the cluster arguments straight from proto fields.
 	clusterArgs := &digitalocean.KubernetesClusterArgs{
-		Name:                pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.ClusterName),
-		Region:              pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.Region.String()),
-		Version:             pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.KubernetesVersion),
-		Ha:                  pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.HighlyAvailable),
-		AutoUpgrade:         pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.AutoUpgrade),
-		SurgeUpgrade:        pulumi.BoolPtr(!locals.DigitalOceanKubernetesCluster.Spec.DisableSurgeUpgrade),
-		VpcUuid:             pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.Vpc.GetValue()),
-		RegistryIntegration: pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.RegistryIntegration),
-		MaintenancePolicy:   maintenancePolicy,
-		Firewall:            firewall,
-		Tags:                tags,
+		Name:                 pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.ClusterName),
+		Region:               pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.Region.String()),
+		Version:              pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.KubernetesVersion),
+		Ha:                   pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.HighlyAvailable),
+		AutoUpgrade:          pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.AutoUpgrade),
+		SurgeUpgrade:         pulumi.BoolPtr(!locals.DigitalOceanKubernetesCluster.Spec.DisableSurgeUpgrade),
+		VpcUuid:              pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.Vpc.GetValue()),
+		RegistryIntegration:  pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.RegistryIntegration),
+		MaintenancePolicy:    maintenancePolicy,
+		ControlPlaneFirewall: controlPlaneFirewall,
+		Tags:                 tags,
 		NodePool: &digitalocean.KubernetesClusterNodePoolArgs{
 			AutoScale: pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.AutoScale),
 			MaxNodes:  pulumi.IntPtr(int(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.MaxNodes)),

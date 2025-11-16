@@ -317,9 +317,9 @@ spec:
 
 ---
 
-## 7. High-Availability Load Balanced Setup
+## 7. High-Availability Multi-Instance Setup
 
-**Use Case**: Multiple web servers behind Civo load balancer.
+**Use Case**: Multiple web servers for redundancy and availability (load balancing via Kubernetes or DNS).
 
 ### Web Instance 1
 
@@ -338,11 +338,12 @@ spec:
   sshKeyIds:
     - deploy-key
   firewallIds:
-    - value: web-backend-firewall  # 8080 from LB only
+    - value: web-firewall  # HTTP/HTTPS access
   tags:
     - env:prod
     - service:web
     - instance-group:web-cluster
+  createPublicIp: true
 ```
 
 ### Web Instance 2
@@ -362,25 +363,24 @@ spec:
   sshKeyIds:
     - deploy-key
   firewallIds:
-    - value: web-backend-firewall
+    - value: web-firewall
   tags:
     - env:prod
     - service:web
     - instance-group:web-cluster
-```
-
-**Paired with Civo Load Balancer**:
-```yaml
-# Note: This would be a separate CivoLoadBalancer resource
-# Load balancer distributes traffic to both web-01 and web-02
-# Health checks ensure failed instances are removed from rotation
+  createPublicIp: true
 ```
 
 **Key Points**:
 - Two identical instances for redundancy
-- Firewall allows LB traffic only (no direct internet access)
-- Use instance placement groups to ensure different physical hosts
-- Load balancer provides health checking and failover
+- Use DNS round-robin or Kubernetes Services for traffic distribution
+- Tags enable grouping for management
+- Each instance has public IP for direct access if needed
+
+**Note**: For production load balancing, consider:
+- Civo Kubernetes with Service type LoadBalancer (automatically provisions LB)
+- External load balancer solutions (HAProxy, Nginx)
+- DNS-based failover with health checks
 
 ---
 

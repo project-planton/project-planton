@@ -99,7 +99,7 @@ var _ = ginkgo.Describe("DigitalOceanLoadBalancerSpec validations", func() {
 	makeValidDropletIdSpec := func() *DigitalOceanLoadBalancerSpec {
 		return &DigitalOceanLoadBalancerSpec{
 			LoadBalancerName: "dev-lb",
-			Region:           digitalocean.DigitalOceanRegion_nyc1,
+			Region:           digitalocean.DigitalOceanRegion_nyc3,
 			Vpc: &foreignkeyv1.StringValueOrRef{
 				LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-vpc-id"},
 			},
@@ -174,7 +174,7 @@ var _ = ginkgo.Describe("DigitalOceanLoadBalancerSpec validations", func() {
 
 		ginkgo.It("should reject spec with missing region", func() {
 			spec := makeValidHTTPSpec()
-			spec.Region = digitalocean.DigitalOceanRegion_digitalocean_region_unspecified
+			spec.Region = digitalocean.DigitalOceanRegion_digital_ocean_region_unspecified
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).ToNot(gomega.BeNil())
 		})

@@ -47,14 +47,14 @@ locals {
   # Determine if trigger is HTTP or Event-driven
   # Default to HTTP (0) if not specified
   is_http_trigger = (
-    var.spec.trigger == null 
-    || var.spec.trigger.trigger_type == null 
+    var.spec.trigger == null
+    || var.spec.trigger.trigger_type == null
     || var.spec.trigger.trigger_type == 0
   )
 
   # Service config with defaults
   service_config = var.spec.service_config != null ? var.spec.service_config : {}
-  
+
   # Memory: default 256MB if not specified
   available_memory_mb = coalesce(
     try(local.service_config.available_memory_mb, null),

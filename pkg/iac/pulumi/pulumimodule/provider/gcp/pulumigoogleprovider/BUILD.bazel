@@ -9,7 +9,7 @@ go_library(
         "//apis/org/project_planton/provider/gcp",
         "//pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput",
         "@com_github_pkg_errors//:errors",
-        "@com_github_pulumi_pulumi_gcp_sdk_v8//go/gcp",
+        "@com_github_pulumi_pulumi_gcp_sdk_v9//go/gcp",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

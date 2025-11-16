@@ -14,7 +14,7 @@ output "function_url" {
 
 output "service_account_email" {
   description = "Service account email that the function runs as"
-  value       = try(
+  value = try(
     google_cloudfunctions2_function.function.service_config[0].service_account_email,
     ""
   )
@@ -32,7 +32,7 @@ output "cloud_run_service_id" {
 
 output "eventarc_trigger_id" {
   description = "Eventarc trigger ID (only for event-driven functions)"
-  value       = !local.is_http_trigger ? try(
+  value = !local.is_http_trigger ? try(
     google_cloudfunctions2_function.function.event_trigger[0].trigger,
     ""
   ) : ""

@@ -639,11 +639,6 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "ciknp"
   }];
-  CivoLoadBalancer = 1509 [(kind_meta) = {
-    provider: civo
-    version: v1
-    id_prefix: "cilb"
-  }];
   CivoVolume = 1510 [(kind_meta) = {
     provider: civo
     version: v1

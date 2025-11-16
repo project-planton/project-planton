@@ -44,7 +44,7 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 		return &DigitalOceanVolumeSpec{
 			VolumeName:     "restored-volume",
 			Description:    "Volume restored from snapshot",
-			Region:         digitalocean.DigitalOceanRegion_nyc1,
+			Region:         digitalocean.DigitalOceanRegion_nyc3,
 			SizeGib:        100,
 			FilesystemType: DigitalOceanVolumeFilesystemType_EXT4,
 			SnapshotId:     "snapshot-abc123",
@@ -97,7 +97,7 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 
 		ginkgo.It("should reject spec with missing region", func() {
 			spec := makeValidMinimalSpec()
-			spec.Region = digitalocean.DigitalOceanRegion_digitalocean_region_unspecified
+			spec.Region = digitalocean.DigitalOceanRegion_digital_ocean_region_unspecified
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).ToNot(gomega.BeNil())
 		})

@@ -1,10 +1,8 @@
-**Note:** This module is not completely implemented as the API resource specification is currently empty.
-
-# Azure Azure AKS Cluster Pulumi Module
+# Azure VPC Pulumi Module
 
 ## Introduction
 
-This Pulumi module provides a standardized way to manage Azure Kubernetes Service (AKS) clusters using our Unified APIs that mimic Kubernetes' resource modeling. It allows developers to define infrastructure configurations in a YAML file, simplifying the deployment and management of complex cloud resources across multiple providers.
+This Pulumi module provides a standardized way to manage Azure Virtual Networks (VNets) using our Unified APIs that mimic Kubernetes' resource modeling. It allows developers to define network infrastructure configurations in a YAML file, simplifying the deployment and management of Azure networking resources across multiple environments.
 
 ## Key Features
 
@@ -12,8 +10,8 @@ This Pulumi module provides a standardized way to manage Azure Kubernetes Servic
 - **Multi-Cloud Support**: Designed to work seamlessly in a multi-cloud environment, starting with Azure.
 - **Pulumi Integration**: Leverages Pulumi's infrastructure-as-code capabilities to automate resource provisioning.
 - **Credential Management**: Securely handles Azure credentials for authenticating with Azure services.
-- **Simplified Deployment**: Enables developers to deploy AKS clusters using a single YAML configuration file.
-- **Standardized Documentation**: Comprehensive documentation available via buf.build for easy reference.
+- **Simplified Deployment**: Enables developers to deploy VNets, subnets, and NAT Gateways using a single YAML configuration file.
+- **Production-Ready**: Implements Azure networking best practices out of the box.
 
 ## Usage
 
@@ -23,15 +21,17 @@ Refer to the example section for usage instructions.
 
 ### API Resource Specification
 
-The module expects an `api-resource.yaml` file defining the desired state of the AKS cluster. The key components of this file include:
+The module expects an `api-resource.yaml` file defining the desired state of the Azure VPC. The key components of this file include:
 
-- **`azure_credential_id`** (required): The identifier for the Azure credentials used to authenticate with Azure services.
-- **`environment_info`**: Contains environment-specific information (currently not implemented).
-- **`stack_job_settings`**: Settings related to the stack job execution (currently not implemented).
+- **`address_space_cidr`** (required): The CIDR block for the Virtual Network address space.
+- **`nodes_subnet_cidr`** (required): The CIDR block for the primary subnet (typically for AKS nodes).
+- **`is_nat_gateway_enabled`** (optional): Toggle to enable NAT Gateway for outbound connectivity.
+- **`dns_private_zone_links`** (optional): List of Azure Private DNS zone resource IDs to link to the VNet.
+- **`tags`** (optional): Map of tags to apply to Azure resources.
 
 ### Pulumi Module Functionality
 
-The core functionality of this module revolves around setting up the Azure provider within the Pulumi context using the provided Azure credentials. This setup is essential for any subsequent resource creation and management within Azure.
+The core functionality of this module revolves around provisioning a complete Azure networking stack including VNet, subnet, optional NAT Gateway, and DNS zone links.
 
 #### Steps Performed:
 
@@ -43,24 +43,37 @@ The core functionality of this module revolves around setting up the Azure provi
    - `SubscriptionId`
    - `TenantId`
 
-2. **Resource Provisioning**:  
-   *(Not yet implemented)* The module will provision the AKS cluster and any associated resources based on the specifications provided in the `api-resource.yaml` file.
+2. **Resource Group Creation**:  
+   Creates an Azure Resource Group to contain all VNet-related resources.
 
-3. **Output Handling**:  
-   *(Not yet implemented)* Captures the outputs from the Pulumi stack execution and stores them in `status.outputs` for later reference.
+3. **Virtual Network Provisioning**:  
+   Creates an Azure Virtual Network with the specified address space CIDR.
 
-## Limitations
+4. **Subnet Creation**:  
+   Provisions a subnet within the VNet for AKS node placement or other workloads.
 
-- **Incomplete Implementation**: The module currently does not implement resource creation due to the empty API resource specification.
-- **Unused Spec Fields**: Fields like `environment_info` and `stack_job_settings` are included in the spec but are not utilized in the current implementation.
-- **No Error Handling**: Advanced error handling and validation mechanisms are yet to be implemented.
+5. **NAT Gateway (Optional)**:  
+   If enabled, creates a NAT Gateway with a public IP and associates it with the subnet for outbound internet connectivity.
 
-## Future Enhancements
+6. **Private DNS Zone Links (Optional)**:  
+   Links specified Private DNS zones to the VNet for name resolution of Azure PaaS services.
 
-- **Implement Resource Creation**: Extend the module to create AKS clusters and related Azure resources based on the provided specifications.
-- **Utilize Spec Fields**: Make use of `environment_info` and `stack_job_settings` to allow for more granular control over the deployment environment and stack job configurations.
-- **Enhance Output Management**: Capture and expose essential output parameters such as cluster endpoints, credentials, and configuration details.
-- **Error Handling and Validation**: Introduce comprehensive error handling and input validation to improve reliability and user experience.
+7. **Output Handling**:  
+   Captures and exports the VNet ID and subnet ID for use by other resources (such as AKS clusters).
+
+## Outputs
+
+- **`vnet_id`**: The Azure resource ID of the created Virtual Network
+- **`nodes_subnet_id`**: The Azure resource ID of the primary subnet
+
+## NAT Gateway
+
+The NAT Gateway feature provides several benefits:
+
+- **Eliminates SNAT Port Exhaustion**: Prevents connection failures from large-scale workloads
+- **Predictable Egress IPs**: Enables firewall allow-listing for external services
+- **Scales to 1M+ Ports**: Uses public IP prefixes for massive scale
+- **Production Best Practice**: Recommended by Azure for AKS clusters
 
 ## Documentation
 
