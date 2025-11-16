@@ -4,6 +4,7 @@ go_library(
     name = "module",
     srcs = [
         "kubernetes_altinity_operator.go",
+        "locals.go",
         "outputs.go",
         "vars.go",
     ],

@@ -15,15 +15,15 @@ locals {
 
   # Organization label only if non-empty
   org_label = (
-  var.metadata.org != null && var.metadata.org != ""
-  ) ? {
+    var.metadata.org != null && var.metadata.org != ""
+    ) ? {
     "organization" = var.metadata.org
   } : {}
 
   # Environment label only if env and env.id are provided
   env_label = (
-  var.metadata.env != null && var.metadata.env != ""
-  ) ? {
+    var.metadata.env != null && var.metadata.env != ""
+    ) ? {
     "organization" = var.metadata.env
   } : {}
   # Merge all labels
@@ -47,17 +47,17 @@ locals {
 
   # External and internal hostnames
   ingress_external_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
+    local.ingress_is_enabled && local.ingress_dns_domain != ""
   ) ? "${local.resource_id}.${local.ingress_dns_domain}" : null
 
   ingress_internal_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
+    local.ingress_is_enabled && local.ingress_dns_domain != ""
   ) ? "${local.resource_id}-internal.${local.ingress_dns_domain}" : null
 
   # Combine hostnames into a list for certificate usage if both are set
   ingress_hostnames = (
-  local.ingress_external_hostname != null && local.ingress_internal_hostname != null
-  ) ? [
+    local.ingress_external_hostname != null && local.ingress_internal_hostname != null
+    ) ? [
     local.ingress_external_hostname,
     local.ingress_internal_hostname
   ] : []

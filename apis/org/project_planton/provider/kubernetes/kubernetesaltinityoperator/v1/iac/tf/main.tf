@@ -1,10 +1,6 @@
 # Terraform module for Altinity ClickHouse Operator
 # This is a placeholder - the operator is primarily deployed via Helm/Pulumi
 
-locals {
-  namespace = var.spec.namespace != "" ? var.spec.namespace : "kubernetes-altinity-operator"
-}
-
 resource "kubernetes_namespace" "kubernetes_altinity_operator" {
   metadata {
     name = local.namespace
@@ -52,10 +48,5 @@ resource "helm_release" "kubernetes_altinity_operator" {
   atomic          = true
   cleanup_on_fail = true
   wait            = true
-}
-
-output "namespace" {
-  description = "The namespace where the Altinity operator is deployed"
-  value       = kubernetes_namespace.kubernetes_altinity_operator.metadata[0].name
 }
 

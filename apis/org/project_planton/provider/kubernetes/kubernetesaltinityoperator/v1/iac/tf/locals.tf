@@ -1,0 +1,7 @@
+# Local values for Altinity ClickHouse Operator deployment
+
+locals {
+  # Determine the namespace - use from spec or default to "kubernetes-altinity-operator"
+  namespace = var.spec.namespace != "" ? var.spec.namespace : "kubernetes-altinity-operator"
+}
+

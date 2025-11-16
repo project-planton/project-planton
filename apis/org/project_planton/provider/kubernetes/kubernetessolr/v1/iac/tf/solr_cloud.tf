@@ -22,8 +22,8 @@ resource "kubernetes_manifest" "solr_cloud" {
         }
 
         solrJavaMem = try(var.spec.config.java_mem, "")
-        solrOpts = try(var.spec.config.opts, "")
-        solrGCTune = try(var.spec.config.garbage_collection_tuning, "")
+        solrOpts    = try(var.spec.config.opts, "")
+        solrGCTune  = try(var.spec.config.garbage_collection_tuning, "")
 
         solrModules = [
           "jaegertracer-configurator",

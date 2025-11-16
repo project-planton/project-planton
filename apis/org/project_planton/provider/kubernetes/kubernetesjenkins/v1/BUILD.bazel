@@ -22,7 +22,7 @@ go_library(
 
 go_test(
     name = "kubernetesjenkins_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":kubernetesjenkins"],
     deps = [
         "//apis/org/project_planton/shared",

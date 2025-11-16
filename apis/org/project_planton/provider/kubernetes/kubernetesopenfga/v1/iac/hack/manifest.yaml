@@ -1,0 +1,21 @@
+apiVersion: kubernetes.project-planton.org/v1
+kind: OpenFgaKubernetes
+metadata:
+  name: test-open-fga-server
+spec:
+  container:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 3000m
+        memory: 3Gi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+  ingress:
+    enabled: true
+    hostname: test-open-fga-server.example.com
+  datastore:
+    engine: postgres
+    uri: postgres://postgres:somepassword@database-hostname:5432/some-database-name?sslmode=disable
+

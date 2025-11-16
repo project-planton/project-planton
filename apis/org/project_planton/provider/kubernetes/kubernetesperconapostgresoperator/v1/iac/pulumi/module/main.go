@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetesperconamongooperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1"
+	kubernetesperconapostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -10,8 +10,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates all Pulumi resources for the Percona Operator for MongoDB Kubernetes add-on.
-func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1.KubernetesPerconaMongoOperatorStackInput) error {
+// Resources creates all Pulumi resources for the Percona Operator for PostgreSQL Kubernetes add-on.
+func Resources(ctx *pulumi.Context, stackInput *kubernetesperconapostgresoperatorv1.KubernetesPerconaPostgresOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
@@ -20,7 +20,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 	}
 
 	// use the configured chart version
-	chartVersion := vars.HelmChartVersion
+	chartVersion := locals.HelmChartVersion
 
 	// determine namespace - use from spec or default
 	namespace := stackInput.Target.Spec.Namespace
@@ -39,8 +39,6 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 
 	// prepare helm values with resource limits from spec
 	helmValues := pulumi.Map{
-		// Enable cluster-wide mode to watch all namespaces
-		"watchAllNamespaces": pulumi.Bool(true),
 		"resources": pulumi.Map{
 			"limits": pulumi.Map{
 				"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Cpu),
@@ -54,11 +52,11 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 	}
 
 	// deploy the operator via Helm
-	_, err = helm.NewRelease(ctx, "percona-operator",
+	_, err = helm.NewRelease(ctx, "kubernetes-percona-postgres-operator",
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
+			Name:            pulumi.String(locals.HelmChartName),
 			Namespace:       ns.Metadata.Name(),
-			Chart:           pulumi.String(vars.HelmChartName),
+			Chart:           pulumi.String(locals.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
@@ -67,14 +65,14 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 			Timeout:         pulumi.Int(300),
 			Values:          helmValues,
 			RepositoryOpts: helm.RepositoryOptsArgs{
-				Repo: pulumi.String(vars.HelmChartRepo),
+				Repo: pulumi.String(locals.HelmChartRepo),
 			},
 		},
 		pulumi.Provider(kubeProvider),
 		pulumi.Parent(ns),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
-		return errors.Wrap(err, "failed to install percona-operator helm release")
+		return errors.Wrap(err, "failed to install kubernetes-percona-postgres-operator helm release")
 	}
 
 	// export stack outputs

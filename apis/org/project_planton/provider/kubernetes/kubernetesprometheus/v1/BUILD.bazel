@@ -23,7 +23,7 @@ go_library(
 
 go_test(
     name = "kubernetesprometheus_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":kubernetesprometheus"],
     deps = [
         "//apis/org/project_planton/shared",

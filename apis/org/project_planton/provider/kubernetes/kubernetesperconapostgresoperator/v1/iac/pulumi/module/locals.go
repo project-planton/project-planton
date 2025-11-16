@@ -1,11 +1,11 @@
 package module
 
-var vars = struct {
+var locals = struct {
 	HelmChartName    string
 	HelmChartRepo    string
 	HelmChartVersion string
 }{
-	HelmChartName:    "psmdb-operator",
+	HelmChartName:    "pg-operator",
 	HelmChartRepo:    "https://percona.github.io/percona-helm-charts/",
-	HelmChartVersion: "1.20.1",
+	HelmChartVersion: "2.7.0",
 }

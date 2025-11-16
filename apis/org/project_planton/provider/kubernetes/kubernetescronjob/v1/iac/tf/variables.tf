@@ -7,12 +7,12 @@
 variable "metadata" {
   description = "Metadata for the CronJob resource, including name, org, env, labels, etc."
   type = object({
-    name = string
-    id = optional(string)
-    org = optional(string)
-    env = optional(string)
+    name   = string
+    id     = optional(string)
+    org    = optional(string)
+    env    = optional(string)
     labels = optional(map(string))
-    tags = optional(list(string))
+    tags   = optional(list(string))
     version = optional(object({
       id      = string
       message = string
@@ -23,17 +23,17 @@ variable "metadata" {
 variable "spec" {
   description = "Spec defines the configuration for the CronJobKubernetes resource."
   type = object({
-    schedule = string
-    concurrency_policy = optional(string)
-    suspend = optional(bool)
+    schedule                      = string
+    concurrency_policy            = optional(string)
+    suspend                       = optional(bool)
     successful_jobs_history_limit = optional(number)
-    failed_jobs_history_limit = optional(number)
-    backoff_limit = optional(number)
-    starting_deadline_seconds = optional(number)
-    restart_policy = optional(string)
+    failed_jobs_history_limit     = optional(number)
+    backoff_limit                 = optional(number)
+    starting_deadline_seconds     = optional(number)
+    restart_policy                = optional(string)
     image = object({
-      repo = string
-      tag  = string
+      repo             = string
+      tag              = string
       pull_secret_name = optional(string)
     })
     resources = object({
@@ -48,10 +48,10 @@ variable "spec" {
     })
     env = object({
       variables = optional(map(string))
-      secrets = optional(map(string))
+      secrets   = optional(map(string))
     })
     command = optional(list(string))
-    args = optional(list(string))
+    args    = optional(list(string))
   })
 }
 

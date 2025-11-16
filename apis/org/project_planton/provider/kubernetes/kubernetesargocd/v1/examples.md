@@ -1,80 +1,92 @@
-Here are a few examples for the `ArgocdKubernetes` API resource, modeled in a similar way to the `MicroserviceKubernetes` examples you provided. These examples demonstrate how to configure and deploy ArgoCD on a Kubernetes cluster using Planton Cloud’s unified API structure.
+Here are a few examples for the `KubernetesArgocd` API resource. These examples demonstrate how to configure and deploy Argo CD on a Kubernetes cluster using Project Planton's unified API structure.
 
 ---
 
-# Example 1: Basic ArgoCD Deployment
+# Example 1: Basic Argo CD Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
-  name: argocd-instance
+  name: my-argocd
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
         cpu: 50m
-        memory: 256Mi
+        memory: 100Mi
       limits:
-        cpu: 1
+        cpu: 1000m
         memory: 1Gi
 ```
 
+**Description:** A basic Argo CD deployment with default resource allocations.
+
 ---
 
-# Example 2: ArgoCD with Ingress Enabled
+# Example 2: Argo CD with Ingress Enabled
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
   name: argocd-prod
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
         cpu: 100m
         memory: 512Mi
       limits:
-        cpu: 2
+        cpu: 2000m
         memory: 2Gi
   ingress:
-    enabled: true
-    hostname: argocd.example.com
+    is_enabled: true
+    dns_domain: example.com
 ```
+
+**Description:** Production Argo CD deployment with ingress enabled for external access. This will create external hostname at `argo-argocd-prod.example.com` and internal hostname at `argo-argocd-prod-internal.example.com`.
 
 ---
 
-# Example 3: ArgoCD Deployment with Custom Resources
+# Example 3: Argo CD Deployment with Custom Resources
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
-  name: argocd-custom
+  name: argocd-large
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
         cpu: 200m
         memory: 1Gi
       limits:
-        cpu: 3
+        cpu: 3000m
         memory: 4Gi
 ```
 
+**Description:** Argo CD deployment with higher resource allocations for managing large-scale GitOps workflows with many applications.
+
 ---
 
-# Example 4: Minimal ArgoCD Deployment (Empty Spec)
+# Example 4: Minimal Argo CD Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
   name: minimal-argocd
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
 ```
+
+**Description:** Minimal Argo CD deployment using default container resources. Suitable for development and testing environments.

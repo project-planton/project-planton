@@ -14,6 +14,8 @@ import (
 func Resources(ctx *pulumi.Context,
 	stackInput *kubernetesingressnginxv1.KubernetesIngressNginxStackInput) error {
 
+	locals := initializeLocals(ctx, stackInput)
+
 	// Build Kubernetes provider from the target‑cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
@@ -22,12 +24,6 @@ func Resources(ctx *pulumi.Context,
 	}
 
 	spec := stackInput.Target.Spec
-
-	// Determine chart version – explicit > default
-	chartVersion := spec.ChartVersion
-	if chartVersion == "" {
-		chartVersion = vars.DefaultChartVersion
-	}
 
 	// Build service annotations based on cluster flavour + internal/external flag
 	var serviceAnnotations map[string]string
@@ -96,10 +92,10 @@ func Resources(ctx *pulumi.Context,
 
 	_, err = helm.NewRelease(ctx, vars.HelmChartName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName), // release name
+			Name:            pulumi.String(locals.ReleaseName),
 			Namespace:       ns.Metadata.Name(),
 			Chart:           pulumi.String(vars.HelmChartName),
-			Version:         pulumi.String(chartVersion),
+			Version:         pulumi.String(locals.ChartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
 			CleanupOnFail:   pulumi.Bool(true),
@@ -115,15 +111,6 @@ func Resources(ctx *pulumi.Context,
 	if err != nil {
 		return errors.Wrap(err, "failed to install kubernetes-ingress-nginx helm release")
 	}
-
-	// ---------------------------------------------------------------------
-	// Stack outputs
-	// ---------------------------------------------------------------------
-	ctx.Export(OpNamespace, ns.Metadata.Name())
-	ctx.Export(OpReleaseName, pulumi.String(vars.HelmChartName))
-	ctx.Export(OpServiceName,
-		pulumi.Sprintf("%s-controller", vars.HelmChartName)) // helm default
-	ctx.Export(OpServiceType, pulumi.String("LoadBalancer"))
 
 	return nil
 }

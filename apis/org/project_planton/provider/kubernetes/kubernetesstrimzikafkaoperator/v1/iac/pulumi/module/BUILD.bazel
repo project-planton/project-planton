@@ -4,6 +4,7 @@ go_library(
     name = "module",
     srcs = [
         "kafka_operator.go",
+        "locals.go",
         "main.go",
         "outputs.go",
         "vars.go",
