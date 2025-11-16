@@ -2,21 +2,22 @@
 """
 Deployment Component Rename Script
 
-Renames a deployment component across the entire codebase:
-- Copies component directory with new name
-- Applies comprehensive find-replace patterns
+Renames a deployment component across the entire codebase using sequential in-place operations:
+- Renames directories containing old component name (bottom-up to avoid path conflicts)
+- Renames files containing old component name
+- Replaces old component name in file contents
 - Updates cloud_resource_kind.proto registry
 - Updates documentation
 - Runs build pipeline (protos, build, test)
 
 Usage:
-  python3 .cursor/rules/deployment-component/_scripts/rename_deployment_component.py \
+  python3 .cursor/rules/deployment-component/rename/_scripts/rename_deployment_component.py \
     --old-name KubernetesMicroservice \
     --new-name KubernetesDeployment \
     --new-id-prefix k8sdpl
 
   # Keep existing id_prefix
-  python3 .cursor/rules/deployment-component/_scripts/rename_deployment_component.py \
+  python3 .cursor/rules/deployment-component/rename/_scripts/rename_deployment_component.py \
     --old-name KubernetesMicroservice \
     --new-name KubernetesDeployment
 
@@ -169,70 +170,105 @@ def get_component_directory(repo_root: str, provider: str, component_folder: str
     )
 
 
-def delete_directory_if_exists(path: str) -> bool:
-    """Delete directory if it exists. Returns True if deleted, False if didn't exist."""
-    if os.path.exists(path):
-        shutil.rmtree(path)
-        return True
-    return False
+def rename_directories(root_dir: Path, old_str: str, new_str: str, stats: Dict) -> None:
+    """Rename directories containing old_str (bottom-up to avoid path errors)"""
+    dirs_to_rename = []
+    
+    # Walk bottom-up to collect directories
+    for dirpath, dirnames, _ in os.walk(root_dir, topdown=False):
+        for dirname in dirnames:
+            # Skip hidden directories
+            if dirname.startswith('.'):
+                continue
+            
+            if old_str in dirname:
+                old_path = Path(dirpath) / dirname
+                new_name = dirname.replace(old_str, new_str)
+                new_path = Path(dirpath) / new_name
+                dirs_to_rename.append((old_path, new_path))
+    
+    # Perform renames
+    for old_path, new_path in dirs_to_rename:
+        try:
+            old_path.rename(new_path)
+            stats['dirs_renamed'] += 1
+        except Exception as e:
+            print(f"Error renaming directory {old_path}: {e}", file=sys.stderr)
+            stats['errors'] += 1
 
 
-def copy_component_directory(src: str, dst: str) -> int:
-    """Copy component directory. Returns number of files copied."""
-    if not os.path.exists(src):
-        raise RuntimeError(f"Source directory does not exist: {src}")
+def rename_files(root_dir: Path, old_str: str, new_str: str, stats: Dict) -> None:
+    """Rename files containing old_str"""
+    files_to_rename = []
     
-    shutil.copytree(src, dst)
+    # Collect files to rename
+    for dirpath, _, filenames in os.walk(root_dir):
+        for filename in filenames:
+            # Skip hidden files
+            if filename.startswith('.'):
+                continue
+            
+            if old_str in filename:
+                old_path = Path(dirpath) / filename
+                new_name = filename.replace(old_str, new_str)
+                new_path = Path(dirpath) / new_name
+                files_to_rename.append((old_path, new_path))
     
-    # Count files
-    file_count = 0
-    for root, dirs, files in os.walk(dst):
-        file_count += len(files)
-    
-    return file_count
+    # Perform renames
+    for old_path, new_path in files_to_rename:
+        try:
+            old_path.rename(new_path)
+            stats['files_renamed'] += 1
+        except Exception as e:
+            print(f"Error renaming file {old_path}: {e}", file=sys.stderr)
+            stats['errors'] += 1
 
 
-def apply_replacements_in_file(file_path: str, replacements: List[Tuple[str, str]]) -> int:
-    """
-    Apply all replacement patterns to a file.
-    Returns number of replacements made.
-    """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-    except (UnicodeDecodeError, PermissionError):
-        # Skip binary files or files we can't read
-        return 0
-    
-    original_content = content
-    replacement_count = 0
-    
-    for old, new in replacements:
-        if old in content:
-            content = content.replace(old, new)
-            replacement_count += 1
-    
-    if content != original_content:
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-    
-    return replacement_count
+def replace_in_files(root_dir: Path, old_str: str, new_str: str, stats: Dict) -> None:
+    """Replace occurrences of old_str with new_str in file contents"""
+    for dirpath, _, filenames in os.walk(root_dir):
+        for filename in filenames:
+            # Skip hidden files
+            if filename.startswith('.'):
+                continue
+            
+            filepath = Path(dirpath) / filename
+            
+            try:
+                # Try to read as text
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # Check if replacement needed
+                if old_str in content:
+                    new_content = content.replace(old_str, new_str)
+                    
+                    with open(filepath, 'w', encoding='utf-8') as f:
+                        f.write(new_content)
+                    stats['files_updated'] += 1
+                    stats['replacements_made'] += 1
+            
+            except (UnicodeDecodeError, IsADirectoryError):
+                # Skip binary files and directories
+                continue
+            except Exception as e:
+                print(f"Error processing file {filepath}: {e}", file=sys.stderr)
+                stats['errors'] += 1
 
 
-def apply_replacements_in_directory(directory: str, replacements: List[Tuple[str, str]]) -> int:
-    """
-    Apply replacements to all files in directory recursively.
-    Returns total number of replacements made.
-    """
-    total_replacements = 0
+def apply_sequential_renames(root_dir: Path, old_str: str, new_str: str, stats: Dict) -> None:
+    """Apply sequential renames: directories → files → contents"""
+    if old_str == new_str:
+        return
     
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            file_path = os.path.join(root, file)
-            count = apply_replacements_in_file(file_path, replacements)
-            total_replacements += count
+    # Phase 1: Rename directories
+    rename_directories(root_dir, old_str, new_str, stats)
     
-    return total_replacements
+    # Phase 2: Rename files
+    rename_files(root_dir, old_str, new_str, stats)
+    
+    # Phase 3: Replace in file contents
+    replace_in_files(root_dir, old_str, new_str, stats)
 
 
 def update_registry_entry(
@@ -406,6 +442,15 @@ def main() -> int:
     
     start_time = time.time()
     
+    # Initialize statistics
+    stats = {
+        'dirs_renamed': 0,
+        'files_renamed': 0,
+        'files_updated': 0,
+        'replacements_made': 0,
+        'errors': 0
+    }
+    
     result = {
         'success': False,
         'old_component': args.old_name,
@@ -416,7 +461,9 @@ def main() -> int:
         'new_id_prefix': args.new_id_prefix,
         'enum_value': None,
         'provider': None,
-        'files_modified': 0,
+        'dirs_renamed': 0,
+        'files_renamed': 0,
+        'files_updated': 0,
         'replacements_made': 0,
         'icon_folder_renamed': False,
         'protos_exit_code': 0,
@@ -460,7 +507,6 @@ def main() -> int:
         new_folder = to_lowercase(args.new_name)
         
         old_dir = get_component_directory(repo_root, provider, old_folder)
-        new_dir = get_component_directory(repo_root, provider, new_folder)
         
         # Validate old directory exists
         if not os.path.exists(old_dir):
@@ -475,28 +521,7 @@ def main() -> int:
             print(json.dumps(result), file=sys.stderr)
             return 1
         
-        # 3. Delete target directory if it exists
-        if delete_directory_if_exists(new_dir):
-            print(f"Deleted existing target directory: {new_dir}", file=sys.stderr)
-        
-        # 4. Copy component directory
-        file_count = copy_component_directory(old_dir, new_dir)
-        result['files_modified'] = file_count
-        
-        # 5. Build replacement map
-        replacements = build_replacement_map(args.old_name, args.new_name)
-        
-        # 6. Apply replacements in new component directory
-        replacements_in_component = apply_replacements_in_directory(new_dir, replacements)
-        result['replacements_made'] += replacements_in_component
-        
-        # 7. Apply replacements in docs directory
-        docs_dir = os.path.join(repo_root, "site/public/docs")
-        if os.path.exists(docs_dir):
-            replacements_in_docs = apply_replacements_in_directory(docs_dir, replacements)
-            result['replacements_made'] += replacements_in_docs
-        
-        # 8. Update cloud_resource_kind.proto
+        # 3. Update cloud_resource_kind.proto (before file renames)
         update_registry_entry(
             component_info['registry_path'],
             args.old_name,
@@ -504,7 +529,7 @@ def main() -> int:
             args.new_id_prefix
         )
         
-        # 9. Rename icon folder (if exists)
+        # 4. Rename icon folder (before component directory renames)
         icon_result = rename_icon_folder(repo_root, provider, old_folder, new_folder)
         result['icon_folder_renamed'] = icon_result['renamed']
         
@@ -513,10 +538,27 @@ def main() -> int:
         else:
             print(f"Icon folder not found (skipped): {icon_result['old_path']}", file=sys.stderr)
         
-        # 10. Delete old component directory
-        shutil.rmtree(old_dir)
+        # 5. Build replacement map
+        replacements = build_replacement_map(args.old_name, args.new_name)
         
-        # 11. Run build pipeline
+        # 6. Apply sequential renames to component directory
+        component_dir = Path(old_dir)
+        for old_str, new_str in replacements:
+            apply_sequential_renames(component_dir, old_str, new_str, stats)
+        
+        # 7. Apply sequential renames to docs directory
+        docs_dir = Path(repo_root) / "site" / "public" / "docs"
+        if docs_dir.exists():
+            for old_str, new_str in replacements:
+                apply_sequential_renames(docs_dir, old_str, new_str, stats)
+        
+        # 8. Update result with statistics
+        result['dirs_renamed'] = stats['dirs_renamed']
+        result['files_renamed'] = stats['files_renamed']
+        result['files_updated'] = stats['files_updated']
+        result['replacements_made'] = stats['replacements_made']
+        
+        # 9. Run build pipeline
         build_results = run_build_pipeline(repo_root)
         result.update(build_results)
         
@@ -541,4 +583,3 @@ def main() -> int:
 
 if __name__ == '__main__':
     sys.exit(main())
-

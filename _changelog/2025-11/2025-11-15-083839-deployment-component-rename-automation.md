@@ -114,20 +114,20 @@ The rename system applies comprehensive replacements covering all conventions:
 
 ### Phase 2: Rename Script (`rename_deployment_component.py`)
 
-**File**: `.cursor/rules/deployment-component/_scripts/rename_deployment_component.py`  
+**File**: `.cursor/rules/deployment-component/rename/_scripts/rename_deployment_component.py`  
 **Size**: 494 lines  
 **Language**: Python 3
 
 #### Command-Line Interface
 
 ```bash
-python3 .cursor/rules/deployment-component/_scripts/rename_deployment_component.py \
+python3 .cursor/rules/deployment-component/rename/_scripts/rename_deployment_component.py \
   --old-name KubernetesMicroservice \
   --new-name KubernetesDeployment \
   --new-id-prefix k8sdpl  # Optional
 
 # Keep existing ID prefix
-python3 .cursor/rules/deployment-component/_scripts/rename_deployment_component.py \
+python3 .cursor/rules/deployment-component/rename/_scripts/rename_deployment_component.py \
   --old-name KubernetesMicroservice \
   --new-name KubernetesDeployment
 ```

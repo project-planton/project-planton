@@ -500,7 +500,7 @@ See: `_changelog/2025-11/2025-11-14-072635-kubernetes-workload-naming-consistenc
 ### Learn More
 - **README:** [`rename/README.md`](rename/README.md)
 - **Rule:** [`rename/rename-project-planton-component.mdc`](rename/rename-project-planton-component.mdc)
-- **Script:** [`_scripts/rename_deployment_component.py`](_scripts/rename_deployment_component.py)
+- **Script:** [`rename/_scripts/rename_deployment_component.py`](rename/_scripts/rename_deployment_component.py)
 
 ---
 
