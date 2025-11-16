@@ -11,6 +11,11 @@ spec:
   highlyAvailable: false              # HA control plane (extra cost)
   autoUpgrade: false                  # Automatic patch upgrades
   disableSurgeUpgrade: false         # Keep surge nodes for zero‑downtime upgrades
+  maintenanceWindow: "sunday=02:00"  # Scheduled maintenance window (optional)
+  registryIntegration: false         # Enable DOCR integration (optional)
+  # controlPlaneFirewallAllowedIps:  # Restrict API access to specific IPs (optional)
+  #   - "203.0.113.5/32"
+  #   - "198.51.100.0/24"
   tags:
     - project-planton
   defaultNodePool:

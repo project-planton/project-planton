@@ -26,21 +26,25 @@ const (
 type DigitalOceanCertificateType int32
 
 const (
+	// Unspecified certificate type (invalid, used for validation).
+	DigitalOceanCertificateType_unspecified DigitalOceanCertificateType = 0
 	// A free, auto‑managed Let's Encrypt certificate.
-	DigitalOceanCertificateType_letsEncrypt DigitalOceanCertificateType = 0
+	DigitalOceanCertificateType_lets_encrypt DigitalOceanCertificateType = 1
 	// A user‑provided custom certificate.
-	DigitalOceanCertificateType_custom DigitalOceanCertificateType = 1
+	DigitalOceanCertificateType_custom DigitalOceanCertificateType = 2
 )
 
 // Enum value maps for DigitalOceanCertificateType.
 var (
 	DigitalOceanCertificateType_name = map[int32]string{
-		0: "letsEncrypt",
-		1: "custom",
+		0: "unspecified",
+		1: "lets_encrypt",
+		2: "custom",
 	}
 	DigitalOceanCertificateType_value = map[string]int32{
-		"letsEncrypt": 0,
-		"custom":      1,
+		"unspecified":  0,
+		"lets_encrypt": 1,
+		"custom":       2,
 	}
 )
 
@@ -134,7 +138,7 @@ func (x *DigitalOceanCertificateSpec) GetType() DigitalOceanCertificateType {
 	if x != nil {
 		return x.Type
 	}
-	return DigitalOceanCertificateType_letsEncrypt
+	return DigitalOceanCertificateType_unspecified
 }
 
 func (x *DigitalOceanCertificateSpec) GetCertificateSource() isDigitalOceanCertificateSpec_CertificateSource {
@@ -334,11 +338,12 @@ const file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_
 	"\vprivate_key\x18\x02 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\n" +
 	"privateKey\x12+\n" +
-	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain*:\n" +
+	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain*L\n" +
 	"\x1bDigitalOceanCertificateType\x12\x0f\n" +
-	"\vletsEncrypt\x10\x00\x12\n" +
+	"\vunspecified\x10\x00\x12\x10\n" +
+	"\flets_encrypt\x10\x01\x12\n" +
 	"\n" +
-	"\x06custom\x10\x01B\x99\x04\n" +
+	"\x06custom\x10\x02B\x99\x04\n" +
 	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\tSpecProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
 
 var (

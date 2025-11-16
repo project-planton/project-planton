@@ -104,6 +104,7 @@ type CivoLoadBalancerSpec struct {
 	InstanceIds []*v1.StringValueOrRef `protobuf:"bytes,6,rep,name=instance_ids,json=instanceIds,proto3" json:"instance_ids,omitempty"`
 	// A tag name for instances. All instances with this tag in the specified network will be attached to the Load Balancer.
 	// Mutually exclusive with `instance_ids`.
+	// When set, this field should contain a non-empty tag name.
 	InstanceTag string `protobuf:"bytes,7,opt,name=instance_tag,json=instanceTag,proto3" json:"instance_tag,omitempty"`
 	// A reserved IP to assign to the Load Balancer (for a static public IP address).
 	// If provided, the Load Balancer will use this reserved IP instead of allocating a new one.
@@ -350,16 +351,15 @@ var File_org_project_planton_provider_civo_civoloadbalancer_v1_spec_proto protor
 
 const file_org_project_planton_provider_civo_civoloadbalancer_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"@org/project_planton/provider/civo/civoloadbalancer/v1/spec.proto\x125org.project_planton.provider.civo.civoloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a.org/project_planton/provider/civo/region.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xab\a\n" +
+	"@org/project_planton/provider/civo/civoloadbalancer/v1/spec.proto\x125org.project_planton.provider.civo.civoloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a.org/project_planton/provider/civo/region.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xa9\a\n" +
 	"\x14CivoLoadBalancerSpec\x12H\n" +
 	"\x12load_balancer_name\x18\x01 \x01(\tB\x1a\xbaH\x17\xc8\x01\x01r\x12\x10\x01\x18@2\f^[a-z0-9-]+$R\x10loadBalancerName\x12M\n" +
 	"\x06region\x18\x02 \x01(\x0e2-.org.project_planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12~\n" +
 	"\anetwork\x18\x03 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\v\x92\xd4a\x19status.outputs.network_idR\anetwork\x12\x8d\x01\n" +
 	"\x10forwarding_rules\x18\x04 \x03(\v2U.org.project_planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerForwardingRuleB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x0fforwardingRules\x12u\n" +
 	"\fhealth_check\x18\x05 \x01(\v2R.org.project_planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerHealthCheckR\vhealthCheck\x12\x82\x01\n" +
-	"\finstance_ids\x18\x06 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB#\x88\xd4a\xde\v\x92\xd4a\x1astatus.outputs.instance_idR\vinstanceIds\x12-\n" +
-	"\finstance_tag\x18\a \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\vinstanceTag\x12\x88\x01\n" +
+	"\finstance_ids\x18\x06 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB#\x88\xd4a\xde\v\x92\xd4a\x1astatus.outputs.instance_idR\vinstanceIds\x12+\n" +
+	"\finstance_tag\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\xff\x01R\vinstanceTag\x12\x88\x01\n" +
 	"\x0ereserved_ip_id\x18\b \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB&\x88\xd4a\xe2\v\x92\xd4a\x1dstatus.outputs.reserved_ip_idR\freservedIpId\x124\n" +
 	"\x16enable_sticky_sessions\x18\t \x01(\bR\x14enableStickySessions\"\x83\x03\n" +
 	"\x1eCivoLoadBalancerForwardingRule\x12-\n" +

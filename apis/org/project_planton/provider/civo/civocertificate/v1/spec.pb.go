@@ -316,10 +316,10 @@ var File_org_project_planton_provider_civo_civocertificate_v1_spec_proto protore
 
 const file_org_project_planton_provider_civo_civocertificate_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?org/project_planton/provider/civo/civocertificate/v1/spec.proto\x124org.project_planton.provider.civo.civocertificate.v1\x1a\x1bbuf/validate/validate.proto\"\x8b\x04\n" +
+	"?org/project_planton/provider/civo/civocertificate/v1/spec.proto\x124org.project_planton.provider.civo.civocertificate.v1\x1a\x1bbuf/validate/validate.proto\"\xfe\x03\n" +
 	"\x13CivoCertificateSpec\x127\n" +
-	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12j\n" +
-	"\x04type\x18\x02 \x01(\x0e2I.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\x04type\x12{\n" +
+	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12]\n" +
+	"\x04type\x18\x02 \x01(\x0e2I.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateTypeR\x04type\x12{\n" +
 	"\flets_encrypt\x18\x03 \x01(\v2V.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateLetsEncryptParamsH\x00R\vletsEncrypt\x12k\n" +
 	"\x06custom\x18\x04 \x01(\v2Q.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateCustomParamsH\x00R\x06custom\x12*\n" +
 	"\vdescription\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\vdescription\x12\x1c\n" +

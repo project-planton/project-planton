@@ -47,22 +47,22 @@ message CloudflareD1DatabaseSpec {
 enum CloudflareD1Region {
   // Unspecified region (Cloudflare will select a default).
   cloudflare_d1_region_unspecified = 0;
-  
+
   // Western Europe
   weur = 1;
-  
+
   // Eastern Europe
   eeur = 2;
-  
+
   // Asia Pacific
   apac = 3;
-  
+
   // Oceania
   oc = 4;
-  
+
   // Western North America
   wnam = 5;
-  
+
   // Eastern North America
   enam = 6;
 }

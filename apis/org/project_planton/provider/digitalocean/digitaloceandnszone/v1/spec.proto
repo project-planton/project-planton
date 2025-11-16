@@ -32,8 +32,10 @@ message DigitalOceanDnsZoneRecord {
   // - For A/AAAA: one or more IP address(es).
   // - For CNAME: the target domain name.
   // - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-  // - For MX: typically one or more entries like "<priority> <mail-server-domain>".
-  // Each value can be a literal or a reference to another resource’s output.
+  // - For MX: the mail server domain name (priority is specified separately in the priority field).
+  // - For SRV: the target server (priority, weight, and port are specified separately).
+  // - For CAA: the certificate authority domain (flags and tag are specified separately).
+  // Each value can be a literal or a reference to another resource's output.
   repeated org.project_planton.shared.foreignkey.v1.StringValueOrRef values = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).repeated.min_items = 1
@@ -46,4 +48,39 @@ message DigitalOceanDnsZoneRecord {
   // The type of the DNS record.
   // This field is required and must be one of the supported record types.
   org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [(buf.validate.field).required = true];
+
+  // Priority for MX and SRV records.
+  // - For MX records: Lower values indicate higher priority (e.g., 1 is higher priority than 10).
+  // - For SRV records: Used in conjunction with weight for load distribution.
+  // - Ignored for other record types.
+  // Defaults to 0 if not specified.
+  uint32 priority = 5 [(org.project_planton.shared.options.recommended_default) = "0"];
+
+  // Weight for SRV records.
+  // Specifies the relative weight for records with the same priority.
+  // Higher weights are chosen more often.
+  // Ignored for non-SRV record types.
+  // Defaults to 0 if not specified.
+  uint32 weight = 6 [(org.project_planton.shared.options.recommended_default) = "0"];
+
+  // Port for SRV records.
+  // Specifies the TCP or UDP port on which the service is available.
+  // Required for SRV records, ignored for other types.
+  // Defaults to 0 if not specified.
+  uint32 port = 7 [(org.project_planton.shared.options.recommended_default) = "0"];
+
+  // Flags for CAA records.
+  // - 0: Non-critical (default) - If a CA doesn't understand the tag, it can ignore it.
+  // - 128: Critical - If a CA doesn't understand the tag, it must refuse to issue.
+  // Ignored for non-CAA record types.
+  // Defaults to 0 if not specified.
+  uint32 flags = 8 [(org.project_planton.shared.options.recommended_default) = "0"];
+
+  // Tag for CAA records.
+  // Specifies the property being authorized:
+  // - "issue": Authorizes a CA to issue certificates for the domain.
+  // - "issuewild": Authorizes a CA to issue wildcard certificates.
+  // - "iodef": Specifies a URL to which a CA may report policy violations.
+  // Required for CAA records, ignored for other types.
+  string tag = 9;
 }

@@ -35,12 +35,17 @@ func loadBalancer(
 	// 3. -----  Forwarding Rules  -------------------------------------------
 	var forwardingRules digitalocean.LoadBalancerForwardingRuleArray
 	for _, fr := range spec.ForwardingRules {
-		forwardingRules = append(forwardingRules, digitalocean.LoadBalancerForwardingRuleArgs{
+		rule := digitalocean.LoadBalancerForwardingRuleArgs{
 			EntryPort:      pulumi.Int(int(fr.EntryPort)),
 			EntryProtocol:  pulumi.String(fr.EntryProtocol.String()),
 			TargetPort:     pulumi.Int(int(fr.TargetPort)),
 			TargetProtocol: pulumi.String(fr.TargetProtocol.String()),
-		})
+		}
+		// Add certificate name for HTTPS termination if specified
+		if fr.CertificateName != "" {
+			rule.CertificateName = pulumi.StringPtr(fr.CertificateName)
+		}
+		forwardingRules = append(forwardingRules, rule)
 	}
 
 	// 4. -----  Health Check  ------------------------------------------------

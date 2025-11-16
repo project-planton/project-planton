@@ -40,17 +40,37 @@ func dnsZone(
 		for valIdx, val := range rec.Values {
 			resourceName := fmt.Sprintf("%s-%d-%d", rec.Name, recIdx, valIdx)
 
+			// Build the DnsRecordArgs with basic fields
+			recordArgs := &digitalocean.DnsRecordArgs{
+				Domain: createdDomain.Name,
+				Name:   pulumi.String(rec.Name),
+				Type:   pulumi.String(rec.Type.String()),
+				Value:  pulumi.String(val.GetValue()),
+				Ttl:    pulumi.Int(ttl),
+			}
+
+			// Add priority for MX and SRV records
+			if rec.Type.String() == "MX" || rec.Type.String() == "SRV" {
+				recordArgs.Priority = pulumi.Int(int(rec.Priority))
+			}
+
+			// Add weight and port for SRV records
+			if rec.Type.String() == "SRV" {
+				recordArgs.Weight = pulumi.Int(int(rec.Weight))
+				recordArgs.Port = pulumi.Int(int(rec.Port))
+			}
+
+			// Add flags and tag for CAA records
+			if rec.Type.String() == "CAA" {
+				recordArgs.Flags = pulumi.Int(int(rec.Flags))
+				recordArgs.Tag = pulumi.String(rec.Tag)
+			}
+
 			// Note: StringValueOrRef has multiple fields; we assume 'Value' carries the literal.
 			createdDnsRecord, err := digitalocean.NewDnsRecord(
 				ctx,
 				resourceName,
-				&digitalocean.DnsRecordArgs{
-					Domain: createdDomain.Name,
-					Name:   pulumi.String(rec.Name),
-					Type:   pulumi.String(rec.Type.String()),
-					Value:  pulumi.String(val.GetValue()),
-					Ttl:    pulumi.Int(ttl),
-				},
+				recordArgs,
 				pulumi.Provider(digitalOceanProvider),
 			)
 			if err != nil {

@@ -13,17 +13,34 @@ func nodePool(
 	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.KubernetesNodePool, error) {
 
-	// 1. Build argument structs directly from proto fields.
+	// 1. Build labels - merge metadata labels with spec labels
 	labels := pulumi.StringMap{}
+	// First add metadata-derived labels
 	for k, v := range locals.DigitalOceanLabels {
 		labels[k] = pulumi.String(v)
 	}
+	// Then add user-specified labels from spec (can override metadata labels)
+	for k, v := range locals.DigitalOceanKubernetesNodePool.Spec.Labels {
+		labels[k] = pulumi.String(v)
+	}
 
+	// 2. Build taints array
+	var taints digitalocean.KubernetesNodePoolTaintArray
+	for _, taint := range locals.DigitalOceanKubernetesNodePool.Spec.Taints {
+		taints = append(taints, &digitalocean.KubernetesNodePoolTaintArgs{
+			Key:    pulumi.String(taint.Key),
+			Value:  pulumi.String(taint.Value),
+			Effect: pulumi.String(taint.Effect),
+		})
+	}
+
+	// 3. Build tags array
 	tags := pulumi.StringArray{}
 	for _, t := range locals.DigitalOceanKubernetesNodePool.Spec.Tags {
 		tags = append(tags, pulumi.String(t))
 	}
 
+	// 4. Build node pool arguments
 	nodePoolArgs := &digitalocean.KubernetesNodePoolArgs{
 		ClusterId: pulumi.String(locals.DigitalOceanKubernetesNodePool.Spec.Cluster.GetValue()),
 		Name:      pulumi.String(locals.DigitalOceanKubernetesNodePool.Spec.NodePoolName),
@@ -33,13 +50,19 @@ func nodePool(
 		NodeCount: pulumi.IntPtr(int(locals.DigitalOceanKubernetesNodePool.Spec.NodeCount)),
 	}
 
+	// Add taints if specified
+	if len(taints) > 0 {
+		nodePoolArgs.Taints = taints
+	}
+
+	// 5. Configure autoscaling if enabled
 	if locals.DigitalOceanKubernetesNodePool.Spec.AutoScale {
 		nodePoolArgs.AutoScale = pulumi.BoolPtr(true)
 		nodePoolArgs.MinNodes = pulumi.IntPtr(int(locals.DigitalOceanKubernetesNodePool.Spec.MinNodes))
 		nodePoolArgs.MaxNodes = pulumi.IntPtr(int(locals.DigitalOceanKubernetesNodePool.Spec.MaxNodes))
 	}
 
-	// 2. Create the node‑pool.
+	// 6. Create the node‑pool.
 	createdNodePool, err := digitalocean.NewKubernetesNodePool(
 		ctx,
 		"node_pool",
@@ -50,7 +73,7 @@ func nodePool(
 		return nil, errors.Wrap(err, "failed to create digitalocean kubernetes node pool")
 	}
 
-	// 3. Export stack outputs.
+	// 7. Export stack outputs.
 	ctx.Export(OpNodePoolId, createdNodePool.ID())
 
 	return createdNodePool, nil

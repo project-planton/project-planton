@@ -47,6 +47,8 @@ const (
 	DnsRecordType_SRV DnsRecordType = 9
 	// descriptive text
 	DnsRecordType_TXT DnsRecordType = 10
+	// certificate authority authorization
+	DnsRecordType_CAA DnsRecordType = 11
 )
 
 // Enum value maps for DnsRecordType.
@@ -63,6 +65,7 @@ var (
 		8:  "SOA",
 		9:  "SRV",
 		10: "TXT",
+		11: "CAA",
 	}
 	DnsRecordType_value = map[string]int32{
 		"unspecified": 0,
@@ -76,6 +79,7 @@ var (
 		"SOA":         8,
 		"SRV":         9,
 		"TXT":         10,
+		"CAA":         11,
 	}
 )
 
@@ -110,7 +114,7 @@ var File_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_ty
 
 const file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_type_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x129org.project_planton.shared.networking.enums.dnsrecordtype*{\n" +
+	"Oorg/project_planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x129org.project_planton.shared.networking.enums.dnsrecordtype*\x84\x01\n" +
 	"\rDnsRecordType\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x05\n" +
 	"\x01A\x10\x01\x12\b\n" +
@@ -123,7 +127,8 @@ const file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_
 	"\x03SOA\x10\b\x12\a\n" +
 	"\x03SRV\x10\t\x12\a\n" +
 	"\x03TXT\x10\n" +
-	"B\xc6\x03\n" +
+	"\x12\a\n" +
+	"\x03CAA\x10\vB\xc6\x03\n" +
 	"=com.org.project_planton.shared.networking.enums.dnsrecordtypeB\x12DnsRecordTypeProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype\xa2\x02\x06OPSNED\xaa\x028Org.ProjectPlanton.Shared.Networking.Enums.Dnsrecordtype\xca\x028Org\\ProjectPlanton\\Shared\\Networking\\Enums\\Dnsrecordtype\xe2\x02DOrg\\ProjectPlanton\\Shared\\Networking\\Enums\\Dnsrecordtype\\GPBMetadata\xea\x02=Org::ProjectPlanton::Shared::Networking::Enums::Dnsrecordtypeb\x06proto3"
 
 var (

@@ -51,6 +51,7 @@ use_repo(
     "com_github_pulumi_pulumi_azure_sdk_v5",
     "com_github_pulumi_pulumi_civo_sdk_v2",
     "com_github_pulumi_pulumi_cloudflare_sdk_v6",
+    "com_github_pulumi_pulumi_confluentcloud_sdk_v2",
     "com_github_pulumi_pulumi_digitalocean_sdk_v4",
     "com_github_pulumi_pulumi_gcp_sdk_v7",
     "com_github_pulumi_pulumi_gcp_sdk_v8",
