@@ -21,10 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsIamRoleStackOutputs describes values returned by Pulumi/Terraform for an ECS service.
+// AwsIamRoleStackOutputs describes values returned by Pulumi/Terraform for an IAM role deployment.
 type AwsIamRoleStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// role_arn is the ARN of the newly created role.
+	// role_arn is the Amazon Resource Name (ARN) of the created IAM role.
 	RoleArn string `protobuf:"bytes,1,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
 	// role_name is the name of the IAM role in AWS.
 	RoleName      string `protobuf:"bytes,2,opt,name=role_name,json=roleName,proto3" json:"role_name,omitempty"`

@@ -46,4 +46,42 @@ message AwsEcrRepoSpec {
   // images (all images get removed on delete). By default, it is false, preventing
   // accidental data loss.
   bool force_delete = 5;
+
+  // scanOnPush enables automatic image scanning when images are pushed to the repository.
+  // This is a production security essential - enables shift-left vulnerability detection.
+  // Defaults to true for security best practices.
+  optional bool scan_on_push = 6 [(org.project_planton.shared.options.default) = "true"];
+
+  // lifecyclePolicyRules defines automated image lifecycle management rules for cost control.
+  // This is essential for production to prevent uncontrolled storage costs.
+  // If not specified, no lifecycle policy is applied (not recommended for production).
+  optional AwsEcrRepoLifecyclePolicy lifecycle_policy = 7;
+}
+
+// AwsEcrRepoLifecyclePolicy defines lifecycle rules for automatic image expiration.
+// This is critical for cost control in active CI/CD environments that generate many images.
+message AwsEcrRepoLifecyclePolicy {
+  // expireUntaggedAfterDays removes untagged images after the specified number of days.
+  // Untagged images are typically intermediate build layers or failed builds.
+  // Recommended: 1-14 days. Default: 14 days if not specified.
+  optional int32 expire_untagged_after_days = 1 [
+    (org.project_planton.shared.options.default) = "14",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 365
+    }
+  ];
+
+  // maxImageCount keeps only the most recent N images, expiring all older ones.
+  // This prevents unbounded growth from CI/CD pipelines creating many tagged images.
+  // Recommended: 30-100 depending on deployment frequency. Default: 30 if not specified.
+  optional int32 max_image_count = 2 [
+    (org.project_planton.shared.options.default) = "30",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 1000
+    }
+  ];
 }

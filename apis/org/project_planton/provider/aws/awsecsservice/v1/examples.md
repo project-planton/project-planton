@@ -187,6 +187,156 @@ spec:
 
 ---
 
+# Example with Autoscaling
+
+This example demonstrates how to enable autoscaling for an ECS service using target tracking. The service will
+automatically scale between 2 and 10 tasks based on CPU utilization, targeting 75% average CPU usage.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsService
+metadata:
+  name: autoscaling-ecs-service
+spec:
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-production-cluster"
+  container:
+    image:
+      repo: "myorg/production-app"
+      tag: "v2.0.0"
+    port: 8080
+    replicas: 2  # Initial desired count
+    cpu: 512
+    memory: 1024
+  network:
+    subnets:
+      - "subnet-prod-1"
+      - "subnet-prod-2"
+    securityGroups:
+      - "sg-prod-app"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/prod-lb/1234567890"
+    routingType: "path"
+    path: "/api/*"
+    listenerPort: 443
+  autoscaling:
+    enabled: true
+    minTasks: 2
+    maxTasks: 10
+    targetCpuPercent: 75
+    targetMemoryPercent: 80  # Optional: also track memory utilization
+```
+
+---
+
+# Example with Health Check Grace Period
+
+This example shows how to configure a health check grace period, which is critical for applications that take time
+to boot. This prevents ECS from prematurely killing tasks during startup when the ALB health checks initially fail.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsService
+metadata:
+  name: slow-start-ecs-service
+spec:
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-app-cluster"
+  container:
+    image:
+      repo: "myorg/springboot-app"  # Spring Boot apps often take 30-60s to start
+      tag: "latest"
+    port: 8080
+    replicas: 2
+    cpu: 1024
+    memory: 2048
+  network:
+    subnets:
+      - "subnet-app-1"
+      - "subnet-app-2"
+    securityGroups:
+      - "sg-app"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/main-lb/abc123"
+    routingType: "hostname"
+    hostname: "app.example.com"
+    listenerPort: 443
+    healthCheck:
+      path: "/actuator/health"
+      interval: 30
+      timeout: 5
+      healthyThreshold: 2
+      unhealthyThreshold: 3
+  # Grace period allows 120 seconds for the app to fully boot before considering health check failures
+  healthCheckGracePeriodSeconds: 120
+```
+
+---
+
+# Complete Production Example
+
+This example combines all features: autoscaling, health check grace period, custom IAM roles, secrets, and ALB routing.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsService
+metadata:
+  name: production-complete-service
+spec:
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/production-cluster"
+  container:
+    image:
+      repo: "myorg/production-api"
+      tag: "v3.1.0"
+    port: 8080
+    replicas: 3
+    cpu: 1024
+    memory: 2048
+    env:
+      variables:
+        ENVIRONMENT: "production"
+        LOG_LEVEL: "info"
+      secrets:
+        DATABASE_URL: "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/db-url"
+        API_KEY: "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/api-key"
+    logging:
+      enabled: true  # Auto-creates CloudWatch Log Group
+  network:
+    subnets:
+      - "subnet-private-1a"
+      - "subnet-private-1b"
+      - "subnet-private-1c"
+    securityGroups:
+      - "sg-production-app"
+  iam:
+    taskExecutionRoleArn: "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789012:role/production-app-task-role"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/production-alb/xyz789"
+    routingType: "hostname"
+    hostname: "api.production.example.com"
+    listenerPort: 443
+    listenerPriority: 10
+    healthCheck:
+      protocol: "HTTP"
+      path: "/health"
+      port: "traffic-port"
+      interval: 30
+      timeout: 5
+      healthyThreshold: 2
+      unhealthyThreshold: 3
+  healthCheckGracePeriodSeconds: 90
+  autoscaling:
+    enabled: true
+    minTasks: 3
+    maxTasks: 20
+    targetCpuPercent: 70
+    targetMemoryPercent: 75
+```
+
+---
+
 After creating a YAML manifest for your ECS service, apply the configuration using either Pulumi or Terraform with the
 ProjectPlanton CLI. The CLI will validate your manifest against the Protobuf schema, generate the required
 infrastructure code, and provision the service on AWS.

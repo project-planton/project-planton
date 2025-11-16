@@ -9,6 +9,9 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awseksclusterv1.AwsEksClusterStackInput) (err error) {
+	// Initialize locals with computed values
+	locals := initializeLocals(ctx, stackInput)
+
 	var provider *aws.Provider
 	awsProviderConfig := stackInput.ProviderConfig
 
@@ -30,7 +33,7 @@ func Resources(ctx *pulumi.Context, stackInput *awseksclusterv1.AwsEksClusterSta
 	}
 
 	// Inputs
-	target := stackInput.Target
+	target := locals.AwsEksCluster
 	spec := target.Spec
 
 	// Build subnet IDs input
@@ -57,6 +60,19 @@ func Resources(ctx *pulumi.Context, stackInput *awseksclusterv1.AwsEksClusterSta
 			PublicAccessCidrs:    pulumi.ToStringArray(spec.PublicAccessCidrs),
 		},
 		EnabledClusterLogTypes: logTypes,
+		Tags:                   pulumi.ToStringMap(locals.AwsTags),
+	}
+
+	// Add KMS encryption if specified
+	if spec.KmsKeyArn != nil && spec.KmsKeyArn.GetValue() != "" {
+		clusterArgs.EncryptionConfig = &eks.ClusterEncryptionConfigArgs{
+			Provider: &eks.ClusterEncryptionConfigProviderArgs{
+				KeyArn: pulumi.String(spec.KmsKeyArn.GetValue()),
+			},
+			Resources: pulumi.StringArray{
+				pulumi.String("secrets"),
+			},
+		}
 	}
 
 	createdCluster, err := eks.NewCluster(ctx, target.Metadata.Name, clusterArgs, pulumi.Provider(provider))
@@ -64,11 +80,14 @@ func Resources(ctx *pulumi.Context, stackInput *awseksclusterv1.AwsEksClusterSta
 		return errors.Wrap(err, "create EKS cluster")
 	}
 
+	// Extract OIDC issuer URL from the cluster identity
+	oidcIssuerUrl := createdCluster.Identities.Index(pulumi.Int(0)).Oidcs().Index(pulumi.Int(0)).Issuer()
+
 	// Export outputs aligned to AwsEksClusterStackOutputs
 	ctx.Export(OpEndpoint, createdCluster.Endpoint)
 	ctx.Export(OpClusterCaCertificate, createdCluster.CertificateAuthority.Data().Elem())
-	ctx.Export(OpClusterSecurityGroupId, pulumi.String(""))
-	ctx.Export(OpOidcIssuerUrl, pulumi.String(""))
+	ctx.Export(OpClusterSecurityGroupId, createdCluster.VpcConfig.ClusterSecurityGroupId().Elem())
+	ctx.Export(OpOidcIssuerUrl, oidcIssuerUrl)
 	ctx.Export(OpClusterArn, createdCluster.Arn)
 	ctx.Export(OpName, createdCluster.Name)
 

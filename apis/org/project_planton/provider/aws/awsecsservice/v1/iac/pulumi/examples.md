@@ -157,6 +157,167 @@ spec:
 
 ---
 
+# Example with Autoscaling
+
+This example enables target tracking auto scaling, automatically adjusting task count based on CPU utilization.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsService
+metadata:
+  name: autoscaling-service
+spec:
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/production-cluster"
+  container:
+    image:
+      repo: "123456789012.dkr.ecr.us-east-1.amazonaws.com/app"
+      tag: "v2.0.0"
+    port: 8080
+    replicas: 2
+    cpu: 512
+    memory: 1024
+  network:
+    subnets:
+      - "subnet-prod-1"
+      - "subnet-prod-2"
+    securityGroups:
+      - "sg-prod-app"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/prod-lb/xyz"
+    routingType: "path"
+    path: "/api/*"
+    listenerPort: 443
+  autoscaling:
+    enabled: true
+    minTasks: 2
+    maxTasks: 10
+    targetCpuPercent: 75
+```
+
+**Key Points**:
+
+- **Target Tracking**: Automatically scales to maintain 75% average CPU utilization.
+- **Bounded Scaling**: Maintains between 2-10 tasks regardless of load.
+- **Production-Ready**: Uses AWS Application Auto Scaling with proper cooldown periods.
+
+---
+
+# Example with Health Check Grace Period
+
+This example demonstrates configuring a health check grace period for applications with slow startup times.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsService
+metadata:
+  name: springboot-service
+spec:
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/app-cluster"
+  container:
+    image:
+      repo: "123456789012.dkr.ecr.us-east-1.amazonaws.com/springboot-app"
+      tag: "latest"
+    port: 8080
+    replicas: 2
+    cpu: 1024
+    memory: 2048
+  network:
+    subnets:
+      - "subnet-app-1"
+      - "subnet-app-2"
+    securityGroups:
+      - "sg-app"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/main-lb/abc"
+    routingType: "hostname"
+    hostname: "app.example.com"
+    listenerPort: 443
+    healthCheck:
+      path: "/actuator/health"
+      interval: 30
+  healthCheckGracePeriodSeconds: 120
+```
+
+**Key Points**:
+
+- **Grace Period**: Allows 120 seconds for application to fully boot.
+- **Prevents Failed Deployments**: ECS ignores ALB health check failures during startup.
+- **Essential for JVM Apps**: Critical for Spring Boot, Quarkus, and other slow-starting applications.
+
+---
+
+# Complete Production Example
+
+This comprehensive example combines all production features: autoscaling, health check grace period, secrets, and ALB integration.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsService
+metadata:
+  name: production-api
+spec:
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/production"
+  container:
+    image:
+      repo: "123456789012.dkr.ecr.us-east-1.amazonaws.com/production-api"
+      tag: "v3.1.0"
+    port: 8080
+    replicas: 3
+    cpu: 1024
+    memory: 2048
+    env:
+      variables:
+        ENVIRONMENT: "production"
+        LOG_LEVEL: "info"
+      secrets:
+        DATABASE_URL: "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/db-url"
+        API_KEY: "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/api-key"
+    logging:
+      enabled: true
+  network:
+    subnets:
+      - "subnet-private-1a"
+      - "subnet-private-1b"
+      - "subnet-private-1c"
+    securityGroups:
+      - "sg-production-app"
+  iam:
+    taskExecutionRoleArn: "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789012:role/production-app-task-role"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/production-alb/xyz"
+    routingType: "hostname"
+    hostname: "api.production.example.com"
+    listenerPort: 443
+    listenerPriority: 10
+    healthCheck:
+      protocol: "HTTP"
+      path: "/health"
+      interval: 30
+      timeout: 5
+      healthyThreshold: 2
+      unhealthyThreshold: 3
+  healthCheckGracePeriodSeconds: 90
+  autoscaling:
+    enabled: true
+    minTasks: 3
+    maxTasks: 20
+    targetCpuPercent: 70
+    targetMemoryPercent: 75
+```
+
+**Key Points**:
+
+- **Full Production Stack**: Combines all features for production-ready deployments.
+- **Dual Scaling Metrics**: Scales on both CPU (70%) and memory (75%) utilization.
+- **Secure Secrets**: Uses AWS Secrets Manager for sensitive configuration.
+- **High Availability**: Spans multiple AZs with 3-20 task range.
+
+---
+
 **Next Steps**:
 
 - Customize CPU/memory allocations, environment variables, or IAM roles based on application requirements.

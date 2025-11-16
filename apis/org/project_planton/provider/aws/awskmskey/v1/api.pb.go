@@ -23,18 +23,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsKmsKey represents a containerized application deployed on AWS ECS.
-// This resource manages ECS services that can run on either Fargate or EC2.
+// AwsKmsKey represents a customer-managed AWS KMS encryption key.
+// KMS keys provide cryptographic operations for data encryption, signing, and verification
+// with fine-grained access control and automatic key rotation capabilities.
 type AwsKmsKey struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version must be set to "aws.project-planton.org/v1".
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind for this ECS service resource, typically "AwsKmsKey".
+	// resource-kind for this KMS key resource, typically "AwsKmsKey".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// spec holds the core configuration data defining how the ECS service is deployed.
+	// spec holds the core configuration data defining the KMS key's properties and behavior.
 	Spec *AwsKmsKeySpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
 	Status        *AwsKmsKeyStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
@@ -107,7 +108,7 @@ func (x *AwsKmsKey) GetStatus() *AwsKmsKeyStatus {
 	return nil
 }
 
-// AwsKmsKeyStatus describes the status fields for an ECS service resource.
+// AwsKmsKeyStatus describes the status fields for a KMS key resource.
 type AwsKmsKeyStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.

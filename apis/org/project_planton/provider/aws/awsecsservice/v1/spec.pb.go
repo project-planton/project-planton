@@ -40,7 +40,16 @@ type AwsEcsServiceSpec struct {
 	// IAM configuration for the ECS service.
 	Iam *AwsEcsServiceIam `protobuf:"bytes,4,opt,name=iam,proto3" json:"iam,omitempty"`
 	// alb defines how an ALB fronts traffic to this ECS service, supporting path- or hostname-based routing.
-	Alb           *AwsEcsServiceAlb `protobuf:"bytes,5,opt,name=alb,proto3" json:"alb,omitempty"`
+	Alb *AwsEcsServiceAlb `protobuf:"bytes,5,opt,name=alb,proto3" json:"alb,omitempty"`
+	// health_check_grace_period_seconds is the number of seconds ECS will ignore ALB health check failures
+	// during container startup. This prevents a race condition where the ALB marks a task unhealthy
+	// before the application has finished booting. Recommended: 60-120 seconds for typical apps.
+	// Only valid when alb.enabled = true.
+	HealthCheckGracePeriodSeconds *int32 `protobuf:"varint,6,opt,name=health_check_grace_period_seconds,json=healthCheckGracePeriodSeconds,proto3,oneof" json:"health_check_grace_period_seconds,omitempty"`
+	// autoscaling configuration for the ECS service using target tracking.
+	// When enabled, AWS Application Auto Scaling automatically adjusts the desired task count
+	// based on CPU or memory utilization.
+	Autoscaling   *AwsEcsServiceAutoscaling `protobuf:"bytes,7,opt,name=autoscaling,proto3" json:"autoscaling,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -106,6 +115,20 @@ func (x *AwsEcsServiceSpec) GetIam() *AwsEcsServiceIam {
 func (x *AwsEcsServiceSpec) GetAlb() *AwsEcsServiceAlb {
 	if x != nil {
 		return x.Alb
+	}
+	return nil
+}
+
+func (x *AwsEcsServiceSpec) GetHealthCheckGracePeriodSeconds() int32 {
+	if x != nil && x.HealthCheckGracePeriodSeconds != nil {
+		return *x.HealthCheckGracePeriodSeconds
+	}
+	return 0
+}
+
+func (x *AwsEcsServiceSpec) GetAutoscaling() *AwsEcsServiceAutoscaling {
+	if x != nil {
+		return x.Autoscaling
 	}
 	return nil
 }
@@ -716,18 +739,112 @@ func (x *AwsEcsServiceHealthCheck) GetUnhealthyThreshold() int32 {
 	return 0
 }
 
+// AwsEcsServiceAutoscaling defines target tracking auto scaling configuration for the ECS service.
+// AWS Application Auto Scaling automatically adjusts the desired task count to maintain
+// the target metric (CPU or memory utilization).
+type AwsEcsServiceAutoscaling struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// enabled controls whether autoscaling is configured for this service.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// min_tasks is the minimum number of tasks to maintain.
+	// Must be >= 1 and <= max_tasks.
+	MinTasks int32 `protobuf:"varint,2,opt,name=min_tasks,json=minTasks,proto3" json:"min_tasks,omitempty"`
+	// max_tasks is the maximum number of tasks to scale to.
+	// Must be >= min_tasks.
+	MaxTasks int32 `protobuf:"varint,3,opt,name=max_tasks,json=maxTasks,proto3" json:"max_tasks,omitempty"`
+	// target_cpu_percent is the target average CPU utilization (as a percentage) across all tasks.
+	// AWS will scale out when CPU exceeds this threshold and scale in when it drops below.
+	// Recommended: 70-75 for production workloads.
+	// Example: 75 means target 75% CPU utilization.
+	TargetCpuPercent *int32 `protobuf:"varint,4,opt,name=target_cpu_percent,json=targetCpuPercent,proto3,oneof" json:"target_cpu_percent,omitempty"`
+	// target_memory_percent is the target average memory utilization (as a percentage) across all tasks.
+	// Similar to target_cpu_percent but for memory.
+	// This is optional; most services scale on CPU alone.
+	TargetMemoryPercent *int32 `protobuf:"varint,5,opt,name=target_memory_percent,json=targetMemoryPercent,proto3,oneof" json:"target_memory_percent,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *AwsEcsServiceAutoscaling) Reset() {
+	*x = AwsEcsServiceAutoscaling{}
+	mi := &file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsEcsServiceAutoscaling) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsEcsServiceAutoscaling) ProtoMessage() {}
+
+func (x *AwsEcsServiceAutoscaling) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsEcsServiceAutoscaling.ProtoReflect.Descriptor instead.
+func (*AwsEcsServiceAutoscaling) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *AwsEcsServiceAutoscaling) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *AwsEcsServiceAutoscaling) GetMinTasks() int32 {
+	if x != nil {
+		return x.MinTasks
+	}
+	return 0
+}
+
+func (x *AwsEcsServiceAutoscaling) GetMaxTasks() int32 {
+	if x != nil {
+		return x.MaxTasks
+	}
+	return 0
+}
+
+func (x *AwsEcsServiceAutoscaling) GetTargetCpuPercent() int32 {
+	if x != nil && x.TargetCpuPercent != nil {
+		return *x.TargetCpuPercent
+	}
+	return 0
+}
+
+func (x *AwsEcsServiceAutoscaling) GetTargetMemoryPercent() int32 {
+	if x != nil && x.TargetMemoryPercent != nil {
+		return *x.TargetMemoryPercent
+	}
+	return 0
+}
+
 var File_org_project_planton_provider_aws_awsecsservice_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/aws/awsecsservice/v1/spec.proto\x121org.project_planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa6\x04\n" +
+	"<org/project_planton/provider/aws/awsecsservice/v1/spec.proto\x121org.project_planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x92\x06\n" +
 	"\x11AwsEcsServiceSpec\x12\x86\x01\n" +
 	"\vcluster_arn\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\xbaH\x03\xc8\x01\x01\x88\xd4a\xcd\x01\x92\xd4a\x1astatus.outputs.cluster_arnR\n" +
 	"clusterArn\x12o\n" +
 	"\tcontainer\x18\x02 \x01(\v2I.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12i\n" +
 	"\anetwork\x18\x03 \x01(\v2G.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetworkB\x06\xbaH\x03\xc8\x01\x01R\anetwork\x12U\n" +
 	"\x03iam\x18\x04 \x01(\v2C.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIamR\x03iam\x12U\n" +
-	"\x03alb\x18\x05 \x01(\v2C.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlbR\x03alb\"\xbb\x03\n" +
+	"\x03alb\x18\x05 \x01(\v2C.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlbR\x03alb\x12U\n" +
+	"!health_check_grace_period_seconds\x18\x06 \x01(\x05B\x06\x8a\xa6\x1d\x0260H\x00R\x1dhealthCheckGracePeriodSeconds\x88\x01\x01\x12m\n" +
+	"\vautoscaling\x18\a \x01(\v2K.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAutoscalingR\vautoscalingB$\n" +
+	"\"_health_check_grace_period_seconds\"\xbb\x03\n" +
 	"\x16AwsEcsServiceContainer\x12d\n" +
 	"\x05image\x18\x01 \x01(\v2N.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImageR\x05image\x12^\n" +
 	"\x03env\x18\x02 \x01(\v2L.org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnvR\x03env\x12\x12\n" +
@@ -774,7 +891,15 @@ const file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc 
 	"\binterval\x18\x04 \x01(\x05R\binterval\x12\x18\n" +
 	"\atimeout\x18\x05 \x01(\x05R\atimeout\x12+\n" +
 	"\x11healthy_threshold\x18\x06 \x01(\x05R\x10healthyThreshold\x12/\n" +
-	"\x13unhealthy_threshold\x18\a \x01(\x05R\x12unhealthyThresholdB\x9c\x03\n" +
+	"\x13unhealthy_threshold\x18\a \x01(\x05R\x12unhealthyThreshold\"\xb9\x02\n" +
+	"\x18AwsEcsServiceAutoscaling\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12$\n" +
+	"\tmin_tasks\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\bminTasks\x12$\n" +
+	"\tmax_tasks\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\bmaxTasks\x12B\n" +
+	"\x12target_cpu_percent\x18\x04 \x01(\x05B\x0f\xbaH\x06\x1a\x04\x18d(\x01\x8a\xa6\x1d\x0275H\x00R\x10targetCpuPercent\x88\x01\x01\x12B\n" +
+	"\x15target_memory_percent\x18\x05 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01H\x01R\x13targetMemoryPercent\x88\x01\x01B\x15\n" +
+	"\x13_target_cpu_percentB\x18\n" +
+	"\x16_target_memory_percentB\x9c\x03\n" +
 	"5com.org.project_planton.provider.aws.awsecsservice.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecsservice/v1;awsecsservicev1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecsservice.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecsservice\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecsservice\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecsservice::V1b\x06proto3"
 
 var (
@@ -789,7 +914,7 @@ func file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZ
 	return file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_goTypes = []any{
 	(*AwsEcsServiceSpec)(nil),             // 0: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec
 	(*AwsEcsServiceContainer)(nil),        // 1: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
@@ -800,32 +925,34 @@ var file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_goTypes = 
 	(*AwsEcsServiceIam)(nil),              // 6: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
 	(*AwsEcsServiceAlb)(nil),              // 7: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
 	(*AwsEcsServiceHealthCheck)(nil),      // 8: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceHealthCheck
-	nil,                                   // 9: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
-	nil,                                   // 10: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
-	(*v1.StringValueOrRef)(nil),           // 11: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*AwsEcsServiceAutoscaling)(nil),      // 9: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAutoscaling
+	nil,                                   // 10: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
+	nil,                                   // 11: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
+	(*v1.StringValueOrRef)(nil),           // 12: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_depIdxs = []int32{
-	11, // 0: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.cluster_arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	12, // 0: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.cluster_arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	1,  // 1: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.container:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
 	5,  // 2: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.network:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
 	6,  // 3: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.iam:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
 	7,  // 4: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.alb:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
-	3,  // 5: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.image:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
-	4,  // 6: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.env:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
-	2,  // 7: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.logging:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLogging
-	9,  // 8: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.variables:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
-	10, // 9: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.secrets:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
-	11, // 10: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork.subnets:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	11, // 11: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork.security_groups:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	11, // 12: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam.task_execution_role_arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	11, // 13: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam.task_role_arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	11, // 14: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb.arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	8,  // 15: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb.health_check:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceHealthCheck
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	9,  // 5: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.autoscaling:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAutoscaling
+	3,  // 6: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.image:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
+	4,  // 7: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.env:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
+	2,  // 8: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.logging:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLogging
+	10, // 9: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.variables:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
+	11, // 10: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.secrets:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
+	12, // 11: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork.subnets:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	12, // 12: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork.security_groups:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	12, // 13: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam.task_execution_role_arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	12, // 14: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam.task_role_arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	12, // 15: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb.arn:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	8,  // 16: org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb.health_check:type_name -> org.project_planton.provider.aws.awsecsservice.v1.AwsEcsServiceHealthCheck
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_init() }
@@ -833,14 +960,16 @@ func file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_init() {
 	if File_org_project_planton_provider_aws_awsecsservice_v1_spec_proto != nil {
 		return
 	}
+	file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[7].OneofWrappers = []any{}
+	file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[9].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

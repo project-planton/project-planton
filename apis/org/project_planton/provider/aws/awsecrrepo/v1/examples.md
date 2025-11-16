@@ -8,24 +8,54 @@ planton apply -f <yaml-path>
 
 # Basic Example
 
-This basic example creates an AWS ECR Repo with default settings.
+This basic example creates an AWS ECR Repository with secure defaults: immutable tags, image scanning enabled, and AES256 encryption.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcrRepo
 metadata:
-  name: my-basic-vpc
+  name: my-basic-repo
 spec:
-  awsProviderConfigId: my-aws-credential-id
-  vpcCidr: 10.0.0.0/16
-  availabilityZones:
-    - us-west-2a
-    - us-west-2b
-  subnetsPerAvailabilityZone: 1
-  subnetSize: 256
-  isNatGatewayEnabled: false
-  isDnsHostnamesEnabled: true
-  isDnsSupportEnabled: true
+  repository_name: my-app/backend
+  image_immutable: true
+```
+
+# Example with Lifecycle Policy
+
+This example adds lifecycle policies for cost control - expires untagged images after 7 days and keeps only the last 50 images.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcrRepo
+metadata:
+  name: my-app-with-lifecycle
+spec:
+  repository_name: my-app/frontend
+  image_immutable: true
+  scan_on_push: true
+  lifecycle_policy:
+    expire_untagged_after_days: 7
+    max_image_count: 50
+```
+
+# Example with KMS Encryption
+
+This example uses customer-managed KMS encryption for compliance requirements.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcrRepo
+metadata:
+  name: my-compliant-repo
+spec:
+  repository_name: my-org/secure-service
+  image_immutable: true
+  scan_on_push: true
+  encryption_type: KMS
+  kms_key_id: arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
+  lifecycle_policy:
+    expire_untagged_after_days: 14
+    max_image_count: 30
 ```
 
 # Example with Environment Variables
@@ -36,21 +66,18 @@ This example uses environment variables to parameterize the ECR configuration.
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcrRepo
 metadata:
-  name: my-env-vpc
+  name: ${REPO_NAME}
 spec:
-  awsProviderConfigId: ${AWS_CREDENTIAL_ID}
-  vpcCidr: ${ECR_CIDR}
-  availabilityZones:
-    - ${AVAILABILITY_ZONE_1}
-    - ${AVAILABILITY_ZONE_2}
-  subnetsPerAvailabilityZone: ${SUBNETS_PER_AZ}
-  subnetSize: ${SUBNET_SIZE}
-  isNatGatewayEnabled: ${ENABLE_NAT_GATEWAY}
-  isDnsHostnamesEnabled: ${ENABLE_DNS_HOSTNAMES}
-  isDnsSupportEnabled: ${ENABLE_DNS_SUPPORT}
+  repository_name: ${ORG_NAME}/${SERVICE_NAME}
+  image_immutable: ${IMAGE_IMMUTABLE}
+  scan_on_push: ${SCAN_ON_PUSH}
+  encryption_type: ${ENCRYPTION_TYPE}
+  lifecycle_policy:
+    expire_untagged_after_days: ${EXPIRE_UNTAGGED_DAYS}
+    max_image_count: ${MAX_IMAGE_COUNT}
 ```
 
-In this example, replace the placeholders like `${AWS_CREDENTIAL_ID}` with your actual environment variable names or values.
+In this example, replace the placeholders like `${REPO_NAME}` with your actual environment variable names or values.
 
 # Example with Environment Secrets
 
@@ -60,52 +87,81 @@ The below example assumes that the secrets are managed by Planton Cloud's [AWS S
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcrRepo
 metadata:
-  name: my-secret-vpc
+  name: my-secret-repo
 spec:
-  awsProviderConfigId: my-aws-credential-id
-  vpcCidr: 10.1.0.0/16
-  availabilityZones:
-    - us-east-1a
-    - us-east-1b
-  subnetsPerAvailabilityZone: 2
-  subnetSize: 512
-  isNatGatewayEnabled: true
-  isDnsHostnamesEnabled: true
-  isDnsSupportEnabled: true
-  someSecretConfig: ${awssm-my-org-prod-aws-secrets.secret-key}
+  repository_name: my-org/confidential-service
+  image_immutable: true
+  scan_on_push: true
+  encryption_type: KMS
+  kms_key_id: ${awssm-my-org-prod-aws-secrets.ecr-kms-key-arn}
+  lifecycle_policy:
+    expire_untagged_after_days: 14
+    max_image_count: 30
 ```
 
 In this example:
 
-- **someSecretConfig** is a placeholder for any configuration value you want to retrieve from AWS Secrets Manager.
+- **kms_key_id** is retrieved from AWS Secrets Manager.
 - The value before the dot (`awssm-my-org-prod-aws-secrets`) is the ID of the AWS Secrets Manager resource on Planton Cloud.
-- The value after the dot (`secret-key`) is the name of the secret within that resource.
+- The value after the dot (`ecr-kms-key-arn`) is the name of the secret within that resource.
 
-# Example with All Available Fields
+# Production-Ready Example
 
-This comprehensive example demonstrates the full capabilities of the `AwsEcrRepo` resource.
+This comprehensive example demonstrates production best practices:
+- Immutable tags for stability
+- Image scanning enabled for security
+- KMS encryption for compliance
+- Lifecycle policies for cost control
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcrRepo
 metadata:
-  name: my-full-config-vpc
+  name: production-service-repo
 spec:
-  awsProviderConfigId: my-aws-credential-id
-  vpcCidr: 10.2.0.0/16
-  availabilityZones:
-    - us-east-1a
-    - us-east-1b
-    - us-east-1c
-  subnetsPerAvailabilityZone: 3
-  subnetSize: 256
-  isNatGatewayEnabled: true
-  isDnsHostnamesEnabled: true
-  isDnsSupportEnabled: true
+  repository_name: my-company/production-api
+  image_immutable: true
+  scan_on_push: true
+  encryption_type: KMS
+  kms_key_id: arn:aws:kms:us-east-1:123456789012:key/prod-ecr-key
+  force_delete: false
+  lifecycle_policy:
+    expire_untagged_after_days: 1
+    max_image_count: 100
+```
+
+# Development Environment Example
+
+This example is suitable for development environments with more lenient policies:
+- Mutable tags for flexibility
+- Shorter retention for faster cleanup
+- AES256 encryption (no KMS required)
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcrRepo
+metadata:
+  name: dev-service-repo
+spec:
+  repository_name: my-company/dev-api
+  image_immutable: false
+  scan_on_push: true
+  encryption_type: AES256
+  force_delete: true
+  lifecycle_policy:
+    expire_untagged_after_days: 3
+    max_image_count: 20
 ```
 
 ---
 
-These examples illustrate various configurations of the `AwsEcrRepo` API resource, demonstrating how to define ECRs with different features such as environment variables, environment secrets, and comprehensive settings.
+These examples illustrate various configurations of the `AwsEcrRepo` API resource, demonstrating how to define ECR repositories with different security postures, lifecycle policies, and encryption configurations.
 
-Please ensure that you replace placeholder values like `my-aws-credential-id`, environment variable names, and secret references with your actual configuration details.
+**Key Production Recommendations:**
+- Always enable `image_immutable: true` for production to prevent tag overwrites
+- Keep `scan_on_push: true` (default) for security vulnerability detection
+- Use lifecycle policies to control costs (untagged images can accumulate quickly)
+- Use `encryption_type: KMS` when compliance requires auditable key management
+- Set `force_delete: false` (default) to prevent accidental repository deletion
+
+Please ensure that you replace placeholder values like repository names, KMS key ARNs, and environment variable names with your actual configuration details.

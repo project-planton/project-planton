@@ -30,6 +30,17 @@ message AwsEcsServiceSpec {
 
   // alb defines how an ALB fronts traffic to this ECS service, supporting path- or hostname-based routing.
   AwsEcsServiceAlb alb = 5;
+
+  // health_check_grace_period_seconds is the number of seconds ECS will ignore ALB health check failures
+  // during container startup. This prevents a race condition where the ALB marks a task unhealthy
+  // before the application has finished booting. Recommended: 60-120 seconds for typical apps.
+  // Only valid when alb.enabled = true.
+  optional int32 health_check_grace_period_seconds = 6 [(org.project_planton.shared.options.default) = "60"];
+
+  // autoscaling configuration for the ECS service using target tracking.
+  // When enabled, AWS Application Auto Scaling automatically adjusts the desired task count
+  // based on CPU or memory utilization.
+  AwsEcsServiceAutoscaling autoscaling = 7;
 }
 
 // AwsEcsServiceContainer is a wrapper for the container spec.
@@ -201,4 +212,40 @@ message AwsEcsServiceHealthCheck {
 
   // number of failures before a target is considered unhealthy. AWS default is 2.
   int32 unhealthy_threshold = 7;
+}
+
+// AwsEcsServiceAutoscaling defines target tracking auto scaling configuration for the ECS service.
+// AWS Application Auto Scaling automatically adjusts the desired task count to maintain
+// the target metric (CPU or memory utilization).
+message AwsEcsServiceAutoscaling {
+  // enabled controls whether autoscaling is configured for this service.
+  bool enabled = 1;
+
+  // min_tasks is the minimum number of tasks to maintain.
+  // Must be >= 1 and <= max_tasks.
+  int32 min_tasks = 2 [(buf.validate.field).int32 = {gte: 1}];
+
+  // max_tasks is the maximum number of tasks to scale to.
+  // Must be >= min_tasks.
+  int32 max_tasks = 3 [(buf.validate.field).int32 = {gte: 1}];
+
+  // target_cpu_percent is the target average CPU utilization (as a percentage) across all tasks.
+  // AWS will scale out when CPU exceeds this threshold and scale in when it drops below.
+  // Recommended: 70-75 for production workloads.
+  // Example: 75 means target 75% CPU utilization.
+  optional int32 target_cpu_percent = 4 [
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 100
+    },
+    (org.project_planton.shared.options.default) = "75"
+  ];
+
+  // target_memory_percent is the target average memory utilization (as a percentage) across all tasks.
+  // Similar to target_cpu_percent but for memory.
+  // This is optional; most services scale on CPU alone.
+  optional int32 target_memory_percent = 5 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 100
+  }];
 }

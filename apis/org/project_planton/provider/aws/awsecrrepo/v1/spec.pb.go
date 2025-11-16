@@ -47,9 +47,17 @@ type AwsEcrRepoSpec struct {
 	// forceDelete, if true, allows deleting the repository even when it contains
 	// images (all images get removed on delete). By default, it is false, preventing
 	// accidental data loss.
-	ForceDelete   bool `protobuf:"varint,5,opt,name=force_delete,json=forceDelete,proto3" json:"force_delete,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ForceDelete bool `protobuf:"varint,5,opt,name=force_delete,json=forceDelete,proto3" json:"force_delete,omitempty"`
+	// scanOnPush enables automatic image scanning when images are pushed to the repository.
+	// This is a production security essential - enables shift-left vulnerability detection.
+	// Defaults to true for security best practices.
+	ScanOnPush *bool `protobuf:"varint,6,opt,name=scan_on_push,json=scanOnPush,proto3,oneof" json:"scan_on_push,omitempty"`
+	// lifecyclePolicyRules defines automated image lifecycle management rules for cost control.
+	// This is essential for production to prevent uncontrolled storage costs.
+	// If not specified, no lifecycle policy is applied (not recommended for production).
+	LifecyclePolicy *AwsEcrRepoLifecyclePolicy `protobuf:"bytes,7,opt,name=lifecycle_policy,json=lifecyclePolicy,proto3,oneof" json:"lifecycle_policy,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AwsEcrRepoSpec) Reset() {
@@ -117,11 +125,85 @@ func (x *AwsEcrRepoSpec) GetForceDelete() bool {
 	return false
 }
 
+func (x *AwsEcrRepoSpec) GetScanOnPush() bool {
+	if x != nil && x.ScanOnPush != nil {
+		return *x.ScanOnPush
+	}
+	return false
+}
+
+func (x *AwsEcrRepoSpec) GetLifecyclePolicy() *AwsEcrRepoLifecyclePolicy {
+	if x != nil {
+		return x.LifecyclePolicy
+	}
+	return nil
+}
+
+// AwsEcrRepoLifecyclePolicy defines lifecycle rules for automatic image expiration.
+// This is critical for cost control in active CI/CD environments that generate many images.
+type AwsEcrRepoLifecyclePolicy struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// expireUntaggedAfterDays removes untagged images after the specified number of days.
+	// Untagged images are typically intermediate build layers or failed builds.
+	// Recommended: 1-14 days. Default: 14 days if not specified.
+	ExpireUntaggedAfterDays *int32 `protobuf:"varint,1,opt,name=expire_untagged_after_days,json=expireUntaggedAfterDays,proto3,oneof" json:"expire_untagged_after_days,omitempty"`
+	// maxImageCount keeps only the most recent N images, expiring all older ones.
+	// This prevents unbounded growth from CI/CD pipelines creating many tagged images.
+	// Recommended: 30-100 depending on deployment frequency. Default: 30 if not specified.
+	MaxImageCount *int32 `protobuf:"varint,2,opt,name=max_image_count,json=maxImageCount,proto3,oneof" json:"max_image_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AwsEcrRepoLifecyclePolicy) Reset() {
+	*x = AwsEcrRepoLifecyclePolicy{}
+	mi := &file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsEcrRepoLifecyclePolicy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsEcrRepoLifecyclePolicy) ProtoMessage() {}
+
+func (x *AwsEcrRepoLifecyclePolicy) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsEcrRepoLifecyclePolicy.ProtoReflect.Descriptor instead.
+func (*AwsEcrRepoLifecyclePolicy) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *AwsEcrRepoLifecyclePolicy) GetExpireUntaggedAfterDays() int32 {
+	if x != nil && x.ExpireUntaggedAfterDays != nil {
+		return *x.ExpireUntaggedAfterDays
+	}
+	return 0
+}
+
+func (x *AwsEcrRepoLifecyclePolicy) GetMaxImageCount() int32 {
+	if x != nil && x.MaxImageCount != nil {
+		return *x.MaxImageCount
+	}
+	return 0
+}
+
 var File_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9org/project_planton/provider/aws/awsecrrepo/v1/spec.proto\x12.org.project_planton.provider.aws.awsecrrepo.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\x95\x02\n" +
+	"9org/project_planton/provider/aws/awsecrrepo/v1/spec.proto\x12.org.project_planton.provider.aws.awsecrrepo.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xe7\x03\n" +
 	"\x0eAwsEcrRepoSpec\x126\n" +
 	"\x0frepository_name\x18\x01 \x01(\tB\r\xbaH\n" +
 	"\xc8\x01\x01r\x05\x10\x02\x18\x80\x02R\x0erepositoryName\x12'\n" +
@@ -129,8 +211,20 @@ const file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDesc = "
 	"\x0fencryption_type\x18\x03 \x01(\tB\x1f\xbaH\x12\xd8\x01\x01r\rR\x06AES256R\x03KMS\x8a\xa6\x1d\x06AES256H\x00R\x0eencryptionType\x88\x01\x01\x12\x1c\n" +
 	"\n" +
 	"kms_key_id\x18\x04 \x01(\tR\bkmsKeyId\x12!\n" +
-	"\fforce_delete\x18\x05 \x01(\bR\vforceDeleteB\x12\n" +
-	"\x10_encryption_typeB\x87\x03\n" +
+	"\fforce_delete\x18\x05 \x01(\bR\vforceDelete\x12/\n" +
+	"\fscan_on_push\x18\x06 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x01R\n" +
+	"scanOnPush\x88\x01\x01\x12y\n" +
+	"\x10lifecycle_policy\x18\a \x01(\v2I.org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoLifecyclePolicyH\x02R\x0flifecyclePolicy\x88\x01\x01B\x12\n" +
+	"\x10_encryption_typeB\x0f\n" +
+	"\r_scan_on_pushB\x13\n" +
+	"\x11_lifecycle_policy\"\xe7\x01\n" +
+	"\x19AwsEcrRepoLifecyclePolicy\x12U\n" +
+	"\x1aexpire_untagged_after_days\x18\x01 \x01(\x05B\x13\xbaH\n" +
+	"\xd8\x01\x01\x1a\x05\x18\xed\x02(\x01\x8a\xa6\x1d\x0214H\x00R\x17expireUntaggedAfterDays\x88\x01\x01\x12@\n" +
+	"\x0fmax_image_count\x18\x02 \x01(\x05B\x13\xbaH\n" +
+	"\xd8\x01\x01\x1a\x05\x18\xe8\a(\x01\x8a\xa6\x1d\x0230H\x01R\rmaxImageCount\x88\x01\x01B\x1d\n" +
+	"\x1b_expire_untagged_after_daysB\x12\n" +
+	"\x10_max_image_countB\x87\x03\n" +
 	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
 
 var (
@@ -145,16 +239,18 @@ func file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDescGZIP(
 	return file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_goTypes = []any{
-	(*AwsEcrRepoSpec)(nil), // 0: org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoSpec
+	(*AwsEcrRepoSpec)(nil),            // 0: org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoSpec
+	(*AwsEcrRepoLifecyclePolicy)(nil), // 1: org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoLifecyclePolicy
 }
 var file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoSpec.lifecycle_policy:type_name -> org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoLifecyclePolicy
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_init() }
@@ -163,13 +259,14 @@ func file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_init() {
 		return
 	}
 	file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
+	file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

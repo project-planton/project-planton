@@ -39,6 +39,19 @@ func rdsCluster(
 		EngineMode:                       pulumi.String(spec.EngineMode),
 	}
 
+	// Storage type (aurora or aurora-iopt1)
+	if spec.StorageType != "" {
+		args.StorageType = pulumi.String(spec.StorageType)
+	}
+
+	// Serverless v2 scaling configuration
+	if spec.ServerlessV2Scaling != nil {
+		args.Serverlessv2ScalingConfiguration = &rds.ClusterServerlessv2ScalingConfigurationArgs{
+			MinCapacity: pulumi.Float64(spec.ServerlessV2Scaling.MinCapacity),
+			MaxCapacity: pulumi.Float64(spec.ServerlessV2Scaling.MaxCapacity),
+		}
+	}
+
 	if spec.KmsKeyId != nil && spec.KmsKeyId.GetValue() != "" {
 		args.KmsKeyId = pulumi.String(spec.KmsKeyId.GetValue())
 	}

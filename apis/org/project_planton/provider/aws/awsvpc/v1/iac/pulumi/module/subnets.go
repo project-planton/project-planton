@@ -88,6 +88,11 @@ func subnets(
 				}
 
 				natGatewayPerAz[availabilityZone] = natGw
+
+				// Export NAT Gateway details
+				ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, publicIndex-1, OpSubnetNatGatewayId), natGw.ID())
+				ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, publicIndex-1, OpSubnetNatGatewayPrivateIp), natGw.PrivateIp)
+				ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, publicIndex-1, OpSubnetNatGatewayPublicIp), createdElasticIp.PublicIp)
 			}
 		}
 	}

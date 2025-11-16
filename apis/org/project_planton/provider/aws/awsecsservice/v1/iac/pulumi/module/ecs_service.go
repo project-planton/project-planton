@@ -11,6 +11,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/appautoscaling"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/cloudwatch"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ecs"
@@ -110,6 +111,15 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 			SecurityGroups: pulumi.ToStringArray(valuefrom.ToStringArray(spec.Network.SecurityGroups)),
 		},
 		Tags: pulumi.ToStringMap(locals.AwsTags),
+	}
+
+	// Set health check grace period if ALB is enabled
+	if spec.Alb != nil && spec.Alb.Enabled {
+		gracePeriod := int32(60) // default
+		if spec.HealthCheckGracePeriodSeconds != nil {
+			gracePeriod = *spec.HealthCheckGracePeriodSeconds
+		}
+		serviceArgs.HealthCheckGracePeriodSeconds = pulumi.Int(int(gracePeriod))
 	}
 
 	var loadBalancerDNS pulumi.StringInput = pulumi.String("")
@@ -242,6 +252,13 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		"service", serviceArgs, pulumi.Provider(provider))
 	if err != nil {
 		return errors.Wrap(err, "unable to create ECS service")
+	}
+
+	// Configure autoscaling if enabled
+	if spec.Autoscaling != nil && spec.Autoscaling.Enabled {
+		if err := configureAutoscaling(ctx, locals, provider, awsEcsService, spec); err != nil {
+			return errors.Wrap(err, "failed to configure autoscaling")
+		}
 	}
 
 	ctx.Export(OpAwsEcsServiceName, awsEcsService.Name)
@@ -399,4 +416,92 @@ func healthCheckArgs(
 	}
 
 	return args
+}
+
+// configureAutoscaling sets up AWS Application Auto Scaling with target tracking policies
+// for the ECS service based on CPU and/or memory utilization.
+func configureAutoscaling(
+	ctx *pulumi.Context,
+	locals *Locals,
+	provider *aws.Provider,
+	ecsService *ecs.Service,
+	spec *awsecsservicev1.AwsEcsServiceSpec,
+) error {
+	serviceName := locals.AwsEcsService.Metadata.Name
+	autoscalingConfig := spec.Autoscaling
+
+	// Extract cluster name from ARN (format: arn:aws:ecs:region:account:cluster/name)
+	clusterArn := spec.ClusterArn.GetValue()
+	clusterName := clusterArn
+	if idx := strings.LastIndex(clusterArn, "/"); idx != -1 {
+		clusterName = clusterArn[idx+1:]
+	}
+
+	// Create the scalable target
+	target, err := appautoscaling.NewTarget(ctx,
+		"autoscaling-target",
+		&appautoscaling.TargetArgs{
+			MaxCapacity:       pulumi.Int(int(autoscalingConfig.MaxTasks)),
+			MinCapacity:       pulumi.Int(int(autoscalingConfig.MinTasks)),
+			ResourceId:        pulumi.Sprintf("service/%s/%s", clusterName, serviceName),
+			ScalableDimension: pulumi.String("ecs:service:DesiredCount"),
+			ServiceNamespace:  pulumi.String("ecs"),
+		},
+		pulumi.Provider(provider),
+		pulumi.DependsOn([]pulumi.Resource{ecsService}))
+	if err != nil {
+		return errors.Wrap(err, "failed to create autoscaling target")
+	}
+
+	// Create CPU-based scaling policy if target_cpu_percent is set
+	if autoscalingConfig.TargetCpuPercent != nil && *autoscalingConfig.TargetCpuPercent > 0 {
+		_, err := appautoscaling.NewPolicy(ctx,
+			"cpu-scaling-policy",
+			&appautoscaling.PolicyArgs{
+				PolicyType:        pulumi.String("TargetTrackingScaling"),
+				ResourceId:        target.ResourceId,
+				ScalableDimension: target.ScalableDimension,
+				ServiceNamespace:  target.ServiceNamespace,
+				TargetTrackingScalingPolicyConfiguration: &appautoscaling.PolicyTargetTrackingScalingPolicyConfigurationArgs{
+					TargetValue: pulumi.Float64(float64(*autoscalingConfig.TargetCpuPercent)),
+					PredefinedMetricSpecification: &appautoscaling.PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs{
+						PredefinedMetricType: pulumi.String("ECSServiceAverageCPUUtilization"),
+					},
+					ScaleInCooldown:  pulumi.Int(300),
+					ScaleOutCooldown: pulumi.Int(60),
+				},
+			},
+			pulumi.Provider(provider),
+			pulumi.DependsOn([]pulumi.Resource{target}))
+		if err != nil {
+			return errors.Wrap(err, "failed to create CPU scaling policy")
+		}
+	}
+
+	// Create memory-based scaling policy if target_memory_percent is set
+	if autoscalingConfig.TargetMemoryPercent != nil && *autoscalingConfig.TargetMemoryPercent > 0 {
+		_, err := appautoscaling.NewPolicy(ctx,
+			"memory-scaling-policy",
+			&appautoscaling.PolicyArgs{
+				PolicyType:        pulumi.String("TargetTrackingScaling"),
+				ResourceId:        target.ResourceId,
+				ScalableDimension: target.ScalableDimension,
+				ServiceNamespace:  target.ServiceNamespace,
+				TargetTrackingScalingPolicyConfiguration: &appautoscaling.PolicyTargetTrackingScalingPolicyConfigurationArgs{
+					TargetValue: pulumi.Float64(float64(*autoscalingConfig.TargetMemoryPercent)),
+					PredefinedMetricSpecification: &appautoscaling.PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs{
+						PredefinedMetricType: pulumi.String("ECSServiceAverageMemoryUtilization"),
+					},
+					ScaleInCooldown:  pulumi.Int(300),
+					ScaleOutCooldown: pulumi.Int(60),
+				},
+			},
+			pulumi.Provider(provider),
+			pulumi.DependsOn([]pulumi.Resource{target}))
+		if err != nil {
+			return errors.Wrap(err, "failed to create memory scaling policy")
+		}
+	}
+
+	return nil
 }

@@ -1,52 +1,94 @@
 # Overview
 
-The AWS ECR Repo (Virtual Private Cloud) API resource provides a consistent and streamlined interface for deploying and managing AWS ECR Repos within our cloud infrastructure. By abstracting the complexities of ECR configurations, this resource allows you to define your network environments effortlessly while ensuring consistency and compliance across different environments.
+The AWS ECR Repo API resource provides a consistent and streamlined interface for deploying and managing AWS Elastic Container Registry (ECR) repositories within our cloud infrastructure. By abstracting the complexities of ECR configurations and lifecycle policies, this resource allows you to define your container image storage effortlessly while ensuring security, compliance, and cost control across different environments.
 
 ## Why We Created This API Resource
 
-Configuring AWS ECR Repos can be intricate due to the numerous networking components, best practices, and security considerations involved. To simplify this process and promote a standardized approach, we developed this API resource. It enables you to:
+Configuring AWS ECR repositories can be intricate due to numerous security considerations, lifecycle management requirements, and compliance needs. The AWS CLI and base IaC tools often default to insecure configurations (mutable tags, no scanning). To simplify this process and promote production-ready defaults, we developed this API resource. It enables you to:
 
-- **Simplify Network Configuration**: Easily set up ECRs with the desired CIDR blocks, subnets, and availability zones without dealing with low-level AWS networking details.
-- **Ensure Consistency**: Maintain uniform network architectures across different environments and projects.
-- **Enhance Productivity**: Reduce the time and effort required to configure ECRs, allowing you to focus on developing and deploying applications.
+- **Secure by Default**: Automatically enables image scanning and supports immutable tags to prevent production incidents.
+- **Simplify Cost Control**: Provides high-level lifecycle policy configuration without dealing with complex JSON syntax.
+- **Ensure Consistency**: Maintain uniform repository configurations across different environments and teams.
+- **Enhance Productivity**: Reduce the time and effort required to configure ECR repositories, allowing you to focus on building and deploying applications.
 
 ## Key Features
 
 ### Environment Integration
 
-- **Environment Info**: Seamlessly integrates with our environment management system to deploy ECRs within specific environments.
+- **Environment Info**: Seamlessly integrates with our environment management system to deploy ECR repositories within specific environments.
 - **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
 
 ### AWS Credential Management
 
 - **AWS Credential ID**: Utilizes specified AWS credentials to ensure secure and authorized deployments.
 
-### Customizable ECR Specifications
+### Customizable Repository Specifications
 
-#### Network Configuration
+#### Repository Identity
 
-- **ECR CIDR Block**: Define the IP address range for the ECR using CIDR notation (e.g., `10.0.0.0/16`).
-- **Availability Zones**: Specify the AWS availability zones to span the ECR (e.g., `["us-west-2a", "us-west-2b"]`).
+- **Repository Name**: Define unique repository names that can be namespaced (e.g., `my-org/service-name`).
+- **Metadata Tags**: Automatically applies organization, environment, and resource tags for cost tracking and governance.
 
-#### Subnet Configuration
+#### Security Configuration
 
-- **Subnets per Availability Zone**: Determine the number of subnets to create in each availability zone for better resource distribution and fault tolerance.
-- **Subnet Size**: Specify the number of hosts in each subnet to control the subnet's IP address range.
+- **Image Immutability**: Toggle to prevent tag overwrites, ensuring that `my-app:v1.0` always refers to exactly one image build.
+- **Image Scanning**: Enable automatic vulnerability scanning when images are pushed (defaults to enabled for security).
+- **Encryption**: Choose between AWS-managed encryption (AES256) or customer-managed KMS keys for compliance requirements.
 
-#### NAT Gateway
+#### Cost Control
 
-- **NAT Gateway Enablement**: Toggle to enable or disable a NAT gateway for private subnets, allowing instances in private subnets to access the internet securely.
+- **Lifecycle Policies**: Simplified configuration for automatic image expiration:
+  - **Expire Untagged Images**: Remove intermediate build layers and failed builds after N days.
+  - **Max Image Count**: Keep only the most recent N images to prevent unbounded storage growth.
 
-#### DNS Settings
+#### Safety Features
 
-- **DNS Hostnames**: Enable or disable DNS hostnames within the ECR to allow instances to have DNS names that resolve to their private IP addresses.
-- **DNS Support**: Enable or disable DNS resolution through the Amazon-provided DNS server, which is essential for internal DNS resolution within the ECR.
+- **Force Delete**: Control whether repositories can be deleted when they contain images (defaults to false to prevent accidental data loss).
+
+## Production Best Practices
+
+This API resource encodes production best practices identified through industry research:
+
+### Stability Guarantee
+
+- **Immutable Tags**: Prevent overwrites of image tags, ensuring reproducible deployments and reliable rollbacks.
+
+### Security Baseline
+
+- **Scan on Push**: Automatically scan images for CVE vulnerabilities when pushed.
+- **Encryption at Rest**: All images encrypted by default (AES256 or KMS).
+
+### Cost Control
+
+- **Lifecycle Policies**: Automated cleanup of old and untagged images prevents runaway storage costs from active CI/CD pipelines.
 
 ## Benefits
 
-- **Simplified Deployment**: Abstracts the complexities of AWS ECR Repo configurations into an easy-to-use API.
-- **Consistency**: Ensures all ECRs adhere to organizational standards for networking, security, and compliance.
-- **Scalability**: Allows for flexible network architectures that can grow with your application's needs.
-- **Security**: Provides options to configure network isolation, control internet access, and manage DNS settings securely.
-- **Flexibility**: Customize ECRs extensively to meet specific application requirements without compromising best practices.
-- **Cost Efficiency**: Optimize resource allocation by precisely controlling subnet sizes and NAT gateway usage.
+- **Simplified Deployment**: Abstracts the complexities of AWS ECR configurations, lifecycle policies, and scanning into an easy-to-use API.
+- **Secure Defaults**: Production-ready configurations out of the box - image scanning enabled, encryption enforced, immutability supported.
+- **Consistency**: Ensures all ECR repositories adhere to organizational standards for security, compliance, and cost control.
+- **No JSON Complexity**: Define lifecycle policies with simple fields like `expire_untagged_after_days` instead of verbose JSON syntax.
+- **Compliance Ready**: Support for KMS encryption with customer-managed keys for HIPAA, PCI-DSS, and other compliance regimes.
+- **Cost Efficiency**: Automated lifecycle policies prevent storage costs from growing indefinitely due to CI/CD pipelines creating thousands of images.
+- **Production Stability**: Immutable tags prevent the "worked yesterday" problem where production images get accidentally overwritten.
+
+## Integration Patterns
+
+### With Amazon ECS/Fargate
+
+ECR repositories integrate seamlessly with ECS and Fargate for container deployments. The Task Execution Role requires ECR pull permissions.
+
+### With Amazon EKS
+
+For Kubernetes workloads, use IRSA (IAM Roles for Service Accounts) to grant pods transparent access to ECR without managing static credentials.
+
+### With CI/CD Pipelines
+
+CI/CD systems authenticate using `aws ecr get-login-password` and push images with unique tags (Git SHA recommended). Lifecycle policies automatically clean up old images.
+
+## Security Considerations
+
+- **IAM Permissions**: Separate pull and push permissions - runtime services need only pull access, CI/CD systems need push access.
+- **Image Scanning**: Enable scan-on-push and configure EventBridge to alert on critical vulnerabilities.
+- **Encryption**: Use KMS encryption when compliance requires demonstrable key lifecycle control and rotation policies.
+- **Network Access**: For private subnet workloads, use VPC endpoints for ECR to avoid NAT Gateway costs and improve security.

@@ -89,6 +89,55 @@ var _ = ginkgo.Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
 					gomega.Expect(err).To(gomega.BeNil())
 				})
 			})
+
+			ginkgo.Context("lifecycle_policy constraints", func() {
+				ginkgo.It("should succeed with valid lifecycle policy", func() {
+					input.Spec.LifecyclePolicy = &AwsEcrRepoLifecyclePolicy{
+						ExpireUntaggedAfterDays: proto.Int32(14),
+						MaxImageCount:           proto.Int32(30),
+					}
+					err := protovalidate.Validate(input)
+					gomega.Expect(err).To(gomega.BeNil())
+				})
+
+				ginkgo.It("should fail if expire_untagged_after_days is less than 1", func() {
+					input.Spec.LifecyclePolicy = &AwsEcrRepoLifecyclePolicy{
+						ExpireUntaggedAfterDays: proto.Int32(0),
+					}
+					err := protovalidate.Validate(input)
+					gomega.Expect(err).NotTo(gomega.BeNil())
+				})
+
+				ginkgo.It("should fail if expire_untagged_after_days is greater than 365", func() {
+					input.Spec.LifecyclePolicy = &AwsEcrRepoLifecyclePolicy{
+						ExpireUntaggedAfterDays: proto.Int32(366),
+					}
+					err := protovalidate.Validate(input)
+					gomega.Expect(err).NotTo(gomega.BeNil())
+				})
+
+				ginkgo.It("should fail if max_image_count is less than 1", func() {
+					input.Spec.LifecyclePolicy = &AwsEcrRepoLifecyclePolicy{
+						MaxImageCount: proto.Int32(0),
+					}
+					err := protovalidate.Validate(input)
+					gomega.Expect(err).NotTo(gomega.BeNil())
+				})
+
+				ginkgo.It("should fail if max_image_count is greater than 1000", func() {
+					input.Spec.LifecyclePolicy = &AwsEcrRepoLifecyclePolicy{
+						MaxImageCount: proto.Int32(1001),
+					}
+					err := protovalidate.Validate(input)
+					gomega.Expect(err).NotTo(gomega.BeNil())
+				})
+
+				ginkgo.It("should succeed with no lifecycle policy", func() {
+					input.Spec.LifecyclePolicy = nil
+					err := protovalidate.Validate(input)
+					gomega.Expect(err).To(gomega.BeNil())
+				})
+			})
 		})
 	})
 })

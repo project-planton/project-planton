@@ -255,8 +255,12 @@ github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0 h1:pwxTKLi3EQU26q5GiHdNTOMrTzQTmv2gB
 github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0/go.mod h1:BRlY8r2S8A8kDm8vnHGiw2GembbHbne/4vwaS/az6PQ=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4 h1:HfKyJcM6v9tKSko+oVedD6M6s1VPIU7wxfwAhs4Gx+k=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4/go.mod h1:ATS+UN8pguMxypQAK+SaPewesU+UN5dpf93PNqVuHzs=
+github.com/pulumi/pulumi-mongodbatlas/sdk/v3 v3.36.1 h1:iyXdxSk0Ut4YRdOXvtabiQrmb+AONiendYLQ2PAuUb4=
+github.com/pulumi/pulumi-mongodbatlas/sdk/v3 v3.36.1/go.mod h1:Fki1qcKoYzenhsxX/+F/GNx6zug7LnXkLrvsp024rrw=
 github.com/pulumi/pulumi-random/sdk/v4 v4.16.7 h1:39rhOe/PTUGMYia8pR5T2wbxxMt2pwrlonf0ncYKSzE=
 github.com/pulumi/pulumi-random/sdk/v4 v4.16.7/go.mod h1:cxxDhJzUPt/YElfvlWa15Q4NGF6XXS8kUs4OQsCxSBk=
+github.com/pulumi/pulumi-snowflake/sdk/v2 v2.9.1 h1:P7AMe/gIaZ7ExukxaunrlsZTZ7Glh1SvKFcXT8f4CaU=
+github.com/pulumi/pulumi-snowflake/sdk/v2 v2.9.1/go.mod h1:qv6pt1dFy4cm6zZW+GC3wnaAX1jpYpvD96P0nK1mDo8=
 github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1 h1:tXemWrzeVTqG8zq6hBdv1TdPFXjgZ+dob63a/6GlF1o=
 github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1/go.mod h1:hODo3iEmmXDFOXqPK+V+vwI0a3Ww7BLjs5Tgamp86Ng=
 github.com/pulumi/pulumi-tls/sdk/v5 v5.2.1 h1:aCGQS3XM39kJDzdukzpcrPTX5YAOIjqqaIUrgR0EGNU=

@@ -55,6 +55,9 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 	//add vpc id to outputs
 	ctx.Export(OpVpcId, createdVpc.ID())
 
+	//add vpc cidr to outputs
+	ctx.Export(OpVpcCidr, pulumi.String(locals.AwsVpc.Spec.VpcCidr))
+
 	// internet gateway for public subnets
 	createdInternetGateway, err := ec2.NewInternetGateway(ctx,
 		locals.AwsVpc.Metadata.Name,

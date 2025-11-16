@@ -23,9 +23,9 @@ project-planton terraform apply --manifest <yaml-path> --stack <stack-name>
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsCluster
 metadata:
-  name: my-basic-aws-ecs-cluster
+  name: dev-cluster
   version:
-    message: "Initial cluster"
+    message: "Development cluster"
 spec:
   # Recommended to be true for production, enabling CloudWatch Container Insights
   enable_container_insights: true
@@ -33,51 +33,56 @@ spec:
   # Using default Fargate capacity
   capacity_providers:
     - "FARGATE"
-
-  # Defaulting to false; set to true if you want ECS Exec
-  enable_execute_command: false
 ```
 
 This example creates a simple AWS ECS cluster that runs on Fargate, with container insights enabled.
 
 ---
 
-# Example with Multiple Capacity Providers
+# Production Example with Cost Optimization
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsCluster
 metadata:
-  name: my-mixed-cluster
+  name: production-cluster
   version:
-    message: "Multi capacity providers cluster"
+    message: "Production cluster with cost optimization"
 spec:
-  # Enable CloudWatch insights to capture performance metrics
+  # Enable CloudWatch insights for comprehensive monitoring
   enable_container_insights: true
 
-  # Include both FARGATE and FARGATE_SPOT for cost savings when spot capacity is available
+  # Include both FARGATE and FARGATE_SPOT for cost optimization
   capacity_providers:
     - "FARGATE"
     - "FARGATE_SPOT"
 
-  # Keep ECS Exec disabled if not needed
-  enable_execute_command: false
+  # Define default capacity provider strategy for cost optimization
+  # This guarantees 1 on-demand task for stability, and scales with 80% Spot / 20% on-demand
+  default_capacity_provider_strategy:
+    - capacity_provider: "FARGATE"
+      base: 1              # Guarantee 1 on-demand task for stability
+      weight: 1            # 1 part on-demand for scaling (20%)
+    - capacity_provider: "FARGATE_SPOT"
+      base: 0              # No minimum Spot tasks required
+      weight: 4            # 4 parts Spot for scaling (80%)
 ```
 
-This example showcases how to combine FARGATE with FARGATE_SPOT, allowing you to reduce costs by taking advantage of
-Spot capacity where possible.
+This production example demonstrates the **80/20 cost optimization pattern**: guarantee stability with a base on-demand task, 
+while scaling 80% on Spot capacity (up to 70% cost savings) and 20% on-demand. This is the primary cost-optimization lever 
+for Fargate workloads.
 
 ---
 
-# Example with ECS Exec Enabled
+# Example with ECS Exec (Default Logging)
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsCluster
 metadata:
-  name: my-exec-enabled-cluster
+  name: debug-cluster
   version:
-    message: "Exec debugging example"
+    message: "Cluster with ECS Exec for debugging"
 spec:
   # Container Insights are highly recommended for monitoring
   enable_container_insights: true
@@ -86,31 +91,144 @@ spec:
   capacity_providers:
     - "FARGATE"
 
-  # Enable ECS Exec to allow debugging into running containers
-  enable_execute_command: true
+  # Enable ECS Exec with AWS-managed default logging
+  execute_command_configuration:
+    logging: DEFAULT
 ```
 
-When `enable_execute_command` is `true`, you can connect to running tasks for debugging or operational troubleshooting.
+When ECS Exec is enabled with `DEFAULT` logging, you can connect to running tasks for debugging or operational 
+troubleshooting using `aws ecs execute-command`, with AWS-managed audit logging.
 
 ---
 
-# Example with Minimal Configuration
+# Example with ECS Exec (Custom CloudWatch Logging)
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsCluster
 metadata:
-  name: shorty
+  name: audit-cluster
   version:
-    message: "Minimal cluster example"
+    message: "Cluster with custom exec auditing"
 spec:
-# Accept all defaults; Insights defaults to true
-# capacity_providers defaults to an empty list (no cluster capacity providers),
-# which is typically updated manually or managed externally if needed
+  # Enable CloudWatch insights for monitoring
+  enable_container_insights: true
+
+  # Production capacity providers
+  capacity_providers:
+    - "FARGATE"
+    - "FARGATE_SPOT"
+
+  # Enable ECS Exec with custom CloudWatch logging for compliance
+  execute_command_configuration:
+    logging: OVERRIDE
+    log_configuration:
+      cloud_watch_log_group_name: "/aws/ecs/prod/exec-audit"
+      cloud_watch_encryption_enabled: true
+    kms_key_id: "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
 ```
 
-If you need a bare-bones cluster definition, you can omit many fields. However, you should explicitly consider capacity
-providers and container insights for a more production-ready setup.
+This example enables ECS Exec with custom CloudWatch logging for compliance and security monitoring. All exec session 
+commands and output are logged to a specific CloudWatch log group with KMS encryption.
+
+---
+
+# Example with ECS Exec (S3 Audit Logging)
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsCluster
+metadata:
+  name: compliance-cluster
+  version:
+    message: "Cluster with S3 exec audit logging"
+spec:
+  # Enable CloudWatch insights for monitoring
+  enable_container_insights: true
+
+  # Production capacity providers
+  capacity_providers:
+    - "FARGATE"
+
+  # Enable ECS Exec with S3 logging for long-term audit retention
+  execute_command_configuration:
+    logging: OVERRIDE
+    log_configuration:
+      s3_bucket_name: "my-compliance-audit-bucket"
+      s3_key_prefix: "ecs-exec-logs/"
+      s3_encryption_enabled: true
+    kms_key_id: "arn:aws:kms:us-east-1:123456789012:key/compliance-key"
+```
+
+This example stores ECS Exec audit logs in S3 for long-term retention and compliance requirements, with KMS encryption enabled.
+
+---
+
+# Full Production Configuration
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsCluster
+metadata:
+  name: production-full
+  version:
+    message: "Production cluster with all features"
+spec:
+  # Enable CloudWatch Container Insights for comprehensive monitoring
+  enable_container_insights: true
+
+  # Cost-optimized capacity providers
+  capacity_providers:
+    - "FARGATE"
+    - "FARGATE_SPOT"
+
+  # Production cost-optimization: 1 guaranteed on-demand + 80/20 Spot scaling
+  default_capacity_provider_strategy:
+    - capacity_provider: "FARGATE"
+      base: 1
+      weight: 1
+    - capacity_provider: "FARGATE_SPOT"
+      base: 0
+      weight: 4
+
+  # Production-grade exec auditing with both CloudWatch and S3
+  execute_command_configuration:
+    logging: OVERRIDE
+    log_configuration:
+      cloud_watch_log_group_name: "/aws/ecs/prod/exec"
+      cloud_watch_encryption_enabled: true
+      s3_bucket_name: "prod-ecs-audit-logs"
+      s3_key_prefix: "exec-sessions/"
+      s3_encryption_enabled: true
+    kms_key_id: "arn:aws:kms:us-east-1:123456789012:key/prod-key"
+```
+
+This comprehensive production example includes:
+- **CloudWatch Container Insights** for observability
+- **Fargate Spot cost optimization** (up to 70% savings) with the base/weight strategy
+- **Production-grade exec auditing** with both CloudWatch and S3 logging for compliance
+- **KMS encryption** for all audit logs
+
+---
+
+# Minimal Development Configuration
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsEcsCluster
+metadata:
+  name: dev-minimal
+  version:
+    message: "Minimal development cluster"
+spec:
+  # Accept defaults; Container Insights recommended default is true
+  # No capacity providers (can be added later)
+  # No exec configuration (disabled by default)
+```
+
+If you need a bare-bones cluster definition for development, you can omit most fields. However, for production-ready 
+setups, explicitly configure capacity providers with the default strategy and consider enabling exec auditing for 
+operational debugging.
 
 ---
 
