@@ -42,6 +42,34 @@ message DigitalOceanKubernetesNodePoolSpec {
   // Required if auto_scale is true.
   uint32 max_nodes = 7;
 
-  // A list of tags to apply to the node pool (for organizational purposes in DigitalOcean).
-  repeated string tags = 8;
+  // Kubernetes labels to apply to all nodes in this pool.
+  // Labels are key-value pairs used for node selection and workload scheduling.
+  // Example: {"workload": "web", "env": "production"}
+  map<string, string> labels = 8;
+
+  // Kubernetes taints to apply to all nodes in this pool.
+  // Taints prevent pods from being scheduled on these nodes unless they have matching tolerations.
+  // Commonly used for workload isolation (e.g., GPU nodes, dedicated system pools).
+  repeated DigitalOceanKubernetesNodePoolTaint taints = 9;
+
+  // A list of DigitalOcean tags to apply to the node pool Droplets.
+  // Tags are used for cost attribution and organizational purposes in DigitalOcean's billing and management.
+  // Note: This is different from Kubernetes labels. Tags affect DO billing, labels affect K8s scheduling.
+  repeated string tags = 10;
+}
+
+// DigitalOcean Kubernetes Node Pool Taint
+// Taints prevent pods from being scheduled on nodes unless they tolerate the taint.
+message DigitalOceanKubernetesNodePoolTaint {
+  // The taint key (e.g., "nvidia.com/gpu", "workload", "dedicated")
+  string key = 1 [(buf.validate.field).required = true];
+
+  // The taint value (e.g., "true", "gpu", "system")
+  string value = 2;
+
+  // The taint effect: NoSchedule, PreferNoSchedule, or NoExecute
+  // - NoSchedule: Pods that don't tolerate this taint will not be scheduled on the node
+  // - PreferNoSchedule: Kubernetes will try to avoid scheduling pods that don't tolerate this taint
+  // - NoExecute: Pods that don't tolerate this taint will be evicted if already running
+  string effect = 3 [(buf.validate.field).required = true];
 }

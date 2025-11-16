@@ -24,11 +24,19 @@ func certificate(
 		}
 	}
 
+	// Determine certificate type and convert enum to string for DigitalOcean API
+	var certType string
+	if locals.DigitalOceanCertificate.Spec.Type == digitaloceancertificatev1.DigitalOceanCertificateType_lets_encrypt {
+		certType = "lets_encrypt"
+	} else if locals.DigitalOceanCertificate.Spec.Type == digitaloceancertificatev1.DigitalOceanCertificateType_custom {
+		certType = "custom"
+	}
+
 	certArgs := &digitalocean.CertificateArgs{
 		Name: pulumi.String(locals.DigitalOceanCertificate.Spec.CertificateName),
-		Type: pulumi.String(locals.DigitalOceanCertificate.Spec.Type.String()),
+		Type: pulumi.String(certType),
 	}
-	if locals.DigitalOceanCertificate.Spec.Type == digitaloceancertificatev1.DigitalOceanCertificateType_letsEncrypt {
+	if locals.DigitalOceanCertificate.Spec.Type == digitaloceancertificatev1.DigitalOceanCertificateType_lets_encrypt {
 		certArgs.Domains = domains
 	}
 

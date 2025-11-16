@@ -2,10 +2,15 @@ syntax = "proto3";
 
 package org.project_planton.provider.digitalocean.digitaloceanfirewall.v1;
 
-// DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Droplet (VM).
+import "buf/validate/validate.proto";
+
+// DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Cloud Firewall.
 message DigitalOceanFirewallSpec {
   // Name of the firewall for identification (must be unique per account/project).
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 255
+  ];
 
   // Inbound rules: traffic allowed *to* Droplets on specific ports from specified sources.
   repeated DigitalOceanFirewallInboundRule inbound_rules = 2;
@@ -25,7 +30,9 @@ message DigitalOceanFirewallSpec {
 // Definition of an inbound (ingress) firewall rule.
 message DigitalOceanFirewallInboundRule {
   // "tcp", "udp", or "icmp". Required.
-  string protocol = 1;
+  string protocol = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
 
   // Ports to allow (e.g., "80", "8000-9000", or "1-65535"; empty or "1-65535" means all ports for tcp/udp).
   string port_range = 2;
@@ -49,7 +56,9 @@ message DigitalOceanFirewallInboundRule {
 // Definition of an outbound (egress) firewall rule.
 message DigitalOceanFirewallOutboundRule {
   // "tcp", "udp", or "icmp". Required.
-  string protocol = 1;
+  string protocol = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
 
   // Ports to allow (format as in inbound rules; required for tcp/udp).
   string port_range = 2;

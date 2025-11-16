@@ -36,10 +36,12 @@ message DigitalOceanCertificateSpec {
 
 // DigitalOceanCertificateType represents the certificate source.
 enum DigitalOceanCertificateType {
+  // Unspecified certificate type (invalid, used for validation).
+  unspecified = 0;
   // A free, auto‑managed Let's Encrypt certificate.
-  letsEncrypt = 0;
+  lets_encrypt = 1;
   // A user‑provided custom certificate.
-  custom = 1;
+  custom = 2;
 }
 
 // Parameters specific to a Let's Encrypt certificate request.

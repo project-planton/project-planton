@@ -92,6 +92,14 @@ message DigitalOceanLoadBalancerForwardingRule {
 
   // Protocol for traffic between the load balancer and the Droplet (e.g., HTTP, HTTPS, TCP).
   DigitalOceanLoadBalancerProtocol target_protocol = 4 [(buf.validate.field).required = true];
+
+  // The name of a TLS certificate resource uploaded to DigitalOcean.
+  // Required when entry_protocol is HTTPS. The certificate is used for SSL termination.
+  // Use certificate name (not ID) to avoid breaking IaC state when Let's Encrypt auto-renews certificates.
+  string certificate_name = 5 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 255
+  ];
 }
 
 // HealthCheck defines how the load balancer checks the health of attached Droplets.

@@ -93,15 +93,47 @@ type DigitalOceanDnsZoneRecord struct {
 	// - For A/AAAA: one or more IP address(es).
 	// - For CNAME: the target domain name.
 	// - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-	// - For MX: typically one or more entries like "<priority> <mail-server-domain>".
-	// Each value can be a literal or a reference to another resource’s output.
+	// - For MX: the mail server domain name (priority is specified separately in the priority field).
+	// - For SRV: the target server (priority, weight, and port are specified separately).
+	// - For CAA: the certificate authority domain (flags and tag are specified separately).
+	// Each value can be a literal or a reference to another resource's output.
 	Values []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
 	// The time-to-live for this DNS record, in seconds.
 	// Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
 	TtlSeconds uint32 `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
 	// The type of the DNS record.
 	// This field is required and must be one of the supported record types.
-	Type          dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
+	Type dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
+	// Priority for MX and SRV records.
+	// - For MX records: Lower values indicate higher priority (e.g., 1 is higher priority than 10).
+	// - For SRV records: Used in conjunction with weight for load distribution.
+	// - Ignored for other record types.
+	// Defaults to 0 if not specified.
+	Priority uint32 `protobuf:"varint,5,opt,name=priority,proto3" json:"priority,omitempty"`
+	// Weight for SRV records.
+	// Specifies the relative weight for records with the same priority.
+	// Higher weights are chosen more often.
+	// Ignored for non-SRV record types.
+	// Defaults to 0 if not specified.
+	Weight uint32 `protobuf:"varint,6,opt,name=weight,proto3" json:"weight,omitempty"`
+	// Port for SRV records.
+	// Specifies the TCP or UDP port on which the service is available.
+	// Required for SRV records, ignored for other types.
+	// Defaults to 0 if not specified.
+	Port uint32 `protobuf:"varint,7,opt,name=port,proto3" json:"port,omitempty"`
+	// Flags for CAA records.
+	// - 0: Non-critical (default) - If a CA doesn't understand the tag, it can ignore it.
+	// - 128: Critical - If a CA doesn't understand the tag, it must refuse to issue.
+	// Ignored for non-CAA record types.
+	// Defaults to 0 if not specified.
+	Flags uint32 `protobuf:"varint,8,opt,name=flags,proto3" json:"flags,omitempty"`
+	// Tag for CAA records.
+	// Specifies the property being authorized:
+	// - "issue": Authorizes a CA to issue certificates for the domain.
+	// - "issuewild": Authorizes a CA to issue wildcard certificates.
+	// - "iodef": Specifies a URL to which a CA may report policy violations.
+	// Required for CAA records, ignored for other types.
+	Tag           string `protobuf:"bytes,9,opt,name=tag,proto3" json:"tag,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -164,6 +196,41 @@ func (x *DigitalOceanDnsZoneRecord) GetType() dnsrecordtype.DnsRecordType {
 	return dnsrecordtype.DnsRecordType(0)
 }
 
+func (x *DigitalOceanDnsZoneRecord) GetPriority() uint32 {
+	if x != nil {
+		return x.Priority
+	}
+	return 0
+}
+
+func (x *DigitalOceanDnsZoneRecord) GetWeight() uint32 {
+	if x != nil {
+		return x.Weight
+	}
+	return 0
+}
+
+func (x *DigitalOceanDnsZoneRecord) GetPort() uint32 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
+}
+
+func (x *DigitalOceanDnsZoneRecord) GetFlags() uint32 {
+	if x != nil {
+		return x.Flags
+	}
+	return 0
+}
+
+func (x *DigitalOceanDnsZoneRecord) GetTag() string {
+	if x != nil {
+		return x.Tag
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_rawDesc = "" +
@@ -172,13 +239,18 @@ const file_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec
 	"\x17DigitalOceanDnsZoneSpec\x12M\n" +
 	"\vdomain_name\x18\x01 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$R\n" +
 	"domainName\x12u\n" +
-	"\arecords\x18\x02 \x03(\v2[.org.project_planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneRecordR\arecords\"\xa9\x02\n" +
+	"\arecords\x18\x02 \x03(\v2[.org.project_planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneRecordR\arecords\"\xb5\x03\n" +
 	"\x19DigitalOceanDnsZoneRecord\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12_\n" +
 	"\x06values\x18\x02 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
 	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
 	"ttlSeconds\x12d\n" +
-	"\x04type\x18\x04 \x01(\x0e2H.org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\xfd\x03\n" +
+	"\x04type\x18\x04 \x01(\x0e2H.org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12!\n" +
+	"\bpriority\x18\x05 \x01(\rB\x05\x92\xa6\x1d\x010R\bpriority\x12\x1d\n" +
+	"\x06weight\x18\x06 \x01(\rB\x05\x92\xa6\x1d\x010R\x06weight\x12\x19\n" +
+	"\x04port\x18\a \x01(\rB\x05\x92\xa6\x1d\x010R\x04port\x12\x1b\n" +
+	"\x05flags\x18\b \x01(\rB\x05\x92\xa6\x1d\x010R\x05flags\x12\x10\n" +
+	"\x03tag\x18\t \x01(\tR\x03tagB\xfd\x03\n" +
 	"Dcom.org.project_planton.provider.digitalocean.digitaloceandnszone.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
 var (

@@ -43,7 +43,10 @@ message AzureKeyVaultSpec {
   // Deleted secrets, keys, and certificates are retained for this period and can be recovered.
   // Default: 90 days (maximum retention)
   optional int32 soft_delete_retention_days = 6 [
-    (buf.validate.field).int32 = {gte: 7, lte: 90},
+    (buf.validate.field).int32 = {
+      gte: 7
+      lte: 90
+    },
     (org.project_planton.shared.options.default) = "90"
   ];
 
@@ -64,11 +67,11 @@ message AzureKeyVaultSpec {
 enum AzureKeyVaultSku {
   // Unspecified SKU (will default to STANDARD)
   SKU_UNSPECIFIED = 0;
-  
+
   // Standard SKU: Software-protected keys and secrets
   // Suitable for most applications, development, and non-regulated production workloads
   STANDARD = 1;
-  
+
   // Premium SKU: HSM-backed keys (FIPS 140-2 Level 3 validated)
   // Required for compliance scenarios (PCI-DSS, HIPAA, FedRAMP, financial services)
   PREMIUM = 2;
@@ -90,26 +93,22 @@ message AzureKeyVaultNetworkAcls {
   // List of IP addresses or CIDR ranges allowed to access the vault.
   // Example: ["203.0.113.0/24", "198.51.100.42"]
   // Used for office IPs, VPN gateways, CI/CD runners, etc.
-  repeated string ip_rules = 3 [
-    (buf.validate.field).repeated.max_items = 200
-  ];
+  repeated string ip_rules = 3 [(buf.validate.field).repeated.max_items = 200];
 
   // List of Azure Virtual Network subnet resource IDs allowed to access the vault.
   // Example: ["/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Network/virtualNetworks/{vnet}/subnets/{subnet}"]
   // Used to restrict access to specific VNets/subnets.
-  repeated string virtual_network_subnet_ids = 4 [
-    (buf.validate.field).repeated.max_items = 100
-  ];
+  repeated string virtual_network_subnet_ids = 4 [(buf.validate.field).repeated.max_items = 100];
 }
 
 // **AzureKeyVaultNetworkAction** defines the default network action for Key Vault.
 enum AzureKeyVaultNetworkAction {
   // Unspecified action (will default to DENY)
   ACTION_UNSPECIFIED = 0;
-  
+
   // Allow all network traffic (not recommended for production)
   ALLOW = 1;
-  
+
   // Deny all network traffic unless explicitly allowed (recommended for production)
   DENY = 2;
 }

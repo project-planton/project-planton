@@ -15,13 +15,22 @@ func vpc(
 
 	// 1. Build the resource arguments straight from the proto fields.
 	vpcArgs := &digitalocean.VpcArgs{
-		Description: pulumi.String(locals.DigitalOceanVpc.Spec.Description),
-		IpRange:     pulumi.String(locals.DigitalOceanVpc.Spec.IpRangeCidr),
-		Name:        pulumi.String(locals.DigitalOceanVpc.Metadata.Name),
-		Region:      pulumi.String(locals.DigitalOceanVpc.Spec.Region.String()),
+		Name:   pulumi.String(locals.DigitalOceanVpc.Metadata.Name),
+		Region: pulumi.String(locals.DigitalOceanVpc.Spec.Region.String()),
 	}
 
-	// 2. Create the VPC.
+	// 2. Add optional description if provided
+	if locals.DigitalOceanVpc.Spec.Description != "" {
+		vpcArgs.Description = pulumi.String(locals.DigitalOceanVpc.Spec.Description)
+	}
+
+	// 3. Add IP range if explicitly specified (80/20: optional for auto-generation)
+	// When omitted, DigitalOcean auto-generates a non-conflicting /20 CIDR block
+	if locals.DigitalOceanVpc.Spec.IpRangeCidr != "" {
+		vpcArgs.IpRange = pulumi.String(locals.DigitalOceanVpc.Spec.IpRangeCidr)
+	}
+
+	// 4. Create the VPC.
 	createdVpc, err := digitalocean.NewVpc(
 		ctx,
 		"vpc",
@@ -32,7 +41,7 @@ func vpc(
 		return nil, errors.Wrap(err, "failed to create digitalocean vpc")
 	}
 
-	// 3. Export stack output.
+	// 5. Export stack output.
 	ctx.Export(OpVpcId, createdVpc.ID())
 
 	return createdVpc, nil

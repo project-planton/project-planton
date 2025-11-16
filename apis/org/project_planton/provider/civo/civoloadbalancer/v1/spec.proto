@@ -54,9 +54,7 @@ message CivoLoadBalancerSpec {
   // A tag name for instances. All instances with this tag in the specified network will be attached to the Load Balancer.
   // Mutually exclusive with `instance_ids`.
   // When set, this field should contain a non-empty tag name.
-  string instance_tag = 7 [
-    (buf.validate.field).string.max_len = 255
-  ];
+  string instance_tag = 7 [(buf.validate.field).string.max_len = 255];
 
   // A reserved IP to assign to the Load Balancer (for a static public IP address).
   // If provided, the Load Balancer will use this reserved IP instead of allocating a new one.
