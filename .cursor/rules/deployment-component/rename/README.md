@@ -67,7 +67,8 @@ Every rename has a cost (user manifest updates, potential confusion). Only renam
 rename/
 ├── rename-project-planton-component.mdc    # Cursor rule (interactive workflow)
 ├── README.md                                 # This file
-└── ../_scripts/rename_deployment_component.py # Python script (execution)
+└── _scripts/
+    └── rename_deployment_component.py       # Python script (execution)
 ```
 
 ### Data Flow
@@ -899,7 +900,7 @@ A rename is successful when:
 ## Reference
 
 - **Cursor Rule**: `rename-project-planton-component.mdc`
-- **Python Script**: `../_scripts/rename_deployment_component.py`
+- **Python Script**: `_scripts/rename_deployment_component.py`
 - **Architecture**: `../../../architecture/deployment-component.md`
 - **Related Rules**: `audit`, `complete`, `fix`, `forge`, `delete`
 

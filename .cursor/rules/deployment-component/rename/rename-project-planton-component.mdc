@@ -665,7 +665,7 @@ After rename completion:
 
 ## Reference
 
-- **Rename Script**: `.cursor/rules/deployment-component/_scripts/rename_deployment_component.py`
+- **Rename Script**: `.cursor/rules/deployment-component/rename/_scripts/rename_deployment_component.py`
 - **Rename README**: `.cursor/rules/deployment-component/rename/README.md`
 - **Ideal State**: `architecture/deployment-component.md`
 - **Other Rules**: `audit`, `forge`, `update`, `complete`, `fix`, `delete`
