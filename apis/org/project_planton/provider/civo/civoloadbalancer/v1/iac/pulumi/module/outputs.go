@@ -7,4 +7,3 @@ const (
 	OpDnsName        = "dns_name"
 	OpState          = "state"
 )
-

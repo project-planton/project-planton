@@ -50,12 +50,20 @@ func bucket(
 		return nil, errors.Wrap(err, "failed to create Cloudflare R2 bucket")
 	}
 
-	// 4. Warn about unsupported versioning.
-	if locals.CloudflareR2Bucket.Spec.VersioningEnabled {
-		ctx.Log.Warn("Cloudflare provider does not yet support R2 bucket versioning – field will be ignored.", nil)
+	// 4. Handle public access (r2.dev subdomain).
+	// Note: The Cloudflare Pulumi provider does not yet expose a direct field for toggling
+	// the r2.dev public URL. This currently requires using the Cloudflare API directly
+	// or the dashboard. We log a warning if public_access is requested.
+	if locals.CloudflareR2Bucket.Spec.PublicAccess {
+		ctx.Log.Warn("Public access (r2.dev subdomain) must be enabled manually via Cloudflare Dashboard or API - field noted but not yet implemented in provider.", nil)
 	}
 
-	// 5. Export stack outputs.
+	// 5. Warn about unsupported versioning.
+	if locals.CloudflareR2Bucket.Spec.VersioningEnabled {
+		ctx.Log.Warn("Cloudflare R2 does not support object versioning – field will be ignored.", nil)
+	}
+
+	// 6. Export stack outputs.
 	ctx.Export(OpBucketName, createdBucket.Name)
 
 	return createdBucket, nil

@@ -52,10 +52,10 @@ func loadBalancer(
 				}
 
 				backends = append(backends, civo.LoadBalancerBackendArgs{
-					InstanceId:     pulumi.String(instanceId),
-					Protocol:       pulumi.String(targetProtocol),
-					SourcePort:     pulumi.Int(int(rule.EntryPort)),
-					TargetPort:     pulumi.Int(int(rule.TargetPort)),
+					InstanceId: pulumi.String(instanceId),
+					Protocol:   pulumi.String(targetProtocol),
+					SourcePort: pulumi.Int(int(rule.EntryPort)),
+					TargetPort: pulumi.Int(int(rule.TargetPort)),
 				})
 			}
 		}
@@ -69,10 +69,10 @@ func loadBalancer(
 			}
 
 			backends = append(backends, civo.LoadBalancerBackendArgs{
-				InstanceId:     pulumi.String("tag:" + spec.InstanceTag),
-				Protocol:       pulumi.String(targetProtocol),
-				SourcePort:     pulumi.Int(int(rule.EntryPort)),
-				TargetPort:     pulumi.Int(int(rule.TargetPort)),
+				InstanceId: pulumi.String("tag:" + spec.InstanceTag),
+				Protocol:   pulumi.String(targetProtocol),
+				SourcePort: pulumi.Int(int(rule.EntryPort)),
+				TargetPort: pulumi.Int(int(rule.TargetPort)),
 			})
 		}
 	} else {
@@ -138,4 +138,3 @@ func loadBalancer(
 
 	return createdLB, nil
 }
-

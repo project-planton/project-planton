@@ -378,4 +378,3 @@ var _ = ginkgo.Describe("CivoLoadBalancerSpec validations", func() {
 		})
 	})
 })
-

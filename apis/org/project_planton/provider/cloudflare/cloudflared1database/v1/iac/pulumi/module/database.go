@@ -2,6 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
+	cloudflared1databasev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1"
 	"github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -19,7 +20,22 @@ func database(
 		Name:      pulumi.String(locals.CloudflareD1Database.Spec.DatabaseName),
 	}
 
-	// 2.  Create the resource.
+	// 2. Add optional primary location hint (region) if specified.
+	if locals.CloudflareD1Database.Spec.Region != cloudflared1databasev1.CloudflareD1Region_cloudflare_d1_region_unspecified {
+		regionStr := mapRegionToString(locals.CloudflareD1Database.Spec.Region)
+		if regionStr != "" {
+			d1Args.PrimaryLocationHint = pulumi.String(regionStr)
+		}
+	}
+
+	// 3. Add optional read replication configuration if specified.
+	if locals.CloudflareD1Database.Spec.ReadReplication != nil {
+		d1Args.ReadReplication = &cloudflare.D1DatabaseReadReplicationArgs{
+			Mode: pulumi.String(locals.CloudflareD1Database.Spec.ReadReplication.Mode),
+		}
+	}
+
+	// 4.  Create the resource.
 	createdD1Database, err := cloudflare.NewD1Database(
 		ctx,
 		"database",
@@ -30,13 +46,33 @@ func database(
 		return nil, errors.Wrap(err, "failed to create cloudflare d1 database")
 	}
 
-	// 3.  Export stack outputs.
+	// 5.  Export stack outputs.
 	ctx.Export(OpDatabaseId, createdD1Database.ID())
 	ctx.Export(OpDatabaseName, createdD1Database.Name)
 
-	// NOTE: Pulumi’s Cloudflare provider (v6.4.1) does not yet expose a connection
+	// NOTE: Pulumi's Cloudflare provider (v6.4.1) does not yet expose a connection
 	// string for D1. We export an empty value to satisfy the Project Planton schema.
 	ctx.Export(OpConnectionString, pulumi.String(""))
 
 	return createdD1Database, nil
+}
+
+// mapRegionToString converts the proto enum to the Cloudflare API region string.
+func mapRegionToString(region cloudflared1databasev1.CloudflareD1Region) string {
+	switch region {
+	case cloudflared1databasev1.CloudflareD1Region_weur:
+		return "weur"
+	case cloudflared1databasev1.CloudflareD1Region_eeur:
+		return "eeur"
+	case cloudflared1databasev1.CloudflareD1Region_apac:
+		return "apac"
+	case cloudflared1databasev1.CloudflareD1Region_oc:
+		return "oc"
+	case cloudflared1databasev1.CloudflareD1Region_wnam:
+		return "wnam"
+	case cloudflared1databasev1.CloudflareD1Region_enam:
+		return "enam"
+	default:
+		return ""
+	}
 }

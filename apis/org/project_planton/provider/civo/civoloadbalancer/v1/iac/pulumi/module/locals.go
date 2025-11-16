@@ -40,4 +40,3 @@ func initializeLocals(_ *pulumi.Context, stackInput *civoloadbalancerv1.CivoLoad
 
 	return locals
 }
-
