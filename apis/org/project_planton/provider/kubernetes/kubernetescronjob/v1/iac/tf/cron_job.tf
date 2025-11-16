@@ -47,11 +47,11 @@ resource "kubernetes_cron_job" "this" {
 
     # Defaults if not set
     successful_jobs_history_limit = try(var.spec.successful_jobs_history_limit, 3)
-    failed_jobs_history_limit = try(var.spec.failed_jobs_history_limit, 1)
+    failed_jobs_history_limit     = try(var.spec.failed_jobs_history_limit, 1)
 
     # For starting_deadline_seconds, if not set or zero, we use null so that it doesn't appear
     starting_deadline_seconds = (try(var.spec.starting_deadline_seconds, 0) != 0 ? var.spec.starting_deadline_seconds :
-      null)
+    null)
 
     job_template {
       spec {
@@ -64,16 +64,16 @@ resource "kubernetes_cron_job" "this" {
 
           spec {
             # Typically "Never" is the recommended default for CronJobs
-            restart_policy = try(var.spec.restart_policy, "Never")
+            restart_policy       = try(var.spec.restart_policy, "Never")
             service_account_name = kubernetes_service_account.this.metadata[0].name
 
             container {
-              name = "cronjob-container"
+              name  = "cronjob-container"
               image = "${var.spec.image.repo}:${var.spec.image.tag}"
 
               # Use the custom command and args if provided, otherwise default to empty lists
               command = try(var.spec.command, [])
-              args = try(var.spec.args, [])
+              args    = try(var.spec.args, [])
 
               # Env variables
               env {
@@ -121,11 +121,11 @@ resource "kubernetes_cron_job" "this" {
               # Resource requests/limits
               resources {
                 limits = {
-                  cpu = try(var.spec.resources.limits.cpu, null)
+                  cpu    = try(var.spec.resources.limits.cpu, null)
                   memory = try(var.spec.resources.limits.memory, null)
                 }
                 requests = {
-                  cpu = try(var.spec.resources.requests.cpu, null)
+                  cpu    = try(var.spec.resources.requests.cpu, null)
                   memory = try(var.spec.resources.requests.memory, null)
                 }
               }

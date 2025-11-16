@@ -3,6 +3,8 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "locals.go",
+        "main.go",
         "outputs.go",
         "percona_operator.go",
         "vars.go",

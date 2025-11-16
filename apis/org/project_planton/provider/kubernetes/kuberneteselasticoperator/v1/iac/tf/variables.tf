@@ -1,35 +1,35 @@
 variable "metadata" {
   description = "Metadata for the resource, including name and labels"
   type = object({
-    name = string,
-    id = optional(string),
-    org = optional(string),
-    env = optional(string),
-    labels = optional(map(string)),
-    tags = optional(list(string)),
+    name    = string,
+    id      = optional(string),
+    org     = optional(string),
+    env     = optional(string),
+    labels  = optional(map(string)),
+    tags    = optional(list(string)),
     version = optional(object({ id = string, message = string }))
   })
 }
 
 
 variable "spec" {
-  description = "spec"
+  description = "Specification for KubernetesElasticOperator"
   type = object({
 
-    # The container specifications for the GitLab deployment.
+    # The container specifications for the ECK operator.
     container = object({
 
-      # The CPU and memory resources allocated to the GitLab container.
+      # The CPU and memory resources allocated to the ECK operator container.
       resources = object({
 
         # The resource limits for the container.
         # Specify the maximum amount of CPU and memory that the container can use.
         limits = object({
 
-          # The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
+          # The amount of CPU allocated (e.g., "1000m" for 1 CPU core).
           cpu = string
 
-          # The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
+          # The amount of memory allocated (e.g., "1Gi" for 1 gibibyte).
           memory = string
         })
 
@@ -37,23 +37,13 @@ variable "spec" {
         # Specify the minimum amount of CPU and memory that the container is guaranteed.
         requests = object({
 
-          # The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
+          # The amount of CPU allocated (e.g., "50m" for 0.05 CPU cores).
           cpu = string
 
-          # The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
+          # The amount of memory allocated (e.g., "100Mi" for 100 mebibytes).
           memory = string
         })
       })
-    })
-
-    # The ingress configuration for the GitLab deployment.
-    ingress = object({
-
-      # A flag to enable or disable ingress.
-      is_enabled = bool
-
-      # The dns domain.
-      dns_domain = string
     })
   })
 }

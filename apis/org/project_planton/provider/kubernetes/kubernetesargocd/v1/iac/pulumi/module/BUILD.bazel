@@ -3,6 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "locals.go",
         "main.go",
         "outputs.go",
     ],
@@ -10,8 +11,14 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1:kubernetesargocd",
+        "//apis/org/project_planton/shared/cloudresourcekind",
+        "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
+        "//pkg/kubernetes/kuberneteslabels",
         "@com_github_pkg_errors//:errors",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/core/v1:core",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/helm/v3:helm",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

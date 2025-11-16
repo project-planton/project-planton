@@ -1,21 +1,17 @@
 # Terraform module for Percona Operator for MySQL
-# This is a placeholder - the operator is primarily deployed via Helm/Pulumi
-
-locals {
-  namespace = var.spec.namespace != "" ? var.spec.namespace : "percona-mysql-operator"
-}
 
 resource "kubernetes_namespace" "percona_mysql_operator" {
   metadata {
-    name = local.namespace
+    name   = local.namespace
+    labels = local.labels
   }
 }
 
 resource "helm_release" "percona_mysql_operator" {
-  name       = "ps-operator"
-  repository = "https://percona.github.io/percona-helm-charts/"
-  chart      = "ps-operator"
-  version    = "0.8.0"
+  name       = local.helm_chart_name
+  repository = local.helm_chart_repo
+  chart      = local.helm_chart_name
+  version    = local.helm_chart_version
   namespace  = kubernetes_namespace.percona_mysql_operator.metadata[0].name
 
   set {
@@ -42,10 +38,5 @@ resource "helm_release" "percona_mysql_operator" {
   atomic          = true
   cleanup_on_fail = true
   wait            = true
-}
-
-output "namespace" {
-  description = "The namespace where the Percona MySQL operator is deployed"
-  value       = kubernetes_namespace.percona_mysql_operator.metadata[0].name
 }
 

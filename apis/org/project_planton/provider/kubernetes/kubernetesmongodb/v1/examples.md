@@ -12,15 +12,14 @@ planton apply -f <yaml-path>
 
 ### Basic Example
 
-This basic example demonstrates a minimal configuration for deploying a MongoDB Kubernetes instance using the default settings, including 1 replica and no persistence.
+This basic example demonstrates a minimal configuration for deploying a MongoDB instance on Kubernetes using the Percona Server for MongoDB Operator with default settings.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MongodbKubernetes
+kind: KubernetesMongodb
 metadata:
   name: basic-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     resources:
@@ -30,21 +29,21 @@ spec:
       limits:
         cpu: 1000m
         memory: 1Gi
+    persistenceEnabled: false
 ```
 
 ---
 
 ## Example w/ Persistence Enabled
 
-In this example, MongoDB persistence is enabled, and a persistent volume is created for each MongoDB pod to ensure data durability. The `disk_size` field defines the storage size allocated to the MongoDB pods.
+In this example, MongoDB persistence is enabled, and a persistent volume is created for each MongoDB pod to ensure data durability. The `diskSize` field defines the storage size allocated to the MongoDB pods.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MongodbKubernetes
+kind: KubernetesMongodb
 metadata:
   name: persistent-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 3
     persistenceEnabled: true
@@ -62,15 +61,14 @@ spec:
 
 ## Example w/ Custom Helm Values
 
-This example demonstrates how to customize the MongoDB deployment using Helm chart values. In this case, we use `helm_values` to set specific resource limits and other options available in the Helm chart for MongoDB.
+This example demonstrates how to customize the MongoDB deployment using Helm chart values. These values allow for advanced configuration options available in the Bitnami MongoDB Helm chart.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MongodbKubernetes
+kind: KubernetesMongodb
 metadata:
   name: custom-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 2
     persistenceEnabled: true
@@ -85,22 +83,20 @@ spec:
   helmValues:
     mongodbUsername: myuser
     mongodbDatabase: mydatabase
-    mongodbRootPassword: secretpassword
 ```
 
 ---
 
 ## Example w/ Ingress Enabled
 
-In this example, ingress is enabled to allow external access to the MongoDB service. This is particularly useful when MongoDB needs to be accessed by clients outside the Kubernetes cluster.
+In this example, ingress is enabled to allow external access to the MongoDB service. A LoadBalancer service is created with external-dns annotations for automatic DNS configuration.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MongodbKubernetes
+kind: KubernetesMongodb
 metadata:
   name: ingress-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     persistenceEnabled: true
@@ -119,27 +115,28 @@ spec:
 
 ---
 
-## Example w/ Random Password and Kubernetes Secrets
+## Example w/ Production Configuration
 
-This example demonstrates how to automatically generate a random password for MongoDB using Kubernetes secrets. The password is securely stored in the Kubernetes secret and used for MongoDB authentication.
+This example demonstrates a production-ready configuration with multiple replicas, persistence enabled, and appropriate resource allocations for a production MongoDB deployment.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MongodbKubernetes
+kind: KubernetesMongodb
 metadata:
-  name: secret-mongodb
+  name: production-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
   container:
-    replicas: 1
-    persistenceEnabled: false
+    replicas: 3
+    persistenceEnabled: true
+    diskSize: 50Gi
     resources:
       requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 1000m
+        cpu: 500m
         memory: 1Gi
-  helmValues:
-    mongodbRootPassword: ${kubernetes-secret-root-password}
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+  ingress:
+    enabled: true
+    hostname: mongodb.prod.example.com
 ```

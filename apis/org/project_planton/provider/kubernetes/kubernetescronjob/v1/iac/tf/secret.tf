@@ -4,14 +4,13 @@
 
 resource "kubernetes_secret" "this" {
   count = (
-  can(var.spec.env.secrets)
-  && length(var.spec.env.secrets) > 0
+    can(var.spec.env.secrets)
+    && length(var.spec.env.secrets) > 0
   ) ? 1 : 0
 
   metadata {
-    # If you want the secret to match the CronJob version name
-    # adjust as needed (e.g. var.metadata.name).
-    name      = var.spec.version
+    # Secret name is "main" - referenced by cron_job.tf
+    name      = "main"
     namespace = kubernetes_namespace.this.metadata[0].name
     labels    = local.final_labels
   }

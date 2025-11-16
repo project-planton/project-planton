@@ -3,9 +3,6 @@
 #
 # Includes logic for:
 #  - Deriving resource_id, labels, namespace
-#  - Determining ingress hostnames
-#  - Creating image_pull_secret_data from
-#    docker_credential (if provider == "gcp_artifact_registry").
 ##############################################
 
 locals {
@@ -20,18 +17,18 @@ locals {
   base_labels = {
     "resource"      = "true"
     "resource_id"   = local.resource_id
-    "resource_kind" = "microservice_kubernetes"
+    "resource_kind" = "cronjob_kubernetes"
   }
 
   # Organization label only if var.metadata.org is non-empty
   org_label = (
-  var.metadata.org != null && var.metadata.org != ""
+    var.metadata.org != null && var.metadata.org != ""
   ) ? { "organization" = var.metadata.org } : {}
 
   # Environment label only if var.metadata.env is non-empty
   env_label = (
-  var.metadata.env != null &&
-  try(var.metadata.env, "") != ""
+    var.metadata.env != null &&
+    try(var.metadata.env, "") != ""
   ) ? { "environment" = var.metadata.env } : {}
 
   # Merge base, org, and environment labels
@@ -55,15 +52,16 @@ locals {
 
   # External hostname (null if not applicable)
   ingress_external_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
+    local.ingress_is_enabled && local.ingress_dns_domain != ""
   ) ? "${local.resource_id}.${local.ingress_dns_domain}" : null
 
   # Internal hostname (null if not applicable)
   ingress_internal_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
+    local.ingress_is_enabled && local.ingress_dns_domain != ""
   ) ? "${local.resource_id}-internal.${local.ingress_dns_domain}" : null
 
   # For certificate creation
   ingress_cert_cluster_issuer_name = local.ingress_dns_domain != "" ? local.ingress_dns_domain : null
   ingress_cert_secret_name         = local.resource_id
+
 }

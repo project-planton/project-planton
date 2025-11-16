@@ -19,55 +19,19 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesaltinityoperatorv1.Kub
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}
 
-	// use the configured chart version
-	chartVersion := vars.HelmChartVersion
-
-	// determine namespace - use from spec or default
-	namespace := stackInput.Target.Spec.Namespace
-	if namespace == "" {
-		namespace = vars.DefaultNamespace
-	}
+	// initialize local values with computed data transformations
+	locals := newLocals(stackInput)
 
 	// create dedicated namespace
-	ns, err := corev1.NewNamespace(ctx, namespace,
+	ns, err := corev1.NewNamespace(ctx, locals.Namespace,
 		&corev1.NamespaceArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(namespace),
+				Name: pulumi.String(locals.Namespace),
 			},
 		},
 		pulumi.Provider(kubeProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create namespace")
-	}
-
-	// prepare helm values with CRD installation enabled and resource limits from spec
-	helmValues := pulumi.Map{
-		"operator": pulumi.Map{
-			"createCRD": pulumi.Bool(true),
-			"resources": pulumi.Map{
-				"limits": pulumi.Map{
-					"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Cpu),
-					"memory": pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Memory),
-				},
-				"requests": pulumi.Map{
-					"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Requests.Cpu),
-					"memory": pulumi.String(stackInput.Target.Spec.Container.Resources.Requests.Memory),
-				},
-			},
-		},
-		// Configure operator to watch all namespaces cluster-wide
-		// Use regex pattern ".*" to match all namespaces (empty array watches only installation namespace)
-		"configs": pulumi.Map{
-			"files": pulumi.Map{
-				"config.yaml": pulumi.Map{
-					"watch": pulumi.Map{
-						"namespaces": pulumi.Array{
-							pulumi.String(".*"),
-						},
-					},
-				},
-			},
-		},
 	}
 
 	// deploy the operator via Helm
@@ -76,13 +40,13 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesaltinityoperatorv1.Kub
 			Name:            pulumi.String(vars.HelmChartName),
 			Namespace:       ns.Metadata.Name(),
 			Chart:           pulumi.String(vars.HelmChartName),
-			Version:         pulumi.String(chartVersion),
+			Version:         pulumi.String(vars.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
 			CleanupOnFail:   pulumi.Bool(true),
 			WaitForJobs:     pulumi.Bool(true),
 			Timeout:         pulumi.Int(300),
-			Values:          helmValues,
+			Values:          locals.HelmValues,
 			RepositoryOpts: helm.RepositoryOptsArgs{
 				Repo: pulumi.String(vars.HelmChartRepo),
 			},

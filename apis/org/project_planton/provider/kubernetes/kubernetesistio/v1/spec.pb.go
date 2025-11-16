@@ -23,14 +23,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// **KubernetesIstioSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
-// It includes container specifications and ingress settings to control resource allocation and external access.
+// **KubernetesIstioSpec** defines the configuration for deploying Istio service mesh on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage an Istio deployment within a Kubernetes environment.
+// It includes container specifications for resource allocation to the Istio control plane (istiod).
 type KubernetesIstioSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// The container specifications for the GitLab deployment.
+	// The container specifications for the Istio control plane (istiod) deployment.
 	Container     *KubernetesIstioSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -80,11 +80,11 @@ func (x *KubernetesIstioSpec) GetContainer() *KubernetesIstioSpecContainer {
 	return nil
 }
 
-// **KubernetesIstioSpecContainer** specifies the container configuration for the GitLab application.
-// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// **KubernetesIstioSpecContainer** specifies the container configuration for the Istio control plane (istiod).
+// It includes resource allocations for CPU and memory to ensure the service mesh control plane runs efficiently.
 type KubernetesIstioSpecContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The CPU and memory resources allocated to the GitLab container.
+	// The CPU and memory resources allocated to the Istio control plane (istiod) container.
 	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

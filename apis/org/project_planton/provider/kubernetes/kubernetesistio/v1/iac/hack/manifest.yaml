@@ -1,0 +1,18 @@
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesIstio
+metadata:
+  name: test-istio
+  labels:
+    environment: test
+spec:
+  target_cluster:
+    kubernetes_credential_id: local-kind-cluster
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+

@@ -1,21 +1,17 @@
 # Terraform module for Percona Operator for PostgreSQL
-# This is a placeholder - the operator is primarily deployed via Helm/Pulumi
-
-locals {
-  namespace = var.spec.namespace != "" ? var.spec.namespace : "kubernetes-percona-postgres-operator"
-}
 
 resource "kubernetes_namespace" "kubernetes_percona_postgres_operator" {
   metadata {
-    name = local.namespace
+    name   = local.namespace
+    labels = local.labels
   }
 }
 
 resource "helm_release" "kubernetes_percona_postgres_operator" {
-  name       = "pg-operator"
-  repository = "https://percona.github.io/percona-helm-charts/"
-  chart      = "pg-operator"
-  version    = "2.7.0"
+  name       = local.helm_chart_name
+  repository = local.helm_chart_repo
+  chart      = local.helm_chart_name
+  version    = local.helm_chart_version
   namespace  = kubernetes_namespace.kubernetes_percona_postgres_operator.metadata[0].name
 
   set {
@@ -42,10 +38,5 @@ resource "helm_release" "kubernetes_percona_postgres_operator" {
   atomic          = true
   cleanup_on_fail = true
   wait            = true
-}
-
-output "namespace" {
-  description = "The namespace where the Percona PostgreSQL operator is deployed"
-  value       = kubernetes_namespace.kubernetes_percona_postgres_operator.metadata[0].name
 }
 

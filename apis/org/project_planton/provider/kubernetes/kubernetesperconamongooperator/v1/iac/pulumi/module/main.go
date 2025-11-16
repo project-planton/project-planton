@@ -20,7 +20,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 	}
 
 	// use the configured chart version
-	chartVersion := vars.HelmChartVersion
+	chartVersion := locals.HelmChartVersion
 
 	// determine namespace - use from spec or default
 	namespace := stackInput.Target.Spec.Namespace
@@ -56,9 +56,9 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 	// deploy the operator via Helm
 	_, err = helm.NewRelease(ctx, "percona-operator",
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
+			Name:            pulumi.String(locals.HelmChartName),
 			Namespace:       ns.Metadata.Name(),
-			Chart:           pulumi.String(vars.HelmChartName),
+			Chart:           pulumi.String(locals.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
@@ -67,7 +67,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 			Timeout:         pulumi.Int(300),
 			Values:          helmValues,
 			RepositoryOpts: helm.RepositoryOptsArgs{
-				Repo: pulumi.String(vars.HelmChartRepo),
+				Repo: pulumi.String(locals.HelmChartRepo),
 			},
 		},
 		pulumi.Provider(kubeProvider),

@@ -140,6 +140,10 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 
 	// ---- stack outputs ----
 	ctx.Export(OpNamespace, sysNS.Metadata.Name())
+	ctx.Export(OpService, pulumi.String("istiod"))
+	ctx.Export(OpPortForwardCommand, pulumi.Sprintf("kubectl port-forward -n %s svc/istiod 15014:15014", sysNS.Metadata.Name()))
+	ctx.Export(OpKubeEndpoint, pulumi.Sprintf("istiod.%s.svc.cluster.local:15012", sysNS.Metadata.Name()))
+	ctx.Export(OpIngressEndpoint, pulumi.Sprintf("istio-gateway.%s.svc.cluster.local:80", gwNS.Metadata.Name()))
 
 	return nil
 }
