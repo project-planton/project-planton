@@ -34,37 +34,8 @@ func Resources(ctx *pulumi.Context, stackInput *awseksnodegroupv1.AwsEksNodeGrou
 	target := stackInput.Target
 	spec := target.Spec
 
-	// Inputs
-	var subnetIds pulumi.StringArray
-	for _, s := range spec.SubnetIds {
-		subnetIds = append(subnetIds, pulumi.String(s.GetValue()))
-	}
-
-	scaling := &eks.NodeGroupScalingConfigArgs{
-		MinSize:     pulumi.Int(int(spec.Scaling.MinSize)),
-		MaxSize:     pulumi.Int(int(spec.Scaling.MaxSize)),
-		DesiredSize: pulumi.Int(int(spec.Scaling.DesiredSize)),
-	}
-
-	capacityType := pulumi.String("ON_DEMAND")
-	if spec.CapacityType == awseksnodegroupv1.AwsEksNodeGroupCapacityType_spot {
-		capacityType = pulumi.String("SPOT")
-	}
-
-	args := &eks.NodeGroupArgs{
-		ClusterName:   pulumi.String(spec.ClusterName.GetValue()),
-		NodeRoleArn:   pulumi.String(spec.NodeRoleArn.GetValue()),
-		SubnetIds:     subnetIds,
-		InstanceTypes: pulumi.ToStringArray([]string{spec.InstanceType}),
-		ScalingConfig: scaling,
-		CapacityType:  capacityType,
-		DiskSize:      pulumi.Int(int(spec.DiskSizeGb)),
-		Labels:        pulumi.ToStringMap(spec.Labels),
-	}
-
-	if spec.SshKeyName != "" {
-		args.RemoteAccess = &eks.NodeGroupRemoteAccessArgs{Ec2SshKey: pulumi.String(spec.SshKeyName)}
-	}
+	// Build node group arguments using helper function from locals.go
+	args := buildNodeGroupArgs(spec)
 
 	created, err := eks.NewNodeGroup(ctx, target.Metadata.Name, args, pulumi.Provider(provider))
 	if err != nil {

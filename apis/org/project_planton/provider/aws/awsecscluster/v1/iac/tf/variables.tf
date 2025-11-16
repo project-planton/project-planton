@@ -40,7 +40,7 @@ variable "metadata" {
 }
 
 variable "spec" {
-  description = "spec holds the core configuration data defining how the ECS service is deployed."
+  description = "spec holds the core configuration data defining how the ECS cluster is deployed."
   type = object({
 
     # enable_container_insights determines whether to enable CloudWatch
@@ -51,12 +51,31 @@ variable "spec" {
 
     # capacity_providers is a list of capacity providers attached
     # to this cluster. For a Fargate-only cluster, typically ["FARGATE"]
-    # or ["FARGATE", "FARGATE_SPOT"] for optional Spot usage.
+    # or ["FARGATE", "FARGATE_SPOT"] for cost-optimized Spot usage.
     capacity_providers = list(string)
 
-    # enable_execute_command controls whether ECS Exec is allowed on
-    # tasks in this cluster, letting you exec into running containers
-    # for debugging or operational tasks. Defaults to false.
-    enable_execute_command = bool
+    # default_capacity_provider_strategy defines the base/weight
+    # distribution for tasks across capacity providers. This is the
+    # primary cost-optimization lever for Fargate workloads.
+    default_capacity_provider_strategy = list(object({
+      capacity_provider = string
+      base              = number
+      weight            = number
+    }))
+
+    # execute_command_configuration defines cluster-level auditing
+    # settings for ECS Exec. This controls logging and encryption
+    # for exec sessions. If not specified, exec is disabled.
+    execute_command_configuration = object({
+      logging = string
+      log_configuration = object({
+        cloud_watch_log_group_name      = string
+        cloud_watch_encryption_enabled  = bool
+        s3_bucket_name                  = string
+        s3_key_prefix                   = string
+        s3_encryption_enabled           = bool
+      })
+      kms_key_id = string
+    })
   })
 }

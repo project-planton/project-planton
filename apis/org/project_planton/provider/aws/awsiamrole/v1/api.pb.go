@@ -23,18 +23,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsIamRole represents a containerized application deployed on AWS ECS.
-// This resource manages ECS services that can run on either Fargate or EC2.
+// AwsIamRole represents an AWS IAM Role resource.
+// IAM roles enable secure delegation of permissions to AWS services, applications, or users
+// through temporary credentials without embedding long-lived access keys.
 type AwsIamRole struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version must be set to "aws.project-planton.org/v1".
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind for this ECS service resource, typically "AwsIamRole".
+	// resource-kind for this IAM role resource, typically "AwsIamRole".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// spec holds the core configuration data defining how the ECS service is deployed.
+	// spec holds the core configuration data defining the IAM role's trust policy and permissions.
 	Spec *AwsIamRoleSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
 	Status        *AwsIamRoleStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
@@ -107,7 +108,7 @@ func (x *AwsIamRole) GetStatus() *AwsIamRoleStatus {
 	return nil
 }
 
-// AwsIamRoleStatus describes the status fields for an ECS service resource.
+// AwsIamRoleStatus describes the status fields for an IAM role resource.
 type AwsIamRoleStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.

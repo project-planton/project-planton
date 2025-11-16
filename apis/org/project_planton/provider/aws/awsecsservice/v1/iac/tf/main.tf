@@ -103,6 +103,14 @@ resource "aws_ecs_service" "this" {
     }
   }
 
+  # Health check grace period (only when ALB is enabled)
+  health_check_grace_period_seconds = local.alb_enabled && local.container_port != null ? local.health_check_grace_period_seconds : null
+
+  # Ignore changes to desired_count when autoscaling is enabled
+  lifecycle {
+    ignore_changes = local.autoscaling_enabled ? [desired_count] : []
+  }
+
   depends_on = [aws_ecs_task_definition.this]
   tags       = local.tags
 }
@@ -164,4 +172,55 @@ resource "aws_lb_listener_rule" "this" {
   depends_on = [aws_lb_target_group.this]
 }
 
+# Auto Scaling Target (only if autoscaling is enabled)
+resource "aws_appautoscaling_target" "ecs_target" {
+  count              = local.autoscaling_enabled ? 1 : 0
+  max_capacity       = local.autoscaling_max_tasks
+  min_capacity       = local.autoscaling_min_tasks
+  resource_id        = "service/${local.cluster_name}/${local.resource_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+
+  depends_on = [aws_ecs_service.this]
+}
+
+# Auto Scaling Policy - CPU-based (only if autoscaling is enabled and target_cpu_percent is set)
+resource "aws_appautoscaling_policy" "ecs_cpu_policy" {
+  count              = local.autoscaling_enabled && local.autoscaling_target_cpu_percent != null ? 1 : 0
+  name               = "${local.resource_name}-cpu-scaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target[0].scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    target_value       = local.autoscaling_target_cpu_percent
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 60
+
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+  }
+}
+
+# Auto Scaling Policy - Memory-based (only if autoscaling is enabled and target_memory_percent is set)
+resource "aws_appautoscaling_policy" "ecs_memory_policy" {
+  count              = local.autoscaling_enabled && local.autoscaling_target_memory_percent != null ? 1 : 0
+  name               = "${local.resource_name}-memory-scaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target[0].scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    target_value       = local.autoscaling_target_memory_percent
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 60
+
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+    }
+  }
+}
 

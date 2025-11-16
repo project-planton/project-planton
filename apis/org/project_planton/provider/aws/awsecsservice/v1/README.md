@@ -43,6 +43,19 @@ IAM roles, and more. The **AwsEcsService** resource aims to streamline that proc
 - **Role Separation**: Separate `task_execution_role_arn` (for pulling container images and writing logs) from
   `task_role_arn` (for runtime AWS API access).
 
+### Auto Scaling
+
+- **Target Tracking Scaling**: Automatically scale your ECS service based on CPU or memory utilization.
+- **Flexible Configuration**: Set minimum and maximum task counts, and define target CPU/memory percentages.
+- **Production-Ready**: Uses AWS Application Auto Scaling with sensible cooldown periods (300s scale-in, 60s scale-out).
+
+### Health Check Grace Period
+
+- **Prevent Premature Failures**: Configure a grace period during which ECS ignores ALB health check failures.
+- **Essential for Slow-Start Apps**: Critical for applications like Spring Boot or JVM-based services that take 30-120
+  seconds to fully boot.
+- **Recommended Default**: Defaults to 60 seconds, configurable up to several minutes for complex applications.
+
 ### Seamless Integration
 
 - **ProjectPlanton CLI**: Deploy the same resource across multiple stacks using either Pulumi or Terraform under the
@@ -54,41 +67,58 @@ IAM roles, and more. The **AwsEcsService** resource aims to streamline that proc
 
 - **Reduced Complexity**: A single definition for your ECS service—container image, CPU/memory, subnets, and more—means
   fewer files and less overhead.
-- **Scalable & Available**: Scale out by adjusting `desired_count` to meet traffic demands without repeatedly editing
-  multiple YAML or JSON templates.
+- **Automatic Scaling**: Built-in support for target tracking auto scaling eliminates manual capacity management.
+- **Production-Ready Defaults**: Health check grace periods and auto scaling prevent common deployment failures.
 - **Infrastructure Consistency**: Enforce naming conventions, validations, and recommended defaults for CPU/memory
   allocations so your deployments remain predictable and repeatable.
 - **Enhanced Observability**: Integrate seamlessly with ECS cluster features like CloudWatch metrics and logs—no extra
   manual setup needed.
+- **Service-Oriented Abstraction**: Focus on defining *what* you want to run (a service), not *how* to wire together
+  infrastructure components.
 
 ## Example Usage
 
-Below is a minimal YAML snippet demonstrating how to configure and deploy an ECS service using ProjectPlanton:
+Below is a production-ready example demonstrating how to configure and deploy an ECS service with autoscaling and health
+check grace period using ProjectPlanton:
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsService
 metadata:
-  name: my-aws-ecs-service
-  version:
-    message: "Initial ECS service deployment"
+  name: production-api-service
 spec:
-  cluster_name: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  service_name: "my-service"
-  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
-  container_port: 80
-  desired_count: 2
-  cpu: 512
-  memory: 1024
-  subnets:
-    - subnet-1abc234d
-    - subnet-2abc345e
-  security_groups:
-    - sg-111aaabbb
-  assign_public_ip: false
-  environment:
-    - name: REDIS_URL
-      value: "redis://my-redis-cache:6379"
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/production-cluster"
+  container:
+    image:
+      repo: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp"
+      tag: "v1.0.0"
+    port: 8080
+    replicas: 2
+    cpu: 512
+    memory: 1024
+    env:
+      variables:
+        ENVIRONMENT: "production"
+      secrets:
+        DATABASE_URL: "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/db-url"
+  network:
+    subnets:
+      - "subnet-1abc234d"
+      - "subnet-2abc345e"
+    securityGroups:
+      - "sg-111aaabbb"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/prod-alb/xyz"
+    routingType: "hostname"
+    hostname: "api.example.com"
+    listenerPort: 443
+  healthCheckGracePeriodSeconds: 60
+  autoscaling:
+    enabled: true
+    minTasks: 2
+    maxTasks: 10
+    targetCpuPercent: 75
 ```
 
 ### Deploying with ProjectPlanton

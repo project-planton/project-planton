@@ -67,6 +67,16 @@ locals {
   has_container_port = local.container_port != null
   has_alb_config     = local.alb_enabled && local.safe_alb_arn != null
   has_iam_roles      = local.safe_task_execution_role_arn != null || local.safe_task_role_arn != null
+
+  # Health check grace period
+  health_check_grace_period_seconds = coalesce(try(var.spec.health_check_grace_period_seconds, null), 60)
+
+  # Auto scaling configuration
+  autoscaling_enabled                 = try(var.spec.autoscaling.enabled, false)
+  autoscaling_min_tasks               = try(var.spec.autoscaling.min_tasks, 1)
+  autoscaling_max_tasks               = try(var.spec.autoscaling.max_tasks, 10)
+  autoscaling_target_cpu_percent      = try(var.spec.autoscaling.target_cpu_percent, null)
+  autoscaling_target_memory_percent   = try(var.spec.autoscaling.target_memory_percent, null)
 }
 
 

@@ -1,99 +1,99 @@
 # Overview
 
-The **AwsEksNodeGroup** API resource provides a standardized and straightforward way to deploy containerized applications
-onto an existing Amazon ECS cluster on AWS. By focusing on essential configurations like image definition, compute
-capacity (Fargate or EC2), networking, and environment variables, it makes running services on ECS far more accessible
+The **AwsEksNodeGroup** API resource provides a standardized and straightforward way to deploy managed worker node groups
+for Amazon EKS clusters on AWS. By focusing on essential configurations like instance type, scaling parameters, 
+capacity type (on-demand vs. Spot), and networking, it makes running production-ready EKS worker nodes far more accessible
 within the ProjectPlanton multi-cloud deployment framework.
 
 ## Purpose
 
-Deploying ECS services typically involves handling multiple moving parts—task definitions, networking, autoscaling,
-IAM roles, and more. The **AwsEksNodeGroup** resource aims to streamline that process by:
+Deploying EKS node groups typically involves handling multiple moving parts—IAM roles, networking, autoscaling,
+instance configuration, and lifecycle management. The **AwsEksNodeGroup** resource aims to streamline that process by:
 
-- **Simplifying ECS Deployments**: Offer an easy-to-use interface for spinning up microservices on ECS (Fargate or EC2).
-- **Aligning with Best Practices**: Provide recommended defaults (e.g., CPU, memory) to ensure users have a
-  production-ready
-  baseline without repetitive configuration.
+- **Simplifying EKS Node Deployments**: Offer an easy-to-use interface for spinning up managed worker nodes for your EKS clusters.
+- **Aligning with Best Practices**: Provide recommended defaults (e.g., disk size, capacity type) to ensure users have a
+  production-ready baseline without repetitive configuration.
 - **Promoting Consistency**: Enforce standardized naming and validations, reducing misconfigurations across
-  multiple services and environments.
+  multiple clusters and environments.
+- **Cost Optimization**: Support both on-demand and Spot instances for flexible cost management.
 
 ## Key Features
 
-### Single-Container Focus
+### Managed Node Group Focus
 
-- **Minimal, Opinionated Spec**: Focuses on the 80-20 use case—a single-container service—while still exposing fields
-  for
-  resource requirements, environment variables, and networking.
+- **Minimal, Opinionated Spec**: Focuses on the 80-20 use case—managed worker nodes with essential configuration—while 
+  exposing fields for scaling, instance types, and node labels.
+- **AWS-Managed Lifecycle**: Leverage AWS EKS managed node groups for automated node provisioning, updates, and termination.
 
 ### Flexible Compute Options
 
-- **Fargate or EC2**: Operate serverless via AWS Fargate, or integrate with your existing EC2-backed ECS environment.
-- **Resource Control**: Define CPU and memory precisely, aligned with ECS constraints (e.g., 256, 512, 1024 CPU units).
+- **On-Demand or Spot**: Choose between reliable on-demand instances or cost-effective Spot instances.
+- **Instance Type Control**: Specify any EC2 instance type (t3.medium, m5.xlarge, etc.) to match your workload requirements.
+- **Auto-Scaling**: Define minimum, maximum, and desired node counts for automatic scaling based on workload.
 
 ### Automatic Networking Setup
 
-- **Subnets & Security Groups**: Attach your service to specific VPC subnets, choosing whether to assign a public IP.
-- **Public or Private**: Easily configure production deployments in private subnets, or set up a publicly accessible
-  service when needed.
+- **Multi-AZ Deployment**: Distribute nodes across multiple subnets for high availability.
+- **VPC Integration**: Seamlessly integrate with your existing VPC and subnet configuration.
+- **Private Subnet Support**: Deploy nodes in private subnets for enhanced security.
 
-### Environment Management
+### Node Customization
 
-- **Environment Variables**: Pass configuration to your container, including references to secrets from AWS Secrets
-  Manager or SSM.
-- **Role Separation**: Separate `task_execution_role_arn` (for pulling container images and writing logs) from
-  `task_role_arn` (for runtime AWS API access).
+- **Kubernetes Labels**: Apply custom labels to nodes for workload targeting and pod scheduling.
+- **SSH Access**: Optionally enable SSH access to nodes for debugging and troubleshooting.
+- **Custom Disk Size**: Configure EBS root volume size to meet your storage requirements.
 
 ### Seamless Integration
 
-- **ProjectPlanton CLI**: Deploy the same resource across multiple stacks using either Pulumi or Terraform under the
-  hood.
-- **Multi-Cloud Ready**: Combine AwsEksNodeGroup on AWS with other providers in the same manifest, adopting ProjectPlanton’s
+- **ProjectPlanton CLI**: Deploy the same resource across multiple stacks using either Pulumi or Terraform under the hood.
+- **Multi-Cloud Ready**: Combine AwsEksNodeGroup on AWS with other providers in the same manifest, adopting ProjectPlanton's
   uniform resource model.
+- **Resource References**: Reference other ProjectPlanton resources (clusters, IAM roles, VPCs) using foreign key relationships.
 
 ## Benefits
 
-- **Reduced Complexity**: A single definition for your ECS service—container image, CPU/memory, subnets, and more—means
+- **Reduced Complexity**: A single definition for your EKS node group—instance type, scaling, subnets, and more—means
   fewer files and less overhead.
-- **Scalable & Available**: Scale out by adjusting `desired_count` to meet traffic demands without repeatedly editing
-  multiple YAML or JSON templates.
-- **Infrastructure Consistency**: Enforce naming conventions, validations, and recommended defaults for CPU/memory
-  allocations so your deployments remain predictable and repeatable.
-- **Enhanced Observability**: Integrate seamlessly with ECS cluster features like CloudWatch metrics and logs—no extra
+- **Scalable & Available**: Scale horizontally by adjusting node counts to meet traffic demands without repeatedly editing
+  multiple configuration files.
+- **Infrastructure Consistency**: Enforce naming conventions, validations, and recommended defaults for node configurations
+  so your deployments remain predictable and repeatable.
+- **Cost Optimization**: Easily switch between on-demand and Spot instances to balance cost and reliability.
+- **Enhanced Observability**: Integrate seamlessly with EKS cluster features like CloudWatch metrics and logs—no extra
   manual setup needed.
 
 ## Example Usage
 
-Below is a minimal YAML snippet demonstrating how to configure and deploy an ECS service using ProjectPlanton:
+Below is a minimal YAML snippet demonstrating how to configure and deploy an EKS node group using ProjectPlanton:
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEksNodeGroup
 metadata:
-  name: my-aws-eks-node-group
-  version:
-    message: "Initial ECS service deployment"
+  name: production-workers
 spec:
-  cluster_name: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  service_name: "my-service"
-  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
-  container_port: 80
-  desired_count: 2
-  cpu: 512
-  memory: 1024
-  subnets:
-    - subnet-1abc234d
-    - subnet-2abc345e
-  security_groups:
-    - sg-111aaabbb
-  assign_public_ip: false
-  environment:
-    - name: REDIS_URL
-      value: "redis://my-redis-cache:6379"
+  clusterName:
+    value: "my-eks-cluster"
+  nodeRoleArn:
+    value: "arn:aws:iam::123456789012:role/EksNodeRole"
+  subnetIds:
+    - value: "subnet-private-1a"
+    - value: "subnet-private-1b"
+  instanceType: "m5.xlarge"
+  scaling:
+    minSize: 3
+    maxSize: 10
+    desiredSize: 5
+  capacityType: "on_demand"
+  diskSizeGb: 100
+  labels:
+    environment: "production"
+    workload: "general"
 ```
 
 ### Deploying with ProjectPlanton
 
-Once your YAML manifest is ready, you can deploy using ProjectPlanton’s CLI. ProjectPlanton will validate the manifest
+Once your YAML manifest is ready, you can deploy using ProjectPlanton's CLI. ProjectPlanton will validate the manifest
 against the Protobuf schema and orchestrate everything in Pulumi or Terraform.
 
 - **Using Pulumi**:
@@ -102,11 +102,11 @@ against the Protobuf schema and orchestrate everything in Pulumi or Terraform.
   ```
 - **Using Terraform**:
   ```bash
-  project-planton terraform apply --manifest awseksnodegroup.yaml --stack org/project/my-stack
+  project-planton tofu apply --manifest awseksnodegroup.yaml --stack org/project/my-stack
   ```
 
-ProjectPlanton will provision the ECS service, create or update the necessary IAM roles (if specified), assign the
-service to the given subnets and security groups, and ensure you have the correct number of running tasks.
+ProjectPlanton will provision the EKS node group, configure the Auto Scaling Group, attach the IAM role, deploy nodes
+across the specified subnets, and ensure your desired number of nodes are running and ready.
 
 ---
 

@@ -56,10 +56,15 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput
 func GetPrivateAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[SubnetName]SubnetCidr {
 	privateAzSubnetMap := make(map[AvailabilityZone]map[SubnetName]SubnetCidr, 0)
 
+	// Calculate total number of public subnets (they come first in CIDR allocation)
+	publicSubnetsCount := len(awsVpc.Spec.AvailabilityZones) * int(awsVpc.Spec.SubnetsPerAvailabilityZone)
+
 	for azIndex, az := range awsVpc.Spec.AvailabilityZones {
 		for subnetIndex := 0; subnetIndex < int(awsVpc.Spec.SubnetsPerAvailabilityZone); subnetIndex++ {
 			privateSubnetName := fmt.Sprintf("private-subnet-%s-%d", az, subnetIndex)
-			privateSubnetCidr := fmt.Sprintf("10.0.%d.0/%d", 100+azIndex*10+subnetIndex, awsVpc.Spec.SubnetSize)
+			// Calculate subnet index: offset by public subnets + position within private subnets
+			globalSubnetIndex := publicSubnetsCount + azIndex*int(awsVpc.Spec.SubnetsPerAvailabilityZone) + subnetIndex
+			privateSubnetCidr := calculateSubnetCidr(awsVpc.Spec.VpcCidr, int(awsVpc.Spec.SubnetSize), globalSubnetIndex)
 
 			if privateAzSubnetMap[AvailabilityZone(az)] == nil {
 				privateAzSubnetMap[AvailabilityZone(az)] = make(map[SubnetName]SubnetCidr)
@@ -77,7 +82,9 @@ func getPublicAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[Subn
 	for azIndex, az := range awsVpc.Spec.AvailabilityZones {
 		for subnetIndex := 0; subnetIndex < int(awsVpc.Spec.SubnetsPerAvailabilityZone); subnetIndex++ {
 			publicSubnetName := fmt.Sprintf("public-subnet-%s-%d", az, subnetIndex)
-			publicSubnetCidr := fmt.Sprintf("10.0.%d.0/%d", azIndex*10+subnetIndex, awsVpc.Spec.SubnetSize)
+			// Calculate global subnet index for public subnets
+			globalSubnetIndex := azIndex*int(awsVpc.Spec.SubnetsPerAvailabilityZone) + subnetIndex
+			publicSubnetCidr := calculateSubnetCidr(awsVpc.Spec.VpcCidr, int(awsVpc.Spec.SubnetSize), globalSubnetIndex)
 
 			if publicAzSubnetMap[AvailabilityZone(az)] == nil {
 				publicAzSubnetMap[AvailabilityZone(az)] = make(map[SubnetName]SubnetCidr)
@@ -86,6 +93,44 @@ func getPublicAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[Subn
 		}
 	}
 	return publicAzSubnetMap
+}
+
+// calculateSubnetCidr calculates a subnet CIDR based on the VPC CIDR, subnet mask size, and subnet index
+// For example: VPC CIDR "10.0.0.0/16" with subnet size /24 and index 0 returns "10.0.0.0/24"
+func calculateSubnetCidr(vpcCidr string, subnetMaskSize int, subnetIndex int) string {
+	_, vpcCidrBlock, err := net.ParseCIDR(vpcCidr)
+	if err != nil {
+		// This should have been validated in initializeLocals, but handle gracefully
+		return fmt.Sprintf("10.0.%d.0/%d", subnetIndex, subnetMaskSize)
+	}
+
+	// Get the base IP address as a 32-bit integer
+	baseIP := vpcCidrBlock.IP.To4()
+	if baseIP == nil {
+		// IPv6 not supported yet
+		return fmt.Sprintf("10.0.%d.0/%d", subnetIndex, subnetMaskSize)
+	}
+
+	// Convert base IP to uint32
+	baseIPInt := uint32(baseIP[0])<<24 | uint32(baseIP[1])<<16 | uint32(baseIP[2])<<8 | uint32(baseIP[3])
+
+	// Calculate the number of IP addresses per subnet
+	// For /24 subnet, this is 2^(32-24) = 256 addresses
+	vpcMaskSize, _ := vpcCidrBlock.Mask.Size()
+	ipsPerSubnet := uint32(1) << (uint(subnetMaskSize) - uint(vpcMaskSize))
+
+	// Calculate the subnet IP by adding the offset
+	subnetIPInt := baseIPInt + uint32(subnetIndex)*ipsPerSubnet
+
+	// Convert back to IP address
+	subnetIP := net.IPv4(
+		byte(subnetIPInt>>24),
+		byte(subnetIPInt>>16),
+		byte(subnetIPInt>>8),
+		byte(subnetIPInt),
+	)
+
+	return fmt.Sprintf("%s/%d", subnetIP.String(), subnetMaskSize)
 }
 
 func getSortedAzKeys(azSubnetMap map[AvailabilityZone]map[SubnetName]SubnetCidr) []string {

@@ -25,17 +25,25 @@ container insights for production monitoring. The **AwsEcsCluster** resource aim
 - **CloudWatch Container Insights**: Easily enable container-level metrics, logs, and traces. Helps teams quickly
   diagnose issues and optimize resource usage.
 
-### Capacity Providers
+### Capacity Providers with Cost Optimization
 
 - **Fargate and Fargate Spot**: Effortlessly configure a Fargate-only cluster or mix in Spot capacity. This allows cost
   optimization while retaining a serverless container environment.
-- **EC2 Capacity Providers**: For workloads requiring direct EC2 control, the AwsEcsCluster resource can also integrate
-  with existing auto-scaling groups, offering maximum flexibility.
+- **Default Capacity Provider Strategy**: Define the base/weight distribution for tasks across capacity providers, 
+  enabling production cost optimization patterns like guaranteed on-demand base + Spot scaling. This is the **primary 
+  cost-optimization lever** for Fargate workloads, enabling up to 70% cost savings with Fargate Spot.
+- **Production Pattern**: Configure strategies like "1 guaranteed on-demand task + 80/20 Spot/on-demand scaling" to 
+  balance reliability and cost.
 
-### ECS Exec Support
+### ECS Exec Support with Production-Grade Auditing
 
 - **Enable Execute Command**: Optionally allow shell access into running ECS tasks for live debugging. This feature is
   extremely useful during development or in production for resolving critical issues.
+- **Cluster-Level Auditing**: Configure comprehensive audit logging for exec sessions with CloudWatch Logs and/or S3 
+  storage for compliance and security monitoring.
+- **Encryption Support**: Enable KMS encryption for exec session audit logs to meet security and compliance requirements.
+- **Flexible Logging Options**: Choose from AWS-managed defaults, custom CloudWatch log groups, S3 buckets, or combined 
+  logging strategies.
 
 ### Seamless Integration
 
@@ -57,21 +65,41 @@ container insights for production monitoring. The **AwsEcsCluster** resource aim
 
 ## Example Usage
 
-Below is a minimal YAML snippet demonstrating how to configure and deploy an ECS cluster using ProjectPlanton:
+Below is a production-ready YAML example demonstrating how to configure and deploy an ECS cluster with cost optimization 
+and exec auditing using ProjectPlanton:
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsCluster
 metadata:
-  name: my-aws-ecs-cluster
+  name: production-cluster
   version:
-    message: "Initial ECS cluster deployment"
+    message: "Production ECS cluster with cost optimization"
 spec:
+  # Enable CloudWatch Container Insights for comprehensive monitoring
   enable_container_insights: true
+  
+  # Cost-optimized capacity providers (up to 70% savings with Spot)
   capacity_providers:
     - "FARGATE"
     - "FARGATE_SPOT"
-  enable_execute_command: true
+  
+  # Production cost-optimization: 1 guaranteed on-demand + 80/20 Spot scaling
+  default_capacity_provider_strategy:
+    - capacity_provider: "FARGATE"
+      base: 1              # Guarantee 1 on-demand task for stability
+      weight: 1            # 1 part on-demand for scaling (20%)
+    - capacity_provider: "FARGATE_SPOT"
+      base: 0              # No minimum Spot tasks required
+      weight: 4            # 4 parts Spot for scaling (80%)
+  
+  # Production-grade exec auditing with CloudWatch logging
+  execute_command_configuration:
+    logging: OVERRIDE
+    log_configuration:
+      cloud_watch_log_group_name: "/aws/ecs/prod/exec"
+      cloud_watch_encryption_enabled: true
+    kms_key_id: "arn:aws:kms:us-east-1:123456789012:key/prod-key"
 ```
 
 You would then deploy this using the ProjectPlanton CLI (either Pulumi or Terraform under the hood):
@@ -86,8 +114,10 @@ Or:
 project-planton terraform apply --manifest awsecscluster.yaml --stack org/project/stack
 ```
 
-This deploys an ECS cluster with Container Insights enabled, Spot capacity, and support for ECS Exec in your chosen AWS
-region.
+This deploys a production-ready ECS cluster with:
+- CloudWatch Container Insights for observability
+- Fargate Spot cost optimization (up to 70% savings) with the 80/20 base/weight strategy
+- Production-grade exec auditing with CloudWatch logging and KMS encryption
 
 ---
 

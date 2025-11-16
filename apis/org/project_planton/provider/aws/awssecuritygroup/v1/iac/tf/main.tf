@@ -1,9 +1,9 @@
 # main.tf
 
 resource "aws_security_group" "this" {
-  name        = var.metadata.name
-  description = var.spec.description
-  vpc_id      = var.spec.vpc_id.value
+  name        = local.security_group_name
+  description = local.description
+  vpc_id      = local.vpc_id
 
   # ingress rules
   # each item in var.ingress maps to one AWS ingress rule
@@ -37,5 +37,5 @@ resource "aws_security_group" "this" {
     }
   }
 
-  tags = var.metadata.labels
+  tags = local.final_labels
 }
