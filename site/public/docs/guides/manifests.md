@@ -345,8 +345,8 @@ Many fields have sensible defaults so you don't have to specify everything.
 Defaults are defined in the protobuf with the `(org.project_planton.shared.options.default)` extension:
 
 ```protobuf
-message ExternalDnsKubernetesSpec {
-  optional string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];
+message KubernetesExternalDnsKubernetesSpec {
+  optional string namespace = 1 [(org.project_planton.shared.options.default) = "kubernetes-external-dns"];
   optional string version = 2 [(org.project_planton.shared.options.default) = "v0.19.0"];
 }
 ```
@@ -357,9 +357,9 @@ message ExternalDnsKubernetesSpec {
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ExternalDnsKubernetes
+kind: KubernetesExternalDnsKubernetes
 metadata:
-  name: external-dns
+  name: kubernetes-external-dns
 spec:
   targetCluster:
     kubernetesProviderConfigId: my-cluster
@@ -370,9 +370,9 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ExternalDnsKubernetes
+kind: KubernetesExternalDnsKubernetes
 metadata:
-  name: external-dns
+  name: kubernetes-external-dns
 spec:
   namespace: custom-dns-namespace
   version: v0.20.0
@@ -385,11 +385,11 @@ spec:
 Use `load-manifest` to see the effective configuration with defaults:
 
 ```bash
-project-planton load-manifest external-dns.yaml
+project-planton load-manifest kubernetes-external-dns.yaml
 
 # Output shows defaults filled in:
 # spec:
-#   namespace: external-dns        # ← Default applied
+#   namespace: kubernetes-external-dns        # ← Default applied
 #   version: v0.19.0               # ← Default applied
 #   targetCluster:
 #     kubernetesProviderConfigId: my-cluster

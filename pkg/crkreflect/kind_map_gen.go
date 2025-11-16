@@ -92,22 +92,21 @@ import (
 	gcpserviceaccountv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1"
 	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsubnetwork/v1"
 	gcpvpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1"
-	altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/altinityoperator/v1"
-	apachesolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/apachesolroperator/v1"
-	certmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/certmanager/v1"
-	elasticoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/elasticoperator/v1"
-	externaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/externaldns/v1"
-	externalsecretsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/externalsecrets/v1"
-	ingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/ingressnginx/v1"
+	kubernetesaltinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1"
 	kubernetesargocdv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1"
+	kubernetescertmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1"
 	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
 	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
 	kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1"
+	kuberneteselasticoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1"
 	kuberneteselasticsearchv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1"
+	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	kubernetesexternalsecretsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1"
 	kubernetesgitlabv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
 	kubernetesgrafanav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1"
 	kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
 	kuberneteshelmreleasev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1"
+	kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
 	kubernetesistiov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1"
 	kubernetesjenkinsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1"
 	kuberneteskafkav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1"
@@ -117,17 +116,18 @@ import (
 	kubernetesnatsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	kubernetesneo4jv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1"
 	kubernetesopenfgav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1"
+	kubernetesperconamongooperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1"
+	kubernetesperconamysqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1"
+	kubernetesperconapostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1"
 	kubernetespostgresv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1"
 	kubernetesprometheusv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1"
 	kubernetesredisv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1"
 	kubernetessignozv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1"
 	kubernetessolrv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1"
+	kubernetessolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1"
+	kubernetesstrimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1"
 	kubernetestemporalv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
-	perconapostgresqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/perconapostgresqloperator/v1"
-	perconaservermongodboperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/perconaservermongodboperator/v1"
-	perconaservermysqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/perconaservermysqloperator/v1"
-	strimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/strimzikafkaoperator/v1"
-	zalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/zalandopostgresoperator/v1"
+	kuberneteszalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
 	snowflakedatabasev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"google.golang.org/protobuf/proto"
@@ -254,42 +254,42 @@ var ProviderGcpMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 }
 
 var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
-	cloudresourcekind.CloudResourceKind_AltinityOperator:             &altinityoperatorv1.AltinityOperator{},
-	cloudresourcekind.CloudResourceKind_ApacheSolrOperator:           &apachesolroperatorv1.ApacheSolrOperator{},
-	cloudresourcekind.CloudResourceKind_CertManager:                  &certmanagerv1.CertManager{},
-	cloudresourcekind.CloudResourceKind_ElasticOperator:              &elasticoperatorv1.ElasticOperator{},
-	cloudresourcekind.CloudResourceKind_ExternalDns:                  &externaldnsv1.ExternalDns{},
-	cloudresourcekind.CloudResourceKind_ExternalSecrets:              &externalsecretsv1.ExternalSecrets{},
-	cloudresourcekind.CloudResourceKind_IngressNginx:                 &ingressnginxv1.IngressNginx{},
-	cloudresourcekind.CloudResourceKind_KubernetesArgocd:             &kubernetesargocdv1.KubernetesArgocd{},
-	cloudresourcekind.CloudResourceKind_KubernetesClickHouse:         &kubernetesclickhousev1.KubernetesClickHouse{},
-	cloudresourcekind.CloudResourceKind_KubernetesCronJob:            &kubernetescronjobv1.KubernetesCronJob{},
-	cloudresourcekind.CloudResourceKind_KubernetesDeployment:         &kubernetesdeploymentv1.KubernetesDeployment{},
-	cloudresourcekind.CloudResourceKind_KubernetesElasticsearch:      &kuberneteselasticsearchv1.KubernetesElasticsearch{},
-	cloudresourcekind.CloudResourceKind_KubernetesGitlab:             &kubernetesgitlabv1.KubernetesGitlab{},
-	cloudresourcekind.CloudResourceKind_KubernetesGrafana:            &kubernetesgrafanav1.KubernetesGrafana{},
-	cloudresourcekind.CloudResourceKind_KubernetesHarbor:             &kubernetesharborv1.KubernetesHarbor{},
-	cloudresourcekind.CloudResourceKind_KubernetesHelmRelease:        &kuberneteshelmreleasev1.KubernetesHelmRelease{},
-	cloudresourcekind.CloudResourceKind_KubernetesIstio:              &kubernetesistiov1.KubernetesIstio{},
-	cloudresourcekind.CloudResourceKind_KubernetesJenkins:            &kubernetesjenkinsv1.KubernetesJenkins{},
-	cloudresourcekind.CloudResourceKind_KubernetesKafka:              &kuberneteskafkav1.KubernetesKafka{},
-	cloudresourcekind.CloudResourceKind_KubernetesKeycloak:           &kuberneteskeycloakv1.KubernetesKeycloak{},
-	cloudresourcekind.CloudResourceKind_KubernetesLocust:             &kuberneteslocustv1.KubernetesLocust{},
-	cloudresourcekind.CloudResourceKind_KubernetesMongodb:            &kubernetesmongodbv1.KubernetesMongodb{},
-	cloudresourcekind.CloudResourceKind_KubernetesNats:               &kubernetesnatsv1.KubernetesNats{},
-	cloudresourcekind.CloudResourceKind_KubernetesNeo4j:              &kubernetesneo4jv1.KubernetesNeo4J{},
-	cloudresourcekind.CloudResourceKind_KubernetesOpenFga:            &kubernetesopenfgav1.KubernetesOpenFga{},
-	cloudresourcekind.CloudResourceKind_KubernetesPostgres:           &kubernetespostgresv1.KubernetesPostgres{},
-	cloudresourcekind.CloudResourceKind_KubernetesPrometheus:         &kubernetesprometheusv1.KubernetesPrometheus{},
-	cloudresourcekind.CloudResourceKind_KubernetesRedis:              &kubernetesredisv1.KubernetesRedis{},
-	cloudresourcekind.CloudResourceKind_KubernetesSignoz:             &kubernetessignozv1.KubernetesSignoz{},
-	cloudresourcekind.CloudResourceKind_KubernetesSolr:               &kubernetessolrv1.KubernetesSolr{},
-	cloudresourcekind.CloudResourceKind_KubernetesTemporal:           &kubernetestemporalv1.KubernetesTemporal{},
-	cloudresourcekind.CloudResourceKind_PerconaPostgresqlOperator:    &perconapostgresqloperatorv1.PerconaPostgresqlOperator{},
-	cloudresourcekind.CloudResourceKind_PerconaServerMongodbOperator: &perconaservermongodboperatorv1.PerconaServerMongodbOperator{},
-	cloudresourcekind.CloudResourceKind_PerconaServerMysqlOperator:   &perconaservermysqloperatorv1.PerconaServerMysqlOperator{},
-	cloudresourcekind.CloudResourceKind_StrimziKafkaOperator:         &strimzikafkaoperatorv1.StrimziKafkaOperator{},
-	cloudresourcekind.CloudResourceKind_ZalandoPostgresOperator:      &zalandopostgresoperatorv1.ZalandoPostgresOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesAltinityOperator:        &kubernetesaltinityoperatorv1.KubernetesAltinityOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesArgocd:                  &kubernetesargocdv1.KubernetesArgocd{},
+	cloudresourcekind.CloudResourceKind_KubernetesCertManager:             &kubernetescertmanagerv1.KubernetesCertManager{},
+	cloudresourcekind.CloudResourceKind_KubernetesClickHouse:              &kubernetesclickhousev1.KubernetesClickHouse{},
+	cloudresourcekind.CloudResourceKind_KubernetesCronJob:                 &kubernetescronjobv1.KubernetesCronJob{},
+	cloudresourcekind.CloudResourceKind_KubernetesDeployment:              &kubernetesdeploymentv1.KubernetesDeployment{},
+	cloudresourcekind.CloudResourceKind_KubernetesElasticOperator:         &kuberneteselasticoperatorv1.KubernetesElasticOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesElasticsearch:           &kuberneteselasticsearchv1.KubernetesElasticsearch{},
+	cloudresourcekind.CloudResourceKind_KubernetesExternalDns:             &kubernetesexternaldnsv1.KubernetesExternalDns{},
+	cloudresourcekind.CloudResourceKind_KubernetesExternalSecrets:         &kubernetesexternalsecretsv1.KubernetesExternalSecrets{},
+	cloudresourcekind.CloudResourceKind_KubernetesGitlab:                  &kubernetesgitlabv1.KubernetesGitlab{},
+	cloudresourcekind.CloudResourceKind_KubernetesGrafana:                 &kubernetesgrafanav1.KubernetesGrafana{},
+	cloudresourcekind.CloudResourceKind_KubernetesHarbor:                  &kubernetesharborv1.KubernetesHarbor{},
+	cloudresourcekind.CloudResourceKind_KubernetesHelmRelease:             &kuberneteshelmreleasev1.KubernetesHelmRelease{},
+	cloudresourcekind.CloudResourceKind_KubernetesIngressNginx:            &kubernetesingressnginxv1.KubernetesIngressNginx{},
+	cloudresourcekind.CloudResourceKind_KubernetesIstio:                   &kubernetesistiov1.KubernetesIstio{},
+	cloudresourcekind.CloudResourceKind_KubernetesJenkins:                 &kubernetesjenkinsv1.KubernetesJenkins{},
+	cloudresourcekind.CloudResourceKind_KubernetesKafka:                   &kuberneteskafkav1.KubernetesKafka{},
+	cloudresourcekind.CloudResourceKind_KubernetesKeycloak:                &kuberneteskeycloakv1.KubernetesKeycloak{},
+	cloudresourcekind.CloudResourceKind_KubernetesLocust:                  &kuberneteslocustv1.KubernetesLocust{},
+	cloudresourcekind.CloudResourceKind_KubernetesMongodb:                 &kubernetesmongodbv1.KubernetesMongodb{},
+	cloudresourcekind.CloudResourceKind_KubernetesNats:                    &kubernetesnatsv1.KubernetesNats{},
+	cloudresourcekind.CloudResourceKind_KubernetesNeo4j:                   &kubernetesneo4jv1.KubernetesNeo4J{},
+	cloudresourcekind.CloudResourceKind_KubernetesOpenFga:                 &kubernetesopenfgav1.KubernetesOpenFga{},
+	cloudresourcekind.CloudResourceKind_KubernetesPerconaMongoOperator:    &kubernetesperconamongooperatorv1.KubernetesPerconaMongoOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesPerconaMysqlOperator:    &kubernetesperconamysqloperatorv1.KubernetesPerconaMysqlOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesPerconaPostgresOperator: &kubernetesperconapostgresoperatorv1.KubernetesPerconaPostgresOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesPostgres:                &kubernetespostgresv1.KubernetesPostgres{},
+	cloudresourcekind.CloudResourceKind_KubernetesPrometheus:              &kubernetesprometheusv1.KubernetesPrometheus{},
+	cloudresourcekind.CloudResourceKind_KubernetesRedis:                   &kubernetesredisv1.KubernetesRedis{},
+	cloudresourcekind.CloudResourceKind_KubernetesSignoz:                  &kubernetessignozv1.KubernetesSignoz{},
+	cloudresourcekind.CloudResourceKind_KubernetesSolr:                    &kubernetessolrv1.KubernetesSolr{},
+	cloudresourcekind.CloudResourceKind_KubernetesSolrOperator:            &kubernetessolroperatorv1.KubernetesSolrOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesStrimziKafkaOperator:    &kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKafkaOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesTemporal:                &kubernetestemporalv1.KubernetesTemporal{},
+	cloudresourcekind.CloudResourceKind_KubernetesZalandoPostgresOperator: &kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperator{},
 }
 
 var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message{

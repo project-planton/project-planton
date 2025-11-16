@@ -132,42 +132,42 @@ const (
 	CloudResourceKind_GcpGkeWorkloadIdentityBinding CloudResourceKind = 615
 	CloudResourceKind_GcpCertManagerCert            CloudResourceKind = 616
 	// 800–999: Kubernetes resources
-	CloudResourceKind_KubernetesArgocd             CloudResourceKind = 800
-	CloudResourceKind_KubernetesCronJob            CloudResourceKind = 801
-	CloudResourceKind_KubernetesElasticsearch      CloudResourceKind = 802
-	CloudResourceKind_KubernetesGitlab             CloudResourceKind = 803
-	CloudResourceKind_KubernetesGrafana            CloudResourceKind = 804
-	CloudResourceKind_KubernetesHelmRelease        CloudResourceKind = 805
-	CloudResourceKind_KubernetesJenkins            CloudResourceKind = 806
-	CloudResourceKind_KubernetesKafka              CloudResourceKind = 807
-	CloudResourceKind_KubernetesKeycloak           CloudResourceKind = 808
-	CloudResourceKind_KubernetesLocust             CloudResourceKind = 809
-	CloudResourceKind_KubernetesDeployment         CloudResourceKind = 810
-	CloudResourceKind_KubernetesMongodb            CloudResourceKind = 811
-	CloudResourceKind_KubernetesNeo4j              CloudResourceKind = 812
-	CloudResourceKind_KubernetesOpenFga            CloudResourceKind = 813
-	CloudResourceKind_KubernetesPostgres           CloudResourceKind = 814
-	CloudResourceKind_KubernetesPrometheus         CloudResourceKind = 815
-	CloudResourceKind_KubernetesRedis              CloudResourceKind = 816
-	CloudResourceKind_KubernetesSignoz             CloudResourceKind = 817
-	CloudResourceKind_KubernetesSolr               CloudResourceKind = 818
-	CloudResourceKind_KubernetesTemporal           CloudResourceKind = 819
-	CloudResourceKind_KubernetesNats               CloudResourceKind = 820
-	CloudResourceKind_CertManager                  CloudResourceKind = 821
-	CloudResourceKind_ElasticOperator              CloudResourceKind = 822
-	CloudResourceKind_ExternalDns                  CloudResourceKind = 823
-	CloudResourceKind_IngressNginx                 CloudResourceKind = 824
-	CloudResourceKind_KubernetesIstio              CloudResourceKind = 825
-	CloudResourceKind_StrimziKafkaOperator         CloudResourceKind = 826
-	CloudResourceKind_ZalandoPostgresOperator      CloudResourceKind = 827
-	CloudResourceKind_ApacheSolrOperator           CloudResourceKind = 828
-	CloudResourceKind_ExternalSecrets              CloudResourceKind = 829
-	CloudResourceKind_KubernetesClickHouse         CloudResourceKind = 830
-	CloudResourceKind_AltinityOperator             CloudResourceKind = 831
-	CloudResourceKind_PerconaPostgresqlOperator    CloudResourceKind = 832
-	CloudResourceKind_PerconaServerMongodbOperator CloudResourceKind = 833
-	CloudResourceKind_PerconaServerMysqlOperator   CloudResourceKind = 834
-	CloudResourceKind_KubernetesHarbor             CloudResourceKind = 835
+	CloudResourceKind_KubernetesArgocd                  CloudResourceKind = 800
+	CloudResourceKind_KubernetesCronJob                 CloudResourceKind = 801
+	CloudResourceKind_KubernetesElasticsearch           CloudResourceKind = 802
+	CloudResourceKind_KubernetesGitlab                  CloudResourceKind = 803
+	CloudResourceKind_KubernetesGrafana                 CloudResourceKind = 804
+	CloudResourceKind_KubernetesHelmRelease             CloudResourceKind = 805
+	CloudResourceKind_KubernetesJenkins                 CloudResourceKind = 806
+	CloudResourceKind_KubernetesKafka                   CloudResourceKind = 807
+	CloudResourceKind_KubernetesKeycloak                CloudResourceKind = 808
+	CloudResourceKind_KubernetesLocust                  CloudResourceKind = 809
+	CloudResourceKind_KubernetesDeployment              CloudResourceKind = 810
+	CloudResourceKind_KubernetesMongodb                 CloudResourceKind = 811
+	CloudResourceKind_KubernetesNeo4j                   CloudResourceKind = 812
+	CloudResourceKind_KubernetesOpenFga                 CloudResourceKind = 813
+	CloudResourceKind_KubernetesPostgres                CloudResourceKind = 814
+	CloudResourceKind_KubernetesPrometheus              CloudResourceKind = 815
+	CloudResourceKind_KubernetesRedis                   CloudResourceKind = 816
+	CloudResourceKind_KubernetesSignoz                  CloudResourceKind = 817
+	CloudResourceKind_KubernetesSolr                    CloudResourceKind = 818
+	CloudResourceKind_KubernetesTemporal                CloudResourceKind = 819
+	CloudResourceKind_KubernetesNats                    CloudResourceKind = 820
+	CloudResourceKind_KubernetesCertManager             CloudResourceKind = 821
+	CloudResourceKind_KubernetesElasticOperator         CloudResourceKind = 822
+	CloudResourceKind_KubernetesExternalDns             CloudResourceKind = 823
+	CloudResourceKind_KubernetesIngressNginx            CloudResourceKind = 824
+	CloudResourceKind_KubernetesIstio                   CloudResourceKind = 825
+	CloudResourceKind_KubernetesStrimziKafkaOperator    CloudResourceKind = 826
+	CloudResourceKind_KubernetesZalandoPostgresOperator CloudResourceKind = 827
+	CloudResourceKind_KubernetesSolrOperator            CloudResourceKind = 828
+	CloudResourceKind_KubernetesExternalSecrets         CloudResourceKind = 829
+	CloudResourceKind_KubernetesClickHouse              CloudResourceKind = 830
+	CloudResourceKind_KubernetesAltinityOperator        CloudResourceKind = 831
+	CloudResourceKind_KubernetesPerconaPostgresOperator CloudResourceKind = 832
+	CloudResourceKind_KubernetesPerconaMongoOperator    CloudResourceKind = 833
+	CloudResourceKind_KubernetesPerconaMysqlOperator    CloudResourceKind = 834
+	CloudResourceKind_KubernetesHarbor                  CloudResourceKind = 835
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -282,20 +282,20 @@ var (
 		818:  "KubernetesSolr",
 		819:  "KubernetesTemporal",
 		820:  "KubernetesNats",
-		821:  "CertManager",
-		822:  "ElasticOperator",
-		823:  "ExternalDns",
-		824:  "IngressNginx",
+		821:  "KubernetesCertManager",
+		822:  "KubernetesElasticOperator",
+		823:  "KubernetesExternalDns",
+		824:  "KubernetesIngressNginx",
 		825:  "KubernetesIstio",
-		826:  "StrimziKafkaOperator",
-		827:  "ZalandoPostgresOperator",
-		828:  "ApacheSolrOperator",
-		829:  "ExternalSecrets",
+		826:  "KubernetesStrimziKafkaOperator",
+		827:  "KubernetesZalandoPostgresOperator",
+		828:  "KubernetesSolrOperator",
+		829:  "KubernetesExternalSecrets",
 		830:  "KubernetesClickHouse",
-		831:  "AltinityOperator",
-		832:  "PerconaPostgresqlOperator",
-		833:  "PerconaServerMongodbOperator",
-		834:  "PerconaServerMysqlOperator",
+		831:  "KubernetesAltinityOperator",
+		832:  "KubernetesPerconaPostgresOperator",
+		833:  "KubernetesPerconaMongoOperator",
+		834:  "KubernetesPerconaMysqlOperator",
 		835:  "KubernetesHarbor",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
@@ -405,20 +405,20 @@ var (
 		"KubernetesSolr":                       818,
 		"KubernetesTemporal":                   819,
 		"KubernetesNats":                       820,
-		"CertManager":                          821,
-		"ElasticOperator":                      822,
-		"ExternalDns":                          823,
-		"IngressNginx":                         824,
+		"KubernetesCertManager":                821,
+		"KubernetesElasticOperator":            822,
+		"KubernetesExternalDns":                823,
+		"KubernetesIngressNginx":               824,
 		"KubernetesIstio":                      825,
-		"StrimziKafkaOperator":                 826,
-		"ZalandoPostgresOperator":              827,
-		"ApacheSolrOperator":                   828,
-		"ExternalSecrets":                      829,
+		"KubernetesStrimziKafkaOperator":       826,
+		"KubernetesZalandoPostgresOperator":    827,
+		"KubernetesSolrOperator":               828,
+		"KubernetesExternalSecrets":            829,
 		"KubernetesClickHouse":                 830,
-		"AltinityOperator":                     831,
-		"PerconaPostgresqlOperator":            832,
-		"PerconaServerMongodbOperator":         833,
-		"PerconaServerMysqlOperator":           834,
+		"KubernetesAltinityOperator":           831,
+		"KubernetesPerconaPostgresOperator":    832,
+		"KubernetesPerconaMongoOperator":       833,
+		"KubernetesPerconaMysqlOperator":       834,
 		"KubernetesHarbor":                     835,
 		"DigitalOceanAppPlatformService":       1200,
 		"DigitalOceanBucket":                   1201,
@@ -655,7 +655,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x10namespace_prefix\x18\x01 \x01(\tR\x0fnamespacePrefix*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xd5(\n" +
+	"\x02v1\x10\x01*\xb7)\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -765,23 +765,23 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\n" +
 	"\btemporal\x12.\n" +
 	"\x0eKubernetesNats\x10\xb4\x06\x1a\x19\xa2\xf7\x04\x15\b\x13\x10\x01\"\ak8snats2\x06\n" +
-	"\x04nats\x12!\n" +
-	"\vCertManager\x10\xb5\x06\x1a\x0f\xa2\xf7\x04\v\b\x13\x10\x01\"\x05k8scm\x12(\n" +
-	"\x0fElasticOperator\x10\xb6\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8selaop\x12%\n" +
-	"\vExternalDns\x10\xb7\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sextdns\x12#\n" +
-	"\fIngressNginx\x10\xb8\x06\x1a\x10\xa2\xf7\x04\f\b\x13\x10\x01\"\x06k8sngx\x12&\n" +
-	"\x0fKubernetesIstio\x10\xb9\x06\x1a\x10\xa2\xf7\x04\f\b\x13\x10\x01\"\x06k8sist\x12-\n" +
-	"\x14StrimziKafkaOperator\x10\xba\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8sstzop\x12/\n" +
-	"\x17ZalandoPostgresOperator\x10\xbb\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8szlop\x12+\n" +
-	"\x12ApacheSolrOperator\x10\xbc\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8sslrop\x12)\n" +
-	"\x0fExternalSecrets\x10\xbd\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sextsec\x12;\n" +
+	"\x04nats\x12+\n" +
+	"\x15KubernetesCertManager\x10\xb5\x06\x1a\x0f\xa2\xf7\x04\v\b\x13\x10\x01\"\x05k8scm\x122\n" +
+	"\x19KubernetesElasticOperator\x10\xb6\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8selaop\x12/\n" +
+	"\x15KubernetesExternalDns\x10\xb7\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sextdns\x12-\n" +
+	"\x16KubernetesIngressNginx\x10\xb8\x06\x1a\x10\xa2\xf7\x04\f\b\x13\x10\x01\"\x06k8sngx\x12&\n" +
+	"\x0fKubernetesIstio\x10\xb9\x06\x1a\x10\xa2\xf7\x04\f\b\x13\x10\x01\"\x06k8sist\x127\n" +
+	"\x1eKubernetesStrimziKafkaOperator\x10\xba\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8sstzop\x129\n" +
+	"!KubernetesZalandoPostgresOperator\x10\xbb\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8szlop\x12/\n" +
+	"\x16KubernetesSolrOperator\x10\xbc\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8sslrop\x123\n" +
+	"\x19KubernetesExternalSecrets\x10\xbd\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sextsec\x12;\n" +
 	"\x14KubernetesClickHouse\x10\xbe\x06\x1a \xa2\xf7\x04\x1c\b\x13\x10\x01\"\bk8sclkhs2\f\n" +
 	"\n" +
-	"clickhouse\x12)\n" +
-	"\x10AltinityOperator\x10\xbf\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8saltop\x125\n" +
-	"\x19PerconaPostgresqlOperator\x10\xc0\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\vk8sprcnpgop\x129\n" +
-	"\x1cPerconaServerMongodbOperator\x10\xc1\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\fk8sprcnmdbop\x126\n" +
-	"\x1aPerconaServerMysqlOperator\x10\xc2\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\vk8sprcnpgop\x122\n" +
+	"clickhouse\x123\n" +
+	"\x1aKubernetesAltinityOperator\x10\xbf\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\bk8saltop\x12=\n" +
+	"!KubernetesPerconaPostgresOperator\x10\xc0\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\vk8sprcnpgop\x12;\n" +
+	"\x1eKubernetesPerconaMongoOperator\x10\xc1\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\fk8sprcnmdbop\x12:\n" +
+	"\x1eKubernetesPerconaMysqlOperator\x10\xc2\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\vk8sprcnpgop\x122\n" +
 	"\x10KubernetesHarbor\x10\xc3\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\ak8shrbr2\b\n" +
 	"\x06harbor\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +

@@ -326,7 +326,7 @@ spec:
   # version omitted
 
 # Load to see defaults
-$ project-planton load-manifest cert-manager.yaml
+$ project-planton load-manifest kubernetes-kubernetes-cert-manager.yaml
 
 # Output shows:
 spec:
