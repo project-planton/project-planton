@@ -443,22 +443,22 @@ enum CloudResourceKind {
     id_prefix: "k8snats"
     kubernetes_meta: {namespace_prefix: "nats"}
   }];
-  CertManager = 821 [(kind_meta) = {
+  KubernetesCertManager = 821 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8scm"
   }];
-  ElasticOperator = 822 [(kind_meta) = {
+  KubernetesElasticOperator = 822 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8selaop"
   }];
-  ExternalDns = 823 [(kind_meta) = {
+  KubernetesExternalDns = 823 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sextdns"
   }];
-  IngressNginx = 824 [(kind_meta) = {
+  KubernetesIngressNginx = 824 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sngx"
@@ -468,22 +468,22 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "k8sist"
   }];
-  StrimziKafkaOperator = 826 [(kind_meta) = {
+  KubernetesStrimziKafkaOperator = 826 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sstzop"
   }];
-  ZalandoPostgresOperator = 827 [(kind_meta) = {
+  KubernetesZalandoPostgresOperator = 827 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8szlop"
   }];
-  ApacheSolrOperator = 828 [(kind_meta) = {
+  KubernetesSolrOperator = 828 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sslrop"
   }];
-  ExternalSecrets = 829 [(kind_meta) = {
+  KubernetesExternalSecrets = 829 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sextsec"
@@ -494,22 +494,22 @@ enum CloudResourceKind {
     id_prefix: "k8sclkhs"
     kubernetes_meta: {namespace_prefix: "clickhouse"}
   }];
-  AltinityOperator = 831 [(kind_meta) = {
+  KubernetesAltinityOperator = 831 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8saltop"
   }];
-  PerconaPostgresqlOperator = 832 [(kind_meta) = {
+  KubernetesPerconaPostgresOperator = 832 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sprcnpgop"
   }];
-  PerconaServerMongodbOperator = 833 [(kind_meta) = {
+  KubernetesPerconaMongoOperator = 833 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sprcnmdbop"
   }];
-  PerconaServerMysqlOperator = 834 [(kind_meta) = {
+  KubernetesPerconaMysqlOperator = 834 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sprcnpgop"
