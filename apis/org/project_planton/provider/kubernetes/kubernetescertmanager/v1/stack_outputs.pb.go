@@ -98,13 +98,13 @@ var File_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_
 
 const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kubernetescertmanager/v1/stack_outputs.proto\x12Forg.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1\"\xc3\x01\n" +
+	"Torg/project_planton/provider/kubernetes/kubernetescertmanager/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\"\xc3\x01\n" +
 	"!KubernetesCertManagerStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12'\n" +
 	"\x0fsolver_identity\x18\x03 \x01(\tR\x0esolverIdentity\x124\n" +
-	"\x16cloudflare_secret_name\x18\x04 \x01(\tR\x14cloudflareSecretNameB\xa7\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x06OPPKAK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetescertmanager.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetescertmanager\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetescertmanager::V1b\x06proto3"
+	"\x16cloudflare_secret_name\x18\x04 \x01(\tR\x14cloudflareSecretNameB\x87\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetescertmanager.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetescertmanager.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetescertmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -120,7 +120,7 @@ func file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack
 
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesCertManagerStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStackOutputs
+	(*KubernetesCertManagerStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -101,13 +101,13 @@ var File_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_output
 
 const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_outputs.proto\x12Corg.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1\"\xbf\x01\n" +
+	"Norg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_outputs.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\"\xbf\x01\n" +
 	"\x1bKubernetesNeo4jStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x123\n" +
 	"\x16bolt_uri_kube_endpoint\x18\x03 \x01(\tR\x13boltUriKubeEndpoint\x123\n" +
-	"\x16http_uri_kube_endpoint\x18\x04 \x01(\tR\x13httpUriKubeEndpointB\x8b\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x06OPPKWK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesneo4j.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesneo4j::V1b\x06proto3"
+	"\x16http_uri_kube_endpoint\x18\x04 \x01(\tR\x13httpUriKubeEndpointB\xdc\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -123,7 +123,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_outpu
 
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesNeo4JStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackOutputs
+	(*KubernetesNeo4JStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

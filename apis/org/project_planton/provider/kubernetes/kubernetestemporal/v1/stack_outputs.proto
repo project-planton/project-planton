@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1;
+package org.project_planton.provider.kubernetes.kubernetestemporal.v1;
 
 // temporal kubernetes stack outputs store deployment details in the resource status.
 message KubernetesTemporalStackOutputs {

@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/api.proto\x12Corg.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1\x1a\x1bbuf/validate/validate.proto\x1aEorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto\x1aNorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc9\x03\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/api.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1a\x1bbuf/validate/validate.proto\x1aEorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto\x1aNorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xb7\x03\n" +
 	"\x0fKubernetesNeo4j\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
 	"\x0fKubernetesNeo4jR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12t\n" +
-	"\x04spec\x18\x04 \x01(\v2X.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12r\n" +
-	"\x06status\x18\x05 \x01(\v2Z.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStatusR\x06status\"\x93\x01\n" +
-	"\x15KubernetesNeo4jStatus\x12z\n" +
-	"\aoutputs\x18\x01 \x01(\v2`.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackOutputsR\aoutputsB\x82\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1B\bApiProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x06OPPKWK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesneo4j.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesneo4j::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12k\n" +
+	"\x04spec\x18\x04 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12i\n" +
+	"\x06status\x18\x05 \x01(\v2Q.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStatusR\x06status\"\x8a\x01\n" +
+	"\x15KubernetesNeo4jStatus\x12q\n" +
+	"\aoutputs\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackOutputsR\aoutputsB\xd3\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\bApiProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_r
 
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_goTypes = []any{
-	(*KubernetesNeo4J)(nil),              // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4j
-	(*KubernetesNeo4JStatus)(nil),        // 1: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStatus
+	(*KubernetesNeo4J)(nil),              // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4j
+	(*KubernetesNeo4JStatus)(nil),        // 1: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStatus
 	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesNeo4JSpec)(nil),          // 3: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpec
-	(*KubernetesNeo4JStackOutputs)(nil),  // 4: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackOutputs
+	(*KubernetesNeo4JSpec)(nil),          // 3: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpec
+	(*KubernetesNeo4JStackOutputs)(nil),  // 4: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4j.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4j.spec:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpec
-	1, // 2: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4j.status:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStatus
-	4, // 3: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStatus.outputs:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4j.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4j.spec:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4j.status:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

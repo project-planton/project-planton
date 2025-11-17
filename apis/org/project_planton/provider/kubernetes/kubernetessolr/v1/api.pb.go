@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto pro
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Corg/project_planton/provider/kubernetes/kubernetessolr/v1/api.proto\x12Borg.project_planton.provider.kubernetes.workload.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1aDorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x1aMorg/project_planton/provider/kubernetes/kubernetessolr/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc3\x03\n" +
+	"Corg/project_planton/provider/kubernetes/kubernetessolr/v1/api.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1aDorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x1aMorg/project_planton/provider/kubernetes/kubernetessolr/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xb1\x03\n" +
 	"\x0eKubernetesSolr\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12)\n" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
 	"\x0eKubernetesSolrR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12r\n" +
-	"\x04spec\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12p\n" +
-	"\x06status\x18\x05 \x01(\v2X.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStatusR\x06status\"\x90\x01\n" +
-	"\x14KubernetesSolrStatus\x12x\n" +
-	"\aoutputs\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackOutputsR\aoutputsB\xfb\x03\n" +
-	"Fcom.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1B\bApiProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x06OPPKWK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetessolr.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessolr\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessolr\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetessolr::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
+	"\x04spec\x18\x04 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
+	"\x06status\x18\x05 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStatusR\x06status\"\x87\x01\n" +
+	"\x14KubernetesSolrStatus\x12o\n" +
+	"\aoutputs\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackOutputsR\aoutputsB\xcc\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\bApiProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_ra
 
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_goTypes = []any{
-	(*KubernetesSolr)(nil),               // 0: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolr
-	(*KubernetesSolrStatus)(nil),         // 1: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStatus
+	(*KubernetesSolr)(nil),               // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolr
+	(*KubernetesSolrStatus)(nil),         // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStatus
 	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesSolrSpec)(nil),           // 3: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrSpec
-	(*KubernetesSolrStackOutputs)(nil),   // 4: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackOutputs
+	(*KubernetesSolrSpec)(nil),           // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec
+	(*KubernetesSolrStackOutputs)(nil),   // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolr.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolr.spec:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrSpec
-	1, // 2: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolr.status:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStatus
-	4, // 3: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStatus.outputs:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolr.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolr.spec:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolr.status:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

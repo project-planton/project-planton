@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_
 
 const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Rorg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/stack_input.proto\x12Iorg.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1\x1aJorg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xba\x02\n" +
-	"\x1fKubernetesHelmReleaseStackInput\x12x\n" +
-	"\x06target\x18\x01 \x01(\v2`.org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmReleaseR\x06target\x12j\n" +
+	"Rorg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/stack_input.proto\x12@org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1\x1aJorg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xb1\x02\n" +
+	"\x1fKubernetesHelmReleaseStackInput\x12o\n" +
+	"\x06target\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xb4\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1B\x0fStackInputProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x06OPPKWK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteshelmrelease.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteshelmrelease\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteshelmrelease::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x85\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1B\x0fStackInputProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kuberneteshelmrelease.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteshelmrelease::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack
 
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesHelmReleaseStackInput)(nil),     // 0: org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackInput
-	(*KubernetesHelmRelease)(nil),               // 1: org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmRelease
+	(*KubernetesHelmReleaseStackInput)(nil),     // 0: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackInput
+	(*KubernetesHelmRelease)(nil),               // 1: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmRelease
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmRelease
-	2, // 1: org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackInput.target:type_name -> org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmRelease
+	2, // 1: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

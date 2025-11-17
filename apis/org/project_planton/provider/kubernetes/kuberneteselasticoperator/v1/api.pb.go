@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_ap
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/api.proto\x12Jorg.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aOorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/spec.proto\x1aXorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x81\x04\n" +
+	"Norg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/api.proto\x12Dorg.project_planton.provider.kubernetes.kuberneteselasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aOorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/spec.proto\x1aXorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xf3\x03\n" +
 	"\x19KubernetesElasticOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x124\n" +
 	"\x04kind\x18\x02 \x01(\tB \xbaH\x1dr\x1b\n" +
 	"\x19KubernetesElasticOperatorR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x85\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2i.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x83\x01\n" +
-	"\x06status\x18\x05 \x01(\v2k.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatusR\x06status\"\xaf\x01\n" +
-	"\x1fKubernetesElasticOperatorStatus\x12\x8b\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2q.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputsR\aoutputsB\xba\x04\n" +
-	"Ncom.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1B\bApiProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x06OPPKAK\xaa\x02IOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kuberneteselasticoperator.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteselasticoperator\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kuberneteselasticoperator::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x7f\n" +
+	"\x04spec\x18\x04 \x01(\v2c.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12}\n" +
+	"\x06status\x18\x05 \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatusR\x06status\"\xa9\x01\n" +
+	"\x1fKubernetesElasticOperatorStatus\x12\x85\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2k.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputsR\aoutputsB\x9a\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1B\bApiProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticoperator.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_a
 
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_api_proto_goTypes = []any{
-	(*KubernetesElasticOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperator
-	(*KubernetesElasticOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatus
+	(*KubernetesElasticOperator)(nil),             // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperator
+	(*KubernetesElasticOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatus
 	(*shared.CloudResourceMetadata)(nil),          // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesElasticOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
-	(*KubernetesElasticOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputs
+	(*KubernetesElasticOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
+	(*KubernetesElasticOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperator.spec:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperator.status:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

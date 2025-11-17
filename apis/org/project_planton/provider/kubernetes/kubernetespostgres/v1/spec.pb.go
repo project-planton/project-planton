@@ -474,7 +474,7 @@ var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_prot
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesPostgresContainer)(nil),
 		Field:         534001,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.default_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetespostgres.v1.default_container",
 		Tag:           "bytes,534001,opt,name=default_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetespostgres/v1/spec.proto",
 	},
@@ -482,7 +482,7 @@ var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_prot
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainer default_container = 534001;
+	// optional org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer default_container = 534001;
 	E_DefaultContainer = &file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_extTypes[0]
 )
 
@@ -490,35 +490,35 @@ var File_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_prot
 
 const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/kubernetes/kubernetespostgres/v1/spec.proto\x12Forg.project_planton.provider.kubernetes.workload.kubernetespostgres.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xb8\x01\n" +
+	"Horg/project_planton/provider/kubernetes/kubernetespostgres/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetespostgres.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xb8\x01\n" +
 	"\x1aKubernetesPostgresR2Config\x12:\n" +
 	"\x15cloudflare_account_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x13cloudflareAccountId\x12*\n" +
 	"\raccess_key_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vaccessKeyId\x122\n" +
-	"\x11secret_access_key\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fsecretAccessKey\"\x9f\x02\n" +
+	"\x11secret_access_key\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fsecretAccessKey\"\x95\x02\n" +
 	"\x1fKubernetesPostgresRestoreConfig\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12$\n" +
 	"\vbucket_name\x18\x02 \x01(\tH\x00R\n" +
 	"bucketName\x88\x01\x01\x12\x17\n" +
-	"\as3_path\x18\x03 \x01(\tR\x06s3Path\x12\x84\x01\n" +
-	"\tr2_config\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresR2ConfigH\x01R\br2Config\x88\x01\x01B\x0e\n" +
+	"\as3_path\x18\x03 \x01(\tR\x06s3Path\x12{\n" +
+	"\tr2_config\x18\x04 \x01(\v2Y.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresR2ConfigH\x01R\br2Config\x88\x01\x01B\x0e\n" +
 	"\f_bucket_nameB\f\n" +
 	"\n" +
-	"_r2_config\"\xb7\x02\n" +
+	"_r2_config\"\xad\x02\n" +
 	"\x1eKubernetesPostgresBackupConfig\x12\x1b\n" +
 	"\ts3_prefix\x18\x01 \x01(\tR\bs3Prefix\x12'\n" +
 	"\x0fbackup_schedule\x18\x02 \x01(\tR\x0ebackupSchedule\x12(\n" +
-	"\renable_backup\x18\x03 \x01(\bH\x00R\fenableBackup\x88\x01\x01\x12\x86\x01\n" +
-	"\arestore\x18\x06 \x01(\v2g.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresRestoreConfigH\x01R\arestore\x88\x01\x01B\x10\n" +
+	"\renable_backup\x18\x03 \x01(\bH\x00R\fenableBackup\x88\x01\x01\x12}\n" +
+	"\arestore\x18\x06 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresRestoreConfigH\x01R\arestore\x88\x01\x01B\x10\n" +
 	"\x0e_enable_backupB\n" +
 	"\n" +
-	"\b_restore\"\xd3\x03\n" +
-	"\x16KubernetesPostgresSpec\x12\xad\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
+	"\b_restore\"\xb8\x03\n" +
+	"\x16KubernetesPostgresSpec\x12\xa4\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12{\n" +
-	"\aingress\x18\x02 \x01(\v2a.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresIngressR\aingress\x12\x8b\x01\n" +
-	"\rbackup_config\x18\x03 \x01(\v2f.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresBackupConfigR\fbackupConfig\"\xd1\x02\n" +
+	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12r\n" +
+	"\aingress\x18\x02 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngressR\aingress\x12\x82\x01\n" +
+	"\rbackup_config\x18\x03 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfigR\fbackupConfig\"\xd1\x02\n" +
 	"\x1bKubernetesPostgresContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
@@ -527,9 +527,9 @@ const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_pr
 	"\x19KubernetesPostgresIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xb1\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2c.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainerR\x10defaultContainerB\x99\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x06OPPKWK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetespostgres.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetespostgres\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetespostgres::V1b\x06proto3"
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa8\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainerR\x10defaultContainerB\xea\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_rawDescOnce sync.Once
@@ -545,24 +545,24 @@ func file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_pro
 
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_goTypes = []any{
-	(*KubernetesPostgresR2Config)(nil),      // 0: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresR2Config
-	(*KubernetesPostgresRestoreConfig)(nil), // 1: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresRestoreConfig
-	(*KubernetesPostgresBackupConfig)(nil),  // 2: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresBackupConfig
-	(*KubernetesPostgresSpec)(nil),          // 3: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresSpec
-	(*KubernetesPostgresContainer)(nil),     // 4: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainer
-	(*KubernetesPostgresIngress)(nil),       // 5: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresIngress
+	(*KubernetesPostgresR2Config)(nil),      // 0: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresR2Config
+	(*KubernetesPostgresRestoreConfig)(nil), // 1: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresRestoreConfig
+	(*KubernetesPostgresBackupConfig)(nil),  // 2: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfig
+	(*KubernetesPostgresSpec)(nil),          // 3: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec
+	(*KubernetesPostgresContainer)(nil),     // 4: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer
+	(*KubernetesPostgresIngress)(nil),       // 5: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngress
 	(*kubernetes.ContainerResources)(nil),   // 6: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),       // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_depIdxs = []int32{
-	0, // 0: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresRestoreConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresR2Config
-	1, // 1: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresBackupConfig.restore:type_name -> org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresRestoreConfig
-	4, // 2: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainer
-	5, // 3: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresSpec.ingress:type_name -> org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresIngress
-	2, // 4: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresBackupConfig
-	6, // 5: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	7, // 6: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.default_container:extendee -> google.protobuf.FieldOptions
-	4, // 7: org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.default_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetespostgres.v1.KubernetesPostgresContainer
+	0, // 0: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresRestoreConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresR2Config
+	1, // 1: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfig.restore:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresRestoreConfig
+	4, // 2: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer
+	5, // 3: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngress
+	2, // 4: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfig
+	6, // 5: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	7, // 6: org.project_planton.provider.kubernetes.kubernetespostgres.v1.default_container:extendee -> google.protobuf.FieldOptions
+	4, // 7: org.project_planton.provider.kubernetes.kubernetespostgres.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer
 	8, // [8:8] is the sub-list for method output_type
 	8, // [8:8] is the sub-list for method input_type
 	7, // [7:8] is the sub-list for extension type_name

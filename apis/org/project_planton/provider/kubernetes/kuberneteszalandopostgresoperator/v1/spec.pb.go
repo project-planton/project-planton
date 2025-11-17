@@ -316,7 +316,7 @@ var File_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Rorg.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x86\x02\n" +
+	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x86\x02\n" +
 	"/KubernetesZalandoPostgresOperatorBackupR2Config\x12>\n" +
 	"\x15cloudflare_account_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x13cloudflareAccountId\x12+\n" +
@@ -326,25 +326,25 @@ const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoper
 	"\raccess_key_id\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\vaccessKeyId\x126\n" +
 	"\x11secret_access_key\x18\x04 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x0fsecretAccessKey\"\xda\x03\n" +
-	"-KubernetesZalandoPostgresOperatorBackupConfig\x12\xa9\x01\n" +
-	"\tr2_config\x18\x01 \x01(\v2\x83\x01.org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2ConfigB\x06\xbaH\x03\xc8\x01\x01R\br2Config\x12,\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x0fsecretAccessKey\"\xd3\x03\n" +
+	"-KubernetesZalandoPostgresOperatorBackupConfig\x12\xa2\x01\n" +
+	"\tr2_config\x18\x01 \x01(\v2}.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2ConfigB\x06\xbaH\x03\xc8\x01\x01R\br2Config\x12,\n" +
 	"\x12s3_prefix_template\x18\x02 \x01(\tR\x10s3PrefixTemplate\x123\n" +
 	"\x0fbackup_schedule\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x0ebackupSchedule\x12-\n" +
 	"\x13enable_wal_g_backup\x18\x04 \x01(\bR\x10enableWalGBackup\x12/\n" +
 	"\x14enable_wal_g_restore\x18\x05 \x01(\bR\x11enableWalGRestore\x12:\n" +
-	"\x1aenable_clone_wal_g_restore\x18\x06 \x01(\bR\x16enableCloneWalGRestore\"\xe9\x03\n" +
+	"\x1aenable_clone_wal_g_restore\x18\x06 \x01(\bR\x16enableCloneWalGRestore\"\xdb\x03\n" +
 	"%KubernetesZalandoPostgresOperatorSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\xa9\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2\x82\x01.org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa7\x01\n" +
-	"\rbackup_config\x18\x03 \x01(\v2\x81\x01.org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xac\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\xa2\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
+	"\rbackup_config\x18\x03 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xac\x01\n" +
 	".KubernetesZalandoPostgresOperatorSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\xf3\x04\n" +
-	"Vcom.org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1B\tSpecProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x06OPPKAK\xaa\x02QOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kuberneteszalandopostgresoperator.V1\xca\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteszalandopostgresoperator\\V1\xe2\x02]Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02WOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kuberneteszalandopostgresoperator::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\xd3\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\tSpecProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescOnce sync.Once
@@ -360,19 +360,19 @@ func file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresopera
 
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesZalandoPostgresOperatorBackupR2Config)(nil), // 0: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
-	(*KubernetesZalandoPostgresOperatorBackupConfig)(nil),   // 1: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
-	(*KubernetesZalandoPostgresOperatorSpec)(nil),           // 2: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec
-	(*KubernetesZalandoPostgresOperatorSpecContainer)(nil),  // 3: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
+	(*KubernetesZalandoPostgresOperatorBackupR2Config)(nil), // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
+	(*KubernetesZalandoPostgresOperatorBackupConfig)(nil),   // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
+	(*KubernetesZalandoPostgresOperatorSpec)(nil),           // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec
+	(*KubernetesZalandoPostgresOperatorSpecContainer)(nil),  // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil),         // 4: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),                   // 5: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_depIdxs = []int32{
-	0, // 0: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
-	4, // 1: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	3, // 2: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
-	1, // 3: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
-	5, // 4: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	0, // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
+	4, // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	3, // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
+	1, // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
+	5, // 4: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

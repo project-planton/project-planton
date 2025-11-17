@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_inp
 
 const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/provider/kubernetes/kubernetestemporal/v1/stack_input.proto\x12Forg.project_planton.provider.kubernetes.workload.kubernetestemporal.v1\x1aGorg/project_planton/provider/kubernetes/kubernetestemporal/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xb1\x02\n" +
-	"\x1cKubernetesTemporalStackInput\x12r\n" +
-	"\x06target\x18\x01 \x01(\v2Z.org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporalR\x06target\x12j\n" +
+	"Oorg/project_planton/provider/kubernetes/kubernetestemporal/v1/stack_input.proto\x12=org.project_planton.provider.kubernetes.kubernetestemporal.v1\x1aGorg/project_planton/provider/kubernetes/kubernetestemporal/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa8\x02\n" +
+	"\x1cKubernetesTemporalStackInput\x12i\n" +
+	"\x06target\x18\x01 \x01(\v2Q.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x9f\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x06OPPKWK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetestemporal.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetestemporal\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetestemporal::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xf0\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetestemporal.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetestemporal.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestemporal::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_in
 
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesTemporalStackInput)(nil),        // 0: org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporalStackInput
-	(*KubernetesTemporal)(nil),                  // 1: org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporal
+	(*KubernetesTemporalStackInput)(nil),        // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalStackInput
+	(*KubernetesTemporal)(nil),                  // 1: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporal
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporalStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporal
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporalStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporal
+	2, // 1: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

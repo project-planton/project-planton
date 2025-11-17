@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stac
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/stack_input.proto\x12Korg.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1\x1aLorg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xc0\x02\n" +
-	"!KubernetesElasticsearchStackInput\x12|\n" +
-	"\x06target\x18\x01 \x01(\v2d.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchR\x06target\x12j\n" +
+	"Torg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/stack_input.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1aLorg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xb7\x02\n" +
+	"!KubernetesElasticsearchStackInput\x12s\n" +
+	"\x06target\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xc2\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1B\x0fStackInputProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x06OPPKWK\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteselasticsearch.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteselasticsearch\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteselasticsearch::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x93\x04\n" +
+	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\x0fStackInputProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_sta
 
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesElasticsearchStackInput)(nil),   // 0: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchStackInput
-	(*KubernetesElasticsearch)(nil),             // 1: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearch
+	(*KubernetesElasticsearchStackInput)(nil),   // 0: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackInput
+	(*KubernetesElasticsearch)(nil),             // 1: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearch
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearch
-	2, // 1: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackInput.target:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearch
+	2, // 1: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

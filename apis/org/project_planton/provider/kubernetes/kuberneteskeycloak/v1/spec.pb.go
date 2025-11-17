@@ -131,16 +131,16 @@ var File_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_prot
 
 const file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/kubernetes/kuberneteskeycloak/v1/spec.proto\x12Forg.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xea\x01\n" +
-	"\x16KubernetesKeycloakSpec\x12\x81\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakContainerR\tcontainer\x12L\n" +
+	"Horg/project_planton/provider/kubernetes/kuberneteskeycloak/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kuberneteskeycloak.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xe0\x01\n" +
+	"\x16KubernetesKeycloakSpec\x12x\n" +
+	"\tcontainer\x18\x01 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainerR\tcontainer\x12L\n" +
 	"\aingress\x18\x02 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\x99\x01\n" +
 	"\x1bKubernetesKeycloakContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\x99\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1;kuberneteskeycloakv1\xa2\x02\x06OPPKWK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteskeycloak.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteskeycloak\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteskeycloak\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteskeycloak::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\xea\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1;kuberneteskeycloakv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kuberneteskeycloak.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskeycloak\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskeycloak\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteskeycloak::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDescOnce sync.Once
@@ -156,15 +156,15 @@ func file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_pro
 
 var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_goTypes = []any{
-	(*KubernetesKeycloakSpec)(nil),        // 0: org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakSpec
-	(*KubernetesKeycloakContainer)(nil),   // 1: org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakContainer
+	(*KubernetesKeycloakSpec)(nil),        // 0: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec
+	(*KubernetesKeycloakContainer)(nil),   // 1: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer
 	(*kubernetes.IngressSpec)(nil),        // 2: org.project_planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakContainer
-	2, // 1: org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
-	3, // 2: org.project_planton.provider.kubernetes.workload.kuberneteskeycloak.v1.KubernetesKeycloakContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	1, // 0: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer
+	2, // 1: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	3, // 2: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

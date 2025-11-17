@@ -84,7 +84,7 @@ Provides outputs from the deployed operator infrastructure.
 ### Building the Module
 
 ```bash
-cd apis/project/planton/provider/kubernetes/addon/kubernetesaltinityoperator/v1/iac/pulumi
+cd apis/project/planton/provider/kubernetes/kubernetesaltinityoperator/v1/iac/pulumi
 make build
 ```
 

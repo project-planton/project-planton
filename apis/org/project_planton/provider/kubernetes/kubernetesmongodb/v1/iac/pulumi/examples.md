@@ -263,7 +263,7 @@ mongosh "mongodb://<username>:<password>@<external-hostname>:27017/?replicaSet=r
 **Solution**: Install the Percona Server for MongoDB Operator first:
 ```bash
 planton pulumi up --manifest percona-operator.yaml \
-  --module-dir apis/project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/iac/pulumi
+  --module-dir apis/project/planton/provider/kubernetes/perconaservermongodboperator/v1/iac/pulumi
 ```
 
 ### Issue: Pods Not Starting

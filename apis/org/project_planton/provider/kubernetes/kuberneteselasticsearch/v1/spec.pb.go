@@ -397,7 +397,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesElasticsearchElasticsearchSpec)(nil),
 		Field:         509001,
-		Name:          "org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.default_elasticsearch_spec",
+		Name:          "org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_elasticsearch_spec",
 		Tag:           "bytes,509001,opt,name=default_elasticsearch_spec",
 		Filename:      "org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto",
 	},
@@ -405,7 +405,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesElasticsearchKibanaSpec)(nil),
 		Field:         509002,
-		Name:          "org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.default_kibana_spec",
+		Name:          "org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_kibana_spec",
 		Tag:           "bytes,509002,opt,name=default_kibana_spec",
 		Filename:      "org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto",
 	},
@@ -413,9 +413,9 @@ var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec default_elasticsearch_spec = 509001;
+	// optional org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec default_elasticsearch_spec = 509001;
 	E_DefaultElasticsearchSpec = &file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_extTypes[0]
-	// optional org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec default_kibana_spec = 509002;
+	// optional org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec default_kibana_spec = 509002;
 	E_DefaultKibanaSpec = &file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_extTypes[1]
 )
 
@@ -423,24 +423,24 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto\x12Korg.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x9f\x03\n" +
-	"\x1bKubernetesElasticsearchSpec\x12\xcb\x01\n" +
-	"\relasticsearch\x18\x01 \x01(\v2u.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
+	"Morg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x8d\x03\n" +
+	"\x1bKubernetesElasticsearchSpec\x12\xc2\x01\n" +
+	"\relasticsearch\x18\x01 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
 	"'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\relasticsearch\x12\xb1\x01\n" +
-	"\x06kibana\x18\x02 \x01(\v2n.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecB)\xd2\xc4\xf8\x01$\b\x01\x12 \b\x01\x12\x1c\n" +
+	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\relasticsearch\x12\xa8\x01\n" +
+	"\x06kibana\x18\x02 \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecB)\xd2\xc4\xf8\x01$\b\x01\x12 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\x06kibana\"\xcd\x02\n" +
-	"(KubernetesElasticsearchElasticsearchSpec\x12\x98\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2z.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainerR\tcontainer\x12\x85\x01\n" +
-	"\aingress\x18\x02 \x01(\v2k.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchIngressR\aingress\"\xd9\x02\n" +
+	"\x0350m\x12\x05100MiR\x06kibana\"\xba\x02\n" +
+	"(KubernetesElasticsearchElasticsearchSpec\x12\x8f\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2q.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainerR\tcontainer\x12|\n" +
+	"\aingress\x18\x02 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngressR\aingress\"\xc6\x02\n" +
 	"!KubernetesElasticsearchKibanaSpec\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x91\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2s.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainerR\tcontainer\x12\x85\x01\n" +
-	"\aingress\x18\x03 \x01(\v2k.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchIngressR\aingress\"\xda\x04\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x88\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2j.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainerR\tcontainer\x12|\n" +
+	"\aingress\x18\x03 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngressR\aingress\"\xda\x04\n" +
 	"-KubernetesElasticsearchElasticsearchContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
@@ -453,10 +453,10 @@ const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_sp
 	"\x1eKubernetesElasticsearchIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xd4\x01\n" +
-	"\x1adefault_elasticsearch_spec\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2u.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecR\x18defaultElasticsearchSpec:\xbf\x01\n" +
-	"\x13default_kibana_spec\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2n.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecR\x11defaultKibanaSpecB\xbc\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x06OPPKWK\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteselasticsearch.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteselasticsearch\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteselasticsearch::V1b\x06proto3"
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xcb\x01\n" +
+	"\x1adefault_elasticsearch_spec\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecR\x18defaultElasticsearchSpec:\xb6\x01\n" +
+	"\x13default_kibana_spec\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecR\x11defaultKibanaSpecB\x8d\x04\n" +
+	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_rawDescOnce sync.Once
@@ -472,28 +472,28 @@ func file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spe
 
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_goTypes = []any{
-	(*KubernetesElasticsearchSpec)(nil),                   // 0: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchSpec
-	(*KubernetesElasticsearchElasticsearchSpec)(nil),      // 1: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec
-	(*KubernetesElasticsearchKibanaSpec)(nil),             // 2: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec
-	(*KubernetesElasticsearchElasticsearchContainer)(nil), // 3: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer
-	(*KubernetesElasticsearchKibanaContainer)(nil),        // 4: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer
-	(*KubernetesElasticsearchIngress)(nil),                // 5: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
+	(*KubernetesElasticsearchSpec)(nil),                   // 0: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchSpec
+	(*KubernetesElasticsearchElasticsearchSpec)(nil),      // 1: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec
+	(*KubernetesElasticsearchKibanaSpec)(nil),             // 2: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec
+	(*KubernetesElasticsearchElasticsearchContainer)(nil), // 3: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer
+	(*KubernetesElasticsearchKibanaContainer)(nil),        // 4: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer
+	(*KubernetesElasticsearchIngress)(nil),                // 5: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
 	(*kubernetes.ContainerResources)(nil),                 // 6: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),                     // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_depIdxs = []int32{
-	1,  // 0: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchSpec.elasticsearch:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec
-	2,  // 1: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchSpec.kibana:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec
-	3,  // 2: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer
-	5,  // 3: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec.ingress:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
-	4,  // 4: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer
-	5,  // 5: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
-	6,  // 6: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	6,  // 7: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	7,  // 8: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.default_elasticsearch_spec:extendee -> google.protobuf.FieldOptions
-	7,  // 9: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.default_kibana_spec:extendee -> google.protobuf.FieldOptions
-	1,  // 10: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.default_elasticsearch_spec:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec
-	2,  // 11: org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.default_kibana_spec:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec
+	1,  // 0: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchSpec.elasticsearch:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec
+	2,  // 1: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchSpec.kibana:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec
+	3,  // 2: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer
+	5,  // 3: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
+	4,  // 4: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer
+	5,  // 5: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
+	6,  // 6: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	6,  // 7: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	7,  // 8: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_elasticsearch_spec:extendee -> google.protobuf.FieldOptions
+	7,  // 9: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_kibana_spec:extendee -> google.protobuf.FieldOptions
+	1,  // 10: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_elasticsearch_spec:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec
+	2,  // 11: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_kibana_spec:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec
 	12, // [12:12] is the sub-list for method output_type
 	12, // [12:12] is the sub-list for method input_type
 	10, // [10:12] is the sub-list for extension type_name

@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/api.proto\x12Rorg.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aWorg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/spec.proto\x1a`org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xb1\x04\n" +
+	"Vorg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/api.proto\x12Lorg.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aWorg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/spec.proto\x1a`org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xa5\x04\n" +
 	"!KubernetesPerconaPostgresOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12<\n" +
 	"\x04kind\x18\x02 \x01(\tB(\xbaH%r#\n" +
 	"!KubernetesPerconaPostgresOperatorR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x95\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2y.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x93\x01\n" +
-	"\x06status\x18\x05 \x01(\v2{.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatusR\x06status\"\xc8\x01\n" +
-	"'KubernetesPerconaPostgresOperatorStatus\x12\x9c\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2\x81\x01.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackOutputsR\aoutputsB\xf2\x04\n" +
-	"Vcom.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1B\bApiProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x06OPPKAK\xaa\x02QOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesperconapostgresoperator.V1\xca\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconapostgresoperator\\V1\xe2\x02]Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02WOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesperconapostgresoperator::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x8f\x01\n" +
+	"\x04spec\x18\x04 \x01(\v2s.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x8d\x01\n" +
+	"\x06status\x18\x05 \x01(\v2u.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatusR\x06status\"\xc1\x01\n" +
+	"'KubernetesPerconaPostgresOperatorStatus\x12\x95\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2{.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackOutputsR\aoutputsB\xd2\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1B\bApiProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconapostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconapostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetesperconapostgresopera
 
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_api_proto_goTypes = []any{
-	(*KubernetesPerconaPostgresOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator
-	(*KubernetesPerconaPostgresOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatus
+	(*KubernetesPerconaPostgresOperator)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator
+	(*KubernetesPerconaPostgresOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatus
 	(*shared.CloudResourceMetadata)(nil),                  // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesPerconaPostgresOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec
-	(*KubernetesPerconaPostgresOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackOutputs
+	(*KubernetesPerconaPostgresOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec
+	(*KubernetesPerconaPostgresOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator.spec:type_name -> org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator.status:type_name -> org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

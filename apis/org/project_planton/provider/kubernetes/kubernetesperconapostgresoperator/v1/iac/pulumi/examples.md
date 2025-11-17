@@ -222,7 +222,7 @@ planton pulumi preview --manifest percona-pg-operator.yaml
 For local development and testing:
 
 ```bash
-cd apis/project/planton/provider/kubernetes/addon/kubernetesperconapostgresoperator/v1/iac/pulumi
+cd apis/project/planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/iac/pulumi
 
 # Set up environment
 export PULUMI_STACK_INPUT=/path/to/manifest.yaml

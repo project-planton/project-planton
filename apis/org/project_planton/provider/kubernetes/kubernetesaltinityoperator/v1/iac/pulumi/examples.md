@@ -222,7 +222,7 @@ planton pulumi preview --manifest kubernetes-altinity-operator.yaml
 For local development and testing:
 
 ```bash
-cd apis/project/planton/provider/kubernetes/addon/kubernetesaltinityoperator/v1/iac/pulumi
+cd apis/project/planton/provider/kubernetes/kubernetesaltinityoperator/v1/iac/pulumi
 
 # Set up environment
 export PULUMI_STACK_INPUT=/path/to/manifest.yaml

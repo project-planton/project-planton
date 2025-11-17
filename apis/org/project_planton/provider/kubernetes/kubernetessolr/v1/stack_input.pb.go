@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_p
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetessolr/v1/stack_input.proto\x12Borg.project_planton.provider.kubernetes.workload.kubernetessolr.v1\x1aCorg/project_planton/provider/kubernetes/kubernetessolr/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa5\x02\n" +
-	"\x18KubernetesSolrStackInput\x12j\n" +
-	"\x06target\x18\x01 \x01(\v2R.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrR\x06target\x12j\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetessolr/v1/stack_input.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1aCorg/project_planton/provider/kubernetes/kubernetessolr/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x9c\x02\n" +
+	"\x18KubernetesSolrStackInput\x12a\n" +
+	"\x06target\x18\x01 \x01(\v2I.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x82\x04\n" +
-	"Fcom.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1B\x0fStackInputProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x06OPPKWK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetessolr.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessolr\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessolr\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetessolr::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xd3\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\x0fStackInputProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_
 
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesSolrStackInput)(nil),            // 0: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackInput
-	(*KubernetesSolr)(nil),                      // 1: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolr
+	(*KubernetesSolrStackInput)(nil),            // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackInput
+	(*KubernetesSolr)(nil),                      // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolr
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolr
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolr
+	2, // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

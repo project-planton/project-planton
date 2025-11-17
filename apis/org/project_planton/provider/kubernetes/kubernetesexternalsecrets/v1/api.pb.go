@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_ap
 
 const file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/api.proto\x12Jorg.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1\x1a\x1bbuf/validate/validate.proto\x1aOorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/spec.proto\x1aXorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x81\x04\n" +
+	"Norg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/api.proto\x12Dorg.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1\x1a\x1bbuf/validate/validate.proto\x1aOorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/spec.proto\x1aXorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xf3\x03\n" +
 	"\x19KubernetesExternalSecrets\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x124\n" +
 	"\x04kind\x18\x02 \x01(\tB \xbaH\x1dr\x1b\n" +
 	"\x19KubernetesExternalSecretsR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x85\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2i.org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x83\x01\n" +
-	"\x06status\x18\x05 \x01(\v2k.org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatusR\x06status\"\xaf\x01\n" +
-	"\x1fKubernetesExternalSecretsStatus\x12\x8b\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2q.org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackOutputsR\aoutputsB\xba\x04\n" +
-	"Ncom.org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1B\bApiProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x06OPPKAK\xaa\x02IOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesexternalsecrets.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesexternalsecrets\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesexternalsecrets::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x7f\n" +
+	"\x04spec\x18\x04 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12}\n" +
+	"\x06status\x18\x05 \x01(\v2e.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatusR\x06status\"\xa9\x01\n" +
+	"\x1fKubernetesExternalSecretsStatus\x12\x85\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2k.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackOutputsR\aoutputsB\x9a\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1B\bApiProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kubernetesexternalsecrets.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternalsecrets::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_a
 
 var file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_api_proto_goTypes = []any{
-	(*KubernetesExternalSecrets)(nil),             // 0: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecrets
-	(*KubernetesExternalSecretsStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatus
+	(*KubernetesExternalSecrets)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecrets
+	(*KubernetesExternalSecretsStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatus
 	(*shared.CloudResourceMetadata)(nil),          // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesExternalSecretsSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsSpec
-	(*KubernetesExternalSecretsStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackOutputs
+	(*KubernetesExternalSecretsSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsSpec
+	(*KubernetesExternalSecretsStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecrets.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecrets.spec:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecrets.status:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecrets.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecrets.spec:type_name -> org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecrets.status:type_name -> org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

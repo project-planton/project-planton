@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetescertmanager/v1/api.proto\x12Forg.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/kubernetescertmanager/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xe7\x03\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetescertmanager/v1/api.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/kubernetescertmanager/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xdb\x03\n" +
 	"\x15KubernetesCertManager\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x120\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1c\xbaH\x19r\x17\n" +
 	"\x15KubernetesCertManagerR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12}\n" +
-	"\x04spec\x18\x04 \x01(\v2a.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12{\n" +
-	"\x06status\x18\x05 \x01(\v2c.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStatusR\x06status\"\xa3\x01\n" +
-	"\x1bKubernetesCertManagerStatus\x12\x83\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStackOutputsR\aoutputsB\x9e\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1B\bApiProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x06OPPKAK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetescertmanager.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetescertmanager\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetescertmanager::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12w\n" +
+	"\x04spec\x18\x04 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12u\n" +
+	"\x06status\x18\x05 \x01(\v2].org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStatusR\x06status\"\x9c\x01\n" +
+	"\x1bKubernetesCertManagerStatus\x12}\n" +
+	"\aoutputs\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStackOutputsR\aoutputsB\xfe\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetescertmanager.v1B\bApiProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetescertmanager.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetescertmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_p
 
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_proto_goTypes = []any{
-	(*KubernetesCertManager)(nil),             // 0: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManager
-	(*KubernetesCertManagerStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStatus
+	(*KubernetesCertManager)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManager
+	(*KubernetesCertManagerStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStatus
 	(*shared.CloudResourceMetadata)(nil),      // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesCertManagerSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpec
-	(*KubernetesCertManagerStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStackOutputs
+	(*KubernetesCertManagerSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec
+	(*KubernetesCertManagerStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManager.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManager.spec:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManager.status:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManager.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManager.spec:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManager.status:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

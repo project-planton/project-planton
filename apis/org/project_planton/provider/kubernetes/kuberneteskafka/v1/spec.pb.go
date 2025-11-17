@@ -413,7 +413,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_e
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesKafkaBrokerContainer)(nil),
 		Field:         524001,
-		Name:          "org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.default_broker_container",
+		Name:          "org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container",
 		Tag:           "bytes,524001,opt,name=default_broker_container",
 		Filename:      "org/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto",
 	},
@@ -421,7 +421,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_e
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesKafkaZookeeperContainer)(nil),
 		Field:         524002,
-		Name:          "org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.default_zookeeper_container",
+		Name:          "org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container",
 		Tag:           "bytes,524002,opt,name=default_zookeeper_container",
 		Filename:      "org/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto",
 	},
@@ -429,9 +429,9 @@ var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_e
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainer default_broker_container = 524001;
+	// optional org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer default_broker_container = 524001;
 	E_DefaultBrokerContainer = &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_extTypes[0]
-	// optional org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer default_zookeeper_container = 524002;
+	// optional org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer default_zookeeper_container = 524002;
 	E_DefaultZookeeperContainer = &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_extTypes[1]
 )
 
@@ -439,18 +439,18 @@ var File_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.workload.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xbb\x06\n" +
-	"\x13KubernetesKafkaSpec\x12r\n" +
-	"\fkafka_topics\x18\x01 \x03(\v2O.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopicR\vkafkaTopics\x12\xba\x01\n" +
-	"\x10broker_container\x18\x02 \x01(\v2c.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainerB*\x8a\xee\xff\x01%\b\x01\x12\x1c\n" +
+	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\x97\x06\n" +
+	"\x13KubernetesKafkaSpec\x12i\n" +
+	"\fkafka_topics\x18\x01 \x03(\v2F.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopicR\vkafkaTopics\x12\xb1\x01\n" +
+	"\x10broker_container\x18\x02 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainerB*\x8a\xee\xff\x01%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x1a\x031GiR\x0fbrokerContainer\x12\xc3\x01\n" +
-	"\x13zookeeper_container\x18\x03 \x01(\v2f.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainerB*\x92\xee\xff\x01%\b\x01\x12\x1c\n" +
+	"\x0350m\x12\x05100Mi\x1a\x031GiR\x0fbrokerContainer\x12\xba\x01\n" +
+	"\x13zookeeper_container\x18\x03 \x01(\v2].org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainerB*\x92\xee\xff\x01%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12\xa7\x01\n" +
-	"\x19schema_registry_container\x18\x04 \x01(\v2k.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainerR\x17schemaRegistryContainer\x12L\n" +
+	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12\x9e\x01\n" +
+	"\x19schema_registry_container\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainerR\x17schemaRegistryContainer\x12L\n" +
 	"\aingress\x18\x05 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\x125\n" +
 	"\x12is_deploy_kafka_ui\x18\x06 \x01(\bB\b\x92\xa6\x1d\x04trueR\x0fisDeployKafkaUi\"\xd9\x02\n" +
 	"\x1eKubernetesKafkaBrokerContainer\x12\x1a\n" +
@@ -470,7 +470,7 @@ const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto
 	"\tresources\x18\x03 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresources\"\x97\t\n" +
+	"\x0350m\x12\x05100MiR\tresources\"\x8e\t\n" +
 	"\n" +
 	"KafkaTopic\x12\x93\x04\n" +
 	"\x04name\x18\x01 \x01(\tB\xfe\x03\xbaH\xfa\x03\xba\x01e\n" +
@@ -482,8 +482,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto
 	"\n" +
 	"partitions\x18\x02 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\n" +
 	"partitions\x88\x01\x01\x12&\n" +
-	"\breplicas\x18\x03 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x01R\breplicas\x88\x01\x01\x12\xc7\x03\n" +
-	"\x06config\x18\x04 \x03(\v2[.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopic.ConfigEntryB\xd1\x02\x9a\xa6\x1d\x18\n" +
+	"\breplicas\x18\x03 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x01R\breplicas\x88\x01\x01\x12\xbe\x03\n" +
+	"\x06config\x18\x04 \x03(\v2R.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntryB\xd1\x02\x9a\xa6\x1d\x18\n" +
 	"\x0ecleanup.policy\x12\x06delete\x9a\xa6\x1d\x1f\n" +
 	"\x13delete.retention.ms\x12\b86400000\x9a\xa6\x1d\x1c\n" +
 	"\x11max.message.bytes\x12\a2097164\x9a\xa6\x1d:\n" +
@@ -501,10 +501,10 @@ const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\r\n" +
 	"\v_partitionsB\v\n" +
-	"\t_replicas:\xbe\x01\n" +
-	"\x18default_broker_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfd\x1f \x01(\v2c.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainerR\x16defaultBrokerContainer:\xc7\x01\n" +
-	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfd\x1f \x01(\v2f.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainerR\x19defaultZookeeperContainerB\x83\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1;kuberneteskafkav1\xa2\x02\x06OPPKWK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteskafka.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteskafka\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteskafka\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteskafka::V1b\x06proto3"
+	"\t_replicas:\xb5\x01\n" +
+	"\x18default_broker_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfd\x1f \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainerR\x16defaultBrokerContainer:\xbe\x01\n" +
+	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfd\x1f \x01(\v2].org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainerR\x19defaultZookeeperContainerB\xd4\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kuberneteskafka.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1;kuberneteskafkav1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kuberneteskafka.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskafka\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskafka\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kuberneteskafka::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescOnce sync.Once
@@ -520,30 +520,30 @@ func file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_
 
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_goTypes = []any{
-	(*KubernetesKafkaSpec)(nil),                    // 0: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSpec
-	(*KubernetesKafkaBrokerContainer)(nil),         // 1: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
-	(*KubernetesKafkaZookeeperContainer)(nil),      // 2: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
-	(*KubernetesKafkaSchemaRegistryContainer)(nil), // 3: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
-	(*KafkaTopic)(nil),                             // 4: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopic
-	nil,                                            // 5: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopic.ConfigEntry
+	(*KubernetesKafkaSpec)(nil),                    // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec
+	(*KubernetesKafkaBrokerContainer)(nil),         // 1: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
+	(*KubernetesKafkaZookeeperContainer)(nil),      // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
+	(*KubernetesKafkaSchemaRegistryContainer)(nil), // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
+	(*KafkaTopic)(nil),                             // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
+	nil,                                            // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
 	(*kubernetes.IngressSpec)(nil),                 // 6: org.project_planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil),          // 7: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),              // 8: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_depIdxs = []int32{
-	4,  // 0: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSpec.kafka_topics:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopic
-	1,  // 1: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSpec.broker_container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
-	2,  // 2: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
-	3,  // 3: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSpec.schema_registry_container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
-	6,  // 4: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
-	7,  // 5: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	7,  // 6: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	7,  // 7: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	5,  // 8: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopic.config:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KafkaTopic.ConfigEntry
-	8,  // 9: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.default_broker_container:extendee -> google.protobuf.FieldOptions
-	8,  // 10: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
-	1,  // 11: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.default_broker_container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
-	2,  // 12: org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
+	4,  // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.kafka_topics:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
+	1,  // 1: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.broker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
+	2,  // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
+	3,  // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.schema_registry_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
+	6,  // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	7,  // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	7,  // 6: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	7,  // 7: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	5,  // 8: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.config:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
+	8,  // 9: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container:extendee -> google.protobuf.FieldOptions
+	8,  // 10: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
+	1,  // 11: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
+	2,  // 12: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
 	13, // [13:13] is the sub-list for method output_type
 	13, // [13:13] is the sub-list for method input_type
 	11, // [11:13] is the sub-list for extension type_name

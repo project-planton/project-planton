@@ -125,15 +125,15 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_o
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Sorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/stack_outputs.proto\x12Horg.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1\"\x8b\x02\n" +
+	"Sorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/stack_outputs.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\"\x8b\x02\n" +
 	" KubernetesPrometheusStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\xaf\x04\n" +
-	"Lcom.org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1B\x11StackOutputsProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x06OPPKWK\xaa\x02GOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesprometheus.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesprometheus\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesprometheus::V1b\x06proto3"
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x80\x04\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesprometheus.v1B\x11StackOutputsProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesprometheus.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesprometheus::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -149,7 +149,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_
 
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesPrometheusStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusStackOutputs
+	(*KubernetesPrometheusStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

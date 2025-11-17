@@ -131,16 +131,16 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_sp
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/spec.proto\x12Jorg.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xa6\x02\n" +
+	"Oorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/spec.proto\x12Dorg.project_planton.provider.kubernetes.kuberneteselasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xa0\x02\n" +
 	"\x1dKubernetesElasticOperatorSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x98\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2r.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa4\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x92\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa4\x01\n" +
 	"&KubernetesElasticOperatorSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\xbb\x04\n" +
-	"Ncom.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1B\tSpecProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x06OPPKAK\xaa\x02IOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kuberneteselasticoperator.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteselasticoperator\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kuberneteselasticoperator::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\x9b\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1B\tSpecProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticoperator.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_rawDescOnce sync.Once
@@ -156,15 +156,15 @@ func file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_s
 
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesElasticOperatorSpec)(nil),           // 0: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
-	(*KubernetesElasticOperatorSpecContainer)(nil),  // 1: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
+	(*KubernetesElasticOperatorSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
+	(*KubernetesElasticOperatorSpecContainer)(nil),  // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

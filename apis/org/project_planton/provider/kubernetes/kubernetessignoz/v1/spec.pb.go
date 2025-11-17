@@ -850,7 +850,7 @@ var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesSignozContainer)(nil),
 		Field:         560001,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_signoz_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_signoz_container",
 		Tag:           "bytes,560001,opt,name=default_signoz_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto",
 	},
@@ -858,7 +858,7 @@ var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesSignozContainer)(nil),
 		Field:         560002,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_otel_collector_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_otel_collector_container",
 		Tag:           "bytes,560002,opt,name=default_otel_collector_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto",
 	},
@@ -866,7 +866,7 @@ var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesSignozClickhouseContainer)(nil),
 		Field:         560003,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_clickhouse_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_clickhouse_container",
 		Tag:           "bytes,560003,opt,name=default_clickhouse_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto",
 	},
@@ -874,7 +874,7 @@ var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesSignozZookeeperContainer)(nil),
 		Field:         560004,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_zookeeper_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_zookeeper_container",
 		Tag:           "bytes,560004,opt,name=default_zookeeper_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto",
 	},
@@ -882,13 +882,13 @@ var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer default_signoz_container = 560001;
+	// optional org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer default_signoz_container = 560001;
 	E_DefaultSignozContainer = &file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_extTypes[0]
-	// optional org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer default_otel_collector_container = 560002;
+	// optional org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer default_otel_collector_container = 560002;
 	E_DefaultOtelCollectorContainer = &file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_extTypes[1]
-	// optional org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainer default_clickhouse_container = 560003;
+	// optional org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainer default_clickhouse_container = 560003;
 	E_DefaultClickhouseContainer = &file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_extTypes[2]
-	// optional org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainer default_zookeeper_container = 560004;
+	// optional org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainer default_zookeeper_container = 560004;
 	E_DefaultZookeeperContainer = &file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_extTypes[3]
 )
 
@@ -896,19 +896,19 @@ var File_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto\x12Dorg.project_planton.provider.kubernetes.workload.kubernetessignoz.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a0org/project_planton/shared/options/options.proto\"\xde\x06\n" +
-	"\x14KubernetesSignozSpec\x12\xb2\x01\n" +
-	"\x10signoz_container\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainerB&\x8a\xb8\x91\x02!\b\x01\x12\x1d\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetessignoz.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a0org/project_planton/shared/options/options.proto\"\xb0\x06\n" +
+	"\x14KubernetesSignozSpec\x12\xa9\x01\n" +
+	"\x10signoz_container\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerB&\x8a\xb8\x91\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
-	"\x04200m\x12\x05512MiR\x0fsignozContainer\x12\xbf\x01\n" +
-	"\x18otel_collector_container\x18\x02 \x01(\v2_.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainerB$\x92\xb8\x91\x02\x1f\b\x02\x12\x1b\n" +
+	"\x04200m\x12\x05512MiR\x0fsignozContainer\x12\xb6\x01\n" +
+	"\x18otel_collector_container\x18\x02 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerB$\x92\xb8\x91\x02\x1f\b\x02\x12\x1b\n" +
 	"\f\n" +
 	"\x052000m\x12\x034Gi\x12\v\n" +
-	"\x04500m\x12\x031GiR\x16otelCollectorContainer\x12\x88\x01\n" +
-	"\bdatabase\x18\x03 \x01(\v2d.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12w\n" +
-	"\aingress\x18\x04 \x01(\v2].org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngressR\aingress\x12\x8b\x01\n" +
-	"\vhelm_values\x18\x05 \x03(\v2j.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntryR\n" +
+	"\x04500m\x12\x031GiR\x16otelCollectorContainer\x12\x7f\n" +
+	"\bdatabase\x18\x03 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12n\n" +
+	"\aingress\x18\x04 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressR\aingress\x12\x82\x01\n" +
+	"\vhelm_values\x18\x05 \x03(\v2a.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -916,12 +916,12 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_prot
 	"\x19KubernetesSignozContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12W\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12K\n" +
-	"\x05image\x18\x03 \x01(\v25.org.project_planton.shared.kubernetes.ContainerImageR\x05image\"\x91\x04\n" +
+	"\x05image\x18\x03 \x01(\v25.org.project_planton.shared.kubernetes.ContainerImageR\x05image\"\xff\x03\n" +
 	"\x1eKubernetesSignozDatabaseConfig\x12\x1f\n" +
 	"\vis_external\x18\x01 \x01(\bR\n" +
-	"isExternal\x12\x95\x01\n" +
-	"\x11external_database\x18\x02 \x01(\v2h.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozExternalClickhouseR\x10externalDatabase\x12\x92\x01\n" +
-	"\x10managed_database\x18\x03 \x01(\v2g.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozManagedClickhouseR\x0fmanagedDatabase:\xa0\x01\xbaH\x9c\x01\x1a\x99\x01\n" +
+	"isExternal\x12\x8c\x01\n" +
+	"\x11external_database\x18\x02 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozExternalClickhouseR\x10externalDatabase\x12\x89\x01\n" +
+	"\x10managed_database\x18\x03 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozManagedClickhouseR\x0fmanagedDatabase:\xa0\x01\xbaH\x9c\x01\x1a\x99\x01\n" +
 	"\x1fspec.database.external_required\x12DExternal database configuration is required when is_external is true\x1a0!this.is_external || has(this.external_database)\"\xf2\x02\n" +
 	"\"KubernetesSignozExternalClickhouse\x12\x1a\n" +
 	"\x04host\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04host\x125\n" +
@@ -934,14 +934,14 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_prot
 	"\n" +
 	"_http_portB\v\n" +
 	"\t_tcp_portB\x0f\n" +
-	"\r_cluster_name\"\xe5\x03\n" +
-	"!KubernetesSignozManagedClickhouse\x12\xb5\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainerB,\x9a\xb8\x91\x02'\b\x01\x12\x1b\n" +
+	"\r_cluster_name\"\xc8\x03\n" +
+	"!KubernetesSignozManagedClickhouse\x12\xac\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainerB,\x9a\xb8\x91\x02'\b\x01\x12\x1b\n" +
 	"\f\n" +
 	"\x052000m\x12\x034Gi\x12\v\n" +
-	"\x04500m\x12\x031Gi \x01*\x0420GiR\tcontainer\x12\x81\x01\n" +
-	"\acluster\x18\x02 \x01(\v2g.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseClusterR\acluster\x12\x83\x01\n" +
-	"\tzookeeper\x18\x03 \x01(\v2e.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperConfigR\tzookeeper\"\xa3\x05\n" +
+	"\x04500m\x12\x031Gi \x01*\x0420GiR\tcontainer\x12x\n" +
+	"\acluster\x18\x02 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseClusterR\acluster\x12z\n" +
+	"\tzookeeper\x18\x03 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperConfigR\tzookeeper\"\xa3\x05\n" +
 	"#KubernetesSignozClickhouseContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12W\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12K\n" +
@@ -955,11 +955,11 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_prot
 	"\vshard_count\x18\x02 \x01(\x05R\n" +
 	"shardCount\x12#\n" +
 	"\rreplica_count\x18\x03 \x01(\x05R\freplicaCount:\xc9\x01\xbaH\xc5\x01\x1a\xc2\x01\n" +
-	"+spec.clickhouse.cluster.counts_when_enabled\x12KShard count and replica count must be at least 1 when clustering is enabled\x1aF!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1)\"\xf7\x01\n" +
+	"+spec.clickhouse.cluster.counts_when_enabled\x12KShard count and replica count must be at least 1 when clustering is enabled\x1aF!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1)\"\xee\x01\n" +
 	"\x1fKubernetesSignozZookeeperConfig\x12\x1d\n" +
 	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\xb4\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2h.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainerB,\xa2\xb8\x91\x02'\b\x01\x12\x1e\n" +
+	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\xab\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainerB,\xa2\xb8\x91\x02'\b\x01\x12\x1e\n" +
 	"\r\n" +
 	"\x04500m\x12\x05512Mi\x12\r\n" +
 	"\x04100m\x12\x05256Mi\"\x038GiR\tcontainer\"\xc3\x03\n" +
@@ -968,19 +968,19 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_prot
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12K\n" +
 	"\x05image\x18\x03 \x01(\v25.org.project_planton.shared.kubernetes.ContainerImageR\x05image\x12\xd1\x01\n" +
 	"\tdisk_size\x18\x04 \x01(\tB\xb3\x01\xbaH\xaf\x01\xba\x01\xab\x01\n" +
-	"!spec.zookeeper.disk_size.required\x12/Disk size is required and must match the format\x1aUsize(this) > 0 && this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')R\bdiskSize\"\x9f\x02\n" +
-	"\x17KubernetesSignozIngress\x12u\n" +
-	"\x02ui\x18\x01 \x01(\v2e.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngressEndpointR\x02ui\x12\x8c\x01\n" +
-	"\x0eotel_collector\x18\x02 \x01(\v2e.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngressEndpointR\rotelCollector\"\xd6\x01\n" +
+	"!spec.zookeeper.disk_size.required\x12/Disk size is required and must match the format\x1aUsize(this) > 0 && this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')R\bdiskSize\"\x8d\x02\n" +
+	"\x17KubernetesSignozIngress\x12l\n" +
+	"\x02ui\x18\x01 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressEndpointR\x02ui\x12\x83\x01\n" +
+	"\x0eotel_collector\x18\x02 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressEndpointR\rotelCollector\"\xd6\x01\n" +
 	"\x1fKubernetesSignozIngressEndpoint\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xba\x01\n" +
-	"\x18default_signoz_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x97\" \x01(\v2_.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainerR\x16defaultSignozContainer:\xc9\x01\n" +
-	" default_otel_collector_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x97\" \x01(\v2_.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainerR\x1ddefaultOtelCollectorContainer:\xcc\x01\n" +
-	"\x1cdefault_clickhouse_container\x12\x1d.google.protobuf.FieldOptions\x18\x83\x97\" \x01(\v2i.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainerR\x1adefaultClickhouseContainer:\xc9\x01\n" +
-	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\x84\x97\" \x01(\v2h.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainerR\x19defaultZookeeperContainerB\x8a\x04\n" +
-	"Hcom.org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x06OPPKWK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetessignoz.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessignoz\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetessignoz::V1b\x06proto3"
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xb1\x01\n" +
+	"\x18default_signoz_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x97\" \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerR\x16defaultSignozContainer:\xc0\x01\n" +
+	" default_otel_collector_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x97\" \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerR\x1ddefaultOtelCollectorContainer:\xc3\x01\n" +
+	"\x1cdefault_clickhouse_container\x12\x1d.google.protobuf.FieldOptions\x18\x83\x97\" \x01(\v2`.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainerR\x1adefaultClickhouseContainer:\xc0\x01\n" +
+	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\x84\x97\" \x01(\v2_.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainerR\x19defaultZookeeperContainerB\xdb\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetessignoz.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetessignoz.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetessignoz::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_rawDescOnce sync.Once
@@ -996,50 +996,50 @@ func file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto
 
 var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_goTypes = []any{
-	(*KubernetesSignozSpec)(nil),                // 0: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec
-	(*KubernetesSignozContainer)(nil),           // 1: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer
-	(*KubernetesSignozDatabaseConfig)(nil),      // 2: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozDatabaseConfig
-	(*KubernetesSignozExternalClickhouse)(nil),  // 3: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozExternalClickhouse
-	(*KubernetesSignozManagedClickhouse)(nil),   // 4: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozManagedClickhouse
-	(*KubernetesSignozClickhouseContainer)(nil), // 5: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainer
-	(*KubernetesSignozClickhouseCluster)(nil),   // 6: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseCluster
-	(*KubernetesSignozZookeeperConfig)(nil),     // 7: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperConfig
-	(*KubernetesSignozZookeeperContainer)(nil),  // 8: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainer
-	(*KubernetesSignozIngress)(nil),             // 9: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngress
-	(*KubernetesSignozIngressEndpoint)(nil),     // 10: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngressEndpoint
-	nil,                                         // 11: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntry
+	(*KubernetesSignozSpec)(nil),                // 0: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec
+	(*KubernetesSignozContainer)(nil),           // 1: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer
+	(*KubernetesSignozDatabaseConfig)(nil),      // 2: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfig
+	(*KubernetesSignozExternalClickhouse)(nil),  // 3: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozExternalClickhouse
+	(*KubernetesSignozManagedClickhouse)(nil),   // 4: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozManagedClickhouse
+	(*KubernetesSignozClickhouseContainer)(nil), // 5: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainer
+	(*KubernetesSignozClickhouseCluster)(nil),   // 6: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseCluster
+	(*KubernetesSignozZookeeperConfig)(nil),     // 7: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperConfig
+	(*KubernetesSignozZookeeperContainer)(nil),  // 8: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainer
+	(*KubernetesSignozIngress)(nil),             // 9: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngress
+	(*KubernetesSignozIngressEndpoint)(nil),     // 10: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressEndpoint
+	nil,                                         // 11: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntry
 	(*kubernetes.ContainerResources)(nil),       // 12: org.project_planton.shared.kubernetes.ContainerResources
 	(*kubernetes.ContainerImage)(nil),           // 13: org.project_planton.shared.kubernetes.ContainerImage
 	(*descriptorpb.FieldOptions)(nil),           // 14: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_depIdxs = []int32{
-	1,  // 0: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.signoz_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer
-	1,  // 1: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.otel_collector_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer
-	2,  // 2: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.database:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozDatabaseConfig
-	9,  // 3: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.ingress:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngress
-	11, // 4: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntry
-	12, // 5: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	13, // 6: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
-	3,  // 7: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozExternalClickhouse
-	4,  // 8: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozDatabaseConfig.managed_database:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozManagedClickhouse
-	5,  // 9: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozManagedClickhouse.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainer
-	6,  // 10: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozManagedClickhouse.cluster:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseCluster
-	7,  // 11: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozManagedClickhouse.zookeeper:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperConfig
-	12, // 12: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	13, // 13: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
-	8,  // 14: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperConfig.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainer
-	12, // 15: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	13, // 16: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
-	10, // 17: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngress.ui:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngressEndpoint
-	10, // 18: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngress.otel_collector:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozIngressEndpoint
-	14, // 19: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_signoz_container:extendee -> google.protobuf.FieldOptions
-	14, // 20: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_otel_collector_container:extendee -> google.protobuf.FieldOptions
-	14, // 21: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_clickhouse_container:extendee -> google.protobuf.FieldOptions
-	14, // 22: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
-	1,  // 23: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_signoz_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer
-	1,  // 24: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_otel_collector_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozContainer
-	5,  // 25: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_clickhouse_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozClickhouseContainer
-	8,  // 26: org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetessignoz.v1.KubernetesSignozZookeeperContainer
+	1,  // 0: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.signoz_container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer
+	1,  // 1: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.otel_collector_container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer
+	2,  // 2: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfig
+	9,  // 3: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngress
+	11, // 4: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntry
+	12, // 5: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	13, // 6: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
+	3,  // 7: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozExternalClickhouse
+	4,  // 8: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfig.managed_database:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozManagedClickhouse
+	5,  // 9: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozManagedClickhouse.container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainer
+	6,  // 10: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozManagedClickhouse.cluster:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseCluster
+	7,  // 11: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozManagedClickhouse.zookeeper:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperConfig
+	12, // 12: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	13, // 13: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
+	8,  // 14: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperConfig.container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainer
+	12, // 15: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	13, // 16: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
+	10, // 17: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngress.ui:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressEndpoint
+	10, // 18: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngress.otel_collector:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressEndpoint
+	14, // 19: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_signoz_container:extendee -> google.protobuf.FieldOptions
+	14, // 20: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_otel_collector_container:extendee -> google.protobuf.FieldOptions
+	14, // 21: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_clickhouse_container:extendee -> google.protobuf.FieldOptions
+	14, // 22: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
+	1,  // 23: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_signoz_container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer
+	1,  // 24: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_otel_collector_container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainer
+	5,  // 25: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_clickhouse_container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainer
+	8,  // 26: org.project_planton.provider.kubernetes.kubernetessignoz.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainer
 	27, // [27:27] is the sub-list for method output_type
 	27, // [27:27] is the sub-list for method input_type
 	23, // [23:27] is the sub-list for extension type_name

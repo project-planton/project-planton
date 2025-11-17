@@ -115,14 +115,14 @@ var File_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"`org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/stack_outputs.proto\x12Rorg.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1\"\xe9\x01\n" +
+	"`org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/stack_outputs.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\"\xe9\x01\n" +
 	"-KubernetesZalandoPostgresOperatorStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xfb\x04\n" +
-	"Vcom.org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1B\x11StackOutputsProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x06OPPKAK\xaa\x02QOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kuberneteszalandopostgresoperator.V1\xca\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteszalandopostgresoperator\\V1\xe2\x02]Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02WOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kuberneteszalandopostgresoperator::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xdb\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\x11StackOutputsProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresopera
 
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesZalandoPostgresOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorStackOutputs
+	(*KubernetesZalandoPostgresOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

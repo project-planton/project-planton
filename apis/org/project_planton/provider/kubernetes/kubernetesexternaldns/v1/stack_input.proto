@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1;
+package org.project_planton.provider.kubernetes.kubernetesexternaldns.v1;
 
 import "org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";

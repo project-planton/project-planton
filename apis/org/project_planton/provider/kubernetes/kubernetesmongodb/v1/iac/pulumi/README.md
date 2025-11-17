@@ -29,7 +29,7 @@ The **Percona Server for MongoDB Operator** must be installed on your Kubernetes
 
 ```bash
 planton pulumi up --manifest percona-operator.yaml \
-  --module-dir apis/project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/iac/pulumi
+  --module-dir apis/project/planton/provider/kubernetes/perconaservermongodboperator/v1/iac/pulumi
 ```
 
 The operator typically installs in the `mongodb-operator` namespace and watches all namespaces for `PerconaServerMongoDB` resources.
@@ -121,7 +121,7 @@ You can install this Pulumi module from GitHub by cloning the repository and run
 1. Clone the repository:
     ```bash
     git clone https://github.com/project-planton/project-planton.git
-    cd project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1/iac/pulumi
+    cd project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1/iac/pulumi
     ```
 
 2. Install dependencies and initialize Pulumi:

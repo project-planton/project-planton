@@ -141,17 +141,17 @@ var File_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Worg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/spec.proto\x12Rorg.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x85\x03\n" +
+	"Worg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xfe\x02\n" +
 	"%KubernetesPerconaPostgresOperatorSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12D\n" +
-	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\xa9\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2\x82\x01.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xad\x01\n" +
+	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\xa2\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2|.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xad\x01\n" +
 	".KubernetesPerconaPostgresOperatorSpecContainer\x12{\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
-	"\x04100m\x12\x05256MiR\tresourcesB\xf3\x04\n" +
-	"Vcom.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1B\tSpecProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x06OPPKAK\xaa\x02QOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesperconapostgresoperator.V1\xca\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconapostgresoperator\\V1\xe2\x02]Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02WOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesperconapostgresoperator::V1b\x06proto3"
+	"\x04100m\x12\x05256MiR\tresourcesB\xd3\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1B\tSpecProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconapostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconapostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_spec_proto_rawDescOnce sync.Once
@@ -167,15 +167,15 @@ func file_org_project_planton_provider_kubernetes_kubernetesperconapostgresopera
 
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesPerconaPostgresOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec
-	(*KubernetesPerconaPostgresOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainer
+	(*KubernetesPerconaPostgresOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec
+	(*KubernetesPerconaPostgresOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil),        // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),                  // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

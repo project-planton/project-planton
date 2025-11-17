@@ -81,11 +81,11 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_st
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/stack_input.proto\x12Jorg.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1\x1aNorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x90\x02\n" +
-	"#KubernetesElasticOperatorStackInput\x12}\n" +
-	"\x06target\x18\x01 \x01(\v2e.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xc1\x04\n" +
-	"Ncom.org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1B\x0fStackInputProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x06OPPKAK\xaa\x02IOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kuberneteselasticoperator.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteselasticoperator\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kuberneteselasticoperator::V1b\x06proto3"
+	"Vorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/stack_input.proto\x12Dorg.project_planton.provider.kubernetes.kuberneteselasticoperator.v1\x1aNorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x8a\x02\n" +
+	"#KubernetesElasticOperatorStackInput\x12w\n" +
+	"\x06target\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xa1\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1B\x0fStackInputProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticoperator.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_stack_input_proto_rawDescOnce sync.Once
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_s
 
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesElasticOperatorStackInput)(nil), // 0: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackInput
-	(*KubernetesElasticOperator)(nil),           // 1: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperator
+	(*KubernetesElasticOperatorStackInput)(nil), // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackInput
+	(*KubernetesElasticOperator)(nil),           // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperator
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperator
-	2, // 1: org.project_planton.provider.kubernetes.addon.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperator
+	2, // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

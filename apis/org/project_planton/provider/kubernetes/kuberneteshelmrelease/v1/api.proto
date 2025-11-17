@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1;
+package org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/spec.proto";

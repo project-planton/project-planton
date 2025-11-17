@@ -81,11 +81,11 @@ var File_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_
 
 const file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"[org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/stack_input.proto\x12Oorg.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1\x1aSorg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa0\x02\n" +
-	"(KubernetesStrimziKafkaOperatorStackInput\x12\x87\x01\n" +
-	"\x06target\x18\x01 \x01(\v2o.org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xe4\x04\n" +
-	"Scom.org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1B\x0fStackInputProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x06OPPKAK\xaa\x02NOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesstrimzikafkaoperator.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02TOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
+	"[org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/stack_input.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1\x1aSorg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x9a\x02\n" +
+	"(KubernetesStrimziKafkaOperatorStackInput\x12\x81\x01\n" +
+	"\x06target\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xc4\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1B\x0fStackInputProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesstrimzikafkaoperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_stack_input_proto_rawDescOnce sync.Once
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator
 
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesStrimziKafkaOperatorStackInput)(nil), // 0: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackInput
-	(*KubernetesStrimziKafkaOperator)(nil),           // 1: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator
+	(*KubernetesStrimziKafkaOperatorStackInput)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackInput
+	(*KubernetesStrimziKafkaOperator)(nil),           // 1: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator
 	(*kubernetes.KubernetesProviderConfig)(nil),      // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator
-	2, // 1: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

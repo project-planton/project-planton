@@ -141,17 +141,17 @@ var File_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_s
 
 const file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/spec.proto\x12Korg.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xef\x02\n" +
+	"Porg/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/spec.proto\x12Eorg.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xe9\x02\n" +
 	"\x1eKubernetesAltinityOperatorSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12D\n" +
-	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x9a\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2t.org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa6\x01\n" +
+	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x94\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2n.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa6\x01\n" +
 	"'KubernetesAltinityOperatorSpecContainer\x12{\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
-	"\x04100m\x12\x05256MiR\tresourcesB\xc2\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1B\tSpecProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x06OPPKAK\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesaltinityoperator.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesaltinityoperator\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesaltinityoperator::V1b\x06proto3"
+	"\x04100m\x12\x05256MiR\tresourcesB\xa2\x04\n" +
+	"Icom.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1B\tSpecProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x05OPPKK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesaltinityoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesaltinityoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_spec_proto_rawDescOnce sync.Once
@@ -167,15 +167,15 @@ func file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_
 
 var file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesAltinityOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpec
-	(*KubernetesAltinityOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainer
+	(*KubernetesAltinityOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpec
+	(*KubernetesAltinityOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

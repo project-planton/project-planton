@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetescronjob/v1/api.proto\x12Eorg.project_planton.provider.kubernetes.workload.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/kubernetescronjob/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xd5\x03\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetescronjob/v1/api.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/kubernetescronjob/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc3\x03\n" +
 	"\x11KubernetesCronJob\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12,\n" +
 	"\x04kind\x18\x02 \x01(\tB\x18\xbaH\x15r\x13\n" +
 	"\x11KubernetesCronJobR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12x\n" +
-	"\x04spec\x18\x04 \x01(\v2\\.org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12v\n" +
-	"\x06status\x18\x05 \x01(\v2^.org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStatusR\x06status\"\x99\x01\n" +
-	"\x17KubernetesCronJobStatus\x12~\n" +
-	"\aoutputs\x18\x01 \x01(\v2d.org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStackOutputsR\aoutputsB\x91\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1B\bApiProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x06OPPKWK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetescronjob.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetescronjob\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02JOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetescronjob::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
+	"\x04spec\x18\x04 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12m\n" +
+	"\x06status\x18\x05 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStatusR\x06status\"\x90\x01\n" +
+	"\x17KubernetesCronJobStatus\x12u\n" +
+	"\aoutputs\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStackOutputsR\aoutputsB\xe2\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetescronjob.v1B\bApiProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetescronjob.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetescronjob::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto
 
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto_goTypes = []any{
-	(*KubernetesCronJob)(nil),             // 0: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJob
-	(*KubernetesCronJobStatus)(nil),       // 1: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStatus
+	(*KubernetesCronJob)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJob
+	(*KubernetesCronJobStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStatus
 	(*shared.CloudResourceMetadata)(nil),  // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesCronJobSpec)(nil),         // 3: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobSpec
-	(*KubernetesCronJobStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStackOutputs
+	(*KubernetesCronJobSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec
+	(*KubernetesCronJobStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJob.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJob.spec:type_name -> org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobSpec
-	1, // 2: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJob.status:type_name -> org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStatus
-	4, // 3: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStatus.outputs:type_name -> org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJob.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJob.spec:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJob.status:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

@@ -143,7 +143,7 @@ var File_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_out
 
 const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/kubernetestemporal/v1/stack_outputs.proto\x12Forg.project_planton.provider.kubernetes.workload.kubernetestemporal.v1\"\xd9\x03\n" +
+	"Qorg/project_planton/provider/kubernetes/kubernetestemporal/v1/stack_outputs.proto\x12=org.project_planton.provider.kubernetes.kubernetestemporal.v1\"\xd9\x03\n" +
 	"\x1eKubernetesTemporalStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x122\n" +
 	"\x15frontend_service_name\x18\x02 \x01(\tR\x13frontendServiceName\x12&\n" +
@@ -153,8 +153,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_o
 	"\x11frontend_endpoint\x18\x06 \x01(\tR\x10frontendEndpoint\x12&\n" +
 	"\x0fweb_ui_endpoint\x18\a \x01(\tR\rwebUiEndpoint\x12<\n" +
 	"\x1aexternal_frontend_hostname\x18\b \x01(\tR\x18externalFrontendHostname\x120\n" +
-	"\x14external_ui_hostname\x18\t \x01(\tR\x12externalUiHostnameB\xa1\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x06OPPKWK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetestemporal.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetestemporal\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetestemporal::V1b\x06proto3"
+	"\x14external_ui_hostname\x18\t \x01(\tR\x12externalUiHostnameB\xf2\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetestemporal.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetestemporal.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestemporal::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -170,7 +170,7 @@ func file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_ou
 
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesTemporalStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.workload.kubernetestemporal.v1.KubernetesTemporalStackOutputs
+	(*KubernetesTemporalStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

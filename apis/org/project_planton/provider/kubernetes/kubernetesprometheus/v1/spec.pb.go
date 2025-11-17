@@ -166,9 +166,9 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12Horg.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xf8\x01\n" +
-	"\x18KubernetesPrometheusSpec\x12\x8d\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xef\x01\n" +
+	"\x18KubernetesPrometheusSpec\x12\x84\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
 	"\aingress\x18\x02 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\xe6\x04\n" +
 	"\x1dKubernetesPrometheusContainer\x12!\n" +
 	"\breplicas\x18\x01 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12z\n" +
@@ -178,8 +178,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_
 	"\x0350m\x12\x05100MiR\tresources\x12/\n" +
 	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))B\xa7\x04\n" +
-	"Lcom.org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x06OPPKWK\xaa\x02GOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesprometheus.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesprometheus\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesprometheus::V1b\x06proto3"
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))B\xf8\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesprometheus.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesprometheus.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesprometheus::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescOnce sync.Once
@@ -195,15 +195,15 @@ func file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_p
 
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_goTypes = []any{
-	(*KubernetesPrometheusSpec)(nil),      // 0: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusSpec
-	(*KubernetesPrometheusContainer)(nil), // 1: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusContainer
+	(*KubernetesPrometheusSpec)(nil),      // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec
+	(*KubernetesPrometheusContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
 	(*kubernetes.IngressSpec)(nil),        // 2: org.project_planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusContainer
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
-	3, // 2: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

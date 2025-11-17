@@ -71,10 +71,10 @@ var File_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outp
 
 const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/kubernetes/kubernetescronjob/v1/stack_outputs.proto\x12Eorg.project_planton.provider.kubernetes.workload.kubernetescronjob.v1\"=\n" +
+	"Porg/project_planton/provider/kubernetes/kubernetescronjob/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\"=\n" +
 	"\x1dKubernetesCronJobStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\x9a\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x06OPPKWK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetescronjob.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetescronjob\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02JOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetescronjob::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xeb\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetescronjob.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetescronjob.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetescronjob::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -90,7 +90,7 @@ func file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_out
 
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesCronJobStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1.KubernetesCronJobStackOutputs
+	(*KubernetesCronJobStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

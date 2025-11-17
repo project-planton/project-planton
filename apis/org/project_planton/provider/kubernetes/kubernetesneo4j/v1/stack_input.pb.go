@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_
 
 const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_input.proto\x12Corg.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1\x1aDorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa8\x02\n" +
-	"\x19KubernetesNeo4jStackInput\x12l\n" +
-	"\x06target\x18\x01 \x01(\v2T.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jR\x06target\x12j\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_input.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1aDorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x9f\x02\n" +
+	"\x19KubernetesNeo4jStackInput\x12c\n" +
+	"\x06target\x18\x01 \x01(\v2K.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x89\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1B\x0fStackInputProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x06OPPKWK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesneo4j.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesneo4j::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xda\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\x0fStackInputProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input
 
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesNeo4JStackInput)(nil),           // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackInput
-	(*KubernetesNeo4J)(nil),                     // 1: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4j
+	(*KubernetesNeo4JStackInput)(nil),           // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackInput
+	(*KubernetesNeo4J)(nil),                     // 1: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4j
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4j
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4j
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

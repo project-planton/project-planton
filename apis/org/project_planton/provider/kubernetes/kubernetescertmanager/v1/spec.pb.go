@@ -563,15 +563,15 @@ var File_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12Forg.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xea\x05\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xde\x05\n" +
 	"\x19KubernetesCertManagerSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12>\n" +
 	"\tnamespace\x18\x02 \x01(\tB\x1b\x8a\xa6\x1d\x17kubernetes-cert-managerH\x00R\tnamespace\x88\x01\x01\x12W\n" +
 	"\x1fkubernetes_cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x1ckubernetesCertManagerVersion\x88\x01\x01\x12>\n" +
 	"\x12helm_chart_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x02R\x10helmChartVersion\x88\x01\x01\x12D\n" +
-	"\x1fskip_install_self_signed_issuer\x18\x05 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12n\n" +
-	"\x04acme\x18\x06 \x01(\v2R.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AcmeConfigB\x06\xbaH\x03\xc8\x01\x01R\x04acme\x12\x88\x01\n" +
-	"\rdns_providers\x18\a \x03(\v2Y.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\f\n" +
+	"\x1fskip_install_self_signed_issuer\x18\x05 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12h\n" +
+	"\x04acme\x18\x06 \x01(\v2L.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfigB\x06\xbaH\x03\xc8\x01\x01R\x04acme\x12\x82\x01\n" +
+	"\rdns_providers\x18\a \x03(\v2S.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\f\n" +
 	"\n" +
 	"_namespaceB\"\n" +
 	" _kubernetes_cert_manager_versionB\x15\n" +
@@ -580,16 +580,16 @@ const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec
 	"AcmeConfig\x12\x1c\n" +
 	"\x05email\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05email\x12O\n" +
 	"\x06server\x18\x02 \x01(\tB2\x8a\xa6\x1d.https://acme-v02.api.letsencrypt.org/directoryH\x00R\x06server\x88\x01\x01B\t\n" +
-	"\a_server\"\xdc\x04\n" +
+	"\a_server\"\xc3\x04\n" +
 	"\x11DnsProviderConfig\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12%\n" +
-	"\tdns_zones\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\bdnsZones\x12\x81\x01\n" +
-	"\rgcp_cloud_dns\x18d \x01(\v2[.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.GcpCloudDnsProviderH\x00R\vgcpCloudDns\x12}\n" +
-	"\vaws_route53\x18e \x01(\v2Z.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AwsRoute53ProviderH\x00R\n" +
-	"awsRoute53\x12w\n" +
-	"\tazure_dns\x18f \x01(\v2X.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AzureDnsProviderH\x00R\bazureDns\x12|\n" +
+	"\tdns_zones\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\bdnsZones\x12{\n" +
+	"\rgcp_cloud_dns\x18d \x01(\v2U.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProviderH\x00R\vgcpCloudDns\x12w\n" +
+	"\vaws_route53\x18e \x01(\v2T.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53ProviderH\x00R\n" +
+	"awsRoute53\x12q\n" +
+	"\tazure_dns\x18f \x01(\v2R.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProviderH\x00R\bazureDns\x12v\n" +
 	"\n" +
-	"cloudflare\x18g \x01(\v2Z.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.CloudflareProviderH\x00R\n" +
+	"cloudflare\x18g \x01(\v2T.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProviderH\x00R\n" +
 	"cloudflareB\n" +
 	"\n" +
 	"\bprovider\"x\n" +
@@ -605,8 +605,8 @@ const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec
 	"\x0eresource_group\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rresourceGroup\x12#\n" +
 	"\tclient_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bclientId\"9\n" +
 	"\x12CloudflareProvider\x12#\n" +
-	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiTokenB\x9f\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x06OPPKAK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetescertmanager.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetescertmanager\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetescertmanager::V1b\x06proto3"
+	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiTokenB\xff\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetescertmanager.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetescertmanager.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetescertmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_rawDescOnce sync.Once
@@ -622,23 +622,23 @@ func file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_
 
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_goTypes = []any{
-	(*KubernetesCertManagerSpec)(nil),               // 0: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpec
-	(*AcmeConfig)(nil),                              // 1: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AcmeConfig
-	(*DnsProviderConfig)(nil),                       // 2: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfig
-	(*GcpCloudDnsProvider)(nil),                     // 3: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.GcpCloudDnsProvider
-	(*AwsRoute53Provider)(nil),                      // 4: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AwsRoute53Provider
-	(*AzureDnsProvider)(nil),                        // 5: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AzureDnsProvider
-	(*CloudflareProvider)(nil),                      // 6: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.CloudflareProvider
+	(*KubernetesCertManagerSpec)(nil),               // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec
+	(*AcmeConfig)(nil),                              // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
+	(*DnsProviderConfig)(nil),                       // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
+	(*GcpCloudDnsProvider)(nil),                     // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider
+	(*AwsRoute53Provider)(nil),                      // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53Provider
+	(*AzureDnsProvider)(nil),                        // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
+	(*CloudflareProvider)(nil),                      // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 7: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 }
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_depIdxs = []int32{
-	7, // 0: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpec.acme:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AcmeConfig
-	2, // 2: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.KubernetesCertManagerSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfig
-	3, // 3: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.GcpCloudDnsProvider
-	4, // 4: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfig.aws_route53:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AwsRoute53Provider
-	5, // 5: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfig.azure_dns:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.AzureDnsProvider
-	6, // 6: org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.DnsProviderConfig.cloudflare:type_name -> org.project_planton.provider.kubernetes.addon.kubernetescertmanager.v1.CloudflareProvider
+	7, // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.acme:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
+	2, // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
+	3, // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider
+	4, // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.aws_route53:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53Provider
+	5, // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.azure_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
+	6, // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.cloudflare:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name

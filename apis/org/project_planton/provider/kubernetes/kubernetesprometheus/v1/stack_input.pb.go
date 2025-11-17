@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_i
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/stack_input.proto\x12Horg.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1\x1aIorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xb7\x02\n" +
-	"\x1eKubernetesPrometheusStackInput\x12v\n" +
-	"\x06target\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusR\x06target\x12j\n" +
+	"Qorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/stack_input.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1aIorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xae\x02\n" +
+	"\x1eKubernetesPrometheusStackInput\x12m\n" +
+	"\x06target\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xad\x04\n" +
-	"Lcom.org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x06OPPKWK\xaa\x02GOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesprometheus.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesprometheus\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesprometheus::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xfe\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesprometheus.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesprometheus.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesprometheus::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_
 
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesPrometheusStackInput)(nil),      // 0: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusStackInput
-	(*KubernetesPrometheus)(nil),                // 1: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheus
+	(*KubernetesPrometheusStackInput)(nil),      // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusStackInput
+	(*KubernetesPrometheus)(nil),                // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheus
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheus
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesprometheus.v1.KubernetesPrometheusStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheus
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

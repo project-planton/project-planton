@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_input
 
 const file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/kubernetesargocd/v1/stack_input.proto\x12Dorg.project_planton.provider.kubernetes.workload.kubernetesargocd.v1\x1aEorg/project_planton/provider/kubernetes/kubernetesargocd/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xab\x02\n" +
-	"\x1aKubernetesArgocdStackInput\x12n\n" +
-	"\x06target\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1.KubernetesArgocdR\x06target\x12j\n" +
+	"Morg/project_planton/provider/kubernetes/kubernetesargocd/v1/stack_input.proto\x12;org.project_planton.provider.kubernetes.kubernetesargocd.v1\x1aEorg/project_planton/provider/kubernetes/kubernetesargocd/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa2\x02\n" +
+	"\x1aKubernetesArgocdStackInput\x12e\n" +
+	"\x06target\x18\x01 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x90\x04\n" +
-	"Hcom.org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1;kubernetesargocdv1\xa2\x02\x06OPPKWK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesargocd.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesargocd\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesargocd\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesargocd::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xe1\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetesargocd.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1;kubernetesargocdv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetesargocd.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesargocd\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesargocd\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetesargocd::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_inpu
 
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesArgocdStackInput)(nil),          // 0: org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1.KubernetesArgocdStackInput
-	(*KubernetesArgocd)(nil),                    // 1: org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1.KubernetesArgocd
+	(*KubernetesArgocdStackInput)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdStackInput
+	(*KubernetesArgocd)(nil),                    // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocd
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1.KubernetesArgocdStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1.KubernetesArgocd
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1.KubernetesArgocdStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocd
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

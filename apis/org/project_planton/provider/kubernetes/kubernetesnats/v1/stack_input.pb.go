@@ -90,12 +90,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_p
 
 const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetesnats/v1/stack_input.proto\x12Borg.project_planton.provider.kubernetes.workload.kubernetesnats.v1\x1aCorg/project_planton/provider/kubernetes/kubernetesnats/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa5\x02\n" +
-	"\x18KubernetesNatsStackInput\x12j\n" +
-	"\x06target\x18\x01 \x01(\v2R.org.project_planton.provider.kubernetes.workload.kubernetesnats.v1.KubernetesNatsR\x06target\x12j\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetesnats/v1/stack_input.proto\x129org.project_planton.provider.kubernetes.kubernetesnats.v1\x1aCorg/project_planton/provider/kubernetes/kubernetesnats/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x9c\x02\n" +
+	"\x18KubernetesNatsStackInput\x12a\n" +
+	"\x06target\x18\x01 \x01(\v2I.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x82\x04\n" +
-	"Fcom.org.project_planton.provider.kubernetes.workload.kubernetesnats.v1B\x0fStackInputProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1;kubernetesnatsv1\xa2\x02\x06OPPKWK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesnats.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesnats\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesnats\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesnats::V1b\x06proto3"
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xd3\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetesnats.v1B\x0fStackInputProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1;kubernetesnatsv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnats.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetesnats::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_proto_rawDescOnce sync.Once
@@ -111,13 +111,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_
 
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesNatsStackInput)(nil),            // 0: org.project_planton.provider.kubernetes.workload.kubernetesnats.v1.KubernetesNatsStackInput
-	(*KubernetesNats)(nil),                      // 1: org.project_planton.provider.kubernetes.workload.kubernetesnats.v1.KubernetesNats
+	(*KubernetesNatsStackInput)(nil),            // 0: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStackInput
+	(*KubernetesNats)(nil),                      // 1: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNats
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesnats.v1.KubernetesNatsStackInput.target:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesnats.v1.KubernetesNats
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesnats.v1.KubernetesNatsStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNats
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

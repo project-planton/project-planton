@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1;
+package org.project_planton.provider.kubernetes.kubernetescronjob.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/shared/kubernetes/kubernetes.proto";

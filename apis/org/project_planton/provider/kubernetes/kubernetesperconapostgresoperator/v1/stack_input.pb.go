@@ -81,11 +81,11 @@ var File_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"^org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/stack_input.proto\x12Rorg.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1\x1aVorg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa9\x02\n" +
-	"+KubernetesPerconaPostgresOperatorStackInput\x12\x8d\x01\n" +
-	"\x06target\x18\x01 \x01(\v2u.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xf9\x04\n" +
-	"Vcom.org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1B\x0fStackInputProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x06OPPKAK\xaa\x02QOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesperconapostgresoperator.V1\xca\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconapostgresoperator\\V1\xe2\x02]Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02WOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesperconapostgresoperator::V1b\x06proto3"
+	"^org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/stack_input.proto\x12Lorg.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1\x1aVorg/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa3\x02\n" +
+	"+KubernetesPerconaPostgresOperatorStackInput\x12\x87\x01\n" +
+	"\x06target\x18\x01 \x01(\v2o.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xd9\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1B\x0fStackInputProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconapostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconapostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_stack_input_proto_rawDescOnce sync.Once
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesperconapostgresopera
 
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesPerconaPostgresOperatorStackInput)(nil), // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackInput
-	(*KubernetesPerconaPostgresOperator)(nil),           // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator
+	(*KubernetesPerconaPostgresOperatorStackInput)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackInput
+	(*KubernetesPerconaPostgresOperator)(nil),           // 1: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator
 	(*kubernetes.KubernetesProviderConfig)(nil),         // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator
-	2, // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperator
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1.KubernetesPerconaPostgresOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

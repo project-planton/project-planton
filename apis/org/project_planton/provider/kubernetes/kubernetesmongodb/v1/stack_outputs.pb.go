@@ -145,7 +145,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outp
 
 const file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/kubernetes/kubernetesmongodb/v1/stack_outputs.proto\x12Eorg.project_planton.provider.kubernetes.workload.kubernetesmongodb.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x89\x03\n" +
+	"Porg/project_planton/provider/kubernetes/kubernetesmongodb/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.kubernetesmongodb.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x89\x03\n" +
 	"\x1dKubernetesMongodbStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
@@ -154,8 +154,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_ou
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
 	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12\x1a\n" +
 	"\busername\x18\a \x01(\tR\busername\x12c\n" +
-	"\x0fpassword_secret\x18\b \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\x9a\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.workload.kubernetesmongodb.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1;kubernetesmongodbv1\xa2\x02\x06OPPKWK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesmongodb.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesmongodb\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesmongodb\\V1\\GPBMetadata\xea\x02JOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesmongodb::V1b\x06proto3"
+	"\x0fpassword_secret\x18\b \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xeb\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetesmongodb.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1;kubernetesmongodbv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesmongodb.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmongodb\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmongodb\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesmongodb::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -171,11 +171,11 @@ func file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_out
 
 var file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesMongodbStackOutputs)(nil),  // 0: org.project_planton.provider.kubernetes.workload.kubernetesmongodb.v1.KubernetesMongodbStackOutputs
+	(*KubernetesMongodbStackOutputs)(nil),  // 0: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbStackOutputs
 	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.shared.kubernetes.KubernetesSecretKey
 }
 var file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesmongodb.v1.KubernetesMongodbStackOutputs.password_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbStackOutputs.password_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

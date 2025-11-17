@@ -423,7 +423,7 @@ spec:
 2. **Apply Configuration**:
    ```bash
    planton pulumi up --stack-input clickhouse.yaml \
-     --module-dir apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/iac/pulumi
+     --module-dir apis/project/planton/provider/kubernetes/clickhousekubernetes/v1/iac/pulumi
    ```
 
 3. **Verify Deployment**:

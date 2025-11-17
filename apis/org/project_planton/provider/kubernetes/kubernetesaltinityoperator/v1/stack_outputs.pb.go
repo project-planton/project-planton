@@ -71,10 +71,10 @@ var File_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_s
 
 const file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Yorg/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/stack_outputs.proto\x12Korg.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1\"F\n" +
+	"Yorg/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/stack_outputs.proto\x12Eorg.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1\"F\n" +
 	"&KubernetesAltinityOperatorStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xca\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1B\x11StackOutputsProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x06OPPKAK\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesaltinityoperator.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesaltinityoperator\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesaltinityoperator::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xaa\x04\n" +
+	"Icom.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1B\x11StackOutputsProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x05OPPKK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesaltinityoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesaltinityoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -90,7 +90,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_
 
 var file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesAltinityOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorStackOutputs
+	(*KubernetesAltinityOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1.KubernetesAltinityOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

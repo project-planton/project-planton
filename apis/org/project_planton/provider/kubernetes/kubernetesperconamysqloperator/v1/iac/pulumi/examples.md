@@ -222,7 +222,7 @@ planton pulumi preview --manifest percona-mysql-operator.yaml
 For local development and testing:
 
 ```bash
-cd apis/project/planton/provider/kubernetes/addon/kubernetesperconamysqloperator/v1/iac/pulumi
+cd apis/project/planton/provider/kubernetes/kubernetesperconamysqloperator/v1/iac/pulumi
 
 # Set up environment
 export PULUMI_STACK_INPUT=/path/to/manifest.yaml

@@ -84,7 +84,7 @@ Provides outputs from the deployed operator infrastructure.
 ### Building the Module
 
 ```bash
-cd apis/project/planton/provider/kubernetes/addon/kubernetesperconapostgresoperator/v1/iac/pulumi
+cd apis/project/planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/iac/pulumi
 make build
 ```
 

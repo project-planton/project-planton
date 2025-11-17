@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.kubernetesaltinityoperator.v1;
+package org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1;
 
 // kubernetes-altinity-operator stack outputs
 message KubernetesAltinityOperatorStackOutputs {

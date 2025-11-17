@@ -125,15 +125,15 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_outputs
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/kubernetessolr/v1/stack_outputs.proto\x12Borg.project_planton.provider.kubernetes.workload.kubernetessolr.v1\"\x85\x02\n" +
+	"Morg/project_planton/provider/kubernetes/kubernetessolr/v1/stack_outputs.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\"\x85\x02\n" +
 	"\x1aKubernetesSolrStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x84\x04\n" +
-	"Fcom.org.project_planton.provider.kubernetes.workload.kubernetessolr.v1B\x11StackOutputsProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x06OPPKWK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetessolr.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessolr\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetessolr\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetessolr::V1b\x06proto3"
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\xd5\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\x11StackOutputsProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -149,7 +149,7 @@ func file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_output
 
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesSolrStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.workload.kubernetessolr.v1.KubernetesSolrStackOutputs
+	(*KubernetesSolrStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

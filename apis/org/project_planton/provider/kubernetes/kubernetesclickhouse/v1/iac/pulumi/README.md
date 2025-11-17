@@ -53,7 +53,7 @@ The **Altinity ClickHouse Operator** must be installed on your Kubernetes cluste
 
 ```bash
 planton pulumi up --stack-input clickhouse-operator.yaml \
-  --module-dir apis/project/planton/provider/kubernetes/addon/clickhouseoperatorkubernetes/v1/iac/pulumi
+  --module-dir apis/project/planton/provider/kubernetes/clickhouseoperatorkubernetes/v1/iac/pulumi
 ```
 
 The operator typically installs in the `clickhouse-operator` namespace and watches all namespaces for ClickHouseInstallation resources.

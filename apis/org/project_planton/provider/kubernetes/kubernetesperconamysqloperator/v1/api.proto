@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.kubernetesperconamysqloperator.v1;
+package org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/spec.proto";

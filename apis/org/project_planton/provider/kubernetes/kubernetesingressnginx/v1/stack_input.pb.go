@@ -81,11 +81,11 @@ var File_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack
 
 const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Sorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/stack_input.proto\x12Gorg.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1\x1aKorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x87\x02\n" +
-	" KubernetesIngressNginxStackInput\x12w\n" +
-	"\x06target\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xac\x04\n" +
-	"Kcom.org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1B\x0fStackInputProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x06OPPKAK\xaa\x02FOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesingressnginx.V1\xca\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesingressnginx\\V1\xe2\x02ROrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesingressnginx::V1b\x06proto3"
+	"Sorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/stack_input.proto\x12Aorg.project_planton.provider.kubernetes.kubernetesingressnginx.v1\x1aKorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x81\x02\n" +
+	" KubernetesIngressNginxStackInput\x12q\n" +
+	"\x06target\x18\x01 \x01(\v2Y.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x8c\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1B\x0fStackInputProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetesingressnginx.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesingressnginx::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack_input_proto_rawDescOnce sync.Once
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stac
 
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesIngressNginxStackInput)(nil),    // 0: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxStackInput
-	(*KubernetesIngressNginx)(nil),              // 1: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginx
+	(*KubernetesIngressNginxStackInput)(nil),    // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxStackInput
+	(*KubernetesIngressNginx)(nil),              // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginx
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginx
-	2, // 1: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginx
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

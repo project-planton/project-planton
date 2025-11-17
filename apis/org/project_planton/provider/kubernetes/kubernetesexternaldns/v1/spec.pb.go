@@ -412,18 +412,18 @@ var File_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetesexternaldns/v1/spec.proto\x12Forg.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xc5\a\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetesexternaldns/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesexternaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xad\a\n" +
 	"\x19KubernetesExternalDnsSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12>\n" +
 	"\tnamespace\x18\x02 \x01(\tB\x1b\x8a\xa6\x1d\x17kubernetes-external-dnsH\x01R\tnamespace\x88\x01\x01\x12W\n" +
 	"\x1fkubernetes_external_dns_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av0.19.0H\x02R\x1ckubernetesExternalDnsVersion\x88\x01\x01\x12=\n" +
 	"\x12helm_chart_version\x18\x04 \x01(\tB\n" +
-	"\x8a\xa6\x1d\x061.19.0H\x03R\x10helmChartVersion\x88\x01\x01\x12{\n" +
-	"\x03gke\x18\xc8\x01 \x01(\v2f.org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfigH\x00R\x03gke\x12{\n" +
-	"\x03eks\x18\xc9\x01 \x01(\v2f.org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfigH\x00R\x03eks\x12{\n" +
-	"\x03aks\x18\xca\x01 \x01(\v2f.org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfigH\x00R\x03aks\x12\x90\x01\n" +
+	"\x8a\xa6\x1d\x061.19.0H\x03R\x10helmChartVersion\x88\x01\x01\x12u\n" +
+	"\x03gke\x18\xc8\x01 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfigH\x00R\x03gke\x12u\n" +
+	"\x03eks\x18\xc9\x01 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfigH\x00R\x03eks\x12u\n" +
+	"\x03aks\x18\xca\x01 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfigH\x00R\x03aks\x12\x8a\x01\n" +
 	"\n" +
-	"cloudflare\x18\xcb\x01 \x01(\v2m.org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfigH\x00R\n" +
+	"cloudflare\x18\xcb\x01 \x01(\v2g.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfigH\x00R\n" +
 	"cloudflareB\x11\n" +
 	"\x0fprovider_configB\f\n" +
 	"\n" +
@@ -444,8 +444,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec
 	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiToken\x12&\n" +
 	"\vdns_zone_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tdnsZoneId\x12\x1d\n" +
 	"\n" +
-	"is_proxied\x18\x03 \x01(\bR\tisProxiedB\x9f\x04\n" +
-	"Jcom.org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1;kubernetesexternaldnsv1\xa2\x02\x06OPPKAK\xaa\x02EOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesexternaldns.V1\xca\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesexternaldns\\V1\xe2\x02QOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesexternaldns\\V1\\GPBMetadata\xea\x02KOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesexternaldns::V1b\x06proto3"
+	"is_proxied\x18\x03 \x01(\bR\tisProxiedB\xff\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1;kubernetesexternaldnsv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesexternaldns.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternaldns\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternaldns\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternaldns::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_rawDescOnce sync.Once
@@ -461,23 +461,23 @@ func file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_
 
 var file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_goTypes = []any{
-	(*KubernetesExternalDnsSpec)(nil),               // 0: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsSpec
-	(*KubernetesExternalDnsGkeConfig)(nil),          // 1: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
-	(*KubernetesExternalDnsEksConfig)(nil),          // 2: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
-	(*KubernetesExternalDnsAksConfig)(nil),          // 3: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig
-	(*KubernetesExternalDnsCloudflareConfig)(nil),   // 4: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfig
+	(*KubernetesExternalDnsSpec)(nil),               // 0: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec
+	(*KubernetesExternalDnsGkeConfig)(nil),          // 1: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
+	(*KubernetesExternalDnsEksConfig)(nil),          // 2: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
+	(*KubernetesExternalDnsAksConfig)(nil),          // 3: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig
+	(*KubernetesExternalDnsCloudflareConfig)(nil),   // 4: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfig
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 5: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*v1.StringValueOrRef)(nil),                     // 6: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_depIdxs = []int32{
-	5, // 0: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.gke:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
-	2, // 2: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.eks:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
-	3, // 3: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.aks:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig
-	4, // 4: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.cloudflare:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfig
-	6, // 5: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	6, // 6: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig.dns_zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	6, // 7: org.project_planton.provider.kubernetes.addon.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig.route53_zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 0: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.gke:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
+	2, // 2: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.eks:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
+	3, // 3: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.aks:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig
+	4, // 4: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.cloudflare:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfig
+	6, // 5: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	6, // 6: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig.dns_zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	6, // 7: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig.route53_zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	8, // [8:8] is the sub-list for method output_type
 	8, // [8:8] is the sub-list for method input_type
 	8, // [8:8] is the sub-list for extension type_name

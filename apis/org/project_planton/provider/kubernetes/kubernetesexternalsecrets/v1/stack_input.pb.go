@@ -81,11 +81,11 @@ var File_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_st
 
 const file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/stack_input.proto\x12Jorg.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1\x1aNorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x90\x02\n" +
-	"#KubernetesExternalSecretsStackInput\x12}\n" +
-	"\x06target\x18\x01 \x01(\v2e.org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xc1\x04\n" +
-	"Ncom.org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1B\x0fStackInputProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x06OPPKAK\xaa\x02IOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesexternalsecrets.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesexternalsecrets\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesexternalsecrets::V1b\x06proto3"
+	"Vorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/stack_input.proto\x12Dorg.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1\x1aNorg/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x8a\x02\n" +
+	"#KubernetesExternalSecretsStackInput\x12w\n" +
+	"\x06target\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xa1\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1B\x0fStackInputProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kubernetesexternalsecrets.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternalsecrets::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_stack_input_proto_rawDescOnce sync.Once
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_s
 
 var file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesExternalSecretsStackInput)(nil), // 0: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackInput
-	(*KubernetesExternalSecrets)(nil),           // 1: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecrets
+	(*KubernetesExternalSecretsStackInput)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackInput
+	(*KubernetesExternalSecrets)(nil),           // 1: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecrets
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecrets
-	2, // 1: org.project_planton.provider.kubernetes.addon.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackInput.target:type_name -> org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecrets
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1.KubernetesExternalSecretsStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

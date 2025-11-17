@@ -71,10 +71,10 @@ var File_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_
 
 const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/stack_outputs.proto\x12Iorg.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1\"A\n" +
+	"Torg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1\"A\n" +
 	"!KubernetesHelmReleaseStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xb6\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x06OPPKWK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteshelmrelease.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteshelmrelease\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteshelmrelease::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\x87\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kuberneteshelmrelease.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteshelmrelease::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -90,7 +90,7 @@ func file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack
 
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesHelmReleaseStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.workload.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackOutputs
+	(*KubernetesHelmReleaseStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

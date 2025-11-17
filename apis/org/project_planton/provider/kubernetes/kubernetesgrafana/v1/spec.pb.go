@@ -132,16 +132,16 @@ var File_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12Eorg.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xf3\x01\n" +
-	"\x15KubernetesGrafanaSpec\x12\x8b\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2e.org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xea\x01\n" +
+	"\x15KubernetesGrafanaSpec\x12\x82\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
 	"\aingress\x18\x03 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\x9c\x01\n" +
 	"\x1eKubernetesGrafanaSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\x92\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1B\tSpecProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1;kubernetesgrafanav1\xa2\x02\x06OPPKWK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesgrafana.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesgrafana\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesgrafana\\V1\\GPBMetadata\xea\x02JOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesgrafana::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\xe3\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetesgrafana.v1B\tSpecProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1;kubernetesgrafanav1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesgrafana.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgrafana\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgrafana\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesgrafana::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDescOnce sync.Once
@@ -157,15 +157,15 @@ func file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_prot
 
 var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_goTypes = []any{
-	(*KubernetesGrafanaSpec)(nil),          // 0: org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpec
-	(*KubernetesGrafanaSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
+	(*KubernetesGrafanaSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec
+	(*KubernetesGrafanaSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
 	(*kubernetes.IngressSpec)(nil),         // 2: org.project_planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil),  // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
-	3, // 2: org.project_planton.provider.kubernetes.workload.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

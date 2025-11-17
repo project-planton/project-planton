@@ -277,7 +277,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_e
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesNeo4JContainer)(nil),
 		Field:         5008130,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.default_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetesneo4j.v1.default_container",
 		Tag:           "bytes,5008130,opt,name=default_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto",
 	},
@@ -285,7 +285,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_e
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainer default_container = 5008130;
+	// optional org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainer default_container = 5008130;
 	E_DefaultContainer = &file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_extTypes[0]
 )
 
@@ -293,15 +293,15 @@ var File_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xbc\x03\n" +
-	"\x13KubernetesNeo4jSpec\x12\xa5\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainerB(\x92\xb0\x8d\x13#\n" +
+	"Eorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xa0\x03\n" +
+	"\x13KubernetesNeo4jSpec\x12\x9c\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainerB(\x92\xb0\x8d\x13#\n" +
 	"\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12\x85\x01\n" +
-	"\rmemory_config\x18\x03 \x01(\v2`.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jMemoryConfigR\fmemoryConfig\x12u\n" +
-	"\aingress\x18\x04 \x01(\v2[.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jIngressR\aingress\"\xc1\x01\n" +
+	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12|\n" +
+	"\rmemory_config\x18\x03 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jMemoryConfigR\fmemoryConfig\x12l\n" +
+	"\aingress\x18\x04 \x01(\v2R.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jIngressR\aingress\"\xc1\x01\n" +
 	"\x18KubernetesNeo4jContainer\x12W\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
 	"\x13persistence_enabled\x18\x02 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
@@ -313,9 +313,9 @@ const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto
 	"\x16KubernetesNeo4jIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xac\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\x82ֱ\x02 \x01(\v2].org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainerR\x10defaultContainerB\x83\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x06OPPKWK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesneo4j.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesneo4j::V1b\x06proto3"
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa3\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\x82ֱ\x02 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainerR\x10defaultContainerB\xd4\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_rawDescOnce sync.Once
@@ -331,20 +331,20 @@ func file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_
 
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_goTypes = []any{
-	(*KubernetesNeo4JSpec)(nil),           // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpec
-	(*KubernetesNeo4JContainer)(nil),      // 1: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainer
-	(*KubernetesNeo4JMemoryConfig)(nil),   // 2: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jMemoryConfig
-	(*KubernetesNeo4JIngress)(nil),        // 3: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jIngress
+	(*KubernetesNeo4JSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpec
+	(*KubernetesNeo4JContainer)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainer
+	(*KubernetesNeo4JMemoryConfig)(nil),   // 2: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jMemoryConfig
+	(*KubernetesNeo4JIngress)(nil),        // 3: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jIngress
 	(*kubernetes.ContainerResources)(nil), // 4: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainer
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpec.memory_config:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jMemoryConfig
-	3, // 2: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jSpec.ingress:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jIngress
-	4, // 3: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	5, // 4: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 5: org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.default_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesneo4j.v1.KubernetesNeo4jContainer
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainer
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpec.memory_config:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jMemoryConfig
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jIngress
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	5, // 4: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 5: org.project_planton.provider.kubernetes.kubernetesneo4j.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainer
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	5, // [5:6] is the sub-list for extension type_name

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.kubernetessolroperator.v1;
+package org.project_planton.provider.kubernetes.kubernetessolroperator.v1;
 
 import "org/project_planton/provider/kubernetes/kubernetessolroperator/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";

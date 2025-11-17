@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetesopenfga/v1/api.proto\x12Eorg.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/kubernetesopenfga/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/kubernetesopenfga/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xd5\x03\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetesopenfga/v1/api.proto\x12<org.project_planton.provider.kubernetes.kubernetesopenfga.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/kubernetesopenfga/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/kubernetesopenfga/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc3\x03\n" +
 	"\x11KubernetesOpenFga\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12,\n" +
 	"\x04kind\x18\x02 \x01(\tB\x18\xbaH\x15r\x13\n" +
 	"\x11KubernetesOpenFgaR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12x\n" +
-	"\x04spec\x18\x04 \x01(\v2\\.org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12v\n" +
-	"\x06status\x18\x05 \x01(\v2^.org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStatusR\x06status\"\x99\x01\n" +
-	"\x17KubernetesOpenFgaStatus\x12~\n" +
-	"\aoutputs\x18\x01 \x01(\v2d.org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStackOutputsR\aoutputsB\x91\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1B\bApiProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1;kubernetesopenfgav1\xa2\x02\x06OPPKWK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesopenfga.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesopenfga\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesopenfga\\V1\\GPBMetadata\xea\x02JOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesopenfga::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
+	"\x04spec\x18\x04 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12m\n" +
+	"\x06status\x18\x05 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStatusR\x06status\"\x90\x01\n" +
+	"\x17KubernetesOpenFgaStatus\x12u\n" +
+	"\aoutputs\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStackOutputsR\aoutputsB\xe2\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetesopenfga.v1B\bApiProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1;kubernetesopenfgav1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesopenfga.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesopenfga\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesopenfga\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesopenfga::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto
 
 var file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto_goTypes = []any{
-	(*KubernetesOpenFga)(nil),             // 0: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFga
-	(*KubernetesOpenFgaStatus)(nil),       // 1: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStatus
+	(*KubernetesOpenFga)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFga
+	(*KubernetesOpenFgaStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStatus
 	(*shared.CloudResourceMetadata)(nil),  // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesOpenFgaSpec)(nil),         // 3: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaSpec
-	(*KubernetesOpenFgaStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStackOutputs
+	(*KubernetesOpenFgaSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaSpec
+	(*KubernetesOpenFgaStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFga.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFga.spec:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaSpec
-	1, // 2: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFga.status:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStatus
-	4, // 3: org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStatus.outputs:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesopenfga.v1.KubernetesOpenFgaStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFga.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFga.spec:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFga.status:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

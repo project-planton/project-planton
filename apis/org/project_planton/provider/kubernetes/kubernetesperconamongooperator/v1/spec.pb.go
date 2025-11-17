@@ -141,17 +141,17 @@ var File_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_
 
 const file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1/spec.proto\x12Oorg.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xfb\x02\n" +
+	"Torg/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xf5\x02\n" +
 	"\"KubernetesPerconaMongoOperatorSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12D\n" +
-	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\xa2\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2|.org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xaa\x01\n" +
+	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x9c\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2v.org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xaa\x01\n" +
 	"+KubernetesPerconaMongoOperatorSpecContainer\x12{\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
-	"\x04100m\x12\x05256MiR\tresourcesB\xde\x04\n" +
-	"Scom.org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1B\tSpecProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1;kubernetesperconamongooperatorv1\xa2\x02\x06OPPKAK\xaa\x02NOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesperconamongooperator.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconamongooperator\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesperconamongooperator\\V1\\GPBMetadata\xea\x02TOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesperconamongooperator::V1b\x06proto3"
+	"\x04100m\x12\x05256MiR\tresourcesB\xbe\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1B\tSpecProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1;kubernetesperconamongooperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamongooperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamongooperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_spec_proto_rawDescOnce sync.Once
@@ -167,15 +167,15 @@ func file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator
 
 var file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesPerconaMongoOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpec
-	(*KubernetesPerconaMongoOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainer
+	(*KubernetesPerconaMongoOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpec
+	(*KubernetesPerconaMongoOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil),     // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),               // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1.KubernetesPerconaMongoOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

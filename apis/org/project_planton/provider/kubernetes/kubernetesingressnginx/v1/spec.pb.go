@@ -341,14 +341,14 @@ var File_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_
 
 const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/spec.proto\x12Gorg.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xd6\x04\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetesingressnginx.v1\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xc4\x04\n" +
 	"\x1aKubernetesIngressNginxSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12#\n" +
 	"\rchart_version\x18\x02 \x01(\tR\fchartVersion\x12\x1a\n" +
-	"\binternal\x18\x03 \x01(\bR\binternal\x12|\n" +
-	"\x03gke\x18d \x01(\v2h.org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfigH\x00R\x03gke\x12|\n" +
-	"\x03eks\x18e \x01(\v2h.org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfigH\x00R\x03eks\x12|\n" +
-	"\x03aks\x18f \x01(\v2h.org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfigH\x00R\x03aksB\x11\n" +
+	"\binternal\x18\x03 \x01(\bR\binternal\x12v\n" +
+	"\x03gke\x18d \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfigH\x00R\x03gke\x12v\n" +
+	"\x03eks\x18e \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfigH\x00R\x03eks\x12v\n" +
+	"\x03aks\x18f \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfigH\x00R\x03aksB\x11\n" +
 	"\x0fprovider_config\"y\n" +
 	"\x1fKubernetesIngressNginxGkeConfig\x12$\n" +
 	"\x0estatic_ip_name\x18\x01 \x01(\tR\fstaticIpName\x120\n" +
@@ -360,8 +360,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spe
 	"\x16irsa_role_arn_override\x18\x03 \x01(\tR\x13irsaRoleArnOverride\"\x84\x01\n" +
 	"\x1fKubernetesIngressNginxAksConfig\x12;\n" +
 	"\x1amanaged_identity_client_id\x18\x01 \x01(\tR\x17managedIdentityClientId\x12$\n" +
-	"\x0epublic_ip_name\x18\x02 \x01(\tR\fpublicIpNameB\xa6\x04\n" +
-	"Kcom.org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x06OPPKAK\xaa\x02FOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesingressnginx.V1\xca\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesingressnginx\\V1\xe2\x02ROrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesingressnginx::V1b\x06proto3"
+	"\x0epublic_ip_name\x18\x02 \x01(\tR\fpublicIpNameB\x86\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetesingressnginx.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesingressnginx::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_rawDescOnce sync.Once
@@ -377,20 +377,20 @@ func file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec
 
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_goTypes = []any{
-	(*KubernetesIngressNginxSpec)(nil),              // 0: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxSpec
-	(*KubernetesIngressNginxGkeConfig)(nil),         // 1: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
-	(*KubernetesIngressNginxEksConfig)(nil),         // 2: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
-	(*KubernetesIngressNginxAksConfig)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig
+	(*KubernetesIngressNginxSpec)(nil),              // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec
+	(*KubernetesIngressNginxGkeConfig)(nil),         // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
+	(*KubernetesIngressNginxEksConfig)(nil),         // 2: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
+	(*KubernetesIngressNginxAksConfig)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 4: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*v1.StringValueOrRef)(nil),                     // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_depIdxs = []int32{
-	4, // 0: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.gke:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
-	2, // 2: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.eks:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
-	3, // 3: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.aks:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig
-	5, // 4: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig.additional_security_group_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 5: org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig.subnet_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.gke:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
+	2, // 2: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.eks:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
+	3, // 3: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.aks:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig
+	5, // 4: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig.additional_security_group_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 5: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig.subnet_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

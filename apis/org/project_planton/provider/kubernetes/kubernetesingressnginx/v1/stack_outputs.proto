@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.kubernetesingressnginx.v1;
+package org.project_planton.provider.kubernetes.kubernetesingressnginx.v1;
 
 // KubernetesIngressNginxStackOutputs defines the outputs for the Ingress Nginx stack.
 message KubernetesIngressNginxStackOutputs {

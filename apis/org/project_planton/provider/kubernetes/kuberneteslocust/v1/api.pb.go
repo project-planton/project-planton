@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto p
 
 const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kuberneteslocust/v1/api.proto\x12Dorg.project_planton.provider.kubernetes.workload.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1aForg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x1aOorg/project_planton/provider/kubernetes/kuberneteslocust/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xcf\x03\n" +
+	"Eorg/project_planton/provider/kubernetes/kuberneteslocust/v1/api.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1aForg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x1aOorg/project_planton/provider/kubernetes/kuberneteslocust/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xbd\x03\n" +
 	"\x10KubernetesLocust\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
 	"\x10KubernetesLocustR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12v\n" +
-	"\x04spec\x18\x04 \x01(\v2Z.org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12t\n" +
-	"\x06status\x18\x05 \x01(\v2\\.org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStatusR\x06status\"\x96\x01\n" +
-	"\x16KubernetesLocustStatus\x12|\n" +
-	"\aoutputs\x18\x01 \x01(\v2b.org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStackOutputsR\aoutputsB\x89\x04\n" +
-	"Hcom.org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1B\bApiProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x06OPPKWK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Workload.Kuberneteslocust.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteslocust\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kuberneteslocust::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12m\n" +
+	"\x04spec\x18\x04 \x01(\v2Q.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12k\n" +
+	"\x06status\x18\x05 \x01(\v2S.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStatusR\x06status\"\x8d\x01\n" +
+	"\x16KubernetesLocustStatus\x12s\n" +
+	"\aoutputs\x18\x01 \x01(\v2Y.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStackOutputsR\aoutputsB\xda\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kuberneteslocust.v1B\bApiProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kuberneteslocust.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kuberneteslocust::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_
 
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_goTypes = []any{
-	(*KubernetesLocust)(nil),             // 0: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocust
-	(*KubernetesLocustStatus)(nil),       // 1: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStatus
+	(*KubernetesLocust)(nil),             // 0: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocust
+	(*KubernetesLocustStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStatus
 	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesLocustSpec)(nil),         // 3: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustSpec
-	(*KubernetesLocustStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStackOutputs
+	(*KubernetesLocustSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec
+	(*KubernetesLocustStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocust.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocust.spec:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustSpec
-	1, // 2: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocust.status:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStatus
-	4, // 3: org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStatus.outputs:type_name -> org.project_planton.provider.kubernetes.workload.kuberneteslocust.v1.KubernetesLocustStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocust.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocust.spec:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec
+	1, // 2: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocust.status:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStatus
+	4, // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

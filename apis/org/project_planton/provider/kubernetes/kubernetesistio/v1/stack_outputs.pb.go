@@ -115,14 +115,14 @@ var File_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_output
 
 const file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kubernetesistio/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.addon.kubernetesistio.v1\"\xd7\x01\n" +
+	"Norg/project_planton/provider/kubernetes/kubernetesistio/v1/stack_outputs.proto\x12:org.project_planton.provider.kubernetes.kubernetesistio.v1\"\xd7\x01\n" +
 	"\x1bKubernetesIstioStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xfc\x03\n" +
-	"Dcom.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x06OPPKAK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesistio.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesistio\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesistio\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesistio::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xdc\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesistio.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesistio.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesistio::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outpu
 
 var file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesIstioStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackOutputs
+	(*KubernetesIstioStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetesistio.v1.KubernetesIstioStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

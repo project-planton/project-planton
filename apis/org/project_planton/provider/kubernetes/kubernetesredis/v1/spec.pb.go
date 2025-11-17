@@ -222,7 +222,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_e
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*KubernetesRedisContainer)(nil),
 		Field:         537001,
-		Name:          "org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.default_container",
+		Name:          "org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container",
 		Tag:           "bytes,537001,opt,name=default_container",
 		Filename:      "org/project_planton/provider/kubernetes/kubernetesredis/v1/spec.proto",
 	},
@@ -230,7 +230,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_e
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainer default_container = 537001;
+	// optional org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer default_container = 537001;
 	E_DefaultContainer = &file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_extTypes[0]
 )
 
@@ -238,13 +238,13 @@ var File_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kubernetesredis/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.workload.kubernetesredis.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xb8\x02\n" +
-	"\x13KubernetesRedisSpec\x12\xa9\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
+	"Eorg/project_planton/provider/kubernetes/kubernetesredis/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesredis.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xa6\x02\n" +
+	"\x13KubernetesRedisSpec\x12\xa0\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12u\n" +
-	"\aingress\x18\x02 \x01(\v2[.org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisIngressR\aingress\"\xb7\x04\n" +
+	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12l\n" +
+	"\aingress\x18\x02 \x01(\v2R.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngressR\aingress\"\xb7\x04\n" +
 	"\x18KubernetesRedisContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
@@ -254,9 +254,9 @@ const file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto
 	"\x16KubernetesRedisIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xab\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xa9\xe3  \x01(\v2].org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainerR\x10defaultContainerB\x83\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.workload.kubernetesredis.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1;kubernetesredisv1\xa2\x02\x06OPPKWK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Workload.Kubernetesredis.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesredis\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Workload\\Kubernetesredis\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Workload::Kubernetesredis::V1b\x06proto3"
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa2\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xa9\xe3  \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainerR\x10defaultContainerB\xd4\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesredis.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1;kubernetesredisv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesredis.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesredis::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_rawDescOnce sync.Once
@@ -272,18 +272,18 @@ func file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_
 
 var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_goTypes = []any{
-	(*KubernetesRedisSpec)(nil),           // 0: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisSpec
-	(*KubernetesRedisContainer)(nil),      // 1: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainer
-	(*KubernetesRedisIngress)(nil),        // 2: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisIngress
+	(*KubernetesRedisSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec
+	(*KubernetesRedisContainer)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
+	(*KubernetesRedisIngress)(nil),        // 2: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngress
 	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 4: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisSpec.container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainer
-	2, // 1: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisSpec.ingress:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisIngress
-	3, // 2: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	4, // 3: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 4: org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.default_container:type_name -> org.project_planton.provider.kubernetes.workload.kubernetesredis.v1.KubernetesRedisContainer
+	1, // 0: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngress
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 4: org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	4, // [4:5] is the sub-list for extension type_name

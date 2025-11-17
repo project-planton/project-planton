@@ -155,19 +155,19 @@ var File_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_
 
 const file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Sorg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/api.proto\x12Oorg.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aTorg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/spec.proto\x1a]org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x9f\x04\n" +
+	"Sorg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/api.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aTorg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/spec.proto\x1a]org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x93\x04\n" +
 	"\x1eKubernetesStrimziKafkaOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x129\n" +
 	"\x04kind\x18\x02 \x01(\tB%\xbaH\"r \n" +
 	"\x1eKubernetesStrimziKafkaOperatorR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x8f\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2s.org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x8d\x01\n" +
-	"\x06status\x18\x05 \x01(\v2u.org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatusR\x06status\"\xbe\x01\n" +
-	"$KubernetesStrimziKafkaOperatorStatus\x12\x95\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2{.org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputsR\aoutputsB\xdd\x04\n" +
-	"Scom.org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1B\bApiProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x06OPPKAK\xaa\x02NOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesstrimzikafkaoperator.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02TOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x89\x01\n" +
+	"\x04spec\x18\x04 \x01(\v2m.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x87\x01\n" +
+	"\x06status\x18\x05 \x01(\v2o.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatusR\x06status\"\xb8\x01\n" +
+	"$KubernetesStrimziKafkaOperatorStatus\x12\x8f\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2u.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputsR\aoutputsB\xbd\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1B\bApiProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesstrimzikafkaoperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_api_proto_rawDescOnce sync.Once
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator
 
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_api_proto_goTypes = []any{
-	(*KubernetesStrimziKafkaOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator
-	(*KubernetesStrimziKafkaOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatus
+	(*KubernetesStrimziKafkaOperator)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator
+	(*KubernetesStrimziKafkaOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatus
 	(*shared.CloudResourceMetadata)(nil),               // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KubernetesStrimziKafkaOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec
-	(*KubernetesStrimziKafkaOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputs
+	(*KubernetesStrimziKafkaOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec
+	(*KubernetesStrimziKafkaOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator.spec:type_name -> org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperator.status:type_name -> org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
