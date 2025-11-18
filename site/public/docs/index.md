@@ -21,6 +21,7 @@ New to ProjectPlanton? Start here:
 
 Master the Project Planton command-line interface:
 
+- **[Unified Commands](/docs/cli/unified-commands)** - NEW! kubectl-style `apply` and `destroy` commands 🚀
 - **[Complete CLI Reference](/docs/cli/cli-reference)** - All commands, flags, and options
 - **[Pulumi Commands](/docs/cli/pulumi-commands)** - Deploy with Pulumi (init, preview, up, refresh, destroy)
 - **[OpenTofu Commands](/docs/cli/tofu-commands)** - Deploy with OpenTofu (init, plan, apply, refresh, destroy)
@@ -126,6 +127,8 @@ apiVersion: kubernetes.project-planton.org/v1
 kind: RedisKubernetes
 metadata:
   name: my-redis
+  labels:
+    project-planton.org/provisioner: pulumi
 spec:
   replicas: 3
   resources:
@@ -135,7 +138,11 @@ spec:
 ```
 
 ```bash
+# Simple kubectl-style workflow
 project-planton validate redis.yaml
+project-planton apply -f redis.yaml
+
+# Or use provisioner-specific commands
 project-planton pulumi up --manifest redis.yaml --stack myorg/project/dev
 ```
 

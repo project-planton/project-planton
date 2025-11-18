@@ -33,12 +33,16 @@ project-planton version
 
 ```bash
 # Validate your manifest
-project-planton validate --manifest database.yaml
+project-planton validate -f database.yaml
 
-# Deploy with Pulumi
+# Deploy with unified kubectl-style command (recommended)
+project-planton apply -f database.yaml
+
+# Destroy with unified command
+project-planton destroy -f database.yaml
+
+# Or use provisioner-specific commands
 project-planton pulumi up --manifest database.yaml
-
-# Or deploy with OpenTofu
 project-planton tofu apply --manifest database.yaml
 ```
 
@@ -46,11 +50,27 @@ project-planton tofu apply --manifest database.yaml
 
 ## Documentation Sections
 
-### [CLI Reference](/docs/cli/cli-reference)
+### [Unified Commands](/docs/cli/unified-commands) 🆕
 
-Complete reference for all CLI commands and flags.
+**NEW!** kubectl-style commands that automatically detect your provisioner.
 
 **What you'll find**:
+- How to use `apply` and `destroy` commands
+- Provisioner auto-detection from manifest labels
+- Interactive provisioner selection
+- Complete examples and migration guide
+- Best practices
+
+**When to read**: Start here if you're new or want the simplest workflow!
+
+---
+
+### [CLI Reference](/docs/cli/cli-reference)
+
+Complete reference for all CLI commands and flags, including the new unified `apply` and `destroy` commands.
+
+**What you'll find**:
+- Unified kubectl-style commands (`apply`, `destroy`/`delete`)
 - Command tree structure
 - All available commands
 - Common flags and options
@@ -58,6 +78,8 @@ Complete reference for all CLI commands and flags.
 - Exit codes
 
 **When to read**: Quick lookup for command syntax and flags.
+
+**New in this release**: The CLI now supports kubectl-style `apply` and `destroy` commands that automatically detect your provisioner from manifest labels!
 
 ---
 
@@ -162,13 +184,15 @@ apiVersion: aws.project-planton.org/v1
 kind: AwsRdsInstance
 metadata:
   name: my-database
+  labels:
+    project-planton.org/provisioner: pulumi
 spec:
   engine: postgres
   instanceClass: db.t3.medium
 EOF
 
-# 5. Deploy
-project-planton pulumi up --manifest database.yaml
+# 5. Deploy (kubectl-style!)
+project-planton apply -f database.yaml
 ```
 
 ### Daily Development
@@ -181,13 +205,10 @@ git pull
 vim ops/resources/api-deployment.yaml
 
 # Validate changes
-project-planton validate --manifest ops/resources/api-deployment.yaml
+project-planton validate -f ops/resources/api-deployment.yaml
 
-# Preview changes
-project-planton pulumi preview --manifest ops/resources/api-deployment.yaml
-
-# Deploy
-project-planton pulumi up --manifest ops/resources/api-deployment.yaml
+# Deploy with unified command (auto-detects provisioner)
+project-planton apply -f ops/resources/api-deployment.yaml
 
 # Evening: commit changes
 git add ops/resources/api-deployment.yaml

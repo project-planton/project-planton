@@ -16,6 +16,8 @@ func init() {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.DisableSuggestions = true
 	rootCmd.AddCommand(
+		root.Apply,
+		root.Destroy,
 		root.LoadManifest,
 		root.Pulumi,
 		root.Tofu,

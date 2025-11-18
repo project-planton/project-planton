@@ -54,6 +54,8 @@ apiVersion: kubernetes.project-planton.org/v1
 kind: PostgresKubernetes
 metadata:
   name: dev-database
+  labels:
+    project-planton.org/provisioner: pulumi
 spec:
   container:
     replicas: 1
@@ -84,9 +86,13 @@ Set up a local Pulumi backend:
 pulumi login --local
 ```
 
-Deploy the resource:
+Deploy the resource using the unified kubectl-style command:
 
 ```bash
+# Simple unified command (automatically detects provisioner from label)
+project-planton apply -f postgres.yaml
+
+# Or use the traditional Pulumi-specific command
 project-planton pulumi up --manifest postgres.yaml --stack org/dev/local
 ```
 
@@ -122,17 +128,18 @@ Behind the scenes, the CLI:
 # Validate a manifest
 project-planton validate --manifest config.yaml
 
-# Deploy with Pulumi
-project-planton pulumi up --manifest config.yaml --stack org/project/env
+# Unified kubectl-style commands (provisioner auto-detected from manifest)
+project-planton apply -f config.yaml
+project-planton destroy -f config.yaml
+# Or use 'delete' as an alias
+project-planton delete -f config.yaml
 
-# Deploy with Terraform
+# Provisioner-specific commands (still supported)
+project-planton pulumi up --manifest config.yaml --stack org/project/env
 project-planton tofu apply --manifest config.yaml
 
 # Override specific values
-project-planton pulumi up \
-  --manifest config.yaml \
-  --set spec.container.cpu=500m \
-  --stack org/project/env
+project-planton apply -f config.yaml --set spec.container.cpu=500m
 ```
 
 ## Troubleshooting
