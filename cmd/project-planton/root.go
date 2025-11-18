@@ -18,8 +18,11 @@ func init() {
 	rootCmd.AddCommand(
 		root.Apply,
 		root.Destroy,
+		root.Init,
 		root.LoadManifest,
+		root.Plan,
 		root.Pulumi,
+		root.Refresh,
 		root.Tofu,
 		root.ValidateManifest,
 		root.Version,
