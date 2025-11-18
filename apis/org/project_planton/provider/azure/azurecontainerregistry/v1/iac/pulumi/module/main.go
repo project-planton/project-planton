@@ -5,9 +5,9 @@ import (
 
 	"github.com/pkg/errors"
 	azurecontainerregistryv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1"
-	"github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v2"
-	"github.com/pulumi/pulumi-azure-native-sdk/resources/v2"
-	azurenative "github.com/pulumi/pulumi-azure-native-sdk/v2"
+	"github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v3"
+	"github.com/pulumi/pulumi-azure-native-sdk/resources/v3"
+	azurenative "github.com/pulumi/pulumi-azure-native-sdk/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -19,11 +19,9 @@ require (
 	github.com/pulumi/pulumi-aws-native/sdk v1.14.0
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.83.2
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.3.0
-	github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v2 v2.90.0
+	github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v3 v3.10.1
 	github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3 v3.10.1
-	github.com/pulumi/pulumi-azure-native-sdk/resources/v2 v2.90.0
 	github.com/pulumi/pulumi-azure-native-sdk/resources/v3 v3.10.1
-	github.com/pulumi/pulumi-azure-native-sdk/v2 v2.90.0
 	github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0
 	github.com/pulumi/pulumi-azure/sdk/v6 v6.28.0
