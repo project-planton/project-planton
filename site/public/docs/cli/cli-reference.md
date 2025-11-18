@@ -17,6 +17,9 @@ Complete command-line reference for the `project-planton` CLI.
 project-planton
 ├── apply               Deploy infrastructure (unified, auto-detects provisioner)
 ├── destroy             Teardown infrastructure (or 'delete')
+├── init                Initialize backend/stack (unified, auto-detects provisioner)
+├── plan                Preview changes (or 'preview', unified, auto-detects provisioner)
+├── refresh             Sync state with reality (unified, auto-detects provisioner)
 ├── pulumi              Manage infrastructure with Pulumi
 │   ├── init           Initialize Pulumi stack
 │   ├── preview        Preview infrastructure changes
@@ -97,6 +100,104 @@ project-planton delete -f database.yaml
 # With auto-approve (skips confirmation)
 project-planton destroy -f api.yaml --auto-approve
 ```
+
+### init
+
+**NEW!** Unified command to initialize infrastructure backend or stack by automatically detecting the provisioner.
+
+**Usage**:
+
+```bash
+project-planton init -f <file> [flags]
+```
+
+**Example**:
+
+```bash
+# Auto-detect provisioner from manifest
+project-planton init -f database.yaml
+
+# With kustomize
+project-planton init --kustomize-dir services/api --overlay prod
+
+# With tofu-specific backend config
+project-planton init -f app.yaml --backend-type s3 --backend-config bucket=my-bucket
+```
+
+**How it works**:
+1. Reads the `project-planton.org/provisioner` label from your manifest
+2. Routes to appropriate initialization:
+   - **Pulumi**: Creates stack if it doesn't exist
+   - **Tofu**: Initializes backend and downloads providers
+   - **Terraform**: Not yet implemented
+
+### plan
+
+**NEW!** Unified command to preview infrastructure changes without applying them.
+
+**Aliases**: `preview` (for Pulumi-style experience)
+
+**Usage**:
+
+```bash
+project-planton plan -f <file> [flags]
+project-planton preview -f <file> [flags]
+```
+
+**Example**:
+
+```bash
+# Auto-detect provisioner and preview changes
+project-planton plan -f database.yaml
+
+# Using preview alias (Pulumi-style)
+project-planton preview -f database.yaml
+
+# With kustomize
+project-planton plan --kustomize-dir services/api --overlay staging
+
+# Preview destroy plan (Tofu)
+project-planton plan -f app.yaml --destroy
+```
+
+**How it works**:
+1. Reads the `project-planton.org/provisioner` label from your manifest
+2. Routes to appropriate preview operation:
+   - **Pulumi**: Runs `pulumi preview`
+   - **Tofu**: Runs `tofu plan`
+   - **Terraform**: Not yet implemented
+
+### refresh
+
+**NEW!** Unified command to sync state with cloud reality without modifying resources.
+
+**Usage**:
+
+```bash
+project-planton refresh -f <file> [flags]
+```
+
+**Example**:
+
+```bash
+# Auto-detect provisioner and refresh state
+project-planton refresh -f database.yaml
+
+# With kustomize
+project-planton refresh --kustomize-dir services/api --overlay prod
+
+# Show detailed diffs (Pulumi)
+project-planton refresh -f app.yaml --diff
+```
+
+**How it works**:
+1. Queries your cloud provider for current resource state
+2. Updates state file to reflect reality
+3. Does NOT modify any cloud resources (read-only operation)
+4. Routes based on provisioner:
+   - **Pulumi**: Runs `pulumi refresh`
+   - **Tofu**: Runs `tofu refresh`
+   - **Terraform**: Not yet implemented
 
 ### pulumi
 

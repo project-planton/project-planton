@@ -1,13 +1,15 @@
 ---
-title: "Unified Apply/Destroy Commands"
-description: "kubectl-style unified commands that automatically detect your provisioner - simplify your workflow with apply and destroy"
+title: "Unified Commands"
+description: "kubectl-style unified commands that automatically detect your provisioner - simplify your workflow with apply, destroy, init, plan, and refresh"
 icon: "rocket"
 order: 2
 ---
 
-# Unified Apply/Destroy Commands
+# Unified Commands
 
-The unified `apply` and `destroy` commands provide a kubectl-like experience by automatically detecting the IaC provisioner from your manifest and routing to the appropriate tool (Pulumi, Tofu, or Terraform).
+The unified commands provide a kubectl-like experience by automatically detecting the IaC provisioner from your manifest and routing to the appropriate tool (Pulumi, Tofu, or Terraform).
+
+**Available unified commands**: `apply`, `destroy`, `init`, `plan`/`preview`, `refresh`
 
 ---
 
@@ -19,10 +21,18 @@ Previously, you had to remember different commands for different provisioners:
 
 ```bash
 # Pulumi
+project-planton pulumi init --manifest app.yaml
+project-planton pulumi preview --manifest app.yaml
 project-planton pulumi up --manifest app.yaml --stack org/project/env
+project-planton pulumi refresh --manifest app.yaml
+project-planton pulumi destroy --manifest app.yaml
 
 # OpenTofu
+project-planton tofu init --manifest app.yaml
+project-planton tofu plan --manifest app.yaml
 project-planton tofu apply --manifest app.yaml
+project-planton tofu refresh --manifest app.yaml
+project-planton tofu destroy --manifest app.yaml
 
 # Different commands, different flags, cognitive overhead!
 ```
@@ -32,8 +42,11 @@ project-planton tofu apply --manifest app.yaml
 Now, use the same commands regardless of provisioner:
 
 ```bash
-# Works for Pulumi, Tofu, or Terraform
+# Works for Pulumi, Tofu, or Terraform - complete lifecycle
+project-planton init -f app.yaml
+project-planton plan -f app.yaml       # or 'preview'
 project-planton apply -f app.yaml
+project-planton refresh -f app.yaml
 project-planton destroy -f app.yaml
 ```
 
@@ -146,6 +159,138 @@ project-planton destroy -f app.yaml --auto-approve
 
 ---
 
+### init
+
+Initialize infrastructure backend or stack.
+
+**Usage**:
+
+```bash
+project-planton init -f <file> [flags]
+```
+
+**Examples**:
+
+```bash
+# Basic usage
+project-planton init -f database.yaml
+
+# With kustomize
+project-planton init --kustomize-dir services/api --overlay prod
+
+# With OpenTofu backend config
+project-planton init -f app.yaml \
+    --backend-type s3 \
+    --backend-config bucket=my-terraform-state \
+    --backend-config key=app/terraform.tfstate \
+    --backend-config region=us-west-2
+```
+
+**What it does**:
+1. Loads and validates your manifest
+2. Detects provisioner from label
+3. Routes to appropriate initialization:
+   - **Pulumi**: Creates stack if it doesn't exist (idempotent)
+   - **Tofu**: Initializes backend, downloads providers
+   - **Terraform**: Not yet implemented
+
+**When to use**:
+- First time deploying a resource
+- After cleaning local state/cache
+- After changing backend configuration
+
+---
+
+### plan / preview
+
+Preview infrastructure changes without applying them.
+
+**Usage**:
+
+```bash
+project-planton plan -f <file> [flags]
+project-planton preview -f <file> [flags]  # Pulumi-style alias
+```
+
+**Examples**:
+
+```bash
+# Basic preview
+project-planton plan -f database.yaml
+
+# Using Pulumi-style alias
+project-planton preview -f database.yaml
+
+# With kustomize
+project-planton plan --kustomize-dir services/api --overlay staging
+
+# Preview destroy plan (OpenTofu)
+project-planton plan -f app.yaml --destroy
+
+# Show detailed diffs (Pulumi)
+project-planton plan -f app.yaml --diff
+```
+
+**What it does**:
+1. Loads and validates your manifest
+2. Detects provisioner from label
+3. Routes to appropriate preview operation:
+   - **Pulumi**: Runs `pulumi preview` (dry-run of update)
+   - **Tofu**: Runs `tofu plan`
+   - **Terraform**: Not yet implemented
+
+**Output**: Shows what resources would be created, modified, or deleted without making any changes.
+
+**When to use**:
+- Before applying changes to production
+- In pull request CI checks
+- To understand impact of manifest changes
+- For review and approval workflows
+
+---
+
+### refresh
+
+Sync state with cloud reality.
+
+**Usage**:
+
+```bash
+project-planton refresh -f <file> [flags]
+```
+
+**Examples**:
+
+```bash
+# Basic refresh
+project-planton refresh -f database.yaml
+
+# With kustomize
+project-planton refresh --kustomize-dir services/api --overlay prod
+
+# Show detailed diffs (Pulumi)
+project-planton refresh -f app.yaml --diff
+```
+
+**What it does**:
+1. Loads and validates your manifest
+2. Detects provisioner from label
+3. Routes to appropriate refresh operation:
+   - **Pulumi**: Runs `pulumi refresh`
+   - **Tofu**: Runs `tofu refresh`
+   - **Terraform**: Not yet implemented
+4. Queries cloud provider for current resource state
+5. Updates state file to match reality
+6. **Does NOT modify any cloud resources** (read-only)
+
+**When to use**:
+- After manual changes made outside IaC (console, CLI, other tools)
+- Before applying updates to ensure state accuracy
+- After failed deployments to resynchronize state
+- When troubleshooting drift between desired and actual state
+
+---
+
 ## Interactive Provisioner Selection
 
 If your manifest doesn't have the `project-planton.org/provisioner` label, the CLI prompts you:
@@ -171,9 +316,9 @@ Simply press **Enter** to use Pulumi (the default), or type your choice.
 
 ## Supported Flags
 
-Both commands support all flags from their respective provisioners.
+All unified commands support flags from their respective provisioners.
 
-### Common Flags
+### Common Flags (All Commands)
 
 | Flag | Description |
 |------|-------------|
@@ -185,17 +330,20 @@ Both commands support all flags from their respective provisioners.
 
 ### Pulumi-Specific Flags
 
-| Flag | Description |
-|------|-------------|
-| `--stack <org>/<project>/<stack>` | Override stack FQDN (or use manifest label) |
-| `--yes` | Auto-approve without confirmation |
-| `--diff` | Show detailed resource diffs |
+| Flag | Commands | Description |
+|------|----------|-------------|
+| `--stack <org>/<project>/<stack>` | All | Override stack FQDN (or use manifest label) |
+| `--yes` | apply, destroy | Auto-approve without confirmation |
+| `--diff` | apply, destroy, plan, refresh | Show detailed resource diffs |
 
 ### Tofu/Terraform-Specific Flags
 
-| Flag | Description |
-|------|-------------|
-| `--auto-approve` | Skip interactive approval |
+| Flag | Commands | Description |
+|------|----------|-------------|
+| `--auto-approve` | apply, destroy | Skip interactive approval |
+| `--destroy` | plan | Create destroy plan instead of apply plan |
+| `--backend-type <type>` | init | Backend type (s3, gcs, local, etc.) |
+| `--backend-config <key=value>` | init | Backend configuration (repeatable) |
 
 ### Provider Credentials
 
@@ -311,7 +459,31 @@ done
 
 ---
 
-### Example 4: CI/CD Pipeline
+### Example 4: Complete Infrastructure Lifecycle
+
+```bash
+# Full workflow from init to destroy
+cd my-infrastructure/
+
+# 1. Initialize backend/stack
+project-planton init -f database.yaml
+
+# 2. Preview changes before applying
+project-planton plan -f database.yaml
+
+# 3. Apply infrastructure
+project-planton apply -f database.yaml --yes
+
+# 4. Refresh state after manual changes
+project-planton refresh -f database.yaml
+
+# 5. Destroy when done
+project-planton destroy -f database.yaml --yes
+```
+
+---
+
+### Example 5: CI/CD Pipeline
 
 ```bash
 #!/bin/bash
@@ -323,7 +495,17 @@ set -e
 IMAGE_TAG="${CI_COMMIT_SHA}"
 ENVIRONMENT="${CI_ENVIRONMENT_NAME}"
 
-# Deploy with dynamic values
+# Initialize (idempotent)
+project-planton init -f deployment.yaml
+
+# Preview changes in pull requests
+if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+    project-planton plan -f deployment.yaml \
+        --set spec.container.image.tag="$IMAGE_TAG"
+    exit 0
+fi
+
+# Deploy to environment
 project-planton apply \
     -f deployment.yaml \
     --set spec.container.image.tag="$IMAGE_TAG" \
@@ -342,18 +524,30 @@ The unified commands are **fully backward compatible**. You can migrate graduall
 ### Before (Provisioner-Specific)
 
 ```bash
-# Pulumi
+# Pulumi - complete workflow
+project-planton pulumi init --manifest app.yaml --stack org/project/dev
+project-planton pulumi preview --manifest app.yaml --stack org/project/dev
 project-planton pulumi up --manifest app.yaml --stack org/project/dev
+project-planton pulumi refresh --manifest app.yaml --stack org/project/dev
+project-planton pulumi destroy --manifest app.yaml --stack org/project/dev
 
-# OpenTofu
+# OpenTofu - complete workflow
+project-planton tofu init --manifest app.yaml
+project-planton tofu plan --manifest app.yaml
 project-planton tofu apply --manifest app.yaml
+project-planton tofu refresh --manifest app.yaml
+project-planton tofu destroy --manifest app.yaml
 ```
 
 ### After (Unified)
 
 ```bash
-# Works for both!
+# Works for both Pulumi and OpenTofu!
+project-planton init -f app.yaml
+project-planton plan -f app.yaml        # or 'preview'
 project-planton apply -f app.yaml
+project-planton refresh -f app.yaml
+project-planton destroy -f app.yaml     # or 'delete'
 ```
 
 ### Migration Steps
@@ -366,9 +560,15 @@ project-planton apply -f app.yaml
    ```
 
 2. **Replace commands** in your scripts:
+   - `pulumi init` → `init`
+   - `pulumi preview` → `plan` or `preview`
    - `pulumi up` → `apply`
+   - `pulumi refresh` → `refresh`
    - `pulumi destroy` → `destroy`
+   - `tofu init` → `init`
+   - `tofu plan` → `plan`
    - `tofu apply` → `apply`
+   - `tofu refresh` → `refresh`
    - `tofu destroy` → `destroy`
 
 3. **Update flags**:
@@ -380,18 +580,25 @@ project-planton apply -f app.yaml
 
 ## Benefits
 
-### 1. Simplified Mental Model
+### 1. Complete Lifecycle Coverage
 
-One command pattern for all provisioners:
+Unified commands for the entire infrastructure lifecycle:
 
 ```bash
-project-planton apply -f <manifest>
-project-planton destroy -f <manifest>
+project-planton init -f <manifest>      # Initialize
+project-planton plan -f <manifest>      # Preview
+project-planton apply -f <manifest>     # Deploy
+project-planton refresh -f <manifest>   # Sync
+project-planton destroy -f <manifest>   # Teardown
 ```
 
-### 2. kubectl-like Experience
+### 2. Simplified Mental Model
 
-Familiar kubectl patterns:
+One command pattern for all provisioners, all operations.
+
+### 3. kubectl-like Experience
+
+Familiar kubectl patterns throughout:
 
 ```bash
 kubectl apply -f deployment.yaml
@@ -401,21 +608,35 @@ kubectl delete -f deployment.yaml
 project-planton delete -f deployment.yaml
 ```
 
-### 3. Easier Automation
+### 4. Easier Automation
 
 Write scripts that work regardless of provisioner:
 
 ```bash
 for manifest in manifests/*.yaml; do
-    project-planton apply -f "$manifest"
+    project-planton init -f "$manifest"
+    project-planton plan -f "$manifest"
+    project-planton apply -f "$manifest" --yes
 done
 ```
 
-### 4. Lower Barrier to Entry
+### 5. Better CI/CD Integration
 
-New team members don't need to learn multiple command patterns.
+Use the same commands across all pipelines:
 
-### 5. Gradual Migration
+```bash
+# Pull Request - preview only
+project-planton plan -f app.yaml
+
+# Main branch - deploy
+project-planton apply -f app.yaml --yes
+```
+
+### 6. Lower Barrier to Entry
+
+New team members learn one command set, not multiple provisioner-specific patterns.
+
+### 7. Gradual Migration
 
 All existing commands still work - migrate at your own pace.
 
@@ -505,12 +726,36 @@ This enables fully automated workflows.
 
 ---
 
-### 2. Use -f Flag for Consistency
+### 2. Follow the Complete Lifecycle
+
+Use all commands for a robust workflow:
+
+```bash
+# 1. Initialize (first time or after cleaning cache)
+project-planton init -f app.yaml
+
+# 2. Always preview before applying
+project-planton plan -f app.yaml
+
+# 3. Apply changes
+project-planton apply -f app.yaml --yes
+
+# 4. Refresh after manual changes
+project-planton refresh -f app.yaml
+
+# 5. Clean up when done
+project-planton destroy -f app.yaml
+```
+
+---
+
+### 3. Use -f Flag for Consistency
 
 Prefer `-f` over `--manifest` to match kubectl style:
 
 ```bash
 # Good (kubectl-style)
+project-planton plan -f app.yaml
 project-planton apply -f app.yaml
 
 # Also works
@@ -519,28 +764,66 @@ project-planton apply --manifest app.yaml
 
 ---
 
-### 3. Combine with Validation
+### 4. Always Preview in CI/CD
+
+Add preview step to pull request pipelines:
+
+```bash
+# .gitlab-ci.yml or similar
+preview:
+  script:
+    - project-planton plan -f deployment.yaml
+  only:
+    - merge_requests
+
+deploy:
+  script:
+    - project-planton apply -f deployment.yaml --yes
+  only:
+    - main
+```
+
+---
+
+### 5. Combine with Validation
 
 Always validate before applying in production:
 
 ```bash
 project-planton validate -f app.yaml && \
+project-planton plan -f app.yaml && \
 project-planton apply -f app.yaml --yes
 ```
 
 ---
 
-### 4. Use Kustomize for Multi-Environment
+### 6. Use Refresh After Manual Changes
+
+If you make manual changes via console or CLI, refresh state:
+
+```bash
+# Made manual changes to database in cloud console
+project-planton refresh -f database.yaml
+
+# Now apply can work with accurate state
+project-planton apply -f database.yaml
+```
+
+---
+
+### 7. Use Kustomize for Multi-Environment
 
 Organize environments with kustomize:
 
 ```bash
+project-planton init --kustomize-dir services/api --overlay prod
+project-planton plan --kustomize-dir services/api --overlay prod
 project-planton apply --kustomize-dir services/api --overlay prod
 ```
 
 ---
 
-### 5. Override Values for CI/CD
+### 8. Override Values for CI/CD
 
 Use `--set` for dynamic values in pipelines:
 
@@ -548,6 +831,23 @@ Use `--set` for dynamic values in pipelines:
 project-planton apply -f app.yaml \
     --set spec.image.tag="$CI_COMMIT_SHA" \
     --set metadata.labels.build="$CI_BUILD_ID"
+```
+
+---
+
+### 9. Use Aliases for Familiarity
+
+Use command aliases that match your background:
+
+```bash
+# Pulumi users might prefer
+project-planton preview -f app.yaml
+
+# Terraform/Tofu users might prefer
+project-planton plan -f app.yaml
+
+# kubectl users might prefer
+project-planton delete -f app.yaml
 ```
 
 ---
