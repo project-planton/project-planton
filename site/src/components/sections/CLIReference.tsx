@@ -6,6 +6,8 @@ import { Terminal, Flag, Command } from "lucide-react";
 
 export default function CLIReference() {
   const primaryCommands = [
+    { command: "project-planton apply -f <manifest.yaml>", description: "Deploy infrastructure (kubectl-style, auto-detects provisioner) 🆕", highlight: true },
+    { command: "project-planton destroy -f <manifest.yaml>", description: "Destroy infrastructure (kubectl-style, auto-detects provisioner) 🆕", highlight: true },
     { command: "project-planton pulumi preview", description: "Preview Pulumi changes" },
     { command: "project-planton pulumi update", description: "Apply Pulumi changes" },
     { command: "project-planton pulumi refresh", description: "Refresh Pulumi state" },
@@ -20,15 +22,15 @@ export default function CLIReference() {
   ];
 
   const coreFlags = [
-    { flag: "--manifest <path>", description: "path to the deployment‑component manifest file", required: true },
-    { flag: "--stack <org/project/stack>", description: "Pulumi stack FQDN (required for pulumi commands)", required: true },
+    { flag: "-f, --manifest <path>", description: "path to the deployment‑component manifest file (kubectl-style -f shorthand)", required: true },
+    { flag: "--stack <org/project/stack>", description: "Pulumi stack FQDN (can be in manifest labels)", required: false },
     { flag: "--module-dir <dir>", description: "directory containing the Pulumi/Tofu module (defaults to current dir)", required: false },
-    { flag: "--input-dir <dir>", description: "directory containing target.yaml and/or credential yamls", required: false },
+    { flag: "--kustomize-dir <dir>", description: "directory containing kustomize configuration", required: false },
+    { flag: "--overlay <name>", description: "kustomize overlay to use (e.g., prod, dev, staging)", required: false },
     { flag: "--set key=value", description: "override manifest fields (deep dot‑paths supported)", required: false },
-    { flag: "--auto-approve", description: "skip interactive approval (tofu apply/destroy)", required: false },
-    { flag: "--destroy", description: "create a destroy plan (tofu plan)", required: false },
-    { flag: "--backend-type {local|s3|gcs|azurerm}", description: "choose backend (tofu init)", required: false },
-    { flag: "--backend-config key=value", description: "repeatable backend arguments (tofu init)", required: false },
+    { flag: "--auto-approve", description: "skip interactive approval (tofu/terraform commands)", required: false },
+    { flag: "--yes", description: "auto-approve operations without confirmation (Pulumi)", required: false },
+    { flag: "--diff", description: "show detailed resource diffs (Pulumi)", required: false },
   ];
 
   const providerConfigFlags = [
@@ -61,7 +63,7 @@ export default function CLIReference() {
           <CardContent>
             <div className="space-y-3">
               {primaryCommands.map((cmd, index) => (
-                <div key={index} className="border-b border-slate-800 pb-3 last:border-b-0 last:pb-0">
+                <div key={index} className={`border-b border-slate-800 pb-3 last:border-b-0 last:pb-0 ${cmd.highlight ? 'bg-purple-900/20 -mx-4 px-4 py-2 rounded' : ''}`}>
                   <code className="text-blue-400 text-sm">{cmd.command}</code>
                   <p className="text-slate-400 text-sm mt-1">{cmd.description}</p>
                 </div>

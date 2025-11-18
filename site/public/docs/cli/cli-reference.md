@@ -15,6 +15,8 @@ Complete command-line reference for the `project-planton` CLI.
 
 ```
 project-planton
+├── apply               Deploy infrastructure (unified, auto-detects provisioner)
+├── destroy             Teardown infrastructure (or 'delete')
 ├── pulumi              Manage infrastructure with Pulumi
 │   ├── init           Initialize Pulumi stack
 │   ├── preview        Preview infrastructure changes
@@ -37,6 +39,64 @@ project-planton
 ---
 
 ## Top-Level Commands
+
+### apply
+
+**NEW!** Unified kubectl-style command to deploy infrastructure by automatically detecting the provisioner from the manifest label `project-planton.org/provisioner`.
+
+**Usage**:
+
+```bash
+project-planton apply -f <file> [flags]
+# or
+project-planton apply --manifest <file> [flags]
+```
+
+**Example**:
+
+```bash
+# Auto-detect provisioner from manifest
+project-planton apply -f database.yaml
+
+# With kustomize
+project-planton apply --kustomize-dir services/api --overlay prod
+
+# With overrides
+project-planton apply -f api.yaml --set spec.replicas=5
+```
+
+**How it works**:
+1. Reads the `project-planton.org/provisioner` label from your manifest
+2. Automatically routes to the appropriate provisioner (pulumi/tofu/terraform)
+3. If label is missing, prompts you to select a provisioner interactively (defaults to Pulumi)
+
+**Supported provisioners**: `pulumi`, `tofu`, `terraform` (case-insensitive)
+
+### destroy
+
+**NEW!** Unified kubectl-style command to destroy infrastructure. Works exactly like `apply` but tears down resources instead.
+
+**Aliases**: `delete` (for kubectl compatibility)
+
+**Usage**:
+
+```bash
+project-planton destroy -f <file> [flags]
+project-planton delete -f <file> [flags]
+```
+
+**Example**:
+
+```bash
+# Auto-detect provisioner from manifest
+project-planton destroy -f database.yaml
+
+# Using kubectl-style delete alias
+project-planton delete -f database.yaml
+
+# With auto-approve (skips confirmation)
+project-planton destroy -f api.yaml --auto-approve
+```
 
 ### pulumi
 
@@ -153,11 +213,14 @@ These flags are available across multiple commands:
 
 ### Manifest Input
 
-**`--manifest <path>`**  
-Path to manifest YAML file (local or URL).
+**`-f, --manifest <path>`**  
+Path to manifest YAML file (local or URL). The `-f` shorthand is available for kubectl-style experience.
 
 ```bash
-# Local file
+# Local file (kubectl-style)
+-f ops/resources/database.yaml
+
+# Local file (traditional)
 --manifest ops/resources/database.yaml
 
 # URL
@@ -305,11 +368,15 @@ Cloned IaC modules are cached in:
 ### First Deployment
 
 ```bash
-# Using Pulumi
+# Unified kubectl-style (recommended)
+project-planton validate -f database.yaml
+project-planton apply -f database.yaml
+
+# Using Pulumi directly
 project-planton validate --manifest database.yaml
 project-planton pulumi up --manifest database.yaml
 
-# Using OpenTofu
+# Using OpenTofu directly
 project-planton validate --manifest database.yaml
 project-planton tofu init --manifest database.yaml
 project-planton tofu plan --manifest database.yaml
@@ -319,9 +386,9 @@ project-planton tofu apply --manifest database.yaml
 ### Multi-Environment Deployment
 
 ```bash
-# Deploy across environments
+# Deploy across environments with unified command
 for env in dev staging prod; do
-    project-planton pulumi up \
+    project-planton apply \
         --kustomize-dir services/api/kustomize \
         --overlay $env \
         --yes
@@ -331,9 +398,9 @@ done
 ### CI/CD Deployment
 
 ```bash
-# Non-interactive with dynamic values
-project-planton pulumi up \
-  --manifest deployment.yaml \
+# Non-interactive with dynamic values (unified command)
+project-planton apply \
+  -f deployment.yaml \
   --set spec.container.image.tag=$CI_COMMIT_SHA \
   --yes
 ```

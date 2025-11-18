@@ -62,3 +62,37 @@ func PrintPulumiFailure() {
 	fmt.Printf("   %s\n", yellow("Check the above output from Pulumi CLI to understand the root cause"))
 	fmt.Println()
 }
+
+// PrintTofuSuccess prints a success message after OpenTofu execution completes
+func PrintTofuSuccess() {
+	green := color.New(color.FgGreen, color.Bold).SprintFunc()
+	fmt.Println()
+	fmt.Printf("%s %s\n", CheckMark, green("OpenTofu execution completed successfully"))
+}
+
+// PrintTofuFailure prints a failure message after OpenTofu execution fails
+func PrintTofuFailure() {
+	red := color.New(color.FgRed, color.Bold).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	fmt.Println()
+	fmt.Printf("%s %s\n", RedTick, red("OpenTofu execution failed"))
+	fmt.Printf("   %s\n", yellow("Check the above output from OpenTofu CLI to understand the root cause"))
+	fmt.Println()
+}
+
+// PrintTerraformSuccess prints a success message after Terraform execution completes
+func PrintTerraformSuccess() {
+	green := color.New(color.FgGreen, color.Bold).SprintFunc()
+	fmt.Println()
+	fmt.Printf("%s %s\n", CheckMark, green("Terraform execution completed successfully"))
+}
+
+// PrintTerraformFailure prints a failure message after Terraform execution fails
+func PrintTerraformFailure() {
+	red := color.New(color.FgRed, color.Bold).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	fmt.Println()
+	fmt.Printf("%s %s\n", RedTick, red("Terraform execution failed"))
+	fmt.Printf("   %s\n", yellow("Check the above output from Terraform CLI to understand the root cause"))
+	fmt.Println()
+}

@@ -17,35 +17,43 @@ export default function Quickstart() {
 
   const steps = [
     { id: "install", title: "1. Install", code: "brew install project-planton/tap/project-planton" },
-    { id: "validate", title: "2. Validate a manifest", code: "project-planton validate manifest.yaml" },
+    {
+      id: "manifest",
+      title: "2. Create manifest with provisioner label",
+      code: `cat > manifest.yaml <<EOF
+apiVersion: kubernetes.project-planton.org/v1
+kind: PostgresKubernetes
+metadata:
+  name: my-database
+  labels:
+    project-planton.org/provisioner: pulumi  # or tofu
+spec:
+  container:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+EOF`,
+    },
+    { id: "validate", title: "3. Validate", code: "project-planton validate -f manifest.yaml" },
     {
       id: "deploy",
-      title: "3. Deploy",
-      code: `# Pulumi (example)
-project-planton pulumi up \
-  --manifest manifest.yaml \
-  --stack myorg/myproject/dev \
-  --module-dir . \
-  --set metadata.labels.env=dev
+      title: "4. Deploy (kubectl-style! 🚀)",
+      code: `# Unified command - auto-detects provisioner from label
+project-planton apply -f manifest.yaml
 
-# OpenTofu (example)
-project-planton tofu init \
-  --manifest manifest.yaml \
-  --backend-type s3 \
-  --backend-config bucket=my-tf-state-bucket \
-  --backend-config dynamodb_table=my-tf-locks \
-  --backend-config region=us-west-2 \
-  --backend-config key=stacks/myproject/dev.tfstate
-
-project-planton tofu plan --manifest manifest.yaml
-project-planton tofu apply --manifest manifest.yaml --auto-approve`,
+# With field overrides
+project-planton apply -f manifest.yaml --set spec.container.replicas=3`,
     },
     {
       id: "destroy",
-      title: "4. Destroy (optional)",
-      code: `project-planton pulumi destroy --manifest manifest.yaml --stack myorg/myproject/dev
-# or
-project-planton tofu destroy --manifest manifest.yaml --auto-approve`,
+      title: "5. Destroy (optional)",
+      code: `# Unified command
+project-planton destroy -f manifest.yaml
+
+# Or use kubectl-style 'delete' alias
+project-planton delete -f manifest.yaml`,
     },
   ];
 
@@ -58,7 +66,7 @@ project-planton tofu destroy --manifest manifest.yaml --auto-approve`,
           </span>
         </h2>
         <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          Four simple steps to deploy your first multi-cloud infrastructure
+          Five simple steps to deploy with kubectl-style commands
         </p>
       </div>
       <div className="grid gap-6 max-w-4xl mx-auto">
@@ -97,14 +105,24 @@ project-planton tofu destroy --manifest manifest.yaml --auto-approve`,
           </Card>
         ))}
       </div>
-      <Card className="mt-8 bg-blue-950/30 border-blue-800/50">
+      <Card className="mt-8 bg-purple-950/30 border-purple-800/50">
         <CardContent className="p-6">
-          <h3 className="text-lg font-bold text-white mb-4">Prerequisites & Notes</h3>
+          <h3 className="text-lg font-bold text-white mb-4">✨ What&apos;s New</h3>
+          <ul className="text-slate-300 space-y-2">
+            <li>• <strong>kubectl-style commands</strong>: Use <code className="text-purple-400">apply</code> and <code className="text-purple-400">destroy</code> for all deployments</li>
+            <li>• <strong>Auto-detection</strong>: Provisioner automatically detected from <code className="text-purple-400">project-planton.org/provisioner</code> label</li>
+            <li>• <strong>Interactive prompts</strong>: If label is missing, CLI prompts you to choose (defaults to Pulumi)</li>
+            <li>• <strong>Backward compatible</strong>: Traditional <code className="text-purple-400">pulumi</code> and <code className="text-purple-400">tofu</code> commands still work</li>
+          </ul>
+        </CardContent>
+      </Card>
+      <Card className="mt-4 bg-blue-950/30 border-blue-800/50">
+        <CardContent className="p-6">
+          <h3 className="text-lg font-bold text-white mb-4">Prerequisites</h3>
           <ul className="text-slate-300 space-y-2">
             <li>• Provider credentials are read from environment variables (AWS_ACCESS_KEY_ID, GOOGLE_APPLICATION_CREDENTIALS, KUBECONFIG, etc.)</li>
             <li>• Pulumi and/or OpenTofu CLI must be installed separately</li>
-            <li>• OpenTofu supports backends: local, s3, gcs, azurerm</li>
-            <li>• Stack FQDN format is &lt;org&gt;/&lt;project&gt;/&lt;stack&gt;</li>
+            <li>• Supported provisioners: <code className="text-blue-400">pulumi</code>, <code className="text-blue-400">tofu</code>, <code className="text-blue-400">terraform</code></li>
           </ul>
         </CardContent>
       </Card>
