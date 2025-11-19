@@ -1,7 +1,7 @@
 locals {
-  # Router and NAT names (use metadata name for both)
-  router_name = var.metadata.name
-  nat_name    = var.metadata.name
+  # Router and NAT names from spec
+  router_name = var.spec.router_name
+  nat_name    = var.spec.nat_name
 
   # Determine NAT IP allocation strategy
   nat_ip_allocate_option = length(var.spec.nat_ip_names) > 0 ? "MANUAL_ONLY" : "AUTO_ONLY"
@@ -25,7 +25,7 @@ locals {
   gcp_labels = merge(
     {
       "resource"      = "true"
-      "resource-name" = var.metadata.name
+      "resource-name" = var.spec.router_name
       "resource-kind" = "gcprouternat"
     },
     var.metadata.org != null ? { "organization" = var.metadata.org } : {},

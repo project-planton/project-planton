@@ -3,7 +3,7 @@
 #############################################
 
 resource "google_container_cluster" "cluster" {
-  name     = var.metadata.name
+  name     = var.spec.cluster_name
   project  = var.spec.project_id.value
   location = var.spec.location
 

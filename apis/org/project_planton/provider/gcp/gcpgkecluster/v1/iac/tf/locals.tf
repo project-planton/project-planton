@@ -1,7 +1,7 @@
 locals {
-  # Create GCP labels from metadata
+  # Create GCP labels from metadata and spec
   gcp_labels = {
-    resource     = var.metadata.name
+    resource     = var.spec.cluster_name
     env          = var.metadata.env.id
     resource-id  = var.metadata.id
     resource-org = var.metadata.org

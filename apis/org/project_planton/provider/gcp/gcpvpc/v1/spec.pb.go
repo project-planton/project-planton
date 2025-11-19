@@ -83,7 +83,12 @@ type GcpVpcSpec struct {
 	// Dynamic routing mode for the VPC's Cloud Routers: REGIONAL or GLOBAL.
 	// **Default:** REGIONAL (Cloud Router adverts routes only in one region):contentReference[oaicite:5]{index=5}.
 	// Use GLOBAL only for multi-region routing needs.
-	RoutingMode   *GcpVpcRoutingMode `protobuf:"varint,3,opt,name=routing_mode,json=routingMode,proto3,enum=org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingMode,oneof" json:"routing_mode,omitempty"`
+	RoutingMode *GcpVpcRoutingMode `protobuf:"varint,3,opt,name=routing_mode,json=routingMode,proto3,enum=org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingMode,oneof" json:"routing_mode,omitempty"`
+	// Name of the VPC network to create in GCP.
+	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
+	// Must start with a lowercase letter and end with a lowercase letter or number.
+	// Example: "my-vpc-network", "prod-network"
+	NetworkName   string `protobuf:"bytes,4,opt,name=network_name,json=networkName,proto3" json:"network_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -139,17 +144,25 @@ func (x *GcpVpcSpec) GetRoutingMode() GcpVpcRoutingMode {
 	return GcpVpcRoutingMode_REGIONAL
 }
 
+func (x *GcpVpcSpec) GetNetworkName() string {
+	if x != nil {
+		return x.NetworkName
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5org/project_planton/provider/gcp/gcpvpc/v1/spec.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd0\x02\n" +
+	"5org/project_planton/provider/gcp/gcpvpc/v1/spec.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa0\x03\n" +
 	"\n" +
 	"GcpVpcSpec\x12\x83\x01\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
 	"\x17auto_create_subnetworks\x18\x02 \x01(\bR\x15autoCreateSubnetworks\x12s\n" +
-	"\frouting_mode\x18\x03 \x01(\x0e2=.org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingModeB\f\x8a\xa6\x1d\bREGIONALH\x00R\vroutingMode\x88\x01\x01B\x0f\n" +
+	"\frouting_mode\x18\x03 \x01(\x0e2=.org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingModeB\f\x8a\xa6\x1d\bREGIONALH\x00R\vroutingMode\x88\x01\x01\x12N\n" +
+	"\fnetwork_name\x18\x04 \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\vnetworkNameB\x0f\n" +
 	"\r_routing_mode*-\n" +
 	"\x11GcpVpcRoutingMode\x12\f\n" +
 	"\bREGIONAL\x10\x00\x12\n" +

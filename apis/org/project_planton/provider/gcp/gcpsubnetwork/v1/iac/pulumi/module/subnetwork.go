@@ -60,7 +60,7 @@ func subnetwork(ctx *pulumi.Context,
 	createdSubnetwork, err := compute.NewSubnetwork(ctx,
 		"subnetwork",
 		&compute.SubnetworkArgs{
-			Name:                  pulumi.String(locals.GcpSubnetwork.Metadata.Name),
+			Name:                  pulumi.String(locals.GcpSubnetwork.Spec.SubnetworkName),
 			Project:               pulumi.StringPtr(locals.GcpSubnetwork.Spec.ProjectId.GetValue()),
 			Region:                pulumi.String(locals.GcpSubnetwork.Spec.Region),
 			Network:               pulumi.String(locals.GcpSubnetwork.Spec.VpcSelfLink.GetValue()),

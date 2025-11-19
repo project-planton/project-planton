@@ -5,7 +5,7 @@ locals {
   resource_id = (
     var.metadata.id != null && var.metadata.id != ""
     ? var.metadata.id
-    : var.metadata.name
+    : var.spec.bucket_name
   )
 
   # Base labels

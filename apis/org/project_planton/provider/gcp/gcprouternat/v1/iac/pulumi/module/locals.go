@@ -25,7 +25,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *gcprouternatv1.GcpRouterNat
 
 	labels := map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: target.Metadata.Name,
+		gcplabelkeys.ResourceName: target.Spec.RouterName,
 		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpRouterNat.String()),
 	}
 

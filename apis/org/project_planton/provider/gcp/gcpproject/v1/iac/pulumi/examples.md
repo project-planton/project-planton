@@ -16,8 +16,8 @@ project-planton terraform apply --manifest <yaml-path> --stack <stack-name>
 
 ## Basic Example (Organization as Parent)
 
-This example creates a Google Cloud project under an organization ID, links a billing account, and enables one API. Note
-that you must specify exactly one of `orgId` or `folderId`.
+This example creates a Google Cloud project under an organization ID, links a billing account, and enables one API.
+The project_id is used directly without a random suffix.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -26,8 +26,8 @@ metadata:
   name: my-basic-gcp-project
 spec:
   projectId: my-basic-12345
-  name: My Basic Project
-  orgId: "987654321012"
+  parentType: organization
+  parentId: "987654321012"
   billingAccountId: "0123AB-4567CD-89EFGH"
   enabledApis:
     - "compute.googleapis.com"
@@ -45,12 +45,32 @@ kind: GcpProject
 metadata:
   name: my-folder-gcp-project
 spec:
-  projectId: my-folder-proj-9876
-  name: Folder Parent Project
-  folderId: "345678901234"
+  projectId: my-folder-proj
+  parentType: folder
+  parentId: "345678901234"
   billingAccountId: "0123AB-4567CD-89EFGH"
   enabledApis:
     - "storage.googleapis.com"
+```
+
+---
+
+## Example with Random Suffix
+
+This example enables the add_suffix option to append a random 3-character suffix to the project_id,
+useful for temporary or test projects where uniqueness needs to be guaranteed.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpProject
+metadata:
+  name: test-project-with-suffix
+spec:
+  projectId: test-project
+  addSuffix: true
+  parentType: organization
+  parentId: "123456789012"
+  billingAccountId: "0123AB-4567CD-89EFGH"
 ```
 
 ---
@@ -66,9 +86,9 @@ kind: GcpProject
 metadata:
   name: multi-api-and-labels
 spec:
-  projectId: multi-api-labels-1234
-  name: Multi API Labels Project
-  orgId: "123456789012"
+  projectId: multi-api-labels
+  parentType: organization
+  parentId: "123456789012"
   billingAccountId: "0123AB-4567CD-89EFGH"
   labels:
     env: "dev"
@@ -93,9 +113,10 @@ metadata:
   name: gcp-project-with-owner
 spec:
   projectId: with-owner-123
-  name: ProjectWithOwner
-  orgId: "123456789012"
-  ownerMember: "user:devops@example.com"
+  parentType: organization
+  parentId: "123456789012"
+  billingAccountId: "0123AB-4567CD-89EFGH"
+  ownerMember: "devops@example.com"
   enabledApis:
     - "compute.googleapis.com"
 ```

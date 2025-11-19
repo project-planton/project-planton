@@ -15,7 +15,7 @@ func iam(ctx *pulumi.Context, locals *Locals, createdProject *organizations.Proj
 	// Optionally assign an owner IAM member
 	if locals.GcpProject.Spec.OwnerMember != "" {
 		_, iamErr := projects.NewIAMMember(ctx,
-			fmt.Sprintf("%s-owner-binding", locals.GcpProject.Metadata.Name),
+			fmt.Sprintf("%s-owner-binding", locals.GcpProject.Spec.ProjectId),
 			&projects.IAMMemberArgs{
 				Project: createdProject.ProjectId,
 				Role:    pulumi.String("roles/owner"),

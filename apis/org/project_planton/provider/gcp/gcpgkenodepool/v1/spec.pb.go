@@ -58,7 +58,12 @@ type GcpGkeNodePoolSpec struct {
 	//
 	//	*GcpGkeNodePoolSpec_NodeCount
 	//	*GcpGkeNodePoolSpec_Autoscaling
-	NodePoolSize  isGcpGkeNodePoolSpec_NodePoolSize `protobuf_oneof:"node_pool_size"`
+	NodePoolSize isGcpGkeNodePoolSpec_NodePoolSize `protobuf_oneof:"node_pool_size"`
+	// Name of the node pool to create in the GKE cluster.
+	// Must be 1-40 characters, lowercase letters, numbers, or hyphens.
+	// Must start with a lowercase letter and end with a lowercase letter or number.
+	// Example: "default-pool", "high-memory-pool"
+	NodePoolName  string `protobuf:"bytes,11,opt,name=node_pool_name,json=nodePoolName,proto3" json:"node_pool_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -186,6 +191,13 @@ func (x *GcpGkeNodePoolSpec) GetAutoscaling() *GcpGkeNodePoolAutoscaling {
 		}
 	}
 	return nil
+}
+
+func (x *GcpGkeNodePoolSpec) GetNodePoolName() string {
+	if x != nil {
+		return x.NodePoolName
+	}
+	return ""
 }
 
 type isGcpGkeNodePoolSpec_NodePoolSize interface {
@@ -329,7 +341,7 @@ var File_org_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto protorefl
 
 const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=org/project_planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x122org.project_planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd1\b\n" +
+	"=org/project_planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x122org.project_planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa4\t\n" +
 	"\x12GcpGkeNodePoolSpec\x12\x88\x01\n" +
 	"\x12cluster_project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1e\xbaH\x03\xc8\x01\x01\x88\xd4a\xdf\x04\x92\xd4a\x0fspec.project_idR\x10clusterProjectId\x12{\n" +
 	"\fcluster_name\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xdf\x04\x92\xd4a\rmetadata.nameR\vclusterName\x125\n" +
@@ -349,7 +361,8 @@ const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc
 	"nodeLabels\x12\x1f\n" +
 	"\n" +
 	"node_count\x18d \x01(\rH\x00R\tnodeCount\x12q\n" +
-	"\vautoscaling\x18e \x01(\v2M.org.project_planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolAutoscalingH\x00R\vautoscaling\x1a=\n" +
+	"\vautoscaling\x18e \x01(\v2M.org.project_planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolAutoscalingH\x00R\vautoscaling\x12Q\n" +
+	"\x0enode_pool_name\x18\v \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$R\fnodePoolName\x1a=\n" +
 	"\x0fNodeLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x10\n" +

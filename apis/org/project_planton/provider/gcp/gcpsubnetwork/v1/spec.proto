@@ -43,6 +43,15 @@ message GcpSubnetworkSpec {
   // Whether to enable Private Google Access on this subnet.
   // If true, VMs without external IPs in this subnet can access Google APIs internally:contentReference[oaicite:11]{index=11}.
   bool private_ip_google_access = 6;
+
+  // Name of the subnetwork to create in GCP.
+  // Must be 1-63 characters, lowercase letters, numbers, or hyphens.
+  // Must start with a lowercase letter and end with a lowercase letter or number.
+  // Example: "my-subnet", "prod-uswest1-subnet"
+  string subnetwork_name = 7 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$"
+  ];
 }
 
 // Define the structure for a secondary IP range.

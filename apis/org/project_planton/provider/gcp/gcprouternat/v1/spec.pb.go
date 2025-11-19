@@ -92,7 +92,17 @@ type GcpRouterNatSpec struct {
 	// **Default:** ERRORS_ONLY (recommended for production to detect port exhaustion and connection failures).
 	// Use DISABLED for non-production environments to reduce costs.
 	// Use ALL for security auditing or detailed troubleshooting (generates significant log volume).
-	LogFilter     *GcpRouterNatLogFilter `protobuf:"varint,5,opt,name=log_filter,json=logFilter,proto3,enum=org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilter,oneof" json:"log_filter,omitempty"`
+	LogFilter *GcpRouterNatLogFilter `protobuf:"varint,5,opt,name=log_filter,json=logFilter,proto3,enum=org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilter,oneof" json:"log_filter,omitempty"`
+	// Name of the Cloud Router to create in GCP.
+	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
+	// Must start with a lowercase letter and end with a lowercase letter or number.
+	// Example: "my-router", "prod-uswest1-router"
+	RouterName string `protobuf:"bytes,6,opt,name=router_name,json=routerName,proto3" json:"router_name,omitempty"`
+	// Name of the NAT configuration on the Cloud Router.
+	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
+	// Must start with a lowercase letter and end with a lowercase letter or number.
+	// Example: "my-nat", "prod-nat-config"
+	NatName       string `protobuf:"bytes,7,opt,name=nat_name,json=natName,proto3" json:"nat_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -162,11 +172,25 @@ func (x *GcpRouterNatSpec) GetLogFilter() GcpRouterNatLogFilter {
 	return GcpRouterNatLogFilter_DISABLED
 }
 
+func (x *GcpRouterNatSpec) GetRouterName() string {
+	if x != nil {
+		return x.RouterName
+	}
+	return ""
+}
+
+func (x *GcpRouterNatSpec) GetNatName() string {
+	if x != nil {
+		return x.NatName
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";org/project_planton/provider/gcp/gcprouternat/v1/spec.proto\x120org.project_planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x9f\x04\n" +
+	";org/project_planton/provider/gcp/gcprouternat/v1/spec.proto\x120org.project_planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xb5\x05\n" +
 	"\x10GcpRouterNatSpec\x12\x8f\x01\n" +
 	"\rvpc_self_link\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12\x1e\n" +
 	"\x06region\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12n\n" +
@@ -174,7 +198,10 @@ const file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDesc =
 	"\fnat_ip_names\x18\x04 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\n" +
 	"natIpNames\x12|\n" +
 	"\n" +
-	"log_filter\x18\x05 \x01(\x0e2G.org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilterB\x0f\x8a\xa6\x1d\vERRORS_ONLYH\x00R\tlogFilter\x88\x01\x01B\r\n" +
+	"log_filter\x18\x05 \x01(\x0e2G.org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilterB\x0f\x8a\xa6\x1d\vERRORS_ONLYH\x00R\tlogFilter\x88\x01\x01\x12L\n" +
+	"\vrouter_name\x18\x06 \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\n" +
+	"routerName\x12F\n" +
+	"\bnat_name\x18\a \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\anatNameB\r\n" +
 	"\v_log_filter*?\n" +
 	"\x15GcpRouterNatLogFilter\x12\f\n" +
 	"\bDISABLED\x10\x00\x12\x0f\n" +

@@ -99,7 +99,7 @@ func nodePool(ctx *pulumi.Context,
 	// ----- Create the node‑pool -----------------------------------------
 
 	createdNodePool, err := container.NewNodePool(ctx,
-		locals.GcpGkeNodePool.Metadata.Name,
+		locals.GcpGkeNodePool.Spec.NodePoolName,
 		&container.NodePoolArgs{
 			Cluster:     pulumi.String(clusterInfo.Name),
 			Location:    pulumi.String(*clusterInfo.Location),

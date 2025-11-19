@@ -3,6 +3,6 @@ kind: GcpGcsBucket
 metadata:
   name: project-planton-test-gcp-gcs-bucket
 spec:
-  gcpProjectId: planton-cloud-public-downloads
-  gcpRegion: asia-south1
-  isPublic: false
+  gcp_project_id: planton-cloud-public-downloads
+  location: asia-south1
+  bucket_name: project-planton-test-bucket

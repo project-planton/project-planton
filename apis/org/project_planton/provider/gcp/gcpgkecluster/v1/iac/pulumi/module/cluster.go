@@ -42,7 +42,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	createdCluster, err := container.NewCluster(ctx,
 		"cluster",
 		&container.ClusterArgs{
-			Name:                  pulumi.String(locals.GcpGkeCluster.Metadata.Name),
+			Name:                  pulumi.String(locals.GcpGkeCluster.Spec.ClusterName),
 			Project:               pulumi.String(locals.GcpGkeCluster.Spec.ProjectId.GetValue()),
 			Location:              pulumi.String(locals.GcpGkeCluster.Spec.Location),
 			Subnetwork:            pulumi.String(locals.GcpGkeCluster.Spec.SubnetworkSelfLink.GetValue()),

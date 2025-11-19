@@ -29,6 +29,7 @@ var _ = ginkgo.Describe("GcpGcsBucketSpec Custom Validation Tests", func() {
 					Spec: &GcpGcsBucketSpec{
 						GcpProjectId:                    "test-project-123",
 						Location:                        "us-central1",
+						BucketName:                      "test-bucket-123",
 						UniformBucketLevelAccessEnabled: true,
 					},
 				}

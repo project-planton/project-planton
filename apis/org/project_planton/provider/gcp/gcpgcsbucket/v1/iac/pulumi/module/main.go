@@ -23,7 +23,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 		ForceDestroy:             pulumi.Bool(true),
 		Labels:                   pulumi.ToStringMap(locals.GcpLabels),
 		Location:                 pulumi.String(locals.GcpGcsBucket.Spec.Location),
-		Name:                     pulumi.String(locals.GcpGcsBucket.Metadata.Name),
+		Name:                     pulumi.String(locals.GcpGcsBucket.Spec.BucketName),
 		Project:                  pulumi.String(locals.GcpGcsBucket.Spec.GcpProjectId),
 		UniformBucketLevelAccess: pulumi.Bool(locals.GcpGcsBucket.Spec.UniformBucketLevelAccessEnabled),
 	}
@@ -102,7 +102,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 
 	// Create the bucket
 	createdBucket, err := storage.NewBucket(ctx,
-		locals.GcpGcsBucket.Metadata.Name,
+		locals.GcpGcsBucket.Spec.BucketName,
 		bucketArgs,
 		pulumi.Provider(gcpProvider))
 	if err != nil {
@@ -129,7 +129,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 			}
 
 			_, err = storage.NewBucketIAMBinding(ctx,
-				fmt.Sprintf("%s-iam-%d", locals.GcpGcsBucket.Metadata.Name, i),
+				fmt.Sprintf("%s-iam-%d", locals.GcpGcsBucket.Spec.BucketName, i),
 				iamBindingArgs,
 				pulumi.Parent(createdBucket),
 				pulumi.Provider(gcpProvider))

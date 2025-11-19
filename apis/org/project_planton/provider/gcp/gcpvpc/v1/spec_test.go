@@ -32,10 +32,46 @@ var _ = ginkgo.Describe("GcpVpcSpec Custom Validation Tests", func() {
 						ProjectId: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
 						},
+						NetworkName: "test-vpc-network",
 					},
 				}
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should return a validation error when network_name is missing", func() {
+				input := &GcpVpc{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpVpc",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-gcp-vpc",
+					},
+					Spec: &GcpVpcSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+
+			ginkgo.It("should return a validation error when network_name has invalid format", func() {
+				input := &GcpVpc{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpVpc",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-gcp-vpc",
+					},
+					Spec: &GcpVpcSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						NetworkName: "INVALID-NAME", // uppercase not allowed
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 	})

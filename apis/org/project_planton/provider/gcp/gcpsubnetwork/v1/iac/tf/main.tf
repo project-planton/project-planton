@@ -9,7 +9,7 @@ resource "google_project_service" "compute_api" {
 
 # Create the GCP Subnetwork in custom mode VPC
 resource "google_compute_subnetwork" "main" {
-  name          = var.metadata.name
+  name          = var.spec.subnetwork_name
   project       = var.spec.project_id
   region        = var.spec.region
   network       = var.spec.vpc_self_link
