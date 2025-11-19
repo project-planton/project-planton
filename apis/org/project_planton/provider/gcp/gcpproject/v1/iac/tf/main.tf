@@ -1,7 +1,10 @@
 # main.tf - GCP Project resource definitions
 
 # Generate a random 3-character suffix for project_id uniqueness
+# Only created when add_suffix is true
 resource "random_string" "project_suffix" {
+  count = var.spec.add_suffix ? 1 : 0
+
   length  = 3
   special = false
   upper   = false

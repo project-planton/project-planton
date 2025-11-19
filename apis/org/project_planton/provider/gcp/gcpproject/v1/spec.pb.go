@@ -83,23 +83,32 @@ func (GcpProjectParentType) EnumDescriptor() ([]byte, []int) {
 // constraints, etc.—should be handled by dedicated resources.
 type GcpProjectSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unique project ID for the GCP project. Must be 6-30 characters long,
+	// contain only lowercase letters, digits, and hyphens, must start with
+	// a letter, and cannot end with a hyphen. This ID is globally unique
+	// across all GCP projects.
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// If true, a random 3-character suffix will be appended to the project_id
+	// to ensure uniqueness across multiple deployments. This is useful when
+	// creating temporary or test projects. Defaults to false.
+	AddSuffix *bool `protobuf:"varint,2,opt,name=add_suffix,json=addSuffix,proto3,oneof" json:"add_suffix,omitempty"`
 	// The type of parent resource under which the project is created.
-	ParentType GcpProjectParentType `protobuf:"varint,1,opt,name=parent_type,json=parentType,proto3,enum=org.project_planton.provider.gcp.gcpproject.v1.GcpProjectParentType" json:"parent_type,omitempty"`
+	ParentType GcpProjectParentType `protobuf:"varint,3,opt,name=parent_type,json=parentType,proto3,enum=org.project_planton.provider.gcp.gcpproject.v1.GcpProjectParentType" json:"parent_type,omitempty"`
 	// Organization ID/Folder ID (numeric string) under which the project is created.
-	ParentId string `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	ParentId string `protobuf:"bytes,4,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Billing account ID in the form "0123AB-4567CD-89EFGH".
 	// Strongly recommended for any project that will use billable services.
-	BillingAccountId string `protobuf:"bytes,3,opt,name=billing_account_id,json=billingAccountId,proto3" json:"billing_account_id,omitempty"`
+	BillingAccountId string `protobuf:"bytes,5,opt,name=billing_account_id,json=billingAccountId,proto3" json:"billing_account_id,omitempty"`
 	// Key/value metadata labels for cost allocation and governance.
 	// GCP label keys must be <= 63 chars, lowercase letters, digits, or underscores.
-	Labels map[string]string `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// If true, the auto-created "default" VPC network is deleted immediately
 	// after project creation. Disabling the default network is a common
 	// security hardening step.
-	DisableDefaultNetwork *bool `protobuf:"varint,5,opt,name=disable_default_network,json=disableDefaultNetwork,proto3,oneof" json:"disable_default_network,omitempty"`
+	DisableDefaultNetwork *bool `protobuf:"varint,7,opt,name=disable_default_network,json=disableDefaultNetwork,proto3,oneof" json:"disable_default_network,omitempty"`
 	// List of Cloud APIs to enable (e.g. "compute.googleapis.com").
 	// Each entry must end with ".googleapis.com".
-	EnabledApis []string `protobuf:"bytes,6,rep,name=enabled_apis,json=enabledApis,proto3" json:"enabled_apis,omitempty"`
+	EnabledApis []string `protobuf:"bytes,8,rep,name=enabled_apis,json=enabledApis,proto3" json:"enabled_apis,omitempty"`
 	// Optional IAM member (user / group / serviceAccount) to be granted
 	// the Owner role at project creation.
 	// Examples:
@@ -107,7 +116,7 @@ type GcpProjectSpec struct {
 	//	"group:devops-admins@example.com"
 	//	"user:alice@example.com"
 	//	"serviceAccount:ci-automation@example.iam.gserviceaccount.com"
-	OwnerMember   string `protobuf:"bytes,7,opt,name=owner_member,json=ownerMember,proto3" json:"owner_member,omitempty"`
+	OwnerMember   string `protobuf:"bytes,9,opt,name=owner_member,json=ownerMember,proto3" json:"owner_member,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -140,6 +149,20 @@ func (x *GcpProjectSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GcpProjectSpec.ProtoReflect.Descriptor instead.
 func (*GcpProjectSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GcpProjectSpec) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *GcpProjectSpec) GetAddSuffix() bool {
+	if x != nil && x.AddSuffix != nil {
+		return *x.AddSuffix
+	}
+	return false
 }
 
 func (x *GcpProjectSpec) GetParentType() GcpProjectParentType {
@@ -195,20 +218,25 @@ var File_org_project_planton_provider_gcp_gcpproject_v1_spec_proto protoreflect.
 
 const file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9org/project_planton/provider/gcp/gcpproject/v1/spec.proto\x12.org.project_planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xee\x04\n" +
-	"\x0eGcpProjectSpec\x12e\n" +
-	"\vparent_type\x18\x01 \x01(\x0e2D.org.project_planton.provider.gcp.gcpproject.v1.GcpProjectParentTypeR\n" +
+	"9org/project_planton/provider/gcp/gcpproject/v1/spec.proto\x12.org.project_planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xf4\x05\n" +
+	"\x0eGcpProjectSpec\x12F\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tB'\xbaH$\xc8\x01\x01r\x1f\x10\x06\x18\x1e2\x19^[a-z][a-z0-9-]*[a-z0-9]$R\tprojectId\x12-\n" +
+	"\n" +
+	"add_suffix\x18\x02 \x01(\bB\t\x8a\xa6\x1d\x05falseH\x00R\taddSuffix\x88\x01\x01\x12e\n" +
+	"\vparent_type\x18\x03 \x01(\x0e2D.org.project_planton.provider.gcp.gcpproject.v1.GcpProjectParentTypeR\n" +
 	"parentType\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\x12Z\n" +
-	"\x12billing_account_id\x18\x03 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12b\n" +
-	"\x06labels\x18\x04 \x03(\v2J.org.project_planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12E\n" +
-	"\x17disable_default_network\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x00R\x15disableDefaultNetwork\x88\x01\x01\x12K\n" +
-	"\fenabled_apis\x18\x06 \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12-\n" +
-	"\fowner_member\x18\a \x01(\tB\n" +
+	"\tparent_id\x18\x04 \x01(\tR\bparentId\x12Z\n" +
+	"\x12billing_account_id\x18\x05 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12b\n" +
+	"\x06labels\x18\x06 \x03(\v2J.org.project_planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12E\n" +
+	"\x17disable_default_network\x18\a \x01(\bB\b\x8a\xa6\x1d\x04trueH\x01R\x15disableDefaultNetwork\x88\x01\x01\x12K\n" +
+	"\fenabled_apis\x18\b \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12-\n" +
+	"\fowner_member\x18\t \x01(\tB\n" +
 	"\xbaH\a\xd8\x01\x01r\x02`\x01R\vownerMember\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x1a\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\r\n" +
+	"\v_add_suffixB\x1a\n" +
 	"\x18_disable_default_network*]\n" +
 	"\x14GcpProjectParentType\x12'\n" +
 	"#gcp_project_parent_type_unspecified\x10\x00\x12\x10\n" +

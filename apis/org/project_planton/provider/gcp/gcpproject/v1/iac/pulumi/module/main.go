@@ -7,7 +7,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources provisions a GCP Project, generating its project ID with a 3-char suffix.
+// Resources provisions a GCP Project using the project_id from spec.
+// Optionally appends a 3-char random suffix if spec.add_suffix is true.
 func Resources(ctx *pulumi.Context, stackInput *gcpprojectv1.GcpProjectStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 

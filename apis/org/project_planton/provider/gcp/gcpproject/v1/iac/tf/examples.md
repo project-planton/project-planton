@@ -2,6 +2,13 @@
 
 This document provides Terraform HCL examples for using the GCP Project module.
 
+## Important Notes
+
+- **project_id** is now a required field and must be specified in the spec
+- The **add_suffix** field (optional, defaults to false) controls whether a random 3-character suffix is appended to the project_id
+- When add_suffix is false (default), the project_id is used as-is
+- When add_suffix is true, a random suffix like "-xyz" is appended for uniqueness
+
 ---
 
 ## Example 1: Minimal Development Project
@@ -17,6 +24,7 @@ module "dev_sandbox" {
   }
 
   spec = {
+    project_id              = "dev-sandbox-proj"
     parent_type             = "folder"
     parent_id               = "123456789012"
     billing_account_id      = "ABCDEF-123456-ABCDEF"
@@ -29,7 +37,7 @@ module "dev_sandbox" {
       "compute.googleapis.com",
       "storage.googleapis.com"
     ]
-    owner_member = "user:alice@example.com"
+    owner_member = "alice@example.com"
   }
 }
 
@@ -61,6 +69,7 @@ module "staging_api_service" {
   }
 
   spec = {
+    project_id              = "staging-api-svc"
     parent_type             = "folder"
     parent_id               = "234567890123"
     billing_account_id      = "ABCDEF-123456-ABCDEF"
@@ -79,7 +88,7 @@ module "staging_api_service" {
       "iam.googleapis.com",
       "iamcredentials.googleapis.com"
     ]
-    owner_member = "group:devops-staging@example.com"
+    owner_member = "devops-staging@example.com"
   }
 }
 
@@ -109,6 +118,7 @@ module "prod_payment_processing" {
   }
 
   spec = {
+    project_id              = "prod-payment-proc"
     parent_type             = "folder"
     parent_id               = "345678901234"
     billing_account_id      = "ABCDEF-123456-ABCDEF"
@@ -135,7 +145,7 @@ module "prod_payment_processing" {
       "dns.googleapis.com",
       "secretmanager.googleapis.com"
     ]
-    owner_member = "group:platform-admins@example.com"
+    owner_member = "platform-admins@example.com"
   }
 }
 
@@ -166,6 +176,7 @@ module "shared_networking" {
   }
 
   spec = {
+    project_id              = "shared-networking"
     parent_type             = "organization"
     parent_id               = "987654321098"
     billing_account_id      = "ABCDEF-123456-ABCDEF"
@@ -180,8 +191,48 @@ module "shared_networking" {
       "dns.googleapis.com",
       "servicenetworking.googleapis.com"
     ]
-    owner_member = "group:network-admins@example.com"
+    owner_member = "network-admins@example.com"
   }
+}
+```
+
+---
+
+## Example 4b: Project with Random Suffix (add_suffix = true)
+
+This example demonstrates using add_suffix to automatically append a random 3-character 
+suffix to the project_id. Useful for testing or temporary projects where uniqueness must be guaranteed.
+
+```hcl
+module "test_project" {
+  source = "../../tf"
+
+  metadata = {
+    name = "test-ephemeral"
+    org  = "example-org"
+    env  = "test"
+  }
+
+  spec = {
+    project_id              = "test-proj"
+    add_suffix              = true  # Will create project_id like "test-proj-abc"
+    parent_type             = "folder"
+    parent_id               = "987654321098"
+    billing_account_id      = "ABCDEF-123456-ABCDEF"
+    labels = {
+      env  = "test"
+      team = "qa"
+    }
+    disable_default_network = false
+    enabled_apis = [
+      "compute.googleapis.com"
+    ]
+  }
+}
+
+output "actual_project_id" {
+  value       = module.test_project.project_id
+  description = "The actual project ID with suffix (e.g., test-proj-xyz)"
 }
 ```
 

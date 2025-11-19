@@ -13,7 +13,7 @@ import (
 func apis(ctx *pulumi.Context, locals *Locals, createdProject *organizations.Project, gcpProvider *gcp.Provider) error {
 	// Enable specified APIs
 	for _, api := range locals.GcpProject.Spec.EnabledApis {
-		serviceName := fmt.Sprintf("%s-enable-%s", locals.GcpProject.Metadata.Name, api)
+		serviceName := fmt.Sprintf("%s-enable-%s", locals.GcpProject.Spec.ProjectId, api)
 		_, srvErr := projects.NewService(ctx, serviceName, &projects.ServiceArgs{
 			Project:                  createdProject.ProjectId,
 			Service:                  pulumi.String(api),

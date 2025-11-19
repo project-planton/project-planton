@@ -14,6 +14,8 @@ variable "metadata" {
 variable "spec" {
   description = "GCP Project specification"
   type = object({
+    project_id              = string                 # Unique GCP project ID (6-30 chars, lowercase, letters/digits/hyphens, must start with letter)
+    add_suffix              = optional(bool)         # If true, append random 3-char suffix to project_id (default: false)
     parent_type             = string                 # "organization" or "folder"
     parent_id               = string                 # Organization ID or Folder ID (numeric string)
     billing_account_id      = string                 # Format: "XXXXXX-XXXXXX-XXXXXX"

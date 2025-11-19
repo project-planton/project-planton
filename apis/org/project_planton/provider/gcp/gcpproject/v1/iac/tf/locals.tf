@@ -1,35 +1,10 @@
 # locals.tf - Local value transformations for GCP Project
 
 locals {
-  # Generate a random 3-character suffix for globally unique project_id
-  # Project ID format: <metadata.name>-<3-char-suffix>
-  # Ensures no collisions even if someone else used the same name before
-  project_id_suffix = random_string.project_suffix.result
-
-  # Make metadata.name safe for GCP project_id constraints:
-  # - lowercase letters, digits, hyphens only
-  # - must start with letter
-  # - 6-30 chars total
-  # - cannot end with hyphen
-  safe_name = lower(
-    replace(
-      replace(var.metadata.name, "_", "-"), # Replace underscores with hyphens
-      "/[^a-z0-9-]/", "-"                   # Replace any invalid chars with hyphen
-    )
-  )
-
-  # Ensure safe_name starts with a letter
-  safe_name_prefix = can(regex("^[a-z]", local.safe_name)) ? local.safe_name : "p${local.safe_name}"
-
-  # Trim to leave space for suffix ("-xyz")
-  # Max length is 30, minus 4 for "-xyz" = 26 chars for name
-  safe_name_trimmed = substr(local.safe_name_prefix, 0, min(length(local.safe_name_prefix), 26))
-
-  # Remove trailing hyphens if any
-  safe_name_clean = trimright(local.safe_name_trimmed, "-")
-
-  # Final project_id with suffix
-  project_id = "${local.safe_name_clean}-${local.project_id_suffix}"
+  # Use project_id from spec, optionally with random suffix if add_suffix is true
+  # If add_suffix is true, append a random 3-character suffix for uniqueness
+  # If add_suffix is false (default), use project_id as-is
+  project_id = var.spec.add_suffix ? "${var.spec.project_id}-${random_string.project_suffix[0].result}" : var.spec.project_id
 
   # GCP labels: merge user-provided labels with standard Planton labels
   # User labels come first, then standard labels (which override if there's a conflict)
