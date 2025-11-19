@@ -165,9 +165,12 @@ type GcpCloudRunSpec struct {
 	// GEN2 offers full Linux compatibility but slower cold starts.
 	ExecutionEnvironment GcpCloudRunExecutionEnvironment `protobuf:"varint,12,opt,name=execution_environment,json=executionEnvironment,proto3,enum=org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironment" json:"execution_environment,omitempty"`
 	// Custom DNS mapping for the Cloud Run service.
-	Dns           *GcpCloudRunDns `protobuf:"bytes,6,opt,name=dns,proto3" json:"dns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Dns *GcpCloudRunDns `protobuf:"bytes,6,opt,name=dns,proto3" json:"dns,omitempty"`
+	// If true, prevents accidental deletion of the Cloud Run service.
+	// When enabled, the service cannot be deleted until this flag is set to false.
+	DeleteProtection bool `protobuf:"varint,13,opt,name=delete_protection,json=deleteProtection,proto3" json:"delete_protection,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *GcpCloudRunSpec) Reset() {
@@ -282,6 +285,13 @@ func (x *GcpCloudRunSpec) GetDns() *GcpCloudRunDns {
 		return x.Dns
 	}
 	return nil
+}
+
+func (x *GcpCloudRunSpec) GetDeleteProtection() bool {
+	if x != nil {
+		return x.DeleteProtection
+	}
+	return false
 }
 
 // GcpCloudRunContainer groups image, resources, environment, and port settings
@@ -676,7 +686,7 @@ var File_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto protoreflect
 
 const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xde\b\n" +
+	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\x96\t\n" +
 	"\x0fGcpCloudRunSpec\x12G\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
@@ -694,7 +704,8 @@ const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = 
 	"\n" +
 	"vpc_access\x18\v \x01(\v2E.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccessR\tvpcAccess\x12\xa5\x01\n" +
 	"\x15execution_environment\x18\f \x01(\x0e2P.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironmentB\x1e\x92\xa6\x1d\x1aEXECUTION_ENVIRONMENT_GEN2R\x14executionEnvironment\x12Q\n" +
-	"\x03dns\x18\x06 \x01(\v2?.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDnsR\x03dns\"\xbf\x03\n" +
+	"\x03dns\x18\x06 \x01(\v2?.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDnsR\x03dns\x126\n" +
+	"\x11delete_protection\x18\r \x01(\bB\t\x92\xa6\x1d\x05falseR\x10deleteProtection\"\xbf\x03\n" +
 	"\x14GcpCloudRunContainer\x12`\n" +
 	"\x05image\x18\x01 \x01(\v2J.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImageR\x05image\x12Z\n" +
 	"\x03env\x18\x02 \x01(\v2H.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnvR\x03env\x12\x1f\n" +

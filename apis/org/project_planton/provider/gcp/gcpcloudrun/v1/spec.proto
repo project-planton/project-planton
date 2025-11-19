@@ -79,6 +79,10 @@ message GcpCloudRunSpec {
 
   // Custom DNS mapping for the Cloud Run service.
   GcpCloudRunDns dns = 6;
+
+  // If true, prevents accidental deletion of the Cloud Run service.
+  // When enabled, the service cannot be deleted until this flag is set to false.
+  bool delete_protection = 13 [(org.project_planton.shared.options.recommended_default) = "false"];
 }
 
 /*

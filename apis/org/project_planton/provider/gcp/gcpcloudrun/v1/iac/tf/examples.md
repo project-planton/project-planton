@@ -132,6 +132,83 @@ output "latest_revision" {
 
 ---
 
+## Production Service with Deletion Protection
+
+Critical production service with deletion protection enabled to prevent accidental deletion.
+
+```hcl
+module "critical_service" {
+  source = "./iac/tf"
+
+  metadata = {
+    name = "payment-processor"
+    id   = "pay-prod-001"
+    org  = "finance-corp"
+    env  = "production"
+    labels = {
+      tier        = "critical"
+      compliance  = "pci-dss"
+      cost_center = "payments"
+    }
+  }
+
+  spec = {
+    project_id     = "finance-prod-123"
+    region         = "us-central1"
+    service_account = "payment-sa@finance-prod-123.iam.gserviceaccount.com"
+
+    container = {
+      image = {
+        repo = "us-docker.pkg.dev/finance-prod-123/services/payment"
+        tag  = "v2.5.1"
+      }
+
+      env = {
+        variables = {
+          ENV              = "production"
+          TRANSACTION_MODE = "live"
+        }
+        secrets = {
+          STRIPE_KEY       = "projects/finance-prod-123/secrets/stripe-key:latest"
+          DATABASE_URL     = "projects/finance-prod-123/secrets/db-url:latest"
+          ENCRYPTION_KEY   = "projects/finance-prod-123/secrets/enc-key:latest"
+        }
+      }
+
+      port   = 8080
+      cpu    = 4
+      memory = 4096
+      replicas = {
+        min = 5  # Always warm for critical service
+        max = 100
+      }
+    }
+
+    max_concurrency       = 80
+    timeout_seconds       = 300
+    allow_unauthenticated = false
+
+    # Enable deletion protection for critical production service
+    # Must be set to false before the service can be deleted
+    delete_protection = true
+  }
+}
+
+output "service_url" {
+  value = module.critical_service.url
+}
+
+output "service_name" {
+  value = module.critical_service.service_name
+}
+```
+
+**Use case:** Critical production service (e.g., payment processing) where accidental deletion would cause significant business impact. Deletion protection ensures the service cannot be deleted until explicitly disabled.
+
+**Note:** To delete a service with deletion protection enabled, you must first set `delete_protection = false` and apply the change, then destroy the resource.
+
+---
+
 ## Custom DNS Domain Mapping
 
 Deploy a service with custom domain mapping and SSL certificate.

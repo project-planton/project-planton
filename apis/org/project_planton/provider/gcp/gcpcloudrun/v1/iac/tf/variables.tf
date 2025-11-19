@@ -86,5 +86,8 @@ variable "spec" {
       hostnames    = list(string) # List of custom hostnames
       managed_zone = string       # Cloud DNS managed zone for verification
     }))
+
+    # Optional: Deletion protection to prevent accidental deletion (default false)
+    delete_protection = optional(bool, false)
   })
 }
