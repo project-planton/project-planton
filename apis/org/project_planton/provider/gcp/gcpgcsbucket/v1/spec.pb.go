@@ -155,7 +155,14 @@ type GcpGcsBucketSpec struct {
 	// Custom labels for the bucket (cost tracking, governance, compliance).
 	// These are merged with auto-generated labels (planton-cloud-resource-*).
 	// Optional.
-	GcpLabels     map[string]string `protobuf:"bytes,15,rep,name=gcp_labels,json=gcpLabels,proto3" json:"gcp_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	GcpLabels map[string]string `protobuf:"bytes,15,rep,name=gcp_labels,json=gcpLabels,proto3" json:"gcp_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Name of the GCS bucket to create in GCP.
+	// Must be globally unique across all GCP projects.
+	// Must be 3-63 characters, lowercase letters, numbers, hyphens, or dots.
+	// Must start and end with a lowercase letter or number.
+	// Cannot contain consecutive dots or be formatted as an IP address.
+	// Example: "my-bucket-prod", "company-data-archive"
+	BucketName    string `protobuf:"bytes,16,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -293,6 +300,13 @@ func (x *GcpGcsBucketSpec) GetGcpLabels() map[string]string {
 		return x.GcpLabels
 	}
 	return nil
+}
+
+func (x *GcpGcsBucketSpec) GetBucketName() string {
+	if x != nil {
+		return x.BucketName
+	}
+	return ""
 }
 
 // Lifecycle rule for automatic object management
@@ -844,7 +858,7 @@ var File_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto protoreflec
 
 const file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";org/project_planton/provider/gcp/gcpgcsbucket/v1/spec.proto\x120org.project_planton.provider.gcp.gcpgcsbucket.v1\x1a\x1bbuf/validate/validate.proto\"\xb6\v\n" +
+	";org/project_planton/provider/gcp/gcpgcsbucket/v1/spec.proto\x120org.project_planton.provider.gcp.gcpgcsbucket.v1\x1a\x1bbuf/validate/validate.proto\"\x88\f\n" +
 	"\x10GcpGcsBucketSpec\x12N\n" +
 	"\x0egcp_project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\fgcpProjectId\x12\"\n" +
 	"\blocation\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\blocation\x12L\n" +
@@ -865,7 +879,9 @@ const file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_rawDesc =
 	"\alogging\x18\r \x01(\v2?.org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLoggingH\x04R\alogging\x88\x01\x01\x128\n" +
 	"\x18public_access_prevention\x18\x0e \x01(\tR\x16publicAccessPrevention\x12p\n" +
 	"\n" +
-	"gcp_labels\x18\x0f \x03(\v2Q.org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.GcpLabelsEntryR\tgcpLabels\x1a<\n" +
+	"gcp_labels\x18\x0f \x03(\v2Q.org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.GcpLabelsEntryR\tgcpLabels\x12P\n" +
+	"\vbucket_name\x18\x10 \x01(\tB/\xbaH,\xc8\x01\x01r'\x10\x03\x18?2!^[a-z0-9]([a-z0-9-._]*[a-z0-9])?$R\n" +
+	"bucketName\x1a<\n" +
 	"\x0eGcpLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x10\n" +

@@ -31,7 +31,7 @@ func initializeLocals(_ *pulumi.Context, input *gcpsubnetworkv1.GcpSubnetworkSta
 	// Base labels – always present.
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: input.Target.Metadata.Name,
+		gcplabelkeys.ResourceName: input.Target.Spec.SubnetworkName,
 		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpSubnetwork.String()),
 	}
 

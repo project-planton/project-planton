@@ -13,7 +13,7 @@ resource "google_project_service" "compute_api" {
 #############################################
 
 resource "google_compute_network" "vpc" {
-  name                    = var.metadata.name
+  name                    = var.spec.network_name
   project                 = var.spec.project_id.value
   auto_create_subnetworks = var.spec.auto_create_subnetworks
   routing_mode            = local.routing_mode

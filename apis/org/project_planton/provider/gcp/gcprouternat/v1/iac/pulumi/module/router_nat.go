@@ -25,7 +25,7 @@ func routerNat(
 	createdRouter, err := compute.NewRouter(ctx,
 		"router",
 		&compute.RouterArgs{
-			Name:   pulumi.String(locals.GcpRouterNat.Metadata.Name),
+			Name:   pulumi.String(locals.GcpRouterNat.Spec.RouterName),
 			Region: pulumi.String(locals.GcpRouterNat.Spec.Region),
 			// VPC is passed as self‑link or short name
 			Network: pulumi.String(locals.GcpRouterNat.Spec.VpcSelfLink.GetValue()),
@@ -128,7 +128,7 @@ func routerNat(
 	createdRouterNat, err := compute.NewRouterNat(ctx,
 		"router-nat",
 		&compute.RouterNatArgs{
-			Name:                          pulumi.String(locals.GcpRouterNat.Metadata.Name),
+			Name:                          pulumi.String(locals.GcpRouterNat.Spec.NatName),
 			Router:                        createdRouter.Name,
 			Region:                        pulumi.String(locals.GcpRouterNat.Spec.Region),
 			NatIpAllocateOption:           natIpAllocateOption,

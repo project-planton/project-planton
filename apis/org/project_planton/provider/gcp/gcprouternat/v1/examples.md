@@ -15,6 +15,8 @@ metadata:
   name: dev-nat-uscentral1
 spec:
   vpc_self_link: "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc"
+  router_name: dev-router-uscentral1
+  nat_name: dev-nat-uscentral1
   region: us-central1
 ```
 
@@ -45,6 +47,8 @@ spec:
       kind: GcpVpc
       name: staging-vpc
       field_path: status.outputs.network_self_link
+  router_name: staging-router-uswest1
+  nat_name: staging-nat-uswest1
   region: us-west1
 ```
 
@@ -78,6 +82,8 @@ spec:
       kind: GcpVpc
       name: prod-vpc
       field_path: status.outputs.network_self_link
+  router_name: prod-router-uscentral1
+  nat_name: prod-nat-uscentral1
   region: us-central1
   nat_ip_names:
     - "prod-nat-ip-1-uscentral1"
@@ -119,6 +125,8 @@ spec:
       kind: GcpVpc
       name: staging-vpc
       field_path: status.outputs.network_self_link
+  router_name: staging-router-useast1
+  nat_name: staging-nat-specific-subnets
   region: us-east1
   subnetwork_self_links:
     - "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-east1/subnetworks/private-subnet-1"
@@ -153,6 +161,8 @@ spec:
       kind: GcpVpc
       name: dev-vpc
       field_path: status.outputs.network_self_link
+  router_name: dev-router-uswest2
+  nat_name: dev-nat-uswest2
   region: us-west2
   log_filter: DISABLED
 ```
@@ -186,6 +196,8 @@ spec:
       kind: GcpVpc
       name: prod-vpc
       field_path: status.outputs.network_self_link
+  router_name: prod-router-audit-uscentral1
+  nat_name: prod-nat-audit-uscentral1
   region: us-central1
   log_filter: ALL
 ```
@@ -219,6 +231,8 @@ spec:
       kind: GcpVpc
       name: prod-vpc
       field_path: status.outputs.network_self_link
+  router_name: prod-router-uscentral1
+  nat_name: prod-nat-uscentral1
   region: us-central1
   nat_ip_names:
     - "prod-nat-ip-uscentral1"
@@ -238,6 +252,8 @@ spec:
       kind: GcpVpc
       name: prod-vpc
       field_path: status.outputs.network_self_link
+  router_name: prod-router-europewest1
+  nat_name: prod-nat-europewest1
   region: europe-west1
   nat_ip_names:
     - "prod-nat-ip-europewest1"
@@ -281,6 +297,8 @@ spec:
       kind: GcpVpc
       name: gke-vpc
       field_path: status.outputs.network_self_link
+  router_name: gke-router-uscentral1
+  nat_name: gke-nat-uscentral1
   region: us-central1
   log_filter: ERRORS_ONLY
 ```
@@ -331,6 +349,8 @@ spec:
       kind: GcpVpc
       name: hybrid-vpc
       field_path: status.outputs.network_self_link
+  router_name: hybrid-router-uscentral1
+  nat_name: hybrid-nat-uscentral1
   region: us-central1
   subnetwork_self_links:
     - "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/app-subnet"

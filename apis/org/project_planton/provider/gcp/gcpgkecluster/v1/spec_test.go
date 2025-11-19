@@ -43,6 +43,7 @@ var _ = ginkgo.Describe("GcpGkeClusterSpec Custom Validation Tests", func() {
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "services-range"},
 						},
 						MasterIpv4CidrBlock: "10.0.0.0/28",
+						ClusterName:         "test-gke-cluster",
 						RouterNatName: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-nat-gateway"},
 						},

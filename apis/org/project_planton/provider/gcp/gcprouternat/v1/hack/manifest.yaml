@@ -3,4 +3,7 @@ kind: GcpRouterNat
 metadata:
   name: test-router-nat
 spec:
-# coming soon
+  vpc_self_link: "projects/test-project-123/global/networks/test-vpc"
+  router_name: test-router
+  nat_name: test-nat
+  region: us-central1

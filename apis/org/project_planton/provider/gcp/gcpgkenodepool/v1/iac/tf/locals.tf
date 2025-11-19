@@ -3,14 +3,14 @@ locals {
   resource_id = (
     var.metadata.id != null && var.metadata.id != ""
     ? var.metadata.id
-    : var.metadata.name
+    : var.spec.node_pool_name
   )
 
   # Base GCP labels (following Project Planton conventions)
   base_gcp_labels = {
     "resource"      = "true"
     "resource_kind" = "gcp-gke-node-pool"
-    "resource_name" = var.metadata.name
+    "resource_name" = var.spec.node_pool_name
   }
 
   # Organization label only if var.metadata.org is non-empty

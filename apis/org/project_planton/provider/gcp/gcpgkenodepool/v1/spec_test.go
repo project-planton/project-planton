@@ -36,7 +36,8 @@ var _ = ginkgo.Describe("GcpGkeNodePoolSpec Custom Validation Tests", func() {
 						ClusterName: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-gke-cluster"},
 						},
-						DiskType: proto.String("pd-standard"), // Valid disk type
+						NodePoolName: "test-node-pool",
+						DiskType:     proto.String("pd-standard"), // Valid disk type
 						NodePoolSize: &GcpGkeNodePoolSpec_NodeCount{
 							NodeCount: 3, // Required node pool size
 						},

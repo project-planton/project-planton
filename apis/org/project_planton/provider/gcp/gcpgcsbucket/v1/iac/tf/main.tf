@@ -1,5 +1,5 @@
 resource "google_storage_bucket" "main" {
-  name                         = var.metadata.name
+  name                         = var.spec.bucket_name
   project                      = var.spec.gcp_project_id
   location                     = var.spec.gcp_region
   labels                       = local.final_labels

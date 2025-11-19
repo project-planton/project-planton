@@ -31,7 +31,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region: "us-central1",
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -53,7 +55,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 								Value: "https://www.googleapis.com/compute/v1/projects/test-project/global/networks/test-vpc",
 							},
 						},
-						Region: "us-central1",
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -78,7 +82,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 								},
 							},
 						},
-						Region: "us-central1",
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -98,7 +104,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region: "us-central1",
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
 						SubnetworkSelfLinks: []*foreignkeyv1.StringValueOrRef{
 							{
 								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
@@ -130,7 +138,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region: "us-central1",
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
 						NatIpNames: []*foreignkeyv1.StringValueOrRef{
 							{
 								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "nat-ip-1"},
@@ -159,8 +169,10 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region:    "us-central1",
-						LogFilter: &logFilter,
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
+						LogFilter:  &logFilter,
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -181,8 +193,10 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region:    "us-central1",
-						LogFilter: &logFilter,
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
+						LogFilter:  &logFilter,
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -203,8 +217,10 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region:    "us-central1",
-						LogFilter: &logFilter,
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
+						LogFilter:  &logFilter,
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -227,7 +243,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region: "us-central1",
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "test-nat",
 						SubnetworkSelfLinks: []*foreignkeyv1.StringValueOrRef{
 							{
 								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
@@ -310,6 +328,92 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 					Kind:       "GcpRouterNat",
 					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-router-nat",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("missing router_name", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &GcpRouterNat{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpRouterNat",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-router-nat",
+					},
+					Spec: &GcpRouterNatSpec{
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
+						Region:  "us-central1",
+						NatName: "test-nat",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("missing nat_name", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &GcpRouterNat{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpRouterNat",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-router-nat",
+					},
+					Spec: &GcpRouterNatSpec{
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
+						Region:     "us-central1",
+						RouterName: "test-router",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("invalid router_name format", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &GcpRouterNat{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpRouterNat",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-router-nat",
+					},
+					Spec: &GcpRouterNatSpec{
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
+						Region:     "us-central1",
+						RouterName: "INVALID-ROUTER", // uppercase not allowed
+						NatName:    "test-nat",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("invalid nat_name format", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &GcpRouterNat{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpRouterNat",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-router-nat",
+					},
+					Spec: &GcpRouterNatSpec{
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
+						Region:     "us-central1",
+						RouterName: "test-router",
+						NatName:    "INVALID-NAT", // uppercase not allowed
 					},
 				}
 				err := protovalidate.Validate(input)

@@ -89,6 +89,19 @@ message GcpGcsBucketSpec {
   // These are merged with auto-generated labels (planton-cloud-resource-*).
   // Optional.
   map<string, string> gcp_labels = 15;
+
+  // Name of the GCS bucket to create in GCP.
+  // Must be globally unique across all GCP projects.
+  // Must be 3-63 characters, lowercase letters, numbers, hyphens, or dots.
+  // Must start and end with a lowercase letter or number.
+  // Cannot contain consecutive dots or be formatted as an IP address.
+  // Example: "my-bucket-prod", "company-data-archive"
+  string bucket_name = 16 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-._]*[a-z0-9])?$",
+    (buf.validate.field).string.min_len = 3,
+    (buf.validate.field).string.max_len = 63
+  ];
 }
 
 // Storage class options for GCS buckets

@@ -25,7 +25,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBuck
 	// Initialize standard GCP labels
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: target.Metadata.Name,
+		gcplabelkeys.ResourceName: target.Spec.BucketName,
 		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpGcsBucket.String()),
 	}
 

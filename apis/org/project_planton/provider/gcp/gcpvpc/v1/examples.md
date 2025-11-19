@@ -37,6 +37,7 @@ metadata:
 spec:
   project_id:
     value: my-dev-project-123
+  network_name: dev-network
   auto_create_subnetworks: false  # Custom mode (recommended)
 ```
 
@@ -92,6 +93,7 @@ metadata:
 spec:
   project_id:
     value: prod-network-host-project
+  network_name: prod-network
   auto_create_subnetworks: false
   routing_mode: GLOBAL  # Required for multi-region hybrid connectivity
 ```
@@ -145,6 +147,7 @@ metadata:
 spec:
   project_id:
     value: myapp-dev-project
+  network_name: app-network
   auto_create_subnetworks: false
 ```
 
@@ -163,6 +166,7 @@ metadata:
 spec:
   project_id:
     value: myapp-staging-project
+  network_name: app-network
   auto_create_subnetworks: false
 ```
 
@@ -181,6 +185,7 @@ metadata:
 spec:
   project_id:
     value: myapp-prod-project
+  network_name: app-network
   auto_create_subnetworks: false
   routing_mode: GLOBAL  # Production may need hybrid connectivity
 ```
@@ -221,6 +226,7 @@ metadata:
 spec:
   project_id:
     value: network-host-project-123
+  network_name: shared-vpc-host
   auto_create_subnetworks: false
   routing_mode: GLOBAL
 ```
@@ -295,6 +301,7 @@ spec:
     ref:
       kind: GcpProject
       name: myapp-project  # References the project defined above
+  network_name: myapp-vpc
   auto_create_subnetworks: false
 ```
 
@@ -337,6 +344,7 @@ metadata:
 spec:
   project_id:
     value: gke-prod-project
+  network_name: gke-network
   auto_create_subnetworks: false
   routing_mode: GLOBAL  # Useful for multi-region GKE clusters
 ```

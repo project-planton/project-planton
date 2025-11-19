@@ -71,6 +71,15 @@ message GcpGkeClusterSpec {
     (org.project_planton.shared.foreignkey.v1.default_kind) = GcpRouterNat,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
   ];
+
+  // Name of the GKE cluster to create in GCP.
+  // Must be 1-40 characters, lowercase letters, numbers, or hyphens.
+  // Must start with a lowercase letter and end with a lowercase letter or number.
+  // Example: "my-gke-cluster", "prod-cluster"
+  string cluster_name = 13 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$"
+  ];
 }
 
 // Enum for available GKE release channels.

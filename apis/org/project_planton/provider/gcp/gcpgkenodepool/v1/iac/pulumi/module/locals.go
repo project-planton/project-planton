@@ -41,12 +41,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkenodepoolv1.GcpGkeNo
 	// Base label maps
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: locals.GcpGkeNodePool.Metadata.Name,
+		gcplabelkeys.ResourceName: locals.GcpGkeNodePool.Spec.NodePoolName,
 		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String()),
 	}
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: locals.GcpGkeNodePool.Metadata.Name,
+		kuberneteslabelkeys.ResourceName: locals.GcpGkeNodePool.Spec.NodePoolName,
 		kuberneteslabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String()),
 	}
 
@@ -68,7 +68,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkenodepoolv1.GcpGkeNo
 	if locals.ClusterName != "" {
 		locals.NetworkTag = fmt.Sprintf("gke-%s", locals.ClusterName)
 	} else {
-		locals.NetworkTag = fmt.Sprintf("gke-%s", locals.GcpGkeNodePool.Metadata.Name)
+		locals.NetworkTag = fmt.Sprintf("gke-%s", locals.GcpGkeNodePool.Spec.NodePoolName)
 	}
 
 	return locals

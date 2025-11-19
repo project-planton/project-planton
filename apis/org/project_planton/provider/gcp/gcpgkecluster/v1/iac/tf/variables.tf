@@ -34,5 +34,11 @@ variable "spec" {
     router_nat_name             = object({
       value = string
     })
+    cluster_name = string
   })
+  
+  validation {
+    condition     = can(regex("^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$", var.spec.cluster_name))
+    error_message = "Cluster name must be 1-40 characters, lowercase letters, numbers, or hyphens, starting with a letter and ending with a letter or number."
+  }
 }

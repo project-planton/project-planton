@@ -14,7 +14,7 @@ data "google_container_cluster" "cluster" {
 ###############################################################################
 
 resource "google_container_node_pool" "node_pool" {
-  name     = var.metadata.name
+  name     = var.spec.node_pool_name
   cluster  = data.google_container_cluster.cluster.name
   location = data.google_container_cluster.cluster.location
   project  = var.spec.cluster_project_id.value

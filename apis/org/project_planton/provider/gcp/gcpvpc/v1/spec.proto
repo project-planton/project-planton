@@ -30,4 +30,13 @@ message GcpVpcSpec {
   // **Default:** REGIONAL (Cloud Router adverts routes only in one region):contentReference[oaicite:5]{index=5}.
   // Use GLOBAL only for multi-region routing needs.
   optional GcpVpcRoutingMode routing_mode = 3 [(org.project_planton.shared.options.default) = "REGIONAL"];
+
+  // Name of the VPC network to create in GCP.
+  // Must be 1-63 characters, lowercase letters, numbers, or hyphens.
+  // Must start with a lowercase letter and end with a lowercase letter or number.
+  // Example: "my-vpc-network", "prod-network"
+  string network_name = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$"
+  ];
 }

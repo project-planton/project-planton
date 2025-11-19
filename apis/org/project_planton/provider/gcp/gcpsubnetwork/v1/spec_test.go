@@ -35,12 +35,58 @@ var _ = ginkgo.Describe("GcpSubnetworkSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
+						Region:         "us-central1",
+						IpCidrRange:    "10.0.0.0/24",
+						SubnetworkName: "test-subnetwork",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should return a validation error when subnetwork_name is missing", func() {
+				input := &GcpSubnetwork{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpSubnetwork",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-subnetwork",
+					},
+					Spec: &GcpSubnetworkSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
 						Region:      "us-central1",
 						IpCidrRange: "10.0.0.0/24",
 					},
 				}
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).To(gomega.BeNil())
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+
+			ginkgo.It("should return a validation error when subnetwork_name has invalid format", func() {
+				input := &GcpSubnetwork{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpSubnetwork",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-subnetwork",
+					},
+					Spec: &GcpSubnetworkSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
+						Region:         "us-central1",
+						IpCidrRange:    "10.0.0.0/24",
+						SubnetworkName: "INVALID-NAME", // uppercase not allowed
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 	})

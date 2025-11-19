@@ -37,6 +37,9 @@ variable "spec" {
 
     # Whether to enable Private Google Access on this subnet
     private_ip_google_access = optional(bool)
+
+    # Name of the subnetwork to create in GCP
+    subnetwork_name = string
   })
 
   validation {
@@ -47,5 +50,10 @@ variable "spec" {
   validation {
     condition     = can(regex("^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$", var.spec.ip_cidr_range))
     error_message = "ip_cidr_range must be a valid IPv4 CIDR notation (e.g., 10.0.0.0/20)."
+  }
+
+  validation {
+    condition     = can(regex("^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$", var.spec.subnetwork_name))
+    error_message = "Subnetwork name must be 1-63 characters, lowercase letters, numbers, or hyphens, starting with a letter and ending with a letter or number."
   }
 }

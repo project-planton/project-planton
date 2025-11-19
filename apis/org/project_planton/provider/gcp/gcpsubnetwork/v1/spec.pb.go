@@ -44,8 +44,13 @@ type GcpSubnetworkSpec struct {
 	// Whether to enable Private Google Access on this subnet.
 	// If true, VMs without external IPs in this subnet can access Google APIs internally:contentReference[oaicite:11]{index=11}.
 	PrivateIpGoogleAccess bool `protobuf:"varint,6,opt,name=private_ip_google_access,json=privateIpGoogleAccess,proto3" json:"private_ip_google_access,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// Name of the subnetwork to create in GCP.
+	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
+	// Must start with a lowercase letter and end with a lowercase letter or number.
+	// Example: "my-subnet", "prod-uswest1-subnet"
+	SubnetworkName string `protobuf:"bytes,7,opt,name=subnetwork_name,json=subnetworkName,proto3" json:"subnetwork_name,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GcpSubnetworkSpec) Reset() {
@@ -120,6 +125,13 @@ func (x *GcpSubnetworkSpec) GetPrivateIpGoogleAccess() bool {
 	return false
 }
 
+func (x *GcpSubnetworkSpec) GetSubnetworkName() string {
+	if x != nil {
+		return x.SubnetworkName
+	}
+	return ""
+}
+
 // Define the structure for a secondary IP range.
 type GcpSubnetworkSecondaryRange struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -180,7 +192,7 @@ var File_org_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto protorefle
 
 const file_org_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x121org.project_planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xec\x04\n" +
+	"<org/project_planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x121org.project_planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc2\x05\n" +
 	"\x11GcpSubnetworkSpec\x12\x83\x01\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8f\x01\n" +
@@ -188,7 +200,8 @@ const file_org_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDesc 
 	"\x06region\x18\x03 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\x06region\x12F\n" +
 	"\rip_cidr_range\x18\x04 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$R\vipCidrRange\x12~\n" +
 	"\x13secondary_ip_ranges\x18\x05 \x03(\v2N.org.project_planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRangeR\x11secondaryIpRanges\x127\n" +
-	"\x18private_ip_google_access\x18\x06 \x01(\bR\x15privateIpGoogleAccess\"\xb0\x01\n" +
+	"\x18private_ip_google_access\x18\x06 \x01(\bR\x15privateIpGoogleAccess\x12T\n" +
+	"\x0fsubnetwork_name\x18\a \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\x0esubnetworkName\"\xb0\x01\n" +
 	"\x1bGcpSubnetworkSecondaryRange\x12I\n" +
 	"\n" +
 	"range_name\x18\x01 \x01(\tB*\xbaH'\xc8\x01\x01r\"\x10\x01\x18?2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\trangeName\x12F\n" +

@@ -28,7 +28,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *gcpvpcv1.GcpVpcStackInput) 
 	// Standard Planton‑wide labels for GCP resources
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: locals.GcpVpc.Metadata.Name,
+		gcplabelkeys.ResourceName: locals.GcpVpc.Spec.NetworkName,
 		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpVpc.String()),
 	}
 

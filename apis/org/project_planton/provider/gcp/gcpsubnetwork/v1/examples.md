@@ -25,6 +25,7 @@ metadata:
 spec:
   project_id: my-project-123
   vpc_self_link: projects/my-project-123/global/networks/my-vpc
+  subnetwork_name: basic-subnet
   region: us-central1
   ip_cidr_range: 10.0.0.0/24
 ```
@@ -47,6 +48,7 @@ metadata:
 spec:
   project_id: prod-project
   vpc_self_link: projects/prod-project/global/networks/prod-vpc
+  subnetwork_name: gke-subnet-us-central1
   region: us-central1
   ip_cidr_range: 10.100.0.0/20          # 4,096 IPs for nodes
   secondary_ip_ranges:
@@ -79,6 +81,7 @@ metadata:
 spec:
   project_id: multi-region-project
   vpc_self_link: projects/multi-region-project/global/networks/global-vpc
+  subnetwork_name: app-subnet-us-central1
   region: us-central1
   ip_cidr_range: 10.0.0.0/20
   private_ip_google_access: true
@@ -91,6 +94,7 @@ metadata:
 spec:
   project_id: multi-region-project
   vpc_self_link: projects/multi-region-project/global/networks/global-vpc
+  subnetwork_name: app-subnet-us-east1
   region: us-east1
   ip_cidr_range: 10.0.16.0/20
   private_ip_google_access: true
@@ -103,6 +107,7 @@ metadata:
 spec:
   project_id: multi-region-project
   vpc_self_link: projects/multi-region-project/global/networks/global-vpc
+  subnetwork_name: app-subnet-europe-west1
   region: europe-west1
   ip_cidr_range: 10.0.32.0/20
   private_ip_google_access: true
@@ -115,6 +120,7 @@ metadata:
 spec:
   project_id: multi-region-project
   vpc_self_link: projects/multi-region-project/global/networks/global-vpc
+  subnetwork_name: app-subnet-asia-southeast1
   region: asia-southeast1
   ip_cidr_range: 10.0.48.0/20
   private_ip_google_access: true
@@ -138,6 +144,7 @@ metadata:
 spec:
   project_id: secure-project
   vpc_self_link: projects/secure-project/global/networks/secure-vpc
+  subnetwork_name: private-subnet
   region: us-west1
   ip_cidr_range: 10.200.0.0/22
   private_ip_google_access: true
@@ -165,6 +172,7 @@ metadata:
 spec:
   project_id: serverless-project
   vpc_self_link: projects/serverless-project/global/networks/app-vpc
+  subnetwork_name: vpc-connector-subnet
   region: us-central1
   ip_cidr_range: 10.8.0.0/28           # Exactly 16 IPs (VPC connector requirement)
 ```
@@ -192,6 +200,7 @@ metadata:
 spec:
   project_id: enterprise-project
   vpc_self_link: projects/enterprise-project/global/networks/enterprise-vpc
+  subnetwork_name: mega-gke-subnet
   region: us-central1
   ip_cidr_range: 10.50.0.0/16          # 65,536 IPs for nodes
   secondary_ip_ranges:
@@ -226,6 +235,7 @@ metadata:
 spec:
   project_id: dev-project
   vpc_self_link: projects/dev-project/global/networks/dev-vpc
+  subnetwork_name: dev-subnet
   region: us-central1
   ip_cidr_range: 10.2.0.0/20
   private_ip_google_access: true
@@ -238,6 +248,7 @@ metadata:
 spec:
   project_id: staging-project
   vpc_self_link: projects/staging-project/global/networks/staging-vpc
+  subnetwork_name: staging-subnet
   region: us-central1
   ip_cidr_range: 10.1.0.0/20
   private_ip_google_access: true
@@ -250,6 +261,7 @@ metadata:
 spec:
   project_id: prod-project
   vpc_self_link: projects/prod-project/global/networks/prod-vpc
+  subnetwork_name: prod-subnet
   region: us-central1
   ip_cidr_range: 10.0.0.0/20
   private_ip_google_access: true
@@ -277,6 +289,7 @@ metadata:
 spec:
   project_id: prod-gcp-project
   vpc_self_link: projects/prod-gcp-project/global/networks/prod-vpc
+  subnetwork_name: gke-prod-subnet
   region: us-west1
   ip_cidr_range: 10.50.0.0/20
   secondary_ip_ranges:
@@ -343,6 +356,7 @@ metadata:
 spec:
   project_id: prod-project
   vpc_self_link: projects/prod-project/global/networks/prod-vpc
+  subnetwork_name: prod-app-us-central1
   region: us-central1
   ip_cidr_range: 10.0.0.0/20
   private_ip_google_access: true

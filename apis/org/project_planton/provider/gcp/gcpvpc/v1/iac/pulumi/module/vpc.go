@@ -28,7 +28,7 @@ func vpc(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*compu
 	// 2. Build the args for the network resource.
 	networkArgs := &compute.NetworkArgs{
 		AutoCreateSubnetworks: pulumi.BoolPtr(locals.GcpVpc.Spec.AutoCreateSubnetworks),
-		Name:                  pulumi.String(locals.GcpVpc.Metadata.Name),
+		Name:                  pulumi.String(locals.GcpVpc.Spec.NetworkName),
 		Project:               pulumi.String(locals.GcpVpc.Spec.ProjectId.GetValue()),
 	}
 

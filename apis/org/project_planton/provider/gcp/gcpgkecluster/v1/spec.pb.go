@@ -105,6 +105,11 @@ type GcpGkeClusterSpec struct {
 	DisableWorkloadIdentity bool `protobuf:"varint,10,opt,name=disable_workload_identity,json=disableWorkloadIdentity,proto3" json:"disable_workload_identity,omitempty"`
 	// Reference to a Cloud NAT configuration to allow outbound internet for private nodes.
 	RouterNatName *v1.StringValueOrRef `protobuf:"bytes,12,opt,name=router_nat_name,json=routerNatName,proto3" json:"router_nat_name,omitempty"`
+	// Name of the GKE cluster to create in GCP.
+	// Must be 1-40 characters, lowercase letters, numbers, or hyphens.
+	// Must start with a lowercase letter and end with a lowercase letter or number.
+	// Example: "my-gke-cluster", "prod-cluster"
+	ClusterName   string `protobuf:"bytes,13,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -216,11 +221,19 @@ func (x *GcpGkeClusterSpec) GetRouterNatName() *v1.StringValueOrRef {
 	return nil
 }
 
+func (x *GcpGkeClusterSpec) GetClusterName() string {
+	if x != nil {
+		return x.ClusterName
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xfd\t\n" +
+	"<org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xcd\n" +
+	"\n" +
 	"\x11GcpGkeClusterSpec\x12\x83\x01\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12C\n" +
@@ -234,7 +247,8 @@ const file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc 
 	"\x16disable_network_policy\x18\t \x01(\bR\x14disableNetworkPolicy\x12:\n" +
 	"\x19disable_workload_identity\x18\n" +
 	" \x01(\bR\x17disableWorkloadIdentity\x12\x80\x01\n" +
-	"\x0frouter_nat_name\x18\f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a\rmetadata.nameR\rrouterNatNameB\x12\n" +
+	"\x0frouter_nat_name\x18\f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a\rmetadata.nameR\rrouterNatName\x12N\n" +
+	"\fcluster_name\x18\r \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$R\vclusterNameB\x12\n" +
 	"\x10_release_channel*f\n" +
 	"\x11GkeReleaseChannel\x12#\n" +
 	"\x1fgke_release_channel_unspecified\x10\x00\x12\t\n" +

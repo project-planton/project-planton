@@ -56,6 +56,9 @@ variable "spec" {
     # Kubernetes labels
     node_labels = optional(map(string), {})
 
+    # Name of the node pool
+    node_pool_name = string
+
     # Scaling configuration (mutually exclusive)
     node_count = optional(number)
 
