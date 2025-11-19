@@ -11,6 +11,9 @@ resource "google_cloud_run_v2_service" "main" {
 
   labels = local.labels
 
+  # Deletion protection at GCP resource level
+  deletion_protection = var.spec.delete_protection
+
   template {
     # Service account
     service_account = local.service_account
@@ -89,7 +92,6 @@ resource "google_cloud_run_v2_service" "main" {
   # Lifecycle settings to prevent unnecessary recreations
   lifecycle {
     create_before_destroy = true
-    prevent_destroy       = var.spec.delete_protection
   }
 }
 

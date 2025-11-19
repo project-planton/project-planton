@@ -78,14 +78,6 @@ func service(
 		}
 	}
 
-	// Resource options: add deletion protection if enabled
-	resourceOpts := []pulumi.ResourceOption{
-		pulumi.Provider(gcpProvider),
-	}
-	if locals.GcpCloudRun.Spec.DeleteProtection {
-		resourceOpts = append(resourceOpts, pulumi.Protect(true))
-	}
-
 	createdService, err := cloudrunv2.NewService(ctx,
 		locals.GcpCloudRun.Metadata.Name,
 		&cloudrunv2.ServiceArgs{
@@ -99,6 +91,9 @@ func service(
 
 			// Ingress settings
 			Ingress: pulumi.String(ingressValue),
+
+			// Deletion protection at GCP resource level
+			DeletionProtection: pulumi.Bool(locals.GcpCloudRun.Spec.DeleteProtection),
 
 			Template: &cloudrunv2.ServiceTemplateArgs{
 				ServiceAccount:                serviceAccountEmail,
@@ -136,7 +131,7 @@ func service(
 			// attach useful labels
 			Labels: pulumi.ToStringMap(locals.GcpLabels),
 		},
-		resourceOpts...,
+		pulumi.Provider(gcpProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create Cloud Run v2 service")
