@@ -195,7 +195,7 @@ var File_org_project_planton_provider_gcp_gcpproject_v1_spec_proto protoreflect.
 
 const file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9org/project_planton/provider/gcp/gcpproject/v1/spec.proto\x12.org.project_planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xeb\x04\n" +
+	"9org/project_planton/provider/gcp/gcpproject/v1/spec.proto\x12.org.project_planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xee\x04\n" +
 	"\x0eGcpProjectSpec\x12e\n" +
 	"\vparent_type\x18\x01 \x01(\x0e2D.org.project_planton.provider.gcp.gcpproject.v1.GcpProjectParentTypeR\n" +
 	"parentType\x12\x1b\n" +
@@ -203,8 +203,9 @@ const file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "
 	"\x12billing_account_id\x18\x03 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12b\n" +
 	"\x06labels\x18\x04 \x03(\v2J.org.project_planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12E\n" +
 	"\x17disable_default_network\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x00R\x15disableDefaultNetwork\x88\x01\x01\x12K\n" +
-	"\fenabled_apis\x18\x06 \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12*\n" +
-	"\fowner_member\x18\a \x01(\tB\a\xbaH\x04r\x02`\x01R\vownerMember\x1a9\n" +
+	"\fenabled_apis\x18\x06 \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12-\n" +
+	"\fowner_member\x18\a \x01(\tB\n" +
+	"\xbaH\a\xd8\x01\x01r\x02`\x01R\vownerMember\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x1a\n" +

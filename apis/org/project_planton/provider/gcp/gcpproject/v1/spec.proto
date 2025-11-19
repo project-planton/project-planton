@@ -54,5 +54,8 @@ message GcpProjectSpec {
   //   "group:devops-admins@example.com"
   //   "user:alice@example.com"
   //   "serviceAccount:ci-automation@example.iam.gserviceaccount.com"
-  string owner_member = 7 [(buf.validate.field).string.email = true];
+  string owner_member = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string.email = true
+  ];
 }
