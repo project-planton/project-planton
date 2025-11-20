@@ -21,18 +21,18 @@ Previously, you had to remember different commands for different provisioners:
 
 ```bash
 # Pulumi
-project-planton pulumi init --manifest app.yaml
-project-planton pulumi preview --manifest app.yaml
-project-planton pulumi up --manifest app.yaml --stack org/project/env
-project-planton pulumi refresh --manifest app.yaml
-project-planton pulumi destroy --manifest app.yaml
+project-planton pulumi init -f app.yaml
+project-planton pulumi preview -f app.yaml
+project-planton pulumi up -f app.yaml --stack org/project/env
+project-planton pulumi refresh -f app.yaml
+project-planton pulumi destroy -f app.yaml
 
 # OpenTofu
-project-planton tofu init --manifest app.yaml
-project-planton tofu plan --manifest app.yaml
-project-planton tofu apply --manifest app.yaml
-project-planton tofu refresh --manifest app.yaml
-project-planton tofu destroy --manifest app.yaml
+project-planton tofu init -f app.yaml
+project-planton tofu plan -f app.yaml
+project-planton tofu apply -f app.yaml
+project-planton tofu refresh -f app.yaml
+project-planton tofu destroy -f app.yaml
 
 # Different commands, different flags, cognitive overhead!
 ```
@@ -89,7 +89,7 @@ Deploy infrastructure changes.
 
 ```bash
 project-planton apply -f <file> [flags]
-project-planton apply --manifest <file> [flags]
+project-planton apply -f <file> [flags]
 ```
 
 **Examples**:
@@ -322,7 +322,7 @@ All unified commands support flags from their respective provisioners.
 
 | Flag | Description |
 |------|-------------|
-| `-f, --manifest <path>` | Path to manifest file (kubectl-style `-f` shorthand) |
+| `-f, -f <path>` | Path to manifest file (kubectl-style `-f` shorthand) |
 | `--kustomize-dir <dir>` | Kustomize base directory |
 | `--overlay <name>` | Kustomize overlay (prod, dev, staging, etc.) |
 | `--set key=value` | Override manifest fields (repeatable) |
@@ -525,18 +525,18 @@ The unified commands are **fully backward compatible**. You can migrate graduall
 
 ```bash
 # Pulumi - complete workflow
-project-planton pulumi init --manifest app.yaml --stack org/project/dev
-project-planton pulumi preview --manifest app.yaml --stack org/project/dev
-project-planton pulumi up --manifest app.yaml --stack org/project/dev
-project-planton pulumi refresh --manifest app.yaml --stack org/project/dev
-project-planton pulumi destroy --manifest app.yaml --stack org/project/dev
+project-planton pulumi init -f app.yaml --stack org/project/dev
+project-planton pulumi preview -f app.yaml --stack org/project/dev
+project-planton pulumi up -f app.yaml --stack org/project/dev
+project-planton pulumi refresh -f app.yaml --stack org/project/dev
+project-planton pulumi destroy -f app.yaml --stack org/project/dev
 
 # OpenTofu - complete workflow
-project-planton tofu init --manifest app.yaml
-project-planton tofu plan --manifest app.yaml
-project-planton tofu apply --manifest app.yaml
-project-planton tofu refresh --manifest app.yaml
-project-planton tofu destroy --manifest app.yaml
+project-planton tofu init -f app.yaml
+project-planton tofu plan -f app.yaml
+project-planton tofu apply -f app.yaml
+project-planton tofu refresh -f app.yaml
+project-planton tofu destroy -f app.yaml
 ```
 
 ### After (Unified)
@@ -572,7 +572,7 @@ project-planton destroy -f app.yaml     # or 'delete'
    - `tofu destroy` → `destroy`
 
 3. **Update flags**:
-   - `--manifest` → `-f` (both work, `-f` is shorter)
+   - `-f` → `-f` (both work, `-f` is shorter)
    - `--stack` → can be in manifest labels now
    - All other flags work the same
 
@@ -671,7 +671,7 @@ Invalid provisioner in manifest: invalid provisioner value 'pulum': must be one 
 
 3. **Use provisioner-specific commands** if you prefer:
    ```bash
-   project-planton pulumi up --manifest app.yaml
+   project-planton pulumi up -f app.yaml
    ```
 
 ---
@@ -751,7 +751,7 @@ project-planton destroy -f app.yaml
 
 ### 3. Use -f Flag for Consistency
 
-Prefer `-f` over `--manifest` to match kubectl style:
+Prefer `-f` over `-f` to match kubectl style:
 
 ```bash
 # Good (kubectl-style)
@@ -759,7 +759,7 @@ project-planton plan -f app.yaml
 project-planton apply -f app.yaml
 
 # Also works
-project-planton apply --manifest app.yaml
+project-planton apply -f app.yaml
 ```
 
 ---

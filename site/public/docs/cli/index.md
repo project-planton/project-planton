@@ -42,8 +42,8 @@ project-planton apply -f database.yaml
 project-planton destroy -f database.yaml
 
 # Or use provisioner-specific commands
-project-planton pulumi up --manifest database.yaml
-project-planton tofu apply --manifest database.yaml
+project-planton pulumi up -f database.yaml
+project-planton tofu apply -f database.yaml
 ```
 
 ---

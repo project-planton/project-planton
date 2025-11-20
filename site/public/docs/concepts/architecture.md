@@ -104,17 +104,17 @@ brew install project-planton/tap/project-planton
 
 ```bash
 # Validate a manifest
-project-planton validate --manifest postgres.yaml
+project-planton validate -f postgres.yaml
 
 # Deploy with Pulumi
-project-planton pulumi up --manifest postgres.yaml --stack org/project/env
+project-planton pulumi up -f postgres.yaml --stack org/project/env
 
 # Deploy with Terraform/OpenTofu
-project-planton tofu apply --manifest postgres.yaml
+project-planton tofu apply -f postgres.yaml
 
 # Override specific values
 project-planton pulumi up \
-  --manifest postgres.yaml \
+  -f postgres.yaml \
   --set spec.container.cpu=500m \
   --stack org/project/env
 ```
@@ -165,13 +165,13 @@ spec:
 ### Step 4: Validate (Optional)
 
 ```bash
-project-planton validate --manifest my-redis.yaml
+project-planton validate -f my-redis.yaml
 ```
 
 ### Step 5: Deploy
 
 ```bash
-project-planton pulumi up --manifest my-redis.yaml --stack acme/platform/prod
+project-planton pulumi up -f my-redis.yaml --stack acme/platform/prod
 ```
 
 **What happens under the hood:**
@@ -221,7 +221,7 @@ project-planton pulumi up --manifest my-redis.yaml --stack acme/platform/prod
 
 2. **CLI validation** (before deployment):
    ```bash
-   project-planton validate --manifest config.yaml
+   project-planton validate -f config.yaml
    ```
 
 3. **Cloud provider validation** (during deployment):

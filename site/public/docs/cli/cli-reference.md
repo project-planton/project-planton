@@ -52,7 +52,7 @@ project-planton
 ```bash
 project-planton apply -f <file> [flags]
 # or
-project-planton apply --manifest <file> [flags]
+project-planton apply -f <file> [flags]
 ```
 
 **Example**:
@@ -210,7 +210,7 @@ Manage infrastructure using Pulumi as the IaC engine.
 **Example**:
 
 ```bash
-project-planton pulumi up --manifest database.yaml
+project-planton pulumi up -f database.yaml
 ```
 
 ### tofu
@@ -224,7 +224,7 @@ Manage infrastructure using OpenTofu/Terraform as the IaC engine.
 **Example**:
 
 ```bash
-project-planton tofu apply --manifest database.yaml
+project-planton tofu apply -f database.yaml
 ```
 
 ### validate
@@ -234,14 +234,14 @@ Validate a manifest against its Protocol Buffer schema without deploying.
 **Usage**:
 
 ```bash
-project-planton validate --manifest <file> [flags]
+project-planton validate -f <file> [flags]
 ```
 
 **Example**:
 
 ```bash
 # Validate single manifest
-project-planton validate --manifest ops/resources/database.yaml
+project-planton validate -f ops/resources/database.yaml
 
 # With kustomize
 project-planton validate \
@@ -253,7 +253,7 @@ project-planton validate \
 ```
 
 **Flags**:
-- `--manifest <file>`: Path to manifest file
+- `-f <file>`: Path to manifest file
 - `--kustomize-dir <dir>`: Kustomize base directory
 - `--overlay <name>`: Kustomize overlay name
 
@@ -264,18 +264,18 @@ Load a manifest and display it with defaults applied and overrides resolved.
 **Usage**:
 
 ```bash
-project-planton load-manifest --manifest <file> [flags]
+project-planton load-manifest -f <file> [flags]
 ```
 
 **Example**:
 
 ```bash
 # Load manifest and see defaults
-project-planton load-manifest --manifest database.yaml
+project-planton load-manifest -f database.yaml
 
 # Load with overrides
 project-planton load-manifest \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.replicas=5
 
 # Load kustomize-built manifest
@@ -314,7 +314,7 @@ These flags are available across multiple commands:
 
 ### Manifest Input
 
-**`-f, --manifest <path>`**  
+**`-f, -f <path>`**  
 Path to manifest YAML file (local or URL). The `-f` shorthand is available for kubectl-style experience.
 
 ```bash
@@ -322,10 +322,10 @@ Path to manifest YAML file (local or URL). The `-f` shorthand is available for k
 -f ops/resources/database.yaml
 
 # Local file (traditional)
---manifest ops/resources/database.yaml
+-f ops/resources/database.yaml
 
 # URL
---manifest https://raw.githubusercontent.com/myorg/manifests/main/db.yaml
+-f https://raw.githubusercontent.com/myorg/manifests/main/db.yaml
 ```
 
 **`--kustomize-dir <directory>`**  
@@ -342,7 +342,7 @@ Kustomize overlay environment to build (must be used with `--kustomize-dir`).
 --overlay prod
 ```
 
-**Priority**: `--manifest` > `--kustomize-dir` + `--overlay`
+**Priority**: `-f` > `--kustomize-dir` + `--overlay`
 
 ### Execution Control
 
@@ -474,14 +474,14 @@ project-planton validate -f database.yaml
 project-planton apply -f database.yaml
 
 # Using Pulumi directly
-project-planton validate --manifest database.yaml
-project-planton pulumi up --manifest database.yaml
+project-planton validate -f database.yaml
+project-planton pulumi up -f database.yaml
 
 # Using OpenTofu directly
-project-planton validate --manifest database.yaml
-project-planton tofu init --manifest database.yaml
-project-planton tofu plan --manifest database.yaml
-project-planton tofu apply --manifest database.yaml
+project-planton validate -f database.yaml
+project-planton tofu init -f database.yaml
+project-planton tofu plan -f database.yaml
+project-planton tofu apply -f database.yaml
 ```
 
 ### Multi-Environment Deployment
@@ -511,7 +511,7 @@ project-planton apply \
 ```bash
 # Point to local module during development
 project-planton pulumi preview \
-  --manifest test.yaml \
+  -f test.yaml \
   --module-dir ~/dev/my-module
 ```
 

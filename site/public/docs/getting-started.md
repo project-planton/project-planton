@@ -70,7 +70,7 @@ spec:
 Validate your manifest before deployment:
 
 ```bash
-project-planton validate --manifest postgres.yaml
+project-planton validate -f postgres.yaml
 ```
 
 This runs validation rules defined in the protobuf, catching errors like:
@@ -93,7 +93,7 @@ Deploy the resource using the unified kubectl-style command:
 project-planton apply -f postgres.yaml
 
 # Or use the traditional Pulumi-specific command
-project-planton pulumi up --manifest postgres.yaml --stack org/dev/local
+project-planton pulumi up -f postgres.yaml --stack org/dev/local
 ```
 
 ### Step 5: Verify
@@ -126,7 +126,7 @@ Behind the scenes, the CLI:
 
 ```bash
 # Validate a manifest
-project-planton validate --manifest config.yaml
+project-planton validate -f config.yaml
 
 # Unified kubectl-style commands (provisioner auto-detected from manifest)
 project-planton apply -f config.yaml
@@ -135,8 +135,8 @@ project-planton destroy -f config.yaml
 project-planton delete -f config.yaml
 
 # Provisioner-specific commands (still supported)
-project-planton pulumi up --manifest config.yaml --stack org/project/env
-project-planton tofu apply --manifest config.yaml
+project-planton pulumi up -f config.yaml --stack org/project/env
+project-planton tofu apply -f config.yaml
 
 # Override specific values
 project-planton apply -f config.yaml --set spec.container.cpu=500m

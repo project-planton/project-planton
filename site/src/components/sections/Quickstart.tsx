@@ -40,7 +40,7 @@ EOF`,
     {
       id: "deploy",
       title: "4. Deploy (kubectl-style! 🚀)",
-      code: `# Unified command - auto-detects provisioner from label
+      code: `# Auto-detects provisioner from label
 project-planton apply -f manifest.yaml
 
 # With field overrides
@@ -49,11 +49,7 @@ project-planton apply -f manifest.yaml --set spec.container.replicas=3`,
     {
       id: "destroy",
       title: "5. Destroy (optional)",
-      code: `# Unified command
-project-planton destroy -f manifest.yaml
-
-# Or use kubectl-style 'delete' alias
-project-planton delete -f manifest.yaml`,
+      code: `project-planton destroy -f manifest.yaml`,
     },
   ];
 

@@ -76,7 +76,7 @@ export AWS_DEFAULT_REGION="us-west-2"  # Optional but recommended
 aws sts get-caller-identity
 
 # Deploy
-project-planton pulumi up --manifest ops/aws/vpc.yaml
+project-planton pulumi up -f ops/aws/vpc.yaml
 ```
 
 **Where to get these**:
@@ -96,7 +96,7 @@ EOF
 
 # Use with CLI
 project-planton pulumi up \
-  --manifest ops/aws/vpc.yaml \
+  -f ops/aws/vpc.yaml \
   --aws-credential ~/.aws/project-planton-prod.yaml
 ```
 
@@ -111,7 +111,7 @@ aws configure --profile production
 
 # Use profile with Project Planton
 export AWS_PROFILE=production
-project-planton pulumi up --manifest ops/aws/vpc.yaml
+project-planton pulumi up -f ops/aws/vpc.yaml
 ```
 
 ### Method 4: IAM Roles (Best for EC2/ECS/Lambda)
@@ -122,7 +122,7 @@ If running on AWS compute (EC2, ECS, Lambda), use IAM roles instead of access ke
 # No credentials needed - automatically provided by AWS
 # Just ensure your EC2 instance/ECS task has an IAM role attached
 
-project-planton pulumi up --manifest ops/aws/vpc.yaml
+project-planton pulumi up -f ops/aws/vpc.yaml
 ```
 
 ### Troubleshooting AWS Credentials
@@ -180,11 +180,11 @@ gcloud iam service-accounts keys create ~/gcp-key.json \
 # Method A: Environment variable (most common)
 export GOOGLE_APPLICATION_CREDENTIALS=~/gcp-key.json
 
-project-planton pulumi up --manifest ops/gcp/gke-cluster.yaml
+project-planton pulumi up -f ops/gcp/gke-cluster.yaml
 
 # Method B: CLI flag
 project-planton pulumi up \
-  --manifest ops/gcp/gke-cluster.yaml \
+  -f ops/gcp/gke-cluster.yaml \
   --gcp-credential ~/gcp-key-as-yaml.yaml
 ```
 
@@ -195,7 +195,7 @@ project-planton pulumi up \
 gcloud auth application-default login
 
 # No additional configuration needed
-project-planton pulumi up --manifest ops/gcp/gke-cluster.yaml
+project-planton pulumi up -f ops/gcp/gke-cluster.yaml
 ```
 
 **When to use**: Local development, personal projects.  
@@ -293,7 +293,7 @@ export ARM_CLIENT_SECRET="xyz-789"
 export ARM_TENANT_ID="def-456"
 export ARM_SUBSCRIPTION_ID="your-subscription-id"
 
-project-planton pulumi up --manifest ops/azure/aks-cluster.yaml
+project-planton pulumi up -f ops/azure/aks-cluster.yaml
 
 # Method B: Credential file via CLI flag
 cat > azure-credential.yaml <<EOF
@@ -304,7 +304,7 @@ subscriptionId: your-subscription-id
 EOF
 
 project-planton pulumi up \
-  --manifest ops/azure/aks-cluster.yaml \
+  -f ops/azure/aks-cluster.yaml \
   --azure-credential azure-credential.yaml
 ```
 
@@ -315,7 +315,7 @@ project-planton pulumi up \
 az login
 
 # No additional configuration needed
-project-planton pulumi up --manifest ops/azure/aks-cluster.yaml
+project-planton pulumi up -f ops/azure/aks-cluster.yaml
 ```
 
 ### Troubleshooting Azure Credentials
@@ -367,7 +367,7 @@ az role assignment create \
 # Method A: Environment variable
 export CLOUDFLARE_API_TOKEN="your-api-token-here"
 
-project-planton pulumi up --manifest ops/cloudflare/r2-bucket.yaml
+project-planton pulumi up -f ops/cloudflare/r2-bucket.yaml
 
 # Method B: Credential file (not commonly used, environment variable preferred)
 ```
@@ -378,7 +378,7 @@ project-planton pulumi up --manifest ops/cloudflare/r2-bucket.yaml
 export CLOUDFLARE_API_KEY="your-api-key"
 export CLOUDFLARE_EMAIL="your-email@example.com"
 
-project-planton pulumi up --manifest ops/cloudflare/r2-bucket.yaml
+project-planton pulumi up -f ops/cloudflare/r2-bucket.yaml
 ```
 
 **Why not recommended**: API keys have account-wide access. API tokens can be scoped to specific permissions.
@@ -412,7 +412,7 @@ When deploying to Kubernetes (using `*.Kubernetes` components), you need kubecon
 
 ```bash
 # Project Planton automatically uses ~/.kube/config
-project-planton pulumi up --manifest ops/k8s/postgres.yaml
+project-planton pulumi up -f ops/k8s/postgres.yaml
 ```
 
 ### Method 2: Custom Kubeconfig Path
@@ -421,7 +421,7 @@ project-planton pulumi up --manifest ops/k8s/postgres.yaml
 # Set custom kubeconfig
 export KUBECONFIG=~/.kube/staging-cluster-config
 
-project-planton pulumi up --manifest ops/k8s/postgres.yaml
+project-planton pulumi up -f ops/k8s/postgres.yaml
 ```
 
 ### Method 3: Kubeconfig via CLI Flag
@@ -429,7 +429,7 @@ project-planton pulumi up --manifest ops/k8s/postgres.yaml
 ```bash
 # Pass kubeconfig as YAML file
 project-planton pulumi up \
-  --manifest ops/k8s/postgres.yaml \
+  -f ops/k8s/postgres.yaml \
   --kubernetes-cluster ~/.kube/prod-cluster.yaml
 ```
 
@@ -487,7 +487,7 @@ export MONGODB_ATLAS_PRIVATE_KEY="your-private-key"
 
 # Or via CLI flag
 project-planton pulumi up \
-  --manifest ops/atlas/cluster.yaml \
+  -f ops/atlas/cluster.yaml \
   --mongodb-atlas-credential atlas-creds.yaml
 ```
 
@@ -501,7 +501,7 @@ export SNOWFLAKE_PASSWORD="password"
 
 # Or via CLI flag
 project-planton pulumi up \
-  --manifest ops/snowflake/database.yaml \
+  -f ops/snowflake/database.yaml \
   --snowflake-credential snowflake-creds.yaml
 ```
 
@@ -514,7 +514,7 @@ export CONFLUENT_CLOUD_API_SECRET="api-secret"
 
 # Or via CLI flag
 project-planton pulumi up \
-  --manifest ops/confluent/kafka.yaml \
+  -f ops/confluent/kafka.yaml \
   --confluent-credential confluent-creds.yaml
 ```
 
@@ -540,7 +540,7 @@ jobs:
       - name: Deploy to AWS
         run: |
           project-planton pulumi up \
-            --manifest ops/aws/vpc.yaml \
+            -f ops/aws/vpc.yaml \
             --yes
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -559,7 +559,7 @@ jobs:
 deploy:
   stage: deploy
   script:
-    - project-planton pulumi up --manifest ops/gcp/cluster.yaml --yes
+    - project-planton pulumi up -f ops/gcp/cluster.yaml --yes
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_KEY}
   only:
@@ -582,7 +582,7 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                sh 'project-planton pulumi up --manifest ops/aws/vpc.yaml --yes'
+                sh 'project-planton pulumi up -f ops/aws/vpc.yaml --yes'
             }
         }
     }

@@ -104,22 +104,22 @@ Master advanced Project Planton techniques.
 
 ```bash
 # Validate manifest
-project-planton validate --manifest resource.yaml
+project-planton validate -f resource.yaml
 
 # Deploy with Pulumi
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 
 # Deploy with OpenTofu
-project-planton tofu apply --manifest resource.yaml
+project-planton tofu apply -f resource.yaml
 
 # View effective manifest (with defaults)
-project-planton load-manifest --manifest resource.yaml
+project-planton load-manifest -f resource.yaml
 ```
 
 ### Common Flags
 
 ```bash
---manifest <file>                    # Manifest file or URL
+-f <file>                    # Manifest file or URL
 --kustomize-dir <dir> --overlay <env> # Use kustomize
 --set key=value                      # Override values
 --module-dir <path>                  # Custom module location

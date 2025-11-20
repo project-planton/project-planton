@@ -7,8 +7,8 @@ export default function HowItWorks() {
     { icon: FileText, title: "Parse", description: "apiVersion/kind/metadata/spec → Protobuf object" },
     { icon: Search, title: "Validate", description: "Buf ProtoValidate/CEL on spec" },
     { icon: Package, title: "Build", description: "stack-input = { provisioner, pulumi|terraform, target, providerCredential }" },
-    { icon: Play, title: "Plan/Preview", description: "pulumi preview or tofu plan" },
-    { icon: CheckCircle, title: "Apply", description: "pulumi update or tofu apply (backends: local|s3|gcs|azurerm)" },
+    { icon: Play, title: "Plan", description: "project-planton plan (auto-detects provisioner)" },
+    { icon: CheckCircle, title: "Apply", description: "project-planton apply (backends: local|s3|gcs|azurerm)" },
   ];
 
   return (

@@ -8,15 +8,9 @@ export default function CLIReference() {
   const primaryCommands = [
     { command: "project-planton apply -f <manifest.yaml>", description: "Deploy infrastructure (kubectl-style, auto-detects provisioner) 🆕", highlight: true },
     { command: "project-planton destroy -f <manifest.yaml>", description: "Destroy infrastructure (kubectl-style, auto-detects provisioner) 🆕", highlight: true },
-    { command: "project-planton pulumi preview", description: "Preview Pulumi changes" },
-    { command: "project-planton pulumi update", description: "Apply Pulumi changes" },
-    { command: "project-planton pulumi refresh", description: "Refresh Pulumi state" },
-    { command: "project-planton pulumi destroy", description: "Destroy Pulumi resources" },
-    { command: "project-planton tofu init", description: "Initialize OpenTofu backend" },
-    { command: "project-planton tofu plan", description: "Create OpenTofu execution plan" },
-    { command: "project-planton tofu apply", description: "Apply OpenTofu changes" },
-    { command: "project-planton tofu destroy", description: "Destroy OpenTofu resources" },
-    { command: "project-planton tofu refresh", description: "Refresh OpenTofu state" },
+    { command: "project-planton plan -f <manifest.yaml>", description: "Preview changes (auto-detects provisioner) 🆕", highlight: true },
+    { command: "project-planton init -f <manifest.yaml>", description: "Initialize backend (auto-detects provisioner) 🆕", highlight: true },
+    { command: "project-planton refresh -f <manifest.yaml>", description: "Refresh state (auto-detects provisioner) 🆕", highlight: true },
     { command: "project-planton validate <manifest.yaml>", description: "Validate manifest with Buf ProtoValidate" },
     { command: "project-planton version", description: "Show CLI version" },
   ];

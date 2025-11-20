@@ -41,7 +41,7 @@ spec:
   port: 5432
   multiAz: true`,
         deploy: `project-planton validate aws-rds-instance.yaml
-project-planton pulumi up --manifest aws-rds-instance.yaml --stack myorg/database/prod`,
+project-planton apply -f aws-rds-instance.yaml`,
       },
       {
         id: "aws-s3",
@@ -61,7 +61,7 @@ spec:
     ignorePublicAcls: true
     restrictPublicBuckets: true`,
         deploy: `project-planton validate aws-s3-bucket.yaml
-project-planton pulumi up --manifest aws-s3-bucket.yaml --stack myorg/storage/prod`,
+project-planton apply -f aws-s3-bucket.yaml`,
       },
     ],
     gcp: [
@@ -90,8 +90,8 @@ spec:
       minNodeCount: 1
       maxNodeCount: 5
       isSpotEnabled: false`,
-        deploy: `project-planton pulumi preview --manifest gcp-gke-cluster.yaml --stack myorg/platform/prod
-project-planton pulumi up --manifest gcp-gke-cluster.yaml --stack myorg/platform/prod`,
+        deploy: `project-planton plan -f gcp-gke-cluster.yaml
+project-planton apply -f gcp-gke-cluster.yaml`,
       },
       {
         id: "gcp-cloudrun",
@@ -108,7 +108,7 @@ spec:
     name: hello
     image: us-docker.pkg.dev/cloudrun/container/hello
     allowUnauthenticated: true`,
-        deploy: `project-planton tofu apply --manifest gcp-cloud-run.yaml --auto-approve`,
+        deploy: `project-planton apply -f gcp-cloud-run.yaml --auto-approve`,
       },
     ],
     azure: [
@@ -129,7 +129,7 @@ spec:
       vmSize: Standard_DS2_v2
       minNodeCount: 1
       maxNodeCount: 3`,
-        deploy: `project-planton pulumi up --manifest azure-aks.yaml --stack myorg/azure/dev`,
+        deploy: `project-planton apply -f azure-aks.yaml`,
       },
       {
         id: "azure-acr",
@@ -144,7 +144,7 @@ spec:
   resourceGroupName: rg-ops
   region: eastus
   sku: Basic`,
-        deploy: `project-planton tofu apply --manifest azure-acr.yaml --auto-approve`,
+        deploy: `project-planton apply -f azure-acr.yaml --auto-approve`,
       },
     ],
     kubernetes: [
@@ -168,8 +168,8 @@ spec:
         memory: "100Mi"
     persistenceEnabled: true
     diskSize: "5Gi"`,
-        deploy: `project-planton pulumi preview --manifest redis-kubernetes.yaml --stack myorg/cache/prod
-project-planton pulumi up --manifest redis-kubernetes.yaml --stack myorg/cache/prod`,
+        deploy: `project-planton plan -f redis-kubernetes.yaml
+project-planton apply -f redis-kubernetes.yaml`,
       },
       {
         id: "postgres-k8s",
@@ -193,8 +193,8 @@ spec:
   ingress:
     enabled: true
     hostname: db.example.com`,
-        deploy: `project-planton tofu plan --manifest postgres-kubernetes.yaml
-project-planton tofu apply --manifest postgres-kubernetes.yaml --auto-approve`,
+        deploy: `project-planton plan -f postgres-kubernetes.yaml
+project-planton apply -f postgres-kubernetes.yaml --auto-approve`,
       },
     ],
   } as const;

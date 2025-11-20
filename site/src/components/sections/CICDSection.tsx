@@ -28,11 +28,11 @@ jobs:
           curl -L https://github.com/opentofu/opentofu/releases/latest/download/tofu_linux_amd64.zip -o tofu.zip
           sudo unzip -o tofu.zip -d /usr/local/bin
 
-      - name: Plan (Tofu)
-        run: project-planton tofu plan --manifest infra/manifest.yaml
+      - name: Plan
+        run: project-planton plan -f infra/manifest.yaml
 
-      - name: Apply (Pulumi)
-        run: project-planton pulumi up --manifest infra/manifest.yaml --stack myorg/myproj/prod`;
+      - name: Apply
+        run: project-planton apply -f infra/manifest.yaml --stack myorg/myproj/prod`;
 
   const copyWorkflow = () => {
     navigator.clipboard.writeText(workflowCode);

@@ -279,7 +279,7 @@ One of Project Planton's superpowers is **validation before deployment**. Instea
 
 ```bash
 # This fails immediately if YAML doesn't match proto structure
-project-planton validate --manifest my-resource.yaml
+project-planton validate -f my-resource.yaml
 ```
 
 **2. Field-Level Validation** (via buf-validate)
@@ -306,7 +306,7 @@ Final validation by the actual cloud provider APIs. This catches provider-specif
 
 ```bash
 # Validate before deploying
-project-planton validate --manifest my-app.yaml
+project-planton validate -f my-app.yaml
 
 # If validation fails, you'll see exactly what's wrong
 ❌  MANIFEST VALIDATION FAILED
@@ -491,10 +491,10 @@ Deploy separately but manage together:
 
 ```bash
 # Deploy database
-project-planton pulumi up --manifest postgres.yaml
+project-planton pulumi up -f postgres.yaml
 
 # Deploy backup bucket
-project-planton pulumi up --manifest postgres-backup-bucket.yaml
+project-planton pulumi up -f postgres-backup-bucket.yaml
 ```
 
 ---
@@ -506,11 +506,11 @@ Manifests don't have to be local files—you can load them from URLs:
 ```bash
 # Load from GitHub raw URL
 project-planton pulumi up \
-  --manifest https://raw.githubusercontent.com/my-org/manifests/main/prod/database.yaml
+  -f https://raw.githubusercontent.com/my-org/manifests/main/prod/database.yaml
 
 # Load from any HTTPS URL
 project-planton pulumi up \
-  --manifest https://config-server.example.com/manifests/vpc.yaml
+  -f https://config-server.example.com/manifests/vpc.yaml
 ```
 
 **How it works**:
@@ -547,11 +547,11 @@ vim /tmp/database.yaml
 
 ```bash
 # ✅ Good: Catch errors early
-project-planton validate --manifest resource.yaml
-project-planton pulumi up --manifest resource.yaml
+project-planton validate -f resource.yaml
+project-planton pulumi up -f resource.yaml
 
 # ⚠️ Risky: Deploy without validation
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 ```
 
 **Why**: Validation catches 90% of errors before making cloud API calls.
@@ -713,7 +713,7 @@ Now that you understand manifests:
 
 1. **Browse the Catalog**: See what resources you can deploy at `/docs/catalog`
 2. **Write Your First Manifest**: Start with something simple like a storage bucket
-3. **Validate It**: Use `project-planton validate --manifest your-resource.yaml`
+3. **Validate It**: Use `project-planton validate -f your-resource.yaml`
 4. **Deploy It**: Follow the Pulumi or OpenTofu command guides
 
 **Remember**: Manifests are declarative—you describe what you want, not how to create it. Project Planton handles the "how."

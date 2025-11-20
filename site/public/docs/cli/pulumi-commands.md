@@ -58,7 +58,7 @@ Think of Pulumi as your infrastructure's version control system. Just as Git let
 **Usage**:
 
 ```bash
-project-planton pulumi init --manifest <manifest-file> [flags]
+project-planton pulumi init -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -66,7 +66,7 @@ project-planton pulumi init --manifest <manifest-file> [flags]
 ```bash
 # Initialize a Cloudflare R2 bucket stack
 project-planton pulumi init \
-  --manifest ops/cloud-resources/prod/r2-bucket.yaml
+  -f ops/cloud-resources/prod/r2-bucket.yaml
 
 # Initialize using kustomize overlay (for projects using kustomize)
 project-planton pulumi init \
@@ -75,7 +75,7 @@ project-planton pulumi init \
 
 # Initialize with explicit module directory (for development/testing)
 project-planton pulumi init \
-  --manifest ops/resources/vpc.yaml \
+  -f ops/resources/vpc.yaml \
   --module-dir ~/projects/custom-modules/aws-vpc
 ```
 
@@ -125,7 +125,7 @@ Created stack 'planton-cloud/planton-cloud/prod.CloudflareR2Bucket.pipeline-logs
 **Usage**:
 
 ```bash
-project-planton pulumi preview --manifest <manifest-file> [flags]
+project-planton pulumi preview -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -133,11 +133,11 @@ project-planton pulumi preview --manifest <manifest-file> [flags]
 ```bash
 # Preview changes for a Kubernetes deployment
 project-planton pulumi preview \
-  --manifest services/api/deployment.yaml
+  -f services/api/deployment.yaml
 
 # Preview with field overrides (useful for testing different configurations)
 project-planton pulumi preview \
-  --manifest services/api/deployment.yaml \
+  -f services/api/deployment.yaml \
   --set spec.replicas=5 \
   --set spec.container.image.tag=v2.0.0
 
@@ -190,7 +190,7 @@ Resources:
 **Usage**:
 
 ```bash
-project-planton pulumi up --manifest <manifest-file> [flags]
+project-planton pulumi up -f <manifest-file> [flags]
 ```
 
 **Aliases**: You can use `update` or `up` interchangeably.
@@ -200,16 +200,16 @@ project-planton pulumi up --manifest <manifest-file> [flags]
 ```bash
 # Interactive deployment (will show preview and ask for confirmation)
 project-planton pulumi up \
-  --manifest ops/resources/database.yaml
+  -f ops/resources/database.yaml
 
 # Non-interactive deployment (CI/CD pipelines)
 project-planton pulumi up \
-  --manifest ops/resources/database.yaml \
+  -f ops/resources/database.yaml \
   --yes
 
 # Deploy with field overrides
 project-planton pulumi up \
-  --manifest ops/resources/cache.yaml \
+  -f ops/resources/cache.yaml \
   --set spec.instanceSize=large \
   --set spec.replicas=3
 
@@ -298,7 +298,7 @@ Duration: 3m21s
 **Usage**:
 
 ```bash
-project-planton pulumi refresh --manifest <manifest-file> [flags]
+project-planton pulumi refresh -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -306,19 +306,19 @@ project-planton pulumi refresh --manifest <manifest-file> [flags]
 ```bash
 # Refresh to sync state after manual changes
 project-planton pulumi refresh \
-  --manifest ops/resources/s3-bucket.yaml
+  -f ops/resources/s3-bucket.yaml
 
 # Non-interactive refresh (for automation)
 project-planton pulumi refresh \
-  --manifest ops/resources/s3-bucket.yaml \
+  -f ops/resources/s3-bucket.yaml \
   --yes
 
 # Refresh before important operations
 project-planton pulumi refresh \
-  --manifest ops/resources/production-db.yaml \
+  -f ops/resources/production-db.yaml \
   --yes && \
 project-planton pulumi up \
-  --manifest ops/resources/production-db.yaml
+  -f ops/resources/production-db.yaml
 ```
 
 **What you'll see**:
@@ -396,7 +396,7 @@ After refresh:
 **Usage**:
 
 ```bash
-project-planton pulumi destroy --manifest <manifest-file> [flags]
+project-planton pulumi destroy -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -404,11 +404,11 @@ project-planton pulumi destroy --manifest <manifest-file> [flags]
 ```bash
 # Interactive destroy (will ask for confirmation)
 project-planton pulumi destroy \
-  --manifest ops/resources/dev-cluster.yaml
+  -f ops/resources/dev-cluster.yaml
 
 # Non-interactive destroy (automation/CI)
 project-planton pulumi destroy \
-  --manifest ops/resources/test-environment.yaml \
+  -f ops/resources/test-environment.yaml \
   --yes
 
 # Destroy temporary environment
@@ -468,19 +468,19 @@ Duration: 4m35s
 
 ```bash
 # ✅ Good: Review before destroying
-project-planton pulumi preview --manifest prod.yaml   # See what exists
-project-planton pulumi destroy --manifest prod.yaml   # Interactive confirmation
+project-planton pulumi preview -f prod.yaml   # See what exists
+project-planton pulumi destroy -f prod.yaml   # Interactive confirmation
 
 # ⚠️ Risky: Blind destruction
-project-planton pulumi destroy --manifest prod.yaml --yes
+project-planton pulumi destroy -f prod.yaml --yes
 
 # ✅ Good: Backup data first
 aws s3 sync s3://my-bucket ./backup-$(date +%Y%m%d)/
-project-planton pulumi destroy --manifest s3-bucket.yaml
+project-planton pulumi destroy -f s3-bucket.yaml
 
 # ✅ Good: Verify manifest before destroying
 cat prod.yaml  # Make absolutely sure this is the right file
-project-planton pulumi destroy --manifest prod.yaml
+project-planton pulumi destroy -f prod.yaml
 ```
 
 ---
@@ -506,7 +506,7 @@ project-planton pulumi destroy --manifest prod.yaml
 **Usage**:
 
 ```bash
-project-planton pulumi delete --manifest <manifest-file> [flags]
+project-planton pulumi delete -f <manifest-file> [flags]
 ```
 
 **Aliases**: You can use `delete` or `rm` interchangeably.
@@ -516,25 +516,25 @@ project-planton pulumi delete --manifest <manifest-file> [flags]
 ```bash
 # Standard workflow: destroy resources first, then remove stack
 project-planton pulumi destroy \
-  --manifest ops/resources/temp-env.yaml \
+  -f ops/resources/temp-env.yaml \
   --yes
 
 # After resources are gone, remove the stack metadata
 project-planton pulumi delete \
-  --manifest ops/resources/temp-env.yaml
+  -f ops/resources/temp-env.yaml
 
 # Using the 'rm' alias
 project-planton pulumi rm \
-  --manifest ops/resources/old-stack.yaml
+  -f ops/resources/old-stack.yaml
 
 # Force removal (skip resource check) - use with extreme caution
 project-planton pulumi delete \
-  --manifest ops/resources/abandoned-stack.yaml \
+  -f ops/resources/abandoned-stack.yaml \
   --force
 
 # Remove stack via explicit stack FQDN
 project-planton pulumi delete \
-  --manifest ops/resources/resource.yaml \
+  -f ops/resources/resource.yaml \
   --stack my-org/my-project/dev.TestStack.old
 ```
 
@@ -590,16 +590,16 @@ delete (rm):
 
 ```bash
 # Step 1: Verify what resources exist
-project-planton pulumi preview --manifest my-stack.yaml
+project-planton pulumi preview -f my-stack.yaml
 
 # Step 2: Destroy the cloud resources
-project-planton pulumi destroy --manifest my-stack.yaml
+project-planton pulumi destroy -f my-stack.yaml
 
 # Step 3: Verify resources are gone (should show empty stack)
-project-planton pulumi preview --manifest my-stack.yaml
+project-planton pulumi preview -f my-stack.yaml
 
 # Step 4: Remove the stack metadata
-project-planton pulumi delete --manifest my-stack.yaml
+project-planton pulumi delete -f my-stack.yaml
 
 # Done! Stack and resources are completely gone
 ```
@@ -609,34 +609,34 @@ project-planton pulumi delete --manifest my-stack.yaml
 ```bash
 # Scenario 1: Stack state is corrupted, resources already manually deleted
 # You know resources are gone but Pulumi state is wrong
-project-planton pulumi delete --manifest broken-stack.yaml --force
+project-planton pulumi delete -f broken-stack.yaml --force
 
 # Scenario 2: Resources were imported/migrated to another stack
 # Original stack should no longer manage them
-project-planton pulumi delete --manifest old-stack.yaml --force
+project-planton pulumi delete -f old-stack.yaml --force
 
 # Scenario 3: Test/development stack with resources you don't care about
 # (Still not recommended - better to destroy properly)
-project-planton pulumi delete --manifest test-stack.yaml --force
+project-planton pulumi delete -f test-stack.yaml --force
 ```
 
 **Best Practices**:
 
 ```bash
 # ✅ Good: Complete cleanup workflow
-project-planton pulumi destroy --manifest stack.yaml --yes
-project-planton pulumi delete --manifest stack.yaml
+project-planton pulumi destroy -f stack.yaml --yes
+project-planton pulumi delete -f stack.yaml
 
 # ⚠️ Risky: Forcing without verification
-project-planton pulumi delete --manifest stack.yaml --force
+project-planton pulumi delete -f stack.yaml --force
 
 # ✅ Good: Verify stack FQDN before deleting
 pulumi stack --stack <stack-fqdn>  # Check what's in the stack
-project-planton pulumi delete --manifest stack.yaml
+project-planton pulumi delete -f stack.yaml
 
 # ✅ Good: Export state before deleting (backup)
 pulumi stack export --stack <stack-fqdn> > backup.json
-project-planton pulumi delete --manifest stack.yaml
+project-planton pulumi delete -f stack.yaml
 ```
 
 **Troubleshooting**:
@@ -646,12 +646,12 @@ project-planton pulumi delete --manifest stack.yaml
 ```bash
 # Problem: Trying to delete stack with resources
 # Solution: Destroy resources first
-project-planton pulumi destroy --manifest stack.yaml
-project-planton pulumi delete --manifest stack.yaml
+project-planton pulumi destroy -f stack.yaml
+project-planton pulumi delete -f stack.yaml
 
 # Or if resources are actually gone (state is wrong)
-project-planton pulumi refresh --manifest stack.yaml  # Sync state
-project-planton pulumi delete --manifest stack.yaml
+project-planton pulumi refresh -f stack.yaml  # Sync state
+project-planton pulumi delete -f stack.yaml
 ```
 
 **Error: "Stack not found"**
@@ -671,10 +671,10 @@ All commands support these flags. They're like the universal remote for infrastr
 
 ### Manifest Input
 
-**`--manifest <file>`**: Path to your resource manifest YAML file.
+**`-f <file>`**: Path to your resource manifest YAML file.
 
 ```bash
-project-planton pulumi up --manifest ops/resources/my-resource.yaml
+project-planton pulumi up -f ops/resources/my-resource.yaml
 ```
 
 **`--kustomize-dir <dir>`** + **`--overlay <name>`**: Use kustomize for environment-specific configurations.
@@ -686,7 +686,7 @@ project-planton pulumi up \
   --overlay prod
 ```
 
-**Priority**: `--manifest` > `--kustomize-dir` + `--overlay`
+**Priority**: `-f` > `--kustomize-dir` + `--overlay`
 
 ### Execution Control
 
@@ -695,7 +695,7 @@ project-planton pulumi up \
 ```bash
 # Use local development module instead of released version
 project-planton pulumi up \
-  --manifest my-resource.yaml \
+  -f my-resource.yaml \
   --module-dir ~/projects/custom-modules/my-module
 ```
 
@@ -703,28 +703,28 @@ project-planton pulumi up \
 
 ```bash
 project-planton pulumi up \
-  --manifest resource.yaml \
+  -f resource.yaml \
   --stack my-org/my-project/custom-stack-name
 ```
 
 **`--yes`**: Auto-approve without confirmation prompts (for CI/CD).
 
 ```bash
-project-planton pulumi up --manifest resource.yaml --yes
+project-planton pulumi up -f resource.yaml --yes
 ```
 
 **`--force`**: Force removal of stack even if resources exist (only for `delete`/`rm` command).
 
 ```bash
 # Use with extreme caution - only when you're certain resources are gone
-project-planton pulumi delete --manifest resource.yaml --force
+project-planton pulumi delete -f resource.yaml --force
 ```
 
 **`--set <key>=<value>`**: Override manifest values at runtime (repeatable flag).
 
 ```bash
 project-planton pulumi up \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=10 \
   --set spec.container.image.tag=v2.1.0 \
   --set metadata.env=staging
@@ -747,7 +747,7 @@ These flags inject provider credentials (alternative to environment variables):
 
 ```bash
 project-planton pulumi up \
-  --manifest ops/aws-resources/vpc.yaml \
+  -f ops/aws-resources/vpc.yaml \
   --aws-credential ~/.config/planton/credentials/aws-prod.yaml
 ```
 
@@ -759,20 +759,20 @@ project-planton pulumi up \
 
 ```bash
 # 1. Initialize the stack (creates state tracking)
-project-planton pulumi init --manifest my-resource.yaml
+project-planton pulumi init -f my-resource.yaml
 
 # 2. Preview what will be created
-project-planton pulumi preview --manifest my-resource.yaml
+project-planton pulumi preview -f my-resource.yaml
 
 # 3. Deploy the infrastructure
-project-planton pulumi up --manifest my-resource.yaml
+project-planton pulumi up -f my-resource.yaml
 ```
 
 **Shortcut**: `up` creates the stack automatically if it doesn't exist:
 
 ```bash
 # One command to rule them all (for new stacks)
-project-planton pulumi up --manifest my-resource.yaml
+project-planton pulumi up -f my-resource.yaml
 ```
 
 ### Updating Existing Infrastructure
@@ -782,10 +782,10 @@ project-planton pulumi up --manifest my-resource.yaml
 vim ops/resources/my-app.yaml
 
 # 2. Preview the changes
-project-planton pulumi preview --manifest ops/resources/my-app.yaml
+project-planton pulumi preview -f ops/resources/my-app.yaml
 
 # 3. Apply if changes look good
-project-planton pulumi up --manifest ops/resources/my-app.yaml
+project-planton pulumi up -f ops/resources/my-app.yaml
 ```
 
 ### Testing Configuration Changes
@@ -793,13 +793,13 @@ project-planton pulumi up --manifest ops/resources/my-app.yaml
 ```bash
 # Preview with overrides (no changes to manifest file)
 project-planton pulumi preview \
-  --manifest api-deployment.yaml \
+  -f api-deployment.yaml \
   --set spec.replicas=20 \
   --set spec.resources.limits.cpu=4000m
 
 # If it looks good, apply with same overrides
 project-planton pulumi up \
-  --manifest api-deployment.yaml \
+  -f api-deployment.yaml \
   --set spec.replicas=20 \
   --set spec.resources.limits.cpu=4000m
 
@@ -814,16 +814,16 @@ vim api-deployment.yaml  # Make changes permanent
 
 # Option 1: Override the current manifest
 project-planton pulumi up \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.container.image.tag=v1.9.5
 
 # Option 2: Revert manifest to previous version
 git checkout HEAD~1 deployment.yaml
-project-planton pulumi up --manifest deployment.yaml
+project-planton pulumi up -f deployment.yaml
 
 # Option 3: Use a previous Git revision
 git show HEAD~5:deployment.yaml > /tmp/previous-deployment.yaml
-project-planton pulumi up --manifest /tmp/previous-deployment.yaml
+project-planton pulumi up -f /tmp/previous-deployment.yaml
 ```
 
 ### Syncing After Manual Changes
@@ -832,17 +832,17 @@ project-planton pulumi up --manifest /tmp/previous-deployment.yaml
 # Someone made changes via AWS console, need to sync state
 
 # 1. Refresh to see what changed
-project-planton pulumi refresh --manifest s3-bucket.yaml
+project-planton pulumi refresh -f s3-bucket.yaml
 
 # 2. Review the diff
-project-planton pulumi preview --manifest s3-bucket.yaml
+project-planton pulumi preview -f s3-bucket.yaml
 
 # 3. Decide:
 #    - Changes match manifest? → Do nothing, state is synced
 #    - Changes don't match? → Update manifest or revert via `up`
 
 # 4. If reverting manual changes:
-project-planton pulumi up --manifest s3-bucket.yaml  # Restores manifest config
+project-planton pulumi up -f s3-bucket.yaml  # Restores manifest config
 ```
 
 ### Multi-Environment Deployment
@@ -879,18 +879,18 @@ cd ~/projects/project-planton/apis/.../.../iac/pulumi
 
 # Point to local module directory
 project-planton pulumi preview \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 
 # Iterate: edit module code, run preview again
 vim module/main.go
 project-planton pulumi preview \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 
 # Deploy with local module
 project-planton pulumi up \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 ```
 
@@ -905,10 +905,10 @@ set -e  # Exit on error
 MANIFEST="ops/resources/app-${ENV}.yaml"
 
 echo "🔍 Previewing changes..."
-project-planton pulumi preview --manifest "$MANIFEST" --yes
+project-planton pulumi preview -f "$MANIFEST" --yes
 
 echo "🚀 Deploying infrastructure..."
-project-planton pulumi up --manifest "$MANIFEST" --yes
+project-planton pulumi up -f "$MANIFEST" --yes
 
 echo "✅ Deployment complete"
 ```
@@ -938,7 +938,7 @@ jobs:
       - name: Deploy Resources
         run: |
           project-planton pulumi up \
-            --manifest ops/resources/prod-infra.yaml \
+            -f ops/resources/prod-infra.yaml \
             --yes
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -959,11 +959,11 @@ jobs:
 
 ```bash
 # Option 1: Run init first
-project-planton pulumi init --manifest my-resource.yaml
-project-planton pulumi preview --manifest my-resource.yaml
+project-planton pulumi init -f my-resource.yaml
+project-planton pulumi preview -f my-resource.yaml
 
 # Option 2: Use 'up' which auto-creates stack
-project-planton pulumi up --manifest my-resource.yaml
+project-planton pulumi up -f my-resource.yaml
 ```
 
 ### Error: "another update is currently in progress"
@@ -982,7 +982,7 @@ pulumi stack --stack <stack-fqdn>
 pulumi cancel --stack <stack-fqdn>
 
 # Then retry your operation
-project-planton pulumi up --manifest my-resource.yaml
+project-planton pulumi up -f my-resource.yaml
 ```
 
 ### Provider Authentication Failures
@@ -1000,7 +1000,7 @@ aws sts get-caller-identity
 
 # Or provide credential file
 project-planton pulumi up \
-  --manifest resource.yaml \
+  -f resource.yaml \
   --aws-credential ~/.aws/credentials-prod.yaml
 ```
 
@@ -1012,14 +1012,14 @@ gcloud config get-value project
 
 # Or set environment variable
 export GOOGLE_APPLICATION_CREDENTIALS=~/gcp-key.json
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 ```
 
 **For Cloudflare**:
 ```bash
 # Set API token
 export CLOUDFLARE_API_TOKEN="your-token-here"
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 ```
 
 ### Preview Shows Unexpected Changes
@@ -1035,10 +1035,10 @@ project-planton pulumi up --manifest resource.yaml
 
 ```bash
 # First, sync state with reality
-project-planton pulumi refresh --manifest resource.yaml
+project-planton pulumi refresh -f resource.yaml
 
 # Then preview again
-project-planton pulumi preview --manifest resource.yaml
+project-planton pulumi preview -f resource.yaml
 
 # Compare against previous state
 pulumi stack --show-urns --stack <stack-fqdn>
@@ -1071,12 +1071,12 @@ vim my-resource.yaml  # Change metadata.name or resource IDs
 
 ```bash
 # ✅ Good: Review changes first
-project-planton pulumi preview --manifest resource.yaml
+project-planton pulumi preview -f resource.yaml
 # Read output, verify changes look correct
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 
 # ⚠️ Risky: Blind deployment
-project-planton pulumi up --manifest resource.yaml --yes
+project-planton pulumi up -f resource.yaml --yes
 ```
 
 **Why**: Preview is your safety net. It catches mistakes before they become expensive incidents.
@@ -1092,7 +1092,7 @@ git push
 
 # ❌ Bad: Direct edits without version control
 vim /tmp/my-resource.yaml
-project-planton pulumi up --manifest /tmp/my-resource.yaml
+project-planton pulumi up -f /tmp/my-resource.yaml
 ```
 
 **Why**: Version control gives you change history, rollback capability, and code review.
@@ -1101,12 +1101,12 @@ project-planton pulumi up --manifest /tmp/my-resource.yaml
 
 ```bash
 # ✅ Good: Sync state before major changes
-project-planton pulumi refresh --manifest resource.yaml --yes
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi refresh -f resource.yaml --yes
+project-planton pulumi up -f resource.yaml
 
 # ⚠️ Risky: Operating on stale state
 # (Someone made manual changes you don't know about)
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 ```
 
 **Why**: Refreshing prevents conflicts and ensures you're working with accurate state.
@@ -1149,13 +1149,13 @@ project-planton pulumi up --kustomize-dir services/api --overlay prod --yes
 ```bash
 # ✅ Good: Quick testing
 project-planton pulumi preview \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=1  # Test with minimal resources
 
 # ❌ Bad: Permanent changes via flag
 # (6 months later: "Why is prod running 1 replica?!")
 project-planton pulumi up \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=1 \
   --yes
 ```
@@ -1169,7 +1169,7 @@ project-planton pulumi up \
 # ops/README.md
 # Deploy with:
 #   export CLOUDFLARE_API_TOKEN=$(pass cloudflare/api-token)
-#   project-planton pulumi up --manifest r2-bucket.yaml
+#   project-planton pulumi up -f r2-bucket.yaml
 
 # ⚠️ Bad: Tribal knowledge
 # (New team member: "How do I deploy this?")
@@ -1181,7 +1181,7 @@ project-planton pulumi up \
 
 ```bash
 # After destroying resources, remove the empty stack
-project-planton pulumi destroy --manifest temp-resource.yaml --yes
+project-planton pulumi destroy -f temp-resource.yaml --yes
 pulumi stack rm <stack-fqdn>  # Remove stack metadata
 
 # List all stacks to find abandoned ones
@@ -1211,7 +1211,7 @@ pulumi stack output --stack <stack-fqdn>
 
 ```bash
 # Preview changes, grep for specific resource
-project-planton pulumi preview --manifest resource.yaml 2>&1 | grep "aws:s3:Bucket"
+project-planton pulumi preview -f resource.yaml 2>&1 | grep "aws:s3:Bucket"
 ```
 
 ### Copy Stack Outputs to Clipboard
@@ -1228,7 +1228,7 @@ pulumi stack output connection_string --stack <stack-fqdn> | xclip -selection cl
 
 ```bash
 # deploy-and-verify.sh
-project-planton pulumi up --manifest api-deployment.yaml --yes
+project-planton pulumi up -f api-deployment.yaml --yes
 
 # Wait for pods to be ready
 kubectl rollout status deployment/api -n production

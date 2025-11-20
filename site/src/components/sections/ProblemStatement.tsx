@@ -159,12 +159,10 @@ export default function ProblemStatement() {
 							</div>
 						</div>
 
-						<div className="mt-6 bg-slate-950 rounded-lg p-4 font-mono text-sm">
-							<div className="text-slate-400"># Same deployment command for all providers:</div>
-							<div className="text-emerald-400 mt-2">project-planton pulumi up --manifest postgres.yaml</div>
-							<div className="text-slate-400 mt-1"># OR</div>
-							<div className="text-emerald-400">project-planton tofu apply --manifest postgres.yaml</div>
-						</div>
+					<div className="mt-6 bg-slate-950 rounded-lg p-4 font-mono text-sm text-center">
+						<div className="text-slate-400"># Same deployment command for all providers:</div>
+						<div className="text-emerald-400 mt-2">project-planton apply -f postgres.yaml</div>
+					</div>
 
 						<div className="mt-6 pt-6 border-t border-slate-700">
 							<p className="text-slate-300 text-center mb-6">

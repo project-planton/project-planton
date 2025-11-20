@@ -143,7 +143,7 @@ project-planton validate redis.yaml
 project-planton apply -f redis.yaml
 
 # Or use provisioner-specific commands
-project-planton pulumi up --manifest redis.yaml --stack myorg/project/dev
+project-planton pulumi up -f redis.yaml --stack myorg/project/dev
 ```
 
 ## Troubleshooting

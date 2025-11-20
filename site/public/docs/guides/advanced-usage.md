@@ -19,7 +19,7 @@ The `--set` flag lets you override manifest values without editing files. Think 
 
 ```bash
 project-planton pulumi up \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set key=value
 ```
 
@@ -30,7 +30,7 @@ Use dot notation to access nested fields:
 ```bash
 # Override nested spec fields
 project-planton pulumi up \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.container.replicas=5 \
   --set spec.container.image.tag=v2.0.0 \
   --set spec.container.resources.limits.cpu=2000m
@@ -42,7 +42,7 @@ Repeat the `--set` flag multiple times:
 
 ```bash
 project-planton pulumi up \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=10 \
   --set spec.container.image.tag=v1.5.0 \
   --set metadata.labels.version=v1.5.0 \
@@ -69,17 +69,17 @@ project-planton pulumi up \
 ```bash
 # Test with 1 replica (cheapest)
 project-planton pulumi preview \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.replicas=1
 
 # Test with 5 replicas (more realistic)
 project-planton pulumi preview \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.replicas=5
 
 # Deploy with 3 (commit to manifest for permanence)
 vim api.yaml  # Set replicas: 3
-project-planton pulumi up --manifest api.yaml
+project-planton pulumi up -f api.yaml
 ```
 
 **Dynamic image tags in CI/CD**:
@@ -89,7 +89,7 @@ project-planton pulumi up --manifest api.yaml
 IMAGE_TAG="${GITHUB_SHA:0:7}"  # Short commit hash
 
 project-planton pulumi up \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.container.image.tag=$IMAGE_TAG \
   --yes
 ```
@@ -99,13 +99,13 @@ project-planton pulumi up \
 ```bash
 # Production is slow, scale up immediately
 project-planton pulumi up \
-  --manifest prod-api.yaml \
+  -f prod-api.yaml \
   --set spec.replicas=10 \
   --yes
 
 # Later: Update manifest and revert to normal
 vim prod-api.yaml  # Set permanent replica count
-project-planton pulumi up --manifest prod-api.yaml
+project-planton pulumi up -f prod-api.yaml
 ```
 
 ### Limitations
@@ -133,11 +133,11 @@ Deploy infrastructure directly from URLs without downloading files manually.
 ```bash
 # Deploy from GitHub raw URL
 project-planton pulumi up \
-  --manifest https://raw.githubusercontent.com/myorg/manifests/main/prod/database.yaml
+  -f https://raw.githubusercontent.com/myorg/manifests/main/prod/database.yaml
 
 # Deploy from any HTTPS URL
 project-planton pulumi up \
-  --manifest https://config-server.example.com/api/manifests/vpc.yaml
+  -f https://config-server.example.com/api/manifests/vpc.yaml
 ```
 
 ### How It Works
@@ -169,10 +169,10 @@ project-planton pulumi up \
 MANIFEST_REPO="https://raw.githubusercontent.com/myorg/infra-manifests/main"
 
 project-planton pulumi up \
-  --manifest $MANIFEST_REPO/prod/database.yaml
+  -f $MANIFEST_REPO/prod/database.yaml
 
 project-planton pulumi up \
-  --manifest $MANIFEST_REPO/prod/cache.yaml
+  -f $MANIFEST_REPO/prod/cache.yaml
 ```
 
 **Generated manifests from API**:
@@ -181,7 +181,7 @@ project-planton pulumi up \
 # CI/CD generates manifests via API
 MANIFEST_URL=$(curl -s https://config-api.example.com/generate?env=prod&service=api)
 
-project-planton pulumi up --manifest $MANIFEST_URL
+project-planton pulumi up -f $MANIFEST_URL
 ```
 
 **Version-pinned deployments**:
@@ -189,11 +189,11 @@ project-planton pulumi up --manifest $MANIFEST_URL
 ```bash
 # Deploy from specific Git tag/commit
 project-planton pulumi up \
-  --manifest https://raw.githubusercontent.com/myorg/manifests/v1.0.0/database.yaml
+  -f https://raw.githubusercontent.com/myorg/manifests/v1.0.0/database.yaml
 
 # Rollback to previous version
 project-planton pulumi up \
-  --manifest https://raw.githubusercontent.com/myorg/manifests/v0.9.0/database.yaml
+  -f https://raw.githubusercontent.com/myorg/manifests/v0.9.0/database.yaml
 ```
 
 ### URL Requirements
@@ -222,7 +222,7 @@ Validate manifests before deploying to catch errors early.
 
 ```bash
 # Validate a single manifest
-project-planton validate --manifest database.yaml
+project-planton validate -f database.yaml
 
 # If valid, no output (exit code 0)
 # If invalid, shows detailed errors
@@ -239,7 +239,7 @@ project-planton validate --manifest database.yaml
 ### Example Validation Errors
 
 ```bash
-$ project-planton validate --manifest bad-config.yaml
+$ project-planton validate -f bad-config.yaml
 
 ╔═══════════════════════════════════════════════════════════╗
 ║                 ❌  MANIFEST VALIDATION FAILED            ║
@@ -256,14 +256,14 @@ spec.container.image.repo: value is required
 
 ```bash
 # ✅ Good: Validate before deploying
-project-planton validate --manifest resource.yaml
+project-planton validate -f resource.yaml
 # See errors immediately (2 seconds)
 
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 # Deploy with confidence
 
 # ⚠️ Risky: Deploy without validation
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 # Might fail after 5 minutes of deployment
 ```
 
@@ -274,11 +274,11 @@ project-planton pulumi up --manifest resource.yaml
 - name: Validate Manifests
   run: |
     for manifest in ops/manifests/**/*.yaml; do
-      project-planton validate --manifest $manifest
+      project-planton validate -f $manifest
     done
 
 - name: Deploy
-  run: project-planton pulumi up --manifest ops/manifests/prod.yaml --yes
+  run: project-planton pulumi up -f ops/manifests/prod.yaml --yes
 ```
 
 ---
@@ -301,7 +301,7 @@ project-planton load-manifest database.yaml
 ```bash
 # See what --set would produce
 project-planton load-manifest \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=5 \
   --set spec.container.image.tag=v2.0.0
 ```
@@ -352,7 +352,7 @@ project-planton load-manifest \
 ```bash
 # Verify override works as expected
 project-planton load-manifest \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.container.image.tag=v2.0.0 \
   | grep "tag:"
 
@@ -377,7 +377,7 @@ Without `--module-dir`, Project Planton uses current working directory:
 
 ```bash
 cd /path/to/module
-project-planton pulumi up --manifest resource.yaml
+project-planton pulumi up -f resource.yaml
 # Uses current directory as module directory
 ```
 
@@ -388,7 +388,7 @@ With `--module-dir`, you can deploy from anywhere:
 ```bash
 # From any location
 project-planton pulumi up \
-  --manifest ~/manifests/database.yaml \
+  -f ~/manifests/database.yaml \
   --module-dir ~/projects/custom-modules/postgres-k8s
 ```
 
@@ -404,16 +404,16 @@ vim main.go
 
 # 3. Test with your manifest
 project-planton pulumi preview \
-  --manifest ~/test-manifests/postgres.yaml \
+  -f ~/test-manifests/postgres.yaml \
   --module-dir .
 
 # 4. Iterate
 vim main.go
-project-planton pulumi preview --manifest ~/test-manifests/postgres.yaml --module-dir .
+project-planton pulumi preview -f ~/test-manifests/postgres.yaml --module-dir .
 
 # 5. Deploy when ready
 project-planton pulumi up \
-  --manifest ~/test-manifests/postgres.yaml \
+  -f ~/test-manifests/postgres.yaml \
   --module-dir .
 ```
 
@@ -432,7 +432,7 @@ vim main.go  # Add custom logic
 
 # 3. Test
 project-planton pulumi up \
-  --manifest s3-bucket.yaml \
+  -f s3-bucket.yaml \
   --module-dir ~/custom-modules/my-s3-module
 
 # 4. If it works, consider contributing back or maintaining internally
@@ -463,7 +463,7 @@ project-planton pulumi up \
 ```bash
 # Load from URL, override specific values
 project-planton pulumi up \
-  --manifest https://manifests.example.com/database.yaml \
+  -f https://manifests.example.com/database.yaml \
   --set spec.region=us-west-2 \
   --set spec.instanceSize=large
 ```
@@ -542,7 +542,7 @@ fi
 
 # Validate all manifests before committing
 for manifest in $(git diff --cached --name-only --diff-filter=ACM | grep '\.yaml$'); do
-    if project-planton validate --manifest $manifest; then
+    if project-planton validate -f $manifest; then
         echo "✓ $manifest valid"
     else
         echo "✗ $manifest invalid"
@@ -560,7 +560,7 @@ done
 
 validate:
 	@for f in ops/manifests/*.yaml; do \
-		project-planton validate --manifest $$f; \
+		project-planton validate -f $$f; \
 	done
 
 deploy-dev:
@@ -704,8 +704,8 @@ Then deploy:
 
 ```bash
 python3 generate-manifests.py
-project-planton pulumi up --manifest api.yaml
-project-planton pulumi up --manifest worker.yaml
+project-planton pulumi up -f api.yaml
+project-planton pulumi up -f worker.yaml
 ```
 
 ---
@@ -749,16 +749,16 @@ project-planton pulumi up \
 cd ~/projects/custom-module
 
 # 1. Validate manifest
-project-planton validate --manifest ~/test-manifests/test.yaml
+project-planton validate -f ~/test-manifests/test.yaml
 
 # 2. Preview changes
 project-planton pulumi preview \
-  --manifest ~/test-manifests/test.yaml \
+  -f ~/test-manifests/test.yaml \
   --module-dir .
 
 # 3. If preview looks good, deploy to test environment
 project-planton pulumi up \
-  --manifest ~/test-manifests/test.yaml \
+  -f ~/test-manifests/test.yaml \
   --module-dir . \
   --stack test-org/test-project/test-stack
 ```
@@ -801,9 +801,9 @@ done
 Deploy only if validation passes:
 
 ```bash
-if project-planton validate --manifest database.yaml; then
+if project-planton validate -f database.yaml; then
     echo "✓ Validation passed, deploying..."
-    project-planton pulumi up --manifest database.yaml --yes
+    project-planton pulumi up -f database.yaml --yes
 else
     echo "✗ Validation failed, aborting"
     exit 1
@@ -844,7 +844,7 @@ project-planton pulumi up \
 ```bash
 # BAD: Override in CI/CD but not in manifest
 project-planton pulumi up \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.replicas=10 \
   --yes
 
@@ -854,7 +854,7 @@ project-planton pulumi up \
 # GOOD: Update manifest first
 vim api.yaml  # Set replicas: 10
 git commit -m "scale: increase API replicas to 10"
-project-planton pulumi up --manifest api.yaml --yes
+project-planton pulumi up -f api.yaml --yes
 ```
 
 ### ❌ Loading Non-Raw GitHub URLs
@@ -862,11 +862,11 @@ project-planton pulumi up --manifest api.yaml --yes
 ```bash
 # BAD: Returns HTML page, not YAML
 project-planton pulumi up \
-  --manifest https://github.com/myorg/repo/blob/main/manifest.yaml
+  -f https://github.com/myorg/repo/blob/main/manifest.yaml
 
 # GOOD: Use raw.githubusercontent.com
 project-planton pulumi up \
-  --manifest https://raw.githubusercontent.com/myorg/repo/main/manifest.yaml
+  -f https://raw.githubusercontent.com/myorg/repo/main/manifest.yaml
 ```
 
 ### ❌ Complex --set Overrides
@@ -874,12 +874,12 @@ project-planton pulumi up \
 ```bash
 # BAD: Trying to override complex structures
 project-planton pulumi up \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.container.resources='{"limits":{"cpu":"2000m"}}'  # Won't work
 
 # GOOD: Override individual fields
 project-planton pulumi up \
-  --manifest api.yaml \
+  -f api.yaml \
   --set spec.container.resources.limits.cpu=2000m
 ```
 

@@ -75,7 +75,7 @@ If you're familiar with the Pulumi commands, here's how OpenTofu differs:
 **Usage**:
 
 ```bash
-project-planton tofu init --manifest <manifest-file> [flags]
+project-planton tofu init -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -83,7 +83,7 @@ project-planton tofu init --manifest <manifest-file> [flags]
 ```bash
 # Initialize for a basic deployment
 project-planton tofu init \
-  --manifest ops/cloud-resources/prod/r2-bucket.yaml
+  -f ops/cloud-resources/prod/r2-bucket.yaml
 
 # Initialize using kustomize overlay
 project-planton tofu init \
@@ -92,7 +92,7 @@ project-planton tofu init \
 
 # Initialize with explicit module directory (for development/testing)
 project-planton tofu init \
-  --manifest ops/resources/vpc.yaml \
+  -f ops/resources/vpc.yaml \
   --module-dir ~/projects/custom-modules/aws-vpc
 ```
 
@@ -151,7 +151,7 @@ any changes that are required for your infrastructure.
 **Usage**:
 
 ```bash
-project-planton tofu plan --manifest <manifest-file> [flags]
+project-planton tofu plan -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -159,11 +159,11 @@ project-planton tofu plan --manifest <manifest-file> [flags]
 ```bash
 # Plan changes for a Kubernetes deployment
 project-planton tofu plan \
-  --manifest services/api/deployment.yaml
+  -f services/api/deployment.yaml
 
 # Plan with field overrides (useful for testing different configurations)
 project-planton tofu plan \
-  --manifest services/api/deployment.yaml \
+  -f services/api/deployment.yaml \
   --set spec.replicas=5 \
   --set spec.container.image.tag=v2.0.0
 
@@ -174,7 +174,7 @@ project-planton tofu plan \
 
 # Create a destroy plan (preview what destroy will do)
 project-planton tofu plan \
-  --manifest ops/resources/test-cluster.yaml \
+  -f ops/resources/test-cluster.yaml \
   --destroy
 ```
 
@@ -215,10 +215,10 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 ```bash
 # Standard plan (create/update resources)
-project-planton tofu plan --manifest resource.yaml
+project-planton tofu plan -f resource.yaml
 
 # Destroy plan (preview destruction)
-project-planton tofu plan --manifest resource.yaml --destroy
+project-planton tofu plan -f resource.yaml --destroy
 ```
 
 ---
@@ -243,7 +243,7 @@ project-planton tofu plan --manifest resource.yaml --destroy
 **Usage**:
 
 ```bash
-project-planton tofu apply --manifest <manifest-file> [flags]
+project-planton tofu apply -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -251,16 +251,16 @@ project-planton tofu apply --manifest <manifest-file> [flags]
 ```bash
 # Interactive deployment (will show plan and ask for confirmation)
 project-planton tofu apply \
-  --manifest ops/resources/database.yaml
+  -f ops/resources/database.yaml
 
 # Non-interactive deployment (CI/CD pipelines)
 project-planton tofu apply \
-  --manifest ops/resources/database.yaml \
+  -f ops/resources/database.yaml \
   --auto-approve
 
 # Deploy with field overrides
 project-planton tofu apply \
-  --manifest ops/resources/cache.yaml \
+  -f ops/resources/cache.yaml \
   --set spec.instanceSize=large \
   --set spec.replicas=3
 
@@ -343,7 +343,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 **Usage**:
 
 ```bash
-project-planton tofu refresh --manifest <manifest-file> [flags]
+project-planton tofu refresh -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -351,13 +351,13 @@ project-planton tofu refresh --manifest <manifest-file> [flags]
 ```bash
 # Refresh to sync state after manual changes
 project-planton tofu refresh \
-  --manifest ops/resources/s3-bucket.yaml
+  -f ops/resources/s3-bucket.yaml
 
 # Refresh before important operations
 project-planton tofu refresh \
-  --manifest ops/resources/production-db.yaml && \
+  -f ops/resources/production-db.yaml && \
 project-planton tofu apply \
-  --manifest ops/resources/production-db.yaml
+  -f ops/resources/production-db.yaml
 ```
 
 **What you'll see**:
@@ -438,7 +438,7 @@ After refresh:
 **Usage**:
 
 ```bash
-project-planton tofu destroy --manifest <manifest-file> [flags]
+project-planton tofu destroy -f <manifest-file> [flags]
 ```
 
 **Examples**:
@@ -446,11 +446,11 @@ project-planton tofu destroy --manifest <manifest-file> [flags]
 ```bash
 # Interactive destroy (will ask for confirmation)
 project-planton tofu destroy \
-  --manifest ops/resources/dev-cluster.yaml
+  -f ops/resources/dev-cluster.yaml
 
 # Non-interactive destroy (automation/CI)
 project-planton tofu destroy \
-  --manifest ops/resources/test-environment.yaml \
+  -f ops/resources/test-environment.yaml \
   --auto-approve
 
 # Destroy temporary environment
@@ -518,19 +518,19 @@ Destroy complete! Resources: 2 destroyed.
 
 ```bash
 # ✅ Good: Review before destroying
-project-planton tofu plan --manifest prod.yaml --destroy  # Preview destruction
-project-planton tofu destroy --manifest prod.yaml          # Interactive confirmation
+project-planton tofu plan -f prod.yaml --destroy  # Preview destruction
+project-planton tofu destroy -f prod.yaml          # Interactive confirmation
 
 # ⚠️ Risky: Blind destruction
-project-planton tofu destroy --manifest prod.yaml --auto-approve
+project-planton tofu destroy -f prod.yaml --auto-approve
 
 # ✅ Good: Backup data first
 aws s3 sync s3://my-bucket ./backup-$(date +%Y%m%d)/
-project-planton tofu destroy --manifest s3-bucket.yaml
+project-planton tofu destroy -f s3-bucket.yaml
 
 # ✅ Good: Verify manifest before destroying
 cat prod.yaml  # Make absolutely sure this is the right file
-project-planton tofu destroy --manifest prod.yaml
+project-planton tofu destroy -f prod.yaml
 ```
 
 ---
@@ -541,10 +541,10 @@ All commands support these flags. They're like the universal remote for infrastr
 
 ### Manifest Input
 
-**`--manifest <file>`**: Path to your resource manifest YAML file.
+**`-f <file>`**: Path to your resource manifest YAML file.
 
 ```bash
-project-planton tofu apply --manifest ops/resources/my-resource.yaml
+project-planton tofu apply -f ops/resources/my-resource.yaml
 ```
 
 **`--kustomize-dir <dir>`** + **`--overlay <name>`**: Use kustomize for environment-specific configurations.
@@ -556,7 +556,7 @@ project-planton tofu apply \
   --overlay prod
 ```
 
-**Priority**: `--manifest` > `--kustomize-dir` + `--overlay`
+**Priority**: `-f` > `--kustomize-dir` + `--overlay`
 
 ### Execution Control
 
@@ -565,28 +565,28 @@ project-planton tofu apply \
 ```bash
 # Use local development module instead of released version
 project-planton tofu apply \
-  --manifest my-resource.yaml \
+  -f my-resource.yaml \
   --module-dir ~/projects/custom-modules/my-module
 ```
 
 **`--auto-approve`**: Auto-approve without confirmation prompts (for CI/CD). Available for `apply` and `destroy` commands.
 
 ```bash
-project-planton tofu apply --manifest resource.yaml --auto-approve
+project-planton tofu apply -f resource.yaml --auto-approve
 ```
 
 **`--destroy`**: Create a destruction plan (only for `plan` command).
 
 ```bash
 # Preview what destroy will do
-project-planton tofu plan --manifest resource.yaml --destroy
+project-planton tofu plan -f resource.yaml --destroy
 ```
 
 **`--set <key>=<value>`**: Override manifest values at runtime (repeatable flag).
 
 ```bash
 project-planton tofu apply \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=10 \
   --set spec.container.image.tag=v2.1.0 \
   --set metadata.env=staging
@@ -609,7 +609,7 @@ These flags inject provider credentials (alternative to environment variables):
 
 ```bash
 project-planton tofu apply \
-  --manifest ops/aws-resources/vpc.yaml \
+  -f ops/aws-resources/vpc.yaml \
   --aws-credential ~/.config/planton/credentials/aws-prod.yaml
 ```
 
@@ -621,13 +621,13 @@ project-planton tofu apply \
 
 ```bash
 # 1. Initialize the backend and providers
-project-planton tofu init --manifest my-resource.yaml
+project-planton tofu init -f my-resource.yaml
 
 # 2. Preview what will be created
-project-planton tofu plan --manifest my-resource.yaml
+project-planton tofu plan -f my-resource.yaml
 
 # 3. Deploy the infrastructure
-project-planton tofu apply --manifest my-resource.yaml
+project-planton tofu apply -f my-resource.yaml
 ```
 
 ### Updating Existing Infrastructure
@@ -637,10 +637,10 @@ project-planton tofu apply --manifest my-resource.yaml
 vim ops/resources/my-app.yaml
 
 # 2. Preview the changes
-project-planton tofu plan --manifest ops/resources/my-app.yaml
+project-planton tofu plan -f ops/resources/my-app.yaml
 
 # 3. Apply if changes look good
-project-planton tofu apply --manifest ops/resources/my-app.yaml
+project-planton tofu apply -f ops/resources/my-app.yaml
 ```
 
 ### Testing Configuration Changes
@@ -648,13 +648,13 @@ project-planton tofu apply --manifest ops/resources/my-app.yaml
 ```bash
 # Preview with overrides (no changes to manifest file)
 project-planton tofu plan \
-  --manifest api-deployment.yaml \
+  -f api-deployment.yaml \
   --set spec.replicas=20 \
   --set spec.resources.limits.cpu=4000m
 
 # If it looks good, apply with same overrides
 project-planton tofu apply \
-  --manifest api-deployment.yaml \
+  -f api-deployment.yaml \
   --set spec.replicas=20 \
   --set spec.resources.limits.cpu=4000m
 
@@ -669,16 +669,16 @@ vim api-deployment.yaml  # Make changes permanent
 
 # Option 1: Override the current manifest
 project-planton tofu apply \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.container.image.tag=v1.9.5
 
 # Option 2: Revert manifest to previous version
 git checkout HEAD~1 deployment.yaml
-project-planton tofu apply --manifest deployment.yaml
+project-planton tofu apply -f deployment.yaml
 
 # Option 3: Use a previous Git revision
 git show HEAD~5:deployment.yaml > /tmp/previous-deployment.yaml
-project-planton tofu apply --manifest /tmp/previous-deployment.yaml
+project-planton tofu apply -f /tmp/previous-deployment.yaml
 ```
 
 ### Syncing After Manual Changes
@@ -687,17 +687,17 @@ project-planton tofu apply --manifest /tmp/previous-deployment.yaml
 # Someone made changes via AWS console, need to sync state
 
 # 1. Refresh to see what changed
-project-planton tofu refresh --manifest s3-bucket.yaml
+project-planton tofu refresh -f s3-bucket.yaml
 
 # 2. Review the diff
-project-planton tofu plan --manifest s3-bucket.yaml
+project-planton tofu plan -f s3-bucket.yaml
 
 # 3. Decide:
 #    - Changes match manifest? → Do nothing, state is synced
 #    - Changes don't match? → Update manifest or revert via `apply`
 
 # 4. If reverting manual changes:
-project-planton tofu apply --manifest s3-bucket.yaml  # Restores manifest config
+project-planton tofu apply -f s3-bucket.yaml  # Restores manifest config
 ```
 
 ### Multi-Environment Deployment
@@ -734,23 +734,23 @@ cd ~/projects/project-planton/apis/.../.../iac/tofu
 
 # Initialize with local module
 project-planton tofu init \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 
 # Preview with local module
 project-planton tofu plan \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 
 # Iterate: edit module code, run plan again
 vim main.tf
 project-planton tofu plan \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 
 # Deploy with local module
 project-planton tofu apply \
-  --manifest ~/manifests/test-resource.yaml \
+  -f ~/manifests/test-resource.yaml \
   --module-dir .
 ```
 
@@ -765,10 +765,10 @@ set -e  # Exit on error
 MANIFEST="ops/resources/app-${ENV}.yaml"
 
 echo "🔍 Planning changes..."
-project-planton tofu plan --manifest "$MANIFEST"
+project-planton tofu plan -f "$MANIFEST"
 
 echo "🚀 Deploying infrastructure..."
-project-planton tofu apply --manifest "$MANIFEST" --auto-approve
+project-planton tofu apply -f "$MANIFEST" --auto-approve
 
 echo "✅ Deployment complete"
 ```
@@ -797,10 +797,10 @@ jobs:
       - name: Deploy Resources
         run: |
           project-planton tofu init \
-            --manifest ops/resources/prod-infra.yaml
+            -f ops/resources/prod-infra.yaml
           
           project-planton tofu apply \
-            --manifest ops/resources/prod-infra.yaml \
+            -f ops/resources/prod-infra.yaml \
             --auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -821,10 +821,10 @@ jobs:
 
 ```bash
 # Run init to set up backend and providers
-project-planton tofu init --manifest my-resource.yaml
+project-planton tofu init -f my-resource.yaml
 
 # Then try your command again
-project-planton tofu plan --manifest my-resource.yaml
+project-planton tofu plan -f my-resource.yaml
 ```
 
 ### Error: "state lock"
@@ -843,7 +843,7 @@ cd <module-directory>
 tofu force-unlock <lock-id>
 
 # Then retry your operation
-project-planton tofu apply --manifest my-resource.yaml
+project-planton tofu apply -f my-resource.yaml
 ```
 
 ### Provider Authentication Failures
@@ -861,7 +861,7 @@ aws sts get-caller-identity
 
 # Or provide credential file
 project-planton tofu apply \
-  --manifest resource.yaml \
+  -f resource.yaml \
   --aws-credential ~/.aws/credentials-prod.yaml
 ```
 
@@ -873,14 +873,14 @@ gcloud config get-value project
 
 # Or set environment variable
 export GOOGLE_APPLICATION_CREDENTIALS=~/gcp-key.json
-project-planton tofu apply --manifest resource.yaml
+project-planton tofu apply -f resource.yaml
 ```
 
 **For Cloudflare**:
 ```bash
 # Set API token
 export CLOUDFLARE_API_TOKEN="your-token-here"
-project-planton tofu apply --manifest resource.yaml
+project-planton tofu apply -f resource.yaml
 ```
 
 ### Plan Shows Unexpected Changes
@@ -897,10 +897,10 @@ project-planton tofu apply --manifest resource.yaml
 
 ```bash
 # First, sync state with reality
-project-planton tofu refresh --manifest resource.yaml
+project-planton tofu refresh -f resource.yaml
 
 # Then plan again
-project-planton tofu plan --manifest resource.yaml
+project-planton tofu plan -f resource.yaml
 
 # If changes persist, check for:
 # - Manual modifications in cloud console
@@ -945,7 +945,7 @@ ls <module-directory>/*.tf
 
 # If using custom module, ensure --module-dir points to correct location
 project-planton tofu init \
-  --manifest resource.yaml \
+  -f resource.yaml \
   --module-dir /correct/path/to/module
 ```
 
@@ -957,12 +957,12 @@ project-planton tofu init \
 
 ```bash
 # ✅ Good: Review changes first
-project-planton tofu plan --manifest resource.yaml
+project-planton tofu plan -f resource.yaml
 # Read output, verify changes look correct
-project-planton tofu apply --manifest resource.yaml
+project-planton tofu apply -f resource.yaml
 
 # ⚠️ Risky: Blind deployment
-project-planton tofu apply --manifest resource.yaml --auto-approve
+project-planton tofu apply -f resource.yaml --auto-approve
 ```
 
 **Why**: Plan is your safety net. It catches mistakes before they become expensive incidents.
@@ -978,7 +978,7 @@ git push
 
 # ❌ Bad: Direct edits without version control
 vim /tmp/my-resource.yaml
-project-planton tofu apply --manifest /tmp/my-resource.yaml
+project-planton tofu apply -f /tmp/my-resource.yaml
 ```
 
 **Why**: Version control gives you change history, rollback capability, and code review.
@@ -987,11 +987,11 @@ project-planton tofu apply --manifest /tmp/my-resource.yaml
 
 ```bash
 # ✅ Good: Run init when starting work
-project-planton tofu init --manifest resource.yaml
-project-planton tofu plan --manifest resource.yaml
+project-planton tofu init -f resource.yaml
+project-planton tofu plan -f resource.yaml
 
 # ⚠️ Risky: Assuming init was already run
-project-planton tofu plan --manifest resource.yaml  # May fail
+project-planton tofu plan -f resource.yaml  # May fail
 ```
 
 **Why**: Init is fast and idempotent. Running it ensures providers and backend are ready.
@@ -1031,13 +1031,13 @@ project-planton tofu apply --kustomize-dir services/api --overlay prod --auto-ap
 ```bash
 # ✅ Good: Quick testing
 project-planton tofu plan \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=1  # Test with minimal resources
 
 # ❌ Bad: Permanent changes via flag
 # (6 months later: "Why is prod running 1 replica?!")
 project-planton tofu apply \
-  --manifest deployment.yaml \
+  -f deployment.yaml \
   --set spec.replicas=1 \
   --auto-approve
 ```
@@ -1051,7 +1051,7 @@ project-planton tofu apply \
 # ops/README.md
 # Deploy with:
 #   export CLOUDFLARE_API_TOKEN=$(pass cloudflare/api-token)
-#   project-planton tofu apply --manifest r2-bucket.yaml
+#   project-planton tofu apply -f r2-bucket.yaml
 
 # ⚠️ Bad: Tribal knowledge
 # (New team member: "How do I deploy this?")
@@ -1063,7 +1063,7 @@ project-planton tofu apply \
 
 ```bash
 # After destroying resources, consider cleaning up state file
-project-planton tofu destroy --manifest temp-resource.yaml --auto-approve
+project-planton tofu destroy -f temp-resource.yaml --auto-approve
 
 # Optionally, remove state file from backend
 # (This step depends on your backend - S3, GCS, etc.)
@@ -1107,11 +1107,11 @@ tofu output -json  # Get outputs as JSON
 ```bash
 # Enable verbose logging
 export TF_LOG=DEBUG
-project-planton tofu plan --manifest resource.yaml
+project-planton tofu plan -f resource.yaml
 
 # Or trace level for maximum verbosity
 export TF_LOG=TRACE
-project-planton tofu plan --manifest resource.yaml
+project-planton tofu plan -f resource.yaml
 ```
 
 ### Format Validation
