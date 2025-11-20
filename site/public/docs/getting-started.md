@@ -51,7 +51,7 @@ Create a file named `postgres.yaml`:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: dev-database
   labels:

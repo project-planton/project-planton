@@ -176,7 +176,7 @@ project-planton apply -f redis-kubernetes.yaml`,
         filename: "postgres-kubernetes.yaml",
         title: "PostgreSQL on Kubernetes",
         manifest: `apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: app-db
 spec:

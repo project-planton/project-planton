@@ -63,7 +63,7 @@ Add this label to your manifest metadata:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: my-database
   labels:
@@ -368,7 +368,7 @@ All unified commands support flags from their respective provisioners.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: app-database
   labels:

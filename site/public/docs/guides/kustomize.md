@@ -196,7 +196,7 @@ The most common approach - specify only the fields you want to change:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: app-database
 spec:
@@ -213,7 +213,7 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: app-database
 spec:
@@ -243,7 +243,7 @@ resources:
 
 patches:
   - target:
-      kind: PostgresKubernetes
+      kind: KubernetesPostgres
       name: app-database
     patch: |-
       - op: replace

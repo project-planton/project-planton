@@ -22,7 +22,7 @@ export default function Quickstart() {
       title: "2. Create manifest with provisioner label",
       code: `cat > manifest.yaml <<EOF
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: my-database
   labels:

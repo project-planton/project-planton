@@ -189,7 +189,7 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: app-database
 spec:
@@ -458,7 +458,7 @@ Sometimes you need multiple manifests for related resources:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: PostgresKubernetes
+kind: KubernetesPostgres
 metadata:
   name: app-database
 spec:
