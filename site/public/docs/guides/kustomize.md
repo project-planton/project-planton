@@ -60,7 +60,7 @@ mkdir -p services/api/kustomize/base
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: api
 spec:
@@ -104,7 +104,7 @@ patches:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: api
 spec:
@@ -757,7 +757,7 @@ resources:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: api
 spec:
@@ -798,7 +798,7 @@ patches:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: api
 spec:
