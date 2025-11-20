@@ -29,6 +29,7 @@ func routerNat(
 			Region: pulumi.String(locals.GcpRouterNat.Spec.Region),
 			// VPC is passed as self‑link or short name
 			Network: pulumi.String(locals.GcpRouterNat.Spec.VpcSelfLink.GetValue()),
+			Project: pulumi.String(locals.GcpRouterNat.Spec.ProjectId.GetValue()),
 		},
 		pulumi.Provider(gcpProvider))
 	if err != nil {
@@ -60,6 +61,7 @@ func routerNat(
 					Region:      pulumi.String(locals.GcpRouterNat.Spec.Region),
 					AddressType: pulumi.String("EXTERNAL"),
 					Labels:      pulumi.ToStringMap(locals.GcpLabels),
+					Project:     pulumi.String(locals.GcpRouterNat.Spec.ProjectId.GetValue()),
 				},
 				pulumi.Provider(gcpProvider),
 				pulumi.Parent(createdRouter))
@@ -136,6 +138,7 @@ func routerNat(
 			SourceSubnetworkIpRangesToNat: sourceRangeSetting,
 			Subnetworks:                   subnetworks,
 			LogConfig:                     logConfig,
+			Project:                       pulumi.String(locals.GcpRouterNat.Spec.ProjectId.GetValue()),
 		},
 		pulumi.Provider(gcpProvider),
 		pulumi.Parent(createdRouter))

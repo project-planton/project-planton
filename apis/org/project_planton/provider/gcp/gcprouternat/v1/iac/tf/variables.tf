@@ -14,6 +14,7 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for the GCP Cloud Router NAT"
   type = object({
+    project_id             = string
     vpc_self_link          = string
     region                 = string
     subnetwork_self_links  = optional(list(string), [])

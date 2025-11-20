@@ -23,7 +23,7 @@ Managing internet egress for private cloud infrastructure can be challenging. Tr
 ### GCP Credential Management
 
 - **GCP Credential ID**: Uses specified GCP credentials to ensure secure and authorized operations.
-- **Project ID**: Automatically computes and uses the GCP project ID where the Cloud Router and NAT will be created.
+- **Project ID**: Required field specifying the GCP project ID where the Cloud Router and NAT will be created. Can be specified as a literal value or reference to a `GcpProject` resource.
 
 ### Simplified NAT Configuration
 
@@ -48,8 +48,9 @@ Unlike traditional NAT appliances, Cloud NAT operates at Google's software-defin
 ### Validation and Compliance
 
 - **Input Validation**: Enforces validation rules to ensure correct configuration.
-  - **Required Fields**: VPC self-link and region are mandatory.
+  - **Required Fields**: Project ID, VPC self-link, region, router name, and NAT name are mandatory.
   - **Optional Fields**: Subnet coverage and NAT IPs are validated when provided.
+  - **Naming Validation**: Router and NAT names must be 1-63 lowercase characters, starting with a letter.
 
 ## Benefits
 

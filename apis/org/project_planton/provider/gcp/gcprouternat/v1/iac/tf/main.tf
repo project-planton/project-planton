@@ -6,6 +6,7 @@ resource "google_compute_router" "router" {
   name    = local.router_name
   region  = var.spec.region
   network = var.spec.vpc_self_link
+  project = var.spec.project_id
 }
 
 # =============================================================================
@@ -19,6 +20,7 @@ resource "google_compute_address" "nat_ips" {
   region       = var.spec.region
   address_type = "EXTERNAL"
   labels       = local.gcp_labels
+  project      = var.spec.project_id
 }
 
 # =============================================================================
@@ -26,9 +28,10 @@ resource "google_compute_address" "nat_ips" {
 # =============================================================================
 
 resource "google_compute_router_nat" "nat" {
-  name   = local.nat_name
-  router = google_compute_router.router.name
-  region = var.spec.region
+  name    = local.nat_name
+  router  = google_compute_router.router.name
+  region  = var.spec.region
+  project = var.spec.project_id
 
   # NAT IP allocation strategy (AUTO_ONLY or MANUAL_ONLY)
   nat_ip_allocate_option = local.nat_ip_allocate_option

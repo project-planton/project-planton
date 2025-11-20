@@ -14,6 +14,7 @@ kind: GcpRouterNat
 metadata:
   name: dev-nat-uscentral1
 spec:
+  project_id: "my-project"
   vpc_self_link: "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc"
   router_name: dev-router-uscentral1
   nat_name: dev-nat-uscentral1
@@ -42,6 +43,11 @@ metadata:
   org: acme-corp
   env: staging
 spec:
+  project_id:
+    ref:
+      kind: GcpProject
+      name: my-gcp-project
+      field_path: status.outputs.project_id
   vpc_self_link:
     ref:
       kind: GcpVpc
@@ -429,8 +435,11 @@ spec:
 ### Required Fields
 
 - **`metadata.name`**: Unique name for the Cloud Router and NAT gateway.
+- **`spec.project_id`**: GCP project ID where the Cloud Router and NAT will be created (string value or reference to `GcpProject` resource).
 - **`spec.vpc_self_link`**: VPC network reference (self-link or reference to `GcpVpc` resource).
 - **`spec.region`**: GCP region for the Cloud Router and NAT (must match where your private resources are located).
+- **`spec.router_name`**: Name of the Cloud Router to create (1-63 lowercase characters, must start with a letter).
+- **`spec.nat_name`**: Name of the NAT configuration on the router (1-63 lowercase characters, must start with a letter).
 
 ### Optional Fields
 

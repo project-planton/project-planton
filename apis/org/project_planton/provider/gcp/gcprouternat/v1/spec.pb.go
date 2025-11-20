@@ -80,29 +80,32 @@ func (GcpRouterNatLogFilter) EnumDescriptor() ([]byte, []int) {
 // GcpRouterNatSpec defines configuration for a Cloud Router with a NAT gateway.
 type GcpRouterNatSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// GCP project ID where the Cloud Router and NAT will be created.
+	// Example: "my-gcp-project-123"
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Reference to the target VPC network (self-link or name of an existing GCP VPC).
-	VpcSelfLink *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=vpc_self_link,json=vpcSelfLink,proto3" json:"vpc_self_link,omitempty"`
+	VpcSelfLink *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=vpc_self_link,json=vpcSelfLink,proto3" json:"vpc_self_link,omitempty"`
 	// GCP region for the Cloud Router and NAT.
-	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	// Optional specific subnets to enable NAT on (if empty or not set, NAT covers all subnets in the region).
-	SubnetworkSelfLinks []*v1.StringValueOrRef `protobuf:"bytes,3,rep,name=subnetwork_self_links,json=subnetworkSelfLinks,proto3" json:"subnetwork_self_links,omitempty"`
+	SubnetworkSelfLinks []*v1.StringValueOrRef `protobuf:"bytes,4,rep,name=subnetwork_self_links,json=subnetworkSelfLinks,proto3" json:"subnetwork_self_links,omitempty"`
 	// Optional static external IP addresses to use for NAT (if empty, NAT will auto-allocate IPs).
-	NatIpNames []*v1.StringValueOrRef `protobuf:"bytes,4,rep,name=nat_ip_names,json=natIpNames,proto3" json:"nat_ip_names,omitempty"`
+	NatIpNames []*v1.StringValueOrRef `protobuf:"bytes,5,rep,name=nat_ip_names,json=natIpNames,proto3" json:"nat_ip_names,omitempty"`
 	// Log filter for NAT translation logging.
 	// **Default:** ERRORS_ONLY (recommended for production to detect port exhaustion and connection failures).
 	// Use DISABLED for non-production environments to reduce costs.
 	// Use ALL for security auditing or detailed troubleshooting (generates significant log volume).
-	LogFilter *GcpRouterNatLogFilter `protobuf:"varint,5,opt,name=log_filter,json=logFilter,proto3,enum=org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilter,oneof" json:"log_filter,omitempty"`
+	LogFilter *GcpRouterNatLogFilter `protobuf:"varint,6,opt,name=log_filter,json=logFilter,proto3,enum=org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilter,oneof" json:"log_filter,omitempty"`
 	// Name of the Cloud Router to create in GCP.
 	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
 	// Must start with a lowercase letter and end with a lowercase letter or number.
 	// Example: "my-router", "prod-uswest1-router"
-	RouterName string `protobuf:"bytes,6,opt,name=router_name,json=routerName,proto3" json:"router_name,omitempty"`
+	RouterName string `protobuf:"bytes,7,opt,name=router_name,json=routerName,proto3" json:"router_name,omitempty"`
 	// Name of the NAT configuration on the Cloud Router.
 	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
 	// Must start with a lowercase letter and end with a lowercase letter or number.
 	// Example: "my-nat", "prod-nat-config"
-	NatName       string `protobuf:"bytes,7,opt,name=nat_name,json=natName,proto3" json:"nat_name,omitempty"`
+	NatName       string `protobuf:"bytes,8,opt,name=nat_name,json=natName,proto3" json:"nat_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -135,6 +138,13 @@ func (x *GcpRouterNatSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GcpRouterNatSpec.ProtoReflect.Descriptor instead.
 func (*GcpRouterNatSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GcpRouterNatSpec) GetProjectId() *v1.StringValueOrRef {
+	if x != nil {
+		return x.ProjectId
+	}
+	return nil
 }
 
 func (x *GcpRouterNatSpec) GetVpcSelfLink() *v1.StringValueOrRef {
@@ -190,18 +200,20 @@ var File_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto protoreflec
 
 const file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";org/project_planton/provider/gcp/gcprouternat/v1/spec.proto\x120org.project_planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xb5\x05\n" +
-	"\x10GcpRouterNatSpec\x12\x8f\x01\n" +
-	"\rvpc_self_link\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12\x1e\n" +
-	"\x06region\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12n\n" +
-	"\x15subnetwork_self_links\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x13subnetworkSelfLinks\x12\\\n" +
-	"\fnat_ip_names\x18\x04 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\n" +
+	";org/project_planton/provider/gcp/gcprouternat/v1/spec.proto\x120org.project_planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xbb\x06\n" +
+	"\x10GcpRouterNatSpec\x12\x83\x01\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8f\x01\n" +
+	"\rvpc_self_link\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12\x1e\n" +
+	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12n\n" +
+	"\x15subnetwork_self_links\x18\x04 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x13subnetworkSelfLinks\x12\\\n" +
+	"\fnat_ip_names\x18\x05 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\n" +
 	"natIpNames\x12|\n" +
 	"\n" +
-	"log_filter\x18\x05 \x01(\x0e2G.org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilterB\x0f\x8a\xa6\x1d\vERRORS_ONLYH\x00R\tlogFilter\x88\x01\x01\x12L\n" +
-	"\vrouter_name\x18\x06 \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\n" +
+	"log_filter\x18\x06 \x01(\x0e2G.org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilterB\x0f\x8a\xa6\x1d\vERRORS_ONLYH\x00R\tlogFilter\x88\x01\x01\x12L\n" +
+	"\vrouter_name\x18\a \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\n" +
 	"routerName\x12F\n" +
-	"\bnat_name\x18\a \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\anatNameB\r\n" +
+	"\bnat_name\x18\b \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\anatNameB\r\n" +
 	"\v_log_filter*?\n" +
 	"\x15GcpRouterNatLogFilter\x12\f\n" +
 	"\bDISABLED\x10\x00\x12\x0f\n" +
@@ -229,15 +241,16 @@ var file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_goTypes = [
 	(*v1.StringValueOrRef)(nil), // 2: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.vpc_self_link:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 1: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.subnetwork_self_links:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 2: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.nat_ip_names:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	0, // 3: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.log_filter:type_name -> org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilter
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // 0: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 1: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.vpc_self_link:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.subnetwork_self_links:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 3: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.nat_ip_names:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 4: org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatSpec.log_filter:type_name -> org.project_planton.provider.gcp.gcprouternat.v1.GcpRouterNatLogFilter
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_init() }

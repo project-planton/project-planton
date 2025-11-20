@@ -18,8 +18,16 @@ enum GcpRouterNatLogFilter {
 
 // GcpRouterNatSpec defines configuration for a Cloud Router with a NAT gateway.
 message GcpRouterNatSpec {
+  // GCP project ID where the Cloud Router and NAT will be created.
+  // Example: "my-gcp-project-123"
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
+  ];
+
   // Reference to the target VPC network (self-link or name of an existing GCP VPC).
-  org.project_planton.shared.foreignkey.v1.StringValueOrRef vpc_self_link = 1 [
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef vpc_self_link = 2 [
     (buf.validate.field).required = true,
     // Default to referencing a GcpVpc resource's network self-link output
     (org.project_planton.shared.foreignkey.v1.default_kind) = GcpVpc,
@@ -27,25 +35,25 @@ message GcpRouterNatSpec {
   ];
 
   // GCP region for the Cloud Router and NAT.
-  string region = 2 [(buf.validate.field).required = true /* (Optional: could add pattern validation for region format) */];
+  string region = 3 [(buf.validate.field).required = true /* (Optional: could add pattern validation for region format) */];
 
   // Optional specific subnets to enable NAT on (if empty or not set, NAT covers all subnets in the region).
-  repeated org.project_planton.shared.foreignkey.v1.StringValueOrRef subnetwork_self_links = 3;
+  repeated org.project_planton.shared.foreignkey.v1.StringValueOrRef subnetwork_self_links = 4;
 
   // Optional static external IP addresses to use for NAT (if empty, NAT will auto-allocate IPs).
-  repeated org.project_planton.shared.foreignkey.v1.StringValueOrRef nat_ip_names = 4;
+  repeated org.project_planton.shared.foreignkey.v1.StringValueOrRef nat_ip_names = 5;
 
   // Log filter for NAT translation logging.
   // **Default:** ERRORS_ONLY (recommended for production to detect port exhaustion and connection failures).
   // Use DISABLED for non-production environments to reduce costs.
   // Use ALL for security auditing or detailed troubleshooting (generates significant log volume).
-  optional GcpRouterNatLogFilter log_filter = 5 [(org.project_planton.shared.options.default) = "ERRORS_ONLY"];
+  optional GcpRouterNatLogFilter log_filter = 6 [(org.project_planton.shared.options.default) = "ERRORS_ONLY"];
 
   // Name of the Cloud Router to create in GCP.
   // Must be 1-63 characters, lowercase letters, numbers, or hyphens.
   // Must start with a lowercase letter and end with a lowercase letter or number.
   // Example: "my-router", "prod-uswest1-router"
-  string router_name = 6 [
+  string router_name = 7 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.pattern = "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$"
   ];
@@ -54,7 +62,7 @@ message GcpRouterNatSpec {
   // Must be 1-63 characters, lowercase letters, numbers, or hyphens.
   // Must start with a lowercase letter and end with a lowercase letter or number.
   // Example: "my-nat", "prod-nat-config"
-  string nat_name = 7 [
+  string nat_name = 8 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.pattern = "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$"
   ];

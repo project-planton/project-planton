@@ -28,6 +28,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
@@ -50,6 +53,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
 								Value: "https://www.googleapis.com/compute/v1/projects/test-project/global/networks/test-vpc",
@@ -74,6 +80,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
 								ValueFrom: &foreignkeyv1.ValueFromRef{
@@ -101,6 +110,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
@@ -135,6 +147,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
@@ -166,6 +181,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
@@ -190,6 +208,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
@@ -214,6 +235,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
@@ -240,6 +264,9 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 						Env:  "test-env",
 					},
 					Spec: &GcpRouterNatSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
