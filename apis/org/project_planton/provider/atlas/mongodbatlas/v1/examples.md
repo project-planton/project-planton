@@ -1,59 +1,195 @@
-# Basic Example
+## Minimal Replica Set Cluster (Development)
 
-This example demonstrates a basic setup of a Snowflake database with minimal configuration.
+This example demonstrates a minimal MongoDB Atlas replica set cluster suitable for development environments.
 
 ```yaml
 apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
-  name: analytics-db
+  name: dev-cluster
 spec:
-  atlas_credential_id: atlas-cred-123
-  catalog: default_catalog
-  comment: "Analytics database for reporting"
-  data_retention_time_in_days: 30
-  default_ddl_collation: "en_US"
-  drop_public_schema_on_creation: false
-  enable_console_output: true
-  external_volume: "external_vol_1"
-  is_transient: false
-  log_level: "INFO"
-  max_data_extension_time_in_days: 10
-  name: analytics_db
-  quoted_identifiers_ignore_case: true
-  replace_invalid_characters: false
-  storage_serialization_policy: "COMPATIBLE"
-  suspend_task_after_num_failures: 3
-  task_auto_retry_attempts: 2
-  trace_level: "OFF"
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "REPLICASET"
+    electable_nodes: 3
+    priority: 7
+    provider_name: "AWS"
+    provider_instance_size_name: "M10"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
 ```
 
-# Example with Advanced Configuration
+## Production Single-Region Cluster
 
-This example includes advanced configurations such as environment isolation and detailed security settings.
+This example shows a production-grade M30 cluster in a single region with cloud backups enabled.
 
 ```yaml
 apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
-  name: finance-db
+  name: prod-cluster
 spec:
-  atlas_credential_id: atlas-cred-finance
-  catalog: finance_catalog
-  comment: "Finance database for transactional data"
-  data_retention_time_in_days: 90
-  default_ddl_collation: "en_US"
-  drop_public_schema_on_creation: true
-  enable_console_output: false
-  external_volume: "external_vol_finance"
-  is_transient: true
-  log_level: "DEBUG"
-  max_data_extension_time_in_days: 15
-  name: finance_db
-  quoted_identifiers_ignore_case: false
-  replace_invalid_characters: true
-  storage_serialization_policy: "OPTIMIZED"
-  suspend_task_after_num_failures: 5
-  task_auto_retry_attempts: 3
-  trace_level: "ALWAYS ON"
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "REPLICASET"
+    electable_nodes: 3
+    priority: 7
+    read_only_nodes: 0
+    provider_name: "AWS"
+    provider_instance_size_name: "M30"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
+```
+
+## Multi-Region Cluster with Read Replicas
+
+This example demonstrates a multi-region deployment with a primary region and read-only replicas in a secondary region for disaster recovery and read scaling.
+
+```yaml
+apiVersion: atlas.project-planton.org/v1
+kind: MongodbAtlas
+metadata:
+  name: multi-region-cluster
+spec:
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "REPLICASET"
+    # Primary region configuration
+    electable_nodes: 3
+    priority: 7
+    provider_name: "AWS"
+    provider_instance_size_name: "M50"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
+```
+
+## Sharded Cluster for High-Throughput Applications
+
+This example shows a sharded cluster configuration for applications requiring horizontal scalability.
+
+```yaml
+apiVersion: atlas.project-planton.org/v1
+kind: MongodbAtlas
+metadata:
+  name: sharded-cluster
+spec:
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "SHARDED"
+    electable_nodes: 3
+    priority: 7
+    provider_name: "GCP"
+    provider_instance_size_name: "M50"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
+```
+
+## Global Cluster for Geographic Distribution
+
+This example demonstrates a geographically distributed cluster for low-latency access across multiple regions.
+
+```yaml
+apiVersion: atlas.project-planton.org/v1
+kind: MongodbAtlas
+metadata:
+  name: global-cluster
+spec:
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "GEOSHARDED"
+    electable_nodes: 3
+    priority: 7
+    provider_name: "AWS"
+    provider_instance_size_name: "M30"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
+```
+
+## Multi-Cloud Cluster for Maximum Resilience
+
+This example shows a multi-cloud deployment spanning AWS and GCP for provider-level disaster recovery.
+
+```yaml
+apiVersion: atlas.project-planton.org/v1
+kind: MongodbAtlas
+metadata:
+  name: multi-cloud-cluster
+spec:
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "REPLICASET"
+    electable_nodes: 3
+    priority: 7
+    provider_name: "AWS"
+    provider_instance_size_name: "M50"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
+```
+
+## High-Performance Cluster with Analytics Nodes
+
+This example includes dedicated analytics nodes to isolate BI/reporting workloads from transactional traffic.
+
+```yaml
+apiVersion: atlas.project-planton.org/v1
+kind: MongodbAtlas
+metadata:
+  name: analytics-cluster
+spec:
+  cluster_config:
+    project_id: "507f1f77bcf86cd799439011"
+    cluster_type: "REPLICASET"
+    electable_nodes: 3
+    priority: 7
+    read_only_nodes: 2
+    provider_name: "AWS"
+    provider_instance_size_name: "M60"
+    mongo_db_major_version: "7.0"
+    cloud_backup: true
+    auto_scaling_disk_gb_enabled: true
+```
+
+## CLI Workflows
+
+### Validate Manifest
+
+```bash
+project-planton validate --manifest mongodb-atlas.yaml
+```
+
+### Deploy with Pulumi
+
+```bash
+project-planton pulumi up --manifest mongodb-atlas.yaml --stack org/project/stack
+```
+
+### Deploy with Terraform
+
+```bash
+project-planton tofu apply --manifest mongodb-atlas.yaml --auto-approve
+```
+
+### Check Cluster Status
+
+```bash
+project-planton get --manifest mongodb-atlas.yaml
+```
+
+### Update Cluster Configuration
+
+```bash
+# Edit your manifest file with desired changes
+project-planton pulumi up --manifest mongodb-atlas.yaml --stack org/project/stack
+```
+
+### Destroy Cluster
+
+```bash
+project-planton pulumi destroy --manifest mongodb-atlas.yaml --stack org/project/stack
 ```
