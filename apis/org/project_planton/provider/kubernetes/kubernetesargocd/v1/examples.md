@@ -41,8 +41,8 @@ spec:
         cpu: 2000m
         memory: 2Gi
   ingress:
-    is_enabled: true
-    dns_domain: example.com
+    isEnabled: true
+    dnsDomain: example.com
 ```
 
 **Description:** Production Argo CD deployment with ingress enabled for external access. This will create external hostname at `argo-argocd-prod.example.com` and internal hostname at `argo-argocd-prod-internal.example.com`.

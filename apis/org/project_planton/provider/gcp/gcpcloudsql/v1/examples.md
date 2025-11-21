@@ -28,11 +28,11 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: MYSQL
-  database_version: MYSQL_8_0
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
   tier: db-n1-standard-1
-  storage_gb: 10
-  root_password: MySecurePassword123!
+  storageGb: 10
+  rootPassword: MySecurePassword123!
 ```
 
 ## Basic PostgreSQL Example
@@ -47,11 +47,11 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: POSTGRESQL
-  database_version: POSTGRES_15
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
   tier: db-n1-standard-2
-  storage_gb: 20
-  root_password: MySecurePassword123!
+  storageGb: 20
+  rootPassword: MySecurePassword123!
 ```
 
 ## MySQL with Private IP and VPC
@@ -66,14 +66,14 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: MYSQL
-  database_version: MYSQL_8_0
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
   tier: db-n1-standard-1
-  storage_gb: 10
+  storageGb: 10
   network:
-    vpc_id: projects/my-gcp-project/global/networks/my-vpc
-    private_ip_enabled: true
-  root_password: MySecurePassword123!
+    vpcId: projects/my-gcp-project/global/networks/my-vpc
+    privateIpEnabled: true
+  rootPassword: MySecurePassword123!
 ```
 
 ## PostgreSQL with Public IP and Authorized Networks
@@ -88,15 +88,15 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: POSTGRESQL
-  database_version: POSTGRES_15
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
   tier: db-n1-standard-1
-  storage_gb: 10
+  storageGb: 10
   network:
-    authorized_networks:
+    authorizedNetworks:
       - 203.0.113.0/24
       - 198.51.100.0/24
-  root_password: MySecurePassword123!
+  rootPassword: MySecurePassword123!
 ```
 
 ## MySQL with High Availability
@@ -111,14 +111,14 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: MYSQL
-  database_version: MYSQL_8_0
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
   tier: db-n1-standard-2
-  storage_gb: 50
-  high_availability:
+  storageGb: 50
+  highAvailability:
     enabled: true
     zone: us-central1-b
-  root_password: MySecurePassword123!
+  rootPassword: MySecurePassword123!
 ```
 
 ## PostgreSQL with Automated Backups
@@ -133,15 +133,15 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: POSTGRESQL
-  database_version: POSTGRES_15
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
   tier: db-n1-standard-1
-  storage_gb: 20
+  storageGb: 20
   backup:
     enabled: true
-    start_time: "03:00"
-    retention_days: 7
-  root_password: MySecurePassword123!
+    startTime: "03:00"
+    retentionDays: 7
+  rootPassword: MySecurePassword123!
 ```
 
 ## Production-Grade PostgreSQL Instance
@@ -156,25 +156,25 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: POSTGRESQL
-  database_version: POSTGRES_15
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
   tier: db-n1-highmem-4
-  storage_gb: 100
+  storageGb: 100
   network:
-    vpc_id: projects/my-gcp-project/global/networks/production-vpc
-    private_ip_enabled: true
-  high_availability:
+    vpcId: projects/my-gcp-project/global/networks/production-vpc
+    privateIpEnabled: true
+  highAvailability:
     enabled: true
     zone: us-central1-c
   backup:
     enabled: true
-    start_time: "02:00"
-    retention_days: 30
-  database_flags:
-    max_connections: "200"
-    shared_buffers: "262144"
-    effective_cache_size: "786432"
-  root_password: ProductionSecurePassword123!
+    startTime: "02:00"
+    retentionDays: 30
+  databaseFlags:
+    maxConnections: "200"
+    sharedBuffers: "262144"
+    effectiveCacheSize: "786432"
+  rootPassword: ProductionSecurePassword123!
 ```
 
 ## MySQL with Database Flags
@@ -189,15 +189,15 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: MYSQL
-  database_version: MYSQL_8_0
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
   tier: db-n1-standard-2
-  storage_gb: 30
-  database_flags:
-    max_connections: "150"
-    innodb_buffer_pool_size: "268435456"
-    slow_query_log: "on"
-  root_password: MySecurePassword123!
+  storageGb: 30
+  databaseFlags:
+    maxConnections: "150"
+    innodbBufferPoolSize: "268435456"
+    slowQueryLog: "on"
+  rootPassword: MySecurePassword123!
 ```
 
 ## Large Storage PostgreSQL Instance
@@ -212,18 +212,18 @@ metadata:
 spec:
   projectId: my-gcp-project
   region: us-central1
-  database_engine: POSTGRESQL
-  database_version: POSTGRES_15
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
   tier: db-n1-highmem-8
-  storage_gb: 1000
+  storageGb: 1000
   network:
-    vpc_id: projects/my-gcp-project/global/networks/data-vpc
-    private_ip_enabled: true
+    vpcId: projects/my-gcp-project/global/networks/data-vpc
+    privateIpEnabled: true
   backup:
     enabled: true
-    start_time: "01:00"
-    retention_days: 14
-  root_password: MySecurePassword123!
+    startTime: "01:00"
+    retentionDays: 14
+  rootPassword: MySecurePassword123!
 ```
 
 ## Development MySQL Instance
@@ -238,11 +238,11 @@ metadata:
 spec:
   projectId: my-dev-project
   region: us-central1
-  database_engine: MYSQL
-  database_version: MYSQL_8_0
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
   tier: db-f1-micro
-  storage_gb: 10
-  root_password: DevPassword123!
+  storageGb: 10
+  rootPassword: DevPassword123!
 ```
 
 ## Notes

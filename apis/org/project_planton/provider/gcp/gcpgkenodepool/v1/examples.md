@@ -24,13 +24,13 @@ metadata:
   name: minimal-pool
 spec:
   # Required: Reference to parent GKE cluster
-  cluster_project_id:
+  clusterProjectId:
     value: my-gcp-project
-  cluster_name:
+  clusterName:
     value: my-cluster
   
   # Fixed size: 3 nodes (no autoscaling)
-  node_count: 3
+  nodeCount: 3
 ```
 
 **Defaults applied:**
@@ -59,35 +59,35 @@ metadata:
   org: my-org
   env: dev
 spec:
-  cluster_project_id:
+  clusterProjectId:
     value: dev-gcp-project
-  cluster_name:
+  clusterName:
     value: dev-cluster
   
   # Cost-optimized machine type
-  machine_type: e2-medium
-  disk_size_gb: 50
-  disk_type: pd-standard
+  machineType: e2-medium
+  diskSizeGb: 50
+  diskType: pd-standard
   
   # Enable Spot VMs for cost savings
   spot: true
   
   # Autoscaling with scale-to-zero
   autoscaling:
-    min_nodes: 0      # Scale to zero during off-hours
-    max_nodes: 5
-    location_policy: ANY  # Hunt for Spot capacity across all zones
+    minNodes: 0      # Scale to zero during off-hours
+    maxNodes: 5
+    locationPolicy: ANY  # Hunt for Spot capacity across all zones
   
   # Labels for workload scheduling
-  node_labels:
+  nodeLabels:
     environment: dev
     spot: "true"
     cost-tier: low
   
   # Management settings
   management:
-    disable_auto_upgrade: false
-    disable_auto_repair: false
+    disableAutoUpgrade: false
+    disableAutoRepair: false
 ```
 
 **Use case:** Development clusters, CI/CD test environments, batch processing jobs that can tolerate interruptions.
@@ -111,36 +111,36 @@ metadata:
   org: my-org
   env: prod
 spec:
-  cluster_project_id:
+  clusterProjectId:
     value: prod-gcp-project
-  cluster_name:
+  clusterName:
     value: prod-cluster
   
   # Production-grade machine type
-  machine_type: n2-standard-4
-  disk_size_gb: 100
-  disk_type: pd-ssd  # SSD for better performance
-  image_type: COS_CONTAINERD
+  machineType: n2-standard-4
+  diskSizeGb: 100
+  diskType: pd-ssd  # SSD for better performance
+  imageType: COS_CONTAINERD
   
   # Custom service account with minimal permissions
-  service_account: gke-prod-sa@prod-gcp-project.iam.gserviceaccount.com
+  serviceAccount: gke-prod-sa@prod-gcp-project.iam.gserviceaccount.com
   
   # High-availability autoscaling
   autoscaling:
-    min_nodes: 3      # Minimum for multi-zone HA
-    max_nodes: 10
-    location_policy: BALANCED  # Even distribution across zones
+    minNodes: 3      # Minimum for multi-zone HA
+    maxNodes: 10
+    locationPolicy: BALANCED  # Even distribution across zones
   
   # Labels for workload scheduling
-  node_labels:
+  nodeLabels:
     environment: production
     workload-tier: general
     disk-type: ssd
   
   # Management settings (keep auto-upgrade/repair enabled)
   management:
-    disable_auto_upgrade: false
-    disable_auto_repair: false
+    disableAutoUpgrade: false
+    disableAutoRepair: false
 ```
 
 **Use case:** Production web applications, microservices, general-purpose workloads requiring reliability and performance.
@@ -164,29 +164,29 @@ metadata:
   org: my-org
   env: prod
 spec:
-  cluster_project_id:
+  clusterProjectId:
     value: prod-gcp-project
-  cluster_name:
+  clusterName:
     value: prod-cluster
   
   # High-memory machine type (M2 series)
-  machine_type: m2-ultramem-208  # 208 vCPU, 5888 GB RAM
-  disk_size_gb: 200
-  disk_type: pd-ssd
+  machineType: m2-ultramem-208  # 208 vCPU, 5888 GB RAM
+  diskSizeGb: 200
+  diskType: pd-ssd
   
   # Fixed size for consistent memory capacity
-  node_count: 2
+  nodeCount: 2
   
   # Labels for targeted scheduling
-  node_labels:
+  nodeLabels:
     workload-type: high-memory
     cache-tier: primary
     environment: production
   
   # Management settings
   management:
-    disable_auto_upgrade: false
-    disable_auto_repair: false
+    disableAutoUpgrade: false
+    disableAutoRepair: false
 ```
 
 **Use case:** In-memory caches (Redis, Memcached), analytics workloads, large Java heap applications.
@@ -214,24 +214,24 @@ metadata:
   org: my-org
   env: prod
 spec:
-  cluster_project_id:
+  clusterProjectId:
     value: ml-gcp-project
-  cluster_name:
+  clusterName:
     value: ml-cluster
   
   # N1 series required for GPU attachment
-  machine_type: n1-standard-8
-  disk_size_gb: 200
-  disk_type: pd-ssd
+  machineType: n1-standard-8
+  diskSizeGb: 200
+  diskType: pd-ssd
   
   # Autoscaling for cost efficiency
   autoscaling:
-    min_nodes: 1
-    max_nodes: 5
-    location_policy: ANY  # GPUs may have limited zone availability
+    minNodes: 1
+    maxNodes: 5
+    locationPolicy: ANY  # GPUs may have limited zone availability
   
   # Labels for GPU workload scheduling
-  node_labels:
+  nodeLabels:
     workload-type: gpu
     accelerator: nvidia-tesla-t4
     ml-workload: "true"
@@ -239,8 +239,8 @@ spec:
   
   # Management settings
   management:
-    disable_auto_upgrade: false
-    disable_auto_repair: false
+    disableAutoUpgrade: false
+    disableAutoRepair: false
 ```
 
 **Use case:** ML training, inference, video processing, CUDA-enabled applications.
@@ -277,32 +277,32 @@ metadata:
   org: my-org
   env: prod
 spec:
-  cluster_project_id:
+  clusterProjectId:
     value: prod-gcp-project
-  cluster_name:
+  clusterName:
     value: prod-cluster
   
   # Compute-optimized machine type (C2 series)
-  machine_type: c2-standard-16  # 16 vCPU, 64 GB RAM, 3.8 GHz all-core turbo
-  disk_size_gb: 100
-  disk_type: pd-ssd
+  machineType: c2-standard-16  # 16 vCPU, 64 GB RAM, 3.8 GHz all-core turbo
+  diskSizeGb: 100
+  diskType: pd-ssd
   
   # Autoscaling for burst capacity
   autoscaling:
-    min_nodes: 2
-    max_nodes: 8
-    location_policy: BALANCED
+    minNodes: 2
+    maxNodes: 8
+    locationPolicy: BALANCED
   
   # Labels for workload scheduling
-  node_labels:
+  nodeLabels:
     workload-type: compute-intensive
     cpu-tier: high-performance
     environment: production
   
   # Management settings
   management:
-    disable_auto_upgrade: false
-    disable_auto_repair: false
+    disableAutoUpgrade: false
+    disableAutoRepair: false
 ```
 
 **Use case:** Video encoding, scientific simulations, high-frequency trading, CPU-bound web applications.
@@ -319,9 +319,9 @@ project-planton apply -f compute-optimized-pool.yaml
 All examples use **literal values** for cluster references:
 
 ```yaml
-cluster_project_id:
+clusterProjectId:
   value: my-gcp-project
-cluster_name:
+clusterName:
   value: my-cluster
 ```
 
@@ -331,16 +331,16 @@ If you're managing the cluster with Project Planton, you can **reference** the c
 
 ```yaml
 spec:
-  cluster_project_id:
+  clusterProjectId:
     resource:
       kind: GcpGkeCluster
       name: my-cluster
-      field_path: spec.project_id
-  cluster_name:
+      fieldPath: spec.project_id
+  clusterName:
     resource:
       kind: GcpGkeCluster
       name: my-cluster
-      field_path: metadata.name
+      fieldPath: metadata.name
 ```
 
 This creates a dependency: the node pool waits for the cluster to be created before provisioning.

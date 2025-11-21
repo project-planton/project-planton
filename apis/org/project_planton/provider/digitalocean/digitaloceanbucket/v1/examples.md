@@ -23,7 +23,7 @@ kind: DigitalOceanBucket
 metadata:
   name: app-data
 spec:
-  bucket_name: app-data
+  bucketName: app-data
   region: nyc3
 ```
 
@@ -57,9 +57,9 @@ metadata:
     environment: production
     purpose: static-website
 spec:
-  bucket_name: company-website
+  bucketName: company-website
   region: nyc3
-  access_control: PUBLIC_READ
+  accessControl: PUBLIC_READ
   tags:
     - website
     - cdn-enabled
@@ -99,10 +99,10 @@ metadata:
     environment: production
     data-classification: critical
 spec:
-  bucket_name: prod-db-backups
+  bucketName: prod-db-backups
   region: sfo3
-  access_control: PRIVATE
-  versioning_enabled: true
+  accessControl: PRIVATE
+  versioningEnabled: true
   tags:
     - backups
     - versioned
@@ -147,10 +147,10 @@ metadata:
     cost-center: engineering
     compliance: gdpr
 spec:
-  bucket_name: prod-user-media
+  bucketName: prod-user-media
   region: ams3
-  access_control: PUBLIC_READ
-  versioning_enabled: false
+  accessControl: PUBLIC_READ
+  versioningEnabled: false
   tags:
     - production
     - user-media
@@ -205,10 +205,10 @@ metadata:
     region-group: us
     region-role: primary
 spec:
-  bucket_name: app-media-us-east
+  bucketName: app-media-us-east
   region: nyc3
-  access_control: PUBLIC_READ
-  versioning_enabled: true
+  accessControl: PUBLIC_READ
+  versioningEnabled: true
   tags:
     - production
     - us-east
@@ -226,10 +226,10 @@ metadata:
     region-group: us
     region-role: secondary
 spec:
-  bucket_name: app-media-us-west
+  bucketName: app-media-us-west
   region: sfo3
-  access_control: PUBLIC_READ
-  versioning_enabled: true
+  accessControl: PUBLIC_READ
+  versioningEnabled: true
   tags:
     - production
     - us-west
@@ -246,10 +246,10 @@ metadata:
   labels:
     region-group: europe
 spec:
-  bucket_name: app-media-europe
+  bucketName: app-media-europe
   region: ams3
-  access_control: PUBLIC_READ
-  versioning_enabled: true
+  accessControl: PUBLIC_READ
+  versioningEnabled: true
   tags:
     - production
     - europe
@@ -277,10 +277,10 @@ metadata:
   labels:
     environment: development
 spec:
-  bucket_name: dev-app-uploads
+  bucketName: dev-app-uploads
   region: nyc3
-  access_control: PRIVATE
-  versioning_enabled: false
+  accessControl: PRIVATE
+  versioningEnabled: false
   tags:
     - development
     - temporary
@@ -302,10 +302,10 @@ metadata:
   labels:
     environment: staging
 spec:
-  bucket_name: staging-app-uploads
+  bucketName: staging-app-uploads
   region: nyc3
-  access_control: PRIVATE
-  versioning_enabled: true
+  accessControl: PRIVATE
+  versioningEnabled: true
   tags:
     - staging
     - production-like
@@ -328,10 +328,10 @@ metadata:
     criticality: high
     backup-enabled: "true"
 spec:
-  bucket_name: prod-app-uploads
+  bucketName: prod-app-uploads
   region: sfo3
-  access_control: PRIVATE
-  versioning_enabled: true
+  accessControl: PRIVATE
+  versioningEnabled: true
   tags:
     - production
     - critical

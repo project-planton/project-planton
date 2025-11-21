@@ -117,8 +117,8 @@ kind: CivoVpc
 metadata:
   name: dev-test-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: dev-test-network
+  civoCredentialId: civo-cred-123
+  networkName: dev-test-network
   region: LON1
   description: "Development test network"
 ```
@@ -136,10 +136,10 @@ kind: CivoVpc
 metadata:
   name: prod-main-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-main-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-main-network
   region: NYC1
-  ip_range_cidr: "10.20.1.0/24"
+  ipRangeCidr: "10.20.1.0/24"
   description: "Production network (NYC1)"
 ```
 
@@ -158,10 +158,10 @@ kind: CivoVpc
 metadata:
   name: prod-lon1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-lon1-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-lon1-network
   region: LON1
-  ip_range_cidr: "10.10.1.0/24"
+  ipRangeCidr: "10.10.1.0/24"
   description: "Production network (London)"
 
 # Production - Frankfurt
@@ -171,10 +171,10 @@ kind: CivoVpc
 metadata:
   name: prod-fra1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-fra1-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-fra1-network
   region: FRA1
-  ip_range_cidr: "10.30.1.0/24"
+  ipRangeCidr: "10.30.1.0/24"
   description: "Production network (Frankfurt)"
 ```
 

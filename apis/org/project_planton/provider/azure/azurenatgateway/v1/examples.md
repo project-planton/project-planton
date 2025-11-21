@@ -8,7 +8,7 @@ kind: AzureNatGateway
 metadata:
   name: dev-nat
 spec:
-  subnet_id:
+  subnetId:
     value: "/subscriptions/{sub-id}/resourceGroups/dev-rg/providers/Microsoft.Network/virtualNetworks/dev-vnet/subnets/nodes-subnet"
 ```
 
@@ -22,10 +22,10 @@ metadata:
   org: mycompany
   env: production
 spec:
-  subnet_id:
+  subnetId:
     value: "/subscriptions/{sub-id}/resourceGroups/prod-rg/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/nodes-subnet"
-  idle_timeout_minutes: 10
-  public_ip_prefix_length: 28  # 16 IPs for scale
+  idleTimeoutMinutes: 10
+  publicIpPrefixLength: 28  # 16 IPs for scale
   tags:
     cost-center: "infrastructure"
 ```
@@ -39,8 +39,8 @@ metadata:
   name: dev-nat
   env: development
 spec:
-  subnet_id:
+  subnetId:
     value: "/subscriptions/{sub-id}/resourceGroups/dev-rg/providers/Microsoft.Network/virtualNetworks/dev-vnet/subnets/nodes-subnet"
-  idle_timeout_minutes: 4  # Default, faster connection cleanup
+  idleTimeoutMinutes: 4  # Default, faster connection cleanup
 ```
 

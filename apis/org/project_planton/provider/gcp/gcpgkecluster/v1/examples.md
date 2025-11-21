@@ -18,8 +18,8 @@ metadata:
     id: production
 spec:
   # GCP project (foreign key reference)
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: acme-prod
       path: status.outputs.project_id
@@ -28,44 +28,44 @@ spec:
   location: us-central1
   
   # VPC networking configuration (foreign key references)
-  subnetwork_self_link:
-    value_ref:
+  subnetworkSelfLink:
+    valueRef:
       kind: GcpSubnetwork
       name: prod-gke-subnet
       path: status.outputs.self_link
   
   # Pod IP secondary range
-  cluster_secondary_range_name:
-    value_ref:
+  clusterSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: prod-gke-subnet
       path: status.outputs.pods_secondary_range_name
   
   # Service IP secondary range
-  services_secondary_range_name:
-    value_ref:
+  servicesSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: prod-gke-subnet
       path: status.outputs.services_secondary_range_name
   
   # Control plane private endpoint CIDR (must be /28)
-  master_ipv4_cidr_block: 172.16.0.0/28
+  masterIpv4CidrBlock: 172.16.0.0/28
   
   # Private nodes (no public IPs)
-  enable_public_nodes: false
+  enablePublicNodes: false
   
   # Regular release channel (recommended for production)
-  release_channel: REGULAR
+  releaseChannel: REGULAR
   
   # Enable network policies (Calico for microsegmentation)
-  disable_network_policy: false
+  disableNetworkPolicy: false
   
   # Enable Workload Identity (IAM for pods)
-  disable_workload_identity: false
+  disableWorkloadIdentity: false
   
   # Cloud NAT for private node egress
-  router_nat_name:
-    value_ref:
+  routerNatName:
+    valueRef:
       kind: GcpRouterNat
       name: prod-nat
       path: metadata.name
@@ -100,39 +100,39 @@ metadata:
     id: development
 spec:
   # GCP project (direct value for dev)
-  project_id:
+  projectId:
     value: acme-dev-12345
   
   # Zonal cluster (cheaper, single control plane replica)
   location: us-central1-a
   
   # VPC networking configuration (direct values)
-  subnetwork_self_link:
+  subnetworkSelfLink:
     value: https://www.googleapis.com/compute/v1/projects/acme-dev-12345/regions/us-central1/subnetworks/dev-gke-subnet
   
-  cluster_secondary_range_name:
+  clusterSecondaryRangeName:
     value: dev-pods
   
-  services_secondary_range_name:
+  servicesSecondaryRangeName:
     value: dev-services
   
   # Control plane CIDR (different /28 range from prod)
-  master_ipv4_cidr_block: 172.16.0.16/28
+  masterIpv4CidrBlock: 172.16.0.16/28
   
   # Private nodes
-  enable_public_nodes: false
+  enablePublicNodes: false
   
   # Rapid release channel (bleeding-edge for dev)
-  release_channel: RAPID
+  releaseChannel: RAPID
   
   # Disable network policies (simplify dev debugging)
-  disable_network_policy: true
+  disableNetworkPolicy: true
   
   # Disable Workload Identity (not needed for dev)
-  disable_workload_identity: true
+  disableWorkloadIdentity: true
   
   # Cloud NAT reference
-  router_nat_name:
+  routerNatName:
     value: dev-nat
 ```
 
@@ -164,8 +164,8 @@ metadata:
   env:
     id: production
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: financial-prod
       path: status.outputs.project_id
@@ -173,40 +173,40 @@ spec:
   # Regional cluster for HA
   location: us-east1
   
-  subnetwork_self_link:
-    value_ref:
+  subnetworkSelfLink:
+    valueRef:
       kind: GcpSubnetwork
       name: secure-subnet
       path: status.outputs.self_link
   
-  cluster_secondary_range_name:
-    value_ref:
+  clusterSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: secure-subnet
       path: status.outputs.pods_secondary_range_name
   
-  services_secondary_range_name:
-    value_ref:
+  servicesSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: secure-subnet
       path: status.outputs.services_secondary_range_name
   
-  master_ipv4_cidr_block: 172.16.0.32/28
+  masterIpv4CidrBlock: 172.16.0.32/28
   
   # Private nodes (maximum security)
-  enable_public_nodes: false
+  enablePublicNodes: false
   
   # Stable release channel (conservative upgrades)
-  release_channel: STABLE
+  releaseChannel: STABLE
   
   # Enable network policies (required for compliance)
-  disable_network_policy: false
+  disableNetworkPolicy: false
   
   # Enable Workload Identity (required for compliance)
-  disable_workload_identity: false
+  disableWorkloadIdentity: false
   
-  router_nat_name:
-    value_ref:
+  routerNatName:
+    valueRef:
       kind: GcpRouterNat
       name: secure-nat
       path: metadata.name
@@ -242,34 +242,34 @@ metadata:
   env:
     id: production
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: acme-prod
       path: status.outputs.project_id
   location: us-central1
-  subnetwork_self_link:
-    value_ref:
+  subnetworkSelfLink:
+    valueRef:
       kind: GcpSubnetwork
       name: frontend-subnet
       path: status.outputs.self_link
-  cluster_secondary_range_name:
-    value_ref:
+  clusterSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: frontend-subnet
       path: status.outputs.pods_secondary_range_name
-  services_secondary_range_name:
-    value_ref:
+  servicesSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: frontend-subnet
       path: status.outputs.services_secondary_range_name
-  master_ipv4_cidr_block: 172.16.0.0/28  # First /28 range
-  enable_public_nodes: false
-  release_channel: REGULAR
-  disable_network_policy: false
-  disable_workload_identity: false
-  router_nat_name:
-    value_ref:
+  masterIpv4CidrBlock: 172.16.0.0/28  # First /28 range
+  enablePublicNodes: false
+  releaseChannel: REGULAR
+  disableNetworkPolicy: false
+  disableWorkloadIdentity: false
+  routerNatName:
+    valueRef:
       kind: GcpRouterNat
       name: frontend-nat
       path: metadata.name
@@ -286,34 +286,34 @@ metadata:
   env:
     id: production
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: acme-prod
       path: status.outputs.project_id
   location: us-central1
-  subnetwork_self_link:
-    value_ref:
+  subnetworkSelfLink:
+    valueRef:
       kind: GcpSubnetwork
       name: backend-subnet
       path: status.outputs.self_link
-  cluster_secondary_range_name:
-    value_ref:
+  clusterSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: backend-subnet
       path: status.outputs.pods_secondary_range_name
-  services_secondary_range_name:
-    value_ref:
+  servicesSecondaryRangeName:
+    valueRef:
       kind: GcpSubnetwork
       name: backend-subnet
       path: status.outputs.services_secondary_range_name
-  master_ipv4_cidr_block: 172.16.0.16/28  # Second /28 range (no overlap)
-  enable_public_nodes: false
-  release_channel: REGULAR
-  disable_network_policy: false
-  disable_workload_identity: false
-  router_nat_name:
-    value_ref:
+  masterIpv4CidrBlock: 172.16.0.16/28  # Second /28 range (no overlap)
+  enablePublicNodes: false
+  releaseChannel: REGULAR
+  disableNetworkPolicy: false
+  disableWorkloadIdentity: false
+  routerNatName:
+    valueRef:
       kind: GcpRouterNat
       name: backend-nat
       path: metadata.name
@@ -346,30 +346,30 @@ metadata:
     id: production
 spec:
   # Service project where cluster is created
-  project_id:
+  projectId:
     value: service-project-12345
   
   location: us-central1
   
   # Subnet from host project (Shared VPC)
-  subnetwork_self_link:
+  subnetworkSelfLink:
     value: https://www.googleapis.com/compute/v1/projects/host-project-99999/regions/us-central1/subnetworks/shared-gke-subnet
   
   # Secondary ranges from host project subnet
-  cluster_secondary_range_name:
+  clusterSecondaryRangeName:
     value: shared-pods
   
-  services_secondary_range_name:
+  servicesSecondaryRangeName:
     value: shared-services
   
-  master_ipv4_cidr_block: 172.16.0.48/28
-  enable_public_nodes: false
-  release_channel: REGULAR
-  disable_network_policy: false
-  disable_workload_identity: false
+  masterIpv4CidrBlock: 172.16.0.48/28
+  enablePublicNodes: false
+  releaseChannel: REGULAR
+  disableNetworkPolicy: false
+  disableWorkloadIdentity: false
   
   # Cloud NAT in host project
-  router_nat_name:
+  routerNatName:
     value: shared-nat
 ```
 
@@ -397,9 +397,9 @@ kind: GcpProject
 metadata:
   name: my-project
 spec:
-  project_name: my-gcp-project
-  billing_account_id: "012345-6789AB-CDEF01"
-  organization_id: "123456789012"
+  projectName: my-gcp-project
+  billingAccountId: "012345-6789AB-CDEF01"
+  organizationId: "123456789012"
 
 ---
 apiVersion: gcp.project-planton.org/v1
@@ -407,12 +407,12 @@ kind: GcpVpc
 metadata:
   name: my-vpc
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: my-project
       path: status.outputs.project_id
-  auto_create_subnetworks: false  # Custom mode
+  autoCreateSubnetworks: false  # Custom mode
 
 ---
 apiVersion: gcp.project-planton.org/v1
@@ -420,23 +420,23 @@ kind: GcpSubnetwork
 metadata:
   name: my-subnet
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: my-project
       path: status.outputs.project_id
-  vpc_self_link:
-    value_ref:
+  vpcSelfLink:
+    valueRef:
       kind: GcpVpc
       name: my-vpc
       path: status.outputs.self_link
   region: us-central1
-  ip_cidr_range: 10.0.0.0/24  # Primary range for nodes
-  secondary_ip_ranges:
+  ipCidrRange: 10.0.0.0/24  # Primary range for nodes
+  secondaryIpRanges:
     - range_name: pods
-      ip_cidr_range: 10.1.0.0/16  # Pod IPs
+      ipCidrRange: 10.1.0.0/16  # Pod IPs
     - range_name: services
-      ip_cidr_range: 10.2.0.0/20  # Service IPs
+      ipCidrRange: 10.2.0.0/20  # Service IPs
 
 ---
 apiVersion: gcp.project-planton.org/v1
@@ -444,13 +444,13 @@ kind: GcpRouter
 metadata:
   name: my-router
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: my-project
       path: status.outputs.project_id
-  vpc_self_link:
-    value_ref:
+  vpcSelfLink:
+    valueRef:
       kind: GcpVpc
       name: my-vpc
       path: status.outputs.self_link
@@ -462,13 +462,13 @@ kind: GcpRouterNat
 metadata:
   name: my-nat
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: my-project
       path: status.outputs.project_id
-  router_name:
-    value_ref:
+  routerName:
+    valueRef:
       kind: GcpRouter
       name: my-router
       path: metadata.name
@@ -480,28 +480,28 @@ kind: GcpGkeCluster
 metadata:
   name: my-cluster
 spec:
-  project_id:
-    value_ref:
+  projectId:
+    valueRef:
       kind: GcpProject
       name: my-project
       path: status.outputs.project_id
   location: us-central1
-  subnetwork_self_link:
-    value_ref:
+  subnetworkSelfLink:
+    valueRef:
       kind: GcpSubnetwork
       name: my-subnet
       path: status.outputs.self_link
-  cluster_secondary_range_name:
+  clusterSecondaryRangeName:
     value: pods
-  services_secondary_range_name:
+  servicesSecondaryRangeName:
     value: services
-  master_ipv4_cidr_block: 172.16.0.0/28
-  enable_public_nodes: false
-  release_channel: REGULAR
-  disable_network_policy: false
-  disable_workload_identity: false
-  router_nat_name:
-    value_ref:
+  masterIpv4CidrBlock: 172.16.0.0/28
+  enablePublicNodes: false
+  releaseChannel: REGULAR
+  disableNetworkPolicy: false
+  disableWorkloadIdentity: false
+  routerNatName:
+    valueRef:
       kind: GcpRouterNat
       name: my-nat
       path: metadata.name

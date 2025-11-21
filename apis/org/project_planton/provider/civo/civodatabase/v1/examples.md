@@ -25,12 +25,12 @@ metadata:
   name: dev-postgres
   env: development
 spec:
-  db_instance_name: dev-db
+  dbInstanceName: dev-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.small
-  network_id:
+  sizeSlug: g3.db.small
+  networkId:
     value: "net-12345678-abcd-1234-abcd-1234567890ab"
 ```
 
@@ -51,13 +51,13 @@ metadata:
   name: dev-postgres-large-storage
   env: development
 spec:
-  db_instance_name: dev-large-db
+  dbInstanceName: dev-large-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.small
-  storage_gib: 100  # Override default 40 GB with 100 GB
-  network_id:
+  sizeSlug: g3.db.small
+  storageGib: 100  # Override default 40 GB with 100 GB
+  networkId:
     value: "net-12345678-abcd-1234-abcd-1234567890ab"
   tags:
     - development
@@ -81,15 +81,15 @@ metadata:
   name: staging-postgres
   env: staging
 spec:
-  db_instance_name: staging-db
+  dbInstanceName: staging-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.medium
+  sizeSlug: g3.db.medium
   replicas: 1  # 2 total nodes (1 primary + 1 replica)
-  network_id:
+  networkId:
     value: "net-12345678-abcd-1234-abcd-1234567890ab"
-  firewall_ids:
+  firewallIds:
     - value: "fw-staging-87654321-dcba-4321-dcba-0987654321ba"
   tags:
     - staging
@@ -114,17 +114,17 @@ metadata:
   env: production
   org: acme-corp
 spec:
-  db_instance_name: production-db
+  dbInstanceName: production-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.large
+  sizeSlug: g3.db.large
   replicas: 2  # 3 total nodes (1 primary + 2 replicas)
-  network_id:
+  networkId:
     value: "net-prod-12345678-abcd-1234-abcd-1234567890ab"
-  firewall_ids:
+  firewallIds:
     - value: "fw-prod-87654321-dcba-4321-dcba-0987654321ba"
-  storage_gib: 250
+  storageGib: 250
   tags:
     - production
     - backend
@@ -156,15 +156,15 @@ metadata:
   name: prod-mysql
   env: production
 spec:
-  db_instance_name: production-mysql
+  dbInstanceName: production-mysql
   engine: mysql
-  engine_version: "8.0"
+  engineVersion: "8.0"
   region: nyc1
-  size_slug: g3.db.medium
+  sizeSlug: g3.db.medium
   replicas: 1  # 2 total nodes
-  network_id:
+  networkId:
     value: "net-12345678-abcd-1234-abcd-1234567890ab"
-  firewall_ids:
+  firewallIds:
     - value: "fw-87654321-dcba-4321-dcba-0987654321ba"
   tags:
     - production
@@ -191,13 +191,13 @@ metadata:
   name: app-db-dev
   env: development
 spec:
-  db_instance_name: app-dev-db
+  dbInstanceName: app-dev-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.small
+  sizeSlug: g3.db.small
   replicas: 0  # Single node
-  network_id:
+  networkId:
     value: "net-dev-12345678"
   tags:
     - development
@@ -213,15 +213,15 @@ metadata:
   name: app-db-staging
   env: staging
 spec:
-  db_instance_name: app-staging-db
+  dbInstanceName: app-staging-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.medium
+  sizeSlug: g3.db.medium
   replicas: 1  # 2 nodes for HA testing
-  network_id:
+  networkId:
     value: "net-staging-12345678"
-  firewall_ids:
+  firewallIds:
     - value: "fw-staging-87654321"
   tags:
     - staging
@@ -237,17 +237,17 @@ metadata:
   name: app-db-prod
   env: production
 spec:
-  db_instance_name: app-prod-db
+  dbInstanceName: app-prod-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.large
+  sizeSlug: g3.db.large
   replicas: 2  # 3 nodes for full HA
-  network_id:
+  networkId:
     value: "net-prod-12345678"
-  firewall_ids:
+  firewallIds:
     - value: "fw-prod-87654321"
-  storage_gib: 200
+  storageGib: 200
   tags:
     - production
     - app
@@ -283,7 +283,7 @@ metadata:
   name: db-firewall
 spec:
   region: lon1
-  network_id:
+  networkId:
     value_from:
       kind: CivoVpc
       name: app-network
@@ -304,18 +304,18 @@ kind: CivoDatabase
 metadata:
   name: app-db
 spec:
-  db_instance_name: app-database
+  dbInstanceName: app-database
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.medium
+  sizeSlug: g3.db.medium
   replicas: 1
-  network_id:
+  networkId:
     value_from:
       kind: CivoVpc
       name: app-network
       field_path: status.outputs.network_id
-  firewall_ids:
+  firewallIds:
     - value_from:
         kind: CivoFirewall
         name: db-firewall

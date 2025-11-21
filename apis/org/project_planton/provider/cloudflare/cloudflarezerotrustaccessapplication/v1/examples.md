@@ -29,8 +29,8 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: minimal-app
 spec:
-  application_name: "Minimal App"
-  zone_id: "abc123def456..."
+  applicationName: "Minimal App"
+  zoneId: "abc123def456..."
   hostname: "app.example.com"
 ```
 
@@ -57,14 +57,14 @@ metadata:
     app: wiki
     audience: company-wide
 spec:
-  application_name: "Company Wiki"
-  zone_id: "abc123def456..."
+  applicationName: "Company Wiki"
+  zoneId: "abc123def456..."
   hostname: "wiki.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "@example.com"
-  session_duration_minutes: 480  # 8 hours
-  require_mfa: false
+  sessionDurationMinutes: 480  # 8 hours
+  requireMfa: false
 ```
 
 **Deploy:**
@@ -92,14 +92,14 @@ metadata:
     app: dashboard
     team: engineering
 spec:
-  application_name: "Engineering Dashboard"
-  zone_id: "abc123def456..."
+  applicationName: "Engineering Dashboard"
+  zoneId: "abc123def456..."
   hostname: "eng-dash.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "engineering@example.com"
-  session_duration_minutes: 720  # 12 hours
-  require_mfa: true
+  sessionDurationMinutes: 720  # 12 hours
+  requireMfa: true
 ```
 
 **Deploy:**
@@ -129,15 +129,15 @@ metadata:
     environment: staging
     app: admin-console
 spec:
-  application_name: "Staging Admin Console"
-  zone_id: "abc123def456..."
+  applicationName: "Staging Admin Console"
+  zoneId: "abc123def456..."
   hostname: "staging-admin.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "engineering@example.com"
     - "qa@example.com"
-  session_duration_minutes: 480  # 8 hours
-  require_mfa: true
+  sessionDurationMinutes: 480  # 8 hours
+  requireMfa: true
 ```
 
 **Deploy:**
@@ -164,14 +164,14 @@ metadata:
     app: admin-console
     tier: critical
 spec:
-  application_name: "Production Admin Console"
-  zone_id: "abc123def456..."
+  applicationName: "Production Admin Console"
+  zoneId: "abc123def456..."
   hostname: "prod.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "prod-admins@example.com"
-  session_duration_minutes: 120  # 2 hours
-  require_mfa: true
+  sessionDurationMinutes: 120  # 2 hours
+  requireMfa: true
 ```
 
 **Deploy:**
@@ -202,14 +202,14 @@ metadata:
     environment: development
     app: console
 spec:
-  application_name: "Development Console"
-  zone_id: "abc123def456..."
+  applicationName: "Development Console"
+  zoneId: "abc123def456..."
   hostname: "dev.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "@example.com"
-  session_duration_minutes: 1440  # 24 hours
-  require_mfa: false
+  sessionDurationMinutes: 1440  # 24 hours
+  requireMfa: false
 ```
 
 **Deploy:**
@@ -287,14 +287,14 @@ metadata:
     environment: development
     app: my-application
 spec:
-  application_name: "My App - Development"
-  zone_id: "abc123def456..."
+  applicationName: "My App - Development"
+  zoneId: "abc123def456..."
   hostname: "dev.my-app.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "@example.com"
-  session_duration_minutes: 1440  # 24 hours
-  require_mfa: false
+  sessionDurationMinutes: 1440  # 24 hours
+  requireMfa: false
 ```
 
 ### Staging Application
@@ -310,15 +310,15 @@ metadata:
     environment: staging
     app: my-application
 spec:
-  application_name: "My App - Staging"
-  zone_id: "abc123def456..."
+  applicationName: "My App - Staging"
+  zoneId: "abc123def456..."
   hostname: "staging.my-app.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "engineering@example.com"
     - "qa@example.com"
-  session_duration_minutes: 480  # 8 hours
-  require_mfa: true
+  sessionDurationMinutes: 480  # 8 hours
+  requireMfa: true
 ```
 
 ### Production Application
@@ -334,14 +334,14 @@ metadata:
     environment: production
     app: my-application
 spec:
-  application_name: "My App - Production"
-  zone_id: "abc123def456..."
+  applicationName: "My App - Production"
+  zoneId: "abc123def456..."
   hostname: "my-app.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "prod-users@example.com"
-  session_duration_minutes: 240  # 4 hours
-  require_mfa: true
+  sessionDurationMinutes: 240  # 4 hours
+  requireMfa: true
 ```
 
 ### Environment-Specific Deployment
@@ -392,16 +392,16 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: contractor-portal
 spec:
-  application_name: "Contractor Portal"
-  zone_id: "abc123def456..."
+  applicationName: "Contractor Portal"
+  zoneId: "abc123def456..."
   hostname: "contractors.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "john.doe@contractor.com"
     - "jane.smith@vendor.com"
     - "@trustedpartner.com"
-  session_duration_minutes: 480
-  require_mfa: true
+  sessionDurationMinutes: 480
+  requireMfa: true
 ```
 
 **Use Case:** External contractors or vendors who need temporary access. Mix individual emails with domain-wide access for trusted partners.
@@ -414,14 +414,14 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: internal-docs
 spec:
-  application_name: "Internal Documentation"
-  zone_id: "abc123def456..."
+  applicationName: "Internal Documentation"
+  zoneId: "abc123def456..."
   hostname: "docs.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "@example.com"
-  session_duration_minutes: 720
-  require_mfa: false
+  sessionDurationMinutes: 720
+  requireMfa: false
 ```
 
 **Use Case:** Company-wide resources accessible to anyone with a company email domain.
@@ -440,14 +440,14 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: finance-dashboard
 spec:
-  application_name: "Finance Dashboard"
-  zone_id: "abc123def456..."
+  applicationName: "Finance Dashboard"
+  zoneId: "abc123def456..."
   hostname: "finance.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "finance@example.com"
-  session_duration_minutes: 480
-  require_mfa: true
+  sessionDurationMinutes: 480
+  requireMfa: true
 ```
 
 ### Multiple Groups
@@ -458,16 +458,16 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: shared-analytics
 spec:
-  application_name: "Shared Analytics Platform"
-  zone_id: "abc123def456..."
+  applicationName: "Shared Analytics Platform"
+  zoneId: "abc123def456..."
   hostname: "analytics.example.com"
-  policy_type: ALLOW
-  allowed_google_groups:
+  policyType: ALLOW
+  allowedGoogleGroups:
     - "engineering@example.com"
     - "product@example.com"
     - "marketing@example.com"
-  session_duration_minutes: 720
-  require_mfa: true
+  sessionDurationMinutes: 720
+  requireMfa: true
 ```
 
 **Use Case:** Cross-functional tools accessible to multiple departments.
@@ -484,18 +484,18 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: mixed-access-app
 spec:
-  application_name: "Mixed Access Application"
-  zone_id: "abc123def456..."
+  applicationName: "Mixed Access Application"
+  zoneId: "abc123def456..."
   hostname: "mixed.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "ceo@example.com"
     - "cto@example.com"
-  allowed_google_groups:
+  allowedGoogleGroups:
     - "leadership@example.com"
     - "engineering@example.com"
-  session_duration_minutes: 480
-  require_mfa: true
+  sessionDurationMinutes: 480
+  requireMfa: true
 ```
 
 **Access Pattern**: Any user matching **either** the email list **or** the group list can access.
@@ -577,40 +577,40 @@ Different session durations for different security requirements:
 
 ```yaml
 spec:
-  application_name: "Financial Admin Console"
+  applicationName: "Financial Admin Console"
   hostname: "finance-admin.example.com"
-  session_duration_minutes: 60
-  require_mfa: true
+  sessionDurationMinutes: 60
+  requireMfa: true
 ```
 
 ### Short (2-4 hours) - High Security
 
 ```yaml
 spec:
-  application_name: "Production Database Console"
+  applicationName: "Production Database Console"
   hostname: "db-console.example.com"
-  session_duration_minutes: 120
-  require_mfa: true
+  sessionDurationMinutes: 120
+  requireMfa: true
 ```
 
 ### Medium (8 hours) - Standard Workday
 
 ```yaml
 spec:
-  application_name: "Internal Dashboard"
+  applicationName: "Internal Dashboard"
   hostname: "dash.example.com"
-  session_duration_minutes: 480
-  require_mfa: true
+  sessionDurationMinutes: 480
+  requireMfa: true
 ```
 
 ### Long (24 hours) - Developer Convenience
 
 ```yaml
 spec:
-  application_name: "Development Tools"
+  applicationName: "Development Tools"
   hostname: "dev-tools.example.com"
-  session_duration_minutes: 1440
-  require_mfa: false
+  sessionDurationMinutes: 1440
+  requireMfa: false
 ```
 
 ---
@@ -623,10 +623,10 @@ Grant access to users matching the rules:
 
 ```yaml
 spec:
-  application_name: "Standard Application"
+  applicationName: "Standard Application"
   hostname: "app.example.com"
-  policy_type: ALLOW
-  allowed_emails:
+  policyType: ALLOW
+  allowedEmails:
     - "@example.com"
 ```
 
@@ -636,10 +636,10 @@ Explicitly deny access to users matching the rules:
 
 ```yaml
 spec:
-  application_name: "Restricted Application"
+  applicationName: "Restricted Application"
   hostname: "restricted.example.com"
-  policy_type: BLOCK
-  allowed_emails:
+  policyType: BLOCK
+  allowedEmails:
     - "blocked-user@example.com"
 ```
 
@@ -696,9 +696,9 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: eng-tools
 spec:
-  application_name: "Engineering Tools"
+  applicationName: "Engineering Tools"
   hostname: "eng.example.com"
-  allowed_google_groups:
+  allowedGoogleGroups:
     - "engineering@example.com"
 
 # Marketing Team
@@ -708,9 +708,9 @@ kind: CloudflareZeroTrustAccessApplication
 metadata:
   name: marketing-tools
 spec:
-  application_name: "Marketing Tools"
+  applicationName: "Marketing Tools"
   hostname: "marketing.example.com"
-  allowed_google_groups:
+  allowedGoogleGroups:
     - "marketing@example.com"
 ```
 
@@ -721,28 +721,28 @@ Start with lenient access, tighten over time:
 **Phase 1 - Initial Rollout**:
 ```yaml
 spec:
-  allowed_emails:
+  allowedEmails:
     - "@example.com"
-  session_duration_minutes: 1440
-  require_mfa: false
+  sessionDurationMinutes: 1440
+  requireMfa: false
 ```
 
 **Phase 2 - Add MFA**:
 ```yaml
 spec:
-  allowed_emails:
+  allowedEmails:
     - "@example.com"
-  session_duration_minutes: 1440
-  require_mfa: true
+  sessionDurationMinutes: 1440
+  requireMfa: true
 ```
 
 **Phase 3 - Restrict to Groups**:
 ```yaml
 spec:
-  allowed_google_groups:
+  allowedGoogleGroups:
     - "approved-users@example.com"
-  session_duration_minutes: 480
-  require_mfa: true
+  sessionDurationMinutes: 480
+  requireMfa: true
 ```
 
 ---

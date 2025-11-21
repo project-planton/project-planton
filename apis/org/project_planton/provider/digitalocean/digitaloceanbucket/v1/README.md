@@ -106,6 +106,15 @@ When `versioning_enabled: true`:
 
 **Cost impact**: Storage costs increase as versions accumulate. Use lifecycle policies to expire old versions.
 
+## Stack Outputs
+
+After deployment, the following outputs are available:
+
+| Output | Description |
+|--------|-------------|
+| `bucket_id` | Unique identifier for the bucket (UUID format) |
+| `endpoint` | Regional endpoint URL for the bucket (e.g., "https://<region>.digitaloceanspaces.com") |
+
 ## Available Regions
 
 Common DigitalOcean Spaces regions:

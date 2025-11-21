@@ -1,114 +1,70 @@
-# Overview
+# AwsCertManagerCert
 
-The **AwsCertManagerCert** API resource provides a standardized and straightforward way to deploy containerized applications
-onto an existing Amazon ECS cluster on AWS. By focusing on essential configurations like image definition, compute
-capacity (Fargate or EC2), networking, and environment variables, it makes running services on ECS far more accessible
-within the ProjectPlanton multi-cloud deployment framework.
+The **AwsCertManagerCert** resource provides a standardized way to provision and manage SSL/TLS certificates through AWS Certificate Manager (ACM) using DNS validation. It simplifies certificate management by automating DNS validation records in Route53 and supporting both single and multi-domain certificates.
 
-## Purpose
+## Spec Fields (80/20)
 
-Deploying ECS services typically involves handling multiple moving parts—task definitions, networking, autoscaling,
-IAM roles, and more. The **AwsCertManagerCert** resource aims to streamline that process by:
+### Essential Fields (80% Use Case)
 
-- **Simplifying ECS Deployments**: Offer an easy-to-use interface for spinning up microservices on ECS (Fargate or EC2).
-- **Aligning with Best Practices**: Provide recommended defaults (e.g., CPU, memory) to ensure users have a
-  production-ready
-  baseline without repetitive configuration.
-- **Promoting Consistency**: Enforce standardized naming and validations, reducing misconfigurations across
-  multiple services and environments.
+- **primary_domain_name**: The main domain name for the certificate (e.g., "example.com" or "*.example.com" for wildcard). This is required and serves as the primary Subject name on the certificate.
+- **route53_hosted_zone_id**: The Route53 Hosted Zone ID where DNS validation records will be automatically created. Must be a public hosted zone that matches the domain names. This is required for DNS validation.
 
-## Key Features
+### Advanced Fields (20% Use Case)
 
-### Single-Container Focus
+- **alternate_domain_names**: Optional list of Subject Alternative Names (SANs) to include on the certificate. Each domain must be unique and follow the same format as the primary domain (supports wildcards). The primary domain should not be duplicated in this list.
+- **validation_method**: Method for domain ownership verification. Options are "DNS" (default and recommended) or "EMAIL". DNS validation is preferred as it automates the validation process through Route53.
 
-- **Minimal, Opinionated Spec**: Focuses on the 80-20 use case—a single-container service—while still exposing fields
-  for
-  resource requirements, environment variables, and networking.
+## Stack Outputs
 
-### Flexible Compute Options
+After provisioning, the AwsCertManagerCert resource provides the following outputs:
 
-- **Fargate or EC2**: Operate serverless via AWS Fargate, or integrate with your existing EC2-backed ECS environment.
-- **Resource Control**: Define CPU and memory precisely, aligned with ECS constraints (e.g., 256, 512, 1024 CPU units).
+- **cert_arn**: The Amazon Resource Name (ARN) of the created certificate, used to reference the certificate in other AWS resources like ALBs, CloudFront distributions, or API Gateways.
+- **validation_status**: Current status of the certificate validation (e.g., "PENDING_VALIDATION", "ISSUED").
+- **domain_validation_records**: Details of the DNS validation records created in Route53.
 
-### Automatic Networking Setup
+## How It Works
 
-- **Subnets & Security Groups**: Attach your service to specific VPC subnets, choosing whether to assign a public IP.
-- **Public or Private**: Easily configure production deployments in private subnets, or set up a publicly accessible
-  service when needed.
+When you define an AwsCertManagerCert resource, ProjectPlanton:
 
-### Environment Management
+1. **Requests Certificate**: Creates an SSL/TLS certificate in AWS Certificate Manager for the specified primary domain and any alternate domains.
+2. **Validates Ownership**: Automatically creates DNS validation records (CNAME records) in the specified Route53 hosted zone to prove domain ownership.
+3. **Waits for Issuance**: Monitors the certificate status until AWS validates ownership and issues the certificate.
+4. **Manages Lifecycle**: Handles certificate renewal automatically—ACM certificates are valid for 13 months and renew automatically if DNS validation records remain in place.
 
-- **Environment Variables**: Pass configuration to your container, including references to secrets from AWS Secrets
-  Manager or SSM.
-- **Role Separation**: Separate `task_execution_role_arn` (for pulling container images and writing logs) from
-  `task_role_arn` (for runtime AWS API access).
+The DNS validation approach is preferred because it's automated, doesn't require manual intervention, and supports wildcard certificates.
 
-### Seamless Integration
+## Use Cases
 
-- **ProjectPlanton CLI**: Deploy the same resource across multiple stacks using either Pulumi or Terraform under the
-  hood.
-- **Multi-Cloud Ready**: Combine AwsCertManagerCert on AWS with other providers in the same manifest, adopting ProjectPlanton’s
-  uniform resource model.
+### Wildcard Certificate for Subdomains
+Create a single wildcard certificate (*.example.com) to secure all subdomains under your primary domain.
 
-## Benefits
+### Multi-Domain Certificate
+Issue one certificate covering multiple distinct domains (e.g., example.com, api.example.com, www.example.com) to simplify certificate management.
 
-- **Reduced Complexity**: A single definition for your ECS service—container image, CPU/memory, subnets, and more—means
-  fewer files and less overhead.
-- **Scalable & Available**: Scale out by adjusting `desired_count` to meet traffic demands without repeatedly editing
-  multiple YAML or JSON templates.
-- **Infrastructure Consistency**: Enforce naming conventions, validations, and recommended defaults for CPU/memory
-  allocations so your deployments remain predictable and repeatable.
-- **Enhanced Observability**: Integrate seamlessly with ECS cluster features like CloudWatch metrics and logs—no extra
-  manual setup needed.
+### CloudFront and ALB SSL
+Provision certificates for use with CloudFront distributions (requires us-east-1 region) or Application Load Balancers in any region.
 
-## Example Usage
+### Automated Certificate Management
+Leverage ACM's automatic renewal and Route53 DNS validation for zero-touch certificate lifecycle management.
 
-Below is a minimal YAML snippet demonstrating how to configure and deploy an ECS service using ProjectPlanton:
+## Important Notes
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsCertManagerCert
-metadata:
-  name: my-aws-cert-manager-cert
-  version:
-    message: "Initial ECS service deployment"
-spec:
-  cluster_name: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  service_name: "my-service"
-  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
-  container_port: 80
-  desired_count: 2
-  cpu: 512
-  memory: 1024
-  subnets:
-    - subnet-1abc234d
-    - subnet-2abc345e
-  security_groups:
-    - sg-111aaabbb
-  assign_public_ip: false
-  environment:
-    - name: REDIS_URL
-      value: "redis://my-redis-cache:6379"
-```
+### DNS Validation Requirements
+- The Route53 hosted zone must be publicly accessible and match the domain names.
+- DNS validation records are automatically created as CNAME records in the hosted zone.
+- Wildcard certificates (*.example.com) require DNS validation; email validation is not supported for wildcards.
 
-### Deploying with ProjectPlanton
+### Regional Considerations
+- For CloudFront distributions, certificates must be created in the us-east-1 region.
+- For other services (ALB, API Gateway), create certificates in the same region as the service.
 
-Once your YAML manifest is ready, you can deploy using ProjectPlanton’s CLI. ProjectPlanton will validate the manifest
-against the Protobuf schema and orchestrate everything in Pulumi or Terraform.
+### Certificate Renewal
+- ACM certificates automatically renew every 13 months if DNS validation records remain in Route53.
+- No action required for renewal as long as validation records are not deleted.
 
-- **Using Pulumi**:
-  ```bash
-  project-planton pulumi up --manifest awscertmanagercert.yaml --stack org/project/my-stack
-  ```
-- **Using Terraform**:
-  ```bash
-  project-planton terraform apply --manifest awscertmanagercert.yaml --stack org/project/my-stack
-  ```
+## References
 
-ProjectPlanton will provision the ECS service, create or update the necessary IAM roles (if specified), assign the
-service to the given subnets and security groups, and ensure you have the correct number of running tasks.
-
----
-
-Happy deploying! If you have questions or run into issues, feel free to open an issue on our GitHub repository or
-reach out through our community channels for support.
+- [AWS Certificate Manager Documentation](https://docs.aws.amazon.com/acm/)
+- [DNS Validation for ACM Certificates](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html)
+- [ACM Certificate Characteristics](https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html)
+- [Route53 DNS Management](https://docs.aws.amazon.com/route53/)

@@ -8,8 +8,8 @@ kind: AzureVpc
 metadata:
   name: dev-vpc
 spec:
-  address_space_cidr: "10.10.0.0/16"
-  nodes_subnet_cidr: "10.10.0.0/18"
+  addressSpaceCidr: "10.10.0.0/16"
+  nodesSubnetCidr: "10.10.0.0/18"
 ```
 
 ## Development Environment
@@ -21,8 +21,8 @@ metadata:
   name: dev-vpc
   env: development
 spec:
-  address_space_cidr: "10.10.0.0/16"
-  nodes_subnet_cidr: "10.10.0.0/18"
+  addressSpaceCidr: "10.10.0.0/16"
+  nodesSubnetCidr: "10.10.0.0/18"
   tags:
     purpose: "development"
 ```
@@ -37,9 +37,9 @@ metadata:
   org: mycompany
   env: production
 spec:
-  address_space_cidr: "10.0.0.0/16"
-  nodes_subnet_cidr: "10.0.0.0/18"
-  is_nat_gateway_enabled: true
+  addressSpaceCidr: "10.0.0.0/16"
+  nodesSubnetCidr: "10.0.0.0/18"
+  isNatGatewayEnabled: true
   tags:
     cost-center: "infrastructure"
     compliance: "soc2"
@@ -55,10 +55,10 @@ metadata:
   org: mycompany
   env: production
 spec:
-  address_space_cidr: "10.0.0.0/16"
-  nodes_subnet_cidr: "10.0.0.0/18"
-  is_nat_gateway_enabled: true
-  dns_private_zone_links:
+  addressSpaceCidr: "10.0.0.0/16"
+  nodesSubnetCidr: "10.0.0.0/18"
+  isNatGatewayEnabled: true
+  dnsPrivateZoneLinks:
     - "/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
     - "/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
   tags:

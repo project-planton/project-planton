@@ -28,7 +28,7 @@ spec:
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 20Gi
     resources:
       requests:
@@ -58,7 +58,7 @@ spec:
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 200Gi
     resources:
       requests:
@@ -84,7 +84,7 @@ spec:
   clusterName: analytics-cluster
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 100Gi
     resources:
       requests:
@@ -115,7 +115,7 @@ spec:
   version: "24.8"
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 150Gi
     resources:
       requests:
@@ -151,7 +151,7 @@ spec:
   clusterName: enterprise-cluster
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 200Gi
     resources:
       requests:
@@ -188,7 +188,7 @@ spec:
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 100Gi
     resources:
       requests:
@@ -223,7 +223,7 @@ spec:
   kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
-    isPersistenceEnabled: false
+    persistenceEnabled: false
     resources:
       requests:
         cpu: 100m

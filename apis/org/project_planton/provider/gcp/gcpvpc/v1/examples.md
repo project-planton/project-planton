@@ -35,10 +35,10 @@ metadata:
   org: engineering
   env: development
 spec:
-  project_id:
+  projectId:
     value: my-dev-project-123
-  network_name: dev-network
-  auto_create_subnetworks: false  # Custom mode (recommended)
+  networkName: dev-network
+  autoCreateSubnetworks: false  # Custom mode (recommended)
 ```
 
 ### What Gets Created
@@ -58,12 +58,12 @@ kind: GcpSubnetwork
 metadata:
   name: dev-uswest1-subnet
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: dev-network
   region: us-west1
-  ip_cidr_range: 10.10.0.0/16
+  ipCidrRange: 10.10.0.0/16
 ```
 
 ---
@@ -91,11 +91,11 @@ metadata:
   org: platform-team
   env: production
 spec:
-  project_id:
+  projectId:
     value: prod-network-host-project
-  network_name: prod-network
-  auto_create_subnetworks: false
-  routing_mode: GLOBAL  # Required for multi-region hybrid connectivity
+  networkName: prod-network
+  autoCreateSubnetworks: false
+  routingMode: GLOBAL  # Required for multi-region hybrid connectivity
 ```
 
 ### What Gets Created
@@ -145,10 +145,10 @@ metadata:
   org: product-team
   env: development
 spec:
-  project_id:
+  projectId:
     value: myapp-dev-project
-  network_name: app-network
-  auto_create_subnetworks: false
+  networkName: app-network
+  autoCreateSubnetworks: false
 ```
 
 **IP Plan**: `10.10.0.0/16` for dev subnets
@@ -164,10 +164,10 @@ metadata:
   org: product-team
   env: staging
 spec:
-  project_id:
+  projectId:
     value: myapp-staging-project
-  network_name: app-network
-  auto_create_subnetworks: false
+  networkName: app-network
+  autoCreateSubnetworks: false
 ```
 
 **IP Plan**: `10.20.0.0/16` for staging subnets
@@ -183,11 +183,11 @@ metadata:
   org: product-team
   env: production
 spec:
-  project_id:
+  projectId:
     value: myapp-prod-project
-  network_name: app-network
-  auto_create_subnetworks: false
-  routing_mode: GLOBAL  # Production may need hybrid connectivity
+  networkName: app-network
+  autoCreateSubnetworks: false
+  routingMode: GLOBAL  # Production may need hybrid connectivity
 ```
 
 **IP Plan**: `10.30.0.0/16` for prod subnets
@@ -224,11 +224,11 @@ metadata:
   org: platform-team
   env: shared
 spec:
-  project_id:
+  projectId:
     value: network-host-project-123
-  network_name: shared-vpc-host
-  auto_create_subnetworks: false
-  routing_mode: GLOBAL
+  networkName: shared-vpc-host
+  autoCreateSubnetworks: false
+  routingMode: GLOBAL
 ```
 
 ### What Gets Created
@@ -284,9 +284,9 @@ kind: GcpProject
 metadata:
   name: myapp-project
 spec:
-  project_id: myapp-prod-123
-  billing_account_id: 012345-ABCDEF-678910
-  folder_id: "123456789012"
+  projectId: myapp-prod-123
+  billingAccountId: 012345-ABCDEF-678910
+  folderId: "123456789012"
 ```
 
 ### VPC Resource (Referencing the Project)
@@ -297,12 +297,12 @@ kind: GcpVpc
 metadata:
   name: myapp-vpc
 spec:
-  project_id:
+  projectId:
     ref:
       kind: GcpProject
       name: myapp-project  # References the project defined above
-  network_name: myapp-vpc
-  auto_create_subnetworks: false
+  networkName: myapp-vpc
+  autoCreateSubnetworks: false
 ```
 
 ### How It Works
@@ -342,11 +342,11 @@ metadata:
   org: platform-team
   env: production
 spec:
-  project_id:
+  projectId:
     value: gke-prod-project
-  network_name: gke-network
-  auto_create_subnetworks: false
-  routing_mode: GLOBAL  # Useful for multi-region GKE clusters
+  networkName: gke-network
+  autoCreateSubnetworks: false
+  routingMode: GLOBAL  # Useful for multi-region GKE clusters
 ```
 
 ### GKE-Ready Subnet (Separate Resource)
@@ -357,18 +357,18 @@ kind: GcpSubnetwork
 metadata:
   name: gke-uswest1-subnet
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: gke-network
   region: us-west1
-  ip_cidr_range: 10.40.0.0/16  # Primary range for node IPs
-  secondary_ip_ranges:
-    - range_name: gke-pods
-      ip_cidr_range: 10.41.0.0/16  # Secondary range for pod IPs
-    - range_name: gke-services
-      ip_cidr_range: 10.42.0.0/16  # Secondary range for service IPs
-  private_google_access: true  # Enable Private Google Access for GKE
+  ipCidrRange: 10.40.0.0/16  # Primary range for node IPs
+  secondaryIpRanges:
+    - rangeName: gke-pods
+      ipCidrRange: 10.41.0.0/16  # Secondary range for pod IPs
+    - rangeName: gke-services
+      ipCidrRange: 10.42.0.0/16  # Secondary range for service IPs
+  privateGoogleAccess: true  # Enable Private Google Access for GKE
 ```
 
 ### Why Separate VPC and Subnet Resources?
@@ -415,12 +415,12 @@ terraform apply -var-file=dev.tfvars
 **What happens:**
 ```yaml
 spec:
-  auto_create_subnetworks: true  # ❌ Don't do this
+  autoCreateSubnetworks: true  # ❌ Don't do this
 ```
 
 **Result**: GCP creates subnets in all regions with fixed IP ranges (`10.128.0.0/9`). These ranges overlap with other auto-mode VPCs, preventing peering and causing conflicts with on-premises networks.
 
-**Fix**: Always use custom mode (`auto_create_subnetworks: false`) and create subnets explicitly.
+**Fix**: Always use custom mode (`autoCreateSubnetworks: false`) and create subnets explicitly.
 
 ---
 

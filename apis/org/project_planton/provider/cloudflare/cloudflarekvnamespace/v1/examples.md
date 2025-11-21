@@ -39,7 +39,7 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-config
 spec:
-  namespace_name: myapp-config-prod
+  namespaceName: myapp-config-prod
 ```
 
 **Deploy:**
@@ -82,8 +82,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-dev-cache
 spec:
-  namespace_name: myapp-dev-cache
-  ttl_seconds: 300  # Keys expire after 5 minutes
+  namespaceName: myapp-dev-cache
+  ttlSeconds: 300  # Keys expire after 5 minutes
   description: "Development cache with short TTL for rapid testing"
 ```
 
@@ -110,8 +110,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-config-prod
 spec:
-  namespace_name: myapp-config-prod
-  ttl_seconds: 0  # No automatic expiration (persistent data)
+  namespaceName: myapp-config-prod
+  ttlSeconds: 0  # No automatic expiration (persistent data)
   description: "Feature flags and application configuration for production"
 ```
 
@@ -140,8 +140,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-config-prod
 spec:
-  namespace_name: myapp-config-prod
-  ttl_seconds: 0
+  namespaceName: myapp-config-prod
+  ttlSeconds: 0
   description: "Persistent configuration and feature flags"
 ```
 
@@ -153,8 +153,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-cache-prod
 spec:
-  namespace_name: myapp-cache-prod
-  ttl_seconds: 3600  # Cache entries expire after 1 hour
+  namespaceName: myapp-cache-prod
+  ttlSeconds: 3600  # Cache entries expire after 1 hour
   description: "Cached API responses and transient data"
 ```
 
@@ -166,8 +166,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-session-prod
 spec:
-  namespace_name: myapp-session-prod
-  ttl_seconds: 1800  # Sessions expire after 30 minutes
+  namespaceName: myapp-session-prod
+  ttlSeconds: 1800  # Sessions expire after 30 minutes
   description: "User session tokens and temporary auth data"
 ```
 
@@ -202,8 +202,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-config-staging
 spec:
-  namespace_name: myapp-config-staging
-  ttl_seconds: 0
+  namespaceName: myapp-config-staging
+  ttlSeconds: 0
   description: "Staging environment feature flags (mirrors prod)"
 ```
 
@@ -221,8 +221,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-dev-alice
 spec:
-  namespace_name: myapp-dev-alice
-  ttl_seconds: 300
+  namespaceName: myapp-dev-alice
+  ttlSeconds: 300
   description: "Alice's personal dev environment"
 ---
 apiVersion: cloudflare.project-planton.org/v1
@@ -230,8 +230,8 @@ kind: CloudflareKvNamespace
 metadata:
   name: myapp-dev-bob
 spec:
-  namespace_name: myapp-dev-bob
-  ttl_seconds: 300
+  namespaceName: myapp-dev-bob
+  ttlSeconds: 300
   description: "Bob's personal dev environment"
 ```
 

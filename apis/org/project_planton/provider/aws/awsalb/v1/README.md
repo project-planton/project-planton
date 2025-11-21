@@ -1,114 +1,63 @@
-# Overview
+# AwsAlb
 
-The **AwsAlb** API resource provides a standardized and straightforward way to deploy containerized applications
-onto an existing Amazon ECS cluster on AWS. By focusing on essential configurations like image definition, compute
-capacity (Fargate or EC2), networking, and environment variables, it makes running services on ECS far more accessible
-within the ProjectPlanton multi-cloud deployment framework.
+The **AwsAlb** resource provides a standardized way to provision and manage AWS Application Load Balancers (ALBs) through ProjectPlanton. It simplifies ALB configuration by focusing on essential fields while providing flexibility for common networking, SSL, and DNS requirements.
 
-## Purpose
+## Spec Fields (80/20)
 
-Deploying ECS services typically involves handling multiple moving parts—task definitions, networking, autoscaling,
-IAM roles, and more. The **AwsAlb** resource aims to streamline that process by:
+### Essential Fields (80% Use Case)
 
-- **Simplifying ECS Deployments**: Offer an easy-to-use interface for spinning up microservices on ECS (Fargate or EC2).
-- **Aligning with Best Practices**: Provide recommended defaults (e.g., CPU, memory) to ensure users have a
-  production-ready
-  baseline without repetitive configuration.
-- **Promoting Consistency**: Enforce standardized naming and validations, reducing misconfigurations across
-  multiple services and environments.
+- **subnets**: List of subnet IDs where the ALB will be created (minimum 2 required for high availability across multiple Availability Zones). Use private subnets for internal ALBs or public subnets for internet-facing ALBs.
+- **security_groups**: List of security group IDs to attach to the ALB for controlling inbound/outbound traffic.
+- **internal**: Boolean flag indicating whether the ALB is internal (true) or internet-facing (false). Defaults to false for internet-facing.
+- **ssl.enabled**: Boolean to enable SSL/TLS termination on the ALB.
+- **ssl.certificate_arn**: ARN of the AWS Certificate Manager certificate to use for HTTPS listeners (required when ssl.enabled is true).
 
-## Key Features
+### Advanced Fields (20% Use Case)
 
-### Single-Container Focus
+- **delete_protection_enabled**: Boolean to enable deletion protection, preventing accidental deletion of the ALB.
+- **idle_timeout_seconds**: Connection idle timeout in seconds (AWS default is 60 seconds if omitted).
+- **dns.enabled**: Boolean to enable automatic Route53 DNS record creation for the ALB.
+- **dns.route53_zone_id**: Route53 Hosted Zone ID where DNS records will be created (required when dns.enabled is true).
+- **dns.hostnames**: List of domain names (e.g., ["app.example.com", "api.example.com"]) that will point to the ALB's DNS name.
 
-- **Minimal, Opinionated Spec**: Focuses on the 80-20 use case—a single-container service—while still exposing fields
-  for
-  resource requirements, environment variables, and networking.
+## Stack Outputs
 
-### Flexible Compute Options
+After provisioning, the AwsAlb resource provides the following outputs:
 
-- **Fargate or EC2**: Operate serverless via AWS Fargate, or integrate with your existing EC2-backed ECS environment.
-- **Resource Control**: Define CPU and memory precisely, aligned with ECS constraints (e.g., 256, 512, 1024 CPU units).
+- **alb_arn**: The ARN of the created Application Load Balancer.
+- **alb_dns_name**: The DNS name assigned by AWS for accessing the ALB.
+- **alb_zone_id**: The Route53 zone ID of the ALB (useful for creating alias records).
 
-### Automatic Networking Setup
+## How It Works
 
-- **Subnets & Security Groups**: Attach your service to specific VPC subnets, choosing whether to assign a public IP.
-- **Public or Private**: Easily configure production deployments in private subnets, or set up a publicly accessible
-  service when needed.
+When you define an AwsAlb resource, ProjectPlanton:
 
-### Environment Management
+1. **Creates the ALB**: Provisions an Application Load Balancer in the specified subnets with the configured security groups.
+2. **Configures Networking**: Sets up the ALB as either internet-facing or internal based on the `internal` flag.
+3. **Applies Security**: Attaches security groups to control traffic flow to and from the ALB.
+4. **Enables SSL (Optional)**: If SSL is enabled, configures HTTPS listeners with the specified certificate.
+5. **Manages DNS (Optional)**: If DNS is enabled, creates Route53 A/AAAA records pointing the specified hostnames to the ALB.
+6. **Sets Advanced Options**: Applies deletion protection and idle timeout settings as configured.
 
-- **Environment Variables**: Pass configuration to your container, including references to secrets from AWS Secrets
-  Manager or SSM.
-- **Role Separation**: Separate `task_execution_role_arn` (for pulling container images and writing logs) from
-  `task_role_arn` (for runtime AWS API access).
+The resource uses Pulumi or Terraform under the hood (depending on your stack configuration) to provision all necessary AWS resources consistently and reliably.
 
-### Seamless Integration
+## Use Cases
 
-- **ProjectPlanton CLI**: Deploy the same resource across multiple stacks using either Pulumi or Terraform under the
-  hood.
-- **Multi-Cloud Ready**: Combine AwsAlb on AWS with other providers in the same manifest, adopting ProjectPlanton’s
-  uniform resource model.
+### Internet-Facing Web Application
+Deploy a public-facing ALB with SSL termination for a web application accessible from the internet.
 
-## Benefits
+### Internal Microservices
+Create an internal ALB for routing traffic between microservices within a private VPC, without exposing services to the internet.
 
-- **Reduced Complexity**: A single definition for your ECS service—container image, CPU/memory, subnets, and more—means
-  fewer files and less overhead.
-- **Scalable & Available**: Scale out by adjusting `desired_count` to meet traffic demands without repeatedly editing
-  multiple YAML or JSON templates.
-- **Infrastructure Consistency**: Enforce naming conventions, validations, and recommended defaults for CPU/memory
-  allocations so your deployments remain predictable and repeatable.
-- **Enhanced Observability**: Integrate seamlessly with ECS cluster features like CloudWatch metrics and logs—no extra
-  manual setup needed.
+### Multi-Domain Hosting
+Use DNS configuration to map multiple domain names to a single ALB, ideal for hosting multiple applications or environments.
 
-## Example Usage
+### High Availability Architecture
+Leverage multi-subnet deployment (required minimum of 2) to ensure ALB availability across multiple Availability Zones.
 
-Below is a minimal YAML snippet demonstrating how to configure and deploy an ECS service using ProjectPlanton:
+## References
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsAlb
-metadata:
-  name: my-aws-alb
-  version:
-    message: "Initial ECS service deployment"
-spec:
-  cluster_name: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  service_name: "my-service"
-  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
-  container_port: 80
-  desired_count: 2
-  cpu: 512
-  memory: 1024
-  subnets:
-    - subnet-1abc234d
-    - subnet-2abc345e
-  security_groups:
-    - sg-111aaabbb
-  assign_public_ip: false
-  environment:
-    - name: REDIS_URL
-      value: "redis://my-redis-cache:6379"
-```
-
-### Deploying with ProjectPlanton
-
-Once your YAML manifest is ready, you can deploy using ProjectPlanton’s CLI. ProjectPlanton will validate the manifest
-against the Protobuf schema and orchestrate everything in Pulumi or Terraform.
-
-- **Using Pulumi**:
-  ```bash
-  project-planton pulumi up --manifest awsalb.yaml --stack org/project/my-stack
-  ```
-- **Using Terraform**:
-  ```bash
-  project-planton terraform apply --manifest awsalb.yaml --stack org/project/my-stack
-  ```
-
-ProjectPlanton will provision the ECS service, create or update the necessary IAM roles (if specified), assign the
-service to the given subnets and security groups, and ensure you have the correct number of running tasks.
-
----
-
-Happy deploying! If you have questions or run into issues, feel free to open an issue on our GitHub repository or
-reach out through our community channels for support.
+- [AWS Application Load Balancer Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
+- [AWS ALB Best Practices](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/application-load-balancer-best-practices.html)
+- [AWS Certificate Manager](https://docs.aws.amazon.com/acm/)
+- [Route53 DNS Management](https://docs.aws.amazon.com/route53/)

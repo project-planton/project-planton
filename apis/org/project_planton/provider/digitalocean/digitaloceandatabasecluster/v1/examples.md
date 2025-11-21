@@ -14,13 +14,13 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: dev-postgres
 spec:
-  cluster_name: dev-postgres
+  clusterName: dev-postgres
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: nyc3
-  size_slug: db-s-1vcpu-1gb
-  node_count: 1
-  enable_public_connectivity: true  # For dev access from local machine
+  sizeSlug: db-s-1vcpu-1gb
+  nodeCount: 1
+  enablePublicConnectivity: true  # For dev access from local machine
 ```
 
 **Notes:**
@@ -40,16 +40,16 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: prod-postgres
 spec:
-  cluster_name: prod-postgres
+  clusterName: prod-postgres
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: nyc3
-  size_slug: db-s-4vcpu-8gb
-  node_count: 3  # Primary + 2 standbys for maximum HA
+  sizeSlug: db-s-4vcpu-8gb
+  nodeCount: 3  # Primary + 2 standbys for maximum HA
   vpc:
     value: "12345678-1234-1234-1234-123456789012"
-  storage_gib: 200
-  enable_public_connectivity: false
+  storageGib: 200
+  enablePublicConnectivity: false
 ```
 
 **Notes:**
@@ -75,16 +75,16 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: prod-mysql
 spec:
-  cluster_name: prod-mysql
+  clusterName: prod-mysql
   engine: mysql
-  engine_version: "8"
+  engineVersion: "8"
   region: sfo3
-  size_slug: db-s-2vcpu-4gb
-  node_count: 2
+  sizeSlug: db-s-2vcpu-4gb
+  nodeCount: 2
   vpc:
     value: "vpc-87654321"
-  storage_gib: 100
-  enable_public_connectivity: false
+  storageGib: 100
+  enablePublicConnectivity: false
 ```
 
 **Notes:**
@@ -110,15 +110,15 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: prod-redis-cache
 spec:
-  cluster_name: prod-redis-cache
+  clusterName: prod-redis-cache
   engine: redis
-  engine_version: "7"
+  engineVersion: "7"
   region: nyc3
-  size_slug: db-s-2vcpu-4gb
-  node_count: 2
+  sizeSlug: db-s-2vcpu-4gb
+  nodeCount: 2
   vpc:
     value: "vpc-cache-12345"
-  enable_public_connectivity: false
+  enablePublicConnectivity: false
 ```
 
 **Notes:**
@@ -144,16 +144,16 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: prod-mongodb
 spec:
-  cluster_name: prod-mongodb
+  clusterName: prod-mongodb
   engine: mongodb
-  engine_version: "7.0"
+  engineVersion: "7.0"
   region: fra1
-  size_slug: db-s-4vcpu-8gb
-  node_count: 3
+  sizeSlug: db-s-4vcpu-8gb
+  nodeCount: 3
   vpc:
     value: "vpc-eu-67890"
-  storage_gib: 500
-  enable_public_connectivity: false
+  storageGib: 500
+  enablePublicConnectivity: false
 ```
 
 **Notes:**
@@ -178,19 +178,19 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: app-database
 spec:
-  cluster_name: app-database
+  clusterName: app-database
   engine: postgres
-  engine_version: "15"
+  engineVersion: "15"
   region: nyc3
-  size_slug: db-s-4vcpu-8gb
-  node_count: 3
+  sizeSlug: db-s-4vcpu-8gb
+  nodeCount: 3
   vpc:
     ref:
       kind: DigitalOceanVpc
       name: production-vpc
       field_path: status.outputs.vpc_id
-  storage_gib: 250
-  enable_public_connectivity: false
+  storageGib: 250
+  enablePublicConnectivity: false
 ```
 
 **Notes:**
@@ -211,13 +211,13 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: dev-app-db
 spec:
-  cluster_name: dev-app-db
+  clusterName: dev-app-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: nyc3
-  size_slug: db-s-1vcpu-1gb
-  node_count: 1
-  enable_public_connectivity: true
+  sizeSlug: db-s-1vcpu-1gb
+  nodeCount: 1
+  enablePublicConnectivity: true
 ```
 
 **Staging:**
@@ -227,15 +227,15 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: staging-app-db
 spec:
-  cluster_name: staging-app-db
+  clusterName: staging-app-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: nyc3
-  size_slug: db-s-2vcpu-4gb
-  node_count: 2
+  sizeSlug: db-s-2vcpu-4gb
+  nodeCount: 2
   vpc:
     value: "vpc-staging-123"
-  enable_public_connectivity: false
+  enablePublicConnectivity: false
 ```
 
 **Production:**
@@ -245,16 +245,16 @@ kind: DigitalOceanDatabaseCluster
 metadata:
   name: prod-app-db
 spec:
-  cluster_name: prod-app-db
+  clusterName: prod-app-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: nyc3
-  size_slug: db-s-4vcpu-8gb
-  node_count: 3
+  sizeSlug: db-s-4vcpu-8gb
+  nodeCount: 3
   vpc:
     value: "vpc-prod-456"
-  storage_gib: 300
-  enable_public_connectivity: false
+  storageGib: 300
+  enablePublicConnectivity: false
 ```
 
 **Pattern Highlights:**

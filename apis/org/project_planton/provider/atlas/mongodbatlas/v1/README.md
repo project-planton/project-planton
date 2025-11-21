@@ -17,19 +17,13 @@ MongoDB Atlas cluster resource for deploying managed MongoDB databases across AW
 
 ### Advanced Fields (20% Use Case)
 - **read_only_nodes**: Dedicated read-only nodes for read scaling (analytics workloads).
-- **continuous_backup_enabled**: Enable Point-in-Time Recovery (PITR) for near-zero RPO.
-- **vpc_peering**: Configure VPC peering for private network connectivity.
-- **private_endpoints**: Configure AWS PrivateLink/Azure Private Link/GCP Private Service Connect (production best practice).
-- **num_shards**: Number of shards for horizontal scaling (SHARDED cluster type only).
 
 ## Stack Outputs
 
-- **cluster_id**: The unique identifier for the MongoDB Atlas cluster.
-- **cluster_connection_strings**: Connection strings for the cluster (standard, private, srv).
-- **cluster_state_name**: Current state of the cluster (IDLE, CREATING, UPDATING, DELETING).
-- **cluster_mongo_db_version**: Actual MongoDB version deployed.
-- **cluster_replication_specs**: Detailed replication configuration including regions and node counts.
-- **cluster_snapshot_backup_policy**: Backup policy configuration if cloud backups are enabled.
+- **id**: The provider-assigned unique cluster ID for the MongoDB Atlas cluster.
+- **bootstrap_endpoint**: MongoDB connection string in SRV format (recommended for drivers) - mongodb+srv://...
+- **crn**: The cluster identifier (same as id) for resource identification.
+- **rest_endpoint**: MongoDB connection string in standard format - mongodb://host:port/...
 
 ## How It Works
 

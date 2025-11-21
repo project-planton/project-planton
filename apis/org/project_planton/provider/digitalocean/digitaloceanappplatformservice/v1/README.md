@@ -150,6 +150,16 @@ Common DigitalOcean regions:
 
 See the [DigitalOcean documentation](https://docs.digitalocean.com/products/platform/availability-matrix/) for the complete list of supported regions.
 
+## Stack Outputs
+
+After deployment, the following outputs are available:
+
+| Output | Description |
+|--------|-------------|
+| `app_id` | The unique identifier of the app (DigitalOcean App Platform application ID) |
+| `default_hostname` | The default hostname assigned to the app (usually ending in "ondigitalocean.app") |
+| `live_url` | The publicly accessible URL (including protocol) of the deployed service |
+
 ## Examples
 
 For comprehensive examples including:

@@ -1,9 +1,6 @@
-```md
 # AWS ALB Examples
 
-Below are several examples demonstrating how to define an AWS ALB (Application Load Balancer) component in
-ProjectPlanton. After creating one of these YAML manifests, apply it with your preferred IaC engine (Pulumi or
-Terraform) using the ProjectPlanton CLI:
+Below are several examples demonstrating how to define an AWS ALB (Application Load Balancer) resource in ProjectPlanton. After creating one of these YAML manifests, apply it with your preferred IaC engine (Pulumi or Terraform) using the ProjectPlanton CLI:
 
 ```shell
 project-planton pulumi up --manifest <yaml-path> --stack <stack-name>
@@ -30,41 +27,12 @@ spec:
     - subnet-67890def
   securityGroups:
     - sg-abcdef1234567890
-  listeners:
-    - protocol: "HTTP"
-      port: 80
 ```
 
 This example:
-• Creates an ALB in two subnets (`subnet-12345abc` and `subnet-67890def`).
-• Attaches one security group (`sg-abcdef1234567890`).
-• Sets up an HTTP listener on port 80.
-
----
-
-## ALB with HTTPS
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsAlb
-metadata:
-  name: alb-with-https
-spec:
-  subnets:
-    - subnet-1111aaaa
-    - subnet-2222bbbb
-  securityGroups:
-    - sg-zzzzxxxxccccdddd
-  listeners:
-    - protocol: "HTTPS"
-      port: 443
-      certificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/abcd1234-5678-efgh-ijkl-123456abcdef"
-      sslPolicy: "ELBSecurityPolicy-2016-08"
-```
-
-Here:
-• The listener uses HTTPS on port 443.
-• A certificate ARN and SSL policy are specified for TLS termination.
+- Creates an internet-facing ALB (default behavior when `internal` is not set).
+- Deploys across two subnets for high availability.
+- Attaches one security group to control traffic.
 
 ---
 
@@ -81,43 +49,36 @@ spec:
     - subnet-internal2
   securityGroups:
     - sg-internal1234
-  scheme: "internal"
-  listeners:
-    - protocol: "HTTP"
-      port: 80
+  internal: true
 ```
 
 This ALB is internal-facing:
-• `scheme` is set to `internal` for private/internal traffic.
-• It can serve traffic only accessible within the specified subnets or VPC.
+- `internal: true` makes the ALB accessible only within the VPC.
+- Ideal for private microservices communication.
 
 ---
 
-## ALB with Multiple Listeners
+## ALB with SSL/TLS Termination
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsAlb
 metadata:
-  name: alb-multi-listener
+  name: alb-with-ssl
 spec:
   subnets:
-    - subnet-abc12345
-    - subnet-def67890
+    - subnet-1111aaaa
+    - subnet-2222bbbb
   securityGroups:
-    - sg-1234abcd5678efgh
-  listeners:
-    - protocol: "HTTP"
-      port: 80
-    - protocol: "HTTPS"
-      port: 443
-      certificateArn: "arn:aws:acm:us-east-1:987654321098:certificate/fedcba98-7654-3210-fedc-ba9876543210"
-      sslPolicy: "ELBSecurityPolicy-2015-05"
+    - sg-zzzzxxxxccccdddd
+  ssl:
+    enabled: true
+    certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/abcd1234-5678-efgh-ijkl-123456abcdef
 ```
 
-In this example:
-• Both HTTP (port 80) and HTTPS (port 443) listeners are defined on the same ALB.
-• HTTPS listener uses a specific SSL policy and certificate ARN.
+This configuration:
+- Enables SSL/TLS termination on the ALB.
+- Uses an AWS Certificate Manager certificate for HTTPS.
 
 ---
 
@@ -127,58 +88,141 @@ In this example:
 apiVersion: aws.project-planton.org/v1
 kind: AwsAlb
 metadata:
-  name: alb-custom-config
+  name: alb-protected
 spec:
   subnets:
     - subnet-custom1
     - subnet-custom2
   securityGroups:
     - sg-custom
-  ipAddressType: "dualstack"
-  enableDeletionProtection: true
+  deleteProtectionEnabled: true
   idleTimeoutSeconds: 120
-  listeners:
-    - protocol: "HTTP"
-      port: 80
 ```
 
 This configuration:
-• Enables dualstack to support both IPv4 and IPv6.
-• Sets a custom idle timeout of 120 seconds.
-• Protects the ALB from accidental deletion by enabling deletion protection.
+- Sets a custom idle timeout of 120 seconds (default is 60).
+- Protects the ALB from accidental deletion with `deleteProtectionEnabled: true`.
 
 ---
 
-## Minimal ALB (No Listeners)
+## ALB with Route53 DNS Management
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsAlb
 metadata:
-  name: alb-minimal
+  name: alb-with-dns
 spec:
   subnets:
-    - subnet-98765432
+    - subnet-abc123
+    - subnet-def456
   securityGroups:
-    - sg-5555aaaa9999bbbb
+    - sg-dns123
+  dns:
+    enabled: true
+    route53ZoneId: Z1234567890ABC
+    hostnames:
+      - app.example.com
+      - api.example.com
 ```
 
-A minimal manifest with:
-• Required subnets and security groups.
-• No listeners defined in `spec`. You can add them later or manage them with a separate resource.
+This example:
+- Automatically creates Route53 DNS records for the ALB.
+- Maps both `app.example.com` and `api.example.com` to the ALB's DNS name.
+- Requires a Route53 Hosted Zone ID.
+
+---
+
+## Complete Example with All Features
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsAlb
+metadata:
+  name: full-featured-alb
+spec:
+  subnets:
+    - subnet-prod1
+    - subnet-prod2
+    - subnet-prod3
+  securityGroups:
+    - sg-prod-alb
+  internal: false
+  deleteProtectionEnabled: true
+  idleTimeoutSeconds: 90
+  ssl:
+    enabled: true
+    certificateArn: arn:aws:acm:us-east-1:987654321098:certificate/prod-cert-12345
+  dns:
+    enabled: true
+    route53ZoneId: Z9876543210DEF
+    hostnames:
+      - www.production.com
+      - api.production.com
+```
+
+This comprehensive example:
+- Creates an internet-facing ALB across three subnets.
+- Enables SSL with a production certificate.
+- Configures Route53 DNS for multiple hostnames.
+- Enables deletion protection and custom idle timeout.
+
+---
+
+## Using Foreign Key References
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsAlb
+metadata:
+  name: alb-with-refs
+spec:
+  subnets:
+    - valueFrom:
+        kind: AwsVpc
+        name: my-vpc
+        field: status.outputs.subnet_ids[0]
+    - valueFrom:
+        kind: AwsVpc
+        name: my-vpc
+        field: status.outputs.subnet_ids[1]
+  securityGroups:
+    - valueFrom:
+        kind: AwsSecurityGroup
+        name: alb-sg
+        field: status.outputs.security_group_id
+  ssl:
+    enabled: true
+    certificateArn:
+      valueFrom:
+        kind: AwsCertManagerCert
+        name: my-cert
+        field: status.outputs.cert_arn
+  dns:
+    enabled: true
+    route53ZoneId:
+      valueFrom:
+        kind: AwsRoute53Zone
+        name: my-zone
+        field: status.outputs.zone_id
+    hostnames:
+      - app.mydomain.com
+```
+
+This example demonstrates:
+- Using foreign key references to other ProjectPlanton resources.
+- Dynamically referencing subnet IDs from an AwsVpc resource.
+- Referencing security group IDs, certificate ARNs, and Route53 zone IDs.
+- This pattern allows for composable infrastructure definitions.
 
 ---
 
 ## After Deploying
 
-Once you’ve applied your manifest with ProjectPlanton, you can confirm that the ALB is active via the AWS console or by
-using the AWS CLI:
+Once you've applied your manifest with ProjectPlanton, you can verify the ALB creation:
 
 ```shell
 aws elbv2 describe-load-balancers --names <your-load-balancer-name>
 ```
 
-You should see details about your Application Load Balancer, such as its DNS name and ARN. Feel free to adjust subnets,
-security groups, or listeners to fit your needs.
-
-```
+You should see details about your Application Load Balancer, including its DNS name, ARN, and configuration. The ALB DNS name can be used to access your applications or services behind the load balancer.

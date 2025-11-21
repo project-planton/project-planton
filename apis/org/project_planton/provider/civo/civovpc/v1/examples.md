@@ -24,8 +24,8 @@ kind: CivoVpc
 metadata:
   name: dev-test-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: dev-test-network
+  civoCredentialId: civo-cred-123
+  networkName: dev-test-network
   region: LON1
   description: "Development test network"
 ```
@@ -59,10 +59,10 @@ kind: CivoVpc
 metadata:
   name: staging-main-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: staging-main-network
+  civoCredentialId: civo-cred-123
+  networkName: staging-main-network
   region: NYC1
-  ip_range_cidr: "10.20.2.0/24"
+  ipRangeCidr: "10.20.2.0/24"
   description: "Staging environment network (NYC1)"
 ```
 
@@ -93,10 +93,10 @@ kind: CivoVpc
 metadata:
   name: prod-main-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-main-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-main-network
   region: NYC1
-  ip_range_cidr: "10.20.1.0/24"
+  ipRangeCidr: "10.20.1.0/24"
   description: "Production network (NYC1)"
 ```
 
@@ -128,10 +128,10 @@ kind: CivoVpc
 metadata:
   name: prod-lon1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-lon1-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-lon1-network
   region: LON1
-  ip_range_cidr: "10.10.1.0/24"
+  ipRangeCidr: "10.10.1.0/24"
   description: "Production network (London)"
 
 # Production - Frankfurt
@@ -141,10 +141,10 @@ kind: CivoVpc
 metadata:
   name: prod-fra1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-fra1-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-fra1-network
   region: FRA1
-  ip_range_cidr: "10.30.1.0/24"
+  ipRangeCidr: "10.30.1.0/24"
   description: "Production network (Frankfurt)"
 ```
 
@@ -184,10 +184,10 @@ kind: CivoVpc
 metadata:
   name: customer-a-net
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: customer-a-net
+  civoCredentialId: civo-cred-123
+  networkName: customer-a-net
   region: FRA1
-  ip_range_cidr: "10.30.1.0/24"
+  ipRangeCidr: "10.30.1.0/24"
   description: "Customer A production network"
 
 # Customer B
@@ -197,10 +197,10 @@ kind: CivoVpc
 metadata:
   name: customer-b-net
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: customer-b-net
+  civoCredentialId: civo-cred-123
+  networkName: customer-b-net
   region: FRA1
-  ip_range_cidr: "10.30.2.0/24"
+  ipRangeCidr: "10.30.2.0/24"
   description: "Customer B production network"
 
 # Customer C
@@ -210,10 +210,10 @@ kind: CivoVpc
 metadata:
   name: customer-c-net
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: customer-c-net
+  civoCredentialId: civo-cred-123
+  networkName: customer-c-net
   region: FRA1
-  ip_range_cidr: "10.30.3.0/24"
+  ipRangeCidr: "10.30.3.0/24"
   description: "Customer C production network"
 ```
 
@@ -255,10 +255,10 @@ kind: CivoVpc
 metadata:
   name: dev-nyc1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: dev-nyc1-network
+  civoCredentialId: civo-cred-123
+  networkName: dev-nyc1-network
   region: NYC1
-  ip_range_cidr: "10.20.3.0/24"
+  ipRangeCidr: "10.20.3.0/24"
   description: "Development environment (NYC1)"
 
 # Staging
@@ -268,10 +268,10 @@ kind: CivoVpc
 metadata:
   name: stage-nyc1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: stage-nyc1-network
+  civoCredentialId: civo-cred-123
+  networkName: stage-nyc1-network
   region: NYC1
-  ip_range_cidr: "10.20.2.0/24"
+  ipRangeCidr: "10.20.2.0/24"
   description: "Staging environment (NYC1)"
 
 # Production
@@ -281,10 +281,10 @@ kind: CivoVpc
 metadata:
   name: prod-nyc1-network
 spec:
-  civo_credential_id: civo-cred-123
-  network_name: prod-nyc1-network
+  civoCredentialId: civo-cred-123
+  networkName: prod-nyc1-network
   region: NYC1
-  ip_range_cidr: "10.20.1.0/24"
+  ipRangeCidr: "10.20.1.0/24"
   description: "Production environment (NYC1)"
 ```
 
@@ -402,9 +402,9 @@ kind: CivoVpc
 metadata:
   name: prod-nyc1-network-1
 spec:
-  network_name: prod-nyc1-network-1
+  networkName: prod-nyc1-network-1
   region: NYC1
-  ip_range_cidr: "10.20.1.0/24"
+  ipRangeCidr: "10.20.1.0/24"
 
 # Production - Network 2
 ---
@@ -413,9 +413,9 @@ kind: CivoVpc
 metadata:
   name: prod-nyc1-network-2
 spec:
-  network_name: prod-nyc1-network-2
+  networkName: prod-nyc1-network-2
   region: NYC1
-  ip_range_cidr: "10.20.11.0/24"
+  ipRangeCidr: "10.20.11.0/24"
 ```
 
 **Option 2: Kubernetes Overlay Networking**

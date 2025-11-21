@@ -23,8 +23,8 @@ metadata:
   name: myapp-kv
 spec:
   region: eastus
-  resource_group: myapp-rg
-  secret_names:
+  resourceGroup: myapp-rg
+  secretNames:
     - api-key
 ```
 
@@ -50,18 +50,18 @@ metadata:
   env: development
 spec:
   region: eastus
-  resource_group: dev-rg
+  resourceGroup: dev-rg
   sku: STANDARD
-  enable_rbac_authorization: true
-  enable_purge_protection: false  # Allow deletion for cleanup
-  soft_delete_retention_days: 7   # Minimum retention
-  network_acls:
-    default_action: DENY
-    bypass_azure_services: true
-    ip_rules:
+  enableRbacAuthorization: true
+  enablePurgeProtection: false  # Allow deletion for cleanup
+  softDeleteRetentionDays: 7   # Minimum retention
+  networkAcls:
+    defaultAction: DENY
+    bypassAzureServices: true
+    ipRules:
       - "203.0.113.0/24"  # Office IP range
       - "198.51.100.42"   # VPN gateway
-  secret_names:
+  secretNames:
     - database-password
     - api-key
     - jwt-secret
@@ -85,19 +85,19 @@ metadata:
   env: production
 spec:
   region: eastus
-  resource_group: prod-security-rg
+  resourceGroup: prod-security-rg
   sku: STANDARD
-  enable_rbac_authorization: true
-  enable_purge_protection: true
-  soft_delete_retention_days: 90
-  network_acls:
-    default_action: DENY
-    bypass_azure_services: true
-    ip_rules:
+  enableRbacAuthorization: true
+  enablePurgeProtection: true
+  softDeleteRetentionDays: 90
+  networkAcls:
+    defaultAction: DENY
+    bypassAzureServices: true
+    ipRules:
       - "203.0.113.0/24"  # CI/CD runner IPs
-    virtual_network_subnet_ids:
+    virtualNetworkSubnetIds:
       - "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/prod-network-rg/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/app-subnet"
-  secret_names:
+  secretNames:
     - database-connection-string
     - redis-password
     - api-key
@@ -130,18 +130,18 @@ metadata:
   env: production
 spec:
   region: eastus
-  resource_group: compliance-security-rg
+  resourceGroup: compliance-security-rg
   sku: PREMIUM  # HSM-backed for FIPS 140-2 Level 3
-  enable_rbac_authorization: true
-  enable_purge_protection: true
-  soft_delete_retention_days: 90
-  network_acls:
-    default_action: DENY
-    bypass_azure_services: true
-    ip_rules: []  # No public IP access
-    virtual_network_subnet_ids:
+  enableRbacAuthorization: true
+  enablePurgeProtection: true
+  softDeleteRetentionDays: 90
+  networkAcls:
+    defaultAction: DENY
+    bypassAzureServices: true
+    ipRules: []  # No public IP access
+    virtualNetworkSubnetIds:
       - "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/prod-network-rg/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/secure-app-subnet"
-  secret_names:
+  secretNames:
     - pii-encryption-key
     - database-master-key
     - api-signing-key
@@ -171,19 +171,19 @@ metadata:
   env: production
 spec:
   region: westus2
-  resource_group: prod-network-rg
+  resourceGroup: prod-network-rg
   sku: STANDARD
-  enable_rbac_authorization: true
-  enable_purge_protection: true
-  soft_delete_retention_days: 90
-  network_acls:
-    default_action: DENY
-    bypass_azure_services: true
-    ip_rules: []  # No public access
-    virtual_network_subnet_ids:
+  enableRbacAuthorization: true
+  enablePurgeProtection: true
+  softDeleteRetentionDays: 90
+  networkAcls:
+    defaultAction: DENY
+    bypassAzureServices: true
+    ipRules: []  # No public access
+    virtualNetworkSubnetIds:
       - "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/prod-network-rg/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/aks-subnet"
       - "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/prod-network-rg/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/app-service-subnet"
-  secret_names:
+  secretNames:
     - aks-database-password
     - appservice-api-key
     - shared-encryption-key

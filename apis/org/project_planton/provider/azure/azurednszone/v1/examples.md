@@ -24,8 +24,8 @@ kind: AzureDnsZone
 metadata:
   name: example.com
 spec:
-  zone_name: example.com
-  resource_group: prod-network-rg
+  zoneName: example.com
+  resourceGroup: prod-network-rg
 ```
 
 **Use Case**: Quick setup for a domain where DNS records will be managed dynamically by tools like external-dns or manually through the Azure portal.
@@ -54,29 +54,29 @@ metadata:
   org: mycompany
   env: production
 spec:
-  zone_name: mycompany.com
-  resource_group: prod-network-rg
+  zoneName: mycompany.com
+  resourceGroup: prod-network-rg
   records:
     # Root domain A record
-    - record_type: A
+    - recordType: A
       name: mycompany.com.
       values:
         - 20.42.15.123
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # WWW subdomain A record
-    - record_type: A
+    - recordType: A
       name: www.mycompany.com.
       values:
         - 20.42.15.123
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # API subdomain CNAME
-    - record_type: CNAME
+    - recordType: CNAME
       name: api.mycompany.com.
       values:
         - mycompany.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Standard web application with root domain and www subdomain pointing to an Azure load balancer IP, plus an API subdomain using a CNAME.
@@ -106,71 +106,71 @@ metadata:
   org: contoso
   env: production
 spec:
-  zone_name: contoso.com
-  resource_group: prod-network-rg
+  zoneName: contoso.com
+  resourceGroup: prod-network-rg
   records:
     # Root domain A record
-    - record_type: A
+    - recordType: A
       name: contoso.com.
       values:
         - 198.51.100.45
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # WWW subdomain
-    - record_type: CNAME
+    - recordType: CNAME
       name: www.contoso.com.
       values:
         - contoso.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # MX records for email routing
-    - record_type: MX
+    - recordType: MX
       name: contoso.com.
       values:
         - mail.contoso.com.
         - backup-mail.contoso.com.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # Mail server A records
-    - record_type: A
+    - recordType: A
       name: mail.contoso.com.
       values:
         - 198.51.100.100
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: backup-mail.contoso.com.
       values:
         - 198.51.100.101
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # SPF record for email authentication
-    - record_type: TXT
+    - recordType: TXT
       name: contoso.com.
       values:
         - v=spf1 include:mail.contoso.com -all
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DMARC record for email policy
-    - record_type: TXT
+    - recordType: TXT
       name: _dmarc.contoso.com.
       values:
         - v=DMARC1; p=reject; rua=mailto:dmarc@contoso.com
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DKIM selector record
-    - record_type: TXT
+    - recordType: TXT
       name: selector1._domainkey.contoso.com.
       values:
         - v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC...
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # Certificate Authority Authorization
-    - record_type: CAA
+    - recordType: CAA
       name: contoso.com.
       values:
         - letsencrypt.org
-      ttl_seconds: 86400
+      ttlSeconds: 86400
 ```
 
 **Use Case**: Production domain with complete email infrastructure including authentication and security records.
@@ -201,72 +201,72 @@ metadata:
   org: company
   env: shared
 spec:
-  zone_name: company.io
-  resource_group: shared-network-rg
+  zoneName: company.io
+  resourceGroup: shared-network-rg
   records:
     # Production environment (root domain)
-    - record_type: A
+    - recordType: A
       name: company.io.
       values:
         - 20.42.10.100
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: www.company.io.
       values:
         - 20.42.10.100
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # API endpoints per environment
-    - record_type: A
+    - recordType: A
       name: api.company.io.
       values:
         - 20.42.10.101
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: api.staging.company.io.
       values:
         - 20.42.10.201
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: api.dev.company.io.
       values:
         - 20.42.10.301
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Application endpoints per environment
-    - record_type: A
+    - recordType: A
       name: app.company.io.
       values:
         - 20.42.10.102
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: app.staging.company.io.
       values:
         - 20.42.10.202
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: app.dev.company.io.
       values:
         - 20.42.10.302
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Shared services
-    - record_type: A
+    - recordType: A
       name: admin.company.io.
       values:
         - 20.42.10.150
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: monitoring.company.io.
       values:
         - 20.42.10.151
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Organization with multiple environments using subdomain prefixes to separate dev, staging, and production traffic.
@@ -298,178 +298,178 @@ metadata:
   org: enterprise
   env: production
 spec:
-  zone_name: enterprise.com
-  resource_group: prod-network-rg
+  zoneName: enterprise.com
+  resourceGroup: prod-network-rg
   records:
     # === Root Domain Configuration ===
     
     # Primary A record pointing to Azure Front Door
-    - record_type: A
+    - recordType: A
       name: enterprise.com.
       values:
         - 20.50.120.45
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # IPv6 support
-    - record_type: AAAA
+    - recordType: AAAA
       name: enterprise.com.
       values:
         - 2603:1030:20::1
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # === Web Application Subdomains ===
     
     # WWW subdomain (CNAME to root)
-    - record_type: CNAME
+    - recordType: CNAME
       name: www.enterprise.com.
       values:
         - enterprise.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # API gateway
-    - record_type: A
+    - recordType: A
       name: api.enterprise.com.
       values:
         - 20.50.120.46
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Mobile API
-    - record_type: A
+    - recordType: A
       name: mobile-api.enterprise.com.
       values:
         - 20.50.120.47
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Admin portal
-    - record_type: A
+    - recordType: A
       name: admin.enterprise.com.
       values:
         - 20.50.120.48
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # === Email Configuration ===
     
     # MX records (Microsoft 365)
-    - record_type: MX
+    - recordType: MX
       name: enterprise.com.
       values:
         - enterprise-com.mail.protection.outlook.com.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # SPF record for Microsoft 365 and SendGrid
-    - record_type: TXT
+    - recordType: TXT
       name: enterprise.com.
       values:
         - v=spf1 include:spf.protection.outlook.com include:sendgrid.net ~all
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DMARC policy
-    - record_type: TXT
+    - recordType: TXT
       name: _dmarc.enterprise.com.
       values:
         - v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@enterprise.com; pct=100
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DKIM selectors for Microsoft 365
-    - record_type: TXT
+    - recordType: TXT
       name: selector1._domainkey.enterprise.com.
       values:
         - v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
-    - record_type: TXT
+    - recordType: TXT
       name: selector2._domainkey.enterprise.com.
       values:
         - v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # === Domain Verification ===
     
     # Microsoft domain verification
-    - record_type: TXT
+    - recordType: TXT
       name: enterprise.com.
       values:
         - MS=ms12345678
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # Azure AD domain verification
-    - record_type: TXT
+    - recordType: TXT
       name: _azuread.enterprise.com.
       values:
         - azuread-verification-abc123xyz789
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # === Azure Service Integration ===
     
     # Azure CDN endpoint
-    - record_type: CNAME
+    - recordType: CNAME
       name: cdn.enterprise.com.
       values:
         - enterprise-cdn.azureedge.net.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # Azure Front Door (custom domain)
-    - record_type: CNAME
+    - recordType: CNAME
       name: global.enterprise.com.
       values:
         - enterprise-afd.azurefd.net.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Azure Storage static website
-    - record_type: CNAME
+    - recordType: CNAME
       name: docs.enterprise.com.
       values:
         - enterprisedocs.z13.web.core.windows.net.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # === Monitoring and Observability ===
     
     # Application Insights endpoint
-    - record_type: CNAME
+    - recordType: CNAME
       name: telemetry.enterprise.com.
       values:
         - enterprise-appinsights.azurewebsites.net.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Status page (hosted on Azure Static Web Apps)
-    - record_type: CNAME
+    - recordType: CNAME
       name: status.enterprise.com.
       values:
         - wonderful-bay-12345.azurestaticapps.net.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # === Security Records ===
     
     # CAA record (Let's Encrypt and DigiCert)
-    - record_type: CAA
+    - recordType: CAA
       name: enterprise.com.
       values:
         - letsencrypt.org
         - digicert.com
-      ttl_seconds: 86400
+      ttlSeconds: 86400
     
     # === Regional Endpoints ===
     
     # US region
-    - record_type: A
+    - recordType: A
       name: us.enterprise.com.
       values:
         - 20.50.120.50
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Europe region
-    - record_type: A
+    - recordType: A
       name: eu.enterprise.com.
       values:
         - 20.76.45.30
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Asia region
-    - record_type: A
+    - recordType: A
       name: asia.enterprise.com.
       values:
         - 20.195.65.20
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Enterprise production environment with comprehensive DNS configuration including:
@@ -516,65 +516,65 @@ metadata:
   org: saas-company
   env: production
 spec:
-  zone_name: saas-app.io
-  resource_group: prod-network-rg
+  zoneName: saas-app.io
+  resourceGroup: prod-network-rg
   records:
     # Root domain
-    - record_type: A
+    - recordType: A
       name: saas-app.io.
       values:
         - 20.85.45.100
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Marketing site
-    - record_type: A
+    - recordType: A
       name: www.saas-app.io.
       values:
         - 20.85.45.100
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Wildcard subdomain for customer tenants
     # Matches: customer1.saas-app.io, customer2.saas-app.io, etc.
-    - record_type: A
+    - recordType: A
       name: *.saas-app.io.
       values:
         - 20.85.45.101
-      ttl_seconds: 60
+      ttlSeconds: 60
     
     # Wildcard subdomain for staging environments
-    - record_type: A
+    - recordType: A
       name: *.staging.saas-app.io.
       values:
         - 20.85.45.201
-      ttl_seconds: 60
+      ttlSeconds: 60
     
     # Wildcard for preview environments
-    - record_type: A
+    - recordType: A
       name: *.preview.saas-app.io.
       values:
         - 20.85.45.202
-      ttl_seconds: 60
+      ttlSeconds: 60
     
     # Specific subdomain (takes precedence over wildcard)
-    - record_type: A
+    - recordType: A
       name: app.saas-app.io.
       values:
         - 20.85.45.102
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Admin portal (specific, not wildcard)
-    - record_type: A
+    - recordType: A
       name: admin.saas-app.io.
       values:
         - 20.85.45.103
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # API endpoint
-    - record_type: A
+    - recordType: A
       name: api.saas-app.io.
       values:
         - 20.85.45.104
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Multi-tenant SaaS platform where each customer gets a unique subdomain (e.g., `acme-corp.saas-app.io`, `widgets-inc.saas-app.io`), all pointing to the same Azure Application Gateway or AKS ingress controller. The application backend uses the hostname to identify the tenant.
@@ -620,59 +620,59 @@ metadata:
   org: bigcorp
   env: shared
 spec:
-  zone_name: bigcorp.net
-  resource_group: shared-network-rg
+  zoneName: bigcorp.net
+  resourceGroup: shared-network-rg
   records:
     # Root domain A record
-    - record_type: A
+    - recordType: A
       name: bigcorp.net.
       values:
         - 203.0.113.100
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # WWW subdomain
-    - record_type: CNAME
+    - recordType: CNAME
       name: www.bigcorp.net.
       values:
         - bigcorp.net.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Delegate 'dev.bigcorp.net' subdomain to separate Azure DNS zone
     # (Managed by development team in a different resource group/subscription)
-    - record_type: NS
+    - recordType: NS
       name: dev.bigcorp.net.
       values:
         - ns1-01.azure-dns.com.
         - ns2-01.azure-dns.net.
         - ns3-01.azure-dns.org.
         - ns4-01.azure-dns.info.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Delegate 'staging.bigcorp.net' subdomain to separate DNS zone
-    - record_type: NS
+    - recordType: NS
       name: staging.bigcorp.net.
       values:
         - ns1-02.azure-dns.com.
         - ns2-02.azure-dns.net.
         - ns3-02.azure-dns.org.
         - ns4-02.azure-dns.info.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Delegate 'partner.bigcorp.net' to external DNS provider (Cloudflare)
-    - record_type: NS
+    - recordType: NS
       name: partner.bigcorp.net.
       values:
         - dante.ns.cloudflare.com.
         - gail.ns.cloudflare.com.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # Delegate 'internal.bigcorp.net' to on-premises DNS servers
-    - record_type: NS
+    - recordType: NS
       name: internal.bigcorp.net.
       values:
         - ns1.onprem.bigcorp.net.
         - ns2.onprem.bigcorp.net.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
 ```
 
 **Use Case**: Large organization where different teams or departments manage their own DNS zones independently:
@@ -700,8 +700,8 @@ spec:
    metadata:
      name: dev.bigcorp.net
    spec:
-     zone_name: dev.bigcorp.net
-     resource_group: dev-network-rg
+     zoneName: dev.bigcorp.net
+     resourceGroup: dev-network-rg
    ```
 
 2. **Retrieve nameservers** from the child zone's stack outputs

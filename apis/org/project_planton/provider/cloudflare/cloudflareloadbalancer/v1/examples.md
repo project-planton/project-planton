@@ -32,11 +32,11 @@ metadata:
   name: api-failover-lb
 spec:
   hostname: api.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"  # Replace with your Cloudflare zone ID
   
   # Active-passive failover using priority order
-  steering_policy: STEERING_OFF
+  steeringPolicy: STEERING_OFF
   
   # Origins are tried in order - first healthy origin receives traffic
   origins:
@@ -52,10 +52,10 @@ spec:
   proxied: true
   
   # Health check at root path
-  health_probe_path: /
+  healthProbePath: /
   
   # No sticky sessions
-  session_affinity: SESSION_AFFINITY_NONE
+  sessionAffinity: SESSION_AFFINITY_NONE
 ```
 
 **Expected Behavior**:
@@ -81,11 +81,11 @@ metadata:
   name: global-app-lb
 spec:
   hostname: app.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
   # Geographic steering - route to nearest origin
-  steering_policy: STEERING_GEO
+  steeringPolicy: STEERING_GEO
   
   origins:
     # North America origin
@@ -104,8 +104,8 @@ spec:
       weight: 1
   
   proxied: true
-  health_probe_path: /health
-  session_affinity: SESSION_AFFINITY_COOKIE
+  healthProbePath: /health
+  sessionAffinity: SESSION_AFFINITY_COOKIE
 ```
 
 **Expected Behavior**:
@@ -134,11 +134,11 @@ metadata:
   name: canary-deployment-lb
 spec:
   hostname: app.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
   # Random steering with weights
-  steering_policy: STEERING_RANDOM
+  steeringPolicy: STEERING_RANDOM
   
   origins:
     # Stable version receives 90% of traffic
@@ -152,8 +152,8 @@ spec:
       weight: 10
   
   proxied: true
-  health_probe_path: /healthz
-  session_affinity: SESSION_AFFINITY_COOKIE  # Ensure users stick to their version
+  healthProbePath: /healthz
+  sessionAffinity: SESSION_AFFINITY_COOKIE  # Ensure users stick to their version
 ```
 
 **Expected Behavior**:
@@ -185,10 +185,10 @@ metadata:
   name: multi-cloud-lb
 spec:
   hostname: api.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
-  steering_policy: STEERING_OFF  # Priority-based failover
+  steeringPolicy: STEERING_OFF  # Priority-based failover
   
   origins:
     # Primary: AWS us-east-1
@@ -212,8 +212,8 @@ spec:
       weight: 1
   
   proxied: true
-  health_probe_path: /health
-  session_affinity: SESSION_AFFINITY_NONE
+  healthProbePath: /health
+  sessionAffinity: SESSION_AFFINITY_NONE
 ```
 
 **Expected Behavior**:
@@ -245,10 +245,10 @@ metadata:
   name: ecommerce-lb
 spec:
   hostname: shop.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
-  steering_policy: STEERING_RANDOM  # Distribute new sessions evenly
+  steeringPolicy: STEERING_RANDOM  # Distribute new sessions evenly
   
   origins:
     - name: app-server-1
@@ -264,10 +264,10 @@ spec:
       weight: 1
   
   proxied: true  # Required for session affinity
-  health_probe_path: /health
+  healthProbePath: /health
   
   # Enable cookie-based sticky sessions
-  session_affinity: SESSION_AFFINITY_COOKIE
+  sessionAffinity: SESSION_AFFINITY_COOKIE
 ```
 
 **Expected Behavior**:
@@ -298,10 +298,10 @@ metadata:
   name: game-server-lb
 spec:
   hostname: game.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
-  steering_policy: STEERING_GEO  # Route to nearest game server
+  steeringPolicy: STEERING_GEO  # Route to nearest game server
   
   origins:
     - name: us-game-server
@@ -315,10 +315,10 @@ spec:
   # DNS-only mode (gray cloud)
   proxied: false
   
-  health_probe_path: /status
+  healthProbePath: /status
   
   # Session affinity is NOT supported in DNS-only mode
-  session_affinity: SESSION_AFFINITY_NONE
+  sessionAffinity: SESSION_AFFINITY_NONE
 ```
 
 **Expected Behavior**:
@@ -351,10 +351,10 @@ metadata:
   name: api-lb-deep-health
 spec:
   hostname: api.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
-  steering_policy: STEERING_OFF
+  steeringPolicy: STEERING_OFF
   
   origins:
     - name: primary
@@ -372,9 +372,9 @@ spec:
   # - Return HTTP 200 if healthy
   # - Return HTTP 5xx if unhealthy
   # - Check database, cache, external dependencies
-  health_probe_path: /api/v1/healthz
+  healthProbePath: /api/v1/healthz
   
-  session_affinity: SESSION_AFFINITY_NONE
+  sessionAffinity: SESSION_AFFINITY_NONE
 ```
 
 **Health Check Best Practices**:
@@ -419,11 +419,11 @@ metadata:
   name: three-tier-failover-lb
 spec:
   hostname: app.example.com
-  zone_id:
+  zoneId:
     value: "abc123def456"
   
   # Priority-based failover
-  steering_policy: STEERING_OFF
+  steeringPolicy: STEERING_OFF
   
   origins:
     # Tier 1: Primary production origin
@@ -442,8 +442,8 @@ spec:
       weight: 1
   
   proxied: true
-  health_probe_path: /health
-  session_affinity: SESSION_AFFINITY_COOKIE
+  healthProbePath: /health
+  sessionAffinity: SESSION_AFFINITY_COOKIE
 ```
 
 **Expected Behavior**:
@@ -516,13 +516,13 @@ metadata:
   name: api-lb
 spec:
   hostname: api.example.com
-  zone_id:
+  zoneId:
     ref: example-zone  # References the CloudflareDnsZone
   origins:
     - name: origin-1
       address: 203.0.113.10
   proxied: true
-  health_probe_path: /health
+  healthProbePath: /health
 ```
 
 ### Example: Load Balancer with Cloudflare Tunnel
@@ -536,7 +536,7 @@ metadata:
   name: internal-api-lb
 spec:
   hostname: internal-api.example.com
-  zone_id:
+  zoneId:
     value: "abc123"
   
   origins:
@@ -550,8 +550,8 @@ spec:
       weight: 1
   
   proxied: true
-  health_probe_path: /health
-  steering_policy: STEERING_OFF
+  healthProbePath: /health
+  steeringPolicy: STEERING_OFF
 ```
 
 **Use Case**: Load balance between multiple private data centers without public IPs.

@@ -26,7 +26,7 @@ Deploying MongoDB on Kubernetes involves complex configurations, including resou
 - **Replicas**: Define the number of MongoDB pod instances. Recommended default is `1`.
 - **Resources**: Allocate CPU and memory resources for the MongoDB container to optimize performance.
 - **Persistence**:
-- **Enable Persistence**: Toggle data persistence for MongoDB using `persistence_enabled`. When enabled, data is stored in a persistent volume, allowing data to survive pod restarts.
+- **Enable Persistence**: Toggle data persistence for MongoDB using `persistenceEnabled`. When enabled, data is stored in a persistent volume, allowing data to survive pod restarts.
 - **Disk Size**: Specify the size of the persistent volume attached to each MongoDB pod (e.g., `1Gi`). This is mandatory if persistence is enabled.
 
 ### Helm Chart Customization

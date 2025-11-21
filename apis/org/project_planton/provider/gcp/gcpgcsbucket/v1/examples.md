@@ -37,9 +37,9 @@ kind: GcpGcsBucket
 metadata:
   name: my-app-data-prod
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
+  uniformBucketLevelAccessEnabled: true
 ```
 
 **Key Points:**
@@ -60,11 +60,11 @@ kind: GcpGcsBucket
 metadata:
   name: gke-workload-storage
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-central1
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  gcp_labels:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  gcpLabels:
     team: platform-engineering
     cost-center: engineering-prod
     application: data-processing
@@ -91,15 +91,15 @@ kind: GcpGcsBucket
 metadata:
   name: public-open-dataset
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: US  # Multi-region for global access
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  iam_bindings:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  iamBindings:
     - role: "roles/storage.objectViewer"
       members:
         - "allUsers"
-  public_access_prevention: "inherited"  # Allow public access
+  publicAccessPrevention: "inherited"  # Allow public access
 ```
 
 **Key Points:**
@@ -123,11 +123,11 @@ kind: GcpGcsBucket
 metadata:
   name: app-backend-storage
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  versioning_enabled: true
-  iam_bindings:
+  uniformBucketLevelAccessEnabled: true
+  versioningEnabled: true
+  iamBindings:
     # Application backend needs read/write access
     - role: "roles/storage.objectAdmin"
       members:
@@ -156,10 +156,10 @@ kind: GcpGcsBucket
 metadata:
   name: sensitive-project-data
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  iam_bindings:
+  uniformBucketLevelAccessEnabled: true
+  iamBindings:
     # Grant access only during business hours
     - role: "roles/storage.objectViewer"
       members:
@@ -196,23 +196,23 @@ kind: GcpGcsBucket
 metadata:
   name: critical-app-data
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  versioning_enabled: true
-  lifecycle_rules:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  versioningEnabled: true
+  lifecycleRules:
     # Delete noncurrent versions after 30 days
     - action:
         type: "Delete"
       condition:
-        num_newer_versions: 5
+        numNewerVersions: 5
     # Delete noncurrent versions older than 90 days regardless of count
     - action:
         type: "Delete"
       condition:
-        age_days: 90
-        is_live: false
+        ageDays: 90
+        isLive: false
 ```
 
 **Key Points:**
@@ -235,21 +235,21 @@ kind: GcpGcsBucket
 metadata:
   name: financial-records-archive
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  storage_class: ARCHIVE
-  versioning_enabled: true
-  retention_policy:
-    retention_period_seconds: 220752000  # 7 years (FINRA requirement)
-    is_locked: false  # Lock after initial validation
-  lifecycle_rules:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: ARCHIVE
+  versioningEnabled: true
+  retentionPolicy:
+    retentionPeriodSeconds: 220752000  # 7 years (FINRA requirement)
+    isLocked: false  # Lock after initial validation
+  lifecycleRules:
     # Delete objects after 7 years + 30 day buffer
     - action:
         type: "Delete"
       condition:
-        age_days: 2585  # 7 years + 30 days
-  iam_bindings:
+        ageDays: 2585  # 7 years + 30 days
+  iamBindings:
     # Write-only access for record ingestion
     - role: "roles/storage.objectCreator"
       members:
@@ -283,23 +283,23 @@ kind: GcpGcsBucket
 metadata:
   name: dev-ephemeral-storage
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  versioning_enabled: true
-  lifecycle_rules:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  versioningEnabled: true
+  lifecycleRules:
     # Delete all objects after 30 days
     - action:
         type: "Delete"
       condition:
-        age_days: 30
+        ageDays: 30
     # Delete noncurrent versions after 7 days
     - action:
         type: "Delete"
       condition:
-        num_newer_versions: 2
-  gcp_labels:
+        numNewerVersions: 2
+  gcpLabels:
     environment: development
     auto-cleanup: enabled
 ```
@@ -324,41 +324,41 @@ kind: GcpGcsBucket
 metadata:
   name: tiered-backup-storage
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD  # Initial storage class for new objects
-  versioning_enabled: true
-  lifecycle_rules:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD  # Initial storage class for new objects
+  versioningEnabled: true
+  lifecycleRules:
     # Transition to NEARLINE after 30 days (infrequent access)
     - action:
         type: "SetStorageClass"
-        storage_class: NEARLINE
+        storageClass: NEARLINE
       condition:
-        age_days: 30
-        matches_storage_class:
+        ageDays: 30
+        matchesStorageClass:
           - STANDARD
     # Transition to COLDLINE after 90 days (quarterly access)
     - action:
         type: "SetStorageClass"
-        storage_class: COLDLINE
+        storageClass: COLDLINE
       condition:
-        age_days: 90
-        matches_storage_class:
+        ageDays: 90
+        matchesStorageClass:
           - NEARLINE
     # Transition to ARCHIVE after 365 days (yearly access)
     - action:
         type: "SetStorageClass"
-        storage_class: ARCHIVE
+        storageClass: ARCHIVE
       condition:
-        age_days: 365
-        matches_storage_class:
+        ageDays: 365
+        matchesStorageClass:
           - COLDLINE
     # Delete after 7 years
     - action:
         type: "Delete"
       condition:
-        age_days: 2555  # 7 years
+        ageDays: 2555  # 7 years
 ```
 
 **Key Points:**
@@ -384,14 +384,14 @@ kind: GcpGcsBucket
 metadata:
   name: static-website-dev
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: US  # Multi-region for better availability
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
   website:
-    main_page_suffix: "index.html"
-    not_found_page: "404.html"
-  iam_bindings:
+    mainPageSuffix: "index.html"
+    notFoundPage: "404.html"
+  iamBindings:
     - role: "roles/storage.objectViewer"
       members:
         - "allUsers"
@@ -420,11 +420,11 @@ kind: GcpGcsBucket
 metadata:
   name: user-upload-storage
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  cors_rules:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  corsRules:
     # Allow uploads from web application
     - methods:
         - "GET"
@@ -433,11 +433,11 @@ spec:
       origins:
         - "https://app.example.com"
         - "https://staging.example.com"
-      response_headers:
+      responseHeaders:
         - "Content-Type"
         - "x-goog-acl"
-      max_age_seconds: 3600  # Cache preflight for 1 hour
-  iam_bindings:
+      maxAgeSeconds: 3600  # Cache preflight for 1 hour
+  iamBindings:
     # Allow authenticated users to upload
     - role: "roles/storage.objectCreator"
       members:
@@ -464,15 +464,15 @@ kind: GcpGcsBucket
 metadata:
   name: highly-sensitive-data
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: us-east1
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  versioning_enabled: true
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  versioningEnabled: true
   encryption:
-    kms_key_name: "projects/my-gcp-project-123/locations/us-east1/keyRings/production-keys/cryptoKeys/bucket-encryption-key"
-  public_access_prevention: "enforced"  # Prevent accidental public access
-  gcp_labels:
+    kmsKeyName: "projects/my-gcp-project-123/locations/us-east1/keyRings/production-keys/cryptoKeys/bucket-encryption-key"
+  publicAccessPrevention: "enforced"  # Prevent accidental public access
+  gcpLabels:
     data-classification: highly-sensitive
     encryption: cmek
     compliance: sox-hipaa
@@ -502,24 +502,24 @@ kind: GcpGcsBucket
 metadata:
   name: global-cdn-content
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcpProjectId: my-gcp-project-123
   location: US  # Multi-region (auto-replication across US regions)
-  uniform_bucket_level_access_enabled: true
-  storage_class: STANDARD
-  versioning_enabled: true
-  lifecycle_rules:
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  versioningEnabled: true
+  lifecycleRules:
     # Keep last 10 versions
     - action:
         type: "Delete"
       condition:
-        num_newer_versions: 10
+        numNewerVersions: 10
     # Delete noncurrent versions after 90 days
     - action:
         type: "Delete"
       condition:
-        age_days: 90
-        is_live: false
-  iam_bindings:
+        ageDays: 90
+        isLive: false
+  iamBindings:
     # CDN origin fetch access
     - role: "roles/storage.objectViewer"
       members:
@@ -528,7 +528,7 @@ spec:
     - role: "roles/storage.objectAdmin"
       members:
         - "group:content-managers@example.com"
-  gcp_labels:
+  gcpLabels:
     application: cdn
     tier: production
     availability: multi-region

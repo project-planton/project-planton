@@ -23,11 +23,11 @@ kind: GcpSubnetwork
 metadata:
   name: basic-subnet
 spec:
-  project_id: my-project-123
-  vpc_self_link: projects/my-project-123/global/networks/my-vpc
-  subnetwork_name: basic-subnet
+  projectId: my-project-123
+  vpcSelfLink: projects/my-project-123/global/networks/my-vpc
+  subnetworkName: basic-subnet
   region: us-central1
-  ip_cidr_range: 10.0.0.0/24
+  ipCidrRange: 10.0.0.0/24
 ```
 
 **Use Case**: Small development environment or dedicated service subnet.
@@ -46,17 +46,17 @@ kind: GcpSubnetwork
 metadata:
   name: gke-subnet-us-central1
 spec:
-  project_id: prod-project
-  vpc_self_link: projects/prod-project/global/networks/prod-vpc
-  subnetwork_name: gke-subnet-us-central1
+  projectId: prod-project
+  vpcSelfLink: projects/prod-project/global/networks/prod-vpc
+  subnetworkName: gke-subnet-us-central1
   region: us-central1
-  ip_cidr_range: 10.100.0.0/20          # 4,096 IPs for nodes
-  secondary_ip_ranges:
-    - range_name: pods
-      ip_cidr_range: 10.100.16.0/18     # 16,384 IPs for pods
-    - range_name: services
-      ip_cidr_range: 10.100.80.0/24     # 256 IPs for services
-  private_ip_google_access: true
+  ipCidrRange: 10.100.0.0/20          # 4,096 IPs for nodes
+  secondaryIpRanges:
+    - rangeName: pods
+      ipCidrRange: 10.100.16.0/18     # 16,384 IPs for pods
+    - rangeName: services
+      ipCidrRange: 10.100.80.0/24     # 256 IPs for services
+  privateIpGoogleAccess: true
 ```
 
 **Use Case**: Production GKE cluster with ~100 nodes, 11,000 pods, 200 services.
@@ -79,12 +79,12 @@ kind: GcpSubnetwork
 metadata:
   name: app-subnet-us-central1
 spec:
-  project_id: multi-region-project
-  vpc_self_link: projects/multi-region-project/global/networks/global-vpc
-  subnetwork_name: app-subnet-us-central1
+  projectId: multi-region-project
+  vpcSelfLink: projects/multi-region-project/global/networks/global-vpc
+  subnetworkName: app-subnet-us-central1
   region: us-central1
-  ip_cidr_range: 10.0.0.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.0.0.0/20
+  privateIpGoogleAccess: true
 ---
 # US East
 apiVersion: gcp.project-planton.org/v1
@@ -92,12 +92,12 @@ kind: GcpSubnetwork
 metadata:
   name: app-subnet-us-east1
 spec:
-  project_id: multi-region-project
-  vpc_self_link: projects/multi-region-project/global/networks/global-vpc
-  subnetwork_name: app-subnet-us-east1
+  projectId: multi-region-project
+  vpcSelfLink: projects/multi-region-project/global/networks/global-vpc
+  subnetworkName: app-subnet-us-east1
   region: us-east1
-  ip_cidr_range: 10.0.16.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.0.16.0/20
+  privateIpGoogleAccess: true
 ---
 # Europe West
 apiVersion: gcp.project-planton.org/v1
@@ -105,12 +105,12 @@ kind: GcpSubnetwork
 metadata:
   name: app-subnet-europe-west1
 spec:
-  project_id: multi-region-project
-  vpc_self_link: projects/multi-region-project/global/networks/global-vpc
-  subnetwork_name: app-subnet-europe-west1
+  projectId: multi-region-project
+  vpcSelfLink: projects/multi-region-project/global/networks/global-vpc
+  subnetworkName: app-subnet-europe-west1
   region: europe-west1
-  ip_cidr_range: 10.0.32.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.0.32.0/20
+  privateIpGoogleAccess: true
 ---
 # Asia Southeast
 apiVersion: gcp.project-planton.org/v1
@@ -118,12 +118,12 @@ kind: GcpSubnetwork
 metadata:
   name: app-subnet-asia-southeast1
 spec:
-  project_id: multi-region-project
-  vpc_self_link: projects/multi-region-project/global/networks/global-vpc
-  subnetwork_name: app-subnet-asia-southeast1
+  projectId: multi-region-project
+  vpcSelfLink: projects/multi-region-project/global/networks/global-vpc
+  subnetworkName: app-subnet-asia-southeast1
   region: asia-southeast1
-  ip_cidr_range: 10.0.48.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.0.48.0/20
+  privateIpGoogleAccess: true
 ```
 
 **Use Case**: Global application with regional GKE clusters or compute instances.
@@ -142,12 +142,12 @@ kind: GcpSubnetwork
 metadata:
   name: private-subnet
 spec:
-  project_id: secure-project
-  vpc_self_link: projects/secure-project/global/networks/secure-vpc
-  subnetwork_name: private-subnet
+  projectId: secure-project
+  vpcSelfLink: projects/secure-project/global/networks/secure-vpc
+  subnetworkName: private-subnet
   region: us-west1
-  ip_cidr_range: 10.200.0.0/22
-  private_ip_google_access: true
+  ipCidrRange: 10.200.0.0/22
+  privateIpGoogleAccess: true
 ```
 
 **Use Case**: VMs without external IPs that need to:
@@ -170,11 +170,11 @@ kind: GcpSubnetwork
 metadata:
   name: vpc-connector-subnet
 spec:
-  project_id: serverless-project
-  vpc_self_link: projects/serverless-project/global/networks/app-vpc
-  subnetwork_name: vpc-connector-subnet
+  projectId: serverless-project
+  vpcSelfLink: projects/serverless-project/global/networks/app-vpc
+  subnetworkName: vpc-connector-subnet
   region: us-central1
-  ip_cidr_range: 10.8.0.0/28           # Exactly 16 IPs (VPC connector requirement)
+  ipCidrRange: 10.8.0.0/28           # Exactly 16 IPs (VPC connector requirement)
 ```
 
 **Use Case**: Serverless VPC Access connector for Cloud Run or Cloud Functions.
@@ -198,17 +198,17 @@ kind: GcpSubnetwork
 metadata:
   name: mega-gke-subnet
 spec:
-  project_id: enterprise-project
-  vpc_self_link: projects/enterprise-project/global/networks/enterprise-vpc
-  subnetwork_name: mega-gke-subnet
+  projectId: enterprise-project
+  vpcSelfLink: projects/enterprise-project/global/networks/enterprise-vpc
+  subnetworkName: mega-gke-subnet
   region: us-central1
-  ip_cidr_range: 10.50.0.0/16          # 65,536 IPs for nodes
-  secondary_ip_ranges:
-    - range_name: pods
-      ip_cidr_range: 10.51.0.0/16      # 65,536 IPs for pods
-    - range_name: services
-      ip_cidr_range: 10.52.0.0/24      # 256 IPs for services
-  private_ip_google_access: true
+  ipCidrRange: 10.50.0.0/16          # 65,536 IPs for nodes
+  secondaryIpRanges:
+    - rangeName: pods
+      ipCidrRange: 10.51.0.0/16      # 65,536 IPs for pods
+    - rangeName: services
+      ipCidrRange: 10.52.0.0/24      # 256 IPs for services
+  privateIpGoogleAccess: true
 ```
 
 **Use Case**: Enterprise-scale GKE cluster with 500+ nodes.
@@ -233,12 +233,12 @@ kind: GcpSubnetwork
 metadata:
   name: dev-subnet
 spec:
-  project_id: dev-project
-  vpc_self_link: projects/dev-project/global/networks/dev-vpc
-  subnetwork_name: dev-subnet
+  projectId: dev-project
+  vpcSelfLink: projects/dev-project/global/networks/dev-vpc
+  subnetworkName: dev-subnet
   region: us-central1
-  ip_cidr_range: 10.2.0.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.2.0.0/20
+  privateIpGoogleAccess: true
 ---
 # Staging
 apiVersion: gcp.project-planton.org/v1
@@ -246,12 +246,12 @@ kind: GcpSubnetwork
 metadata:
   name: staging-subnet
 spec:
-  project_id: staging-project
-  vpc_self_link: projects/staging-project/global/networks/staging-vpc
-  subnetwork_name: staging-subnet
+  projectId: staging-project
+  vpcSelfLink: projects/staging-project/global/networks/staging-vpc
+  subnetworkName: staging-subnet
   region: us-central1
-  ip_cidr_range: 10.1.0.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.1.0.0/20
+  privateIpGoogleAccess: true
 ---
 # Production
 apiVersion: gcp.project-planton.org/v1
@@ -259,12 +259,12 @@ kind: GcpSubnetwork
 metadata:
   name: prod-subnet
 spec:
-  project_id: prod-project
-  vpc_self_link: projects/prod-project/global/networks/prod-vpc
-  subnetwork_name: prod-subnet
+  projectId: prod-project
+  vpcSelfLink: projects/prod-project/global/networks/prod-vpc
+  subnetworkName: prod-subnet
   region: us-central1
-  ip_cidr_range: 10.0.0.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.0.0.0/20
+  privateIpGoogleAccess: true
 ```
 
 **Use Case**: Isolate environments with separate VPCs and non-overlapping IP ranges.
@@ -287,17 +287,17 @@ kind: GcpSubnetwork
 metadata:
   name: gke-prod-subnet
 spec:
-  project_id: prod-gcp-project
-  vpc_self_link: projects/prod-gcp-project/global/networks/prod-vpc
-  subnetwork_name: gke-prod-subnet
+  projectId: prod-gcp-project
+  vpcSelfLink: projects/prod-gcp-project/global/networks/prod-vpc
+  subnetworkName: gke-prod-subnet
   region: us-west1
-  ip_cidr_range: 10.50.0.0/20
-  secondary_ip_ranges:
-    - range_name: pods
-      ip_cidr_range: 10.50.16.0/18
-    - range_name: services
-      ip_cidr_range: 10.50.80.0/24
-  private_ip_google_access: true
+  ipCidrRange: 10.50.0.0/20
+  secondaryIpRanges:
+    - rangeName: pods
+      ipCidrRange: 10.50.16.0/18
+    - rangeName: services
+      ipCidrRange: 10.50.80.0/24
+  privateIpGoogleAccess: true
 ---
 # Step 2: Reference in GKE cluster (pseudo-example)
 apiVersion: gcp.project-planton.org/v1
@@ -305,16 +305,16 @@ kind: GkeCluster
 metadata:
   name: prod-cluster
 spec:
-  project_id: prod-gcp-project
+  projectId: prod-gcp-project
   region: us-west1
-  network_config:
+  networkConfig:
     # Reference the subnet by name or self-link output
-    subnetwork_ref:
+    subnetworkRef:
       kind: GcpSubnetwork
       name: gke-prod-subnet
-      field_path: status.outputs.subnetwork_self_link
-    cluster_secondary_range_name: pods
-    services_secondary_range_name: services
+      fieldPath: status.outputs.subnetwork_self_link
+    clusterSecondaryRangeName: pods
+    servicesSecondaryRangeName: services
 ```
 
 **Use Case**: Modular infrastructure where subnets are created separately from clusters.
@@ -354,12 +354,12 @@ kind: GcpSubnetwork
 metadata:
   name: prod-app-us-central1
 spec:
-  project_id: prod-project
-  vpc_self_link: projects/prod-project/global/networks/prod-vpc
-  subnetwork_name: prod-app-us-central1
+  projectId: prod-project
+  vpcSelfLink: projects/prod-project/global/networks/prod-vpc
+  subnetworkName: prod-app-us-central1
   region: us-central1
-  ip_cidr_range: 10.0.0.0/20
-  private_ip_google_access: true
+  ipCidrRange: 10.0.0.0/20
+  privateIpGoogleAccess: true
 ```
 
 **Use Case**: Systematic IP planning for large organizations.
@@ -393,9 +393,9 @@ Quick reference for common subnet sizes:
 
 ```yaml
 # BAD: Too small for 100-node cluster
-secondary_ip_ranges:
-  - range_name: pods
-    ip_cidr_range: 10.0.16.0/20  # Only 4,096 IPs
+secondaryIpRanges:
+  - rangeName: pods
+    ipCidrRange: 10.0.16.0/20  # Only 4,096 IPs
 ```
 
 **Problem**: 100 nodes × 110 pods = 11,000 IPs needed, but /20 only provides 4,096.
@@ -419,7 +419,7 @@ secondary_ip_ranges:
 ```yaml
 # BAD: No secondary ranges
 spec:
-  ip_cidr_range: 10.0.0.0/20
+  ipCidrRange: 10.0.0.0/20
   # Missing secondary_ip_ranges!
 ```
 

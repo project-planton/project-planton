@@ -30,11 +30,11 @@ kind: CloudflareR2Bucket
 metadata:
   name: app-data-bucket
 spec:
-  bucket_name: myapp-private-data
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # Replace with your account ID
+  bucketName: myapp-private-data
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # Replace with your account ID
   location: ENAM  # Eastern North America
-  public_access: false
-  versioning_enabled: false
+  publicAccess: false
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -66,11 +66,11 @@ kind: CloudflareR2Bucket
 metadata:
   name: cdn-assets-bucket
 spec:
-  bucket_name: public-cdn-assets
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: public-cdn-assets
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: WEUR  # Western Europe
-  public_access: true  # Enable r2.dev public URL
-  versioning_enabled: false
+  publicAccess: true  # Enable r2.dev public URL
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -108,10 +108,10 @@ kind: CloudflareR2Bucket
 metadata:
   name: assets-us-east
 spec:
-  bucket_name: myapp-assets-us-east
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-assets-us-east
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: ENAM
-  public_access: false
+  publicAccess: false
 
 ---
 # US West bucket
@@ -120,10 +120,10 @@ kind: CloudflareR2Bucket
 metadata:
   name: assets-us-west
 spec:
-  bucket_name: myapp-assets-us-west
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-assets-us-west
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: WNAM
-  public_access: false
+  publicAccess: false
 
 ---
 # Europe bucket
@@ -132,10 +132,10 @@ kind: CloudflareR2Bucket
 metadata:
   name: assets-eu
 spec:
-  bucket_name: myapp-assets-eu
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-assets-eu
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: WEUR
-  public_access: false
+  publicAccess: false
 
 ---
 # Asia-Pacific bucket
@@ -144,10 +144,10 @@ kind: CloudflareR2Bucket
 metadata:
   name: assets-apac
 spec:
-  bucket_name: myapp-assets-apac
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-assets-apac
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: APAC
-  public_access: false
+  publicAccess: false
 ```
 
 **Expected Behavior**:
@@ -185,11 +185,11 @@ kind: CloudflareR2Bucket
 metadata:
   name: dev-test-bucket
 spec:
-  bucket_name: myapp-dev-testing
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-dev-testing
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: ENAM
-  public_access: true  # Easy testing without auth
-  versioning_enabled: false
+  publicAccess: true  # Easy testing without auth
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -228,11 +228,11 @@ metadata:
     team: platform
     cost-center: engineering
 spec:
-  bucket_name: myapp-prod-data
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-prod-data
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: ENAM
-  public_access: false  # Strict auth required
-  versioning_enabled: false
+  publicAccess: false  # Strict auth required
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -268,11 +268,11 @@ kind: CloudflareR2Bucket
 metadata:
   name: media-storage
 spec:
-  bucket_name: myapp-media-assets
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-media-assets
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: WEUR  # Western Europe
-  public_access: true
-  versioning_enabled: false
+  publicAccess: true
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -313,11 +313,11 @@ kind: CloudflareR2Bucket
 metadata:
   name: user-uploads
 spec:
-  bucket_name: myapp-user-uploads
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-user-uploads
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: ENAM
-  public_access: false  # Users get presigned URLs
-  versioning_enabled: false
+  publicAccess: false  # Users get presigned URLs
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -368,11 +368,11 @@ kind: CloudflareR2Bucket
 metadata:
   name: backup-archive
 spec:
-  bucket_name: myapp-backups-archive
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  bucketName: myapp-backups-archive
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   location: ENAM
-  public_access: false
-  versioning_enabled: false
+  publicAccess: false
+  versioningEnabled: false
 ```
 
 **Expected Behavior**:
@@ -407,10 +407,10 @@ metadata:
   labels:
     environment: development
 spec:
-  bucket_name: myapp-dev
-  account_id: "dev-account-id-32-hex-characters"
+  bucketName: myapp-dev
+  accountId: "dev-account-id-32-hex-characters"
   location: ENAM
-  public_access: true  # Easy testing
+  publicAccess: true  # Easy testing
 ```
 
 ### Staging
@@ -423,10 +423,10 @@ metadata:
   labels:
     environment: staging
 spec:
-  bucket_name: myapp-staging
-  account_id: "staging-account-id-32-hex-chars"
+  bucketName: myapp-staging
+  accountId: "staging-account-id-32-hex-chars"
   location: ENAM
-  public_access: false  # Match prod security
+  publicAccess: false  # Match prod security
 ```
 
 ### Production
@@ -440,10 +440,10 @@ metadata:
     environment: production
     criticality: high
 spec:
-  bucket_name: myapp-prod
-  account_id: "prod-account-id-32-hex-characters"
+  bucketName: myapp-prod
+  accountId: "prod-account-id-32-hex-characters"
   location: ENAM
-  public_access: false  # Strict auth
+  publicAccess: false  # Strict auth
 ```
 
 ---

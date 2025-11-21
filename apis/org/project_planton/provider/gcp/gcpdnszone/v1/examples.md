@@ -24,7 +24,7 @@ kind: GcpDnsZone
 metadata:
   name: example.com
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
 ```
 
 **Use Case**: Quick setup for a domain where DNS records will be managed dynamically by tools like external-dns or manually through the GCP console.
@@ -46,25 +46,25 @@ kind: GcpDnsZone
 metadata:
   name: mycompany.com
 spec:
-  project_id: production-gcp-project
+  projectId: production-gcp-project
   records:
-    - record_type: A
+    - recordType: A
       name: mycompany.com.
       values:
         - 104.198.14.52
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: www.mycompany.com.
       values:
         - 104.198.14.52
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: CNAME
+    - recordType: CNAME
       name: api.mycompany.com.
       values:
         - mycompany.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Standard web application with root domain and www subdomain pointing to a load balancer IP, plus an API subdomain using a CNAME.
@@ -87,70 +87,70 @@ kind: GcpDnsZone
 metadata:
   name: example.com
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   records:
     # A record for root domain
-    - record_type: A
+    - recordType: A
       name: example.com.
       values:
         - 203.0.113.10
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # CNAME for www subdomain
-    - record_type: CNAME
+    - recordType: CNAME
       name: www.example.com.
       values:
         - example.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # MX records for email routing
-    - record_type: MX
+    - recordType: MX
       name: example.com.
       values:
         - 10 mail.example.com.
         - 20 backup-mail.example.com.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # A records for mail servers
-    - record_type: A
+    - recordType: A
       name: mail.example.com.
       values:
         - 203.0.113.20
-      ttl_seconds: 300
+      ttlSeconds: 300
     
-    - record_type: A
+    - recordType: A
       name: backup-mail.example.com.
       values:
         - 203.0.113.21
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # SPF record for email authentication
-    - record_type: TXT
+    - recordType: TXT
       name: example.com.
       values:
         - v=spf1 include:_spf.google.com ~all
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DKIM record for email signing
-    - record_type: TXT
+    - recordType: TXT
       name: default._domainkey.example.com.
       values:
         - v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC...
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # Google domain verification
-    - record_type: TXT
+    - recordType: TXT
       name: example.com.
       values:
         - google-site-verification=abc123xyz789
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # AAAA record for IPv6
-    - record_type: AAAA
+    - recordType: AAAA
       name: example.com.
       values:
         - 2001:0db8:85a3:0000:0000:8a2e:0370:7334
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Production domain with email services, domain verification, and IPv6 support.
@@ -174,27 +174,27 @@ kind: GcpDnsZone
 metadata:
   name: production.example.com
 spec:
-  project_id: prod-gcp-project
+  projectId: prod-gcp-project
   
   # Grant DNS management permissions to Kubernetes workload identities
-  iam_service_accounts:
+  iamServiceAccounts:
     - cert-manager@prod-gcp-project.iam.gserviceaccount.com
     - external-dns@prod-gcp-project.iam.gserviceaccount.com
   
   records:
     # Root domain A record
-    - record_type: A
+    - recordType: A
       name: production.example.com.
       values:
         - 104.198.14.52
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # TXT record for domain verification (static, managed by IaC)
-    - record_type: TXT
+    - recordType: TXT
       name: production.example.com.
       values:
         - google-site-verification=xyz789abc123
-      ttl_seconds: 3600
+      ttlSeconds: 3600
 ```
 
 **Use Case**: Production environment where:
@@ -202,7 +202,7 @@ spec:
 - **external-dns** needs to create A/CNAME records automatically when Kubernetes Ingress resources are created
 
 **How It Works**:
-1. The `iam_service_accounts` field grants `roles/dns.admin` to the specified service accounts
+1. The `iamServiceAccounts` field grants `roles/dns.admin` to the specified service accounts
 2. cert-manager can now create `_acme-challenge.production.example.com` TXT records during certificate issuance
 3. external-dns can create records like `app.production.example.com` when Ingress resources are deployed
 4. Static foundational records (like domain verification) remain managed by this IaC configuration
@@ -223,10 +223,10 @@ kind: GcpDnsZone
 metadata:
   name: company.io
 spec:
-  project_id: production-infrastructure
+  projectId: production-infrastructure
   
   # Service accounts for automation tools
-  iam_service_accounts:
+  iamServiceAccounts:
     - cert-manager@production-infrastructure.iam.gserviceaccount.com
     - external-dns@production-infrastructure.iam.gserviceaccount.com
     - cloudflare-dns-sync@production-infrastructure.iam.gserviceaccount.com
@@ -235,114 +235,114 @@ spec:
     # === Root Domain Configuration ===
     
     # Primary A record pointing to global load balancer
-    - record_type: A
+    - recordType: A
       name: company.io.
       values:
         - 35.201.85.123
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # IPv6 support
-    - record_type: AAAA
+    - recordType: AAAA
       name: company.io.
       values:
         - 2600:1901:0:b::1
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # === Web Application Subdomains ===
     
     # WWW subdomain (CNAME to root)
-    - record_type: CNAME
+    - recordType: CNAME
       name: www.company.io.
       values:
         - company.io.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # API gateway
-    - record_type: A
+    - recordType: A
       name: api.company.io.
       values:
         - 35.201.85.124
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Application environments (static records for infrastructure endpoints)
-    - record_type: A
+    - recordType: A
       name: staging.company.io.
       values:
         - 35.201.85.125
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # === Email Configuration ===
     
     # MX records with priority (10 = primary, 20 = backup)
-    - record_type: MX
+    - recordType: MX
       name: company.io.
       values:
         - 10 aspmx.l.google.com.
         - 20 alt1.aspmx.l.google.com.
         - 30 alt2.aspmx.l.google.com.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # SPF record for email sender authentication
-    - record_type: TXT
+    - recordType: TXT
       name: company.io.
       values:
         - v=spf1 include:_spf.google.com include:sendgrid.net ~all
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DMARC policy for email authentication reporting
-    - record_type: TXT
+    - recordType: TXT
       name: _dmarc.company.io.
       values:
         - v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@company.io; pct=100
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # DKIM selector for Google Workspace
-    - record_type: TXT
+    - recordType: TXT
       name: google._domainkey.company.io.
       values:
         - v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # === Domain Verification ===
     
     # Google Search Console verification
-    - record_type: TXT
+    - recordType: TXT
       name: company.io.
       values:
         - google-site-verification=AbC123XyZ789...
-      ttl_seconds: 3600
+      ttlSeconds: 3600
     
     # === Service Discovery ===
     
     # Database endpoint (private, but using public DNS for simplicity)
-    - record_type: CNAME
+    - recordType: CNAME
       name: db.company.io.
       values:
         - prod-postgres.c.production-infrastructure.internal.
-      ttl_seconds: 60
+      ttlSeconds: 60
     
     # Redis cache endpoint
-    - record_type: CNAME
+    - recordType: CNAME
       name: cache.company.io.
       values:
         - prod-redis.c.production-infrastructure.internal.
-      ttl_seconds: 60
+      ttlSeconds: 60
     
     # === Monitoring and Observability ===
     
     # Grafana dashboard
-    - record_type: A
+    - recordType: A
       name: metrics.company.io.
       values:
         - 35.201.85.126
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Status page
-    - record_type: CNAME
+    - recordType: CNAME
       name: status.company.io.
       values:
         - statuspage.company.io.herokudns.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Production environment with comprehensive DNS configuration including:
@@ -386,40 +386,40 @@ kind: GcpDnsZone
 metadata:
   name: saas-platform.io
 spec:
-  project_id: saas-production
+  projectId: saas-production
   
-  iam_service_accounts:
+  iamServiceAccounts:
     - cert-manager@saas-production.iam.gserviceaccount.com
   
   records:
     # Root domain
-    - record_type: A
+    - recordType: A
       name: saas-platform.io.
       values:
         - 34.120.45.67
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Wildcard subdomain for customer tenants
     # Matches: customer1.saas-platform.io, customer2.saas-platform.io, etc.
-    - record_type: A
+    - recordType: A
       name: *.saas-platform.io.
       values:
         - 34.120.45.67
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Wildcard subdomain for staging environments
-    - record_type: A
+    - recordType: A
       name: *.staging.saas-platform.io.
       values:
         - 34.120.45.68
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Specific subdomain (takes precedence over wildcard)
-    - record_type: A
+    - recordType: A
       name: app.saas-platform.io.
       values:
         - 34.120.45.69
-      ttl_seconds: 300
+      ttlSeconds: 300
 ```
 
 **Use Case**: Multi-tenant SaaS platform where each customer gets a unique subdomain (e.g., `acme-corp.saas-platform.io`, `widgets-inc.saas-platform.io`), all pointing to the same load balancer IP. The application backend uses the hostname to identify the tenant.
@@ -450,51 +450,51 @@ kind: GcpDnsZone
 metadata:
   name: company.net
 spec:
-  project_id: infrastructure-project
+  projectId: infrastructure-project
   
   records:
     # Root domain A record
-    - record_type: A
+    - recordType: A
       name: company.net.
       values:
         - 203.0.113.50
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # WWW subdomain
-    - record_type: CNAME
+    - recordType: CNAME
       name: www.company.net.
       values:
         - company.net.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Delegate 'dev.company.net' subdomain to separate DNS zone
     # (Managed by development team in a different GCP project)
-    - record_type: NS
+    - recordType: NS
       name: dev.company.net.
       values:
         - ns-cloud-d1.googledomains.com.
         - ns-cloud-d2.googledomains.com.
         - ns-cloud-d3.googledomains.com.
         - ns-cloud-d4.googledomains.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Delegate 'staging.company.net' subdomain to separate DNS zone
-    - record_type: NS
+    - recordType: NS
       name: staging.company.net.
       values:
         - ns-cloud-e1.googledomains.com.
         - ns-cloud-e2.googledomains.com.
         - ns-cloud-e3.googledomains.com.
         - ns-cloud-e4.googledomains.com.
-      ttl_seconds: 300
+      ttlSeconds: 300
     
     # Delegate 'partner.company.net' to external DNS provider (e.g., Cloudflare)
-    - record_type: NS
+    - recordType: NS
       name: partner.company.net.
       values:
         - dante.ns.cloudflare.com.
         - gail.ns.cloudflare.com.
-      ttl_seconds: 3600
+      ttlSeconds: 3600
 ```
 
 **Use Case**: Large organization where different teams or departments manage their own DNS zones independently:
@@ -581,7 +581,7 @@ If you define application DNS records in this IaC configuration **and** use exte
 - Use **external-dns** for dynamic application records (Ingress A/CNAME records)
 - Use **cert-manager** for temporary ACME challenge records
 
-The `iam_service_accounts` field enables this pattern by granting the necessary permissions to external-dns and cert-manager to manage their own records within the zone you create.
+The `iamServiceAccounts` field enables this pattern by granting the necessary permissions to external-dns and cert-manager to manage their own records within the zone you create.
 
 ---
 

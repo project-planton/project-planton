@@ -76,9 +76,9 @@ kind: CivoCertificate
 metadata:
   name: simple-cert
 spec:
-  certificate_name: simple-cert
+  certificateName: simple-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - example.com
 ```
@@ -91,9 +91,9 @@ kind: CivoCertificate
 metadata:
   name: wildcard-cert
 spec:
-  certificate_name: wildcard-cert
+  certificateName: wildcard-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - "*.example.com"
       - "example.com"  # Include apex domain if needed
@@ -107,20 +107,20 @@ kind: CivoCertificate
 metadata:
   name: custom-cert
 spec:
-  certificate_name: custom-cert
+  certificateName: custom-cert
   type: custom
   custom:
-    leaf_certificate: |
+    leafCertificate: |
       -----BEGIN CERTIFICATE-----
       MIIFbjCCBFagAwIBAgIQDvO...
       (your certificate PEM)
       -----END CERTIFICATE-----
-    private_key: |
+    privateKey: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpAIBAAKCAQEAv0...
       (your private key PEM)
       -----END RSA PRIVATE KEY-----
-    certificate_chain: |
+    certificateChain: |
       -----BEGIN CERTIFICATE-----
       MIIEADCCAuigAwIBAgISA...
       (intermediate cert 1)
@@ -294,9 +294,9 @@ kind: CivoCertificate
 metadata:
   name: prod-web-cert
 spec:
-  certificate_name: prod-web-cert
+  certificateName: prod-web-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - www.example.com
       - example.com
@@ -314,9 +314,9 @@ kind: CivoCertificate
 metadata:
   name: api-wildcard
 spec:
-  certificate_name: api-wildcard
+  certificateName: api-wildcard
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - "*.api.example.com"
 ```
@@ -329,18 +329,18 @@ kind: CivoCertificate
 metadata:
   name: internal-cert
 spec:
-  certificate_name: internal-cert
+  certificateName: internal-cert
   type: custom
   custom:
-    leaf_certificate: |
+    leafCertificate: |
       -----BEGIN CERTIFICATE-----
       (from internal CA)
       -----END CERTIFICATE-----
-    private_key: |
+    privateKey: |
       -----BEGIN RSA PRIVATE KEY-----
       (private key)
       -----END RSA PRIVATE KEY-----
-    certificate_chain: |
+    certificateChain: |
       -----BEGIN CERTIFICATE-----
       (internal CA intermediate)
       -----END CERTIFICATE-----

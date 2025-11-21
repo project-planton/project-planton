@@ -14,9 +14,9 @@ kind: DigitalOceanCertificate
 metadata:
   name: prod-web-cert
 spec:
-  certificate_name: prod-web-cert
+  certificateName: prod-web-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - example.com
 ```
@@ -38,9 +38,9 @@ kind: DigitalOceanCertificate
 metadata:
   name: prod-multi-domain-cert
 spec:
-  certificate_name: prod-multi-domain-cert
+  certificateName: prod-multi-domain-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - example.com
       - www.example.com
@@ -70,9 +70,9 @@ kind: DigitalOceanCertificate
 metadata:
   name: staging-wildcard-cert
 spec:
-  certificate_name: staging-wildcard-cert
+  certificateName: staging-wildcard-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - staging.example.com
       - "*.staging.example.com"
@@ -99,12 +99,12 @@ kind: DigitalOceanCertificate
 metadata:
   name: test-manual-renewal
 spec:
-  certificate_name: test-manual-renewal
+  certificateName: test-manual-renewal
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - test.example.com
-    disable_auto_renew: true
+    disableAutoRenew: true
   description: "Test cert for validating expiration monitoring"
   tags:
     - env:test
@@ -128,22 +128,22 @@ kind: DigitalOceanCertificate
 metadata:
   name: prod-ev-cert
 spec:
-  certificate_name: prod-ev-cert-2025
+  certificateName: prod-ev-cert-2025
   type: custom
   custom:
-    private_key: |
+    privateKey: |
       -----BEGIN PRIVATE KEY-----
       MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7VJTUt9Us8cKj
       MzEfYyjiWA4R4/M2bS1+fWIcPm15A8d0bsI8Mz9XkPmfGQzJzPY7kCYSHl8e8tWN
       ... (truncated for brevity) ...
       -----END PRIVATE KEY-----
-    leaf_certificate: |
+    leafCertificate: |
       -----BEGIN CERTIFICATE-----
       MIIDXTCCAkWgAwIBAgIJAKL0UG+mRKSzMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV
       BAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX
       ... (truncated for brevity) ...
       -----END CERTIFICATE-----
-    certificate_chain: |
+    certificateChain: |
       -----BEGIN CERTIFICATE-----
       MIIEkjCCA3qgAwIBAgIQCgFBQgAAAVOFc2oLheynCDANBgkqhkiG9w0BAQsFADA/
       MSQwIgYDVQQKExtEaWdpdGFsIFNlY3VyaXR5IFRydXN0IENvLjEXMBUGA1UEAxMO
@@ -174,14 +174,14 @@ kind: DigitalOceanCertificate
 metadata:
   name: prod-secure-cert
 spec:
-  certificate_name: prod-secure-cert-2025
+  certificateName: prod-secure-cert-2025
   type: custom
   custom:
     # These placeholders would be replaced by your orchestration layer
     # (e.g., Pulumi config secrets, Terraform vault data sources)
-    private_key: ${SECRET_PRIVATE_KEY}
-    leaf_certificate: ${SECRET_LEAF_CERT}
-    certificate_chain: ${SECRET_CERT_CHAIN}
+    privateKey: ${SECRET_PRIVATE_KEY}
+    leafCertificate: ${SECRET_LEAF_CERT}
+    certificateChain: ${SECRET_CERT_CHAIN}
   description: "Secure cert with secrets injected from Vault"
   tags:
     - env:production
@@ -237,14 +237,14 @@ kind: DigitalOceanCertificate
 metadata:
   name: prod-complete-cert
 spec:
-  certificate_name: prod-complete-cert
+  certificateName: prod-complete-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - example.com
       - www.example.com
       - api.example.com
-    disable_auto_renew: false  # Explicit: auto-renewal enabled
+    disableAutoRenew: false  # Explicit: auto-renewal enabled
   description: "Production certificate for web/API, auto-renews 30 days before expiry"
   tags:
     - env:production
@@ -273,9 +273,9 @@ kind: DigitalOceanCertificate
 metadata:
   name: staging-full-wildcard
 spec:
-  certificate_name: staging-full-wildcard
+  certificateName: staging-full-wildcard
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - staging.example.com           # Apex (staging.example.com)
       - "*.staging.example.com"       # All subdomains (*.staging.example.com)

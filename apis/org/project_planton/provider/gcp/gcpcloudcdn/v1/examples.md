@@ -29,11 +29,11 @@ kind: GcpCloudCdn
 metadata:
   name: my-static-site-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    gcs_bucket:
-      bucket_name: my-static-website-bucket
-      enable_uniform_access: true
+    gcsBucket:
+      bucketName: my-static-website-bucket
+      enableUniformAccess: true
   # Optional: Using defaults for cache_mode (CACHE_ALL_STATIC), default_ttl_seconds (3600)
 ```
 
@@ -56,25 +56,25 @@ kind: GcpCloudCdn
 metadata:
   name: production-website-cdn
 spec:
-  gcp_project_id: my-company-prod
+  gcpProjectId: my-company-prod
   backend:
-    gcs_bucket:
-      bucket_name: www-mycompany-com-bucket
-      enable_uniform_access: true
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 3600  # 1 hour
-  max_ttl_seconds: 86400     # 1 day
-  enable_negative_caching: true
-  frontend_config:
-    custom_domains:
+    gcsBucket:
+      bucketName: www-mycompany-com-bucket
+      enableUniformAccess: true
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 3600  # 1 hour
+  maxTtlSeconds: 86400     # 1 day
+  enableNegativeCaching: true
+  frontendConfig:
+    customDomains:
       - www.mycompany.com
       - mycompany.com
-    ssl_certificate:
-      google_managed:
+    sslCertificate:
+      googleManaged:
         domains:
           - www.mycompany.com
           - mycompany.com
-    enable_https_redirect: true
+    enableHttpsRedirect: true
 ```
 
 **After deployment:**
@@ -96,15 +96,15 @@ kind: GcpCloudCdn
 metadata:
   name: api-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    gcs_bucket:
-      bucket_name: api-static-responses-bucket
-  cache_mode: USE_ORIGIN_HEADERS  # Only cache if origin sends Cache-Control headers
-  default_ttl_seconds: 1800        # 30 minutes default
-  max_ttl_seconds: 3600            # 1 hour maximum (overrides origin headers)
-  client_ttl_seconds: 900          # 15 minutes for browser cache
-  enable_negative_caching: true    # Cache 404 errors
+    gcsBucket:
+      bucketName: api-static-responses-bucket
+  cacheMode: USE_ORIGIN_HEADERS  # Only cache if origin sends Cache-Control headers
+  defaultTtlSeconds: 1800        # 30 minutes default
+  maxTtlSeconds: 3600            # 1 hour maximum (overrides origin headers)
+  clientTtlSeconds: 900          # 15 minutes for browser cache
+  enableNegativeCaching: true    # Cache 404 errors
 ```
 
 **When to use `USE_ORIGIN_HEADERS`:**
@@ -126,25 +126,25 @@ kind: GcpCloudCdn
 metadata:
   name: optimized-cache-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    gcs_bucket:
-      bucket_name: webapp-assets-bucket
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 3600
-  max_ttl_seconds: 86400
-  enable_negative_caching: true
-  advanced_config:
-    cache_key_policy:
-      include_query_string: true
+    gcsBucket:
+      bucketName: webapp-assets-bucket
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 3600
+  maxTtlSeconds: 86400
+  enableNegativeCaching: true
+  advancedConfig:
+    cacheKeyPolicy:
+      includeQueryString: true
       # Only these query params affect caching; all others are ignored
-      query_string_whitelist:
+      queryStringWhitelist:
         - version
         - lang
         - page
-      include_protocol: true
-      include_host: true
-    enable_request_coalescing: true
+      includeProtocol: true
+      includeHost: true
+    enableRequestCoalescing: true
 ```
 
 **Problem this solves:**
@@ -175,22 +175,22 @@ kind: GcpCloudCdn
 metadata:
   name: private-content-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    gcs_bucket:
-      bucket_name: premium-videos-bucket
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 7200  # 2 hours (videos change infrequently)
-  max_ttl_seconds: 86400     # 1 day
-  enable_negative_caching: true
-  advanced_config:
-    signed_url_config:
+    gcsBucket:
+      bucketName: premium-videos-bucket
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 7200  # 2 hours (videos change infrequently)
+  maxTtlSeconds: 86400     # 1 day
+  enableNegativeCaching: true
+  advancedConfig:
+    signedUrlConfig:
       enabled: true
       keys:
-        - key_name: primary-key-2024
-          key_value: aGVsbG93b3JsZHRoaXNpc2Fwcm9kdWN0aW9ua2V5  # Base64-encoded 128-bit key
-        - key_name: backup-key-2024
-          key_value: YmFja3Vwa2V5Zm9yY2RucmVkaXN0cmlidXRpb24  # For key rotation
+        - keyName: primary-key-2024
+          keyValue: aGVsbG93b3JsZHRoaXNpc2Fwcm9kdWN0aW9ua2V5  # Base64-encoded 128-bit key
+        - keyName: backup-key-2024
+          keyValue: YmFja3Vwa2V5Zm9yY2RucmVkaXN0cmlidXRpb24  # For key rotation
 ```
 
 **Generate signing keys:**
@@ -229,24 +229,24 @@ kind: GcpCloudCdn
 metadata:
   name: cloud-run-api-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    cloud_run_service:
-      service_name: my-api-service
+    cloudRunService:
+      serviceName: my-api-service
       region: us-central1
-  cache_mode: USE_ORIGIN_HEADERS  # Cloud Run app sets Cache-Control headers
-  default_ttl_seconds: 300         # 5 minutes for uncached responses
-  max_ttl_seconds: 3600            # 1 hour max
-  client_ttl_seconds: 600          # 10 minutes for browsers
-  enable_negative_caching: true
-  frontend_config:
-    custom_domains:
+  cacheMode: USE_ORIGIN_HEADERS  # Cloud Run app sets Cache-Control headers
+  defaultTtlSeconds: 300         # 5 minutes for uncached responses
+  maxTtlSeconds: 3600            # 1 hour max
+  clientTtlSeconds: 600          # 10 minutes for browsers
+  enableNegativeCaching: true
+  frontendConfig:
+    customDomains:
       - api.mycompany.com
-    ssl_certificate:
-      google_managed:
+    sslCertificate:
+      googleManaged:
         domains:
           - api.mycompany.com
-    enable_https_redirect: true
+    enableHttpsRedirect: true
 ```
 
 **Cloud Run application must:**
@@ -283,40 +283,40 @@ kind: GcpCloudCdn
 metadata:
   name: webapp-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    compute_service:
-      instance_group_name: webapp-mig-us-central1
+    computeService:
+      instanceGroupName: webapp-mig-us-central1
       protocol: HTTP
       port: 8080
-      health_check:
+      healthCheck:
         path: /healthz
         port: 8080
-        check_interval_seconds: 10
-        timeout_seconds: 5
-        healthy_threshold: 2
-        unhealthy_threshold: 3
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 3600
-  max_ttl_seconds: 86400
-  enable_negative_caching: true
-  advanced_config:
-    cache_key_policy:
-      include_query_string: true
-      query_string_whitelist:
+        checkIntervalSeconds: 10
+        timeoutSeconds: 5
+        healthyThreshold: 2
+        unhealthyThreshold: 3
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 3600
+  maxTtlSeconds: 86400
+  enableNegativeCaching: true
+  advancedConfig:
+    cacheKeyPolicy:
+      includeQueryString: true
+      queryStringWhitelist:
         - page
         - category
         - sort
-      include_protocol: true
-      include_host: true
-  frontend_config:
-    custom_domains:
+      includeProtocol: true
+      includeHost: true
+  frontendConfig:
+    customDomains:
       - www.mywebapp.com
-    ssl_certificate:
-      google_managed:
+    sslCertificate:
+      googleManaged:
         domains:
           - www.mywebapp.com
-    enable_https_redirect: true
+    enableHttpsRedirect: true
 ```
 
 **Prerequisites:**
@@ -338,24 +338,24 @@ kind: GcpCloudCdn
 metadata:
   name: hybrid-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    external_origin:
+    externalOrigin:
       hostname: assets.mycompany.com  # Could be AWS S3, on-prem, etc.
       port: 443
       protocol: HTTPS
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 3600
-  max_ttl_seconds: 86400
-  enable_negative_caching: true
-  frontend_config:
-    custom_domains:
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 3600
+  maxTtlSeconds: 86400
+  enableNegativeCaching: true
+  frontendConfig:
+    customDomains:
       - cdn.mycompany.com
-    ssl_certificate:
-      google_managed:
+    sslCertificate:
+      googleManaged:
         domains:
           - cdn.mycompany.com
-    enable_https_redirect: true
+    enableHttpsRedirect: true
 ```
 
 **What this enables:**
@@ -382,40 +382,40 @@ kind: GcpCloudCdn
 metadata:
   name: production-secure-cdn
 spec:
-  gcp_project_id: my-company-prod
+  gcpProjectId: my-company-prod
   backend:
-    gcs_bucket:
-      bucket_name: ecommerce-static-assets
-      enable_uniform_access: true
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 3600
-  max_ttl_seconds: 86400
-  client_ttl_seconds: 1800
-  enable_negative_caching: true
-  advanced_config:
-    cache_key_policy:
-      include_query_string: true
-      query_string_whitelist:
+    gcsBucket:
+      bucketName: ecommerce-static-assets
+      enableUniformAccess: true
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 3600
+  maxTtlSeconds: 86400
+  clientTtlSeconds: 1800
+  enableNegativeCaching: true
+  advancedConfig:
+    cacheKeyPolicy:
+      includeQueryString: true
+      queryStringWhitelist:
         - product_id
         - category
         - page
-      include_protocol: true
-      include_host: true
-    enable_request_coalescing: true
-    serve_while_stale_seconds: 60  # Serve stale content for 1 min while revalidating
-  frontend_config:
-    custom_domains:
+      includeProtocol: true
+      includeHost: true
+    enableRequestCoalescing: true
+    serveWhileStaleSeconds: 60  # Serve stale content for 1 min while revalidating
+  frontendConfig:
+    customDomains:
       - www.mystore.com
       - mystore.com
-    ssl_certificate:
-      google_managed:
+    sslCertificate:
+      googleManaged:
         domains:
           - www.mystore.com
           - mystore.com
-    cloud_armor:
+    cloudArmor:
       enabled: true
-      security_policy_name: ecommerce-security-policy  # Pre-existing Cloud Armor policy
-    enable_https_redirect: true
+      securityPolicyName: ecommerce-security-policy  # Pre-existing Cloud Armor policy
+    enableHttpsRedirect: true
 ```
 
 **Cloud Armor security policy must exist:**
@@ -445,46 +445,46 @@ kind: GcpCloudCdn
 metadata:
   name: advanced-api-cdn
 spec:
-  gcp_project_id: my-project-123456
+  gcpProjectId: my-project-123456
   backend:
-    cloud_run_service:
-      service_name: advanced-api
+    cloudRunService:
+      serviceName: advanced-api
       region: us-central1
-  cache_mode: USE_ORIGIN_HEADERS
-  default_ttl_seconds: 600
-  max_ttl_seconds: 3600
-  client_ttl_seconds: 300
-  enable_negative_caching: true
-  advanced_config:
-    cache_key_policy:
-      include_query_string: true
-      query_string_whitelist:
+  cacheMode: USE_ORIGIN_HEADERS
+  defaultTtlSeconds: 600
+  maxTtlSeconds: 3600
+  clientTtlSeconds: 300
+  enableNegativeCaching: true
+  advancedConfig:
+    cacheKeyPolicy:
+      includeQueryString: true
+      queryStringWhitelist:
         - api_version
         - format
-      include_protocol: true
-      include_host: true
-      included_headers:
+      includeProtocol: true
+      includeHost: true
+      includedHeaders:
         - Accept
         - Accept-Encoding
-    negative_caching_policies:
+    negativeCachingPolicies:
       - code: 404
-        ttl_seconds: 600  # Cache "Not Found" for 10 minutes (reduces origin load)
+        ttlSeconds: 600  # Cache "Not Found" for 10 minutes (reduces origin load)
       - code: 500
-        ttl_seconds: 10   # Cache "Internal Server Error" for 10 seconds only
+        ttlSeconds: 10   # Cache "Internal Server Error" for 10 seconds only
       - code: 502
-        ttl_seconds: 10   # Cache "Bad Gateway" for 10 seconds only
+        ttlSeconds: 10   # Cache "Bad Gateway" for 10 seconds only
       - code: 503
-        ttl_seconds: 30   # Cache "Service Unavailable" for 30 seconds
-    serve_while_stale_seconds: 120  # Serve stale content for 2 minutes during origin outage
-    enable_request_coalescing: true
-  frontend_config:
-    custom_domains:
+        ttlSeconds: 30   # Cache "Service Unavailable" for 30 seconds
+    serveWhileStaleSeconds: 120  # Serve stale content for 2 minutes during origin outage
+    enableRequestCoalescing: true
+  frontendConfig:
+    customDomains:
       - api.example.com
-    ssl_certificate:
-      google_managed:
+    sslCertificate:
+      googleManaged:
         domains:
           - api.example.com
-    enable_https_redirect: true
+    enableHttpsRedirect: true
 ```
 
 **Why this configuration?**
@@ -577,9 +577,9 @@ Instead of cache invalidation, use versioned filenames:
 ```yaml
 # Configure long TTLs
 spec:
-  cache_mode: CACHE_ALL_STATIC
-  default_ttl_seconds: 31536000  # 1 year
-  max_ttl_seconds: 31536000      # 1 year
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 31536000  # 1 year
+  maxTtlSeconds: 31536000      # 1 year
 ```
 
 Your build process generates hashed filenames:

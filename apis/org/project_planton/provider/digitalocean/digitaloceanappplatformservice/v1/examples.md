@@ -28,16 +28,16 @@ metadata:
     environment: development
     team: backend
 spec:
-  service_name: simple-api
+  serviceName: simple-api
   region: nyc1
-  service_type: web_service
+  serviceType: web_service
   
-  git_source:
-    repo_url: https://github.com/myorg/simple-api.git
+  gitSource:
+    repoUrl: https://github.com/myorg/simple-api.git
     branch: main
   
-  instance_size_slug: basic_xxs
-  instance_count: 1
+  instanceSizeSlug: basic_xxs
+  instanceCount: 1
   
   env:
     NODE_ENV: production
@@ -65,20 +65,20 @@ metadata:
     team: backend
     criticality: high
 spec:
-  service_name: production-api
+  serviceName: production-api
   region: sfo3
-  service_type: web_service
+  serviceType: web_service
   
-  git_source:
-    repo_url: https://github.com/myorg/production-api.git
+  gitSource:
+    repoUrl: https://github.com/myorg/production-api.git
     branch: production
-    build_command: "npm run build"
-    run_command: "npm start"
+    buildCommand: "npm run build"
+    runCommand: "npm start"
   
-  instance_size_slug: professional_s
-  enable_autoscale: true
-  min_instance_count: 2
-  max_instance_count: 10
+  instanceSizeSlug: professional_s
+  enableAutoscale: true
+  minInstanceCount: 2
+  maxInstanceCount: 10
   
   env:
     NODE_ENV: production
@@ -104,17 +104,17 @@ kind: DigitalOceanAppPlatformService
 metadata:
   name: backend-service
 spec:
-  service_name: backend-service
+  serviceName: backend-service
   region: nyc3
-  service_type: web_service
+  serviceType: web_service
   
-  image_source:
+  imageSource:
     registry: registry.digitalocean.com/myorg
     repository: backend-service
     tag: v1.2.3
   
-  instance_size_slug: professional_xs
-  instance_count: 3
+  instanceSizeSlug: professional_xs
+  instanceCount: 3
   
   env:
     ENVIRONMENT: production
@@ -147,17 +147,17 @@ metadata:
     environment: production
     service-type: worker
 spec:
-  service_name: email-worker
+  serviceName: email-worker
   region: tor1
-  service_type: worker
+  serviceType: worker
   
-  git_source:
-    repo_url: https://github.com/myorg/workers.git
+  gitSource:
+    repoUrl: https://github.com/myorg/workers.git
     branch: main
-    run_command: "python worker.py"
+    runCommand: "python worker.py"
   
-  instance_size_slug: basic_s
-  instance_count: 2
+  instanceSizeSlug: basic_s
+  instanceCount: 2
   
   env:
     WORKER_TYPE: email
@@ -190,16 +190,16 @@ kind: DigitalOceanAppPlatformService
 metadata:
   name: db-migration
 spec:
-  service_name: db-migration
+  serviceName: db-migration
   region: lon1
-  service_type: job
+  serviceType: job
   
-  git_source:
-    repo_url: https://github.com/myorg/app.git
+  gitSource:
+    repoUrl: https://github.com/myorg/app.git
     branch: main
-    run_command: "npm run migrate"
+    runCommand: "npm run migrate"
   
-  instance_size_slug: basic_xxs
+  instanceSizeSlug: basic_xxs
   
   env:
     DATABASE_URL: ${digitalocean-postgres-prod.connection-uri}
@@ -229,22 +229,22 @@ kind: DigitalOceanAppPlatformService
 metadata:
   name: api-myapp
 spec:
-  service_name: api-myapp
+  serviceName: api-myapp
   region: fra1
-  service_type: web_service
+  serviceType: web_service
   
-  git_source:
-    repo_url: https://github.com/myorg/myapp-api.git
+  gitSource:
+    repoUrl: https://github.com/myorg/myapp-api.git
     branch: main
   
-  instance_size_slug: professional_m
-  instance_count: 3
+  instanceSizeSlug: professional_m
+  instanceCount: 3
   
   env:
     NODE_ENV: production
     ALLOWED_ORIGINS: "https://myapp.com,https://www.myapp.com"
   
-  custom_domain: api.myapp.com
+  customDomain: api.myapp.com
 ```
 
 **Key characteristics:**
@@ -281,16 +281,16 @@ metadata:
   labels:
     environment: development
 spec:
-  service_name: myapp-dev
+  serviceName: myapp-dev
   region: nyc1
-  service_type: web_service
+  serviceType: web_service
   
-  git_source:
-    repo_url: https://github.com/myorg/myapp.git
+  gitSource:
+    repoUrl: https://github.com/myorg/myapp.git
     branch: develop
   
-  instance_size_slug: basic_xxs
-  instance_count: 1
+  instanceSizeSlug: basic_xxs
+  instanceCount: 1
   
   env:
     NODE_ENV: development
@@ -308,16 +308,16 @@ metadata:
   labels:
     environment: staging
 spec:
-  service_name: myapp-staging
+  serviceName: myapp-staging
   region: nyc1
-  service_type: web_service
+  serviceType: web_service
   
-  git_source:
-    repo_url: https://github.com/myorg/myapp.git
+  gitSource:
+    repoUrl: https://github.com/myorg/myapp.git
     branch: staging
   
-  instance_size_slug: basic_s
-  instance_count: 2
+  instanceSizeSlug: basic_s
+  instanceCount: 2
   
   env:
     NODE_ENV: production
@@ -336,26 +336,26 @@ metadata:
     environment: production
     criticality: high
 spec:
-  service_name: myapp-prod
+  serviceName: myapp-prod
   region: nyc3
-  service_type: web_service
+  serviceType: web_service
   
-  image_source:
+  imageSource:
     registry: registry.digitalocean.com/myorg
     repository: myapp
     tag: v1.0.0
   
-  instance_size_slug: professional_m
-  enable_autoscale: true
-  min_instance_count: 3
-  max_instance_count: 15
+  instanceSizeSlug: professional_m
+  enableAutoscale: true
+  minInstanceCount: 3
+  maxInstanceCount: 15
   
   env:
     NODE_ENV: production
     DATABASE_URL: ${digitalocean-postgres-prod.connection-uri}
     LOG_LEVEL: warn
   
-  custom_domain: api.myapp.com
+  customDomain: api.myapp.com
 ```
 
 **Environment progression strategy:**
@@ -375,18 +375,18 @@ kind: DigitalOceanAppPlatformService
 metadata:
   name: orders-api
 spec:
-  service_name: orders-api
+  serviceName: orders-api
   region: sgp1
-  service_type: web_service
+  serviceType: web_service
   
-  git_source:
-    repo_url: https://github.com/myorg/orders-api.git
+  gitSource:
+    repoUrl: https://github.com/myorg/orders-api.git
     branch: main
   
-  instance_size_slug: professional_xs
-  enable_autoscale: true
-  min_instance_count: 2
-  max_instance_count: 6
+  instanceSizeSlug: professional_xs
+  enableAutoscale: true
+  minInstanceCount: 2
+  maxInstanceCount: 6
   
   env:
     NODE_ENV: production

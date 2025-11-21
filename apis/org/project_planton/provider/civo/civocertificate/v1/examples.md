@@ -29,9 +29,9 @@ metadata:
   name: simple-web-cert
   description: Single domain certificate for website
 spec:
-  certificate_name: simple-web-cert
+  certificateName: simple-web-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - www.example.com
   tags:
@@ -58,9 +58,9 @@ kind: CivoCertificate
 metadata:
   name: wildcard-cert
 spec:
-  certificate_name: wildcard-cert
+  certificateName: wildcard-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - "*.example.com"
       - "example.com"  # Include apex if needed
@@ -90,9 +90,9 @@ kind: CivoCertificate
 metadata:
   name: multi-domain-cert
 spec:
-  certificate_name: multi-domain-cert
+  certificateName: multi-domain-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - example.com
       - www.example.com
@@ -123,12 +123,12 @@ kind: CivoCertificate
 metadata:
   name: staging-cert-no-renew
 spec:
-  certificate_name: staging-cert-no-renew
+  certificateName: staging-cert-no-renew
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - staging.example.com
-    disable_auto_renew: true
+    disableAutoRenew: true
   description: Staging certificate with manual renewal
   tags:
     - env:staging
@@ -155,20 +155,20 @@ kind: CivoCertificate
 metadata:
   name: ev-cert
 spec:
-  certificate_name: ev-cert
+  certificateName: ev-cert
   type: custom
   custom:
-    leaf_certificate: |
+    leafCertificate: |
       -----BEGIN CERTIFICATE-----
       MIIFbjCCBFagAwIBAgIQDvO...
       (your EV certificate from Digicert/GlobalSign)
       -----END CERTIFICATE-----
-    private_key: |
+    privateKey: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpAIBAAKCAQEAv0...
       (private key - keep secure!)
       -----END RSA PRIVATE KEY-----
-    certificate_chain: |
+    certificateChain: |
       -----BEGIN CERTIFICATE-----
       MIIEADCCAuigAwIBAgISA...
       (intermediate certificate 1)
@@ -204,20 +204,20 @@ kind: CivoCertificate
 metadata:
   name: internal-api-cert
 spec:
-  certificate_name: internal-api-cert
+  certificateName: internal-api-cert
   type: custom
   custom:
-    leaf_certificate: |
+    leafCertificate: |
       -----BEGIN CERTIFICATE-----
       MIIDXTCCAkWgAwIBAgIBADANBgkqhkiG9w0BA...
       (certificate from internal CA)
       -----END CERTIFICATE-----
-    private_key: |
+    privateKey: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEowIBAAKCAQEA0Z...
       (private key)
       -----END RSA PRIVATE KEY-----
-    certificate_chain: |
+    certificateChain: |
       -----BEGIN CERTIFICATE-----
       MIIDXTCCAkWgAwIBAgIBADANBgkqhkiG9w0BA...
       (internal CA intermediate)
@@ -251,9 +251,9 @@ kind: CivoCertificate
 metadata:
   name: dev-cert
 spec:
-  certificate_name: dev-cert
+  certificateName: dev-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - dev.example.com
   description: Development environment certificate
@@ -269,9 +269,9 @@ kind: CivoCertificate
 metadata:
   name: staging-cert
 spec:
-  certificate_name: staging-cert
+  certificateName: staging-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - staging.example.com
   description: Staging environment certificate
@@ -287,9 +287,9 @@ kind: CivoCertificate
 metadata:
   name: prod-cert
 spec:
-  certificate_name: prod-cert
+  certificateName: prod-cert
   type: letsEncrypt
-  lets_encrypt:
+  letsEncrypt:
     domains:
       - example.com
       - www.example.com

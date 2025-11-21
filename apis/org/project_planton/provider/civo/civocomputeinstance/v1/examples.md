@@ -343,7 +343,6 @@ spec:
     - env:prod
     - service:web
     - instance-group:web-cluster
-  createPublicIp: true
 ```
 
 ### Web Instance 2
@@ -368,7 +367,6 @@ spec:
     - env:prod
     - service:web
     - instance-group:web-cluster
-  createPublicIp: true
 ```
 
 **Key Points**:

@@ -26,8 +26,8 @@ kind: CloudflareD1Database
 metadata:
   name: minimal-db
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-minimal-db"
+  accountId: "abc123def456..."
+  databaseName: "my-minimal-db"
 ```
 
 **Deploy:**
@@ -53,8 +53,8 @@ metadata:
     environment: development
     app: my-application
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-dev-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-dev-db"
   region: "weur"  # Western Europe - close to EU developers
 ```
 
@@ -101,8 +101,8 @@ metadata:
     environment: preview
     app: my-application
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-preview-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-preview-db"
   region: "wnam"  # Western North America
 ```
 
@@ -152,8 +152,8 @@ metadata:
     app: my-application
     tier: critical
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-production-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-production-db"
   region: "enam"  # Eastern North America - close to primary user base
 ```
 
@@ -182,10 +182,10 @@ metadata:
     tier: critical
     replication: enabled
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-global-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-global-db"
   region: "enam"  # Primary region: Eastern North America
-  read_replication:
+  readReplication:
     mode: "auto"  # Enable automatic read replication
 ```
 
@@ -263,8 +263,8 @@ metadata:
   labels:
     environment: development
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-dev-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-dev-db"
   region: "weur"
 ```
 
@@ -280,8 +280,8 @@ metadata:
   labels:
     environment: preview
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-preview-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-preview-db"
   region: "wnam"
 ```
 
@@ -297,10 +297,10 @@ metadata:
   labels:
     environment: production
 spec:
-  account_id: "abc123def456..."
-  database_name: "my-app-production-db"
+  accountId: "abc123def456..."
+  databaseName: "my-app-production-db"
   region: "enam"
-  read_replication:
+  readReplication:
     mode: "auto"
 ```
 
@@ -581,8 +581,8 @@ metadata:
     tenant: acme-corp
     app: my-saas
 spec:
-  account_id: "abc123def456..."
-  database_name: "tenant-acme-corp-db"
+  accountId: "abc123def456..."
+  databaseName: "tenant-acme-corp-db"
   region: "wnam"
 ```
 
@@ -601,8 +601,8 @@ metadata:
     branch: feature/new-auth
     ephemeral: "true"
 spec:
-  account_id: "abc123def456..."
-  database_name: "feature-new-auth-db"
+  accountId: "abc123def456..."
+  databaseName: "feature-new-auth-db"
   region: "weur"
 ```
 

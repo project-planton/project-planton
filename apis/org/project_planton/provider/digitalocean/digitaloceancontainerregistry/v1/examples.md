@@ -48,7 +48,7 @@ metadata:
   name: my-registry
 spec:
   name: my-registry
-  subscription_tier: STARTER
+  subscriptionTier: STARTER
   region: NYC3
 ```
 
@@ -71,9 +71,9 @@ metadata:
   name: prod-registry
 spec:
   name: prod-registry
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Use Case:** Production workloads requiring reliability and cost control.
@@ -97,9 +97,9 @@ metadata:
   name: john-dev-registry
 spec:
   name: john-dev-registry
-  subscription_tier: STARTER
+  subscriptionTier: STARTER
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Rationale:**
@@ -127,9 +127,9 @@ metadata:
   name: team-dev-registry
 spec:
   name: team-dev-registry
-  subscription_tier: BASIC
+  subscriptionTier: BASIC
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Rationale:**
@@ -154,9 +154,9 @@ metadata:
   name: staging-registry
 spec:
   name: app-staging
-  subscription_tier: BASIC
+  subscriptionTier: BASIC
   region: NYC3
-  garbage_collection_enabled: false
+  garbageCollectionEnabled: false
 ```
 
 **Use Case:** Staging environment that closely mirrors production configuration but with manual cleanup.
@@ -176,9 +176,9 @@ metadata:
   name: staging-registry
 spec:
   name: myapp-staging
-  subscription_tier: BASIC
+  subscriptionTier: BASIC
   region: SFO3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Rationale:**
@@ -203,9 +203,9 @@ metadata:
   name: prod-registry
 spec:
   name: myapp-prod
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Rationale:**
@@ -232,9 +232,9 @@ metadata:
   name: prod-us-east
 spec:
   name: myapp-prod-us-east
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **US West Registry:**
@@ -245,9 +245,9 @@ metadata:
   name: prod-us-west
 spec:
   name: myapp-prod-us-west
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: SFO3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Europe Registry:**
@@ -258,9 +258,9 @@ metadata:
   name: prod-europe
 spec:
   name: myapp-prod-europe
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: LON1
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Rationale:**
@@ -285,9 +285,9 @@ metadata:
   name: cost-optimized-prod
 spec:
   name: myapp-prod-optimized
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Cost Optimization Practices:**
@@ -311,9 +311,9 @@ metadata:
   name: us-east-registry
 spec:
   name: myapp-us-east
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Data Center:** New York City, New York
@@ -331,9 +331,9 @@ metadata:
   name: us-west-registry
 spec:
   name: myapp-us-west
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: SFO3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Data Center:** San Francisco, California
@@ -351,9 +351,9 @@ metadata:
   name: europe-uk-registry
 spec:
   name: myapp-eu-uk
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: LON1
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Data Center:** London, United Kingdom
@@ -371,9 +371,9 @@ metadata:
   name: europe-de-registry
 spec:
   name: myapp-eu-de
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: FRA1
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Data Center:** Frankfurt, Germany
@@ -391,9 +391,9 @@ metadata:
   name: asia-sg-registry
 spec:
   name: myapp-asia-sg
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: SGP1
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Data Center:** Singapore
@@ -416,9 +416,9 @@ metadata:
   name: myapp-dev
 spec:
   name: myapp-dev
-  subscription_tier: STARTER
+  subscriptionTier: STARTER
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Staging:**
@@ -429,9 +429,9 @@ metadata:
   name: myapp-staging
 spec:
   name: myapp-staging
-  subscription_tier: BASIC
+  subscriptionTier: BASIC
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Production:**
@@ -442,9 +442,9 @@ metadata:
   name: myapp-prod
 spec:
   name: myapp-prod
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Total Cost:**
@@ -470,9 +470,9 @@ metadata:
   name: microservices-prod
 spec:
   name: platform-prod
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Repository Organization:**
@@ -509,9 +509,9 @@ metadata:
   name: global-primary
 spec:
   name: myapp-primary-us
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **DR - Europe:**
@@ -522,9 +522,9 @@ metadata:
   name: global-dr-eu
 spec:
   name: myapp-dr-europe
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: FRA1
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **DR - Asia:**
@@ -535,9 +535,9 @@ metadata:
   name: global-dr-asia
 spec:
   name: myapp-dr-asia
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: SGP1
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **DR Strategy:**
@@ -560,9 +560,9 @@ metadata:
   name: multi-team-prod
 spec:
   name: company-prod
-  subscription_tier: PROFESSIONAL
+  subscriptionTier: PROFESSIONAL
   region: NYC3
-  garbage_collection_enabled: true
+  garbageCollectionEnabled: true
 ```
 
 **Repository Organization by Team:**
@@ -781,9 +781,9 @@ Error: storage limit exceeded (500 MiB used, 500 MiB limit)
 ```yaml
 spec:
   name: my-registry
-  subscription_tier: BASIC  # Upgrade from STARTER
+  subscriptionTier: BASIC  # Upgrade from STARTER
   region: NYC3
-  garbage_collection_enabled: true  # Enable automated cleanup
+  garbageCollectionEnabled: true  # Enable automated cleanup
 ```
 
 ---

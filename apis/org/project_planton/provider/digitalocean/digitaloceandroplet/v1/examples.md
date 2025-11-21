@@ -76,7 +76,7 @@ spec:
     - staging
     - webapp
     - staging-firewall  # Used by Cloud Firewall for auto-assignment
-  user_data: |
+  userData: |
     #!/bin/bash
     apt-get update
     apt-get install -y nginx

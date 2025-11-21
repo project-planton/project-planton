@@ -55,8 +55,8 @@ spec:
       dnsZones:
         - example.com
         - example.org
-  cloudflare:
-    apiToken: "your-cloudflare-api-token"
+      cloudflare:
+        apiToken: "your-cloudflare-api-token"
 ```
 
 Deploy it:
@@ -116,8 +116,8 @@ dnsProviders:
     dnsZones:
       - example.com
       - example.org
-  cloudflare:
-    apiToken: "cloudflare-api-token-here"  # Required
+    cloudflare:
+      apiToken: "cloudflare-api-token-here"  # Required
 ```
 
 **What you need**:
@@ -144,7 +144,7 @@ dnsProviders:
     dnsZones:
       - internal.example.net
     gcpCloudDns:
-    projectId: "my-gcp-project"
+      projectId: "my-gcp-project"
       serviceAccountEmail: "kubernetes-cert-manager@my-project.iam.gserviceaccount.com"
 ```
 
@@ -227,7 +227,7 @@ spec:
       dnsZones:
         - example.com
         - example.org
-          cloudflare:
+      cloudflare:
         apiToken: "cloudflare-token-here"
     
     # Internal domains managed by Google Cloud DNS

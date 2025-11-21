@@ -26,8 +26,8 @@ kind: CloudflareDnsZone
 metadata:
   name: minimal-zone
 spec:
-  zone_name: "example.com"
-  account_id: "abc123def456..."
+  zoneName: "example.com"
+  accountId: "abc123def456..."
 \`\`\`
 
 **Deploy:**
@@ -52,11 +52,11 @@ metadata:
     environment: production
     plan: free
 spec:
-  zone_name: "myblog.com"
-  account_id: "abc123..."
+  zoneName: "myblog.com"
+  accountId: "abc123..."
   plan: FREE
   paused: false
-  default_proxied: true  # Orange-cloud new records by default
+  defaultProxied: true  # Orange-cloud new records by default
 \`\`\`
 
 **Features:**
@@ -83,11 +83,11 @@ metadata:
     environment: production
     plan: pro
 spec:
-  zone_name: "mybusiness.com"
-  account_id: "abc123..."
+  zoneName: "mybusiness.com"
+  accountId: "abc123..."
   plan: PRO
   paused: false
-  default_proxied: true
+  defaultProxied: true
 \`\`\`
 
 **Features:**
@@ -114,11 +114,11 @@ metadata:
     environment: production
     plan: business
 spec:
-  zone_name: "enterprise.example.com"
-  account_id: "xyz789..."
+  zoneName: "enterprise.example.com"
+  accountId: "xyz789..."
   plan: BUSINESS
   paused: false
-  default_proxied: false  # Explicit control per record
+  defaultProxied: false  # Explicit control per record
 \`\`\`
 
 **Features:**
@@ -143,8 +143,8 @@ kind: CloudflareDnsZone
 metadata:
   name: dns-only-zone
 spec:
-  zone_name: "dnsonly.example.com"
-  account_id: "abc123..."
+  zoneName: "dnsonly.example.com"
+  accountId: "abc123..."
   paused: true  # No proxy/CDN/WAF features
 \`\`\`
 
@@ -167,10 +167,10 @@ kind: CloudflareDnsZone
 metadata:
   name: proxied-zone
 spec:
-  zone_name: "secure.example.com"
-  account_id: "abc123..."
+  zoneName: "secure.example.com"
+  accountId: "abc123..."
   plan: PRO
-  default_proxied: true  # New records orange-cloud by default
+  defaultProxied: true  # New records orange-cloud by default
 \`\`\`
 
 **Use Case:**
@@ -209,11 +209,11 @@ metadata:
   labels:
     environment: development
 spec:
-  zone_name: "dev.example.com"
-  account_id: "abc123..."
+  zoneName: "dev.example.com"
+  accountId: "abc123..."
   plan: FREE
   paused: false
-  default_proxied: true
+  defaultProxied: true
 \`\`\`
 
 ### Staging Zone
@@ -228,11 +228,11 @@ metadata:
   labels:
     environment: staging
 spec:
-  zone_name: "staging.example.com"
-  account_id: "abc123..."
+  zoneName: "staging.example.com"
+  accountId: "abc123..."
   plan: PRO
   paused: false
-  default_proxied: true
+  defaultProxied: true
 \`\`\`
 
 ### Production Zone
@@ -247,11 +247,11 @@ metadata:
   labels:
     environment: production
 spec:
-  zone_name: "example.com"
-  account_id: "abc123..."
+  zoneName: "example.com"
+  accountId: "abc123..."
   plan: BUSINESS
   paused: false
-  default_proxied: true
+  defaultProxied: true
 \`\`\`
 
 ### Deployment Script
@@ -396,11 +396,11 @@ kind: CloudflareDnsZone
 metadata:
   name: migrated-zone
 spec:
-  zone_name: "oldprovider.com"
-  account_id: "abc123..."
+  zoneName: "oldprovider.com"
+  accountId: "abc123..."
   plan: PRO
   paused: false  # Active immediately
-  default_proxied: false  # Start with grey-cloud for safety
+  defaultProxied: false  # Start with grey-cloud for safety
 \`\`\`
 
 **Migration Steps:**

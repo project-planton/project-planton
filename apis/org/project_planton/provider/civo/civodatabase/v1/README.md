@@ -34,12 +34,12 @@ kind: CivoDatabase
 metadata:
   name: dev-postgres
 spec:
-  db_instance_name: dev-db
+  dbInstanceName: dev-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.small
-  network_id:
+  sizeSlug: g3.db.small
+  networkId:
     value: "net-12345678-abcd-1234-abcd-1234567890ab"
 ```
 
@@ -54,17 +54,17 @@ metadata:
   name: prod-postgres
   env: production
 spec:
-  db_instance_name: production-db
+  dbInstanceName: production-db
   engine: postgres
-  engine_version: "16"
+  engineVersion: "16"
   region: lon1
-  size_slug: g3.db.large
+  sizeSlug: g3.db.large
   replicas: 2  # Creates 3 total nodes (1 primary + 2 replicas)
-  network_id:
+  networkId:
     value: "net-12345678-abcd-1234-abcd-1234567890ab"
-  firewall_ids:
+  firewallIds:
     - value: "fw-87654321-dcba-4321-dcba-0987654321ba"
-  storage_gib: 200
+  storageGib: 200
   tags:
     - production
     - backend
@@ -262,7 +262,7 @@ mysql://username:password@dns-endpoint:3306/database_name
 
 2. **Configure firewall rules**: Attach a `CivoFirewall` with least-privilege access control:
    ```yaml
-   firewall_ids:
+   firewallIds:
      - value_from:
          kind: CivoFirewall
          name: db-firewall

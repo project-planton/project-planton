@@ -30,7 +30,7 @@ kind: CloudflareWorker
 metadata:
   name: hello-worker
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # Replace with your account ID
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # Replace with your account ID
   
   script:
     name: hello-worker
@@ -39,7 +39,7 @@ spec:
       path: builds/hello-worker-v1.0.0.js
   
   # No DNS configuration - Worker accessible at hello-worker.<account>.workers.dev
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 ```
 
 **Worker Code** (`hello-worker-v1.0.0.js`):
@@ -76,7 +76,7 @@ kind: CloudflareWorker
 metadata:
   name: api-worker
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   
   script:
     name: api-production
@@ -86,11 +86,11 @@ spec:
   
   dns:
     enabled: true
-    zone_id: "zone123abc456def"  # Your Cloudflare zone ID
+    zoneId: "zone123abc456def"  # Your Cloudflare zone ID
     hostname: api.example.com
-    route_pattern: api.example.com/*  # Match all paths
+    routePattern: api.example.com/*  # Match all paths
   
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 ```
 
 **Expected Behavior**:
@@ -132,7 +132,7 @@ kind: CloudflareWorker
 metadata:
   name: api-gateway
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   
   script:
     name: api-gateway-prod
@@ -141,7 +141,7 @@ spec:
       path: gateway/v2.1.0.js
   
   # Bind KV namespaces
-  kv_bindings:
+  kvBindings:
     - name: RATE_LIMIT_KV
       field_path: "rate-limit-namespace-id"
     - name: CACHE_KV
@@ -149,9 +149,9 @@ spec:
   
   dns:
     enabled: true
-    zone_id: "zone123"
+    zoneId: "zone123"
     hostname: api.example.com
-    route_pattern: api.example.com/v1/*
+    routePattern: api.example.com/v1/*
   
   env:
     variables:
@@ -162,8 +162,8 @@ spec:
       BACKEND_API_KEY: "$secrets-group/backend/api-key"
       JWT_SECRET: "$secrets-group/auth/jwt-secret"
   
-  compatibility_date: "2025-01-15"
-  usage_model: 0  # BUNDLED
+  compatibilityDate: "2025-01-15"
+  usageModel: 0  # BUNDLED
 ```
 
 **Worker Code**:
@@ -224,7 +224,7 @@ kind: CloudflareWorker
 metadata:
   name: github-webhook
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   
   script:
     name: github-webhook-handler
@@ -234,15 +234,15 @@ spec:
   
   dns:
     enabled: true
-    zone_id: "zone123"
+    zoneId: "zone123"
     hostname: webhooks.example.com
-    route_pattern: webhooks.example.com/github/*
+    routePattern: webhooks.example.com/github/*
   
   env:
     secrets:
       GITHUB_WEBHOOK_SECRET: "$secrets-group/github/webhook-secret"
   
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 ```
 
 **Worker Code**:
@@ -294,7 +294,7 @@ kind: CloudflareWorker
 metadata:
   name: auth-middleware
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   
   script:
     name: auth-middleware
@@ -304,9 +304,9 @@ spec:
   
   dns:
     enabled: true
-    zone_id: "zone123"
+    zoneId: "zone123"
     hostname: app.example.com
-    route_pattern: app.example.com/api/*
+    routePattern: app.example.com/api/*
   
   env:
     secrets:
@@ -314,7 +314,7 @@ spec:
     variables:
       BACKEND_URL: "https://backend.example.com"
   
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 ```
 
 **Worker Code**:
@@ -366,7 +366,7 @@ kind: CloudflareWorker
 metadata:
   name: api-staging
 spec:
-  account_id: "staging-account-32-hex-chars"
+  accountId: "staging-account-32-hex-chars"
   
   script:
     name: api-staging
@@ -376,7 +376,7 @@ spec:
   
   dns:
     enabled: true
-    zone_id: "staging-zone-id"
+    zoneId: "staging-zone-id"
     hostname: api-staging.example.com
   
   env:
@@ -385,7 +385,7 @@ spec:
       DEBUG: "true"
       BACKEND_URL: "https://backend-staging.example.com"
   
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 
 ---
 # Production Worker
@@ -394,7 +394,7 @@ kind: CloudflareWorker
 metadata:
   name: api-prod
 spec:
-  account_id: "prod-account-32-hex-chars"
+  accountId: "prod-account-32-hex-chars"
   
   script:
     name: api-prod
@@ -404,7 +404,7 @@ spec:
   
   dns:
     enabled: true
-    zone_id: "prod-zone-id"
+    zoneId: "prod-zone-id"
     hostname: api.example.com
   
   env:
@@ -415,8 +415,8 @@ spec:
     secrets:
       API_KEY: "$secrets-group/prod/api-key"
   
-  compatibility_date: "2025-01-15"
-  usage_model: 1  # UNBOUND for high traffic
+  compatibilityDate: "2025-01-15"
+  usageModel: 1  # UNBOUND for high traffic
 ```
 
 ---
@@ -431,7 +431,7 @@ kind: CloudflareWorker
 metadata:
   name: config-demo
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   
   script:
     name: config-demo-worker
@@ -460,7 +460,7 @@ spec:
       OAUTH_CLIENT_SECRET: "$secrets-group/oauth/client-secret"
       ENCRYPTION_KEY: "$secrets-group/crypto/encryption-key"
   
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 ```
 
 **Worker Code**:
@@ -501,7 +501,7 @@ kind: CloudflareWorker
 metadata:
   name: ab-test-worker
 spec:
-  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   
   script:
     name: ab-test-router
@@ -509,13 +509,13 @@ spec:
       bucket: workers-prod
       path: experiments/ab-test-v1.0.0.js
   
-  kv_bindings:
+  kvBindings:
     - name: AB_TEST_KV
       field_path: "ab-test-namespace-id"
   
   dns:
     enabled: true
-    zone_id: "zone123"
+    zoneId: "zone123"
     hostname: app.example.com
   
   env:
@@ -524,7 +524,7 @@ spec:
       VARIANT_B_URL: "https://app-v2.example.com"
       VARIANT_B_PERCENTAGE: "10"  # 10% to variant B
   
-  compatibility_date: "2025-01-15"
+  compatibilityDate: "2025-01-15"
 ```
 
 **Worker Code**:

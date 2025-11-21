@@ -1,59 +1,185 @@
-# Basic Example
+## Minimal Production Database
 
-This example demonstrates a basic setup of a Snowflake database with minimal configuration.
+A basic production database with standard configuration and 30-day Time Travel retention.
 
 ```yaml
 apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
-  name: analytics-db
+  name: prod-analytics
 spec:
-  snowflake_credential_id: snowflake-cred-123
-  catalog: default_catalog
-  comment: "Analytics database for reporting"
+  name: prod_analytics
+  comment: "Production analytics database"
   data_retention_time_in_days: 30
-  default_ddl_collation: "en_US"
-  drop_public_schema_on_creation: false
-  enable_console_output: true
-  external_volume: "external_vol_1"
   is_transient: false
-  log_level: "INFO"
-  max_data_extension_time_in_days: 10
-  name: analytics_db
-  quoted_identifiers_ignore_case: true
-  replace_invalid_characters: false
-  storage_serialization_policy: "COMPATIBLE"
-  suspend_task_after_num_failures: 3
-  task_auto_retry_attempts: 2
-  trace_level: "OFF"
 ```
 
-# Example with Advanced Configuration
+## Transient Staging Database
 
-This example includes advanced configurations such as environment isolation and detailed security settings.
+A cost-optimized transient database suitable for staging environments.
 
 ```yaml
 apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
-  name: finance-db
+  name: staging-analytics
 spec:
-  snowflake_credential_id: snowflake-cred-finance
-  catalog: finance_catalog
-  comment: "Finance database for transactional data"
-  data_retention_time_in_days: 90
-  default_ddl_collation: "en_US"
-  drop_public_schema_on_creation: true
-  enable_console_output: false
-  external_volume: "external_vol_finance"
+  name: staging_analytics
+  comment: "Staging analytics database for testing"
+  data_retention_time_in_days: 7
   is_transient: true
-  log_level: "DEBUG"
-  max_data_extension_time_in_days: 15
-  name: finance_db
-  quoted_identifiers_ignore_case: false
+  drop_public_schema_on_creation: false
+```
+
+## Database with Iceberg Configuration
+
+Database configured for Apache Iceberg tables with external catalog and storage.
+
+```yaml
+apiVersion: snowflake.project-planton.org/v1
+kind: SnowflakeDatabase
+metadata:
+  name: iceberg-datalake
+spec:
+  name: iceberg_datalake
+  comment: "Data lake with Iceberg tables"
+  catalog: iceberg_catalog
+  external_volume: s3_external_volume
+  storage_serialization_policy: "COMPATIBLE"
   replace_invalid_characters: true
-  storage_serialization_policy: "OPTIMIZED"
+  data_retention_time_in_days: 30
+  is_transient: false
+```
+
+## High-Compliance Database
+
+Database with maximum data retention and comprehensive logging for compliance requirements.
+
+```yaml
+apiVersion: snowflake.project-planton.org/v1
+kind: SnowflakeDatabase
+metadata:
+  name: compliance-finance
+  labels:
+    environment: production
+    compliance: sox-pci
+    criticality: tier-1
+spec:
+  name: finance_compliance
+  comment: "SOX and PCI-DSS compliant finance database"
+  data_retention_time_in_days: 90
+  max_data_extension_time_in_days: 30
+  is_transient: false
+  drop_public_schema_on_creation: true
+  log_level: "INFO"
+  trace_level: "ON_EVENT"
+  enable_console_output: false
+  quoted_identifiers_ignore_case: false
+  default_ddl_collation: "en_US"
+```
+
+## Task-Intensive ETL Database
+
+Database optimized for task-based ETL workflows with retry and auto-suspend configuration.
+
+```yaml
+apiVersion: snowflake.project-planton.org/v1
+kind: SnowflakeDatabase
+metadata:
+  name: etl-pipeline
+spec:
+  name: etl_pipeline
+  comment: "ETL pipeline database with task management"
+  data_retention_time_in_days: 14
+  is_transient: false
   suspend_task_after_num_failures: 5
   task_auto_retry_attempts: 3
-  trace_level: "ALWAYS ON"
+  user_task:
+    managed_initial_warehouse_size: "MEDIUM"
+    minimum_trigger_interval_in_seconds: 60
+    timeout_ms: 3600000
+```
+
+## Development Database with Debug Logging
+
+Development database with verbose logging for troubleshooting and development.
+
+```yaml
+apiVersion: snowflake.project-planton.org/v1
+kind: SnowflakeDatabase
+metadata:
+  name: dev-analytics
+spec:
+  name: dev_analytics
+  comment: "Development analytics database"
+  data_retention_time_in_days: 1
+  is_transient: true
+  drop_public_schema_on_creation: false
+  log_level: "DEBUG"
+  trace_level: "ALWAYS"
+  enable_console_output: true
+  quoted_identifiers_ignore_case: true
+```
+
+## Multi-Region Iceberg Database
+
+Database for multi-region data lake with optimized serialization for Snowflake-only access.
+
+```yaml
+apiVersion: snowflake.project-planton.org/v1
+kind: SnowflakeDatabase
+metadata:
+  name: global-datalake
+  labels:
+    scope: global
+    architecture: multi-region
+spec:
+  name: global_datalake
+  comment: "Global multi-region data lake"
+  catalog: global_iceberg_catalog
+  external_volume: s3_multi_region_volume
+  storage_serialization_policy: "OPTIMIZED"
+  data_retention_time_in_days: 60
+  is_transient: false
+  quoted_identifiers_ignore_case: false
+  default_ddl_collation: "en_US"
+```
+
+## CLI Workflows
+
+### Validate Manifest
+
+```bash
+project-planton validate --manifest snowflake-database.yaml
+```
+
+### Deploy with Pulumi
+
+```bash
+project-planton pulumi up --manifest snowflake-database.yaml --stack org/project/stack
+```
+
+### Deploy with Terraform
+
+```bash
+project-planton tofu apply --manifest snowflake-database.yaml --auto-approve
+```
+
+### Check Database Status
+
+```bash
+project-planton get --manifest snowflake-database.yaml
+```
+
+### Update Database Configuration
+
+```bash
+# Edit your manifest file with desired changes
+project-planton pulumi up --manifest snowflake-database.yaml --stack org/project/stack
+```
+
+### Destroy Database
+
+```bash
+project-planton pulumi destroy --manifest snowflake-database.yaml --stack org/project/stack
 ```

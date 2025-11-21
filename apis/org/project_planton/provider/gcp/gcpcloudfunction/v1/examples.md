@@ -20,11 +20,11 @@ kind: GcpCloudFunction
 metadata:
   name: hello-http-dev
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
-  build_config:
+  buildConfig:
     runtime: python311
-    entry_point: hello_http
+    entryPoint: hello_http
     source:
       bucket: my-code-bucket
       object: functions/hello-http-v1.0.0.zip
@@ -40,18 +40,18 @@ kind: GcpCloudFunction
 metadata:
   name: api-gateway-dev
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
-  build_config:
+  buildConfig:
     runtime: nodejs20
-    entry_point: handleRequest
+    entryPoint: handleRequest
     source:
       bucket: my-code-bucket
       object: functions/api-gateway-v2.1.3.zip
-  service_config:
-    available_memory_mb: 512
-    timeout_seconds: 120
-    environment_variables:
+  serviceConfig:
+    availableMemoryMb: 512
+    timeoutSeconds: 120
+    environmentVariables:
       LOG_LEVEL: "debug"
       API_VERSION: "v2"
       ENVIRONMENT: "development"
@@ -74,34 +74,34 @@ metadata:
   env: prod
   org: my-org
 spec:
-  project_id: my-gcp-project-prod
+  projectId: my-gcp-project-prod
   region: us-east1
-  build_config:
+  buildConfig:
     runtime: nodejs22
-    entry_point: handleRequest
+    entryPoint: handleRequest
     source:
       bucket: my-prod-code-bucket
       object: functions/api-gateway-v3.4.1.zip
-  service_config:
-    service_account_email: api-gateway@my-gcp-project-prod.iam.gserviceaccount.com
-    available_memory_mb: 1024
-    timeout_seconds: 60
-    max_instance_request_concurrency: 80
-    environment_variables:
+  serviceConfig:
+    serviceAccountEmail: api-gateway@my-gcp-project-prod.iam.gserviceaccount.com
+    availableMemoryMb: 1024
+    timeoutSeconds: 60
+    maxInstanceRequestConcurrency: 80
+    environmentVariables:
       LOG_LEVEL: "info"
       API_VERSION: "v3"
       ENVIRONMENT: "production"
-    secret_environment_variables:
+    secretEnvironmentVariables:
       JWT_SECRET: jwt-secret
       DB_CONNECTION_STRING: db-connection
       API_KEY: external-api-key
-    vpc_connector: projects/my-gcp-project-prod/locations/us-east1/connectors/vpc-connector
-    vpc_connector_egress_settings: 0  # PRIVATE_RANGES_ONLY
-    ingress_settings: 0  # ALLOW_ALL (public)
+    vpcConnector: projects/my-gcp-project-prod/locations/us-east1/connectors/vpc-connector
+    vpcConnectorEgressSettings: 0  # PRIVATE_RANGES_ONLY
+    ingressSettings: 0  # ALLOW_ALL (public)
     scaling:
-      min_instance_count: 2  # 2 warm instances for HA
-      max_instance_count: 100
-    allow_unauthenticated: true
+      minInstanceCount: 2  # 2 warm instances for HA
+      maxInstanceCount: 100
+    allowUnauthenticated: true
 ```
 
 ## Private HTTP Function (Internal Only)
@@ -114,21 +114,21 @@ kind: GcpCloudFunction
 metadata:
   name: internal-api
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
-  build_config:
+  buildConfig:
     runtime: python312
-    entry_point: process_request
+    entryPoint: process_request
     source:
       bucket: my-code-bucket
       object: functions/internal-api-v1.2.0.zip
-  service_config:
-    service_account_email: internal-api@my-gcp-project.iam.gserviceaccount.com
-    available_memory_mb: 512
-    timeout_seconds: 180
-    vpc_connector: projects/my-gcp-project/locations/us-central1/connectors/vpc-connector
-    ingress_settings: 1  # ALLOW_INTERNAL_ONLY (private)
-    allow_unauthenticated: false
+  serviceConfig:
+    serviceAccountEmail: internal-api@my-gcp-project.iam.gserviceaccount.com
+    availableMemoryMb: 512
+    timeoutSeconds: 180
+    vpcConnector: projects/my-gcp-project/locations/us-central1/connectors/vpc-connector
+    ingressSettings: 1  # ALLOW_INTERNAL_ONLY (private)
+    allowUnauthenticated: false
 ```
 
 ## Event-Driven Function (Pub/Sub Trigger)
@@ -141,31 +141,31 @@ kind: GcpCloudFunction
 metadata:
   name: pubsub-worker
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
-  build_config:
+  buildConfig:
     runtime: go122
-    entry_point: ProcessMessage
+    entryPoint: ProcessMessage
     source:
       bucket: my-code-bucket
       object: functions/pubsub-worker-v1.0.0.zip
-  service_config:
-    service_account_email: pubsub-worker@my-gcp-project.iam.gserviceaccount.com
-    available_memory_mb: 512
-    timeout_seconds: 300
-    secret_environment_variables:
+  serviceConfig:
+    serviceAccountEmail: pubsub-worker@my-gcp-project.iam.gserviceaccount.com
+    availableMemoryMb: 512
+    timeoutSeconds: 300
+    secretEnvironmentVariables:
       DB_PASSWORD: database-password
-    vpc_connector: projects/my-gcp-project/locations/us-central1/connectors/vpc-connector
+    vpcConnector: projects/my-gcp-project/locations/us-central1/connectors/vpc-connector
     scaling:
-      min_instance_count: 0
-      max_instance_count: 50
+      minInstanceCount: 0
+      maxInstanceCount: 50
   trigger:
-    trigger_type: 1  # EVENT_TRIGGER
-    event_trigger:
-      event_type: google.cloud.pubsub.topic.v1.messagePublished
-      pubsub_topic: projects/my-gcp-project/topics/job-queue
-      trigger_region: us-central1
-      retry_policy: 1  # RETRY_POLICY_RETRY (automatic retries)
+    triggerType: 1  # EVENT_TRIGGER
+    eventTrigger:
+      eventType: google.cloud.pubsub.topic.v1.messagePublished
+      pubsubTopic: projects/my-gcp-project/topics/job-queue
+      triggerRegion: us-central1
+      retryPolicy: 1  # RETRY_POLICY_RETRY (automatic retries)
 ```
 
 ## Event-Driven Function (Cloud Storage Trigger)
@@ -178,33 +178,33 @@ kind: GcpCloudFunction
 metadata:
   name: image-processor
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
-  build_config:
+  buildConfig:
     runtime: python311
-    entry_point: process_image
+    entryPoint: process_image
     source:
       bucket: my-code-bucket
       object: functions/image-processor-v2.0.0.zip
-  service_config:
-    service_account_email: image-processor@my-gcp-project.iam.gserviceaccount.com
-    available_memory_mb: 2048
-    timeout_seconds: 540  # 9 minutes for image processing
-    environment_variables:
+  serviceConfig:
+    serviceAccountEmail: image-processor@my-gcp-project.iam.gserviceaccount.com
+    availableMemoryMb: 2048
+    timeoutSeconds: 540  # 9 minutes for image processing
+    environmentVariables:
       OUTPUT_BUCKET: processed-images
       IMAGE_FORMAT: "webp"
     scaling:
-      min_instance_count: 0
-      max_instance_count: 10
+      minInstanceCount: 0
+      maxInstanceCount: 10
   trigger:
-    trigger_type: 1  # EVENT_TRIGGER
-    event_trigger:
-      event_type: google.cloud.storage.object.v1.finalized
-      event_filters:
+    triggerType: 1  # EVENT_TRIGGER
+    eventTrigger:
+      eventType: google.cloud.storage.object.v1.finalized
+      eventFilters:
         - attribute: bucket
           value: upload-bucket
-      trigger_region: us-central1
-      retry_policy: 0  # RETRY_POLICY_DO_NOT_RETRY (at-most-once)
+      triggerRegion: us-central1
+      retryPolicy: 0  # RETRY_POLICY_DO_NOT_RETRY (at-most-once)
 ```
 
 ## Notes

@@ -26,7 +26,7 @@ Managing artifact repositories directly in GCP can be complex due to the various
 
 - **Project ID**: Define the GCP project (`project_id`) where the artifact registry resources will be created, ensuring resources are organized within the correct project.
 - **Region Specification**: Specify the GCP region (`region`) where the artifact registry will be created (e.g., `us-west2`). Choosing the closest region to your Kubernetes clusters reduces service startup time by enabling faster container image downloads.
-- **External Access Control**: The `is_external` flag allows you to control access to artifacts published to repositories without any authentication. This is useful for publishing artifacts for open-source projects or when unauthenticated access is desired.
+- **External Access Control**: The `enable_public_access` flag allows you to control access to artifacts published to repositories without any authentication. This is useful for publishing artifacts for open-source projects or when unauthenticated access is desired.
 
 ## Benefits
 

@@ -25,8 +25,8 @@ spec:
   cloud: AWS
   region: us-east-2
   availability: SINGLE_ZONE
-  environment_id: env-dev-abc123
-  cluster_type: BASIC
+  environmentId: env-dev-abc123
+  clusterType: BASIC
 ```
 
 **Key characteristics:**
@@ -54,9 +54,9 @@ spec:
   cloud: GCP
   region: us-central1
   availability: MULTI_ZONE
-  environment_id: env-prod-xyz789
-  cluster_type: STANDARD
-  display_name: Production Orders Kafka Cluster
+  environmentId: env-prod-xyz789
+  clusterType: STANDARD
+  displayName: Production Orders Kafka Cluster
 ```
 
 **Key characteristics:**
@@ -84,11 +84,11 @@ spec:
   cloud: AWS
   region: us-west-2
   availability: MULTI_ZONE
-  environment_id: env-prod-enterprise
-  cluster_type: ENTERPRISE
-  display_name: Enterprise Secure Kafka Cluster
-  network_config:
-    network_id: n-abc123
+  environmentId: env-prod-enterprise
+  clusterType: ENTERPRISE
+  displayName: Enterprise Secure Kafka Cluster
+  networkConfig:
+    networkId: n-abc123
 ```
 
 **Prerequisites:**
@@ -122,13 +122,13 @@ spec:
   cloud: AZURE
   region: eastus
   availability: MULTI_ZONE
-  environment_id: env-prod-critical
-  cluster_type: DEDICATED
-  display_name: High-Throughput Dedicated Kafka
-  dedicated_config:
+  environmentId: env-prod-critical
+  clusterType: DEDICATED
+  displayName: High-Throughput Dedicated Kafka
+  dedicatedConfig:
     cku: 4
-  network_config:
-    network_id: n-azure-private-123
+  networkConfig:
+    networkId: n-azure-private-123
 ```
 
 **Prerequisites:**
@@ -168,11 +168,11 @@ spec:
   cloud: AWS
   region: us-east-1
   availability: MULTI_ZONE
-  environment_id: env-prod-primary
-  cluster_type: ENTERPRISE
-  display_name: Production Primary Kafka (us-east-1)
-  network_config:
-    network_id: n-us-east-1
+  environmentId: env-prod-primary
+  clusterType: ENTERPRISE
+  displayName: Production Primary Kafka (us-east-1)
+  networkConfig:
+    networkId: n-us-east-1
 ```
 
 ### Secondary Cluster (us-west-2)
@@ -190,11 +190,11 @@ spec:
   cloud: AWS
   region: us-west-2
   availability: MULTI_ZONE
-  environment_id: env-prod-secondary
-  cluster_type: ENTERPRISE
-  display_name: Production Secondary Kafka (us-west-2)
-  network_config:
-    network_id: n-us-west-2
+  environmentId: env-prod-secondary
+  clusterType: ENTERPRISE
+  displayName: Production Secondary Kafka (us-west-2)
+  networkConfig:
+    networkId: n-us-west-2
 ```
 
 **Disaster Recovery Strategy:**
@@ -225,8 +225,8 @@ spec:
   cloud: GCP
   region: us-central1
   availability: LOW  # Legacy value for BASIC clusters
-  environment_id: env-dev
-  cluster_type: BASIC
+  environmentId: env-dev
+  clusterType: BASIC
 ```
 
 **Note:** `LOW` and `HIGH` are legacy availability values supported for BASIC clusters. For new deployments, use `SINGLE_ZONE` or `MULTI_ZONE`.
@@ -246,9 +246,9 @@ spec:
   cloud: AWS
   region: us-east-2
   availability: MULTI_ZONE
-  environment_id: env-prod
-  cluster_type: STANDARD
-  display_name: "Production Kafka Cluster - Orders & Payments"  # Shown in UI
+  environmentId: env-prod
+  clusterType: STANDARD
+  displayName: "Production Kafka Cluster - Orders & Payments"  # Shown in UI
 ```
 
 ---

@@ -14,10 +14,10 @@ kind: GcpRouterNat
 metadata:
   name: dev-nat-uscentral1
 spec:
-  project_id: "my-project"
-  vpc_self_link: "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc"
-  router_name: dev-router-uscentral1
-  nat_name: dev-nat-uscentral1
+  projectId: "my-project"
+  vpcSelfLink: "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc"
+  routerName: dev-router-uscentral1
+  natName: dev-nat-uscentral1
   region: us-central1
 ```
 
@@ -43,18 +43,18 @@ metadata:
   org: acme-corp
   env: staging
 spec:
-  project_id:
+  projectId:
     ref:
       kind: GcpProject
       name: my-gcp-project
-      field_path: status.outputs.project_id
-  vpc_self_link:
+      fieldPath: status.outputs.project_id
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: staging-vpc
-      field_path: status.outputs.network_self_link
-  router_name: staging-router-uswest1
-  nat_name: staging-nat-uswest1
+      fieldPath: status.outputs.network_self_link
+  routerName: staging-router-uswest1
+  natName: staging-nat-uswest1
   region: us-west1
 ```
 
@@ -83,18 +83,18 @@ metadata:
     cost-center: cc-4510
     compliance: pci-dss
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: prod-vpc
-      field_path: status.outputs.network_self_link
-  router_name: prod-router-uscentral1
-  nat_name: prod-nat-uscentral1
+      fieldPath: status.outputs.network_self_link
+  routerName: prod-router-uscentral1
+  natName: prod-nat-uscentral1
   region: us-central1
-  nat_ip_names:
+  natIpNames:
     - "prod-nat-ip-1-uscentral1"
     - "prod-nat-ip-2-uscentral1"
-  log_filter: ERRORS_ONLY
+  logFilter: ERRORS_ONLY
 ```
 
 **Features:**
@@ -126,18 +126,18 @@ metadata:
   org: acme-corp
   env: staging
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: staging-vpc
-      field_path: status.outputs.network_self_link
-  router_name: staging-router-useast1
-  nat_name: staging-nat-specific-subnets
+      fieldPath: status.outputs.network_self_link
+  routerName: staging-router-useast1
+  natName: staging-nat-specific-subnets
   region: us-east1
-  subnetwork_self_links:
+  subnetworkSelfLinks:
     - "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-east1/subnetworks/private-subnet-1"
     - "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-east1/subnetworks/private-subnet-2"
-  log_filter: ERRORS_ONLY
+  logFilter: ERRORS_ONLY
 ```
 
 **Features:**
@@ -162,15 +162,15 @@ metadata:
   org: acme-corp
   env: dev
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: dev-vpc
-      field_path: status.outputs.network_self_link
-  router_name: dev-router-uswest2
-  nat_name: dev-nat-uswest2
+      fieldPath: status.outputs.network_self_link
+  routerName: dev-router-uswest2
+  natName: dev-nat-uswest2
   region: us-west2
-  log_filter: DISABLED
+  logFilter: DISABLED
 ```
 
 **Features:**
@@ -197,15 +197,15 @@ metadata:
     compliance: sox
     audit: true
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: prod-vpc
-      field_path: status.outputs.network_self_link
-  router_name: prod-router-audit-uscentral1
-  nat_name: prod-nat-audit-uscentral1
+      fieldPath: status.outputs.network_self_link
+  routerName: prod-router-audit-uscentral1
+  natName: prod-nat-audit-uscentral1
   region: us-central1
-  log_filter: ALL
+  logFilter: ALL
 ```
 
 **Features:**
@@ -232,15 +232,15 @@ metadata:
   org: acme-corp
   env: prod
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: prod-vpc
-      field_path: status.outputs.network_self_link
-  router_name: prod-router-uscentral1
-  nat_name: prod-nat-uscentral1
+      fieldPath: status.outputs.network_self_link
+  routerName: prod-router-uscentral1
+  natName: prod-nat-uscentral1
   region: us-central1
-  nat_ip_names:
+  natIpNames:
     - "prod-nat-ip-uscentral1"
 ```
 
@@ -253,15 +253,15 @@ metadata:
   org: acme-corp
   env: prod
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: prod-vpc
-      field_path: status.outputs.network_self_link
-  router_name: prod-router-europewest1
-  nat_name: prod-nat-europewest1
+      fieldPath: status.outputs.network_self_link
+  routerName: prod-router-europewest1
+  natName: prod-nat-europewest1
   region: europe-west1
-  nat_ip_names:
+  natIpNames:
     - "prod-nat-ip-europewest1"
 ```
 
@@ -287,8 +287,8 @@ kind: GcpVpc
 metadata:
   name: gke-vpc
 spec:
-  project_id: my-gke-project
-  auto_create_subnetworks: false
+  projectId: my-gke-project
+  autoCreateSubnetworks: false
 ```
 
 **Step 2: Deploy NAT Gateway**
@@ -298,15 +298,15 @@ kind: GcpRouterNat
 metadata:
   name: gke-nat-uscentral1
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: gke-vpc
-      field_path: status.outputs.network_self_link
-  router_name: gke-router-uscentral1
-  nat_name: gke-nat-uscentral1
+      fieldPath: status.outputs.network_self_link
+  routerName: gke-router-uscentral1
+  natName: gke-nat-uscentral1
   region: us-central1
-  log_filter: ERRORS_ONLY
+  logFilter: ERRORS_ONLY
 ```
 
 **Step 3: Deploy Private GKE Cluster**
@@ -316,13 +316,13 @@ kind: GcpGkeCluster
 metadata:
   name: private-gke-cluster
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: gke-vpc
-      field_path: status.outputs.network_self_link
+      fieldPath: status.outputs.network_self_link
   region: us-central1
-  private_cluster: true
+  privateCluster: true
   # NAT is automatically used by private nodes
 ```
 
@@ -350,19 +350,19 @@ metadata:
   org: acme-corp
   env: prod
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: hybrid-vpc
-      field_path: status.outputs.network_self_link
-  router_name: hybrid-router-uscentral1
-  nat_name: hybrid-nat-uscentral1
+      fieldPath: status.outputs.network_self_link
+  routerName: hybrid-router-uscentral1
+  natName: hybrid-nat-uscentral1
   region: us-central1
-  subnetwork_self_links:
+  subnetworkSelfLinks:
     - "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/app-subnet"
-  nat_ip_names:
+  natIpNames:
     - "hybrid-nat-ip-uscentral1"
-  log_filter: ERRORS_ONLY
+  logFilter: ERRORS_ONLY
 ```
 
 **Features:**
@@ -393,26 +393,26 @@ metadata:
     component: payment-processing
     criticality: high
 spec:
-  vpc_self_link:
+  vpcSelfLink:
     ref:
       kind: GcpVpc
       name: prod-payment-vpc
-      field_path: status.outputs.network_self_link
+      fieldPath: status.outputs.network_self_link
   region: us-central1
-  subnetwork_self_links:
+  subnetworkSelfLinks:
     - ref:
         kind: GcpSubnet
         name: payment-app-subnet
-        field_path: status.outputs.subnet_self_link
+        fieldPath: status.outputs.subnet_self_link
     - ref:
         kind: GcpSubnet
         name: payment-worker-subnet
-        field_path: status.outputs.subnet_self_link
-  nat_ip_names:
+        fieldPath: status.outputs.subnet_self_link
+  natIpNames:
     - "prod-payment-nat-ip-1-uscentral1"
     - "prod-payment-nat-ip-2-uscentral1"
     - "prod-payment-nat-ip-3-uscentral1"
-  log_filter: ERRORS_ONLY
+  logFilter: ERRORS_ONLY
 ```
 
 **Features:**
@@ -467,12 +467,12 @@ spec:
 
 **Default (Recommended):**
 ```yaml
-nat_ip_names: []  # or omit field entirely
+natIpNames: []  # or omit field entirely
 ```
 
 **Manual Allocation (Only if needed):**
 ```yaml
-nat_ip_names:
+natIpNames:
   - "nat-ip-1"
   - "nat-ip-2"
 ```
@@ -483,12 +483,12 @@ nat_ip_names:
 
 **Default (Recommended):**
 ```yaml
-subnetwork_self_links: []  # or omit field entirely
+subnetworkSelfLinks: []  # or omit field entirely
 ```
 
 **Specific Subnets (Only if needed):**
 ```yaml
-subnetwork_self_links:
+subnetworkSelfLinks:
   - "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/subnet-1"
 ```
 
@@ -498,17 +498,17 @@ subnetwork_self_links:
 
 **Production (Recommended):**
 ```yaml
-log_filter: ERRORS_ONLY  # or omit for default
+logFilter: ERRORS_ONLY  # or omit for default
 ```
 
 **Development (Cost Optimization):**
 ```yaml
-log_filter: DISABLED
+logFilter: DISABLED
 ```
 
 **Security Auditing (High Cost):**
 ```yaml
-log_filter: ALL
+logFilter: ALL
 ```
 
 **Why:** `ERRORS_ONLY` detects NAT issues (port exhaustion, connection failures) without excessive log volume.
@@ -539,7 +539,7 @@ gcloud compute addresses create nat-ip-2 --region=us-central1
 
 Then reference them:
 ```yaml
-nat_ip_names:
+natIpNames:
   - "nat-ip-1"
   - "nat-ip-2"
 ```
@@ -590,7 +590,7 @@ kind: GcpRouterNat
 metadata:
   name: gke-nat
 spec:
-  vpc_self_link: { ref to gke-vpc }
+  vpcSelfLink: { ref to gke-vpc }
   region: us-central1
 
 # 3. Private GKE Cluster
@@ -598,8 +598,8 @@ kind: GcpGkeCluster
 metadata:
   name: private-gke
 spec:
-  vpc_self_link: { ref to gke-vpc }
-  private_cluster: true
+  vpcSelfLink: { ref to gke-vpc }
+  privateCluster: true
 ```
 
 ### Pattern: Multi-Region with Manual IPs
@@ -610,7 +610,7 @@ metadata:
   name: nat-uscentral1
 spec:
   region: us-central1
-  nat_ip_names: ["nat-ip-uscentral1"]
+  natIpNames: ["nat-ip-uscentral1"]
 
 # Region 2: europe-west1
 kind: GcpRouterNat
@@ -618,7 +618,7 @@ metadata:
   name: nat-europewest1
 spec:
   region: europe-west1
-  nat_ip_names: ["nat-ip-europewest1"]
+  natIpNames: ["nat-ip-europewest1"]
 ```
 
 ### Pattern: Selective Subnet Coverage
@@ -628,7 +628,7 @@ metadata:
   name: selective-nat
 spec:
   region: us-central1
-  subnetwork_self_links:
+  subnetworkSelfLinks:
     - { ref to app-subnet }
     - { ref to worker-subnet }
     # database-subnet is excluded

@@ -3,19 +3,24 @@ syntax = "proto3";
 package org.project_planton.provider.snowflake.snowflakedatabase.v1;
 
 //snowflake-database stack outputs
-//https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#outputs
+//https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#outputs
 message SnowflakeDatabaseStackOutputs {
   //The provider-assigned unique ID for this managed resource.
-  //https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#id_yaml
+  //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#id_yaml
   string id = 1;
-  // The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster. (e.g., SASL_SSL://pkc-00000.us-central1.gcp.snowflake.cloud:9092).
-  //https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#bootstrapendpoint_yaml
-  string bootstrap_endpoint = 2;
-  //The Snowflake Resource Name of the Kafka cluster,
-  // for example, crn://snowflake.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123/cloud-cluster=lkc-abc123.
-  //https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#rbaccrn_yaml
-  string crn = 3;
-  //The REST endpoint of the Kafka cluster (e.g., https://pkc-00000.us-central1.gcp.snowflake.cloud:443).
-  //https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#restendpoint_yaml
-  string rest_endpoint = 4;
+  //The fully-qualified name of the created database
+  //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#name_yaml
+  string name = 2;
+  //The owner role of the database
+  //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#owner_yaml
+  string owner = 3;
+  //Timestamp when the database was created
+  //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#createdon_yaml
+  string created_on = 4;
+  //Boolean indicating if the database is transient
+  //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#istransient_yaml
+  bool is_transient = 5;
+  //Configured data retention time in days
+  //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#dataretentiontimeindays_yaml
+  int32 data_retention_time_in_days = 6;
 }
