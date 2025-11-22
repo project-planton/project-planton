@@ -40,3 +40,8 @@ SUCCESS
 NOTES
 - Later rules will add validations, status/outputs, tests, and IaC. This rule purposefully keeps `spec.proto` minimal and unvalidated for quick iteration.
 - Deterministic read/write responsibilities are fully delegated to the Python tools defined above to ensure repeatable file system effects.
+- When creating enums, follow the guidelines in `.cursor/info/spec_proto.md`:
+  - Nest enums inside messages where they're used
+  - Use lowercase values without prefixes (except unspecified)
+  - UNSPECIFIED values: `{enum_name_in_snake_case}_unspecified` (e.g., `built_in_profile_unspecified`)
+  - Other values: lowercase, minimal underscores (e.g., `small`, `medium`, `istio`, `baseline`)

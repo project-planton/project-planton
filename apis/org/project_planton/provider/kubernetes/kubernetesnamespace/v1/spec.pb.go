@@ -23,198 +23,198 @@ const (
 )
 
 // *
+// **KubernetesNamespacePodSecurityStandard** defines Pod Security Standards enforcement.
+// These are Kubernetes-native policies that enforce security best practices.
+type KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard int32
+
+const (
+	// No enforcement (permissive)
+	KubernetesNamespaceSpec_pod_security_standard_unspecified KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard = 0
+	// Privileged: Unrestricted policy, allows known privilege escalations.
+	// Use only for system-level workloads (monitoring, logging, CNI).
+	KubernetesNamespaceSpec_privileged KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard = 1
+	// Baseline: Minimally restrictive, prevents known privilege escalations.
+	// Suitable for most applications that don't need special permissions.
+	KubernetesNamespaceSpec_baseline KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard = 2
+	// Restricted: Heavily restricted, follows pod hardening best practices.
+	// Use for security-sensitive workloads. May require significant configuration.
+	KubernetesNamespaceSpec_restricted KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard = 3
+)
+
+// Enum value maps for KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard.
+var (
+	KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard_name = map[int32]string{
+		0: "pod_security_standard_unspecified",
+		1: "privileged",
+		2: "baseline",
+		3: "restricted",
+	}
+	KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard_value = map[string]int32{
+		"pod_security_standard_unspecified": 0,
+		"privileged":                        1,
+		"baseline":                          2,
+		"restricted":                        3,
+	}
+)
+
+func (x KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard) Enum() *KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard {
+	p := new(KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard)
+	*p = x
+	return p
+}
+
+func (x KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[0]
+}
+
+func (x KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard.Descriptor instead.
+func (KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{0, 0}
+}
+
+// *
 // **KubernetesNamespaceBuiltInProfile** provides pre-configured resource profiles.
 // These implement best practices for CPU, memory, and object count quotas.
-type KubernetesNamespaceBuiltInProfile int32
+type KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile int32
 
 const (
 	// Unspecified profile. System will apply a default minimal profile.
-	KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_UNSPECIFIED KubernetesNamespaceBuiltInProfile = 0
+	KubernetesNamespaceResourceProfile_built_in_profile_unspecified KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile = 0
 	// Small profile for development and testing.
 	// CPU: 2 cores request / 4 cores limit
 	// Memory: 4Gi request / 8Gi limit
 	// Pods: 20, Services: 10, ConfigMaps: 50, Secrets: 50
-	KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_SMALL KubernetesNamespaceBuiltInProfile = 1
+	KubernetesNamespaceResourceProfile_small KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile = 1
 	// Medium profile for staging and small production workloads.
 	// CPU: 4 cores request / 8 cores limit
 	// Memory: 8Gi request / 16Gi limit
 	// Pods: 50, Services: 20, ConfigMaps: 100, Secrets: 100
-	KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_MEDIUM KubernetesNamespaceBuiltInProfile = 2
+	KubernetesNamespaceResourceProfile_medium KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile = 2
 	// Large profile for production workloads.
 	// CPU: 8 cores request / 16 cores limit
 	// Memory: 16Gi request / 32Gi limit
 	// Pods: 100, Services: 40, ConfigMaps: 200, Secrets: 200
-	KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_LARGE KubernetesNamespaceBuiltInProfile = 3
+	KubernetesNamespaceResourceProfile_large KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile = 3
 	// Extra large profile for high-scale production workloads.
 	// CPU: 16 cores request / 32 cores limit
 	// Memory: 32Gi request / 64Gi limit
 	// Pods: 200, Services: 80, ConfigMaps: 400, Secrets: 400
-	KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_XLARGE KubernetesNamespaceBuiltInProfile = 4
+	KubernetesNamespaceResourceProfile_xlarge KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile = 4
 )
 
-// Enum value maps for KubernetesNamespaceBuiltInProfile.
+// Enum value maps for KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile.
 var (
-	KubernetesNamespaceBuiltInProfile_name = map[int32]string{
-		0: "BUILT_IN_PROFILE_UNSPECIFIED",
-		1: "BUILT_IN_PROFILE_SMALL",
-		2: "BUILT_IN_PROFILE_MEDIUM",
-		3: "BUILT_IN_PROFILE_LARGE",
-		4: "BUILT_IN_PROFILE_XLARGE",
+	KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile_name = map[int32]string{
+		0: "built_in_profile_unspecified",
+		1: "small",
+		2: "medium",
+		3: "large",
+		4: "xlarge",
 	}
-	KubernetesNamespaceBuiltInProfile_value = map[string]int32{
-		"BUILT_IN_PROFILE_UNSPECIFIED": 0,
-		"BUILT_IN_PROFILE_SMALL":       1,
-		"BUILT_IN_PROFILE_MEDIUM":      2,
-		"BUILT_IN_PROFILE_LARGE":       3,
-		"BUILT_IN_PROFILE_XLARGE":      4,
+	KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile_value = map[string]int32{
+		"built_in_profile_unspecified": 0,
+		"small":                        1,
+		"medium":                       2,
+		"large":                        3,
+		"xlarge":                       4,
 	}
 )
 
-func (x KubernetesNamespaceBuiltInProfile) Enum() *KubernetesNamespaceBuiltInProfile {
-	p := new(KubernetesNamespaceBuiltInProfile)
+func (x KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile) Enum() *KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile {
+	p := new(KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile)
 	*p = x
 	return p
 }
 
-func (x KubernetesNamespaceBuiltInProfile) String() string {
+func (x KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (KubernetesNamespaceBuiltInProfile) Descriptor() protoreflect.EnumDescriptor {
-	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[0].Descriptor()
+func (KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[1].Descriptor()
 }
 
-func (KubernetesNamespaceBuiltInProfile) Type() protoreflect.EnumType {
-	return &file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[0]
+func (KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[1]
 }
 
-func (x KubernetesNamespaceBuiltInProfile) Number() protoreflect.EnumNumber {
+func (x KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use KubernetesNamespaceBuiltInProfile.Descriptor instead.
-func (KubernetesNamespaceBuiltInProfile) EnumDescriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{0}
+// Deprecated: Use KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile.Descriptor instead.
+func (KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{1, 0}
 }
 
 // *
 // **KubernetesNamespaceServiceMeshType** defines supported service mesh types.
-type KubernetesNamespaceServiceMeshType int32
+type KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType int32
 
 const (
 	// No service mesh
-	KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_UNSPECIFIED KubernetesNamespaceServiceMeshType = 0
+	KubernetesNamespaceServiceMeshConfig_service_mesh_type_unspecified KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType = 0
 	// Istio service mesh
-	KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_ISTIO KubernetesNamespaceServiceMeshType = 1
+	KubernetesNamespaceServiceMeshConfig_istio KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType = 1
 	// Linkerd service mesh
-	KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_LINKERD KubernetesNamespaceServiceMeshType = 2
+	KubernetesNamespaceServiceMeshConfig_linkerd KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType = 2
 	// Consul Connect service mesh
-	KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_CONSUL KubernetesNamespaceServiceMeshType = 3
+	KubernetesNamespaceServiceMeshConfig_consul KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType = 3
 )
 
-// Enum value maps for KubernetesNamespaceServiceMeshType.
+// Enum value maps for KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType.
 var (
-	KubernetesNamespaceServiceMeshType_name = map[int32]string{
-		0: "SERVICE_MESH_TYPE_UNSPECIFIED",
-		1: "SERVICE_MESH_TYPE_ISTIO",
-		2: "SERVICE_MESH_TYPE_LINKERD",
-		3: "SERVICE_MESH_TYPE_CONSUL",
+	KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType_name = map[int32]string{
+		0: "service_mesh_type_unspecified",
+		1: "istio",
+		2: "linkerd",
+		3: "consul",
 	}
-	KubernetesNamespaceServiceMeshType_value = map[string]int32{
-		"SERVICE_MESH_TYPE_UNSPECIFIED": 0,
-		"SERVICE_MESH_TYPE_ISTIO":       1,
-		"SERVICE_MESH_TYPE_LINKERD":     2,
-		"SERVICE_MESH_TYPE_CONSUL":      3,
+	KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType_value = map[string]int32{
+		"service_mesh_type_unspecified": 0,
+		"istio":                         1,
+		"linkerd":                       2,
+		"consul":                        3,
 	}
 )
 
-func (x KubernetesNamespaceServiceMeshType) Enum() *KubernetesNamespaceServiceMeshType {
-	p := new(KubernetesNamespaceServiceMeshType)
+func (x KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) Enum() *KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType {
+	p := new(KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType)
 	*p = x
 	return p
 }
 
-func (x KubernetesNamespaceServiceMeshType) String() string {
+func (x KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (KubernetesNamespaceServiceMeshType) Descriptor() protoreflect.EnumDescriptor {
-	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[1].Descriptor()
-}
-
-func (KubernetesNamespaceServiceMeshType) Type() protoreflect.EnumType {
-	return &file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[1]
-}
-
-func (x KubernetesNamespaceServiceMeshType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use KubernetesNamespaceServiceMeshType.Descriptor instead.
-func (KubernetesNamespaceServiceMeshType) EnumDescriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-// *
-// **KubernetesNamespacePodSecurityStandard** defines Pod Security Standards enforcement.
-// These are Kubernetes-native policies that enforce security best practices.
-type KubernetesNamespacePodSecurityStandard int32
-
-const (
-	// No enforcement (permissive)
-	KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_UNSPECIFIED KubernetesNamespacePodSecurityStandard = 0
-	// Privileged: Unrestricted policy, allows known privilege escalations.
-	// Use only for system-level workloads (monitoring, logging, CNI).
-	KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_PRIVILEGED KubernetesNamespacePodSecurityStandard = 1
-	// Baseline: Minimally restrictive, prevents known privilege escalations.
-	// Suitable for most applications that don't need special permissions.
-	KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_BASELINE KubernetesNamespacePodSecurityStandard = 2
-	// Restricted: Heavily restricted, follows pod hardening best practices.
-	// Use for security-sensitive workloads. May require significant configuration.
-	KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_RESTRICTED KubernetesNamespacePodSecurityStandard = 3
-)
-
-// Enum value maps for KubernetesNamespacePodSecurityStandard.
-var (
-	KubernetesNamespacePodSecurityStandard_name = map[int32]string{
-		0: "POD_SECURITY_STANDARD_UNSPECIFIED",
-		1: "POD_SECURITY_STANDARD_PRIVILEGED",
-		2: "POD_SECURITY_STANDARD_BASELINE",
-		3: "POD_SECURITY_STANDARD_RESTRICTED",
-	}
-	KubernetesNamespacePodSecurityStandard_value = map[string]int32{
-		"POD_SECURITY_STANDARD_UNSPECIFIED": 0,
-		"POD_SECURITY_STANDARD_PRIVILEGED":  1,
-		"POD_SECURITY_STANDARD_BASELINE":    2,
-		"POD_SECURITY_STANDARD_RESTRICTED":  3,
-	}
-)
-
-func (x KubernetesNamespacePodSecurityStandard) Enum() *KubernetesNamespacePodSecurityStandard {
-	p := new(KubernetesNamespacePodSecurityStandard)
-	*p = x
-	return p
-}
-
-func (x KubernetesNamespacePodSecurityStandard) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (KubernetesNamespacePodSecurityStandard) Descriptor() protoreflect.EnumDescriptor {
+func (KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) Descriptor() protoreflect.EnumDescriptor {
 	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[2].Descriptor()
 }
 
-func (KubernetesNamespacePodSecurityStandard) Type() protoreflect.EnumType {
+func (KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) Type() protoreflect.EnumType {
 	return &file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes[2]
 }
 
-func (x KubernetesNamespacePodSecurityStandard) Number() protoreflect.EnumNumber {
+func (x KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use KubernetesNamespacePodSecurityStandard.Descriptor instead.
-func (KubernetesNamespacePodSecurityStandard) EnumDescriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType.Descriptor instead.
+func (KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{8, 0}
 }
 
 // *
@@ -261,7 +261,7 @@ type KubernetesNamespaceSpec struct {
 	// *
 	// Pod security standards enforcement level.
 	// Defines the security posture for pods running in the namespace.
-	PodSecurityStandard KubernetesNamespacePodSecurityStandard `protobuf:"varint,7,opt,name=pod_security_standard,json=podSecurityStandard,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespacePodSecurityStandard" json:"pod_security_standard,omitempty"`
+	PodSecurityStandard KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard `protobuf:"varint,7,opt,name=pod_security_standard,json=podSecurityStandard,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard" json:"pod_security_standard,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -338,11 +338,11 @@ func (x *KubernetesNamespaceSpec) GetServiceMeshConfig() *KubernetesNamespaceSer
 	return nil
 }
 
-func (x *KubernetesNamespaceSpec) GetPodSecurityStandard() KubernetesNamespacePodSecurityStandard {
+func (x *KubernetesNamespaceSpec) GetPodSecurityStandard() KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard {
 	if x != nil {
 		return x.PodSecurityStandard
 	}
-	return KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_UNSPECIFIED
+	return KubernetesNamespaceSpec_pod_security_standard_unspecified
 }
 
 // *
@@ -396,13 +396,13 @@ func (x *KubernetesNamespaceResourceProfile) GetProfileConfig() isKubernetesName
 	return nil
 }
 
-func (x *KubernetesNamespaceResourceProfile) GetPreset() KubernetesNamespaceBuiltInProfile {
+func (x *KubernetesNamespaceResourceProfile) GetPreset() KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile {
 	if x != nil {
 		if x, ok := x.ProfileConfig.(*KubernetesNamespaceResourceProfile_Preset); ok {
 			return x.Preset
 		}
 	}
-	return KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_UNSPECIFIED
+	return KubernetesNamespaceResourceProfile_built_in_profile_unspecified
 }
 
 func (x *KubernetesNamespaceResourceProfile) GetCustom() *KubernetesNamespaceCustomQuotas {
@@ -421,7 +421,7 @@ type isKubernetesNamespaceResourceProfile_ProfileConfig interface {
 type KubernetesNamespaceResourceProfile_Preset struct {
 	// Pre-defined T-shirt size profiles (small, medium, large, xlarge).
 	// These provide opinionated defaults for different namespace sizes.
-	Preset KubernetesNamespaceBuiltInProfile `protobuf:"varint,1,opt,name=preset,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceBuiltInProfile,oneof"`
+	Preset KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile `protobuf:"varint,1,opt,name=preset,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile,oneof"`
 }
 
 type KubernetesNamespaceResourceProfile_Custom struct {
@@ -900,7 +900,7 @@ type KubernetesNamespaceServiceMeshConfig struct {
 	// *
 	// Service mesh type.
 	// Determines which mesh to use (Istio, Linkerd, etc.).
-	MeshType KubernetesNamespaceServiceMeshType `protobuf:"varint,2,opt,name=mesh_type,json=meshType,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshType" json:"mesh_type,omitempty"`
+	MeshType KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType `protobuf:"varint,2,opt,name=mesh_type,json=meshType,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType" json:"mesh_type,omitempty"`
 	// *
 	// Mesh revision tag (Istio-specific).
 	// Allows pointing to a specific control plane version without hardcoding the version.
@@ -948,11 +948,11 @@ func (x *KubernetesNamespaceServiceMeshConfig) GetEnabled() bool {
 	return false
 }
 
-func (x *KubernetesNamespaceServiceMeshConfig) GetMeshType() KubernetesNamespaceServiceMeshType {
+func (x *KubernetesNamespaceServiceMeshConfig) GetMeshType() KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType {
 	if x != nil {
 		return x.MeshType
 	}
-	return KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_UNSPECIFIED
+	return KubernetesNamespaceServiceMeshConfig_service_mesh_type_unspecified
 }
 
 func (x *KubernetesNamespaceServiceMeshConfig) GetRevisionTag() string {
@@ -966,8 +966,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pro
 
 const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iorg/project_planton/provider/kubernetes/kubernetesnamespace/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesnamespace.v1\x1a\x1bbuf/validate/validate.proto\"\xf1\n" +
-	"\n" +
+	"Iorg/project_planton/provider/kubernetes/kubernetesnamespace/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesnamespace.v1\x1a\x1bbuf/validate/validate.proto\"\x88\f\n" +
 	"\x17KubernetesNamespaceSpec\x12\xcb\x01\n" +
 	"\x04name\x18\x01 \x01(\tB\xb6\x01\xbaH\xb2\x01\xba\x01\xa8\x01\n" +
 	"\x0ename.dns_label\x12`Name must be a valid DNS label (lowercase alphanumeric and hyphens, no leading/trailing hyphens)\x1a4this.matches('^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$')r\x04\x10\x01\x18?R\x04name\x12{\n" +
@@ -975,18 +974,33 @@ const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_p
 	"\vannotations\x18\x03 \x03(\v2h.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntryR\vannotations\x12\x8d\x01\n" +
 	"\x10resource_profile\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfileR\x0fresourceProfile\x12\x87\x01\n" +
 	"\x0enetwork_config\x18\x05 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfigR\rnetworkConfig\x12\x94\x01\n" +
-	"\x13service_mesh_config\x18\x06 \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfigR\x11serviceMeshConfig\x12\xa4\x01\n" +
-	"\x15pod_security_standard\x18\a \x01(\x0e2f.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespacePodSecurityStandardB\b\xbaH\x05\x82\x01\x02\x10\x01R\x13podSecurityStandard\x1a9\n" +
+	"\x13service_mesh_config\x18\x06 \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfigR\x11serviceMeshConfig\x12\xbc\x01\n" +
+	"\x15pod_security_standard\x18\a \x01(\x0e2~.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandardB\b\xbaH\x05\x82\x01\x02\x10\x01R\x13podSecurityStandard\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xaa\x01\xbaH\xa6\x01\x1a\xa3\x01\n" +
-	"\x1fservice_mesh_requires_mesh_type\x122mesh_type must be set when service mesh is enabled\x1aL!this.service_mesh_config.enabled || this.service_mesh_config.mesh_type != 0\"\xb9\x02\n" +
-	"\"KubernetesNamespaceResourceProfile\x12\x85\x01\n" +
-	"\x06preset\x18\x01 \x01(\x0e2a.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceBuiltInProfileB\b\xbaH\x05\x82\x01\x02\x10\x01H\x00R\x06preset\x12y\n" +
-	"\x06custom\x18\x02 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotasH\x00R\x06customB\x10\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"}\n" +
+	"&KubernetesNamespacePodSecurityStandard\x12%\n" +
+	"!pod_security_standard_unspecified\x10\x00\x12\x0e\n" +
+	"\n" +
+	"privileged\x10\x01\x12\f\n" +
+	"\bbaseline\x10\x02\x12\x0e\n" +
+	"\n" +
+	"restricted\x10\x03:\xaa\x01\xbaH\xa6\x01\x1a\xa3\x01\n" +
+	"\x1fservice_mesh_requires_mesh_type\x122mesh_type must be set when service mesh is enabled\x1aL!this.service_mesh_config.enabled || this.service_mesh_config.mesh_type != 0\"\xd2\x03\n" +
+	"\"KubernetesNamespaceResourceProfile\x12\xa9\x01\n" +
+	"\x06preset\x18\x01 \x01(\x0e2\x84\x01.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.KubernetesNamespaceBuiltInProfileB\b\xbaH\x05\x82\x01\x02\x10\x01H\x00R\x06preset\x12y\n" +
+	"\x06custom\x18\x02 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotasH\x00R\x06custom\"s\n" +
+	"!KubernetesNamespaceBuiltInProfile\x12 \n" +
+	"\x1cbuilt_in_profile_unspecified\x10\x00\x12\t\n" +
+	"\x05small\x10\x01\x12\n" +
+	"\n" +
+	"\x06medium\x10\x02\x12\t\n" +
+	"\x05large\x10\x03\x12\n" +
+	"\n" +
+	"\x06xlarge\x10\x04B\x10\n" +
 	"\x0eprofile_config\"\x9e\x04\n" +
 	"\x1fKubernetesNamespaceCustomQuotas\x12m\n" +
 	"\x03cpu\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCpuQuotaR\x03cpu\x12v\n" +
@@ -1018,27 +1032,17 @@ const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_p
 	"\x0frestrict_egress\x18\x02 \x01(\bR\x0erestrictEgress\x12<\n" +
 	"\x1aallowed_ingress_namespaces\x18\x03 \x03(\tR\x18allowedIngressNamespaces\x120\n" +
 	"\x14allowed_egress_cidrs\x18\x04 \x03(\tR\x12allowedEgressCidrs\x124\n" +
-	"\x16allowed_egress_domains\x18\x05 \x03(\tR\x14allowedEgressDomains\"\xf8\x01\n" +
+	"\x16allowed_egress_domains\x18\x05 \x03(\tR\x14allowedEgressDomains\"\x8b\x03\n" +
 	"$KubernetesNamespaceServiceMeshConfig\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x89\x01\n" +
-	"\tmesh_type\x18\x02 \x01(\x0e2b.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\bmeshType\x12*\n" +
-	"\frevision_tag\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18?R\vrevisionTag*\xb7\x01\n" +
-	"!KubernetesNamespaceBuiltInProfile\x12 \n" +
-	"\x1cBUILT_IN_PROFILE_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16BUILT_IN_PROFILE_SMALL\x10\x01\x12\x1b\n" +
-	"\x17BUILT_IN_PROFILE_MEDIUM\x10\x02\x12\x1a\n" +
-	"\x16BUILT_IN_PROFILE_LARGE\x10\x03\x12\x1b\n" +
-	"\x17BUILT_IN_PROFILE_XLARGE\x10\x04*\xa1\x01\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\xaf\x01\n" +
+	"\tmesh_type\x18\x02 \x01(\x0e2\x87\x01.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.KubernetesNamespaceServiceMeshTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\bmeshType\x12*\n" +
+	"\frevision_tag\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18?R\vrevisionTag\"k\n" +
 	"\"KubernetesNamespaceServiceMeshType\x12!\n" +
-	"\x1dSERVICE_MESH_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n" +
-	"\x17SERVICE_MESH_TYPE_ISTIO\x10\x01\x12\x1d\n" +
-	"\x19SERVICE_MESH_TYPE_LINKERD\x10\x02\x12\x1c\n" +
-	"\x18SERVICE_MESH_TYPE_CONSUL\x10\x03*\xbf\x01\n" +
-	"&KubernetesNamespacePodSecurityStandard\x12%\n" +
-	"!POD_SECURITY_STANDARD_UNSPECIFIED\x10\x00\x12$\n" +
-	" POD_SECURITY_STANDARD_PRIVILEGED\x10\x01\x12\"\n" +
-	"\x1ePOD_SECURITY_STANDARD_BASELINE\x10\x02\x12$\n" +
-	" POD_SECURITY_STANDARD_RESTRICTED\x10\x03B\xf1\x03\n" +
+	"\x1dservice_mesh_type_unspecified\x10\x00\x12\t\n" +
+	"\x05istio\x10\x01\x12\v\n" +
+	"\alinkerd\x10\x02\x12\n" +
+	"\n" +
+	"\x06consul\x10\x03B\xf1\x03\n" +
 	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
 
 var (
@@ -1056,18 +1060,18 @@ func file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pr
 var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_goTypes = []any{
-	(KubernetesNamespaceBuiltInProfile)(0),       // 0: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceBuiltInProfile
-	(KubernetesNamespaceServiceMeshType)(0),      // 1: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshType
-	(KubernetesNamespacePodSecurityStandard)(0),  // 2: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespacePodSecurityStandard
-	(*KubernetesNamespaceSpec)(nil),              // 3: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec
-	(*KubernetesNamespaceResourceProfile)(nil),   // 4: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile
-	(*KubernetesNamespaceCustomQuotas)(nil),      // 5: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas
-	(*KubernetesNamespaceCpuQuota)(nil),          // 6: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCpuQuota
-	(*KubernetesNamespaceMemoryQuota)(nil),       // 7: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceMemoryQuota
-	(*KubernetesNamespaceObjectCountQuotas)(nil), // 8: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceObjectCountQuotas
-	(*KubernetesNamespaceDefaultLimits)(nil),     // 9: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceDefaultLimits
-	(*KubernetesNamespaceNetworkConfig)(nil),     // 10: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfig
-	(*KubernetesNamespaceServiceMeshConfig)(nil), // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
+	(KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard)(0),          // 0: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandard
+	(KubernetesNamespaceResourceProfile_KubernetesNamespaceBuiltInProfile)(0),    // 1: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.KubernetesNamespaceBuiltInProfile
+	(KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType)(0), // 2: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.KubernetesNamespaceServiceMeshType
+	(*KubernetesNamespaceSpec)(nil),                                              // 3: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec
+	(*KubernetesNamespaceResourceProfile)(nil),                                   // 4: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile
+	(*KubernetesNamespaceCustomQuotas)(nil),                                      // 5: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas
+	(*KubernetesNamespaceCpuQuota)(nil),                                          // 6: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCpuQuota
+	(*KubernetesNamespaceMemoryQuota)(nil),                                       // 7: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceMemoryQuota
+	(*KubernetesNamespaceObjectCountQuotas)(nil),                                 // 8: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceObjectCountQuotas
+	(*KubernetesNamespaceDefaultLimits)(nil),                                     // 9: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceDefaultLimits
+	(*KubernetesNamespaceNetworkConfig)(nil),                                     // 10: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfig
+	(*KubernetesNamespaceServiceMeshConfig)(nil),                                 // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
 	nil, // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntry
 	nil, // 13: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntry
 }
@@ -1077,14 +1081,14 @@ var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pro
 	4,  // 2: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.resource_profile:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile
 	10, // 3: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.network_config:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfig
 	11, // 4: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.service_mesh_config:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
-	2,  // 5: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.pod_security_standard:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespacePodSecurityStandard
-	0,  // 6: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.preset:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceBuiltInProfile
+	0,  // 5: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.pod_security_standard:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandard
+	1,  // 6: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.preset:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.KubernetesNamespaceBuiltInProfile
 	5,  // 7: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.custom:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas
 	6,  // 8: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.cpu:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCpuQuota
 	7,  // 9: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.memory:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceMemoryQuota
 	8,  // 10: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.object_counts:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceObjectCountQuotas
 	9,  // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.default_limits:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceDefaultLimits
-	1,  // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.mesh_type:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshType
+	2,  // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.mesh_type:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.KubernetesNamespaceServiceMeshType
 	13, // [13:13] is the sub-list for method output_type
 	13, // [13:13] is the sub-list for method input_type
 	13, // [13:13] is the sub-list for extension type_name

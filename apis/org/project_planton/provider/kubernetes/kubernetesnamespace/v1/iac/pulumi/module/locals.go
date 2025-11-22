@@ -136,7 +136,7 @@ func buildLabels(locals *Locals) map[string]string {
 	}
 
 	// Add pod security standard label if specified
-	if locals.Spec.PodSecurityStandard != kubernetesnamespacev1.KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_UNSPECIFIED {
+	if locals.Spec.PodSecurityStandard != kubernetesnamespacev1.KubernetesNamespaceSpec_pod_security_standard_unspecified {
 		pssLevel := getPodSecurityStandard(locals.Spec)
 		if pssLevel != "" {
 			labels["pod-security.kubernetes.io/enforce"] = pssLevel
@@ -158,17 +158,17 @@ func buildAnnotations(locals *Locals) map[string]string {
 	// Add service mesh annotations
 	if locals.Spec.ServiceMeshConfig != nil && locals.Spec.ServiceMeshConfig.Enabled {
 		switch locals.Spec.ServiceMeshConfig.MeshType {
-		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_ISTIO:
+		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshConfig_istio:
 			// Istio sidecar injection
 			if locals.Spec.ServiceMeshConfig.RevisionTag != "" {
 				annotations["istio.io/rev"] = locals.Spec.ServiceMeshConfig.RevisionTag
 			} else {
 				annotations["istio-injection"] = "enabled"
 			}
-		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_LINKERD:
+		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshConfig_linkerd:
 			// Linkerd sidecar injection
 			annotations["linkerd.io/inject"] = "enabled"
-		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_CONSUL:
+		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshConfig_consul:
 			// Consul Connect injection
 			annotations["consul.hashicorp.com/connect-inject"] = "true"
 		}
@@ -191,7 +191,7 @@ func computeResourceQuota(spec *kubernetesnamespacev1.KubernetesNamespaceSpec) *
 	case *kubernetesnamespacev1.KubernetesNamespaceResourceProfile_Preset:
 		// Apply preset profile
 		switch profileConfig.Preset {
-		case kubernetesnamespacev1.KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_SMALL:
+		case kubernetesnamespacev1.KubernetesNamespaceResourceProfile_small:
 			config.CpuRequests = "2"
 			config.CpuLimits = "4"
 			config.MemoryRequests = "4Gi"
@@ -203,7 +203,7 @@ func computeResourceQuota(spec *kubernetesnamespacev1.KubernetesNamespaceSpec) *
 			config.PVCs = 5
 			config.LoadBalancers = 2
 
-		case kubernetesnamespacev1.KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_MEDIUM:
+		case kubernetesnamespacev1.KubernetesNamespaceResourceProfile_medium:
 			config.CpuRequests = "4"
 			config.CpuLimits = "8"
 			config.MemoryRequests = "8Gi"
@@ -215,7 +215,7 @@ func computeResourceQuota(spec *kubernetesnamespacev1.KubernetesNamespaceSpec) *
 			config.PVCs = 10
 			config.LoadBalancers = 3
 
-		case kubernetesnamespacev1.KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_LARGE:
+		case kubernetesnamespacev1.KubernetesNamespaceResourceProfile_large:
 			config.CpuRequests = "8"
 			config.CpuLimits = "16"
 			config.MemoryRequests = "16Gi"
@@ -227,7 +227,7 @@ func computeResourceQuota(spec *kubernetesnamespacev1.KubernetesNamespaceSpec) *
 			config.PVCs = 20
 			config.LoadBalancers = 5
 
-		case kubernetesnamespacev1.KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_XLARGE:
+		case kubernetesnamespacev1.KubernetesNamespaceResourceProfile_xlarge:
 			config.CpuRequests = "16"
 			config.CpuLimits = "32"
 			config.MemoryRequests = "32Gi"
@@ -312,11 +312,11 @@ func extractServiceMeshConfig(spec *kubernetesnamespacev1.KubernetesNamespaceSpe
 		config.RevisionTag = spec.ServiceMeshConfig.RevisionTag
 
 		switch spec.ServiceMeshConfig.MeshType {
-		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_ISTIO:
+		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshConfig_istio:
 			config.MeshType = "istio"
-		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_LINKERD:
+		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshConfig_linkerd:
 			config.MeshType = "linkerd"
-		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_CONSUL:
+		case kubernetesnamespacev1.KubernetesNamespaceServiceMeshConfig_consul:
 			config.MeshType = "consul"
 		default:
 			config.MeshType = ""
@@ -329,11 +329,11 @@ func extractServiceMeshConfig(spec *kubernetesnamespacev1.KubernetesNamespaceSpe
 // getPodSecurityStandard returns the pod security standard level
 func getPodSecurityStandard(spec *kubernetesnamespacev1.KubernetesNamespaceSpec) string {
 	switch spec.PodSecurityStandard {
-	case kubernetesnamespacev1.KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_PRIVILEGED:
+	case kubernetesnamespacev1.KubernetesNamespaceSpec_privileged:
 		return "privileged"
-	case kubernetesnamespacev1.KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_BASELINE:
+	case kubernetesnamespacev1.KubernetesNamespaceSpec_baseline:
 		return "baseline"
-	case kubernetesnamespacev1.KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_RESTRICTED:
+	case kubernetesnamespacev1.KubernetesNamespaceSpec_restricted:
 		return "restricted"
 	default:
 		return ""

@@ -16,6 +16,27 @@ import "buf/validate/validate.proto";
  */
 message KubernetesNamespaceSpec {
   /**
+   * **KubernetesNamespacePodSecurityStandard** defines Pod Security Standards enforcement.
+   * These are Kubernetes-native policies that enforce security best practices.
+   */
+  enum KubernetesNamespacePodSecurityStandard {
+    // No enforcement (permissive)
+    pod_security_standard_unspecified = 0;
+
+    // Privileged: Unrestricted policy, allows known privilege escalations.
+    // Use only for system-level workloads (monitoring, logging, CNI).
+    privileged = 1;
+
+    // Baseline: Minimally restrictive, prevents known privilege escalations.
+    // Suitable for most applications that don't need special permissions.
+    baseline = 2;
+
+    // Restricted: Heavily restricted, follows pod hardening best practices.
+    // Use for security-sensitive workloads. May require significant configuration.
+    restricted = 3;
+  }
+
+  /**
    * The unique name of the namespace.
    * This will be used as the Kubernetes namespace metadata.name.
    * Must be a valid DNS label (lowercase alphanumeric and hyphens).
@@ -84,6 +105,39 @@ message KubernetesNamespaceSpec {
  * This abstracts the complexity of ResourceQuota and LimitRange into intuitive profiles.
  */
 message KubernetesNamespaceResourceProfile {
+  /**
+   * **KubernetesNamespaceBuiltInProfile** provides pre-configured resource profiles.
+   * These implement best practices for CPU, memory, and object count quotas.
+   */
+  enum KubernetesNamespaceBuiltInProfile {
+    // Unspecified profile. System will apply a default minimal profile.
+    built_in_profile_unspecified = 0;
+
+    // Small profile for development and testing.
+    // CPU: 2 cores request / 4 cores limit
+    // Memory: 4Gi request / 8Gi limit
+    // Pods: 20, Services: 10, ConfigMaps: 50, Secrets: 50
+    small = 1;
+
+    // Medium profile for staging and small production workloads.
+    // CPU: 4 cores request / 8 cores limit
+    // Memory: 8Gi request / 16Gi limit
+    // Pods: 50, Services: 20, ConfigMaps: 100, Secrets: 100
+    medium = 2;
+
+    // Large profile for production workloads.
+    // CPU: 8 cores request / 16 cores limit
+    // Memory: 16Gi request / 32Gi limit
+    // Pods: 100, Services: 40, ConfigMaps: 200, Secrets: 200
+    large = 3;
+
+    // Extra large profile for high-scale production workloads.
+    // CPU: 16 cores request / 32 cores limit
+    // Memory: 32Gi request / 64Gi limit
+    // Pods: 200, Services: 80, ConfigMaps: 400, Secrets: 400
+    xlarge = 4;
+  }
+
   oneof profile_config {
     // Pre-defined T-shirt size profiles (small, medium, large, xlarge).
     // These provide opinionated defaults for different namespace sizes.
@@ -92,39 +146,6 @@ message KubernetesNamespaceResourceProfile {
     // Custom resource limits for advanced users who need precise control.
     KubernetesNamespaceCustomQuotas custom = 2;
   }
-}
-
-/**
- * **KubernetesNamespaceBuiltInProfile** provides pre-configured resource profiles.
- * These implement best practices for CPU, memory, and object count quotas.
- */
-enum KubernetesNamespaceBuiltInProfile {
-  // Unspecified profile. System will apply a default minimal profile.
-  BUILT_IN_PROFILE_UNSPECIFIED = 0;
-
-  // Small profile for development and testing.
-  // CPU: 2 cores request / 4 cores limit
-  // Memory: 4Gi request / 8Gi limit
-  // Pods: 20, Services: 10, ConfigMaps: 50, Secrets: 50
-  BUILT_IN_PROFILE_SMALL = 1;
-
-  // Medium profile for staging and small production workloads.
-  // CPU: 4 cores request / 8 cores limit
-  // Memory: 8Gi request / 16Gi limit
-  // Pods: 50, Services: 20, ConfigMaps: 100, Secrets: 100
-  BUILT_IN_PROFILE_MEDIUM = 2;
-
-  // Large profile for production workloads.
-  // CPU: 8 cores request / 16 cores limit
-  // Memory: 16Gi request / 32Gi limit
-  // Pods: 100, Services: 40, ConfigMaps: 200, Secrets: 200
-  BUILT_IN_PROFILE_LARGE = 3;
-
-  // Extra large profile for high-scale production workloads.
-  // CPU: 16 cores request / 32 cores limit
-  // Memory: 32Gi request / 64Gi limit
-  // Pods: 200, Services: 80, ConfigMaps: 400, Secrets: 400
-  BUILT_IN_PROFILE_XLARGE = 4;
 }
 
 /**
@@ -255,6 +276,23 @@ message KubernetesNamespaceNetworkConfig {
  */
 message KubernetesNamespaceServiceMeshConfig {
   /**
+   * **KubernetesNamespaceServiceMeshType** defines supported service mesh types.
+   */
+  enum KubernetesNamespaceServiceMeshType {
+    // No service mesh
+    service_mesh_type_unspecified = 0;
+
+    // Istio service mesh
+    istio = 1;
+
+    // Linkerd service mesh
+    linkerd = 2;
+
+    // Consul Connect service mesh
+    consul = 3;
+  }
+
+  /**
    * Enable service mesh sidecar injection.
    * When true, service mesh proxies are automatically injected into pods.
    */
@@ -273,42 +311,4 @@ message KubernetesNamespaceServiceMeshConfig {
    * This enables safe, granular mesh upgrades.
    */
   string revision_tag = 3 [(buf.validate.field).string.max_len = 63];
-}
-
-/**
- * **KubernetesNamespaceServiceMeshType** defines supported service mesh types.
- */
-enum KubernetesNamespaceServiceMeshType {
-  // No service mesh
-  SERVICE_MESH_TYPE_UNSPECIFIED = 0;
-
-  // Istio service mesh
-  SERVICE_MESH_TYPE_ISTIO = 1;
-
-  // Linkerd service mesh
-  SERVICE_MESH_TYPE_LINKERD = 2;
-
-  // Consul Connect service mesh
-  SERVICE_MESH_TYPE_CONSUL = 3;
-}
-
-/**
- * **KubernetesNamespacePodSecurityStandard** defines Pod Security Standards enforcement.
- * These are Kubernetes-native policies that enforce security best practices.
- */
-enum KubernetesNamespacePodSecurityStandard {
-  // No enforcement (permissive)
-  POD_SECURITY_STANDARD_UNSPECIFIED = 0;
-
-  // Privileged: Unrestricted policy, allows known privilege escalations.
-  // Use only for system-level workloads (monitoring, logging, CNI).
-  POD_SECURITY_STANDARD_PRIVILEGED = 1;
-
-  // Baseline: Minimally restrictive, prevents known privilege escalations.
-  // Suitable for most applications that don't need special permissions.
-  POD_SECURITY_STANDARD_BASELINE = 2;
-
-  // Restricted: Heavily restricted, follows pod hardening best practices.
-  // Use for security-sensitive workloads. May require significant configuration.
-  POD_SECURITY_STANDARD_RESTRICTED = 3;
 }

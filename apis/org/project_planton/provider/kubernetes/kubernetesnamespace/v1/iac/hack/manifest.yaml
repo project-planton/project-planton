@@ -12,7 +12,7 @@ spec:
   annotations:
     description: "Test namespace created by Project Planton"
   resource_profile:
-    preset: BUILT_IN_PROFILE_SMALL
+    preset: small
   network_config:
     isolate_ingress: true
     restrict_egress: true
@@ -21,4 +21,4 @@ spec:
       - "istio-system"
     allowed_egress_cidrs:
       - "10.0.0.0/8"
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+  pod_security_standard: baseline

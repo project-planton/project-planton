@@ -9,23 +9,23 @@ locals {
   }
 
   # Pod security standard label
-  pss_label = var.spec.pod_security_standard != null && var.spec.pod_security_standard != "POD_SECURITY_STANDARD_UNSPECIFIED" ? {
-    "pod-security.kubernetes.io/enforce" = lower(replace(var.spec.pod_security_standard, "POD_SECURITY_STANDARD_", ""))
+  pss_label = var.spec.pod_security_standard != null && var.spec.pod_security_standard != "pod_security_standard_unspecified" ? {
+    "pod-security.kubernetes.io/enforce" = var.spec.pod_security_standard
   } : {}
 
   labels = merge(local.standard_labels, var.spec.labels, local.pss_label)
 
   # Build annotations with service mesh injection
   mesh_annotations = var.spec.service_mesh_config != null && var.spec.service_mesh_config.enabled ? (
-    var.spec.service_mesh_config.mesh_type == "SERVICE_MESH_TYPE_ISTIO" ? (
+    var.spec.service_mesh_config.mesh_type == "istio" ? (
       var.spec.service_mesh_config.revision_tag != null ? {
         "istio.io/rev" = var.spec.service_mesh_config.revision_tag
       } : {
         "istio-injection" = "enabled"
       }
-    ) : var.spec.service_mesh_config.mesh_type == "SERVICE_MESH_TYPE_LINKERD" ? {
+    ) : var.spec.service_mesh_config.mesh_type == "linkerd" ? {
       "linkerd.io/inject" = "enabled"
-    } : var.spec.service_mesh_config.mesh_type == "SERVICE_MESH_TYPE_CONSUL" ? {
+    } : var.spec.service_mesh_config.mesh_type == "consul" ? {
       "consul.hashicorp.com/connect-inject" = "true"
     } : {}
   ) : {}
@@ -36,7 +36,7 @@ locals {
   resource_quota_enabled = var.spec.resource_profile != null
 
   resource_quota_preset = var.spec.resource_profile != null && var.spec.resource_profile.preset != null ? {
-    "BUILT_IN_PROFILE_SMALL" = {
+    "small" = {
       cpu_requests    = "2"
       cpu_limits      = "4"
       memory_requests = "4Gi"
@@ -48,7 +48,7 @@ locals {
       pvcs            = 5
       load_balancers  = 2
     }
-    "BUILT_IN_PROFILE_MEDIUM" = {
+    "medium" = {
       cpu_requests    = "4"
       cpu_limits      = "8"
       memory_requests = "8Gi"
@@ -60,7 +60,7 @@ locals {
       pvcs            = 10
       load_balancers  = 3
     }
-    "BUILT_IN_PROFILE_LARGE" = {
+    "large" = {
       cpu_requests    = "8"
       cpu_limits      = "16"
       memory_requests = "16Gi"
@@ -72,7 +72,7 @@ locals {
       pvcs            = 20
       load_balancers  = 5
     }
-    "BUILT_IN_PROFILE_XLARGE" = {
+    "xlarge" = {
       cpu_requests    = "16"
       cpu_limits      = "32"
       memory_requests = "32Gi"
@@ -138,12 +138,12 @@ locals {
   # Service mesh configuration
   service_mesh_enabled = var.spec.service_mesh_config != null ? var.spec.service_mesh_config.enabled : false
   service_mesh_type = var.spec.service_mesh_config != null && var.spec.service_mesh_config.mesh_type != null ? (
-    replace(lower(var.spec.service_mesh_config.mesh_type), "service_mesh_type_", "")
+    var.spec.service_mesh_config.mesh_type
   ) : ""
 
   # Pod security standard
-  pod_security_standard = var.spec.pod_security_standard != null && var.spec.pod_security_standard != "POD_SECURITY_STANDARD_UNSPECIFIED" ? (
-    lower(replace(var.spec.pod_security_standard, "POD_SECURITY_STANDARD_", ""))
+  pod_security_standard = var.spec.pod_security_standard != null && var.spec.pod_security_standard != "pod_security_standard_unspecified" ? (
+    var.spec.pod_security_standard
   ) : ""
 }
 

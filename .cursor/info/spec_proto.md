@@ -37,6 +37,51 @@ This document describes how to author or update `spec.proto` for a Planton resou
   - KMS key: default_kind = AwsKmsKey, default_kind_field_path = "status.outputs.key_arn"
 - If a referenced kind does not yet exist (e.g., a future Lambda Layer), use plain `StringValueOrRef` without defaults.
 
+## Enum Guidelines
+
+When defining enums in spec.proto, follow these conventions for better user experience and cleaner manifests:
+
+### Nesting
+- **Always nest enums** inside the message where they are used
+- Keep the full enum name (e.g., `KubernetesNamespaceBuiltInProfile`) for clarity in code
+- Protobuf automatically namespaces nested enums to prevent collisions
+- Reference as `MessageName.EnumName` in field definitions
+
+Example:
+```proto
+message KubernetesNamespaceResourceProfile {
+  enum KubernetesNamespaceBuiltInProfile {
+    built_in_profile_unspecified = 0;
+    small = 1;
+    medium = 2;
+    large = 3;
+  }
+  
+  KubernetesNamespaceBuiltInProfile preset = 1;
+}
+```
+
+### Value Naming
+- **UNSPECIFIED values**: Use `lower_snake_case` with full enum prefix
+  - Pattern: `{enum_name_in_snake_case}_unspecified`
+  - Example: `built_in_profile_unspecified`, `service_mesh_type_unspecified`, `pod_security_standard_unspecified`
+  - Rationale: Makes the zero value explicit and searchable
+  
+- **Other values**: Use lowercase without prefixes, minimal underscores
+  - Single words: `small`, `medium`, `large`, `istio`, `linkerd`, `baseline`, `restricted`
+  - Multiple words: Use words directly where clear, underscores only when necessary for clarity
+  - Rationale: Clean YAML manifests (`preset: small` vs `preset: BUILT_IN_PROFILE_SMALL`)
+
+### When NOT to Follow This Pattern
+- Enums that represent external standards where uppercase is conventional (e.g., DNS record types: `A`, `AAAA`, `CNAME`)
+- In these cases, add a comment explaining the deviation from the standard pattern
+
+### Benefits
+- **Cleaner user experience**: Manifests use `preset: small` instead of `preset: BUILT_IN_PROFILE_SMALL`
+- **Better readability**: Lowercase values are easier to read and type
+- **No collisions**: Protobuf nesting provides automatic namespacing
+- **Consistent patterns**: All components follow the same enum style
+
 ## What to Avoid
 - Do not add provider credentials here (those belong in stack input later).
 - Avoid deep nesting unless essential.

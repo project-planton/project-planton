@@ -30,7 +30,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 				Name: "dev-namespace",
 				ResourceProfile: &KubernetesNamespaceResourceProfile{
 					ProfileConfig: &KubernetesNamespaceResourceProfile_Preset{
-						Preset: KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_SMALL,
+						Preset: KubernetesNamespaceResourceProfile_small,
 					},
 				},
 			}
@@ -43,7 +43,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 				Name: "prod-namespace",
 				ResourceProfile: &KubernetesNamespaceResourceProfile{
 					ProfileConfig: &KubernetesNamespaceResourceProfile_Preset{
-						Preset: KubernetesNamespaceBuiltInProfile_BUILT_IN_PROFILE_LARGE,
+						Preset: KubernetesNamespaceResourceProfile_large,
 					},
 				},
 			}
@@ -107,7 +107,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 				Name: "mesh-namespace",
 				ServiceMeshConfig: &KubernetesNamespaceServiceMeshConfig{
 					Enabled:     true,
-					MeshType:    KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_ISTIO,
+					MeshType:    KubernetesNamespaceServiceMeshConfig_istio,
 					RevisionTag: "prod-stable",
 				},
 			}
@@ -120,7 +120,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 				Name: "linkerd-namespace",
 				ServiceMeshConfig: &KubernetesNamespaceServiceMeshConfig{
 					Enabled:  true,
-					MeshType: KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_LINKERD,
+					MeshType: KubernetesNamespaceServiceMeshConfig_linkerd,
 				},
 			}
 			err := protovalidate.Validate(spec)
@@ -130,7 +130,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 		ginkgo.It("accepts a spec with pod security standard BASELINE", func() {
 			spec := &KubernetesNamespaceSpec{
 				Name:                "baseline-namespace",
-				PodSecurityStandard: KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_BASELINE,
+				PodSecurityStandard: KubernetesNamespaceSpec_baseline,
 			}
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
@@ -139,7 +139,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 		ginkgo.It("accepts a spec with pod security standard RESTRICTED", func() {
 			spec := &KubernetesNamespaceSpec{
 				Name:                "restricted-namespace",
-				PodSecurityStandard: KubernetesNamespacePodSecurityStandard_POD_SECURITY_STANDARD_RESTRICTED,
+				PodSecurityStandard: KubernetesNamespaceSpec_restricted,
 			}
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
@@ -218,7 +218,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 				Name: "mesh-namespace",
 				ServiceMeshConfig: &KubernetesNamespaceServiceMeshConfig{
 					Enabled:  true,
-					MeshType: KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_UNSPECIFIED,
+					MeshType: KubernetesNamespaceServiceMeshConfig_service_mesh_type_unspecified,
 				},
 			}
 			err := protovalidate.Validate(spec)
@@ -339,7 +339,7 @@ var _ = ginkgo.Describe("KubernetesNamespaceSpec validations", func() {
 				Name: "mesh-namespace",
 				ServiceMeshConfig: &KubernetesNamespaceServiceMeshConfig{
 					Enabled:     true,
-					MeshType:    KubernetesNamespaceServiceMeshType_SERVICE_MESH_TYPE_ISTIO,
+					MeshType:    KubernetesNamespaceServiceMeshConfig_istio,
 					RevisionTag: "this-is-a-very-long-revision-tag-that-exceeds-the-maximum-length-allowed-for-revision-tags",
 				},
 			}

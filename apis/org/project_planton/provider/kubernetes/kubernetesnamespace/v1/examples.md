@@ -48,8 +48,8 @@ spec:
     environment: development
     cost-center: engineering
   resource_profile:
-    preset: BUILT_IN_PROFILE_SMALL
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+    preset: small
+  pod_security_standard: baseline
 ```
 
 **What this creates:**
@@ -75,7 +75,7 @@ spec:
     cost-center: engineering
     criticality: high
   resource_profile:
-    preset: BUILT_IN_PROFILE_LARGE
+    preset: large
   network_config:
     isolate_ingress: true
     restrict_egress: true
@@ -87,7 +87,7 @@ spec:
     allowed_egress_domains:
       - "api.stripe.com"
       - "api.twilio.com"
-  pod_security_standard: POD_SECURITY_STANDARD_RESTRICTED
+  pod_security_standard: restricted
 ```
 
 **What this creates:**
@@ -115,12 +115,12 @@ spec:
   annotations:
     description: "Staging environment for microservices"
   resource_profile:
-    preset: BUILT_IN_PROFILE_MEDIUM
+    preset: medium
   service_mesh_config:
     enabled: true
-    mesh_type: SERVICE_MESH_TYPE_ISTIO
+    mesh_type: istio
     revision_tag: "prod-stable"
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+  pod_security_standard: baseline
 ```
 
 **What this creates:**
@@ -149,7 +149,7 @@ spec:
     janitor/ttl: "24h"
     description: "Temporary environment for PR #1234"
   resource_profile:
-    preset: BUILT_IN_PROFILE_SMALL
+    preset: small
 ```
 
 **What this creates:**
@@ -216,11 +216,11 @@ spec:
     team: backend-team
     environment: production
   resource_profile:
-    preset: BUILT_IN_PROFILE_MEDIUM
+    preset: medium
   service_mesh_config:
     enabled: true
-    mesh_type: SERVICE_MESH_TYPE_LINKERD
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+    mesh_type: linkerd
+  pod_security_standard: baseline
 ```
 
 **What this creates:**
@@ -245,7 +245,7 @@ spec:
     compliance: "pci-dss"
     criticality: critical
   resource_profile:
-    preset: BUILT_IN_PROFILE_LARGE
+    preset: large
   network_config:
     isolate_ingress: true
     restrict_egress: true
@@ -255,9 +255,9 @@ spec:
       - "api.plaid.com"
   service_mesh_config:
     enabled: true
-    mesh_type: SERVICE_MESH_TYPE_ISTIO
+    mesh_type: istio
     revision_tag: "prod-stable"
-  pod_security_standard: POD_SECURITY_STANDARD_RESTRICTED
+  pod_security_standard: restricted
 ```
 
 **What this creates:**
@@ -285,8 +285,8 @@ spec:
     environment: dev
     team: product-team
   resource_profile:
-    preset: BUILT_IN_PROFILE_SMALL
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+    preset: small
+  pod_security_standard: baseline
 ```
 
 **staging-environment.yaml:**
@@ -302,12 +302,12 @@ spec:
     environment: staging
     team: product-team
   resource_profile:
-    preset: BUILT_IN_PROFILE_MEDIUM
+    preset: medium
   service_mesh_config:
     enabled: true
-    mesh_type: SERVICE_MESH_TYPE_ISTIO
+    mesh_type: istio
     revision_tag: "prod-stable"
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+  pod_security_standard: baseline
 ```
 
 **prod-environment.yaml:**
@@ -324,7 +324,7 @@ spec:
     team: product-team
     criticality: high
   resource_profile:
-    preset: BUILT_IN_PROFILE_LARGE
+    preset: large
   network_config:
     isolate_ingress: true
     restrict_egress: true
@@ -332,9 +332,9 @@ spec:
       - istio-system
   service_mesh_config:
     enabled: true
-    mesh_type: SERVICE_MESH_TYPE_ISTIO
+    mesh_type: istio
     revision_tag: "prod-stable"
-  pod_security_standard: POD_SECURITY_STANDARD_RESTRICTED
+  pod_security_standard: restricted
 ```
 
 ## Verification
@@ -375,7 +375,7 @@ spec:
     team: {team-name}
     cost-center: engineering
   resource_profile:
-    preset: BUILT_IN_PROFILE_MEDIUM
+    preset: medium
 ```
 
 ### Pattern 2: Environment-Based Namespaces
@@ -399,10 +399,10 @@ Pre-configure namespace for microservices with mesh:
 spec:
   service_mesh_config:
     enabled: true
-    mesh_type: SERVICE_MESH_TYPE_ISTIO
+    mesh_type: istio
   network_config:
     isolate_ingress: true
-  pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+  pod_security_standard: baseline
 ```
 
 ## Troubleshooting

@@ -33,7 +33,7 @@ module "namespace" {
     }
 
     resource_profile = {
-      preset = "BUILT_IN_PROFILE_LARGE"
+      preset = "large"
     }
 
     network_config = {
@@ -45,11 +45,11 @@ module "namespace" {
 
     service_mesh_config = {
       enabled      = true
-      mesh_type    = "SERVICE_MESH_TYPE_ISTIO"
+      mesh_type    = "istio"
       revision_tag = "prod-stable"
     }
 
-    pod_security_standard = "POD_SECURITY_STANDARD_BASELINE"
+    pod_security_standard = "baseline"
   }
 }
 ```
@@ -58,10 +58,10 @@ module "namespace" {
 
 ### Preset Profiles
 
-- **BUILT_IN_PROFILE_SMALL**: 2-4 CPU, 4-8Gi memory (dev/test)
-- **BUILT_IN_PROFILE_MEDIUM**: 4-8 CPU, 8-16Gi memory (staging)
-- **BUILT_IN_PROFILE_LARGE**: 8-16 CPU, 16-32Gi memory (production)
-- **BUILT_IN_PROFILE_XLARGE**: 16-32 CPU, 32-64Gi memory (high-scale)
+- **small**: 2-4 CPU, 4-8Gi memory (dev/test)
+- **medium**: 4-8 CPU, 8-16Gi memory (staging)
+- **large**: 8-16 CPU, 16-32Gi memory (production)
+- **xlarge**: 16-32 CPU, 32-64Gi memory (high-scale)
 
 ### Custom Quotas
 
