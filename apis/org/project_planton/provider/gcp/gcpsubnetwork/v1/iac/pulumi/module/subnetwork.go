@@ -1,6 +1,8 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/compute"
@@ -78,7 +80,20 @@ func subnetwork(ctx *pulumi.Context,
 	ctx.Export(OpSubnetworkSelfLink, createdSubnetwork.SelfLink)
 	ctx.Export(OpRegion, createdSubnetwork.Region)
 	ctx.Export(OpIpCidrRange, createdSubnetwork.IpCidrRange)
-	ctx.Export(OpSecondaryRanges, createdSubnetwork.SecondaryIpRanges)
+
+	// Export secondary ranges with individual fields (matching AwsVpc pattern)
+	// This ensures the Java StackOutputsMapToProtoLoader can properly map them
+	createdSubnetwork.SecondaryIpRanges.ApplyT(func(ranges []compute.SubnetworkSecondaryIpRange) error {
+		for i, r := range ranges {
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "range_name"), pulumi.String(r.RangeName))
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "ip_cidr_range"), pulumi.String(r.IpCidrRange))
+			// Note: reserved_internal_range is optional and often empty, but export it for completeness
+			if r.ReservedInternalRange != nil && *r.ReservedInternalRange != "" {
+				ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "reserved_internal_range"), pulumi.String(*r.ReservedInternalRange))
+			}
+		}
+		return nil
+	})
 
 	return createdSubnetwork, nil
 }
