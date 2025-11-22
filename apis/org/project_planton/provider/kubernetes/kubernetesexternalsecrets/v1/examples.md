@@ -944,3 +944,4 @@ GCP Secret Manager: 72,000 / 10,000 × $0.06 = $0.43/month
 
 **Recommendation:** Start with 1-hour polling for most use cases, adjust based on secret rotation requirements.
 
+

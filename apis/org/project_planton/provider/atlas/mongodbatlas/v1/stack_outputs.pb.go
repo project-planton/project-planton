@@ -22,21 +22,23 @@ const (
 )
 
 // mongodb-atlas stack outputs
-// https://www.pulumi.com/registry/packages/atlascloud/api-docs/kafkacluster/#outputs
+// https://www.pulumi.com/registry/packages/mongodbatlas/api-docs/advancedcluster/
+// https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/advanced_cluster#attributes-reference
 type MongodbAtlasStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The provider-assigned unique ID for this managed resource.
-	// https://www.pulumi.com/registry/packages/atlascloud/api-docs/kafkacluster/#id_yaml
+	// The provider-assigned unique ID for the MongoDB Atlas cluster (cluster_id).
+	// https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/advanced_cluster#cluster_id
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster. (e.g., SASL_SSL://pkc-00000.us-central1.gcp.atlas.cloud:9092).
-	// https://www.pulumi.com/registry/packages/atlascloud/api-docs/kafkacluster/#bootstrapendpoint_yaml
+	// MongoDB Atlas standard connection string in SRV format (recommended for MongoDB drivers).
+	// Format: mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>
+	// https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/advanced_cluster#connection_strings
 	BootstrapEndpoint string `protobuf:"bytes,2,opt,name=bootstrap_endpoint,json=bootstrapEndpoint,proto3" json:"bootstrap_endpoint,omitempty"`
-	// The Snowflake Resource Name of the Kafka cluster,
-	// for example, crn://atlas.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123/cloud-cluster=lkc-abc123.
-	// https://www.pulumi.com/registry/packages/atlascloud/api-docs/kafkacluster/#rbaccrn_yaml
+	// The cluster identifier, same as id field. Used for resource identification and API operations.
+	// https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/advanced_cluster#cluster_id
 	Crn string `protobuf:"bytes,3,opt,name=crn,proto3" json:"crn,omitempty"`
-	// The REST endpoint of the Kafka cluster (e.g., https://pkc-00000.us-central1.gcp.atlas.cloud:443).
-	// https://www.pulumi.com/registry/packages/atlascloud/api-docs/kafkacluster/#restendpoint_yaml
+	// MongoDB Atlas standard connection string in legacy format.
+	// Format: mongodb://<host1>:<port1>,<host2>:<port2>/<database>
+	// https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/advanced_cluster#connection_strings
 	RestEndpoint  string `protobuf:"bytes,4,opt,name=rest_endpoint,json=restEndpoint,proto3" json:"rest_endpoint,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
