@@ -113,6 +113,7 @@ import (
 	kuberneteskeycloakv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1"
 	kuberneteslocustv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1"
 	kubernetesmongodbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1"
+	kubernetesnamespacev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1"
 	kubernetesnatsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	kubernetesneo4jv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1"
 	kubernetesopenfgav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1"
@@ -275,6 +276,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesKeycloak:                &kuberneteskeycloakv1.KubernetesKeycloak{},
 	cloudresourcekind.CloudResourceKind_KubernetesLocust:                  &kuberneteslocustv1.KubernetesLocust{},
 	cloudresourcekind.CloudResourceKind_KubernetesMongodb:                 &kubernetesmongodbv1.KubernetesMongodb{},
+	cloudresourcekind.CloudResourceKind_KubernetesNamespace:               &kubernetesnamespacev1.KubernetesNamespace{},
 	cloudresourcekind.CloudResourceKind_KubernetesNats:                    &kubernetesnatsv1.KubernetesNats{},
 	cloudresourcekind.CloudResourceKind_KubernetesNeo4j:                   &kubernetesneo4jv1.KubernetesNeo4J{},
 	cloudresourcekind.CloudResourceKind_KubernetesOpenFga:                 &kubernetesopenfgav1.KubernetesOpenFga{},
