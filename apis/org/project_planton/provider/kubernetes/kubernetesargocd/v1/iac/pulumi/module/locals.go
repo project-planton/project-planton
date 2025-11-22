@@ -100,20 +100,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesargocdv1.Kubern
 	// Handle ingress configuration
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||
-		target.Spec.Ingress.DnsDomain == "" {
+		target.Spec.Ingress.Hostname == "" {
 		// Export empty hostnames if ingress is not enabled
 		ctx.Export(ExternalHostname, pulumi.String(""))
 		ctx.Export(InternalHostname, pulumi.String(""))
 		return locals
 	}
 
-	// External hostname (public ingress)
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	// Use the hostname directly from spec
+	locals.IngressExternalHostname = target.Spec.Ingress.Hostname
 
-	// Internal hostname (private ingress)
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	// Internal hostname (private ingress) - append -internal to the hostname
+	locals.IngressInternalHostname = fmt.Sprintf("internal-%s", target.Spec.Ingress.Hostname)
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
@@ -126,9 +124,31 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesargocdv1.Kubern
 
 	// Certificate configuration
 	// Note: a ClusterIssuer resource should already exist on the kubernetes-cluster
-	// The cluster-issuer name will be same as the ingress-domain-name
-	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
+	// Extract the domain from hostname for certificate issuer name
+	// For example: "argocd.example.com" -> "example.com"
+	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
+	locals.IngressCertClusterIssuerName = dnsDomain
 	locals.IngressCertSecretName = resourceId
 
 	return locals
+}
+
+// extractDomainFromHostname extracts the domain from a hostname
+// Example: "argocd.example.com" -> "example.com"
+func extractDomainFromHostname(hostname string) string {
+	// Split by dots and take everything after the first part
+	// This is a simple implementation - assumes standard domain structure
+	parts := []rune(hostname)
+	firstDotIndex := -1
+	for i, char := range parts {
+		if char == '.' {
+			firstDotIndex = i
+			break
+		}
+	}
+	if firstDotIndex > 0 && firstDotIndex < len(hostname)-1 {
+		return hostname[firstDotIndex+1:]
+	}
+	// If no dot found or dot is at the end, return the hostname as-is
+	return hostname
 }

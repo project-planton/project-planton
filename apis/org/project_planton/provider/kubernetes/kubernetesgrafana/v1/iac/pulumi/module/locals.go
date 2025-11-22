@@ -88,23 +88,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesgrafanav1.Kuber
 	ctx.Export(PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
-		!target.Spec.Ingress.Enabled {
+		!target.Spec.Ingress.Enabled ||
+		target.Spec.Ingress.Hostname == "" {
 		return locals
 	}
 
-	// Calculate external hostname
-	if target.Spec.Ingress.DnsDomain != "" {
-		locals.IngressExternalHostname = fmt.Sprintf("https://grafana-%s.%s",
-			target.Metadata.Name, target.Spec.Ingress.DnsDomain)
-		ctx.Export(ExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	}
+	// Use the hostname directly from spec
+	locals.IngressExternalHostname = fmt.Sprintf("https://%s", target.Spec.Ingress.Hostname)
+	ctx.Export(ExternalHostname, pulumi.String(locals.IngressExternalHostname))
 
-	// Calculate internal hostname
-	if target.Spec.Ingress.DnsDomain != "" {
-		locals.IngressInternalHostname = fmt.Sprintf("https://grafana-%s-internal.%s",
-			target.Metadata.Name, target.Spec.Ingress.DnsDomain)
-		ctx.Export(InternalHostname, pulumi.String(locals.IngressInternalHostname))
-	}
+	// Internal hostname (private ingress) - prepend internal-
+	locals.IngressInternalHostname = fmt.Sprintf("https://internal-%s", target.Spec.Ingress.Hostname)
+	ctx.Export(InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

@@ -14,7 +14,7 @@ type Locals struct {
 
 	// Ingress configuration
 	IngressEnabled bool
-	DnsDomain      string
+	Hostname       string
 
 	// Keycloak service configuration
 	ServiceName string
@@ -50,7 +50,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskeycloakv1.Kube
 	// Ingress configuration
 	if stackInput.Target.Spec != nil && stackInput.Target.Spec.Ingress != nil {
 		locals.IngressEnabled = stackInput.Target.Spec.Ingress.Enabled
-		locals.DnsDomain = stackInput.Target.Spec.Ingress.DnsDomain
+		locals.Hostname = stackInput.Target.Spec.Ingress.Hostname
 	}
 
 	// Service configuration
@@ -61,9 +61,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskeycloakv1.Kube
 	locals.PortForwardCommand = "kubectl port-forward -n " + locals.Namespace + " svc/" + locals.ServiceName + " 8080:8080"
 	locals.KubeEndpoint = locals.ServiceName + "." + locals.Namespace + ".svc.cluster.local:" + "8080"
 
-	if locals.IngressEnabled && locals.DnsDomain != "" {
-		locals.ExternalHostname = "https://" + locals.DnsDomain
-		locals.InternalHostname = "https://" + locals.DnsDomain + "-internal"
+	if locals.IngressEnabled && locals.Hostname != "" {
+		locals.ExternalHostname = "https://" + locals.Hostname
+		locals.InternalHostname = "https://internal-" + locals.Hostname
 	}
 
 	return locals

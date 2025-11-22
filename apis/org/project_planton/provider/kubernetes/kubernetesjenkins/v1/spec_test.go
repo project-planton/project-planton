@@ -36,8 +36,9 @@ var _ = ginkgo.Describe("KubernetesJenkins Custom Validation Tests", func() {
 						Memory: "100Mi",
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "jenkins.example.com",
+				Ingress: &KubernetesJenkinsIngress{
+					Enabled:  true,
+					Hostname: "jenkins.example.com",
 				},
 			},
 		}
@@ -46,6 +47,25 @@ var _ = ginkgo.Describe("KubernetesJenkins Custom Validation Tests", func() {
 	ginkgo.Describe("When valid input is passed", func() {
 		ginkgo.Context("jenkins_kubernetes", func() {
 			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Ingress validation", func() {
+		ginkgo.Context("When ingress is enabled without hostname", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Ingress.Hostname = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is disabled", func() {
+			ginkgo.It("should not require hostname", func() {
+				input.Spec.Ingress.Enabled = false
+				input.Spec.Ingress.Hostname = ""
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})

@@ -23,62 +23,88 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KubernetesDeployment",
 			Metadata: &shared.CloudResourceMetadata{
-				Name: "sample-k8sms",
+				Name: "test-deployment",
 			},
 			Spec: &KubernetesDeploymentSpec{
-				Version: "review-123", // Valid according to the custom regex checks
+				Version: "main",
 				Container: &KubernetesDeploymentContainer{
 					App: &KubernetesDeploymentContainerApp{
 						Image: &kubernetes.ContainerImage{
-							Repo: "example",
+							Repo: "nginx",
 							Tag:  "latest",
 						},
 						Resources: &kubernetes.ContainerResources{
 							Limits: &kubernetes.CpuMemory{
-								Cpu:    "500m",
-								Memory: "512Mi",
+								Cpu:    "1000m",
+								Memory: "1Gi",
 							},
 							Requests: &kubernetes.CpuMemory{
-								Cpu:    "250m",
-								Memory: "256Mi",
+								Cpu:    "50m",
+								Memory: "100Mi",
 							},
-						},
-						Env: &KubernetesDeploymentContainerAppEnv{
-							Variables: map[string]string{"KEY": "value"},
-							Secrets:   map[string]string{"SECRET_KEY": "secret_value"},
 						},
 						Ports: []*KubernetesDeploymentContainerAppPort{
 							{
-								Name:            "web1",
+								Name:            "http",
 								ContainerPort:   8080,
+								ServicePort:     80,
 								NetworkProtocol: "TCP",
 								AppProtocol:     "http",
-								ServicePort:     80,
 								IsIngressPort:   true,
 							},
 						},
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "myapp.example.com",
-				},
-				Availability: &KubernetesDeploymentAvailability{
-					MinReplicas: 1,
-					HorizontalPodAutoscaling: &KubernetesDeploymentAvailabilityHpa{
-						IsEnabled:                   true,
-						TargetCpuUtilizationPercent: 70,
-						TargetMemoryUtilization:     "512Mi",
-					},
+				Ingress: &KubernetesDeploymentIngress{
+					Enabled:  true,
+					Hostname: "myapp.example.com",
 				},
 			},
 		}
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("microservice_kubernetes", func() {
+		ginkgo.Context("deployment_kubernetes", func() {
 			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Ingress validation", func() {
+		ginkgo.Context("When ingress is enabled without hostname", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Ingress.Hostname = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is disabled", func() {
+			ginkgo.It("should not require hostname", func() {
+				input.Spec.Ingress.Enabled = false
+				input.Spec.Ingress.Hostname = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Version validation", func() {
+		ginkgo.Context("When version contains uppercase", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Version = "Main"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When version ends with hyphen", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Version = "main-"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 	})

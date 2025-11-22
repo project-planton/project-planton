@@ -31,7 +31,7 @@ type KubernetesArgocdSpec struct {
 	// The container specifications for the Argo CD deployment.
 	Container *KubernetesArgocdContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Argo CD deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesArgocdIngress `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,11 +73,69 @@ func (x *KubernetesArgocdSpec) GetContainer() *KubernetesArgocdContainer {
 	return nil
 }
 
-func (x *KubernetesArgocdSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesArgocdSpec) GetIngress() *KubernetesArgocdIngress {
 	if x != nil {
 		return x.Ingress
 	}
 	return nil
+}
+
+// *
+// KubernetesArgocdIngress defines ingress configuration for Argo CD.
+type KubernetesArgocdIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	// When enabled, creates appropriate ingress resources for external access.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "argocd.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesArgocdIngress) Reset() {
+	*x = KubernetesArgocdIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesArgocdIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesArgocdIngress) ProtoMessage() {}
+
+func (x *KubernetesArgocdIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesArgocdIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesArgocdIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesArgocdIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesArgocdIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // **KubernetesArgocdContainer** specifies the container configuration for the Argo CD application.
@@ -93,7 +151,7 @@ type KubernetesArgocdContainer struct {
 
 func (x *KubernetesArgocdContainer) Reset() {
 	*x = KubernetesArgocdContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -105,7 +163,7 @@ func (x *KubernetesArgocdContainer) String() string {
 func (*KubernetesArgocdContainer) ProtoMessage() {}
 
 func (x *KubernetesArgocdContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -118,7 +176,7 @@ func (x *KubernetesArgocdContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesArgocdContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesArgocdContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesArgocdContainer) GetResources() *kubernetes.ContainerResources {
@@ -132,10 +190,14 @@ var File_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetesargocd/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesargocd.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xe2\x01\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetesargocd/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesargocd.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\x84\x02\n" +
 	"\x14KubernetesArgocdSpec\x12|\n" +
-	"\tcontainer\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
-	"\aingress\x18\x03 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\x97\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12n\n" +
+	"\aingress\x18\x03 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngressR\aingress\"\xce\x01\n" +
+	"\x17KubernetesArgocdIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x97\x01\n" +
 	"\x19KubernetesArgocdContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -155,16 +217,16 @@ func file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto
 	return file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_goTypes = []any{
 	(*KubernetesArgocdSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec
-	(*KubernetesArgocdContainer)(nil),     // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
-	(*kubernetes.IngressSpec)(nil),        // 2: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesArgocdIngress)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngress
+	(*KubernetesArgocdContainer)(nil),     // 2: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
 	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
-	2, // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngress
 	3, // 2: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
@@ -184,7 +246,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

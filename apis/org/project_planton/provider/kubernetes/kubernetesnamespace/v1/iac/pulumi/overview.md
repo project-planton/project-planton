@@ -181,3 +181,4 @@ The `initializeLocals` function:
 - [Multi-Tenancy Guide](https://kubernetes.io/docs/concepts/security/multi-tenancy/)
 - [Namespace-as-a-Service Pattern](https://docs.rafay.co/template_catalog/get_started/namespace_asaservice/)
 
+

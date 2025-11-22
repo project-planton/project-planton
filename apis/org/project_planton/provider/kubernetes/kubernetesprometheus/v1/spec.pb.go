@@ -34,7 +34,7 @@ type KubernetesPrometheusSpec struct {
 	Container *KubernetesPrometheusContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// *
 	// The ingress configuration for the Prometheus deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesPrometheusIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,11 +76,68 @@ func (x *KubernetesPrometheusSpec) GetContainer() *KubernetesPrometheusContainer
 	return nil
 }
 
-func (x *KubernetesPrometheusSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesPrometheusSpec) GetIngress() *KubernetesPrometheusIngress {
 	if x != nil {
 		return x.Ingress
 	}
 	return nil
+}
+
+// *
+// KubernetesPrometheusIngress defines ingress configuration for Prometheus.
+type KubernetesPrometheusIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "prometheus.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesPrometheusIngress) Reset() {
+	*x = KubernetesPrometheusIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesPrometheusIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesPrometheusIngress) ProtoMessage() {}
+
+func (x *KubernetesPrometheusIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesPrometheusIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesPrometheusIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesPrometheusIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesPrometheusIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // *
@@ -106,7 +163,7 @@ type KubernetesPrometheusContainer struct {
 
 func (x *KubernetesPrometheusContainer) Reset() {
 	*x = KubernetesPrometheusContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +175,7 @@ func (x *KubernetesPrometheusContainer) String() string {
 func (*KubernetesPrometheusContainer) ProtoMessage() {}
 
 func (x *KubernetesPrometheusContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -131,7 +188,7 @@ func (x *KubernetesPrometheusContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesPrometheusContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesPrometheusContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesPrometheusContainer) GetReplicas() int32 {
@@ -166,10 +223,14 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xef\x01\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\x99\x02\n" +
 	"\x18KubernetesPrometheusSpec\x12\x84\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
-	"\aingress\x18\x02 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\xe6\x04\n" +
+	"\tcontainer\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
+	"\aingress\x18\x02 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngressR\aingress\"\xd2\x01\n" +
+	"\x1bKubernetesPrometheusIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xe6\x04\n" +
 	"\x1dKubernetesPrometheusContainer\x12!\n" +
 	"\breplicas\x18\x01 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12z\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
@@ -193,16 +254,16 @@ func file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_p
 	return file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_goTypes = []any{
 	(*KubernetesPrometheusSpec)(nil),      // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec
-	(*KubernetesPrometheusContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
-	(*kubernetes.IngressSpec)(nil),        // 2: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesPrometheusIngress)(nil),   // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
+	(*KubernetesPrometheusContainer)(nil), // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
 	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
-	2, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
 	3, // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
@@ -222,7 +283,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_p
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

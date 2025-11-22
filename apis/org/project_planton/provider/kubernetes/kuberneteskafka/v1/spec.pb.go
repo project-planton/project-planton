@@ -41,7 +41,7 @@ type KubernetesKafkaSpec struct {
 	// The specifications for the Schema Registry containers.
 	SchemaRegistryContainer *KubernetesKafkaSchemaRegistryContainer `protobuf:"bytes,4,opt,name=schema_registry_container,json=schemaRegistryContainer,proto3" json:"schema_registry_container,omitempty"`
 	// The ingress configuration for the Kafka deployment.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesKafkaIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// A flag to toggle the deployment of the Kafka UI component.
 	IsDeployKafkaUi bool `protobuf:"varint,6,opt,name=is_deploy_kafka_ui,json=isDeployKafkaUi,proto3" json:"is_deploy_kafka_ui,omitempty"`
 	unknownFields   protoimpl.UnknownFields
@@ -106,7 +106,7 @@ func (x *KubernetesKafkaSpec) GetSchemaRegistryContainer() *KubernetesKafkaSchem
 	return nil
 }
 
-func (x *KubernetesKafkaSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesKafkaSpec) GetIngress() *KubernetesKafkaIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -118,6 +118,63 @@ func (x *KubernetesKafkaSpec) GetIsDeployKafkaUi() bool {
 		return x.IsDeployKafkaUi
 	}
 	return false
+}
+
+// *
+// KubernetesKafkaIngress defines ingress configuration for Kafka.
+type KubernetesKafkaIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "kafka.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesKafkaIngress) Reset() {
+	*x = KubernetesKafkaIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesKafkaIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesKafkaIngress) ProtoMessage() {}
+
+func (x *KubernetesKafkaIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesKafkaIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesKafkaIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesKafkaIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesKafkaIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // **KubernetesKafkaBrokerContainer** specifies the configuration for the Kafka broker containers.
@@ -140,7 +197,7 @@ type KubernetesKafkaBrokerContainer struct {
 
 func (x *KubernetesKafkaBrokerContainer) Reset() {
 	*x = KubernetesKafkaBrokerContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -152,7 +209,7 @@ func (x *KubernetesKafkaBrokerContainer) String() string {
 func (*KubernetesKafkaBrokerContainer) ProtoMessage() {}
 
 func (x *KubernetesKafkaBrokerContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -165,7 +222,7 @@ func (x *KubernetesKafkaBrokerContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesKafkaBrokerContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesKafkaBrokerContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesKafkaBrokerContainer) GetReplicas() int32 {
@@ -210,7 +267,7 @@ type KubernetesKafkaZookeeperContainer struct {
 
 func (x *KubernetesKafkaZookeeperContainer) Reset() {
 	*x = KubernetesKafkaZookeeperContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -222,7 +279,7 @@ func (x *KubernetesKafkaZookeeperContainer) String() string {
 func (*KubernetesKafkaZookeeperContainer) ProtoMessage() {}
 
 func (x *KubernetesKafkaZookeeperContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -235,7 +292,7 @@ func (x *KubernetesKafkaZookeeperContainer) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use KubernetesKafkaZookeeperContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesKafkaZookeeperContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{2}
+	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *KubernetesKafkaZookeeperContainer) GetReplicas() int32 {
@@ -278,7 +335,7 @@ type KubernetesKafkaSchemaRegistryContainer struct {
 
 func (x *KubernetesKafkaSchemaRegistryContainer) Reset() {
 	*x = KubernetesKafkaSchemaRegistryContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -290,7 +347,7 @@ func (x *KubernetesKafkaSchemaRegistryContainer) String() string {
 func (*KubernetesKafkaSchemaRegistryContainer) ProtoMessage() {}
 
 func (x *KubernetesKafkaSchemaRegistryContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -303,7 +360,7 @@ func (x *KubernetesKafkaSchemaRegistryContainer) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use KubernetesKafkaSchemaRegistryContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesKafkaSchemaRegistryContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{3}
+	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *KubernetesKafkaSchemaRegistryContainer) GetIsEnabled() bool {
@@ -352,7 +409,7 @@ type KafkaTopic struct {
 
 func (x *KafkaTopic) Reset() {
 	*x = KafkaTopic{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -364,7 +421,7 @@ func (x *KafkaTopic) String() string {
 func (*KafkaTopic) ProtoMessage() {}
 
 func (x *KafkaTopic) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -377,7 +434,7 @@ func (x *KafkaTopic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KafkaTopic.ProtoReflect.Descriptor instead.
 func (*KafkaTopic) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{4}
+	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *KafkaTopic) GetName() string {
@@ -439,7 +496,7 @@ var File_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\x97\x06\n" +
+	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xb7\x06\n" +
 	"\x13KubernetesKafkaSpec\x12i\n" +
 	"\fkafka_topics\x18\x01 \x03(\v2F.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopicR\vkafkaTopics\x12\xb1\x01\n" +
 	"\x10broker_container\x18\x02 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainerB*\x8a\xee\xff\x01%\b\x01\x12\x1c\n" +
@@ -450,9 +507,13 @@ const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12\x9e\x01\n" +
-	"\x19schema_registry_container\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainerR\x17schemaRegistryContainer\x12L\n" +
-	"\aingress\x18\x05 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\x125\n" +
-	"\x12is_deploy_kafka_ui\x18\x06 \x01(\bB\b\x92\xa6\x1d\x04trueR\x0fisDeployKafkaUi\"\xd9\x02\n" +
+	"\x19schema_registry_container\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainerR\x17schemaRegistryContainer\x12l\n" +
+	"\aingress\x18\x05 \x01(\v2R.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaIngressR\aingress\x125\n" +
+	"\x12is_deploy_kafka_ui\x18\x06 \x01(\bB\b\x92\xa6\x1d\x04trueR\x0fisDeployKafkaUi\"\xcd\x01\n" +
+	"\x16KubernetesKafkaIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xd9\x02\n" +
 	"\x1eKubernetesKafkaBrokerContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
 	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xc1\x01\n" +
@@ -518,32 +579,32 @@ func file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_
 	return file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_goTypes = []any{
 	(*KubernetesKafkaSpec)(nil),                    // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec
-	(*KubernetesKafkaBrokerContainer)(nil),         // 1: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
-	(*KubernetesKafkaZookeeperContainer)(nil),      // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
-	(*KubernetesKafkaSchemaRegistryContainer)(nil), // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
-	(*KafkaTopic)(nil),                             // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
-	nil,                                            // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
-	(*kubernetes.IngressSpec)(nil),                 // 6: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesKafkaIngress)(nil),                 // 1: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaIngress
+	(*KubernetesKafkaBrokerContainer)(nil),         // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
+	(*KubernetesKafkaZookeeperContainer)(nil),      // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
+	(*KubernetesKafkaSchemaRegistryContainer)(nil), // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
+	(*KafkaTopic)(nil),                             // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
+	nil,                                            // 6: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
 	(*kubernetes.ContainerResources)(nil),          // 7: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),              // 8: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_depIdxs = []int32{
-	4,  // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.kafka_topics:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
-	1,  // 1: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.broker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
-	2,  // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
-	3,  // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.schema_registry_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
-	6,  // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	5,  // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.kafka_topics:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
+	2,  // 1: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.broker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
+	3,  // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
+	4,  // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.schema_registry_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
+	1,  // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaIngress
 	7,  // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	7,  // 6: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	7,  // 7: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	5,  // 8: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.config:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
+	6,  // 8: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.config:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
 	8,  // 9: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container:extendee -> google.protobuf.FieldOptions
 	8,  // 10: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
-	1,  // 11: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
-	2,  // 12: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
+	2,  // 11: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer
+	3,  // 12: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
 	13, // [13:13] is the sub-list for method output_type
 	13, // [13:13] is the sub-list for method input_type
 	11, // [11:13] is the sub-list for extension type_name
@@ -556,14 +617,14 @@ func file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_
 	if File_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[4].OneofWrappers = []any{}
+	file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 2,
 			NumServices:   0,
 		},

@@ -7,7 +7,6 @@
 package kubernetes
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -405,62 +404,6 @@ func (x *ContainerImage) GetPullSecretName() string {
 	return ""
 }
 
-// **IngressSpec** defines the ingress configuration for an API resource to be deployed in Kubernetes.
-// It allows you to enable or disable ingress and specify the endpoint domain name for internal and external access.
-type IngressSpec struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A flag to enable or disable ingress.
-	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	// The dns domain.
-	DnsDomain     string `protobuf:"bytes,2,opt,name=dns_domain,json=dnsDomain,proto3" json:"dns_domain,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *IngressSpec) Reset() {
-	*x = IngressSpec{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *IngressSpec) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*IngressSpec) ProtoMessage() {}
-
-func (x *IngressSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use IngressSpec.ProtoReflect.Descriptor instead.
-func (*IngressSpec) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *IngressSpec) GetEnabled() bool {
-	if x != nil {
-		return x.Enabled
-	}
-	return false
-}
-
-func (x *IngressSpec) GetDnsDomain() string {
-	if x != nil {
-		return x.DnsDomain
-	}
-	return ""
-}
-
 // **KubernetesSecretKey** is a wrapper for referencing a specific key within a Kubernetes Secret.
 // It is used to access sensitive data stored in secrets, such as passwords or API keys.
 type KubernetesSecretKey struct {
@@ -475,7 +418,7 @@ type KubernetesSecretKey struct {
 
 func (x *KubernetesSecretKey) Reset() {
 	*x = KubernetesSecretKey{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[7]
+	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -487,7 +430,7 @@ func (x *KubernetesSecretKey) String() string {
 func (*KubernetesSecretKey) ProtoMessage() {}
 
 func (x *KubernetesSecretKey) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[7]
+	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -500,7 +443,7 @@ func (x *KubernetesSecretKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesSecretKey.ProtoReflect.Descriptor instead.
 func (*KubernetesSecretKey) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{7}
+	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *KubernetesSecretKey) GetName() string {
@@ -521,7 +464,7 @@ var File_org_project_planton_shared_kubernetes_kubernetes_proto protoreflect.Fil
 
 const file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\n" +
-	"6org/project_planton/shared/kubernetes/kubernetes.proto\x12%org.project_planton.shared.kubernetes\x1a\x1bbuf/validate/validate.proto\"\xa4\x02\n" +
+	"6org/project_planton/shared/kubernetes/kubernetes.proto\x12%org.project_planton.shared.kubernetes\"\xa4\x02\n" +
 	"\tContainer\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05image\x18\x02 \x01(\tR\x05image\x12J\n" +
@@ -544,12 +487,7 @@ const file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\x0eContainerImage\x12\x12\n" +
 	"\x04repo\x18\x01 \x01(\tR\x04repo\x12\x10\n" +
 	"\x03tag\x18\x02 \x01(\tR\x03tag\x12(\n" +
-	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\"\xd1\x01\n" +
-	"\vIngressSpec\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1d\n" +
-	"\n" +
-	"dns_domain\x18\x02 \x01(\tR\tdnsDomain:\x88\x01\xbaH\x84\x01\x1a\x81\x01\n" +
-	"#ingress.enabled.dns_domain.required\x1aZthis.enabled && size(this.dns_domain) == 0? 'DNS Domain is required to enable ingress': ''\";\n" +
+	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\";\n" +
 	"\x13KubernetesSecretKey\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03key\x18\x02 \x01(\tR\x03keyB\xc7\x02\n" +
@@ -567,7 +505,7 @@ func file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP() [
 	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescData
 }
 
-var file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_org_project_planton_shared_kubernetes_kubernetes_proto_goTypes = []any{
 	(*Container)(nil),           // 0: org.project_planton.shared.kubernetes.Container
 	(*ContainerResources)(nil),  // 1: org.project_planton.shared.kubernetes.ContainerResources
@@ -575,8 +513,7 @@ var file_org_project_planton_shared_kubernetes_kubernetes_proto_goTypes = []any{
 	(*ContainerPort)(nil),       // 3: org.project_planton.shared.kubernetes.ContainerPort
 	(*CpuMemory)(nil),           // 4: org.project_planton.shared.kubernetes.CpuMemory
 	(*ContainerImage)(nil),      // 5: org.project_planton.shared.kubernetes.ContainerImage
-	(*IngressSpec)(nil),         // 6: org.project_planton.shared.kubernetes.IngressSpec
-	(*KubernetesSecretKey)(nil), // 7: org.project_planton.shared.kubernetes.KubernetesSecretKey
+	(*KubernetesSecretKey)(nil), // 6: org.project_planton.shared.kubernetes.KubernetesSecretKey
 }
 var file_org_project_planton_shared_kubernetes_kubernetes_proto_depIdxs = []int32{
 	3, // 0: org.project_planton.shared.kubernetes.Container.ports:type_name -> org.project_planton.shared.kubernetes.ContainerPort
@@ -602,7 +539,7 @@ func file_org_project_planton_shared_kubernetes_kubernetes_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc), len(file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

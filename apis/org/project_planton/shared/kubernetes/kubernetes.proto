@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package org.project_planton.shared.kubernetes;
 
-import "buf/validate/validate.proto";
-
 // **Container** defines the specifications for a container within a microservice deployment configuration.
 // This message mirrors the Kubernetes container spec (https://pkg.go.dev/k8s.io/api/core/v1#Container),
 // allowing you to specify container attributes such as the image, ports, resources, and environment variables.
@@ -78,24 +76,6 @@ message ContainerImage {
 
   // The name of the image pull secret for private image repositories.
   string pull_secret_name = 3;
-}
-
-// **IngressSpec** defines the ingress configuration for an API resource to be deployed in Kubernetes.
-// It allows you to enable or disable ingress and specify the endpoint domain name for internal and external access.
-message IngressSpec {
-  option (buf.validate.message).cel = {
-    id: "ingress.enabled.dns_domain.required"
-    expression:
-      "this.enabled && size(this.dns_domain) == 0"
-      "? 'DNS Domain is required to enable ingress'"
-      ": ''"
-  };
-
-  // A flag to enable or disable ingress.
-  bool enabled = 1;
-
-  // The dns domain.
-  string dns_domain = 2;
 }
 
 // **KubernetesSecretKey** is a wrapper for referencing a specific key within a Kubernetes Secret.

@@ -23,13 +23,10 @@ var _ = ginkgo.Describe("KubernetesPrometheus Custom Validation Tests", func() {
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KubernetesPrometheus",
 			Metadata: &shared.CloudResourceMetadata{
-				Name: "test-prom",
+				Name: "test-prometheus",
 			},
 			Spec: &KubernetesPrometheusSpec{
 				Container: &KubernetesPrometheusContainer{
-					Replicas:           1,
-					PersistenceEnabled: true,
-					DiskSize:           "10Gi",
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",
@@ -41,8 +38,9 @@ var _ = ginkgo.Describe("KubernetesPrometheus Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "prometheus.example.com",
+				Ingress: &KubernetesPrometheusIngress{
+					Enabled:  true,
+					Hostname: "prometheus.example.com",
 				},
 			},
 		}
@@ -51,6 +49,25 @@ var _ = ginkgo.Describe("KubernetesPrometheus Custom Validation Tests", func() {
 	ginkgo.Describe("When valid input is passed", func() {
 		ginkgo.Context("prometheus_kubernetes", func() {
 			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Ingress validation", func() {
+		ginkgo.Context("When ingress is enabled without hostname", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Ingress.Hostname = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is disabled", func() {
+			ginkgo.It("should not require hostname", func() {
+				input.Spec.Ingress.Enabled = false
+				input.Spec.Ingress.Hostname = ""
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})

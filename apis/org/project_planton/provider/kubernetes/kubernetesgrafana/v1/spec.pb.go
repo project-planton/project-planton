@@ -31,7 +31,7 @@ type KubernetesGrafanaSpec struct {
 	// The container specifications for the Grafana deployment.
 	Container *KubernetesGrafanaSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Grafana deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesGrafanaIngress `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,11 +73,68 @@ func (x *KubernetesGrafanaSpec) GetContainer() *KubernetesGrafanaSpecContainer {
 	return nil
 }
 
-func (x *KubernetesGrafanaSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesGrafanaSpec) GetIngress() *KubernetesGrafanaIngress {
 	if x != nil {
 		return x.Ingress
 	}
 	return nil
+}
+
+// *
+// KubernetesGrafanaIngress defines ingress configuration for Grafana.
+type KubernetesGrafanaIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "grafana.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesGrafanaIngress) Reset() {
+	*x = KubernetesGrafanaIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesGrafanaIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesGrafanaIngress) ProtoMessage() {}
+
+func (x *KubernetesGrafanaIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesGrafanaIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesGrafanaIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesGrafanaIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesGrafanaIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // **KubernetesGrafanaSpecContainer** specifies the container configuration for the Grafana application.
@@ -93,7 +150,7 @@ type KubernetesGrafanaSpecContainer struct {
 
 func (x *KubernetesGrafanaSpecContainer) Reset() {
 	*x = KubernetesGrafanaSpecContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -105,7 +162,7 @@ func (x *KubernetesGrafanaSpecContainer) String() string {
 func (*KubernetesGrafanaSpecContainer) ProtoMessage() {}
 
 func (x *KubernetesGrafanaSpecContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -118,7 +175,7 @@ func (x *KubernetesGrafanaSpecContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesGrafanaSpecContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesGrafanaSpecContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesGrafanaSpecContainer) GetResources() *kubernetes.ContainerResources {
@@ -132,10 +189,14 @@ var File_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xea\x01\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\x8e\x02\n" +
 	"\x15KubernetesGrafanaSpec\x12\x82\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
-	"\aingress\x18\x03 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\x9c\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12p\n" +
+	"\aingress\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngressR\aingress\"\xcf\x01\n" +
+	"\x18KubernetesGrafanaIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x9c\x01\n" +
 	"\x1eKubernetesGrafanaSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -155,16 +216,16 @@ func file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_prot
 	return file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_goTypes = []any{
 	(*KubernetesGrafanaSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec
-	(*KubernetesGrafanaSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
-	(*kubernetes.IngressSpec)(nil),         // 2: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesGrafanaIngress)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngress
+	(*KubernetesGrafanaSpecContainer)(nil), // 2: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
 	(*kubernetes.ContainerResources)(nil),  // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
-	2, // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
+	1, // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngress
 	3, // 2: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
@@ -184,7 +245,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

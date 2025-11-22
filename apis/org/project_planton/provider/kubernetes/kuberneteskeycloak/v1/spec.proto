@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.kuberneteskeycloak.v1;
 
+import "buf/validate/validate.proto";
 import "org/project_planton/shared/kubernetes/kubernetes.proto";
 import "org/project_planton/shared/kubernetes/options.proto";
 
@@ -13,7 +14,25 @@ message KubernetesKeycloakSpec {
   KubernetesKeycloakContainer container = 1;
 
   // The ingress configuration for the Keycloak deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 2;
+  KubernetesKeycloakIngress ingress = 2;
+}
+
+/**
+ * KubernetesKeycloakIngress defines ingress configuration for Keycloak.
+ */
+message KubernetesKeycloakIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "keycloak.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 // **KubernetesKeycloakContainer** specifies the container configuration for the Keycloak application.

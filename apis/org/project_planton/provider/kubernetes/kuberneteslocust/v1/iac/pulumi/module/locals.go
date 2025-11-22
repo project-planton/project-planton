@@ -86,15 +86,15 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteslocustv1.Kubern
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||
-		target.Spec.Ingress.DnsDomain == "" {
+		target.Spec.Ingress.Hostname == "" {
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	// Use the hostname directly from spec
+	locals.IngressExternalHostname = target.Spec.Ingress.Hostname
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	// Internal hostname (private ingress) - prepend internal-
+	locals.IngressInternalHostname = fmt.Sprintf("internal-%s", target.Spec.Ingress.Hostname)
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
@@ -110,9 +110,31 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteslocustv1.Kubern
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
+	// Extract the domain from hostname for certificate issuer name
+	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
+	locals.IngressCertClusterIssuerName = dnsDomain
 
 	locals.IngressCertSecretName = locals.Namespace
 
 	return locals
+}
+
+// extractDomainFromHostname extracts the domain from a hostname
+// Example: "locust.example.com" -> "example.com"
+func extractDomainFromHostname(hostname string) string {
+	// Split by dots and take everything after the first part
+	// This is a simple implementation - assumes standard domain structure
+	parts := []rune(hostname)
+	firstDotIndex := -1
+	for i, char := range parts {
+		if char == '.' {
+			firstDotIndex = i
+			break
+		}
+	}
+	if firstDotIndex > 0 && firstDotIndex < len(hostname)-1 {
+		return hostname[firstDotIndex+1:]
+	}
+	// If no dot found or dot is at the end, return the hostname as-is
+	return hostname
 }

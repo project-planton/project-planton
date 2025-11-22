@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("KubernetesLocust Custom Validation Tests", func() {
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KubernetesLocust",
 			Metadata: &shared.CloudResourceMetadata{
-				Name: "sample-locust",
+				Name: "test-locust",
 			},
 			Spec: &KubernetesLocustSpec{
 				MasterContainer: &KubernetesLocustContainer{
@@ -52,19 +52,14 @@ var _ = ginkgo.Describe("KubernetesLocust Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "locust.example.com",
+				Ingress: &KubernetesLocustIngress{
+					Enabled:  true,
+					Hostname: "locust.example.com",
 				},
 				LoadTest: &KubernetesLocustLoadTest{
-					Name:          "example-loadtest",
-					MainPyContent: "print('Hello, Locust')",
-					LibFilesContent: map[string]string{
-						"utils.py": "def helper(): pass",
-					},
-					PipPackages: []string{"requests", "locust"},
-				},
-				HelmValues: map[string]string{
-					"someKey": "someValue",
+					Name:            "test-load",
+					MainPyContent:   "from locust import HttpUser, task\n\nclass MyUser(HttpUser):\n    @task\n    def my_task(self):\n        self.client.get('/')",
+					LibFilesContent: map[string]string{"utils.py": "# utility functions"},
 				},
 			},
 		}
@@ -73,6 +68,25 @@ var _ = ginkgo.Describe("KubernetesLocust Custom Validation Tests", func() {
 	ginkgo.Describe("When valid input is passed", func() {
 		ginkgo.Context("locust_kubernetes", func() {
 			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Ingress validation", func() {
+		ginkgo.Context("When ingress is enabled without hostname", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Ingress.Hostname = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is disabled", func() {
+			ginkgo.It("should not require hostname", func() {
+				input.Spec.Ingress.Enabled = false
+				input.Spec.Ingress.Hostname = ""
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
