@@ -85,9 +85,12 @@ func subnetwork(ctx *pulumi.Context,
 	// This ensures the Java StackOutputsMapToProtoLoader can properly map them
 	createdSubnetwork.SecondaryIpRanges.ApplyT(func(ranges []compute.SubnetworkSecondaryIpRange) error {
 		for i, r := range ranges {
+			// Export each field individually (dereference pointer fields)
 			ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "range_name"), pulumi.String(r.RangeName))
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "ip_cidr_range"), pulumi.String(r.IpCidrRange))
-			// Note: reserved_internal_range is optional and often empty, but export it for completeness
+			if r.IpCidrRange != nil {
+				ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "ip_cidr_range"), pulumi.String(*r.IpCidrRange))
+			}
+			// Note: reserved_internal_range is optional and often empty
 			if r.ReservedInternalRange != nil && *r.ReservedInternalRange != "" {
 				ctx.Export(fmt.Sprintf("%s.%d.%s", OpSecondaryRanges, i, "reserved_internal_range"), pulumi.String(*r.ReservedInternalRange))
 			}
