@@ -45,6 +45,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 			Name:                  pulumi.String(locals.GcpGkeCluster.Spec.ClusterName),
 			Project:               pulumi.String(locals.GcpGkeCluster.Spec.ProjectId.GetValue()),
 			Location:              pulumi.String(locals.GcpGkeCluster.Spec.Location),
+			Network:               pulumi.String(locals.GcpGkeCluster.Spec.NetworkSelfLink.GetValue()),
 			Subnetwork:            pulumi.String(locals.GcpGkeCluster.Spec.SubnetworkSelfLink.GetValue()),
 			RemoveDefaultNodePool: pulumi.Bool(true),
 			DeletionProtection:    pulumi.Bool(false),

@@ -16,6 +16,9 @@ variable "spec" {
     project_id = object({
       value = string
     })
+    network_self_link = object({
+      value = string
+    })
     location                     = string
     subnetwork_self_link        = object({
       value = string

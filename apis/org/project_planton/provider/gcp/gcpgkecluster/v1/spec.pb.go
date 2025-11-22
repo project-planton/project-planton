@@ -85,31 +85,33 @@ type GcpGkeClusterSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// GCP project in which to create the cluster (reference to GcpProject resource).
 	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// VPC Network to use for this cluster (must exist).
+	NetworkSelfLink *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=network_self_link,json=networkSelfLink,proto3" json:"network_self_link,omitempty"`
 	// Location for the cluster: region (for regional) or zone (for zonal).
-	Location string `protobuf:"bytes,2,opt,name=location,proto3" json:"location,omitempty"`
+	Location string `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
 	// VPC Subnetwork to attach this cluster (must exist; carries primary & secondary IP ranges).
-	SubnetworkSelfLink *v1.StringValueOrRef `protobuf:"bytes,3,opt,name=subnetwork_self_link,json=subnetworkSelfLink,proto3" json:"subnetwork_self_link,omitempty"`
+	SubnetworkSelfLink *v1.StringValueOrRef `protobuf:"bytes,4,opt,name=subnetwork_self_link,json=subnetworkSelfLink,proto3" json:"subnetwork_self_link,omitempty"`
 	// Name of the secondary range on the subnetwork for Pod IPs (VPC-native aliasing).
-	ClusterSecondaryRangeName *v1.StringValueOrRef `protobuf:"bytes,4,opt,name=cluster_secondary_range_name,json=clusterSecondaryRangeName,proto3" json:"cluster_secondary_range_name,omitempty"`
+	ClusterSecondaryRangeName *v1.StringValueOrRef `protobuf:"bytes,5,opt,name=cluster_secondary_range_name,json=clusterSecondaryRangeName,proto3" json:"cluster_secondary_range_name,omitempty"`
 	// Name of the secondary range on the subnetwork for Service IPs.
-	ServicesSecondaryRangeName *v1.StringValueOrRef `protobuf:"bytes,5,opt,name=services_secondary_range_name,json=servicesSecondaryRangeName,proto3" json:"services_secondary_range_name,omitempty"`
+	ServicesSecondaryRangeName *v1.StringValueOrRef `protobuf:"bytes,6,opt,name=services_secondary_range_name,json=servicesSecondaryRangeName,proto3" json:"services_secondary_range_name,omitempty"`
 	// RFC1918 /28 CIDR block for the Kubernetes control-plane masters (private endpoint range).
-	MasterIpv4CidrBlock string `protobuf:"bytes,6,opt,name=master_ipv4_cidr_block,json=masterIpv4CidrBlock,proto3" json:"master_ipv4_cidr_block,omitempty"`
+	MasterIpv4CidrBlock string `protobuf:"bytes,7,opt,name=master_ipv4_cidr_block,json=masterIpv4CidrBlock,proto3" json:"master_ipv4_cidr_block,omitempty"`
 	// Whether nodes should be created with public IPs
-	EnablePublicNodes bool `protobuf:"varint,7,opt,name=enable_public_nodes,json=enablePublicNodes,proto3" json:"enable_public_nodes,omitempty"`
+	EnablePublicNodes bool `protobuf:"varint,8,opt,name=enable_public_nodes,json=enablePublicNodes,proto3" json:"enable_public_nodes,omitempty"`
 	// Kubernetes release channel for auto-upgrades (Rapid, Regular, Stable, or NONE).
-	ReleaseChannel *GkeReleaseChannel `protobuf:"varint,8,opt,name=release_channel,json=releaseChannel,proto3,enum=org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel,oneof" json:"release_channel,omitempty"`
+	ReleaseChannel *GkeReleaseChannel `protobuf:"varint,9,opt,name=release_channel,json=releaseChannel,proto3,enum=org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel,oneof" json:"release_channel,omitempty"`
 	// Disable network policy enforcement (Calico)
-	DisableNetworkPolicy bool `protobuf:"varint,9,opt,name=disable_network_policy,json=disableNetworkPolicy,proto3" json:"disable_network_policy,omitempty"`
+	DisableNetworkPolicy bool `protobuf:"varint,10,opt,name=disable_network_policy,json=disableNetworkPolicy,proto3" json:"disable_network_policy,omitempty"`
 	// Disable Workload Identity for pods (mapping KSA to GCP service accounts).
-	DisableWorkloadIdentity bool `protobuf:"varint,10,opt,name=disable_workload_identity,json=disableWorkloadIdentity,proto3" json:"disable_workload_identity,omitempty"`
+	DisableWorkloadIdentity bool `protobuf:"varint,11,opt,name=disable_workload_identity,json=disableWorkloadIdentity,proto3" json:"disable_workload_identity,omitempty"`
 	// Reference to a Cloud NAT configuration to allow outbound internet for private nodes.
-	RouterNatName *v1.StringValueOrRef `protobuf:"bytes,12,opt,name=router_nat_name,json=routerNatName,proto3" json:"router_nat_name,omitempty"`
+	RouterNatName *v1.StringValueOrRef `protobuf:"bytes,13,opt,name=router_nat_name,json=routerNatName,proto3" json:"router_nat_name,omitempty"`
 	// Name of the GKE cluster to create in GCP.
 	// Must be 1-40 characters, lowercase letters, numbers, or hyphens.
 	// Must start with a lowercase letter and end with a lowercase letter or number.
 	// Example: "my-gke-cluster", "prod-cluster"
-	ClusterName   string `protobuf:"bytes,13,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	ClusterName   string `protobuf:"bytes,14,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -147,6 +149,13 @@ func (*GcpGkeClusterSpec) Descriptor() ([]byte, []int) {
 func (x *GcpGkeClusterSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
+	}
+	return nil
+}
+
+func (x *GcpGkeClusterSpec) GetNetworkSelfLink() *v1.StringValueOrRef {
+	if x != nil {
+		return x.NetworkSelfLink
 	}
 	return nil
 }
@@ -232,23 +241,23 @@ var File_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto protorefle
 
 const file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xcd\n" +
-	"\n" +
+	"<org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xdf\v\n" +
 	"\x11GcpGkeClusterSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12C\n" +
-	"\blocation\x18\x02 \x01(\tB'\xbaH$\xc8\x01\x01r\x1f2\x1d^[a-z]+-[a-z]+[0-9](-[a-z])?$R\blocation\x12\x95\x01\n" +
-	"\x14subnetwork_self_link\x18\x03 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB'\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x18status.outputs.self_linkR\x12subnetworkSelfLink\x12\xb4\x01\n" +
-	"\x1ccluster_secondary_range_name\x18\x04 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB7\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a(status.outputs.pods_secondary_range_nameR\x19clusterSecondaryRangeName\x12\xba\x01\n" +
-	"\x1dservices_secondary_range_name\x18\x05 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB;\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a,status.outputs.services_secondary_range_nameR\x1aservicesSecondaryRangeName\x12W\n" +
-	"\x16master_ipv4_cidr_block\x18\x06 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+\\/28$R\x13masterIpv4CidrBlock\x12.\n" +
-	"\x13enable_public_nodes\x18\a \x01(\bR\x11enablePublicNodes\x12\x7f\n" +
-	"\x0frelease_channel\x18\b \x01(\x0e2D.org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARH\x00R\x0ereleaseChannel\x88\x01\x01\x124\n" +
-	"\x16disable_network_policy\x18\t \x01(\bR\x14disableNetworkPolicy\x12:\n" +
-	"\x19disable_workload_identity\x18\n" +
-	" \x01(\bR\x17disableWorkloadIdentity\x12\x80\x01\n" +
-	"\x0frouter_nat_name\x18\f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a\rmetadata.nameR\rrouterNatName\x12N\n" +
-	"\fcluster_name\x18\r \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$R\vclusterNameB\x12\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8f\x01\n" +
+	"\x11network_self_link\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB'\xbaH\x03\xc8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a\x18status.outputs.self_linkR\x0fnetworkSelfLink\x12C\n" +
+	"\blocation\x18\x03 \x01(\tB'\xbaH$\xc8\x01\x01r\x1f2\x1d^[a-z]+-[a-z]+[0-9](-[a-z])?$R\blocation\x12\x95\x01\n" +
+	"\x14subnetwork_self_link\x18\x04 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB'\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x18status.outputs.self_linkR\x12subnetworkSelfLink\x12\xb4\x01\n" +
+	"\x1ccluster_secondary_range_name\x18\x05 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB7\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a(status.outputs.pods_secondary_range_nameR\x19clusterSecondaryRangeName\x12\xba\x01\n" +
+	"\x1dservices_secondary_range_name\x18\x06 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB;\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a,status.outputs.services_secondary_range_nameR\x1aservicesSecondaryRangeName\x12W\n" +
+	"\x16master_ipv4_cidr_block\x18\a \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+\\/28$R\x13masterIpv4CidrBlock\x12.\n" +
+	"\x13enable_public_nodes\x18\b \x01(\bR\x11enablePublicNodes\x12\x7f\n" +
+	"\x0frelease_channel\x18\t \x01(\x0e2D.org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARH\x00R\x0ereleaseChannel\x88\x01\x01\x124\n" +
+	"\x16disable_network_policy\x18\n" +
+	" \x01(\bR\x14disableNetworkPolicy\x12:\n" +
+	"\x19disable_workload_identity\x18\v \x01(\bR\x17disableWorkloadIdentity\x12\x80\x01\n" +
+	"\x0frouter_nat_name\x18\r \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a\rmetadata.nameR\rrouterNatName\x12N\n" +
+	"\fcluster_name\x18\x0e \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$R\vclusterNameB\x12\n" +
 	"\x10_release_channel*f\n" +
 	"\x11GkeReleaseChannel\x12#\n" +
 	"\x1fgke_release_channel_unspecified\x10\x00\x12\t\n" +
@@ -280,16 +289,17 @@ var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_goTypes = 
 }
 var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_depIdxs = []int32{
 	2, // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 1: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.subnetwork_self_link:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 2: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.cluster_secondary_range_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 3: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.services_secondary_range_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	0, // 4: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.release_channel:type_name -> org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel
-	2, // 5: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.router_nat_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	2, // 1: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.network_self_link:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.subnetwork_self_link:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 3: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.cluster_secondary_range_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 4: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.services_secondary_range_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 5: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.release_channel:type_name -> org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel
+	2, // 6: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.router_nat_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_init() }

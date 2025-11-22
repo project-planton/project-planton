@@ -32,6 +32,9 @@ var _ = ginkgo.Describe("GcpGkeClusterSpec Custom Validation Tests", func() {
 						ProjectId: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
 						},
+						NetworkSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
 						Location: "us-central1",
 						SubnetworkSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/regions/us-central1/subnetworks/test-subnet"},
