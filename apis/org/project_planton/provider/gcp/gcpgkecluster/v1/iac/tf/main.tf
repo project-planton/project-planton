@@ -8,7 +8,7 @@ resource "google_container_cluster" "cluster" {
   location = var.spec.location
 
   # VPC-native networking configuration
-  network    = ""  # Derived from subnetwork (not needed when subnetwork is specified)
+  network    = var.spec.network_self_link.value
   subnetwork = var.spec.subnetwork_self_link.value
 
   # Remove default node pool immediately (best practice)
