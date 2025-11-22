@@ -24,4 +24,6 @@ message CloudResourceMetadata {
   repeated string tags = 8;
   //explicit relationships for the cloud-resource with other cloud-resources
   repeated org.project_planton.shared.relationship.v1.CloudResourceRelationship relationships = 9;
+  // group for visual organization in DAG (e.g., "app/services", "infrastructure/networking")
+  string group = 10;
 }

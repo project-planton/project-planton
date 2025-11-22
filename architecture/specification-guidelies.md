@@ -192,6 +192,132 @@ README files should show what users want to achieve, not how it's implemented:
 **Good:** "Deploy a production MongoDB cluster with backup enabled"  
 **Bad:** "Configure Percona operator CRD with specific replset parameters"
 
+## Enum Design Patterns
+
+Enums in specifications require special attention to maintain clean, intuitive user experiences while preventing naming collisions.
+
+### Nesting Enums Inside Messages
+
+**Always nest enums inside the message where they are used.** This provides automatic namespacing and keeps related types together.
+
+**Good Example:**
+```protobuf
+message KubernetesNamespaceResourceProfile {
+  enum KubernetesNamespaceBuiltInProfile {
+    built_in_profile_unspecified = 0;
+    small = 1;
+    medium = 2;
+    large = 3;
+    xlarge = 4;
+  }
+  
+  oneof profile_config {
+    KubernetesNamespaceBuiltInProfile preset = 1;
+    KubernetesNamespaceCustomQuotas custom = 2;
+  }
+}
+```
+
+**Bad Example:**
+```protobuf
+// ❌ Top-level enum pollutes package namespace
+enum BuildProfile {
+  BUILD_PROFILE_SMALL = 1;
+  BUILD_PROFILE_MEDIUM = 2;
+}
+
+message ResourceProfile {
+  BuildProfile preset = 1;
+}
+```
+
+### Lowercase Enum Values
+
+Use **lowercase values without prefixes** (except for the UNSPECIFIED value). This creates cleaner YAML manifests for users.
+
+**User Experience Impact:**
+
+```yaml
+# ✅ Good: Clean, readable manifest
+resource_profile:
+  preset: small
+pod_security_standard: baseline
+service_mesh_config:
+  mesh_type: istio
+
+# ❌ Bad: Verbose, uppercase manifest
+resource_profile:
+  preset: BUILT_IN_PROFILE_SMALL
+pod_security_standard: POD_SECURITY_STANDARD_BASELINE
+service_mesh_config:
+  mesh_type: SERVICE_MESH_TYPE_ISTIO
+```
+
+### Naming Convention
+
+1. **UNSPECIFIED values**: Use `lower_snake_case` with full enum prefix
+   - Pattern: `{enum_name_in_snake_case}_unspecified`
+   - Examples: `built_in_profile_unspecified`, `service_mesh_type_unspecified`
+   - Rationale: Makes the zero value explicit and searchable
+
+2. **Other values**: Use lowercase without prefixes
+   - Single words: `small`, `medium`, `large`, `istio`, `linkerd`
+   - Multiple words: Minimal underscores, only when needed for clarity
+   - Examples: `baseline`, `restricted`, `privileged`
+
+### Complete Example
+
+```protobuf
+message KubernetesNamespaceServiceMeshConfig {
+  enum KubernetesNamespaceServiceMeshType {
+    // Always prefix UNSPECIFIED with enum name
+    service_mesh_type_unspecified = 0;
+    
+    // Clean, lowercase values for actual options
+    istio = 1;
+    linkerd = 2;
+    consul = 3;
+  }
+  
+  bool enabled = 1;
+  KubernetesNamespaceServiceMeshType mesh_type = 2;
+  string revision_tag = 3;
+}
+```
+
+**User's YAML:**
+```yaml
+service_mesh_config:
+  enabled: true
+  mesh_type: istio
+  revision_tag: "prod-stable"
+```
+
+### Benefits of This Pattern
+
+1. **Cleaner User Experience**: Lowercase values are easier to read and type
+2. **No Namespace Collisions**: Protobuf nesting prevents enum value conflicts
+3. **Better IDE Support**: Nested enums provide better code completion
+4. **Consistent Patterns**: All components follow the same style
+
+### Exceptions
+
+Use uppercase values **only** when representing external standards where uppercase is conventional:
+
+```protobuf
+message DnsRecordConfig {
+  enum DnsRecordType {
+    dns_record_type_unspecified = 0;
+    A = 1;      // DNS standard uses uppercase
+    AAAA = 2;   // DNS standard uses uppercase
+    CNAME = 3;  // DNS standard uses uppercase
+    MX = 4;     // DNS standard uses uppercase
+  }
+}
+```
+
+Add a comment explaining why you're deviating from the lowercase pattern.
+
 ## Validation
 
 When you write a spec, ask yourself:
@@ -201,6 +327,7 @@ When you write a spec, ask yourself:
 3. ✅ **Intuitive?** Would a Kubernetes engineer understand it without reading documentation?
 4. ✅ **Future-proof?** Can we add features without breaking changes?
 5. ✅ **Sensible defaults?** Can users deploy with minimal configuration?
+6. ✅ **Clean enums?** Are enums nested with lowercase values for better UX?
 
 If you answer "no" to any question, revisit the design.
 

@@ -94,9 +94,7 @@ type CloudResourceRelationship struct {
 	// Name of the related resource.
 	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// Type of relationship between the resources.
-	Type CloudResourceRelationship_RelationshipType `protobuf:"varint,4,opt,name=type,proto3,enum=org.project_planton.shared.relationship.v1.CloudResourceRelationship_RelationshipType" json:"type,omitempty"`
-	// Optional group to further categorize the relationship.
-	Group         string `protobuf:"bytes,5,opt,name=group,proto3" json:"group,omitempty"`
+	Type          CloudResourceRelationship_RelationshipType `protobuf:"varint,4,opt,name=type,proto3,enum=org.project_planton.shared.relationship.v1.CloudResourceRelationship_RelationshipType" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -159,24 +157,16 @@ func (x *CloudResourceRelationship) GetType() CloudResourceRelationship_Relation
 	return CloudResourceRelationship_unspecified
 }
 
-func (x *CloudResourceRelationship) GetGroup() string {
-	if x != nil {
-		return x.Group
-	}
-	return ""
-}
-
 var File_org_project_planton_shared_relationship_v1_relationship_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_shared_relationship_v1_relationship_proto_rawDesc = "" +
 	"\n" +
-	"=org/project_planton/shared/relationship/v1/relationship.proto\x12*org.project_planton.shared.relationship.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1aForg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\x8c\x03\n" +
+	"=org/project_planton/shared/relationship/v1/relationship.proto\x12*org.project_planton.shared.relationship.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1aForg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xf6\x02\n" +
 	"\x19CloudResourceRelationship\x12[\n" +
 	"\x04kind\x18\x01 \x01(\x0e2?.org.project_planton.shared.cloudresourcekind.CloudResourceKindB\x06\xbaH\x03\xc8\x01\x01R\x04kind\x12\x10\n" +
 	"\x03env\x18\x02 \x01(\tR\x03env\x12\x1a\n" +
 	"\x04name\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12r\n" +
-	"\x04type\x18\x04 \x01(\x0e2V.org.project_planton.shared.relationship.v1.CloudResourceRelationship.RelationshipTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x14\n" +
-	"\x05group\x18\x05 \x01(\tR\x05group\"Z\n" +
+	"\x04type\x18\x04 \x01(\x0e2V.org.project_planton.shared.relationship.v1.CloudResourceRelationship.RelationshipTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\"Z\n" +
 	"\x10RelationshipType\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x0e\n" +
 	"\n" +

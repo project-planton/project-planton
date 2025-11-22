@@ -28,6 +28,4 @@ message CloudResourceRelationship {
   string name = 3 [(buf.validate.field).required = true];
   // Type of relationship between the resources.
   RelationshipType type = 4 [(buf.validate.field).required = true];
-  // Optional group to further categorize the relationship.
-  string group = 5;
 }

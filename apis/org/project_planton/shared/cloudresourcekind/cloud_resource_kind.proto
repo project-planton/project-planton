@@ -520,6 +520,11 @@ enum CloudResourceKind {
     id_prefix: "k8shrbr"
     kubernetes_meta: {namespace_prefix: "harbor"}
   }];
+  // KubernetesNamespace = 836 [(kind_meta) = {
+  //   provider: kubernetes
+  //   version: v1
+  //   id_prefix: "k8sns"
+  // }];
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200 [(kind_meta) = {

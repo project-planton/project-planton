@@ -43,6 +43,8 @@ type CloudResourceMetadata struct {
 	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	// explicit relationships for the cloud-resource with other cloud-resources
 	Relationships []*v1.CloudResourceRelationship `protobuf:"bytes,9,rep,name=relationships,proto3" json:"relationships,omitempty"`
+	// group for visual organization in DAG (e.g., "app/services", "infrastructure/networking")
+	Group         string `protobuf:"bytes,10,opt,name=group,proto3" json:"group,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -140,11 +142,18 @@ func (x *CloudResourceMetadata) GetRelationships() []*v1.CloudResourceRelationsh
 	return nil
 }
 
+func (x *CloudResourceMetadata) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
 var File_org_project_planton_shared_metadata_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\n" +
-	")org/project_planton/shared/metadata.proto\x12\x1aorg.project_planton.shared\x1a=org/project_planton/shared/relationship/v1/relationship.proto\"\xac\x04\n" +
+	")org/project_planton/shared/metadata.proto\x12\x1aorg.project_planton.shared\x1a=org/project_planton/shared/relationship/v1/relationship.proto\"\xc2\x04\n" +
 	"\x15CloudResourceMetadata\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x0e\n" +
@@ -154,7 +163,9 @@ const file_org_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\x06labels\x18\x06 \x03(\v2=.org.project_planton.shared.CloudResourceMetadata.LabelsEntryR\x06labels\x12d\n" +
 	"\vannotations\x18\a \x03(\v2B.org.project_planton.shared.CloudResourceMetadata.AnnotationsEntryR\vannotations\x12\x12\n" +
 	"\x04tags\x18\b \x03(\tR\x04tags\x12k\n" +
-	"\rrelationships\x18\t \x03(\v2E.org.project_planton.shared.relationship.v1.CloudResourceRelationshipR\rrelationships\x1a9\n" +
+	"\rrelationships\x18\t \x03(\v2E.org.project_planton.shared.relationship.v1.CloudResourceRelationshipR\rrelationships\x12\x14\n" +
+	"\x05group\x18\n" +
+	" \x01(\tR\x05group\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +

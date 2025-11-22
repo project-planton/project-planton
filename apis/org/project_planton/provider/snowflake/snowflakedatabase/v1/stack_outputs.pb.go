@@ -22,24 +22,29 @@ const (
 )
 
 // snowflake-database stack outputs
-// https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#outputs
+// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#outputs
 type SnowflakeDatabaseStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The provider-assigned unique ID for this managed resource.
-	// https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#id_yaml
+	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#id_yaml
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster. (e.g., SASL_SSL://pkc-00000.us-central1.gcp.snowflake.cloud:9092).
-	// https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#bootstrapendpoint_yaml
-	BootstrapEndpoint string `protobuf:"bytes,2,opt,name=bootstrap_endpoint,json=bootstrapEndpoint,proto3" json:"bootstrap_endpoint,omitempty"`
-	// The Snowflake Resource Name of the Kafka cluster,
-	// for example, crn://snowflake.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123/cloud-cluster=lkc-abc123.
-	// https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#rbaccrn_yaml
-	Crn string `protobuf:"bytes,3,opt,name=crn,proto3" json:"crn,omitempty"`
-	// The REST endpoint of the Kafka cluster (e.g., https://pkc-00000.us-central1.gcp.snowflake.cloud:443).
-	// https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#restendpoint_yaml
-	RestEndpoint  string `protobuf:"bytes,4,opt,name=rest_endpoint,json=restEndpoint,proto3" json:"rest_endpoint,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The fully-qualified name of the created database
+	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#name_yaml
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// The owner role of the database
+	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#owner_yaml
+	Owner string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
+	// Timestamp when the database was created
+	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#createdon_yaml
+	CreatedOn string `protobuf:"bytes,4,opt,name=created_on,json=createdOn,proto3" json:"created_on,omitempty"`
+	// Boolean indicating if the database is transient
+	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#istransient_yaml
+	IsTransient bool `protobuf:"varint,5,opt,name=is_transient,json=isTransient,proto3" json:"is_transient,omitempty"`
+	// Configured data retention time in days
+	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#dataretentiontimeindays_yaml
+	DataRetentionTimeInDays int32 `protobuf:"varint,6,opt,name=data_retention_time_in_days,json=dataRetentionTimeInDays,proto3" json:"data_retention_time_in_days,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *SnowflakeDatabaseStackOutputs) Reset() {
@@ -79,37 +84,54 @@ func (x *SnowflakeDatabaseStackOutputs) GetId() string {
 	return ""
 }
 
-func (x *SnowflakeDatabaseStackOutputs) GetBootstrapEndpoint() string {
+func (x *SnowflakeDatabaseStackOutputs) GetName() string {
 	if x != nil {
-		return x.BootstrapEndpoint
+		return x.Name
 	}
 	return ""
 }
 
-func (x *SnowflakeDatabaseStackOutputs) GetCrn() string {
+func (x *SnowflakeDatabaseStackOutputs) GetOwner() string {
 	if x != nil {
-		return x.Crn
+		return x.Owner
 	}
 	return ""
 }
 
-func (x *SnowflakeDatabaseStackOutputs) GetRestEndpoint() string {
+func (x *SnowflakeDatabaseStackOutputs) GetCreatedOn() string {
 	if x != nil {
-		return x.RestEndpoint
+		return x.CreatedOn
 	}
 	return ""
+}
+
+func (x *SnowflakeDatabaseStackOutputs) GetIsTransient() bool {
+	if x != nil {
+		return x.IsTransient
+	}
+	return false
+}
+
+func (x *SnowflakeDatabaseStackOutputs) GetDataRetentionTimeInDays() int32 {
+	if x != nil {
+		return x.DataRetentionTimeInDays
+	}
+	return 0
 }
 
 var File_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/provider/snowflake/snowflakedatabase/v1/stack_outputs.proto\x12;org.project_planton.provider.snowflake.snowflakedatabase.v1\"\x95\x01\n" +
+	"Oorg/project_planton/provider/snowflake/snowflakedatabase/v1/stack_outputs.proto\x12;org.project_planton.provider.snowflake.snowflakedatabase.v1\"\xd9\x01\n" +
 	"\x1dSnowflakeDatabaseStackOutputs\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12-\n" +
-	"\x12bootstrap_endpoint\x18\x02 \x01(\tR\x11bootstrapEndpoint\x12\x10\n" +
-	"\x03crn\x18\x03 \x01(\tR\x03crn\x12#\n" +
-	"\rrest_endpoint\x18\x04 \x01(\tR\frestEndpointB\xe4\x03\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05owner\x18\x03 \x01(\tR\x05owner\x12\x1d\n" +
+	"\n" +
+	"created_on\x18\x04 \x01(\tR\tcreatedOn\x12!\n" +
+	"\fis_transient\x18\x05 \x01(\bR\visTransient\x12<\n" +
+	"\x1bdata_retention_time_in_days\x18\x06 \x01(\x05R\x17dataRetentionTimeInDaysB\xe4\x03\n" +
 	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
 
 var (

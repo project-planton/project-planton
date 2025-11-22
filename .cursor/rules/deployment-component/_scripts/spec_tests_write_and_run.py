@@ -48,8 +48,8 @@ def find_repo_root(start_dir: str) -> str:
 def build_test_path(repo_root: str, provider: str, kind_folder: str) -> Tuple[str, str, str]:
     base_rel = os.path.join(
         "apis",
-        "project",
-        "planton",
+        "org",
+        "project_planton",
         "provider",
         provider,
         kind_folder,
