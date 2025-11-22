@@ -38,8 +38,9 @@ var _ = ginkgo.Describe("KubernetesKeycloak Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "keycloak.example.com",
+				Ingress: &KubernetesKeycloakIngress{
+					Enabled:  true,
+					Hostname: "keycloak.example.com",
 				},
 			},
 		}
@@ -48,6 +49,25 @@ var _ = ginkgo.Describe("KubernetesKeycloak Custom Validation Tests", func() {
 	ginkgo.Describe("When valid input is passed", func() {
 		ginkgo.Context("keycloak_kubernetes", func() {
 			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Ingress validation", func() {
+		ginkgo.Context("When ingress is enabled without hostname", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Ingress.Hostname = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is disabled", func() {
+			ginkgo.It("should not require hostname", func() {
+				input.Spec.Ingress.Enabled = false
+				input.Spec.Ingress.Hostname = ""
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})

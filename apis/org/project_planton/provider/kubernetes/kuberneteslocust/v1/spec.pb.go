@@ -37,7 +37,7 @@ type KubernetesLocustSpec struct {
 	// This defines the resource allocation and number of replicas for the worker nodes.
 	WorkerContainer *KubernetesLocustContainer `protobuf:"bytes,2,opt,name=worker_container,json=workerContainer,proto3" json:"worker_container,omitempty"`
 	// The ingress configuration for the Locust deployment.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesLocustIngress `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The load test parameters, including the main test script, additional library files,
 	// and extra Python pip packages needed for test execution.
 	// This specifies how the Locust nodes will simulate traffic and interact with the target application.
@@ -96,7 +96,7 @@ func (x *KubernetesLocustSpec) GetWorkerContainer() *KubernetesLocustContainer {
 	return nil
 }
 
-func (x *KubernetesLocustSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesLocustSpec) GetIngress() *KubernetesLocustIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -257,6 +257,63 @@ func (x *KubernetesLocustLoadTest) GetPipPackages() []string {
 	return nil
 }
 
+// *
+// KubernetesLocustIngress defines ingress configuration for Locust.
+type KubernetesLocustIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "locust.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesLocustIngress) Reset() {
+	*x = KubernetesLocustIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesLocustIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesLocustIngress) ProtoMessage() {}
+
+func (x *KubernetesLocustIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesLocustIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesLocustIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *KubernetesLocustIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesLocustIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -288,7 +345,7 @@ var File_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xfa\x05\n" +
+	"Forg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x9c\x06\n" +
 	"\x14KubernetesLocustSpec\x12\xa8\x01\n" +
 	"\x10master_container\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
@@ -297,8 +354,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_prot
 	"\x10worker_container\x18\x02 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x92\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\x0fworkerContainer\x12L\n" +
-	"\aingress\x18\x03 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\x12z\n" +
+	"\x0350m\x12\x05100MiR\x0fworkerContainer\x12n\n" +
+	"\aingress\x18\x03 \x01(\v2T.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngressR\aingress\x12z\n" +
 	"\tload_test\x18\x04 \x01(\v2U.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTestB\x06\xbaH\x03\xc8\x01\x01R\bloadTest\x12\x82\x01\n" +
 	"\vhelm_values\x18\x05 \x03(\v2a.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
@@ -315,7 +372,11 @@ const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_prot
 	"\fpip_packages\x18\x04 \x03(\tR\vpipPackages\x1aB\n" +
 	"\x14LibFilesContentEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb1\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xce\x01\n" +
+	"\x17KubernetesLocustIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xb1\x01\n" +
 	"\x18default_master_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x9d  \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerR\x16defaultMasterContainer:\xb1\x01\n" +
 	"\x18default_worker_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x9d  \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerR\x16defaultWorkerContainerB\xdb\x03\n" +
 	"?com.org.project_planton.provider.kubernetes.kuberneteslocust.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kuberneteslocust.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kuberneteslocust::V1b\x06proto3"
@@ -332,25 +393,25 @@ func file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto
 	return file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_goTypes = []any{
 	(*KubernetesLocustSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec
 	(*KubernetesLocustContainer)(nil),     // 1: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer
 	(*KubernetesLocustLoadTest)(nil),      // 2: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest
-	nil,                                   // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntry
-	nil,                                   // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.LibFilesContentEntry
-	(*kubernetes.IngressSpec)(nil),        // 5: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesLocustIngress)(nil),       // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngress
+	nil,                                   // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntry
+	nil,                                   // 5: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.LibFilesContentEntry
 	(*kubernetes.ContainerResources)(nil), // 6: org.project_planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_depIdxs = []int32{
 	1,  // 0: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.master_container:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer
 	1,  // 1: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.worker_container:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer
-	5,  // 2: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	3,  // 2: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngress
 	2,  // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.load_test:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest
-	3,  // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntry
+	4,  // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntry
 	6,  // 5: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	4,  // 6: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.lib_files_content:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.LibFilesContentEntry
+	5,  // 6: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.lib_files_content:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.LibFilesContentEntry
 	7,  // 7: org.project_planton.provider.kubernetes.kuberneteslocust.v1.default_master_container:extendee -> google.protobuf.FieldOptions
 	7,  // 8: org.project_planton.provider.kubernetes.kuberneteslocust.v1.default_worker_container:extendee -> google.protobuf.FieldOptions
 	1,  // 9: org.project_planton.provider.kubernetes.kuberneteslocust.v1.default_master_container:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer
@@ -373,7 +434,7 @@ func file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 2,
 			NumServices:   0,
 		},

@@ -39,7 +39,7 @@ type KubernetesDeploymentSpec struct {
 	Container *KubernetesDeploymentContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the microservice.
 	// This defines how the microservice can be accessed externally.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesDeploymentIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The availability configuration for the microservice.
 	// This includes settings for replicas, autoscaling, deployment strategy, and pod disruption budgets.
 	Availability  *KubernetesDeploymentAvailability `protobuf:"bytes,5,opt,name=availability,proto3" json:"availability,omitempty"`
@@ -91,7 +91,7 @@ func (x *KubernetesDeploymentSpec) GetContainer() *KubernetesDeploymentContainer
 	return nil
 }
 
-func (x *KubernetesDeploymentSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesDeploymentSpec) GetIngress() *KubernetesDeploymentIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -103,6 +103,63 @@ func (x *KubernetesDeploymentSpec) GetAvailability() *KubernetesDeploymentAvaila
 		return x.Availability
 	}
 	return nil
+}
+
+// *
+// KubernetesDeploymentIngress defines ingress configuration for the deployment.
+type KubernetesDeploymentIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "myapp.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesDeploymentIngress) Reset() {
+	*x = KubernetesDeploymentIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesDeploymentIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesDeploymentIngress) ProtoMessage() {}
+
+func (x *KubernetesDeploymentIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesDeploymentIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesDeploymentIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesDeploymentIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesDeploymentIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // *
@@ -120,7 +177,7 @@ type KubernetesDeploymentContainer struct {
 
 func (x *KubernetesDeploymentContainer) Reset() {
 	*x = KubernetesDeploymentContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -132,7 +189,7 @@ func (x *KubernetesDeploymentContainer) String() string {
 func (*KubernetesDeploymentContainer) ProtoMessage() {}
 
 func (x *KubernetesDeploymentContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -145,7 +202,7 @@ func (x *KubernetesDeploymentContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesDeploymentContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesDeploymentContainer) GetApp() *KubernetesDeploymentContainerApp {
@@ -208,7 +265,7 @@ type KubernetesDeploymentContainerApp struct {
 
 func (x *KubernetesDeploymentContainerApp) Reset() {
 	*x = KubernetesDeploymentContainerApp{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -220,7 +277,7 @@ func (x *KubernetesDeploymentContainerApp) String() string {
 func (*KubernetesDeploymentContainerApp) ProtoMessage() {}
 
 func (x *KubernetesDeploymentContainerApp) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -233,7 +290,7 @@ func (x *KubernetesDeploymentContainerApp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesDeploymentContainerApp.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentContainerApp) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{2}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *KubernetesDeploymentContainerApp) GetImage() *kubernetes.ContainerImage {
@@ -301,7 +358,7 @@ type KubernetesDeploymentContainerAppEnv struct {
 
 func (x *KubernetesDeploymentContainerAppEnv) Reset() {
 	*x = KubernetesDeploymentContainerAppEnv{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -313,7 +370,7 @@ func (x *KubernetesDeploymentContainerAppEnv) String() string {
 func (*KubernetesDeploymentContainerAppEnv) ProtoMessage() {}
 
 func (x *KubernetesDeploymentContainerAppEnv) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -326,7 +383,7 @@ func (x *KubernetesDeploymentContainerAppEnv) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use KubernetesDeploymentContainerAppEnv.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentContainerAppEnv) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{3}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *KubernetesDeploymentContainerAppEnv) GetVariables() map[string]string {
@@ -373,7 +430,7 @@ type KubernetesDeploymentContainerAppPort struct {
 
 func (x *KubernetesDeploymentContainerAppPort) Reset() {
 	*x = KubernetesDeploymentContainerAppPort{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -385,7 +442,7 @@ func (x *KubernetesDeploymentContainerAppPort) String() string {
 func (*KubernetesDeploymentContainerAppPort) ProtoMessage() {}
 
 func (x *KubernetesDeploymentContainerAppPort) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -398,7 +455,7 @@ func (x *KubernetesDeploymentContainerAppPort) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use KubernetesDeploymentContainerAppPort.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentContainerAppPort) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{4}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *KubernetesDeploymentContainerAppPort) GetName() string {
@@ -467,7 +524,7 @@ type KubernetesDeploymentAvailability struct {
 
 func (x *KubernetesDeploymentAvailability) Reset() {
 	*x = KubernetesDeploymentAvailability{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[5]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -479,7 +536,7 @@ func (x *KubernetesDeploymentAvailability) String() string {
 func (*KubernetesDeploymentAvailability) ProtoMessage() {}
 
 func (x *KubernetesDeploymentAvailability) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[5]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -492,7 +549,7 @@ func (x *KubernetesDeploymentAvailability) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesDeploymentAvailability.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentAvailability) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{5}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *KubernetesDeploymentAvailability) GetMinReplicas() int32 {
@@ -540,7 +597,7 @@ type KubernetesDeploymentAvailabilityHpa struct {
 
 func (x *KubernetesDeploymentAvailabilityHpa) Reset() {
 	*x = KubernetesDeploymentAvailabilityHpa{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[6]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -552,7 +609,7 @@ func (x *KubernetesDeploymentAvailabilityHpa) String() string {
 func (*KubernetesDeploymentAvailabilityHpa) ProtoMessage() {}
 
 func (x *KubernetesDeploymentAvailabilityHpa) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[6]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -565,7 +622,7 @@ func (x *KubernetesDeploymentAvailabilityHpa) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use KubernetesDeploymentAvailabilityHpa.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentAvailabilityHpa) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{6}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *KubernetesDeploymentAvailabilityHpa) GetIsEnabled() bool {
@@ -622,7 +679,7 @@ type KubernetesDeploymentDeploymentStrategy struct {
 
 func (x *KubernetesDeploymentDeploymentStrategy) Reset() {
 	*x = KubernetesDeploymentDeploymentStrategy{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[7]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -634,7 +691,7 @@ func (x *KubernetesDeploymentDeploymentStrategy) String() string {
 func (*KubernetesDeploymentDeploymentStrategy) ProtoMessage() {}
 
 func (x *KubernetesDeploymentDeploymentStrategy) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[7]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -647,7 +704,7 @@ func (x *KubernetesDeploymentDeploymentStrategy) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use KubernetesDeploymentDeploymentStrategy.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentDeploymentStrategy) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{7}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *KubernetesDeploymentDeploymentStrategy) GetMaxUnavailable() string {
@@ -700,7 +757,7 @@ type KubernetesDeploymentPodDisruptionBudget struct {
 
 func (x *KubernetesDeploymentPodDisruptionBudget) Reset() {
 	*x = KubernetesDeploymentPodDisruptionBudget{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[8]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -712,7 +769,7 @@ func (x *KubernetesDeploymentPodDisruptionBudget) String() string {
 func (*KubernetesDeploymentPodDisruptionBudget) ProtoMessage() {}
 
 func (x *KubernetesDeploymentPodDisruptionBudget) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[8]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -725,7 +782,7 @@ func (x *KubernetesDeploymentPodDisruptionBudget) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use KubernetesDeploymentPodDisruptionBudget.ProtoReflect.Descriptor instead.
 func (*KubernetesDeploymentPodDisruptionBudget) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{8}
+	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *KubernetesDeploymentPodDisruptionBudget) GetEnabled() bool {
@@ -753,14 +810,18 @@ var File_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xe3\x04\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\x8d\x05\n" +
 	"\x18KubernetesDeploymentSpec\x12\xe9\x01\n" +
 	"\aversion\x18\x01 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
 	"\x12spec.version.chars\x128Only lowercase letters, numbers, and hyphens are allowed\x1a\x1cthis.matches('^[a-z0-9-]+$')\xba\x01R\n" +
 	"\x1dspec.version.no-hyphen-ending\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x1eR\aversion\x12\x84\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12L\n" +
-	"\aingress\x18\x04 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\x12\x85\x01\n" +
-	"\favailability\x18\x05 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityR\favailability\"\xea\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
+	"\aingress\x18\x04 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngressR\aingress\x12\x85\x01\n" +
+	"\favailability\x18\x05 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityR\favailability\"\xd2\x01\n" +
+	"\x1bKubernetesDeploymentIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xea\x01\n" +
 	"\x1dKubernetesDeploymentContainer\x12{\n" +
 	"\x03app\x18\x01 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12L\n" +
 	"\bsidecars\x18\x02 \x03(\v20.org.project_planton.shared.kubernetes.ContainerR\bsidecars\"\xa6\a\n" +
@@ -826,43 +887,43 @@ func file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_p
 	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_goTypes = []any{
 	(*KubernetesDeploymentSpec)(nil),                // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec
-	(*KubernetesDeploymentContainer)(nil),           // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer
-	(*KubernetesDeploymentContainerApp)(nil),        // 2: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
-	(*KubernetesDeploymentContainerAppEnv)(nil),     // 3: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
-	(*KubernetesDeploymentContainerAppPort)(nil),    // 4: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
-	(*KubernetesDeploymentAvailability)(nil),        // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability
-	(*KubernetesDeploymentAvailabilityHpa)(nil),     // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
-	(*KubernetesDeploymentDeploymentStrategy)(nil),  // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
-	(*KubernetesDeploymentPodDisruptionBudget)(nil), // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
-	nil,                                   // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
-	nil,                                   // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
-	(*kubernetes.IngressSpec)(nil),        // 11: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesDeploymentIngress)(nil),             // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngress
+	(*KubernetesDeploymentContainer)(nil),           // 2: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer
+	(*KubernetesDeploymentContainerApp)(nil),        // 3: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
+	(*KubernetesDeploymentContainerAppEnv)(nil),     // 4: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
+	(*KubernetesDeploymentContainerAppPort)(nil),    // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
+	(*KubernetesDeploymentAvailability)(nil),        // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability
+	(*KubernetesDeploymentAvailabilityHpa)(nil),     // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
+	(*KubernetesDeploymentDeploymentStrategy)(nil),  // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
+	(*KubernetesDeploymentPodDisruptionBudget)(nil), // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
+	nil,                                   // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
+	nil,                                   // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
 	(*kubernetes.Container)(nil),          // 12: org.project_planton.shared.kubernetes.Container
 	(*kubernetes.ContainerImage)(nil),     // 13: org.project_planton.shared.kubernetes.ContainerImage
 	(*kubernetes.ContainerResources)(nil), // 14: org.project_planton.shared.kubernetes.ContainerResources
 	(*kubernetes1.Probe)(nil),             // 15: org.project_planton.provider.kubernetes.Probe
 }
 var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_depIdxs = []int32{
-	1,  // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer
-	11, // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
-	5,  // 2: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.availability:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability
-	2,  // 3: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
+	2,  // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer
+	1,  // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngress
+	6,  // 2: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.availability:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability
+	3,  // 3: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
 	12, // 4: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.sidecars:type_name -> org.project_planton.shared.kubernetes.Container
 	13, // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
 	14, // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	3,  // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
-	4,  // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
+	4,  // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
+	5,  // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
 	15, // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.liveness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
 	15, // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.readiness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
 	15, // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.startup_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	9,  // 12: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
-	10, // 13: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
-	6,  // 14: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.horizontal_pod_autoscaling:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
-	7,  // 15: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.deployment_strategy:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
-	8,  // 16: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
+	10, // 12: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
+	11, // 13: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
+	7,  // 14: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.horizontal_pod_autoscaling:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
+	8,  // 15: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.deployment_strategy:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
+	9,  // 16: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
 	17, // [17:17] is the sub-list for method output_type
 	17, // [17:17] is the sub-list for method input_type
 	17, // [17:17] is the sub-list for extension type_name
@@ -881,7 +942,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_p
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

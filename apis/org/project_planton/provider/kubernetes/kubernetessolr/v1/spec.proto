@@ -58,7 +58,25 @@ message KubernetesSolrSpec {
   }];
 
   //The ingress configuration for the Solr deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 4;
+  KubernetesSolrIngress ingress = 4;
+}
+
+/**
+ * KubernetesSolrIngress defines ingress configuration for Solr.
+ */
+message KubernetesSolrIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "solr.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 /**

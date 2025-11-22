@@ -14,7 +14,25 @@ message KubernetesGrafanaSpec {
   KubernetesGrafanaSpecContainer container = 1 [(buf.validate.field).required = true];
 
   // The ingress configuration for the Grafana deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 3;
+  KubernetesGrafanaIngress ingress = 3;
+}
+
+/**
+ * KubernetesGrafanaIngress defines ingress configuration for Grafana.
+ */
+message KubernetesGrafanaIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "grafana.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 // **KubernetesGrafanaSpecContainer** specifies the container configuration for the Grafana application.

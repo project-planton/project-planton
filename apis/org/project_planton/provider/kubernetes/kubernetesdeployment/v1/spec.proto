@@ -39,11 +39,29 @@ message KubernetesDeploymentSpec {
 
   //The ingress configuration for the microservice.
   //This defines how the microservice can be accessed externally.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 4;
+  KubernetesDeploymentIngress ingress = 4;
 
   //The availability configuration for the microservice.
   //This includes settings for replicas, autoscaling, deployment strategy, and pod disruption budgets.
   KubernetesDeploymentAvailability availability = 5;
+}
+
+/**
+ * KubernetesDeploymentIngress defines ingress configuration for the deployment.
+ */
+message KubernetesDeploymentIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "myapp.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 /**

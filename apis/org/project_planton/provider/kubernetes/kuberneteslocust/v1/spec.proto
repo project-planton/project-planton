@@ -49,7 +49,7 @@ message KubernetesLocustSpec {
   }];
 
   // The ingress configuration for the Locust deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 3;
+  KubernetesLocustIngress ingress = 3;
 
   // The load test parameters, including the main test script, additional library files,
   // and extra Python pip packages needed for test execution.
@@ -97,4 +97,22 @@ message KubernetesLocustLoadTest {
   // These packages will be installed in the environment where the load test is executed,
   // allowing for extended functionality or custom dependencies to be included easily.
   repeated string pip_packages = 4;
+}
+
+/**
+ * KubernetesLocustIngress defines ingress configuration for Locust.
+ */
+message KubernetesLocustIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "locust.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

@@ -7,6 +7,7 @@
 package kubernetesjenkinsv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -36,7 +37,7 @@ type KubernetesJenkinsSpec struct {
 	// https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
 	HelmValues map[string]string `protobuf:"bytes,3,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// The ingress configuration for the Jenkins deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesJenkinsIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -85,29 +86,90 @@ func (x *KubernetesJenkinsSpec) GetHelmValues() map[string]string {
 	return nil
 }
 
-func (x *KubernetesJenkinsSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesJenkinsSpec) GetIngress() *KubernetesJenkinsIngress {
 	if x != nil {
 		return x.Ingress
 	}
 	return nil
 }
 
+// *
+// KubernetesJenkinsIngress defines ingress configuration for Jenkins.
+type KubernetesJenkinsIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "jenkins.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesJenkinsIngress) Reset() {
+	*x = KubernetesJenkinsIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesJenkinsIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesJenkinsIngress) ProtoMessage() {}
+
+func (x *KubernetesJenkinsIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesJenkinsIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesJenkinsIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesJenkinsIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesJenkinsIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xbb\x03\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xdf\x03\n" +
 	"\x15KubernetesJenkinsSpec\x12\x8d\x01\n" +
 	"\x13container_resources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x12containerResources\x12\x84\x01\n" +
 	"\vhelm_values\x18\x03 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntryR\n" +
-	"helmValues\x12L\n" +
-	"\aingress\x18\x04 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\x1a=\n" +
+	"helmValues\x12p\n" +
+	"\aingress\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngressR\aingress\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xe3\x03\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcf\x01\n" +
+	"\x18KubernetesJenkinsIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0B\xe3\x03\n" +
 	"@com.org.project_planton.provider.kubernetes.kubernetesjenkins.v1B\tSpecProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1;kubernetesjenkinsv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesjenkins.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesjenkins::V1b\x06proto3"
 
 var (
@@ -122,17 +184,17 @@ func file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_prot
 	return file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_goTypes = []any{
 	(*KubernetesJenkinsSpec)(nil),         // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec
-	nil,                                   // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
-	(*kubernetes.ContainerResources)(nil), // 2: org.project_planton.shared.kubernetes.ContainerResources
-	(*kubernetes.IngressSpec)(nil),        // 3: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesJenkinsIngress)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
+	nil,                                   // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
+	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.container_resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	1, // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	3, // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.container_resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -151,7 +213,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

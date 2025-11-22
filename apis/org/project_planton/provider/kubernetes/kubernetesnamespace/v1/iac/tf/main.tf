@@ -142,3 +142,4 @@ resource "kubernetes_network_policy_v1" "egress" {
   depends_on = [kubernetes_namespace_v1.namespace]
 }
 
+

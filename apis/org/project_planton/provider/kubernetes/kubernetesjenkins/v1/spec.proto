@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.kubernetesjenkins.v1;
 
+import "buf/validate/validate.proto";
 import "org/project_planton/shared/kubernetes/kubernetes.proto";
 import "org/project_planton/shared/kubernetes/options.proto";
 
@@ -29,5 +30,23 @@ message KubernetesJenkinsSpec {
   map<string, string> helm_values = 3;
 
   // The ingress configuration for the Jenkins deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 4;
+  KubernetesJenkinsIngress ingress = 4;
+}
+
+/**
+ * KubernetesJenkinsIngress defines ingress configuration for Jenkins.
+ */
+message KubernetesJenkinsIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "jenkins.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

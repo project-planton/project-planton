@@ -14,7 +14,26 @@ message KubernetesArgocdSpec {
   KubernetesArgocdContainer container = 1 [(buf.validate.field).required = true];
 
   // The ingress configuration for the Argo CD deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 3;
+  KubernetesArgocdIngress ingress = 3;
+}
+
+/**
+ * KubernetesArgocdIngress defines ingress configuration for Argo CD.
+ */
+message KubernetesArgocdIngress {
+  // Flag to enable or disable ingress.
+  // When enabled, creates appropriate ingress resources for external access.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "argocd.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 // **KubernetesArgocdContainer** specifies the container configuration for the Argo CD application.

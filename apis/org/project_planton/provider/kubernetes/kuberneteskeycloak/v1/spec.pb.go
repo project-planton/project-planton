@@ -7,6 +7,7 @@
 package kuberneteskeycloakv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -30,7 +31,7 @@ type KubernetesKeycloakSpec struct {
 	// The container specifications for the Keycloak deployment.
 	Container *KubernetesKeycloakContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Keycloak deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesKeycloakIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -72,11 +73,68 @@ func (x *KubernetesKeycloakSpec) GetContainer() *KubernetesKeycloakContainer {
 	return nil
 }
 
-func (x *KubernetesKeycloakSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KubernetesKeycloakSpec) GetIngress() *KubernetesKeycloakIngress {
 	if x != nil {
 		return x.Ingress
 	}
 	return nil
+}
+
+// *
+// KubernetesKeycloakIngress defines ingress configuration for Keycloak.
+type KubernetesKeycloakIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "keycloak.example.com").
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesKeycloakIngress) Reset() {
+	*x = KubernetesKeycloakIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesKeycloakIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesKeycloakIngress) ProtoMessage() {}
+
+func (x *KubernetesKeycloakIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesKeycloakIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesKeycloakIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesKeycloakIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesKeycloakIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // **KubernetesKeycloakContainer** specifies the container configuration for the Keycloak application.
@@ -92,7 +150,7 @@ type KubernetesKeycloakContainer struct {
 
 func (x *KubernetesKeycloakContainer) Reset() {
 	*x = KubernetesKeycloakContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -104,7 +162,7 @@ func (x *KubernetesKeycloakContainer) String() string {
 func (*KubernetesKeycloakContainer) ProtoMessage() {}
 
 func (x *KubernetesKeycloakContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +175,7 @@ func (x *KubernetesKeycloakContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesKeycloakContainer.ProtoReflect.Descriptor instead.
 func (*KubernetesKeycloakContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesKeycloakContainer) GetResources() *kubernetes.ContainerResources {
@@ -131,10 +189,14 @@ var File_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_prot
 
 const file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/kubernetes/kuberneteskeycloak/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kuberneteskeycloak.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xe0\x01\n" +
+	"Horg/project_planton/provider/kubernetes/kuberneteskeycloak/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kuberneteskeycloak.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\x86\x02\n" +
 	"\x16KubernetesKeycloakSpec\x12x\n" +
-	"\tcontainer\x18\x01 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainerR\tcontainer\x12L\n" +
-	"\aingress\x18\x02 \x01(\v22.org.project_planton.shared.kubernetes.IngressSpecR\aingress\"\x99\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainerR\tcontainer\x12r\n" +
+	"\aingress\x18\x02 \x01(\v2X.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakIngressR\aingress\"\xd0\x01\n" +
+	"\x19KubernetesKeycloakIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x99\x01\n" +
 	"\x1bKubernetesKeycloakContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -154,16 +216,16 @@ func file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_pro
 	return file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_goTypes = []any{
 	(*KubernetesKeycloakSpec)(nil),        // 0: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec
-	(*KubernetesKeycloakContainer)(nil),   // 1: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer
-	(*kubernetes.IngressSpec)(nil),        // 2: org.project_planton.shared.kubernetes.IngressSpec
+	(*KubernetesKeycloakIngress)(nil),     // 1: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakIngress
+	(*KubernetesKeycloakContainer)(nil),   // 2: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer
 	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer
-	2, // 1: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec.ingress:type_name -> org.project_planton.shared.kubernetes.IngressSpec
+	2, // 0: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer
+	1, // 1: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakIngress
 	3, // 2: org.project_planton.provider.kubernetes.kuberneteskeycloak.v1.KubernetesKeycloakContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
@@ -183,7 +245,7 @@ func file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_pro
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

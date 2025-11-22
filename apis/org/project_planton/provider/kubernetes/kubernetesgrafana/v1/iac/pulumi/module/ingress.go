@@ -22,17 +22,14 @@ func ingress(ctx *pulumi.Context,
 	// Extract external hostname without https:// prefix
 	externalHost := ""
 	if locals.IngressExternalHostname != "" {
-		externalHost = fmt.Sprintf("grafana-%s.%s",
-			locals.KubernetesGrafana.Metadata.Name,
-			locals.KubernetesGrafana.Spec.Ingress.DnsDomain)
+		// Remove https:// prefix if present
+		externalHost = locals.KubernetesGrafana.Spec.Ingress.Hostname
 	}
 
 	// Extract internal hostname without https:// prefix
 	internalHost := ""
 	if locals.IngressInternalHostname != "" {
-		internalHost = fmt.Sprintf("grafana-%s-internal.%s",
-			locals.KubernetesGrafana.Metadata.Name,
-			locals.KubernetesGrafana.Spec.Ingress.DnsDomain)
+		internalHost = fmt.Sprintf("internal-%s", locals.KubernetesGrafana.Spec.Ingress.Hostname)
 	}
 
 	pathType := "Prefix"

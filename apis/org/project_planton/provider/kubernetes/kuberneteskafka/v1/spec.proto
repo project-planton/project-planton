@@ -58,10 +58,28 @@ message KubernetesKafkaSpec {
   KubernetesKafkaSchemaRegistryContainer schema_registry_container = 4;
 
   // The ingress configuration for the Kafka deployment.
-  org.project_planton.shared.kubernetes.IngressSpec ingress = 5;
+  KubernetesKafkaIngress ingress = 5;
 
   // A flag to toggle the deployment of the Kafka UI component.
   bool is_deploy_kafka_ui = 6 [(org.project_planton.shared.options.recommended_default) = "true"];
+}
+
+/**
+ * KubernetesKafkaIngress defines ingress configuration for Kafka.
+ */
+message KubernetesKafkaIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "kafka.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 // **KubernetesKafkaBrokerContainer** specifies the configuration for the Kafka broker containers.

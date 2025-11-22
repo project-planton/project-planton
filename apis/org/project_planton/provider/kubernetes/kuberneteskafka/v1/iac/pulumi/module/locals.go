@@ -100,9 +100,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 
 		locals.IngressSchemaRegistryCertSecretName = fmt.Sprintf("cert-%s-schema-registry", locals.Namespace)
 
-		locals.IngressExternalSchemaRegistryHostname = fmt.Sprintf("%s-schema-registry.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
+		locals.IngressExternalSchemaRegistryHostname = fmt.Sprintf("schema-registry-%s", target.Spec.Ingress.Hostname)
 
-		locals.IngressInternalSchemaRegistryHostname = fmt.Sprintf("%s-schema-registry-internal.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
+		locals.IngressInternalSchemaRegistryHostname = fmt.Sprintf("internal-schema-registry-%s", target.Spec.Ingress.Hostname)
 
 		ctx.Export(OpSchemaRegistryExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalSchemaRegistryHostname))
 		ctx.Export(OpSchemaRegistryInternalUrl, pulumi.Sprintf("https://%s", locals.IngressInternalSchemaRegistryHostname))
@@ -119,7 +119,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 
 		locals.IngressKowlCertSecretName = fmt.Sprintf("cert-%s-kowl", locals.Namespace)
 
-		locals.IngressExternalKowlHostname = fmt.Sprintf("%s-kowl.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
+		locals.IngressExternalKowlHostname = fmt.Sprintf("ui-%s", target.Spec.Ingress.Hostname)
 
 		ctx.Export(OpKafkaUiExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalKowlHostname))
 
@@ -128,13 +128,13 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||
-		target.Spec.Ingress.DnsDomain == "" {
+		target.Spec.Ingress.Hostname == "" {
 		return locals
 	}
 
-	locals.IngressExternalBootstrapHostname = fmt.Sprintf("%s-bootstrap.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
+	locals.IngressExternalBootstrapHostname = target.Spec.Ingress.Hostname
 
-	locals.IngressInternalBootstrapHostname = fmt.Sprintf("%s-bootstrap-internal.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
+	locals.IngressInternalBootstrapHostname = fmt.Sprintf("internal-%s", target.Spec.Ingress.Hostname)
 
 	ctx.Export(OpBootstrapServerExternalHostname, pulumi.String(locals.IngressExternalBootstrapHostname))
 	ctx.Export(OpBootstrapServerInternalHostname, pulumi.String(locals.IngressInternalBootstrapHostname))
@@ -142,14 +142,14 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 	// Creating internal broker hostnames
 	ingressInternalBrokerHostnames := make([]string, int(target.Spec.BrokerContainer.Replicas))
 	for i := 0; i < int(target.Spec.BrokerContainer.Replicas); i++ {
-		ingressInternalBrokerHostnames[i] = fmt.Sprintf("%s-broker-b%d-internal.%s", locals.Namespace, i, target.Spec.Ingress.DnsDomain)
+		ingressInternalBrokerHostnames[i] = fmt.Sprintf("internal-broker-%d-%s", i, target.Spec.Ingress.Hostname)
 	}
 	locals.IngressInternalBrokerHostnames = ingressInternalBrokerHostnames
 
 	// Creating external broker hostnames
 	ingressExternalBrokerHostnames := make([]string, int(target.Spec.BrokerContainer.Replicas))
 	for i := 0; i < int(target.Spec.BrokerContainer.Replicas); i++ {
-		ingressExternalBrokerHostnames[i] = fmt.Sprintf("%s-broker-b%d.%s", locals.Namespace, i, target.Spec.Ingress.DnsDomain)
+		ingressExternalBrokerHostnames[i] = fmt.Sprintf("broker-%d-%s", i, target.Spec.Ingress.Hostname)
 	}
 	locals.IngressExternalBrokerHostnames = ingressExternalBrokerHostnames
 
@@ -171,7 +171,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
+	// Extract the domain from hostname for certificate issuer name
+	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
+	locals.IngressCertClusterIssuerName = dnsDomain
 
 	switch stackInput.ProviderConfig.Provider {
 	case kubernetes.KubernetesProvider_gcp_gke:
@@ -182,4 +184,24 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 	}
 
 	return locals
+}
+
+// extractDomainFromHostname extracts the domain from a hostname
+// Example: "kafka.example.com" -> "example.com"
+func extractDomainFromHostname(hostname string) string {
+	// Split by dots and take everything after the first part
+	// This is a simple implementation - assumes standard domain structure
+	parts := []rune(hostname)
+	firstDotIndex := -1
+	for i, char := range parts {
+		if char == '.' {
+			firstDotIndex = i
+			break
+		}
+	}
+	if firstDotIndex > 0 && firstDotIndex < len(hostname)-1 {
+		return hostname[firstDotIndex+1:]
+	}
+	// If no dot found or dot is at the end, return the hostname as-is
+	return hostname
 }
