@@ -30,6 +30,10 @@ module "gitlab_basic" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "gitlab-basic"
     container = {
       resources = {
         limits = {
@@ -71,6 +75,10 @@ module "gitlab_with_ingress" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "gitlab-prod"
     container = {
       resources = {
         limits = {
@@ -115,6 +123,10 @@ module "gitlab_high_resources" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "gitlab-enterprise"
     container = {
       resources = {
         limits = {
@@ -151,6 +163,10 @@ module "gitlab_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "gitlab-dev"
     container = {
       resources = {
         limits = {
@@ -227,6 +243,10 @@ module "gitlab" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "gitlab-${each.key}"
     container = {
       resources = {
         limits = {
@@ -325,6 +345,10 @@ module "gitlab" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = var.gitlab_name
     container = {
       resources = {
         limits = {

@@ -31,8 +31,8 @@ locals {
   # Merge all labels
   labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # The namespace is derived from the resource name
-  namespace = var.metadata.name
+  # Get namespace from spec
+  namespace = var.spec.namespace
 
   # Neo4j Helm chart constants
   neo4j_helm_chart_name    = "neo4j"

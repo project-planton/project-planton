@@ -13,6 +13,10 @@ module "argocd_basic" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "argocd-dev"
     container = {
       resources = {
         requests = {
@@ -59,6 +63,10 @@ module "argocd_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace = "argocd-prod"
     container = {
       resources = {
         requests = {
@@ -119,6 +127,10 @@ module "argocd_large_scale" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "platform-gke-cluster"
+    }
+    namespace = "argocd-platform"
     container = {
       resources = {
         requests = {
@@ -156,6 +168,10 @@ module "argocd_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "dev-gke-cluster"
+    }
+    namespace = "argocd-dev"
     container = {
       resources = {
         requests = {
@@ -185,6 +201,10 @@ module "argocd_staging" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "staging-gke-cluster"
+    }
+    namespace = "argocd-staging"
     container = {
       resources = {
         requests = {
@@ -214,6 +234,10 @@ module "argocd_prod" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace = "argocd-prod"
     container = {
       resources = {
         requests = {
@@ -311,6 +335,11 @@ variable "environment" {
   type        = string
 }
 
+variable "cluster_name" {
+  description = "Name of the Kubernetes cluster"
+  type        = string
+}
+
 variable "dns_domain" {
   description = "DNS domain for ingress"
   type        = string
@@ -332,6 +361,10 @@ module "argocd" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = var.cluster_name
+    }
+    namespace = "argocd-${var.environment}"
     container = {
       resources = {
         requests = {

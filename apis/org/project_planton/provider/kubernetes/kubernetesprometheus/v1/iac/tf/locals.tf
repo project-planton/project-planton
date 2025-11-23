@@ -30,8 +30,8 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace uses the resource_id
-  namespace = local.resource_id
+  # Get namespace from spec
+  namespace = var.spec.namespace
 
   # Service name for Prometheus
   kube_service_name = "${var.metadata.name}-prometheus"

@@ -31,8 +31,12 @@ locals {
   } : {}
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace set to resource_id
-  namespace = local.resource_id
+  # Use namespace from spec with fallback to resource_id
+  namespace = (
+    var.spec.namespace != null && var.spec.namespace != ""
+    ? var.spec.namespace
+    : local.resource_id
+  )
 
   # Handle optional fields in var.spec.ingress
   ingress_is_enabled = try(var.spec.ingress.is_enabled, false)

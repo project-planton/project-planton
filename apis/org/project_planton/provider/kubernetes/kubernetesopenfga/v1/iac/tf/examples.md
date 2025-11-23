@@ -13,6 +13,11 @@ module "openfga_basic" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "basic-openfga"
+
     container = {
       replicas = 1
 
@@ -54,6 +59,11 @@ module "openfga_with_ingress" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "ingress-openfga"
+
     container = {
       replicas = 2
 
@@ -93,6 +103,11 @@ module "openfga_mysql" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "mysql-openfga"
+
     container = {
       replicas = 1
 
@@ -139,6 +154,11 @@ module "openfga_production" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "production-openfga"
+
     container = {
       replicas = 5
 
@@ -206,6 +226,11 @@ module "openfga_dev" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "dev-openfga"
+
     container = {
       replicas = 1
 
@@ -246,6 +271,11 @@ module "openfga_staging" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "staging-openfga"
+
     container = {
       replicas = 3
 

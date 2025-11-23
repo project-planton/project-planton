@@ -12,8 +12,13 @@ variable "metadata" {
 }
 
 variable "spec" {
-  description = "spec"
+  description = "Specification for Kubernetes Locust deployment"
   type = object({
+    # Target Kubernetes cluster
+    target_cluster_name = string
+
+    # Kubernetes namespace for Locust deployment
+    namespace = string
 
     # The master container specifications for the Locust cluster.
     # This defines the resource allocation and number of replicas for the master node.

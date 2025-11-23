@@ -16,6 +16,15 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # The Kubernetes cluster to install Prometheus on.
+    target_cluster = object({
+      cluster_name = string
+      cluster_kind = optional(number)
+    })
+
+    # Kubernetes namespace to install Prometheus.
+    namespace = string
+
     # The container specifications for the Prometheus deployment.
     container = object({
 

@@ -6,15 +6,24 @@ import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // **KubernetesElasticOperatorSpec** defines the configuration for deploying Elastic Operator on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage an Elastic Operator deployment within a Kubernetes environment.
 // It includes container specifications to control resource allocation.
 message KubernetesElasticOperatorSpec {
-  // The Kubernetes cluster to install this addon on.
+  // The Kubernetes cluster to install this operator on.
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The container specifications for the Elastic Operator deployment.
-  KubernetesElasticOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
+  KubernetesElasticOperatorSpecContainer container = 3 [(buf.validate.field).required = true];
 }
 
 // **KubernetesElasticOperatorSpecContainer** specifies the container configuration for the Elastic Operator application.

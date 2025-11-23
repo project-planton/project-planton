@@ -6,7 +6,6 @@ import (
 	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -45,14 +44,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetescronjobv1.Kuber
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// default namespace to resource's name
-	locals.Namespace = target.Metadata.Name
-	if target.Metadata.Labels != nil &&
-		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
-		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
-	} else {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
+	// get namespace from spec
+	locals.Namespace = target.Spec.Namespace.GetValue()
 
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))

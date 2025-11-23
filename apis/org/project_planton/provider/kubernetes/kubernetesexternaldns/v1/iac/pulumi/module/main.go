@@ -23,9 +23,9 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 
 	spec := stackInput.Target.Spec
 
-	// Namespace and chart version now come from spec with defaults in proto
-	namespace := spec.GetNamespace()
-	chartVersion := spec.GetHelmChartVersion()
+	// Namespace and chart version with proper defaults
+	namespace := getNamespace(spec)
+	chartVersion := getHelmChartVersion(spec)
 
 	// Use the resource name as the Helm release name (e.g., "kubernetes-external-dns-planton-cloud")
 	// This allows multiple ExternalDNS instances for different domains in the same namespace

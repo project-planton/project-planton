@@ -14,6 +14,10 @@ module "eck_operator" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "elastic-system"
     container = {
       resources = {
         requests = {
@@ -48,6 +52,10 @@ module "eck_operator_ha" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "production-gke-cluster"
+    }
+    namespace = "elastic-system"
     container = {
       resources = {
         requests = {
@@ -77,6 +85,10 @@ module "eck_operator_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "dev-gke-cluster"
+    }
+    namespace = "elastic-system"
     container = {
       resources = {
         requests = {
@@ -132,6 +144,10 @@ module "eck_operator" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "${local.current_env}-gke-cluster"
+    }
+    namespace = "elastic-system"
     container = {
       resources = {
         requests = {

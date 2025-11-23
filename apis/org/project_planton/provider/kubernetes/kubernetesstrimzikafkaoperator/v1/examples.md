@@ -8,6 +8,10 @@ kind: KubernetesStrimziKafkaOperator
 metadata:
   name: kafka-operator-basic
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "strimzi-kafka-operator"
   container: {}
 ```
 
@@ -19,6 +23,10 @@ kind: KubernetesStrimziKafkaOperator
 metadata:
   name: kafka-operator-prod
 spec:
+  targetCluster:
+    clusterName: "production-gke-cluster"
+  namespace:
+    value: "strimzi-kafka-operator"
   container:
     resources:
       requests:
@@ -38,7 +46,9 @@ metadata:
   name: kafka-operator-gke
 spec:
   targetCluster:
-    kubernetesCredentialId: prod-gke-cluster-01
+    clusterName: "prod-gke-cluster-01"
+  namespace:
+    value: "strimzi-kafka-operator"
   container:
     resources:
       requests:

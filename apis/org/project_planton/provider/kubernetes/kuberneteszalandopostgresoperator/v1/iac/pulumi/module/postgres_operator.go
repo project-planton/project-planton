@@ -12,12 +12,20 @@ import (
 
 // postgresOperator deploys the Zalando Postgres‑Operator via Helm.
 func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *pulumikubernetes.Provider) error {
+	// Get namespace from spec (required field)
+	namespace := locals.KubernetesZalandoPostgresOperator.Spec.Namespace.GetValue()
+
+	// Fallback to default if somehow empty (should not happen due to validation)
+	if namespace == "" {
+		namespace = vars.Namespace
+	}
+
 	// 1. Namespace
 	createdNamespace, err := corev1.NewNamespace(ctx,
-		vars.Namespace,
+		namespace,
 		&corev1.NamespaceArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:   pulumi.String(vars.Namespace),
+				Name:   pulumi.String(namespace),
 				Labels: pulumi.ToStringMap(locals.KubernetesLabels),
 			}),
 		},

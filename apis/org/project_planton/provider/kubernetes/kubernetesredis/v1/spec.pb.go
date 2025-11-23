@@ -9,6 +9,7 @@ package kubernetesredisv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -30,10 +31,14 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesRedisSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this component on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The container specifications for the Redis deployment.
-	Container *KubernetesRedisContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesRedisContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Redis deployment.
-	Ingress       *KubernetesRedisIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesRedisIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,6 +71,20 @@ func (x *KubernetesRedisSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesRedisSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesRedisSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesRedisSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesRedisSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesRedisSpec) GetContainer() *KubernetesRedisContainer {
@@ -238,13 +257,15 @@ var File_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kubernetesredis/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesredis.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xa6\x02\n" +
-	"\x13KubernetesRedisSpec\x12\xa0\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
+	"Eorg/project_planton/provider/kubernetes/kubernetesredis/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesredis.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x85\x04\n" +
+	"\x13KubernetesRedisSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa0\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12l\n" +
-	"\aingress\x18\x02 \x01(\v2R.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngressR\aingress\"\xb9\x04\n" +
+	"\aingress\x18\x04 \x01(\v2R.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngressR\aingress\"\xb9\x04\n" +
 	"\x18KubernetesRedisContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
 	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12/\n" +
@@ -272,23 +293,27 @@ func file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_
 
 var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_goTypes = []any{
-	(*KubernetesRedisSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec
-	(*KubernetesRedisContainer)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
-	(*KubernetesRedisIngress)(nil),        // 2: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngress
-	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.provider.kubernetes.ContainerResources
-	(*descriptorpb.FieldOptions)(nil),     // 4: google.protobuf.FieldOptions
+	(*KubernetesRedisSpec)(nil),                  // 0: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec
+	(*KubernetesRedisContainer)(nil),             // 1: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
+	(*KubernetesRedisIngress)(nil),               // 2: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngress
+	(*kubernetes.KubernetesClusterSelector)(nil), // 3: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 4: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 5: org.project_planton.provider.kubernetes.ContainerResources
+	(*descriptorpb.FieldOptions)(nil),            // 6: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
-	2, // 1: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngress
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	4, // 3: org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 4: org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	4, // [4:5] is the sub-list for extension type_name
-	3, // [3:4] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	4, // 1: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
+	2, // 3: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisIngress
+	5, // 4: org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	6, // 5: org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 6: org.project_planton.provider.kubernetes.kubernetesredis.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisContainer
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	6, // [6:7] is the sub-list for extension type_name
+	5, // [5:6] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesredis_v1_spec_proto_init() }

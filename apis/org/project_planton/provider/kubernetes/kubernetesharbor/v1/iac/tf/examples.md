@@ -11,6 +11,10 @@ module "harbor_basic" {
       name = "harbor-dev"
     }
     spec = {
+      target_cluster = {
+        cluster_name = "my-gke-cluster"
+      }
+      namespace = "harbor-dev"
       database = {
         is_external = false
       }
@@ -39,6 +43,10 @@ module "harbor_production" {
       name = "harbor-prod"
     }
     spec = {
+      target_cluster = {
+        cluster_name = "my-eks-cluster"
+      }
+      namespace = "harbor-prod"
       database = {
         is_external = true
         external_database = {

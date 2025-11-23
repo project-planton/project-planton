@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesIstioSpec(t *testing.T) {
@@ -23,6 +24,11 @@ var _ = ginkgo.Describe("KubernetesIstioSpec validations", func() {
 			TargetCluster: &kubernetes.KubernetesClusterSelector{
 				ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
 				ClusterName: "my-k8s-cluster",
+			},
+			Namespace: &foreignkeyv1.StringValueOrRef{
+				LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+					Value: "istio-system",
+				},
 			},
 			Container: &KubernetesIstioSpecContainer{
 				Resources: &kubernetes.ContainerResources{

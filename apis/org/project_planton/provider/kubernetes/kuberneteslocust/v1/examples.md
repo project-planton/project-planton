@@ -2,10 +2,14 @@
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: LocustKubernetes
+kind: KubernetesLocust
 metadata:
   name: locust-basic
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "locust-test"
   master_container:
     resources:
       requests:
@@ -41,10 +45,14 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: LocustKubernetes
+kind: KubernetesLocust
 metadata:
   name: locust-custom
 spec:
+  targetCluster:
+    clusterName: "production-gke-cluster"
+  namespace:
+    value: "locust-prod"
   master_container:
     resources:
       requests:
@@ -92,10 +100,14 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: LocustKubernetes
+kind: KubernetesLocust
 metadata:
   name: locust-tls
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "locust-tls"
   master_container:
     resources:
       requests:
@@ -140,10 +152,14 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: LocustKubernetes
+kind: KubernetesLocust
 metadata:
   name: locust-external-lib
 spec:
+  targetCluster:
+    clusterName: "dev-cluster"
+  namespace:
+    value: "locust-dev"
   master_container:
     resources:
       requests:
@@ -188,10 +204,14 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: LocustKubernetes
+kind: KubernetesLocust
 metadata:
   name: locust-minimal
 spec:
+  targetCluster:
+    clusterName: "test-cluster"
+  namespace:
+    value: "locust-minimal"
   master_container:
     resources:
       requests:

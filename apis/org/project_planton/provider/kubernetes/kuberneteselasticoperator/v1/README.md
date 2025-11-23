@@ -117,10 +117,9 @@ The `target_cluster` field specifies where to install the operator:
 ```yaml
 spec:
   target_cluster:
-    kubernetes_credential_id: "my-cluster-credential"
-    # OR use a cluster selector:
-    # kubernetes_cluster_selector:
-    #   name: "production-cluster"
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "elastic-system"
 ```
 
 ## Usage Patterns
@@ -136,7 +135,9 @@ metadata:
   name: eck-operator
 spec:
   target_cluster:
-    kubernetes_credential_id: "prod-k8s-cluster"
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "elastic-system"
   container:
     resources:
       requests:
@@ -158,7 +159,9 @@ metadata:
   name: eck-operator-ha
 spec:
   target_cluster:
-    kubernetes_credential_id: "prod-k8s-cluster"
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: "elastic-system"
   container:
     resources:
       requests:
@@ -180,7 +183,9 @@ metadata:
   name: eck-operator-dev
 spec:
   target_cluster:
-    kubernetes_credential_id: "dev-k8s-cluster"
+    cluster_name: "dev-gke-cluster"
+  namespace:
+    value: "elastic-system"
   container:
     resources:
       requests:

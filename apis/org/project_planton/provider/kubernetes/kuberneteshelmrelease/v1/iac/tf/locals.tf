@@ -30,8 +30,8 @@ locals {
   # Merge all into final_labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # For convenience, we use metadata.id as the namespace name
-  namespace_name = local.resource_id
+  # Namespace from spec.namespace (StringValueOrRef), with fallback to resource_id
+  namespace_name = try(var.spec.namespace.value, local.resource_id)
 
   # The helm release fields for direct reference:
   helm_repo    = var.spec.repo

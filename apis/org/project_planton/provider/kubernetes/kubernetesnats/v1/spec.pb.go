@@ -9,6 +9,7 @@ package kubernetesnatsv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -80,18 +81,22 @@ func (KubernetesNatsAuthScheme) EnumDescriptor() ([]byte, []int) {
 // NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
 type KubernetesNatsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this component on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// server container settings (replicas, resources, disk).
-	ServerContainer *KubernetesNatsServerContainer `protobuf:"bytes,1,opt,name=server_container,json=serverContainer,proto3" json:"server_container,omitempty"`
+	ServerContainer *KubernetesNatsServerContainer `protobuf:"bytes,3,opt,name=server_container,json=serverContainer,proto3" json:"server_container,omitempty"`
 	// disable jet-stream persistence
-	DisableJetStream bool `protobuf:"varint,2,opt,name=disable_jet_stream,json=disableJetStream,proto3" json:"disable_jet_stream,omitempty"`
+	DisableJetStream bool `protobuf:"varint,4,opt,name=disable_jet_stream,json=disableJetStream,proto3" json:"disable_jet_stream,omitempty"`
 	// authentication settings for the nats cluster.
-	Auth *KubernetesNatsAuth `protobuf:"bytes,3,opt,name=auth,proto3" json:"auth,omitempty"`
+	Auth *KubernetesNatsAuth `protobuf:"bytes,5,opt,name=auth,proto3" json:"auth,omitempty"`
 	// tls settings for the nats cluster.
-	TlsEnabled bool `protobuf:"varint,4,opt,name=tls_enabled,json=tlsEnabled,proto3" json:"tls_enabled,omitempty"`
+	TlsEnabled bool `protobuf:"varint,6,opt,name=tls_enabled,json=tlsEnabled,proto3" json:"tls_enabled,omitempty"`
 	// optional ingress configuration for external access.
-	Ingress *KubernetesNatsIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesNatsIngress `protobuf:"bytes,7,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// toggle to deploy the nats-box utility pod.
-	DisableNatsBox bool `protobuf:"varint,6,opt,name=disable_nats_box,json=disableNatsBox,proto3" json:"disable_nats_box,omitempty"`
+	DisableNatsBox bool `protobuf:"varint,8,opt,name=disable_nats_box,json=disableNatsBox,proto3" json:"disable_nats_box,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -124,6 +129,20 @@ func (x *KubernetesNatsSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesNatsSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesNatsSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesNatsSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesNatsSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesNatsSpec) GetServerContainer() *KubernetesNatsServerContainer {
@@ -431,18 +450,20 @@ var File_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetesnats/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetesnats.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a0org/project_planton/shared/options/options.proto\"\x90\x04\n" +
-	"\x12KubernetesNatsSpec\x12\xb1\x01\n" +
-	"\x10server_container\x18\x01 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetesnats/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetesnats.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xef\x05\n" +
+	"\x12KubernetesNatsSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xb1\x01\n" +
+	"\x10server_container\x18\x03 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04100m\x12\x05256Mi\x1a\x0410GiR\x0fserverContainer\x12,\n" +
-	"\x12disable_jet_stream\x18\x02 \x01(\bR\x10disableJetStream\x12a\n" +
-	"\x04auth\x18\x03 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthR\x04auth\x12\x1f\n" +
-	"\vtls_enabled\x18\x04 \x01(\bR\n" +
+	"\x12disable_jet_stream\x18\x04 \x01(\bR\x10disableJetStream\x12a\n" +
+	"\x04auth\x18\x05 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthR\x04auth\x12\x1f\n" +
+	"\vtls_enabled\x18\x06 \x01(\bR\n" +
 	"tlsEnabled\x12j\n" +
-	"\aingress\x18\x05 \x01(\v2P.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngressR\aingress\x12(\n" +
-	"\x10disable_nats_box\x18\x06 \x01(\bR\x0edisableNatsBox\"\xcb\x01\n" +
+	"\aingress\x18\a \x01(\v2P.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngressR\aingress\x12(\n" +
+	"\x10disable_nats_box\x18\b \x01(\bR\x0edisableNatsBox\"\xcb\x01\n" +
 	"\x1dKubernetesNatsServerContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\breplicas\x12Y\n" +
 	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12*\n" +
@@ -482,29 +503,33 @@ func file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_r
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_goTypes = []any{
-	(KubernetesNatsAuthScheme)(0),         // 0: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthScheme
-	(*KubernetesNatsSpec)(nil),            // 1: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec
-	(*KubernetesNatsServerContainer)(nil), // 2: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer
-	(*KubernetesNatsNoAuthUser)(nil),      // 3: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNoAuthUser
-	(*KubernetesNatsAuth)(nil),            // 4: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth
-	(*KubernetesNatsIngress)(nil),         // 5: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngress
-	(*kubernetes.ContainerResources)(nil), // 6: org.project_planton.provider.kubernetes.ContainerResources
-	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
+	(KubernetesNatsAuthScheme)(0),                // 0: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthScheme
+	(*KubernetesNatsSpec)(nil),                   // 1: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec
+	(*KubernetesNatsServerContainer)(nil),        // 2: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer
+	(*KubernetesNatsNoAuthUser)(nil),             // 3: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNoAuthUser
+	(*KubernetesNatsAuth)(nil),                   // 4: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth
+	(*KubernetesNatsIngress)(nil),                // 5: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngress
+	(*kubernetes.KubernetesClusterSelector)(nil), // 6: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 7: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 8: org.project_planton.provider.kubernetes.ContainerResources
+	(*descriptorpb.FieldOptions)(nil),            // 9: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.server_container:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer
-	4, // 1: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.auth:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth
-	5, // 2: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngress
-	6, // 3: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	0, // 4: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth.scheme:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthScheme
-	3, // 5: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth.no_auth_user:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNoAuthUser
-	7, // 6: org.project_planton.provider.kubernetes.kubernetesnats.v1.default_server_container:extendee -> google.protobuf.FieldOptions
-	2, // 7: org.project_planton.provider.kubernetes.kubernetesnats.v1.default_server_container:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	7, // [7:8] is the sub-list for extension type_name
-	6, // [6:7] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	6,  // 0: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	7,  // 1: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2,  // 2: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.server_container:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer
+	4,  // 3: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.auth:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth
+	5,  // 4: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngress
+	8,  // 5: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	0,  // 6: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth.scheme:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthScheme
+	3,  // 7: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuth.no_auth_user:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNoAuthUser
+	9,  // 8: org.project_planton.provider.kubernetes.kubernetesnats.v1.default_server_container:extendee -> google.protobuf.FieldOptions
+	2,  // 9: org.project_planton.provider.kubernetes.kubernetesnats.v1.default_server_container:type_name -> org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainer
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	9,  // [9:10] is the sub-list for extension type_name
+	8,  // [8:9] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_init() }

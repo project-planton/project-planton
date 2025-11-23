@@ -33,8 +33,8 @@ locals {
 
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace with default
-  namespace = try(var.spec.namespace, "kubernetes-external-dns")
+  # Namespace with default (StringValueOrRef)
+  namespace = try(var.spec.namespace.value, "kubernetes-external-dns")
 
   # Release name matches the resource name for multi-instance support
   release_name = var.metadata.name

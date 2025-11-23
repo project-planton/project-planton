@@ -7,6 +7,8 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesClickHouseSpec(t *testing.T) {
@@ -19,6 +21,15 @@ var _ = ginkgo.Describe("KubernetesClickHouseSpec validations", func() {
 
 	ginkgo.BeforeEach(func() {
 		spec = &KubernetesClickHouseSpec{
+			TargetCluster: &kubernetes.KubernetesClusterSelector{
+				ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+				ClusterName: "test-cluster",
+			},
+			Namespace: &foreignkeyv1.StringValueOrRef{
+				LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+					Value: "test-namespace",
+				},
+			},
 			ClusterName: "test-cluster",
 			Container: &KubernetesClickHouseContainer{
 				Replicas:           1,

@@ -14,6 +14,10 @@ kind: SignozKubernetes
 metadata:
   name: signoz-dev
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz-dev
   signozContainer:
     replicas: 1
     resources:
@@ -70,6 +74,10 @@ kind: SignozKubernetes
 metadata:
   name: signoz-production
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz-production
   signozContainer:
     replicas: 2
     resources:
@@ -139,6 +147,10 @@ kind: SignozKubernetes
 metadata:
   name: signoz-external-ch
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz-external-ch
   signozContainer:
     replicas: 2
     resources:
@@ -187,6 +199,10 @@ kind: SignozKubernetes
 metadata:
   name: signoz-ingress
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz-ingress
   signozContainer:
     replicas: 2
     resources:

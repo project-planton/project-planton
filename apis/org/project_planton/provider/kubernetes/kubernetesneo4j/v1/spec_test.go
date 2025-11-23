@@ -8,6 +8,8 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesNeo4J(t *testing.T) {
@@ -26,6 +28,15 @@ var _ = ginkgo.Describe("KubernetesNeo4J Custom Validation Tests", func() {
 				Name: "test-neo4j",
 			},
 			Spec: &KubernetesNeo4JSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "test-namespace",
+					},
+				},
 				Container: &KubernetesNeo4JContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{

@@ -21,6 +21,12 @@ module "redis_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = false
@@ -67,6 +73,12 @@ module "redis_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = true
@@ -112,6 +124,12 @@ module "redis_ha" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 3
       persistence_enabled = true
@@ -168,6 +186,12 @@ module "redis_minimal" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = false
@@ -212,6 +236,12 @@ module "redis_public" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = true
@@ -307,6 +337,12 @@ module "redis_env" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = var.resource_tier[var.environment].replicas
       persistence_enabled = var.resource_tier[var.environment].persistence

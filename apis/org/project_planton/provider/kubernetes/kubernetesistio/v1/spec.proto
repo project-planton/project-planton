@@ -6,6 +6,7 @@ import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // **KubernetesIstioSpec** defines the configuration for deploying Istio service mesh on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage an Istio deployment within a Kubernetes environment.
@@ -13,8 +14,16 @@ import "org/project_planton/provider/kubernetes/target_cluster.proto";
 message KubernetesIstioSpec {
   // The Kubernetes cluster to install this addon on.
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The container specifications for the Istio control plane (istiod) deployment.
-  KubernetesIstioSpecContainer container = 2 [(buf.validate.field).required = true];
+  KubernetesIstioSpecContainer container = 3 [(buf.validate.field).required = true];
 }
 
 // **KubernetesIstioSpecContainer** specifies the container configuration for the Istio control plane (istiod).

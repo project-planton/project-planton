@@ -5,6 +5,8 @@ package org.project_planton.provider.kubernetes.kubernetespostgres.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesPostgresContainer default_container = 534001;
@@ -92,8 +94,18 @@ message KubernetesPostgresBackupConfig {
  * It includes container specifications and ingress settings to control resource allocation and external access.
  */
 message KubernetesPostgresSpec {
+  // The Kubernetes cluster to install PostgreSQL on.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install PostgreSQL.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The container specifications for the PostgreSQL deployment.
-  KubernetesPostgresContainer container = 1 [(default_container) = {
+  KubernetesPostgresContainer container = 3 [(default_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -109,12 +121,12 @@ message KubernetesPostgresSpec {
   }];
 
   //The ingress configuration for the PostgreSQL deployment.
-  KubernetesPostgresIngress ingress = 2;
+  KubernetesPostgresIngress ingress = 4;
 
   // Optional: Per-database backup configuration
   // When specified, these settings override the operator-level backup configuration
   // If not specified, the database inherits operator-level backup settings
-  KubernetesPostgresBackupConfig backup_config = 3;
+  KubernetesPostgresBackupConfig backup_config = 5;
 }
 
 /**

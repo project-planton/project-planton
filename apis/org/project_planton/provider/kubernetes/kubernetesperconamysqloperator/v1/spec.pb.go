@@ -9,6 +9,7 @@ package kubernetesperconamysqloperatorv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -31,8 +32,7 @@ type KubernetesPerconaMysqlOperatorSpec struct {
 	// The Kubernetes cluster to install this operator on.
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Kubernetes namespace to install the operator.
-	// If not provided, defaults to "percona-mysql-operator"
-	Namespace string `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// Container resource specifications for the operator
 	Container     *KubernetesPerconaMysqlOperatorSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -76,11 +76,11 @@ func (x *KubernetesPerconaMysqlOperatorSpec) GetTargetCluster() *kubernetes.Kube
 	return nil
 }
 
-func (x *KubernetesPerconaMysqlOperatorSpec) GetNamespace() string {
+func (x *KubernetesPerconaMysqlOperatorSpec) GetNamespace() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Namespace
 	}
-	return ""
+	return nil
 }
 
 func (x *KubernetesPerconaMysqlOperatorSpec) GetContainer() *KubernetesPerconaMysqlOperatorSpecContainer {
@@ -141,10 +141,10 @@ var File_org_project_planton_provider_kubernetes_kubernetesperconamysqloperator_
 
 const file_org_project_planton_provider_kubernetes_kubernetesperconamysqloperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\xf4\x02\n" +
+	"Torg/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xa2\x03\n" +
 	"\"KubernetesPerconaMysqlOperatorSpec\x12i\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12D\n" +
-	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x9c\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x9c\x01\n" +
 	"\tcontainer\x18\x03 \x01(\v2v.org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xac\x01\n" +
 	"+KubernetesPerconaMysqlOperatorSpecContainer\x12}\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
@@ -170,17 +170,19 @@ var file_org_project_planton_provider_kubernetes_kubernetesperconamysqloperator_
 	(*KubernetesPerconaMysqlOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpec
 	(*KubernetesPerconaMysqlOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpecContainer
 	(*kubernetes.KubernetesClusterSelector)(nil),        // 2: org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	(*kubernetes.ContainerResources)(nil),               // 3: org.project_planton.provider.kubernetes.ContainerResources
+	(*v1.StringValueOrRef)(nil),                         // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),               // 4: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesperconamysqloperator_v1_spec_proto_depIdxs = []int32{
 	2, // 0: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	1, // 1: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 1: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpecContainer
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1.KubernetesPerconaMysqlOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

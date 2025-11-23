@@ -2,6 +2,22 @@
 
 This document provides practical examples for deploying Kubernetes namespaces using Project Planton.
 
+## Understanding Target Cluster
+
+All examples include the `target_cluster` field, which specifies which Kubernetes cluster the namespace should be created in. This field is required and consists of:
+
+- `cluster_kind`: The type of Kubernetes cluster (e.g., `gcp_gke_cluster`, `aws_eks_cluster`, `azure_aks_cluster`, etc.)
+- `cluster_name`: The name (or slug) of the Kubernetes cluster in your environment
+
+**Supported cluster kinds:**
+- `azure_aks_cluster` (400) - Azure AKS
+- `aws_eks_cluster` (207) - AWS EKS
+- `gcp_gke_cluster` (607) - GCP GKE
+- `digital_ocean_kubernetes_cluster` (1208) - DigitalOcean Kubernetes
+- `civo_kubernetes_cluster` (1507) - Civo Kubernetes
+
+The cluster specified must exist in the same environment as the namespace resource.
+
 ## Example 1: Minimal Namespace
 
 The simplest possible namespace configuration with just a name:
@@ -12,6 +28,9 @@ kind: KubernetesNamespace
 metadata:
   name: dev-team-alpha
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: prod-cluster
   name: dev-team-alpha
 ```
 
@@ -42,6 +61,9 @@ kind: KubernetesNamespace
 metadata:
   name: dev-namespace
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: dev-cluster
   name: dev-namespace
   labels:
     team: platform-engineering
@@ -68,6 +90,9 @@ kind: KubernetesNamespace
 metadata:
   name: prod-api-services
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: prod-cluster
   name: prod-api-services
   labels:
     team: backend-team
@@ -107,6 +132,9 @@ kind: KubernetesNamespace
 metadata:
   name: staging-services
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: staging-cluster
   name: staging-services
   labels:
     team: platform-team
@@ -140,6 +168,9 @@ kind: KubernetesNamespace
 metadata:
   name: pr-1234-preview
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: preview-cluster
   name: pr-1234-preview
   labels:
     team: frontend-team
@@ -168,6 +199,9 @@ kind: KubernetesNamespace
 metadata:
   name: custom-quota-namespace
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: prod-cluster
   name: custom-quota-namespace
   labels:
     team: data-science
@@ -211,6 +245,9 @@ kind: KubernetesNamespace
 metadata:
   name: linkerd-services
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: prod-cluster
   name: linkerd-services
   labels:
     team: backend-team
@@ -238,6 +275,9 @@ kind: KubernetesNamespace
 metadata:
   name: secure-banking-services
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: prod-cluster
   name: secure-banking-services
   labels:
     team: security-team
@@ -279,6 +319,9 @@ kind: KubernetesNamespace
 metadata:
   name: myapp-dev
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: dev-cluster
   name: myapp-dev
   labels:
     app: myapp
@@ -296,6 +339,9 @@ kind: KubernetesNamespace
 metadata:
   name: myapp-staging
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: staging-cluster
   name: myapp-staging
   labels:
     app: myapp
@@ -317,6 +363,9 @@ kind: KubernetesNamespace
 metadata:
   name: myapp-prod
 spec:
+  target_cluster:
+    cluster_kind: gcp_gke_cluster
+    cluster_name: prod-cluster
   name: myapp-prod
   labels:
     app: myapp

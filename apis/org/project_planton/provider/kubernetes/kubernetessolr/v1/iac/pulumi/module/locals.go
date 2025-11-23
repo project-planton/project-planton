@@ -7,7 +7,6 @@ import (
 	kubernetessolrv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -50,20 +49,17 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessolrv1.Kubernet
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Priority order:
-	// 1. Default: metadata.name
-	// 2. Override with custom label if provided
-	// 3. Override with stackInput if provided
+	// Get namespace from spec (required field)
+	// Falls back to stackInput if spec namespace is empty
+	locals.Namespace = target.Spec.Namespace.GetValue()
 
-	locals.Namespace = target.Metadata.Name
-
-	if target.Metadata.Labels != nil &&
-		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
-		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
+	if locals.Namespace == "" && stackInput.KubernetesNamespace != "" {
+		locals.Namespace = stackInput.KubernetesNamespace
 	}
 
-	if stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
+	// Final fallback to metadata.name
+	if locals.Namespace == "" {
+		locals.Namespace = target.Metadata.Name
 	}
 
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))

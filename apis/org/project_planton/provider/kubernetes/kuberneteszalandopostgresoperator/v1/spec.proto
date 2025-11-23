@@ -6,17 +6,26 @@ import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // **KubernetesZalandoPostgresOperatorSpec** defines the configuration for deploying the Zalando Postgres Operator on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
 // It includes container specifications and backup configuration settings to control resource allocation and data protection.
 message KubernetesZalandoPostgresOperatorSpec {
-  // The Kubernetes cluster to install this addon on.
+  // The Kubernetes cluster to install this operator on.
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The container specifications for the operator deployment.
-  KubernetesZalandoPostgresOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
+  KubernetesZalandoPostgresOperatorSpecContainer container = 3 [(buf.validate.field).required = true];
   // Optional: Backup configuration for all databases managed by this operator
-  KubernetesZalandoPostgresOperatorBackupConfig backup_config = 3;
+  KubernetesZalandoPostgresOperatorBackupConfig backup_config = 4;
 }
 
 // **KubernetesZalandoPostgresOperatorSpecContainer** specifies the container configuration for the Zalando Postgres Operator.

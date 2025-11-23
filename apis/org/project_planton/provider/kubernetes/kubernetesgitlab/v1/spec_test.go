@@ -6,7 +6,9 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesGitlab(t *testing.T) {
@@ -25,6 +27,15 @@ var _ = ginkgo.Describe("KubernetesGitlab Custom Validation Tests", func() {
 				Name: "test-gitlab",
 			},
 			Spec: &KubernetesGitlabSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: 607, // GKE cluster kind
+					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "test-namespace",
+					},
+				},
 				Container: &KubernetesGitlabSpecContainer{},
 			},
 		}

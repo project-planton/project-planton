@@ -4,6 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetescertmanager.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
 // KubernetesCertManagerSpec defines configuration for kubernetes-cert-manager on any cluster.
@@ -13,7 +14,11 @@ message KubernetesCertManagerSpec {
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
   // Kubernetes namespace where kubernetes-cert-manager will be deployed.
-  optional string namespace = 2 [(org.project_planton.shared.options.default) = "kubernetes-cert-manager"];
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
 
   // kubernetes-cert-manager version such as "v1.19.1". Used to set the image tag.
   // Minimum version v1.16.4 is enforced for Cloudflare API compatibility.

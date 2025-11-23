@@ -27,8 +27,8 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace configuration
-  namespace = "keycloak-${var.metadata.name}"
+  # Namespace from spec.namespace (StringValueOrRef), with fallback to default pattern
+  namespace = try(var.spec.namespace.value, "keycloak-${var.metadata.name}")
 
   # Service configuration
   service_name = "keycloak-${var.metadata.name}"

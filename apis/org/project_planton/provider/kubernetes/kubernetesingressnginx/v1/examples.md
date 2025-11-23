@@ -28,7 +28,9 @@ metadata:
   name: basic-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: my-cluster-credential
+    cluster_name: my-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
 ```
@@ -53,7 +55,9 @@ metadata:
   name: internal-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: my-cluster-credential
+    cluster_name: my-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: true
 ```
@@ -81,7 +85,9 @@ metadata:
     cloud: gcp
 spec:
   target_cluster:
-    kubernetes_credential_id: gke-cluster-credential
+    cluster_name: gke-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   gke:
@@ -114,7 +120,9 @@ metadata:
   name: gke-internal-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: gke-cluster-credential
+    cluster_name: gke-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: true
   gke:
@@ -144,7 +152,9 @@ metadata:
     cloud: aws
 spec:
   target_cluster:
-    kubernetes_credential_id: eks-cluster-credential
+    cluster_name: eks-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   eks:
@@ -178,7 +188,9 @@ metadata:
   name: eks-internal-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: eks-cluster-credential
+    cluster_name: eks-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: true
   eks:
@@ -211,7 +223,9 @@ metadata:
     cloud: azure
 spec:
   target_cluster:
-    kubernetes_credential_id: aks-cluster-credential
+    cluster_name: aks-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   aks:
@@ -242,7 +256,9 @@ metadata:
   name: aks-static-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: aks-cluster-credential
+    cluster_name: aks-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   aks:
@@ -281,7 +297,9 @@ metadata:
     environment: development
 spec:
   target_cluster:
-    kubernetes_credential_id: dev-cluster-credential
+    cluster_name: dev-cluster
+  namespace:
+    value: ingress-nginx
   # chart_version omitted - uses default stable version
   internal: false
 ```
@@ -312,7 +330,9 @@ metadata:
     region: us-west1
 spec:
   target_cluster:
-    kubernetes_credential_id: gke-prod-credential
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   gke:
@@ -332,7 +352,9 @@ metadata:
     region: us-west-2
 spec:
   target_cluster:
-    kubernetes_credential_id: eks-prod-credential
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   eks:
@@ -356,7 +378,9 @@ metadata:
     region: westus2
 spec:
   target_cluster:
-    kubernetes_credential_id: aks-prod-credential
+    cluster_name: prod-aks-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
   aks:
@@ -529,7 +553,9 @@ metadata:
   name: public-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: cluster-credential
+    cluster_name: my-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
 ---
@@ -540,7 +566,9 @@ metadata:
   name: internal-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: cluster-credential
+    cluster_name: my-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: true
 ```
@@ -557,9 +585,9 @@ metadata:
   env: production
 spec:
   target_cluster:
-    kubernetes_cluster_selector:
-      cluster_kind: GcpGkeClusterCore  # or AwsEksClusterCore, AzureAksCluster
-      cluster_name: my-prod-cluster
+    cluster_name: my-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
 ```

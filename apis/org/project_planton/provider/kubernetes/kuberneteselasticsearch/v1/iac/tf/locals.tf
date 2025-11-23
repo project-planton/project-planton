@@ -32,8 +32,12 @@ locals {
   } : {}
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace is the resource_id
-  namespace = local.resource_id
+  # Namespace from spec with fallback to resource_id
+  namespace = (
+    var.spec.namespace != null && var.spec.namespace != ""
+    ? var.spec.namespace
+    : local.resource_id
+  )
 
   # Service names and endpoints
   elasticsearch_kube_service_name = "${var.metadata.name}-es-http"

@@ -15,6 +15,14 @@ variable "spec" {
   description = "Specification for SigNoz Kubernetes deployment"
   type = object({
 
+    # The Kubernetes cluster to install this component on
+    target_cluster = object({
+      name = string
+    })
+
+    # Kubernetes namespace to install the component
+    namespace = string
+
     # The container specifications for the main SigNoz binary (UI, API server, Ruler, Alertmanager).
     signoz_container = object({
 

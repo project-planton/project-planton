@@ -24,6 +24,11 @@ metadata = {
 }
 
 spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace = "solr-instance-basic"
+
   solr_container = {
     replicas = 1
     image = {
@@ -102,6 +107,11 @@ metadata = {
 }
 
 spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace = "solr-instance-custom"
+
   solr_container = {
     replicas = 3
     image = {
@@ -182,6 +192,11 @@ metadata = {
 }
 
 spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace = "solr-instance-ingress"
+
   solr_container = {
     replicas = 2
     image = {
@@ -270,6 +285,11 @@ metadata = {
 }
 
 spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace = "solr-instance-gc-tuned"
+
   solr_container = {
     replicas = 1
     image = {
@@ -334,6 +354,11 @@ Update the `solr_container.replicas` value in your `.tfvars` file and re-apply:
 
 ```hcl
 spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace = "your-namespace"
+
   solr_container = {
     replicas = 5  # Scale from 3 to 5
     # ... rest of config
@@ -351,6 +376,11 @@ Modify the `image.tag` in your configuration:
 
 ```hcl
 spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace = "your-namespace"
+
   solr_container = {
     image = {
       repo = "solr"

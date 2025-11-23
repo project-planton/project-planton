@@ -19,6 +19,11 @@ module "clickhouse_basic" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "basic-clickhouse"
+    
     cluster_name = "dev-cluster"
     
     container = {
@@ -55,6 +60,11 @@ module "clickhouse_production" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "prod-clickhouse"
+    
     cluster_name = "production-analytics"
     version      = "24.8"
     
@@ -90,6 +100,11 @@ module "clickhouse_distributed" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "distributed-analytics"
+    
     cluster_name = "analytics-cluster"
     
     container = {
@@ -136,6 +151,11 @@ module "clickhouse_ha" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "ha-clickhouse"
+    
     cluster_name = "ha-analytics"
     version      = "24.8"
     
@@ -182,6 +202,11 @@ module "clickhouse_external_zk" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "enterprise-clickhouse"
+    
     cluster_name = "enterprise-cluster"
     
     container = {
@@ -236,6 +261,11 @@ module "clickhouse_public" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "public-clickhouse"
+    
     cluster_name = "public-cluster"
     
     container = {

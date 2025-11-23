@@ -22,6 +22,10 @@ module "minimal_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "minimal-example"
     version = "main"
     
     container = {
@@ -86,6 +90,10 @@ module "env_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "env-example"
     version = "main"
     
     container = {
@@ -153,6 +161,10 @@ module "db_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "db-credentials-example"
     version = "main"
     
     container = {
@@ -238,6 +250,10 @@ module "sidecar_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "sidecar-example"
     version = "v2"
     
     container = {
@@ -338,6 +354,10 @@ module "ingress_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "ingress-example"
     version = "main"
     
     container = {
@@ -420,6 +440,10 @@ module "hpa_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "hpa-example"
     version = "v3.0"
     
     container = {
@@ -496,6 +520,10 @@ module "production_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "production-api"
     version = "v1.0"
     
     container = {
@@ -643,6 +671,10 @@ module "private_registry_microservice" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "private-app"
     version = "main"
     
     container = {

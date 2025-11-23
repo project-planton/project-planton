@@ -13,17 +13,21 @@ web UI through ingress.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: TemporalKubernetes
+kind: KubernetesTemporal
 metadata:
   name: temporal-basic
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: temporal-basic
   database:
     backend: cassandra
   ingress:
     frontend:
       enabled: true
-      hostname: temporal-frontend.example.com
-    webUi:
+      grpc_hostname: temporal-frontend.example.com
+    web_ui:
       enabled: true
       hostname: temporal-ui.example.com
 ```
@@ -41,22 +45,26 @@ Deploy Temporal using an external PostgreSQL database for production-grade scala
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: TemporalKubernetes
+kind: KubernetesTemporal
 metadata:
   name: temporal-postgres
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-prod
   database:
     backend: postgresql
-    externalDatabase:
+    external_database:
       host: postgres-db.example.com
       port: 5432
-      user: temporaluser
+      username: temporaluser
       password: securepassword
   ingress:
     frontend:
       enabled: true
-      hostname: temporal-frontend-prod.example.com
-    webUi:
+      grpc_hostname: temporal-frontend-prod.example.com
+    web_ui:
       enabled: true
       hostname: temporal-ui-prod.example.com
 ```
@@ -74,13 +82,17 @@ queries.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: TemporalKubernetes
+kind: KubernetesTemporal
 metadata:
   name: temporal-elasticsearch
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: temporal-observability
   database:
     backend: cassandra
-  externalElasticsearch:
+  external_elasticsearch:
     host: elasticsearch.example.com
     port: 9200
     user: elasticuser
@@ -88,8 +100,8 @@ spec:
   ingress:
     frontend:
       enabled: true
-      hostname: temporal-frontend.example.com
-    webUi:
+      grpc_hostname: temporal-frontend.example.com
+    web_ui:
       enabled: true
       hostname: temporal-ui.example.com
 ```

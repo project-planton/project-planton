@@ -8,6 +8,8 @@ package kubernetestemporalv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -83,28 +85,32 @@ func (KubernetesTemporalDatabaseBackend) EnumDescriptor() ([]byte, []int) {
 // temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
 type KubernetesTemporalSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install Temporal on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install Temporal.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// database configuration
-	Database *KubernetesTemporalDatabaseConfig `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
+	Database *KubernetesTemporalDatabaseConfig `protobuf:"bytes,3,opt,name=database,proto3" json:"database,omitempty"`
 	// disables temporal web ui
-	DisableWebUi bool `protobuf:"varint,2,opt,name=disable_web_ui,json=disableWebUi,proto3" json:"disable_web_ui,omitempty"`
+	DisableWebUi bool `protobuf:"varint,4,opt,name=disable_web_ui,json=disableWebUi,proto3" json:"disable_web_ui,omitempty"`
 	// enables embedded elasticsearch for temporal
 	// this is ignored if external elasticsearch is set
-	EnableEmbeddedElasticsearch bool `protobuf:"varint,3,opt,name=enable_embedded_elasticsearch,json=enableEmbeddedElasticsearch,proto3" json:"enable_embedded_elasticsearch,omitempty"`
+	EnableEmbeddedElasticsearch bool `protobuf:"varint,5,opt,name=enable_embedded_elasticsearch,json=enableEmbeddedElasticsearch,proto3" json:"enable_embedded_elasticsearch,omitempty"`
 	// enables monitoring stack for temporal
 	// enabling this will deploy prometheus and grafana
-	EnableMonitoringStack bool `protobuf:"varint,4,opt,name=enable_monitoring_stack,json=enableMonitoringStack,proto3" json:"enable_monitoring_stack,omitempty"`
+	EnableMonitoringStack bool `protobuf:"varint,6,opt,name=enable_monitoring_stack,json=enableMonitoringStack,proto3" json:"enable_monitoring_stack,omitempty"`
 	// number of cassandra nodes to be deployed
 	// this is only honored when the backend is cassandra, and no external database is provided.
-	CassandraReplicas *int32 `protobuf:"varint,5,opt,name=cassandra_replicas,json=cassandraReplicas,proto3,oneof" json:"cassandra_replicas,omitempty"`
+	CassandraReplicas *int32 `protobuf:"varint,7,opt,name=cassandra_replicas,json=cassandraReplicas,proto3,oneof" json:"cassandra_replicas,omitempty"`
 	// The ingress configuration for the temporal deployment.
 	// if enabled, the frontend will be exposed using a load-balancer
 	// and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-	Ingress *KubernetesTemporalIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesTemporalIngress `protobuf:"bytes,8,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// external elasticsearch configuration to be used by temporal for configuring observability.
-	ExternalElasticsearch *KubernetesTemporalExternalElasticsearch `protobuf:"bytes,7,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
+	ExternalElasticsearch *KubernetesTemporalExternalElasticsearch `protobuf:"bytes,9,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
 	// version of the Temporal Helm chart to deploy (e.g., "0.62.0")
 	// if not specified, the default version configured in the Pulumi module will be used
-	Version       string `protobuf:"bytes,8,opt,name=version,proto3" json:"version,omitempty"`
+	Version       string `protobuf:"bytes,10,opt,name=version,proto3" json:"version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -137,6 +143,20 @@ func (x *KubernetesTemporalSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesTemporalSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesTemporalSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesTemporalSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesTemporalSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesTemporalSpec) GetDatabase() *KubernetesTemporalDatabaseConfig {
@@ -605,16 +625,19 @@ var File_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_prot
 
 const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/kubernetes/kubernetestemporal/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetestemporal.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xc0\x05\n" +
-	"\x16KubernetesTemporalSpec\x12\x83\x01\n" +
-	"\bdatabase\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
-	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12B\n" +
-	"\x1denable_embedded_elasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x126\n" +
-	"\x17enable_monitoring_stack\x18\x04 \x01(\bR\x15enableMonitoringStack\x129\n" +
-	"\x12cassandra_replicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\x11cassandraReplicas\x88\x01\x01\x12r\n" +
-	"\aingress\x18\x06 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngressR\aingress\x12\x9d\x01\n" +
-	"\x16external_elasticsearch\x18\a \x01(\v2f.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearchR\x15externalElasticsearch\x12\x18\n" +
-	"\aversion\x18\b \x01(\tR\aversionB\x15\n" +
+	"Horg/project_planton/provider/kubernetes/kubernetestemporal/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetestemporal.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x9f\a\n" +
+	"\x16KubernetesTemporalSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x83\x01\n" +
+	"\bdatabase\x18\x03 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
+	"\x0edisable_web_ui\x18\x04 \x01(\bR\fdisableWebUi\x12B\n" +
+	"\x1denable_embedded_elasticsearch\x18\x05 \x01(\bR\x1benableEmbeddedElasticsearch\x126\n" +
+	"\x17enable_monitoring_stack\x18\x06 \x01(\bR\x15enableMonitoringStack\x129\n" +
+	"\x12cassandra_replicas\x18\a \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\x11cassandraReplicas\x88\x01\x01\x12r\n" +
+	"\aingress\x18\b \x01(\v2X.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngressR\aingress\x12\x9d\x01\n" +
+	"\x16external_elasticsearch\x18\t \x01(\v2f.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearchR\x15externalElasticsearch\x12\x18\n" +
+	"\aversion\x18\n" +
+	" \x01(\tR\aversionB\x15\n" +
 	"\x13_cassandra_replicas\"\x98\x04\n" +
 	" KubernetesTemporalDatabaseConfig\x12\x82\x01\n" +
 	"\abackend\x18\x01 \x01(\x0e2`.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseBackendB\x06\xbaH\x03\xc8\x01\x01R\abackend\x12\x8e\x01\n" +
@@ -677,20 +700,24 @@ var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_prot
 	(*KubernetesTemporalIngress)(nil),                 // 5: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress
 	(*KubernetesTemporalFrontendIngressEndpoint)(nil), // 6: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalFrontendIngressEndpoint
 	(*KubernetesTemporalWebUiIngressEndpoint)(nil),    // 7: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpoint
+	(*kubernetes.KubernetesClusterSelector)(nil),      // 8: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                       // 9: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig
-	5, // 1: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress
-	4, // 2: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.external_elasticsearch:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearch
-	0, // 3: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.backend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseBackend
-	3, // 4: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalDatabase
-	6, // 5: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.frontend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalFrontendIngressEndpoint
-	7, // 6: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.web_ui:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpoint
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	8, // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	9, // 1: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig
+	5, // 3: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress
+	4, // 4: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.external_elasticsearch:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearch
+	0, // 5: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.backend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseBackend
+	3, // 6: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalDatabase
+	6, // 7: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.frontend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalFrontendIngressEndpoint
+	7, // 8: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.web_ui:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpoint
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_init() }

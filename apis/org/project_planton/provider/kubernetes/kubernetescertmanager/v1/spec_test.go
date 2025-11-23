@@ -6,7 +6,10 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesCertManager(t *testing.T) {
@@ -25,6 +28,15 @@ var _ = ginkgo.Describe("KubernetesCertManager Custom Validation Tests", func() 
 				Name: "test-kubernetes-cert-manager",
 			},
 			Spec: &KubernetesCertManagerSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "test-namespace",
+					},
+				},
 				Acme: &AcmeConfig{
 					Email: "admin@example.com",
 				},

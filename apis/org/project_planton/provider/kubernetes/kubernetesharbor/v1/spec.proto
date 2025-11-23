@@ -5,6 +5,8 @@ package org.project_planton.provider.kubernetes.kubernetesharbor.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
@@ -24,8 +26,18 @@ extend google.protobuf.FieldOptions {
  * deployment patterns from simple single-node installations to production-grade high-availability clusters.
  */
 message KubernetesHarborSpec {
+  // The Kubernetes cluster to install this component on.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The container specifications for Harbor Core (API server, authentication, webhook).
-  KubernetesHarborContainer core_container = 1 [(default_harbor_core_container) = {
+  KubernetesHarborContainer core_container = 3 [(default_harbor_core_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -40,7 +52,7 @@ message KubernetesHarborSpec {
   }];
 
   // The container specifications for Harbor Portal (web UI).
-  KubernetesHarborContainer portal_container = 2 [(default_harbor_portal_container) = {
+  KubernetesHarborContainer portal_container = 4 [(default_harbor_portal_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -55,7 +67,7 @@ message KubernetesHarborSpec {
   }];
 
   // The container specifications for Harbor Registry (Docker/OCI registry backend).
-  KubernetesHarborContainer registry_container = 3 [(default_harbor_registry_container) = {
+  KubernetesHarborContainer registry_container = 5 [(default_harbor_registry_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -70,7 +82,7 @@ message KubernetesHarborSpec {
   }];
 
   // The container specifications for Harbor Jobservice (background job execution).
-  KubernetesHarborContainer jobservice_container = 4 [(default_harbor_jobservice_container) = {
+  KubernetesHarborContainer jobservice_container = 6 [(default_harbor_jobservice_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -85,16 +97,16 @@ message KubernetesHarborSpec {
   }];
 
   // The database configuration for Harbor, supporting both self-managed and external PostgreSQL.
-  KubernetesHarborDatabaseConfig database = 5 [(buf.validate.field).required = true];
+  KubernetesHarborDatabaseConfig database = 7 [(buf.validate.field).required = true];
 
   // The cache configuration for Harbor, supporting both self-managed and external Redis.
-  KubernetesHarborCacheConfig cache = 6 [(buf.validate.field).required = true];
+  KubernetesHarborCacheConfig cache = 8 [(buf.validate.field).required = true];
 
   // The object storage configuration for Harbor artifact storage.
-  KubernetesHarborStorageConfig storage = 7 [(buf.validate.field).required = true];
+  KubernetesHarborStorageConfig storage = 9 [(buf.validate.field).required = true];
 
   // The ingress configuration for Harbor UI and registry endpoints.
-  KubernetesHarborIngress ingress = 8;
+  KubernetesHarborIngress ingress = 10;
 
   /**
    * A map of key-value pairs that provide additional customization options for the Harbor Helm chart.
@@ -103,7 +115,7 @@ message KubernetesHarborSpec {
    * For detailed information on available options, refer to the Helm chart documentation at:
    * https://github.com/goharbor/harbor-helm
    */
-  map<string, string> helm_values = 9;
+  map<string, string> helm_values = 11;
 }
 
 /**

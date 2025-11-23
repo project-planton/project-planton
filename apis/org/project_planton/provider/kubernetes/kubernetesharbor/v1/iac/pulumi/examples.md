@@ -48,6 +48,15 @@ func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         // Define Harbor configuration
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+                ClusterName: "my-gke-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "harbor-dev",
+                },
+            },
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 1,
                 Resources: &kubernetes.ContainerResources{
@@ -186,6 +195,8 @@ import (
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
@@ -207,6 +218,15 @@ func main() {
         s3Region := cfg.Require("s3-region")
 
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterKind: cloudresourcekind.CloudResourceKind_AwsEksCluster,
+                ClusterName: "my-eks-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "harbor-prod",
+                },
+            },
             // Harbor Core - 3 replicas for HA
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 3,
@@ -359,6 +379,8 @@ import (
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
@@ -372,6 +394,15 @@ func main() {
         redisPassword := cfg.RequireSecret("redis-password")
 
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+                ClusterName: "my-gke-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "harbor-gcp",
+                },
+            },
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 2,
                 Resources: &kubernetes.ContainerResources{
@@ -474,12 +505,23 @@ import (
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+                ClusterName: "my-gke-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "harbor-advanced",
+                },
+            },
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 2,
             },
@@ -565,12 +607,23 @@ import (
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+                ClusterName: "my-gke-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "harbor-minio",
+                },
+            },
             CoreContainer:       &kubernetesharborv1.KubernetesHarborContainer{Replicas: 1},
             PortalContainer:     &kubernetesharborv1.KubernetesHarborContainer{Replicas: 1},
             RegistryContainer:   &kubernetesharborv1.KubernetesHarborContainer{Replicas: 1},

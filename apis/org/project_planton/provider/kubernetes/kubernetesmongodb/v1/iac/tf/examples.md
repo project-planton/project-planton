@@ -13,6 +13,11 @@ module "mongodb_basic" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "basic-mongodb"
+
     container = {
       replicas = 1
 
@@ -52,6 +57,11 @@ module "mongodb_persistent" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "persistent-mongodb"
+
     container = {
       replicas = 3
 
@@ -89,6 +99,11 @@ module "mongodb_with_ingress" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "ingress-mongodb"
+
     container = {
       replicas = 1
 
@@ -133,6 +148,11 @@ module "mongodb_production" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "production-mongodb"
+
     container = {
       replicas = 3
 
@@ -200,6 +220,11 @@ module "mongodb_dev" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "dev-mongodb"
+
     container = {
       replicas = 1
 
@@ -237,6 +262,11 @@ module "mongodb_custom" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "custom-mongodb"
+
     container = {
       replicas = 2
 

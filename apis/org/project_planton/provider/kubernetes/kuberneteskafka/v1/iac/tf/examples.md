@@ -33,6 +33,11 @@ module "kafka_basic" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "kafka-basic"
+
     kafka_topics = [
       {
         name       = "my-topic"
@@ -106,6 +111,11 @@ module "kafka_full" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "kafka-prod"
+
     kafka_topics = [
       {
         name       = "my-topic"
@@ -200,6 +210,11 @@ module "kafka_minimal" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "kafka-minimal"
+
     broker_container = {
       replicas = 1
       resources = {
@@ -259,6 +274,11 @@ module "kafka_custom_topics" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "kafka-topics"
+
     kafka_topics = [
       {
         name       = "logs"
@@ -347,6 +367,11 @@ module "kafka_schema_only" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "kafka-schema"
+
     kafka_topics = [
       {
         name       = "transactions"
@@ -434,6 +459,11 @@ module "kafka_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-eks-cluster"
+    }
+    namespace = "kafka-production"
+
     kafka_topics = [
       {
         name       = "critical-events"

@@ -9,6 +9,7 @@ package kubernetescronjobv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -31,65 +32,69 @@ const (
 // cron-job is deployed, executed, and how concurrency and retries are handled.
 type KubernetesCronJobSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this cron-job on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the cron-job.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// *
 	// The container image to be used for the application.
 	// The `pull_secret_name` is determined by looking up the
 	// `container_image_artifact_store_id` from the environment where the cron-job is deployed.
-	Image *kubernetes.ContainerImage `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
+	Image *kubernetes.ContainerImage `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
 	// *
 	// The CPU and memory resources allocated to the cron-job container.
 	// If not specified, default container resources (limits.cpu=1000m, limits.memory=1Gi,
 	// requests.cpu=50m, requests.memory=100Mi) are applied.
-	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
+	Resources *kubernetes.ContainerResources `protobuf:"bytes,4,opt,name=resources,proto3" json:"resources,omitempty"`
 	// *
 	// Environment variables and secrets for the cron-job container.
 	// This includes both straightforward environment variables (key=value)
 	// and references to secrets.
-	Env *KubernetesCronJobContainerAppEnv `protobuf:"bytes,3,opt,name=env,proto3" json:"env,omitempty"`
+	Env *KubernetesCronJobContainerAppEnv `protobuf:"bytes,5,opt,name=env,proto3" json:"env,omitempty"`
 	// *
 	// A cron schedule expression in standard Cron format, e.g. "0 0 * * *".
 	// This field is required.
-	Schedule string `protobuf:"bytes,4,opt,name=schedule,proto3" json:"schedule,omitempty"`
+	Schedule string `protobuf:"bytes,6,opt,name=schedule,proto3" json:"schedule,omitempty"`
 	// *
 	// Optional deadline in seconds for starting the job if it misses its scheduled time.
 	// If set to 0, no deadline is enforced.
-	StartingDeadlineSeconds *uint64 `protobuf:"varint,5,opt,name=starting_deadline_seconds,json=startingDeadlineSeconds,proto3,oneof" json:"starting_deadline_seconds,omitempty"`
+	StartingDeadlineSeconds *uint64 `protobuf:"varint,7,opt,name=starting_deadline_seconds,json=startingDeadlineSeconds,proto3,oneof" json:"starting_deadline_seconds,omitempty"`
 	// *
 	// Concurrency policy specifies how concurrent job runs are handled.
 	// Allowed values are: "Allow", "Forbid", "Replace".
 	// Default is "Forbid".
-	ConcurrencyPolicy *string `protobuf:"bytes,6,opt,name=concurrency_policy,json=concurrencyPolicy,proto3,oneof" json:"concurrency_policy,omitempty"`
+	ConcurrencyPolicy *string `protobuf:"bytes,8,opt,name=concurrency_policy,json=concurrencyPolicy,proto3,oneof" json:"concurrency_policy,omitempty"`
 	// *
 	// If true, no subsequent runs are scheduled.
 	// Default is false.
-	Suspend *bool `protobuf:"varint,7,opt,name=suspend,proto3,oneof" json:"suspend,omitempty"`
+	Suspend *bool `protobuf:"varint,9,opt,name=suspend,proto3,oneof" json:"suspend,omitempty"`
 	// *
 	// Number of successful finished jobs to retain.
 	// Default is 3.
-	SuccessfulJobsHistoryLimit *uint32 `protobuf:"varint,8,opt,name=successful_jobs_history_limit,json=successfulJobsHistoryLimit,proto3,oneof" json:"successful_jobs_history_limit,omitempty"`
+	SuccessfulJobsHistoryLimit *uint32 `protobuf:"varint,10,opt,name=successful_jobs_history_limit,json=successfulJobsHistoryLimit,proto3,oneof" json:"successful_jobs_history_limit,omitempty"`
 	// *
 	// Number of failed finished jobs to retain.
 	// Default is 1.
-	FailedJobsHistoryLimit *uint32 `protobuf:"varint,9,opt,name=failed_jobs_history_limit,json=failedJobsHistoryLimit,proto3,oneof" json:"failed_jobs_history_limit,omitempty"`
+	FailedJobsHistoryLimit *uint32 `protobuf:"varint,11,opt,name=failed_jobs_history_limit,json=failedJobsHistoryLimit,proto3,oneof" json:"failed_jobs_history_limit,omitempty"`
 	// *
 	// Number of retries before marking this job as failed.
 	// Default is 6.
-	BackoffLimit *uint32 `protobuf:"varint,10,opt,name=backoff_limit,json=backoffLimit,proto3,oneof" json:"backoff_limit,omitempty"`
+	BackoffLimit *uint32 `protobuf:"varint,12,opt,name=backoff_limit,json=backoffLimit,proto3,oneof" json:"backoff_limit,omitempty"`
 	// *
 	// Pod restart policy.
 	// Allowed values: "Always", "OnFailure", "Never".
 	// Default is "Never".
-	RestartPolicy *string `protobuf:"bytes,11,opt,name=restart_policy,json=restartPolicy,proto3,oneof" json:"restart_policy,omitempty"`
+	RestartPolicy *string `protobuf:"bytes,13,opt,name=restart_policy,json=restartPolicy,proto3,oneof" json:"restart_policy,omitempty"`
 	// *
 	// An optional list of commands (equivalent to an ENTRYPOINT override) for the cron-job container.
 	// If omitted, the default ENTRYPOINT in the image will be used.
 	// Example: ["sh","-c","echo Hello from Cron"]
-	Command []string `protobuf:"bytes,12,rep,name=command,proto3" json:"command,omitempty"`
+	Command []string `protobuf:"bytes,14,rep,name=command,proto3" json:"command,omitempty"`
 	// *
 	// An optional list of arguments passed to the container command or the image's default ENTRYPOINT.
 	// If omitted, the default CMD in the image will be used.
 	// Example: ["-f","/path/to/config.yaml"]
-	Args          []string `protobuf:"bytes,13,rep,name=args,proto3" json:"args,omitempty"`
+	Args          []string `protobuf:"bytes,15,rep,name=args,proto3" json:"args,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -122,6 +127,20 @@ func (x *KubernetesCronJobSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesCronJobSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesCronJobSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesCronJobSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesCronJobSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesCronJobSpec) GetImage() *kubernetes.ContainerImage {
@@ -276,25 +295,28 @@ var File_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xc0\b\n" +
-	"\x15KubernetesCronJobSpec\x12M\n" +
-	"\x05image\x18\x01 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageR\x05image\x12|\n" +
-	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x9f\n" +
+	"\n" +
+	"\x15KubernetesCronJobSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12M\n" +
+	"\x05image\x18\x03 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageR\x05image\x12|\n" +
+	"\tresources\x18\x04 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12p\n" +
-	"\x03env\x18\x03 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnvR\x03env\x12\"\n" +
-	"\bschedule\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bschedule\x12L\n" +
-	"\x19starting_deadline_seconds\x18\x05 \x01(\x04B\v\xbaH\x03\xd8\x01\x01\x8a\xa6\x1d\x010H\x00R\x17startingDeadlineSeconds\x88\x01\x01\x12[\n" +
-	"\x12concurrency_policy\x18\x06 \x01(\tB'\xbaH\x1ar\x18R\x05AllowR\x06ForbidR\aReplace\x8a\xa6\x1d\x06ForbidH\x01R\x11concurrencyPolicy\x88\x01\x01\x12(\n" +
-	"\asuspend\x18\a \x01(\bB\t\x8a\xa6\x1d\x05falseH\x02R\asuspend\x88\x01\x01\x12M\n" +
-	"\x1dsuccessful_jobs_history_limit\x18\b \x01(\rB\x05\x8a\xa6\x1d\x013H\x03R\x1asuccessfulJobsHistoryLimit\x88\x01\x01\x12E\n" +
-	"\x19failed_jobs_history_limit\x18\t \x01(\rB\x05\x8a\xa6\x1d\x011H\x04R\x16failedJobsHistoryLimit\x88\x01\x01\x12/\n" +
-	"\rbackoff_limit\x18\n" +
-	" \x01(\rB\x05\x8a\xa6\x1d\x016H\x05R\fbackoffLimit\x88\x01\x01\x12T\n" +
-	"\x0erestart_policy\x18\v \x01(\tB(\xbaH\x1cr\x1aR\x06AlwaysR\tOnFailureR\x05Never\x8a\xa6\x1d\x05NeverH\x06R\rrestartPolicy\x88\x01\x01\x12\x18\n" +
-	"\acommand\x18\f \x03(\tR\acommand\x12\x12\n" +
-	"\x04args\x18\r \x03(\tR\x04argsB\x1c\n" +
+	"\x03env\x18\x05 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnvR\x03env\x12\"\n" +
+	"\bschedule\x18\x06 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bschedule\x12L\n" +
+	"\x19starting_deadline_seconds\x18\a \x01(\x04B\v\xbaH\x03\xd8\x01\x01\x8a\xa6\x1d\x010H\x00R\x17startingDeadlineSeconds\x88\x01\x01\x12[\n" +
+	"\x12concurrency_policy\x18\b \x01(\tB'\xbaH\x1ar\x18R\x05AllowR\x06ForbidR\aReplace\x8a\xa6\x1d\x06ForbidH\x01R\x11concurrencyPolicy\x88\x01\x01\x12(\n" +
+	"\asuspend\x18\t \x01(\bB\t\x8a\xa6\x1d\x05falseH\x02R\asuspend\x88\x01\x01\x12M\n" +
+	"\x1dsuccessful_jobs_history_limit\x18\n" +
+	" \x01(\rB\x05\x8a\xa6\x1d\x013H\x03R\x1asuccessfulJobsHistoryLimit\x88\x01\x01\x12E\n" +
+	"\x19failed_jobs_history_limit\x18\v \x01(\rB\x05\x8a\xa6\x1d\x011H\x04R\x16failedJobsHistoryLimit\x88\x01\x01\x12/\n" +
+	"\rbackoff_limit\x18\f \x01(\rB\x05\x8a\xa6\x1d\x016H\x05R\fbackoffLimit\x88\x01\x01\x12T\n" +
+	"\x0erestart_policy\x18\r \x01(\tB(\xbaH\x1cr\x1aR\x06AlwaysR\tOnFailureR\x05Never\x8a\xa6\x1d\x05NeverH\x06R\rrestartPolicy\x88\x01\x01\x12\x18\n" +
+	"\acommand\x18\x0e \x03(\tR\acommand\x12\x12\n" +
+	"\x04args\x18\x0f \x03(\tR\x04argsB\x1c\n" +
 	"\x1a_starting_deadline_secondsB\x15\n" +
 	"\x13_concurrency_policyB\n" +
 	"\n" +
@@ -332,20 +354,24 @@ var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto
 	(*KubernetesCronJobContainerAppEnv)(nil), // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
 	nil,                                      // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
 	nil,                                      // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
-	(*kubernetes.ContainerImage)(nil),        // 4: org.project_planton.provider.kubernetes.ContainerImage
-	(*kubernetes.ContainerResources)(nil),    // 5: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.KubernetesClusterSelector)(nil), // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerImage)(nil),            // 6: org.project_planton.provider.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil),        // 7: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_depIdxs = []int32{
-	4, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	5, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	1, // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.env:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
-	2, // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
-	3, // 4: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	5, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	6, // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	7, // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	1, // 4: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.env:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
+	2, // 5: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
+	3, // 6: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_init() }

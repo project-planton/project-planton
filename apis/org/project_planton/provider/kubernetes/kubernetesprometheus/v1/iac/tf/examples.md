@@ -22,6 +22,12 @@ module "prometheus_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = false
@@ -68,6 +74,12 @@ module "prometheus_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 2
       persistence_enabled = true
@@ -113,6 +125,12 @@ module "prometheus_analytics" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 3
       persistence_enabled = true
@@ -165,6 +183,12 @@ module "prometheus_minimal" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = false
@@ -209,6 +233,12 @@ module "prometheus_public" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = 1
       persistence_enabled = true
@@ -304,6 +334,12 @@ module "prometheus_env" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       replicas = var.resource_tier[var.environment].replicas
       persistence_enabled = var.resource_tier[var.environment].persistence

@@ -20,7 +20,10 @@ metadata = {
 }
 
 spec = {
-  namespace = "kubernetes-percona-postgres-operator"  # Optional: defaults to "kubernetes-percona-postgres-operator"
+  target_cluster = {
+    cluster_name = "my-gke-cluster"
+  }
+  namespace = "kubernetes-percona-postgres-operator"
   
   container = {
     resources = {
@@ -106,6 +109,9 @@ metadata = {
 }
 
 spec = {
+  target_cluster = {
+    cluster_name = "production-gke-cluster"
+  }
   namespace = "kubernetes-percona-postgres-operator-prod"
   
   container = {
@@ -150,6 +156,9 @@ metadata = {
 }
 
 spec = {
+  target_cluster = {
+    cluster_name = "dev-gke-cluster"
+  }
   namespace = "kubernetes-percona-postgres-operator-dev"
   
   container = {

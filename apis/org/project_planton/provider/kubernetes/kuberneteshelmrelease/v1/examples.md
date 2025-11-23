@@ -27,6 +27,10 @@ kind: HelmRelease
 metadata:
   name: basic-nginx
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: default
   repo: https://charts.bitnami.com/bitnami
   name: nginx
   version: 15.14.0
@@ -47,6 +51,10 @@ kind: HelmRelease
 metadata:
   name: nginx-ha
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: default
   repo: https://charts.bitnami.com/bitnami
   name: nginx
   version: 15.14.0
@@ -77,6 +85,10 @@ kind: HelmRelease
 metadata:
   name: wordpress-blog
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: wordpress
   repo: https://charts.bitnami.com/bitnami
   name: wordpress
   version: 19.0.0
@@ -109,6 +121,10 @@ kind: HelmRelease
 metadata:
   name: redis-ha
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: redis
   repo: https://charts.bitnami.com/bitnami
   name: redis
   version: 18.19.0
@@ -149,6 +165,10 @@ metadata:
     environment: production
     team: platform
 spec:
+  target_cluster:
+    cluster_name: prod-cluster
+  namespace:
+    value: postgres
   repo: https://charts.bitnami.com/bitnami
   name: postgresql
   version: 14.3.0
@@ -196,6 +216,10 @@ kind: HelmRelease
 metadata:
   name: prometheus-monitoring
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: monitoring
   repo: https://prometheus-community.github.io/helm-charts
   name: prometheus
   version: 25.11.0
@@ -245,6 +269,10 @@ kind: HelmRelease
 metadata:
   name: private-app
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: default
   repo: https://private-charts.company.com/charts
   name: internal-app
   version: 2.1.0
@@ -281,6 +309,10 @@ kind: HelmRelease
 metadata:
   name: oci-chart-deployment
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: default
   repo: oci://ghcr.io/company/charts
   name: myapp
   version: 1.5.0
@@ -316,6 +348,10 @@ metadata:
     environment: development
     team: engineering
 spec:
+  target_cluster:
+    cluster_name: dev-cluster
+  namespace:
+    value: myapp-dev
   repo: https://charts.company.com/stable
   name: myapp
   version: 3.2.0
@@ -363,6 +399,10 @@ metadata:
     team: engineering
     criticality: high
 spec:
+  target_cluster:
+    cluster_name: prod-cluster
+  namespace:
+    value: myapp-prod
   repo: https://charts.company.com/stable
   name: myapp
   version: 3.2.0

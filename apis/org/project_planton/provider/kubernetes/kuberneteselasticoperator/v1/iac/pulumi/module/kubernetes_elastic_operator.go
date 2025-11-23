@@ -14,12 +14,18 @@ import (
 func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 	k8sProvider *pulumikubernetes.Provider) error {
 
+	// Get namespace from spec
+	namespace := locals.KubernetesElasticOperator.Spec.Namespace.GetValue()
+	if namespace == "" {
+		namespace = vars.Namespace // fallback to default
+	}
+
 	// --------------------------------------------------------------------
 	// 1. Namespace
 	// --------------------------------------------------------------------
-	ns, err := corev1.NewNamespace(ctx, vars.Namespace, &corev1.NamespaceArgs{
+	ns, err := corev1.NewNamespace(ctx, namespace, &corev1.NamespaceArgs{
 		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-			Name:   pulumi.String(vars.Namespace),
+			Name:   pulumi.String(namespace),
 			Labels: pulumi.ToStringMap(locals.KubeLabels),
 		}),
 	}, pulumi.Provider(k8sProvider))

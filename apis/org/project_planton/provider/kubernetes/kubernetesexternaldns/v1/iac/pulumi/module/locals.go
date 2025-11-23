@@ -36,10 +36,11 @@ func getProviderType(spec *kubernetesexternaldnsv1.KubernetesExternalDnsSpec) st
 
 // getNamespace returns the namespace from spec, with default if not specified
 func getNamespace(spec *kubernetesexternaldnsv1.KubernetesExternalDnsSpec) string {
-	if spec.Namespace != nil && *spec.Namespace != "" {
-		return *spec.Namespace
+	namespace := spec.Namespace.GetValue()
+	if namespace == "" {
+		return "kubernetes-external-dns" // default
 	}
-	return "kubernetes-external-dns" // default
+	return namespace
 }
 
 // getHelmChartVersion returns the Helm chart version from spec, with default if not specified

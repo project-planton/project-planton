@@ -9,6 +9,7 @@ package kubernetesharborv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -99,29 +100,33 @@ func (KubernetesHarborStorageType) EnumDescriptor() ([]byte, []int) {
 // deployment patterns from simple single-node installations to production-grade high-availability clusters.
 type KubernetesHarborSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this component on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The container specifications for Harbor Core (API server, authentication, webhook).
-	CoreContainer *KubernetesHarborContainer `protobuf:"bytes,1,opt,name=core_container,json=coreContainer,proto3" json:"core_container,omitempty"`
+	CoreContainer *KubernetesHarborContainer `protobuf:"bytes,3,opt,name=core_container,json=coreContainer,proto3" json:"core_container,omitempty"`
 	// The container specifications for Harbor Portal (web UI).
-	PortalContainer *KubernetesHarborContainer `protobuf:"bytes,2,opt,name=portal_container,json=portalContainer,proto3" json:"portal_container,omitempty"`
+	PortalContainer *KubernetesHarborContainer `protobuf:"bytes,4,opt,name=portal_container,json=portalContainer,proto3" json:"portal_container,omitempty"`
 	// The container specifications for Harbor Registry (Docker/OCI registry backend).
-	RegistryContainer *KubernetesHarborContainer `protobuf:"bytes,3,opt,name=registry_container,json=registryContainer,proto3" json:"registry_container,omitempty"`
+	RegistryContainer *KubernetesHarborContainer `protobuf:"bytes,5,opt,name=registry_container,json=registryContainer,proto3" json:"registry_container,omitempty"`
 	// The container specifications for Harbor Jobservice (background job execution).
-	JobserviceContainer *KubernetesHarborContainer `protobuf:"bytes,4,opt,name=jobservice_container,json=jobserviceContainer,proto3" json:"jobservice_container,omitempty"`
+	JobserviceContainer *KubernetesHarborContainer `protobuf:"bytes,6,opt,name=jobservice_container,json=jobserviceContainer,proto3" json:"jobservice_container,omitempty"`
 	// The database configuration for Harbor, supporting both self-managed and external PostgreSQL.
-	Database *KubernetesHarborDatabaseConfig `protobuf:"bytes,5,opt,name=database,proto3" json:"database,omitempty"`
+	Database *KubernetesHarborDatabaseConfig `protobuf:"bytes,7,opt,name=database,proto3" json:"database,omitempty"`
 	// The cache configuration for Harbor, supporting both self-managed and external Redis.
-	Cache *KubernetesHarborCacheConfig `protobuf:"bytes,6,opt,name=cache,proto3" json:"cache,omitempty"`
+	Cache *KubernetesHarborCacheConfig `protobuf:"bytes,8,opt,name=cache,proto3" json:"cache,omitempty"`
 	// The object storage configuration for Harbor artifact storage.
-	Storage *KubernetesHarborStorageConfig `protobuf:"bytes,7,opt,name=storage,proto3" json:"storage,omitempty"`
+	Storage *KubernetesHarborStorageConfig `protobuf:"bytes,9,opt,name=storage,proto3" json:"storage,omitempty"`
 	// The ingress configuration for Harbor UI and registry endpoints.
-	Ingress *KubernetesHarborIngress `protobuf:"bytes,8,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesHarborIngress `protobuf:"bytes,10,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// *
 	// A map of key-value pairs that provide additional customization options for the Harbor Helm chart.
 	// These values allow for further refinement of the deployment, such as enabling Trivy scanner,
 	// configuring Notary for image signing, or customizing authentication providers.
 	// For detailed information on available options, refer to the Helm chart documentation at:
 	// https://github.com/goharbor/harbor-helm
-	HelmValues    map[string]string `protobuf:"bytes,9,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	HelmValues    map[string]string `protobuf:"bytes,11,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -154,6 +159,20 @@ func (x *KubernetesHarborSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesHarborSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesHarborSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesHarborSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesHarborSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesHarborSpec) GetCoreContainer() *KubernetesHarborContainer {
@@ -1629,30 +1648,32 @@ var File_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetesharbor/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesharbor.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a0org/project_planton/shared/options/options.proto\"\xfa\n" +
-	"\n" +
-	"\x14KubernetesHarborSpec\x12\xa5\x01\n" +
-	"\x0ecore_container\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x8a\xa9\x96\x02!\b\x01\x12\x1d\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetesharbor/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesharbor.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd9\f\n" +
+	"\x14KubernetesHarborSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa5\x01\n" +
+	"\x0ecore_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x8a\xa9\x96\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04200m\x12\x05512MiR\rcoreContainer\x12\xaa\x01\n" +
-	"\x10portal_container\x18\x02 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB'\x92\xa9\x96\x02\"\b\x01\x12\x1e\n" +
+	"\x10portal_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB'\x92\xa9\x96\x02\"\b\x01\x12\x1e\n" +
 	"\r\n" +
 	"\x04500m\x12\x05512Mi\x12\r\n" +
 	"\x04100m\x12\x05256MiR\x0fportalContainer\x12\xad\x01\n" +
-	"\x12registry_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x9a\xa9\x96\x02!\b\x01\x12\x1d\n" +
+	"\x12registry_container\x18\x05 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x9a\xa9\x96\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04200m\x12\x05512MiR\x11registryContainer\x12\xb1\x01\n" +
-	"\x14jobservice_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\xa2\xa9\x96\x02!\b\x01\x12\x1d\n" +
+	"\x14jobservice_container\x18\x06 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\xa2\xa9\x96\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
 	"\x04100m\x12\x05256MiR\x13jobserviceContainer\x12\x7f\n" +
-	"\bdatabase\x18\x05 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12v\n" +
-	"\x05cache\x18\x06 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfigB\x06\xbaH\x03\xc8\x01\x01R\x05cache\x12|\n" +
-	"\astorage\x18\a \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfigB\x06\xbaH\x03\xc8\x01\x01R\astorage\x12n\n" +
-	"\aingress\x18\b \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressR\aingress\x12\x82\x01\n" +
-	"\vhelm_values\x18\t \x03(\v2a.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntryR\n" +
+	"\bdatabase\x18\a \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12v\n" +
+	"\x05cache\x18\b \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfigB\x06\xbaH\x03\xc8\x01\x01R\x05cache\x12|\n" +
+	"\astorage\x18\t \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfigB\x06\xbaH\x03\xc8\x01\x01R\astorage\x12n\n" +
+	"\aingress\x18\n" +
+	" \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressR\aingress\x12\x82\x01\n" +
+	"\vhelm_values\x18\v \x03(\v2a.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -1812,77 +1833,81 @@ func file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto
 var file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_goTypes = []any{
-	(KubernetesHarborStorageType)(0),            // 0: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageType
-	(*KubernetesHarborSpec)(nil),                // 1: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec
-	(*KubernetesHarborContainer)(nil),           // 2: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	(*KubernetesHarborDatabaseConfig)(nil),      // 3: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig
-	(*KubernetesHarborExternalPostgresql)(nil),  // 4: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalPostgresql
-	(*KubernetesHarborManagedPostgresql)(nil),   // 5: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedPostgresql
-	(*KubernetesHarborPostgresqlContainer)(nil), // 6: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer
-	(*KubernetesHarborCacheConfig)(nil),         // 7: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig
-	(*KubernetesHarborExternalRedis)(nil),       // 8: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalRedis
-	(*KubernetesHarborManagedRedis)(nil),        // 9: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedRedis
-	(*KubernetesHarborRedisContainer)(nil),      // 10: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer
-	(*KubernetesHarborStorageConfig)(nil),       // 11: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig
-	(*KubernetesHarborS3Storage)(nil),           // 12: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborS3Storage
-	(*KubernetesHarborGcsStorage)(nil),          // 13: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborGcsStorage
-	(*KubernetesHarborAzureStorage)(nil),        // 14: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborAzureStorage
-	(*KubernetesHarborOssStorage)(nil),          // 15: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborOssStorage
-	(*KubernetesHarborFilesystemStorage)(nil),   // 16: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborFilesystemStorage
-	(*KubernetesHarborIngress)(nil),             // 17: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress
-	(*KubernetesHarborIngressEndpoint)(nil),     // 18: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressEndpoint
-	nil,                                         // 19: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntry
-	(*kubernetes.ContainerResources)(nil),       // 20: org.project_planton.provider.kubernetes.ContainerResources
-	(*kubernetes.ContainerImage)(nil),           // 21: org.project_planton.provider.kubernetes.ContainerImage
-	(*descriptorpb.FieldOptions)(nil),           // 22: google.protobuf.FieldOptions
+	(KubernetesHarborStorageType)(0),             // 0: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageType
+	(*KubernetesHarborSpec)(nil),                 // 1: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec
+	(*KubernetesHarborContainer)(nil),            // 2: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	(*KubernetesHarborDatabaseConfig)(nil),       // 3: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig
+	(*KubernetesHarborExternalPostgresql)(nil),   // 4: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalPostgresql
+	(*KubernetesHarborManagedPostgresql)(nil),    // 5: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedPostgresql
+	(*KubernetesHarborPostgresqlContainer)(nil),  // 6: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer
+	(*KubernetesHarborCacheConfig)(nil),          // 7: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig
+	(*KubernetesHarborExternalRedis)(nil),        // 8: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalRedis
+	(*KubernetesHarborManagedRedis)(nil),         // 9: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedRedis
+	(*KubernetesHarborRedisContainer)(nil),       // 10: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer
+	(*KubernetesHarborStorageConfig)(nil),        // 11: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig
+	(*KubernetesHarborS3Storage)(nil),            // 12: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborS3Storage
+	(*KubernetesHarborGcsStorage)(nil),           // 13: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborGcsStorage
+	(*KubernetesHarborAzureStorage)(nil),         // 14: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborAzureStorage
+	(*KubernetesHarborOssStorage)(nil),           // 15: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborOssStorage
+	(*KubernetesHarborFilesystemStorage)(nil),    // 16: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborFilesystemStorage
+	(*KubernetesHarborIngress)(nil),              // 17: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress
+	(*KubernetesHarborIngressEndpoint)(nil),      // 18: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressEndpoint
+	nil,                                          // 19: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntry
+	(*kubernetes.KubernetesClusterSelector)(nil), // 20: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 21: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 22: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.ContainerImage)(nil),            // 23: org.project_planton.provider.kubernetes.ContainerImage
+	(*descriptorpb.FieldOptions)(nil),            // 24: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_depIdxs = []int32{
-	2,  // 0: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.core_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	2,  // 1: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.portal_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	2,  // 2: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.registry_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	2,  // 3: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.jobservice_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	3,  // 4: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig
-	7,  // 5: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.cache:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig
-	11, // 6: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.storage:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig
-	17, // 7: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress
-	19, // 8: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntry
-	20, // 9: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	21, // 10: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	4,  // 11: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalPostgresql
-	5,  // 12: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig.managed_database:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedPostgresql
-	6,  // 13: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedPostgresql.container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer
-	20, // 14: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	21, // 15: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	8,  // 16: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig.external_cache:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalRedis
-	9,  // 17: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig.managed_cache:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedRedis
-	10, // 18: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedRedis.container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer
-	20, // 19: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	21, // 20: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	0,  // 21: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.type:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageType
-	12, // 22: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.s3:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborS3Storage
-	13, // 23: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.gcs:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborGcsStorage
-	14, // 24: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.azure:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborAzureStorage
-	15, // 25: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.oss:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborOssStorage
-	16, // 26: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.filesystem:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborFilesystemStorage
-	18, // 27: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress.core:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressEndpoint
-	18, // 28: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress.notary:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressEndpoint
-	22, // 29: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_core_container:extendee -> google.protobuf.FieldOptions
-	22, // 30: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_portal_container:extendee -> google.protobuf.FieldOptions
-	22, // 31: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_registry_container:extendee -> google.protobuf.FieldOptions
-	22, // 32: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_jobservice_container:extendee -> google.protobuf.FieldOptions
-	22, // 33: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_postgresql_container:extendee -> google.protobuf.FieldOptions
-	22, // 34: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_redis_container:extendee -> google.protobuf.FieldOptions
-	2,  // 35: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_core_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	2,  // 36: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_portal_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	2,  // 37: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_registry_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	2,  // 38: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_jobservice_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
-	6,  // 39: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_postgresql_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer
-	10, // 40: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_redis_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer
-	41, // [41:41] is the sub-list for method output_type
-	41, // [41:41] is the sub-list for method input_type
-	35, // [35:41] is the sub-list for extension type_name
-	29, // [29:35] is the sub-list for extension extendee
-	0,  // [0:29] is the sub-list for field type_name
+	20, // 0: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	21, // 1: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2,  // 2: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.core_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	2,  // 3: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.portal_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	2,  // 4: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.registry_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	2,  // 5: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.jobservice_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	3,  // 6: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig
+	7,  // 7: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.cache:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig
+	11, // 8: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.storage:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig
+	17, // 9: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress
+	19, // 10: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntry
+	22, // 11: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	23, // 12: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	4,  // 13: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalPostgresql
+	5,  // 14: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfig.managed_database:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedPostgresql
+	6,  // 15: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedPostgresql.container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer
+	22, // 16: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	23, // 17: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	8,  // 18: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig.external_cache:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborExternalRedis
+	9,  // 19: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfig.managed_cache:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedRedis
+	10, // 20: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborManagedRedis.container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer
+	22, // 21: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	23, // 22: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	0,  // 23: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.type:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageType
+	12, // 24: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.s3:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborS3Storage
+	13, // 25: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.gcs:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborGcsStorage
+	14, // 26: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.azure:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborAzureStorage
+	15, // 27: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.oss:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborOssStorage
+	16, // 28: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfig.filesystem:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborFilesystemStorage
+	18, // 29: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress.core:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressEndpoint
+	18, // 30: org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngress.notary:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressEndpoint
+	24, // 31: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_core_container:extendee -> google.protobuf.FieldOptions
+	24, // 32: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_portal_container:extendee -> google.protobuf.FieldOptions
+	24, // 33: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_registry_container:extendee -> google.protobuf.FieldOptions
+	24, // 34: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_jobservice_container:extendee -> google.protobuf.FieldOptions
+	24, // 35: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_postgresql_container:extendee -> google.protobuf.FieldOptions
+	24, // 36: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_redis_container:extendee -> google.protobuf.FieldOptions
+	2,  // 37: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_core_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	2,  // 38: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_portal_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	2,  // 39: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_registry_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	2,  // 40: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_harbor_jobservice_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainer
+	6,  // 41: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_postgresql_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainer
+	10, // 42: org.project_planton.provider.kubernetes.kubernetesharbor.v1.default_redis_container:type_name -> org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainer
+	43, // [43:43] is the sub-list for method output_type
+	43, // [43:43] is the sub-list for method input_type
+	37, // [37:43] is the sub-list for extension type_name
+	31, // [31:37] is the sub-list for extension extendee
+	0,  // [0:31] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_init() }

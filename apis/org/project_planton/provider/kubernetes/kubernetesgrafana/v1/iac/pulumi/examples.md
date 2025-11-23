@@ -3,11 +3,14 @@
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-instance
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "grafana"
   container:
     resources:
       requests:
@@ -24,11 +27,14 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-prod
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: "grafana"
   container:
     resources:
       requests:
@@ -48,11 +54,14 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-with-env
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "dev-gke-cluster"
+  namespace:
+    value: "grafana"
   container:
     env:
       variables:
@@ -71,15 +80,18 @@ spec:
 
 # Example 4: Grafana with Environment Secrets
 
-The below example assumes that secrets are managed by Planton Cloud’s [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:ai.planton.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
+The below example assumes that secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:ai.planton.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-secure
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: "grafana"
   container:
     env:
       secrets:
@@ -97,13 +109,17 @@ spec:
 
 ---
 
-# Example 5: Minimal Grafana Deployment (Empty Spec)
+# Example 5: Minimal Grafana Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: minimal-grafana
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "dev-gke-cluster"
+  namespace:
+    value: "grafana"
+  container: {}
 ```

@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesAltinityOperatorSpec(t *testing.T) {
@@ -24,7 +25,11 @@ var _ = ginkgo.Describe("KubernetesAltinityOperatorSpec validations", func() {
 				ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
 				ClusterName: "my-k8s-cluster",
 			},
-			Namespace: "kubernetes-altinity-operator",
+			Namespace: &foreignkeyv1.StringValueOrRef{
+				LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+					Value: "kubernetes-altinity-operator",
+				},
+			},
 			Container: &KubernetesAltinityOperatorSpecContainer{
 				Resources: &kubernetes.ContainerResources{
 					Limits: &kubernetes.CpuMemory{
@@ -50,19 +55,31 @@ var _ = ginkgo.Describe("KubernetesAltinityOperatorSpec validations", func() {
 
 		ginkgo.Context("spec with valid namespace pattern", func() {
 			ginkgo.It("should not return a validation error for lowercase with hyphens", func() {
-				spec.Namespace = "my-operator-namespace"
+				spec.Namespace = &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "my-operator-namespace",
+					},
+				}
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 
 			ginkgo.It("should not return a validation error for single word", func() {
-				spec.Namespace = "operator"
+				spec.Namespace = &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "operator",
+					},
+				}
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 
 			ginkgo.It("should not return a validation error for namespace with numbers", func() {
-				spec.Namespace = "operator-v2"
+				spec.Namespace = &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "operator-v2",
+					},
+				}
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
@@ -89,38 +106,6 @@ var _ = ginkgo.Describe("KubernetesAltinityOperatorSpec validations", func() {
 		ginkgo.Context("spec with missing required container field", func() {
 			ginkgo.It("should return a validation error", func() {
 				spec.Container = nil
-				err := protovalidate.Validate(spec)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-		})
-
-		ginkgo.Context("spec with invalid namespace pattern", func() {
-			ginkgo.It("should return a validation error for uppercase letters", func() {
-				spec.Namespace = "InvalidNamespace"
-				err := protovalidate.Validate(spec)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-
-			ginkgo.It("should return a validation error for underscores", func() {
-				spec.Namespace = "invalid_namespace"
-				err := protovalidate.Validate(spec)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-
-			ginkgo.It("should return a validation error for starting with hyphen", func() {
-				spec.Namespace = "-invalid"
-				err := protovalidate.Validate(spec)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-
-			ginkgo.It("should return a validation error for ending with hyphen", func() {
-				spec.Namespace = "invalid-"
-				err := protovalidate.Validate(spec)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-
-			ginkgo.It("should return a validation error for special characters", func() {
-				spec.Namespace = "invalid@namespace"
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).NotTo(gomega.BeNil())
 			})

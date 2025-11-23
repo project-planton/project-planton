@@ -12,6 +12,10 @@ kind: KubernetesSolrOperator
 metadata:
   name: solr-operator-basic
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "solr-operator-system"
   container: {}
 ```
 
@@ -37,6 +41,10 @@ kind: KubernetesSolrOperator
 metadata:
   name: solr-operator-production
 spec:
+  targetCluster:
+    clusterName: "production-gke-cluster"
+  namespace:
+    value: "solr-operator-system"
   container:
     resources:
       requests:
@@ -59,9 +67,9 @@ spec:
 
 ---
 
-## Example 3: Operator Deployment to Specific Cluster (Credential ID)
+## Example 3: Operator Deployment to Specific Cluster
 
-Deploy the operator to a specific Kubernetes cluster using a credential ID.
+Deploy the operator to a specific Kubernetes cluster.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -70,7 +78,9 @@ metadata:
   name: solr-operator-prod-cluster
 spec:
   targetCluster:
-    kubernetesCredentialId: prod-k8s-cluster-01
+    clusterName: "prod-k8s-cluster-01"
+  namespace:
+    value: "solr-operator-system"
   container:
     resources:
       requests:
@@ -104,8 +114,9 @@ metadata:
   name: solr-operator-gke
 spec:
   targetCluster:
-    kubernetesClusterSelector:
-      clusterKind: 615  # GcpGkeClusterCore
+    clusterName: "prod-gke-cluster"
+  namespace:
+    value: "solr-operator-system"
   container:
     resources:
       requests:
@@ -142,6 +153,10 @@ kind: KubernetesSolrOperator
 metadata:
   name: solr-operator-minimal
 spec:
+  targetCluster:
+    clusterName: "dev-cluster"
+  namespace:
+    value: "solr-operator-system"
   container:
     resources:
       requests:
@@ -176,6 +191,10 @@ kind: KubernetesSolrOperator
 metadata:
   name: solr-operator-enterprise
 spec:
+  targetCluster:
+    clusterName: "enterprise-prod-cluster"
+  namespace:
+    value: "solr-operator-system"
   container:
     resources:
       requests:

@@ -22,8 +22,13 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamysqloperatorv1
 	// use the configured chart version
 	chartVersion := locals.HelmChartVersion
 
-	// determine namespace - use from spec or default
-	namespace := stackInput.Target.Spec.Namespace
+	// determine namespace - use from spec (required field)
+	namespace := stackInput.Target.Spec.Namespace.GetValue()
+
+	// fallback to default if somehow empty (should not happen due to validation)
+	if namespace == "" {
+		namespace = "percona-mysql-operator"
+	}
 
 	// create dedicated namespace
 	ns, err := corev1.NewNamespace(ctx, namespace,

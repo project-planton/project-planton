@@ -10,7 +10,10 @@ kind: PostgresKubernetes
 metadata:
   name: postgres-db
 spec:
-  kubernetes_credential_id: my-k8s-cluster-credential
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "postgres-db"
   container:
     replicas: 1
     resources:
@@ -36,7 +39,10 @@ kind: PostgresKubernetes
 metadata:
   name: postgres-db
 spec:
-  kubernetes_credential_id: prod-k8s-cluster-credential
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "postgres-db"
   container:
     replicas: 2
     resources:
@@ -66,7 +72,10 @@ kind: PostgresKubernetes
 metadata:
   name: secure-postgres-db
 spec:
-  kubernetes_credential_id: secure-k8s-cluster-credential
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "secure-postgres-db"
   container:
     replicas: 3
     resources:
@@ -96,7 +105,10 @@ kind: PostgresKubernetes
 metadata:
   name: minimal-postgres-db
 spec:
-  kubernetes_credential_id: basic-k8s-cluster-credential
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "minimal-postgres-db"
   container:
     replicas: 1
     resources:

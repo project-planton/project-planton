@@ -6,6 +6,10 @@ variable "harbor_kubernetes" {
       id   = optional(string)
     })
     spec = object({
+      target_cluster = object({
+        cluster_name = string
+      })
+      namespace = string
       core_container = optional(object({
         replicas = number
         resources = optional(object({

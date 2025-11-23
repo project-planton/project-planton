@@ -12,23 +12,38 @@ kind: ElasticsearchKubernetes
 metadata:
   name: logging-cluster
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace: logging
   elasticsearch:
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 1000m
-        memory: 2Gi
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      persistence_enabled: true
+      disk_size: 10Gi
+    ingress:
+      enabled: false
+      hostname: ""
   kibana:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
+    enabled: true
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+    ingress:
+      enabled: false
+      hostname: ""
 ```
 
 ### Terraform Usage
@@ -42,29 +57,49 @@ module "logging_cluster" {
   }
 
   spec = {
-    kubernetesProviderConfigId = "my-k8s-credentials"
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "logging"
     elasticsearch = {
-      resources = {
-        requests = {
-          cpu    = "500m"
-          memory = "1Gi"
+      container = {
+        replicas            = 1
+        persistence_enabled = true
+        disk_size          = "10Gi"
+        resources = {
+          requests = {
+            cpu    = "500m"
+            memory = "1Gi"
+          }
+          limits = {
+            cpu    = "1000m"
+            memory = "2Gi"
+          }
         }
-        limits = {
-          cpu    = "1000m"
-          memory = "2Gi"
-        }
+      }
+      ingress = {
+        enabled  = false
+        hostname = ""
       }
     }
     kibana = {
-      resources = {
-        requests = {
-          cpu    = "200m"
-          memory = "512Mi"
+      enabled = true
+      container = {
+        replicas = 1
+        resources = {
+          requests = {
+            cpu    = "200m"
+            memory = "512Mi"
+          }
+          limits = {
+            cpu    = "500m"
+            memory = "1Gi"
+          }
         }
-        limits = {
-          cpu    = "500m"
-          memory = "1Gi"
-        }
+      }
+      ingress = {
+        enabled  = false
+        hostname = ""
       }
     }
   }
@@ -81,9 +116,12 @@ kind: ElasticsearchKubernetes
 metadata:
   name: search-service
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace: search
   elasticsearch:
     container:
+      replicas: 3
       resources:
         requests:
           cpu: 1
@@ -91,12 +129,15 @@ spec:
         limits:
           cpu: 2
           memory: 4Gi
+      persistence_enabled: true
+      disk_size: 50Gi
     ingress:
       enabled: true
       hostname: search.example.com
   kibana:
     enabled: true
     container:
+      replicas: 1
       resources:
         requests:
           cpu: 200m
@@ -120,9 +161,15 @@ module "search_service" {
   }
 
   spec = {
-    kubernetesProviderConfigId = "my-k8s-credentials"
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "search"
     elasticsearch = {
       container = {
+        replicas            = 3
+        persistence_enabled = true
+        disk_size          = "50Gi"
         resources = {
           requests = {
             cpu    = "1"
@@ -142,6 +189,7 @@ module "search_service" {
     kibana = {
       enabled = true
       container = {
+        replicas = 1
         resources = {
           requests = {
             cpu    = "200m"
@@ -172,12 +220,14 @@ kind: ElasticsearchKubernetes
 metadata:
   name: persistent-cluster
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace: elasticsearch-prod
   elasticsearch:
     container:
-      persistenceEnabled: true
-      diskSize: 20Gi
-      replicas: 3
+      persistence_enabled: true
+      disk_size: 100Gi
+      replicas: 5
       resources:
         requests:
           cpu: 1
@@ -191,7 +241,7 @@ spec:
   kibana:
     enabled: true
     container:
-      replicas: 1
+      replicas: 2
       resources:
         requests:
           cpu: 200m
@@ -215,12 +265,15 @@ module "persistent_cluster" {
   }
 
   spec = {
-    kubernetesProviderConfigId = "my-k8s-credentials"
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "elasticsearch-prod"
     elasticsearch = {
       container = {
-        persistenceEnabled = true
-        diskSize          = "20Gi"
-        replicas          = 3
+        persistence_enabled = true
+        disk_size          = "100Gi"
+        replicas          = 5
         resources = {
           requests = {
             cpu    = "1"
@@ -240,7 +293,7 @@ module "persistent_cluster" {
     kibana = {
       enabled = true
       container = {
-        replicas = 1
+        replicas = 2
         resources = {
           requests = {
             cpu    = "200m"
@@ -271,7 +324,9 @@ kind: ElasticsearchKubernetes
 metadata:
   name: minimal-elasticsearch
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace: elasticsearch
 ```
 
 ### Terraform Usage
@@ -285,12 +340,16 @@ module "minimal_elasticsearch" {
   }
 
   spec = {
-    kubernetesProviderConfigId = "my-k8s-credentials"
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "elasticsearch"
+    # All other fields will use defaults from the proto schema
   }
 }
 ```
 
-This minimal example uses all the default values configured in the Terraform module.
+This minimal example provides only the required fields. All other fields use the default values configured in the proto schema.
 
 ---
 
@@ -351,8 +410,10 @@ output "port_forward_command_kibana" {
 
 ## Notes
 
-- All examples assume you have a valid `kubernetesProviderConfigId` configured
+- All examples require `target_cluster` and `namespace` fields - these are mandatory
+- The `target_cluster.cluster_name` should reference an existing Kubernetes cluster
 - Adjust resource limits and requests based on your workload requirements
 - For production deployments, always enable persistence and use multiple replicas
 - Ingress hostnames should be valid DNS names that resolve to your Kubernetes cluster's ingress controller
+- The `namespace` field accepts a simple string value in Terraform (unlike YAML which uses StringValueOrRef)
 

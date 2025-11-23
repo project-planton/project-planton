@@ -42,7 +42,9 @@ metadata:
   name: kubernetes-cert-manager
 spec:
   targetCluster:
-    kubernetesProviderConfigId: my-cluster
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
   
   # Global ACME configuration
   acme:
@@ -215,7 +217,9 @@ metadata:
   name: kubernetes-cert-manager-multi
 spec:
   targetCluster:
-    kubernetesProviderConfigId: my-cluster
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
   
   acme:
     email: "admin@example.com"

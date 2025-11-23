@@ -20,6 +20,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: dev-clickhouse
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: dev-clickhouse
   clusterName: dev-cluster
   container:
     replicas: 1
@@ -54,6 +58,10 @@ metadata:
   org: my-org
   env: production
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: prod-clickhouse
   clusterName: production-analytics
   version: "24.3"
   container:
@@ -88,6 +96,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: distributed-analytics
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: distributed-analytics
   clusterName: analytics-cluster
   container:
     isPersistenceEnabled: true
@@ -126,6 +138,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: ha-clickhouse
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: ha-clickhouse
   clusterName: ha-analytics
   version: "24.3"
   container:
@@ -176,6 +192,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: enterprise-clickhouse
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: enterprise-clickhouse
   clusterName: enterprise-cluster
   container:
     isPersistenceEnabled: true
@@ -217,6 +237,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: enterprise-with-zk
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: enterprise-with-zk
   clusterName: enterprise-cluster
   cluster:
     isEnabled: true
@@ -248,6 +272,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: test-clickhouse
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: test-clickhouse
   clusterName: test-cluster
   container:
     replicas: 1
@@ -279,6 +307,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: public-analytics
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: public-analytics
   clusterName: public-cluster
   container:
     replicas: 1
@@ -317,6 +349,10 @@ metadata:
   org: my-org
   env: production
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz-backend
   clusterName: cluster  # SigNoz requires cluster name to be "cluster"
   version: "24.8"
   container:
@@ -364,6 +400,10 @@ metadata:
   name: staging-clickhouse
   env: staging
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: staging-clickhouse
   clusterName: staging-analytics
   version: "24.4"  # Testing newer version
   container:
@@ -387,6 +427,10 @@ metadata:
   name: production-clickhouse
   env: production
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: production-clickhouse
   clusterName: production-analytics
   version: "24.3"  # Stable version
   container:

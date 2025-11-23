@@ -99,6 +99,10 @@ kind: ClickHouseKubernetes
 metadata:
   name: my-clickhouse
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: my-clickhouse
   clusterName: my-cluster
   cluster:
     isEnabled: true
@@ -110,6 +114,10 @@ spec:
 ### Production with Custom Keeper Configuration
 ```yaml
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: my-clickhouse
   cluster:
     isEnabled: true
     shardCount: 2
@@ -128,6 +136,10 @@ spec:
 ### External Keeper (Shared Infrastructure)
 ```yaml
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: my-clickhouse
   cluster:
     isEnabled: true
   coordination:
@@ -140,6 +152,10 @@ spec:
 ### External ZooKeeper (Legacy Integration)
 ```yaml
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: my-clickhouse
   cluster:
     isEnabled: true
   coordination:
@@ -158,6 +174,10 @@ The original `zookeeper` field is deprecated in favor of the more flexible `coor
 **Old (Deprecated):**
 ```yaml
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: my-clickhouse
   zookeeper:
     useExternal: true
     nodes:
@@ -167,6 +187,10 @@ spec:
 **New (Recommended):**
 ```yaml
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: my-clickhouse
   coordination:
     type: external_zookeeper
     externalConfig:

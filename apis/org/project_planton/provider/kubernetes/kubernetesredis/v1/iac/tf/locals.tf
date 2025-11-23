@@ -34,8 +34,8 @@ locals {
     "app.kubernetes.io/name"      = "redis"
   }
 
-  # Use resource_id as the namespace name
-  namespace = local.resource_id
+  # Get namespace from spec
+  namespace = var.spec.namespace
 
   # Service name
   kube_service_name = "${var.metadata.name}-master"

@@ -23,6 +23,10 @@ kind: CronJobKubernetes
 metadata:
   name: daily-backup
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   schedule: "0 0 * * *"
   image:
     repo: busybox
@@ -54,6 +58,10 @@ kind: CronJobKubernetes
 metadata:
   name: weekly-report
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   schedule: "0 9 * * 1"
   image:
     repo: org/reports-generator
@@ -88,6 +96,10 @@ kind: CronJobKubernetes
 metadata:
   name: db-maintenance
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   schedule: "0 3 * * *"
   image:
     repo: org/maintenance-tool
@@ -122,6 +134,10 @@ kind: CronJobKubernetes
 metadata:
   name: heavy-lift-job
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   schedule: "*/30 * * * *"
   concurrencyPolicy: "Forbid"
   backoffLimit: 3
@@ -158,6 +174,10 @@ kind: CronJobKubernetes
 metadata:
   name: end-of-month-report
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   # Run at 23:30 on the last day of each month
   schedule: "30 23 28-31 * *"
   # This ensures if a schedule is missed for over 2 hours, it won't run retroactively

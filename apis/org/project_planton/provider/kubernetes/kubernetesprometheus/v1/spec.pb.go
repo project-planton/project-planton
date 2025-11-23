@@ -9,6 +9,7 @@ package kubernetesprometheusv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -30,11 +31,15 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesPrometheusSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install Prometheus on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install Prometheus.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The container specifications for the Prometheus deployment.
-	Container *KubernetesPrometheusContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesPrometheusContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// *
 	// The ingress configuration for the Prometheus deployment.
-	Ingress       *KubernetesPrometheusIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesPrometheusIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -67,6 +72,20 @@ func (x *KubernetesPrometheusSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesPrometheusSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesPrometheusSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesPrometheusSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesPrometheusSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesPrometheusSpec) GetContainer() *KubernetesPrometheusContainer {
@@ -223,10 +242,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\x99\x02\n" +
-	"\x18KubernetesPrometheusSpec\x12\x84\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
-	"\aingress\x18\x02 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngressR\aingress\"\xd2\x01\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xf8\x03\n" +
+	"\x18KubernetesPrometheusSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x84\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
+	"\aingress\x18\x04 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngressR\aingress\"\xd2\x01\n" +
 	"\x1bKubernetesPrometheusIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
@@ -256,20 +277,24 @@ func file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_p
 
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_goTypes = []any{
-	(*KubernetesPrometheusSpec)(nil),      // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec
-	(*KubernetesPrometheusIngress)(nil),   // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
-	(*KubernetesPrometheusContainer)(nil), // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
-	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.provider.kubernetes.ContainerResources
+	(*KubernetesPrometheusSpec)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec
+	(*KubernetesPrometheusIngress)(nil),          // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
+	(*KubernetesPrometheusContainer)(nil),        // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
+	(*kubernetes.KubernetesClusterSelector)(nil), // 3: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 4: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 5: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
-	1, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	4, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
+	1, // 3: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
+	5, // 4: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_init() }

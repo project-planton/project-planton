@@ -15,6 +15,11 @@ module "nats_basic" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "nats-basic"
+
     server_container = {
       replicas = 3
       resources = {
@@ -61,6 +66,11 @@ module "nats_secure" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "nats-secure"
+
     server_container = {
       replicas = 5
       resources = {
@@ -117,6 +127,11 @@ module "nats_basic_auth" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "nats-basic-auth"
+
     server_container = {
       replicas = 3
       resources = {

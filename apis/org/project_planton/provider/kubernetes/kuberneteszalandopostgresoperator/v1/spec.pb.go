@@ -9,6 +9,7 @@ package kuberneteszalandopostgresoperatorv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,12 +29,14 @@ const (
 // It includes container specifications and backup configuration settings to control resource allocation and data protection.
 type KubernetesZalandoPostgresOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this addon on.
+	// The Kubernetes cluster to install this operator on.
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The container specifications for the operator deployment.
-	Container *KubernetesZalandoPostgresOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesZalandoPostgresOperatorSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// Optional: Backup configuration for all databases managed by this operator
-	BackupConfig  *KubernetesZalandoPostgresOperatorBackupConfig `protobuf:"bytes,3,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
+	BackupConfig  *KubernetesZalandoPostgresOperatorBackupConfig `protobuf:"bytes,4,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -71,6 +74,13 @@ func (*KubernetesZalandoPostgresOperatorSpec) Descriptor() ([]byte, []int) {
 func (x *KubernetesZalandoPostgresOperatorSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
 	}
 	return nil
 }
@@ -316,11 +326,12 @@ var File_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\xda\x03\n" +
+	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xce\x04\n" +
 	"%KubernetesZalandoPostgresOperatorSpec\x12i\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\xa2\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
-	"\rbackup_config\x18\x03 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xae\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa2\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
+	"\rbackup_config\x18\x04 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xae\x01\n" +
 	".KubernetesZalandoPostgresOperatorSpecContainer\x12|\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -365,19 +376,21 @@ var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperat
 	(*KubernetesZalandoPostgresOperatorBackupR2Config)(nil), // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
 	(*KubernetesZalandoPostgresOperatorBackupConfig)(nil),   // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
 	(*kubernetes.KubernetesClusterSelector)(nil),            // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	(*kubernetes.ContainerResources)(nil),                   // 5: org.project_planton.provider.kubernetes.ContainerResources
+	(*v1.StringValueOrRef)(nil),                             // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),                   // 6: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_depIdxs = []int32{
 	4, // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	1, // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
-	5, // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	2, // 4: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	5, // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
+	3, // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
+	6, // 4: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	2, // 5: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() {

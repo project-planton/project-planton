@@ -23,7 +23,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 	chartVersion := locals.HelmChartVersion
 
 	// determine namespace - use from spec or default
-	namespace := stackInput.Target.Spec.Namespace
+	namespace := stackInput.Target.Spec.Namespace.GetValue()
 
 	// create dedicated namespace
 	ns, err := corev1.NewNamespace(ctx, namespace,
