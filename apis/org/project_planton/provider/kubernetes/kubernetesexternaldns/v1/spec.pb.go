@@ -8,8 +8,8 @@ package kubernetesexternaldnsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -29,7 +29,7 @@ const (
 type KubernetesExternalDnsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Kubernetes namespace where ExternalDNS will be deployed.
 	Namespace *string `protobuf:"bytes,2,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"`
 	// ExternalDNS version such as "v0.19.0". Used to set the image tag.
@@ -79,7 +79,7 @@ func (*KubernetesExternalDnsSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KubernetesExternalDnsSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *KubernetesExternalDnsSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
 	}
@@ -412,9 +412,9 @@ var File_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetesexternaldns/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesexternaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xad\a\n" +
-	"\x19KubernetesExternalDnsSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12>\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetesexternaldns/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesexternaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xac\a\n" +
+	"\x19KubernetesExternalDnsSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12>\n" +
 	"\tnamespace\x18\x02 \x01(\tB\x1b\x8a\xa6\x1d\x17kubernetes-external-dnsH\x01R\tnamespace\x88\x01\x01\x12W\n" +
 	"\x1fkubernetes_external_dns_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av0.19.0H\x02R\x1ckubernetesExternalDnsVersion\x88\x01\x01\x12=\n" +
 	"\x12helm_chart_version\x18\x04 \x01(\tB\n" +
@@ -461,16 +461,16 @@ func file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_
 
 var file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_goTypes = []any{
-	(*KubernetesExternalDnsSpec)(nil),               // 0: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec
-	(*KubernetesExternalDnsGkeConfig)(nil),          // 1: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
-	(*KubernetesExternalDnsEksConfig)(nil),          // 2: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
-	(*KubernetesExternalDnsAksConfig)(nil),          // 3: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig
-	(*KubernetesExternalDnsCloudflareConfig)(nil),   // 4: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfig
-	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 5: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	(*v1.StringValueOrRef)(nil),                     // 6: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*KubernetesExternalDnsSpec)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec
+	(*KubernetesExternalDnsGkeConfig)(nil),        // 1: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
+	(*KubernetesExternalDnsEksConfig)(nil),        // 2: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
+	(*KubernetesExternalDnsAksConfig)(nil),        // 3: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig
+	(*KubernetesExternalDnsCloudflareConfig)(nil), // 4: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfig
+	(*kubernetes.KubernetesClusterSelector)(nil),  // 5: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                   // 6: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_depIdxs = []int32{
-	5, // 0: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	5, // 0: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	1, // 1: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.gke:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfig
 	2, // 2: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.eks:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsEksConfig
 	3, // 3: org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsSpec.aks:type_name -> org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsAksConfig

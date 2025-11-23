@@ -8,7 +8,7 @@ package kuberneteselasticsearchv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -423,7 +423,7 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x8d\x03\n" +
+	"Morg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\x8d\x03\n" +
 	"\x1bKubernetesElasticsearchSpec\x12\xc2\x01\n" +
 	"\relasticsearch\x18\x01 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
 	"'\b\x01\x12\x1c\n" +
@@ -440,16 +440,16 @@ const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_sp
 	"!KubernetesElasticsearchKibanaSpec\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x88\x01\n" +
 	"\tcontainer\x18\x02 \x01(\v2j.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainerR\tcontainer\x12|\n" +
-	"\aingress\x18\x03 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngressR\aingress\"\xda\x04\n" +
+	"\aingress\x18\x03 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngressR\aingress\"\xdc\x04\n" +
 	"-KubernetesElasticsearchElasticsearchContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12/\n" +
 	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xe5\x02\xbaH\xe1\x02\x1a\xde\x02\n" +
-	"/spec.elasticsearch.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\x9d\x01\n" +
+	"/spec.elasticsearch.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\x9f\x01\n" +
 	"&KubernetesElasticsearchKibanaContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\"\xd5\x01\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\"\xd5\x01\n" +
 	"\x1eKubernetesElasticsearchIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
@@ -478,7 +478,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 	(*KubernetesElasticsearchElasticsearchContainer)(nil), // 3: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer
 	(*KubernetesElasticsearchKibanaContainer)(nil),        // 4: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer
 	(*KubernetesElasticsearchIngress)(nil),                // 5: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
-	(*kubernetes.ContainerResources)(nil),                 // 6: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil),                 // 6: org.project_planton.provider.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),                     // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_depIdxs = []int32{
@@ -488,8 +488,8 @@ var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 	5,  // 3: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
 	4,  // 4: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer
 	5,  // 5: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchIngress
-	6,  // 6: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	6,  // 7: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	6,  // 6: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	6,  // 7: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	7,  // 8: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_elasticsearch_spec:extendee -> google.protobuf.FieldOptions
 	7,  // 9: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_kibana_spec:extendee -> google.protobuf.FieldOptions
 	1,  // 10: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.default_elasticsearch_spec:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpec

@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kuberneteslocust.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesLocustContainer default_master_container = 528001;
@@ -72,7 +72,7 @@ message KubernetesLocustContainer {
   // This determines the level of concurrency and load generation capabilities.
   int32 replicas = 1;
   // The CPU and memory resources allocated to the Locust container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 }
 
 // **KubernetesLocustLoadTest** defines the specification for a load test using a Locust cluster.

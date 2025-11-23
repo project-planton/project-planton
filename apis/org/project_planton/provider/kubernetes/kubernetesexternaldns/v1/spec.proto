@@ -3,14 +3,14 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kubernetesexternaldns.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
-import "org/project_planton/shared/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/options/options.proto";
 
 // KubernetesExternalDnsSpec defines configuration for ExternalDNS on any cluster.
 message KubernetesExternalDnsSpec {
   // The Kubernetes cluster to install this addon on.
-  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
   // Kubernetes namespace where ExternalDNS will be deployed.
   optional string namespace = 2 [(org.project_planton.shared.options.default) = "kubernetes-external-dns"];
   // ExternalDNS version such as "v0.19.0". Used to set the image tag.

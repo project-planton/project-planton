@@ -40,7 +40,7 @@ import (
     kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -185,7 +185,7 @@ import (
     kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
@@ -358,7 +358,7 @@ import (
     kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
@@ -473,7 +473,7 @@ import (
     kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -564,7 +564,7 @@ import (
     kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

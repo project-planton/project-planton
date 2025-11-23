@@ -4,8 +4,8 @@ package org.project_planton.provider.kubernetes.kuberneteskafka.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
-import "org/project_planton/shared/kubernetes/options.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
@@ -92,7 +92,7 @@ message KubernetesKafkaBrokerContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Kafka broker containers.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   // The size of the disk to be attached to each broker instance (e.g., "30Gi").
   // A default value is set if not provided by the client.
@@ -115,7 +115,7 @@ message KubernetesKafkaZookeeperContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Zookeeper containers.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   // The size of the disk to be attached to each Zookeeper instance (e.g., "30Gi").
   // A default value is set if not provided by the client.
@@ -140,7 +140,7 @@ message KubernetesKafkaSchemaRegistryContainer {
   int32 replicas = 2 [(org.project_planton.shared.options.recommended_default) = "1"];
 
   // The CPU and memory resources allocated to the Schema Registry containers.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 3 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+  org.project_planton.provider.kubernetes.ContainerResources resources = 3 [(org.project_planton.provider.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"
       memory: "1Gi"

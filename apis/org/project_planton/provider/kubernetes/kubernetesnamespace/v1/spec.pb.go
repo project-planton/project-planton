@@ -8,7 +8,7 @@ package kubernetesnamespacev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -230,7 +230,7 @@ func (KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) E
 type KubernetesNamespaceSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster in which the namespace should be created
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// *
 	// The unique name of the namespace.
 	// This will be used as the Kubernetes namespace metadata.name.
@@ -299,7 +299,7 @@ func (*KubernetesNamespaceSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KubernetesNamespaceSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *KubernetesNamespaceSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
 	}
@@ -976,9 +976,9 @@ var File_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pro
 
 const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iorg/project_planton/provider/kubernetes/kubernetesnamespace/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xf4\f\n" +
-	"\x17KubernetesNamespaceSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\xcb\x01\n" +
+	"Iorg/project_planton/provider/kubernetes/kubernetesnamespace/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\xf3\f\n" +
+	"\x17KubernetesNamespaceSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\xcb\x01\n" +
 	"\x04name\x18\x02 \x01(\tB\xb6\x01\xbaH\xb2\x01\xba\x01\xa8\x01\n" +
 	"\x0ename.dns_label\x12`Name must be a valid DNS label (lowercase alphanumeric and hyphens, no leading/trailing hyphens)\x1a4this.matches('^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$')r\x04\x10\x01\x18?R\x04name\x12{\n" +
 	"\x06labels\x18\x03 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntryR\x06labels\x12\x8a\x01\n" +
@@ -1085,10 +1085,10 @@ var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pro
 	(*KubernetesNamespaceServiceMeshConfig)(nil),                                 // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
 	nil, // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntry
 	nil, // 13: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntry
-	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 14: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	(*kubernetes.KubernetesClusterSelector)(nil), // 14: org.project_planton.provider.kubernetes.KubernetesClusterSelector
 }
 var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_depIdxs = []int32{
-	14, // 0: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	14, // 0: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	12, // 1: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.labels:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntry
 	13, // 2: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.annotations:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntry
 	4,  // 3: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.resource_profile:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile

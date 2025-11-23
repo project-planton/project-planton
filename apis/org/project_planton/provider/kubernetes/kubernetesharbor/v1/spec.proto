@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetesharbor.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
@@ -115,10 +115,10 @@ message KubernetesHarborContainer {
   int32 replicas = 1 [(buf.validate.field).int32.gte = 1];
 
   // The CPU and memory resources allocated to the container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   // The container image configuration (repository and tag).
-  org.project_planton.shared.kubernetes.ContainerImage image = 3;
+  org.project_planton.provider.kubernetes.ContainerImage image = 3;
 }
 
 /**
@@ -223,10 +223,10 @@ message KubernetesHarborPostgresqlContainer {
   int32 replicas = 1 [(buf.validate.field).int32.gte = 1];
 
   // The CPU and memory resources allocated to the PostgreSQL container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   // The container image configuration for PostgreSQL.
-  org.project_planton.shared.kubernetes.ContainerImage image = 3;
+  org.project_planton.provider.kubernetes.ContainerImage image = 3;
 
   /**
    * Flag to enable or disable data persistence for PostgreSQL.
@@ -351,10 +351,10 @@ message KubernetesHarborRedisContainer {
   int32 replicas = 1 [(buf.validate.field).int32.gte = 1];
 
   // The CPU and memory resources allocated to the Redis container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   // The container image configuration for Redis.
-  org.project_planton.shared.kubernetes.ContainerImage image = 3;
+  org.project_planton.provider.kubernetes.ContainerImage image = 3;
 
   /**
    * Flag to enable or disable data persistence for Redis.

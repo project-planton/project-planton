@@ -8,7 +8,7 @@ package kuberneteslocustv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -345,7 +345,7 @@ var File_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x9c\x06\n" +
+	"Forg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\x9c\x06\n" +
 	"\x14KubernetesLocustSpec\x12\xa8\x01\n" +
 	"\x10master_container\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
@@ -361,10 +361,10 @@ const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_prot
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x90\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x92\x01\n" +
 	"\x19KubernetesLocustContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\"\xee\x02\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\"\xee\x02\n" +
 	"\x18KubernetesLocustLoadTest\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12.\n" +
 	"\x0fmain_py_content\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rmainPyContent\x12\x9e\x01\n" +
@@ -401,7 +401,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_
 	(*KubernetesLocustIngress)(nil),       // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngress
 	nil,                                   // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntry
 	nil,                                   // 5: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.LibFilesContentEntry
-	(*kubernetes.ContainerResources)(nil), // 6: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil), // 6: org.project_planton.provider.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_depIdxs = []int32{
@@ -410,7 +410,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_
 	3,  // 2: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngress
 	2,  // 3: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.load_test:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest
 	4,  // 4: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntry
-	6,  // 5: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	6,  // 5: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	5,  // 6: org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.lib_files_content:type_name -> org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTest.LibFilesContentEntry
 	7,  // 7: org.project_planton.provider.kubernetes.kuberneteslocust.v1.default_master_container:extendee -> google.protobuf.FieldOptions
 	7,  // 8: org.project_planton.provider.kubernetes.kuberneteslocust.v1.default_worker_container:extendee -> google.protobuf.FieldOptions

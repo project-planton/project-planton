@@ -8,7 +8,7 @@ package kubernetesgrafanav1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -189,16 +189,16 @@ var File_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\x8e\x02\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\"\x8e\x02\n" +
 	"\x15KubernetesGrafanaSpec\x12\x82\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12p\n" +
 	"\aingress\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngressR\aingress\"\xcf\x01\n" +
 	"\x18KubernetesGrafanaIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x9c\x01\n" +
-	"\x1eKubernetesGrafanaSpecContainer\x12z\n" +
-	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x9e\x01\n" +
+	"\x1eKubernetesGrafanaSpecContainer\x12|\n" +
+	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresourcesB\xe3\x03\n" +
@@ -221,12 +221,12 @@ var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto
 	(*KubernetesGrafanaSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec
 	(*KubernetesGrafanaIngress)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngress
 	(*KubernetesGrafanaSpecContainer)(nil), // 2: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
-	(*kubernetes.ContainerResources)(nil),  // 3: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil),  // 3: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_depIdxs = []int32{
 	2, // 0: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer
 	1, // 1: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngress
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

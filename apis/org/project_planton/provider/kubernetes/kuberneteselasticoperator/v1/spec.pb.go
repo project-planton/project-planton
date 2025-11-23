@@ -8,7 +8,7 @@ package kuberneteselasticoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -29,7 +29,7 @@ const (
 type KubernetesElasticOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// The container specifications for the Elastic Operator deployment.
 	Container     *KubernetesElasticOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -66,7 +66,7 @@ func (*KubernetesElasticOperatorSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KubernetesElasticOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *KubernetesElasticOperatorSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
 	}
@@ -131,12 +131,12 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_sp
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/spec.proto\x12Dorg.project_planton.provider.kubernetes.kuberneteselasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xa0\x02\n" +
-	"\x1dKubernetesElasticOperatorSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x92\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa4\x01\n" +
-	"&KubernetesElasticOperatorSpecContainer\x12z\n" +
-	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"Oorg/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/spec.proto\x12Dorg.project_planton.provider.kubernetes.kuberneteselasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\x9f\x02\n" +
+	"\x1dKubernetesElasticOperatorSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\x92\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa6\x01\n" +
+	"&KubernetesElasticOperatorSpecContainer\x12|\n" +
+	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresourcesB\x9b\x04\n" +
@@ -156,15 +156,15 @@ func file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_s
 
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesElasticOperatorSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
-	(*KubernetesElasticOperatorSpecContainer)(nil),  // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
-	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
+	(*KubernetesElasticOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec
+	(*KubernetesElasticOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
+	(*kubernetes.KubernetesClusterSelector)(nil),   // 2: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*kubernetes.ContainerResources)(nil),          // 3: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	2, // 0: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	1, // 1: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	3, // 2: org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

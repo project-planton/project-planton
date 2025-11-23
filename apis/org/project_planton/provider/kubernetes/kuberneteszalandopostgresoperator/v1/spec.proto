@@ -3,9 +3,9 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1;
 
 import "buf/validate/validate.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
-import "org/project_planton/shared/kubernetes/options.proto";
-import "org/project_planton/shared/kubernetes/target_cluster.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/options.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
 
 // Cloudflare R2-specific storage configuration for PostgreSQL backups.
 // This is separate to allow future support for other S3-compatible backends.
@@ -75,7 +75,7 @@ message KubernetesZalandoPostgresOperatorBackupConfig {
 // It includes container specifications and backup configuration settings to control resource allocation and data protection.
 message KubernetesZalandoPostgresOperatorSpec {
   // The Kubernetes cluster to install this addon on.
-  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
   // The container specifications for the operator deployment.
   KubernetesZalandoPostgresOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
   // Optional: Backup configuration for all databases managed by this operator
@@ -86,7 +86,7 @@ message KubernetesZalandoPostgresOperatorSpec {
 // It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
 message KubernetesZalandoPostgresOperatorSpecContainer {
   // The CPU and memory resources allocated to the operator container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+  org.project_planton.provider.kubernetes.ContainerResources resources = 1 [(org.project_planton.provider.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"
       memory: "1Gi"

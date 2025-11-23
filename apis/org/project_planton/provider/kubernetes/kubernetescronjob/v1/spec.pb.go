@@ -8,7 +8,7 @@ package kubernetescronjobv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -276,10 +276,10 @@ var File_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xbc\b\n" +
-	"\x15KubernetesCronJobSpec\x12K\n" +
-	"\x05image\x18\x01 \x01(\v25.org.project_planton.shared.kubernetes.ContainerImageR\x05image\x12z\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xc0\b\n" +
+	"\x15KubernetesCronJobSpec\x12M\n" +
+	"\x05image\x18\x01 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageR\x05image\x12|\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12p\n" +
@@ -332,12 +332,12 @@ var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto
 	(*KubernetesCronJobContainerAppEnv)(nil), // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
 	nil,                                      // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
 	nil,                                      // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
-	(*kubernetes.ContainerImage)(nil),        // 4: org.project_planton.shared.kubernetes.ContainerImage
-	(*kubernetes.ContainerResources)(nil),    // 5: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerImage)(nil),        // 4: org.project_planton.provider.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil),    // 5: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_depIdxs = []int32{
-	4, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
-	5, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	4, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	5, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	1, // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.env:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
 	2, // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
 	3, // 4: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry

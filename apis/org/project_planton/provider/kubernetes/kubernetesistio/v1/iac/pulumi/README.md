@@ -48,7 +48,7 @@ import (
     kubernetesistiov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -7,7 +7,7 @@
 package kubernetespostgresv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -141,16 +141,16 @@ var File_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_out
 
 const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/kubernetespostgres/v1/stack_outputs.proto\x12=org.project_planton.provider.kubernetes.kubernetespostgres.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xd3\x03\n" +
+	"Qorg/project_planton/provider/kubernetes/kubernetespostgres/v1/stack_outputs.proto\x12=org.project_planton.provider.kubernetes.kubernetespostgres.v1\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xd7\x03\n" +
 	"\x1eKubernetesPostgresStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12c\n" +
-	"\x0fusername_secret\x18\b \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x0eusernameSecret\x12c\n" +
-	"\x0fpassword_secret\x18\t \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xf2\x03\n" +
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12e\n" +
+	"\x0fusername_secret\x18\b \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0eusernameSecret\x12e\n" +
+	"\x0fpassword_secret\x18\t \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xf2\x03\n" +
 	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
 
 var (
@@ -168,11 +168,11 @@ func file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_ou
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_outputs_proto_goTypes = []any{
 	(*KubernetesPostgresStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputs
-	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.shared.kubernetes.KubernetesSecretKey
+	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.provider.kubernetes.KubernetesSecretKey
 }
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputs.username_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
-	1, // 1: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputs.password_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputs.username_secret:type_name -> org.project_planton.provider.kubernetes.KubernetesSecretKey
+	1, // 1: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputs.password_secret:type_name -> org.project_planton.provider.kubernetes.KubernetesSecretKey
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

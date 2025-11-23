@@ -1,22 +1,12 @@
 syntax = "proto3";
 
-package org.project_planton.shared.kubernetes;
+package org.project_planton.provider.kubernetes;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 
-// **KubernetesAddonTargetCluster** defines the target cluster for a Kubernetes addon.
-message KubernetesAddonTargetCluster {
-  oneof credential_source {
-    // The ID of the Kubernetes cluster credential.
-    string kubernetes_credential_id = 1;
-    // The selector for the Kubernetes cluster in the same environment as the addon.
-    KubernetesClusterCloudResourceSelector kubernetes_cluster_selector = 2;
-  }
-}
-
-// **KubernetesClusterCloudResourceSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
-message KubernetesClusterCloudResourceSelector {
+// **KubernetesClusterSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
+message KubernetesClusterSelector {
   //can be either gcp-gke-cluster-core
   org.project_planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [(buf.validate.field).enum = {
     in: [

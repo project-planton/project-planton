@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetesmongodb.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesMongodbContainer default_container = 530001;
@@ -78,7 +78,7 @@ message KubernetesMongodbContainer {
   int32 replicas = 1;
 
   //The CPU and memory resources allocated to the MongoDB container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   /**
    * A flag to enable or disable data persistence for MongoDB.

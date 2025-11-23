@@ -10,7 +10,7 @@ Completed a comprehensive refactoring to eliminate the shared `IngressSpec` mess
 
 ## Problem Statement / Motivation
 
-The shared `IngressSpec` in `org/project_planton/shared/kubernetes/kubernetes.proto` created several architectural and usability problems that became increasingly apparent as the platform evolved:
+The shared `IngressSpec` in `org/project_planton/provider/kubernetes/kubernetes.proto` created several architectural and usability problems that became increasingly apparent as the platform evolved:
 
 ### Pain Points
 
@@ -243,7 +243,7 @@ input := &KubernetesPrometheus{
 
 ### Final Cleanup
 
-**Removed from `org/project_planton/shared/kubernetes/kubernetes.proto`**:
+**Removed from `org/project_planton/provider/kubernetes/kubernetes.proto`**:
 
 ```protobuf
 // Deleted (lines 83-99)

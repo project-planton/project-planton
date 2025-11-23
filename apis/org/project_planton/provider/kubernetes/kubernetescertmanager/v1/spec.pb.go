@@ -8,7 +8,7 @@ package kubernetescertmanagerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -29,7 +29,7 @@ const (
 type KubernetesCertManagerSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Kubernetes namespace where kubernetes-cert-manager will be deployed.
 	Namespace *string `protobuf:"bytes,2,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"`
 	// kubernetes-cert-manager version such as "v1.19.1". Used to set the image tag.
@@ -78,7 +78,7 @@ func (*KubernetesCertManagerSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KubernetesCertManagerSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *KubernetesCertManagerSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
 	}
@@ -563,9 +563,9 @@ var File_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xde\x05\n" +
-	"\x19KubernetesCertManagerSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12>\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xdd\x05\n" +
+	"\x19KubernetesCertManagerSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12>\n" +
 	"\tnamespace\x18\x02 \x01(\tB\x1b\x8a\xa6\x1d\x17kubernetes-cert-managerH\x00R\tnamespace\x88\x01\x01\x12W\n" +
 	"\x1fkubernetes_cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x1ckubernetesCertManagerVersion\x88\x01\x01\x12>\n" +
 	"\x12helm_chart_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x02R\x10helmChartVersion\x88\x01\x01\x12D\n" +
@@ -622,17 +622,17 @@ func file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_
 
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_goTypes = []any{
-	(*KubernetesCertManagerSpec)(nil),               // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec
-	(*AcmeConfig)(nil),                              // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
-	(*DnsProviderConfig)(nil),                       // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
-	(*GcpCloudDnsProvider)(nil),                     // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider
-	(*AwsRoute53Provider)(nil),                      // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53Provider
-	(*AzureDnsProvider)(nil),                        // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
-	(*CloudflareProvider)(nil),                      // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
-	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 7: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	(*KubernetesCertManagerSpec)(nil),            // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec
+	(*AcmeConfig)(nil),                           // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
+	(*DnsProviderConfig)(nil),                    // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
+	(*GcpCloudDnsProvider)(nil),                  // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider
+	(*AwsRoute53Provider)(nil),                   // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53Provider
+	(*AzureDnsProvider)(nil),                     // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
+	(*CloudflareProvider)(nil),                   // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
+	(*kubernetes.KubernetesClusterSelector)(nil), // 7: org.project_planton.provider.kubernetes.KubernetesClusterSelector
 }
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_depIdxs = []int32{
-	7, // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	7, // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	1, // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.acme:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
 	2, // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
 	3, // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider

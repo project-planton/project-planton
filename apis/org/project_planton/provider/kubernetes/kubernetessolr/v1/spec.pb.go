@@ -8,7 +8,7 @@ package kubernetessolrv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -400,7 +400,7 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xe3\x04\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xe3\x04\n" +
 	"\x12KubernetesSolrSpec\x12\xb8\x01\n" +
 	"\x0esolr_container\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
 	"\f\n" +
@@ -416,20 +416,20 @@ const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_
 	"\x15KubernetesSolrIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x9e\x03\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xa2\x03\n" +
 	"\x1bKubernetesSolrSolrContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
-	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\x12K\n" +
-	"\x05image\x18\x04 \x01(\v25.org.project_planton.shared.kubernetes.ContainerImageR\x05image\"\x85\x01\n" +
+	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\x12M\n" +
+	"\x05image\x18\x04 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageR\x05image\"\x85\x01\n" +
 	"\x18KubernetesSolrSolrConfig\x12\x19\n" +
 	"\bjava_mem\x18\x01 \x01(\tR\ajavaMem\x12\x12\n" +
 	"\x04opts\x18\x02 \x01(\tR\x04opts\x12:\n" +
-	"\x19garbage_collection_tuning\x18\x03 \x01(\tR\x17garbageCollectionTuning\"\xd6\x02\n" +
+	"\x19garbage_collection_tuning\x18\x03 \x01(\tR\x17garbageCollectionTuning\"\xd8\x02\n" +
 	" KubernetesSolrZookeeperContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
 	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xad\x01\n" +
 	"\x16default_solr_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfa  \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerR\x14defaultSolrContainer:\xb7\x01\n" +
@@ -455,8 +455,8 @@ var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_go
 	(*KubernetesSolrSolrContainer)(nil),      // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
 	(*KubernetesSolrSolrConfig)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfig
 	(*KubernetesSolrZookeeperContainer)(nil), // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer
-	(*kubernetes.ContainerResources)(nil),    // 5: org.project_planton.shared.kubernetes.ContainerResources
-	(*kubernetes.ContainerImage)(nil),        // 6: org.project_planton.shared.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil),    // 5: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.ContainerImage)(nil),        // 6: org.project_planton.provider.kubernetes.ContainerImage
 	(*descriptorpb.FieldOptions)(nil),        // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_depIdxs = []int32{
@@ -464,9 +464,9 @@ var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_de
 	3,  // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.config:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfig
 	4,  // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer
 	1,  // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngress
-	5,  // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	6,  // 5: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
-	5,  // 6: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	5,  // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	6,  // 5: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	5,  // 6: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	7,  // 7: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_solr_container:extendee -> google.protobuf.FieldOptions
 	7,  // 8: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
 	2,  // 9: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_solr_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer

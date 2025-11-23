@@ -7,7 +7,7 @@
 package kuberneteselasticsearchv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -290,19 +290,19 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stac
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/stack_outputs.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xe8\x02\n" +
+	"Vorg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/stack_outputs.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xe8\x02\n" +
 	"#KubernetesElasticsearchStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x9a\x01\n" +
 	"\relasticsearch\x18\x02 \x01(\v2t.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchStackOutputsR\relasticsearch\x12\x85\x01\n" +
-	"\x06kibana\x18\x03 \x01(\v2m.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaStackOutputsR\x06kibana\"\xfe\x02\n" +
+	"\x06kibana\x18\x03 \x01(\v2m.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaStackOutputsR\x06kibana\"\x80\x03\n" +
 	"0KubernetesElasticsearchElasticsearchStackOutputs\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x02 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x03 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x04 \x01(\tR\x10externalHostname\x12+\n" +
 	"\x11internal_hostname\x18\x05 \x01(\tR\x10internalHostname\x12\x1a\n" +
-	"\busername\x18\x06 \x01(\tR\busername\x12c\n" +
-	"\x0fpassword_secret\x18\a \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecret\"\xf6\x01\n" +
+	"\busername\x18\x06 \x01(\tR\busername\x12e\n" +
+	"\x0fpassword_secret\x18\a \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecret\"\xf6\x01\n" +
 	")KubernetesElasticsearchKibanaStackOutputs\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x02 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -328,12 +328,12 @@ var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stac
 	(*KubernetesElasticsearchStackOutputs)(nil),              // 0: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackOutputs
 	(*KubernetesElasticsearchElasticsearchStackOutputs)(nil), // 1: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchStackOutputs
 	(*KubernetesElasticsearchKibanaStackOutputs)(nil),        // 2: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaStackOutputs
-	(*kubernetes.KubernetesSecretKey)(nil),                   // 3: org.project_planton.shared.kubernetes.KubernetesSecretKey
+	(*kubernetes.KubernetesSecretKey)(nil),                   // 3: org.project_planton.provider.kubernetes.KubernetesSecretKey
 }
 var file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_outputs_proto_depIdxs = []int32{
 	1, // 0: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackOutputs.elasticsearch:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchStackOutputs
 	2, // 1: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackOutputs.kibana:type_name -> org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaStackOutputs
-	3, // 2: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchStackOutputs.password_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
+	3, // 2: org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchStackOutputs.password_secret:type_name -> org.project_planton.provider.kubernetes.KubernetesSecretKey
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
