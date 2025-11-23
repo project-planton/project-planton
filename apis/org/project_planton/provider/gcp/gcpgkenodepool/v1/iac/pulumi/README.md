@@ -75,6 +75,9 @@ Create a `stack-input.json` file with your node pool configuration:
       "cluster_name": {
         "value": "prod-cluster"
       },
+      "cluster_location": {
+        "value": "us-central1"
+      },
       "machine_type": "n2-standard-4",
       "disk_size_gb": 100,
       "disk_type": "pd-ssd",

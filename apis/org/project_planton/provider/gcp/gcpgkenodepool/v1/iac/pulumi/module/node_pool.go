@@ -8,11 +8,10 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// nodePool creates a single GKE node‑pool for the parent cluster described
-// by clusterInfo. All inputs come straight from locals.GcpGkeNodePool.Spec.
+// nodePool creates a single GKE node‑pool for the parent cluster.
+// All inputs come straight from locals.GcpGkeNodePool.Spec.
 func nodePool(ctx *pulumi.Context,
 	locals *Locals,
-	clusterInfo *container.LookupClusterResult,
 	gcpProvider *gcp.Provider) error {
 
 	spec := locals.GcpGkeNodePool.Spec
@@ -101,8 +100,8 @@ func nodePool(ctx *pulumi.Context,
 	createdNodePool, err := container.NewNodePool(ctx,
 		locals.GcpGkeNodePool.Spec.NodePoolName,
 		&container.NodePoolArgs{
-			Cluster:     pulumi.String(clusterInfo.Name),
-			Location:    pulumi.String(*clusterInfo.Location),
+			Cluster:     pulumi.String(locals.ClusterName),
+			Location:    pulumi.String(locals.ClusterLocation),
 			Project:     pulumi.String(locals.GcpGkeNodePool.Spec.ClusterProjectId.GetValue()),
 			NodeConfig:  nodeConfig,
 			NodeCount:   nodeCount,

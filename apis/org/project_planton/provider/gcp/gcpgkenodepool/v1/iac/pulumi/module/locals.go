@@ -23,6 +23,7 @@ type Locals struct {
 	KubernetesLabels map[string]string
 	NetworkTag       string
 	ClusterName      string
+	ClusterLocation  string
 }
 
 // initializeLocals builds the Locals struct from the generated stack‑input message.
@@ -36,6 +37,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkenodepoolv1.GcpGkeNo
 	// We check both the literal value and any reference string; fallback to empty.
 	if stackInput.Target.Spec.ClusterName != nil {
 		locals.ClusterName = stackInput.Target.Spec.ClusterName.GetValue()
+	}
+
+	// Resolve the parent cluster location (region or zone).
+	if stackInput.Target.Spec.ClusterLocation != nil {
+		locals.ClusterLocation = stackInput.Target.Spec.ClusterLocation.GetValue()
 	}
 
 	// Base label maps
