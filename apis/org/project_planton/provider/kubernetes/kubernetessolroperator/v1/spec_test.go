@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 func TestKubernetesSolrOperator(t *testing.T) {
@@ -26,10 +27,9 @@ var _ = ginkgo.Describe("KubernetesSolrOperator Validation Tests", func() {
 				Name: "test-solr-operator",
 			},
 			Spec: &KubernetesSolrOperatorSpec{
-				TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-					CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-						KubernetesCredentialId: "test-cluster-credential",
-					},
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
 				},
 				Container: &KubernetesSolrOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{
@@ -109,12 +109,9 @@ var _ = ginkgo.Describe("KubernetesSolrOperator Validation Tests", func() {
 						Name: "selector-operator",
 					},
 					Spec: &KubernetesSolrOperatorSpec{
-						TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-							CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesClusterSelector{
-								KubernetesClusterSelector: &kubernetes.KubernetesClusterCloudResourceSelector{
-									ClusterKind: 615, // GcpGkeClusterCore
-								},
-							},
+						TargetCluster: &kubernetes.KubernetesClusterSelector{
+							ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+							ClusterName: "selector-cluster",
 						},
 						Container: &KubernetesSolrOperatorSpecContainer{},
 					},

@@ -7,13 +7,14 @@ import "org/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 
 // **KubernetesClusterSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
 message KubernetesClusterSelector {
-  //can be either gcp-gke-cluster-core
+  //can be one of the supported kubernetes cluster kinds
   org.project_planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [(buf.validate.field).enum = {
     in: [
       400, //AzureAksCluster
-      615, //GcpGkeClusterCore
-      218, //AwsEksClusterCore
-      1208 //DigitalOceanKubernetesCluster
+      207, //AwsEksCluster
+      607, //GcpGkeCluster
+      1208, //DigitalOceanKubernetesCluster
+      1507 //CivoKubernetesCluster
     ]
   }];
   //name of the kubernetes cluster in the same environment as the addon

@@ -26,7 +26,7 @@ const (
 // **KubernetesClusterSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
 type KubernetesClusterSelector struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// can be either gcp-gke-cluster-core
+	// can be one of the supported kubernetes cluster kinds
 	ClusterKind cloudresourcekind.CloudResourceKind `protobuf:"varint,1,opt,name=cluster_kind,json=clusterKind,proto3,enum=org.project_planton.shared.cloudresourcekind.CloudResourceKind" json:"cluster_kind,omitempty"`
 	// name of the kubernetes cluster in the same environment as the addon
 	// if the name is different from slug, use the value of slug here.
@@ -85,9 +85,9 @@ var File_org_project_planton_provider_kubernetes_target_cluster_proto protorefle
 
 const file_org_project_planton_provider_kubernetes_target_cluster_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/kubernetes/target_cluster.proto\x12'org.project_planton.provider.kubernetes\x1a\x1bbuf/validate/validate.proto\x1aForg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xb6\x01\n" +
-	"\x19KubernetesClusterSelector\x12v\n" +
-	"\fcluster_kind\x18\x01 \x01(\x0e2?.org.project_planton.shared.cloudresourcekind.CloudResourceKindB\x12\xbaH\x0f\x82\x01\f\x18\x90\x03\x18\xe7\x04\x18\xda\x01\x18\xb8\tR\vclusterKind\x12!\n" +
+	"<org/project_planton/provider/kubernetes/target_cluster.proto\x12'org.project_planton.provider.kubernetes\x1a\x1bbuf/validate/validate.proto\x1aForg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xb9\x01\n" +
+	"\x19KubernetesClusterSelector\x12y\n" +
+	"\fcluster_kind\x18\x01 \x01(\x0e2?.org.project_planton.shared.cloudresourcekind.CloudResourceKindB\x15\xbaH\x12\x82\x01\x0f\x18\x90\x03\x18\xcf\x01\x18\xdf\x04\x18\xb8\t\x18\xe3\vR\vclusterKind\x12!\n" +
 	"\fcluster_name\x18\x02 \x01(\tR\vclusterNameB\xd6\x02\n" +
 	"+com.org.project_planton.provider.kubernetesB\x12TargetClusterProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
