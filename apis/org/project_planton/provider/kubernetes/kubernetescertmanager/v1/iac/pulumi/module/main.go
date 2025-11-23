@@ -34,7 +34,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	}
 
 	// get namespace from spec (proto default: "kubernetes-cert-manager")
-	namespace := spec.GetNamespace()
+	namespace := spec.GetNamespace().GetValue()
 
 	// get chart version from spec (proto default: "v1.19.1")
 	chartVersion := spec.GetHelmChartVersion()

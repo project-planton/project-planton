@@ -15,6 +15,11 @@ module "signoz_dev" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-dev"
+
     signoz_container = {
       replicas = 1
       resources = {
@@ -90,6 +95,11 @@ module "signoz_production" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-prod"
+
     signoz_container = {
       replicas = 2
       resources = {
@@ -181,6 +191,11 @@ module "signoz_external_clickhouse" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-external"
+
     signoz_container = {
       replicas = 2
       resources = {
@@ -242,6 +257,11 @@ module "signoz_with_ingress" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-ingress"
+
     signoz_container = {
       replicas = 2
       resources = {
@@ -328,6 +348,11 @@ module "signoz_custom_images" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-custom"
+
     signoz_container = {
       replicas = 2
       resources = {
@@ -415,6 +440,11 @@ module "signoz_custom_helm" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-custom"
+
     signoz_container = {
       replicas = 2
       resources = {
@@ -504,6 +534,11 @@ module "signoz_high_volume" {
   }
 
   spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "signoz-high-volume"
+
     signoz_container = {
       replicas = 3
       resources = {

@@ -8,6 +8,8 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	cloudresourcekind "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesKeycloak(t *testing.T) {
@@ -26,6 +28,15 @@ var _ = ginkgo.Describe("KubernetesKeycloak Custom Validation Tests", func() {
 				Name: "test-keycloak",
 			},
 			Spec: &KubernetesKeycloakSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "test-namespace",
+					},
+				},
 				Container: &KubernetesKeycloakContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{

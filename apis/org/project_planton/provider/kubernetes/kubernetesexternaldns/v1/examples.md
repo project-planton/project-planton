@@ -15,8 +15,9 @@ metadata:
   name: external-dns-gke-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-gke-cluster
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: kubernetes-external-dns
   gke:
     project_id:
       value: my-gcp-project
@@ -48,8 +49,9 @@ metadata:
   name: external-dns-gke-ref
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      ref: prod-gke-cluster-id
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: kubernetes-external-dns
   gke:
     project_id:
       ref: gcp-project-platform
@@ -75,8 +77,9 @@ metadata:
   name: external-dns-eks-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-eks-cluster
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: kubernetes-external-dns
   eks:
     route53_zone_id:
       value: Z1234567890ABC
@@ -105,8 +108,9 @@ metadata:
   name: external-dns-eks-custom
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-eks-cluster
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: kubernetes-external-dns
   eks:
     route53_zone_id:
       value: Z1234567890ABC
@@ -131,8 +135,9 @@ metadata:
   name: external-dns-aks-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-aks-cluster
+    cluster_name: prod-aks-cluster
+  namespace:
+    value: kubernetes-external-dns
   aks:
     dns_zone_id: /subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com
     managed_identity_client_id: 12345678-1234-1234-1234-123456789012
@@ -162,8 +167,9 @@ metadata:
   name: external-dns-cloudflare
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: my-k8s-cluster
+    cluster_name: my-k8s-cluster
+  namespace:
+    value: kubernetes-external-dns
   cloudflare:
     api_token: your-cloudflare-api-token-here
     dns_zone_id: 1234567890abcdef1234567890abcdef
@@ -193,8 +199,9 @@ metadata:
   name: external-dns-cloudflare-proxy
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: my-k8s-cluster
+    cluster_name: my-k8s-cluster
+  namespace:
+    value: kubernetes-external-dns
   cloudflare:
     api_token: your-cloudflare-api-token-here
     dns_zone_id: 1234567890abcdef1234567890abcdef
@@ -219,12 +226,12 @@ kind: KubernetesExternalDns
 metadata:
   name: external-dns-custom
 spec:
-  namespace: dns-automation
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: dns-automation
   kubernetes_external_dns_version: v0.14.0
   helm_chart_version: 1.14.0
-  target_cluster:
-    kubernetes_cluster_id:
-      value: my-gke-cluster
   gke:
     project_id:
       value: my-gcp-project
@@ -256,8 +263,9 @@ metadata:
   name: external-dns-prod-domain
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: shared-cluster
+    cluster_name: shared-cluster
+  namespace:
+    value: kubernetes-external-dns
   gke:
     project_id:
       value: my-gcp-project
@@ -273,8 +281,9 @@ metadata:
   name: external-dns-staging-domain
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: shared-cluster
+    cluster_name: shared-cluster
+  namespace:
+    value: kubernetes-external-dns
   gke:
     project_id:
       value: my-gcp-project
@@ -306,8 +315,9 @@ metadata:
   name: external-dns-ref-cluster
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      ref: my-gke-cluster-resource
+    cluster_name: my-gke-cluster-resource
+  namespace:
+    value: kubernetes-external-dns
   gke:
     project_id:
       ref: gcp-project-platform

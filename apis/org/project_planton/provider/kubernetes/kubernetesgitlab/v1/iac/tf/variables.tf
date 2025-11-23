@@ -16,6 +16,15 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # The Kubernetes cluster to install this component on.
+    target_cluster = object({
+      # Name of the target Kubernetes cluster
+      cluster_name = string
+    })
+
+    # Kubernetes namespace to install the component.
+    namespace = string
+
     # The container specifications for the GitLab deployment.
     container = object({
 

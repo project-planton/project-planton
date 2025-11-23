@@ -1,5 +1,9 @@
 locals {
-  namespace = var.harbor_kubernetes.metadata.name
+  namespace = (
+    var.harbor_kubernetes.spec.namespace != null && var.harbor_kubernetes.spec.namespace != ""
+    ? var.harbor_kubernetes.spec.namespace
+    : var.harbor_kubernetes.metadata.name
+  )
 
   labels = {
     "app.kubernetes.io/name"     = "harbor"

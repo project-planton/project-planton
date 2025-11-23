@@ -30,8 +30,13 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskeycloakv1.KubernetesKeycloakStackInput) *Locals {
 	locals := &Locals{}
 
-	// Determine namespace
-	locals.Namespace = "keycloak-" + stackInput.Target.Metadata.Name
+	// Determine namespace from spec (required StringValueOrRef field)
+	locals.Namespace = stackInput.Target.Spec.Namespace.GetValue()
+
+	// Fallback to default pattern if empty
+	if locals.Namespace == "" {
+		locals.Namespace = "keycloak-" + stackInput.Target.Metadata.Name
+	}
 
 	// Set up labels
 	locals.Labels = map[string]string{

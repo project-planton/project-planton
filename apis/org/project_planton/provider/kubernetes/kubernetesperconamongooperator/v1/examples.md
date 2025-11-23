@@ -28,8 +28,9 @@ metadata:
   name: percona-operator-prod
 spec:
   targetCluster:
-    credentialId: my-k8s-cluster-credential
-  namespace: percona-operator  # Optional: defaults to "percona-operator"
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "percona-operator"
   container:
     resources:
       requests:
@@ -66,8 +67,9 @@ metadata:
   name: percona-operator-large
 spec:
   targetCluster:
-    credentialId: my-k8s-cluster-credential
-  namespace: percona-operator
+    clusterName: "production-gke-cluster"
+  namespace:
+    value: "percona-operator"
   container:
     resources:
       requests:
@@ -104,8 +106,9 @@ metadata:
   name: percona-operator-dev
 spec:
   targetCluster:
-    credentialId: my-local-k8s-cluster
-  namespace: percona-operator-dev  # Custom namespace for dev environment
+    clusterName: "my-local-k8s-cluster"
+  namespace:
+    value: "percona-operator-dev"
   container:
     resources:
       requests:

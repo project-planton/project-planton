@@ -15,6 +15,12 @@ module "neo4j_basic" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -65,6 +71,12 @@ module "neo4j_memory_optimized" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -107,6 +119,12 @@ module "neo4j_external" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -164,6 +182,12 @@ module "neo4j_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -221,6 +245,12 @@ module "neo4j_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -276,6 +306,12 @@ module "neo4j_complete" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -319,6 +355,12 @@ module "neo4j_app" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -356,6 +398,12 @@ module "neo4j_analytics" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = {
         limits = {
@@ -515,6 +563,12 @@ module "neo4j" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     container = {
       resources = local.environment == "production" ? {
         limits = {

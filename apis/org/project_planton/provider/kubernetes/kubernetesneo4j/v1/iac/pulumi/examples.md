@@ -20,7 +20,10 @@ kind: Neo4jKubernetes
 metadata:
   name: basic-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   container:
     resources:
       requests:
@@ -43,7 +46,10 @@ kind: Neo4jKubernetes
 metadata:
   name: ingress-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   container:
     resources:
       requests:
@@ -69,7 +75,10 @@ kind: Neo4jKubernetes
 metadata:
   name: custom-resources-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   container:
     resources:
       requests:
@@ -92,7 +101,10 @@ kind: Neo4jKubernetes
 metadata:
   name: minimal-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
   container:
     resources:
       requests:

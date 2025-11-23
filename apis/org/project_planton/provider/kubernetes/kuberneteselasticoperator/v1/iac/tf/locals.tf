@@ -35,8 +35,12 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # ECK operator constants
-  namespace          = "elastic-system"
+  # ECK operator configuration
+  namespace = (
+    var.spec.namespace != null && var.spec.namespace != ""
+    ? var.spec.namespace
+    : "elastic-system" # fallback to default
+  )
   helm_chart_name    = "eck-operator"
   helm_chart_repo    = "https://helm.elastic.co"
   helm_chart_version = "2.14.0"

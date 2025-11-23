@@ -16,6 +16,10 @@ kind: MicroserviceKubernetes
 metadata:
   name: minimal-example
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "minimal-example"
   version: main
   container:
     app:
@@ -56,6 +60,10 @@ kind: MicroserviceKubernetes
 metadata:
   name: env-example
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "env-example"
   version: main
   container:
     app:
@@ -100,6 +108,10 @@ kind: MicroserviceKubernetes
 metadata:
   name: db-credentials-example
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "db-credentials-example"
   version: main
   container:
     app:
@@ -146,6 +158,10 @@ kind: MicroserviceKubernetes
 metadata:
   name: sidecar-example
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "sidecar-example"
   version: "v2"
   container:
     app:
@@ -206,6 +222,10 @@ metadata:
   labels:
     customLabel: "example"
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "ingress-example"
   version: main
   container:
     app:
@@ -248,6 +268,10 @@ kind: MicroserviceKubernetes
 metadata:
   name: hpa-example
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "hpa-example"
   version: "3.0"
   container:
     app:

@@ -26,7 +26,10 @@ kind: MongodbKubernetes
 metadata:
   name: basic-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: basic-mongodb
   container:
     replicas: 1
     resources:
@@ -52,7 +55,10 @@ kind: MongodbKubernetes
 metadata:
   name: persistent-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: persistent-mongodb
   container:
     replicas: 3
     persistenceEnabled: true
@@ -80,7 +86,10 @@ kind: MongodbKubernetes
 metadata:
   name: ha-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: ha-mongodb
   container:
     replicas: 3
     persistenceEnabled: true
@@ -111,7 +120,10 @@ kind: MongodbKubernetes
 metadata:
   name: ingress-mongodb
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: ingress-mongodb
   container:
     replicas: 1
     persistenceEnabled: true
@@ -144,7 +156,10 @@ metadata:
   org: my-org
   env: production
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: production-mongodb
   container:
     replicas: 3
     persistenceEnabled: true

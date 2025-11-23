@@ -116,7 +116,9 @@ metadata:
   name: my-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: my-cluster-credential
+    cluster_name: my-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: false
 ```
@@ -130,7 +132,9 @@ metadata:
   name: internal-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: gke-cluster-credential
+    cluster_name: gke-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   internal: true
   gke:
@@ -146,7 +150,9 @@ metadata:
   name: eks-ingress
 spec:
   target_cluster:
-    kubernetes_credential_id: eks-cluster-credential
+    cluster_name: eks-prod-cluster
+  namespace:
+    value: ingress-nginx
   chart_version: "4.11.1"
   eks:
     subnet_ids:

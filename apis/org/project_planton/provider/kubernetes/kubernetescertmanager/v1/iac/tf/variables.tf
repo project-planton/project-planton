@@ -14,6 +14,9 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for Kubernetes Cert-Manager deployment"
   type = object({
+    # Target Kubernetes cluster
+    target_cluster_name = string
+
     # Kubernetes namespace where cert-manager will be deployed
     namespace = optional(string, "kubernetes-cert-manager")
 

@@ -30,8 +30,12 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Use resource_id as the namespace name
-  namespace = local.resource_id
+  # Namespace from spec with fallback to resource_id
+  namespace = (
+    var.spec.namespace != null && var.spec.namespace != ""
+    ? var.spec.namespace
+    : local.resource_id
+  )
 
   # Kafka broker container replicas (for convenience)
   broker_replicas = try(var.spec.broker_container.replicas, 1)

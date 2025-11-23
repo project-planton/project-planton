@@ -16,6 +16,10 @@ kind: NatsKubernetes
 metadata:
   name: nats-basic
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "nats-basic"
   serverContainer:
     replicas: 3
     diskSize: "10Gi"
@@ -41,6 +45,10 @@ kind: NatsKubernetes
 metadata:
   name: nats-secure
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "nats-secure"
   serverContainer:
     replicas: 5
     resources:
@@ -74,6 +82,10 @@ kind: NatsKubernetes
 metadata:
   name: nats-external
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "nats-external"
   serverContainer:
     replicas: 3
     diskSize: "10Gi"
@@ -104,6 +116,10 @@ kind: NatsKubernetes
 metadata:
   name: nats-minimal
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "nats-minimal"
   serverContainer:
     replicas: 1
     resources:
@@ -136,6 +152,10 @@ kind: NatsKubernetes
 metadata:
   name: nats-ha-metrics
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "nats-ha-metrics"
   serverContainer:
     replicas: 7
     resources:

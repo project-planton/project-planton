@@ -9,6 +9,7 @@ import (
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesPerconaMysqlOperator(t *testing.T) {
@@ -31,7 +32,11 @@ var _ = ginkgo.Describe("KubernetesPerconaMysqlOperator Validation Tests", func(
 					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
 					ClusterName: "test-cluster",
 				},
-				Namespace: "percona-mysql-operator",
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "percona-mysql-operator",
+					},
+				},
 				Container: &KubernetesPerconaMysqlOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
@@ -57,28 +62,16 @@ var _ = ginkgo.Describe("KubernetesPerconaMysqlOperator Validation Tests", func(
 		})
 	})
 
-	ginkgo.Describe("When namespace pattern validation is tested", func() {
+	ginkgo.Describe("When namespace is provided", func() {
 		ginkgo.Context("with valid lowercase namespace", func() {
 			ginkgo.It("should pass validation", func() {
-				input.Spec.Namespace = "my-namespace-123"
+				input.Spec.Namespace = &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "my-namespace-123",
+					},
+				}
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
-			})
-		})
-
-		ginkgo.Context("with invalid uppercase namespace", func() {
-			ginkgo.It("should fail validation", func() {
-				input.Spec.Namespace = "MyNamespace"
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-		})
-
-		ginkgo.Context("with invalid special characters in namespace", func() {
-			ginkgo.It("should fail validation", func() {
-				input.Spec.Namespace = "my_namespace"
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 	})

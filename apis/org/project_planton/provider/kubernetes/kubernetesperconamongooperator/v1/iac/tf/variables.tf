@@ -14,8 +14,11 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for the Percona Operator for MongoDB deployment"
   type = object({
+    # Target Kubernetes cluster
+    target_cluster_name = string
+
     # Kubernetes namespace to install the operator. Defaults to "percona-operator" if not provided.
-    namespace = optional(string, "")
+    namespace = optional(string, "percona-operator")
 
     # The container specifications for the operator deployment.
     container = object({

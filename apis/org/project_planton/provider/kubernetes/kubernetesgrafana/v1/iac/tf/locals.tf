@@ -33,8 +33,12 @@ locals {
     "app.kubernetes.io/instance" = local.resource_id
   }
 
-  # Use resource_id as the namespace name
-  namespace = local.resource_id
+  # Use namespace from spec with fallback to resource_id
+  namespace = (
+    var.spec.namespace != null && var.spec.namespace != ""
+    ? var.spec.namespace
+    : local.resource_id
+  )
 
   # Service name
   kube_service_name = "${var.metadata.name}-grafana"

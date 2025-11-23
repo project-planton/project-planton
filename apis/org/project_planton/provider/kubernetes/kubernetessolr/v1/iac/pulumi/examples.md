@@ -10,7 +10,10 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-basic
 spec:
-  kubernetesProviderConfigId: cluster-credential-12345
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: solr-instance-basic
   solrContainer:
     replicas: 1
     image:
@@ -46,7 +49,10 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-custom
 spec:
-  kubernetesProviderConfigId: cluster-credential-67890
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: solr-instance-custom
   solrContainer:
     replicas: 3
     image:
@@ -86,7 +92,10 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-ingress
 spec:
-  kubernetesProviderConfigId: cluster-credential-24680
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: solr-instance-ingress
   solrContainer:
     replicas: 2
     image:
@@ -111,10 +120,8 @@ spec:
         memory: 1Gi
     diskSize: "2Gi"
   ingress:
-    isEnabled: true
-    ingressClass: "nginx"
-    host: "solr.example.com"
-    tlsEnabled: true
+    enabled: true
+    hostname: "solr.example.com"
 ```
 
 ## Example 4: Solr Deployment with Custom Garbage Collection and No Ingress
@@ -127,7 +134,10 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-no-ingress
 spec:
-  kubernetesProviderConfigId: cluster-credential-112233
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: solr-instance-no-ingress
   solrContainer:
     replicas: 1
     image:

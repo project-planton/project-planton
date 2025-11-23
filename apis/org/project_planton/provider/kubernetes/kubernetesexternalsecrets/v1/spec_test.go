@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
@@ -27,6 +28,15 @@ var _ = ginkgo.Describe("KubernetesExternalSecrets Validation Tests", func() {
 				Name: "test-external-secrets",
 			},
 			Spec: &KubernetesExternalSecretsSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "external-secrets",
+					},
+				},
 				Container: &KubernetesExternalSecretsSpecContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{

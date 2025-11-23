@@ -20,6 +20,10 @@ metadata:
   org: my-org
   env: dev
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "my-app-db"
   container:
     replicas: 1
     resources:
@@ -54,6 +58,10 @@ metadata:
   org: my-org
   env: prod
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "my-public-db"
   container:
     replicas: 1
     resources:
@@ -92,6 +100,10 @@ metadata:
   org: my-org
   env: prod
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "my-app-db"
   container:
     replicas: 1
     resources:
@@ -140,6 +152,10 @@ metadata:
   org: my-org
   env: prod
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "restored-db"
   container:
     replicas: 1
     resources:
@@ -209,6 +225,10 @@ metadata:
   org: my-org
   env: prod
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "restored-db"
   container:
     replicas: 1
     resources:
@@ -279,6 +299,10 @@ metadata:
   org: my-org
   env: prod
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "restored-db-simple"
   container:
     replicas: 1
     resources:
@@ -325,6 +349,10 @@ metadata:
   org: my-org
   env: prod
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "ha-db"
   container:
     # Multiple replicas for high availability
     replicas: 3
@@ -375,6 +403,10 @@ metadata:
   org: my-org
   env: dev
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "dev-db"
   container:
     replicas: 1
     resources:

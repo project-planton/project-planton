@@ -27,8 +27,10 @@ metadata:
   name: kubernetes-altinity-operator-default
 spec:
   targetCluster:
-    credentialId: my-k8s-cluster
-  namespace: kubernetes-altinity-operator  # Optional: defaults to "kubernetes-altinity-operator"
+    clusterKind: GcpGkeCluster  # Can be GcpGkeCluster, AwsEksCluster, AzureAksCluster, DigitalOceanKubernetesCluster, or CivoKubernetesCluster
+    clusterName: my-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator  # Optional: defaults to "kubernetes-altinity-operator"
   container:
     resources:
       requests:
@@ -77,8 +79,10 @@ metadata:
   name: kubernetes-altinity-operator-large
 spec:
   targetCluster:
-    credentialId: production-k8s-cluster
-  namespace: kubernetes-altinity-operator-prod  # Custom namespace for production
+    clusterKind: GcpGkeCluster
+    clusterName: production-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator-prod  # Custom namespace for production
   container:
     resources:
       requests:
@@ -114,8 +118,10 @@ metadata:
   name: kubernetes-altinity-operator-dev
 spec:
   targetCluster:
-    credentialId: dev-k8s-cluster
-  namespace: kubernetes-altinity-operator-dev
+    clusterKind: GcpGkeCluster
+    clusterName: dev-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator-dev
   container:
     resources:
       requests:
@@ -187,7 +193,10 @@ metadata:
   name: kubernetes-altinity-operator-custom
 spec:
   targetCluster:
-    credentialId: my-k8s-cluster
+    clusterKind: GcpGkeCluster
+    clusterName: my-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator
   container:
     resources:
       requests:

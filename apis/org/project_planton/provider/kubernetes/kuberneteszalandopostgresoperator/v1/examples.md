@@ -24,6 +24,10 @@ kind: KubernetesZalandoPostgresOperator
 metadata:
   name: postgres-operator
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -44,6 +48,10 @@ kind: KubernetesZalandoPostgresOperator
 metadata:
   name: postgres-operator
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -107,6 +115,10 @@ metadata:
     org: acme-corp
     env: production
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -148,6 +160,10 @@ metadata:
     org: acme-corp
     env: production
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -217,6 +233,10 @@ metadata:
   labels:
     env: development
 spec:
+  target_cluster:
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -237,6 +257,10 @@ metadata:
   labels:
     env: staging
 spec:
+  target_cluster:
+    cluster_name: staging-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -257,6 +281,10 @@ metadata:
   labels:
     env: production
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -296,6 +324,10 @@ kind: KubernetesZalandoPostgresOperator
 metadata:
   name: postgres-operator
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -317,6 +349,10 @@ metadata:
   labels:
     env: development
 spec:
+  target_cluster:
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: postgres-operator-dev
   container:
     resources:
       requests:
@@ -339,6 +375,10 @@ metadata:
     org: acme-corp
     env: production
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator-prod
   container:
     resources:
       requests:
@@ -505,6 +545,10 @@ kind: KubernetesZalandoPostgresOperator
 metadata:
   name: postgres-operator
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator
   container:
     resources:
       requests:
@@ -614,6 +658,10 @@ metadata:
     team: platform
     cost-center: engineering
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator-prod
   container:
     resources:
       requests:

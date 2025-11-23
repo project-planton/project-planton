@@ -81,8 +81,9 @@ metadata:
   name: external-dns-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: my-gke-cluster
+    cluster_name: my-gke-cluster
+  namespace:
+    value: kubernetes-external-dns
   gke:
     project_id:
       value: my-gcp-project

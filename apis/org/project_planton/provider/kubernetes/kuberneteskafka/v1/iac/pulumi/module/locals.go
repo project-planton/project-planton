@@ -72,13 +72,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 	// Priority order:
 	// 1. Default: metadata.name
 	// 2. Override with custom label if provided
-	// 3. Override with stackInput if provided
+	// 3. Override with spec.namespace if provided
+	// 4. Override with stackInput if provided
 
 	locals.Namespace = target.Metadata.Name
 
 	if target.Metadata.Labels != nil &&
 		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
 		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
+	}
+
+	if target.Spec.Namespace != nil && target.Spec.Namespace.GetValue() != "" {
+		locals.Namespace = target.Spec.Namespace.GetValue()
 	}
 
 	if stackInput.KubernetesNamespace != "" {

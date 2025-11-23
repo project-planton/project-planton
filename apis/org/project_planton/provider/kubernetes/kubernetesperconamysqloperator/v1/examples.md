@@ -27,9 +27,10 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-prod
 spec:
-  targetCluster:
-    credentialId: my-k8s-cluster-credential
-  namespace: percona-mysql-operator  # Optional: defaults to "percona-mysql-operator"
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: percona-mysql-operator
   container:
     resources:
       requests:
@@ -65,9 +66,10 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-large
 spec:
-  targetCluster:
-    credentialId: my-k8s-cluster-credential
-  namespace: percona-mysql-operator
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: percona-mysql-operator
   container:
     resources:
       requests:
@@ -103,9 +105,10 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-dev
 spec:
-  targetCluster:
-    credentialId: my-local-k8s-cluster
-  namespace: percona-mysql-operator-dev  # Custom namespace for dev environment
+  target_cluster:
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: percona-mysql-operator-dev
   container:
     resources:
       requests:

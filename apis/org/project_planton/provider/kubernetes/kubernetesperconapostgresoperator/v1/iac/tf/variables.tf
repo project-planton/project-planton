@@ -14,8 +14,14 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for the Percona Operator for PostgreSQL deployment"
   type = object({
-    # Kubernetes namespace to install the operator. Defaults to "kubernetes-percona-postgres-operator" if not provided.
-    namespace = optional(string, "")
+    # The Kubernetes cluster to install this operator on.
+    target_cluster = object({
+      # Name of the target Kubernetes cluster
+      cluster_name = string
+    })
+
+    # Kubernetes namespace to install the operator.
+    namespace = string
 
     # The container specifications for the operator deployment.
     container = object({

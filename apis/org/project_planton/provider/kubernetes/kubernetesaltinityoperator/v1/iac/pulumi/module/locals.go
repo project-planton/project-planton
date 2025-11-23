@@ -19,7 +19,7 @@ func newLocals(stackInput *kubernetesaltinityoperatorv1.KubernetesAltinityOperat
 	l := &locals{}
 
 	// Determine namespace - use from spec or default
-	l.Namespace = stackInput.Target.Spec.Namespace
+	l.Namespace = stackInput.Target.Spec.Namespace.GetValue()
 	if l.Namespace == "" {
 		l.Namespace = vars.DefaultNamespace
 	}

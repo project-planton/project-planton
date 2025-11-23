@@ -16,7 +16,6 @@ go_library(
         "//apis/org/project_planton/shared/cloudresourcekind",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
-        "//pkg/kubernetes/kuberneteslabels",
         "//pkg/kubernetes/kubernetestypes/perconamongodb/kubernetes/psmdb/v1:psmdb",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/core/v1:core",

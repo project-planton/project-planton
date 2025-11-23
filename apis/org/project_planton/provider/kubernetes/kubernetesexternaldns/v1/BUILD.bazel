@@ -26,7 +26,9 @@ go_test(
     srcs = ["spec_test.go"],
     embed = [":kubernetesexternaldns"],
     deps = [
+        "//apis/org/project_planton/provider/kubernetes",
         "//apis/org/project_planton/shared",
+        "//apis/org/project_planton/shared/cloudresourcekind",
         "//apis/org/project_planton/shared/foreignkey/v1:foreignkey",
         "@build_buf_go_protovalidate//:protovalidate",
         "@com_github_onsi_ginkgo_v2//:ginkgo",

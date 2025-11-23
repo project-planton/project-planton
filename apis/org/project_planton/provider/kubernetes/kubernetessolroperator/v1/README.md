@@ -53,7 +53,9 @@ metadata:
   name: <operator-name>
 spec:
   targetCluster: # Optional - where to deploy
-    kubernetesCredentialId: <credential-id>
+    clusterName: "<cluster-name>"
+  namespace: # Required
+    value: "solr-operator-system"
   container:
     resources: # Optional - defaults provided
       requests:
@@ -70,10 +72,14 @@ spec:
 
 Specifies the target Kubernetes cluster for operator deployment.
 
-- **`kubernetesCredentialId`** (string): ID of the Kubernetes cluster credential
-- **`kubernetesClusterSelector`** (object): Selector for cluster in the same environment
+- **`clusterName`** (string): Name of the Kubernetes cluster
+- **`clusterKind`** (enum): Type of cluster (GKE, EKS, AKS, etc.)
 
-At most one of these fields should be specified. If neither is provided, the operator deploys to the default cluster.
+If not provided, the operator deploys to the default cluster.
+
+#### `namespace` (required)
+
+Kubernetes namespace where the operator will be deployed. Default: `"solr-operator-system"`
 
 #### `container` (required)
 

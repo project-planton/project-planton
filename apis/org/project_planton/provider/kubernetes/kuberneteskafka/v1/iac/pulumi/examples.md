@@ -6,6 +6,10 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-cluster-basic
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: kafka-basic
   kafka_topics:
     - name: my-topic
       partitions: 3
@@ -43,6 +47,10 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-cluster-with-schema-registry
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: kafka-with-registry
   kafka_topics:
     - name: my-topic
       partitions: 3
@@ -95,6 +103,10 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-minimal
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: kafka-minimal
   broker_container:
     replicas: 1
     resources:
@@ -128,6 +140,10 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-custom-topics
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: kafka-topics
   kafka_topics:
     - name: logs
       partitions: 5
@@ -174,6 +190,10 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-with-schema-registry
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: kafka-schema-registry
   kafka_topics:
     - name: transactions
       partitions: 3

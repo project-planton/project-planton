@@ -38,8 +38,14 @@ func newLocals(stackInput *kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKaf
 		}
 	}
 
+	// get namespace from spec
+	namespace := vars.Namespace
+	if stackInput.Target != nil && stackInput.Target.Spec != nil && stackInput.Target.Spec.Namespace != nil {
+		namespace = stackInput.Target.Spec.Namespace.GetValue()
+	}
+
 	return &locals{
-		namespace:    vars.Namespace,
+		namespace:    namespace,
 		labels:       labels,
 		operatorName: operatorName,
 		chartVersion: vars.HelmChartVersion,

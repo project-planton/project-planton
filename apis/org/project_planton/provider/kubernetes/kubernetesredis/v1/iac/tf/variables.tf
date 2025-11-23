@@ -15,6 +15,15 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # The Kubernetes cluster to install this component on.
+    target_cluster = object({
+      cluster_name = string
+      cluster_kind = optional(number)
+    })
+
+    # Kubernetes namespace to install the operator.
+    namespace = string
+
     # The container specifications for the Redis deployment.
     container = object({
 

@@ -15,6 +15,13 @@ variable "metadata" {
 variable "spec" {
   description = "spec"
   type = object({
+    # Target Kubernetes cluster
+    target_cluster = object({
+      cluster_name = string
+    })
+
+    # Kubernetes namespace
+    namespace = string
 
     # A list of Kafka topics to be created in the Kafka cluster.
     kafka_topics = list(object({

@@ -16,6 +16,15 @@ variable "spec" {
   description = "Specification for KubernetesElasticOperator"
   type = object({
 
+    # The Kubernetes cluster to install this operator on.
+    target_cluster = optional(object({
+      cluster_name = string
+      cluster_kind = optional(number)
+    }))
+
+    # Kubernetes namespace to install the operator.
+    namespace = string
+
     # The container specifications for the ECK operator.
     container = object({
 

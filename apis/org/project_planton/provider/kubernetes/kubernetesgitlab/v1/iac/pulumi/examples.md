@@ -6,7 +6,10 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-instance
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-instance
   container:
     resources:
       requests:
@@ -27,7 +30,10 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-production
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-production
   container:
     resources:
       requests:
@@ -51,7 +57,10 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-custom
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-custom
   container:
     resources:
       requests:
@@ -72,7 +81,10 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-env-vars
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-env-vars
   container:
     env:
       variables:
@@ -90,7 +102,7 @@ spec:
 
 ---
 
-# Example 5: Minimal GitLab Deployment (Empty Spec)
+# Example 5: Minimal GitLab Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -98,5 +110,16 @@ kind: GitlabKubernetes
 metadata:
   name: minimal-gitlab
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: minimal-gitlab
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
 ```

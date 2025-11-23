@@ -101,7 +101,9 @@ metadata:
   name: main-istio
 spec:
   target_cluster:
-    kubernetes_credential_id: my-cluster-credential
+    cluster_name: my-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:
@@ -123,7 +125,9 @@ metadata:
   name: prod-istio
 spec:
   target_cluster:
-    kubernetes_credential_id: prod-cluster-credential
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:
@@ -145,7 +149,9 @@ metadata:
   name: dev-istio
 spec:
   target_cluster:
-    kubernetes_credential_id: dev-cluster-credential
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:

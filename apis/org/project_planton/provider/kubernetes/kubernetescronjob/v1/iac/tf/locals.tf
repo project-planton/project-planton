@@ -34,8 +34,8 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Use resource_id as the namespace name
-  namespace = local.resource_id
+  # Get namespace from spec
+  namespace = var.spec.namespace
 
   # The microservice version is used as the Service name (per the code logic).
   kube_service_name = var.spec.version

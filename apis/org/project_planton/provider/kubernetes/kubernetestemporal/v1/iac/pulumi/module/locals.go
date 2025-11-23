@@ -56,17 +56,26 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// ------------------------------- namespace -------------------------------
 	// Priority order:
-	// 1. Default: metadata.name
-	// 2. Override with custom label if provided
-	// 3. Override with stackInput if provided
+	// 1. Spec.Namespace (required field)
+	// 2. Override with stackInput if provided (for backward compatibility)
+	// 3. Override with custom label if provided
+	// 4. Default: metadata.name
 
-	locals.Namespace = target.Metadata.Name
+	// Start with the required namespace field from spec
+	locals.Namespace = target.Spec.Namespace.GetValue()
 
+	// If namespace is empty, fall back to metadata name
+	if locals.Namespace == "" {
+		locals.Namespace = target.Metadata.Name
+	}
+
+	// Allow override from custom label
 	if target.Metadata.Labels != nil &&
 		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
 		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
 	}
 
+	// Allow override from stackInput (backward compatibility)
 	if stackInput.KubernetesNamespace != "" {
 		locals.Namespace = stackInput.KubernetesNamespace
 	}

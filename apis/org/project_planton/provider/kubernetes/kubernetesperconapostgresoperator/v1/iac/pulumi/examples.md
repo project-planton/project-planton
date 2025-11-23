@@ -26,9 +26,10 @@ kind: KubernetesPerconaPostgresOperator
 metadata:
   name: percona-pg-operator-default
 spec:
-  targetCluster:
-    credentialId: my-k8s-cluster
-  namespace: kubernetes-percona-postgres-operator  # Optional: defaults to "kubernetes-percona-postgres-operator"
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-percona-postgres-operator"
   container:
     resources:
       requests:
@@ -76,9 +77,10 @@ kind: KubernetesPerconaPostgresOperator
 metadata:
   name: percona-pg-operator-large
 spec:
-  targetCluster:
-    credentialId: production-k8s-cluster
-  namespace: kubernetes-percona-postgres-operator-prod  # Custom namespace for production
+  target_cluster:
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: "kubernetes-percona-postgres-operator-prod"
   container:
     resources:
       requests:
@@ -113,9 +115,10 @@ kind: KubernetesPerconaPostgresOperator
 metadata:
   name: percona-pg-operator-dev
 spec:
-  targetCluster:
-    credentialId: dev-k8s-cluster
-  namespace: kubernetes-percona-postgres-operator-dev
+  target_cluster:
+    cluster_name: "dev-gke-cluster"
+  namespace:
+    value: "kubernetes-percona-postgres-operator-dev"
   container:
     resources:
       requests:
@@ -186,8 +189,10 @@ kind: KubernetesPerconaPostgresOperator
 metadata:
   name: percona-pg-operator-custom
 spec:
-  targetCluster:
-    credentialId: my-k8s-cluster
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-percona-postgres-operator"
   container:
     resources:
       requests:

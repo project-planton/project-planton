@@ -15,6 +15,14 @@ variable "spec" {
   description = "NatsKubernetes specification"
   type = object({
 
+    # The Kubernetes cluster to install this component on
+    target_cluster = object({
+      cluster_name = string
+    })
+
+    # Kubernetes namespace to install NATS
+    namespace = string
+
     # Server container configuration
     server_container = object({
       # Number of NATS replicas

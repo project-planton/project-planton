@@ -75,6 +75,10 @@ kind: KubernetesExternalSecrets
 metadata:
   name: external-secrets-prod
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: external-secrets
   poll_interval_seconds: 30
   container:
     resources:

@@ -8,6 +8,8 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesJenkins(t *testing.T) {
@@ -26,6 +28,15 @@ var _ = ginkgo.Describe("KubernetesJenkins Custom Validation Tests", func() {
 				Name: "test-jenkins",
 			},
 			Spec: &KubernetesJenkinsSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-k8s-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "jenkins",
+					},
+				},
 				ContainerResources: &kubernetes.ContainerResources{
 					Limits: &kubernetes.CpuMemory{
 						Cpu:    "1000m",

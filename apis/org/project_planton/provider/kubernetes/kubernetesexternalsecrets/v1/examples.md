@@ -15,8 +15,9 @@ metadata:
   name: external-secrets-gke-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-gke-cluster
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 30
   
@@ -66,8 +67,9 @@ metadata:
   name: external-secrets-gke-ref
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      ref: prod-gke-cluster-resource
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 60
   
@@ -105,8 +107,9 @@ metadata:
   name: external-secrets-eks-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-eks-cluster
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 15
   
@@ -163,8 +166,9 @@ metadata:
   name: external-secrets-eks-custom
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-eks-cluster
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 30
   
@@ -221,8 +225,9 @@ metadata:
   name: external-secrets-aks-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-aks-cluster
+    cluster_name: prod-aks-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 30
   
@@ -285,8 +290,9 @@ metadata:
   name: external-secrets-cost-optimized
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-gke-cluster
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: external-secrets
   
   # Poll every hour to minimize API costs
   poll_interval_seconds: 3600
@@ -338,8 +344,9 @@ metadata:
   name: external-secrets-dynamic
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-eks-cluster
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: external-secrets
   
   # Poll every 5 minutes for dynamic secrets
   poll_interval_seconds: 300
@@ -378,8 +385,9 @@ metadata:
   name: external-secrets-minimal
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: dev-gke-cluster
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 120
   
@@ -422,8 +430,9 @@ metadata:
   name: external-secrets-ha-prod
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-gke-cluster
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 30
   
@@ -468,8 +477,9 @@ metadata:
   name: external-secrets-multi-region
 spec:
   target_cluster:
-    kubernetes_cluster_id:
-      value: prod-eks-cluster
+    cluster_name: prod-eks-cluster
+  namespace:
+    value: external-secrets
   
   poll_interval_seconds: 60
   

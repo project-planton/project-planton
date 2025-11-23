@@ -10,7 +10,10 @@ This document provides practical examples for deploying the ECK operator using P
   "target": {
     "spec": {
       "targetCluster": {
-        "kubernetesCredentialId": "my-k8s-cluster"
+        "clusterName": "my-gke-cluster"
+      },
+      "namespace": {
+        "value": "elastic-system"
       }
     }
   },
@@ -21,7 +24,10 @@ This document provides practical examples for deploying the ECK operator using P
     },
     "spec": {
       "targetCluster": {
-        "kubernetesCredentialId": "my-k8s-cluster"
+        "clusterName": "my-gke-cluster"
+      },
+      "namespace": {
+        "value": "elastic-system"
       },
       "container": {
         "resources": {
@@ -54,7 +60,10 @@ pulumi up
   "target": {
     "spec": {
       "targetCluster": {
-        "kubernetesCredentialId": "production-cluster"
+        "clusterName": "production-gke-cluster"
+      },
+      "namespace": {
+        "value": "elastic-system"
       }
     }
   },
@@ -67,7 +76,10 @@ pulumi up
     },
     "spec": {
       "targetCluster": {
-        "kubernetesCredentialId": "production-cluster"
+        "clusterName": "production-gke-cluster"
+      },
+      "namespace": {
+        "value": "elastic-system"
       },
       "container": {
         "resources": {
@@ -94,7 +106,10 @@ pulumi up
   "target": {
     "spec": {
       "targetCluster": {
-        "kubernetesCredentialId": "dev-cluster"
+        "clusterName": "dev-gke-cluster"
+      },
+      "namespace": {
+        "value": "elastic-system"
       }
     }
   },
@@ -106,7 +121,10 @@ pulumi up
     },
     "spec": {
       "targetCluster": {
-        "kubernetesCredentialId": "dev-cluster"
+        "clusterName": "dev-gke-cluster"
+      },
+      "namespace": {
+        "value": "elastic-system"
       },
       "container": {
         "resources": {

@@ -16,6 +16,15 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # The Kubernetes cluster to install this component on.
+    target_cluster = optional(object({
+      cluster_name = string
+      cluster_kind = optional(number)
+    }))
+
+    # Kubernetes namespace to install Jenkins.
+    namespace = string
+
     # The CPU and memory resources allocated to the Jenkins container.
     container_resources = object({
 

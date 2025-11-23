@@ -259,7 +259,9 @@ module "external_dns_custom" {
   }
 
   spec = {
-    namespace                       = "dns-automation"
+    namespace = {
+      value = "dns-automation"
+    }
     kubernetes_external_dns_version = "v0.14.0"
     helm_chart_version              = "1.14.0"
 

@@ -14,6 +14,11 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
+  
   acme:
     email: "admin@example.com"
     server: "https://acme-v02.api.letsencrypt.org/directory"
@@ -40,6 +45,11 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-multi
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
+  
   acme:
     email: "certs@acme-corp.com"
   
@@ -67,6 +77,11 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-gcp
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
+  
   acme:
     email: "platform@example.com"
   
@@ -97,6 +112,11 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-aws
 spec:
+  targetCluster:
+    clusterName: "my-eks-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
+  
   acme:
     email: "devops@example.com"
   
@@ -128,6 +148,11 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-azure
 spec:
+  targetCluster:
+    clusterName: "my-aks-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
+  
   acme:
     email: "it@example.com"
   
@@ -159,6 +184,11 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-hybrid
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "kubernetes-cert-manager"
+  
   acme:
     email: "certificates@multi-cloud.com"
   
@@ -208,7 +238,10 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-staging
 spec:
-  namespace: cert-manager-staging
+  targetCluster:
+    clusterName: "my-staging-cluster"
+  namespace:
+    value: "cert-manager-staging"
   
   acme:
     email: "staging@example.com"
@@ -239,7 +272,10 @@ kind: KubernetesCertManager
 metadata:
   name: cert-manager-custom
 spec:
-  namespace: security-cert-manager
+  targetCluster:
+    clusterName: "my-production-cluster"
+  namespace:
+    value: "security-cert-manager"
   kubernetesCertManagerVersion: "v1.19.1"
   helmChartVersion: "v1.19.1"
   

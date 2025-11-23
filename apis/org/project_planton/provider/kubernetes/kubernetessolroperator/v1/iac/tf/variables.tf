@@ -13,47 +13,42 @@ variable "metadata" {
 
 
 variable "spec" {
-  description = "spec"
+  description = "Specification for Kubernetes Solr Operator deployment"
   type = object({
+    # Target Kubernetes cluster
+    target_cluster_name = string
 
-    # The container specifications for the GitLab deployment.
+    # Kubernetes namespace where operator will be deployed
+    namespace = optional(string, "solr-operator-system")
+
+    # The container specifications for the Apache Solr Operator deployment.
     container = object({
 
-      # The CPU and memory resources allocated to the GitLab container.
-      resources = object({
+      # The CPU and memory resources allocated to the operator container.
+      resources = optional(object({
 
         # The resource limits for the container.
         # Specify the maximum amount of CPU and memory that the container can use.
-        limits = object({
+        limits = optional(object({
 
-          # The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
-          cpu = string
+          # The amount of CPU allocated (e.g., "1000m" for 1 CPU core).
+          cpu = optional(string, "1000m")
 
-          # The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
-          memory = string
-        })
+          # The amount of memory allocated (e.g., "1Gi" for 1 gibibyte).
+          memory = optional(string, "1Gi")
+        }))
 
         # The resource requests for the container.
         # Specify the minimum amount of CPU and memory that the container is guaranteed.
-        requests = object({
+        requests = optional(object({
 
-          # The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
-          cpu = string
+          # The amount of CPU allocated (e.g., "50m" for 0.05 CPU cores).
+          cpu = optional(string, "50m")
 
-          # The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
-          memory = string
-        })
-      })
-    })
-
-    # The ingress configuration for the GitLab deployment.
-    ingress = object({
-
-      # A flag to enable or disable ingress.
-      is_enabled = bool
-
-      # The dns domain.
-      dns_domain = string
+          # The amount of memory allocated (e.g., "100Mi" for 100 mebibytes).
+          memory = optional(string, "100Mi")
+        }))
+      }))
     })
   })
 }

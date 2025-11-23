@@ -22,6 +22,12 @@ module "daily_backup_cronjob" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     schedule = "0 0 * * *"
     
     image = {
@@ -66,6 +72,12 @@ module "weekly_report_cronjob" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     schedule = "0 9 * * 1"  # Every Monday at 9:00 AM
     
     image = {
@@ -117,6 +129,12 @@ module "db_maintenance_cronjob" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     schedule = "0 3 * * *"  # Daily at 3:00 AM
     
     image = {
@@ -176,6 +194,12 @@ module "heavy_lift_cronjob" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     schedule = "*/30 * * * *"  # Every 30 minutes
     
     # Prevent concurrent executions
@@ -232,6 +256,12 @@ module "end_of_month_report" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     # Run at 23:30 on the last day of each month
     schedule = "30 23 28-31 * *"
     
@@ -300,6 +330,12 @@ module "grpc_invoker_cronjob" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     schedule = "0 0 * * *"  # Daily at midnight
     
     concurrency_policy = "Forbid"
@@ -368,6 +404,12 @@ module "private_registry_cronjob" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace = "my-namespace"
+    
     schedule = "0 */6 * * *"  # Every 6 hours
     
     image = {

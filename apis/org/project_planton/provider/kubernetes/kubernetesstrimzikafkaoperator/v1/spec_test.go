@@ -9,6 +9,7 @@ import (
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestKubernetesStrimziKafkaOperator(t *testing.T) {
@@ -30,6 +31,11 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 				TargetCluster: &kubernetes.KubernetesClusterSelector{
 					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
 					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "strimzi-kafka-operator",
+					},
 				},
 				Container: &KubernetesStrimziKafkaOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{
@@ -64,6 +70,11 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 						Name: "minimal-kafka-operator",
 					},
 					Spec: &KubernetesStrimziKafkaOperatorSpec{
+						Namespace: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "strimzi-kafka-operator",
+							},
+						},
 						Container: &KubernetesStrimziKafkaOperatorSpecContainer{},
 					},
 				}
@@ -81,6 +92,11 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 						Name: "custom-resources-operator",
 					},
 					Spec: &KubernetesStrimziKafkaOperatorSpec{
+						Namespace: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "strimzi-kafka-operator",
+							},
+						},
 						Container: &KubernetesStrimziKafkaOperatorSpecContainer{
 							Resources: &kubernetes.ContainerResources{
 								Limits: &kubernetes.CpuMemory{
@@ -112,6 +128,11 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 						TargetCluster: &kubernetes.KubernetesClusterSelector{
 							ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
 							ClusterName: "selector-cluster",
+						},
+						Namespace: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "strimzi-kafka-operator",
+							},
 						},
 						Container: &KubernetesStrimziKafkaOperatorSpecContainer{},
 					},

@@ -44,9 +44,12 @@ func newLocals(stackInput *kubernetesprometheusv1.KubernetesPrometheusStackInput
 		labels["environment"] = metadata.Env
 	}
 
+	// Get namespace from spec
+	namespace := stackInput.Target.Spec.Namespace.GetValue()
+
 	return &locals{
 		resourceId:  resourceId,
-		namespace:   resourceId,
+		namespace:   namespace,
 		serviceName: metadata.Name + "-prometheus",
 		labels:      labels,
 	}

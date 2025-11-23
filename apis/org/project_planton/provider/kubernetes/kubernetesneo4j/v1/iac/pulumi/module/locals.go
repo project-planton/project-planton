@@ -9,7 +9,6 @@ import (
 
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
 )
 
 // Locals struct mirrors the "locals" concept from Terraform,
@@ -69,14 +68,8 @@ func initializeLocals(
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Determine the namespace, defaulting to target.Metadata.Name,
-	// but allowing override if there's a label for it.
-	locals.Namespace = target.Metadata.Name
-	if target.Metadata.Labels != nil {
-		if overrideNS, exists := target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]; exists {
-			locals.Namespace = overrideNS
-		}
-	}
+	// Get namespace from spec
+	locals.Namespace = target.Spec.Namespace.GetValue()
 
 	// Export the namespace in which Neo4j will reside.
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))

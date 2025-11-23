@@ -25,7 +25,9 @@ metadata:
     environment: development
 spec:
   target_cluster:
-    kubernetes_credential_id: dev-cluster-credential
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:
@@ -85,7 +87,9 @@ metadata:
     cluster: primary
 spec:
   target_cluster:
-    kubernetes_credential_id: prod-cluster-credential
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:
@@ -151,7 +155,9 @@ metadata:
     availability: high
 spec:
   target_cluster:
-    kubernetes_credential_id: prod-ha-cluster-credential
+    cluster_name: prod-ha-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:
@@ -224,7 +230,9 @@ metadata:
     tier: lightweight
 spec:
   target_cluster:
-    kubernetes_credential_id: edge-cluster-credential
+    cluster_name: edge-k3s-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:
@@ -294,7 +302,9 @@ metadata:
     region: us-east-1
 spec:
   target_cluster:
-    kubernetes_credential_id: enterprise-cluster-credential
+    cluster_name: enterprise-gke-cluster
+  namespace:
+    value: istio-system
   container:
     resources:
       requests:

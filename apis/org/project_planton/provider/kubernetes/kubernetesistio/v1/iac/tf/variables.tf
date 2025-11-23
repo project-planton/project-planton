@@ -16,10 +16,19 @@ variable "spec" {
   description = "spec"
   type = object({
 
-    # The container specifications for the GitLab deployment.
+    # The Kubernetes cluster to install this component on.
+    target_cluster = object({
+      # Name of the target Kubernetes cluster
+      cluster_name = string
+    })
+
+    # Kubernetes namespace to install the component.
+    namespace = string
+
+    # The container specifications for the Istio control plane deployment.
     container = object({
 
-      # The CPU and memory resources allocated to the GitLab container.
+      # The CPU and memory resources allocated to the Istio control plane container.
       resources = object({
 
         # The resource limits for the container.
@@ -46,14 +55,5 @@ variable "spec" {
       })
     })
 
-    # The ingress configuration for the GitLab deployment.
-    ingress = object({
-
-      # A flag to enable or disable ingress.
-      is_enabled = bool
-
-      # The dns domain.
-      dns_domain = string
-    })
   })
 }

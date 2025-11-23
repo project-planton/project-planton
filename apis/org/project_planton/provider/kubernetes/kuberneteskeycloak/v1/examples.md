@@ -6,6 +6,10 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-instance-basic
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: keycloak
   container:
     resources:
       requests:
@@ -26,6 +30,10 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-instance-ingress
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: keycloak
   container:
     resources:
       requests:
@@ -36,11 +44,7 @@ spec:
         memory: 2Gi
   ingress:
     enabled: true
-    ingressClassName: "nginx"
-    hosts:
-      - host: keycloak.mydomain.com
-        paths:
-          - /
+    hostname: keycloak.mydomain.com
 ```
 
 # Example 3: Keycloak Kubernetes with Minimal Configuration
@@ -51,6 +55,10 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-minimal
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: keycloak
   container:
     resources:
       requests:
@@ -69,6 +77,10 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-high-resources
 spec:
+  target_cluster:
+    cluster_name: prod-cluster
+  namespace:
+    value: keycloak-prod
   container:
     resources:
       requests:
@@ -79,11 +91,7 @@ spec:
         memory: 8Gi
   ingress:
     enabled: true
-    ingressClassName: "nginx"
-    hosts:
-      - host: keycloak-large.mydomain.com
-        paths:
-          - /
+    hostname: keycloak-large.mydomain.com
 ```
 
 # Example 5: Keycloak Kubernetes with Port Forwarding for Local Access
@@ -94,6 +102,10 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-port-forward
 spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: keycloak-dev
   container:
     resources:
       requests:

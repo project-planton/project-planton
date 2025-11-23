@@ -16,6 +16,15 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # The Kubernetes cluster to install this microservice on.
+    target_cluster = object({
+      # Name of the target Kubernetes cluster
+      cluster_name = string
+    })
+
+    # Kubernetes namespace to install the microservice.
+    namespace = string
+
     # The version of the microservice being deployed.
     # This is usually either "main" (the default git branch name) or "review-<id>" where <id> is the merge request number.
     # It must be between 1 and 20 characters and can only contain lowercase letters, numbers, and hyphens.

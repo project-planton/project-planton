@@ -16,6 +16,15 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # The Kubernetes cluster to install this component on.
+    target_cluster = optional(object({
+      cluster_name = string
+      cluster_kind = optional(number)
+    }))
+
+    # Kubernetes namespace to install Grafana.
+    namespace = string
+
     # The container specifications for the Grafana deployment.
     container = object({
 

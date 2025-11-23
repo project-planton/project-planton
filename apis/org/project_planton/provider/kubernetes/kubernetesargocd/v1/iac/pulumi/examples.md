@@ -1,16 +1,19 @@
-Here are a few examples for the `ArgocdKubernetes` API resource, modeled in a similar way to the `MicroserviceKubernetes` examples you provided. These examples demonstrate how to configure and deploy ArgoCD on a Kubernetes cluster using Planton Cloud’s unified API structure.
+Here are a few examples for the `KubernetesArgocd` API resource, demonstrating how to configure and deploy Argo CD on a Kubernetes cluster using Planton Cloud's unified API structure.
 
 ---
 
-# Example 1: Basic ArgoCD Deployment
+# Example 1: Basic Argo CD Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
   name: argocd-instance
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: argocd
   container:
     resources:
       requests:
@@ -23,15 +26,18 @@ spec:
 
 ---
 
-# Example 2: ArgoCD with Ingress Enabled
+# Example 2: Argo CD with Ingress Enabled
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
   name: argocd-prod
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: argocd-prod
   container:
     resources:
       requests:
@@ -47,15 +53,18 @@ spec:
 
 ---
 
-# Example 3: ArgoCD Deployment with Custom Resources
+# Example 3: Argo CD Deployment with Custom Resources
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
   name: argocd-custom
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: argocd-custom
   container:
     resources:
       requests:
@@ -68,14 +77,31 @@ spec:
 
 ---
 
-# Example 4: Minimal ArgoCD Deployment (Empty Spec)
+# Example 4: Production Argo CD with High Availability
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ArgocdKubernetes
+kind: KubernetesArgocd
 metadata:
-  name: minimal-argocd
+  name: argocd-ha
+  labels:
+    env: production
+    team: platform
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: argocd-system
+  container:
+    resources:
+      requests:
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        cpu: 4
+        memory: 8Gi
+  ingress:
+    enabled: true
+    hostname: argocd.prod.example.com
 ```
 

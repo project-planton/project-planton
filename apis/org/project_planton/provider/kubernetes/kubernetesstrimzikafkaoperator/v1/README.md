@@ -27,6 +27,10 @@ kind: KubernetesStrimziKafkaOperator
 metadata:
   name: kafka-operator
 spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "strimzi-kafka-operator"
   container:
     resources:
       requests:
