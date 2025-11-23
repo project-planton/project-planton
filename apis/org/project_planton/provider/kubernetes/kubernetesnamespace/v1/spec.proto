@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kubernetesnamespace.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/kubernetes/target_cluster.proto";
 
 /**
  * **KubernetesNamespaceSpec** defines the configuration for creating and managing a Kubernetes namespace.
@@ -15,6 +16,9 @@ import "buf/validate/validate.proto";
  * flexibility for advanced use cases.
  */
 message KubernetesNamespaceSpec {
+  // The Kubernetes cluster in which the namespace should be created
+  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+
   /**
    * **KubernetesNamespacePodSecurityStandard** defines Pod Security Standards enforcement.
    * These are Kubernetes-native policies that enforce security best practices.
@@ -41,7 +45,7 @@ message KubernetesNamespaceSpec {
    * This will be used as the Kubernetes namespace metadata.name.
    * Must be a valid DNS label (lowercase alphanumeric and hyphens).
    */
-  string name = 1 [
+  string name = 2 [
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 63,
     (buf.validate.field).cel = {
@@ -56,7 +60,7 @@ message KubernetesNamespaceSpec {
    * These are merged with standard labels (environment, team, cost-center) for
    * cost allocation, monitoring, and governance.
    */
-  map<string, string> labels = 2;
+  map<string, string> labels = 3;
 
   /**
    * Additional annotations to be applied to the namespace.
@@ -65,32 +69,32 @@ message KubernetesNamespaceSpec {
    * - janitor/ttl: "24h" for ephemeral namespace cleanup
    * - scheduler.alpha.kubernetes.io/node-selector: for node affinity
    */
-  map<string, string> annotations = 3;
+  map<string, string> annotations = 4;
 
   /**
    * Resource allocation profile for the namespace.
    * This abstracts ResourceQuota and LimitRange configuration into T-shirt sizes
    * or allows custom specifications for advanced users.
    */
-  KubernetesNamespaceResourceProfile resource_profile = 4;
+  KubernetesNamespaceResourceProfile resource_profile = 5;
 
   /**
    * Network isolation and security configuration.
    * Controls ingress/egress network policies to enforce zero-trust networking.
    */
-  KubernetesNamespaceNetworkConfig network_config = 5;
+  KubernetesNamespaceNetworkConfig network_config = 6;
 
   /**
    * Service mesh integration configuration.
    * Enables automatic sidecar injection and mesh-specific features.
    */
-  KubernetesNamespaceServiceMeshConfig service_mesh_config = 6;
+  KubernetesNamespaceServiceMeshConfig service_mesh_config = 7;
 
   /**
    * Pod security standards enforcement level.
    * Defines the security posture for pods running in the namespace.
    */
-  KubernetesNamespacePodSecurityStandard pod_security_standard = 7 [(buf.validate.field).enum.defined_only = true];
+  KubernetesNamespacePodSecurityStandard pod_security_standard = 8 [(buf.validate.field).enum.defined_only = true];
 
   // Message-level validations
   option (buf.validate.message).cel = {

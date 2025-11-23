@@ -8,6 +8,7 @@ package kubernetesnamespacev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -228,40 +229,42 @@ func (KubernetesNamespaceServiceMeshConfig_KubernetesNamespaceServiceMeshType) E
 // flexibility for advanced use cases.
 type KubernetesNamespaceSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster in which the namespace should be created
+	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// *
 	// The unique name of the namespace.
 	// This will be used as the Kubernetes namespace metadata.name.
 	// Must be a valid DNS label (lowercase alphanumeric and hyphens).
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// *
 	// Additional labels to be applied to the namespace.
 	// These are merged with standard labels (environment, team, cost-center) for
 	// cost allocation, monitoring, and governance.
-	Labels map[string]string `protobuf:"bytes,2,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,3,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
 	// Additional annotations to be applied to the namespace.
 	// Common use cases:
 	// - linkerd.io/inject: "enabled" for service mesh injection
 	// - janitor/ttl: "24h" for ephemeral namespace cleanup
 	// - scheduler.alpha.kubernetes.io/node-selector: for node affinity
-	Annotations map[string]string `protobuf:"bytes,3,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Annotations map[string]string `protobuf:"bytes,4,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
 	// Resource allocation profile for the namespace.
 	// This abstracts ResourceQuota and LimitRange configuration into T-shirt sizes
 	// or allows custom specifications for advanced users.
-	ResourceProfile *KubernetesNamespaceResourceProfile `protobuf:"bytes,4,opt,name=resource_profile,json=resourceProfile,proto3" json:"resource_profile,omitempty"`
+	ResourceProfile *KubernetesNamespaceResourceProfile `protobuf:"bytes,5,opt,name=resource_profile,json=resourceProfile,proto3" json:"resource_profile,omitempty"`
 	// *
 	// Network isolation and security configuration.
 	// Controls ingress/egress network policies to enforce zero-trust networking.
-	NetworkConfig *KubernetesNamespaceNetworkConfig `protobuf:"bytes,5,opt,name=network_config,json=networkConfig,proto3" json:"network_config,omitempty"`
+	NetworkConfig *KubernetesNamespaceNetworkConfig `protobuf:"bytes,6,opt,name=network_config,json=networkConfig,proto3" json:"network_config,omitempty"`
 	// *
 	// Service mesh integration configuration.
 	// Enables automatic sidecar injection and mesh-specific features.
-	ServiceMeshConfig *KubernetesNamespaceServiceMeshConfig `protobuf:"bytes,6,opt,name=service_mesh_config,json=serviceMeshConfig,proto3" json:"service_mesh_config,omitempty"`
+	ServiceMeshConfig *KubernetesNamespaceServiceMeshConfig `protobuf:"bytes,7,opt,name=service_mesh_config,json=serviceMeshConfig,proto3" json:"service_mesh_config,omitempty"`
 	// *
 	// Pod security standards enforcement level.
 	// Defines the security posture for pods running in the namespace.
-	PodSecurityStandard KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard `protobuf:"varint,7,opt,name=pod_security_standard,json=podSecurityStandard,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard" json:"pod_security_standard,omitempty"`
+	PodSecurityStandard KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard `protobuf:"varint,8,opt,name=pod_security_standard,json=podSecurityStandard,proto3,enum=org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec_KubernetesNamespacePodSecurityStandard" json:"pod_security_standard,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -294,6 +297,13 @@ func (x *KubernetesNamespaceSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesNamespaceSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesNamespaceSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesNamespaceSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
 }
 
 func (x *KubernetesNamespaceSpec) GetName() string {
@@ -966,16 +976,17 @@ var File_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pro
 
 const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iorg/project_planton/provider/kubernetes/kubernetesnamespace/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesnamespace.v1\x1a\x1bbuf/validate/validate.proto\"\x88\f\n" +
-	"\x17KubernetesNamespaceSpec\x12\xcb\x01\n" +
-	"\x04name\x18\x01 \x01(\tB\xb6\x01\xbaH\xb2\x01\xba\x01\xa8\x01\n" +
+	"Iorg/project_planton/provider/kubernetes/kubernetesnamespace/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xf4\f\n" +
+	"\x17KubernetesNamespaceSpec\x12j\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\xcb\x01\n" +
+	"\x04name\x18\x02 \x01(\tB\xb6\x01\xbaH\xb2\x01\xba\x01\xa8\x01\n" +
 	"\x0ename.dns_label\x12`Name must be a valid DNS label (lowercase alphanumeric and hyphens, no leading/trailing hyphens)\x1a4this.matches('^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$')r\x04\x10\x01\x18?R\x04name\x12{\n" +
-	"\x06labels\x18\x02 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntryR\x06labels\x12\x8a\x01\n" +
-	"\vannotations\x18\x03 \x03(\v2h.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntryR\vannotations\x12\x8d\x01\n" +
-	"\x10resource_profile\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfileR\x0fresourceProfile\x12\x87\x01\n" +
-	"\x0enetwork_config\x18\x05 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfigR\rnetworkConfig\x12\x94\x01\n" +
-	"\x13service_mesh_config\x18\x06 \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfigR\x11serviceMeshConfig\x12\xbc\x01\n" +
-	"\x15pod_security_standard\x18\a \x01(\x0e2~.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandardB\b\xbaH\x05\x82\x01\x02\x10\x01R\x13podSecurityStandard\x1a9\n" +
+	"\x06labels\x18\x03 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntryR\x06labels\x12\x8a\x01\n" +
+	"\vannotations\x18\x04 \x03(\v2h.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntryR\vannotations\x12\x8d\x01\n" +
+	"\x10resource_profile\x18\x05 \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfileR\x0fresourceProfile\x12\x87\x01\n" +
+	"\x0enetwork_config\x18\x06 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfigR\rnetworkConfig\x12\x94\x01\n" +
+	"\x13service_mesh_config\x18\a \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfigR\x11serviceMeshConfig\x12\xbc\x01\n" +
+	"\x15pod_security_standard\x18\b \x01(\x0e2~.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandardB\b\xbaH\x05\x82\x01\x02\x10\x01R\x13podSecurityStandard\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
@@ -1074,26 +1085,28 @@ var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_pro
 	(*KubernetesNamespaceServiceMeshConfig)(nil),                                 // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
 	nil, // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntry
 	nil, // 13: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntry
+	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 14: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 }
 var file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_depIdxs = []int32{
-	12, // 0: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.labels:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntry
-	13, // 1: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.annotations:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntry
-	4,  // 2: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.resource_profile:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile
-	10, // 3: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.network_config:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfig
-	11, // 4: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.service_mesh_config:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
-	0,  // 5: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.pod_security_standard:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandard
-	1,  // 6: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.preset:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.KubernetesNamespaceBuiltInProfile
-	5,  // 7: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.custom:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas
-	6,  // 8: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.cpu:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCpuQuota
-	7,  // 9: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.memory:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceMemoryQuota
-	8,  // 10: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.object_counts:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceObjectCountQuotas
-	9,  // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.default_limits:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceDefaultLimits
-	2,  // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.mesh_type:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.KubernetesNamespaceServiceMeshType
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	14, // 0: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	12, // 1: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.labels:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.LabelsEntry
+	13, // 2: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.annotations:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.AnnotationsEntry
+	4,  // 3: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.resource_profile:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile
+	10, // 4: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.network_config:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceNetworkConfig
+	11, // 5: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.service_mesh_config:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig
+	0,  // 6: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.pod_security_standard:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpec.KubernetesNamespacePodSecurityStandard
+	1,  // 7: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.preset:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.KubernetesNamespaceBuiltInProfile
+	5,  // 8: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceResourceProfile.custom:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas
+	6,  // 9: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.cpu:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCpuQuota
+	7,  // 10: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.memory:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceMemoryQuota
+	8,  // 11: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.object_counts:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceObjectCountQuotas
+	9,  // 12: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceCustomQuotas.default_limits:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceDefaultLimits
+	2,  // 13: org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.mesh_type:type_name -> org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceServiceMeshConfig.KubernetesNamespaceServiceMeshType
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_init() }
