@@ -3,16 +3,16 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1;
 
 import "buf/validate/validate.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
-import "org/project_planton/shared/kubernetes/options.proto";
-import "org/project_planton/shared/kubernetes/target_cluster.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/options.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
 
 // **KubernetesPerconaMongoOperatorSpec** defines the configuration for deploying the Percona Operator for MongoDB
 // on a Kubernetes cluster. This message specifies the parameters needed to create and manage the operator
 // deployment within a Kubernetes environment. It includes container specifications to control resource allocation.
 message KubernetesPerconaMongoOperatorSpec {
   // The Kubernetes cluster to install this operator on.
-  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
   // Kubernetes namespace to install the operator.
   // If not provided, defaults to "percona-operator"
@@ -26,7 +26,7 @@ message KubernetesPerconaMongoOperatorSpec {
 // It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
 message KubernetesPerconaMongoOperatorSpecContainer {
   // CPU and memory resources for the operator pod
-  org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+  org.project_planton.provider.kubernetes.ContainerResources resources = 1 [(org.project_planton.provider.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"
       memory: "1Gi"

@@ -7,7 +7,7 @@
 package kubernetessignozv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -205,7 +205,7 @@ var File_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outpu
 
 const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/provider/kubernetes/kubernetessignoz/v1/stack_outputs.proto\x12;org.project_planton.provider.kubernetes.kubernetessignoz.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xcc\x06\n" +
+	"Oorg/project_planton/provider/kubernetes/kubernetessignoz/v1/stack_outputs.proto\x12;org.project_planton.provider.kubernetes.kubernetessignoz.v1\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xce\x06\n" +
 	"\x1cKubernetesSignozStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12%\n" +
 	"\x0esignoz_service\x18\x02 \x01(\tR\rsignozService\x124\n" +
@@ -220,8 +220,8 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_out
 	" \x01(\tR!otelCollectorExternalGrpcHostname\x12P\n" +
 	"%otel_collector_external_http_hostname\x18\v \x01(\tR!otelCollectorExternalHttpHostname\x12/\n" +
 	"\x13clickhouse_endpoint\x18\f \x01(\tR\x12clickhouseEndpoint\x12/\n" +
-	"\x13clickhouse_username\x18\r \x01(\tR\x12clickhouseUsername\x12x\n" +
-	"\x1aclickhouse_password_secret\x18\x0e \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x18clickhousePasswordSecretB\xe3\x03\n" +
+	"\x13clickhouse_username\x18\r \x01(\tR\x12clickhouseUsername\x12z\n" +
+	"\x1aclickhouse_password_secret\x18\x0e \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x18clickhousePasswordSecretB\xe3\x03\n" +
 	"?com.org.project_planton.provider.kubernetes.kubernetessignoz.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetessignoz.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetessignoz::V1b\x06proto3"
 
 var (
@@ -239,10 +239,10 @@ func file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outp
 var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outputs_proto_goTypes = []any{
 	(*KubernetesSignozStackOutputs)(nil),   // 0: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozStackOutputs
-	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.shared.kubernetes.KubernetesSecretKey
+	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.provider.kubernetes.KubernetesSecretKey
 }
 var file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozStackOutputs.clickhouse_password_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozStackOutputs.clickhouse_password_secret:type_name -> org.project_planton.provider.kubernetes.KubernetesSecretKey
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

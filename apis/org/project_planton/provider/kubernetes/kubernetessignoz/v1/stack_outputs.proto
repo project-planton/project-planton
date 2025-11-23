@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.kubernetessignoz.v1;
 
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 // KubernetesSignozStackOutputs captures observable outputs from a SigNoz deployment on Kubernetes.
 message KubernetesSignozStackOutputs {
@@ -62,5 +62,5 @@ message KubernetesSignozStackOutputs {
   string clickhouse_username = 13;
 
   // kubernetes secret key for the ClickHouse password.
-  org.project_planton.shared.kubernetes.KubernetesSecretKey clickhouse_password_secret = 14;
+  org.project_planton.provider.kubernetes.KubernetesSecretKey clickhouse_password_secret = 14;
 }

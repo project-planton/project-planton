@@ -3,9 +3,9 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kubernetesdeployment.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/probe.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
-import "org/project_planton/shared/kubernetes/options.proto";
 
 /**
  * **KubernetesDeploymentSpec** defines the configuration for deploying a microservice on a Kubernetes cluster.
@@ -73,7 +73,7 @@ message KubernetesDeploymentContainer {
   KubernetesDeploymentContainerApp app = 1 [(buf.validate.field).required = true];
 
   //A list of sidecar containers to be deployed alongside the main application container.
-  repeated org.project_planton.shared.kubernetes.Container sidecars = 2;
+  repeated org.project_planton.provider.kubernetes.Container sidecars = 2;
 }
 
 /**
@@ -88,7 +88,7 @@ message KubernetesDeploymentContainerApp {
    * The `pull_secret_name` is the name of the image pull secret to be configured in the Kubernetes Deployment resource.
    * It is determined by looking up the `container_image_artifact_store_id` from the environment where the microservice is deployed.
    */
-  org.project_planton.shared.kubernetes.ContainerImage image = 1 [
+  org.project_planton.provider.kubernetes.ContainerImage image = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "spec.container.app.image.repo"
@@ -103,7 +103,7 @@ message KubernetesDeploymentContainerApp {
   ];
 
   // The CPU and memory resources allocated to the application container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2 [(org.project_planton.provider.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"
       memory: "1Gi"

@@ -3,14 +3,14 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kubernetescertmanager.v1;
 
 import "buf/validate/validate.proto";
-import "org/project_planton/shared/kubernetes/target_cluster.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/options/options.proto";
 
 // KubernetesCertManagerSpec defines configuration for kubernetes-cert-manager on any cluster.
 // The addon automatically creates a ClusterIssuer with multiple DNS solvers based on the provided DNS provider configurations.
 message KubernetesCertManagerSpec {
   // The Kubernetes cluster to install this addon on.
-  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
   // Kubernetes namespace where kubernetes-cert-manager will be deployed.
   optional string namespace = 2 [(org.project_planton.shared.options.default) = "kubernetes-cert-manager"];

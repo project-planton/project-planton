@@ -6,7 +6,8 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 func TestKubernetesIngressNginxSpec(t *testing.T) {
@@ -19,10 +20,9 @@ var _ = ginkgo.Describe("KubernetesIngressNginxSpec validations", func() {
 
 	ginkgo.BeforeEach(func() {
 		spec = &KubernetesIngressNginxSpec{
-			TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-				CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-					KubernetesCredentialId: "test-cluster-credential",
-				},
+			TargetCluster: &kubernetes.KubernetesClusterSelector{
+				ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+				ClusterName: "test-cluster",
 			},
 			ChartVersion: "4.11.1",
 			Internal:     false,

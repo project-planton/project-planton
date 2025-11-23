@@ -6,7 +6,8 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 func TestKubernetesAltinityOperatorSpec(t *testing.T) {
@@ -19,10 +20,9 @@ var _ = ginkgo.Describe("KubernetesAltinityOperatorSpec validations", func() {
 
 	ginkgo.BeforeEach(func() {
 		spec = &KubernetesAltinityOperatorSpec{
-			TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-				CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-					KubernetesCredentialId: "my-k8s-cluster",
-				},
+			TargetCluster: &kubernetes.KubernetesClusterSelector{
+				ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+				ClusterName: "my-k8s-cluster",
 			},
 			Namespace: "kubernetes-altinity-operator",
 			Container: &KubernetesAltinityOperatorSpecContainer{

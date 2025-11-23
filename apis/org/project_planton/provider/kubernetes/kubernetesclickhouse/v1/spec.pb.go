@@ -8,7 +8,7 @@ package kubernetesclickhousev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -907,7 +907,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesclickhouse/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesclickhouse.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xc0\a\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesclickhouse/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesclickhouse.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xc0\a\n" +
 	"\x18KubernetesClickHouseSpec\x12I\n" +
 	"\fcluster_name\x18\x01 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vclusterName\x12\xaa\x01\n" +
 	"\tcontainer\x18\x02 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainerB,ʵ\xfd\x01'\b\x01\x12\x1b\n" +
@@ -919,10 +919,10 @@ const file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_
 	"\aversion\x18\x05 \x01(\tR\aversion\x12\x8b\x01\n" +
 	"\fcoordination\x18\x06 \x01(\v2g.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfigR\fcoordination\x12\x86\x01\n" +
 	"\tzookeeper\x18\a \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseZookeeperConfigB\x02\x18\x01R\tzookeeper\x12\x84\x01\n" +
-	"\alogging\x18\b \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfigB\x06\xbaH\x03\xc8\x01\x01R\alogging\"\xc5\x04\n" +
+	"\alogging\x18\b \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfigB\x06\xbaH\x03\xc8\x01\x01R\alogging\"\xc7\x04\n" +
 	"\x1dKubernetesClickHouseContainer\x12#\n" +
-	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12/\n" +
 	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
 	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xc9\x02\n" +
@@ -942,10 +942,10 @@ const file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_
 	"\n" +
 	"\x06keeper\x10\x01\x12\x13\n" +
 	"\x0fexternal_keeper\x10\x02\x12\x16\n" +
-	"\x12external_zookeeper\x10\x03\"\xf9\x01\n" +
+	"\x12external_zookeeper\x10\x03\"\xfb\x01\n" +
 	" KubernetesClickHouseKeeperConfig\x12'\n" +
-	"\breplicas\x18\x01 \x01(\x05B\v\xbaH\b\x1a\x060\x010\x030\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12S\n" +
+	"\breplicas\x18\x01 \x01(\x05B\v\xbaH\b\x1a\x060\x010\x030\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12S\n" +
 	"\tdisk_size\x18\x03 \x01(\tB6\xbaH3r12/^\\d+(\\.\\d+)?\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$R\bdiskSize\"P\n" +
 	".KubernetesClickHouseExternalCoordinationConfig\x12\x1e\n" +
 	"\x05nodes\x18\x01 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x05nodes\"\xda\x01\n" +
@@ -992,7 +992,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_pr
 	(*KubernetesClickHouseLoggingConfig)(nil),                    // 8: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfig
 	(*KubernetesClickHouseIngress)(nil),                          // 9: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseIngress
 	(*KubernetesClickHouseZookeeperConfig)(nil),                  // 10: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseZookeeperConfig
-	(*kubernetes.ContainerResources)(nil),                        // 11: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil),                        // 11: org.project_planton.provider.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),                            // 12: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_proto_depIdxs = []int32{
@@ -1002,11 +1002,11 @@ var file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_pr
 	5,  // 3: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseSpec.coordination:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfig
 	10, // 4: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseSpec.zookeeper:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseZookeeperConfig
 	8,  // 5: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseSpec.logging:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfig
-	11, // 6: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	11, // 6: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	0,  // 7: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfig.type:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfig.CoordinationType
 	6,  // 8: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfig.keeper_config:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseKeeperConfig
 	7,  // 9: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfig.external_config:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseExternalCoordinationConfig
-	11, // 10: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseKeeperConfig.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	11, // 10: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseKeeperConfig.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	1,  // 11: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfig.level:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfig.LogLevel
 	12, // 12: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.default_container:extendee -> google.protobuf.FieldOptions
 	3,  // 13: org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainer

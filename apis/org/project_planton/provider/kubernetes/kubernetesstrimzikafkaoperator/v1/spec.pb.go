@@ -8,7 +8,7 @@ package kubernetesstrimzikafkaoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -29,7 +29,7 @@ const (
 type KubernetesStrimziKafkaOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// The container specifications for the Strimzi Kafka Operator deployment.
 	Container     *KubernetesStrimziKafkaOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -66,7 +66,7 @@ func (*KubernetesStrimziKafkaOperatorSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KubernetesStrimziKafkaOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *KubernetesStrimziKafkaOperatorSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
 	}
@@ -131,12 +131,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_
 
 const file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xaf\x02\n" +
-	"\"KubernetesStrimziKafkaOperatorSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x9c\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2v.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa9\x01\n" +
-	"+KubernetesStrimziKafkaOperatorSpecContainer\x12z\n" +
-	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"Torg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\xae\x02\n" +
+	"\"KubernetesStrimziKafkaOperatorSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\x9c\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2v.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xab\x01\n" +
+	"+KubernetesStrimziKafkaOperatorSpecContainer\x12|\n" +
+	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresourcesB\xbe\x04\n" +
@@ -158,13 +158,13 @@ var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_spec_proto_goTypes = []any{
 	(*KubernetesStrimziKafkaOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec
 	(*KubernetesStrimziKafkaOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainer
-	(*kubernetes.KubernetesAddonTargetCluster)(nil),     // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	(*kubernetes.ContainerResources)(nil),               // 3: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.KubernetesClusterSelector)(nil),        // 2: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*kubernetes.ContainerResources)(nil),               // 3: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	2, // 0: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	1, // 1: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

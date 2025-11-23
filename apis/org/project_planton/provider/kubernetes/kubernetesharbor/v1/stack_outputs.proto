@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.kubernetesharbor.v1;
 
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 // KubernetesHarborStackOutputs captures observable outputs from a Harbor deployment on Kubernetes.
 message KubernetesHarborStackOutputs {
@@ -60,7 +60,7 @@ message KubernetesHarborStackOutputs {
 
   // kubernetes secret containing the Harbor admin password.
   // the password can be retrieved using: kubectl get secret <secret-name> -n <namespace> -o jsonpath='{.data.password}' | base64 -d
-  org.project_planton.shared.kubernetes.KubernetesSecretKey admin_password_secret = 13;
+  org.project_planton.provider.kubernetes.KubernetesSecretKey admin_password_secret = 13;
 
   // PostgreSQL database endpoint (internal cluster endpoint).
   // ex: harbor-postgresql.namespace.svc.cluster.local:5432
@@ -73,7 +73,7 @@ message KubernetesHarborStackOutputs {
 
   // kubernetes secret key for the PostgreSQL password.
   // This is only populated when using self-managed PostgreSQL.
-  org.project_planton.shared.kubernetes.KubernetesSecretKey database_password_secret = 16;
+  org.project_planton.provider.kubernetes.KubernetesSecretKey database_password_secret = 16;
 
   // Redis cache endpoint (internal cluster endpoint).
   // ex: harbor-redis.namespace.svc.cluster.local:6379
@@ -82,5 +82,5 @@ message KubernetesHarborStackOutputs {
 
   // kubernetes secret key for the Redis password.
   // This is only populated when using self-managed Redis.
-  org.project_planton.shared.kubernetes.KubernetesSecretKey redis_password_secret = 18;
+  org.project_planton.provider.kubernetes.KubernetesSecretKey redis_password_secret = 18;
 }

@@ -14,7 +14,7 @@ import (
 	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
@@ -65,7 +65,7 @@ import (
 	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
@@ -114,7 +114,7 @@ import (
 	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
@@ -165,7 +165,7 @@ import (
 	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
@@ -227,7 +227,7 @@ import (
 	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 

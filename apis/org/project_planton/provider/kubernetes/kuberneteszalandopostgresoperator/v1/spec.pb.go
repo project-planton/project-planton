@@ -8,7 +8,7 @@ package kuberneteszalandopostgresoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,6 +22,119 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+// **KubernetesZalandoPostgresOperatorSpec** defines the configuration for deploying the Zalando Postgres Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
+// It includes container specifications and backup configuration settings to control resource allocation and data protection.
+type KubernetesZalandoPostgresOperatorSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this addon on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// The container specifications for the operator deployment.
+	Container *KubernetesZalandoPostgresOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	// Optional: Backup configuration for all databases managed by this operator
+	BackupConfig  *KubernetesZalandoPostgresOperatorBackupConfig `protobuf:"bytes,3,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) Reset() {
+	*x = KubernetesZalandoPostgresOperatorSpec{}
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesZalandoPostgresOperatorSpec) ProtoMessage() {}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesZalandoPostgresOperatorSpec.ProtoReflect.Descriptor instead.
+func (*KubernetesZalandoPostgresOperatorSpec) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) GetContainer() *KubernetesZalandoPostgresOperatorSpecContainer {
+	if x != nil {
+		return x.Container
+	}
+	return nil
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) GetBackupConfig() *KubernetesZalandoPostgresOperatorBackupConfig {
+	if x != nil {
+		return x.BackupConfig
+	}
+	return nil
+}
+
+// **KubernetesZalandoPostgresOperatorSpecContainer** specifies the container configuration for the Zalando Postgres Operator.
+// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
+type KubernetesZalandoPostgresOperatorSpecContainer struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The CPU and memory resources allocated to the operator container.
+	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpecContainer) Reset() {
+	*x = KubernetesZalandoPostgresOperatorSpecContainer{}
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpecContainer) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesZalandoPostgresOperatorSpecContainer) ProtoMessage() {}
+
+func (x *KubernetesZalandoPostgresOperatorSpecContainer) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesZalandoPostgresOperatorSpecContainer.ProtoReflect.Descriptor instead.
+func (*KubernetesZalandoPostgresOperatorSpecContainer) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
+	if x != nil {
+		return x.Resources
+	}
+	return nil
+}
 
 // Cloudflare R2-specific storage configuration for PostgreSQL backups.
 // This is separate to allow future support for other S3-compatible backends.
@@ -44,7 +157,7 @@ type KubernetesZalandoPostgresOperatorBackupR2Config struct {
 
 func (x *KubernetesZalandoPostgresOperatorBackupR2Config) Reset() {
 	*x = KubernetesZalandoPostgresOperatorBackupR2Config{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -56,7 +169,7 @@ func (x *KubernetesZalandoPostgresOperatorBackupR2Config) String() string {
 func (*KubernetesZalandoPostgresOperatorBackupR2Config) ProtoMessage() {}
 
 func (x *KubernetesZalandoPostgresOperatorBackupR2Config) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -69,7 +182,7 @@ func (x *KubernetesZalandoPostgresOperatorBackupR2Config) ProtoReflect() protore
 
 // Deprecated: Use KubernetesZalandoPostgresOperatorBackupR2Config.ProtoReflect.Descriptor instead.
 func (*KubernetesZalandoPostgresOperatorBackupR2Config) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KubernetesZalandoPostgresOperatorBackupR2Config) GetCloudflareAccountId() string {
@@ -129,7 +242,7 @@ type KubernetesZalandoPostgresOperatorBackupConfig struct {
 
 func (x *KubernetesZalandoPostgresOperatorBackupConfig) Reset() {
 	*x = KubernetesZalandoPostgresOperatorBackupConfig{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -141,7 +254,7 @@ func (x *KubernetesZalandoPostgresOperatorBackupConfig) String() string {
 func (*KubernetesZalandoPostgresOperatorBackupConfig) ProtoMessage() {}
 
 func (x *KubernetesZalandoPostgresOperatorBackupConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -154,7 +267,7 @@ func (x *KubernetesZalandoPostgresOperatorBackupConfig) ProtoReflect() protorefl
 
 // Deprecated: Use KubernetesZalandoPostgresOperatorBackupConfig.ProtoReflect.Descriptor instead.
 func (*KubernetesZalandoPostgresOperatorBackupConfig) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *KubernetesZalandoPostgresOperatorBackupConfig) GetR2Config() *KubernetesZalandoPostgresOperatorBackupR2Config {
@@ -199,124 +312,20 @@ func (x *KubernetesZalandoPostgresOperatorBackupConfig) GetEnableCloneWalGRestor
 	return false
 }
 
-// **KubernetesZalandoPostgresOperatorSpec** defines the configuration for deploying the Zalando Postgres Operator on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
-// It includes container specifications and backup configuration settings to control resource allocation and data protection.
-type KubernetesZalandoPostgresOperatorSpec struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this addon on.
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// The container specifications for the operator deployment.
-	Container *KubernetesZalandoPostgresOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
-	// Optional: Backup configuration for all databases managed by this operator
-	BackupConfig  *KubernetesZalandoPostgresOperatorBackupConfig `protobuf:"bytes,3,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpec) Reset() {
-	*x = KubernetesZalandoPostgresOperatorSpec{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpec) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*KubernetesZalandoPostgresOperatorSpec) ProtoMessage() {}
-
-func (x *KubernetesZalandoPostgresOperatorSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use KubernetesZalandoPostgresOperatorSpec.ProtoReflect.Descriptor instead.
-func (*KubernetesZalandoPostgresOperatorSpec) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
-	if x != nil {
-		return x.TargetCluster
-	}
-	return nil
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpec) GetContainer() *KubernetesZalandoPostgresOperatorSpecContainer {
-	if x != nil {
-		return x.Container
-	}
-	return nil
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpec) GetBackupConfig() *KubernetesZalandoPostgresOperatorBackupConfig {
-	if x != nil {
-		return x.BackupConfig
-	}
-	return nil
-}
-
-// **KubernetesZalandoPostgresOperatorSpecContainer** specifies the container configuration for the Zalando Postgres Operator.
-// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
-type KubernetesZalandoPostgresOperatorSpecContainer struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The CPU and memory resources allocated to the operator container.
-	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpecContainer) Reset() {
-	*x = KubernetesZalandoPostgresOperatorSpecContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpecContainer) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*KubernetesZalandoPostgresOperatorSpecContainer) ProtoMessage() {}
-
-func (x *KubernetesZalandoPostgresOperatorSpecContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use KubernetesZalandoPostgresOperatorSpecContainer.ProtoReflect.Descriptor instead.
-func (*KubernetesZalandoPostgresOperatorSpecContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *KubernetesZalandoPostgresOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
-	if x != nil {
-		return x.Resources
-	}
-	return nil
-}
-
 var File_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x86\x02\n" +
+	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\xda\x03\n" +
+	"%KubernetesZalandoPostgresOperatorSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\xa2\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
+	"\rbackup_config\x18\x03 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xae\x01\n" +
+	".KubernetesZalandoPostgresOperatorSpecContainer\x12|\n" +
+	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"\f\n" +
+	"\x051000m\x12\x031Gi\x12\f\n" +
+	"\x0350m\x12\x05100MiR\tresources\"\x86\x02\n" +
 	"/KubernetesZalandoPostgresOperatorBackupR2Config\x12>\n" +
 	"\x15cloudflare_account_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x13cloudflareAccountId\x12+\n" +
@@ -334,16 +343,7 @@ const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoper
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x0ebackupSchedule\x12-\n" +
 	"\x13enable_wal_g_backup\x18\x04 \x01(\bR\x10enableWalGBackup\x12/\n" +
 	"\x14enable_wal_g_restore\x18\x05 \x01(\bR\x11enableWalGRestore\x12:\n" +
-	"\x1aenable_clone_wal_g_restore\x18\x06 \x01(\bR\x16enableCloneWalGRestore\"\xdb\x03\n" +
-	"%KubernetesZalandoPostgresOperatorSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\xa2\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
-	"\rbackup_config\x18\x03 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xac\x01\n" +
-	".KubernetesZalandoPostgresOperatorSpecContainer\x12z\n" +
-	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
-	"\f\n" +
-	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\xd3\x04\n" +
+	"\x1aenable_clone_wal_g_restore\x18\x06 \x01(\bR\x16enableCloneWalGRestoreB\xd3\x04\n" +
 	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\tSpecProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
 
 var (
@@ -360,19 +360,19 @@ func file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresopera
 
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesZalandoPostgresOperatorBackupR2Config)(nil), // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
-	(*KubernetesZalandoPostgresOperatorBackupConfig)(nil),   // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
-	(*KubernetesZalandoPostgresOperatorSpec)(nil),           // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec
-	(*KubernetesZalandoPostgresOperatorSpecContainer)(nil),  // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
-	(*kubernetes.KubernetesAddonTargetCluster)(nil),         // 4: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	(*kubernetes.ContainerResources)(nil),                   // 5: org.project_planton.shared.kubernetes.ContainerResources
+	(*KubernetesZalandoPostgresOperatorSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec
+	(*KubernetesZalandoPostgresOperatorSpecContainer)(nil),  // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
+	(*KubernetesZalandoPostgresOperatorBackupR2Config)(nil), // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
+	(*KubernetesZalandoPostgresOperatorBackupConfig)(nil),   // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
+	(*kubernetes.KubernetesClusterSelector)(nil),            // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*kubernetes.ContainerResources)(nil),                   // 5: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_depIdxs = []int32{
-	0, // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
-	4, // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	3, // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
-	1, // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
-	5, // 4: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	4, // 0: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	1, // 1: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig
+	5, // 3: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	2, // 4: org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfig.r2_config:type_name -> org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupR2Config
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

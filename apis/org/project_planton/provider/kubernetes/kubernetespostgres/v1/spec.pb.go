@@ -8,7 +8,7 @@ package kubernetespostgresv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -490,7 +490,7 @@ var File_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_prot
 
 const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/kubernetes/kubernetespostgres/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetespostgres.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xb8\x01\n" +
+	"Horg/project_planton/provider/kubernetes/kubernetespostgres/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetespostgres.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xb8\x01\n" +
 	"\x1aKubernetesPostgresR2Config\x12:\n" +
 	"\x15cloudflare_account_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x13cloudflareAccountId\x12*\n" +
 	"\raccess_key_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vaccessKeyId\x122\n" +
@@ -518,10 +518,10 @@ const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_pr
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12r\n" +
 	"\aingress\x18\x02 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngressR\aingress\x12\x82\x01\n" +
-	"\rbackup_config\x18\x03 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfigR\fbackupConfig\"\xd1\x02\n" +
+	"\rbackup_config\x18\x03 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfigR\fbackupConfig\"\xd3\x02\n" +
 	"\x1bKubernetesPostgresContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
 	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\"\xd0\x01\n" +
 	"\x19KubernetesPostgresIngress\x12\x18\n" +
@@ -551,7 +551,7 @@ var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_prot
 	(*KubernetesPostgresSpec)(nil),          // 3: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec
 	(*KubernetesPostgresContainer)(nil),     // 4: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer
 	(*KubernetesPostgresIngress)(nil),       // 5: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngress
-	(*kubernetes.ContainerResources)(nil),   // 6: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil),   // 6: org.project_planton.provider.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),       // 7: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_depIdxs = []int32{
@@ -560,7 +560,7 @@ var file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_prot
 	4, // 2: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer
 	5, // 3: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngress
 	2, // 4: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpec.backup_config:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfig
-	6, // 5: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	6, // 5: org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	7, // 6: org.project_planton.provider.kubernetes.kubernetespostgres.v1.default_container:extendee -> google.protobuf.FieldOptions
 	4, // 7: org.project_planton.provider.kubernetes.kubernetespostgres.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainer
 	8, // [8:8] is the sub-list for method output_type

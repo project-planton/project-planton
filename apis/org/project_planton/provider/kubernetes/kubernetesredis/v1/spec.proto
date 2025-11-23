@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetesredis.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesRedisContainer default_container = 537001;
@@ -43,7 +43,7 @@ message KubernetesRedisContainer {
   int32 replicas = 1;
 
   //The CPU and memory resources allocated to the Redis container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   /**
    * A flag to enable or disable data persistence for Redis.

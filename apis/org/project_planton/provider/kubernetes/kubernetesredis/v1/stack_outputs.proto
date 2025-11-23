@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.kubernetesredis.v1;
 
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 //redis-kubernetes status stack outputs.
 message KubernetesRedisStackOutputs {
@@ -37,5 +37,5 @@ message KubernetesRedisStackOutputs {
   string username = 7;
 
   //kubernetes secret key for the password.
-  org.project_planton.shared.kubernetes.KubernetesSecretKey password_secret = 8;
+  org.project_planton.provider.kubernetes.KubernetesSecretKey password_secret = 8;
 }

@@ -8,7 +8,7 @@ package kubernetesprometheusv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -223,17 +223,17 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\x99\x02\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\x99\x02\n" +
 	"\x18KubernetesPrometheusSpec\x12\x84\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
 	"\aingress\x18\x02 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngressR\aingress\"\xd2\x01\n" +
 	"\x1bKubernetesPrometheusIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xe6\x04\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xe8\x04\n" +
 	"\x1dKubernetesPrometheusContainer\x12!\n" +
-	"\breplicas\x18\x01 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12z\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"\breplicas\x18\x01 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12|\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12/\n" +
@@ -259,12 +259,12 @@ var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_pr
 	(*KubernetesPrometheusSpec)(nil),      // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec
 	(*KubernetesPrometheusIngress)(nil),   // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
 	(*KubernetesPrometheusContainer)(nil), // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
-	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_depIdxs = []int32{
 	2, // 0: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer
 	1, // 1: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngress
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	3, // 2: org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

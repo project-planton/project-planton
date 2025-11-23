@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetespostgres.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesPostgresContainer default_container = 534001;
@@ -127,7 +127,7 @@ message KubernetesPostgresContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the PostgreSQL container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   /**
    * The storage size to allocate for each PostgreSQL instance (e.g., "1Gi").

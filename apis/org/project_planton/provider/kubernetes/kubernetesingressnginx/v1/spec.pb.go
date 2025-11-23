@@ -7,8 +7,8 @@
 package kubernetesingressnginxv1
 
 import (
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,7 +27,7 @@ const (
 type KubernetesIngressNginxSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
-	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Upstream Helm chart version tag (e.g. "4.11.1").
 	ChartVersion string `protobuf:"bytes,2,opt,name=chart_version,json=chartVersion,proto3" json:"chart_version,omitempty"`
 	// Deploy the controller with an **internal** load balancer.
@@ -75,7 +75,7 @@ func (*KubernetesIngressNginxSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KubernetesIngressNginxSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *KubernetesIngressNginxSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
 	}
@@ -341,9 +341,9 @@ var File_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_
 
 const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetesingressnginx.v1\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xc4\x04\n" +
-	"\x1aKubernetesIngressNginxSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12#\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetesingressnginx.v1\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc3\x04\n" +
+	"\x1aKubernetesIngressNginxSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12#\n" +
 	"\rchart_version\x18\x02 \x01(\tR\fchartVersion\x12\x1a\n" +
 	"\binternal\x18\x03 \x01(\bR\binternal\x12v\n" +
 	"\x03gke\x18d \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfigH\x00R\x03gke\x12v\n" +
@@ -377,15 +377,15 @@ func file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec
 
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_goTypes = []any{
-	(*KubernetesIngressNginxSpec)(nil),              // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec
-	(*KubernetesIngressNginxGkeConfig)(nil),         // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
-	(*KubernetesIngressNginxEksConfig)(nil),         // 2: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
-	(*KubernetesIngressNginxAksConfig)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig
-	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 4: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	(*v1.StringValueOrRef)(nil),                     // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*KubernetesIngressNginxSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec
+	(*KubernetesIngressNginxGkeConfig)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
+	(*KubernetesIngressNginxEksConfig)(nil),      // 2: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
+	(*KubernetesIngressNginxAksConfig)(nil),      // 3: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig
+	(*kubernetes.KubernetesClusterSelector)(nil), // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_depIdxs = []int32{
-	4, // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	4, // 0: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	1, // 1: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.gke:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfig
 	2, // 2: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.eks:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfig
 	3, // 3: org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxSpec.aks:type_name -> org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfig

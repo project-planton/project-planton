@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesElasticsearchElasticsearchSpec default_elasticsearch_spec = 509001;
@@ -83,7 +83,7 @@ message KubernetesElasticsearchElasticsearchContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Elasticsearch container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   // A flag to enable or disable data persistence for Elasticsearch.
   // When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
@@ -118,7 +118,7 @@ message KubernetesElasticsearchKibanaContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Kibana container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 }
 
 // **KubernetesElasticsearchIngress** defines the ingress configuration for Elasticsearch or Kibana.

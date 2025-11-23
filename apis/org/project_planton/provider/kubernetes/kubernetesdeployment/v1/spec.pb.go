@@ -8,8 +8,7 @@ package kubernetesdeploymentv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -244,21 +243,21 @@ type KubernetesDeploymentContainerApp struct {
 	// Periodic probe of container liveness. Container will be restarted if the probe fails.
 	// This helps detect and recover from deadlocks or unresponsive applications.
 	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
-	LivenessProbe *kubernetes1.Probe `protobuf:"bytes,5,opt,name=liveness_probe,json=livenessProbe,proto3" json:"liveness_probe,omitempty"`
+	LivenessProbe *kubernetes.Probe `protobuf:"bytes,5,opt,name=liveness_probe,json=livenessProbe,proto3" json:"liveness_probe,omitempty"`
 	// *
 	// Readiness probe configuration.
 	// Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails.
 	// This ensures traffic is only routed to pods that are ready to handle requests.
 	// Essential for zero-downtime deployments.
 	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
-	ReadinessProbe *kubernetes1.Probe `protobuf:"bytes,6,opt,name=readiness_probe,json=readinessProbe,proto3" json:"readiness_probe,omitempty"`
+	ReadinessProbe *kubernetes.Probe `protobuf:"bytes,6,opt,name=readiness_probe,json=readinessProbe,proto3" json:"readiness_probe,omitempty"`
 	// *
 	// Startup probe configuration.
 	// Indicates whether the application within the container is started.
 	// All other probes are disabled if a startup probe is provided, until it succeeds.
 	// Useful for slow-starting containers to avoid them getting killed by liveness probes before they are up.
 	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
-	StartupProbe  *kubernetes1.Probe `protobuf:"bytes,7,opt,name=startup_probe,json=startupProbe,proto3" json:"startup_probe,omitempty"`
+	StartupProbe  *kubernetes.Probe `protobuf:"bytes,7,opt,name=startup_probe,json=startupProbe,proto3" json:"startup_probe,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -321,21 +320,21 @@ func (x *KubernetesDeploymentContainerApp) GetPorts() []*KubernetesDeploymentCon
 	return nil
 }
 
-func (x *KubernetesDeploymentContainerApp) GetLivenessProbe() *kubernetes1.Probe {
+func (x *KubernetesDeploymentContainerApp) GetLivenessProbe() *kubernetes.Probe {
 	if x != nil {
 		return x.LivenessProbe
 	}
 	return nil
 }
 
-func (x *KubernetesDeploymentContainerApp) GetReadinessProbe() *kubernetes1.Probe {
+func (x *KubernetesDeploymentContainerApp) GetReadinessProbe() *kubernetes.Probe {
 	if x != nil {
 		return x.ReadinessProbe
 	}
 	return nil
 }
 
-func (x *KubernetesDeploymentContainerApp) GetStartupProbe() *kubernetes1.Probe {
+func (x *KubernetesDeploymentContainerApp) GetStartupProbe() *kubernetes.Probe {
 	if x != nil {
 		return x.StartupProbe
 	}
@@ -810,7 +809,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\x8d\x05\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\"\x8d\x05\n" +
 	"\x18KubernetesDeploymentSpec\x12\xe9\x01\n" +
 	"\aversion\x18\x01 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
 	"\x12spec.version.chars\x128Only lowercase letters, numbers, and hyphens are allowed\x1a\x1cthis.matches('^[a-z0-9-]+$')\xba\x01R\n" +
@@ -821,15 +820,15 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_
 	"\x1bKubernetesDeploymentIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xea\x01\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xec\x01\n" +
 	"\x1dKubernetesDeploymentContainer\x12{\n" +
-	"\x03app\x18\x01 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12L\n" +
-	"\bsidecars\x18\x02 \x03(\v20.org.project_planton.shared.kubernetes.ContainerR\bsidecars\"\xa6\a\n" +
-	" KubernetesDeploymentContainerApp\x12\x8b\x02\n" +
-	"\x05image\x18\x01 \x01(\v25.org.project_planton.shared.kubernetes.ContainerImageB\xbd\x01\xbaH\xb9\x01\xba\x01Z\n" +
+	"\x03app\x18\x01 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12N\n" +
+	"\bsidecars\x18\x02 \x03(\v22.org.project_planton.provider.kubernetes.ContainerR\bsidecars\"\xaa\a\n" +
+	" KubernetesDeploymentContainerApp\x12\x8d\x02\n" +
+	"\x05image\x18\x01 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageB\xbd\x01\xbaH\xb9\x01\xba\x01Z\n" +
 	"\x1dspec.container.app.image.repo\x12\x16Image repo is required\x1a!has(this.repo) && this.repo != ''\xba\x01V\n" +
-	"\x1cspec.container.app.image.tag\x12\x15Image tag is required\x1a\x1fhas(this.tag) && this.tag != ''\xc8\x01\x01R\x05image\x12z\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"\x1cspec.container.app.image.tag\x12\x15Image tag is required\x1a\x1fhas(this.tag) && this.tag != ''\xc8\x01\x01R\x05image\x12|\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12v\n" +
@@ -901,19 +900,19 @@ var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 	(*KubernetesDeploymentPodDisruptionBudget)(nil), // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
 	nil,                                   // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
 	nil,                                   // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
-	(*kubernetes.Container)(nil),          // 12: org.project_planton.shared.kubernetes.Container
-	(*kubernetes.ContainerImage)(nil),     // 13: org.project_planton.shared.kubernetes.ContainerImage
-	(*kubernetes.ContainerResources)(nil), // 14: org.project_planton.shared.kubernetes.ContainerResources
-	(*kubernetes1.Probe)(nil),             // 15: org.project_planton.provider.kubernetes.Probe
+	(*kubernetes.Container)(nil),          // 12: org.project_planton.provider.kubernetes.Container
+	(*kubernetes.ContainerImage)(nil),     // 13: org.project_planton.provider.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil), // 14: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.Probe)(nil),              // 15: org.project_planton.provider.kubernetes.Probe
 }
 var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_depIdxs = []int32{
 	2,  // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer
 	1,  // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngress
 	6,  // 2: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.availability:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability
 	3,  // 3: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
-	12, // 4: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.sidecars:type_name -> org.project_planton.shared.kubernetes.Container
-	13, // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.image:type_name -> org.project_planton.shared.kubernetes.ContainerImage
-	14, // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	12, // 4: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.sidecars:type_name -> org.project_planton.provider.kubernetes.Container
+	13, // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	14, // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	4,  // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
 	5,  // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
 	15, // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.liveness_probe:type_name -> org.project_planton.provider.kubernetes.Probe

@@ -3,9 +3,37 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1;
 
 import "buf/validate/validate.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
-import "org/project_planton/shared/kubernetes/options.proto";
-import "org/project_planton/shared/kubernetes/target_cluster.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/options.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+
+// **KubernetesZalandoPostgresOperatorSpec** defines the configuration for deploying the Zalando Postgres Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
+// It includes container specifications and backup configuration settings to control resource allocation and data protection.
+message KubernetesZalandoPostgresOperatorSpec {
+  // The Kubernetes cluster to install this addon on.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+  // The container specifications for the operator deployment.
+  KubernetesZalandoPostgresOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
+  // Optional: Backup configuration for all databases managed by this operator
+  KubernetesZalandoPostgresOperatorBackupConfig backup_config = 3;
+}
+
+// **KubernetesZalandoPostgresOperatorSpecContainer** specifies the container configuration for the Zalando Postgres Operator.
+// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
+message KubernetesZalandoPostgresOperatorSpecContainer {
+  // The CPU and memory resources allocated to the operator container.
+  org.project_planton.provider.kubernetes.ContainerResources resources = 1 [(org.project_planton.provider.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
+    }
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
+}
 
 // Cloudflare R2-specific storage configuration for PostgreSQL backups.
 // This is separate to allow future support for other S3-compatible backends.
@@ -68,32 +96,4 @@ message KubernetesZalandoPostgresOperatorBackupConfig {
   // Enable WAL-G for clone operations (default: true)
   // Maps to CLONE_USE_WALG_RESTORE environment variable
   bool enable_clone_wal_g_restore = 6;
-}
-
-// **KubernetesZalandoPostgresOperatorSpec** defines the configuration for deploying the Zalando Postgres Operator on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
-// It includes container specifications and backup configuration settings to control resource allocation and data protection.
-message KubernetesZalandoPostgresOperatorSpec {
-  // The Kubernetes cluster to install this addon on.
-  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
-  // The container specifications for the operator deployment.
-  KubernetesZalandoPostgresOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
-  // Optional: Backup configuration for all databases managed by this operator
-  KubernetesZalandoPostgresOperatorBackupConfig backup_config = 3;
-}
-
-// **KubernetesZalandoPostgresOperatorSpecContainer** specifies the container configuration for the Zalando Postgres Operator.
-// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
-message KubernetesZalandoPostgresOperatorSpecContainer {
-  // The CPU and memory resources allocated to the operator container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
-    limits: {
-      cpu: "1000m"
-      memory: "1Gi"
-    }
-    requests: {
-      cpu: "50m"
-      memory: "100Mi"
-    }
-  }];
 }

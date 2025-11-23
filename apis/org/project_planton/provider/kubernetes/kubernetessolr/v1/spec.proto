@@ -4,7 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetessolr.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
-import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesSolrSolrContainer default_solr_container = 540001;
@@ -90,7 +90,7 @@ message KubernetesSolrSolrContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Solr container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   //The size of the persistent volume attached to each Solr pod (e.g., "1Gi").
   string disk_size = 3 [(buf.validate.field).cel = {
@@ -102,7 +102,7 @@ message KubernetesSolrSolrContainer {
 
   //The container image for the Solr deployment.
   //Example repository: "solr", example tag: "8.7.0".
-  org.project_planton.shared.kubernetes.ContainerImage image = 4;
+  org.project_planton.provider.kubernetes.ContainerImage image = 4;
 }
 
 /**
@@ -130,7 +130,7 @@ message KubernetesSolrZookeeperContainer {
   int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Zookeeper container.
-  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+  org.project_planton.provider.kubernetes.ContainerResources resources = 2;
 
   //The size of the persistent volume attached to each Zookeeper pod (e.g., "1Gi").
   string disk_size = 3 [(buf.validate.field).cel = {

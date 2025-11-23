@@ -6,8 +6,9 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 func TestKubernetesPerconaMysqlOperator(t *testing.T) {
@@ -26,8 +27,11 @@ var _ = ginkgo.Describe("KubernetesPerconaMysqlOperator Validation Tests", func(
 				Name: "test-percona-mysql-operator",
 			},
 			Spec: &KubernetesPerconaMysqlOperatorSpec{
-				TargetCluster: &kubernetes.KubernetesAddonTargetCluster{},
-				Namespace:     "percona-mysql-operator",
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: "percona-mysql-operator",
 				Container: &KubernetesPerconaMysqlOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{

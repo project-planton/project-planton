@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.shared.kubernetes;
+package org.project_planton.provider.kubernetes;
 
 // **Container** defines the specifications for a container within a microservice deployment configuration.
 // This message mirrors the Kubernetes container spec (https://pkg.go.dev/k8s.io/api/core/v1#Container),

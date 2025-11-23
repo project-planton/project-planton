@@ -6,8 +6,9 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 func TestKubernetesPerconaPostgresOperator(t *testing.T) {
@@ -26,8 +27,11 @@ var _ = ginkgo.Describe("KubernetesPerconaPostgresOperator Validation Tests", fu
 				Name: "test-percona-postgres-operator",
 			},
 			Spec: &KubernetesPerconaPostgresOperatorSpec{
-				TargetCluster: &kubernetes.KubernetesAddonTargetCluster{},
-				Namespace:     "percona-postgres-operator",
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: "percona-postgres-operator",
 				Container: &KubernetesPerconaPostgresOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{

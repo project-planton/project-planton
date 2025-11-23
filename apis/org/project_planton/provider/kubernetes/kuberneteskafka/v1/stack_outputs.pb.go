@@ -7,7 +7,7 @@
 package kuberneteskafkav1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -137,11 +137,11 @@ var File_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_output
 
 const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kuberneteskafka/v1/stack_outputs.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\x8b\x04\n" +
+	"Norg/project_planton/provider/kubernetes/kuberneteskafka/v1/stack_outputs.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\x8d\x04\n" +
 	"\x1bKubernetesKafkaStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12c\n" +
-	"\x0fpassword_secret\x18\x03 \x01(\v2:.org.project_planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecret\x12K\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12e\n" +
+	"\x0fpassword_secret\x18\x03 \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecret\x12K\n" +
 	"\"bootstrap_server_external_hostname\x18\x04 \x01(\tR\x1fbootstrapServerExternalHostname\x12K\n" +
 	"\"bootstrap_server_internal_hostname\x18\x05 \x01(\tR\x1fbootstrapServerInternalHostname\x12?\n" +
 	"\x1cschema_registry_external_url\x18\x06 \x01(\tR\x19schemaRegistryExternalUrl\x12?\n" +
@@ -164,10 +164,10 @@ func file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outpu
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outputs_proto_goTypes = []any{
 	(*KubernetesKafkaStackOutputs)(nil),    // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaStackOutputs
-	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.shared.kubernetes.KubernetesSecretKey
+	(*kubernetes.KubernetesSecretKey)(nil), // 1: org.project_planton.provider.kubernetes.KubernetesSecretKey
 }
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaStackOutputs.password_secret:type_name -> org.project_planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaStackOutputs.password_secret:type_name -> org.project_planton.provider.kubernetes.KubernetesSecretKey
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

@@ -6,8 +6,9 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 func TestKubernetesElasticOperator(t *testing.T) {
@@ -26,10 +27,9 @@ var _ = ginkgo.Describe("KubernetesElasticOperator Validation Tests", func() {
 				Name: "test-elastic-operator",
 			},
 			Spec: &KubernetesElasticOperatorSpec{
-				TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-					CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-						KubernetesCredentialId: "test-k8s-cred-id",
-					},
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-k8s-cluster",
 				},
 				Container: &KubernetesElasticOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{

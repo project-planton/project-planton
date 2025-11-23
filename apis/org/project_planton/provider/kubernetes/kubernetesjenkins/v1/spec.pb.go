@@ -8,7 +8,7 @@ package kubernetesjenkinsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -154,9 +154,9 @@ var File_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\"\xdf\x03\n" +
-	"\x15KubernetesJenkinsSpec\x12\x8d\x01\n" +
-	"\x13container_resources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\"\xe1\x03\n" +
+	"\x15KubernetesJenkinsSpec\x12\x8f\x01\n" +
+	"\x13container_resources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x12containerResources\x12\x84\x01\n" +
@@ -189,10 +189,10 @@ var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto
 	(*KubernetesJenkinsSpec)(nil),         // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec
 	(*KubernetesJenkinsIngress)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
 	nil,                                   // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
-	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_depIdxs = []int32{
-	3, // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.container_resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	3, // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.container_resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	2, // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
 	1, // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
 	3, // [3:3] is the sub-list for method output_type

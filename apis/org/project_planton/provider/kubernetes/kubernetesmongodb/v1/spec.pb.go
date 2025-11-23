@@ -8,7 +8,7 @@ package kubernetesmongodbv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -254,7 +254,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesmongodb/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesmongodb.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\"\xf6\x03\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesmongodb/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesmongodb.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xf6\x03\n" +
 	"\x15KubernetesMongodbSpec\x12\xa4\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbContainerB,\x8a\xe5\x82\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
@@ -269,10 +269,10 @@ const file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_spec_pro
 	"\x18KubernetesMongodbIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xb9\x04\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xbb\x04\n" +
 	"\x1aKubernetesMongodbContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12/\n" +
 	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
 	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xa6\x01\n" +
@@ -297,14 +297,14 @@ var file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_spec_proto
 	(*KubernetesMongodbIngress)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbIngress
 	(*KubernetesMongodbContainer)(nil),    // 2: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbContainer
 	nil,                                   // 3: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbSpec.HelmValuesEntry
-	(*kubernetes.ContainerResources)(nil), // 4: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil), // 4: org.project_planton.provider.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_spec_proto_depIdxs = []int32{
 	2, // 0: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbContainer
 	1, // 1: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbIngress
 	3, // 2: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbSpec.HelmValuesEntry
-	4, // 3: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	4, // 3: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	5, // 4: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.default_container:extendee -> google.protobuf.FieldOptions
 	2, // 5: org.project_planton.provider.kubernetes.kubernetesmongodb.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesmongodb.v1.KubernetesMongodbContainer
 	6, // [6:6] is the sub-list for method output_type

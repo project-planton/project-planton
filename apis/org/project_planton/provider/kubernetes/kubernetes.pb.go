@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/shared/kubernetes/kubernetes.proto
+// source: org/project_planton/provider/kubernetes/kubernetes.proto
 
 package kubernetes
 
@@ -43,7 +43,7 @@ type Container struct {
 
 func (x *Container) Reset() {
 	*x = Container{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -55,7 +55,7 @@ func (x *Container) String() string {
 func (*Container) ProtoMessage() {}
 
 func (x *Container) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -68,7 +68,7 @@ func (x *Container) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Container.ProtoReflect.Descriptor instead.
 func (*Container) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Container) GetName() string {
@@ -122,7 +122,7 @@ type ContainerResources struct {
 
 func (x *ContainerResources) Reset() {
 	*x = ContainerResources{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -134,7 +134,7 @@ func (x *ContainerResources) String() string {
 func (*ContainerResources) ProtoMessage() {}
 
 func (x *ContainerResources) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -147,7 +147,7 @@ func (x *ContainerResources) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContainerResources.ProtoReflect.Descriptor instead.
 func (*ContainerResources) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ContainerResources) GetLimits() *CpuMemory {
@@ -178,7 +178,7 @@ type ContainerEnvVar struct {
 
 func (x *ContainerEnvVar) Reset() {
 	*x = ContainerEnvVar{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -190,7 +190,7 @@ func (x *ContainerEnvVar) String() string {
 func (*ContainerEnvVar) ProtoMessage() {}
 
 func (x *ContainerEnvVar) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -203,7 +203,7 @@ func (x *ContainerEnvVar) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContainerEnvVar.ProtoReflect.Descriptor instead.
 func (*ContainerEnvVar) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{2}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ContainerEnvVar) GetName() string {
@@ -236,7 +236,7 @@ type ContainerPort struct {
 
 func (x *ContainerPort) Reset() {
 	*x = ContainerPort{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -248,7 +248,7 @@ func (x *ContainerPort) String() string {
 func (*ContainerPort) ProtoMessage() {}
 
 func (x *ContainerPort) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -261,7 +261,7 @@ func (x *ContainerPort) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContainerPort.ProtoReflect.Descriptor instead.
 func (*ContainerPort) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{3}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ContainerPort) GetName() string {
@@ -297,7 +297,7 @@ type CpuMemory struct {
 
 func (x *CpuMemory) Reset() {
 	*x = CpuMemory{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -309,7 +309,7 @@ func (x *CpuMemory) String() string {
 func (*CpuMemory) ProtoMessage() {}
 
 func (x *CpuMemory) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -322,7 +322,7 @@ func (x *CpuMemory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CpuMemory.ProtoReflect.Descriptor instead.
 func (*CpuMemory) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{4}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CpuMemory) GetCpu() string {
@@ -355,7 +355,7 @@ type ContainerImage struct {
 
 func (x *ContainerImage) Reset() {
 	*x = ContainerImage{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[5]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -367,7 +367,7 @@ func (x *ContainerImage) String() string {
 func (*ContainerImage) ProtoMessage() {}
 
 func (x *ContainerImage) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[5]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -380,7 +380,7 @@ func (x *ContainerImage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContainerImage.ProtoReflect.Descriptor instead.
 func (*ContainerImage) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{5}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ContainerImage) GetRepo() string {
@@ -418,7 +418,7 @@ type KubernetesSecretKey struct {
 
 func (x *KubernetesSecretKey) Reset() {
 	*x = KubernetesSecretKey{}
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[6]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -430,7 +430,7 @@ func (x *KubernetesSecretKey) String() string {
 func (*KubernetesSecretKey) ProtoMessage() {}
 
 func (x *KubernetesSecretKey) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes[6]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -443,7 +443,7 @@ func (x *KubernetesSecretKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubernetesSecretKey.ProtoReflect.Descriptor instead.
 func (*KubernetesSecretKey) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{6}
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *KubernetesSecretKey) GetName() string {
@@ -460,20 +460,20 @@ func (x *KubernetesSecretKey) GetKey() string {
 	return ""
 }
 
-var File_org_project_planton_shared_kubernetes_kubernetes_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_kubernetes_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\n" +
-	"6org/project_planton/shared/kubernetes/kubernetes.proto\x12%org.project_planton.shared.kubernetes\"\xa4\x02\n" +
+	"8org/project_planton/provider/kubernetes/kubernetes.proto\x12'org.project_planton.provider.kubernetes\"\xaa\x02\n" +
 	"\tContainer\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05image\x18\x02 \x01(\tR\x05image\x12J\n" +
-	"\x05ports\x18\x03 \x03(\v24.org.project_planton.shared.kubernetes.ContainerPortR\x05ports\x12W\n" +
-	"\tresources\x18\x04 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12H\n" +
-	"\x03env\x18\x05 \x03(\v26.org.project_planton.shared.kubernetes.ContainerEnvVarR\x03env\"\xac\x01\n" +
-	"\x12ContainerResources\x12H\n" +
-	"\x06limits\x18\x01 \x01(\v20.org.project_planton.shared.kubernetes.CpuMemoryR\x06limits\x12L\n" +
-	"\brequests\x18\x02 \x01(\v20.org.project_planton.shared.kubernetes.CpuMemoryR\brequests\";\n" +
+	"\x05image\x18\x02 \x01(\tR\x05image\x12L\n" +
+	"\x05ports\x18\x03 \x03(\v26.org.project_planton.provider.kubernetes.ContainerPortR\x05ports\x12Y\n" +
+	"\tresources\x18\x04 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12J\n" +
+	"\x03env\x18\x05 \x03(\v28.org.project_planton.provider.kubernetes.ContainerEnvVarR\x03env\"\xb0\x01\n" +
+	"\x12ContainerResources\x12J\n" +
+	"\x06limits\x18\x01 \x01(\v22.org.project_planton.provider.kubernetes.CpuMemoryR\x06limits\x12N\n" +
+	"\brequests\x18\x02 \x01(\v22.org.project_planton.provider.kubernetes.CpuMemoryR\brequests\";\n" +
 	"\x0fContainerEnvVar\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value\"f\n" +
@@ -490,37 +490,37 @@ const file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\";\n" +
 	"\x13KubernetesSecretKey\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03key\x18\x02 \x01(\tR\x03keyB\xc7\x02\n" +
-	")com.org.project_planton.shared.kubernetesB\x0fKubernetesProtoP\x01ZUgithub.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes\xa2\x02\x04OPSK\xaa\x02$Org.ProjectPlanton.Shared.Kubernetes\xca\x02$Org\\ProjectPlanton\\Shared\\Kubernetes\xe2\x020Org\\ProjectPlanton\\Shared\\Kubernetes\\GPBMetadata\xea\x02'Org::ProjectPlanton::Shared::Kubernetesb\x06proto3"
+	"\x03key\x18\x02 \x01(\tR\x03keyB\xd3\x02\n" +
+	"+com.org.project_planton.provider.kubernetesB\x0fKubernetesProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
-	file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescOnce sync.Once
-	file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescData []byte
 )
 
-func file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP() []byte {
-	file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc), len(file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDesc)))
 	})
-	return file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescData
 }
 
-var file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_org_project_planton_shared_kubernetes_kubernetes_proto_goTypes = []any{
-	(*Container)(nil),           // 0: org.project_planton.shared.kubernetes.Container
-	(*ContainerResources)(nil),  // 1: org.project_planton.shared.kubernetes.ContainerResources
-	(*ContainerEnvVar)(nil),     // 2: org.project_planton.shared.kubernetes.ContainerEnvVar
-	(*ContainerPort)(nil),       // 3: org.project_planton.shared.kubernetes.ContainerPort
-	(*CpuMemory)(nil),           // 4: org.project_planton.shared.kubernetes.CpuMemory
-	(*ContainerImage)(nil),      // 5: org.project_planton.shared.kubernetes.ContainerImage
-	(*KubernetesSecretKey)(nil), // 6: org.project_planton.shared.kubernetes.KubernetesSecretKey
+var file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_org_project_planton_provider_kubernetes_kubernetes_proto_goTypes = []any{
+	(*Container)(nil),           // 0: org.project_planton.provider.kubernetes.Container
+	(*ContainerResources)(nil),  // 1: org.project_planton.provider.kubernetes.ContainerResources
+	(*ContainerEnvVar)(nil),     // 2: org.project_planton.provider.kubernetes.ContainerEnvVar
+	(*ContainerPort)(nil),       // 3: org.project_planton.provider.kubernetes.ContainerPort
+	(*CpuMemory)(nil),           // 4: org.project_planton.provider.kubernetes.CpuMemory
+	(*ContainerImage)(nil),      // 5: org.project_planton.provider.kubernetes.ContainerImage
+	(*KubernetesSecretKey)(nil), // 6: org.project_planton.provider.kubernetes.KubernetesSecretKey
 }
-var file_org_project_planton_shared_kubernetes_kubernetes_proto_depIdxs = []int32{
-	3, // 0: org.project_planton.shared.kubernetes.Container.ports:type_name -> org.project_planton.shared.kubernetes.ContainerPort
-	1, // 1: org.project_planton.shared.kubernetes.Container.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	2, // 2: org.project_planton.shared.kubernetes.Container.env:type_name -> org.project_planton.shared.kubernetes.ContainerEnvVar
-	4, // 3: org.project_planton.shared.kubernetes.ContainerResources.limits:type_name -> org.project_planton.shared.kubernetes.CpuMemory
-	4, // 4: org.project_planton.shared.kubernetes.ContainerResources.requests:type_name -> org.project_planton.shared.kubernetes.CpuMemory
+var file_org_project_planton_provider_kubernetes_kubernetes_proto_depIdxs = []int32{
+	3, // 0: org.project_planton.provider.kubernetes.Container.ports:type_name -> org.project_planton.provider.kubernetes.ContainerPort
+	1, // 1: org.project_planton.provider.kubernetes.Container.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	2, // 2: org.project_planton.provider.kubernetes.Container.env:type_name -> org.project_planton.provider.kubernetes.ContainerEnvVar
+	4, // 3: org.project_planton.provider.kubernetes.ContainerResources.limits:type_name -> org.project_planton.provider.kubernetes.CpuMemory
+	4, // 4: org.project_planton.provider.kubernetes.ContainerResources.requests:type_name -> org.project_planton.provider.kubernetes.CpuMemory
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -528,26 +528,26 @@ var file_org_project_planton_shared_kubernetes_kubernetes_proto_depIdxs = []int3
 	0, // [0:5] is the sub-list for field type_name
 }
 
-func init() { file_org_project_planton_shared_kubernetes_kubernetes_proto_init() }
-func file_org_project_planton_shared_kubernetes_kubernetes_proto_init() {
-	if File_org_project_planton_shared_kubernetes_kubernetes_proto != nil {
+func init() { file_org_project_planton_provider_kubernetes_kubernetes_proto_init() }
+func file_org_project_planton_provider_kubernetes_kubernetes_proto_init() {
+	if File_org_project_planton_provider_kubernetes_kubernetes_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc), len(file_org_project_planton_shared_kubernetes_kubernetes_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_shared_kubernetes_kubernetes_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_shared_kubernetes_kubernetes_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_shared_kubernetes_kubernetes_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_kubernetes_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_kubernetes_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_kubernetes_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_shared_kubernetes_kubernetes_proto = out.File
-	file_org_project_planton_shared_kubernetes_kubernetes_proto_goTypes = nil
-	file_org_project_planton_shared_kubernetes_kubernetes_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_kubernetes_proto = out.File
+	file_org_project_planton_provider_kubernetes_kubernetes_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_kubernetes_proto_depIdxs = nil
 }

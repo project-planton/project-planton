@@ -8,7 +8,7 @@ package kuberneteskafkav1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -496,7 +496,7 @@ var File_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xb7\x06\n" +
+	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a0org/project_planton/shared/options/options.proto\"\xb7\x06\n" +
 	"\x13KubernetesKafkaSpec\x12i\n" +
 	"\fkafka_topics\x18\x01 \x03(\v2F.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopicR\vkafkaTopics\x12\xb1\x01\n" +
 	"\x10broker_container\x18\x02 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainerB*\x8a\xee\xff\x01%\b\x01\x12\x1c\n" +
@@ -513,22 +513,22 @@ const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto
 	"\x16KubernetesKafkaIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xd9\x02\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xdb\x02\n" +
 	"\x1eKubernetesKafkaBrokerContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xc1\x01\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12\xc1\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\xa3\x01\xbaH\x9f\x01\xba\x01\x9b\x01\n" +
-	"&spec.broker_container.disk_size.format\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\"\xdc\x02\n" +
+	"&spec.broker_container.disk_size.format\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\"\xde\x02\n" +
 	"!KubernetesKafkaZookeeperContainer\x12\x1a\n" +
-	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12W\n" +
-	"\tresources\x18\x02 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xc1\x01\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12\xc1\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\xa3\x01\xbaH\x9f\x01\xba\x01\x9b\x01\n" +
-	"&spec.broker_container.disk_size.format\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\"\xe6\x01\n" +
+	"&spec.broker_container.disk_size.format\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\"\xe8\x01\n" +
 	"&KubernetesKafkaSchemaRegistryContainer\x12\x1d\n" +
 	"\n" +
 	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12!\n" +
-	"\breplicas\x18\x02 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12z\n" +
-	"\tresources\x18\x03 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"\breplicas\x18\x02 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12|\n" +
+	"\tresources\x18\x03 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\"\x8e\t\n" +
@@ -588,7 +588,7 @@ var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_g
 	(*KubernetesKafkaSchemaRegistryContainer)(nil), // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
 	(*KafkaTopic)(nil),                             // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic
 	nil,                                            // 6: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
-	(*kubernetes.ContainerResources)(nil),          // 7: org.project_planton.shared.kubernetes.ContainerResources
+	(*kubernetes.ContainerResources)(nil),          // 7: org.project_planton.provider.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),              // 8: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_depIdxs = []int32{
@@ -597,9 +597,9 @@ var file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_d
 	3,  // 2: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer
 	4,  // 3: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.schema_registry_container:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer
 	1,  // 4: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaIngress
-	7,  // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	7,  // 6: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
-	7,  // 7: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	7,  // 5: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	7,  // 6: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	7,  // 7: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	6,  // 8: org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.config:type_name -> org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopic.ConfigEntry
 	8,  // 9: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_broker_container:extendee -> google.protobuf.FieldOptions
 	8,  // 10: org.project_planton.provider.kubernetes.kuberneteskafka.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
