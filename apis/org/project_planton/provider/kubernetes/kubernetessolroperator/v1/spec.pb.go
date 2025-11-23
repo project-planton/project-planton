@@ -9,6 +9,7 @@ package kubernetessolroperatorv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -30,8 +31,10 @@ type KubernetesSolrOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The container specifications for the Apache Solr Operator deployment.
-	Container     *KubernetesSolrOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	Container     *KubernetesSolrOperatorSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,6 +72,13 @@ func (*KubernetesSolrOperatorSpec) Descriptor() ([]byte, []int) {
 func (x *KubernetesSolrOperatorSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
 	if x != nil {
 		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesSolrOperatorSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
 	}
 	return nil
 }
@@ -131,10 +141,11 @@ var File_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_
 
 const file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetessolroperator/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetessolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\x96\x02\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetessolroperator/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetessolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x8a\x03\n" +
 	"\x1aKubernetesSolrOperatorSpec\x12i\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\x8c\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2f.org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa3\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x8c\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2f.org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa3\x01\n" +
 	"#KubernetesSolrOperatorSpecContainer\x12|\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -159,17 +170,19 @@ var file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_
 	(*KubernetesSolrOperatorSpec)(nil),           // 0: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpec
 	(*KubernetesSolrOperatorSpecContainer)(nil),  // 1: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainer
 	(*kubernetes.KubernetesClusterSelector)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	(*kubernetes.ContainerResources)(nil),        // 3: org.project_planton.provider.kubernetes.ContainerResources
+	(*v1.StringValueOrRef)(nil),                  // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 4: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_proto_depIdxs = []int32{
 	2, // 0: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	1, // 1: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 1: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainer
+	4, // 3: org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_proto_init() }

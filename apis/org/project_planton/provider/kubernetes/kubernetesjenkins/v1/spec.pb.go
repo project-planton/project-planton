@@ -9,6 +9,7 @@ package kubernetesjenkinsv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -29,15 +30,19 @@ const (
 // and external access.
 type KubernetesJenkinsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this component on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The CPU and memory resources allocated to the Jenkins container.
-	ContainerResources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=container_resources,json=containerResources,proto3" json:"container_resources,omitempty"`
+	ContainerResources *kubernetes.ContainerResources `protobuf:"bytes,3,opt,name=container_resources,json=containerResources,proto3" json:"container_resources,omitempty"`
 	// A map of key-value pairs that provide additional customization options for the Helm chart used to deploy Jenkins.
 	// These values allow for further refinement of the deployment, such as customizing resource limits, setting environment variables,
 	// or specifying version tags. For detailed information on the available options, refer to the Helm chart documentation at:
 	// https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
-	HelmValues map[string]string `protobuf:"bytes,3,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	HelmValues map[string]string `protobuf:"bytes,5,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// The ingress configuration for the Jenkins deployment.
-	Ingress       *KubernetesJenkinsIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesJenkinsIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -70,6 +75,20 @@ func (x *KubernetesJenkinsSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesJenkinsSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesJenkinsSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesJenkinsSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesJenkinsSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesJenkinsSpec) GetContainerResources() *kubernetes.ContainerResources {
@@ -154,15 +173,17 @@ var File_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\"\xe1\x03\n" +
-	"\x15KubernetesJenkinsSpec\x12\x8f\x01\n" +
-	"\x13container_resources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc0\x05\n" +
+	"\x15KubernetesJenkinsSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x8f\x01\n" +
+	"\x13container_resources\x18\x03 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x12containerResources\x12\x84\x01\n" +
-	"\vhelm_values\x18\x03 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntryR\n" +
+	"\vhelm_values\x18\x05 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntryR\n" +
 	"helmValues\x12p\n" +
-	"\aingress\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngressR\aingress\x1a=\n" +
+	"\aingress\x18\x06 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngressR\aingress\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcf\x01\n" +
@@ -186,20 +207,24 @@ func file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_prot
 
 var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_goTypes = []any{
-	(*KubernetesJenkinsSpec)(nil),         // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec
-	(*KubernetesJenkinsIngress)(nil),      // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
-	nil,                                   // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
-	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.provider.kubernetes.ContainerResources
+	(*KubernetesJenkinsSpec)(nil),    // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec
+	(*KubernetesJenkinsIngress)(nil), // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
+	nil,                              // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
+	(*kubernetes.KubernetesClusterSelector)(nil), // 3: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 4: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 5: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_depIdxs = []int32{
-	3, // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.container_resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	2, // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
-	1, // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	4, // 1: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 2: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.container_resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	2, // 3: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.helm_values:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.HelmValuesEntry
+	1, // 4: org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsIngress
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_init() }

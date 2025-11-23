@@ -15,15 +15,22 @@ message KubernetesExternalSecretsSpec {
   // The Kubernetes cluster on which to install this add‑on.
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // How often the controller polls the backing secret store (in seconds).
   // Very small values can incur high cloud‑API costs.
-  optional uint32 poll_interval_seconds = 2 [
+  optional uint32 poll_interval_seconds = 3 [
     (org.project_planton.shared.options.default) = "10",
     (buf.validate.field).uint32.gt = 0
   ];
 
   // CPU / memory tuning for the ESO controller container.
-  KubernetesExternalSecretsSpecContainer container = 3 [(buf.validate.field).required = true];
+  KubernetesExternalSecretsSpecContainer container = 4 [(buf.validate.field).required = true];
 
   // Provider‑specific glue.  Exactly one block should be set.
   oneof provider_config {

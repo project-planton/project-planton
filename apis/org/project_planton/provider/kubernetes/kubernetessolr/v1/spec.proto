@@ -5,6 +5,8 @@ package org.project_planton.provider.kubernetes.kubernetessolr.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesSolrSolrContainer default_solr_container = 540001;
@@ -18,8 +20,18 @@ extend google.protobuf.FieldOptions {
  * including resource allocation, data persistence, and external access through ingress.
  */
 message KubernetesSolrSpec {
+  // The Kubernetes cluster to install this component on.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install the component.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The specifications for the Solr container deployment.
-  KubernetesSolrSolrContainer solr_container = 1 [(default_solr_container) = {
+  KubernetesSolrSolrContainer solr_container = 3 [(default_solr_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -39,10 +51,10 @@ message KubernetesSolrSpec {
   }];
 
   //The Solr-specific configuration options.
-  KubernetesSolrSolrConfig config = 2;
+  KubernetesSolrSolrConfig config = 4;
 
   // The specifications for the Zookeeper container deployment.
-  KubernetesSolrZookeeperContainer zookeeper_container = 3 [(default_zookeeper_container) = {
+  KubernetesSolrZookeeperContainer zookeeper_container = 5 [(default_zookeeper_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -58,7 +70,7 @@ message KubernetesSolrSpec {
   }];
 
   //The ingress configuration for the Solr deployment.
-  KubernetesSolrIngress ingress = 4;
+  KubernetesSolrIngress ingress = 6;
 }
 
 /**

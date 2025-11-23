@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.kubernetesingressnginx.v1;
 
+import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
@@ -10,12 +11,19 @@ message KubernetesIngressNginxSpec {
   // The Kubernetes cluster to install this addon on.
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // Upstream Helm chart version tag (e.g. "4.11.1").
-  string chart_version = 2;
+  string chart_version = 3;
 
   // Deploy the controller with an **internal** load balancer.
   // The default (false) produces an external LB where the provider supports it.
-  bool internal = 3;
+  bool internal = 4;
 
   // Provider‑specific glue (exactly one block may be set).
   oneof provider_config {

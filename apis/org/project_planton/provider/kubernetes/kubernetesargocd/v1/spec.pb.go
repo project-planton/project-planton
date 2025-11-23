@@ -9,6 +9,7 @@ package kubernetesargocdv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,10 +29,14 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesArgocdSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install Argo CD on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install Argo CD.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The container specifications for the Argo CD deployment.
-	Container *KubernetesArgocdContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesArgocdContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Argo CD deployment.
-	Ingress       *KubernetesArgocdIngress `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesArgocdIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -64,6 +69,20 @@ func (x *KubernetesArgocdSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesArgocdSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesArgocdSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesArgocdSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesArgocdSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesArgocdSpec) GetContainer() *KubernetesArgocdContainer {
@@ -190,10 +209,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetesargocd/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesargocd.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\"\x84\x02\n" +
-	"\x14KubernetesArgocdSpec\x12|\n" +
-	"\tcontainer\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12n\n" +
-	"\aingress\x18\x03 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngressR\aingress\"\xce\x01\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetesargocd/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesargocd.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe3\x03\n" +
+	"\x14KubernetesArgocdSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12|\n" +
+	"\tcontainer\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12n\n" +
+	"\aingress\x18\x05 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngressR\aingress\"\xce\x01\n" +
 	"\x17KubernetesArgocdIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
@@ -219,20 +240,24 @@ func file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto
 
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_goTypes = []any{
-	(*KubernetesArgocdSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec
-	(*KubernetesArgocdIngress)(nil),       // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngress
-	(*KubernetesArgocdContainer)(nil),     // 2: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
-	(*kubernetes.ContainerResources)(nil), // 3: org.project_planton.provider.kubernetes.ContainerResources
+	(*KubernetesArgocdSpec)(nil),                 // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec
+	(*KubernetesArgocdIngress)(nil),              // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngress
+	(*KubernetesArgocdContainer)(nil),            // 2: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
+	(*kubernetes.KubernetesClusterSelector)(nil), // 3: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 4: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 5: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
-	1, // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngress
-	3, // 2: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	4, // 1: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer
+	1, // 3: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdIngress
+	5, // 4: org.project_planton.provider.kubernetes.kubernetesargocd.v1.KubernetesArgocdContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesargocd_v1_spec_proto_init() }

@@ -5,6 +5,8 @@ package org.project_planton.provider.kubernetes.kubernetesnats.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
 // custom option to store default values for the server container message
@@ -14,8 +16,18 @@ extend google.protobuf.FieldOptions {
 
 // NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
 message KubernetesNatsSpec {
+  // The Kubernetes cluster to install this component on.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install the operator.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // server container settings (replicas, resources, disk).
-  KubernetesNatsServerContainer server_container = 1 [(default_server_container) = {
+  KubernetesNatsServerContainer server_container = 3 [(default_server_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -30,15 +42,15 @@ message KubernetesNatsSpec {
     disk_size: "10Gi"
   }];
   // disable jet-stream persistence
-  bool disable_jet_stream = 2;
+  bool disable_jet_stream = 4;
   // authentication settings for the nats cluster.
-  KubernetesNatsAuth auth = 3;
+  KubernetesNatsAuth auth = 5;
   // tls settings for the nats cluster.
-  bool tls_enabled = 4;
+  bool tls_enabled = 6;
   // optional ingress configuration for external access.
-  KubernetesNatsIngress ingress = 5;
+  KubernetesNatsIngress ingress = 7;
   // toggle to deploy the nats-box utility pod.
-  bool disable_nats_box = 6;
+  bool disable_nats_box = 8;
 }
 
 // server container settings for the nats stateful-set.

@@ -5,6 +5,8 @@ package org.project_planton.provider.kubernetes.kubernetesmongodb.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 extend google.protobuf.FieldOptions {
   KubernetesMongodbContainer default_container = 530001;
@@ -16,8 +18,18 @@ extend google.protobuf.FieldOptions {
  * It includes container specifications, ingress settings, and Helm chart customization options.
  */
 message KubernetesMongodbSpec {
+  // The Kubernetes cluster to install MongoDB on.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // Kubernetes namespace to install MongoDB.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
   // The specifications for the MongoDB container deployment.
-  KubernetesMongodbContainer container = 1 [(default_container) = {
+  KubernetesMongodbContainer container = 3 [(default_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -36,7 +48,7 @@ message KubernetesMongodbSpec {
   /**
    * The ingress configuration for the MongoDB deployment.
    */
-  KubernetesMongodbIngress ingress = 2;
+  KubernetesMongodbIngress ingress = 4;
 
   /**
    * A map of key-value pairs that provide additional customization options for the Helm chart used
@@ -45,7 +57,7 @@ message KubernetesMongodbSpec {
    * For detailed information on the available options, refer to the Helm chart documentation at:
    * https://artifacthub.io/packages/helm/bitnami/mongodb
    */
-  map<string, string> helm_values = 3;
+  map<string, string> helm_values = 5;
 }
 
 /**

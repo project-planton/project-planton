@@ -9,6 +9,7 @@ package kubernetessolrv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -31,14 +32,18 @@ const (
 // including resource allocation, data persistence, and external access through ingress.
 type KubernetesSolrSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this component on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the component.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The specifications for the Solr container deployment.
-	SolrContainer *KubernetesSolrSolrContainer `protobuf:"bytes,1,opt,name=solr_container,json=solrContainer,proto3" json:"solr_container,omitempty"`
+	SolrContainer *KubernetesSolrSolrContainer `protobuf:"bytes,3,opt,name=solr_container,json=solrContainer,proto3" json:"solr_container,omitempty"`
 	// The Solr-specific configuration options.
-	Config *KubernetesSolrSolrConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	Config *KubernetesSolrSolrConfig `protobuf:"bytes,4,opt,name=config,proto3" json:"config,omitempty"`
 	// The specifications for the Zookeeper container deployment.
-	ZookeeperContainer *KubernetesSolrZookeeperContainer `protobuf:"bytes,3,opt,name=zookeeper_container,json=zookeeperContainer,proto3" json:"zookeeper_container,omitempty"`
+	ZookeeperContainer *KubernetesSolrZookeeperContainer `protobuf:"bytes,5,opt,name=zookeeper_container,json=zookeeperContainer,proto3" json:"zookeeper_container,omitempty"`
 	// The ingress configuration for the Solr deployment.
-	Ingress       *KubernetesSolrIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesSolrIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -71,6 +76,20 @@ func (x *KubernetesSolrSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use KubernetesSolrSpec.ProtoReflect.Descriptor instead.
 func (*KubernetesSolrSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *KubernetesSolrSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesSolrSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
 }
 
 func (x *KubernetesSolrSpec) GetSolrContainer() *KubernetesSolrSolrContainer {
@@ -400,19 +419,21 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\"\xe3\x04\n" +
-	"\x12KubernetesSolrSpec\x12\xb8\x01\n" +
-	"\x0esolr_container\x18\x01 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc2\x06\n" +
+	"\x12KubernetesSolrSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xb8\x01\n" +
+	"\x0esolr_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031Gi\"\r\n" +
 	"\x04solr\x12\x058.7.0R\rsolrContainer\x12k\n" +
-	"\x06config\x18\x02 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfigR\x06config\x12\xb8\x01\n" +
-	"\x13zookeeper_container\x18\x03 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
+	"\x06config\x18\x04 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfigR\x06config\x12\xb8\x01\n" +
+	"\x13zookeeper_container\x18\x05 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12j\n" +
-	"\aingress\x18\x04 \x01(\v2P.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngressR\aingress\"\xcc\x01\n" +
+	"\aingress\x18\x06 \x01(\v2P.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngressR\aingress\"\xcc\x01\n" +
 	"\x15KubernetesSolrIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
@@ -450,32 +471,36 @@ func file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_r
 
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_goTypes = []any{
-	(*KubernetesSolrSpec)(nil),               // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec
-	(*KubernetesSolrIngress)(nil),            // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngress
-	(*KubernetesSolrSolrContainer)(nil),      // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
-	(*KubernetesSolrSolrConfig)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfig
-	(*KubernetesSolrZookeeperContainer)(nil), // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer
-	(*kubernetes.ContainerResources)(nil),    // 5: org.project_planton.provider.kubernetes.ContainerResources
-	(*kubernetes.ContainerImage)(nil),        // 6: org.project_planton.provider.kubernetes.ContainerImage
-	(*descriptorpb.FieldOptions)(nil),        // 7: google.protobuf.FieldOptions
+	(*KubernetesSolrSpec)(nil),                   // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec
+	(*KubernetesSolrIngress)(nil),                // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngress
+	(*KubernetesSolrSolrContainer)(nil),          // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
+	(*KubernetesSolrSolrConfig)(nil),             // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfig
+	(*KubernetesSolrZookeeperContainer)(nil),     // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer
+	(*kubernetes.KubernetesClusterSelector)(nil), // 5: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 6: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerResources)(nil),        // 7: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.ContainerImage)(nil),            // 8: org.project_planton.provider.kubernetes.ContainerImage
+	(*descriptorpb.FieldOptions)(nil),            // 9: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_depIdxs = []int32{
-	2,  // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.solr_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
-	3,  // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.config:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfig
-	4,  // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer
-	1,  // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngress
-	5,  // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	6,  // 5: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	5,  // 6: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	7,  // 7: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_solr_container:extendee -> google.protobuf.FieldOptions
-	7,  // 8: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
-	2,  // 9: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_solr_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
-	2,  // 10: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	9,  // [9:11] is the sub-list for extension type_name
-	7,  // [7:9] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	5,  // 0: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	6,  // 1: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2,  // 2: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.solr_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
+	3,  // 3: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.config:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfig
+	4,  // 4: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer
+	1,  // 5: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngress
+	7,  // 6: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	8,  // 7: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	7,  // 8: org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	9,  // 9: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_solr_container:extendee -> google.protobuf.FieldOptions
+	9,  // 10: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
+	2,  // 11: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_solr_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
+	2,  // 12: org.project_planton.provider.kubernetes.kubernetessolr.v1.default_zookeeper_container:type_name -> org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainer
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	11, // [11:13] is the sub-list for extension type_name
+	9,  // [9:11] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_init() }

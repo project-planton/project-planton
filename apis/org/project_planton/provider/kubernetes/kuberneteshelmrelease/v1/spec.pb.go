@@ -8,6 +8,8 @@ package kuberneteshelmreleasev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,19 +29,23 @@ const (
 // By configuring the Helm chart specifications, you can deploy applications packaged as Helm charts with customized values.
 type KubernetesHelmReleaseSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this component on.
+	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
+	// Kubernetes namespace to install the operator.
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// The repository URL where the Helm chart is hosted.
 	// For example, "https://charts.helm.sh/stable".
 	// an example for chart-repo (redis chart) can be found in https://artifacthub.io/packages/helm/bitnami/redis?modal=install
-	Repo string `protobuf:"bytes,1,opt,name=repo,proto3" json:"repo,omitempty"`
+	Repo string `protobuf:"bytes,3,opt,name=repo,proto3" json:"repo,omitempty"`
 	// The name of the Helm chart to deploy.
 	// For example, "nginx-ingress".
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Name string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	// The version of the Helm chart to deploy.
 	// For example, "1.41.3".
-	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	Version string `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
 	// A map of key-value pairs representing custom values for the Helm chart.
 	// These values override the default settings in the chart's values.yaml file.
-	Values        map[string]string `protobuf:"bytes,4,rep,name=values,proto3" json:"values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Values        map[string]string `protobuf:"bytes,6,rep,name=values,proto3" json:"values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,6 +80,20 @@ func (*KubernetesHelmReleaseSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *KubernetesHelmReleaseSpec) GetTargetCluster() *kubernetes.KubernetesClusterSelector {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
+func (x *KubernetesHelmReleaseSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
+	}
+	return nil
+}
+
 func (x *KubernetesHelmReleaseSpec) GetRepo() string {
 	if x != nil {
 		return x.Repo
@@ -106,12 +126,14 @@ var File_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1\x1a\x1bbuf/validate/validate.proto\"\xb1\x02\n" +
-	"\x19KubernetesHelmReleaseSpec\x12\x1a\n" +
-	"\x04repo\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04repo\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12 \n" +
-	"\aversion\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aversion\x12\x7f\n" +
-	"\x06values\x18\x04 \x03(\v2g.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.ValuesEntryR\x06values\x1a9\n" +
+	"Korg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x90\x04\n" +
+	"\x19KubernetesHelmReleaseSpec\x12i\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x1a\n" +
+	"\x04repo\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04repo\x12\x1a\n" +
+	"\x04name\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12 \n" +
+	"\aversion\x18\x05 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aversion\x12\x7f\n" +
+	"\x06values\x18\x06 \x03(\v2g.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.ValuesEntryR\x06values\x1a9\n" +
 	"\vValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xff\x03\n" +
@@ -133,14 +155,18 @@ var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_p
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_proto_goTypes = []any{
 	(*KubernetesHelmReleaseSpec)(nil), // 0: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec
 	nil,                               // 1: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.ValuesEntry
+	(*kubernetes.KubernetesClusterSelector)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.values:type_name -> org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.ValuesEntry
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	3, // 1: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.values:type_name -> org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.ValuesEntry
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_proto_init() }

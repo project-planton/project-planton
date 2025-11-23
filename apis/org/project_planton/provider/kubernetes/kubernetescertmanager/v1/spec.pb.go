@@ -9,6 +9,7 @@ package kubernetescertmanagerv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -31,7 +32,7 @@ type KubernetesCertManagerSpec struct {
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Kubernetes namespace where kubernetes-cert-manager will be deployed.
-	Namespace *string `protobuf:"bytes,2,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"`
+	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// kubernetes-cert-manager version such as "v1.19.1". Used to set the image tag.
 	// Minimum version v1.16.4 is enforced for Cloudflare API compatibility.
 	KubernetesCertManagerVersion *string `protobuf:"bytes,3,opt,name=kubernetes_cert_manager_version,json=kubernetesCertManagerVersion,proto3,oneof" json:"kubernetes_cert_manager_version,omitempty"`
@@ -85,11 +86,11 @@ func (x *KubernetesCertManagerSpec) GetTargetCluster() *kubernetes.KubernetesClu
 	return nil
 }
 
-func (x *KubernetesCertManagerSpec) GetNamespace() string {
-	if x != nil && x.Namespace != nil {
-		return *x.Namespace
+func (x *KubernetesCertManagerSpec) GetNamespace() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Namespace
 	}
-	return ""
+	return nil
 }
 
 func (x *KubernetesCertManagerSpec) GetKubernetesCertManagerVersion() string {
@@ -563,17 +564,15 @@ var File_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xdd\x05\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x83\x06\n" +
 	"\x19KubernetesCertManagerSpec\x12i\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12>\n" +
-	"\tnamespace\x18\x02 \x01(\tB\x1b\x8a\xa6\x1d\x17kubernetes-cert-managerH\x00R\tnamespace\x88\x01\x01\x12W\n" +
-	"\x1fkubernetes_cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x1ckubernetesCertManagerVersion\x88\x01\x01\x12>\n" +
-	"\x12helm_chart_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x02R\x10helmChartVersion\x88\x01\x01\x12D\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12W\n" +
+	"\x1fkubernetes_cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x00R\x1ckubernetesCertManagerVersion\x88\x01\x01\x12>\n" +
+	"\x12helm_chart_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x10helmChartVersion\x88\x01\x01\x12D\n" +
 	"\x1fskip_install_self_signed_issuer\x18\x05 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12h\n" +
 	"\x04acme\x18\x06 \x01(\v2L.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfigB\x06\xbaH\x03\xc8\x01\x01R\x04acme\x12\x82\x01\n" +
-	"\rdns_providers\x18\a \x03(\v2S.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\f\n" +
-	"\n" +
-	"_namespaceB\"\n" +
+	"\rdns_providers\x18\a \x03(\v2S.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\"\n" +
 	" _kubernetes_cert_manager_versionB\x15\n" +
 	"\x13_helm_chart_version\"\x86\x01\n" +
 	"\n" +
@@ -630,20 +629,22 @@ var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_p
 	(*AzureDnsProvider)(nil),                     // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
 	(*CloudflareProvider)(nil),                   // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
 	(*kubernetes.KubernetesClusterSelector)(nil), // 7: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 8: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_depIdxs = []int32{
 	7, // 0: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	1, // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.acme:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
-	2, // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
-	3, // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider
-	4, // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.aws_route53:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53Provider
-	5, // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.azure_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
-	6, // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.cloudflare:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	8, // 1: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.acme:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfig
+	2, // 3: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.KubernetesCertManagerSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig
+	3, // 4: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.GcpCloudDnsProvider
+	4, // 5: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.aws_route53:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AwsRoute53Provider
+	5, // 6: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.azure_dns:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AzureDnsProvider
+	6, // 7: org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfig.cloudflare:type_name -> org.project_planton.provider.kubernetes.kubernetescertmanager.v1.CloudflareProvider
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_init() }
