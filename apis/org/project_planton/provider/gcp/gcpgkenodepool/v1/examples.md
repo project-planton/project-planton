@@ -28,6 +28,8 @@ spec:
     value: my-gcp-project
   clusterName:
     value: my-cluster
+  clusterLocation:
+    value: us-central1
   
   # Fixed size: 3 nodes (no autoscaling)
   nodeCount: 3
@@ -63,6 +65,8 @@ spec:
     value: dev-gcp-project
   clusterName:
     value: dev-cluster
+  clusterLocation:
+    value: us-central1
   
   # Cost-optimized machine type
   machineType: e2-medium
@@ -115,6 +119,8 @@ spec:
     value: prod-gcp-project
   clusterName:
     value: prod-cluster
+  clusterLocation:
+    value: us-central1
   
   # Production-grade machine type
   machineType: n2-standard-4
@@ -168,6 +174,8 @@ spec:
     value: prod-gcp-project
   clusterName:
     value: prod-cluster
+  clusterLocation:
+    value: us-central1
   
   # High-memory machine type (M2 series)
   machineType: m2-ultramem-208  # 208 vCPU, 5888 GB RAM
@@ -218,6 +226,8 @@ spec:
     value: ml-gcp-project
   clusterName:
     value: ml-cluster
+  clusterLocation:
+    value: us-central1
   
   # N1 series required for GPU attachment
   machineType: n1-standard-8
@@ -281,6 +291,8 @@ spec:
     value: prod-gcp-project
   clusterName:
     value: prod-cluster
+  clusterLocation:
+    value: us-central1
   
   # Compute-optimized machine type (C2 series)
   machineType: c2-standard-16  # 16 vCPU, 64 GB RAM, 3.8 GHz all-core turbo
@@ -323,6 +335,8 @@ clusterProjectId:
   value: my-gcp-project
 clusterName:
   value: my-cluster
+clusterLocation:
+  value: us-central1
 ```
 
 ### Using References to Other Resources
@@ -341,6 +355,11 @@ spec:
       kind: GcpGkeCluster
       name: my-cluster
       fieldPath: metadata.name
+  clusterLocation:
+    resource:
+      kind: GcpGkeCluster
+      name: my-cluster
+      fieldPath: spec.location
 ```
 
 This creates a dependency: the node pool waits for the cluster to be created before provisioning.

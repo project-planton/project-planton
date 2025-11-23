@@ -23,17 +23,26 @@ message GcpGkeNodePoolSpec {
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
   ];
 
+  // Location of the parent GKE cluster (region or zone).
+  // Must refer to an existing GcpGkeCluster resource in the same environment.
+  // Example: "us-central1" (regional) or "us-central1-a" (zonal)
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef cluster_location = 3 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpGkeCluster,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.location"
+  ];
+
   // Machine type for node VMs (e.g., "e2-medium", "n1-standard-4").
   // If unspecified, defaults to "e2-medium" (2 vCPU, 4 GB RAM).
-  optional string machine_type = 3 [(org.project_planton.shared.options.default) = "e2-medium"];
+  optional string machine_type = 4 [(org.project_planton.shared.options.default) = "e2-medium"];
 
   // Size of boot disk (GB) for each node. Min 10 GB. Defaults to 100 GB if unset.
   // Default 100 implied if not provided (handled in provisioning code or via options.default if supported).
-  uint32 disk_size_gb = 4;
+  uint32 disk_size_gb = 5;
 
   // Type of boot disk: "pd-standard", "pd-ssd", or "pd-balanced".
   // Defaults to "pd-standard" for unspecified.
-  optional string disk_type = 5 [
+  optional string disk_type = 6 [
     (org.project_planton.shared.options.default) = "pd-standard",
     (buf.validate.field).string = {
       in: [
@@ -45,19 +54,19 @@ message GcpGkeNodePoolSpec {
   ];
 
   // Node image type (OS image). Default is "COS_CONTAINERD" (Container-Optimized OS with containerd).
-  optional string image_type = 6 [(org.project_planton.shared.options.default) = "COS_CONTAINERD" /* (No validation on allowed values here; GKE accepts specific strings like "COS", "COS_CONTAINERD", "UBUNTU", etc.) */];
+  optional string image_type = 7 [(org.project_planton.shared.options.default) = "COS_CONTAINERD" /* (No validation on allowed values here; GKE accepts specific strings like "COS", "COS_CONTAINERD", "UBUNTU", etc.) */];
 
   // Service account email for nodes. If not provided, the GKE default node service account is used.
-  string service_account = 7;
+  string service_account = 8;
 
   // Auto-upgrade and Auto-repair settings for node management.
-  GcpGkeClusterNodePoolNodeManagement management = 8 [(buf.validate.field).required = false];
+  GcpGkeClusterNodePoolNodeManagement management = 9 [(buf.validate.field).required = false];
 
   // Whether to use Spot (preemptible) VMs for this node pool.
-  bool spot = 9;
+  bool spot = 10;
 
   // Kubernetes labels to apply to all nodes in this pool.
-  map<string, string> node_labels = 10;
+  map<string, string> node_labels = 11;
 
   // Oneof: either a fixed node count or autoscaling config must be provided.
   oneof node_pool_size {
@@ -72,7 +81,7 @@ message GcpGkeNodePoolSpec {
   // Must be 1-40 characters, lowercase letters, numbers, or hyphens.
   // Must start with a lowercase letter and end with a lowercase letter or number.
   // Example: "default-pool", "high-memory-pool"
-  string node_pool_name = 11 [
+  string node_pool_name = 12 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.pattern = "^[a-z]([a-z0-9-]{0,38}[a-z0-9])?$"
   ];

@@ -257,8 +257,8 @@ Compute Engine VMs (managed by GKE)
 ```
 
 **Foreign key resolution:**
-- `cluster_project_id` and `cluster_name` are foreign key references to the parent `GcpGkeCluster`
-- Pulumi performs a `container.LookupCluster()` to validate the cluster exists and fetch its location
+- `cluster_project_id`, `cluster_name`, and `cluster_location` are foreign key references to the parent `GcpGkeCluster`
+- All required cluster information is provided in the spec (no additional API lookups needed)
 - Node pool is created in the same location (region or zone) as the parent cluster
 
 ### Implicit Dependencies
