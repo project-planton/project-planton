@@ -15,13 +15,6 @@ variable "metadata" {
 variable "spec" {
   description = "spec"
   type = object({
-
-    # The Kubernetes cluster to install Argo CD on.
-    target_cluster = object({
-      # Name of the target Kubernetes cluster.
-      cluster_name = string
-    })
-
     # Kubernetes namespace to install Argo CD.
     namespace = string
 

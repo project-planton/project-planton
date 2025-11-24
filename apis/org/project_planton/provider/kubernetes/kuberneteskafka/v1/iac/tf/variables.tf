@@ -15,11 +15,6 @@ variable "metadata" {
 variable "spec" {
   description = "spec"
   type = object({
-    # Target Kubernetes cluster
-    target_cluster = object({
-      cluster_name = string
-    })
-
     # Kubernetes namespace
     namespace = string
 

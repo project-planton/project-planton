@@ -14,13 +14,6 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for the Zalando Postgres Operator deployment"
   type = object({
-
-    # The Kubernetes cluster to install this operator on
-    target_cluster = object({
-      # Name of the target Kubernetes cluster
-      cluster_name = string
-    })
-
     # Kubernetes namespace to install the operator
     namespace = string
 

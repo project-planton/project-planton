@@ -15,12 +15,6 @@ variable "metadata" {
 variable "spec" {
   description = "ClickHouse cluster specification"
   type = object({
-
-    # The Kubernetes cluster to install ClickHouse on
-    target_cluster = object({
-      name = string
-    })
-
     # Kubernetes namespace to install ClickHouse
     namespace = string
 

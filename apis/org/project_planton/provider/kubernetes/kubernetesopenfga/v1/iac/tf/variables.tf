@@ -15,12 +15,6 @@ variable "metadata" {
 variable "spec" {
   description = "spec"
   type = object({
-
-    # The Kubernetes cluster to install this component on
-    target_cluster = object({
-      name = string
-    })
-
     # Kubernetes namespace to install the component
     namespace = string
 
