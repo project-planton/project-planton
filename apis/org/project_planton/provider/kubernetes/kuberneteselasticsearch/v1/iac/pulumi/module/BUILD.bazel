@@ -17,7 +17,6 @@ go_library(
         "//apis/org/project_planton/shared/cloudresourcekind",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
-        "//pkg/kubernetes/kuberneteslabels",
         "//pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1:cert_manager",
         "//pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/elasticsearch/v1:elasticsearch",
         "//pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/kibana/v1beta1",

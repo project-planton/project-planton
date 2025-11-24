@@ -46,20 +46,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.Kuber
 		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Get namespace from spec (required field)
-	// Falls back to stackInput if spec namespace is empty
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
-	if locals.Namespace == "" && stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
-
-	// Final fallback to metadata.name
-	if locals.Namespace == "" {
-		locals.Namespace = target.Metadata.Name
-	}
-
+	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+
 	ctx.Export(OpUsername, pulumi.String(vars.RootUsername))
 	ctx.Export(OpPasswordSecretName, pulumi.String(target.Metadata.Name))
 	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.MongodbRootPasswordKey))

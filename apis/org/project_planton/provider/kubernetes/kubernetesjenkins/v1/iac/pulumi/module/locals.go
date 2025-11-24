@@ -49,19 +49,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.Kuber
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Get namespace from spec with fallback to stackInput
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
-	// Fallback to stackInput if provided
-	if stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
-
-	// Final fallback to metadata.name if namespace is still empty
-	if locals.Namespace == "" {
-		locals.Namespace = target.Metadata.Name
-	}
-
+	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceName = target.Metadata.Name

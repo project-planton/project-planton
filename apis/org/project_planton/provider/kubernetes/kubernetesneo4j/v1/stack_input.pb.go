@@ -29,10 +29,8 @@ type KubernetesNeo4JStackInput struct {
 	Target *KubernetesNeo4J `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
-	// kubernetes namespace
-	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *KubernetesNeo4JStackInput) Reset() {
@@ -79,22 +77,14 @@ func (x *KubernetesNeo4JStackInput) GetProviderConfig() *kubernetes.KubernetesPr
 	return nil
 }
 
-func (x *KubernetesNeo4JStackInput) GetKubernetesNamespace() string {
-	if x != nil {
-		return x.KubernetesNamespace
-	}
-	return ""
-}
-
 var File_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_input.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1aDorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x9f\x02\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/stack_input.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1aDorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xec\x01\n" +
 	"\x19KubernetesNeo4jStackInput\x12c\n" +
 	"\x06target\x18\x01 \x01(\v2K.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xda\x03\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xda\x03\n" +
 	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\x0fStackInputProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (

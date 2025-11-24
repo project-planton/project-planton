@@ -86,8 +86,8 @@ generate-cloud-resource-kind-map:
 generate-kubernetes-types:
 	pushd pkg/kubernetes/kubernetestypes;make build;popd
 
-.PHONY: go-build
-go-build: fmt deps vet
+.PHONY: build-go
+build-go: fmt deps vet
 	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .
 	GOOS=darwin GOARCH=arm64 ${build_cmd} -o ${build_dir}/${name}-darwin-arm64 .
 	GOOS=linux GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-linux .
@@ -95,12 +95,12 @@ go-build: fmt deps vet
 	openssl dgst -sha256 ${build_dir}/${name}-linux
 
 .PHONY: build-cli
-build-cli: go-build
+build-cli: build-go
 
 .PHONY: build
 build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle bazel-build-cli build-cli
 
-${build_dir}/${name}: go-build
+${build_dir}/${name}: build-go
 
 .PHONY: test
 test:

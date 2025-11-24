@@ -68,10 +68,10 @@ func initializeLocals(
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Get namespace from spec
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
-	// Export the namespace in which Neo4j will reside.
+	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	// Define pod selector labels that Helm or raw K8s resources might use.

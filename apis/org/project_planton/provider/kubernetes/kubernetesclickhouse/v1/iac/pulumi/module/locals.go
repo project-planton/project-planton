@@ -47,17 +47,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesclickhousev1.Ku
 	}
 
 	// Get namespace from spec (required field)
-	// Falls back to stackInput if spec namespace is empty
 	locals.Namespace = target.Spec.Namespace.GetValue()
-
-	if locals.Namespace == "" && stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
-
-	// Final fallback to metadata.name
-	if locals.Namespace == "" {
-		locals.Namespace = target.Metadata.Name
-	}
 
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 	ctx.Export(OpUsername, pulumi.String(vars.DefaultUsername))

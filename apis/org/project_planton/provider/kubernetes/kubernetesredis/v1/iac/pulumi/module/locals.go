@@ -46,9 +46,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesredisv1.Kuberne
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// get namespace from spec
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
+	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	locals.RedisPodSelectorLabels = map[string]string{
