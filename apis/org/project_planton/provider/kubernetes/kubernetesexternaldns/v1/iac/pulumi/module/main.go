@@ -81,8 +81,8 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	case spec.GetAks() != nil:
 		aks := spec.GetAks()
 		values["provider"] = pulumi.String("azure")
-		if aks.DnsZoneId != "" {
-			values["domainFilters"] = pulumi.StringArray{pulumi.String(aks.DnsZoneId)}
+		values["zoneIdFilters"] = pulumi.StringArray{
+			pulumi.String(aks.DnsZoneId.GetValue()),
 		}
 		if aks.ManagedIdentityClientId != "" {
 			annotations["azure.workload.identity/client-id"] =
@@ -137,7 +137,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 		// Configure extra args for Cloudflare-specific features only
 		extraArgs := pulumi.StringArray{
 			pulumi.String("--cloudflare-dns-records-per-page=5000"),
-			pulumi.String(fmt.Sprintf("--zone-id-filter=%s", cf.DnsZoneId)),
+			pulumi.String(fmt.Sprintf("--zone-id-filter=%s", cf.DnsZoneId.GetValue())),
 		}
 
 		// Add proxy flag if enabled

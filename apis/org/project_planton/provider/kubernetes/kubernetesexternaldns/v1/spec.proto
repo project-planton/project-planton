@@ -62,7 +62,11 @@ message KubernetesExternalDnsEksConfig {
 // KubernetesExternalDnsAksConfig defines configuration for ExternalDNS on AKS with Azure DNS.
 message KubernetesExternalDnsAksConfig {
   // The Azure DNS zone ID to use for ExternalDNS.
-  string dns_zone_id = 1;
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef dns_zone_id = 1 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = AzureDnsZone,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.zone_id"
+  ];
   // The Azure Managed Identity client ID to use for ExternalDNS.
   string managed_identity_client_id = 2;
 }
@@ -73,7 +77,11 @@ message KubernetesExternalDnsCloudflareConfig {
   string api_token = 1 [(buf.validate.field).required = true];
 
   // Cloudflare DNS zone ID to manage. ExternalDNS will only manage records in this zone.
-  string dns_zone_id = 2 [(buf.validate.field).required = true];
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef dns_zone_id = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = CloudflareDnsZone,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.zone_id"
+  ];
 
   // Enable Cloudflare proxy (orange cloud) for all managed DNS records.
   // When enabled, traffic routes through Cloudflare's edge network for DDoS protection, WAF, and CDN.

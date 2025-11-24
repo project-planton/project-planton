@@ -72,12 +72,12 @@ locals {
   eks_irsa_role_arn = local.is_eks ? try(var.spec.eks.irsa_role_arn_override, "") : ""
 
   # AKS configuration
-  aks_dns_zone_id = local.is_aks ? try(var.spec.aks.dns_zone_id, "") : ""
+  aks_dns_zone_id = local.is_aks ? try(var.spec.aks.dns_zone_id.value, "") : ""
   aks_managed_identity_client_id = local.is_aks ? try(var.spec.aks.managed_identity_client_id, "") : ""
 
   # Cloudflare configuration
   cf_api_token = local.is_cloudflare ? try(var.spec.cloudflare.api_token, "") : ""
-  cf_dns_zone_id = local.is_cloudflare ? try(var.spec.cloudflare.dns_zone_id, "") : ""
+  cf_dns_zone_id = local.is_cloudflare ? try(var.spec.cloudflare.dns_zone_id.value, "") : ""
   cf_is_proxied = local.is_cloudflare ? try(var.spec.cloudflare.is_proxied, false) : false
   cf_secret_name = local.is_cloudflare ? "cloudflare-api-token-${local.release_name}" : ""
 

@@ -176,7 +176,9 @@ module "external_dns_aks" {
 
   spec = {
     aks = {
-      dns_zone_id                = "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com"
+      dns_zone_id = {
+        value = "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com"
+      }
       managed_identity_client_id = "12345678-1234-1234-1234-123456789012"
     }
   }
@@ -226,8 +228,10 @@ module "external_dns_cloudflare" {
 
   spec = {
     cloudflare = {
-      api_token   = var.cloudflare_api_token
-      dns_zone_id = "1234567890abcdef1234567890abcdef"
+      api_token = var.cloudflare_api_token
+      dns_zone_id = {
+        value = "1234567890abcdef1234567890abcdef"
+      }
       is_proxied  = true
     }
   }

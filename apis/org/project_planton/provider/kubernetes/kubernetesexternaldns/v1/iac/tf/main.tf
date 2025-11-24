@@ -104,7 +104,7 @@ resource "helm_release" "external_dns" {
   dynamic "set" {
     for_each = local.is_aks && local.aks_dns_zone_id != "" ? [1] : []
     content {
-      name  = "domainFilters[0]"
+      name  = "zoneIdFilters[0]"
       value = local.aks_dns_zone_id
     }
   }

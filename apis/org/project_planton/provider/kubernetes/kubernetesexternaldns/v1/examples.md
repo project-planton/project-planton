@@ -139,7 +139,8 @@ spec:
   namespace:
     value: kubernetes-external-dns
   aks:
-    dns_zone_id: /subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com
+    dns_zone_id:
+      value: /subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com
     managed_identity_client_id: 12345678-1234-1234-1234-123456789012
 ```
 
@@ -172,7 +173,8 @@ spec:
     value: kubernetes-external-dns
   cloudflare:
     api_token: your-cloudflare-api-token-here
-    dns_zone_id: 1234567890abcdef1234567890abcdef
+    dns_zone_id:
+      value: 1234567890abcdef1234567890abcdef
 ```
 
 **How it works:**
@@ -204,7 +206,8 @@ spec:
     value: kubernetes-external-dns
   cloudflare:
     api_token: your-cloudflare-api-token-here
-    dns_zone_id: 1234567890abcdef1234567890abcdef
+    dns_zone_id:
+      value: 1234567890abcdef1234567890abcdef
     is_proxied: true
 ```
 

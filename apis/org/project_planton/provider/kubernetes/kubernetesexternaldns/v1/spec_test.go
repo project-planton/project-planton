@@ -146,7 +146,11 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 			ginkgo.It("should not return a validation error", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Aks{
 					Aks: &KubernetesExternalDnsAksConfig{
-						DnsZoneId:               "my-azure-dns-zone-id",
+						DnsZoneId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-azure-dns-zone-id",
+							},
+						},
 						ManagedIdentityClientId: "12345678-1234-1234-1234-123456789012",
 					},
 				}
@@ -155,13 +159,13 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 			})
 		})
 
-		ginkgo.Context("with minimal AKS config", func() {
-			ginkgo.It("should not return a validation error", func() {
+		ginkgo.Context("with missing dns_zone_id", func() {
+			ginkgo.It("should return a validation error", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Aks{
 					Aks: &KubernetesExternalDnsAksConfig{},
 				}
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).To(gomega.BeNil())
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 	})
@@ -171,8 +175,12 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 			ginkgo.It("should not return a validation error", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Cloudflare{
 					Cloudflare: &KubernetesExternalDnsCloudflareConfig{
-						ApiToken:  "my-cloudflare-api-token",
-						DnsZoneId: "1234567890abcdef1234567890abcdef",
+						ApiToken: "my-cloudflare-api-token",
+						DnsZoneId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "1234567890abcdef1234567890abcdef",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -184,8 +192,12 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 			ginkgo.It("should not return a validation error", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Cloudflare{
 					Cloudflare: &KubernetesExternalDnsCloudflareConfig{
-						ApiToken:  "my-cloudflare-api-token",
-						DnsZoneId: "1234567890abcdef1234567890abcdef",
+						ApiToken: "my-cloudflare-api-token",
+						DnsZoneId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "1234567890abcdef1234567890abcdef",
+							},
+						},
 						IsProxied: true,
 					},
 				}
@@ -198,7 +210,11 @@ var _ = ginkgo.Describe("KubernetesExternalDns Validation Tests", func() {
 			ginkgo.It("should return a validation error", func() {
 				input.Spec.ProviderConfig = &KubernetesExternalDnsSpec_Cloudflare{
 					Cloudflare: &KubernetesExternalDnsCloudflareConfig{
-						DnsZoneId: "1234567890abcdef1234567890abcdef",
+						DnsZoneId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "1234567890abcdef1234567890abcdef",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)

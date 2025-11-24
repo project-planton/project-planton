@@ -136,8 +136,10 @@ func main() {
 					},
 					ProviderConfig: &kubernetesexternaldnsv1.KubernetesExternalDnsSpec_Cloudflare{
 						Cloudflare: &kubernetesexternaldnsv1.KubernetesExternalDnsCloudflareConfig{
-							ApiToken:  "your-cloudflare-api-token",
-							DnsZoneId: "1234567890abcdef1234567890abcdef",
+							ApiToken: "your-cloudflare-api-token",
+							DnsZoneId: &v1.StringValueOrRef{
+								Value: "1234567890abcdef1234567890abcdef",
+							},
 							IsProxied: true,
 						},
 					},
@@ -193,8 +195,10 @@ func main() {
 					},
 					ProviderConfig: &kubernetesexternaldnsv1.KubernetesExternalDnsSpec_Cloudflare{
 						Cloudflare: &kubernetesexternaldnsv1.KubernetesExternalDnsCloudflareConfig{
-							ApiToken:  string(cloudflareToken),
-							DnsZoneId: dnsZoneId,
+							ApiToken: string(cloudflareToken),
+							DnsZoneId: &v1.StringValueOrRef{
+								Value: dnsZoneId,
+							},
 						},
 					},
 				},
