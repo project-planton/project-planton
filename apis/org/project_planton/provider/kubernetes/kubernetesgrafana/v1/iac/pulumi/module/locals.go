@@ -47,20 +47,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesgrafanav1.Kuber
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Get namespace from spec with fallback to stackInput
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
-	// Fallback to stackInput if provided
-	if stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
-
-	// Final fallback to metadata.name if namespace is still empty
-	if locals.Namespace == "" {
-		locals.Namespace = target.Metadata.Name
-	}
-
-	ctx.Export(Namespace, pulumi.String(locals.Namespace))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	locals.GrafanaPodSelectorLabels = map[string]string{
 		"app.kubernetes.io/name":     "grafana",
@@ -70,18 +60,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesgrafanav1.Kuber
 	locals.KubeServiceName = fmt.Sprintf("%s-grafana", target.Metadata.Name)
 
 	//export kubernetes service name
-	ctx.Export(Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KubeServiceName, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(OpKubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:80",
 		locals.Namespace, locals.KubeServiceName)
 
 	//export kube-port-forward command
-	ctx.Export(PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||
@@ -91,11 +81,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesgrafanav1.Kuber
 
 	// Use the hostname directly from spec
 	locals.IngressExternalHostname = fmt.Sprintf("https://%s", target.Spec.Ingress.Hostname)
-	ctx.Export(ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
 
 	// Internal hostname (private ingress) - prepend internal-
 	locals.IngressInternalHostname = fmt.Sprintf("https://internal-%s", target.Spec.Ingress.Hostname)
-	ctx.Export(InternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

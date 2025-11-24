@@ -11,8 +11,6 @@ message KubernetesDeploymentStackInput {
   KubernetesDeployment target = 1;
   //provider-config
   org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
-  //kubernetes namespace
-  string kubernetes_namespace = 3;
   //docker-config-json to be used for setting up image-pull-secret
   //
   //why is this field important?
@@ -41,5 +39,5 @@ message KubernetesDeploymentStackInput {
   //
   //for more details on image pull secrets, see:
   //https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  string docker_config_json = 4;
+  string docker_config_json = 3;
 }

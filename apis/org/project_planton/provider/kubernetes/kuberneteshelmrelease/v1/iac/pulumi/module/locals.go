@@ -40,21 +40,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteshelmreleasev1.K
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Priority order for namespace:
-	// 1. spec.namespace (required field with StringValueOrRef)
-	// 2. Override with stackInput.KubernetesNamespace if provided
-	// 3. Fall back to metadata.name if spec.namespace is empty
-
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
-	if locals.Namespace == "" {
-		locals.Namespace = target.Metadata.Name
-	}
-
-	if stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
-
+	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	return locals

@@ -7,7 +7,6 @@ import (
 	kubernetesargocdv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -64,24 +63,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesargocdv1.Kubern
 		resourceId = target.Metadata.Id
 	}
 
-	// Start with the required namespace field from spec
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
-
-	// If namespace is empty, fall back to computed default
-	if locals.Namespace == "" {
-		locals.Namespace = fmt.Sprintf("argo-%s", resourceId)
-	}
-
-	// Allow override from custom label
-	if target.Metadata.Labels != nil &&
-		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
-		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
-	}
-
-	// Allow override from stackInput (backward compatibility)
-	if stackInput.KubernetesNamespace != "" {
-		locals.Namespace = stackInput.KubernetesNamespace
-	}
 
 	// Export namespace
 	ctx.Export(Namespace, pulumi.String(locals.Namespace))

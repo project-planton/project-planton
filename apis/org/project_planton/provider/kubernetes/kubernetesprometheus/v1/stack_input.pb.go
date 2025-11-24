@@ -29,10 +29,8 @@ type KubernetesPrometheusStackInput struct {
 	Target *KubernetesPrometheus `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
-	// kubernetes namespace
-	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *KubernetesPrometheusStackInput) Reset() {
@@ -79,22 +77,14 @@ func (x *KubernetesPrometheusStackInput) GetProviderConfig() *kubernetes.Kuberne
 	return nil
 }
 
-func (x *KubernetesPrometheusStackInput) GetKubernetesNamespace() string {
-	if x != nil {
-		return x.KubernetesNamespace
-	}
-	return ""
-}
-
 var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/stack_input.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1aIorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xae\x02\n" +
+	"Qorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/stack_input.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1aIorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xfb\x01\n" +
 	"\x1eKubernetesPrometheusStackInput\x12m\n" +
 	"\x06target\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xfe\x03\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xfe\x03\n" +
 	"Ccom.org.project_planton.provider.kubernetes.kubernetesprometheus.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesprometheus.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesprometheus::V1b\x06proto3"
 
 var (

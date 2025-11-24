@@ -11,6 +11,4 @@ message KubernetesHelmReleaseStackInput {
   KubernetesHelmRelease target = 1;
   //provider-config
   org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
-  //kubernetes namespace
-  string kubernetes_namespace = 3;
 }

@@ -30,15 +30,6 @@ message CloudResourceKindMeta {
   string id_prefix = 4;
   //flag indicating whether the cloud-resource kind can be used to launch a service.
   bool is_service_kind = 5;
-  //kubernetes metadata. only applicable when provider is kubernetes
-  KubernetesCloudResourceKindMeta kubernetes_meta = 6;
-}
-
-// kubernetes cloud-resource kind meta
-message KubernetesCloudResourceKindMeta {
-  //prefix to be used for kubernetes namespace
-  //this is only applicable when provider is kubernetes
-  string namespace_prefix = 1;
 }
 
 enum CloudResourceKind {
@@ -320,128 +311,107 @@ enum CloudResourceKind {
     provider: kubernetes
     version: v1
     id_prefix: "k8sargo"
-    kubernetes_meta: {namespace_prefix: "argo"}
   }];
   KubernetesCronJob = 801 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8scron"
-    kubernetes_meta: {namespace_prefix: "cron"}
   }];
   KubernetesElasticsearch = 802 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8ses"
-    kubernetes_meta: {namespace_prefix: "elasticsearch"}
   }];
   KubernetesGitlab = 803 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sgl"
-    kubernetes_meta: {namespace_prefix: "gitlab"}
   }];
   KubernetesGrafana = 804 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sgfn"
-    kubernetes_meta: {namespace_prefix: "grafana"}
   }];
   KubernetesHelmRelease = 805 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8shelm"
-    kubernetes_meta: {namespace_prefix: "helm"}
   }];
   KubernetesJenkins = 806 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sjkn"
-    kubernetes_meta: {namespace_prefix: "jenkins"}
   }];
   KubernetesKafka = 807 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8skaf"
-    kubernetes_meta: {namespace_prefix: "kafka"}
   }];
   KubernetesKeycloak = 808 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8skc"
-    kubernetes_meta: {namespace_prefix: "keycloak"}
   }];
   KubernetesLocust = 809 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sloc"
-    kubernetes_meta: {namespace_prefix: "locust"}
   }];
   KubernetesDeployment = 810 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sdpl"
     is_service_kind: true
-    kubernetes_meta: {namespace_prefix: "service"}
   }];
   KubernetesMongodb = 811 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8smdb"
-    kubernetes_meta: {namespace_prefix: "mongo"}
   }];
   KubernetesNeo4j = 812 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sneo"
-    kubernetes_meta: {namespace_prefix: "neo4j"}
   }];
   KubernetesOpenFga = 813 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sfga"
-    kubernetes_meta: {namespace_prefix: "openfga"}
   }];
   KubernetesPostgres = 814 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8spg"
-    kubernetes_meta: {namespace_prefix: "postgres"}
   }];
   KubernetesPrometheus = 815 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sprom"
-    kubernetes_meta: {namespace_prefix: "prometheus"}
   }];
   KubernetesRedis = 816 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8sred"
-    kubernetes_meta: {namespace_prefix: "redis"}
   }];
   KubernetesSignoz = 817 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8ssgz"
-    kubernetes_meta: {namespace_prefix: "signoz"}
   }];
   KubernetesSolr = 818 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8ssolr"
-    kubernetes_meta: {namespace_prefix: "solr"}
   }];
   KubernetesTemporal = 819 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8stprl"
-    kubernetes_meta: {namespace_prefix: "temporal"}
   }];
   KubernetesNats = 820 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "k8snats"
-    kubernetes_meta: {namespace_prefix: "nats"}
   }];
   KubernetesCertManager = 821 [(kind_meta) = {
     provider: kubernetes
@@ -492,7 +462,6 @@ enum CloudResourceKind {
     provider: kubernetes
     version: v1
     id_prefix: "k8sclkhs"
-    kubernetes_meta: {namespace_prefix: "clickhouse"}
   }];
   KubernetesAltinityOperator = 831 [(kind_meta) = {
     provider: kubernetes
@@ -518,7 +487,6 @@ enum CloudResourceKind {
     provider: kubernetes
     version: v1
     id_prefix: "k8shrbr"
-    kubernetes_meta: {namespace_prefix: "harbor"}
   }];
   KubernetesNamespace = 836 [(kind_meta) = {
     provider: kubernetes

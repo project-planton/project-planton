@@ -29,10 +29,8 @@ type KubernetesGitlabStackInput struct {
 	Target *KubernetesGitlab `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
-	// kubernetes namespace
-	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *KubernetesGitlabStackInput) Reset() {
@@ -79,22 +77,14 @@ func (x *KubernetesGitlabStackInput) GetProviderConfig() *kubernetes.KubernetesP
 	return nil
 }
 
-func (x *KubernetesGitlabStackInput) GetKubernetesNamespace() string {
-	if x != nil {
-		return x.KubernetesNamespace
-	}
-	return ""
-}
-
 var File_org_project_planton_provider_kubernetes_kubernetesgitlab_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kubernetesgitlab_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/kubernetesgitlab/v1/stack_input.proto\x12;org.project_planton.provider.kubernetes.kubernetesgitlab.v1\x1aEorg/project_planton/provider/kubernetes/kubernetesgitlab/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa2\x02\n" +
+	"Morg/project_planton/provider/kubernetes/kubernetesgitlab/v1/stack_input.proto\x12;org.project_planton.provider.kubernetes.kubernetesgitlab.v1\x1aEorg/project_planton/provider/kubernetes/kubernetesgitlab/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xef\x01\n" +
 	"\x1aKubernetesGitlabStackInput\x12e\n" +
 	"\x06target\x18\x01 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetesgitlab.v1.KubernetesGitlabR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xe1\x03\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xe1\x03\n" +
 	"?com.org.project_planton.provider.kubernetes.kubernetesgitlab.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1;kubernetesgitlabv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetesgitlab.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgitlab\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgitlab\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetesgitlab::V1b\x06proto3"
 
 var (

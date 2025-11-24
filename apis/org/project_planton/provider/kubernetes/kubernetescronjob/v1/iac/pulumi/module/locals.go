@@ -44,7 +44,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetescronjobv1.Kuber
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// get namespace from spec
+	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
 	// export namespace as an output

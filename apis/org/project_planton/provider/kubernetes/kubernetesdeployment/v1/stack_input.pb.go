@@ -29,8 +29,6 @@ type KubernetesDeploymentStackInput struct {
 	Target *KubernetesDeployment `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
-	// kubernetes namespace
-	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	// docker-config-json to be used for setting up image-pull-secret
 	//
 	// why is this field important?
@@ -59,7 +57,7 @@ type KubernetesDeploymentStackInput struct {
 	//
 	// for more details on image pull secrets, see:
 	// https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-	DockerConfigJson string `protobuf:"bytes,4,opt,name=docker_config_json,json=dockerConfigJson,proto3" json:"docker_config_json,omitempty"`
+	DockerConfigJson string `protobuf:"bytes,3,opt,name=docker_config_json,json=dockerConfigJson,proto3" json:"docker_config_json,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -108,13 +106,6 @@ func (x *KubernetesDeploymentStackInput) GetProviderConfig() *kubernetes.Kuberne
 	return nil
 }
 
-func (x *KubernetesDeploymentStackInput) GetKubernetesNamespace() string {
-	if x != nil {
-		return x.KubernetesNamespace
-	}
-	return ""
-}
-
 func (x *KubernetesDeploymentStackInput) GetDockerConfigJson() string {
 	if x != nil {
 		return x.DockerConfigJson
@@ -126,12 +117,11 @@ var File_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_stack_i
 
 const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/stack_input.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1aIorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xdc\x02\n" +
+	"Qorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/stack_input.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1aIorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xa9\x02\n" +
 	"\x1eKubernetesDeploymentStackInput\x12m\n" +
 	"\x06target\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespace\x12,\n" +
-	"\x12docker_config_json\x18\x04 \x01(\tR\x10dockerConfigJsonB\xfe\x03\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x12,\n" +
+	"\x12docker_config_json\x18\x03 \x01(\tR\x10dockerConfigJsonB\xfe\x03\n" +
 	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
 
 var (

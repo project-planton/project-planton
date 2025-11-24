@@ -29,10 +29,8 @@ type KubernetesElasticsearchStackInput struct {
 	Target *KubernetesElasticsearch `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
-	// kubernetes namespace
-	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *KubernetesElasticsearchStackInput) Reset() {
@@ -79,22 +77,14 @@ func (x *KubernetesElasticsearchStackInput) GetProviderConfig() *kubernetes.Kube
 	return nil
 }
 
-func (x *KubernetesElasticsearchStackInput) GetKubernetesNamespace() string {
-	if x != nil {
-		return x.KubernetesNamespace
-	}
-	return ""
-}
-
 var File_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/stack_input.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1aLorg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xb7\x02\n" +
+	"Torg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/stack_input.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1aLorg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x84\x02\n" +
 	"!KubernetesElasticsearchStackInput\x12s\n" +
 	"\x06target\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
-	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x93\x04\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x93\x04\n" +
 	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\x0fStackInputProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
 
 var (
