@@ -47,19 +47,10 @@ go-stubs: go-stubs-init
 	done
 
 # --------------------------------------------------------------------------- #
-#  TypeScript protobuf/Connect RPC stub generation
-# --------------------------------------------------------------------------- #
-.PHONY: ts-stubs
-ts-stubs:
-	@echo "Generating TypeScript stubs..."
-	@./scripts/generate-ts-stubs.sh || true
-	@echo "✅ TypeScript stubs generated"
-
-# --------------------------------------------------------------------------- #
-#  Main generation target
+#  Main generation target (includes both Go and TypeScript via buf.gen.yaml)
 # --------------------------------------------------------------------------- #
 .PHONY: generate
-generate: go-stubs ts-stubs
+generate: go-stubs
 	@echo "✅ All proto code generated"
 
 .PHONY: lint
