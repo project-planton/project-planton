@@ -1,0 +1,39 @@
+version: v2
+managed:
+  enabled: true
+  disable:
+    - file_option: go_package
+      module: google/protobuf/empty
+    - file_option: go_package
+      module: google/protobuf/timestamp
+    - file_option: go_package
+      module: buf.build/bufbuild/protovalidate
+  override:
+    - file_option: optimize_for
+      value: SPEED
+    - file_option: go_package_prefix
+      value: github.com/project-planton/project-planton/backend/apis/gen/go
+plugins:
+  # Generate Go code for protocol buffers
+  - remote: buf.build/protocolbuffers/go:v1.36.6
+    out: gen/go
+    opt:
+      - paths=source_relative
+  # Generate Go code for Connect RPC
+  - remote: buf.build/connectrpc/go:v1.16.2
+    out: gen/go
+    opt:
+      - paths=source_relative
+      - require_unimplemented_servers=false
+  # Generate TypeScript protobuf types (for web-app)
+  # This generates the .pb.js files that Connect RPC imports
+  - remote: buf.build/protocolbuffers/js:v4.0.1
+    out: ../../web-app/src/gen
+    opt:
+      - import_style=es6
+  # Generate TypeScript code for Connect RPC (for web-app)
+  # This generates the service definitions that import the protobuf types above
+  - remote: buf.build/connectrpc/es:v1.6.1
+    out: ../../web-app/src/gen
+    opt:
+      - target=ts

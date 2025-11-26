@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package backend.v1;
+
+option go_package = "github.com/project-planton/project-planton/backend/apis/gen/go/proto;v1";
+
+import "google/protobuf/timestamp.proto";
+
+// DeploymentComponentService provides operations for managing deployment components.
+service DeploymentComponentService {
+  // ListDeploymentComponents returns a list of deployment components.
+  // Supports optional filtering by provider and kind.
+  rpc ListDeploymentComponents(ListDeploymentComponentsRequest) returns (ListDeploymentComponentsResponse);
+}
+
+// Request message for listing deployment components.
+message ListDeploymentComponentsRequest {
+  // Optional filter by provider (e.g., "aws", "gcp", "kubernetes").
+  optional string provider = 1;
+
+  // Optional filter by kind (e.g., "AwsRdsInstance", "PostgresKubernetes").
+  optional string kind = 2;
+}
+
+// Response message containing a list of deployment components.
+message ListDeploymentComponentsResponse {
+  // List of deployment components.
+  repeated DeploymentComponent components = 1;
+}
+
+// DeploymentComponent represents a deployment component resource.
+message DeploymentComponent {
+  // Unique identifier for the deployment component.
+  string id = 1;
+
+  // The kind of the deployment component (e.g., "AwsRdsInstance", "PostgresKubernetes").
+  string kind = 2;
+
+  // The provider of the deployment component (e.g., "aws", "gcp", "kubernetes").
+  string provider = 3;
+
+  // The name of the deployment component.
+  string name = 4;
+
+  // The version of the deployment component API (e.g., "v1").
+  string version = 5;
+
+  // The ID prefix used for this deployment component type.
+  string id_prefix = 6;
+
+  // Whether this deployment component can be used to launch a service.
+  bool is_service_kind = 7;
+
+  // Timestamp when the component was created.
+  google.protobuf.Timestamp created_at = 8;
+
+  // Timestamp when the component was last updated.
+  google.protobuf.Timestamp updated_at = 9;
+}
+

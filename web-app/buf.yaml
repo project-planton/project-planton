@@ -1,0 +1,11 @@
+version: v2
+modules:
+  - path: proto
+    name: buf.build/project-planton/web-app
+lint:
+  use:
+    - DEFAULT
+breaking:
+  use:
+    - FILE
+

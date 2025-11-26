@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package webapp.v1;
+
+// Command service for write operations
+service CommandService {
+  // Example command operation
+  rpc ExecuteCommand(CommandRequest) returns (CommandResponse);
+}
+
+// Query service for read operations
+service QueryService {
+  // Example query operation
+  rpc ExecuteQuery(QueryRequest) returns (QueryResponse);
+}
+
+// Command request message
+message CommandRequest {
+  string action = 1;
+  map<string, string> parameters = 2;
+}
+
+// Command response message
+message CommandResponse {
+  bool success = 1;
+  string message = 2;
+  string result_id = 3;
+}
+
+// Query request message
+message QueryRequest {
+  string query_type = 1;
+  map<string, string> filters = 2;
+}
+
+// Query response message
+message QueryResponse {
+  bool success = 1;
+  repeated QueryResult results = 2;
+}
+
+// Query result item
+message QueryResult {
+  string id = 1;
+  map<string, string> data = 2;
+}
+

@@ -1,0 +1,12 @@
+version: v2
+plugins:
+  - plugin: buf.build/connectrpc/es
+    out: src/gen
+    opt:
+      - target=ts
+  - plugin: buf.build/protocolbuffers/js
+    out: src/gen
+    opt:
+      - import_style=commonjs
+      - target=static-module
+
