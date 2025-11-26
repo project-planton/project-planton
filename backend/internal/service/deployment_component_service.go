@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"connectrpc.com/connect"
-	v1 "github.com/project-planton/project-planton/backend/apis/gen/go/proto"
+	backendv1 "github.com/project-planton/project-planton/backend/apis/gen/go/proto"
 )
 
 // DeploymentComponentService implements the DeploymentComponentService RPC.
@@ -27,8 +27,8 @@ func NewDeploymentComponentService(repo *database.DeploymentComponentRepository)
 // ListDeploymentComponents retrieves a list of deployment components with optional filters.
 func (s *DeploymentComponentService) ListDeploymentComponents(
 	ctx context.Context,
-	req *connect.Request[v1.ListDeploymentComponentsRequest],
-) (*connect.Response[v1.ListDeploymentComponentsResponse], error) {
+	req *connect.Request[backendv1.ListDeploymentComponentsRequest],
+) (*connect.Response[backendv1.ListDeploymentComponentsResponse], error) {
 	logrus.WithFields(logrus.Fields{
 		"provider": req.Msg.Provider,
 		"kind":     req.Msg.Kind,
@@ -50,9 +50,9 @@ func (s *DeploymentComponentService) ListDeploymentComponents(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list deployment components: %w", err))
 	}
 
-	protoComponents := make([]*v1.DeploymentComponent, 0, len(components))
+	protoComponents := make([]*backendv1.DeploymentComponent, 0, len(components))
 	for _, comp := range components {
-		protoComp := &v1.DeploymentComponent{
+		protoComp := &backendv1.DeploymentComponent{
 			Id:            comp.ID.Hex(),
 			Kind:          comp.Kind,
 			Provider:      comp.Provider,
@@ -72,7 +72,7 @@ func (s *DeploymentComponentService) ListDeploymentComponents(
 		protoComponents = append(protoComponents, protoComp)
 	}
 
-	return connect.NewResponse(&v1.ListDeploymentComponentsResponse{
+	return connect.NewResponse(&backendv1.ListDeploymentComponentsResponse{
 		Components: protoComponents,
 	}), nil
 }

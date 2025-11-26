@@ -9,7 +9,7 @@ import (
 	"github.com/project-planton/project-planton/backend/internal/service"
 	"github.com/sirupsen/logrus"
 
-	v1connect "github.com/project-planton/project-planton/backend/apis/gen/go/proto/v1connect"
+	backendv1connect "github.com/project-planton/project-planton/backend/apis/gen/go/proto/backendv1connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
@@ -83,7 +83,7 @@ func NewServer(cfg *Config) *Server {
 	mux := http.NewServeMux()
 
 	// Register the DeploymentComponentService
-	path, handler := v1connect.NewDeploymentComponentServiceHandler(deploymentComponentService)
+	path, handler := backendv1connect.NewDeploymentComponentServiceHandler(deploymentComponentService)
 	// Wrap handler with CORS middleware
 	mux.Handle(path, corsMiddleware(handler))
 

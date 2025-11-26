@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { createClient, Client } from '@connectrpc/connect';
 import { createGrpcWebTransport } from '@connectrpc/connect-web';
 import { AppContext } from '@/contexts';
-import { DescService } from '@bufbuild/protobuf';
+import { GenService } from '@bufbuild/protobuf/codegenv1';
 
 function addGlobalErrorHandling(client: any) {
   for (const methodName of Object.keys(client)) {
@@ -29,7 +29,7 @@ function addGlobalErrorHandling(client: any) {
   return client;
 }
 
-export const useConnectRpcClient = <T extends DescService>(service: T): Client<T> | null => {
+export const useConnectRpcClient = <T extends GenService<any>>(service: T): Client<T> | null => {
   const { connectHost } = useContext(AppContext);
   const [client, setClient] = useState<Client<T> | null>(null);
 
@@ -38,7 +38,7 @@ export const useConnectRpcClient = <T extends DescService>(service: T): Client<T
 
     const transport = createGrpcWebTransport({
       baseUrl: connectHost,
-      useBinaryFormat: true,
+      useBinaryFormat: true, // Binary format now works with proper field definitions in schemas
     });
 
     const newClient = createClient(service, transport);

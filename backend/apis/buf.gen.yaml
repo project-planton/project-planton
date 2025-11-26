@@ -25,14 +25,12 @@ plugins:
     opt:
       - paths=source_relative
       - require_unimplemented_servers=false
-  # Generate TypeScript protobuf types (for web-app)
-  # This generates the .pb.js files that Connect RPC imports
-  - remote: buf.build/protocolbuffers/js:v4.0.1
+  # Generate TypeScript protobuf types compatible with Connect RPC binary format
+  - remote: buf.build/bufbuild/es:v2.2.2
     out: ../../web-app/src/gen
     opt:
-      - import_style=es6
-  # Generate TypeScript code for Connect RPC (for web-app)
-  # This generates the service definitions that import the protobuf types above
+      - target=ts
+  # Generate TypeScript code for Connect RPC
   - remote: buf.build/connectrpc/es:v1.6.1
     out: ../../web-app/src/gen
     opt:
