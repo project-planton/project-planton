@@ -2,5 +2,6 @@ go 1.24.7
 
 use (
 	.
+	./app/backend
 	./buf/lint/optional-linter
 )

@@ -29,3 +29,10 @@ cursor/
 **/iac/pulumi/pulumi
 _cursor/
 _a-gitignored-workspace
+# Backend generated files
+backend/apis/gen/
+backend/bin/
+backend/server
+
+# Web-app generated files
+web-app/src/gen/
