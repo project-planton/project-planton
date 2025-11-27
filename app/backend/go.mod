@@ -4,6 +4,7 @@ go 1.24.7
 
 require (
 	connectrpc.com/connect v1.16.2
+	github.com/rs/cors v1.11.1
 	github.com/sirupsen/logrus v1.9.3
 	go.mongodb.org/mongo-driver v1.16.1
 	golang.org/x/net v0.41.0

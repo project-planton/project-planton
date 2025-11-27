@@ -1,6 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { ListItem, Divider } from '@mui/material';
+import { AppContext } from '@/contexts';
 import {
   Dashboard as DashboardIcon,
   Menu as MenuIcon,
@@ -26,7 +27,7 @@ import {
   StyledListItemText,
   BadgeContainer,
   StyledDivider,
-} from './styled';
+} from '@/components/layout/sidebar/styled';
 
 interface MenuItem {
   text: string;
@@ -96,37 +97,37 @@ const menuGroups: MenuGroup[] = [
 export const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const [open, setOpen] = useState(true);
+  const { navbarOpen, setNavbarOpen } = useContext(AppContext);
 
-  const handleToggle = () => {
-    setOpen(!open);
-  };
+  const handleNavbarToggle = useCallback(() => {
+    setNavbarOpen(!navbarOpen);
+  }, [setNavbarOpen, navbarOpen]);
 
   const handleNavigation = (path: string) => {
     router.push(path);
   };
 
   return (
-    <StyledDrawer variant="permanent" open={open}>
+    <StyledDrawer variant="permanent" open={navbarOpen}>
       <SidebarContainer>
         <ContentContainer>
           {menuGroups.map((group, groupIndex) => (
             <React.Fragment key={groupIndex}>
-              {group.title && open && <MenuGroupTitle>{group.title}</MenuGroupTitle>}
+              {group.title && navbarOpen && <MenuGroupTitle>{group.title}</MenuGroupTitle>}
               <StyledList>
                 {group.items.map((item) => {
                   const isActive = pathname === item.path;
                   return (
                     <ListItem key={item.text} disablePadding>
                       <StyledListItemButton
-                        open={open}
+                        open={navbarOpen}
                         selected={isActive}
                         onClick={() => handleNavigation(item.path)}
                       >
-                        <StyledListItemIcon open={open}>{item.icon}</StyledListItemIcon>
-                        {open && (
+                        <StyledListItemIcon open={navbarOpen}>{item.icon}</StyledListItemIcon>
+                        {navbarOpen && (
                           <>
-                            <StyledListItemText open={open} primary={item.text} />
+                            <StyledListItemText open={navbarOpen} primary={item.text} />
                             {item.badge !== undefined && (
                               <BadgeContainer>{item.badge}</BadgeContainer>
                             )}
@@ -137,19 +138,18 @@ export const Sidebar = () => {
                   );
                 })}
               </StyledList>
-              {groupIndex < menuGroups.length - 1 && open && <StyledDivider />}
+              {groupIndex < menuGroups.length - 1 && navbarOpen && <StyledDivider />}
             </React.Fragment>
           ))}
         </ContentContainer>
 
-        <StyledBottomSection open={open}>
+        <StyledBottomSection open={navbarOpen}>
           <Divider />
-          <StyledToggleIconButton onClick={handleToggle} size="small">
-            {open ? <ChevronLeft /> : <MenuIcon />}
+          <StyledToggleIconButton onClick={handleNavbarToggle} size="small">
+            {navbarOpen ? <ChevronLeft /> : <MenuIcon />}
           </StyledToggleIconButton>
         </StyledBottomSection>
       </SidebarContainer>
     </StyledDrawer>
   );
 };
-

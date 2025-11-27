@@ -7,13 +7,12 @@ import {
   InputBase,
   LinearProgress,
   Menu,
-  MenuItem,
   Stack,
   styled,
   Toolbar,
   Typography,
 } from '@mui/material';
-import { AccountCircle, Logout, NotificationsOutlined, Search as SearchIcon, Settings } from '@mui/icons-material';
+import { Search as SearchIcon } from '@mui/icons-material';
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
@@ -133,4 +132,3 @@ export const StyledMenuItemIcon = styled('span')(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
 }));
-

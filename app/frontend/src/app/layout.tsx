@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Layout } from '@/components';
 import { Providers } from '@/components/providers';
+import { getAllCookiesParsed, getCookieThemeMode, getCookieNavbarOpen } from '@/lib/server/cookies';
 
 export const metadata: Metadata = {
   title: 'Project Planton Web App',
@@ -18,14 +19,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // Default to localhost:50051 if API_ENDPOINT is not set
   const connectHost = process.env.API_ENDPOINT || 'http://localhost:50051';
 
+  // Get cookies for SSR
+  const allCookies = getAllCookiesParsed();
+  const cookieThemeMode = getCookieThemeMode(allCookies);
+  const cookieNavbarOpen = getCookieNavbarOpen(allCookies);
+
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <Providers connectHost={connectHost}>
+        <Providers
+          connectHost={connectHost}
+          cookieThemeMode={cookieThemeMode}
+          cookieNavbarOpen={cookieNavbarOpen}
+        >
           <Layout>{children}</Layout>
         </Providers>
       </body>
     </html>
   );
 }
-

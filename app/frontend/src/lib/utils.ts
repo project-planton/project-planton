@@ -1,3 +1,6 @@
+import { Timestamp } from 'node_modules/@bufbuild/protobuf/dist/esm/wkt/gen/google/protobuf/timestamp_pb';
+import moment from 'moment';
+
 export const Utils = {
   setStorage(key: string, data: any): void {
     if (typeof window !== 'undefined') {
@@ -43,3 +46,9 @@ export const placeholderErrHandler = () => {
    */
 };
 
+export const formatTimestampToDate = (timestamp: Timestamp, format = 'DD/MM/YYYY, HH:mm:ss') => {
+  let date: Date;
+  if (typeof timestamp === 'string') date = new Date(timestamp);
+  else if (timestamp?.seconds) date = new Date(Number(timestamp.seconds) * 1000);
+  return moment(date).format(format);
+};

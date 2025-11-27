@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { StyledEngineProvider, Box } from '@mui/material';
+import { StyledEngineProvider } from '@mui/material';
 import { Header } from './header';
 import { Sidebar } from './sidebar';
 import { StyledContainer, StyledWrapperBox } from '@/components/layout/styled';
@@ -15,11 +15,8 @@ export const Layout = ({ children }: LayoutProps) => {
       <Header />
       <StyledWrapperBox>
         <Sidebar />
-        <StyledContainer>
-          {children}
-        </StyledContainer>
+        <StyledContainer>{children}</StyledContainer>
       </StyledWrapperBox>
     </StyledEngineProvider>
   );
 };
-

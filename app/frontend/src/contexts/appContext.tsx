@@ -11,9 +11,11 @@ import {
   Severity,
   THEME,
   PCS_THEME_IDENTIFIER,
+  NAVBAR_OPEN,
 } from '@/contexts/models';
 import { NextFont } from 'next/dist/compiled/@next/font';
 import { Utils } from '@/lib/utils';
+import { setCookieThemeMode, setCookieNavbarOpen } from '@/lib/cookie-utils';
 
 type Props = {
   connectHost: string;
@@ -22,6 +24,8 @@ type Props = {
 
 type PropsWithChildren = Props & {
   children: React.ReactNode;
+  cookieThemeMode?: PCThemeType;
+  cookieNavbarOpen?: boolean;
 };
 
 const defaultAppContext: AppContextType = {
@@ -33,11 +37,19 @@ const defaultAppContext: AppContextType = {
   setTitle: null,
   pageLoading: false,
   setPageLoading: null,
+  navbarOpen: false,
+  setNavbarOpen: null,
 };
 
 export const AppContext = createContext<AppContextType>(defaultAppContext);
 
-export const AppContextProvider = ({ children, connectHost, font }: PropsWithChildren) => {
+export const AppContextProvider = ({
+  children,
+  connectHost,
+  font,
+  cookieThemeMode,
+  cookieNavbarOpen,
+}: PropsWithChildren) => {
   const [title, setTitle] = useState('');
   const [snackPack, setSnackPack] = useState<ISnack[]>([]);
   const [snackMsg, setSnackMsg] = useState<ISnack | undefined>(undefined);
@@ -45,7 +57,28 @@ export const AppContextProvider = ({ children, connectHost, font }: PropsWithChi
   const [pageLoading, setPageLoading] = useState(false);
   const [connectRpcHost] = useState(connectHost);
   const isDarkThemePreferred = useMediaQuery('(prefers-color-scheme: dark)');
-  const existingMode = Utils.getStorage(PCS_THEME_IDENTIFIER) as PCThemeType | undefined;
+
+  const [existingMode] = useState(() => {
+    if (cookieThemeMode !== null && cookieThemeMode !== undefined) {
+      return cookieThemeMode;
+    }
+    const stored = Utils.getStorage(PCS_THEME_IDENTIFIER) as PCThemeType;
+    return stored !== null && stored !== undefined ? stored : THEME.LIGHT;
+  });
+
+  const [navbarOpenState, setNavbarOpenState] = useState(() => {
+    if (cookieNavbarOpen !== null && cookieNavbarOpen !== undefined) {
+      return cookieNavbarOpen;
+    }
+    const stored = Utils.getStorage(NAVBAR_OPEN) as boolean;
+    return stored !== null && stored !== undefined ? stored : true;
+  });
+
+  const setNavbarOpen = useCallback((open: boolean) => {
+    setNavbarOpenState(open);
+    Utils.setStorage(NAVBAR_OPEN, open);
+    setCookieNavbarOpen(open);
+  }, []);
 
   useEffect(() => {
     if (snackPack.length && !snackMsg) {
@@ -67,8 +100,8 @@ export const AppContextProvider = ({ children, connectHost, font }: PropsWithChi
   }, [existingMode, isDarkThemePreferred]);
 
   const [theme, setTheme] = useState<PCTheme>({
-    mode: THEME.LIGHT,
-    ...appTheme(THEME.LIGHT, font),
+    mode: themeMode,
+    ...appTheme(themeMode, font),
   });
 
   useEffect(() => {
@@ -79,14 +112,18 @@ export const AppContextProvider = ({ children, connectHost, font }: PropsWithChi
     setSnackPack((prev) => [...prev, { id: message, message, severity: svrty }]);
   }, []);
 
-  const changeTheme = useCallback((type: PCThemeType) => {
-    const newTheme = {
-      mode: type,
-      ...appTheme(type, font),
-    };
-    setTheme(newTheme);
-    Utils.setStorage(PCS_THEME_IDENTIFIER, type);
-  }, [font]);
+  const changeTheme = useCallback(
+    (type: PCThemeType) => {
+      const newTheme = {
+        mode: type,
+        ...appTheme(type, font),
+      };
+      setTheme(newTheme);
+      Utils.setStorage(PCS_THEME_IDENTIFIER, type);
+      setCookieThemeMode(type);
+    },
+    [font]
+  );
 
   const handleSetTitle = useCallback((newTitle: string) => {
     setTitle(newTitle);
@@ -106,8 +143,21 @@ export const AppContextProvider = ({ children, connectHost, font }: PropsWithChi
       pageLoading,
       setPageLoading: handleSetPageLoading,
       connectHost: connectRpcHost,
+      navbarOpen: navbarOpenState,
+      setNavbarOpen,
     }),
-    [title, theme, changeTheme, openSnackbar, handleSetTitle, pageLoading, handleSetPageLoading, connectRpcHost]
+    [
+      title,
+      theme,
+      changeTheme,
+      openSnackbar,
+      handleSetTitle,
+      pageLoading,
+      handleSetPageLoading,
+      connectRpcHost,
+      navbarOpenState,
+      setNavbarOpen,
+    ]
   );
 
   return (
@@ -119,4 +169,3 @@ export const AppContextProvider = ({ children, connectHost, font }: PropsWithChi
     </AppContext.Provider>
   );
 };
-

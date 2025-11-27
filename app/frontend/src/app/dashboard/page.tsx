@@ -2,7 +2,10 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Typography, Grid2, Button, Box, Alert } from '@mui/material';
 import { create } from '@bufbuild/protobuf';
-import { ListDeploymentComponentsRequestSchema } from '@/gen/proto/deployment_component_service_pb';
+import {
+  DeploymentComponent,
+  ListDeploymentComponentsRequestSchema,
+} from '@/gen/proto/deployment_component_service_pb';
 import {
   DashboardContainer,
   StyledGrid2,
@@ -15,35 +18,25 @@ import { DataTable, Column, Action } from '@/components/shared/data-table';
 import { Edit, Delete, Visibility, Refresh } from '@mui/icons-material';
 import { StatusBadge } from '@/components/shared/data-table/styled';
 import { useDashboardQuery } from '@/app/dashboard/_services/query';
+import { Timestamp } from '@bufbuild/protobuf/wkt';
+import { formatTimestampToDate } from '@/lib';
 
-// Removed SampleData interface - using DeploymentComponentData only
-
-interface DeploymentComponentData {
-  id: string;
-  kind: string;
-  provider: string;
-  name: string;
-  version: string;
-  idPrefix: string;
-  isServiceKind: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+// Removed SampleData interface - using DeploymentComponent only
 
 export default function DashboardPage() {
   const { query } = useDashboardQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [selectedRows, setSelectedRows] = useState<DeploymentComponentData[]>([]);
-  const [sortColumn, setSortColumn] = useState<keyof DeploymentComponentData | string>('name');
+  const [selectedRows, setSelectedRows] = useState<DeploymentComponent[]>([]);
+  const [sortColumn, setSortColumn] = useState<keyof DeploymentComponent | string>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [deploymentComponents, setDeploymentComponents] = useState<DeploymentComponentData[]>([]);
+  const [deploymentComponents, setDeploymentComponents] = useState<DeploymentComponent[]>([]);
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiLoading, setApiLoading] = useState(false);
 
   // No sample data - using deployment components from API
 
-  const columns: Column<DeploymentComponentData>[] = useMemo(
+  const columns: Column<DeploymentComponent>[] = useMemo(
     () => [
       { id: 'name', label: 'Name', sortable: true },
       { id: 'kind', label: 'Kind', sortable: true },
@@ -55,22 +48,20 @@ export default function DashboardPage() {
         label: 'Service Kind',
         sortable: true,
         render: (value: boolean) => (
-          <StatusBadge $status={value ? 'active' : 'inactive'}>
-            {value ? 'Yes' : 'No'}
-          </StatusBadge>
+          <StatusBadge $status={value ? 'active' : 'inactive'}>{value ? 'Yes' : 'No'}</StatusBadge>
         ),
       },
       {
         id: 'createdAt',
         label: 'Created At',
         sortable: true,
-        render: (value: Date) => value?.toLocaleDateString() || ''
+        render: (value: Timestamp) => formatTimestampToDate(value, 'DD/MM/YYYY'),
       },
     ],
     []
   );
 
-  const actions: Action<DeploymentComponentData>[] = useMemo(
+  const actions: Action<DeploymentComponent>[] = useMemo(
     () => [
       {
         label: 'View',
@@ -111,7 +102,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSelectRow = (row: DeploymentComponentData, selected: boolean) => {
+  const handleSelectRow = (row: DeploymentComponent, selected: boolean) => {
     if (selected) {
       setSelectedRows([...selectedRows, row]);
     } else {
@@ -119,7 +110,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSort = (columnId: keyof DeploymentComponentData | string, order: 'asc' | 'desc') => {
+  const handleSort = (columnId: keyof DeploymentComponent | string, order: 'asc' | 'desc') => {
     setSortColumn(columnId);
     setSortOrder(order);
   };
@@ -145,12 +136,7 @@ export default function DashboardPage() {
     query
       .listDeploymentComponents(create(ListDeploymentComponentsRequestSchema))
       .then((result) => {
-        const convertedComponents = (result?.components || []).map(comp => ({
-          ...comp,
-          createdAt: comp.createdAt ? new Date(Number(comp.createdAt.seconds) * 1000 + Math.floor((comp.createdAt.nanos || 0) / 1000000)) : undefined,
-          updatedAt: comp.updatedAt ? new Date(Number(comp.updatedAt.seconds) * 1000 + Math.floor((comp.updatedAt.nanos || 0) / 1000000)) : undefined,
-        }));
-        setDeploymentComponents(convertedComponents);
+        setDeploymentComponents(result.components);
         setApiLoading(false);
       })
       .catch((err: any) => {
@@ -163,7 +149,6 @@ export default function DashboardPage() {
   // Auto-load on mount
   useEffect(() => {
     if (query) {
-      console.log('query', query);
       handleLoadDeploymentComponents();
     }
   }, [query, handleLoadDeploymentComponents]);
@@ -172,8 +157,8 @@ export default function DashboardPage() {
   const sortedData = useMemo(() => {
     const sorted = [...deploymentComponents];
     sorted.sort((a, b) => {
-      const aValue = a[sortColumn as keyof DeploymentComponentData];
-      const bValue = b[sortColumn as keyof DeploymentComponentData];
+      const aValue = a[sortColumn as keyof DeploymentComponent];
+      const bValue = b[sortColumn as keyof DeploymentComponent];
       if (sortOrder === 'asc') {
         return aValue > bValue ? 1 : -1;
       }

@@ -1,5 +1,4 @@
 import { Theme } from '@mui/material/styles';
-import { NextFont } from 'next/dist/compiled/@next/font';
 
 export type PCThemeType = 'dark' | 'light';
 
@@ -9,6 +8,7 @@ export const THEME = {
 };
 
 export const PCS_THEME_IDENTIFIER = 'pcs-theme';
+export const NAVBAR_OPEN = 'navbar-open';
 
 export type PCTheme = Theme & {
   mode: PCThemeType;
@@ -31,5 +31,6 @@ export interface AppContextType {
   setTitle: (title: string) => void | null;
   pageLoading: boolean;
   setPageLoading: (loading: boolean) => void | null;
+  navbarOpen: boolean;
+  setNavbarOpen: (open: boolean) => void;
 }
-

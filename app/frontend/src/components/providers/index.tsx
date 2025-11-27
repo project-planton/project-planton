@@ -1,10 +1,12 @@
 'use client';
 import { Inter } from 'next/font/google';
-import { AppContextProvider } from '@/contexts';
+import { AppContextProvider, PCThemeType } from '@/contexts';
 
 interface ProvidersProps {
   children: React.ReactNode;
   connectHost: string;
+  cookieThemeMode?: PCThemeType;
+  cookieNavbarOpen?: boolean;
 }
 
 const inter = Inter({
@@ -13,11 +15,20 @@ const inter = Inter({
   display: 'swap',
 });
 
-export function Providers({ children, connectHost }: ProvidersProps) {
+export function Providers({
+  children,
+  connectHost,
+  cookieThemeMode,
+  cookieNavbarOpen,
+}: ProvidersProps) {
   return (
-    <AppContextProvider connectHost={connectHost} font={inter}>
+    <AppContextProvider
+      connectHost={connectHost}
+      font={inter}
+      cookieThemeMode={cookieThemeMode}
+      cookieNavbarOpen={cookieNavbarOpen}
+    >
       {children}
     </AppContextProvider>
   );
 }
-

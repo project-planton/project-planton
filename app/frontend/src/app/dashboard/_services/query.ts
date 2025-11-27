@@ -1,12 +1,16 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '@/contexts';
 import { useConnectRpcClient } from '@/hooks';
-import { DeploymentComponentService, ListDeploymentComponentsRequestSchema } from '@/gen/proto/deployment_component_service_pb';
-import { ListDeploymentComponentsRequest, ListDeploymentComponentsResponse } from '@/gen/proto/deployment_component_service_pb';
-import { create } from '@bufbuild/protobuf';
+import { DeploymentComponentService } from '@/gen/proto/deployment_component_service_pb';
+import {
+  ListDeploymentComponentsRequest,
+  ListDeploymentComponentsResponse,
+} from '@/gen/proto/deployment_component_service_pb';
 
 interface QueryType {
-  listDeploymentComponents: (input: ListDeploymentComponentsRequest) => Promise<ListDeploymentComponentsResponse>;
+  listDeploymentComponents: (
+    input: ListDeploymentComponentsRequest
+  ) => Promise<ListDeploymentComponentsResponse>;
 }
 
 const RESOURCE_NAME = 'Deployment Components';
@@ -18,7 +22,9 @@ export const useDashboardQuery = () => {
 
   const queryApis: QueryType = useMemo(
     () => ({
-      listDeploymentComponents: (input: ListDeploymentComponentsRequest): Promise<ListDeploymentComponentsResponse> => {
+      listDeploymentComponents: (
+        input: ListDeploymentComponentsRequest
+      ): Promise<ListDeploymentComponentsResponse> => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
 
