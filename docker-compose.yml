@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: project-planton-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: project_planton
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - project-planton-network
+
+  backend:
+    build:
+      context: ./app/backend
+      dockerfile: Dockerfile
+    container_name: project-planton-backend
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://root:password@mongodb:27017/project_planton?authSource=admin
+      - MONGODB_DATABASE=project_planton
+      - SERVER_PORT=50051
+    ports:
+      - "50051:50051"
+    depends_on:
+      - mongodb
+    networks:
+      - project-planton-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:50051/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./app/frontend
+      dockerfile: Dockerfile
+    container_name: project-planton-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:50051
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - project-planton-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  project-planton-network:
+    driver: bridge

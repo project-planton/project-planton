@@ -1,6 +1,6 @@
 module github.com/project-planton/project-planton/buf/lint/optional-linter
 
-go 1.24.0
+go 1.24.7
 
 require (
 	buf.build/go/bufplugin v0.9.0
@@ -18,7 +18,7 @@ require (
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/google/cel-go v0.26.1 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/spf13/pflag v1.0.6 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
 	golang.org/x/sys v0.33.0 // indirect
@@ -29,6 +29,6 @@ require (
 )
 
 replace (
-	github.com/project-planton/project-planton => ../../..
 	github.com/bufbuild/protovalidate-go => buf.build/go/protovalidate v1.0.0
+	github.com/project-planton/project-planton => ../../..
 )
