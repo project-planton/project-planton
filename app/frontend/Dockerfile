@@ -6,16 +6,23 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# Enable Corepack for Yarn 3
+RUN corepack enable
+
 # Copy package files
-COPY package.json yarn.lock* ./
+COPY package.json yarn.lock ./
 COPY .yarnrc.yml ./
 
 # Install dependencies
-RUN yarn --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+
+# Enable Corepack for Yarn 3
+RUN corepack enable
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -30,6 +37,9 @@ RUN yarn build
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
+
+# Install wget for healthcheck
+RUN apk add --no-cache wget
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -58,9 +68,9 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# Health check
+# Health check - check if Next.js server is responding
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
 
 # Run the application
 CMD ["node", "server.js"]

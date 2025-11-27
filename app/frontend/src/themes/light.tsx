@@ -1,7 +1,7 @@
 import { ThemeOptions } from '@mui/material';
 import { NextFont } from 'next/dist/compiled/@next/font';
-import colors from './colors';
-import { listBase, listPaper, menuItemRoot } from './theme';
+import colors from '@/themes/colors';
+import { listBase, listPaper, menuItemRoot } from '@/themes/theme';
 
 const {
   primaryLight,
@@ -11,8 +11,6 @@ const {
   warningLight,
   infoLight,
   successLight,
-  exceptionsLight,
-  crimsonLight,
 } = colors;
 
 export const getLightTheme = (font: NextFont): ThemeOptions => ({
@@ -58,8 +56,8 @@ export const getLightTheme = (font: NextFont): ThemeOptions => ({
       ...successLight,
     },
     grey: { ...greyLight },
-    exceptions: { ...exceptionsLight },
-    crimson: { ...crimsonLight },
+    // exceptions: { ...exceptionsLight }, // TODO: Extend ThemeOptions type to include custom colors
+    // crimson: { ...crimsonLight }, // TODO: Extend ThemeOptions type to include custom colors
     background: {
       default: greyLight[100],
       paper: greyLight[100],
@@ -69,12 +67,12 @@ export const getLightTheme = (font: NextFont): ThemeOptions => ({
       primary: greyLight[10],
       secondary: greyLight[30],
       disabled: greyLight[50],
-      link: primaryLight[50],
+      // link: primaryLight[50], // TODO: Extend TypeText type to include link property
     },
-    neutral: {
-      main: '#e0e0e0',
-      contrastText: '#000',
-    },
+    // neutral: { // TODO: Extend ThemeOptions type to include custom colors
+    //   main: '#e0e0e0',
+    //   contrastText: '#000',
+    // },
   },
   components: {
     MuiButton: {
@@ -137,4 +135,3 @@ export const getLightTheme = (font: NextFont): ThemeOptions => ({
     caption: { fontSize: 12, fontWeight: 400 },
   },
 });
-

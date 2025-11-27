@@ -26,6 +26,7 @@ import {
   StyledTablePagination,
   ActionsTableCell,
 } from '@/components/shared/data-table/styled';
+import { useCallback } from 'react';
 
 export type Order = 'asc' | 'desc';
 
@@ -91,7 +92,6 @@ export function DataTable<T extends { id?: string | number }>({
   const [order, setOrder] = useState<Order>(defaultSortOrder || 'asc');
   const [orderBy, setOrderBy] = useState<keyof T | string>(defaultSortColumn || '');
   const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
-  const [selectedRow, setSelectedRow] = useState<T | null>(null);
 
   const handleRequestSort = (property: keyof T | string) => {
     if (!onSort) return;
@@ -118,7 +118,6 @@ export function DataTable<T extends { id?: string | number }>({
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, row: T) => {
     const rowId = String(row.id || Math.random());
     setAnchorEl({ ...anchorEl, [rowId]: event.currentTarget });
-    setSelectedRow(row);
   };
 
   const handleMenuClose = (rowId: string) => {
@@ -131,20 +130,21 @@ export function DataTable<T extends { id?: string | number }>({
     handleMenuClose(rowId);
   };
 
-  const isSelected = (row: T) => {
-    return selectedRows.some((selected) => selected.id === row.id);
-  };
+  const isSelected = useCallback(
+    (row: T) => selectedRows.some((selected) => selected.id === row.id),
+    [selectedRows]
+  );
 
   const isAllSelected = useMemo(() => {
     if (!selectable || data.length === 0) return false;
     return data.every((row) => isSelected(row));
-  }, [data, selectedRows, selectable]);
+  }, [data, selectable, isSelected]);
 
   const isIndeterminate = useMemo(() => {
     if (!selectable || data.length === 0) return false;
     const selectedCount = data.filter((row) => isSelected(row)).length;
     return selectedCount > 0 && selectedCount < data.length;
-  }, [data, selectedRows, selectable]);
+  }, [data, selectable, isSelected]);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     if (onPageChange) {
@@ -221,11 +221,7 @@ export function DataTable<T extends { id?: string | number }>({
                 )}
               </StyledTableCell>
             ))}
-            {actions.length > 0 && (
-              <ActionsTableCell align="right">
-                Actions
-              </ActionsTableCell>
-            )}
+            {actions.length > 0 && <ActionsTableCell align="right">Actions</ActionsTableCell>}
           </StyledTableRow>
         </StyledTableHead>
         <TableBody>
@@ -249,7 +245,7 @@ export function DataTable<T extends { id?: string | number }>({
                   const value = getValue(row, column.id);
                   return (
                     <StyledTableCell key={String(column.id)} align={column.align || 'left'}>
-                      {column.render ? column.render(value, row) : value ?? '-'}
+                      {column.render ? column.render(value, row) : (value ?? '-')}
                     </StyledTableCell>
                   );
                 })}
@@ -287,7 +283,9 @@ export function DataTable<T extends { id?: string | number }>({
                                 key={actionIndex}
                                 onClick={() => handleActionClick(action, row)}
                               >
-                                {action.icon && <MenuItemIconContainer>{action.icon}</MenuItemIconContainer>}
+                                {action.icon && (
+                                  <MenuItemIconContainer>{action.icon}</MenuItemIconContainer>
+                                )}
                                 {action.label}
                               </MenuItem>
                             ))}
@@ -318,4 +316,3 @@ export function DataTable<T extends { id?: string | number }>({
     </StyledTableContainer>
   );
 }
-

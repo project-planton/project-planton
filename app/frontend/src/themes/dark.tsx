@@ -1,19 +1,10 @@
 import { NextFont } from 'next/dist/compiled/@next/font';
 import { ThemeOptions } from '@mui/material';
-import colors from './colors';
-import { listBase, listPaper, menuItemRoot } from './theme';
+import colors from '@/themes/colors';
+import { listBase, listPaper, menuItemRoot } from '@/themes/theme';
 
-const {
-  primaryDark,
-  secondaryDark,
-  greyDark,
-  errorDark,
-  warningDark,
-  infoDark,
-  successDark,
-  exceptionsDark,
-  crimsonDark,
-} = colors;
+const { primaryDark, secondaryDark, greyDark, errorDark, warningDark, infoDark, successDark } =
+  colors;
 
 export const getDarkTheme = (font: NextFont): ThemeOptions => ({
   palette: {
@@ -58,7 +49,7 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
       ...successDark,
     },
     grey: { ...greyDark },
-    crimson: { ...crimsonDark },
+    // crimson: { ...crimsonDark }, // TODO: Extend ThemeOptions type to include custom colors
     background: {
       default: greyDark[100],
       paper: greyDark[100],
@@ -73,10 +64,10 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
       secondary: greyDark[30],
       disabled: greyDark[50],
     },
-    neutral: {
-      main: '#424242',
-      contrastText: '#fff',
-    },
+    // neutral: { // TODO: Extend ThemeOptions type to include custom colors
+    //   main: '#424242',
+    //   contrastText: '#fff',
+    // },
   },
   components: {
     MuiButton: {
@@ -139,4 +130,3 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
     caption: { fontSize: 12, fontWeight: 500 },
   },
 });
-

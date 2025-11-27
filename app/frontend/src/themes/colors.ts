@@ -8,7 +8,7 @@ import {
   secondaryDark,
   successDark,
   warningDark,
-} from './dark-colors';
+} from '@/themes/dark-colors';
 import {
   crimsonLight,
   errorLight,
@@ -19,9 +19,9 @@ import {
   secondaryLight,
   successLight,
   warningLight,
-} from './light-colors';
+} from '@/themes/light-colors';
 
-export default {
+const colors = {
   primaryLight,
   primaryDark,
   secondaryLight,
@@ -41,4 +41,6 @@ export default {
   crimsonLight,
   crimsonDark,
 };
+
+export default colors;
 
