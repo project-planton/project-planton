@@ -2,9 +2,10 @@ package project_planton
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/project-planton/project-planton/cmd/project-planton/root"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var rootCmd = &cobra.Command{
@@ -17,8 +18,10 @@ func init() {
 	rootCmd.DisableSuggestions = true
 	rootCmd.AddCommand(
 		root.Apply,
+		root.ConfigCmd,
 		root.Destroy,
 		root.Init,
+		root.ListDeploymentComponent,
 		root.LoadManifest,
 		root.Plan,
 		root.Pulumi,

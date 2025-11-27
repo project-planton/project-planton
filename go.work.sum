@@ -279,6 +279,7 @@ github.com/pulumi/pulumi-gcp/sdk/v8 v8.41.1 h1:w6OnO3d4j5yVf2vpm8OzXFC/xHOEGqt+9
 github.com/pulumi/pulumi-gcp/sdk/v8 v8.41.1/go.mod h1:UyZyv7hz4knpFx6/Sh+SkZe6hT6sJHtDvw9A0TbvEsk=
 github.com/pulumi/pulumi/pkg/v3 v3.154.0 h1:TD4hsZfV7g5nmySK+7l8lIdigmROXcVn9bCDssOd5hE=
 github.com/pulumi/pulumi/pkg/v3 v3.154.0/go.mod h1:IS+Yqg2NnvjdkBR7+tpBfzIKiCAHO/8Cwcg9UZ4YoVY=
+github.com/rs/cors v1.11.1/go.mod h1:XyqrcTp5zjWr1wsJ8PIRZssZ8b/WMcMf71DJnit4EMU=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
 github.com/ryanuber/go-glob v1.0.0 h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk=
 github.com/ryanuber/go-glob v1.0.0/go.mod h1:807d1WSdnB0XRJzKNil9Om6lcp/3a0v4qIHxIXzX/Yc=
