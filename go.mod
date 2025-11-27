@@ -5,6 +5,7 @@ go 1.24.7
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1
 	buf.build/go/protovalidate v1.0.0
+	connectrpc.com/connect v1.16.2
 	github.com/Masterminds/sprig v2.15.0+incompatible
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/fatih/color v1.18.0
