@@ -1,11 +1,12 @@
 # Project Planton CLI Help
 
-This guide covers the configuration and deployment component management commands in the Project Planton CLI.
+This guide covers the configuration, deployment component management, and cloud resource management commands in the Project Planton CLI.
 
 ## Table of Contents
 
 - [Configuration Management](#configuration-management)
 - [Deployment Components](#deployment-components)
+- [Cloud Resources](#cloud-resources)
 - [Common Workflows](#common-workflows)
 - [Troubleshooting](#troubleshooting)
 
@@ -136,6 +137,145 @@ project-planton config set backend-url <your-backend-url>
 
 ---
 
+## Cloud Resources
+
+Cloud resources represent infrastructure resources that can be created and managed through the Project Planton backend service. You can create cloud resources from YAML manifests and list existing resources.
+
+### `project-planton cloud-resource:create`
+
+Create a new cloud resource from a YAML manifest file.
+
+#### Basic Usage
+
+```bash
+project-planton cloud-resource:create --arg=path/to/manifest.yaml
+```
+
+**Example:**
+```bash
+# Create a cloud resource from a YAML file
+project-planton cloud-resource:create --arg=my-vpc.yaml
+```
+
+**Sample Output:**
+```
+✅ Cloud resource created successfully!
+
+ID: 507f1f77bcf86cd799439011
+Name: my-vpc
+Kind: CivoVpc
+Created At: 2025-11-28 13:14:12
+```
+
+#### Flags
+
+- `--arg, -a` - Path to the YAML manifest file (required)
+- `--help, -h` - Show help information
+
+#### Manifest Requirements
+
+The YAML manifest must contain:
+- `kind` - The type of cloud resource (e.g., `CivoVpc`, `AwsRdsInstance`)
+- `metadata.name` - A unique name for the resource
+
+**Example Manifest:**
+```yaml
+kind: CivoVpc
+metadata:
+  name: my-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+```
+
+#### Error Handling
+
+**Missing manifest:**
+```
+Error: --arg flag is required. Provide path to YAML manifest file
+Usage: project-planton cloud-resource:create --arg=<yaml-file>
+```
+
+**Invalid YAML:**
+```
+Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
+```
+
+**Duplicate resource:**
+```
+Error: Invalid manifest - cloud resource with name 'my-vpc' already exists
+```
+
+**Connection issues:**
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+### `project-planton cloud-resource:list`
+
+List all cloud resources from the backend service with optional filtering by kind.
+
+#### Basic Usage
+
+```bash
+# List all cloud resources
+project-planton cloud-resource:list
+```
+
+**Sample Output:**
+```
+ID                     NAME      KIND            CREATED
+507f1f77bcf86cd799439011  my-vpc   CivoVpc        2025-11-28 13:14:12
+507f1f77bcf86cd799439012  my-db    AwsRdsInstance  2025-11-28 13:15:00
+
+Total: 2 cloud resource(s)
+```
+
+#### Filtering by Kind
+
+Use the `--kind` flag to filter cloud resources by their kind.
+
+```bash
+# Filter by specific kind
+project-planton cloud-resource:list --kind CivoVpc
+project-planton cloud-resource:list -k AwsRdsInstance
+```
+
+**Sample Output:**
+```
+ID                     NAME      KIND     CREATED
+507f1f77bcf86cd799439011  my-vpc   CivoVpc  2025-11-28 13:14:12
+
+Total: 1 cloud resource(s) (filtered by kind: CivoVpc)
+```
+
+#### Flags
+
+- `--kind, -k` - Filter cloud resources by kind (optional)
+- `--help, -h` - Show help information
+
+#### Output Format
+
+The command displays results in a table with the following columns:
+
+- **ID** - Unique identifier (MongoDB ObjectID)
+- **NAME** - Resource name (from metadata.name)
+- **KIND** - Resource type/kind (e.g., CivoVpc, AwsRdsInstance)
+- **CREATED** - Creation timestamp
+
+### Prerequisites
+
+Before using cloud resource commands, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+---
+
 ## Common Workflows
 
 ### Initial Setup
@@ -171,7 +311,22 @@ project-planton config set backend-url <your-backend-url>
    project-planton list-deployment-components --kind AwsRdsInstance
    ```
 
-3. **Check configuration:**
+3. **Create cloud resources:**
+   ```bash
+   # Create a cloud resource from YAML manifest
+   project-planton cloud-resource:create --arg=my-vpc.yaml
+   ```
+
+4. **List cloud resources:**
+   ```bash
+   # List all cloud resources
+   project-planton cloud-resource:list
+
+   # Filter by kind
+   project-planton cloud-resource:list --kind CivoVpc
+   ```
+
+5. **Check configuration:**
    ```bash
    project-planton config list
    ```
@@ -277,6 +432,53 @@ No deployment components found with kind 'YourKind'
 
 3. **Check available kinds by listing all components first**
 
+### Cloud Resource Creation Errors
+
+**Invalid Manifest:**
+```
+Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
+```
+
+**Solution:**
+- Verify the YAML file is valid
+- Ensure `kind` and `metadata.name` fields are present
+- Check YAML syntax (indentation, quotes, etc.)
+
+**Duplicate Resource Name:**
+```
+Error: Invalid manifest - cloud resource with name 'my-vpc' already exists
+```
+
+**Solution:**
+- Use a different name for the resource
+- Check existing resources: `project-planton cloud-resource:list`
+- Delete or rename the existing resource if needed
+
+**Empty Results:**
+```
+No cloud resources found
+# or
+No cloud resources found with kind 'YourKind'
+```
+
+**Possible Causes:**
+1. No cloud resources have been created yet
+2. Wrong kind filter applied
+3. Backend database is empty
+
+**Solutions:**
+1. **Check without filters:**
+   ```bash
+   project-planton cloud-resource:list
+   ```
+
+2. **Create a test resource:**
+   ```bash
+   project-planton cloud-resource:create --arg=test-resource.yaml
+   ```
+
+3. **Verify backend service is running and initialized**
+
 ### Configuration File Issues
 
 **Error:** Permission denied or file access issues
@@ -334,6 +536,16 @@ for kind in PostgresKubernetes AwsRdsInstance GcpCloudSql; do
     echo "=== $kind ==="
     project-planton list-deployment-components --kind "$kind"
 done
+
+# Create cloud resources from directory
+for manifest in resources/*.yaml; do
+    echo "Creating resource from $manifest"
+    project-planton cloud-resource:create --arg="$manifest"
+done
+
+# List all cloud resources
+echo "=== Cloud Resources ==="
+project-planton cloud-resource:list
 ```
 
 ### JSON Output (Future Enhancement)
