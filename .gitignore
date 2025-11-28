@@ -36,3 +36,6 @@ backend/server
 
 # Web-app generated files
 web-app/src/gen/
+
+*.sh
+**/*.env

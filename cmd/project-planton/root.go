@@ -19,7 +19,10 @@ func init() {
 	rootCmd.AddCommand(
 		root.Apply,
 		root.CloudResourceCreateCmd,
+		root.CloudResourceDeleteCmd,
+		root.CloudResourceGetCmd,
 		root.CloudResourceListCmd,
+		root.CloudResourceUpdateCmd,
 		root.ConfigCmd,
 		root.Destroy,
 		root.Init,

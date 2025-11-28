@@ -12,6 +12,12 @@ service CloudResourceService {
   rpc CreateCloudResource(CreateCloudResourceRequest) returns (CreateCloudResourceResponse);
   // ListCloudResources returns a list of all cloud resources.
   rpc ListCloudResources(ListCloudResourcesRequest) returns (ListCloudResourcesResponse);
+  // GetCloudResource retrieves a cloud resource by ID.
+  rpc GetCloudResource(GetCloudResourceRequest) returns (GetCloudResourceResponse);
+  // UpdateCloudResource updates an existing cloud resource from a YAML manifest.
+  rpc UpdateCloudResource(UpdateCloudResourceRequest) returns (UpdateCloudResourceResponse);
+  // DeleteCloudResource deletes a cloud resource by ID.
+  rpc DeleteCloudResource(DeleteCloudResourceRequest) returns (DeleteCloudResourceResponse);
 }
 
 // Request message for creating a cloud resource.
@@ -36,6 +42,44 @@ message ListCloudResourcesRequest {
 message ListCloudResourcesResponse {
   // List of cloud resources.
   repeated CloudResource resources = 1;
+}
+
+// Request message for retrieving a cloud resource by ID.
+message GetCloudResourceRequest {
+  // The unique identifier of the cloud resource.
+  string id = 1;
+}
+
+// Response message containing the retrieved cloud resource.
+message GetCloudResourceResponse {
+  // The requested cloud resource.
+  CloudResource resource = 1;
+}
+
+// Request message for updating a cloud resource.
+message UpdateCloudResourceRequest {
+  // The unique identifier of the cloud resource to update.
+  string id = 1;
+  // YAML manifest content as string.
+  string manifest = 2;
+}
+
+// Response message containing the updated cloud resource.
+message UpdateCloudResourceResponse {
+  // The updated cloud resource.
+  CloudResource resource = 1;
+}
+
+// Request message for deleting a cloud resource.
+message DeleteCloudResourceRequest {
+  // The unique identifier of the cloud resource to delete.
+  string id = 1;
+}
+
+// Response message for delete operation.
+message DeleteCloudResourceResponse {
+  // Success status message.
+  string message = 1;
 }
 
 // CloudResource represents a cloud resource.

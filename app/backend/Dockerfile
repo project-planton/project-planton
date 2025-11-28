@@ -18,9 +18,14 @@ RUN go mod download
 # Copy source code
 COPY . .
 
+# Generate proto code
+RUN make generate
+
+# Download any new dependencies introduced by generated code
+RUN go mod download
+
 # Build the application
-RUN make generate && \
-    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/server ./cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/server ./cmd/server
 
 # Final stage - minimal runtime image
 FROM alpine:3.19

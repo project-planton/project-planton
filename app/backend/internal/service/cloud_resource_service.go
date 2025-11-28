@@ -154,3 +154,181 @@ func (s *CloudResourceService) ListCloudResources(
 	}), nil
 }
 
+// GetCloudResource retrieves a cloud resource by ID.
+func (s *CloudResourceService) GetCloudResource(
+	ctx context.Context,
+	req *connect.Request[backendv1.GetCloudResourceRequest],
+) (*connect.Response[backendv1.GetCloudResourceResponse], error) {
+	id := req.Msg.Id
+	if id == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"id": id,
+	}).Info("Getting cloud resource")
+
+	resource, err := s.repo.FindByID(ctx, id)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to get cloud resource")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to get cloud resource: %w", err))
+	}
+
+	if resource == nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("cloud resource with ID '%s' not found", id))
+	}
+
+	protoResource := &backendv1.CloudResource{
+		Id:       resource.ID.Hex(),
+		Name:     resource.Name,
+		Kind:     resource.Kind,
+		Manifest: resource.Manifest,
+	}
+
+	if !resource.CreatedAt.IsZero() {
+		protoResource.CreatedAt = timestamppb.New(resource.CreatedAt)
+	}
+	if !resource.UpdatedAt.IsZero() {
+		protoResource.UpdatedAt = timestamppb.New(resource.UpdatedAt)
+	}
+
+	return connect.NewResponse(&backendv1.GetCloudResourceResponse{
+		Resource: protoResource,
+	}), nil
+}
+
+// UpdateCloudResource updates an existing cloud resource from a YAML manifest.
+func (s *CloudResourceService) UpdateCloudResource(
+	ctx context.Context,
+	req *connect.Request[backendv1.UpdateCloudResourceRequest],
+) (*connect.Response[backendv1.UpdateCloudResourceResponse], error) {
+	id := req.Msg.Id
+	if id == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
+	}
+
+	manifest := req.Msg.Manifest
+	if manifest == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest cannot be empty"))
+	}
+
+	// Check if resource exists
+	existingResource, err := s.repo.FindByID(ctx, id)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to find cloud resource")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to find cloud resource: %w", err))
+	}
+	if existingResource == nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("cloud resource with ID '%s' not found", id))
+	}
+
+	// Parse YAML to extract kind and metadata.name
+	var yamlData map[string]interface{}
+	if err := yaml.Unmarshal([]byte(manifest), &yamlData); err != nil {
+		logrus.WithError(err).Error("Failed to parse YAML manifest")
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid YAML format: %w", err))
+	}
+
+	// Extract kind
+	kind, ok := yamlData["kind"].(string)
+	if !ok || kind == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'kind' field"))
+	}
+
+	// Extract metadata.name
+	metadata, ok := yamlData["metadata"].(map[string]interface{})
+	if !ok {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'metadata' field"))
+	}
+
+	name, ok := metadata["name"].(string)
+	if !ok || name == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'metadata.name' field"))
+	}
+
+	// Validate name and kind match existing resource
+	if name != existingResource.Name {
+		return nil, connect.NewError(connect.CodeInvalidArgument,
+			fmt.Errorf("manifest name '%s' does not match existing resource name '%s'", name, existingResource.Name))
+	}
+
+	if kind != existingResource.Kind {
+		return nil, connect.NewError(connect.CodeInvalidArgument,
+			fmt.Errorf("manifest kind '%s' does not match existing resource kind '%s'", kind, existingResource.Kind))
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"id":   id,
+		"name": name,
+		"kind": kind,
+	}).Info("Updating cloud resource")
+
+	// Create updated domain model
+	cloudResource := &models.CloudResource{
+		Name:     name,
+		Kind:     kind,
+		Manifest: manifest,
+	}
+
+	// Update in database
+	updatedResource, err := s.repo.Update(ctx, id, cloudResource)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to update cloud resource")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update cloud resource: %w", err))
+	}
+
+	// Convert to proto
+	protoResource := &backendv1.CloudResource{
+		Id:       updatedResource.ID.Hex(),
+		Name:     updatedResource.Name,
+		Kind:     updatedResource.Kind,
+		Manifest: updatedResource.Manifest,
+	}
+
+	if !updatedResource.CreatedAt.IsZero() {
+		protoResource.CreatedAt = timestamppb.New(updatedResource.CreatedAt)
+	}
+	if !updatedResource.UpdatedAt.IsZero() {
+		protoResource.UpdatedAt = timestamppb.New(updatedResource.UpdatedAt)
+	}
+
+	return connect.NewResponse(&backendv1.UpdateCloudResourceResponse{
+		Resource: protoResource,
+	}), nil
+}
+
+// DeleteCloudResource deletes a cloud resource by ID.
+func (s *CloudResourceService) DeleteCloudResource(
+	ctx context.Context,
+	req *connect.Request[backendv1.DeleteCloudResourceRequest],
+) (*connect.Response[backendv1.DeleteCloudResourceResponse], error) {
+	id := req.Msg.Id
+	if id == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"id": id,
+	}).Info("Deleting cloud resource")
+
+	// Check if resource exists first
+	resource, err := s.repo.FindByID(ctx, id)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to find cloud resource")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to find cloud resource: %w", err))
+	}
+	if resource == nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("cloud resource with ID '%s' not found", id))
+	}
+
+	// Delete from database
+	err = s.repo.Delete(ctx, id)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to delete cloud resource")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete cloud resource: %w", err))
+	}
+
+	return connect.NewResponse(&backendv1.DeleteCloudResourceResponse{
+		Message: fmt.Sprintf("Cloud resource '%s' deleted successfully", resource.Name),
+	}), nil
+}
