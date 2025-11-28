@@ -458,6 +458,213 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
   3. Network connectivity
 ```
 
+### `project-planton cloud-resource:apply`
+
+Apply a cloud resource from a YAML manifest file. This command performs an **upsert operation**: if a resource with the same `name` and `kind` already exists, it will be updated; otherwise, a new resource will be created.
+
+#### Basic Usage
+
+```bash
+project-planton cloud-resource:apply --arg=path/to/manifest.yaml
+```
+
+**Example:**
+```bash
+# Apply a cloud resource (create or update)
+project-planton cloud-resource:apply --arg=my-vpc.yaml
+```
+
+#### Key Features
+
+- **Idempotent**: Can be run multiple times safely with the same manifest
+- **Declarative**: Declare the desired state, let the system figure out create vs update
+- **Name + Kind uniqueness**: Resources are identified by the combination of `metadata.name` and `kind`
+- **Kubernetes-style**: Follows the familiar `kubectl apply` pattern
+
+#### Sample Output (Create)
+
+When the resource doesn't exist, it will be created:
+
+```
+✅ Cloud resource applied successfully!
+
+Action: Created
+ID: 507f1f77bcf86cd799439011
+Name: my-vpc
+Kind: CivoVpc
+Created At: 2025-11-28 13:14:12
+Updated At: 2025-11-28 13:14:12
+```
+
+#### Sample Output (Update)
+
+When the resource already exists (same name and kind), it will be updated:
+
+```
+✅ Cloud resource applied successfully!
+
+Action: Updated
+ID: 507f1f77bcf86cd799439011
+Name: my-vpc
+Kind: CivoVpc
+Created At: 2025-11-28 13:14:12
+Updated At: 2025-11-28 15:30:45
+```
+
+#### Flags
+
+- `--arg, -a` - Path to the YAML manifest file (required)
+- `--help, -h` - Show help information
+
+#### Manifest Requirements
+
+The YAML manifest must contain:
+- `kind` - The type of cloud resource (e.g., `CivoVpc`, `AwsRdsInstance`)
+- `metadata.name` - A unique name for the resource
+
+**Example Manifest:**
+```yaml
+kind: CivoVpc
+metadata:
+  name: my-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+  description: Production VPC
+```
+
+#### How It Works
+
+1. **Extracts** `metadata.name` and `kind` from the manifest
+2. **Queries** the backend for an existing resource with matching name and kind
+3. **Creates** the resource if it doesn't exist
+4. **Updates** the resource if it already exists (preserves ID and creation timestamp)
+5. **Returns** the resource with a flag indicating whether it was created or updated
+
+#### Idempotency
+
+The `apply` command is fully idempotent - you can run it multiple times with the same manifest:
+
+```bash
+# First run - creates the resource
+$ project-planton cloud-resource:apply --arg=my-vpc.yaml
+Action: Created
+
+# Second run - updates the resource (even if nothing changed)
+$ project-planton cloud-resource:apply --arg=my-vpc.yaml
+Action: Updated
+
+# Third run - still works
+$ project-planton cloud-resource:apply --arg=my-vpc.yaml
+Action: Updated
+```
+
+#### Name + Kind Uniqueness
+
+The combination of `metadata.name` and `kind` uniquely identifies a resource. This means you can have resources with the same name but different kinds:
+
+```bash
+# Create a CivoVpc named "my-vpc"
+$ cat > civo-vpc.yaml <<EOF
+kind: CivoVpc
+metadata:
+  name: my-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+EOF
+$ project-planton cloud-resource:apply --arg=civo-vpc.yaml
+Action: Created
+
+# Create an AwsVpc with the same name - this is allowed!
+$ cat > aws-vpc.yaml <<EOF
+kind: AwsVpc
+metadata:
+  name: my-vpc
+spec:
+  region: us-east-1
+  cidr: 10.1.0.0/16
+EOF
+$ project-planton cloud-resource:apply --arg=aws-vpc.yaml
+Action: Created
+
+# Now you have TWO resources named "my-vpc" with different kinds
+```
+
+#### Use Cases
+
+**1. Initial Resource Creation**
+```bash
+# Create infrastructure from scratch
+project-planton cloud-resource:apply --arg=vpc.yaml
+project-planton cloud-resource:apply --arg=database.yaml
+project-planton cloud-resource:apply --arg=cache.yaml
+```
+
+**2. Configuration Updates**
+```bash
+# Modify vpc.yaml to change CIDR or add tags
+# Then apply the changes
+project-planton cloud-resource:apply --arg=vpc.yaml
+# The resource is updated automatically
+```
+
+**3. GitOps Workflows**
+```bash
+# In CI/CD pipeline - always apply the latest manifest
+git pull origin main
+project-planton cloud-resource:apply --arg=manifests/production-vpc.yaml
+```
+
+**4. Disaster Recovery**
+```bash
+# Resources deleted accidentally? Just reapply
+project-planton cloud-resource:apply --arg=all-resources/*.yaml
+# Creates any missing resources, updates existing ones
+```
+
+#### Comparison with Other Commands
+
+**Apply vs Create:**
+- `create`: Fails if resource already exists (by name only, regardless of kind)
+- `apply`: Creates if not exists, updates if exists (by name AND kind)
+
+**Apply vs Update:**
+- `update`: Requires resource ID, fails if resource doesn't exist
+- `apply`: No ID needed, works whether resource exists or not
+
+**When to use each:**
+- Use `apply` for declarative, idempotent workflows (recommended for most cases)
+- Use `create` when you want to ensure a resource doesn't already exist
+- Use `update` when you have the resource ID and want explicit update semantics
+
+#### Error Handling
+
+**Missing manifest:**
+```
+Error: --arg flag is required. Provide path to YAML manifest file
+Usage: project-planton cloud-resource:apply --arg=<yaml-file>
+```
+
+**Invalid YAML:**
+```
+Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
+```
+
+**Missing required fields:**
+```
+Error: Invalid manifest - manifest must contain 'kind' field
+Error: Invalid manifest - manifest must contain 'metadata.name' field
+```
+
+**Connection issues:**
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
 ### Prerequisites
 
 Before using cloud resource commands, you must configure the backend URL:
@@ -505,7 +712,10 @@ project-planton config set backend-url <your-backend-url>
 
 3. **Manage cloud resources:**
    ```bash
-   # Create a cloud resource from YAML manifest
+   # Apply a cloud resource (recommended - works for create and update)
+   project-planton cloud-resource:apply --arg=my-vpc.yaml
+
+   # Or use explicit create/update commands
    project-planton cloud-resource:create --arg=my-vpc.yaml
 
    # Get resource details by ID
@@ -782,7 +992,14 @@ for kind in PostgresKubernetes AwsRdsInstance GcpCloudSql; do
     project-planton list-deployment-components --kind "$kind"
 done
 
-# Create cloud resources from directory
+# Apply cloud resources from directory (recommended - idempotent)
+echo "=== Applying resources ==="
+for manifest in resources/*.yaml; do
+    echo "Applying resource from $manifest"
+    project-planton cloud-resource:apply --arg="$manifest"
+done
+
+# Or use explicit create for new resources
 for manifest in resources/*.yaml; do
     echo "Creating resource from $manifest"
     project-planton cloud-resource:create --arg="$manifest"
@@ -795,13 +1012,13 @@ project-planton cloud-resource:list | grep -v "^Total:" | tail -n +2 | while rea
     echo ""
 done
 
-# Update multiple resources
+# Apply updates to resources (no ID needed!)
+echo "=== Applying updates ==="
 for manifest in updates/*.yaml; do
-    # Extract resource name from manifest
     name=$(grep "name:" "$manifest" | awk '{print $2}')
-    # Find resource ID by name (requires parsing list output)
-    echo "Updating resource: $name from $manifest"
-    # Note: In practice, you'd need to map names to IDs
+    kind=$(grep "kind:" "$manifest" | awk '{print $2}')
+    echo "Applying $kind/$name from $manifest"
+    project-planton cloud-resource:apply --arg="$manifest"
 done
 
 # Cleanup old resources
@@ -814,10 +1031,77 @@ done
 
 ### Complete Cloud Resource Lifecycle
 
+#### Using Apply (Recommended - Simpler)
+
 ```bash
 #!/bin/bash
 
-# Complete workflow example
+# Complete workflow example using apply command
+set -e
+
+# 1. Apply a resource (creates it)
+echo "Applying VPC resource..."
+cat > temp-vpc.yaml <<EOF
+kind: CivoVpc
+metadata:
+  name: automation-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+EOF
+
+# First apply creates the resource
+OUTPUT=$(project-planton cloud-resource:apply --arg=temp-vpc.yaml)
+echo "$OUTPUT"
+RESOURCE_ID=$(echo "$OUTPUT" | grep "^ID:" | awk '{print $2}')
+echo "Resource ID: $RESOURCE_ID"
+
+# 2. Get resource details
+echo "Fetching resource details..."
+project-planton cloud-resource:get --id="$RESOURCE_ID"
+
+# 3. Modify and apply again (updates it)
+echo "Updating resource..."
+cat > temp-vpc.yaml <<EOF
+kind: CivoVpc
+metadata:
+  name: automation-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+  description: Updated via automation
+  tags:
+    - automated
+    - production
+EOF
+
+# Apply again - automatically updates the resource
+project-planton cloud-resource:apply --arg=temp-vpc.yaml
+
+# 4. Verify update
+echo "Verifying update..."
+project-planton cloud-resource:get --id="$RESOURCE_ID" | grep "description"
+
+# 5. Apply is idempotent - run it again, still works
+echo "Applying again (idempotency test)..."
+project-planton cloud-resource:apply --arg=temp-vpc.yaml
+
+# 6. Delete resource
+echo "Cleaning up..."
+project-planton cloud-resource:delete --id="$RESOURCE_ID"
+
+# Cleanup temp file
+rm temp-vpc.yaml
+
+echo "Workflow complete!"
+```
+
+#### Using Create/Update (Explicit)
+
+```bash
+#!/bin/bash
+
+# Complete workflow example using explicit create/update
 set -e
 
 # 1. Create a resource
@@ -864,6 +1148,47 @@ project-planton cloud-resource:delete --id="$RESOURCE_ID"
 rm temp-vpc.yaml
 
 echo "Workflow complete!"
+```
+
+### GitOps-Style Infrastructure Management
+
+```bash
+#!/bin/bash
+
+# GitOps workflow - sync infrastructure from Git repository
+set -e
+
+MANIFEST_DIR="infrastructure/manifests"
+
+echo "=== Syncing infrastructure from Git ==="
+
+# Pull latest changes
+git pull origin main
+
+# Apply all resources (creates new, updates existing)
+for manifest in "$MANIFEST_DIR"/*.yaml; do
+    echo "Applying $(basename $manifest)..."
+
+    # Parse manifest for name and kind
+    name=$(grep "name:" "$manifest" | head -1 | awk '{print $2}')
+    kind=$(grep "kind:" "$manifest" | head -1 | awk '{print $2}')
+
+    # Apply the resource
+    OUTPUT=$(project-planton cloud-resource:apply --arg="$manifest")
+
+    # Check if created or updated
+    if echo "$OUTPUT" | grep -q "Action: Created"; then
+        echo "✅ Created $kind/$name"
+    else
+        echo "✅ Updated $kind/$name"
+    fi
+done
+
+echo "=== Infrastructure sync complete ==="
+
+# List all resources to verify
+echo "Current infrastructure state:"
+project-planton cloud-resource:list
 ```
 
 ### JSON Output (Future Enhancement)

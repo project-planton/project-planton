@@ -332,3 +332,109 @@ func (s *CloudResourceService) DeleteCloudResource(
 		Message: fmt.Sprintf("Cloud resource '%s' deleted successfully", resource.Name),
 	}), nil
 }
+
+// ApplyCloudResource creates or updates a cloud resource (upsert operation).
+func (s *CloudResourceService) ApplyCloudResource(
+	ctx context.Context,
+	req *connect.Request[backendv1.ApplyCloudResourceRequest],
+) (*connect.Response[backendv1.ApplyCloudResourceResponse], error) {
+	manifest := req.Msg.Manifest
+	if manifest == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest cannot be empty"))
+	}
+
+	// Parse YAML to extract kind and metadata.name
+	var yamlData map[string]interface{}
+	if err := yaml.Unmarshal([]byte(manifest), &yamlData); err != nil {
+		logrus.WithError(err).Error("Failed to parse YAML manifest")
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid YAML format: %w", err))
+	}
+
+	// Extract kind
+	kind, ok := yamlData["kind"].(string)
+	if !ok || kind == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'kind' field"))
+	}
+
+	// Extract metadata.name
+	metadata, ok := yamlData["metadata"].(map[string]interface{})
+	if !ok {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'metadata' field"))
+	}
+
+	name, ok := metadata["name"].(string)
+	if !ok || name == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'metadata.name' field"))
+	}
+
+	// Check if resource exists by name and kind
+	existingResource, err := s.repo.FindByNameAndKind(ctx, name, kind)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to check for existing cloud resource")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to check for existing cloud resource: %w", err))
+	}
+
+	var resultResource *models.CloudResource
+	var created bool
+
+	if existingResource != nil {
+		// Resource exists - perform update
+		logrus.WithFields(logrus.Fields{
+			"id":   existingResource.ID.Hex(),
+			"name": name,
+			"kind": kind,
+		}).Info("Updating existing cloud resource via apply")
+
+		cloudResource := &models.CloudResource{
+			Name:     name,
+			Kind:     kind,
+			Manifest: manifest,
+		}
+
+		resultResource, err = s.repo.Update(ctx, existingResource.ID.Hex(), cloudResource)
+		if err != nil {
+			logrus.WithError(err).Error("Failed to update cloud resource")
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update cloud resource: %w", err))
+		}
+		created = false
+	} else {
+		// Resource doesn't exist - perform create
+		logrus.WithFields(logrus.Fields{
+			"name": name,
+			"kind": kind,
+		}).Info("Creating new cloud resource via apply")
+
+		cloudResource := &models.CloudResource{
+			Name:     name,
+			Kind:     kind,
+			Manifest: manifest,
+		}
+
+		resultResource, err = s.repo.Create(ctx, cloudResource)
+		if err != nil {
+			logrus.WithError(err).Error("Failed to create cloud resource")
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create cloud resource: %w", err))
+		}
+		created = true
+	}
+
+	// Convert to proto
+	protoResource := &backendv1.CloudResource{
+		Id:       resultResource.ID.Hex(),
+		Name:     resultResource.Name,
+		Kind:     resultResource.Kind,
+		Manifest: resultResource.Manifest,
+	}
+
+	if !resultResource.CreatedAt.IsZero() {
+		protoResource.CreatedAt = timestamppb.New(resultResource.CreatedAt)
+	}
+	if !resultResource.UpdatedAt.IsZero() {
+		protoResource.UpdatedAt = timestamppb.New(resultResource.UpdatedAt)
+	}
+
+	return connect.NewResponse(&backendv1.ApplyCloudResourceResponse{
+		Resource: protoResource,
+		Created:  created,
+	}), nil
+}
