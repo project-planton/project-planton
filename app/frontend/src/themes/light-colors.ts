@@ -80,6 +80,12 @@ export const exceptionsLight = {
 };
 
 export const crimsonLight = {
-  50: '#C2185B',
+  0: '#FAFAFA', // bg color
+  10: '#7C4DFF', // key color
+  20: '#90A4AE', // text color
+  30: '#39ADB5', // parenth color
+  40: '#F76D47', // numeric color
+  50: '#F6A434', // string color
+  60: '#EEEEEE', // highlight bg color
 };
 

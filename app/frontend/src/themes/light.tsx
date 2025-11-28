@@ -11,6 +11,7 @@ const {
   warningLight,
   infoLight,
   successLight,
+  crimsonLight,
 } = colors;
 
 export const getLightTheme = (font: NextFont): ThemeOptions => ({
@@ -57,7 +58,7 @@ export const getLightTheme = (font: NextFont): ThemeOptions => ({
     },
     grey: { ...greyLight },
     // exceptions: { ...exceptionsLight }, // TODO: Extend ThemeOptions type to include custom colors
-    // crimson: { ...crimsonLight }, // TODO: Extend ThemeOptions type to include custom colors
+    crimson: { ...crimsonLight },
     background: {
       default: greyLight[100],
       paper: greyLight[100],

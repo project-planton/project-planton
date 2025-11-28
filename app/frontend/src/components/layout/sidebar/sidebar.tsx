@@ -12,6 +12,7 @@ import {
   Article,
   Folder,
   Person,
+  Cloud,
 } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -48,6 +49,11 @@ const menuGroups: MenuGroup[] = [
         text: 'Dashboard',
         icon: <DashboardIcon />,
         path: '/dashboard',
+      },
+      {
+        text: 'Cloud Resources',
+        icon: <Cloud />,
+        path: '/cloud-resources',
       },
     ],
   },
