@@ -13,6 +13,30 @@ declare module '@mui/material/styles' {
     lighter?: string;
     darker?: string;
   }
+
+  interface Palette {
+    crimson?: {
+      0: string;
+      10: string;
+      20: string;
+      30: string;
+      40: string;
+      50: string;
+      60: string;
+    };
+  }
+
+  interface PaletteOptions {
+    crimson?: {
+      0: string;
+      10: string;
+      20: string;
+      30: string;
+      40: string;
+      50: string;
+      60: string;
+    };
+  }
 }
 
 export const listPaper = (theme: Theme): CSSObject => ({

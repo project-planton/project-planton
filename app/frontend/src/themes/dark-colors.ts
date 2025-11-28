@@ -80,6 +80,12 @@ export const exceptionsDark = {
 };
 
 export const crimsonDark = {
-  50: '#C2185B',
+  0: '#2F2F2F', // bg color
+  10: '#C792EA', // key color
+  20: '#EEEEEE', // text color
+  30: '#89DDFF', // parenth color
+  40: '#FD9170', // numeric color
+  50: '#A5E844', // string color
+  60: '#393939', // highlight bg color
 };
 

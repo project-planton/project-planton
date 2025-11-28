@@ -3,7 +3,7 @@ import { ThemeOptions } from '@mui/material';
 import colors from '@/themes/colors';
 import { listBase, listPaper, menuItemRoot } from '@/themes/theme';
 
-const { primaryDark, secondaryDark, greyDark, errorDark, warningDark, infoDark, successDark } =
+const { primaryDark, secondaryDark, greyDark, errorDark, warningDark, infoDark, successDark, crimsonDark } =
   colors;
 
 export const getDarkTheme = (font: NextFont): ThemeOptions => ({
@@ -49,7 +49,7 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
       ...successDark,
     },
     grey: { ...greyDark },
-    // crimson: { ...crimsonDark }, // TODO: Extend ThemeOptions type to include custom colors
+    crimson: { ...crimsonDark },
     background: {
       default: greyDark[100],
       paper: greyDark[100],

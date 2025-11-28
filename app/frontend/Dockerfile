@@ -26,8 +26,10 @@ RUN corepack enable
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate proto files (if needed)
-RUN if [ -f "buf.gen.yaml" ]; then yarn generate; fi
+# Note: Proto files should be generated before Docker build
+# Run this command from project root before building:
+# cd app/backend/apis && buf generate
+# The generated files will be in app/frontend/src/gen/proto/
 
 # Build the application
 # Disable telemetry during build
