@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package backend.v1;
+
+option go_package = "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto;v1";
+
+import "google/protobuf/timestamp.proto";
+
+// CloudResourceService provides operations for managing cloud resources.
+service CloudResourceService {
+  // CreateCloudResource creates a new cloud resource from a YAML manifest.
+  rpc CreateCloudResource(CreateCloudResourceRequest) returns (CreateCloudResourceResponse);
+  // ListCloudResources returns a list of all cloud resources.
+  rpc ListCloudResources(ListCloudResourcesRequest) returns (ListCloudResourcesResponse);
+}
+
+// Request message for creating a cloud resource.
+message CreateCloudResourceRequest {
+  // YAML manifest content as string.
+  string manifest = 1;
+}
+
+// Response message containing the created cloud resource.
+message CreateCloudResourceResponse {
+  // The created cloud resource.
+  CloudResource resource = 1;
+}
+
+// Request message for listing cloud resources.
+message ListCloudResourcesRequest {
+  // Optional filter by kind (e.g., "CivoVpc", "AwsRdsInstance").
+  optional string kind = 1;
+}
+
+// Response message containing a list of cloud resources.
+message ListCloudResourcesResponse {
+  // List of cloud resources.
+  repeated CloudResource resources = 1;
+}
+
+// CloudResource represents a cloud resource.
+message CloudResource {
+  // Unique identifier for the cloud resource.
+  string id = 1;
+
+  // The name of the cloud resource (from metadata.name).
+  string name = 2;
+
+  // The kind of the cloud resource (e.g., "CivoVpc", "AwsRdsInstance").
+  string kind = 3;
+
+  // The full YAML manifest content.
+  string manifest = 4;
+
+  // Timestamp when the resource was created.
+  google.protobuf.Timestamp created_at = 5;
+
+  // Timestamp when the resource was last updated.
+  google.protobuf.Timestamp updated_at = 6;
+}
+

@@ -18,6 +18,8 @@ func init() {
 	rootCmd.DisableSuggestions = true
 	rootCmd.AddCommand(
 		root.Apply,
+		root.CloudResourceCreateCmd,
+		root.CloudResourceListCmd,
 		root.ConfigCmd,
 		root.Destroy,
 		root.Init,
