@@ -41,6 +41,19 @@ func (r *CloudResourceRepository) FindByName(ctx context.Context, name string) (
 	return &resource, nil
 }
 
+// FindByNameAndKind retrieves a cloud resource by name and kind.
+func (r *CloudResourceRepository) FindByNameAndKind(ctx context.Context, name string, kind string) (*models.CloudResource, error) {
+	var resource models.CloudResource
+	err := r.collection.FindOne(ctx, bson.M{"name": name, "kind": kind}).Decode(&resource)
+	if err == mongo.ErrNoDocuments {
+		return nil, nil // Not found, but not an error
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to query cloud resource by name and kind: %w", err)
+	}
+	return &resource, nil
+}
+
 // FindByID retrieves a cloud resource by ID.
 func (r *CloudResourceRepository) FindByID(ctx context.Context, id string) (*models.CloudResource, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)

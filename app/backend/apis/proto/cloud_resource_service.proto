@@ -18,6 +18,8 @@ service CloudResourceService {
   rpc UpdateCloudResource(UpdateCloudResourceRequest) returns (UpdateCloudResourceResponse);
   // DeleteCloudResource deletes a cloud resource by ID.
   rpc DeleteCloudResource(DeleteCloudResourceRequest) returns (DeleteCloudResourceResponse);
+  // ApplyCloudResource creates or updates a cloud resource (upsert operation based on name and kind).
+  rpc ApplyCloudResource(ApplyCloudResourceRequest) returns (ApplyCloudResourceResponse);
 }
 
 // Request message for creating a cloud resource.
@@ -80,6 +82,20 @@ message DeleteCloudResourceRequest {
 message DeleteCloudResourceResponse {
   // Success status message.
   string message = 1;
+}
+
+// Request message for applying a cloud resource (upsert).
+message ApplyCloudResourceRequest {
+  // YAML manifest content as string.
+  string manifest = 1;
+}
+
+// Response message containing the applied cloud resource.
+message ApplyCloudResourceResponse {
+  // The created or updated cloud resource.
+  CloudResource resource = 1;
+  // Indicates whether the resource was created (true) or updated (false).
+  bool created = 2;
 }
 
 // CloudResource represents a cloud resource.

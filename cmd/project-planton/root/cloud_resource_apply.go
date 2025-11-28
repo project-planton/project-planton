@@ -1,0 +1,103 @@
+package root
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"os"
+	"time"
+
+	"connectrpc.com/connect"
+	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
+	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	"github.com/spf13/cobra"
+)
+
+var CloudResourceApplyCmd = &cobra.Command{
+	Use:   "cloud-resource:apply",
+	Short: "create or update a cloud resource from YAML manifest (upsert)",
+	Long:  "Apply a cloud resource by providing a YAML manifest file. If a resource with the same name and kind exists, it will be updated. Otherwise, a new resource will be created.",
+	Run:   cloudResourceApplyHandler,
+}
+
+func init() {
+	CloudResourceApplyCmd.Flags().StringP("arg", "a", "", "path to the YAML manifest file (required)")
+	CloudResourceApplyCmd.MarkFlagRequired("arg")
+}
+
+func cloudResourceApplyHandler(cmd *cobra.Command, args []string) {
+	// Get YAML file path
+	yamlFile, _ := cmd.Flags().GetString("arg")
+	if yamlFile == "" {
+		fmt.Println("Error: --arg flag is required. Provide path to YAML manifest file")
+		fmt.Println("Usage: project-planton cloud-resource:apply --arg=<yaml-file>")
+		os.Exit(1)
+	}
+
+	// Read YAML file
+	manifestContent, err := os.ReadFile(yamlFile)
+	if err != nil {
+		fmt.Printf("Error: Failed to read YAML file '%s': %v\n", yamlFile, err)
+		os.Exit(1)
+	}
+
+	// Get backend URL from configuration
+	backendURL, err := GetBackendURL()
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Create Connect-RPC client
+	client := backendv1connect.NewCloudResourceServiceClient(
+		http.DefaultClient,
+		backendURL,
+	)
+
+	// Prepare request
+	req := &backendv1.ApplyCloudResourceRequest{
+		Manifest: string(manifestContent),
+	}
+
+	// Create context with timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	// Make the API call
+	resp, err := client.ApplyCloudResource(ctx, connect.NewRequest(req))
+	if err != nil {
+		if connect.CodeOf(err) == connect.CodeUnavailable {
+			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
+			fmt.Printf("  1. The backend service is running\n")
+			fmt.Printf("  2. The backend URL is correct\n")
+			fmt.Printf("  3. Network connectivity\n")
+			os.Exit(1)
+		}
+		if connect.CodeOf(err) == connect.CodeInvalidArgument {
+			fmt.Printf("Error: Invalid manifest - %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Error applying cloud resource: %v\n", err)
+		os.Exit(1)
+	}
+
+	resource := resp.Msg.Resource
+	action := "Updated"
+	if resp.Msg.Created {
+		action = "Created"
+	}
+
+	// Display success message
+	fmt.Println("✅ Cloud resource applied successfully!")
+	fmt.Printf("\nAction: %s\n", action)
+	fmt.Printf("ID: %s\n", resource.Id)
+	fmt.Printf("Name: %s\n", resource.Name)
+	fmt.Printf("Kind: %s\n", resource.Kind)
+	if resource.CreatedAt != nil {
+		fmt.Printf("Created At: %s\n", resource.CreatedAt.AsTime().Format("2006-01-02 15:04:05"))
+	}
+	if resource.UpdatedAt != nil {
+		fmt.Printf("Updated At: %s\n", resource.UpdatedAt.AsTime().Format("2006-01-02 15:04:05"))
+	}
+}
+
