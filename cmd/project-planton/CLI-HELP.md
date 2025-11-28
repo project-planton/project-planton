@@ -139,7 +139,7 @@ project-planton config set backend-url <your-backend-url>
 
 ## Cloud Resources
 
-Cloud resources represent infrastructure resources that can be created and managed through the Project Planton backend service. You can create cloud resources from YAML manifests and list existing resources.
+Cloud resources represent infrastructure resources that can be created and managed through the Project Planton backend service. You can perform complete lifecycle management including create, read, update, delete, and list operations.
 
 ### `project-planton cloud-resource:create`
 
@@ -266,6 +266,198 @@ The command displays results in a table with the following columns:
 - **KIND** - Resource type/kind (e.g., CivoVpc, AwsRdsInstance)
 - **CREATED** - Creation timestamp
 
+### `project-planton cloud-resource:get`
+
+Retrieve detailed information about a specific cloud resource by its ID.
+
+#### Basic Usage
+
+```bash
+project-planton cloud-resource:get --id=<resource-id>
+```
+
+**Example:**
+```bash
+# Get a cloud resource by ID
+project-planton cloud-resource:get --id=507f1f77bcf86cd799439011
+```
+
+**Sample Output:**
+```
+Cloud Resource Details:
+======================
+ID:         507f1f77bcf86cd799439011
+Name:       my-vpc
+Kind:       CivoVpc
+Created At: 2025-11-28 13:14:12
+Updated At: 2025-11-28 14:05:23
+
+Manifest:
+----------
+kind: CivoVpc
+metadata:
+  name: my-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+  description: Production VPC
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the cloud resource (required)
+- `--help, -h` - Show help information
+
+#### Error Handling
+
+**Missing ID:**
+```
+Error: --id flag is required. Provide the cloud resource ID
+Usage: project-planton cloud-resource:get --id=<resource-id>
+```
+
+**Resource not found:**
+```
+Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Invalid ID format:**
+```
+Error: Invalid manifest - invalid ID format
+```
+
+### `project-planton cloud-resource:update`
+
+Update an existing cloud resource by providing a new YAML manifest. The manifest's `name` and `kind` must match the existing resource.
+
+#### Basic Usage
+
+```bash
+project-planton cloud-resource:update --id=<resource-id> --arg=<yaml-file>
+```
+
+**Example:**
+```bash
+# Update a cloud resource
+project-planton cloud-resource:update --id=507f1f77bcf86cd799439011 --arg=my-vpc-updated.yaml
+```
+
+**Sample Output:**
+```
+✅ Cloud resource updated successfully!
+
+ID: 507f1f77bcf86cd799439011
+Name: my-vpc
+Kind: CivoVpc
+Updated At: 2025-11-28 14:05:23
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the cloud resource (required)
+- `--arg, -a` - Path to the YAML manifest file (required)
+- `--help, -h` - Show help information
+
+#### Update Validation
+
+**CRITICAL**: The update operation validates that the manifest's `name` and `kind` match the existing resource to prevent accidental data corruption.
+
+**Validation Rules:**
+- Manifest `metadata.name` must match existing resource name
+- Manifest `kind` must match existing resource kind
+- Resource ID and creation timestamp are preserved
+
+**Example Valid Update:**
+```yaml
+# Existing resource: name=my-vpc, kind=CivoVpc
+# This update will succeed
+kind: CivoVpc
+metadata:
+  name: my-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+  description: Updated description
+  tags:
+    - production
+```
+
+#### Error Handling
+
+**Missing arguments:**
+```
+Error: --id flag is required. Provide the cloud resource ID
+Error: --arg flag is required. Provide path to YAML manifest file
+Usage: project-planton cloud-resource:update --id=<resource-id> --arg=<yaml-file>
+```
+
+**Resource not found:**
+```
+Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Name mismatch:**
+```
+Error: Invalid manifest - manifest name 'different-name' does not match existing resource name 'my-vpc'
+```
+
+**Kind mismatch:**
+```
+Error: Invalid manifest - manifest kind 'AwsVpc' does not match existing resource kind 'CivoVpc'
+```
+
+**Invalid YAML:**
+```
+Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
+```
+
+### `project-planton cloud-resource:delete`
+
+Delete a cloud resource by its ID. This operation is irreversible.
+
+#### Basic Usage
+
+```bash
+project-planton cloud-resource:delete --id=<resource-id>
+```
+
+**Example:**
+```bash
+# Delete a cloud resource
+project-planton cloud-resource:delete --id=507f1f77bcf86cd799439011
+```
+
+**Sample Output:**
+```
+✅ Cloud resource 'my-vpc' deleted successfully
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the cloud resource (required)
+- `--help, -h` - Show help information
+
+#### Error Handling
+
+**Missing ID:**
+```
+Error: --id flag is required. Provide the cloud resource ID
+Usage: project-planton cloud-resource:delete --id=<resource-id>
+```
+
+**Resource not found:**
+```
+Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Connection issues:**
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
 ### Prerequisites
 
 Before using cloud resource commands, you must configure the backend URL:
@@ -311,10 +503,19 @@ project-planton config set backend-url <your-backend-url>
    project-planton list-deployment-components --kind AwsRdsInstance
    ```
 
-3. **Create cloud resources:**
+3. **Manage cloud resources:**
    ```bash
    # Create a cloud resource from YAML manifest
    project-planton cloud-resource:create --arg=my-vpc.yaml
+
+   # Get resource details by ID
+   project-planton cloud-resource:get --id=507f1f77bcf86cd799439011
+
+   # Update a resource
+   project-planton cloud-resource:update --id=507f1f77bcf86cd799439011 --arg=updated.yaml
+
+   # Delete a resource
+   project-planton cloud-resource:delete --id=507f1f77bcf86cd799439011
    ```
 
 4. **List cloud resources:**
@@ -452,7 +653,51 @@ Error: Invalid manifest - cloud resource with name 'my-vpc' already exists
 **Solution:**
 - Use a different name for the resource
 - Check existing resources: `project-planton cloud-resource:list`
-- Delete or rename the existing resource if needed
+- Delete the existing resource if needed: `project-planton cloud-resource:delete --id=<id>`
+
+### Cloud Resource Update Errors
+
+**Name Mismatch:**
+```
+Error: Invalid manifest - manifest name 'different-name' does not match existing resource name 'my-vpc'
+```
+
+**Solution:**
+- Ensure the manifest `metadata.name` matches the existing resource name
+- Get current resource details: `project-planton cloud-resource:get --id=<id>`
+- Update the manifest to use the correct name
+
+**Kind Mismatch:**
+```
+Error: Invalid manifest - manifest kind 'AwsVpc' does not match existing resource kind 'CivoVpc'
+```
+
+**Solution:**
+- Ensure the manifest `kind` matches the existing resource kind
+- If you need to change the kind, delete and recreate the resource
+- Get current resource details: `project-planton cloud-resource:get --id=<id>`
+
+**Resource Not Found:**
+```
+Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Solution:**
+- Verify the resource ID is correct
+- List all resources: `project-planton cloud-resource:list`
+- The resource may have been deleted
+
+### Cloud Resource Deletion Errors
+
+**Resource Not Found:**
+```
+Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Solution:**
+- Verify the resource ID is correct
+- List all resources: `project-planton cloud-resource:list`
+- The resource may have already been deleted
 
 **Empty Results:**
 ```
@@ -543,9 +788,82 @@ for manifest in resources/*.yaml; do
     project-planton cloud-resource:create --arg="$manifest"
 done
 
-# List all cloud resources
-echo "=== Cloud Resources ==="
-project-planton cloud-resource:list
+# List all cloud resources and get details
+project-planton cloud-resource:list | grep -v "^Total:" | tail -n +2 | while read -r id name kind created; do
+    echo "=== Resource: $name ($kind) ==="
+    project-planton cloud-resource:get --id="$id"
+    echo ""
+done
+
+# Update multiple resources
+for manifest in updates/*.yaml; do
+    # Extract resource name from manifest
+    name=$(grep "name:" "$manifest" | awk '{print $2}')
+    # Find resource ID by name (requires parsing list output)
+    echo "Updating resource: $name from $manifest"
+    # Note: In practice, you'd need to map names to IDs
+done
+
+# Cleanup old resources
+echo "=== Cleaning up old resources ==="
+project-planton cloud-resource:list --kind TestResource | grep -v "^Total:" | tail -n +2 | while read -r id rest; do
+    echo "Deleting test resource: $id"
+    project-planton cloud-resource:delete --id="$id"
+done
+```
+
+### Complete Cloud Resource Lifecycle
+
+```bash
+#!/bin/bash
+
+# Complete workflow example
+set -e
+
+# 1. Create a resource
+echo "Creating VPC resource..."
+cat > temp-vpc.yaml <<EOF
+kind: CivoVpc
+metadata:
+  name: automation-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+EOF
+
+RESOURCE_ID=$(project-planton cloud-resource:create --arg=temp-vpc.yaml | grep "^ID:" | awk '{print $2}')
+echo "Created resource with ID: $RESOURCE_ID"
+
+# 2. Get resource details
+echo "Fetching resource details..."
+project-planton cloud-resource:get --id="$RESOURCE_ID"
+
+# 3. Update the resource
+echo "Updating resource..."
+cat > temp-vpc.yaml <<EOF
+kind: CivoVpc
+metadata:
+  name: automation-vpc
+spec:
+  region: NYC1
+  cidr: 10.0.0.0/16
+  description: Updated via automation
+EOF
+
+project-planton cloud-resource:update --id="$RESOURCE_ID" --arg=temp-vpc.yaml
+
+# 4. Verify update
+echo "Verifying update..."
+project-planton cloud-resource:get --id="$RESOURCE_ID" | grep "description"
+
+# 5. Delete resource
+echo "Cleaning up..."
+project-planton cloud-resource:delete --id="$RESOURCE_ID"
+
+# Cleanup temp file
+rm temp-vpc.yaml
+
+echo "Workflow complete!"
 ```
 
 ### JSON Output (Future Enhancement)

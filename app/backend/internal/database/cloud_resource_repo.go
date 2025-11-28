@@ -41,6 +41,24 @@ func (r *CloudResourceRepository) FindByName(ctx context.Context, name string) (
 	return &resource, nil
 }
 
+// FindByID retrieves a cloud resource by ID.
+func (r *CloudResourceRepository) FindByID(ctx context.Context, id string) (*models.CloudResource, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	var resource models.CloudResource
+	err = r.collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&resource)
+	if err == mongo.ErrNoDocuments {
+		return nil, nil // Not found, but not an error
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to query cloud resource by ID: %w", err)
+	}
+	return &resource, nil
+}
+
 // Create inserts a new cloud resource into MongoDB.
 func (r *CloudResourceRepository) Create(ctx context.Context, resource *models.CloudResource) (*models.CloudResource, error) {
 	now := time.Now()
@@ -86,3 +104,57 @@ func (r *CloudResourceRepository) List(ctx context.Context, opts *CloudResourceL
 	return resources, nil
 }
 
+// Update updates an existing cloud resource in MongoDB.
+func (r *CloudResourceRepository) Update(ctx context.Context, id string, resource *models.CloudResource) (*models.CloudResource, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	resource.ID = objectID
+	resource.UpdatedAt = time.Now()
+
+	update := bson.M{
+		"$set": bson.M{
+			"name":       resource.Name,
+			"kind":       resource.Kind,
+			"manifest":   resource.Manifest,
+			"updated_at": resource.UpdatedAt,
+		},
+	}
+
+	result := r.collection.FindOneAndUpdate(
+		ctx,
+		bson.M{"_id": objectID},
+		update,
+	)
+
+	if result.Err() != nil {
+		if result.Err() == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("cloud resource not found")
+		}
+		return nil, fmt.Errorf("failed to update cloud resource: %w", result.Err())
+	}
+
+	// Fetch the updated resource
+	return r.FindByID(ctx, id)
+}
+
+// Delete removes a cloud resource from MongoDB.
+func (r *CloudResourceRepository) Delete(ctx context.Context, id string) error {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	result, err := r.collection.DeleteOne(ctx, bson.M{"_id": objectID})
+	if err != nil {
+		return fmt.Errorf("failed to delete cloud resource: %w", err)
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("cloud resource not found")
+	}
+
+	return nil
+}

@@ -1,37 +1,18 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: mongo:7.0
-    container_name: project-planton-mongodb
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: project_planton
-    ports:
-      - '27018:27017'
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - project-planton-network
-
   backend:
-    build:
-      context: ./app/backend
-      dockerfile: Dockerfile
+    image: ${BACKEND_IMAGE:-satishlleftbin/project-planton-backend:latest}
     container_name: project-planton-backend
     restart: unless-stopped
-    environment:
-      - MONGODB_URI=mongodb://root:password@mongodb:27017/project_planton?authSource=admin
-      - MONGODB_DATABASE=project_planton
-      - SERVER_PORT=50051
     ports:
-      - '50051:50051'
-    depends_on:
-      - mongodb
+      - "50051:50051"
     networks:
       - project-planton-network
+    environment:
+      - MONGODB_URI=${MONGODB_URI:-mongodb://host.docker.internal:27017/project_planton}
+      - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
+      - SERVER_PORT=50051
     healthcheck:
       test: ['CMD', 'pgrep', '-f', 'server']
       interval: 30s
@@ -40,9 +21,7 @@ services:
       start_period: 40s
 
   frontend:
-    build:
-      context: ./app/frontend
-      dockerfile: Dockerfile
+    image: ${FRONTEND_IMAGE:-satishlleftbin/project-planton-frontend:latest}
     container_name: project-planton-frontend
     restart: unless-stopped
     environment:
@@ -60,10 +39,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  mongodb_data:
-    driver: local
 
 networks:
   project-planton-network:

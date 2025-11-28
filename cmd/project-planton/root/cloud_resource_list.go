@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/internal/backend/proto"
-	"github.com/project-planton/project-planton/internal/backend/proto/backendv1connect"
+	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
+	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
 	"github.com/spf13/cobra"
 )
 

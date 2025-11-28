@@ -13,24 +13,34 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var CloudResourceCreateCmd = &cobra.Command{
-	Use:   "cloud-resource:create",
-	Short: "create a new cloud resource from YAML manifest",
-	Long:  "Create a new cloud resource by providing a YAML manifest file. The manifest must contain 'kind' and 'metadata.name' fields.",
-	Run:   cloudResourceCreateHandler,
+var CloudResourceUpdateCmd = &cobra.Command{
+	Use:   "cloud-resource:update",
+	Short: "update a cloud resource from YAML manifest",
+	Long:  "Update an existing cloud resource by providing its ID and a YAML manifest file. The manifest's 'kind' and 'metadata.name' must match the existing resource.",
+	Run:   cloudResourceUpdateHandler,
 }
 
 func init() {
-	CloudResourceCreateCmd.Flags().StringP("arg", "a", "", "path to the YAML manifest file (required)")
-	CloudResourceCreateCmd.MarkFlagRequired("arg")
+	CloudResourceUpdateCmd.Flags().StringP("id", "i", "", "unique identifier of the cloud resource (required)")
+	CloudResourceUpdateCmd.Flags().StringP("arg", "a", "", "path to the YAML manifest file (required)")
+	CloudResourceUpdateCmd.MarkFlagRequired("id")
+	CloudResourceUpdateCmd.MarkFlagRequired("arg")
 }
 
-func cloudResourceCreateHandler(cmd *cobra.Command, args []string) {
+func cloudResourceUpdateHandler(cmd *cobra.Command, args []string) {
+	// Get resource ID
+	id, _ := cmd.Flags().GetString("id")
+	if id == "" {
+		fmt.Println("Error: --id flag is required. Provide the cloud resource ID")
+		fmt.Println("Usage: project-planton cloud-resource:update --id=<resource-id> --arg=<yaml-file>")
+		os.Exit(1)
+	}
+
 	// Get YAML file path
 	yamlFile, _ := cmd.Flags().GetString("arg")
 	if yamlFile == "" {
 		fmt.Println("Error: --arg flag is required. Provide path to YAML manifest file")
-		fmt.Println("Usage: project-planton cloud-resource:create --arg=<yaml-file>")
+		fmt.Println("Usage: project-planton cloud-resource:update --id=<resource-id> --arg=<yaml-file>")
 		os.Exit(1)
 	}
 
@@ -55,7 +65,8 @@ func cloudResourceCreateHandler(cmd *cobra.Command, args []string) {
 	)
 
 	// Prepare request
-	req := &backendv1.CreateCloudResourceRequest{
+	req := &backendv1.UpdateCloudResourceRequest{
+		Id:       id,
 		Manifest: string(manifestContent),
 	}
 
@@ -64,7 +75,7 @@ func cloudResourceCreateHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.CreateCloudResource(ctx, connect.NewRequest(req))
+	resp, err := client.UpdateCloudResource(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
@@ -73,23 +84,27 @@ func cloudResourceCreateHandler(cmd *cobra.Command, args []string) {
 			fmt.Printf("  3. Network connectivity\n")
 			os.Exit(1)
 		}
+		if connect.CodeOf(err) == connect.CodeNotFound {
+			fmt.Printf("Error: Cloud resource with ID '%s' not found\n", id)
+			os.Exit(1)
+		}
 		if connect.CodeOf(err) == connect.CodeInvalidArgument {
 			fmt.Printf("Error: Invalid manifest - %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Error creating cloud resource: %v\n", err)
+		fmt.Printf("Error updating cloud resource: %v\n", err)
 		os.Exit(1)
 	}
 
 	resource := resp.Msg.Resource
 
 	// Display success message
-	fmt.Println("✅ Cloud resource created successfully!")
+	fmt.Println("✅ Cloud resource updated successfully!")
 	fmt.Printf("\nID: %s\n", resource.Id)
 	fmt.Printf("Name: %s\n", resource.Name)
 	fmt.Printf("Kind: %s\n", resource.Kind)
-	if resource.CreatedAt != nil {
-		fmt.Printf("Created At: %s\n", resource.CreatedAt.AsTime().Format("2006-01-02 15:04:05"))
+	if resource.UpdatedAt != nil {
+		fmt.Printf("Updated At: %s\n", resource.UpdatedAt.AsTime().Format("2006-01-02 15:04:05"))
 	}
 }
 
