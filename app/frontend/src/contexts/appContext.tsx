@@ -2,6 +2,7 @@
 import React, { createContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
+import { SnackBar } from '@/components/shared/snackbar';
 import { appTheme } from '@/themes/theme';
 import {
   AppContextType,
@@ -133,6 +134,14 @@ export const AppContextProvider = ({
     setPageLoading(loading);
   }, []);
 
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handleExited = useCallback(() => {
+    setSnackMsg(undefined);
+  }, []);
+
   const appContext: AppContextType = useMemo(
     () => ({
       title,
@@ -165,6 +174,14 @@ export const AppContextProvider = ({
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
+        <SnackBar
+          open={open}
+          severity={snackMsg ? snackMsg?.severity : undefined}
+          message={snackMsg ? snackMsg?.message : undefined}
+          id={snackMsg ? snackMsg?.id : undefined}
+          handleClose={handleClose}
+          handleExited={handleExited}
+        />
       </ThemeProvider>
     </AppContext.Provider>
   );

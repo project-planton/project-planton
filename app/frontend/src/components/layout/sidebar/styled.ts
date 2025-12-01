@@ -60,14 +60,14 @@ export const StyledDrawer = styled(Drawer, {
   },
 }));
 
-export const SidebarContainer = styled(Box)({
+export const SidebarContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
   position: 'relative',
   padding: 0,
-  margin: 0,
-});
+  margin: theme.spacing(1, 0),
+}));
 
 export const StyledBottomSection = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -142,30 +142,7 @@ export const StyledListItemButton = styled(ListItemButton, {
   borderRadius: theme.shape.borderRadius * 2,
   padding: theme.spacing(1, 1.5),
   margin: theme.spacing(0.5, 0),
-  marginTop: theme.spacing(0.5),
-  marginBottom: theme.spacing(0.5),
   justifyContent: open ? 'flex-start' : 'center',
-  color: theme.palette.text.primary,
-  '&.Mui-selected': {
-    backgroundColor: theme.palette.mode === 'dark'
-      ? theme.palette.grey[800] || theme.palette.action.selected
-      : theme.palette.grey[200] || theme.palette.action.selected,
-    color: theme.palette.text.primary,
-    '&:hover': {
-      backgroundColor: theme.palette.mode === 'dark'
-        ? theme.palette.grey[800] || theme.palette.action.selected
-        : theme.palette.grey[200] || theme.palette.action.selected,
-    },
-    '& .MuiListItemIcon-root': {
-      color: theme.palette.text.primary,
-    },
-  },
-  '&:hover:not(.Mui-selected)': {
-    backgroundColor: theme.palette.action.hover,
-    '& .MuiListItemIcon-root': {
-      color: theme.palette.text.primary,
-    },
-  },
 }));
 
 export const StyledListItemIcon = styled(ListItemIcon, {
@@ -213,4 +190,3 @@ export const StyledDivider = styled(Divider)(({ theme }) => ({
   marginTop: theme.spacing(0.5),
   marginBottom: theme.spacing(0.5),
 }));
-

@@ -1,6 +1,6 @@
 import { createTheme, CSSObject, Theme } from '@mui/material/styles';
-import { getDarkTheme } from './dark';
-import { getLightTheme } from './light';
+import { getDarkTheme } from '@/themes/dark';
+import { getLightTheme } from '@/themes/light';
 import { NextFont } from 'next/dist/compiled/@next/font';
 
 declare module '@mui/material/styles' {
@@ -12,30 +12,6 @@ declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lighter?: string;
     darker?: string;
-  }
-
-  interface Palette {
-    crimson?: {
-      0: string;
-      10: string;
-      20: string;
-      30: string;
-      40: string;
-      50: string;
-      60: string;
-    };
-  }
-
-  interface PaletteOptions {
-    crimson?: {
-      0: string;
-      10: string;
-      20: string;
-      30: string;
-      40: string;
-      50: string;
-      60: string;
-    };
   }
 }
 
@@ -71,8 +47,11 @@ export const menuItemRoot = (theme: Theme): CSSObject => {
   };
 };
 
+export const formControlLabelLabel = (): CSSObject => ({
+  lineHeight: 1,
+});
+
 export const appTheme = (type: 'dark' | 'light', font: NextFont): Theme => {
   const theme = type === 'light' ? getLightTheme(font) : getDarkTheme(font);
   return createTheme(theme);
 };
-
