@@ -10,6 +10,12 @@ BUF := $(shell which buf 2>/dev/null || echo /tmp/buf)
 go-stubs-clean:
 	@rm -rf gen/go
 
+.PHONY: ts-stubs-clean
+ts-stubs-clean:
+	@echo "Cleaning TypeScript generated stubs..."
+	@rm -rf ../frontend/src/gen/proto
+	@rm -rf ../frontend/src/gen/connect
+
 .PHONY: go-stubs-init
 go-stubs-init:
 	@mkdir -p gen/go
@@ -48,10 +54,13 @@ go-stubs: go-stubs-init
 
 # --------------------------------------------------------------------------- #
 #  Main generation target (includes both Go and TypeScript via buf.gen.yaml)
+#  IMPORTANT: Always cleans before generating to ensure file descriptors are
+#  regenerated when new messages are added. This prevents issues where new
+#  message schemas reference indices that don't exist in old file descriptors.
 # --------------------------------------------------------------------------- #
 .PHONY: generate
-generate: go-stubs
-	@echo "✅ All proto code generated"
+generate: clean go-stubs
+	@echo "✅ All proto code generated (Go and TypeScript)"
 
 .PHONY: lint
 lint:
@@ -66,8 +75,8 @@ format:
 	@echo "✅ Formatting complete"
 
 .PHONY: clean
-clean: go-stubs-clean
-	@echo "✅ Cleaned generated stubs"
+clean: go-stubs-clean ts-stubs-clean
+	@echo "✅ Cleaned all generated stubs (Go and TypeScript)"
 
 .PHONY: build
 build: lint format generate

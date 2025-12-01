@@ -438,3 +438,29 @@ func (s *CloudResourceService) ApplyCloudResource(
 		Created:  created,
 	}), nil
 }
+
+// CountCloudResources returns the total count of cloud resources.
+func (s *CloudResourceService) CountCloudResources(
+	ctx context.Context,
+	req *connect.Request[backendv1.CountCloudResourcesRequest],
+) (*connect.Response[backendv1.CountCloudResourcesResponse], error) {
+	opts := &database.CloudResourceListOptions{}
+	if req.Msg.Kind != nil {
+		kind := *req.Msg.Kind
+		opts.Kind = &kind
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"kind": req.Msg.Kind,
+	}).Info("Counting cloud resources")
+
+	count, err := s.repo.Count(ctx, opts)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to count cloud resources")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count cloud resources: %w", err))
+	}
+
+	return connect.NewResponse(&backendv1.CountCloudResourcesResponse{
+		Count: count,
+	}), nil
+}

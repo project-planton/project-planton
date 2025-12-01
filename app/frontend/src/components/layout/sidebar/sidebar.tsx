@@ -57,47 +57,6 @@ const menuGroups: MenuGroup[] = [
       },
     ],
   },
-  {
-    title: 'Shop',
-    items: [
-      {
-        text: 'Products',
-        icon: <Inventory2 />,
-        path: '/products',
-      },
-      {
-        text: 'Orders',
-        icon: <ShoppingBag />,
-        path: '/orders',
-        badge: 0,
-      },
-      {
-        text: 'Customers',
-        icon: <People />,
-        path: '/customers',
-      },
-    ],
-  },
-  {
-    title: 'Blog',
-    items: [
-      {
-        text: 'Posts',
-        icon: <Article />,
-        path: '/posts',
-      },
-      {
-        text: 'Categories',
-        icon: <Folder />,
-        path: '/categories',
-      },
-      {
-        text: 'Authors',
-        icon: <Person />,
-        path: '/authors',
-      },
-    ],
-  },
 ];
 
 export const Sidebar = () => {

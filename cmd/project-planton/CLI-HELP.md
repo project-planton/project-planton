@@ -23,15 +23,18 @@ The Project Planton CLI uses a configuration system similar to Git, allowing you
 Set a configuration value.
 
 **Available Keys:**
+
 - `backend-url` - URL of the Project Planton backend service
 
 **Example:**
+
 ```bash
 project-planton config set backend-url http://localhost:50051
 project-planton config set backend-url https://api.project-planton.com
 ```
 
 **Validation:**
+
 - `backend-url` must start with `http://` or `https://`
 
 #### `project-planton config get <key>`
@@ -39,12 +42,14 @@ project-planton config set backend-url https://api.project-planton.com
 Get a configuration value.
 
 **Example:**
+
 ```bash
 project-planton config get backend-url
 # Output: http://localhost:50051
 ```
 
 **Error Handling:**
+
 - Returns exit code 1 if the key is not set
 - Prints error message for unknown keys
 
@@ -53,6 +58,7 @@ project-planton config get backend-url
 List all configuration values.
 
 **Example:**
+
 ```bash
 project-planton config list
 # Output: backend-url=http://localhost:50051
@@ -83,6 +89,7 @@ project-planton list-deployment-components
 ```
 
 **Sample Output:**
+
 ```
 NAME                KIND                PROVIDER    VERSION  ID PREFIX  SERVICE KIND  CREATED
 PostgresKubernetes  PostgresKubernetes  kubernetes  v1       k8spg      Yes           2025-11-25
@@ -103,6 +110,7 @@ project-planton list-deployment-components -k AwsRdsInstance
 ```
 
 **Sample Output:**
+
 ```
 NAME                KIND                PROVIDER    VERSION  ID PREFIX  SERVICE KIND  CREATED
 PostgresKubernetes  PostgresKubernetes  kubernetes  v1       k8spg      Yes           2025-11-25
@@ -152,12 +160,14 @@ project-planton cloud-resource:create --arg=path/to/manifest.yaml
 ```
 
 **Example:**
+
 ```bash
 # Create a cloud resource from a YAML file
 project-planton cloud-resource:create --arg=my-vpc.yaml
 ```
 
 **Sample Output:**
+
 ```
 ✅ Cloud resource created successfully!
 
@@ -175,10 +185,12 @@ Created At: 2025-11-28 13:14:12
 #### Manifest Requirements
 
 The YAML manifest must contain:
+
 - `kind` - The type of cloud resource (e.g., `CivoVpc`, `AwsRdsInstance`)
 - `metadata.name` - A unique name for the resource
 
 **Example Manifest:**
+
 ```yaml
 kind: CivoVpc
 metadata:
@@ -191,22 +203,26 @@ spec:
 #### Error Handling
 
 **Missing manifest:**
+
 ```
 Error: --arg flag is required. Provide path to YAML manifest file
 Usage: project-planton cloud-resource:create --arg=<yaml-file>
 ```
 
 **Invalid YAML:**
+
 ```
 Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
 ```
 
 **Duplicate resource:**
+
 ```
 Error: Invalid manifest - cloud resource with name 'my-vpc' already exists
 ```
 
 **Connection issues:**
+
 ```
 Error: Cannot connect to backend service at http://localhost:50051. Please check:
   1. The backend service is running
@@ -226,6 +242,7 @@ project-planton cloud-resource:list
 ```
 
 **Sample Output:**
+
 ```
 ID                     NAME      KIND            CREATED
 507f1f77bcf86cd799439011  my-vpc   CivoVpc        2025-11-28 13:14:12
@@ -245,6 +262,7 @@ project-planton cloud-resource:list -k AwsRdsInstance
 ```
 
 **Sample Output:**
+
 ```
 ID                     NAME      KIND     CREATED
 507f1f77bcf86cd799439011  my-vpc   CivoVpc  2025-11-28 13:14:12
@@ -277,12 +295,14 @@ project-planton cloud-resource:get --id=<resource-id>
 ```
 
 **Example:**
+
 ```bash
 # Get a cloud resource by ID
 project-planton cloud-resource:get --id=507f1f77bcf86cd799439011
 ```
 
 **Sample Output:**
+
 ```
 Cloud Resource Details:
 ======================
@@ -311,17 +331,20 @@ spec:
 #### Error Handling
 
 **Missing ID:**
+
 ```
 Error: --id flag is required. Provide the cloud resource ID
 Usage: project-planton cloud-resource:get --id=<resource-id>
 ```
 
 **Resource not found:**
+
 ```
 Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
 ```
 
 **Invalid ID format:**
+
 ```
 Error: Invalid manifest - invalid ID format
 ```
@@ -337,12 +360,14 @@ project-planton cloud-resource:update --id=<resource-id> --arg=<yaml-file>
 ```
 
 **Example:**
+
 ```bash
 # Update a cloud resource
 project-planton cloud-resource:update --id=507f1f77bcf86cd799439011 --arg=my-vpc-updated.yaml
 ```
 
 **Sample Output:**
+
 ```
 ✅ Cloud resource updated successfully!
 
@@ -363,11 +388,13 @@ Updated At: 2025-11-28 14:05:23
 **CRITICAL**: The update operation validates that the manifest's `name` and `kind` match the existing resource to prevent accidental data corruption.
 
 **Validation Rules:**
+
 - Manifest `metadata.name` must match existing resource name
 - Manifest `kind` must match existing resource kind
 - Resource ID and creation timestamp are preserved
 
 **Example Valid Update:**
+
 ```yaml
 # Existing resource: name=my-vpc, kind=CivoVpc
 # This update will succeed
@@ -385,6 +412,7 @@ spec:
 #### Error Handling
 
 **Missing arguments:**
+
 ```
 Error: --id flag is required. Provide the cloud resource ID
 Error: --arg flag is required. Provide path to YAML manifest file
@@ -392,21 +420,25 @@ Usage: project-planton cloud-resource:update --id=<resource-id> --arg=<yaml-file
 ```
 
 **Resource not found:**
+
 ```
 Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
 ```
 
 **Name mismatch:**
+
 ```
 Error: Invalid manifest - manifest name 'different-name' does not match existing resource name 'my-vpc'
 ```
 
 **Kind mismatch:**
+
 ```
 Error: Invalid manifest - manifest kind 'AwsVpc' does not match existing resource kind 'CivoVpc'
 ```
 
 **Invalid YAML:**
+
 ```
 Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
 ```
@@ -422,12 +454,14 @@ project-planton cloud-resource:delete --id=<resource-id>
 ```
 
 **Example:**
+
 ```bash
 # Delete a cloud resource
 project-planton cloud-resource:delete --id=507f1f77bcf86cd799439011
 ```
 
 **Sample Output:**
+
 ```
 ✅ Cloud resource 'my-vpc' deleted successfully
 ```
@@ -440,17 +474,20 @@ project-planton cloud-resource:delete --id=507f1f77bcf86cd799439011
 #### Error Handling
 
 **Missing ID:**
+
 ```
 Error: --id flag is required. Provide the cloud resource ID
 Usage: project-planton cloud-resource:delete --id=<resource-id>
 ```
 
 **Resource not found:**
+
 ```
 Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
 ```
 
 **Connection issues:**
+
 ```
 Error: Cannot connect to backend service at http://localhost:50051. Please check:
   1. The backend service is running
@@ -469,6 +506,7 @@ project-planton cloud-resource:apply --arg=path/to/manifest.yaml
 ```
 
 **Example:**
+
 ```bash
 # Apply a cloud resource (create or update)
 project-planton cloud-resource:apply --arg=my-vpc.yaml
@@ -519,10 +557,12 @@ Updated At: 2025-11-28 15:30:45
 #### Manifest Requirements
 
 The YAML manifest must contain:
+
 - `kind` - The type of cloud resource (e.g., `CivoVpc`, `AwsRdsInstance`)
 - `metadata.name` - A unique name for the resource
 
 **Example Manifest:**
+
 ```yaml
 kind: CivoVpc
 metadata:
@@ -594,6 +634,7 @@ Action: Created
 #### Use Cases
 
 **1. Initial Resource Creation**
+
 ```bash
 # Create infrastructure from scratch
 project-planton cloud-resource:apply --arg=vpc.yaml
@@ -602,6 +643,7 @@ project-planton cloud-resource:apply --arg=cache.yaml
 ```
 
 **2. Configuration Updates**
+
 ```bash
 # Modify vpc.yaml to change CIDR or add tags
 # Then apply the changes
@@ -610,6 +652,7 @@ project-planton cloud-resource:apply --arg=vpc.yaml
 ```
 
 **3. GitOps Workflows**
+
 ```bash
 # In CI/CD pipeline - always apply the latest manifest
 git pull origin main
@@ -617,6 +660,7 @@ project-planton cloud-resource:apply --arg=manifests/production-vpc.yaml
 ```
 
 **4. Disaster Recovery**
+
 ```bash
 # Resources deleted accidentally? Just reapply
 project-planton cloud-resource:apply --arg=all-resources/*.yaml
@@ -626,14 +670,17 @@ project-planton cloud-resource:apply --arg=all-resources/*.yaml
 #### Comparison with Other Commands
 
 **Apply vs Create:**
+
 - `create`: Fails if resource already exists (by name only, regardless of kind)
 - `apply`: Creates if not exists, updates if exists (by name AND kind)
 
 **Apply vs Update:**
+
 - `update`: Requires resource ID, fails if resource doesn't exist
 - `apply`: No ID needed, works whether resource exists or not
 
 **When to use each:**
+
 - Use `apply` for declarative, idempotent workflows (recommended for most cases)
 - Use `create` when you want to ensure a resource doesn't already exist
 - Use `update` when you have the resource ID and want explicit update semantics
@@ -641,23 +688,27 @@ project-planton cloud-resource:apply --arg=all-resources/*.yaml
 #### Error Handling
 
 **Missing manifest:**
+
 ```
 Error: --arg flag is required. Provide path to YAML manifest file
 Usage: project-planton cloud-resource:apply --arg=<yaml-file>
 ```
 
 **Invalid YAML:**
+
 ```
 Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
 ```
 
 **Missing required fields:**
+
 ```
 Error: Invalid manifest - manifest must contain 'kind' field
 Error: Invalid manifest - manifest must contain 'metadata.name' field
 ```
 
 **Connection issues:**
+
 ```
 Error: Cannot connect to backend service at http://localhost:50051. Please check:
   1. The backend service is running
@@ -680,11 +731,13 @@ project-planton config set backend-url <your-backend-url>
 ### Initial Setup
 
 1. **Configure the backend URL:**
+
    ```bash
    project-planton config set backend-url http://localhost:50051
    ```
 
 2. **Verify configuration:**
+
    ```bash
    project-planton config get backend-url
    ```
@@ -697,11 +750,13 @@ project-planton config set backend-url <your-backend-url>
 ### Daily Usage
 
 1. **List all available deployment components:**
+
    ```bash
    project-planton list-deployment-components
    ```
 
 2. **Find specific component types:**
+
    ```bash
    # List all Kubernetes components
    project-planton list-deployment-components --kind PostgresKubernetes
@@ -711,6 +766,7 @@ project-planton config set backend-url <your-backend-url>
    ```
 
 3. **Manage cloud resources:**
+
    ```bash
    # Apply a cloud resource (recommended - works for create and update)
    project-planton cloud-resource:apply --arg=my-vpc.yaml
@@ -729,6 +785,7 @@ project-planton config set backend-url <your-backend-url>
    ```
 
 4. **List cloud resources:**
+
    ```bash
    # List all cloud resources
    project-planton cloud-resource:list
@@ -745,16 +802,19 @@ project-planton config set backend-url <your-backend-url>
 ### Environment-Specific Setup
 
 #### Local Development
+
 ```bash
 project-planton config set backend-url http://localhost:50051
 ```
 
 #### Staging Environment
+
 ```bash
 project-planton config set backend-url https://staging-api.project-planton.com
 ```
 
 #### Production Environment
+
 ```bash
 project-planton config set backend-url https://api.project-planton.com
 ```
@@ -766,11 +826,13 @@ project-planton config set backend-url https://api.project-planton.com
 ### Backend URL Not Configured
 
 **Error:**
+
 ```
 Error: backend URL not configured. Run: project-planton config set backend-url <url>
 ```
 
 **Solution:**
+
 ```bash
 project-planton config set backend-url http://localhost:50051
 ```
@@ -778,6 +840,7 @@ project-planton config set backend-url http://localhost:50051
 ### Connection Refused
 
 **Error:**
+
 ```
 Error: Cannot connect to backend service at http://localhost:50051. Please check:
   1. The backend service is running
@@ -786,7 +849,9 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 ```
 
 **Solutions:**
+
 1. **Check if backend service is running:**
+
    ```bash
    # If using Docker
    docker ps | grep backend
@@ -796,6 +861,7 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
    ```
 
 2. **Verify backend URL configuration:**
+
    ```bash
    project-planton config get backend-url
    ```
@@ -808,11 +874,13 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 ### Invalid Backend URL
 
 **Error:**
+
 ```
 Error: backend-url must start with http:// or https://
 ```
 
 **Solution:**
+
 ```bash
 # Correct format
 project-planton config set backend-url http://localhost:50051
@@ -822,6 +890,7 @@ project-planton config set backend-url https://api.example.com
 ### No Results Found
 
 **Output:**
+
 ```
 No deployment components found
 # or
@@ -829,12 +898,15 @@ No deployment components found with kind 'YourKind'
 ```
 
 **Possible Causes:**
+
 1. Backend database is empty
 2. Wrong kind filter applied
 3. Backend service not properly initialized
 
 **Solutions:**
+
 1. **Check without filters:**
+
    ```bash
    project-planton list-deployment-components
    ```
@@ -846,21 +918,25 @@ No deployment components found with kind 'YourKind'
 ### Cloud Resource Creation Errors
 
 **Invalid Manifest:**
+
 ```
 Error: Invalid manifest - invalid YAML format: yaml: line 2: found character that cannot start any token
 ```
 
 **Solution:**
+
 - Verify the YAML file is valid
 - Ensure `kind` and `metadata.name` fields are present
 - Check YAML syntax (indentation, quotes, etc.)
 
 **Duplicate Resource Name:**
+
 ```
 Error: Invalid manifest - cloud resource with name 'my-vpc' already exists
 ```
 
 **Solution:**
+
 - Use a different name for the resource
 - Check existing resources: `project-planton cloud-resource:list`
 - Delete the existing resource if needed: `project-planton cloud-resource:delete --id=<id>`
@@ -868,31 +944,37 @@ Error: Invalid manifest - cloud resource with name 'my-vpc' already exists
 ### Cloud Resource Update Errors
 
 **Name Mismatch:**
+
 ```
 Error: Invalid manifest - manifest name 'different-name' does not match existing resource name 'my-vpc'
 ```
 
 **Solution:**
+
 - Ensure the manifest `metadata.name` matches the existing resource name
 - Get current resource details: `project-planton cloud-resource:get --id=<id>`
 - Update the manifest to use the correct name
 
 **Kind Mismatch:**
+
 ```
 Error: Invalid manifest - manifest kind 'AwsVpc' does not match existing resource kind 'CivoVpc'
 ```
 
 **Solution:**
+
 - Ensure the manifest `kind` matches the existing resource kind
 - If you need to change the kind, delete and recreate the resource
 - Get current resource details: `project-planton cloud-resource:get --id=<id>`
 
 **Resource Not Found:**
+
 ```
 Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
 ```
 
 **Solution:**
+
 - Verify the resource ID is correct
 - List all resources: `project-planton cloud-resource:list`
 - The resource may have been deleted
@@ -900,16 +982,19 @@ Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
 ### Cloud Resource Deletion Errors
 
 **Resource Not Found:**
+
 ```
 Error: Cloud resource with ID '507f1f77bcf86cd799439011' not found
 ```
 
 **Solution:**
+
 - Verify the resource ID is correct
 - List all resources: `project-planton cloud-resource:list`
 - The resource may have already been deleted
 
 **Empty Results:**
+
 ```
 No cloud resources found
 # or
@@ -917,17 +1002,21 @@ No cloud resources found with kind 'YourKind'
 ```
 
 **Possible Causes:**
+
 1. No cloud resources have been created yet
 2. Wrong kind filter applied
 3. Backend database is empty
 
 **Solutions:**
+
 1. **Check without filters:**
+
    ```bash
    project-planton cloud-resource:list
    ```
 
 2. **Create a test resource:**
+
    ```bash
    project-planton cloud-resource:create --arg=test-resource.yaml
    ```
@@ -939,7 +1028,9 @@ No cloud resources found with kind 'YourKind'
 **Error:** Permission denied or file access issues
 
 **Solutions:**
+
 1. **Check file permissions:**
+
    ```bash
    ls -la ~/.project-planton/
    ```
@@ -955,7 +1046,9 @@ No cloud resources found with kind 'YourKind'
 **Error:** Timeout or DNS resolution issues
 
 **Solutions:**
+
 1. **Test basic connectivity:**
+
    ```bash
    ping <your-backend-host>
    curl <your-backend-url>
@@ -1205,6 +1298,7 @@ project-planton list-deployment-components --output json
 ## Support
 
 For additional help:
+
 - Check the main CLI help: `project-planton --help`
 - Command-specific help: `project-planton <command> --help`
 - Project documentation: [Project Planton Documentation](https://project-planton.org)

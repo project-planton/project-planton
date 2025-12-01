@@ -175,3 +175,21 @@ func (r *CloudResourceRepository) Delete(ctx context.Context, id string) error {
 
 	return nil
 }
+
+// Count returns the total count of cloud resources with optional filters.
+func (r *CloudResourceRepository) Count(ctx context.Context, opts *CloudResourceListOptions) (int64, error) {
+	filter := bson.M{}
+
+	if opts != nil {
+		if opts.Kind != nil && *opts.Kind != "" {
+			filter["kind"] = *opts.Kind
+		}
+	}
+
+	count, err := r.collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, fmt.Errorf("failed to count cloud resources: %w", err)
+	}
+
+	return count, nil
+}

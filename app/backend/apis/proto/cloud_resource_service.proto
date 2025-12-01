@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package backend.v1;
 
-option go_package = "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto;v1";
-
 import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto;v1";
 
 // CloudResourceService provides operations for managing cloud resources.
 service CloudResourceService {
@@ -20,6 +20,8 @@ service CloudResourceService {
   rpc DeleteCloudResource(DeleteCloudResourceRequest) returns (DeleteCloudResourceResponse);
   // ApplyCloudResource creates or updates a cloud resource (upsert operation based on name and kind).
   rpc ApplyCloudResource(ApplyCloudResourceRequest) returns (ApplyCloudResourceResponse);
+  // CountCloudResources returns the total count of cloud resources, optionally filtered by kind.
+  rpc CountCloudResources(CountCloudResourcesRequest) returns (CountCloudResourcesResponse);
 }
 
 // Request message for creating a cloud resource.
@@ -119,3 +121,14 @@ message CloudResource {
   google.protobuf.Timestamp updated_at = 6;
 }
 
+// Request message for counting cloud resources.
+message CountCloudResourcesRequest {
+  // Optional filter by kind (e.g., "CivoVpc", "AwsRdsInstance").
+  optional string kind = 1;
+}
+
+// Response message containing the count of cloud resources.
+message CountCloudResourcesResponse {
+  // Total count of cloud resources matching the filter.
+  int64 count = 1;
+}
