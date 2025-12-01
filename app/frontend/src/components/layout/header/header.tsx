@@ -2,7 +2,14 @@
 import React, { useContext } from 'react';
 import { AppContext } from '@/contexts';
 import { Badge, MenuItem, Divider, Typography } from '@mui/material';
-import { Brightness4, Brightness7, NotificationsOutlined, AccountCircle, Logout, Settings } from '@mui/icons-material';
+import {
+  Brightness4,
+  Brightness7,
+  NotificationsOutlined,
+  AccountCircle,
+  Logout,
+  Settings,
+} from '@mui/icons-material';
 import {
   StyledAppBar,
   StyledToolbar,
@@ -19,7 +26,7 @@ import {
   StyledMenu,
   StyledMenuItemIcon,
   StyledLinearProgress,
-} from './styled';
+} from '@/components/layout/header/styled';
 
 export const Header = () => {
   const { theme, changeTheme, pageLoading } = useContext(AppContext);
@@ -44,9 +51,7 @@ export const Header = () => {
       {pageLoading && <StyledLinearProgress color="primary" />}
       <StyledToolbar>
         <LogoSection>
-          <StyledLogoText variant="h6">
-            Project Planton
-          </StyledLogoText>
+          <StyledLogoText variant="h6">Project Planton</StyledLogoText>
         </LogoSection>
 
         <Spacer />
@@ -104,4 +109,3 @@ export const Header = () => {
     </StyledAppBar>
   );
 };
-

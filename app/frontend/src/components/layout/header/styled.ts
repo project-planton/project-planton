@@ -94,8 +94,10 @@ export const StyledSearchIcon = styled(SearchIcon)(({ theme }) => ({
 }));
 
 export const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  minHeight: 'unset',
   flex: 1,
   fontSize: theme.typography.body2.fontSize,
+  backgroundColor: 'inherit',
   '& input': {
     padding: 0,
   },

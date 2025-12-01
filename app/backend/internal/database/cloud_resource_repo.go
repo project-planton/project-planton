@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -136,21 +137,24 @@ func (r *CloudResourceRepository) Update(ctx context.Context, id string, resourc
 		},
 	}
 
-	result := r.collection.FindOneAndUpdate(
+	opts := options.FindOneAndUpdate().SetReturnDocument(options.After) // Return the document after update
+
+	var updatedResource models.CloudResource
+	err = r.collection.FindOneAndUpdate(
 		ctx,
 		bson.M{"_id": objectID},
 		update,
-	)
+		opts,
+	).Decode(&updatedResource)
 
-	if result.Err() != nil {
-		if result.Err() == mongo.ErrNoDocuments {
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
 			return nil, fmt.Errorf("cloud resource not found")
 		}
-		return nil, fmt.Errorf("failed to update cloud resource: %w", result.Err())
+		return nil, fmt.Errorf("failed to update cloud resource: %w", err)
 	}
 
-	// Fetch the updated resource
-	return r.FindByID(ctx, id)
+	return &updatedResource, nil
 }
 
 // Delete removes a cloud resource from MongoDB.
