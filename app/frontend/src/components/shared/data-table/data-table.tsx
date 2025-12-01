@@ -256,14 +256,18 @@ export function DataTable<T extends { id?: string | number }>({
                         <IconButton
                           size="small"
                           onClick={() => actions[0].onClick(row)}
-                          color={actions[0].color || 'primary'}
+                          color={actions[0].color || 'secondary'}
                         >
                           {actions[0].icon || <Visibility />}
                         </IconButton>
                       ) : (
                         <>
-                          <IconButton size="small" onClick={(e) => handleMenuOpen(e, row)}>
-                            <MoreVert />
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={(e) => handleMenuOpen(e, row)}
+                          >
+                            <MoreVert color="inherit" />
                           </IconButton>
                           <Menu
                             anchorEl={anchorEl[rowId]}

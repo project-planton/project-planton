@@ -7,12 +7,15 @@ import {
   ListCloudResourcesRequest,
   ListCloudResourcesResponse,
   GetCloudResourceRequestSchema,
+  CountCloudResourcesRequestSchema,
+  CountCloudResourcesResponse,
   CloudResource,
 } from '@/gen/proto/cloud_resource_service_pb';
 
 interface QueryType {
   listCloudResources: (input: ListCloudResourcesRequest) => Promise<ListCloudResourcesResponse>;
   getById: (id: string) => Promise<CloudResource>;
+  count: (kind?: string) => Promise<number>;
 }
 
 const RESOURCE_NAME = 'Cloud Resources';
@@ -51,6 +54,27 @@ export const useCloudResourceQuery = () => {
             })
             .catch((err) => {
               openSnackbar(err.message || `Could not get ${RESOURCE_NAME}!`, 'error');
+              reject(err);
+            })
+            .finally(() => {
+              setPageLoading(false);
+            });
+        });
+      },
+      count: (kind?: string): Promise<number> => {
+        return new Promise((resolve, reject) => {
+          setPageLoading(true);
+          queryClient
+            .countCloudResources(
+              create(CountCloudResourcesRequestSchema, {
+                kind: kind || undefined,
+              })
+            )
+            .then((response: CountCloudResourcesResponse) => {
+              resolve(Number(response.count));
+            })
+            .catch((err) => {
+              openSnackbar(err.message || `Could not count ${RESOURCE_NAME}!`, 'error');
               reject(err);
             })
             .finally(() => {
