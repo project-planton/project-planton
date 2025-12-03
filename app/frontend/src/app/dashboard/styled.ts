@@ -10,11 +10,10 @@ export const StyledGrid2 = styled(Grid2)(({ theme }) => ({
   marginBottom: theme.spacing(3),
 }));
 
-export const StyledPaper = styled(Paper)(({ theme }) => ({
+export const StyledCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius * 2,
   backgroundColor: theme.palette.background.paper,
-  border: `${theme.spacing(0.125)} solid ${theme.palette.divider}`,
   boxShadow: `0 ${theme.spacing(0.125)} ${theme.spacing(0.5)} rgba(0, 0, 0, 0.05)`,
   transition: theme.transitions.create(['box-shadow'], {
     easing: theme.transitions.easing.sharp,
@@ -30,7 +29,6 @@ export const StatCardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: theme.typography.fontWeightMedium,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1),
-  textTransform: 'uppercase',
   letterSpacing: theme.spacing(0.0625), // 0.5px
 }));
 

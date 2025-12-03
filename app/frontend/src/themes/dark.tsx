@@ -219,7 +219,6 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          minHeight: '76px',
           boxShadow: 'none',
           backgroundColor: greyDark[100],
         },

@@ -8,6 +8,13 @@ require('dotenv').config();
 module.exports = {
   webpack: (config) => {
     config.cache = false;
+    
+    // Handle SVG imports as React components
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    
     return config;
   },
   output: 'standalone',

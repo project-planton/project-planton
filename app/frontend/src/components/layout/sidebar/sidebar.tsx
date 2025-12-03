@@ -1,120 +1,143 @@
 'use client';
-import React, { useContext, useCallback } from 'react';
-import { ListItem, Divider } from '@mui/material';
+import React, { useContext, useCallback, useMemo, FC } from 'react';
+import { Box, Divider, Tooltip } from '@mui/material';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AppContext } from '@/contexts';
-import {
-  Dashboard as DashboardIcon,
-  Menu as MenuIcon,
-  ChevronLeft,
-  Inventory2,
-  ShoppingBag,
-  People,
-  Article,
-  Folder,
-  Person,
-  Cloud,
-} from '@mui/icons-material';
-import { usePathname, useRouter } from 'next/navigation';
+import { NAVBAR_OPEN, THEME } from '@/contexts/models';
+import { Utils } from '@/lib/utils';
+import { setCookieNavbarOpen } from '@/lib/cookie-utils';
 import {
   StyledDrawer,
-  SidebarContainer,
-  StyledBottomSection,
-  StyledToggleIconButton,
-  ContentContainer,
-  MenuGroupTitle,
   StyledList,
   StyledListItemButton,
   StyledListItemIcon,
   StyledListItemText,
-  BadgeContainer,
-  StyledDivider,
+  StyledBottomSection,
 } from '@/components/layout/sidebar/styled';
+import { CustomTooltip } from '@/components/shared/custom-tooltip';
+import { Icon, ICON_NAMES } from '@/components/shared/icon';
 
-interface MenuItem {
-  text: string;
-  icon: React.ReactNode;
+export interface Route {
+  name: string;
   path: string;
-  badge?: number;
+  iconName: ICON_NAMES;
+  activePaths?: string[];
 }
 
-interface MenuGroup {
-  title?: string;
-  items: MenuItem[];
-}
-
-const menuGroups: MenuGroup[] = [
+const TOP_MENU: Route[] = [
   {
-    items: [
-      {
-        text: 'Dashboard',
-        icon: <DashboardIcon />,
-        path: '/dashboard',
-      },
-      {
-        text: 'Cloud Resources',
-        icon: <Cloud />,
-        path: '/cloud-resources',
-      },
-    ],
+    name: 'Dashboard',
+    path: '/dashboard',
+    iconName: ICON_NAMES.DASHBOARD,
+    activePaths: ['/', '/dashboard'],
+  },
+  {
+    name: 'Cloud Resources',
+    path: '/cloud-resources',
+    iconName: ICON_NAMES.INFRA_HUB,
   },
 ];
 
-export const Sidebar = () => {
+interface ILeftNavItem {
+  route: Route;
+  navbarOpen: boolean;
+}
+
+const LeftNavItem: FC<ILeftNavItem> = ({ route, navbarOpen }) => {
   const pathname = usePathname();
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { push: pushRoute } = useRouter();
+  const { theme } = useContext(AppContext);
+
+  const handleListItemClick = (path: string) => {
+    pushRoute(`${path}?${searchParams.toString()}`);
+  };
+
+  const isActive = useMemo(
+    () =>
+      pathname === route.path ||
+      (route?.activePaths?.length && route.activePaths.includes(pathname)),
+    [pathname, route]
+  );
+
+  return (
+    <StyledListItemButton
+      onClick={() => handleListItemClick(route.path)}
+      selected={isActive}
+      open={navbarOpen}
+    >
+      <CustomTooltip title={!navbarOpen ? route?.name : ''} placement="right">
+        <StyledListItemIcon>
+          <Icon
+            name={route.iconName}
+            fontSize="small"
+            sx={{
+              filter: theme.mode === THEME.DARK ? 'invert(0.3)' : 'none',
+            }}
+          />
+        </StyledListItemIcon>
+      </CustomTooltip>
+      <StyledListItemText primary={route.name} open={navbarOpen} />
+    </StyledListItemButton>
+  );
+};
+
+export const Sidebar = () => {
   const { navbarOpen, setNavbarOpen } = useContext(AppContext);
 
-  const handleNavbarToggle = useCallback(() => {
-    setNavbarOpen(!navbarOpen);
-  }, [setNavbarOpen, navbarOpen]);
+  const routesArray = useMemo(() => {
+    return TOP_MENU;
+  }, []);
 
-  const handleNavigation = (path: string) => {
-    router.push(path);
-  };
+  const handleNavbarToggle = useCallback(() => {
+    const newValue = !navbarOpen;
+    Utils.setStorage(NAVBAR_OPEN, newValue);
+    setCookieNavbarOpen(newValue);
+    setNavbarOpen(newValue);
+  }, [navbarOpen, setNavbarOpen]);
 
   return (
     <StyledDrawer variant="permanent" open={navbarOpen}>
-      <SidebarContainer>
-        <ContentContainer>
-          {menuGroups.map((group, groupIndex) => (
-            <React.Fragment key={groupIndex}>
-              {group.title && navbarOpen && <MenuGroupTitle>{group.title}</MenuGroupTitle>}
-              <StyledList>
-                {group.items.map((item) => {
-                  const isActive = pathname === item.path;
-                  return (
-                    <ListItem key={item.text} disablePadding>
-                      <StyledListItemButton
-                        open={navbarOpen}
-                        selected={isActive}
-                        onClick={() => handleNavigation(item.path)}
-                      >
-                        <StyledListItemIcon open={navbarOpen}>{item.icon}</StyledListItemIcon>
-                        {navbarOpen && (
-                          <>
-                            <StyledListItemText open={navbarOpen} primary={item.text} />
-                            {item.badge !== undefined && (
-                              <BadgeContainer>{item.badge}</BadgeContainer>
-                            )}
-                          </>
-                        )}
-                      </StyledListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </StyledList>
-              {groupIndex < menuGroups.length - 1 && navbarOpen && <StyledDivider />}
-            </React.Fragment>
-          ))}
-        </ContentContainer>
-
-        <StyledBottomSection open={navbarOpen}>
-          <Divider />
-          <StyledToggleIconButton onClick={handleNavbarToggle} size="small">
-            {navbarOpen ? <ChevronLeft /> : <MenuIcon />}
-          </StyledToggleIconButton>
-        </StyledBottomSection>
-      </SidebarContainer>
+      <StyledList disablePadding>
+        {routesArray.map((route, index) => (
+          <LeftNavItem key={`${index}-${route.name}`} route={route} navbarOpen={navbarOpen} />
+        ))}
+      </StyledList>
+      <StyledBottomSection>
+        <Divider />
+        <Tooltip
+          arrow
+          placement="right"
+          title={`${navbarOpen ? 'Collapse' : 'Expand'} the navigation`}
+        >
+          <Box
+            sx={{
+              alignSelf: 'end',
+              display: 'flex',
+              cursor: 'pointer',
+              padding: (theme) => theme.spacing(1),
+              border: '1px solid transparent',
+              ...(navbarOpen ? { rotate: '180deg' } : {}),
+              borderRadius: (theme) => theme.shape.borderRadius - 2.5,
+              '&:hover': {
+                border: (theme) => `1px solid ${theme.palette.divider}`,
+                backgroundColor: (theme) => theme.palette.background.default,
+              },
+            }}
+            onClick={handleNavbarToggle}
+          >
+            <Icon
+              name={ICON_NAMES.NAV}
+              sx={{
+                fontSize: 20,
+                stroke: (theme) =>
+                  navbarOpen ? theme.palette.grey[0] : theme.palette.secondary[50],
+                fill: (theme) => (navbarOpen ? theme.palette.secondary[50] : 'none'),
+              }}
+            />
+          </Box>
+        </Tooltip>
+      </StyledBottomSection>
     </StyledDrawer>
   );
 };

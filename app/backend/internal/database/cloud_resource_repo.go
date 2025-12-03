@@ -91,10 +91,12 @@ func (r *CloudResourceRepository) Create(ctx context.Context, resource *models.C
 
 // CloudResourceListOptions contains options for listing cloud resources.
 type CloudResourceListOptions struct {
-	Kind *string
+	Kind     *string
+	PageNum  *int32
+	PageSize *int32
 }
 
-// List retrieves cloud resources from MongoDB with optional filters.
+// List retrieves cloud resources from MongoDB with optional filters and pagination.
 func (r *CloudResourceRepository) List(ctx context.Context, opts *CloudResourceListOptions) ([]*models.CloudResource, error) {
 	filter := bson.M{}
 
@@ -104,7 +106,23 @@ func (r *CloudResourceRepository) List(ctx context.Context, opts *CloudResourceL
 		}
 	}
 
-	cursor, err := r.collection.Find(ctx, filter)
+	findOptions := options.Find()
+
+	// Apply pagination if provided
+	if opts != nil && opts.PageNum != nil && opts.PageSize != nil {
+		pageNum := *opts.PageNum
+		pageSize := *opts.PageSize
+		if pageSize > 0 {
+			skip := int64(pageNum) * int64(pageSize)
+			findOptions.SetSkip(skip)
+			findOptions.SetLimit(int64(pageSize))
+		}
+	}
+
+	// Sort by created_at descending (newest first)
+	findOptions.SetSort(bson.D{{Key: "created_at", Value: -1}})
+
+	cursor, err := r.collection.Find(ctx, filter, findOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query cloud resources: %w", err)
 	}

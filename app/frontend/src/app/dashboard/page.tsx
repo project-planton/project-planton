@@ -1,10 +1,10 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-import { Typography, Grid2 } from '@mui/material';
+import { Typography, Grid2, Skeleton } from '@mui/material';
 import {
   DashboardContainer,
   StyledGrid2,
-  StyledPaper,
+  StyledCard,
   StatCardTitle,
   StatCardValue,
 } from '@/app/dashboard/styled';
@@ -43,12 +43,18 @@ export default function DashboardPage() {
 
       <StyledGrid2 container spacing={3}>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
-          <StyledPaper>
+          <StyledCard>
             <StatCardTitle>Cloud Resources</StatCardTitle>
             <StatCardValue>
-              {isLoading ? '...' : cloudResourceCount !== null ? cloudResourceCount : 0}
+              {isLoading ? (
+                <Skeleton variant="text" width={50} height={24} />
+              ) : cloudResourceCount !== null ? (
+                cloudResourceCount
+              ) : (
+                0
+              )}
             </StatCardValue>
-          </StyledPaper>
+          </StyledCard>
         </Grid2>
       </StyledGrid2>
 

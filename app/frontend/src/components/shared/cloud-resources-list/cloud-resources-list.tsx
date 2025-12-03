@@ -1,17 +1,19 @@
 'use client';
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Typography, Button, Box, Stack, TextField, Alert } from '@mui/material';
+import { Typography, Button, Box, Stack, TextField } from '@mui/material';
 import { create } from '@bufbuild/protobuf';
-import { DataTable, Column, Action } from '@/components/shared/data-table';
+import { TableComp } from '@/components/shared/table';
+import { ActionMenuProps, PAGINATION_MODE } from '@/models/table';
 import { Drawer } from '@/components/shared/drawer';
 import { YamlEditor } from '@/components/shared/yaml-editor';
+import { AlertDialog } from '@/components/shared/alert-dialog';
 import { Edit, Delete, Visibility, Refresh, Add } from '@mui/icons-material';
 import { useCloudResourceQuery, useCloudResourceCommand } from '@/app/cloud-resources/_services';
 import {
   ListCloudResourcesRequestSchema,
   CloudResource,
+  PageInfoSchema,
 } from '@/gen/proto/cloud_resource_service_pb';
-import { Timestamp } from '@bufbuild/protobuf/wkt';
 import { formatTimestampToDate } from '@/lib';
 import { TableSection } from '@/components/shared/cloud-resources-list/styled';
 
@@ -33,7 +35,7 @@ export interface CloudResourcesListProps {
   initialKindFilter?: string;
   /**
    * Placeholder text for the kind filter input
-   * @default "e.g., CivoVpc, AwsRdsInstance"
+   * @default "Filter by kind"
    */
   kindFilterPlaceholder?: string;
   /**
@@ -65,7 +67,7 @@ export function CloudResourcesList({
   title = 'Cloud Resources',
   showKindFilter = false,
   initialKindFilter = '',
-  kindFilterPlaceholder = 'e.g., CivoVpc, AwsRdsInstance',
+  kindFilterPlaceholder = 'Filter by kind',
   kindFilterLabel,
   kindFilterMinWidth = 250,
   showErrorAlerts = true,
@@ -76,12 +78,9 @@ export function CloudResourcesList({
   const { command } = useCloudResourceCommand();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [selectedRows, setSelectedRows] = useState<CloudResource[]>([]);
-  const [sortColumn, setSortColumn] = useState<keyof CloudResource | string>('name');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [cloudResources, setCloudResources] = useState<CloudResource[]>([]);
-  const [apiError, setApiError] = useState<string | null>(null);
-  const [apiLoading, setApiLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [apiLoading, setApiLoading] = useState(true);
   const [kindFilter, setKindFilter] = useState<string>(initialKindFilter);
 
   // Drawer state
@@ -90,38 +89,35 @@ export function CloudResourcesList({
   const [selectedResource, setSelectedResource] = useState<CloudResource | null>(null);
   const [formData, setFormData] = useState<{ manifest: string }>({ manifest: '' });
 
+  // Delete confirmation dialog state
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [resourceToDelete, setResourceToDelete] = useState<CloudResource | null>(null);
+
   // Function to call the API
   const handleLoadCloudResources = useCallback(() => {
-    if (!query) {
-      if (showErrorAlerts) {
-        setApiError('Query service not ready');
-      }
-      return;
-    }
-
     setApiLoading(true);
-    if (showErrorAlerts) {
-      setApiError(null);
+    if (query) {
+      query
+        .listCloudResources(
+          create(ListCloudResourcesRequestSchema, {
+            kind: kindFilter.trim() || undefined,
+            pageInfo: create(PageInfoSchema, {
+              num: page,
+              size: rowsPerPage,
+            }),
+          })
+        )
+        .then((result) => {
+          console.log('result', result);
+          setCloudResources(result.resources);
+          setTotalPages(result.totalPages || 0);
+          setApiLoading(false);
+        })
+        .finally(() => {
+          setApiLoading(false);
+        });
     }
-
-    const request = create(ListCloudResourcesRequestSchema, {
-      kind: kindFilter.trim() || undefined,
-    });
-
-    query
-      .listCloudResources(request)
-      .then((result) => {
-        setCloudResources(result.resources);
-        setApiLoading(false);
-      })
-      .catch((err: any) => {
-        if (showErrorAlerts) {
-          setApiError(err.message || 'Failed to load cloud resources');
-        }
-        console.error('API Error:', err);
-        setApiLoading(false);
-      });
-  }, [query, kindFilter, showErrorAlerts]);
+  }, [query, kindFilter, page, rowsPerPage]);
 
   useEffect(() => {
     if (onChange) {
@@ -129,7 +125,7 @@ export function CloudResourcesList({
     }
   }, [cloudResources]);
 
-  // Auto-load on mount and when kind filter changes
+  // Auto-load on mount and when dependencies change
   useEffect(() => {
     if (query) {
       handleLoadCloudResources();
@@ -141,28 +137,24 @@ export function CloudResourcesList({
     const newKind = event.target.value;
     setKindFilter(newKind);
     setPage(0); // Reset to first page when filter changes
-    setSelectedRows([]); // Clear selected rows when filter changes
   }, []);
 
-  const columns: Column<CloudResource>[] = useMemo(
-    () => [
-      { id: 'name', label: 'Name', sortable: true },
-      { id: 'kind', label: 'Kind', sortable: true },
-      {
-        id: 'createdAt',
-        label: 'Created At',
-        sortable: true,
-        render: (value: Timestamp | undefined) =>
-          value ? formatTimestampToDate(value, 'DD/MM/YYYY') : '-',
+  // Convert to TableComp format
+  const tableHeaders = useMemo(() => ['Name', 'Kind', 'Created At', 'Updated At', 'Actions'], []);
+  const tableDataPath = useMemo<Array<'name' | 'kind' | 'createdAt' | 'updatedAt'>>(
+    () => ['name', 'kind', 'createdAt', 'updatedAt'],
+    []
+  );
+
+  const tableDataTemplate = useMemo(
+    () => ({
+      createdAt: (val: string, row: CloudResource) => {
+        return row.createdAt ? formatTimestampToDate(row.createdAt, 'DD/MM/YYYY') : '-';
       },
-      {
-        id: 'updatedAt',
-        label: 'Updated At',
-        sortable: true,
-        render: (value: Timestamp | undefined) =>
-          value ? formatTimestampToDate(value, 'DD/MM/YYYY') : '-',
+      updatedAt: (val: string, row: CloudResource) => {
+        return row.updatedAt ? formatTimestampToDate(row.updatedAt, 'DD/MM/YYYY') : '-';
       },
-    ],
+    }),
     []
   );
 
@@ -189,23 +181,18 @@ export function CloudResourcesList({
   }, []);
 
   const handleSave = useCallback(() => {
-    if (!command) {
-      if (showErrorAlerts) {
-        setApiError('Command service not ready');
+    if (command) {
+      if (drawerMode === 'create') {
+        command.create(formData.manifest).then(() => {
+          handleLoadCloudResources();
+          handleCloseDrawer();
+        });
+      } else if (drawerMode === 'edit' && selectedResource) {
+        command.update(selectedResource.id, formData.manifest).then(() => {
+          handleLoadCloudResources();
+          handleCloseDrawer();
+        });
       }
-      return;
-    }
-
-    if (drawerMode === 'create') {
-      command.create(formData.manifest).then(() => {
-        handleLoadCloudResources();
-        handleCloseDrawer();
-      });
-    } else if (drawerMode === 'edit' && selectedResource) {
-      command.update(selectedResource.id, formData.manifest).then(() => {
-        handleLoadCloudResources();
-        handleCloseDrawer();
-      });
     }
   }, [
     command,
@@ -214,96 +201,68 @@ export function CloudResourcesList({
     selectedResource,
     handleLoadCloudResources,
     handleCloseDrawer,
-    showErrorAlerts,
   ]);
 
-  const handleDelete = useCallback(
-    (row: CloudResource) => {
-      if (!command) {
-        if (showErrorAlerts) {
-          setApiError('Command service not ready');
-        }
-        return;
-      }
-      if (window.confirm(`Are you sure you want to delete "${row.name}"?`)) {
-        command
-          .delete(row.id)
-          .then(() => {
-            handleLoadCloudResources();
-          })
-          .catch((err: any) => {
-            // Error is already handled by command service with snackbar
-            console.error('Delete error:', err);
-          });
-      }
-    },
-    [command, handleLoadCloudResources, showErrorAlerts]
-  );
+  const handleDelete = useCallback((row: CloudResource) => {
+    setResourceToDelete(row);
+    setDeleteDialogOpen(true);
+  }, []);
 
-  const actions: Action<CloudResource>[] = useMemo(
+  const handleConfirmDelete = useCallback(() => {
+    if (command) {
+      command
+        .delete(resourceToDelete.id)
+        .then(() => {
+          handleLoadCloudResources();
+          setDeleteDialogOpen(false);
+          setResourceToDelete(null);
+        })
+        .catch((err: any) => {
+          console.error('Delete error:', err);
+          setDeleteDialogOpen(false);
+          setResourceToDelete(null);
+        });
+    }
+  }, [command, resourceToDelete, handleLoadCloudResources, showErrorAlerts]);
+
+  const handleCancelDelete = useCallback(() => {
+    setDeleteDialogOpen(false);
+    setResourceToDelete(null);
+  }, []);
+
+  const tableActions: ActionMenuProps<CloudResource>[] = useMemo(
     () => [
       {
-        label: 'View',
+        text: 'View',
         icon: <Visibility fontSize="small" />,
-        onClick: (row) => {
+        handler: (row: CloudResource) => {
           handleOpenDrawer('view', row);
         },
-        color: 'primary',
+        isMenuAction: true,
       },
       {
-        label: 'Edit',
+        text: 'Edit',
         icon: <Edit fontSize="small" />,
-        onClick: (row) => {
+        handler: (row: CloudResource) => {
           handleOpenDrawer('edit', row);
         },
-        color: 'primary',
+        isMenuAction: true,
       },
       {
-        label: 'Delete',
+        text: 'Delete',
         icon: <Delete fontSize="small" />,
-        onClick: handleDelete,
-        color: 'error',
+        handler: (row: CloudResource) => {
+          handleDelete(row);
+        },
+        isMenuAction: true,
       },
     ],
     [handleOpenDrawer, handleDelete]
   );
 
-  const handleSelectAll = useCallback(
-    (selected: boolean) => {
-      if (selected) {
-        setSelectedRows(cloudResources);
-      } else {
-        setSelectedRows([]);
-      }
-    },
-    [cloudResources]
-  );
-
-  const handleSelectRow = useCallback((row: CloudResource, selected: boolean) => {
-    setSelectedRows((prevSelected) => {
-      if (selected) {
-        return [...prevSelected, row];
-      } else {
-        return prevSelected.filter((r) => r.id !== row.id);
-      }
-    });
-  }, []);
-
-  const handleSort = useCallback(
-    (columnId: keyof CloudResource | string, order: 'asc' | 'desc') => {
-      setSortColumn(columnId);
-      setSortOrder(order);
-    },
-    []
-  );
-
-  const handlePageChange = useCallback((newPage: number) => {
+  const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
     setPage(newPage);
-  }, []);
-
-  const handleRowsPerPageChange = useCallback((newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
-    setPage(0);
   }, []);
 
   // Function to reload data from API
@@ -326,25 +285,6 @@ export function CloudResourcesList({
     handleOpenDrawer('create');
   }, [handleOpenDrawer]);
 
-  // Apply sorting
-  const sortedData = useMemo(() => {
-    const sorted = [...cloudResources];
-    sorted.sort((a, b) => {
-      const aValue = a[sortColumn as keyof CloudResource];
-      const bValue = b[sortColumn as keyof CloudResource];
-      if (sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      }
-      return aValue < bValue ? 1 : -1;
-    });
-    return sorted;
-  }, [cloudResources, sortColumn, sortOrder]);
-
-  // Apply pagination
-  const paginatedData = useMemo(() => {
-    const start = page * rowsPerPage;
-    return sortedData.slice(start, start + rowsPerPage);
-  }, [sortedData, page, rowsPerPage]);
 
   const content = (
     <TableSection>
@@ -376,47 +316,23 @@ export function CloudResourcesList({
         </Stack>
       </Box>
 
-      {showErrorAlerts && apiError && (
-        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setApiError(null)}>
-          {apiError}
-        </Alert>
-      )}
-
-      {cloudResources.length === 0 && !apiLoading && !apiError && (
-        <Alert severity="info" sx={{ mb: 2 }}>
-          No cloud resources found. Click Refresh to load data.
-        </Alert>
-      )}
-
-      {!apiLoading && cloudResources.length > 0 && (
-        <Typography variant="body2" color="text.secondary" gutterBottom sx={{ mb: 2 }}>
-          Found {cloudResources.length} cloud resource(s)
-        </Typography>
-      )}
-
-      {apiLoading && (
-        <Typography variant="body2" color="text.secondary" gutterBottom sx={{ mb: 2 }}>
-          Loading cloud resources...
-        </Typography>
-      )}
-
-      <DataTable
-        columns={columns}
-        data={paginatedData}
-        selectable
-        selectedRows={selectedRows}
-        onSelectAll={handleSelectAll}
-        onSelectRow={handleSelectRow}
-        actions={actions}
-        pagination
-        page={page}
-        rowsPerPage={rowsPerPage}
-        totalRows={cloudResources.length}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleRowsPerPageChange}
-        onSort={handleSort}
-        defaultSortColumn="name"
-        defaultSortOrder="asc"
+      <TableComp
+        data={cloudResources}
+        loading={apiLoading}
+        options={{
+          headers: tableHeaders,
+          dataPath: tableDataPath,
+          dataTemplate: tableDataTemplate,
+          actions: tableActions,
+          showPagination: true,
+          paginationMode: PAGINATION_MODE.SERVER,
+          currentPage: page,
+          rowsPerPage: rowsPerPage,
+          totalPages: totalPages,
+          onPageChange: handlePageChange,
+          emptyMessage: 'No cloud resources found',
+          border: true,
+        }}
       />
     </TableSection>
   );
@@ -462,6 +378,18 @@ export function CloudResourcesList({
           </Box>
         </Stack>
       </Drawer>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        open={deleteDialogOpen}
+        onClose={handleCancelDelete}
+        onSubmit={handleConfirmDelete}
+        title="Delete Cloud Resource"
+        subTitle={`Are you sure you want to delete "${resourceToDelete?.name}"? This action cannot be undone.`}
+        submitLabel="Delete"
+        submitBtnColor="error"
+        cancelLabel="Cancel"
+      />
     </>
   );
 }

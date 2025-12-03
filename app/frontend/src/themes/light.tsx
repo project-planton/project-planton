@@ -202,7 +202,6 @@ export const getLightTheme = (font: NextFont): ThemeOptions => ({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          minHeight: '76px',
           boxShadow: 'none',
           backgroundColor: greyLight[100],
         },
