@@ -203,12 +203,12 @@ export function CloudResourcesList({
     handleCloseDrawer,
   ]);
 
-  const handleDelete = useCallback((row: CloudResource) => {
+  const handleConfirmDelete = useCallback((row: CloudResource) => {
     setResourceToDelete(row);
     setDeleteDialogOpen(true);
   }, []);
 
-  const handleConfirmDelete = useCallback(() => {
+  const handleDelete = useCallback(() => {
     if (command) {
       command
         .delete(resourceToDelete.id)
@@ -252,12 +252,12 @@ export function CloudResourcesList({
         text: 'Delete',
         icon: <Delete fontSize="small" />,
         handler: (row: CloudResource) => {
-          handleDelete(row);
+          handleConfirmDelete(row);
         },
         isMenuAction: true,
       },
     ],
-    [handleOpenDrawer, handleDelete]
+    [handleOpenDrawer, handleConfirmDelete]
   );
 
   const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
@@ -284,7 +284,6 @@ export function CloudResourcesList({
   const handleCreateClick = useCallback(() => {
     handleOpenDrawer('create');
   }, [handleOpenDrawer]);
-
 
   const content = (
     <TableSection>
@@ -383,7 +382,7 @@ export function CloudResourcesList({
       <AlertDialog
         open={deleteDialogOpen}
         onClose={handleCancelDelete}
-        onSubmit={handleConfirmDelete}
+        onSubmit={handleDelete}
         title="Delete Cloud Resource"
         subTitle={`Are you sure you want to delete "${resourceToDelete?.name}"? This action cannot be undone.`}
         submitLabel="Delete"
