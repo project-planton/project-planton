@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { create } from '@bufbuild/protobuf';
 import { Typography, Grid2, Skeleton } from '@mui/material';
 import {
   DashboardContainer,
@@ -10,6 +11,7 @@ import {
 } from '@/app/dashboard/styled';
 import { CloudResourcesList } from '@/components/shared/cloud-resources-list';
 import { useCloudResourceQuery } from '@/app/cloud-resources/_services';
+import { ListCloudResourcesRequestSchema } from '@/gen/proto/cloud_resource_service_pb';
 
 export default function DashboardPage() {
   const { query } = useCloudResourceQuery();
@@ -20,9 +22,9 @@ export default function DashboardPage() {
     if (query) {
       setIsLoading(true);
       query
-        .count()
-        .then((count) => {
-          setCloudResourceCount(count);
+        .listCloudResources(create(ListCloudResourcesRequestSchema, {}))
+        .then((response) => {
+          setCloudResourceCount(response.resources.length);
           setIsLoading(false);
         })
         .catch(() => {

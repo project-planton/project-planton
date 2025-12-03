@@ -776,6 +776,8 @@ ListStackJobsResponse {
 **Modified**:
 
 - `app/backend/go.mod` - Updated dependencies
+- `app/backend/apis/buf.gen.yaml` - Fixed TypeScript proto output paths (post-implementation fix)
+- `app/backend/apis/Makefile` - Fixed TypeScript stubs cleanup paths (post-implementation fix)
 
 ### Infrastructure
 
@@ -789,6 +791,7 @@ ListStackJobsResponse {
 **Modified**:
 
 - `app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx` - Minor updates (exact changes not detailed in git status)
+- `app/frontend/src/app/dashboard/page.tsx` - Fixed TypeScript error in listCloudResources call (post-implementation fix)
 
 ## Technical Metrics
 
@@ -899,6 +902,36 @@ These limitations are intentional for the initial implementation and can be addr
 **Alternative considered**: Pulumi Go SDK
 
 - Rejected because CLI provides better output capture and is already installed
+
+## Post-Implementation Fixes
+
+### Frontend TypeScript Proto Generation Path Fix
+
+**Issue**: TypeScript proto files were being generated in the wrong location (`app/backend/frontend/src/gen/proto/`) instead of the correct frontend directory (`app/frontend/src/gen/proto/`).
+
+**Root Cause**: The buf configuration used incorrect relative paths. From the `app/backend/apis/` directory:
+- Incorrect: `../frontend` resolved to `app/backend/frontend/` ❌
+- Correct: `../../frontend` resolves to `app/frontend/` ✅
+
+**Fix Applied**:
+
+1. **Updated `app/backend/apis/buf.gen.yaml`**:
+   - Changed TypeScript output path from `../frontend/src/gen` to `../../frontend/src/gen`
+   - Affects both `@bufbuild/es` and `@connectrpc/es` plugins
+
+2. **Updated `app/backend/apis/Makefile`**:
+   - Changed `ts-stubs-clean` target paths from `../frontend/` to `../../frontend/`
+   - Ensures cleanup occurs in the correct directory
+
+**Result**:
+- Running `make generate` in `app/backend/apis/` now correctly generates TypeScript files at `app/frontend/src/gen/proto/`
+- Frontend build (`yarn build`) succeeds without module resolution errors
+- No manual file copying required
+
+**Impact**:
+- Fixes `Module not found: Can't resolve '@/gen/proto/cloud_resource_service_pb'` build errors
+- Enables proper frontend integration with backend gRPC services
+- Establishes correct proto generation workflow for future development
 
 ---
 

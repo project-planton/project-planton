@@ -27,11 +27,11 @@ plugins:
       - require_unimplemented_servers=false
   # Generate TypeScript protobuf types compatible with Connect RPC binary format
   - remote: buf.build/bufbuild/es:v2.2.2
-    out: ../frontend/src/gen
+    out: ../../frontend/src/gen
     opt:
       - target=ts
   # Generate TypeScript code for Connect RPC
   - remote: buf.build/connectrpc/es:v1.6.1
-    out: ../frontend/src/gen
+    out: ../../frontend/src/gen
     opt:
       - target=ts
