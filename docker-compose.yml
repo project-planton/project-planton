@@ -6,14 +6,24 @@ services:
     container_name: project-planton-backend
     restart: unless-stopped
     ports:
-      - "50051:50051"
+      - '50051:50051'
     networks:
       - project-planton-network
     environment:
       - MONGODB_URI=${MONGODB_URI:-mongodb://host.docker.internal:27017/project_planton}
       - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
       - SERVER_PORT=50051
+      # Pulumi configuration (optional - uncomment if using Pulumi Cloud)
+      # - PULUMI_ACCESS_TOKEN=${PULUMI_ACCESS_TOKEN}
+      # - PULUMI_BACKEND_URL=${PULUMI_BACKEND_URL:-https://api.pulumi.com}
+      # Pulumi local backend (if using file-based state)
+      - PULUMI_HOME=${PULUMI_HOME:-/home/appuser/.pulumi}
+    # volumes:
+    # Optional: Mount Pulumi state directory for persistence (if using local backend)
+    # Uncomment to persist Pulumi state/config across container restarts
+    # - pulumi-state:/home/appuser/.pulumi
     healthcheck:
+      # Check if server process is running (requires procps package)
       test: ['CMD', 'pgrep', '-f', 'server']
       interval: 30s
       timeout: 10s
@@ -43,3 +53,7 @@ services:
 networks:
   project-planton-network:
     driver: bridge
+# Optional: Uncomment to persist Pulumi state/config across container restarts
+# volumes:
+#   pulumi-state:
+#     driver: local

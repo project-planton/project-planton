@@ -26,8 +26,18 @@ RUN make generate && \
 # Final stage - minimal runtime image
 FROM alpine:3.19
 
-# Install ca-certificates for HTTPS calls
-RUN apk --no-cache add ca-certificates tzdata
+# Install ca-certificates for HTTPS calls, curl and wget for downloading Pulumi, procps for healthcheck
+RUN apk --no-cache add ca-certificates tzdata curl wget procps
+
+# Install Pulumi CLI
+# Using direct download method (more reliable for Alpine)
+ARG PULUMI_VERSION=v3.206.0
+RUN wget -q "https://get.pulumi.com/releases/sdk/pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
+    tar -xf "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
+    mv pulumi/* /usr/local/bin/ && \
+    rm -rf pulumi "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
+    chmod +x /usr/local/bin/pulumi && \
+    pulumi version
 
 # Create non-root user
 RUN addgroup -g 1001 -S appgroup && \

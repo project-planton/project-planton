@@ -13,8 +13,8 @@ go-stubs-clean:
 .PHONY: ts-stubs-clean
 ts-stubs-clean:
 	@echo "Cleaning TypeScript generated stubs..."
-	@rm -rf ../frontend/src/gen/proto
-	@rm -rf ../frontend/src/gen/connect
+	@rm -rf ../../frontend/src/gen/proto
+	@rm -rf ../../frontend/src/gen/connect
 
 .PHONY: go-stubs-init
 go-stubs-init:
