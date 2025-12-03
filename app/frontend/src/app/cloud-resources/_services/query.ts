@@ -32,9 +32,12 @@ export const useCloudResourceQuery = () => {
       ): Promise<ListCloudResourcesResponse> => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
+          console.log('input', input);
           queryClient
             .listCloudResources(input)
-            .then(resolve)
+            .then((response) => {
+              resolve(response);
+            })
             .catch((err) => {
               openSnackbar(err.message || `Could not get ${RESOURCE_NAME}!`, 'error');
               reject(err);

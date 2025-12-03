@@ -36,16 +36,29 @@ message CreateCloudResourceResponse {
   CloudResource resource = 1;
 }
 
+// PageInfo represents pagination parameters.
+// Page numbers are 0-indexed (page 0 is the first page).
+message PageInfo {
+  // Page number (0-indexed, where 0 is the first page).
+  int32 num = 1;
+  // Number of items per page.
+  int32 size = 2;
+}
+
 // Request message for listing cloud resources.
 message ListCloudResourcesRequest {
   // Optional filter by kind (e.g., "CivoVpc", "AwsRdsInstance").
   optional string kind = 1;
+  // Pagination parameters (optional). If not provided, returns all resources.
+  optional PageInfo page_info = 2;
 }
 
 // Response message containing a list of cloud resources.
 message ListCloudResourcesResponse {
   // List of cloud resources.
   repeated CloudResource resources = 1;
+  // Total number of pages available (only set when page_info is provided).
+  int32 total_pages = 2;
 }
 
 // Request message for retrieving a cloud resource by ID.

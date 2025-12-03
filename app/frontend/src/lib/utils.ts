@@ -52,3 +52,38 @@ export const formatTimestampToDate = (timestamp: Timestamp, format = 'DD/MM/YYYY
   else if (timestamp?.seconds) date = new Date(Number(timestamp.seconds) * 1000);
   return moment(date).format(format);
 };
+
+/**
+ * Get data from nested object path (e.g., 'user.profile.name')
+ */
+export function getDataFromPath<T>(path: string, data: T): any {
+  if (!path) {
+    return '';
+  }
+
+  const pathArr = path?.split('.');
+  if (pathArr.length === 1) {
+    return (data && (data as any)[pathArr[0]]) || '';
+  }
+  const parsed = pathArr.shift();
+  return getDataFromPath(pathArr.join('.'), data ? (data as any)[parsed] : null);
+}
+
+/**
+ * Copy text to clipboard
+ */
+export const copyText = async (text: string): Promise<void> => {
+  if (typeof navigator !== 'undefined' && navigator.clipboard) {
+    await navigator.clipboard.writeText(text);
+  }
+};
+
+/**
+ * Capitalize words in a string (e.g., 'hello_world' -> 'Hello World')
+ */
+export const capitalizeWords = (str: string): string => {
+  return str
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};

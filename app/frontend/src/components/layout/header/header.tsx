@@ -1,72 +1,54 @@
 'use client';
 import React, { useContext } from 'react';
 import { AppContext } from '@/contexts';
-import { Badge, MenuItem, Divider, Typography } from '@mui/material';
-import {
-  Brightness4,
-  Brightness7,
-  NotificationsOutlined,
-  AccountCircle,
-  Logout,
-  Settings,
-} from '@mui/icons-material';
+// import { Badge, MenuItem, Divider, Typography } from '@mui/material';
 import {
   StyledAppBar,
   StyledToolbar,
-  LogoSection,
-  StyledLogoText,
   Spacer,
   RightSection,
-  SearchBox,
-  StyledSearchIcon,
-  StyledInputBase,
-  StyledIconButton,
-  StyledAvatarButton,
-  StyledAvatar,
-  StyledMenu,
-  StyledMenuItemIcon,
   StyledLinearProgress,
+  // SearchBox,
+  // StyledSearchIcon,
+  // StyledInputBase,
+  // StyledAvatarButton,
+  // StyledAvatar,
+  // StyledMenu,
+  // StyledMenuItemIcon,
 } from '@/components/layout/header/styled';
+import { HeaderIcon } from '@/components/layout/header/header-icon';
+import { ThemeSwitch } from '@/components/layout/theme-switch';
 
 export const Header = () => {
-  const { theme, changeTheme, pageLoading } = useContext(AppContext);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const { pageLoading } = useContext(AppContext);
+  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const open = Boolean(anchorEl);
 
-  const handleThemeToggle = () => {
-    const newTheme = theme.mode === 'light' ? 'dark' : 'light';
-    changeTheme(newTheme);
-  };
+  // const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleMenuClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   return (
     <StyledAppBar>
       {pageLoading && <StyledLinearProgress color="primary" />}
       <StyledToolbar>
-        <LogoSection>
-          <StyledLogoText variant="h6">Project Planton</StyledLogoText>
-        </LogoSection>
+        <HeaderIcon />
 
         <Spacer />
 
         <RightSection>
-          <SearchBox>
+          {/* <SearchBox>
             <StyledSearchIcon />
             <StyledInputBase placeholder="Search..." />
-          </SearchBox>
+          </SearchBox> */}
 
-          <StyledIconButton onClick={handleThemeToggle} size="small">
-            {theme.mode === 'light' ? <Brightness4 /> : <Brightness7 />}
-          </StyledIconButton>
+          <ThemeSwitch />
 
-          <StyledIconButton size="small">
+          {/* <StyledIconButton size="small">
             <Badge badgeContent={0} color="error">
               <NotificationsOutlined />
             </Badge>
@@ -74,10 +56,10 @@ export const Header = () => {
 
           <StyledAvatarButton onClick={handleMenuOpen} size="small">
             <StyledAvatar>DU</StyledAvatar>
-          </StyledAvatarButton>
+          </StyledAvatarButton> */}
         </RightSection>
 
-        <StyledMenu
+        {/* <StyledMenu
           anchorEl={anchorEl}
           open={open}
           onClose={handleMenuClose}
@@ -104,7 +86,7 @@ export const Header = () => {
             </StyledMenuItemIcon>
             <Typography variant="body2">Sign out</Typography>
           </MenuItem>
-        </StyledMenu>
+        </StyledMenu> */}
       </StyledToolbar>
     </StyledAppBar>
   );

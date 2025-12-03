@@ -21,6 +21,7 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   color: theme.palette.text.primary,
   position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
+  minHeight: 'unset',
 }));
 
 export const StyledToolbar = styled(Toolbar)(({ theme }) => ({

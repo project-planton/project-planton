@@ -109,7 +109,7 @@ func (s *CloudResourceService) CreateCloudResource(
 	}), nil
 }
 
-// ListCloudResources retrieves all cloud resources.
+// ListCloudResources retrieves cloud resources with optional pagination.
 func (s *CloudResourceService) ListCloudResources(
 	ctx context.Context,
 	req *connect.Request[backendv1.ListCloudResourcesRequest],
@@ -120,8 +120,32 @@ func (s *CloudResourceService) ListCloudResources(
 		opts.Kind = &kind
 	}
 
+	// Apply pagination with defaults (page=0, size=20) if not provided
+	var pageNum int32 = 0
+	var pageSize int32 = 20
+	if req.Msg.PageInfo != nil {
+		pageNum = req.Msg.PageInfo.Num
+		pageSize = req.Msg.PageInfo.Size
+	}
+	opts.PageNum = &pageNum
+	opts.PageSize = &pageSize
+
+	// Calculate total pages
+	totalCount, err := s.repo.Count(ctx, opts)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to count cloud resources for pagination")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count cloud resources: %w", err))
+	}
+
+	var totalPages int32
+	if pageSize > 0 {
+		totalPages = int32((totalCount + int64(pageSize) - 1) / int64(pageSize))
+	}
+
 	logrus.WithFields(logrus.Fields{
-		"kind": req.Msg.Kind,
+		"kind":      req.Msg.Kind,
+		"page_num":  opts.PageNum,
+		"page_size": opts.PageSize,
 	}).Info("Listing cloud resources")
 
 	resources, err := s.repo.List(ctx, opts)
@@ -149,9 +173,12 @@ func (s *CloudResourceService) ListCloudResources(
 		protoResources = append(protoResources, protoRes)
 	}
 
-	return connect.NewResponse(&backendv1.ListCloudResourcesResponse{
-		Resources: protoResources,
-	}), nil
+	response := &backendv1.ListCloudResourcesResponse{
+		Resources:  protoResources,
+		TotalPages: totalPages,
+	}
+
+	return connect.NewResponse(response), nil
 }
 
 // GetCloudResource retrieves a cloud resource by ID.

@@ -23,6 +23,8 @@ var CloudResourceListCmd = &cobra.Command{
 
 func init() {
 	CloudResourceListCmd.Flags().StringP("kind", "k", "", "filter cloud resources by kind")
+	CloudResourceListCmd.Flags().Int32P("page", "p", 0, "page number (0-indexed, default: 0)")
+	CloudResourceListCmd.Flags().Int32P("size", "s", 20, "page size (default: 20)")
 }
 
 func cloudResourceListHandler(cmd *cobra.Command, args []string) {
@@ -36,6 +38,10 @@ func cloudResourceListHandler(cmd *cobra.Command, args []string) {
 	// Get kind filter if provided
 	kind, _ := cmd.Flags().GetString("kind")
 
+	// Get pagination parameters (defaults: page=0, size=20)
+	pageNum, _ := cmd.Flags().GetInt32("page")
+	pageSize, _ := cmd.Flags().GetInt32("size")
+
 	// Create Connect-RPC client
 	client := backendv1connect.NewCloudResourceServiceClient(
 		http.DefaultClient,
@@ -46,6 +52,12 @@ func cloudResourceListHandler(cmd *cobra.Command, args []string) {
 	req := &backendv1.ListCloudResourcesRequest{}
 	if kind != "" {
 		req.Kind = &kind
+	}
+
+	// Always include pagination (defaults applied in service if not provided)
+	req.PageInfo = &backendv1.PageInfo{
+		Num:  pageNum,
+		Size: pageSize,
 	}
 
 	// Create context with timeout
@@ -104,6 +116,10 @@ func cloudResourceListHandler(cmd *cobra.Command, args []string) {
 	if kind != "" {
 		fmt.Printf(" (filtered by kind: %s)", kind)
 	}
+	if resp.Msg.TotalPages > 0 {
+		fmt.Printf(" | Page %d of %d", pageNum+1, resp.Msg.TotalPages)
+	} else {
+		fmt.Printf(" | Page %d of 1", pageNum+1)
+	}
 	fmt.Println()
 }
-
