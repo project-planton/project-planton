@@ -3,6 +3,7 @@ syntax = "proto3";
 package backend.v1;
 
 import "google/protobuf/timestamp.proto";
+import "proto/cloud_resource_service.proto";
 
 option go_package = "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto;v1";
 
@@ -47,12 +48,16 @@ message ListStackJobsRequest {
   optional string cloud_resource_id = 1;
   // Optional filter by status (success, failed, in_progress).
   optional string status = 2;
+  // Pagination parameters (optional). If not provided, returns all jobs.
+  optional PageInfo page_info = 3;
 }
 
 // Response message containing a list of stack jobs.
 message ListStackJobsResponse {
   // List of stack jobs.
   repeated StackJob jobs = 1;
+  // Total number of pages available (only set when page_info is provided).
+  int32 total_pages = 2;
 }
 
 // StackJob represents a Pulumi stack deployment job.

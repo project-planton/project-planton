@@ -7,7 +7,7 @@ import { ActionMenuProps, PAGINATION_MODE } from '@/models/table';
 import { Drawer } from '@/components/shared/drawer';
 import { YamlEditor } from '@/components/shared/yaml-editor';
 import { AlertDialog } from '@/components/shared/alert-dialog';
-import { Edit, Delete, Visibility, Refresh, Add } from '@mui/icons-material';
+import { Refresh, Add } from '@mui/icons-material';
 import { useCloudResourceQuery, useCloudResourceCommand } from '@/app/cloud-resources/_services';
 import {
   ListCloudResourcesRequestSchema,
@@ -15,7 +15,7 @@ import {
   PageInfoSchema,
 } from '@/gen/proto/cloud_resource_service_pb';
 import { formatTimestampToDate } from '@/lib';
-import { TableSection } from '@/components/shared/cloud-resources-list/styled';
+import { StackJobsDrawer } from '@/components/shared/stackjob';
 
 type DrawerMode = 'view' | 'edit' | 'create' | null;
 
@@ -93,6 +93,11 @@ export function CloudResourcesList({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resourceToDelete, setResourceToDelete] = useState<CloudResource | null>(null);
 
+  // Stack jobs drawer state
+  const [stackJobsDrawerOpen, setStackJobsDrawerOpen] = useState(false);
+  const [selectedResourceForStackJobs, setSelectedResourceForStackJobs] =
+    useState<CloudResource | null>(null);
+
   // Function to call the API
   const handleLoadCloudResources = useCallback(() => {
     setApiLoading(true);
@@ -108,7 +113,6 @@ export function CloudResourcesList({
           })
         )
         .then((result) => {
-          console.log('result', result);
           setCloudResources(result.resources);
           setTotalPages(result.totalPages || 0);
           setApiLoading(false);
@@ -230,11 +234,20 @@ export function CloudResourcesList({
     setResourceToDelete(null);
   }, []);
 
+  const handleOpenStackJobs = useCallback((row: CloudResource) => {
+    setSelectedResourceForStackJobs(row);
+    setStackJobsDrawerOpen(true);
+  }, []);
+
+  const handleCloseStackJobs = useCallback(() => {
+    setStackJobsDrawerOpen(false);
+    setSelectedResourceForStackJobs(null);
+  }, []);
+
   const tableActions: ActionMenuProps<CloudResource>[] = useMemo(
     () => [
       {
         text: 'View',
-        icon: <Visibility fontSize="small" />,
         handler: (row: CloudResource) => {
           handleOpenDrawer('view', row);
         },
@@ -242,22 +255,27 @@ export function CloudResourcesList({
       },
       {
         text: 'Edit',
-        icon: <Edit fontSize="small" />,
         handler: (row: CloudResource) => {
           handleOpenDrawer('edit', row);
         },
         isMenuAction: true,
       },
       {
+        text: 'Stack Jobs',
+        handler: (row: CloudResource) => {
+          handleOpenStackJobs(row);
+        },
+        isMenuAction: true,
+      },
+      {
         text: 'Delete',
-        icon: <Delete fontSize="small" />,
         handler: (row: CloudResource) => {
           handleConfirmDelete(row);
         },
         isMenuAction: true,
       },
     ],
-    [handleOpenDrawer, handleConfirmDelete]
+    [handleOpenDrawer, handleConfirmDelete, handleOpenStackJobs]
   );
 
   const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
@@ -286,7 +304,7 @@ export function CloudResourcesList({
   }, [handleOpenDrawer]);
 
   const content = (
-    <TableSection>
+    <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h5">{title}</Typography>
         <Stack flexDirection="row" gap={1}>
@@ -333,7 +351,7 @@ export function CloudResourcesList({
           border: true,
         }}
       />
-    </TableSection>
+    </Box>
   );
 
   return (
@@ -389,6 +407,15 @@ export function CloudResourcesList({
         submitBtnColor="error"
         cancelLabel="Cancel"
       />
+
+      {/* Stack Jobs Drawer */}
+      {selectedResourceForStackJobs && (
+        <StackJobsDrawer
+          open={stackJobsDrawerOpen}
+          cloudResourceId={selectedResourceForStackJobs.id}
+          onClose={handleCloseStackJobs}
+        />
+      )}
     </>
   );
 }

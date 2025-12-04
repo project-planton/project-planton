@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/project-planton/project-planton/app/backend/internal/database"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"connectrpc.com/connect"
@@ -29,11 +28,6 @@ func (s *DeploymentComponentService) ListDeploymentComponents(
 	ctx context.Context,
 	req *connect.Request[backendv1.ListDeploymentComponentsRequest],
 ) (*connect.Response[backendv1.ListDeploymentComponentsResponse], error) {
-	logrus.WithFields(logrus.Fields{
-		"provider": req.Msg.Provider,
-		"kind":     req.Msg.Kind,
-	}).Info("Listing deployment components")
-
 	opts := &database.ListOptions{}
 	if req.Msg.Provider != nil {
 		provider := *req.Msg.Provider
@@ -46,7 +40,6 @@ func (s *DeploymentComponentService) ListDeploymentComponents(
 
 	components, err := s.repo.List(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to list deployment components")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list deployment components: %w", err))
 	}
 

@@ -13,14 +13,13 @@ export const DrawerHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: theme.spacing(2, 3),
+  padding: theme.spacing(2),
   minHeight: theme.spacing(8),
   borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
 export const DrawerContent = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3),
+  padding: theme.spacing(2),
   overflowY: 'auto',
   height: '100%',
 }));
-

@@ -17,7 +17,6 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
-	"github.com/sirupsen/logrus"
 
 	"connectrpc.com/connect"
 	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
@@ -55,7 +54,6 @@ func (s *StackJobService) DeployCloudResource(
 	// Fetch cloud resource by ID
 	cloudResource, err := s.cloudResourceRepo.FindByID(ctx, cloudResourceID)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to fetch cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch cloud resource: %w", err))
 	}
 
@@ -71,16 +69,13 @@ func (s *StackJobService) DeployCloudResource(
 
 	createdJob, err := s.stackJobRepo.Create(ctx, stackJob)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to create stack job")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create stack job: %w", err))
 	}
 
 	// Execute Pulumi deployment asynchronously
 	jobID := createdJob.ID.Hex()
 	go func() {
-		if err := s.deployWithPulumi(context.Background(), jobID, cloudResourceID, cloudResource.Manifest); err != nil {
-			logrus.WithError(err).Error("Failed to deploy cloud resource with Pulumi")
-		}
+		_ = s.deployWithPulumi(context.Background(), jobID, cloudResourceID, cloudResource.Manifest)
 	}()
 
 	// Convert to proto
@@ -115,7 +110,6 @@ func (s *StackJobService) GetStackJob(
 
 	job, err := s.stackJobRepo.FindByID(ctx, id)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to fetch stack job")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch stack job: %w", err))
 	}
 
@@ -142,26 +136,46 @@ func (s *StackJobService) GetStackJob(
 	}), nil
 }
 
-// ListStackJobs lists stack jobs with optional filters.
+// ListStackJobs lists stack jobs with optional filters and pagination.
 func (s *StackJobService) ListStackJobs(
 	ctx context.Context,
 	req *connect.Request[backendv1.ListStackJobsRequest],
 ) (*connect.Response[backendv1.ListStackJobsResponse], error) {
-	var cloudResourceID *string
+	opts := &database.StackJobListOptions{}
+
 	if req.Msg.CloudResourceId != nil {
 		id := *req.Msg.CloudResourceId
-		cloudResourceID = &id
+		opts.CloudResourceID = &id
 	}
 
-	var status *string
 	if req.Msg.Status != nil {
 		s := *req.Msg.Status
-		status = &s
+		opts.Status = &s
 	}
 
-	jobs, err := s.stackJobRepo.List(ctx, cloudResourceID, status)
+	// Apply pagination with defaults (page=0, size=20) if not provided
+	var pageNum int32 = 0
+	var pageSize int32 = 20
+	if req.Msg.PageInfo != nil {
+		pageNum = req.Msg.PageInfo.Num
+		pageSize = req.Msg.PageInfo.Size
+	}
+	opts.PageNum = &pageNum
+	opts.PageSize = &pageSize
+
+	// Calculate total pages
+	totalCount, err := s.stackJobRepo.Count(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to list stack jobs")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count stack jobs: %w", err))
+	}
+
+	var totalPages int32
+	if pageSize > 0 {
+		totalPages = int32((totalCount + int64(pageSize) - 1) / int64(pageSize))
+	}
+
+	jobs, err := s.stackJobRepo.List(ctx, opts)
+	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list stack jobs: %w", err))
 	}
 
@@ -184,9 +198,12 @@ func (s *StackJobService) ListStackJobs(
 		protoJobs = append(protoJobs, protoJob)
 	}
 
-	return connect.NewResponse(&backendv1.ListStackJobsResponse{
-		Jobs: protoJobs,
-	}), nil
+	response := &backendv1.ListStackJobsResponse{
+		Jobs:       protoJobs,
+		TotalPages: totalPages,
+	}
+
+	return connect.NewResponse(response), nil
 }
 
 // deployWithPulumi executes pulumi up and stores output in stackjobs table
@@ -214,7 +231,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	var stackFqdn string
 	backendConfig, err = backendconfig.ExtractFromManifest(manifestObject)
 	if err != nil {
-		logrus.WithError(err).Warn("Failed to extract Pulumi backend config from manifest, will attempt Pulumi execution anyway")
 		// Continue - let Pulumi report the error
 	} else if backendConfig != nil && backendConfig.StackFqdn != "" {
 		stackFqdn = backendConfig.StackFqdn
@@ -224,7 +240,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	var kindName string
 	kindName, err = crkreflect.ExtractKindFromProto(manifestObject)
 	if err != nil {
-		logrus.WithError(err).Warn("Failed to extract kind, will attempt Pulumi execution anyway")
 		// Continue - let Pulumi report the error
 	}
 
@@ -239,7 +254,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	if stackFqdn != "" && kindName != "" {
 		pulumiModulePath, err = pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
 		if err != nil {
-			logrus.WithError(err).Warn("Failed to get Pulumi module path, will attempt Pulumi execution anyway")
 			// Continue - let Pulumi report the error
 			pulumiModulePath = moduleDir // Use fallback
 		}
@@ -251,7 +265,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	var stackInputYaml string
 	stackInputYaml, err = stackinput.BuildStackInputYaml(manifestObject, stackinputproviderconfig.StackInputProviderConfigOptions{})
 	if err != nil {
-		logrus.WithError(err).Warn("Failed to build stack input YAML, will attempt Pulumi execution anyway")
 		// Continue - let Pulumi report the error
 		stackInputYaml = "" // Empty fallback
 	}
@@ -313,12 +326,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 		} else {
 			exitCode = -1
 		}
-		logrus.WithError(err).
-			WithField("exit_code", exitCode).
-			WithField("stderr", stderr.String()).
-			Error("Pulumi command failed")
-	} else {
-		logrus.WithField("command", "pulumi up").Info("Pulumi command executed successfully")
 	}
 
 	// Prepare response-like structure
@@ -388,7 +395,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	// Convert to JSON string and update stack job
 	outputJSON, jsonErr := json.Marshal(deploymentOutput)
 	if jsonErr != nil {
-		logrus.WithError(jsonErr).Error("Failed to marshal deployment output to JSON")
 		// Store error status if JSON marshaling fails
 		errorOutput := map[string]interface{}{
 			"status":    "failed",
@@ -400,9 +406,7 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 			Status: "failed",
 			Output: string(errorJSON),
 		}
-		if _, err := s.stackJobRepo.Update(ctx, jobID, updateJob); err != nil {
-			logrus.WithError(err).Error("Failed to update stack job with error")
-		}
+		_, _ = s.stackJobRepo.Update(ctx, jobID, updateJob)
 		return fmt.Errorf("failed to marshal deployment output: %w", jsonErr)
 	}
 
@@ -413,15 +417,8 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	}
 	_, updateErr := s.stackJobRepo.Update(ctx, jobID, updateJob)
 	if updateErr != nil {
-		logrus.WithError(updateErr).Error("Failed to update stack job with deployment output")
 		return fmt.Errorf("failed to update stack job: %w", updateErr)
 	}
-
-	logrus.WithFields(logrus.Fields{
-		"job_id":            jobID,
-		"cloud_resource_id": cloudResourceID,
-		"status":            status,
-	}).Info("Stack job deployment completed")
 
 	return nil
 }
@@ -438,8 +435,6 @@ func (s *StackJobService) updateJobWithError(ctx context.Context, jobID string, 
 		Status: "failed",
 		Output: string(outputJSON),
 	}
-	if _, updateErr := s.stackJobRepo.Update(ctx, jobID, updateJob); updateErr != nil {
-		logrus.WithError(updateErr).Error("Failed to update stack job with error")
-	}
+	_, _ = s.stackJobRepo.Update(ctx, jobID, updateJob)
 	return err
 }
