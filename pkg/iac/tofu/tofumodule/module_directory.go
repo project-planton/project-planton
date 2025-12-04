@@ -100,7 +100,7 @@ func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
 
 	kindDirPath := filepath.Join(
 		moduleRepoDir,
-		"apis/project/planton/provider",
+		"apis/org/project_planton/provider",
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
 	terraformModulePath := filepath.Join(

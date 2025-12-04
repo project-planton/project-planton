@@ -1,9 +1,10 @@
 package pulumistack
 
 import (
-	"github.com/pkg/errors"
 	"os"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 // ExtractProjectName extracts the project name from the stack FQDN.
@@ -15,7 +16,9 @@ func ExtractProjectName(stackFqdn string) (string, error) {
 	return parts[1], nil
 }
 
-func updateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName string) error {
+// UpdateProjectNameInPulumiYaml updates the project name in Pulumi.yaml file
+// to match the project name from the stack FQDN.
+func UpdateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName string) error {
 	// Check if the cloned repository contains Pulumi.yaml file
 	pulumiYamlPath := pulumiModuleRepoPath + "/Pulumi.yaml"
 	if _, err := os.Stat(pulumiYamlPath); os.IsNotExist(err) {

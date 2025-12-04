@@ -47,7 +47,7 @@ func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 	}
 
 	//checkout the project-planton version tag if it is not the default version
-	if version.Version != version.DefaultVersion {
+	if version.Version != "" && version.Version != version.DefaultVersion {
 		gitCheckoutCommand := exec.Command("git", "-C", pulumiModuleRepoPath, "checkout", version.Version)
 		gitCheckoutCommand.Stdout = os.Stdout
 		gitCheckoutCommand.Stderr = os.Stderr
@@ -84,7 +84,7 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 
 	kindDirPath := filepath.Join(
 		moduleRepoDir,
-		"apis/project/planton/provider",
+		"apis/org/project_planton/provider",
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
 	pulumiModulePath := filepath.Join(

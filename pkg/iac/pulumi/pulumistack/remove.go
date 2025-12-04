@@ -53,7 +53,7 @@ func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[
 		return errors.Wrapf(err, "failed to extract project name from stack fqdn")
 	}
 
-	if err := updateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName); err != nil {
+	if err := UpdateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName); err != nil {
 		return errors.Wrapf(err, "failed to update project name in %s/Pulumi.yaml", pulumiModuleRepoPath)
 	}
 

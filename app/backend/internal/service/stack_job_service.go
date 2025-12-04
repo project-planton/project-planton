@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/project-planton/project-planton/app/backend/internal/database"
@@ -15,6 +16,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 
@@ -207,8 +209,16 @@ func (s *StackJobService) ListStackJobs(
 }
 
 // deployWithPulumi executes pulumi up and stores output in stackjobs table
+// This function performs all required setup steps before executing Pulumi:
+// 1. Loads and validates manifest
+// 2. Extracts stack FQDN and kind
+// 3. Gets Pulumi module path
+// 4. Initializes stack if needed
+// 5. Updates Pulumi.yaml project name
+// 6. Builds stack input YAML
+// 7. Executes pulumi up with proper environment variables
 func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
-	// Write manifest to temp file
+	// Step 1: Write manifest to temp file
 	tmpFile, err := os.CreateTemp("", "manifest-*.yaml")
 	if err != nil {
 		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to create temp file: %w", err))
@@ -218,96 +228,153 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	if _, err := tmpFile.WriteString(manifestYaml); err != nil {
 		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to write manifest: %w", err))
 	}
-	tmpFile.Close()
+	if err := tmpFile.Close(); err != nil {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to close temp file: %w", err))
+	}
 
-	// Load manifest
+	// Step 2: Load manifest and validate
 	manifestObject, err := manifest.LoadManifest(tmpFile.Name())
 	if err != nil {
 		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to load manifest: %w", err))
 	}
 
-	// Extract stack FQDN from manifest labels (best effort - continue even if fails)
-	var backendConfig *backendconfig.PulumiBackendConfig
-	var stackFqdn string
-	backendConfig, err = backendconfig.ExtractFromManifest(manifestObject)
+	// Step 3: Extract stack FQDN from manifest labels (REQUIRED - fail if missing)
+	backendConfig, err := backendconfig.ExtractFromManifest(manifestObject)
 	if err != nil {
-		// Continue - let Pulumi report the error
-	} else if backendConfig != nil && backendConfig.StackFqdn != "" {
-		stackFqdn = backendConfig.StackFqdn
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to extract backend config from manifest: %w", err))
+	}
+	if backendConfig == nil || backendConfig.StackFqdn == "" {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("stack FQDN not found in manifest labels. Add 'pulumi.project-planton.org/stack.fqdn' label"))
+	}
+	stackFqdn := backendConfig.StackFqdn
+
+	// Step 4: Extract kind name (REQUIRED - fail if missing)
+	kindName, err := crkreflect.ExtractKindFromProto(manifestObject)
+	if err != nil {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to extract kind from manifest: %w", err))
+	}
+	if kindName == "" {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("kind field is required in manifest"))
 	}
 
-	// Extract kind name (best effort - continue even if fails)
-	var kindName string
-	kindName, err = crkreflect.ExtractKindFromProto(manifestObject)
-	if err != nil {
-		// Continue - let Pulumi report the error
-	}
-
-	// Get Pulumi module directory
+	// Step 5: Get Pulumi module directory
 	moduleDir := os.Getenv("PULUMI_MODULE_DIR")
 	if moduleDir == "" {
 		moduleDir = "." // Default to current directory
 	}
 
-	// Try to get Pulumi module path (best effort)
-	var pulumiModulePath string
-	if stackFqdn != "" && kindName != "" {
-		pulumiModulePath, err = pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
-		if err != nil {
-			// Continue - let Pulumi report the error
-			pulumiModulePath = moduleDir // Use fallback
-		}
-	} else {
-		pulumiModulePath = moduleDir // Use fallback
-	}
-
-	// Build stack input YAML (best effort)
-	var stackInputYaml string
-	stackInputYaml, err = stackinput.BuildStackInputYaml(manifestObject, stackinputproviderconfig.StackInputProviderConfigOptions{})
+	// Step 6: Get Pulumi module path (REQUIRED - fail if missing)
+	pulumiModulePath, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
 	if err != nil {
-		// Continue - let Pulumi report the error
-		stackInputYaml = "" // Empty fallback
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to get Pulumi module path: %w", err))
 	}
 
-	// ALWAYS execute Pulumi - let it report errors for invalid configurations
-	var pulumiArgs []string
-	if stackFqdn != "" {
-		pulumiArgs = []string{
-			"up",
-			"--stack", stackFqdn,
-			"--yes",
-			"--skip-preview",
+	// Step 7: Extract project name from stack FQDN
+	pulumiProjectName, err := pulumistack.ExtractProjectName(stackFqdn)
+	if err != nil {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to extract project name from stack FQDN '%s': %w", stackFqdn, err))
+	}
+
+	// Step 8: Update Pulumi.yaml project name (REQUIRED - fail if error)
+	if err := pulumistack.UpdateProjectNameInPulumiYaml(pulumiModulePath, pulumiProjectName); err != nil {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to update Pulumi.yaml project name: %w", err))
+	}
+
+	// Step 9: Initialize stack if it doesn't exist (idempotent)
+	// Note: pulumistack.Init writes to os.Stdout/Stderr, but we need to capture output
+	// So we'll handle stack initialization manually with output capture
+	if err := s.ensureStackInitialized(ctx, jobID, moduleDir, stackFqdn, tmpFile.Name(), pulumiModulePath); err != nil {
+		// Check if error is "stack already exists" - that's OK
+		if !strings.Contains(err.Error(), "already exists") {
+			return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to initialize stack: %w", err))
 		}
+		// Stack already exists, continue
+	}
+
+	// Step 10: Build provider config options from environment variables (for all providers)
+	providerConfigOptions, cleanupProviderConfigs, err := stackinputproviderconfig.BuildProviderConfigOptionsFromEnv()
+	if err != nil {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to build provider config from environment: %w", err))
+	}
+	defer cleanupProviderConfigs() // Clean up all temporary provider config files
+
+	// Check if we need AWS credentials for this deployment
+	kindNameLower := strings.ToLower(kindName)
+	needsAwsCreds := strings.Contains(kindNameLower, "aws")
+
+	// Debug: Log which provider configs were found
+	if providerConfigOptions.AwsProviderConfig != "" {
+		fmt.Printf("DEBUG: AWS provider config file created: %s\n", providerConfigOptions.AwsProviderConfig)
+	} else if needsAwsCreds {
+		// Check if environment variables are set (for better error message)
+		awsAccessKeyID := os.Getenv("AWS_ACCESS_KEY_ID")
+		awsSecretKey := os.Getenv("AWS_SECRET_ACCESS_KEY")
+
+		if awsAccessKeyID == "" || awsSecretKey == "" {
+			errorMsg := fmt.Sprintf(
+				"AWS credentials not found. AWS resource '%s' requires AWS credentials to be set in the backend service environment. "+
+					"Required environment variables: AWS_ACCESS_KEY_ID (currently: %s), AWS_SECRET_ACCESS_KEY (currently: %s), "+
+					"AWS_REGION or AWS_DEFAULT_REGION (optional, defaults to us-east-1), AWS_ACCOUNT_ID (optional, will be fetched from STS if not set). "+
+					"Please set these environment variables in your backend service and restart it.",
+				kindName,
+				ifEmpty(awsAccessKeyID, "NOT SET"),
+				ifEmpty(awsSecretKey, "NOT SET"),
+			)
+			return s.updateJobWithError(ctx, jobID, fmt.Errorf("%s", errorMsg))
+		}
+	}
+	if providerConfigOptions.GcpProviderConfig != "" {
+		fmt.Printf("DEBUG: GCP provider config file created: %s\n", providerConfigOptions.GcpProviderConfig)
+	}
+	if providerConfigOptions.AzureProviderConfig != "" {
+		fmt.Printf("DEBUG: Azure provider config file created: %s\n", providerConfigOptions.AzureProviderConfig)
+	}
+
+	// Step 11: Build stack input YAML (REQUIRED - fail if error)
+	stackInputYaml, err := stackinput.BuildStackInputYaml(manifestObject, providerConfigOptions)
+	if err != nil {
+		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to build stack input YAML: %w", err))
+	}
+
+	// Debug: Check if provider config is in the stack input YAML
+	if strings.Contains(stackInputYaml, "awsProviderConfig") {
+		fmt.Printf("DEBUG: AWS provider config found in stack input YAML\n")
 	} else {
-		// Try without stack - Pulumi will report the error
-		pulumiArgs = []string{
-			"up",
-			"--yes",
-			"--skip-preview",
-		}
+		fmt.Printf("DEBUG: WARNING: AWS provider config NOT found in stack input YAML\n")
 	}
 
-	// Execute Pulumi command directly
-	timeout := 600 * time.Second // 10 minutes
+	// Step 12: Cancel any existing locks on the stack (idempotent - safe to run even if no lock exists)
+	// This handles cases where a previous deployment was interrupted and left a lock
+	if err := s.cancelStackLock(ctx, pulumiModulePath, stackFqdn); err != nil {
+		// Log the error but don't fail - the lock might not exist or might be from an active process
+		// If there's actually a lock from an active process, pulumi up will fail with a clear error
+		fmt.Printf("Warning: Failed to cancel stack lock (this is OK if no lock exists): %v\n", err)
+	}
+
+	// Step 13: Execute Pulumi command
+	// Increased timeout to 30 minutes to account for plugin downloads and large deployments
+	timeout := 1800 * time.Second // 30 minutes
 	cmdCtx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	// Build command
-	args := []string{"pulumi"}
-	args = append(args, pulumiArgs...)
-
-	cmd := exec.CommandContext(cmdCtx, args[0], args[1:]...)
-
-	// Set working directory if provided
-	if pulumiModulePath != "" {
-		cmd.Dir = pulumiModulePath
+	pulumiArgs := []string{
+		"up",
+		"--stack", stackFqdn,
+		"--yes",
+		"--skip-preview",
 	}
+
+	cmd := exec.CommandContext(cmdCtx, "pulumi", pulumiArgs...)
+	cmd.Dir = pulumiModulePath
 
 	// Set environment variables
 	cmd.Env = os.Environ()
+	// Set STACK_INPUT_YAML (required by Pulumi modules)
 	if stackInputYaml != "" {
 		cmd.Env = append(cmd.Env, fmt.Sprintf("STACK_INPUT_YAML=%s", stackInputYaml))
 	}
+	// Set PROJECT_PLANTON_MANIFEST (some modules may read this)
+	cmd.Env = append(cmd.Env, fmt.Sprintf("PROJECT_PLANTON_MANIFEST=%s", manifestYaml))
 
 	// Capture output
 	var stdout, stderr bytes.Buffer
@@ -317,85 +384,89 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	// Execute command
 	err = cmd.Run()
 	exitCode := 0
-	success := true
-
+	var wasKilled bool
 	if err != nil {
-		success = false
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode = exitError.ExitCode()
 		} else {
-			exitCode = -1
+			// Check if context was cancelled (timeout or cancellation)
+			if cmdCtx.Err() == context.DeadlineExceeded {
+				exitCode = -1
+				wasKilled = true
+			} else if cmdCtx.Err() == context.Canceled {
+				exitCode = -1
+				wasKilled = true
+			} else {
+				exitCode = -1
+			}
 		}
 	}
 
-	// Prepare response-like structure
-	var respStdout, respStderr string
-	var respExitCode int32
-	if stdout.Len() > 0 {
-		respStdout = stdout.String()
-	}
-	if stderr.Len() > 0 {
-		respStderr = stderr.String()
-	}
-	respExitCode = int32(exitCode)
+	// Step 14: Prepare deployment output
+	respStdout := stdout.String()
+	respStderr := stderr.String()
+	respExitCode := int32(exitCode)
 
-	// Prepare deployment output as JSON - always use real Pulumi output
 	deploymentOutput := map[string]interface{}{
 		"timestamp":  time.Now().Format(time.RFC3339),
-		"error_type": "pulumi", // This is always a real Pulumi execution
-	}
-
-	// Include stack_fqdn if available
-	if stackFqdn != "" {
-		deploymentOutput["stack_fqdn"] = stackFqdn
+		"error_type": "pulumi",
+		"stack_fqdn": stackFqdn,
+		"stdout":     respStdout,
+		"stderr":     respStderr,
+		"exit_code":  respExitCode,
 	}
 
 	var status string
-	if err != nil {
-		// Deployment failed with execution error (rare - usually Pulumi returns exit code)
+	if err != nil || exitCode != 0 {
 		status = "failed"
 		deploymentOutput["status"] = "failed"
-		deploymentOutput["exit_code"] = exitCode
-		deploymentOutput["stdout"] = respStdout
-		deploymentOutput["stderr"] = respStderr
-		// Use real Pulumi stderr as error, fallback to exec error
-		if respStderr != "" {
-			deploymentOutput["error"] = respStderr
+
+		// Check if error is due to stack lock
+		combinedOutput := respStderr + respStdout
+		isLockError := strings.Contains(combinedOutput, "currently locked") ||
+			strings.Contains(combinedOutput, "lock file") ||
+			strings.Contains(combinedOutput, "pulumi cancel")
+
+		// Determine error message based on failure type
+		var errorMsg string
+		if isLockError {
+			errorMsg = fmt.Sprintf("Stack is locked by another Pulumi process. This usually happens when:\n"+
+				"1. A previous deployment is still running\n"+
+				"2. A previous deployment was interrupted and didn't clean up\n"+
+				"3. Multiple deployments are trying to run simultaneously\n\n"+
+				"Solution: Wait for the other process to finish, or manually cancel the lock:\n"+
+				"  pulumi cancel --stack %s --yes\n\n"+
+				"Original error:\n%s", stackFqdn, combinedOutput)
+		} else if wasKilled {
+			if cmdCtx.Err() == context.DeadlineExceeded {
+				errorMsg = fmt.Sprintf("Pulumi deployment timed out after %.0f minutes. The process was killed. This may happen if:\n- Plugin downloads take too long\n- The deployment is very large\n- Network issues slow down the process\n\nLast output:\n%s", timeout.Minutes(), respStdout)
+			} else {
+				errorMsg = fmt.Sprintf("Pulumi deployment was interrupted (process killed). Exit code: %d\n\nLast output:\n%s", respExitCode, respStdout)
+			}
+		} else if respStderr != "" {
+			errorMsg = respStderr
 		} else if respStdout != "" {
-			deploymentOutput["error"] = respStdout
+			// If stdout contains error-like content, use it
+			if strings.Contains(respStdout, "error") || strings.Contains(respStdout, "Error") || strings.Contains(respStdout, "failed") {
+				errorMsg = respStdout
+			} else {
+				// Otherwise, prepend a message about the failure
+				errorMsg = fmt.Sprintf("Pulumi command failed with exit code %d\n\nOutput:\n%s", respExitCode, respStdout)
+			}
+		} else if err != nil {
+			errorMsg = err.Error()
 		} else {
-			deploymentOutput["error"] = err.Error()
+			errorMsg = fmt.Sprintf("Pulumi command failed with exit code %d", respExitCode)
 		}
-	} else if !success {
-		// Deployment failed (non-zero exit code) - use real Pulumi error output
-		status = "failed"
-		deploymentOutput["status"] = "failed"
-		deploymentOutput["stdout"] = respStdout
-		deploymentOutput["stderr"] = respStderr
-		deploymentOutput["exit_code"] = respExitCode
-		// Always use real Pulumi stderr as the error message
-		if respStderr != "" {
-			deploymentOutput["error"] = respStderr
-		} else if respStdout != "" {
-			// Fallback to stdout if stderr is empty
-			deploymentOutput["error"] = respStdout
-		} else {
-			deploymentOutput["error"] = fmt.Sprintf("Pulumi command failed with exit code %d", respExitCode)
-		}
+		deploymentOutput["error"] = errorMsg
 	} else {
-		// Deployment succeeded - use real Pulumi success output
 		status = "success"
 		deploymentOutput["status"] = "success"
-		deploymentOutput["stdout"] = respStdout
-		deploymentOutput["stderr"] = respStderr
-		deploymentOutput["exit_code"] = respExitCode
-		// No error field for success
 	}
 
-	// Convert to JSON string and update stack job
+	// Step 13: Convert to JSON and update stack job
 	outputJSON, jsonErr := json.Marshal(deploymentOutput)
 	if jsonErr != nil {
-		// Store error status if JSON marshaling fails
 		errorOutput := map[string]interface{}{
 			"status":    "failed",
 			"error":     fmt.Sprintf("Failed to marshal deployment output: %v", jsonErr),
@@ -410,7 +481,6 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 		return fmt.Errorf("failed to marshal deployment output: %w", jsonErr)
 	}
 
-	// Update stack job with deployment output
 	updateJob := &models.StackJob{
 		Status: status,
 		Output: string(outputJSON),
@@ -421,6 +491,79 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	}
 
 	return nil
+}
+
+// ensureStackInitialized ensures the Pulumi stack exists, initializing it if needed
+func (s *StackJobService) ensureStackInitialized(ctx context.Context, jobID, moduleDir, stackFqdn, manifestPath, pulumiModulePath string) error {
+	// Check if stack exists by trying to select it
+	checkCmd := exec.CommandContext(ctx, "pulumi", "stack", "select", stackFqdn)
+	checkCmd.Dir = pulumiModulePath
+	checkCmd.Env = os.Environ()
+	var checkStderr bytes.Buffer
+	checkCmd.Stderr = &checkStderr
+
+	err := checkCmd.Run()
+	if err == nil {
+		// Stack exists, nothing to do
+		return nil
+	}
+
+	// Stack doesn't exist, initialize it
+	// Use pulumistack.Init but capture output
+	initCmd := exec.CommandContext(ctx, "pulumi", "stack", "init", stackFqdn)
+	initCmd.Dir = pulumiModulePath
+	initCmd.Env = os.Environ()
+
+	var initStdout, initStderr bytes.Buffer
+	initCmd.Stdout = &initStdout
+	initCmd.Stderr = &initStderr
+
+	initErr := initCmd.Run()
+	if initErr != nil {
+		// Check if error is "stack already exists" (race condition)
+		output := initStderr.String() + initStdout.String()
+		if strings.Contains(output, "already exists") || strings.Contains(output, "stack already exists") {
+			return nil // Stack exists, that's OK
+		}
+		return fmt.Errorf("failed to initialize stack: %w, stderr: %s", initErr, initStderr.String())
+	}
+
+	return nil
+}
+
+// cancelStackLock cancels any existing locks on the Pulumi stack.
+// This is safe to call even if no lock exists - it will simply do nothing.
+func (s *StackJobService) cancelStackLock(ctx context.Context, pulumiModulePath, stackFqdn string) error {
+	// Build pulumi cancel command
+	args := []string{"cancel", "--stack", stackFqdn, "--yes"}
+	cancelCmd := exec.CommandContext(ctx, "pulumi", args...)
+	cancelCmd.Dir = pulumiModulePath
+	cancelCmd.Env = os.Environ()
+
+	// Capture output (but don't fail if cancel fails - lock might not exist)
+	var stdout, stderr bytes.Buffer
+	cancelCmd.Stdout = &stdout
+	cancelCmd.Stderr = &stderr
+
+	err := cancelCmd.Run()
+	if err != nil {
+		// If cancel fails, it might be because:
+		// 1. No lock exists (this is fine)
+		// 2. Lock is from an active process (pulumi up will handle this)
+		// 3. Some other error (we'll let pulumi up handle it)
+		// So we return the error but don't fail the deployment
+		return fmt.Errorf("pulumi cancel failed (this is OK if no lock exists): %w, stderr: %s", err, stderr.String())
+	}
+
+	return nil
+}
+
+// ifEmpty returns "SET" if value is not empty, otherwise returns defaultValue
+func ifEmpty(value, defaultValue string) string {
+	if value == "" {
+		return defaultValue
+	}
+	return "SET"
 }
 
 // updateJobWithError updates a stack job with an error status
