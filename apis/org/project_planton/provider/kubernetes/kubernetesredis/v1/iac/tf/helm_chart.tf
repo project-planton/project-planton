@@ -11,6 +11,12 @@ resource "helm_release" "redis" {
       fullnameOverride = var.metadata.name
       architecture     = "standalone"
 
+      image = {
+        registry   = local.redis_image_registry
+        repository = local.redis_image_repository
+        tag        = local.redis_image_tag
+      }
+
       master = {
         podLabels = local.final_labels
         resources = {

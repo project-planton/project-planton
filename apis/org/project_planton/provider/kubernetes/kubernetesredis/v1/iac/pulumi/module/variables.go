@@ -7,6 +7,9 @@ var vars = struct {
 	RedisPasswordSecretKey  string
 	RedisPasswordSecretName string
 	RedisPort               int
+	RedisImageRegistry      string
+	RedisImageRepository    string
+	RedisImageTag           string
 }{
 	HelmChartName:           "redis",
 	HelmChartRepoUrl:        "https://charts.bitnami.com/bitnami",
@@ -14,4 +17,7 @@ var vars = struct {
 	RedisPasswordSecretKey:  "password",
 	RedisPasswordSecretName: "redis-password",
 	RedisPort:               6379,
+	RedisImageRegistry:      "docker.io",
+	RedisImageRepository:    "bitnamilegacy/redis",
+	RedisImageTag:           "8.2.1-debian-12-r0",
 }

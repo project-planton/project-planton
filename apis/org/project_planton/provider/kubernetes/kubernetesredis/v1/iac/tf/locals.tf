@@ -49,4 +49,9 @@ locals {
   # Safely handle optional ingress values
   ingress_is_enabled = try(var.spec.ingress.enabled, false)
   ingress_external_hostname = try(var.spec.ingress.hostname, null)
+
+  # Redis image configuration (using legacy Bitnami repository)
+  redis_image_registry    = "docker.io"
+  redis_image_repository  = "bitnamilegacy/redis"
+  redis_image_tag         = "8.2.1-debian-12-r0"
 }

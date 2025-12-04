@@ -22,6 +22,11 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			Values: pulumi.Map{
 				"fullnameOverride": pulumi.String(locals.KubernetesRedis.Metadata.Name),
 				"architecture":     pulumi.String("standalone"),
+				"image": pulumi.Map{
+					"registry":   pulumi.String(vars.RedisImageRegistry),
+					"repository": pulumi.String(vars.RedisImageRepository),
+					"tag":        pulumi.String(vars.RedisImageTag),
+				},
 				"master": pulumi.Map{
 					"podLabels": convertstringmaps.ConvertGoStringMapToPulumiMap(locals.Labels),
 					"resources": containerresources.ConvertToPulumiMap(locals.KubernetesRedis.Spec.Container.Resources),
