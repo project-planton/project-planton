@@ -1,0 +1,27 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "service",
+    srcs = [
+        "cloud_resource_service.go",
+        "deployment_component_service.go",
+        "stack_job_service.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/app/backend/internal/service",
+    visibility = ["//app/backend:__subpackages__"],
+    deps = [
+        "//app/backend/apis/gen/go/proto",
+        "//app/backend/internal/database",
+        "//app/backend/pkg/models",
+        "//internal/manifest",
+        "//pkg/crkreflect",
+        "//pkg/iac/pulumi/backendconfig",
+        "//pkg/iac/pulumi/pulumimodule",
+        "//pkg/iac/stackinput",
+        "//pkg/iac/stackinput/stackinputproviderconfig",
+        "@com_connectrpc_connect//:connect",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)

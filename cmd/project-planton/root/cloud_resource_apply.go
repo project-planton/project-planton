@@ -100,4 +100,3 @@ func cloudResourceApplyHandler(cmd *cobra.Command, args []string) {
 		fmt.Printf("Updated At: %s\n", resource.UpdatedAt.AsTime().Format("2006-01-02 15:04:05"))
 	}
 }
-

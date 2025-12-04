@@ -92,4 +92,3 @@ func cloudResourceCreateHandler(cmd *cobra.Command, args []string) {
 		fmt.Printf("Created At: %s\n", resource.CreatedAt.AsTime().Format("2006-01-02 15:04:05"))
 	}
 }
-
