@@ -8,6 +8,7 @@ go_library(
         "azure_provider.go",
         "cloudflare_provider.go",
         "confluent_provider.go",
+        "env_provider.go",
         "gcp_provider.go",
         "kubernetes_provider.go",
         "options.go",

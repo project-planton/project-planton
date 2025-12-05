@@ -77,4 +77,3 @@ func cloudResourceDeleteHandler(cmd *cobra.Command, args []string) {
 	// Display success message
 	fmt.Println("✅ " + resp.Msg.Message)
 }
-
