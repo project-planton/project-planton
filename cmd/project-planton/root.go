@@ -32,6 +32,7 @@ func init() {
 		root.Plan,
 		root.Pulumi,
 		root.Refresh,
+		root.StreamCmd,
 		root.Tofu,
 		root.ValidateManifest,
 		root.Version,

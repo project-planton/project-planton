@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package backend.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto;v1";
+
+// StreamingService provides streaming operations for real-time data.
+service StreamingService {
+  // StreamData streams dummy data to the client.
+  // This is a server-side streaming RPC that sends data at regular intervals.
+  rpc StreamData(StreamDataRequest) returns (stream StreamDataResponse);
+}
+
+// Request message for streaming data.
+message StreamDataRequest {
+  // Optional: Number of messages to stream (0 means stream indefinitely).
+  optional int32 message_count = 1;
+  // Optional: Interval in milliseconds between messages (default: 1000ms).
+  optional int32 interval_ms = 2;
+}
+
+// Response message containing streamed data.
+message StreamDataResponse {
+  // Sequence number of this message.
+  int32 sequence = 1;
+  // Dummy data content.
+  string data = 2;
+  // Timestamp when this message was generated.
+  google.protobuf.Timestamp timestamp = 3;
+  // Status of the stream.
+  string status = 4;
+}
+

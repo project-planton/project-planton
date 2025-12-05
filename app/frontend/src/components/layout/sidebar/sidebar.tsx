@@ -36,6 +36,11 @@ const TOP_MENU: Route[] = [
     path: '/cloud-resources',
     iconName: ICON_NAMES.INFRA_HUB,
   },
+  {
+    name: 'Streaming',
+    path: '/streaming',
+    iconName: ICON_NAMES.DASHBOARD,
+  },
 ];
 
 interface ILeftNavItem {
