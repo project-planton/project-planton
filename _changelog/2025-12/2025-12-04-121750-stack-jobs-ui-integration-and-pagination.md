@@ -6,7 +6,7 @@
 
 ## Summary
 
-Integrated stack jobs functionality into the cloud resources web interface, enabling users to view and navigate stack jobs directly from the cloud resources list. Added a "Stack Jobs" menu option that opens a drawer showing paginated stack jobs for a selected cloud resource, with clickable rows that navigate to detailed stack job pages. Implemented server-side pagination in the backend ListStackJobs API to support efficient handling of large numbers of stack jobs.
+Integrated stack jobs functionality into the cloud resources web interface, enabling users to view and navigate stack jobs directly from the cloud resources list. Added a "Stack Jobs" menu option that opens a drawer showing paginated stack jobs for a selected cloud resource, with clickable rows that navigate to detailed stack job pages. Implemented server-side pagination in the backend ListStackJobs API to support efficient handling of large numbers of stack jobs. Enhanced DeployCloudResource API to accept user-provided provider credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes) via API request, with automatic fallback to environment variables. Fixed module directory path resolution for both Pulumi and OpenTofu modules.
 
 ## Problem Statement / Motivation
 
@@ -19,6 +19,8 @@ The stack jobs feature existed in the backend but lacked a user interface for ac
 - **No detailed view**: No dedicated page to view complete stack job details including output JSON
 - **No pagination support**: Backend API didn't support pagination, which would cause performance issues with large numbers of stack jobs
 - **No navigation flow**: No intuitive way to navigate from cloud resources to their associated stack jobs
+- **No user-provided credentials**: DeployCloudResource API only supported environment variables, requiring credentials to be pre-configured on the server
+- **Incorrect module paths**: Module directory resolution used incorrect API path structure (`apis/org/project_planton/provider` instead of `apis/project/planton/provider`)
 
 ### User Impact
 
@@ -28,14 +30,17 @@ Without these improvements, users faced:
 - No way to see deployment history for cloud resources
 - Performance issues when loading large numbers of stack jobs
 - No detailed view of stack job execution results
+- Requirement to pre-configure credentials on the server before deploying resources
+- Module path resolution failures for Pulumi and OpenTofu modules
 
 ## Solution / What's New
 
-Implemented a complete UI integration for stack jobs with three main components:
+Implemented a complete UI integration for stack jobs with four main components:
 
 1. **Stack Jobs Menu in Cloud Resources List**: Added "Stack Jobs" action menu item that opens a drawer showing all stack jobs for the selected cloud resource
 2. **Stack Jobs Detail Page**: Created a dedicated page (`/stack-jobs/[id]`) to view complete stack job details including status, timestamps, and full output JSON
 3. **Backend Pagination**: Added server-side pagination support to the ListStackJobs API with total pages calculation
+4. **User-Provided Credentials Support**: Enhanced DeployCloudResource API to accept provider credentials via API request, with automatic validation and fallback to environment variables
 
 ### Architecture
 
@@ -119,6 +124,21 @@ Response (jobs + totalPages)
 - Default pagination: page 0, size 20 if not provided
 - Maintains backward compatibility (pagination is optional)
 
+**5. User-Provided Credentials Support**
+
+- Added `ProviderConfig` message to `DeployCloudResourceRequest` proto supporting all providers (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
+- Credentials priority: User-provided credentials > Environment variables
+- Automatic credential validation based on resource provider type
+- Temporary credential files created from API request (matching CLI pattern)
+- Automatic cleanup of temporary files after deployment
+- Clear error messages when required credentials are missing
+
+**6. Module Path Fixes**
+
+- Fixed Pulumi module directory path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+- Fixed OpenTofu module directory path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+- Fixed version check logic in Pulumi module directory (removed unnecessary empty string check)
+
 ## Implementation Details
 
 ### 1. Backend Pagination Support
@@ -152,6 +172,40 @@ message ListStackJobsResponse {
 - Reused `PageInfo` message from `cloud_resource_service.proto` for consistency
 - `total_pages` only set when `page_info` is provided (backward compatible)
 - Pagination is optional to maintain backward compatibility
+
+**File**: `app/backend/apis/proto/stack_job_service.proto`
+
+Added ProviderConfig support for user-provided credentials:
+
+```22:122:app/backend/apis/proto/stack_job_service.proto
+message DeployCloudResourceRequest {
+  // The unique identifier of the cloud resource to deploy.
+  string cloud_resource_id = 1;
+  // Optional provider credentials. If not provided, credentials will be read from environment variables.
+  optional ProviderConfig provider_config = 2;
+}
+
+// ProviderConfig contains credentials for cloud providers.
+message ProviderConfig {
+  oneof config {
+    AwsProviderConfig aws = 1;
+    GcpProviderConfig gcp = 2;
+    AzureProviderConfig azure = 3;
+    AtlasProviderConfig atlas = 4;
+    CloudflareProviderConfig cloudflare = 5;
+    ConfluentProviderConfig confluent = 6;
+    SnowflakeProviderConfig snowflake = 7;
+    KubernetesProviderConfig kubernetes = 8;
+  }
+}
+```
+
+**Key design decisions**:
+
+- Used `oneof` pattern for type-safe provider selection
+- All provider configs match existing provider proto definitions
+- Credentials are optional (fallback to environment variables)
+- Supports all major cloud providers used in the system
 
 **File**: `app/backend/internal/service/stack_job_service.go`
 
@@ -226,6 +280,63 @@ func (s *StackJobService) ListStackJobs(
 - Calculates total pages using ceiling division
 - Returns both jobs and totalPages in response
 - Maintains all existing filter capabilities (cloud_resource_id, status)
+
+**File**: `app/backend/internal/service/stack_job_service.go`
+
+Added user-provided credentials support with validation:
+
+```86:432:app/backend/internal/service/stack_job_service.go
+	// Extract user-provided credentials from request (if provided)
+	var userProviderConfig *backendv1.ProviderConfig
+	if req.Msg.ProviderConfig != nil {
+		userProviderConfig = req.Msg.ProviderConfig
+	}
+
+	// Execute Pulumi deployment asynchronously
+	jobID := createdJob.ID.Hex()
+	go func() {
+		_ = s.deployWithPulumi(context.Background(), jobID, cloudResourceID, cloudResource.Manifest, userProviderConfig)
+	}()
+
+	// ... in deployWithPulumi function ...
+
+	// Step 10: Build provider config options
+	// Priority: User-provided credentials > Environment variables
+	var providerConfigOptions stackinputproviderconfig.StackInputProviderConfigOptions
+	var cleanupProviderConfigs func()
+
+	if userProviderConfig != nil {
+		// Convert user-provided credentials to files (same pattern as CLI)
+		// ... credential conversion logic ...
+		providerConfigOptions, cleanupProviderConfigs, err = stackinputproviderconfig.BuildProviderConfigOptionsFromUserCredentials(
+			awsConfig,
+			gcpConfig,
+			azureConfig,
+			atlasConfig,
+			cloudflareConfig,
+			confluentConfig,
+			snowflakeConfig,
+			kubernetesConfig,
+		)
+	} else {
+		// Fallback to environment variables (existing behavior)
+		providerConfigOptions, cleanupProviderConfigs, err = stackinputproviderconfig.BuildProviderConfigOptionsFromEnv()
+	}
+	defer cleanupProviderConfigs()
+
+	// Validate that required credentials are provided based on provider enum
+	if err := s.validateProviderCredentials(provider, providerConfigOptions, kindName); err != nil {
+		return s.updateJobWithError(ctx, jobID, err)
+	}
+```
+
+**Key features**:
+
+- Priority system: User-provided credentials override environment variables
+- Automatic credential file creation from proto messages
+- Provider-specific credential validation
+- Automatic cleanup of temporary credential files
+- Clear error messages for missing credentials
 
 **File**: `app/backend/internal/database/stack_job_repo.go`
 
@@ -318,7 +429,56 @@ func (r *StackJobRepository) Count(ctx context.Context, opts *StackJobListOption
 - Sorted by created_at descending (newest first)
 - Maintains all existing filter capabilities
 
-### 2. Frontend Stack Jobs Integration
+### 3. User-Provided Credentials Implementation
+
+**File**: `pkg/iac/stackinput/stackinputproviderconfig/user_provider.go`
+
+Created new file to handle user-provided credentials (replacing env_provider.go):
+
+- `BuildProviderConfigOptionsFromUserCredentials()` - Converts proto messages to temporary credential files
+- Provider-specific file creation functions for all supported providers
+- Automatic cleanup functions for temporary files
+- YAML file format matching CLI credential files
+
+**Key features**:
+
+- Creates temporary YAML files from proto messages
+- Matches CLI credential file format for consistency
+- Automatic cleanup via returned cleanup function
+- Supports all providers: AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes
+
+**File**: `pkg/iac/pulumi/pulumimodule/module_directory.go`
+
+Fixed module path resolution:
+
+```84:88:pkg/iac/pulumi/pulumimodule/module_directory.go
+	kindDirPath := filepath.Join(
+		moduleRepoDir,
+		"apis/project/planton/provider",
+		strings.ReplaceAll(kindProvider.String(), "_", ""))
+```
+
+**Changes**:
+
+- Fixed path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+- Fixed version check: removed unnecessary `version.Version != ""` check
+
+**File**: `pkg/iac/tofu/tofumodule/module_directory.go`
+
+Fixed module path resolution:
+
+```101:104:pkg/iac/tofu/tofumodule/module_directory.go
+	kindDirPath := filepath.Join(
+		moduleRepoDir,
+		"apis/project/planton/provider",
+		strings.ReplaceAll(kindProvider.String(), "_", ""))
+```
+
+**Changes**:
+
+- Fixed path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+
+### 4. Frontend Stack Jobs Integration
 
 **File**: `app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx`
 
@@ -528,7 +688,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
 - Resets to page 0 when cloudResourceId changes
 - Loading states handled
 
-### 3. Stack Job Detail Page
+### 5. Stack Job Detail Page
 
 **File**: `app/frontend/src/app/stack-jobs/[id]/page.tsx`
 
@@ -684,7 +844,7 @@ export function StackJobHeader({ stackJob, updatedTime }: StackJobHeaderProps) {
 - Last updated timestamp
 - Loading states with skeletons
 
-### 4. Supporting Components
+### 6. Supporting Components
 
 **File**: `app/frontend/src/components/shared/breadcrumb/index.tsx`
 
@@ -756,6 +916,13 @@ Created JSON syntax highlighter component for displaying stack job output:
 - Faster page loads for large numbers of stack jobs
 - Reduced memory usage in browser
 
+**Flexibility**:
+
+- Can provide credentials per deployment via API
+- No need to pre-configure credentials on server
+- Supports multiple cloud accounts per deployment
+- Automatic credential validation prevents deployment failures
+
 ### For Developers
 
 **Component Reusability**:
@@ -776,6 +943,12 @@ Created JSON syntax highlighter component for displaying stack job output:
 - Efficient database queries with skip/limit
 - Total count calculation only when needed
 
+**Infrastructure**:
+
+- Fixed module path resolution for reliable deployments
+- Corrected API path structure for both Pulumi and OpenTofu
+- Improved version handling in module directory logic
+
 ## Impact
 
 ### Immediate
@@ -786,6 +959,9 @@ Created JSON syntax highlighter component for displaying stack job output:
 - Navigate to detailed stack job pages
 - View complete deployment output with syntax highlighting
 - Paginated browsing of stack jobs
+- Provide credentials per deployment via API
+- Automatic credential validation before deployment
+- Fixed module path resolution for reliable deployments
 
 **User Experience**:
 
@@ -801,6 +977,9 @@ Created JSON syntax highlighter component for displaying stack job output:
 **1 new breadcrumb component** for navigation
 **1 new syntax highlighter component** for JSON display
 **Backend pagination** support in service and repository layers
+**1 new credential handling module** (`user_provider.go`) replacing `env_provider.go`
+**Provider credential support** for all 8 supported cloud providers
+**Module path fixes** for both Pulumi and OpenTofu modules
 
 ### System Capabilities
 
@@ -808,6 +987,8 @@ Created JSON syntax highlighter component for displaying stack job output:
 **Navigation**: Complete navigation flow from resources to jobs to details
 **Pagination**: Scalable pagination for large datasets
 **Performance**: Efficient loading with server-side pagination
+**Credential Management**: User-provided credentials with automatic validation and fallback
+**Module Resolution**: Fixed path resolution for reliable Pulumi and OpenTofu deployments
 
 ## Usage Examples
 
@@ -857,17 +1038,54 @@ ListStackJobsResponse {
 }
 ```
 
+### Backend API with User-Provided Credentials
+
+**Request**:
+
+```protobuf
+DeployCloudResourceRequest {
+  cloud_resource_id: "507f1f77bcf86cd799439011"
+  provider_config: {
+    aws: {
+      account_id: "123456789012"
+      access_key_id: "AKIAIOSFODNN7EXAMPLE"
+      secret_access_key: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+      region: "us-east-1"
+    }
+  }
+}
+```
+
+**Behavior**:
+
+- If `provider_config` is provided, uses user credentials
+- If `provider_config` is not provided, falls back to environment variables
+- Validates required credentials based on resource provider type
+- Creates temporary credential files matching CLI format
+- Automatically cleans up temporary files after deployment
+
 ## Files Modified/Created
 
 ### Backend API
 
 **Modified**:
 
-- `app/backend/apis/proto/stack_job_service.proto` - Added PageInfo and total_pages to ListStackJobs API
-- `app/backend/internal/service/stack_job_service.go` - Implemented pagination logic with total pages calculation, removed logrus logging
+- `app/backend/apis/proto/stack_job_service.proto` - Added PageInfo and total_pages to ListStackJobs API; Added ProviderConfig support to DeployCloudResourceRequest for user-provided credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
+- `app/backend/internal/service/stack_job_service.go` - Implemented pagination logic with total pages calculation; Added user-provided credentials support with fallback to environment variables; Added provider credential validation based on resource kind; Removed logrus logging
 - `app/backend/internal/service/cloud_resource_service.go` - Removed logrus logging (code cleanup)
 - `app/backend/internal/service/deployment_component_service.go` - Removed logrus logging (code cleanup)
 - `app/backend/internal/database/stack_job_repo.go` - Added pagination support with skip/limit and Count method
+
+### Infrastructure Code
+
+**Modified**:
+
+- `pkg/iac/pulumi/pulumimodule/module_directory.go` - Fixed version check logic (removed empty string check); Corrected API path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+- `pkg/iac/tofu/tofumodule/module_directory.go` - Corrected API path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+
+**Deleted**:
+
+- `pkg/iac/stackinput/stackinputproviderconfig/env_provider.go` - Removed (functionality consolidated into user_provider.go which handles both user credentials and environment variables)
 
 ### Frontend Pages
 
@@ -959,6 +1177,7 @@ This work enables:
 - **No real-time updates**: Status changes require manual refresh
 - **No deployment actions**: Can't trigger deployments from UI (only view history)
 - **No output filtering**: Full JSON output always displayed (could add collapsible sections)
+- **No credential encryption**: Credentials are passed in plain text in API requests (should use encryption in production)
 
 These limitations are intentional for the initial implementation and can be addressed in future enhancements.
 
@@ -1024,6 +1243,36 @@ These limitations are intentional for the initial implementation and can be addr
 
 - Rejected because drawer benefits from smaller page size for better UX
 
+### User-Provided Credentials
+
+**Decision**: Support user-provided credentials via API with fallback to environment variables
+
+**Rationale**:
+
+- Enables per-deployment credential management
+- Supports multi-tenant scenarios with different cloud accounts
+- Maintains backward compatibility with environment variable approach
+- Provides flexibility for different deployment scenarios
+- Automatic validation prevents deployment failures due to missing credentials
+
+**Alternative considered**: Environment variables only
+
+- Rejected because it requires pre-configuration and doesn't support multi-tenant scenarios
+
+### Module Path Correction
+
+**Decision**: Fix module directory paths from `apis/org/project_planton/provider` to `apis/project/planton/provider`
+
+**Rationale**:
+
+- Matches actual repository structure
+- Fixes deployment failures due to incorrect module resolution
+- Consistent across both Pulumi and OpenTofu modules
+
+**Alternative considered**: Keep incorrect paths
+
+- Rejected because it causes deployment failures
+
 ## Post-Implementation Cleanup
 
 ### Logrus Removal from Service APIs
@@ -1053,9 +1302,10 @@ As part of code quality improvements, removed all logrus logging from the backen
 ---
 
 **Status**: ✅ Complete and Production Ready
-**Component**: Web Frontend - Stack Jobs UI Integration, Backend API - Pagination
+**Component**: Web Frontend - Stack Jobs UI Integration, Backend API - Pagination and Credentials, Infrastructure - Module Path Fixes
 **Pages Added**: 1 detail page (`/stack-jobs/[id]`)
 **Components Added**: 6 new reusable components
 **Components Modified**: 2 existing components
-**Backend Changes**: Pagination support in service and repository
-**Location**: `app/frontend/src/app/stack-jobs/`, `app/frontend/src/components/shared/stackjob/`, `app/backend/internal/service/`, `app/backend/internal/database/`
+**Backend Changes**: Pagination support in service and repository; User-provided credentials support with validation
+**Infrastructure Changes**: Module path fixes for Pulumi and OpenTofu; Credential handling refactoring
+**Location**: `app/frontend/src/app/stack-jobs/`, `app/frontend/src/components/shared/stackjob/`, `app/backend/internal/service/`, `app/backend/internal/database/`, `pkg/iac/pulumi/pulumimodule/`, `pkg/iac/tofu/tofumodule/`, `pkg/iac/stackinput/stackinputproviderconfig/`
