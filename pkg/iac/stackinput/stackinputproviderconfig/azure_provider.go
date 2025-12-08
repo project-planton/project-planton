@@ -1,14 +1,15 @@
 package stackinputproviderconfig
 
 import (
+	"os"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"os"
 	"sigs.k8s.io/yaml"
 )
 
 const (
-	AzureProviderConfigKey  = "azureProviderConfig"
+	AzureProviderConfigKey  = "provider_config"
 	azureProviderConfigYaml = "azure-provider-config.yaml"
 )
 

@@ -17,7 +17,7 @@ func GetWorkspaceDir() (string, error) {
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get home directory")
 	}
-	//base directory will always be ${HOME}/.planton-cloud/pulumi
+	//base directory will always be ${HOME}/.project-planton
 	cliWorkspaceDirectory := filepath.Join(homeDir, ProjectPlantonDir)
 	if !fileutil.IsDirExists(cliWorkspaceDirectory) {
 		if err := os.MkdirAll(cliWorkspaceDirectory, os.ModePerm); err != nil {

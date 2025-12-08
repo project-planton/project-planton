@@ -7,6 +7,7 @@ This guide covers the configuration, deployment component management, and cloud 
 - [Configuration Management](#configuration-management)
 - [Deployment Components](#deployment-components)
 - [Cloud Resources](#cloud-resources)
+- [Stack Jobs](#stack-jobs)
 - [Common Workflows](#common-workflows)
 - [Troubleshooting](#troubleshooting)
 
@@ -151,7 +152,7 @@ Cloud resources represent infrastructure resources that can be created and manag
 
 ### `project-planton cloud-resource:create`
 
-Create a new cloud resource from a YAML manifest file.
+Create a new cloud resource from a YAML manifest file. This command automatically triggers deployment using credentials resolved from the database.
 
 #### Basic Usage
 
@@ -176,6 +177,17 @@ Name: my-vpc
 Kind: CivoVpc
 Created At: 2025-11-28 13:14:12
 ```
+
+#### Automatic Deployment
+
+When you create a cloud resource, the system automatically:
+
+1. Saves the resource to the database
+2. Determines the cloud provider from the resource kind (e.g., `GcpCloudSql` → `gcp`)
+3. Resolves credentials from the database based on the provider
+4. Triggers a Pulumi deployment with the resolved credentials
+
+**Note:** Credentials are automatically resolved from the database based on the cloud provider. Ensure credentials are configured in the database before creating cloud resources (typically done through the backend API or web console).
 
 #### Flags
 
@@ -351,7 +363,7 @@ Error: Invalid manifest - invalid ID format
 
 ### `project-planton cloud-resource:update`
 
-Update an existing cloud resource by providing a new YAML manifest. The manifest's `name` and `kind` must match the existing resource.
+Update an existing cloud resource by providing a new YAML manifest. The manifest's `name` and `kind` must match the existing resource. This command automatically triggers deployment using credentials resolved from the database.
 
 #### Basic Usage
 
@@ -376,6 +388,17 @@ Name: my-vpc
 Kind: CivoVpc
 Updated At: 2025-11-28 14:05:23
 ```
+
+#### Automatic Deployment
+
+When you update a cloud resource, the system automatically:
+
+1. Updates the resource in the database
+2. Determines the cloud provider from the resource kind
+3. Resolves credentials from the database based on the provider
+4. Triggers a Pulumi deployment with the resolved credentials
+
+**Note:** Credentials are automatically resolved from the database based on the cloud provider. Ensure credentials are configured in the database before updating cloud resources (typically done through the backend API or web console).
 
 #### Flags
 
@@ -497,7 +520,7 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 
 ### `project-planton cloud-resource:apply`
 
-Apply a cloud resource from a YAML manifest file. This command performs an **upsert operation**: if a resource with the same `name` and `kind` already exists, it will be updated; otherwise, a new resource will be created.
+Apply a cloud resource from a YAML manifest file. This command performs an **upsert operation**: if a resource with the same `name` and `kind` already exists, it will be updated; otherwise, a new resource will be created. This command automatically triggers deployment using credentials resolved from the database.
 
 #### Basic Usage
 
@@ -511,6 +534,17 @@ project-planton cloud-resource:apply --arg=path/to/manifest.yaml
 # Apply a cloud resource (create or update)
 project-planton cloud-resource:apply --arg=my-vpc.yaml
 ```
+
+#### Automatic Deployment
+
+When you apply a cloud resource, the system automatically:
+
+1. Creates or updates the resource in the database
+2. Determines the cloud provider from the resource kind
+3. Resolves credentials from the database based on the provider
+4. Triggers a Pulumi deployment with the resolved credentials
+
+**Note:** Credentials are automatically resolved from the database based on the cloud provider. Ensure credentials are configured in the database before applying cloud resources (typically done through the backend API or web console).
 
 #### Key Features
 
@@ -726,6 +760,202 @@ project-planton config set backend-url <your-backend-url>
 
 ---
 
+## Stack Jobs
+
+Stack jobs represent deployment operations for cloud resources. You can stream real-time output from stack jobs to monitor deployment progress.
+
+### `project-planton stack-job:stream-output`
+
+Stream real-time deployment logs from a stack job. Shows stdout and stderr output as it's generated during deployment.
+
+#### Basic Usage
+
+```bash
+# Stream output from a stack job
+project-planton stack-job:stream-output --id=<stack-job-id>
+```
+
+**Sample Output:**
+
+```
+🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+
+[15:04:05.123] [stdout] [Seq: 1] Updating (example-env.GcpCloudSql.gcp-postgres-example):
+[15:04:05.234] [stdout] [Seq: 2]     pulumi:pulumi:Stack project-planton-examples-example-env.GcpCloudSql.gcp-postgres-example  Compiling the program ...
+[15:04:06.456] [stdout] [Seq: 3]     pulumi:pulumi:Stack project-planton-examples-example-env.GcpCloudSql.gcp-postgres-example  Finished compiling
+[15:04:07.789] [stdout] [Seq: 4] +  gcp:sql:DatabaseInstance gcp-postgres-example creating (0s)
+[15:04:10.123] [stdout] [Seq: 5] +  gcp:sql:DatabaseInstance gcp-postgres-example created (3s)
+
+✅ Stream completed successfully
+
+📊 Total messages received: 5 (last sequence: 5)
+```
+
+#### Resuming from a Specific Sequence
+
+If you need to resume streaming from a specific point (e.g., after disconnection), use the `--last-sequence` flag:
+
+```bash
+# Resume from sequence 100
+project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=100
+```
+
+**Sample Output:**
+
+```
+🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+   Resuming from sequence: 100
+
+[15:05:01.234] [stdout] [Seq: 101] Continuing deployment...
+[15:05:02.456] [stdout] [Seq: 102] Finalizing resources...
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the stack job (required)
+- `--last-sequence, -s` - Last sequence number received (for resuming stream from a specific point, default: 0)
+- `--help, -h` - Show help information
+
+#### Output Format
+
+Each stream message displays:
+
+- **Timestamp** - Time when the message was generated (HH:MM:SS.mmm format)
+- **Stream Type** - `[stdout]` for standard output or `[stderr]` for error output
+- **Sequence** - Sequence number of the message (for ordering and resuming)
+- **Content** - The actual log line content
+
+#### Graceful Shutdown
+
+The stream command supports graceful shutdown via interrupt signals:
+
+- Press `Ctrl+C` to cancel the stream
+- The command will finish processing the current message and exit cleanly
+- A summary showing total messages received and last sequence number will be displayed
+
+**Example:**
+
+```bash
+$ project-planton stack-job:stream-output --id=69369e4ec78ad326a6e5aa8b
+🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+
+[15:04:05.123] [stdout] [Seq: 1] Starting deployment...
+[15:04:06.456] [stdout] [Seq: 2] Compiling program...
+^C
+
+⚠️  Interrupt received, stopping stream...
+
+⚠️  Stream cancelled
+
+📊 Total messages received: 2 (last sequence: 2)
+```
+
+#### Error Handling
+
+**Backend URL Not Configured:**
+
+```
+Error: backend URL not configured. Run: project-planton config set backend-url <url>
+```
+
+**Solution:**
+
+```bash
+project-planton config set backend-url http://localhost:50051
+```
+
+**Connection Issues:**
+
+```
+❌ Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+**Solutions:**
+
+1. **Check if backend service is running:**
+
+   ```bash
+   # Check if port is accessible
+   curl http://localhost:50051
+   ```
+
+2. **Verify backend URL configuration:**
+
+   ```bash
+   project-planton config get backend-url
+   ```
+
+3. **Update backend URL if needed:**
+   ```bash
+   project-planton config set backend-url <correct-url>
+   ```
+
+**Stack Job Not Found:**
+
+```
+❌ Error: Stack job with ID 'invalid-id' not found
+```
+
+**Solution:**
+
+- Verify the stack job ID is correct
+- Use `project-planton cloud-resource:get` to find the associated cloud resource and its stack jobs
+
+**Stream Error:**
+
+```
+❌ Stream error: <error details>
+```
+
+**Possible Causes:**
+
+- Backend service disconnected during streaming
+- Network interruption
+- Backend service error
+
+**Solutions:**
+
+1. Check backend service logs
+2. Verify network connectivity
+3. Retry the stream command
+4. Use `--last-sequence` to resume from the last received sequence number
+
+#### Use Cases
+
+**1. Monitoring Active Deployments**
+
+```bash
+# Stream output from an in-progress deployment
+project-planton stack-job:stream-output --id=<stack-job-id>
+```
+
+**2. Reviewing Completed Deployments**
+
+```bash
+# Stream all logs from a completed deployment
+project-planton stack-job:stream-output --id=<stack-job-id>
+```
+
+**3. Resuming After Disconnection**
+
+```bash
+# If disconnected, resume from the last sequence number you saw
+project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=150
+```
+
+#### Prerequisites
+
+Before using the stack-job:stream-output command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+---
+
 ## Common Workflows
 
 ### Initial Setup
@@ -795,6 +1025,7 @@ project-planton config set backend-url <your-backend-url>
    ```
 
 5. **Check configuration:**
+
    ```bash
    project-planton config list
    ```

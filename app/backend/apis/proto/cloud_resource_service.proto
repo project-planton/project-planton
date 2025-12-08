@@ -3,6 +3,7 @@ syntax = "proto3";
 package backend.v1;
 
 import "google/protobuf/timestamp.proto";
+import "proto/provider_config.proto";
 
 option go_package = "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto;v1";
 
@@ -79,6 +80,8 @@ message UpdateCloudResourceRequest {
   string id = 1;
   // YAML manifest content as string.
   string manifest = 2;
+  // Provider credentials are automatically resolved from the database
+  // based on the environment and provider type. No need to provide credentials in the request.
 }
 
 // Response message containing the updated cloud resource.

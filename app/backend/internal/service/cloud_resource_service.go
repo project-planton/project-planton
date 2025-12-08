@@ -15,13 +15,15 @@ import (
 
 // CloudResourceService implements the CloudResourceService RPC.
 type CloudResourceService struct {
-	repo *database.CloudResourceRepository
+	repo            *database.CloudResourceRepository
+	stackJobService *StackJobService
 }
 
 // NewCloudResourceService creates a new service instance.
-func NewCloudResourceService(repo *database.CloudResourceRepository) *CloudResourceService {
+func NewCloudResourceService(repo *database.CloudResourceRepository, stackJobService *StackJobService) *CloudResourceService {
 	return &CloudResourceService{
-		repo: repo,
+		repo:            repo,
+		stackJobService: stackJobService,
 	}
 }
 
@@ -78,6 +80,21 @@ func (s *CloudResourceService) CreateCloudResource(
 	createdResource, err := s.repo.Create(ctx, cloudResource)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create cloud resource: %w", err))
+	}
+
+	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
+	if s.stackJobService != nil {
+		// Create a deployment request (no provider_config needed - will be resolved automatically)
+		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
+			Msg: &backendv1.DeployCloudResourceRequest{
+				CloudResourceId: createdResource.ID.Hex(),
+			},
+		}
+
+		// Trigger deployment asynchronously (don't wait for it)
+		go func() {
+			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+		}()
 	}
 
 	// Convert to proto
@@ -271,6 +288,21 @@ func (s *CloudResourceService) UpdateCloudResource(
 	updatedResource, err := s.repo.Update(ctx, id, cloudResource)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update cloud resource: %w", err))
+	}
+
+	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
+	if s.stackJobService != nil {
+		// Create a deployment request (no provider_config needed - will be resolved automatically)
+		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
+			Msg: &backendv1.DeployCloudResourceRequest{
+				CloudResourceId: id,
+			},
+		}
+
+		// Trigger deployment asynchronously (don't wait for it)
+		go func() {
+			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+		}()
 	}
 
 	// Convert to proto

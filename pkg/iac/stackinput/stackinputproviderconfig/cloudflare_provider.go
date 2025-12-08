@@ -1,14 +1,15 @@
 package stackinputproviderconfig
 
 import (
+	"os"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"gopkg.in/yaml.v3"
-	"os"
 )
 
 const (
-	CloudflareProviderConfigKey  = "cloudflareProviderConfig"
+	CloudflareProviderConfigKey  = "provider_config"
 	cloudflareProviderConfigYaml = "cloudflare-provider-config.yaml"
 )
 

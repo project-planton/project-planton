@@ -18,6 +18,7 @@ go_library(
         "plan.go",
         "pulumi.go",
         "refresh.go",
+        "stack_job_stream_output.go",
         "tofu.go",
         "validate_manifest.go",
         "version.go",

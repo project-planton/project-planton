@@ -7,12 +7,19 @@ import {
   ListStackJobsRequest,
   ListStackJobsResponse,
   GetStackJobRequestSchema,
+  StreamStackJobOutputRequestSchema,
+  StreamStackJobOutputResponse,
   StackJob,
 } from '@/gen/proto/stack_job_service_pb';
 
 interface QueryType {
   listStackJobs: (input: ListStackJobsRequest) => Promise<ListStackJobsResponse>;
   getById: (id: string) => Promise<StackJob>;
+  streamOutput: (
+    jobId: string,
+    lastSequenceNum?: number,
+    signal?: AbortSignal
+  ) => AsyncIterable<StreamStackJobOutputResponse>;
 }
 
 const RESOURCE_NAME = 'Stack Jobs';
@@ -57,6 +64,18 @@ export const useStackJobQuery = () => {
               setPageLoading(false);
             });
         });
+      },
+      streamOutput: (
+        jobId: string,
+        lastSequenceNum?: number,
+        signal?: AbortSignal
+      ): AsyncIterable<StreamStackJobOutputResponse> => {
+        const request = create(StreamStackJobOutputRequestSchema, {
+          jobId,
+          lastSequenceNum: lastSequenceNum !== undefined ? lastSequenceNum : undefined,
+        });
+
+        return queryClient.streamStackJobOutput(request, { signal });
       },
     }),
     [queryClient, setPageLoading, openSnackbar]

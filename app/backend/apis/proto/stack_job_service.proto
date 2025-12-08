@@ -16,109 +16,17 @@ service StackJobService {
   rpc GetStackJob(GetStackJobRequest) returns (GetStackJobResponse);
   // ListStackJobs lists stack jobs, optionally filtered by cloud resource ID or status.
   rpc ListStackJobs(ListStackJobsRequest) returns (ListStackJobsResponse);
+  // StreamStackJobOutput streams real-time output from a stack job deployment.
+  // Streams output chunks from the stackjob_streaming_responses collection in real-time.
+  rpc StreamStackJobOutput(StreamStackJobOutputRequest) returns (stream StreamStackJobOutputResponse);
 }
 
 // Request message for deploying a cloud resource.
 message DeployCloudResourceRequest {
   // The unique identifier of the cloud resource to deploy.
   string cloud_resource_id = 1;
-  // Provider credentials. Required for deployment.
-  optional ProviderConfig provider_config = 2;
-}
-
-// ProviderConfig contains credentials for cloud providers.
-message ProviderConfig {
-  oneof config {
-    AwsProviderConfig aws = 1;
-    GcpProviderConfig gcp = 2;
-    AzureProviderConfig azure = 3;
-    AtlasProviderConfig atlas = 4;
-    CloudflareProviderConfig cloudflare = 5;
-    ConfluentProviderConfig confluent = 6;
-    SnowflakeProviderConfig snowflake = 7;
-    KubernetesProviderConfig kubernetes = 8;
-  }
-}
-
-// AwsProviderConfig contains AWS credentials.
-message AwsProviderConfig {
-  string account_id = 1;
-  string access_key_id = 2;
-  string secret_access_key = 3;
-  optional string region = 4;
-  optional string session_token = 5;
-}
-
-// GcpProviderConfig contains GCP credentials.
-message GcpProviderConfig {
-  string service_account_key_base64 = 1;
-}
-
-// AzureProviderConfig contains Azure credentials.
-message AzureProviderConfig {
-  string client_id = 1;
-  string client_secret = 2;
-  string tenant_id = 3;
-  string subscription_id = 4;
-}
-
-// AtlasProviderConfig contains MongoDB Atlas credentials.
-message AtlasProviderConfig {
-  string public_key = 1;
-  string private_key = 2;
-}
-
-// CloudflareProviderConfig contains Cloudflare credentials.
-message CloudflareProviderConfig {
-  int32 auth_scheme = 1; // 1 = api_token, 2 = legacy_api_key
-  optional string api_token = 2;
-  optional string api_key = 3;
-  optional string email = 4;
-}
-
-// ConfluentProviderConfig contains Confluent Cloud credentials.
-message ConfluentProviderConfig {
-  string api_key = 1;
-  string api_secret = 2;
-}
-
-// SnowflakeProviderConfig contains Snowflake credentials.
-message SnowflakeProviderConfig {
-  string account = 1;
-  string region = 2;
-  string username = 3;
-  string password = 4;
-}
-
-// KubernetesProviderConfig contains Kubernetes cluster credentials.
-message KubernetesProviderConfig {
-  int32 provider = 1; // 1 = gcp_gke, 2 = aws_eks, 3 = azure_aks, 4 = digital_ocean_doks
-  optional KubernetesProviderConfigGcpGke gcp_gke = 2;
-  optional KubernetesProviderConfigAwsEks aws_eks = 3;
-  optional KubernetesProviderConfigAzureAks azure_aks = 4;
-  optional KubernetesProviderConfigDigitalOceanDoks digital_ocean_doks = 5;
-}
-
-// KubernetesProviderConfigGcpGke contains GKE cluster credentials.
-message KubernetesProviderConfigGcpGke {
-  string cluster_endpoint = 1;
-  string cluster_ca_data = 2;
-  string service_account_key_base64 = 3;
-}
-
-// KubernetesProviderConfigAwsEks contains EKS cluster credentials.
-message KubernetesProviderConfigAwsEks {
-  // Empty for now - EKS uses AWS credentials from parent
-}
-
-// KubernetesProviderConfigAzureAks contains AKS cluster credentials.
-message KubernetesProviderConfigAzureAks {
-  // Empty for now - AKS uses Azure credentials from parent
-}
-
-// KubernetesProviderConfigDigitalOceanDoks contains DOKS cluster credentials.
-message KubernetesProviderConfigDigitalOceanDoks {
-  string kube_config = 1;
+  // Provider credentials are automatically resolved from the database
+  // based on the environment and provider type. No need to provide credentials in the request.
 }
 
 // Response message containing the created stack job.
@@ -176,5 +84,27 @@ message StackJob {
 
   // Timestamp when the job was last updated.
   google.protobuf.Timestamp updated_at = 6;
+}
+
+// Request message for streaming stack job output.
+message StreamStackJobOutputRequest {
+  // The unique identifier of the stack job to stream output from.
+  string job_id = 1;
+  // Optional: Last sequence number received (for resuming stream).
+  optional int32 last_sequence_num = 2;
+}
+
+// Response message containing a streaming output chunk.
+message StreamStackJobOutputResponse {
+  // Sequence number of this chunk (for ordering).
+  int32 sequence_num = 1;
+  // The output content (line or chunk).
+  string content = 2;
+  // Stream type: "stdout" or "stderr".
+  string stream_type = 3;
+  // Timestamp when this chunk was received.
+  google.protobuf.Timestamp timestamp = 4;
+  // Status of the stream: "streaming", "completed", "failed".
+  string status = 5;
 }
 
