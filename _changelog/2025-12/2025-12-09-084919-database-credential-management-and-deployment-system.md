@@ -2,15 +2,16 @@
 
 **Date**: December 8-9, 2025
 **Type**: Feature + Bug Fix
-**Components**: Backend API, Database, CLI, Docker Configuration, Pulumi Integration, Credential Management
+**Components**: Backend API, Database, CLI, Docker Configuration, Pulumi Integration, Credential Management, Frontend Logo
 
 ## Summary
 
-Implemented a complete database-driven credential management system with unified API architecture and CLI commands, then resolved seven critical Docker deployment blockers to enable end-to-end cloud resource deployments. This work transforms credential management from a conceptual design into a fully operational system that automatically resolves and applies credentials during Pulumi stack deployments in the backend service.
+Implemented a complete database-driven credential management system with unified API architecture and CLI commands, then resolved seven critical Docker deployment blockers to enable end-to-end cloud resource deployments. This work transforms credential management from a conceptual design into a fully operational system that automatically resolves and applies credentials during Pulumi stack deployments in the backend service. Additionally, the logo was updated to use a single variant that works across all themes.
 
 ## Problem Statement
 
 The Project Planton backend service needed a way to:
+
 1. Store cloud provider credentials (GCP, AWS, Azure) persistently
 2. Resolve credentials automatically based on the provider of the resource being deployed
 3. Execute Pulumi deployments with those credentials in a Docker container environment
@@ -37,29 +38,35 @@ Refactored from provider-specific APIs to a unified approach using a single API 
 ### Before: Provider-Specific Approach
 
 **Backend API:**
+
 - 3 separate RPC methods: `CreateGcpCredential`, `CreateAwsCredential`, `CreateAzureCredential`
 - 3 separate proto messages per provider
 
 **Database:**
+
 - 3 separate collections: `aws_credentials`, `gcp_credentials`, `azure_credentials`
 - 3 separate repositories: `AwsCredentialRepository`, `GcpCredentialRepository`, `AzureCredentialRepository`
 
 **CLI:**
+
 - 3 separate commands: `credential:create-gcp`, `credential:create-aws`, `credential:create-azure`
 
 ### After: Unified Approach
 
 **Backend API:**
+
 - 1 unified RPC method: `CreateCredential` with provider enum
 - Provider-specific specs in oneof field
 - `CredentialProvider` enum: `GCP`, `AWS`, `AZURE`
 
 **Database:**
+
 - 1 unified collection: `credentials`
 - 1 unified repository: `CredentialRepository`
 - Provider stored as field: `provider: "gcp"`, `provider: "aws"`, `provider: "azure"`
 
 **CLI:**
+
 - 1 unified command: `credential:create --provider=<gcp|aws|azure>`
 - Provider-specific flags conditionally required
 
@@ -128,6 +135,7 @@ message AzureCredentialSpec {
 ```
 
 **Benefits:**
+
 - Single API endpoint for all providers
 - Type-safe provider discrimination
 - Extensible for future providers
@@ -339,6 +347,7 @@ After implementing the credential management architecture, seven critical blocke
 ### Issue 1: Git Not Installed in Runtime Container
 
 **Error**:
+
 ```
 exec: "git": executable file not found in $PATH
 ```
@@ -354,6 +363,7 @@ RUN apk --no-cache add ca-certificates tzdata curl wget procps git
 ### Issue 2: Missing Pulumi Config Passphrase
 
 **Error**:
+
 ```
 passphrase must be set with PULUMI_CONFIG_PASSPHRASE or PULUMI_CONFIG_PASSPHRASE_FILE environment variables
 ```
@@ -370,6 +380,7 @@ environment:
 ### Issue 3: MongoDB DateTime Type Conversion Panic
 
 **Error**:
+
 ```
 panic: interface conversion: interface {} is primitive.DateTime, not time.Time
 ```
@@ -394,6 +405,7 @@ Applied to all three credential conversion functions.
 ### Issue 4 & 5: Go Binary Missing and Version Mismatch
 
 **Error**:
+
 ```
 couldn't find go binary: unable to find program: go
 go.mod requires go >= 1.24.7 (running go 1.21.10)
@@ -417,6 +429,7 @@ ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 ### Issue 6: Disk Space Exhaustion During Go Build
 
 **Error**:
+
 ```
 mkdir /tmp/go-build3750108590/b030/: no space left on device
 ```
@@ -426,6 +439,7 @@ mkdir /tmp/go-build3750108590/b030/: no space left on device
 **Solution**: Configured Go to use persistent directories with Docker volumes:
 
 **In Dockerfile**:
+
 ```dockerfile
 ENV GOCACHE=/home/appuser/go/cache
 ENV GOTMPDIR=/home/appuser/go/tmp
@@ -435,6 +449,7 @@ RUN mkdir -p /home/appuser/go/cache && \
 ```
 
 **In docker-compose.yml**:
+
 ```yaml
 volumes:
   - pulumi-state:/home/appuser/.pulumi
@@ -450,6 +465,7 @@ volumes:
 ### Issue 7: Docker Build Cache Exhaustion
 
 **Error**:
+
 ```
 chown: /home/appuser/.pulumi/plugins/resource-aws: No space left on device
 ```
@@ -491,11 +507,41 @@ This logging was crucial for identifying exactly where each failure occurred.
 
 ---
 
+# Part 3: Logo Update
+
+After completing the backend credential management and Docker deployment fixes, the logo was updated to use a single variant that works across all themes.
+
+## Logo Changes
+
+**Change**: Removed separate dark mode logo variant in favor of a single logo that works in both light and dark themes.
+
+**Files Changed**:
+
+- **Deleted**: `app/frontend/public/images/planton-cloud-logo-dark.svg`
+- **Modified**: `app/frontend/public/images/planton-cloud-logo.svg` - Updated logo SVG
+- **Modified**: `app/frontend/src/components/shared/icon/icon.tsx` - Removed dark mode logo support, updated viewBox
+
+**Details**:
+
+- Removed `PlantonLogoDarkIcon` import and dark mode logo registry entry from icon component
+- Updated Planton logo `viewBox` from `0 0 28 32` to `0 0 738 750` to match the actual SVG dimensions
+- Simplified icon component by removing dark mode logo override logic
+- The single logo now works in both light and dark themes
+
+**Benefits**:
+
+- Reduced maintenance overhead (one logo instead of two)
+- Consistent branding across themes
+- Cleaner code with less conditional logic
+
+---
+
 # Complete System Flow
 
 ## End-to-End Deployment Process
 
 1. **User creates credential**:
+
    ```bash
    project-planton credential:create \
      --name=my-gcp-prod \
@@ -508,6 +554,7 @@ This logging was crucial for identifying exactly where each failure occurred.
 3. **Backend stores in MongoDB**: Single `credentials` collection with provider field
 
 4. **User deploys resource**:
+
    ```bash
    project-planton deploy --manifest gcp-postgres.yaml
    ```
@@ -515,11 +562,13 @@ This logging was crucial for identifying exactly where each failure occurred.
 5. **Backend creates stack job**: Stored in `stack_jobs` collection
 
 6. **Deployment goroutine starts**:
+
    - Loads manifest
    - Extracts kind (e.g., `GcpCloudSql`)
    - Determines provider from kind (`gcp`)
 
 7. **Credential resolver queries database**:
+
    ```go
    credentialRepo.FindFirstByProvider(ctx, "gcp")
    ```
@@ -563,19 +612,23 @@ DEBUG: Sending response seq=73, type=stdout, content=Installing plugin kubernete
 ## Architectural Benefits
 
 ### Unified Design
+
 - ✅ Single repository instead of 3
 - ✅ Single collection instead of 3
 - ✅ Single RPC method instead of 3
 - ✅ Single CLI command instead of 3
 
 ### Reduced Complexity
+
 - ✅ ~60% less credential management code
 - ✅ Common validation logic centralized
 - ✅ Unified error handling patterns
 - ✅ Consistent database operations
 
 ### Extensibility
+
 Adding a new provider (e.g., Cloudflare) requires:
+
 1. Add enum value to `CredentialProvider`
 2. Add spec message (e.g., `CloudflareCredentialSpec`)
 3. Add case to switch statement in service
@@ -587,12 +640,15 @@ Adding a new provider (e.g., Cloudflare) requires:
 ## Operational Benefits
 
 ### For Users
+
 - ✅ **Store once, use everywhere**: Create credential once, automatically used for all deployments
 - ✅ **No manual credential passing**: No more copying credentials to every deployment command
 - ✅ **Real-time visibility**: See Pulumi output as it happens
 - ✅ **Consistent interface**: Same command pattern for all providers
+- ✅ **Simplified branding**: Single logo works across all themes
 
 ### For Deployments
+
 - ✅ **End-to-end working**: All seven blockers resolved
 - ✅ **Automatic credential resolution**: Backend determines credentials based on resource kind
 - ✅ **Streaming output**: Real-time progress feedback
@@ -600,6 +656,7 @@ Adding a new provider (e.g., Cloudflare) requires:
 - ✅ **Disk space management**: No more "no space left" errors
 
 ### For Development
+
 - ✅ **Better debugging**: Comprehensive logging shows execution flow
 - ✅ **Faster iterations**: Cached dependencies speed up repeated deployments
 - ✅ **Local builds**: Docker compose builds from local Dockerfile
@@ -610,17 +667,20 @@ Adding a new provider (e.g., Cloudflare) requires:
 ### Deployment Times
 
 **Initial deployment** (cold start):
+
 - Pulumi plugins download: ~20-30 seconds (one-time per environment)
 - Go dependencies download: ~10-15 seconds (one-time, then cached)
 - Actual infrastructure deployment: varies by resource
 
 **Subsequent deployments** (warm cache):
+
 - Using cached plugins and Go modules: ~5-10 seconds overhead
 - Actual infrastructure deployment: varies by resource
 
 ### Resource Usage
 
 **Docker cleanup results**:
+
 ```
 Before: 21.37GB build cache + 7GB unused images + 3.5GB stopped containers
 After: 0GB build cache, clean slate
@@ -628,6 +688,7 @@ Total freed: ~27GB
 ```
 
 **Runtime container**:
+
 - Without plugin pre-installation: ~500MB base image
 - Plugins cached in volume: 1-2GB (grows as needed)
 - Go cache in volume: ~500MB-1GB (grows as needed)
@@ -635,10 +696,12 @@ Total freed: ~27GB
 ### Database Performance
 
 **Credential queries**:
+
 - Single collection query by provider: <10ms
 - Index on `provider` field recommended for production
 
 **Streaming responses**:
+
 - Insert rate: ~100-500 lines/second during Pulumi execution
 - Query performance: Sequence-based pagination ensures fast polling
 
@@ -649,6 +712,7 @@ Total freed: ~27GB
 ## Files Changed
 
 ### Backend
+
 - `app/backend/apis/proto/credential_service.proto` - Unified API definition
 - `app/backend/internal/database/credential_repo.go` - Unified repository with MongoDB DateTime fix
 - `app/backend/internal/service/credential_service.go` - Unified service with provider routing
@@ -659,13 +723,22 @@ Total freed: ~27GB
 - `docker-compose.yml` - Added passphrase, volumes, local build configuration
 
 ### CLI
+
 - `cmd/project-planton/root/credential_create.go` - New unified command
 - `cmd/project-planton/root/credential_create_gcp.go` - Deleted (replaced)
 - `cmd/project-planton/root.go` - Updated command registration
 
+### Frontend
+
+- `app/frontend/src/components/shared/icon/icon.tsx` - Removed dark mode logo support, updated logo viewBox
+- `app/frontend/public/images/planton-cloud-logo-dark.svg` - Deleted (no longer needed)
+- `app/frontend/public/images/planton-cloud-logo.svg` - Updated logo SVG
+
 ### Total Statistics
+
 - **Backend files**: 8 modified
 - **CLI files**: 2 modified, 1 deleted
+- **Frontend files**: 2 modified, 1 deleted (logo-related only)
 - **Docker space freed**: 27GB
 - **Deployment success rate**: 0% → 100%
 - **Code reduction**: ~60% less credential management code
@@ -673,6 +746,7 @@ Total freed: ~27GB
 ## Docker Configuration
 
 **Environment Variables**:
+
 ```yaml
 # Pulumi
 PULUMI_HOME: /home/appuser/.pulumi
@@ -687,13 +761,15 @@ GOTMPDIR: /home/appuser/go/tmp
 ```
 
 **Volume Mounts**:
+
 ```yaml
 volumes:
-  - pulumi-state:/home/appuser/.pulumi  # Pulumi state, plugins, config
-  - go-cache:/home/appuser/go            # Go build cache, modules
+  - pulumi-state:/home/appuser/.pulumi # Pulumi state, plugins, config
+  - go-cache:/home/appuser/go # Go build cache, modules
 ```
 
 **Runtime Dependencies**:
+
 - Git (for cloning Pulumi modules)
 - Go 1.24.7 (for executing Pulumi programs)
 - Pulumi CLI 3.206.0 (for stack operations)
@@ -743,7 +819,7 @@ kind: GcpCloudSql
 metadata:
   name: production-db
   labels:
-    pulumi.project-planton.org/stack.fqdn: "org/project/env.GcpCloudSql.prod-db"
+    pulumi.project-planton.org/stack.fqdn: 'org/project/env.GcpCloudSql.prod-db'
 spec:
   region: us-central1
   database_version: POSTGRES_15
@@ -756,6 +832,7 @@ project-planton deploy --manifest gcp-postgres.yaml
 ```
 
 Backend automatically:
+
 1. Reads manifest
 2. Determines kind is `GcpCloudSql`
 3. Maps kind to provider `gcp`
@@ -787,6 +864,7 @@ Real-time streaming output:
 **Error**: `failed to resolve provider credentials: no credential found for provider 'gcp'`
 
 **Solution**: Create a credential for that provider:
+
 ```bash
 project-planton credential:create --name=my-gcp --provider=gcp --service-account-key=key.json
 ```
@@ -814,6 +892,7 @@ project-planton credential:create --name=my-gcp --provider=gcp --service-account
 **Error**: `mkdir /tmp/go-build: no space left on device`
 
 **Solution**:
+
 1. Ensure GOCACHE/GOTMPDIR point to persistent volumes (Part 2, Issue 6)
 2. Clean Docker build cache: `docker builder prune -af`
 
@@ -826,6 +905,7 @@ docker logs -f project-planton-backend | grep -E "DEBUG|ERROR"
 ```
 
 Look for:
+
 - `DEBUG: deployWithPulumi started` - Deployment initiated
 - `DEBUG: Getting Pulumi module path` - Module resolution
 - `DEBUG: Pulumi module path resolved` - Module found
@@ -838,12 +918,14 @@ Look for:
 ## Credential Management
 
 ### Additional CRUD Operations
+
 - `credential:list` - List all credentials (with provider filter)
 - `credential:get` - Get credential by ID (without sensitive data)
 - `credential:delete` - Delete credential
 - `credential:update` - Update credential name or refresh keys
 
 ### Enhanced Features
+
 - **Credential validation**: Test credentials before storing (make API call to verify)
 - **Encryption at rest**: Encrypt sensitive fields in MongoDB
 - **Credential rotation**: Track expiry dates, support rotation workflows
@@ -854,6 +936,7 @@ Look for:
 ## Additional Providers
 
 Following the same pattern, add:
+
 - Cloudflare (cloudflare-worker, cloudflare-dns)
 - MongoDB Atlas (atlas-cluster, atlas-database)
 - Confluent Cloud (confluent-kafka)
@@ -862,6 +945,7 @@ Following the same pattern, add:
 - Civo (civo-kubernetes)
 
 Each requires:
+
 1. Add to `CredentialProvider` enum
 2. Create `*CredentialSpec` message
 3. Add case to service switch
@@ -870,18 +954,21 @@ Each requires:
 ## Deployment Optimizations
 
 ### Performance
+
 - **Layer caching**: Pre-download common Go modules in base layer
 - **Plugin pre-installation**: Optional for air-gapped environments
 - **Parallel deployments**: Support multiple stack jobs concurrently
 - **Resource pooling**: Reuse Go build environments
 
 ### Monitoring
+
 - **Metrics collection**: Track deployment times, success rates, cache hit rates
 - **Alerts**: Disk space thresholds, failed deployment rates
 - **Dashboards**: Real-time deployment status, credential usage
 - **Cost tracking**: Track cloud resource costs per deployment
 
 ### Reliability
+
 - **Retry logic**: Automatic retry for transient failures
 - **Rollback support**: Revert to previous stack state on failure
 - **Health checks**: Monitor credential validity, Pulumi service health
@@ -894,6 +981,7 @@ Each requires:
 ## Previous Changelogs
 
 This work supersedes and combines:
+
 - `2025-12-08-unified-credential-management.md` - Architectural refactoring (Part 1)
 - `2025-12-08-171621-database-driven-credential-management-and-streaming-api.md` - Initial implementation with streaming
 - `2025-12-09-084354-docker-backend-deployment-fixes.md` - Docker fixes (Part 2)
@@ -915,11 +1003,13 @@ This work represents a complete transformation of credential management in Proje
 **To**: Database-driven automatic resolution, unified API, working end-to-end deployments
 
 The system is now production-ready with:
+
 - ✅ **Simple user experience**: Store credential once, automatically used
 - ✅ **Clean architecture**: Single API, single collection, unified commands
 - ✅ **Operational reliability**: All deployment blockers resolved
 - ✅ **Real-time feedback**: Streaming output from Pulumi
 - ✅ **Extensible design**: Easy to add new providers
+- ✅ **Simplified branding**: Single logo works across all themes
 
 **Key Innovation**: Automatic credential resolution based on resource kind - users never need to specify which credential to use, the system figures it out.
 
@@ -928,8 +1018,11 @@ The system is now production-ready with:
 **Status**: ✅ Production Ready
 **Timeline**: December 8-9, 2025 (2-day implementation and debugging)
 **Code Statistics**:
-- Files changed: 11
+
+- Backend files: 8 modified
+- CLI files: 2 modified, 1 deleted
+- Frontend files: 2 modified, 1 deleted (logo-related only)
+- Total files changed: 13
 - Code reduction: ~60% in credential management
 - Deployment success: 0% → 100%
 - Docker space freed: 27GB
-

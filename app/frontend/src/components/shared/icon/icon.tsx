@@ -6,7 +6,6 @@ import { AppContext } from '@/contexts';
 // Import SVG icons as React components
 // Note: Requires @svgr/webpack to be installed and configured in next.config.js
 import PlantonLogoIcon from '../../../../public/images/planton-cloud-logo.svg';
-import PlantonLogoDarkIcon from '../../../../public/images/planton-cloud-logo-dark.svg';
 import SunIcon from '../../../../public/images/sun.svg';
 import MoonIcon from '../../../../public/images/moon.svg';
 import NavIcon from '../../../../public/images/nav.svg';
@@ -41,7 +40,7 @@ interface IconRegistry {
 const icons: IconRegistry = {
   [ICON_NAMES.PLANTON_LOGO]: {
     icon: PlantonLogoIcon,
-    viewBox: '0 0 28 32',
+    viewBox: '0 0 738 750',
   },
   [ICON_NAMES.SUN]: {
     icon: SunIcon,
@@ -76,12 +75,7 @@ const icons: IconRegistry = {
 };
 
 // Dark mode icons registry (overrides light mode icons when available)
-const iconsDark: IconRegistry = {
-  [ICON_NAMES.PLANTON_LOGO]: {
-    icon: PlantonLogoDarkIcon,
-    viewBox: '0 0 28 32',
-  },
-};
+const iconsDark: IconRegistry = {};
 
 export interface IconProps extends Omit<SvgIconProps, 'component'> {
   name: ICON_NAMES | string;
@@ -102,9 +96,7 @@ export const Icon: FC<IconProps> = ({ name, sx, ...props }) => {
 
   const iconConfig = useMemo(() => {
     // Try dark mode first, fallback to light mode
-    const config = theme.mode === 'dark' 
-      ? (iconsDark[name] || icons[name])
-      : icons[name];
+    const config = theme.mode === 'dark' ? iconsDark[name] || icons[name] : icons[name];
 
     if (!config) {
       console.warn(`Icon "${name}" not found in registry`);
@@ -118,12 +110,7 @@ export const Icon: FC<IconProps> = ({ name, sx, ...props }) => {
     return null;
   }
 
-  const {
-    icon: IconComponent,
-    color,
-    fill = 'none',
-    viewBox = '0 0 20 20',
-  } = iconConfig;
+  const { icon: IconComponent, color, fill = 'none', viewBox = '0 0 20 20' } = iconConfig;
 
   return (
     <SvgIcon
@@ -140,4 +127,3 @@ export const Icon: FC<IconProps> = ({ name, sx, ...props }) => {
     />
   );
 };
-

@@ -50,7 +50,6 @@ export const useStackJobQuery = () => {
       },
       getById: (id: string): Promise<StackJob> => {
         return new Promise((resolve, reject) => {
-          setPageLoading(true);
           queryClient
             .getStackJob(create(GetStackJobRequestSchema, { id }))
             .then((response) => {
@@ -59,9 +58,6 @@ export const useStackJobQuery = () => {
             .catch((err) => {
               openSnackbar(err.message || `Could not get ${RESOURCE_NAME}!`, 'error');
               reject(err);
-            })
-            .finally(() => {
-              setPageLoading(false);
             });
         });
       },
