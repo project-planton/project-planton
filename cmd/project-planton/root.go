@@ -25,6 +25,8 @@ func init() {
 		root.CloudResourceListCmd,
 		root.CloudResourceUpdateCmd,
 		root.ConfigCmd,
+		root.CredentialCreateCmd,
+		root.CredentialListCmd,
 		root.Destroy,
 		root.Init,
 		root.ListDeploymentComponent,

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     image: ${BACKEND_IMAGE:-satishlleftbin/project-planton-backend:latest}
@@ -13,15 +11,20 @@ services:
       - MONGODB_URI=${MONGODB_URI:-mongodb://host.docker.internal:27017/project_planton}
       - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
       - SERVER_PORT=50051
-      # Pulumi configuration (optional - uncomment if using Pulumi Cloud)
+      # Pulumi configuration
+      - PULUMI_HOME=/home/appuser/.pulumi
+      - PULUMI_STATE_DIR=/home/appuser/.pulumi/state
+      - PULUMI_CONFIG_PASSPHRASE=${PULUMI_CONFIG_PASSPHRASE:-project-planton-default-passphrase}
+      - PULUMI_SKIP_UPDATE_CHECK=true
+      - PULUMI_AUTOMATION_API_SKIP_VERSION_CHECK=true
+      # Optional: Use Pulumi Cloud instead of local backend
       # - PULUMI_ACCESS_TOKEN=${PULUMI_ACCESS_TOKEN}
       # - PULUMI_BACKEND_URL=${PULUMI_BACKEND_URL:-https://api.pulumi.com}
-      # Pulumi local backend (if using file-based state)
-      - PULUMI_HOME=${PULUMI_HOME:-/home/appuser/.pulumi}
-    # volumes:
-    # Optional: Mount Pulumi state directory for persistence (if using local backend)
-    # Uncomment to persist Pulumi state/config across container restarts
-    # - pulumi-state:/home/appuser/.pulumi
+    volumes:
+      # Persist Pulumi state across container restarts
+      - pulumi-state:/home/appuser/.pulumi
+      # Persist Go build cache to avoid "no space left on device" errors
+      - go-cache:/home/appuser/go
     healthcheck:
       # Check if server process is running (requires procps package)
       test: ['CMD', 'pgrep', '-f', 'server']
@@ -53,7 +56,9 @@ services:
 networks:
   project-planton-network:
     driver: bridge
-# Optional: Uncomment to persist Pulumi state/config across container restarts
-# volumes:
-#   pulumi-state:
-#     driver: local
+
+volumes:
+  pulumi-state:
+    driver: local
+  go-cache:
+    driver: local

@@ -7,6 +7,7 @@ This guide covers the configuration, deployment component management, and cloud 
 - [Configuration Management](#configuration-management)
 - [Deployment Components](#deployment-components)
 - [Cloud Resources](#cloud-resources)
+- [Credentials](#credentials)
 - [Stack Jobs](#stack-jobs)
 - [Common Workflows](#common-workflows)
 - [Troubleshooting](#troubleshooting)
@@ -757,6 +758,513 @@ Before using cloud resource commands, you must configure the backend URL:
 ```bash
 project-planton config set backend-url <your-backend-url>
 ```
+
+---
+
+## Credentials
+
+Credentials are cloud provider authentication configurations stored in the backend database. They are automatically used when deploying cloud resources to the corresponding provider.
+
+### `project-planton credential:create`
+
+Create a new cloud provider credential for GCP, AWS, or Azure. The command uses a unified interface with a `--provider` flag to specify the cloud provider type.
+
+#### Basic Usage
+
+```bash
+project-planton credential:create --name=<credential-name> --provider=<gcp|aws|azure> [provider-specific-flags]
+```
+
+**Examples:**
+
+```bash
+# Create a GCP credential
+project-planton credential:create \
+  --name=my-gcp-production-credential \
+  --provider=gcp \
+  --service-account-key=~/Downloads/my-project-12345-abcdef.json
+
+# Create an AWS credential
+project-planton credential:create \
+  --name=my-aws-production-credential \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=... \
+  --region=us-east-1
+
+# Create an Azure credential
+project-planton credential:create \
+  --name=my-azure-production-credential \
+  --provider=azure \
+  --client-id=... \
+  --client-secret=... \
+  --tenant-id=... \
+  --subscription-id=...
+```
+
+**Sample Output:**
+
+```
+✅ Credential created successfully!
+
+ID: 507f1f77bcf86cd799439011
+Name: my-gcp-production-credential
+Provider: GCP
+Created At: 2025-12-08 15:30:45
+
+💡 This credential can now be automatically used when deploying GCP resources.
+```
+
+#### How It Works
+
+The command handles different providers seamlessly:
+
+**For GCP:**
+1. Reads the service account key JSON file
+2. Base64-encodes the key content automatically
+3. Stores in database with `provider=gcp`
+
+**For AWS:**
+1. Collects AWS credentials from command flags
+2. Stores in database with `provider=aws`
+
+**For Azure:**
+1. Collects Azure credentials from command flags
+2. Stores in database with `provider=azure`
+
+#### Automatic Credential Resolution
+
+Once a credential is created, it will be automatically used when deploying resources for that provider:
+
+- **GCP resources**: `GcpCloudSql`, `GcpGke`, `GcpComputeInstance`, etc.
+- **AWS resources**: `AwsRdsInstance`, `AwsEksCluster`, `AwsEc2Instance`, etc.
+- **Azure resources**: `AzureSqlDatabase`, `AzureAksCluster`, `AzureVm`, etc.
+
+The system automatically:
+1. Detects the cloud provider from the resource `kind` field
+2. Queries the unified `credentials` database collection filtered by provider
+3. Uses the first available credential for that provider
+
+**Example Workflow:**
+
+```bash
+# Step 1: Create credentials for different providers
+project-planton credential:create \
+  --name=my-gcp-prod \
+  --provider=gcp \
+  --service-account-key=~/gcp-key.json
+
+project-planton credential:create \
+  --name=my-aws-prod \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=...
+
+# Step 2: Deploy resources (credentials auto-used based on resource kind)
+project-planton cloud-resource:create --arg=gcp-cloudsql.yaml  # Uses GCP credential
+project-planton cloud-resource:create --arg=aws-rds.yaml       # Uses AWS credential
+
+# The system automatically:
+# - Detects provider from resource kind (GcpCloudSql → gcp, AwsRdsInstance → aws)
+# - Fetches matching credential from database
+# - Deploys using that credential
+```
+
+#### Flags
+
+**Common Flags** (required for all providers):
+
+- `--name, -n` - Name of the credential (required, must be unique)
+- `--provider, -p` - Cloud provider: `gcp`, `aws`, or `azure` (required)
+- `--help, -h` - Show help information
+
+**GCP-specific Flags** (required when `--provider=gcp`):
+
+- `--service-account-key` - Path to GCP service account key JSON file
+
+**AWS-specific Flags** (required when `--provider=aws`):
+
+- `--account-id` - AWS account ID
+- `--access-key-id` - AWS access key ID
+- `--secret-access-key` - AWS secret access key
+- `--region` - AWS region (optional)
+- `--session-token` - AWS session token (optional)
+
+**Azure-specific Flags** (required when `--provider=azure`):
+
+- `--client-id` - Azure client ID
+- `--client-secret` - Azure client secret
+- `--tenant-id` - Azure tenant ID
+- `--subscription-id` - Azure subscription ID
+
+#### Provider-Specific Requirements
+
+**GCP Service Account Key:**
+
+The key file must be valid JSON from Google Cloud Console with appropriate IAM permissions:
+- `roles/compute.admin`, `roles/container.admin`, `roles/cloudsql.admin`, etc.
+
+**AWS Credentials:**
+
+Use IAM access keys with appropriate permissions:
+- Create via AWS IAM Console > Users > Security Credentials
+- Grant policies like `AdministratorAccess` or specific resource policies
+
+**Azure Service Principal:**
+
+Create via Azure CLI or Portal with required RBAC roles:
+```bash
+az ad sp create-for-rbac --name="myServicePrincipal" --role="Contributor"
+```
+
+#### Error Handling
+
+**Missing name:**
+
+```
+Error: --name flag is required
+Usage: project-planton credential:create-gcp --name=<credential-name> --service-account-key=<path-to-key.json>
+```
+
+**Missing provider:**
+
+```
+Error: --provider flag is required
+Usage: project-planton credential:create --name=<name> --provider=<gcp|aws|azure> [provider-specific-flags]
+```
+
+**Unsupported provider:**
+
+```
+Error: Unsupported provider 'unknown'. Supported providers: gcp, aws, azure
+```
+
+**Missing provider-specific flags:**
+
+```
+# For GCP
+Error: --service-account-key is required for GCP provider
+
+# For AWS
+Error: --account-id is required for AWS provider
+Error: --access-key-id is required for AWS provider
+
+# For Azure
+Error: --client-id is required for Azure provider
+```
+
+**File not found (GCP):**
+
+```
+Error: failed to read service account key file '/path/to/key.json': no such file or directory
+```
+
+**Duplicate credential name:**
+
+```
+Error: A credential with name 'my-prod-cred' already exists
+```
+
+**Connection issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+#### Security Best Practices
+
+1. **Never commit service account keys to version control**
+   ```bash
+   # Add to .gitignore
+   echo "*.json" >> .gitignore
+   echo "*-key.json" >> .gitignore
+   ```
+
+2. **Use separate credentials for different environments**
+```bash
+# GCP Development
+project-planton credential:create \
+  --name=gcp-dev \
+  --provider=gcp \
+  --service-account-key=~/keys/gcp-dev.json
+
+# AWS Production
+project-planton credential:create \
+  --name=aws-prod \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=...
+```
+
+3. **Rotate credentials regularly**
+   - Create new service account keys periodically
+   - Delete old credentials from the database
+   - Revoke old keys in Google Cloud Console
+
+4. **Use principle of least privilege**
+   - Grant only the minimum required permissions
+   - Use separate service accounts for different resource types
+
+5. **Store key files securely**
+   ```bash
+   # Set restrictive permissions
+   chmod 600 ~/keys/*.json
+
+   # Store in a secure location
+   mkdir -p ~/.config/gcp-keys
+   chmod 700 ~/.config/gcp-keys
+   mv ~/Downloads/*-key.json ~/.config/gcp-keys/
+   ```
+
+#### Use Cases
+
+**1. Initial Setup**
+
+```bash
+# Configure backend
+project-planton config set backend-url http://localhost:50051
+
+# Add GCP credential
+project-planton credential:create-gcp \
+  --name=default-gcp \
+  --service-account-key=~/gcp-service-account.json
+```
+
+**2. Multi-Environment Setup**
+
+```bash
+# Development environment
+project-planton credential:create-gcp \
+  --name=gcp-development \
+  --service-account-key=~/keys/dev-sa-key.json
+
+# Staging environment
+project-planton credential:create-gcp \
+  --name=gcp-staging \
+  --service-account-key=~/keys/staging-sa-key.json
+
+# Production environment
+project-planton credential:create-gcp \
+  --name=gcp-production \
+  --service-account-key=~/keys/prod-sa-key.json
+```
+
+**3. Multi-Project Setup**
+
+```bash
+# Project A
+project-planton credential:create-gcp \
+  --name=gcp-project-a \
+  --service-account-key=~/keys/project-a-key.json
+
+# Project B
+project-planton credential:create-gcp \
+  --name=gcp-project-b \
+  --service-account-key=~/keys/project-b-key.json
+```
+
+**4. Team Collaboration**
+
+```bash
+# Each team member creates their own credential
+project-planton credential:create-gcp \
+  --name=gcp-alice-dev \
+  --service-account-key=~/alice-dev-key.json
+
+project-planton credential:create-gcp \
+  --name=gcp-bob-dev \
+  --service-account-key=~/bob-dev-key.json
+```
+
+#### Comparison with CLI Flags
+
+**Before (using --gcp-credential flag):**
+
+```bash
+# Had to provide credential file every time
+project-planton pulumi up \
+  --manifest resource.yaml \
+  --gcp-credential ~/gcp-key.json
+```
+
+**Now (using database-stored credentials):**
+
+```bash
+# Create credential once
+project-planton credential:create-gcp \
+  --name=my-gcp-cred \
+  --service-account-key=~/gcp-key.json
+
+# Use cloud-resource commands without credential flags
+project-planton cloud-resource:create --arg=resource.yaml
+project-planton cloud-resource:apply --arg=resource.yaml
+# Credentials are automatically resolved!
+```
+
+**Benefits:**
+
+- ✅ No need to specify credentials for every deployment
+- ✅ Centralized credential management
+- ✅ Credentials are securely stored in the database
+- ✅ Easier team collaboration
+- ✅ Supports multiple credentials per provider
+
+#### Prerequisites
+
+Before using the credential:create-gcp command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+### `project-planton credential:list`
+
+List all stored cloud provider credentials with optional filtering by provider type.
+
+#### Basic Usage
+
+```bash
+# List all credentials
+project-planton credential:list
+
+# List credentials for a specific provider
+project-planton credential:list --provider=gcp
+project-planton credential:list --provider=aws
+project-planton credential:list --provider=azure
+```
+
+**Sample Output (all credentials):**
+
+```
+ID                       NAME                           PROVIDER   CREATED
+------------------------------------------------------------------------------------
+507f1f77bcf86cd799439011 my-gcp-production-credential   GCP        2025-12-08 15:30:45
+507f1f77bcf86cd799439012 my-aws-production-credential   AWS        2025-12-08 15:32:10
+507f1f77bcf86cd799439013 my-azure-production-credenti   AZURE      2025-12-08 15:33:22
+
+Total: 3 credential(s)
+```
+
+**Sample Output (filtered by provider):**
+
+```bash
+$ project-planton credential:list --provider=gcp
+```
+
+```
+ID                       NAME                           PROVIDER   CREATED
+------------------------------------------------------------------------------------
+507f1f77bcf86cd799439011 my-gcp-production-credential   GCP        2025-12-08 15:30:45
+507f1f77bcf86cd799439014 my-gcp-dev-credential          GCP        2025-12-08 15:34:00
+
+Total: 2 credential(s) (filtered by provider: GCP)
+```
+
+#### Flags
+
+- `--provider, -p` - Filter by cloud provider: `gcp`, `aws`, or `azure` (optional)
+- `--help, -h` - Show help information
+
+#### Output Format
+
+The command displays results in a table with the following columns:
+
+- **ID** - Unique credential identifier (MongoDB ObjectID)
+- **NAME** - Credential name
+- **PROVIDER** - Cloud provider type (GCP, AWS, AZURE)
+- **CREATED** - Creation timestamp
+
+**Note:** Sensitive credential data (keys, secrets, passwords) is not displayed in the list output for security reasons.
+
+#### Use Cases
+
+**1. View All Credentials**
+
+```bash
+project-planton credential:list
+```
+
+**2. Check GCP Credentials**
+
+```bash
+project-planton credential:list --provider=gcp
+```
+
+**3. Verify Credentials Before Deployment**
+
+```bash
+# Check if AWS credentials exist before deploying AWS resources
+project-planton credential:list --provider=aws
+
+# If credentials exist, proceed with deployment
+project-planton cloud-resource:create --arg=aws-resource.yaml
+```
+
+**4. Audit Credentials**
+
+```bash
+# List all credentials to audit what's configured
+project-planton credential:list
+
+# Check when credentials were created
+project-planton credential:list --provider=azure
+```
+
+#### Error Handling
+
+**Backend URL Not Configured:**
+
+```
+Error: backend URL not configured. Run: project-planton config set backend-url <url>
+```
+
+**Unsupported Provider:**
+
+```
+Error: Unsupported provider 'unknown'. Supported providers: gcp, aws, azure
+```
+
+**Connection Issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+**No Credentials Found:**
+
+```
+# When no credentials exist
+No credentials found
+
+# When no credentials exist for specific provider
+No credentials found for provider: GCP
+```
+
+#### Prerequisites
+
+Before using the credential:list command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+#### Future Enhancements
+
+Additional credential commands and providers coming soon:
+
+- `credential:get` - Get details of a specific credential (including sensitive data with proper access control)
+- `credential:delete` - Delete a credential by ID
+- `credential:update` - Update existing credentials
+- Support for additional providers: Cloudflare, Atlas, Confluent, Snowflake
 
 ---
 

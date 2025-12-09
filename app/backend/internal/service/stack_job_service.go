@@ -395,6 +395,8 @@ func (s *StackJobService) StreamStackJobOutput(
 // 7. Builds stack input YAML (with credentials)
 // 8. Executes pulumi up with resolved credentials
 func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
+	fmt.Printf("DEBUG: deployWithPulumi started for jobID=%s, cloudResourceID=%s\n", jobID, cloudResourceID)
+
 	// Step 1: Write manifest to temp file
 	tmpFile, err := os.CreateTemp("", "manifest-*.yaml")
 	if err != nil {
@@ -448,10 +450,12 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 	}
 
 	// Step 6: Get Pulumi module path (REQUIRED - fail if missing)
+	fmt.Printf("DEBUG: Getting Pulumi module path for kind=%s, stackFqdn=%s, moduleDir=%s\n", kindName, stackFqdn, moduleDir)
 	pulumiModulePath, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
 	if err != nil {
 		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to get Pulumi module path: %w", err))
 	}
+	fmt.Printf("DEBUG: Pulumi module path resolved: %s\n", pulumiModulePath)
 
 	// Step 7: Extract project name from stack FQDN
 	pulumiProjectName, err := pulumistack.ExtractProjectName(stackFqdn)
@@ -1038,6 +1042,7 @@ func ifEmpty(value, defaultValue string) string {
 
 // updateJobWithError updates a stack job with an error status
 func (s *StackJobService) updateJobWithError(ctx context.Context, jobID string, err error) error {
+	fmt.Printf("ERROR: Stack job %s failed: %v\n", jobID, err)
 	errorOutput := map[string]interface{}{
 		"status":    "failed",
 		"error":     err.Error(),
@@ -1048,6 +1053,9 @@ func (s *StackJobService) updateJobWithError(ctx context.Context, jobID string, 
 		Status: "failed",
 		Output: string(outputJSON),
 	}
-	_, _ = s.stackJobRepo.Update(ctx, jobID, updateJob)
+	_, updateErr := s.stackJobRepo.Update(ctx, jobID, updateJob)
+	if updateErr != nil {
+		fmt.Printf("ERROR: Failed to update job %s with error status: %v\n", jobID, updateErr)
+	}
 	return err
 }

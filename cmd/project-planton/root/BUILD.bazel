@@ -11,6 +11,8 @@ go_library(
         "cloud_resource_list.go",
         "cloud_resource_update.go",
         "config.go",
+        "credential_create.go",
+        "credential_list.go",
         "destroy.go",
         "init.go",
         "list_deployment_component.go",

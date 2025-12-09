@@ -1,6 +1,7 @@
 .idea
 generated/
 build/
+bin/
 site/node_modules/
 site/build/
 site/.yarn/*

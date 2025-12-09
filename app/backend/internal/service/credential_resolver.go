@@ -8,26 +8,19 @@ import (
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
 	"github.com/project-planton/project-planton/app/backend/internal/database"
+	"github.com/project-planton/project-planton/app/backend/pkg/models"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 )
 
 // CredentialResolver resolves provider credentials from the database based on provider.
 type CredentialResolver struct {
-	awsCredentialRepo   *database.AwsCredentialRepository
-	gcpCredentialRepo   *database.GcpCredentialRepository
-	azureCredentialRepo *database.AzureCredentialRepository
+	credentialRepo *database.CredentialRepository
 }
 
 // NewCredentialResolver creates a new credential resolver instance.
-func NewCredentialResolver(
-	awsCredentialRepo *database.AwsCredentialRepository,
-	gcpCredentialRepo *database.GcpCredentialRepository,
-	azureCredentialRepo *database.AzureCredentialRepository,
-) *CredentialResolver {
+func NewCredentialResolver(credentialRepo *database.CredentialRepository) *CredentialResolver {
 	return &CredentialResolver{
-		awsCredentialRepo:   awsCredentialRepo,
-		gcpCredentialRepo:   gcpCredentialRepo,
-		azureCredentialRepo: azureCredentialRepo,
+		credentialRepo: credentialRepo,
 	}
 }
 
@@ -55,16 +48,19 @@ func (r *CredentialResolver) ResolveProviderConfig(
 		return nil, fmt.Errorf("unsupported provider: %v", providerEnum)
 	}
 
-	// Step 4: Fetch the first credential from the appropriate repository based on provider
+	// Step 4: Fetch the first credential from the repository based on provider
+	credInterface, err := r.credentialRepo.FindFirstByProvider(ctx, providerString)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch %s credential: %w", providerString, err)
+	}
+	if credInterface == nil {
+		return nil, fmt.Errorf("no %s credential found. Please create a %s credential first", strings.ToUpper(providerString), strings.ToUpper(providerString))
+	}
+
+	// Convert to ProviderConfig based on provider type
 	switch providerString {
 	case "aws":
-		awsCred, err := r.awsCredentialRepo.FindFirst(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to fetch AWS credential: %w", err)
-		}
-		if awsCred == nil {
-			return nil, fmt.Errorf("no AWS credential found. Please create an AWS credential first")
-		}
+		awsCred := credInterface.(*models.AwsCredential)
 		return &backendv1.ProviderConfig{
 			Config: &backendv1.ProviderConfig_Aws{
 				Aws: &backendv1.AwsProviderConfig{
@@ -78,13 +74,7 @@ func (r *CredentialResolver) ResolveProviderConfig(
 		}, nil
 
 	case "gcp":
-		gcpCred, err := r.gcpCredentialRepo.FindFirst(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to fetch GCP credential: %w", err)
-		}
-		if gcpCred == nil {
-			return nil, fmt.Errorf("no GCP credential found. Please create a GCP credential first")
-		}
+		gcpCred := credInterface.(*models.GcpCredential)
 		return &backendv1.ProviderConfig{
 			Config: &backendv1.ProviderConfig_Gcp{
 				Gcp: &backendv1.GcpProviderConfig{
@@ -94,13 +84,7 @@ func (r *CredentialResolver) ResolveProviderConfig(
 		}, nil
 
 	case "azure":
-		azureCred, err := r.azureCredentialRepo.FindFirst(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to fetch Azure credential: %w", err)
-		}
-		if azureCred == nil {
-			return nil, fmt.Errorf("no Azure credential found. Please create an Azure credential first")
-		}
+		azureCred := credInterface.(*models.AzureCredential)
 		return &backendv1.ProviderConfig{
 			Config: &backendv1.ProviderConfig_Azure{
 				Azure: &backendv1.AzureProviderConfig{

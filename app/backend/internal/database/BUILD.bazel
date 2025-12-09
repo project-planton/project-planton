@@ -4,9 +4,11 @@ go_library(
     name = "database",
     srcs = [
         "cloud_resource_repo.go",
+        "credential_repo.go",
         "deployment_component_repo.go",
         "mongodb.go",
         "stack_job_repo.go",
+        "stack_job_streaming_response_repo.go",
     ],
     importpath = "github.com/project-planton/project-planton/app/backend/internal/database",
     visibility = ["//app/backend:__subpackages__"],
