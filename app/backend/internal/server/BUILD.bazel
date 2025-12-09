@@ -1,0 +1,16 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "server",
+    srcs = ["server.go"],
+    importpath = "github.com/project-planton/project-planton/app/backend/internal/server",
+    visibility = ["//app/backend:__subpackages__"],
+    deps = [
+        "//app/backend/apis/gen/go/proto/backendv1connect",
+        "//app/backend/internal/database",
+        "//app/backend/internal/service",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@org_golang_x_net//http2",
+        "@org_golang_x_net//http2/h2c",
+    ],
+)
