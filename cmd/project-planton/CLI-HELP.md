@@ -950,7 +950,7 @@ az ad sp create-for-rbac --name="myServicePrincipal" --role="Contributor"
 
 ```
 Error: --name flag is required
-Usage: project-planton credential:create-gcp --name=<credential-name> --service-account-key=<path-to-key.json>
+Usage: project-planton credential:create --name=<credential-name> --provider=<gcp|aws|azure> [provider-specific-flags]
 ```
 
 **Missing provider:**
@@ -1061,8 +1061,9 @@ project-planton credential:create \
 project-planton config set backend-url http://localhost:50051
 
 # Add GCP credential
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=default-gcp \
+  --provider=gcp \
   --service-account-key=~/gcp-service-account.json
 ```
 
@@ -1070,18 +1071,21 @@ project-planton credential:create-gcp \
 
 ```bash
 # Development environment
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-development \
+  --provider=gcp \
   --service-account-key=~/keys/dev-sa-key.json
 
 # Staging environment
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-staging \
+  --provider=gcp \
   --service-account-key=~/keys/staging-sa-key.json
 
 # Production environment
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-production \
+  --provider=gcp \
   --service-account-key=~/keys/prod-sa-key.json
 ```
 
@@ -1089,13 +1093,15 @@ project-planton credential:create-gcp \
 
 ```bash
 # Project A
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-project-a \
+  --provider=gcp \
   --service-account-key=~/keys/project-a-key.json
 
 # Project B
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-project-b \
+  --provider=gcp \
   --service-account-key=~/keys/project-b-key.json
 ```
 
@@ -1103,12 +1109,14 @@ project-planton credential:create-gcp \
 
 ```bash
 # Each team member creates their own credential
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-alice-dev \
+  --provider=gcp \
   --service-account-key=~/alice-dev-key.json
 
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=gcp-bob-dev \
+  --provider=gcp \
   --service-account-key=~/bob-dev-key.json
 ```
 
@@ -1127,8 +1135,9 @@ project-planton pulumi up \
 
 ```bash
 # Create credential once
-project-planton credential:create-gcp \
+project-planton credential:create \
   --name=my-gcp-cred \
+  --provider=gcp \
   --service-account-key=~/gcp-key.json
 
 # Use cloud-resource commands without credential flags
@@ -1147,7 +1156,7 @@ project-planton cloud-resource:apply --arg=resource.yaml
 
 #### Prerequisites
 
-Before using the credential:create-gcp command, you must configure the backend URL:
+Before using the credential:create command, you must configure the backend URL:
 
 ```bash
 project-planton config set backend-url <your-backend-url>
@@ -1287,13 +1296,405 @@ Before using the credential:list command, you must configure the backend URL:
 project-planton config set backend-url <your-backend-url>
 ```
 
-#### Future Enhancements
+---
 
-Additional credential commands and providers coming soon:
+### `project-planton credential:get`
 
-- `credential:get` - Get details of a specific credential (including sensitive data with proper access control)
-- `credential:delete` - Delete a credential by ID
-- `credential:update` - Update existing credentials
+Retrieve detailed information about a credential by providing its unique ID. This command displays all credential metadata and masked sensitive data for security.
+
+#### Basic Usage
+
+```bash
+project-planton credential:get --id=<credential-id>
+```
+
+**Example:**
+
+```bash
+project-planton credential:get --id=507f1f77bcf86cd799439011
+```
+
+**Sample Output:**
+
+```
+Credential Details:
+===================
+ID:         507f1f77bcf86cd799439011
+Name:       my-gcp-production-credential
+Provider:   GCP
+Created At: 2025-12-08 15:30:45
+Updated At: 2025-12-08 16:20:10
+
+Credential Data:
+----------------
+Service Account Key (Base64): ewog...IA==
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the credential (required)
+- `--help, -h` - Show help information
+
+#### Output Format
+
+The command displays:
+
+- **ID** - Unique credential identifier
+- **Name** - Credential name
+- **Provider** - Cloud provider type (GCP, AWS, Azure)
+- **Created At** - Creation timestamp
+- **Updated At** - Last update timestamp (if available)
+- **Credential Data** - Provider-specific credential information with sensitive data masked
+
+**Security Note:** Sensitive data (keys, secrets, passwords) is automatically masked in the output. Only partial data is shown (first 4 and last 4 characters) for security purposes.
+
+#### Use Cases
+
+**1. Verify Credential Details**
+
+```bash
+# Get full details of a credential
+project-planton credential:get --id=507f1f77bcf86cd799439011
+```
+
+**2. Check Credential Before Deployment**
+
+```bash
+# List credentials to find ID
+project-planton credential:list
+
+# Get details of specific credential
+project-planton credential:get --id=<credential-id>
+```
+
+**3. Audit Credential Configuration**
+
+```bash
+# Verify credential settings after creation or update
+project-planton credential:get --id=507f1f77bcf86cd799439011
+```
+
+#### Error Handling
+
+**Missing ID:**
+
+```
+Error: required flag(s) "id" not set
+Usage: project-planton credential:get --id=<credential-id>
+```
+
+**Invalid ID Format:**
+
+```
+Error getting credential: internal: failed to get credential: invalid ID format: the provided hex string is not a valid ObjectID
+```
+
+**Credential Not Found:**
+
+```
+Error: Credential with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Connection Issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+#### Prerequisites
+
+Before using the credential:get command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+---
+
+### `project-planton credential:update`
+
+Update an existing cloud provider credential. The provider type must match the existing credential. You can update the credential name and all provider-specific credential data.
+
+#### Basic Usage
+
+```bash
+project-planton credential:update --id=<credential-id> --name=<new-name> --provider=<gcp|aws|azure> [provider-specific-flags]
+```
+
+**Examples:**
+
+```bash
+# Update a GCP credential
+project-planton credential:update \
+  --id=507f1f77bcf86cd799439011 \
+  --name=updated-gcp-credential \
+  --provider=gcp \
+  --service-account-key=~/Downloads/new-gcp-key.json
+
+# Update an AWS credential
+project-planton credential:update \
+  --id=507f1f77bcf86cd799439012 \
+  --name=updated-aws-credential \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=... \
+  --region=us-west-2
+
+# Update an Azure credential
+project-planton credential:update \
+  --id=507f1f77bcf86cd799439013 \
+  --name=updated-azure-credential \
+  --provider=azure \
+  --client-id=12345678-1234-1234-1234-123456789012 \
+  --client-secret=new-client-secret-here \
+  --tenant-id=87654321-4321-4321-4321-210987654321 \
+  --subscription-id=11111111-2222-3333-4444-555555555555
+```
+
+**Sample Output:**
+
+```
+✅ Credential updated successfully!
+
+ID:       507f1f77bcf86cd799439011
+Name:     updated-gcp-credential
+Provider: GCP
+Updated At: 2025-12-08 16:20:10
+```
+
+#### Flags
+
+**Common Flags** (required for all providers):
+
+- `--id, -i` - Unique identifier of the credential (required)
+- `--name, -n` - New name for the credential (required)
+- `--provider, -p` - Cloud provider: `gcp`, `aws`, or `azure` (required, must match existing credential)
+- `--help, -h` - Show help information
+
+**GCP-specific Flags** (required when `--provider=gcp`):
+
+- `--service-account-key` - Path to new GCP service account key JSON file
+
+**AWS-specific Flags** (required when `--provider=aws`):
+
+- `--account-id` - AWS account ID
+- `--access-key-id` - AWS access key ID
+- `--secret-access-key` - AWS secret access key
+- `--region` - AWS region (optional)
+- `--session-token` - AWS session token (optional)
+
+**Azure-specific Flags** (required when `--provider=azure`):
+
+- `--client-id` - Azure client ID
+- `--client-secret` - Azure client secret
+- `--tenant-id` - Azure tenant ID
+- `--subscription-id` - Azure subscription ID
+
+#### Use Cases
+
+**1. Rotate Credentials**
+
+```bash
+# Update with new service account key
+project-planton credential:update \
+  --id=507f1f77bcf86cd799439011 \
+  --name=my-gcp-prod \
+  --provider=gcp \
+  --service-account-key=~/new-key.json
+```
+
+**2. Update Credential Name**
+
+```bash
+# Rename credential while keeping same credentials
+project-planton credential:update \
+  --id=507f1f77bcf86cd799439011 \
+  --name=new-credential-name \
+  --provider=gcp \
+  --service-account-key=~/existing-key.json
+```
+
+**3. Change AWS Region**
+
+```bash
+# Update AWS credential with new region
+project-planton credential:update \
+  --id=507f1f77bcf86cd799439012 \
+  --name=my-aws-prod \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=... \
+  --region=us-west-2
+```
+
+#### Error Handling
+
+**Missing Required Flags:**
+
+```
+Error: --id, --name, and --provider flags are required
+Usage: project-planton credential:update --id=<id> --name=<name> --provider=<provider> [provider-specific-flags]
+```
+
+**Missing Provider-Specific Flags:**
+
+```
+# For GCP
+Error: --service-account-key is required for GCP provider
+
+# For AWS
+Error: --account-id, --access-key-id, and --secret-access-key are required for AWS provider
+
+# For Azure
+Error: --client-id, --client-secret, --tenant-id, and --subscription-id are required for Azure provider
+```
+
+**Invalid Provider:**
+
+```
+Error: Invalid provider 'unknown'. Valid values: gcp, aws, azure
+```
+
+**Credential Not Found:**
+
+```
+Error: Credential with ID '507f1f77bcf86cd799439011' not found
+```
+
+**File Not Found (GCP):**
+
+```
+Error: Failed to read service account key file '/path/to/key.json': open /path/to/key.json: no such file or directory
+```
+
+**Connection Issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+#### Prerequisites
+
+Before using the credential:update command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+---
+
+### `project-planton credential:delete`
+
+Delete a credential by providing its unique ID. This action is irreversible and will permanently remove the credential from the database.
+
+#### Basic Usage
+
+```bash
+project-planton credential:delete --id=<credential-id>
+```
+
+**Example:**
+
+```bash
+project-planton credential:delete --id=507f1f77bcf86cd799439011
+```
+
+**Sample Output:**
+
+```
+✅ Credential deleted successfully
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the credential (required)
+- `--help, -h` - Show help information
+
+#### Use Cases
+
+**1. Remove Unused Credentials**
+
+```bash
+# List credentials to find ID
+project-planton credential:list
+
+# Delete specific credential
+project-planton credential:delete --id=507f1f77bcf86cd799439011
+```
+
+**2. Clean Up Old Credentials**
+
+```bash
+# Delete credentials that are no longer needed
+project-planton credential:delete --id=507f1f77bcf86cd799439011
+```
+
+**3. Rotate Credentials**
+
+```bash
+# After creating new credential, delete old one
+project-planton credential:create --name=new-cred --provider=gcp --service-account-key=~/new-key.json
+project-planton credential:delete --id=<old-credential-id>
+```
+
+#### Error Handling
+
+**Missing ID:**
+
+```
+Error: required flag(s) "id" not set
+Usage: project-planton credential:delete --id=<credential-id>
+```
+
+**Invalid ID Format:**
+
+```
+Error deleting credential: internal: failed to delete credential: invalid ID format: the provided hex string is not a valid ObjectID
+```
+
+**Credential Not Found:**
+
+```
+Error: Credential with ID '507f1f77bcf86cd799439011' not found
+```
+
+**Connection Issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+#### Prerequisites
+
+Before using the credential:delete command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+#### Important Notes
+
+- ⚠️ **This operation is irreversible** - Once deleted, the credential cannot be recovered
+- ⚠️ **Impact on Deployments** - If this credential is being used by active deployments, those deployments may fail
+- ✅ **Safe to Delete** - You can safely delete credentials that are no longer in use
+
+---
+
+## Future Enhancements
+
+Additional credential providers coming soon:
+
 - Support for additional providers: Cloudflare, Atlas, Confluent, Snowflake
 
 ---

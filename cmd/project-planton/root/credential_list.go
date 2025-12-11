@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
+	"text/tabwriter"
 	"time"
 
 	"connectrpc.com/connect"
@@ -16,25 +16,25 @@ import (
 
 var CredentialListCmd = &cobra.Command{
 	Use:   "credential:list",
-	Short: "list all cloud provider credentials",
-	Long:  "List all stored cloud provider credentials with optional filtering by provider type (gcp, aws, azure).",
+	Short: "list all credentials from backend",
+	Long:  "List all credentials from the backend service. Optionally filter by provider.",
 	Run:   credentialListHandler,
 }
 
 func init() {
-	CredentialListCmd.Flags().StringP("provider", "p", "", "filter by cloud provider: gcp, aws, or azure (optional)")
+	CredentialListCmd.Flags().StringP("provider", "p", "", "filter credentials by provider (gcp, aws, azure)")
 }
 
 func credentialListHandler(cmd *cobra.Command, args []string) {
-	// Get provider filter (optional)
-	provider, _ := cmd.Flags().GetString("provider")
-
 	// Get backend URL from configuration
 	backendURL, err := GetBackendURL()
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
+
+	// Get provider filter if provided
+	providerStr, _ := cmd.Flags().GetString("provider")
 
 	// Create Connect-RPC client
 	client := backendv1connect.NewCredentialServiceClient(
@@ -44,23 +44,20 @@ func credentialListHandler(cmd *cobra.Command, args []string) {
 
 	// Prepare request
 	req := &backendv1.ListCredentialsRequest{}
-
-	// Add provider filter if specified
-	if provider != "" {
-		provider = strings.ToLower(provider)
-		var providerEnum backendv1.CredentialProvider
-		switch provider {
+	if providerStr != "" {
+		var provider backendv1.CredentialProvider
+		switch providerStr {
 		case "gcp":
-			providerEnum = backendv1.CredentialProvider_GCP
+			provider = backendv1.CredentialProvider_GCP
 		case "aws":
-			providerEnum = backendv1.CredentialProvider_AWS
+			provider = backendv1.CredentialProvider_AWS
 		case "azure":
-			providerEnum = backendv1.CredentialProvider_AZURE
+			provider = backendv1.CredentialProvider_AZURE
 		default:
-			fmt.Printf("Error: Unsupported provider '%s'. Supported providers: gcp, aws, azure\n", provider)
+			fmt.Printf("Error: Invalid provider '%s'. Valid values: gcp, aws, azure\n", providerStr)
 			os.Exit(1)
 		}
-		req.Provider = &providerEnum
+		req.Provider = &provider
 	}
 
 	// Create context with timeout
@@ -77,68 +74,57 @@ func credentialListHandler(cmd *cobra.Command, args []string) {
 			fmt.Printf("  3. Network connectivity\n")
 			os.Exit(1)
 		}
-		fmt.Printf("Error listing credentials: %v\n", err)
+		fmt.Printf("Error fetching credentials: %v\n", err)
 		os.Exit(1)
 	}
 
 	credentials := resp.Msg.Credentials
 
-	// Display results
 	if len(credentials) == 0 {
-		if provider != "" {
-			fmt.Printf("No credentials found for provider: %s\n", strings.ToUpper(provider))
+		if providerStr != "" {
+			fmt.Printf("No credentials found with provider '%s'\n", providerStr)
 		} else {
 			fmt.Println("No credentials found")
 		}
 		return
 	}
 
-	// Print header
-	fmt.Printf("%-24s %-30s %-10s %-20s\n", "ID", "NAME", "PROVIDER", "CREATED")
-	fmt.Println(strings.Repeat("-", 84))
+	// Display results in table format
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+	defer w.Flush()
 
-	// Print credentials
+	// Table header
+	fmt.Fprintln(w, "ID\tNAME\tPROVIDER\tCREATED")
+
+	// Table rows
 	for _, cred := range credentials {
-		providerStr := providerEnumToStr(cred.Provider)
-		createdAt := ""
+		providerName := "UNKNOWN"
+		switch cred.Provider {
+		case backendv1.CredentialProvider_GCP:
+			providerName = "GCP"
+		case backendv1.CredentialProvider_AWS:
+			providerName = "AWS"
+		case backendv1.CredentialProvider_AZURE:
+			providerName = "Azure"
+		}
+
+		createdAt := "N/A"
 		if cred.CreatedAt != nil {
 			createdAt = cred.CreatedAt.AsTime().Format("2006-01-02 15:04:05")
 		}
 
-		fmt.Printf("%-24s %-30s %-10s %-20s\n",
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n",
 			cred.Id,
-			truncate(cred.Name, 30),
-			strings.ToUpper(providerStr),
+			cred.Name,
+			providerName,
 			createdAt,
 		)
 	}
 
-	// Print summary
+	// Summary
 	fmt.Printf("\nTotal: %d credential(s)", len(credentials))
-	if provider != "" {
-		fmt.Printf(" (filtered by provider: %s)", strings.ToUpper(provider))
+	if providerStr != "" {
+		fmt.Printf(" (filtered by provider: %s)", providerStr)
 	}
 	fmt.Println()
-}
-
-// providerEnumToStr converts CredentialProvider enum to string.
-func providerEnumToStr(provider backendv1.CredentialProvider) string {
-	switch provider {
-	case backendv1.CredentialProvider_GCP:
-		return "gcp"
-	case backendv1.CredentialProvider_AWS:
-		return "aws"
-	case backendv1.CredentialProvider_AZURE:
-		return "azure"
-	default:
-		return "unknown"
-	}
-}
-
-// truncate truncates a string to the specified length.
-func truncate(s string, maxLen int) string {
-	if len(s) <= maxLen {
-		return s
-	}
-	return s[:maxLen-3] + "..."
 }

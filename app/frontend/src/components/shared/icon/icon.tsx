@@ -11,8 +11,12 @@ import MoonIcon from '../../../../public/images/moon.svg';
 import NavIcon from '../../../../public/images/nav.svg';
 import DashboardIcon from '../../../../public/images/leftnav-icons/4square.svg';
 import InfraHubIcon from '../../../../public/images/leftnav-icons/3square.svg';
+import ConnectionsIcon from '../../../../public/images/connections.svg';
 import EditIcon from '../../../../public/images/edit-icon.svg';
 import DeleteIcon from '../../../../public/images/delete.svg';
+import GcpIcon from '../../../../public/images/resources/gcp.svg';
+import AwsIcon from '../../../../public/images/resources/aws.svg';
+import AzureIcon from '../../../../public/images/resources/azure.svg';
 
 export enum ICON_NAMES {
   PLANTON_LOGO = 'PLANTON_LOGO',
@@ -21,8 +25,12 @@ export enum ICON_NAMES {
   NAV = 'NAV',
   DASHBOARD = 'DASHBOARD',
   INFRA_HUB = 'INFRA_HUB',
+  CONNECTIONS = 'CONNECTIONS',
   EDIT = 'EDIT',
   DELETE = 'DELETE',
+  GCP = 'GCP',
+  AWS = 'AWS',
+  AZURE = 'AZURE',
 }
 
 interface IconConfig {
@@ -62,6 +70,10 @@ const icons: IconRegistry = {
     icon: InfraHubIcon,
     viewBox: '0 0 16 16',
   },
+  [ICON_NAMES.CONNECTIONS]: {
+    icon: ConnectionsIcon,
+    viewBox: '0 0 16 16',
+  },
   [ICON_NAMES.EDIT]: {
     icon: EditIcon,
     color: '#6C7A8D',
@@ -71,6 +83,18 @@ const icons: IconRegistry = {
   [ICON_NAMES.DELETE]: {
     icon: DeleteIcon,
     viewBox: '0 0 14 14',
+  },
+  [ICON_NAMES.GCP]: {
+    icon: GcpIcon,
+    viewBox: '0 0 41 40',
+  },
+  [ICON_NAMES.AWS]: {
+    icon: AwsIcon,
+    viewBox: '0 0 16 9',
+  },
+  [ICON_NAMES.AZURE]: {
+    icon: AzureIcon,
+    viewBox: '0 0 100 100',
   },
 };
 
