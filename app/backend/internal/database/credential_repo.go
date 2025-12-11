@@ -30,6 +30,15 @@ func NewCredentialRepository(db *MongoDB) *CredentialRepository {
 
 // CreateGcp creates a new GCP credential.
 func (r *CredentialRepository) CreateGcp(ctx context.Context, name, serviceAccountKeyBase64 string) (*models.GcpCredential, error) {
+	// Check if a credential for this provider already exists
+	exists, err := r.ExistsByProvider(ctx, "gcp")
+	if err != nil {
+		return nil, fmt.Errorf("failed to check for existing GCP credential: %w", err)
+	}
+	if exists {
+		return nil, fmt.Errorf("credential for provider 'gcp' already exists")
+	}
+
 	now := time.Now()
 	credential := &models.GcpCredential{
 		ID:                      primitive.NewObjectID(),
@@ -49,7 +58,7 @@ func (r *CredentialRepository) CreateGcp(ctx context.Context, name, serviceAccou
 		"updated_at":                 credential.UpdatedAt,
 	}
 
-	_, err := r.collection.InsertOne(ctx, doc)
+	_, err = r.collection.InsertOne(ctx, doc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create GCP credential: %w", err)
 	}
@@ -59,6 +68,15 @@ func (r *CredentialRepository) CreateGcp(ctx context.Context, name, serviceAccou
 
 // CreateAws creates a new AWS credential.
 func (r *CredentialRepository) CreateAws(ctx context.Context, name, accountID, accessKeyID, secretAccessKey, region, sessionToken string) (*models.AwsCredential, error) {
+	// Check if a credential for this provider already exists
+	exists, err := r.ExistsByProvider(ctx, "aws")
+	if err != nil {
+		return nil, fmt.Errorf("failed to check for existing AWS credential: %w", err)
+	}
+	if exists {
+		return nil, fmt.Errorf("credential for provider 'aws' already exists")
+	}
+
 	now := time.Now()
 	credential := &models.AwsCredential{
 		ID:              primitive.NewObjectID(),
@@ -89,7 +107,7 @@ func (r *CredentialRepository) CreateAws(ctx context.Context, name, accountID, a
 		doc["session_token"] = sessionToken
 	}
 
-	_, err := r.collection.InsertOne(ctx, doc)
+	_, err = r.collection.InsertOne(ctx, doc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create AWS credential: %w", err)
 	}
@@ -99,6 +117,15 @@ func (r *CredentialRepository) CreateAws(ctx context.Context, name, accountID, a
 
 // CreateAzure creates a new Azure credential.
 func (r *CredentialRepository) CreateAzure(ctx context.Context, name, clientID, clientSecret, tenantID, subscriptionID string) (*models.AzureCredential, error) {
+	// Check if a credential for this provider already exists
+	exists, err := r.ExistsByProvider(ctx, "azure")
+	if err != nil {
+		return nil, fmt.Errorf("failed to check for existing Azure credential: %w", err)
+	}
+	if exists {
+		return nil, fmt.Errorf("credential for provider 'azure' already exists")
+	}
+
 	now := time.Now()
 	credential := &models.AzureCredential{
 		ID:             primitive.NewObjectID(),
@@ -123,12 +150,158 @@ func (r *CredentialRepository) CreateAzure(ctx context.Context, name, clientID, 
 		"updated_at":      credential.UpdatedAt,
 	}
 
-	_, err := r.collection.InsertOne(ctx, doc)
+	_, err = r.collection.InsertOne(ctx, doc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Azure credential: %w", err)
 	}
 
 	return credential, nil
+}
+
+// UpdateGcp updates an existing GCP credential.
+func (r *CredentialRepository) UpdateGcp(ctx context.Context, id string, name, serviceAccountKeyBase64 string) (*models.GcpCredential, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	now := time.Now()
+	update := bson.M{
+		"$set": bson.M{
+			"name":                       name,
+			"service_account_key_base64": serviceAccountKeyBase64,
+			"updated_at":                 now,
+		},
+	}
+
+	result := r.collection.FindOneAndUpdate(ctx, bson.M{"_id": objectID, "provider": "gcp"}, update)
+	if result.Err() == mongo.ErrNoDocuments {
+		return nil, fmt.Errorf("GCP credential with ID '%s' not found", id)
+	}
+	if result.Err() != nil {
+		return nil, fmt.Errorf("failed to update GCP credential: %w", result.Err())
+	}
+
+	// Fetch updated document
+	doc, err := r.FindByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if doc == nil {
+		return nil, fmt.Errorf("credential not found after update")
+	}
+
+	return convertToGcpCredential(doc)
+}
+
+// UpdateAws updates an existing AWS credential.
+func (r *CredentialRepository) UpdateAws(ctx context.Context, id string, name, accountID, accessKeyID, secretAccessKey, region, sessionToken string) (*models.AwsCredential, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	now := time.Now()
+	setFields := bson.M{
+		"name":              name,
+		"account_id":        accountID,
+		"access_key_id":     accessKeyID,
+		"secret_access_key": secretAccessKey,
+		"updated_at":        now,
+	}
+	unsetFields := bson.M{}
+
+	if region != "" {
+		setFields["region"] = region
+	} else {
+		unsetFields["region"] = ""
+	}
+	if sessionToken != "" {
+		setFields["session_token"] = sessionToken
+	} else {
+		unsetFields["session_token"] = ""
+	}
+
+	update := bson.M{"$set": setFields}
+	if len(unsetFields) > 0 {
+		update["$unset"] = unsetFields
+	}
+
+	result := r.collection.FindOneAndUpdate(ctx, bson.M{"_id": objectID, "provider": "aws"}, update)
+	if result.Err() == mongo.ErrNoDocuments {
+		return nil, fmt.Errorf("AWS credential with ID '%s' not found", id)
+	}
+	if result.Err() != nil {
+		return nil, fmt.Errorf("failed to update AWS credential: %w", result.Err())
+	}
+
+	// Fetch updated document
+	doc, err := r.FindByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if doc == nil {
+		return nil, fmt.Errorf("credential not found after update")
+	}
+
+	return convertToAwsCredential(doc)
+}
+
+// UpdateAzure updates an existing Azure credential.
+func (r *CredentialRepository) UpdateAzure(ctx context.Context, id string, name, clientID, clientSecret, tenantID, subscriptionID string) (*models.AzureCredential, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	now := time.Now()
+	update := bson.M{
+		"$set": bson.M{
+			"name":            name,
+			"client_id":       clientID,
+			"client_secret":   clientSecret,
+			"tenant_id":       tenantID,
+			"subscription_id": subscriptionID,
+			"updated_at":      now,
+		},
+	}
+
+	result := r.collection.FindOneAndUpdate(ctx, bson.M{"_id": objectID, "provider": "azure"}, update)
+	if result.Err() == mongo.ErrNoDocuments {
+		return nil, fmt.Errorf("azure credential with ID '%s' not found", id)
+	}
+	if result.Err() != nil {
+		return nil, fmt.Errorf("failed to update Azure credential: %w", result.Err())
+	}
+
+	// Fetch updated document
+	doc, err := r.FindByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if doc == nil {
+		return nil, fmt.Errorf("credential not found after update")
+	}
+
+	return convertToAzureCredential(doc)
+}
+
+// Delete deletes a credential by ID.
+func (r *CredentialRepository) Delete(ctx context.Context, id string) error {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	result, err := r.collection.DeleteOne(ctx, bson.M{"_id": objectID})
+	if err != nil {
+		return fmt.Errorf("failed to delete credential: %w", err)
+	}
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("credential with ID '%s' not found", id)
+	}
+
+	return nil
 }
 
 // FindFirstByProvider retrieves the first credential for a given provider.
@@ -155,6 +328,34 @@ func (r *CredentialRepository) FindFirstByProvider(ctx context.Context, provider
 	default:
 		return nil, fmt.Errorf("unsupported provider: %s", provider)
 	}
+}
+
+// ExistsByProvider checks if a credential exists for the given provider.
+func (r *CredentialRepository) ExistsByProvider(ctx context.Context, provider string) (bool, error) {
+	filter := bson.M{"provider": provider}
+	count, err := r.collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return false, fmt.Errorf("failed to check credential existence: %w", err)
+	}
+	return count > 0, nil
+}
+
+// FindByID retrieves a credential by ID.
+func (r *CredentialRepository) FindByID(ctx context.Context, id string) (bson.M, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	var result bson.M
+	err = r.collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&result)
+	if err == mongo.ErrNoDocuments {
+		return nil, nil // Not found, but not an error
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to query credential by ID: %w", err)
+	}
+	return result, nil
 }
 
 // List retrieves all credentials with optional provider filter.

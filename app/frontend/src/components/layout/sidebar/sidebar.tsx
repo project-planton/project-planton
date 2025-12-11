@@ -36,6 +36,11 @@ const TOP_MENU: Route[] = [
     path: '/cloud-resources',
     iconName: ICON_NAMES.INFRA_HUB,
   },
+  {
+    name: 'Credentials',
+    path: '/credentials',
+    iconName: ICON_NAMES.CONNECTIONS,
+  },
 ];
 
 interface ILeftNavItem {

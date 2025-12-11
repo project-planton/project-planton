@@ -13,12 +13,21 @@ export const StyledWrapperBox = styled(Box, {
   overflowX: 'hidden',
 }));
 
-export const StyledContainer = styled(Container)(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  width: '100%',
-  maxWidth: '100% !important',
-  minHeight: `calc(100vh - ${theme.spacing(8)})`,
-  minWidth: 0,
-  overflowX: 'hidden',
-}));
+export const StyledContainer = styled(Container, {
+  shouldForwardProp: (prop) => prop !== '$fullWidth' && prop !== '$navbarOpen',
+})<{ $fullWidth?: boolean; $navbarOpen?: boolean }>(
+  ({ theme, $fullWidth, $navbarOpen }) => ({
+    flexGrow: 1,
+    padding: $fullWidth ? `${theme.spacing(0)} !important` : `${theme.spacing(3)} !important`,
+    width: '100%',
+    maxWidth: '100% !important',
+    minHeight: `calc(100vh - ${theme.spacing(8)})`,
+    minWidth: 0,
+    overflowX: 'hidden',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: $fullWidth
+        ? `calc(100% - ${$navbarOpen ? '260px' : '60px'}) !important`
+        : '100% !important',
+    },
+  })
+);
