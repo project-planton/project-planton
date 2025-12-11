@@ -559,14 +559,20 @@ When you apply a cloud resource, the system automatically:
 When the resource doesn't exist, it will be created:
 
 ```
-✅ Cloud resource applied successfully!
+Applying cloud resource: kind=GcpCloudSql, name=gcp-postgres-example
+Checking if resource exists...
+✅ Cloud resource created successfully!
 
 Action: Created
 ID: 507f1f77bcf86cd799439011
-Name: my-vpc
-Kind: CivoVpc
+Name: gcp-postgres-example
+Kind: GcpCloudSql
 Created At: 2025-11-28 13:14:12
 Updated At: 2025-11-28 13:14:12
+
+🚀 Pulumi deployment has been triggered automatically.
+   Deployment is running in the background.
+   Use 'project-planton stack-job:list' to check deployment status.
 ```
 
 #### Sample Output (Update)
@@ -574,14 +580,20 @@ Updated At: 2025-11-28 13:14:12
 When the resource already exists (same name and kind), it will be updated:
 
 ```
-✅ Cloud resource applied successfully!
+Applying cloud resource: kind=GcpCloudSql, name=gcp-postgres-example
+Checking if resource exists...
+✅ Cloud resource updated successfully!
 
 Action: Updated
 ID: 507f1f77bcf86cd799439011
-Name: my-vpc
-Kind: CivoVpc
+Name: gcp-postgres-example
+Kind: GcpCloudSql
 Created At: 2025-11-28 13:14:12
 Updated At: 2025-11-28 15:30:45
+
+🚀 Pulumi deployment has been triggered automatically.
+   Deployment is running in the background.
+   Use 'project-planton stack-job:list' to check deployment status.
 ```
 
 #### Flags
@@ -611,10 +623,16 @@ spec:
 #### How It Works
 
 1. **Extracts** `metadata.name` and `kind` from the manifest
-2. **Queries** the backend for an existing resource with matching name and kind
-3. **Creates** the resource if it doesn't exist
-4. **Updates** the resource if it already exists (preserves ID and creation timestamp)
-5. **Returns** the resource with a flag indicating whether it was created or updated
+2. **Calls** the `ApplyCloudResource` API which:
+   - Checks if resource exists by `name` + `kind`
+   - **Creates** the resource if it doesn't exist
+   - **Updates** the resource if it already exists (preserves ID and creation timestamp)
+3. **Automatically triggers** Pulumi deployment:
+   - Resolves credentials from database based on provider
+   - Creates a stack job with status "in_progress"
+   - Executes `pulumi up` asynchronously in the background
+4. **Returns** the resource with a flag indicating whether it was created or updated
+5. **Displays** deployment status message with instructions to check stack jobs
 
 #### Idempotency
 
@@ -821,15 +839,18 @@ Created At: 2025-12-08 15:30:45
 The command handles different providers seamlessly:
 
 **For GCP:**
+
 1. Reads the service account key JSON file
 2. Base64-encodes the key content automatically
 3. Stores in database with `provider=gcp`
 
 **For AWS:**
+
 1. Collects AWS credentials from command flags
 2. Stores in database with `provider=aws`
 
 **For Azure:**
+
 1. Collects Azure credentials from command flags
 2. Stores in database with `provider=azure`
 
@@ -842,6 +863,7 @@ Once a credential is created, it will be automatically used when deploying resou
 - **Azure resources**: `AzureSqlDatabase`, `AzureAksCluster`, `AzureVm`, etc.
 
 The system automatically:
+
 1. Detects the cloud provider from the resource `kind` field
 2. Queries the unified `credentials` database collection filtered by provider
 3. Uses the first available credential for that provider
@@ -904,17 +926,20 @@ project-planton cloud-resource:create --arg=aws-rds.yaml       # Uses AWS creden
 **GCP Service Account Key:**
 
 The key file must be valid JSON from Google Cloud Console with appropriate IAM permissions:
+
 - `roles/compute.admin`, `roles/container.admin`, `roles/cloudsql.admin`, etc.
 
 **AWS Credentials:**
 
 Use IAM access keys with appropriate permissions:
+
 - Create via AWS IAM Console > Users > Security Credentials
 - Grant policies like `AdministratorAccess` or specific resource policies
 
 **Azure Service Principal:**
 
 Create via Azure CLI or Portal with required RBAC roles:
+
 ```bash
 az ad sp create-for-rbac --name="myServicePrincipal" --role="Contributor"
 ```
@@ -979,6 +1004,7 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 #### Security Best Practices
 
 1. **Never commit service account keys to version control**
+
    ```bash
    # Add to .gitignore
    echo "*.json" >> .gitignore
@@ -986,6 +1012,7 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
    ```
 
 2. **Use separate credentials for different environments**
+
 ```bash
 # GCP Development
 project-planton credential:create \
@@ -1003,15 +1030,18 @@ project-planton credential:create \
 ```
 
 3. **Rotate credentials regularly**
+
    - Create new service account keys periodically
    - Delete old credentials from the database
    - Revoke old keys in Google Cloud Console
 
 4. **Use principle of least privilege**
+
    - Grant only the minimum required permissions
    - Use separate service accounts for different resource types
 
 5. **Store key files securely**
+
    ```bash
    # Set restrictive permissions
    chmod 600 ~/keys/*.json
