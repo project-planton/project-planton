@@ -16,6 +16,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.23.3
 	github.com/onsi/gomega v1.37.0
 	github.com/pkg/errors v0.9.1
+	github.com/project-planton/project-planton/app/backend v0.0.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pulumi/pulumi-aws-native/sdk v1.14.0
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.83.2
@@ -171,3 +172,5 @@ require (
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.2 // indirect
 )
+
+replace github.com/project-planton/project-planton/app/backend => ./app/backend

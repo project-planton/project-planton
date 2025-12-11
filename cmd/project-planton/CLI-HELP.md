@@ -7,6 +7,8 @@ This guide covers the configuration, deployment component management, and cloud 
 - [Configuration Management](#configuration-management)
 - [Deployment Components](#deployment-components)
 - [Cloud Resources](#cloud-resources)
+- [Credentials](#credentials)
+- [Stack Jobs](#stack-jobs)
 - [Common Workflows](#common-workflows)
 - [Troubleshooting](#troubleshooting)
 
@@ -151,7 +153,7 @@ Cloud resources represent infrastructure resources that can be created and manag
 
 ### `project-planton cloud-resource:create`
 
-Create a new cloud resource from a YAML manifest file.
+Create a new cloud resource from a YAML manifest file. This command automatically triggers deployment using credentials resolved from the database.
 
 #### Basic Usage
 
@@ -176,6 +178,17 @@ Name: my-vpc
 Kind: CivoVpc
 Created At: 2025-11-28 13:14:12
 ```
+
+#### Automatic Deployment
+
+When you create a cloud resource, the system automatically:
+
+1. Saves the resource to the database
+2. Determines the cloud provider from the resource kind (e.g., `GcpCloudSql` → `gcp`)
+3. Resolves credentials from the database based on the provider
+4. Triggers a Pulumi deployment with the resolved credentials
+
+**Note:** Credentials are automatically resolved from the database based on the cloud provider. Ensure credentials are configured in the database before creating cloud resources (typically done through the backend API or web console).
 
 #### Flags
 
@@ -351,7 +364,7 @@ Error: Invalid manifest - invalid ID format
 
 ### `project-planton cloud-resource:update`
 
-Update an existing cloud resource by providing a new YAML manifest. The manifest's `name` and `kind` must match the existing resource.
+Update an existing cloud resource by providing a new YAML manifest. The manifest's `name` and `kind` must match the existing resource. This command automatically triggers deployment using credentials resolved from the database.
 
 #### Basic Usage
 
@@ -376,6 +389,17 @@ Name: my-vpc
 Kind: CivoVpc
 Updated At: 2025-11-28 14:05:23
 ```
+
+#### Automatic Deployment
+
+When you update a cloud resource, the system automatically:
+
+1. Updates the resource in the database
+2. Determines the cloud provider from the resource kind
+3. Resolves credentials from the database based on the provider
+4. Triggers a Pulumi deployment with the resolved credentials
+
+**Note:** Credentials are automatically resolved from the database based on the cloud provider. Ensure credentials are configured in the database before updating cloud resources (typically done through the backend API or web console).
 
 #### Flags
 
@@ -497,7 +521,7 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 
 ### `project-planton cloud-resource:apply`
 
-Apply a cloud resource from a YAML manifest file. This command performs an **upsert operation**: if a resource with the same `name` and `kind` already exists, it will be updated; otherwise, a new resource will be created.
+Apply a cloud resource from a YAML manifest file. This command performs an **upsert operation**: if a resource with the same `name` and `kind` already exists, it will be updated; otherwise, a new resource will be created. This command automatically triggers deployment using credentials resolved from the database.
 
 #### Basic Usage
 
@@ -511,6 +535,17 @@ project-planton cloud-resource:apply --arg=path/to/manifest.yaml
 # Apply a cloud resource (create or update)
 project-planton cloud-resource:apply --arg=my-vpc.yaml
 ```
+
+#### Automatic Deployment
+
+When you apply a cloud resource, the system automatically:
+
+1. Creates or updates the resource in the database
+2. Determines the cloud provider from the resource kind
+3. Resolves credentials from the database based on the provider
+4. Triggers a Pulumi deployment with the resolved credentials
+
+**Note:** Credentials are automatically resolved from the database based on the cloud provider. Ensure credentials are configured in the database before applying cloud resources (typically done through the backend API or web console).
 
 #### Key Features
 
@@ -726,6 +761,709 @@ project-planton config set backend-url <your-backend-url>
 
 ---
 
+## Credentials
+
+Credentials are cloud provider authentication configurations stored in the backend database. They are automatically used when deploying cloud resources to the corresponding provider.
+
+### `project-planton credential:create`
+
+Create a new cloud provider credential for GCP, AWS, or Azure. The command uses a unified interface with a `--provider` flag to specify the cloud provider type.
+
+#### Basic Usage
+
+```bash
+project-planton credential:create --name=<credential-name> --provider=<gcp|aws|azure> [provider-specific-flags]
+```
+
+**Examples:**
+
+```bash
+# Create a GCP credential
+project-planton credential:create \
+  --name=my-gcp-production-credential \
+  --provider=gcp \
+  --service-account-key=~/Downloads/my-project-12345-abcdef.json
+
+# Create an AWS credential
+project-planton credential:create \
+  --name=my-aws-production-credential \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=... \
+  --region=us-east-1
+
+# Create an Azure credential
+project-planton credential:create \
+  --name=my-azure-production-credential \
+  --provider=azure \
+  --client-id=... \
+  --client-secret=... \
+  --tenant-id=... \
+  --subscription-id=...
+```
+
+**Sample Output:**
+
+```
+✅ Credential created successfully!
+
+ID: 507f1f77bcf86cd799439011
+Name: my-gcp-production-credential
+Provider: GCP
+Created At: 2025-12-08 15:30:45
+
+💡 This credential can now be automatically used when deploying GCP resources.
+```
+
+#### How It Works
+
+The command handles different providers seamlessly:
+
+**For GCP:**
+1. Reads the service account key JSON file
+2. Base64-encodes the key content automatically
+3. Stores in database with `provider=gcp`
+
+**For AWS:**
+1. Collects AWS credentials from command flags
+2. Stores in database with `provider=aws`
+
+**For Azure:**
+1. Collects Azure credentials from command flags
+2. Stores in database with `provider=azure`
+
+#### Automatic Credential Resolution
+
+Once a credential is created, it will be automatically used when deploying resources for that provider:
+
+- **GCP resources**: `GcpCloudSql`, `GcpGke`, `GcpComputeInstance`, etc.
+- **AWS resources**: `AwsRdsInstance`, `AwsEksCluster`, `AwsEc2Instance`, etc.
+- **Azure resources**: `AzureSqlDatabase`, `AzureAksCluster`, `AzureVm`, etc.
+
+The system automatically:
+1. Detects the cloud provider from the resource `kind` field
+2. Queries the unified `credentials` database collection filtered by provider
+3. Uses the first available credential for that provider
+
+**Example Workflow:**
+
+```bash
+# Step 1: Create credentials for different providers
+project-planton credential:create \
+  --name=my-gcp-prod \
+  --provider=gcp \
+  --service-account-key=~/gcp-key.json
+
+project-planton credential:create \
+  --name=my-aws-prod \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=...
+
+# Step 2: Deploy resources (credentials auto-used based on resource kind)
+project-planton cloud-resource:create --arg=gcp-cloudsql.yaml  # Uses GCP credential
+project-planton cloud-resource:create --arg=aws-rds.yaml       # Uses AWS credential
+
+# The system automatically:
+# - Detects provider from resource kind (GcpCloudSql → gcp, AwsRdsInstance → aws)
+# - Fetches matching credential from database
+# - Deploys using that credential
+```
+
+#### Flags
+
+**Common Flags** (required for all providers):
+
+- `--name, -n` - Name of the credential (required, must be unique)
+- `--provider, -p` - Cloud provider: `gcp`, `aws`, or `azure` (required)
+- `--help, -h` - Show help information
+
+**GCP-specific Flags** (required when `--provider=gcp`):
+
+- `--service-account-key` - Path to GCP service account key JSON file
+
+**AWS-specific Flags** (required when `--provider=aws`):
+
+- `--account-id` - AWS account ID
+- `--access-key-id` - AWS access key ID
+- `--secret-access-key` - AWS secret access key
+- `--region` - AWS region (optional)
+- `--session-token` - AWS session token (optional)
+
+**Azure-specific Flags** (required when `--provider=azure`):
+
+- `--client-id` - Azure client ID
+- `--client-secret` - Azure client secret
+- `--tenant-id` - Azure tenant ID
+- `--subscription-id` - Azure subscription ID
+
+#### Provider-Specific Requirements
+
+**GCP Service Account Key:**
+
+The key file must be valid JSON from Google Cloud Console with appropriate IAM permissions:
+- `roles/compute.admin`, `roles/container.admin`, `roles/cloudsql.admin`, etc.
+
+**AWS Credentials:**
+
+Use IAM access keys with appropriate permissions:
+- Create via AWS IAM Console > Users > Security Credentials
+- Grant policies like `AdministratorAccess` or specific resource policies
+
+**Azure Service Principal:**
+
+Create via Azure CLI or Portal with required RBAC roles:
+```bash
+az ad sp create-for-rbac --name="myServicePrincipal" --role="Contributor"
+```
+
+#### Error Handling
+
+**Missing name:**
+
+```
+Error: --name flag is required
+Usage: project-planton credential:create-gcp --name=<credential-name> --service-account-key=<path-to-key.json>
+```
+
+**Missing provider:**
+
+```
+Error: --provider flag is required
+Usage: project-planton credential:create --name=<name> --provider=<gcp|aws|azure> [provider-specific-flags]
+```
+
+**Unsupported provider:**
+
+```
+Error: Unsupported provider 'unknown'. Supported providers: gcp, aws, azure
+```
+
+**Missing provider-specific flags:**
+
+```
+# For GCP
+Error: --service-account-key is required for GCP provider
+
+# For AWS
+Error: --account-id is required for AWS provider
+Error: --access-key-id is required for AWS provider
+
+# For Azure
+Error: --client-id is required for Azure provider
+```
+
+**File not found (GCP):**
+
+```
+Error: failed to read service account key file '/path/to/key.json': no such file or directory
+```
+
+**Duplicate credential name:**
+
+```
+Error: A credential with name 'my-prod-cred' already exists
+```
+
+**Connection issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+#### Security Best Practices
+
+1. **Never commit service account keys to version control**
+   ```bash
+   # Add to .gitignore
+   echo "*.json" >> .gitignore
+   echo "*-key.json" >> .gitignore
+   ```
+
+2. **Use separate credentials for different environments**
+```bash
+# GCP Development
+project-planton credential:create \
+  --name=gcp-dev \
+  --provider=gcp \
+  --service-account-key=~/keys/gcp-dev.json
+
+# AWS Production
+project-planton credential:create \
+  --name=aws-prod \
+  --provider=aws \
+  --account-id=123456789012 \
+  --access-key-id=AKIA... \
+  --secret-access-key=...
+```
+
+3. **Rotate credentials regularly**
+   - Create new service account keys periodically
+   - Delete old credentials from the database
+   - Revoke old keys in Google Cloud Console
+
+4. **Use principle of least privilege**
+   - Grant only the minimum required permissions
+   - Use separate service accounts for different resource types
+
+5. **Store key files securely**
+   ```bash
+   # Set restrictive permissions
+   chmod 600 ~/keys/*.json
+
+   # Store in a secure location
+   mkdir -p ~/.config/gcp-keys
+   chmod 700 ~/.config/gcp-keys
+   mv ~/Downloads/*-key.json ~/.config/gcp-keys/
+   ```
+
+#### Use Cases
+
+**1. Initial Setup**
+
+```bash
+# Configure backend
+project-planton config set backend-url http://localhost:50051
+
+# Add GCP credential
+project-planton credential:create-gcp \
+  --name=default-gcp \
+  --service-account-key=~/gcp-service-account.json
+```
+
+**2. Multi-Environment Setup**
+
+```bash
+# Development environment
+project-planton credential:create-gcp \
+  --name=gcp-development \
+  --service-account-key=~/keys/dev-sa-key.json
+
+# Staging environment
+project-planton credential:create-gcp \
+  --name=gcp-staging \
+  --service-account-key=~/keys/staging-sa-key.json
+
+# Production environment
+project-planton credential:create-gcp \
+  --name=gcp-production \
+  --service-account-key=~/keys/prod-sa-key.json
+```
+
+**3. Multi-Project Setup**
+
+```bash
+# Project A
+project-planton credential:create-gcp \
+  --name=gcp-project-a \
+  --service-account-key=~/keys/project-a-key.json
+
+# Project B
+project-planton credential:create-gcp \
+  --name=gcp-project-b \
+  --service-account-key=~/keys/project-b-key.json
+```
+
+**4. Team Collaboration**
+
+```bash
+# Each team member creates their own credential
+project-planton credential:create-gcp \
+  --name=gcp-alice-dev \
+  --service-account-key=~/alice-dev-key.json
+
+project-planton credential:create-gcp \
+  --name=gcp-bob-dev \
+  --service-account-key=~/bob-dev-key.json
+```
+
+#### Comparison with CLI Flags
+
+**Before (using --gcp-credential flag):**
+
+```bash
+# Had to provide credential file every time
+project-planton pulumi up \
+  --manifest resource.yaml \
+  --gcp-credential ~/gcp-key.json
+```
+
+**Now (using database-stored credentials):**
+
+```bash
+# Create credential once
+project-planton credential:create-gcp \
+  --name=my-gcp-cred \
+  --service-account-key=~/gcp-key.json
+
+# Use cloud-resource commands without credential flags
+project-planton cloud-resource:create --arg=resource.yaml
+project-planton cloud-resource:apply --arg=resource.yaml
+# Credentials are automatically resolved!
+```
+
+**Benefits:**
+
+- ✅ No need to specify credentials for every deployment
+- ✅ Centralized credential management
+- ✅ Credentials are securely stored in the database
+- ✅ Easier team collaboration
+- ✅ Supports multiple credentials per provider
+
+#### Prerequisites
+
+Before using the credential:create-gcp command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+### `project-planton credential:list`
+
+List all stored cloud provider credentials with optional filtering by provider type.
+
+#### Basic Usage
+
+```bash
+# List all credentials
+project-planton credential:list
+
+# List credentials for a specific provider
+project-planton credential:list --provider=gcp
+project-planton credential:list --provider=aws
+project-planton credential:list --provider=azure
+```
+
+**Sample Output (all credentials):**
+
+```
+ID                       NAME                           PROVIDER   CREATED
+------------------------------------------------------------------------------------
+507f1f77bcf86cd799439011 my-gcp-production-credential   GCP        2025-12-08 15:30:45
+507f1f77bcf86cd799439012 my-aws-production-credential   AWS        2025-12-08 15:32:10
+507f1f77bcf86cd799439013 my-azure-production-credenti   AZURE      2025-12-08 15:33:22
+
+Total: 3 credential(s)
+```
+
+**Sample Output (filtered by provider):**
+
+```bash
+$ project-planton credential:list --provider=gcp
+```
+
+```
+ID                       NAME                           PROVIDER   CREATED
+------------------------------------------------------------------------------------
+507f1f77bcf86cd799439011 my-gcp-production-credential   GCP        2025-12-08 15:30:45
+507f1f77bcf86cd799439014 my-gcp-dev-credential          GCP        2025-12-08 15:34:00
+
+Total: 2 credential(s) (filtered by provider: GCP)
+```
+
+#### Flags
+
+- `--provider, -p` - Filter by cloud provider: `gcp`, `aws`, or `azure` (optional)
+- `--help, -h` - Show help information
+
+#### Output Format
+
+The command displays results in a table with the following columns:
+
+- **ID** - Unique credential identifier (MongoDB ObjectID)
+- **NAME** - Credential name
+- **PROVIDER** - Cloud provider type (GCP, AWS, AZURE)
+- **CREATED** - Creation timestamp
+
+**Note:** Sensitive credential data (keys, secrets, passwords) is not displayed in the list output for security reasons.
+
+#### Use Cases
+
+**1. View All Credentials**
+
+```bash
+project-planton credential:list
+```
+
+**2. Check GCP Credentials**
+
+```bash
+project-planton credential:list --provider=gcp
+```
+
+**3. Verify Credentials Before Deployment**
+
+```bash
+# Check if AWS credentials exist before deploying AWS resources
+project-planton credential:list --provider=aws
+
+# If credentials exist, proceed with deployment
+project-planton cloud-resource:create --arg=aws-resource.yaml
+```
+
+**4. Audit Credentials**
+
+```bash
+# List all credentials to audit what's configured
+project-planton credential:list
+
+# Check when credentials were created
+project-planton credential:list --provider=azure
+```
+
+#### Error Handling
+
+**Backend URL Not Configured:**
+
+```
+Error: backend URL not configured. Run: project-planton config set backend-url <url>
+```
+
+**Unsupported Provider:**
+
+```
+Error: Unsupported provider 'unknown'. Supported providers: gcp, aws, azure
+```
+
+**Connection Issues:**
+
+```
+Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+**No Credentials Found:**
+
+```
+# When no credentials exist
+No credentials found
+
+# When no credentials exist for specific provider
+No credentials found for provider: GCP
+```
+
+#### Prerequisites
+
+Before using the credential:list command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+#### Future Enhancements
+
+Additional credential commands and providers coming soon:
+
+- `credential:get` - Get details of a specific credential (including sensitive data with proper access control)
+- `credential:delete` - Delete a credential by ID
+- `credential:update` - Update existing credentials
+- Support for additional providers: Cloudflare, Atlas, Confluent, Snowflake
+
+---
+
+## Stack Jobs
+
+Stack jobs represent deployment operations for cloud resources. You can stream real-time output from stack jobs to monitor deployment progress.
+
+### `project-planton stack-job:stream-output`
+
+Stream real-time deployment logs from a stack job. Shows stdout and stderr output as it's generated during deployment.
+
+#### Basic Usage
+
+```bash
+# Stream output from a stack job
+project-planton stack-job:stream-output --id=<stack-job-id>
+```
+
+**Sample Output:**
+
+```
+🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+
+[15:04:05.123] [stdout] [Seq: 1] Updating (example-env.GcpCloudSql.gcp-postgres-example):
+[15:04:05.234] [stdout] [Seq: 2]     pulumi:pulumi:Stack project-planton-examples-example-env.GcpCloudSql.gcp-postgres-example  Compiling the program ...
+[15:04:06.456] [stdout] [Seq: 3]     pulumi:pulumi:Stack project-planton-examples-example-env.GcpCloudSql.gcp-postgres-example  Finished compiling
+[15:04:07.789] [stdout] [Seq: 4] +  gcp:sql:DatabaseInstance gcp-postgres-example creating (0s)
+[15:04:10.123] [stdout] [Seq: 5] +  gcp:sql:DatabaseInstance gcp-postgres-example created (3s)
+
+✅ Stream completed successfully
+
+📊 Total messages received: 5 (last sequence: 5)
+```
+
+#### Resuming from a Specific Sequence
+
+If you need to resume streaming from a specific point (e.g., after disconnection), use the `--last-sequence` flag:
+
+```bash
+# Resume from sequence 100
+project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=100
+```
+
+**Sample Output:**
+
+```
+🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+   Resuming from sequence: 100
+
+[15:05:01.234] [stdout] [Seq: 101] Continuing deployment...
+[15:05:02.456] [stdout] [Seq: 102] Finalizing resources...
+```
+
+#### Flags
+
+- `--id, -i` - Unique identifier of the stack job (required)
+- `--last-sequence, -s` - Last sequence number received (for resuming stream from a specific point, default: 0)
+- `--help, -h` - Show help information
+
+#### Output Format
+
+Each stream message displays:
+
+- **Timestamp** - Time when the message was generated (HH:MM:SS.mmm format)
+- **Stream Type** - `[stdout]` for standard output or `[stderr]` for error output
+- **Sequence** - Sequence number of the message (for ordering and resuming)
+- **Content** - The actual log line content
+
+#### Graceful Shutdown
+
+The stream command supports graceful shutdown via interrupt signals:
+
+- Press `Ctrl+C` to cancel the stream
+- The command will finish processing the current message and exit cleanly
+- A summary showing total messages received and last sequence number will be displayed
+
+**Example:**
+
+```bash
+$ project-planton stack-job:stream-output --id=69369e4ec78ad326a6e5aa8b
+🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+
+[15:04:05.123] [stdout] [Seq: 1] Starting deployment...
+[15:04:06.456] [stdout] [Seq: 2] Compiling program...
+^C
+
+⚠️  Interrupt received, stopping stream...
+
+⚠️  Stream cancelled
+
+📊 Total messages received: 2 (last sequence: 2)
+```
+
+#### Error Handling
+
+**Backend URL Not Configured:**
+
+```
+Error: backend URL not configured. Run: project-planton config set backend-url <url>
+```
+
+**Solution:**
+
+```bash
+project-planton config set backend-url http://localhost:50051
+```
+
+**Connection Issues:**
+
+```
+❌ Error: Cannot connect to backend service at http://localhost:50051. Please check:
+  1. The backend service is running
+  2. The backend URL is correct
+  3. Network connectivity
+```
+
+**Solutions:**
+
+1. **Check if backend service is running:**
+
+   ```bash
+   # Check if port is accessible
+   curl http://localhost:50051
+   ```
+
+2. **Verify backend URL configuration:**
+
+   ```bash
+   project-planton config get backend-url
+   ```
+
+3. **Update backend URL if needed:**
+   ```bash
+   project-planton config set backend-url <correct-url>
+   ```
+
+**Stack Job Not Found:**
+
+```
+❌ Error: Stack job with ID 'invalid-id' not found
+```
+
+**Solution:**
+
+- Verify the stack job ID is correct
+- Use `project-planton cloud-resource:get` to find the associated cloud resource and its stack jobs
+
+**Stream Error:**
+
+```
+❌ Stream error: <error details>
+```
+
+**Possible Causes:**
+
+- Backend service disconnected during streaming
+- Network interruption
+- Backend service error
+
+**Solutions:**
+
+1. Check backend service logs
+2. Verify network connectivity
+3. Retry the stream command
+4. Use `--last-sequence` to resume from the last received sequence number
+
+#### Use Cases
+
+**1. Monitoring Active Deployments**
+
+```bash
+# Stream output from an in-progress deployment
+project-planton stack-job:stream-output --id=<stack-job-id>
+```
+
+**2. Reviewing Completed Deployments**
+
+```bash
+# Stream all logs from a completed deployment
+project-planton stack-job:stream-output --id=<stack-job-id>
+```
+
+**3. Resuming After Disconnection**
+
+```bash
+# If disconnected, resume from the last sequence number you saw
+project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=150
+```
+
+#### Prerequisites
+
+Before using the stack-job:stream-output command, you must configure the backend URL:
+
+```bash
+project-planton config set backend-url <your-backend-url>
+```
+
+---
+
 ## Common Workflows
 
 ### Initial Setup
@@ -795,6 +1533,7 @@ project-planton config set backend-url <your-backend-url>
    ```
 
 5. **Check configuration:**
+
    ```bash
    project-planton config list
    ```

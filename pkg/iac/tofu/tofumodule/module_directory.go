@@ -100,7 +100,7 @@ func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
 
 	kindDirPath := filepath.Join(
 		moduleRepoDir,
-		"apis/project/planton/provider",
+		"apis/org/project_planton/provider",
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
 	terraformModulePath := filepath.Join(
@@ -122,7 +122,7 @@ func getWorkspaceDir() (string, error) {
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get cli workspace directory")
 	}
-	//base directory will always be ${HOME}/.planton-cloud/tofu
+	//base directory will always be ${HOME}/.project-planton/tofu
 	tofuModuleWorkspaceDir := filepath.Join(cliWorkspaceDir, "tofu")
 	if !fileutil.IsDirExists(tofuModuleWorkspaceDir) {
 		if err := os.MkdirAll(tofuModuleWorkspaceDir, os.ModePerm); err != nil {

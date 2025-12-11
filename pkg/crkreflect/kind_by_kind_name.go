@@ -14,7 +14,12 @@ func KindByKindName(kindName string) (cloudresourcekind.CloudResourceKind, error
 			continue
 		}
 		// Compare the kind_name in the metadata with the message kind name
-		if kindMeta.Name == kindName {
+		// If kindMeta.Name is empty, fall back to comparing with enum value name
+		metaName := kindMeta.Name
+		if metaName == "" {
+			metaName = kind.String()
+		}
+		if metaName == kindName {
 			// If it matches, return the corresponding ApiResourceKind
 			return kind, nil
 		}

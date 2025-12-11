@@ -21,7 +21,6 @@ func GetWithCreatedEksClusterWithAwsProviderConfigs(ctx *pulumi.Context, created
 				createdEksCluster.CertificateAuthority.Data().Elem(),
 				awsProviderConfig.AccessKeyId,
 				awsProviderConfig.SecretAccessKey,
-				awsProviderConfig.Region,
 			),
 		}, pulumi.DependsOn(dependencies))
 	if err != nil {

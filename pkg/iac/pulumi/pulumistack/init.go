@@ -54,7 +54,7 @@ func Init(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[st
 		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", finalStackFqdn)
 	}
 
-	if err := updateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName); err != nil {
+	if err := UpdateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName); err != nil {
 		return errors.Wrapf(err, "failed to update project name in %s/Pulumi.yaml", pulumiModuleRepoPath)
 	}
 

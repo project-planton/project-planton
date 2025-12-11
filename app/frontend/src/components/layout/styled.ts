@@ -9,6 +9,8 @@ export const StyledWrapperBox = styled(Box, {
   minHeight: `calc(100vh - ${theme.spacing(8)})`,
   backgroundColor: $hasWhiteBg ? theme.palette.grey[0] : theme.palette.grey[20],
   marginTop: theme.spacing(8),
+  minWidth: 0,
+  overflowX: 'hidden',
 }));
 
 export const StyledContainer = styled(Container)(({ theme }) => ({
@@ -17,4 +19,6 @@ export const StyledContainer = styled(Container)(({ theme }) => ({
   width: '100%',
   maxWidth: '100% !important',
   minHeight: `calc(100vh - ${theme.spacing(8)})`,
+  minWidth: 0,
+  overflowX: 'hidden',
 }));

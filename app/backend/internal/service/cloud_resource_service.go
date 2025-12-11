@@ -6,7 +6,6 @@ import (
 
 	"github.com/project-planton/project-planton/app/backend/internal/database"
 	"github.com/project-planton/project-planton/app/backend/pkg/models"
-	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 
 	"connectrpc.com/connect"
@@ -16,13 +15,15 @@ import (
 
 // CloudResourceService implements the CloudResourceService RPC.
 type CloudResourceService struct {
-	repo *database.CloudResourceRepository
+	repo            *database.CloudResourceRepository
+	stackJobService *StackJobService
 }
 
 // NewCloudResourceService creates a new service instance.
-func NewCloudResourceService(repo *database.CloudResourceRepository) *CloudResourceService {
+func NewCloudResourceService(repo *database.CloudResourceRepository, stackJobService *StackJobService) *CloudResourceService {
 	return &CloudResourceService{
-		repo: repo,
+		repo:            repo,
+		stackJobService: stackJobService,
 	}
 }
 
@@ -39,7 +40,6 @@ func (s *CloudResourceService) CreateCloudResource(
 	// Parse YAML to extract kind and metadata.name
 	var yamlData map[string]interface{}
 	if err := yaml.Unmarshal([]byte(manifest), &yamlData); err != nil {
-		logrus.WithError(err).Error("Failed to parse YAML manifest")
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid YAML format: %w", err))
 	}
 
@@ -60,15 +60,9 @@ func (s *CloudResourceService) CreateCloudResource(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest must contain 'metadata.name' field"))
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"name": name,
-		"kind": kind,
-	}).Info("Creating cloud resource")
-
 	// Check if a resource with the same name already exists
 	existingResource, err := s.repo.FindByName(ctx, name)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to check for existing cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to validate cloud resource name: %w", err))
 	}
 	if existingResource != nil {
@@ -85,8 +79,22 @@ func (s *CloudResourceService) CreateCloudResource(
 	// Save to database
 	createdResource, err := s.repo.Create(ctx, cloudResource)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to create cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create cloud resource: %w", err))
+	}
+
+	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
+	if s.stackJobService != nil {
+		// Create a deployment request (no provider_config needed - will be resolved automatically)
+		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
+			Msg: &backendv1.DeployCloudResourceRequest{
+				CloudResourceId: createdResource.ID.Hex(),
+			},
+		}
+
+		// Trigger deployment asynchronously (don't wait for it)
+		go func() {
+			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+		}()
 	}
 
 	// Convert to proto
@@ -133,7 +141,6 @@ func (s *CloudResourceService) ListCloudResources(
 	// Calculate total pages
 	totalCount, err := s.repo.Count(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to count cloud resources for pagination")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count cloud resources: %w", err))
 	}
 
@@ -142,15 +149,8 @@ func (s *CloudResourceService) ListCloudResources(
 		totalPages = int32((totalCount + int64(pageSize) - 1) / int64(pageSize))
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"kind":      req.Msg.Kind,
-		"page_num":  opts.PageNum,
-		"page_size": opts.PageSize,
-	}).Info("Listing cloud resources")
-
 	resources, err := s.repo.List(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to list cloud resources")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list cloud resources: %w", err))
 	}
 
@@ -191,13 +191,8 @@ func (s *CloudResourceService) GetCloudResource(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"id": id,
-	}).Info("Getting cloud resource")
-
 	resource, err := s.repo.FindByID(ctx, id)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to get cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to get cloud resource: %w", err))
 	}
 
@@ -242,7 +237,6 @@ func (s *CloudResourceService) UpdateCloudResource(
 	// Check if resource exists
 	existingResource, err := s.repo.FindByID(ctx, id)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to find cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to find cloud resource: %w", err))
 	}
 	if existingResource == nil {
@@ -252,7 +246,6 @@ func (s *CloudResourceService) UpdateCloudResource(
 	// Parse YAML to extract kind and metadata.name
 	var yamlData map[string]interface{}
 	if err := yaml.Unmarshal([]byte(manifest), &yamlData); err != nil {
-		logrus.WithError(err).Error("Failed to parse YAML manifest")
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid YAML format: %w", err))
 	}
 
@@ -284,12 +277,6 @@ func (s *CloudResourceService) UpdateCloudResource(
 			fmt.Errorf("manifest kind '%s' does not match existing resource kind '%s'", kind, existingResource.Kind))
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"id":   id,
-		"name": name,
-		"kind": kind,
-	}).Info("Updating cloud resource")
-
 	// Create updated domain model
 	cloudResource := &models.CloudResource{
 		Name:     name,
@@ -300,8 +287,22 @@ func (s *CloudResourceService) UpdateCloudResource(
 	// Update in database
 	updatedResource, err := s.repo.Update(ctx, id, cloudResource)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to update cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update cloud resource: %w", err))
+	}
+
+	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
+	if s.stackJobService != nil {
+		// Create a deployment request (no provider_config needed - will be resolved automatically)
+		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
+			Msg: &backendv1.DeployCloudResourceRequest{
+				CloudResourceId: id,
+			},
+		}
+
+		// Trigger deployment asynchronously (don't wait for it)
+		go func() {
+			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+		}()
 	}
 
 	// Convert to proto
@@ -334,14 +335,9 @@ func (s *CloudResourceService) DeleteCloudResource(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"id": id,
-	}).Info("Deleting cloud resource")
-
 	// Check if resource exists first
 	resource, err := s.repo.FindByID(ctx, id)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to find cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to find cloud resource: %w", err))
 	}
 	if resource == nil {
@@ -351,7 +347,6 @@ func (s *CloudResourceService) DeleteCloudResource(
 	// Delete from database
 	err = s.repo.Delete(ctx, id)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to delete cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete cloud resource: %w", err))
 	}
 
@@ -373,7 +368,6 @@ func (s *CloudResourceService) ApplyCloudResource(
 	// Parse YAML to extract kind and metadata.name
 	var yamlData map[string]interface{}
 	if err := yaml.Unmarshal([]byte(manifest), &yamlData); err != nil {
-		logrus.WithError(err).Error("Failed to parse YAML manifest")
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid YAML format: %w", err))
 	}
 
@@ -397,7 +391,6 @@ func (s *CloudResourceService) ApplyCloudResource(
 	// Check if resource exists by name and kind
 	existingResource, err := s.repo.FindByNameAndKind(ctx, name, kind)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to check for existing cloud resource")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to check for existing cloud resource: %w", err))
 	}
 
@@ -406,11 +399,6 @@ func (s *CloudResourceService) ApplyCloudResource(
 
 	if existingResource != nil {
 		// Resource exists - perform update
-		logrus.WithFields(logrus.Fields{
-			"id":   existingResource.ID.Hex(),
-			"name": name,
-			"kind": kind,
-		}).Info("Updating existing cloud resource via apply")
 
 		cloudResource := &models.CloudResource{
 			Name:     name,
@@ -420,16 +408,11 @@ func (s *CloudResourceService) ApplyCloudResource(
 
 		resultResource, err = s.repo.Update(ctx, existingResource.ID.Hex(), cloudResource)
 		if err != nil {
-			logrus.WithError(err).Error("Failed to update cloud resource")
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update cloud resource: %w", err))
 		}
 		created = false
 	} else {
 		// Resource doesn't exist - perform create
-		logrus.WithFields(logrus.Fields{
-			"name": name,
-			"kind": kind,
-		}).Info("Creating new cloud resource via apply")
 
 		cloudResource := &models.CloudResource{
 			Name:     name,
@@ -439,7 +422,6 @@ func (s *CloudResourceService) ApplyCloudResource(
 
 		resultResource, err = s.repo.Create(ctx, cloudResource)
 		if err != nil {
-			logrus.WithError(err).Error("Failed to create cloud resource")
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create cloud resource: %w", err))
 		}
 		created = true
@@ -477,13 +459,8 @@ func (s *CloudResourceService) CountCloudResources(
 		opts.Kind = &kind
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"kind": req.Msg.Kind,
-	}).Info("Counting cloud resources")
-
 	count, err := s.repo.Count(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to count cloud resources")
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count cloud resources: %w", err))
 	}
 

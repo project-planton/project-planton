@@ -29,7 +29,6 @@ export const useCloudResourceQuery = () => {
       ): Promise<ListCloudResourcesResponse> => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
-          console.log('input', input);
           queryClient
             .listCloudResources(input)
             .then((response) => {

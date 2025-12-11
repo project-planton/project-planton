@@ -11,8 +11,14 @@ import (
 func dbInstance(ctx *pulumi.Context, locals *Locals, provider *aws.Provider, createdSubnetGroup *rds.SubnetGroup) (*rds.Instance, error) {
 	spec := locals.AwsRdsInstance.Spec
 
+	// Use Metadata.Id if available, otherwise fall back to Metadata.Name (consistent with Terraform version)
+	instanceIdentifier := locals.AwsRdsInstance.Metadata.Id
+	if instanceIdentifier == "" {
+		instanceIdentifier = locals.AwsRdsInstance.Metadata.Name
+	}
+
 	args := &rds.InstanceArgs{
-		Identifier:         pulumi.String(locals.AwsRdsInstance.Metadata.Id),
+		Identifier:         pulumi.String(instanceIdentifier),
 		Engine:             pulumi.String(spec.Engine),
 		EngineVersion:      pulumi.String(spec.EngineVersion),
 		InstanceClass:      pulumi.String(spec.InstanceClass),

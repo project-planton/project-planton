@@ -127,20 +127,43 @@ func (r *StackJobRepository) Update(ctx context.Context, id string, job *models.
 	return &updatedJob, nil
 }
 
-// List retrieves stack jobs with optional filters.
-func (r *StackJobRepository) List(ctx context.Context, cloudResourceID *string, status *string) ([]*models.StackJob, error) {
+// StackJobListOptions contains options for listing stack jobs.
+type StackJobListOptions struct {
+	CloudResourceID *string
+	Status          *string
+	PageNum         *int32
+	PageSize        *int32
+}
+
+// List retrieves stack jobs with optional filters and pagination.
+func (r *StackJobRepository) List(ctx context.Context, opts *StackJobListOptions) ([]*models.StackJob, error) {
 	filter := bson.M{}
 
-	if cloudResourceID != nil && *cloudResourceID != "" {
-		filter["cloud_resource_id"] = *cloudResourceID
-	}
+	if opts != nil {
+		if opts.CloudResourceID != nil && *opts.CloudResourceID != "" {
+			filter["cloud_resource_id"] = *opts.CloudResourceID
+		}
 
-	if status != nil && *status != "" {
-		filter["status"] = *status
+		if opts.Status != nil && *opts.Status != "" {
+			filter["status"] = *opts.Status
+		}
 	}
 
 	findOptions := options.Find()
-	findOptions.SetSort(bson.D{{Key: "created_at", Value: -1}}) // Newest first
+
+	// Apply pagination if provided
+	if opts != nil && opts.PageNum != nil && opts.PageSize != nil {
+		pageNum := *opts.PageNum
+		pageSize := *opts.PageSize
+		if pageSize > 0 {
+			skip := int64(pageNum) * int64(pageSize)
+			findOptions.SetSkip(skip)
+			findOptions.SetLimit(int64(pageSize))
+		}
+	}
+
+	// Sort by created_at descending (newest first)
+	findOptions.SetSort(bson.D{{Key: "created_at", Value: -1}})
 
 	cursor, err := r.collection.Find(ctx, filter, findOptions)
 	if err != nil {
@@ -154,4 +177,26 @@ func (r *StackJobRepository) List(ctx context.Context, cloudResourceID *string, 
 	}
 
 	return jobs, nil
+}
+
+// Count returns the total count of stack jobs with optional filters.
+func (r *StackJobRepository) Count(ctx context.Context, opts *StackJobListOptions) (int64, error) {
+	filter := bson.M{}
+
+	if opts != nil {
+		if opts.CloudResourceID != nil && *opts.CloudResourceID != "" {
+			filter["cloud_resource_id"] = *opts.CloudResourceID
+		}
+
+		if opts.Status != nil && *opts.Status != "" {
+			filter["status"] = *opts.Status
+		}
+	}
+
+	count, err := r.collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, fmt.Errorf("failed to count stack jobs: %w", err)
+	}
+
+	return count, nil
 }

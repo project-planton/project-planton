@@ -1,14 +1,15 @@
 package stackinputproviderconfig
 
 import (
+	"os"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"gopkg.in/yaml.v3"
-	"os"
 )
 
 const (
-	AwsProviderConfigKey  = "awsProviderConfig"
+	AwsProviderConfigKey  = "provider_config"
 	awsProviderConfigYaml = "aws-provider-config.yaml"
 )
 

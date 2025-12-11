@@ -1,0 +1,267 @@
+package database
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/project-planton/project-planton/app/backend/pkg/models"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+const (
+	// CredentialCollectionName is the unified collection for all provider credentials
+	CredentialCollectionName = "credentials"
+)
+
+// CredentialRepository provides unified data access for all provider credentials.
+type CredentialRepository struct {
+	collection *mongo.Collection
+}
+
+// NewCredentialRepository creates a new unified credential repository instance.
+func NewCredentialRepository(db *MongoDB) *CredentialRepository {
+	return &CredentialRepository{
+		collection: db.Database.Collection(CredentialCollectionName),
+	}
+}
+
+// CreateGcp creates a new GCP credential.
+func (r *CredentialRepository) CreateGcp(ctx context.Context, name, serviceAccountKeyBase64 string) (*models.GcpCredential, error) {
+	now := time.Now()
+	credential := &models.GcpCredential{
+		ID:                      primitive.NewObjectID(),
+		Name:                    name,
+		ServiceAccountKeyBase64: serviceAccountKeyBase64,
+		CreatedAt:               now,
+		UpdatedAt:               now,
+	}
+
+	// Store as document with provider field
+	doc := bson.M{
+		"_id":                        credential.ID,
+		"name":                       credential.Name,
+		"provider":                   "gcp",
+		"service_account_key_base64": credential.ServiceAccountKeyBase64,
+		"created_at":                 credential.CreatedAt,
+		"updated_at":                 credential.UpdatedAt,
+	}
+
+	_, err := r.collection.InsertOne(ctx, doc)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create GCP credential: %w", err)
+	}
+
+	return credential, nil
+}
+
+// CreateAws creates a new AWS credential.
+func (r *CredentialRepository) CreateAws(ctx context.Context, name, accountID, accessKeyID, secretAccessKey, region, sessionToken string) (*models.AwsCredential, error) {
+	now := time.Now()
+	credential := &models.AwsCredential{
+		ID:              primitive.NewObjectID(),
+		Name:            name,
+		AccountID:       accountID,
+		AccessKeyID:     accessKeyID,
+		SecretAccessKey: secretAccessKey,
+		Region:          region,
+		SessionToken:    sessionToken,
+		CreatedAt:       now,
+		UpdatedAt:       now,
+	}
+
+	doc := bson.M{
+		"_id":               credential.ID,
+		"name":              credential.Name,
+		"provider":          "aws",
+		"account_id":        credential.AccountID,
+		"access_key_id":     credential.AccessKeyID,
+		"secret_access_key": credential.SecretAccessKey,
+		"created_at":        credential.CreatedAt,
+		"updated_at":        credential.UpdatedAt,
+	}
+	if region != "" {
+		doc["region"] = region
+	}
+	if sessionToken != "" {
+		doc["session_token"] = sessionToken
+	}
+
+	_, err := r.collection.InsertOne(ctx, doc)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create AWS credential: %w", err)
+	}
+
+	return credential, nil
+}
+
+// CreateAzure creates a new Azure credential.
+func (r *CredentialRepository) CreateAzure(ctx context.Context, name, clientID, clientSecret, tenantID, subscriptionID string) (*models.AzureCredential, error) {
+	now := time.Now()
+	credential := &models.AzureCredential{
+		ID:             primitive.NewObjectID(),
+		Name:           name,
+		ClientID:       clientID,
+		ClientSecret:   clientSecret,
+		TenantID:       tenantID,
+		SubscriptionID: subscriptionID,
+		CreatedAt:      now,
+		UpdatedAt:      now,
+	}
+
+	doc := bson.M{
+		"_id":             credential.ID,
+		"name":            credential.Name,
+		"provider":        "azure",
+		"client_id":       credential.ClientID,
+		"client_secret":   credential.ClientSecret,
+		"tenant_id":       credential.TenantID,
+		"subscription_id": credential.SubscriptionID,
+		"created_at":      credential.CreatedAt,
+		"updated_at":      credential.UpdatedAt,
+	}
+
+	_, err := r.collection.InsertOne(ctx, doc)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Azure credential: %w", err)
+	}
+
+	return credential, nil
+}
+
+// FindFirstByProvider retrieves the first credential for a given provider.
+func (r *CredentialRepository) FindFirstByProvider(ctx context.Context, provider string) (interface{}, error) {
+	filter := bson.M{"provider": provider}
+
+	var result bson.M
+	err := r.collection.FindOne(ctx, filter).Decode(&result)
+	if err == mongo.ErrNoDocuments {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to find %s credential: %w", provider, err)
+	}
+
+	// Convert to appropriate model based on provider
+	switch provider {
+	case "gcp":
+		return convertToGcpCredential(result)
+	case "aws":
+		return convertToAwsCredential(result)
+	case "azure":
+		return convertToAzureCredential(result)
+	default:
+		return nil, fmt.Errorf("unsupported provider: %s", provider)
+	}
+}
+
+// List retrieves all credentials with optional provider filter.
+// Returns credential summaries (without sensitive data like keys/secrets).
+func (r *CredentialRepository) List(ctx context.Context, provider *string) ([]bson.M, error) {
+	filter := bson.M{}
+	if provider != nil && *provider != "" {
+		filter["provider"] = *provider
+	}
+
+	cursor, err := r.collection.Find(ctx, filter)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list credentials: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	var results []bson.M
+	if err := cursor.All(ctx, &results); err != nil {
+		return nil, fmt.Errorf("failed to decode credentials: %w", err)
+	}
+
+	return results, nil
+}
+
+// Helper functions to convert bson.M to typed credentials
+func convertToGcpCredential(doc bson.M) (*models.GcpCredential, error) {
+	id, ok := doc["_id"].(primitive.ObjectID)
+	if !ok {
+		return nil, fmt.Errorf("invalid _id field")
+	}
+
+	// Convert primitive.DateTime to time.Time
+	var createdAt, updatedAt time.Time
+	if dt, ok := doc["created_at"].(primitive.DateTime); ok {
+		createdAt = dt.Time()
+	}
+	if dt, ok := doc["updated_at"].(primitive.DateTime); ok {
+		updatedAt = dt.Time()
+	}
+
+	return &models.GcpCredential{
+		ID:                      id,
+		Name:                    doc["name"].(string),
+		ServiceAccountKeyBase64: doc["service_account_key_base64"].(string),
+		CreatedAt:               createdAt,
+		UpdatedAt:               updatedAt,
+	}, nil
+}
+
+func convertToAwsCredential(doc bson.M) (*models.AwsCredential, error) {
+	id, ok := doc["_id"].(primitive.ObjectID)
+	if !ok {
+		return nil, fmt.Errorf("invalid _id field")
+	}
+
+	// Convert primitive.DateTime to time.Time
+	var createdAt, updatedAt time.Time
+	if dt, ok := doc["created_at"].(primitive.DateTime); ok {
+		createdAt = dt.Time()
+	}
+	if dt, ok := doc["updated_at"].(primitive.DateTime); ok {
+		updatedAt = dt.Time()
+	}
+
+	cred := &models.AwsCredential{
+		ID:              id,
+		Name:            doc["name"].(string),
+		AccountID:       doc["account_id"].(string),
+		AccessKeyID:     doc["access_key_id"].(string),
+		SecretAccessKey: doc["secret_access_key"].(string),
+		CreatedAt:       createdAt,
+		UpdatedAt:       updatedAt,
+	}
+
+	if region, ok := doc["region"].(string); ok {
+		cred.Region = region
+	}
+	if sessionToken, ok := doc["session_token"].(string); ok {
+		cred.SessionToken = sessionToken
+	}
+
+	return cred, nil
+}
+
+func convertToAzureCredential(doc bson.M) (*models.AzureCredential, error) {
+	id, ok := doc["_id"].(primitive.ObjectID)
+	if !ok {
+		return nil, fmt.Errorf("invalid _id field")
+	}
+
+	// Convert primitive.DateTime to time.Time
+	var createdAt, updatedAt time.Time
+	if dt, ok := doc["created_at"].(primitive.DateTime); ok {
+		createdAt = dt.Time()
+	}
+	if dt, ok := doc["updated_at"].(primitive.DateTime); ok {
+		updatedAt = dt.Time()
+	}
+
+	return &models.AzureCredential{
+		ID:             id,
+		Name:           doc["name"].(string),
+		ClientID:       doc["client_id"].(string),
+		ClientSecret:   doc["client_secret"].(string),
+		TenantID:       doc["tenant_id"].(string),
+		SubscriptionID: doc["subscription_id"].(string),
+		CreatedAt:      createdAt,
+		UpdatedAt:      updatedAt,
+	}, nil
+}

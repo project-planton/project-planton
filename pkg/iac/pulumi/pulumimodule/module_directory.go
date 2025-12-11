@@ -46,8 +46,8 @@ func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 		}
 	}
 
-	//checkout the project-planton version tag if it is not the default version
-	if version.Version != version.DefaultVersion {
+	//checkout the project-planton version tag if it is not the default version and not empty
+	if version.Version != "" && version.Version != version.DefaultVersion {
 		gitCheckoutCommand := exec.Command("git", "-C", pulumiModuleRepoPath, "checkout", version.Version)
 		gitCheckoutCommand.Stdout = os.Stdout
 		gitCheckoutCommand.Stderr = os.Stderr
@@ -84,7 +84,7 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 
 	kindDirPath := filepath.Join(
 		moduleRepoDir,
-		"apis/project/planton/provider",
+		"apis/org/project_planton/provider",
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
 	pulumiModulePath := filepath.Join(
@@ -106,7 +106,7 @@ func getWorkspaceDir(stackFqdn string) (string, error) {
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
 	}
-	//base directory will always be ${HOME}/.planton-cloud/pulumi
+	//base directory will always be ${HOME}/.project-planton/pulumi
 	stackWorkspaceDir := filepath.Join(cliWorkspaceDir, "pulumi", stackFqdn)
 	if !fileutil.IsDirExists(stackWorkspaceDir) {
 		if err := os.MkdirAll(stackWorkspaceDir, os.ModePerm); err != nil {

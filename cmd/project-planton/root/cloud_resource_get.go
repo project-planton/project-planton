@@ -92,4 +92,3 @@ func cloudResourceGetHandler(cmd *cobra.Command, args []string) {
 	fmt.Println("----------")
 	fmt.Println(resource.Manifest)
 }
-
