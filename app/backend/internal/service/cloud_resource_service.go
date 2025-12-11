@@ -427,6 +427,21 @@ func (s *CloudResourceService) ApplyCloudResource(
 		created = true
 	}
 
+	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
+	if s.stackJobService != nil {
+		// Create a deployment request (no provider_config needed - will be resolved automatically)
+		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
+			Msg: &backendv1.DeployCloudResourceRequest{
+				CloudResourceId: resultResource.ID.Hex(),
+			},
+		}
+
+		// Trigger deployment asynchronously (don't wait for it)
+		go func() {
+			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+		}()
+	}
+
 	// Convert to proto
 	protoResource := &backendv1.CloudResource{
 		Id:       resultResource.ID.Hex(),
