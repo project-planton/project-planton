@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/project-planton/project-planton/cmd/project-planton/root"
+	"github.com/project-planton/project-planton/cmd/project-planton/root/webapp"
 	"github.com/spf13/cobra"
 )
 
@@ -41,6 +42,7 @@ func init() {
 		root.Tofu,
 		root.ValidateManifest,
 		root.Version,
+		webapp.WebAppCmd,
 	)
 }
 

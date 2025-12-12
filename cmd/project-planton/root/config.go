@@ -11,7 +11,9 @@ import (
 )
 
 type Config struct {
-	BackendURL string `yaml:"backend-url,omitempty"`
+	BackendURL         string `yaml:"backend-url,omitempty"`
+	WebAppContainerID  string `yaml:"webapp-container-id,omitempty"`
+	WebAppVersion      string `yaml:"webapp-version,omitempty"`
 }
 
 var ConfigCmd = &cobra.Command{
@@ -160,9 +162,21 @@ func configListHandler(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	hasConfig := false
 	if config.BackendURL != "" {
 		fmt.Printf("backend-url=%s\n", config.BackendURL)
-	} else {
+		hasConfig = true
+	}
+	if config.WebAppContainerID != "" {
+		fmt.Printf("webapp-container-id=%s\n", config.WebAppContainerID)
+		hasConfig = true
+	}
+	if config.WebAppVersion != "" {
+		fmt.Printf("webapp-version=%s\n", config.WebAppVersion)
+		hasConfig = true
+	}
+
+	if !hasConfig {
 		fmt.Println("No configuration values set")
 	}
 }
@@ -179,4 +193,14 @@ func GetBackendURL() (string, error) {
 	}
 
 	return config.BackendURL, nil
+}
+
+// LoadConfigPublic loads the configuration (exported for other packages)
+func LoadConfigPublic() (*Config, error) {
+	return loadConfig()
+}
+
+// SaveConfigPublic saves the configuration (exported for other packages)
+func SaveConfigPublic(config *Config) error {
+	return saveConfig(config)
 }
