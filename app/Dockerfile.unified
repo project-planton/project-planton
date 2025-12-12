@@ -74,7 +74,11 @@ RUN yarn build
 # ==========================================
 FROM ubuntu:22.04
 
-# Install runtime dependencies
+# Set non-interactive frontend to avoid prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Install MongoDB repository and dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     tzdata \
@@ -83,8 +87,15 @@ RUN apt-get update && apt-get install -y \
     git \
     procps \
     supervisor \
-    mongodb \
+    gnupg \
     && rm -rf /var/lib/apt/lists/*
+
+# Add MongoDB official repository (Ubuntu 22.04 uses MongoDB 8.0)
+RUN curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/8.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-8.0.list && \
+    apt-get update && \
+    apt-get install -y mongodb-org && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 20
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
@@ -96,7 +107,7 @@ COPY --from=backend-builder /usr/local/go /usr/local/go
 
 # Install Pulumi CLI
 ARG PULUMI_VERSION=v3.206.0
-RUN wget -q "https://get.pulumi.com/releases/sdk/pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
+RUN wget "https://get.pulumi.com/releases/sdk/pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
     tar -xf "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
     mv pulumi/* /usr/local/bin/ && \
     rm -rf pulumi "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \

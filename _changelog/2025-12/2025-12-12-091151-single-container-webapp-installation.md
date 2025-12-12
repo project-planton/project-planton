@@ -130,11 +130,25 @@ FROM node:20-alpine AS frontend-builder
 **Stage 3: Final Runtime** (shipped to users)
 ```dockerfile
 FROM ubuntu:22.04
+# Set non-interactive frontend to avoid prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Install MongoDB official repository (Ubuntu 22.04 uses MongoDB 8.0)
+# Add GPG key and configure repository before installing mongodb-org
+RUN curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+    gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] \
+    https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/8.0 multiverse" | \
+    tee /etc/apt/sources.list.d/mongodb-org-8.0.list && \
+    apt-get update && \
+    apt-get install -y mongodb-org
+
 # Install runtime dependencies:
-#   - MongoDB server
+#   - MongoDB server (via official repository)
 #   - Node.js 20 (for Next.js SSR)
 #   - Supervisord (process manager)
-#   - Pulumi CLI v3.206.0
+#   - Pulumi CLI v3.206.0 (with progress output)
 #   - Git (for module cloning)
 # Copy pre-built backend binary from stage 1
 # Copy pre-built frontend from stage 2
@@ -149,6 +163,9 @@ FROM ubuntu:22.04
 - **Non-root user** (appuser) for security
 - **Health checks** at container level
 - **Persistent volumes** for MongoDB data, Pulumi state, and Go cache
+- **Non-interactive package installation** via `DEBIAN_FRONTEND=noninteractive` to prevent build hangs
+- **MongoDB 8.0 official repository** for Ubuntu 22.04 (jammy) compatibility
+- **Pulumi download progress** visible by removing `-q` flag from `wget` for better build visibility
 
 ### 2. Process Management
 
@@ -866,6 +883,53 @@ planton webapp uninstall
 planton webapp uninstall --purge-data --force
 ```
 
+## Build Fixes and Improvements
+
+During the Docker image build process, several fixes were applied to ensure reliable, non-interactive builds:
+
+### MongoDB Installation Fix
+
+**Problem**: The `mongodb` package from Ubuntu repositories was not available for Ubuntu 22.04 (jammy), causing build failures.
+
+**Solution**: Switched to MongoDB's official repository:
+- Added GPG key for MongoDB 8.0
+- Configured official repository for Ubuntu 22.04 (jammy)
+- Installed `mongodb-org` package from official source
+
+**Changes in `app/Dockerfile.unified`**:
+```dockerfile
+# Add MongoDB official repository (Ubuntu 22.04 uses MongoDB 8.0)
+RUN curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+    gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] \
+    https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/8.0 multiverse" | \
+    tee /etc/apt/sources.list.d/mongodb-org-8.0.list && \
+    apt-get update && \
+    apt-get install -y mongodb-org
+```
+
+### Non-Interactive Build Fix
+
+**Problem**: Package installation prompts (timezone configuration) caused builds to hang waiting for user input.
+
+**Solution**: Added environment variables to prevent interactive prompts:
+```dockerfile
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+```
+
+### Build Progress Visibility
+
+**Problem**: Pulumi CLI download progress was hidden with `-q` flag, making it difficult to monitor slow downloads.
+
+**Solution**: Removed `-q` flag from `wget` to show download progress:
+```dockerfile
+# Before: wget -q "https://get.pulumi.com/..."
+# After:  wget "https://get.pulumi.com/..."
+```
+
+These fixes ensure the Docker build completes successfully without manual intervention and provides better visibility into the build process.
+
 ## Known Limitations
 
 1. **Image Size**: ~500MB due to Ubuntu base and MongoDB inclusion
@@ -946,7 +1010,7 @@ planton webapp start
 
 ---
 
-**Status**: ✅ Implementation Complete - Ready for Docker Image Build and Manual Testing
-**Timeline**: ~2 hours implementation + 2-3 hours testing (estimated)
-**Next Action**: Build Docker image and run manual testing checklist
+**Status**: ✅ Implementation Complete - Docker Image Build Successful
+**Timeline**: ~2 hours implementation + 2-3 hours testing + build fixes
+**Completed**: Docker image built and tested successfully with all build fixes applied
 
