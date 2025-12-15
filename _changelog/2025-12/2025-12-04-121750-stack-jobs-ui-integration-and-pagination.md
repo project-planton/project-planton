@@ -787,11 +787,11 @@ export default function StackUpdateDetailPage() {
 - Loading states with skeleton placeholders
 - Stack job header component for key information
 
-**File**: `app/frontend/src/components/shared/stackupdate/stack-job-header.tsx`
+**File**: `app/frontend/src/components/shared/stackupdate/stack-update-header.tsx`
 
 Created header component:
 
-```14:56:app/frontend/src/components/shared/stackupdate/stack-job-header.tsx
+```14:56:app/frontend/src/components/shared/stackupdate/stack-update-header.tsx
 export function StackUpdateHeader({ stackUpdate, updatedTime }: StackUpdateHeaderProps) {
   return (
     <HeaderContainer>
@@ -1101,7 +1101,7 @@ DeployCloudResourceRequest {
 **Created**:
 
 - `app/frontend/src/components/shared/stackupdate/index.ts` - Stack job component exports
-- `app/frontend/src/components/shared/stackupdate/stack-job-header.tsx` - Stack job header component
+- `app/frontend/src/components/shared/stackupdate/stack-update-header.tsx` - Stack job header component
 - `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx` - Stack jobs drawer component
 - `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx` - Stack jobs list component with pagination
 - `app/frontend/src/components/shared/breadcrumb/index.tsx` - Breadcrumb navigation component

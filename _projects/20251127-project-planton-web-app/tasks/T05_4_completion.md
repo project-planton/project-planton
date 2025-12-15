@@ -3,7 +3,7 @@
 **Status:** ✅ COMPLETED
 **Date:** December 3, 2025
 **Type:** Feature
-**Changelog:** `2025-12-03-171627-pulumi-cli-stack-job-api-implementation.md`
+**Changelog:** `2025-12-03-171627-pulumi-cli-stack-update-api-implementation.md`
 
 ---
 

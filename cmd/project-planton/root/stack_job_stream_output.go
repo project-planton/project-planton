@@ -16,7 +16,7 @@ import (
 )
 
 var StackUpdateStreamOutputCmd = &cobra.Command{
-	Use:   "stack-job:stream-output",
+	Use:   "stack-update:stream-output",
 	Short: "stream real-time output from a stack-update",
 	Long:  "Stream real-time deployment logs from a stack-update. Shows stdout and stderr output as it's generated during deployment.",
 	Run:   stackUpdateStreamOutputHandler,
@@ -33,7 +33,7 @@ func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 	jobID, _ := cmd.Flags().GetString("id")
 	if jobID == "" {
 		fmt.Println("Error: --id flag is required. Provide the stack-update ID")
-		fmt.Println("Usage: project-planton stack-job:stream-output --id=<stack-job-id>")
+		fmt.Println("Usage: project-planton stack-update:stream-output --id=<stack-update-id>")
 		os.Exit(1)
 	}
 

@@ -140,5 +140,5 @@ func cloudResourceApplyHandler(cmd *cobra.Command, args []string) {
 
 	fmt.Printf("\n🚀 Pulumi deployment has been triggered automatically.\n")
 	fmt.Printf("   Deployment is running in the background.\n")
-	fmt.Printf("   Use 'project-planton stack-job:list' to check deployment status.\n")
+	fmt.Printf("   Use 'project-planton stack-update:list' to check deployment status.\n")
 }

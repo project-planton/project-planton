@@ -1137,7 +1137,7 @@ Updated At: 2025-11-28 13:14:12
 
 🚀 Pulumi deployment has been triggered automatically.
    Deployment is running in the background.
-   Use 'project-planton stack-job:list' to check deployment status.
+   Use 'project-planton stack-update:list' to check deployment status.
 ```
 
 #### Sample Output (Update)
@@ -1158,7 +1158,7 @@ Updated At: 2025-11-28 15:30:45
 
 🚀 Pulumi deployment has been triggered automatically.
    Deployment is running in the background.
-   Use 'project-planton stack-job:list' to check deployment status.
+   Use 'project-planton stack-update:list' to check deployment status.
 ```
 
 #### Flags
@@ -2295,7 +2295,7 @@ Additional credential providers coming soon:
 
 Stack jobs represent deployment operations for cloud resources. You can stream real-time output from stack-updates to monitor deployment progress.
 
-### `project-planton stack-job:stream-output`
+### `project-planton stack-update:stream-output`
 
 Stream real-time deployment logs from a stack-update. Shows stdout and stderr output as it's generated during deployment.
 
@@ -2303,7 +2303,7 @@ Stream real-time deployment logs from a stack-update. Shows stdout and stderr ou
 
 ```bash
 # Stream output from a stack-update
-project-planton stack-job:stream-output --id=<stack-job-id>
+project-planton stack-update:stream-output --id=<stack-update-id>
 ```
 
 **Sample Output:**
@@ -2328,7 +2328,7 @@ If you need to resume streaming from a specific point (e.g., after disconnection
 
 ```bash
 # Resume from sequence 100
-project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=100
+project-planton stack-update:stream-output --id=<stack-update-id> --last-sequence=100
 ```
 
 **Sample Output:**
@@ -2367,7 +2367,7 @@ The stream command supports graceful shutdown via interrupt signals:
 **Example:**
 
 ```bash
-$ project-planton stack-job:stream-output --id=69369e4ec78ad326a6e5aa8b
+$ project-planton stack-update:stream-output --id=69369e4ec78ad326a6e5aa8b
 🚀 Streaming output for stack-update: 69369e4ec78ad326a6e5aa8b
 
 [15:04:05.123] [stdout] [Seq: 1] Starting deployment...
@@ -2460,26 +2460,26 @@ project-planton config set backend-url http://localhost:50051
 
 ```bash
 # Stream output from an in-progress deployment
-project-planton stack-job:stream-output --id=<stack-job-id>
+project-planton stack-update:stream-output --id=<stack-update-id>
 ```
 
 **2. Reviewing Completed Deployments**
 
 ```bash
 # Stream all logs from a completed deployment
-project-planton stack-job:stream-output --id=<stack-job-id>
+project-planton stack-update:stream-output --id=<stack-update-id>
 ```
 
 **3. Resuming After Disconnection**
 
 ```bash
 # If disconnected, resume from the last sequence number you saw
-project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=150
+project-planton stack-update:stream-output --id=<stack-update-id> --last-sequence=150
 ```
 
 #### Prerequisites
 
-Before using the stack-job:stream-output command, ensure the backend is configured (automatically done if using `planton webapp init`):
+Before using the stack-update:stream-output command, ensure the backend is configured (automatically done if using `planton webapp init`):
 
 ```bash
 # If using remote backend, configure manually:

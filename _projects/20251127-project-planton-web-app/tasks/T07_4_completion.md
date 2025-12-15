@@ -120,7 +120,7 @@ Cleanup temporary files
 
 ### UI Components
 - `app/frontend/src/components/shared/stackupdate/index.ts` - Stack job component exports
-- `app/frontend/src/components/shared/stackupdate/stack-job-header.tsx` - Job header component
+- `app/frontend/src/components/shared/stackupdate/stack-update-header.tsx` - Job header component
 - `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx` - Drawer component
 - `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx` - List component with pagination
 - `app/frontend/src/components/shared/breadcrumb/index.tsx` - Breadcrumb navigation

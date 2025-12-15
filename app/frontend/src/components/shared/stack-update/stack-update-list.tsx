@@ -7,7 +7,7 @@ import { create } from '@bufbuild/protobuf';
 import { TableComp } from '@/components/shared/table';
 import { PAGINATION_MODE } from '@/models/table';
 import { StatusChip } from '@/components/shared/status-chip';
-import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
+import { useStackUpdateQuery } from '@/app/stack-update/_services';
 import { ListStackUpdatesRequestSchema } from '@/gen/org/project_planton/app/stackupdate/v1/io_pb';
 import { StackUpdate } from '@/gen/org/project_planton/app/stackupdate/v1/api_pb';
 import { PageInfoSchema } from '@/gen/org/project_planton/app/commons/page_info_pb';
@@ -90,7 +90,7 @@ export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
   const clickableColumns = useMemo(
     () => ({
       id: (row: StackUpdate) => {
-        router.push(`/stack-jobs/${row.id}`);
+        router.push(`/stack-update/${row.id}`);
       },
     }),
     [router]

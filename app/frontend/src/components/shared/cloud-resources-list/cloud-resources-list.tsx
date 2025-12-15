@@ -13,7 +13,7 @@ import { ListCloudResourcesRequestSchema } from '@/gen/org/project_planton/app/c
 import { CloudResource } from '@/gen/org/project_planton/app/cloudresource/v1/api_pb';
 import { PageInfoSchema } from '@/gen/org/project_planton/app/commons/page_info_pb';
 import { formatTimestampToDate } from '@/lib';
-import { StackUpdatesDrawer } from '@/components/shared/stackjob';
+import { StackUpdatesDrawer } from '@/components/shared/stack-update';
 
 type DrawerMode = 'view' | 'edit' | 'create' | null;
 

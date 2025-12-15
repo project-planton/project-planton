@@ -3,11 +3,11 @@
 import { useEffect, useState, useMemo, useCallback, useContext, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { Box, Skeleton, Stack, Typography, Paper, Divider, Tabs, Tab } from '@mui/material';
-import { StackUpdateContainer, LogContainer, LogEntry } from '@/app/stack-jobs/styled';
-import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
+import { StackUpdateContainer, LogContainer, LogEntry } from '@/app/stack-update/styled';
+import { useStackUpdateQuery } from '@/app/stack-update/_services';
 import { StackUpdate } from '@/gen/org/project_planton/app/stackupdate/v1/api_pb';
 import { Breadcrumb, BreadcrumbStartIcon, IBreadcrumbItem } from '@/components/shared/breadcrumb';
-import { StackUpdatesDrawer, StackUpdateHeader } from '@/components/shared/stackjob';
+import { StackUpdatesDrawer, StackUpdateHeader } from '@/components/shared/stack-update';
 import { ICON_NAMES } from '@/components/shared/icon';
 import { formatTimestampToDate } from '@/lib';
 import { JsonCode } from '@/components/shared/syntax-highlighter';
