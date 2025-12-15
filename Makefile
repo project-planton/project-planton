@@ -30,7 +30,7 @@ deps:
 	go mod tidy
 
 .PHONY: build_darwin
-build_darwin: vet
+build_darwin:
 	GOOS=darwin ${build_cmd} -o ${build_dir}/${name}-darwin .
 
 .PHONY: buf-generate

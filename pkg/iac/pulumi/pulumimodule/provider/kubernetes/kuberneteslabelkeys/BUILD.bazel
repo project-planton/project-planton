@@ -1,9 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "kuberneteslabelkeys",
-    srcs = ["kubernetes_label_keys.go"],
-    importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys",
-    visibility = ["//visibility:public"],
-    deps = ["//pkg/iac/pulumi/pulumimodule/labels/labelkeys"],
-)

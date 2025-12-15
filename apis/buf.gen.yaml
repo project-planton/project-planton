@@ -2,12 +2,6 @@ version: v2
 managed:
   enabled: true
   disable:
-    - file_option: java_package
-      module: google/protobuf/empty
-    - file_option: java_package
-      module: google/protobuf/timestamp
-    - file_option: java_package
-      module: buf.build/bufbuild/protovalidate
     - file_option: go_package
       module: google/protobuf/empty
     - file_option: go_package
@@ -15,10 +9,6 @@ managed:
     - file_option: go_package
       module: buf.build/bufbuild/protovalidate
   override:
-    - file_option: java_multiple_files
-      value: true
-    - file_option: java_string_check_utf8
-      value: false
     - file_option: optimize_for
       value: SPEED
     - file_option: go_package_prefix
@@ -28,7 +18,3 @@ plugins:
     out: generated/stubs/go
   - remote: buf.build/grpc/go:v1.5.1
     out: generated/stubs/go
-  - remote: buf.build/community/pseudomuto-doc:v1.5.1
-    out: generated/docs
-    opt:
-      - "json,docs.json"

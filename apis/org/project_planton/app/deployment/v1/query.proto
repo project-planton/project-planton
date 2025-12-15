@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package org.project_planton.app.v1;
+
+import "google/protobuf/timestamp.proto";
+
+import "org/project_planton/app/v1/cloud_resource_service.proto";
+
+// StackJobService provides operations for managing Pulumi stack deployment jobs.
+service StackJobService {
+  // DeployCloudResource deploys a cloud resource using Pulumi.
+  // Takes a cloud resource ID, fetches the manifest, executes pulumi up, and stores the result in stackjobs table.
+  rpc DeployCloudResource(DeployCloudResourceRequest) returns (DeployCloudResourceResponse);
+  // GetStackJob retrieves a stack job by ID.
+  rpc GetStackJob(GetStackJobRequest) returns (GetStackJobResponse);
+  // ListStackJobs lists stack jobs, optionally filtered by cloud resource ID or status.
+  rpc ListStackJobs(ListStackJobsRequest) returns (ListStackJobsResponse);
+  // StreamStackJobOutput streams real-time output from a stack job deployment.
+  // Streams output chunks from the stackjob_streaming_responses collection in real-time.
+  rpc StreamStackJobOutput(StreamStackJobOutputRequest) returns (stream StreamStackJobOutputResponse);
+}
+
+// Request message for deploying a cloud resource.
+message DeployCloudResourceRequest {
+  // The unique identifier of the cloud resource to deploy.
+  string cloud_resource_id = 1;
+  // Provider credentials are automatically resolved from the database
+  // based on the environment and provider type. No need to provide credentials in the request.
+}
+
+// Response message containing the created stack job.
+message DeployCloudResourceResponse {
+  // The created stack job.
+  StackJob job = 1;
+}
+
+// Request message for retrieving a stack job by ID.
+message GetStackJobRequest {
+  // The unique identifier of the stack job.
+  string id = 1;
+}
+
+// Response message containing the retrieved stack job.
+message GetStackJobResponse {
+  // The requested stack job.
+  StackJob job = 1;
+}
+
+// Request message for listing stack jobs.
+message ListStackJobsRequest {
+  // Optional filter by cloud resource ID.
+  optional string cloud_resource_id = 1;
+  // Optional filter by status (success, failed, in_progress).
+  optional string status = 2;
+  // Pagination parameters (optional). If not provided, returns all jobs.
+  optional PageInfo page_info = 3;
+}
+
+// Response message containing a list of stack jobs.
+message ListStackJobsResponse {
+  // List of stack jobs.
+  repeated StackJob jobs = 1;
+  // Total number of pages available (only set when page_info is provided).
+  int32 total_pages = 2;
+}
+
+// StackJob represents a Pulumi stack deployment job.
+message StackJob {
+  // Unique identifier for the stack job.
+  string id = 1;
+
+  // The cloud resource ID this job is associated with.
+  string cloud_resource_id = 2;
+
+  // The status of the deployment (success, failed, in_progress).
+  string status = 3;
+
+  // Pulumi deployment output as JSON string containing: status, stdout, stderr, exit_code, timestamp, stack_fqdn, error
+  string output = 4;
+
+  // Timestamp when the job was created.
+  google.protobuf.Timestamp created_at = 5;
+
+  // Timestamp when the job was last updated.
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+// Request message for streaming stack job output.
+message StreamStackJobOutputRequest {
+  // The unique identifier of the stack job to stream output from.
+  string job_id = 1;
+  // Optional: Last sequence number received (for resuming stream).
+  optional int32 last_sequence_num = 2;
+}
+
+// Response message containing a streaming output chunk.
+message StreamStackJobOutputResponse {
+  // Sequence number of this chunk (for ordering).
+  int32 sequence_num = 1;
+  // The output content (line or chunk).
+  string content = 2;
+  // Stream type: "stdout" or "stderr".
+  string stream_type = 3;
+  // Timestamp when this chunk was received.
+  google.protobuf.Timestamp timestamp = 4;
+  // Status of the stream: "streaming", "completed", "failed".
+  string status = 5;
+}
