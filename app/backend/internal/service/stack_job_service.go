@@ -33,13 +33,14 @@ import (
 	kubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	snowflakev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake"
 	cloudresourcekind "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	stackupdatev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // StackUpdateService implements the StackUpdateService RPC.
 type StackUpdateService struct {
-	stackUpdateRepo          *database.StackUpdateRepository
+	stackUpdateRepo       *database.StackUpdateRepository
 	cloudResourceRepo     *database.CloudResourceRepository
 	streamingResponseRepo *database.StackUpdateStreamingResponseRepository
 	credentialResolver    *CredentialResolver
@@ -53,7 +54,7 @@ func NewStackUpdateService(
 	credentialResolver *CredentialResolver,
 ) *StackUpdateService {
 	return &StackUpdateService{
-		stackUpdateRepo:          stackUpdateRepo,
+		stackUpdateRepo:       stackUpdateRepo,
 		cloudResourceRepo:     cloudResourceRepo,
 		streamingResponseRepo: streamingResponseRepo,
 		credentialResolver:    credentialResolver,
@@ -64,8 +65,8 @@ func NewStackUpdateService(
 // Fetches the manifest from the cloud resource ID, executes pulumi up, and stores the result in stackupdates table.
 func (s *StackUpdateService) DeployCloudResource(
 	ctx context.Context,
-	req *connect.Request[backendv1.DeployCloudResourceRequest],
-) (*connect.Response[backendv1.DeployCloudResourceResponse], error) {
+	req *connect.Request[stackupdatev1.DeployCloudResourceRequest],
+) (*connect.Response[stackupdatev1.DeployCloudResourceResponse], error) {
 	cloudResourceID := req.Msg.CloudResourceId
 	if cloudResourceID == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("cloud_resource_id cannot be empty"))
@@ -100,7 +101,7 @@ func (s *StackUpdateService) DeployCloudResource(
 	}()
 
 	// Convert to proto
-	protoJob := &backendv1.StackUpdate{
+	protoJob := &stackupdatev1.StackUpdate{
 		Id:              createdJob.ID.Hex(),
 		CloudResourceId: createdJob.CloudResourceID,
 		Status:          createdJob.Status,
@@ -114,31 +115,31 @@ func (s *StackUpdateService) DeployCloudResource(
 		protoJob.UpdatedAt = timestamppb.New(createdJob.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.DeployCloudResourceResponse{
-		Job: protoJob,
+	return connect.NewResponse(&stackupdatev1.DeployCloudResourceResponse{
+		StackUpdate: protoJob,
 	}), nil
 }
 
 // GetStackUpdate retrieves a stack-update by ID.
 func (s *StackUpdateService) GetStackUpdate(
 	ctx context.Context,
-	req *connect.Request[backendv1.GetStackUpdateRequest],
-) (*connect.Response[backendv1.GetStackUpdateResponse], error) {
+	req *connect.Request[stackupdatev1.GetStackUpdateRequest],
+) (*connect.Response[stackupdatev1.GetStackUpdateResponse], error) {
 	id := req.Msg.Id
 	if id == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("stack-update ID cannot be empty"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("stack job ID cannot be empty"))
 	}
 
 	job, err := s.stackUpdateRepo.FindByID(ctx, id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch stack-update: %w", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch stack job: %w", err))
 	}
 
 	if job == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("stack-update with ID '%s' not found", id))
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("stack job with ID '%s' not found", id))
 	}
 
-	protoJob := &backendv1.StackUpdate{
+	protoJob := &stackupdatev1.StackUpdate{
 		Id:              job.ID.Hex(),
 		CloudResourceId: job.CloudResourceID,
 		Status:          job.Status,
@@ -152,25 +153,25 @@ func (s *StackUpdateService) GetStackUpdate(
 		protoJob.UpdatedAt = timestamppb.New(job.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.GetStackUpdateResponse{
-		Job: protoJob,
+	return connect.NewResponse(&stackupdatev1.GetStackUpdateResponse{
+		StackUpdate: protoJob,
 	}), nil
 }
 
 // ListStackUpdates lists stack-updates with optional filters and pagination.
 func (s *StackUpdateService) ListStackUpdates(
 	ctx context.Context,
-	req *connect.Request[backendv1.ListStackUpdatesRequest],
-) (*connect.Response[backendv1.ListStackUpdatesResponse], error) {
+	req *connect.Request[stackupdatev1.ListStackUpdatesRequest],
+) (*connect.Response[stackupdatev1.ListStackUpdatesResponse], error) {
 	opts := &database.StackUpdateListOptions{}
 
-	if req.Msg.CloudResourceId != nil {
-		id := *req.Msg.CloudResourceId
+	if req.Msg.CloudResourceId != "" {
+		id := req.Msg.CloudResourceId
 		opts.CloudResourceID = &id
 	}
 
-	if req.Msg.Status != nil {
-		s := *req.Msg.Status
+	if req.Msg.Status != "" {
+		s := req.Msg.Status
 		opts.Status = &s
 	}
 
@@ -200,9 +201,9 @@ func (s *StackUpdateService) ListStackUpdates(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list stack-updates: %w", err))
 	}
 
-	protoJobs := make([]*backendv1.StackUpdate, 0, len(jobs))
+	protoJobs := make([]*stackupdatev1.StackUpdate, 0, len(jobs))
 	for _, job := range jobs {
-		protoJob := &backendv1.StackUpdate{
+		protoJob := &stackupdatev1.StackUpdate{
 			Id:              job.ID.Hex(),
 			CloudResourceId: job.CloudResourceID,
 			Status:          job.Status,
@@ -219,8 +220,8 @@ func (s *StackUpdateService) ListStackUpdates(
 		protoJobs = append(protoJobs, protoJob)
 	}
 
-	response := &backendv1.ListStackUpdatesResponse{
-		Jobs:       protoJobs,
+	response := &stackupdatev1.ListStackUpdatesResponse{
+		StackUpdates:       protoJobs,
 		TotalPages: totalPages,
 	}
 
@@ -231,8 +232,8 @@ func (s *StackUpdateService) ListStackUpdates(
 // Polls the stackupdate_streaming_responses collection and streams new chunks as they arrive.
 func (s *StackUpdateService) StreamStackUpdateOutput(
 	ctx context.Context,
-	req *connect.Request[backendv1.StreamStackUpdateOutputRequest],
-	stream *connect.ServerStream[backendv1.StreamStackUpdateOutputResponse],
+	req *connect.Request[stackupdatev1.StreamStackUpdateOutputRequest],
+	stream *connect.ServerStream[stackupdatev1.StreamStackUpdateOutputResponse],
 ) error {
 	jobID := req.Msg.JobId
 	fmt.Printf("DEBUG: StreamStackUpdateOutput called with jobID=%s, lastSequenceNum=%v\n", jobID, req.Msg.LastSequenceNum)
@@ -252,8 +253,8 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 	// Get last sequence number if provided (for resuming)
 	// If not provided, start from -1 which means fetch all existing logs from sequence 0
 	lastSequenceNum := -1
-	if req.Msg.LastSequenceNum != nil {
-		lastSequenceNum = int(*req.Msg.LastSequenceNum)
+	if req.Msg.LastSequenceNum != 0 {
+		lastSequenceNum = int(req.Msg.LastSequenceNum)
 	}
 
 	// Poll interval for checking new responses
@@ -288,7 +289,7 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 			contentPreview = contentPreview[:50]
 		}
 		fmt.Printf("DEBUG: Sending existing response seq=%d, type=%s, content=%s\n", resp.SequenceNum, resp.StreamType, contentPreview)
-		response := &backendv1.StreamStackUpdateOutputResponse{
+		response := &stackupdatev1.StreamStackUpdateOutputResponse{
 			SequenceNum: int32(resp.SequenceNum),
 			Content:     resp.Content,
 			StreamType:  resp.StreamType,
@@ -308,7 +309,7 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 		select {
 		case <-ctx.Done():
 			// Context cancelled, send final message and return
-			finalResponse := &backendv1.StreamStackUpdateOutputResponse{
+			finalResponse := &stackupdatev1.StreamStackUpdateOutputResponse{
 				SequenceNum: int32(currentSequenceNum),
 				Content:     "Stream cancelled by client",
 				StreamType:  "stdout",
@@ -348,7 +349,7 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 					contentPreview = contentPreview[:50]
 				}
 				fmt.Printf("DEBUG: Sending new response seq=%d, type=%s, content=%s\n", resp.SequenceNum, resp.StreamType, contentPreview)
-				response := &backendv1.StreamStackUpdateOutputResponse{
+				response := &stackupdatev1.StreamStackUpdateOutputResponse{
 					SequenceNum: int32(resp.SequenceNum),
 					Content:     resp.Content,
 					StreamType:  resp.StreamType,
@@ -369,7 +370,7 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 				remainingResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, jobID, currentSequenceNum)
 				if err == nil && len(remainingResponses) == 0 {
 					// Send final completion message
-					finalResponse := &backendv1.StreamStackUpdateOutputResponse{
+					finalResponse := &stackupdatev1.StreamStackUpdateOutputResponse{
 						SequenceNum: int32(currentSequenceNum),
 						Content:     "Stream completed",
 						StreamType:  "stdout",
@@ -499,78 +500,24 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 	var kubernetesConfig *kubernetesv1.KubernetesProviderConfig
 
 	// Extract provider configs from oneof
-	switch cfg := providerConfig.Config.(type) {
-	case *backendv1.ProviderConfig_Aws:
-		// Convert backend proto to provider proto
-		awsConfig = &awsv1.AwsProviderConfig{
-			AccountId:       cfg.Aws.AccountId,
-			AccessKeyId:     cfg.Aws.AccessKeyId,
-			SecretAccessKey: cfg.Aws.SecretAccessKey,
-		}
-		if cfg.Aws.Region != nil {
-			region := *cfg.Aws.Region
-			awsConfig.Region = &region
-		}
-		if cfg.Aws.SessionToken != nil {
-			awsConfig.SessionToken = *cfg.Aws.SessionToken
-		}
-	case *backendv1.ProviderConfig_Gcp:
-		gcpConfig = &gcpv1.GcpProviderConfig{
-			ServiceAccountKeyBase64: cfg.Gcp.ServiceAccountKeyBase64,
-		}
-	case *backendv1.ProviderConfig_Azure:
-		azureConfig = &azurev1.AzureProviderConfig{
-			ClientId:       cfg.Azure.ClientId,
-			ClientSecret:   cfg.Azure.ClientSecret,
-			TenantId:       cfg.Azure.TenantId,
-			SubscriptionId: cfg.Azure.SubscriptionId,
-		}
-	case *backendv1.ProviderConfig_Atlas:
-		atlasConfig = &atlasv1.AtlasProviderConfig{
-			PublicKey:  cfg.Atlas.PublicKey,
-			PrivateKey: cfg.Atlas.PrivateKey,
-		}
-	case *backendv1.ProviderConfig_Cloudflare:
-		cloudflareConfig = &cloudflarev1.CloudflareProviderConfig{
-			AuthScheme: cloudflarev1.CloudflareAuthScheme(cfg.Cloudflare.AuthScheme),
-		}
-		if cfg.Cloudflare.ApiToken != nil {
-			cloudflareConfig.ApiToken = *cfg.Cloudflare.ApiToken
-		}
-		if cfg.Cloudflare.ApiKey != nil {
-			cloudflareConfig.ApiKey = *cfg.Cloudflare.ApiKey
-		}
-		if cfg.Cloudflare.Email != nil {
-			cloudflareConfig.Email = *cfg.Cloudflare.Email
-		}
-	case *backendv1.ProviderConfig_Confluent:
-		confluentConfig = &confluentv1.ConfluentProviderConfig{
-			ApiKey:    cfg.Confluent.ApiKey,
-			ApiSecret: cfg.Confluent.ApiSecret,
-		}
-	case *backendv1.ProviderConfig_Snowflake:
-		snowflakeConfig = &snowflakev1.SnowflakeProviderConfig{
-			Account:  cfg.Snowflake.Account,
-			Region:   cfg.Snowflake.Region,
-			Username: cfg.Snowflake.Username,
-			Password: cfg.Snowflake.Password,
-		}
-	case *backendv1.ProviderConfig_Kubernetes:
-		kubernetesConfig = &kubernetesv1.KubernetesProviderConfig{
-			Provider: kubernetesv1.KubernetesProvider(cfg.Kubernetes.Provider),
-		}
-		if cfg.Kubernetes.GcpGke != nil {
-			kubernetesConfig.GcpGke = &kubernetesv1.KubernetesProviderConfigGcpGke{
-				ClusterEndpoint:         cfg.Kubernetes.GcpGke.ClusterEndpoint,
-				ClusterCaData:           cfg.Kubernetes.GcpGke.ClusterCaData,
-				ServiceAccountKeyBase64: cfg.Kubernetes.GcpGke.ServiceAccountKeyBase64,
-			}
-		}
-		if cfg.Kubernetes.DigitalOceanDoks != nil {
-			kubernetesConfig.DigitalOceanDoks = &kubernetesv1.KubernetesProviderConfigDigitalOceanDoks{
-				KubeConfig: cfg.Kubernetes.DigitalOceanDoks.KubeConfig,
-			}
-		}
+	switch cfg := providerConfig.Data.(type) {
+	case *credentialv1.CredentialProviderConfig_Aws:
+		// Use provider proto directly
+		awsConfig = cfg.Aws
+	case *credentialv1.CredentialProviderConfig_Gcp:
+		gcpConfig = cfg.Gcp
+	case *credentialv1.CredentialProviderConfig_Azure:
+		azureConfig = cfg.Azure
+	case *credentialv1.CredentialProviderConfig_Atlas:
+		atlasConfig = cfg.Atlas
+	case *credentialv1.CredentialProviderConfig_Cloudflare:
+		cloudflareConfig = cfg.Cloudflare
+	case *credentialv1.CredentialProviderConfig_Confluent:
+		confluentConfig = cfg.Confluent
+	case *credentialv1.CredentialProviderConfig_Snowflake:
+		snowflakeConfig = cfg.Snowflake
+	case *credentialv1.CredentialProviderConfig_Kubernetes:
+		kubernetesConfig = cfg.Kubernetes
 	}
 
 	providerConfigOptions, cleanupProviderConfigs, err := stackinputproviderconfig.BuildProviderConfigOptionsFromUserCredentials(
@@ -736,10 +683,10 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 			mu.Unlock()
 
 			streamingResponse := &models.StackUpdateStreamingResponse{
-				StackUpdateID:  jobID,
-				Content:     line,
-				StreamType:  streamType,
-				SequenceNum: currentSeq,
+				StackUpdateID: jobID,
+				Content:       line,
+				StreamType:    streamType,
+				SequenceNum:   currentSeq,
 			}
 
 			// Store in database using background context (won't expire)

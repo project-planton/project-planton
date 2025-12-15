@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
 	"github.com/spf13/cobra"
 )
 
@@ -37,27 +37,27 @@ func credentialListHandler(cmd *cobra.Command, args []string) {
 	providerStr, _ := cmd.Flags().GetString("provider")
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCredentialServiceClient(
+	client := credentialv1connect.NewCredentialQueryControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.ListCredentialsRequest{}
+	req := &credentialv1.ListCredentialsRequest{}
 	if providerStr != "" {
-		var provider backendv1.CredentialProvider
+		var provider credentialv1.Credential_CredentialProvider
 		switch providerStr {
 		case "gcp":
-			provider = backendv1.CredentialProvider_GCP
+			provider = credentialv1.Credential_GCP
 		case "aws":
-			provider = backendv1.CredentialProvider_AWS
+			provider = credentialv1.Credential_AWS
 		case "azure":
-			provider = backendv1.CredentialProvider_AZURE
+			provider = credentialv1.Credential_AZURE
 		default:
 			fmt.Printf("Error: Invalid provider '%s'. Valid values: gcp, aws, azure\n", providerStr)
 			os.Exit(1)
 		}
-		req.Provider = &provider
+		req.Provider = provider
 	}
 
 	// Create context with timeout
@@ -65,7 +65,7 @@ func credentialListHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.ListCredentials(ctx, connect.NewRequest(req))
+	resp, err := client.List(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
@@ -100,11 +100,11 @@ func credentialListHandler(cmd *cobra.Command, args []string) {
 	for _, cred := range credentials {
 		providerName := "UNKNOWN"
 		switch cred.Provider {
-		case backendv1.CredentialProvider_GCP:
+		case credentialv1.Credential_GCP:
 			providerName = "GCP"
-		case backendv1.CredentialProvider_AWS:
+		case credentialv1.Credential_AWS:
 			providerName = "AWS"
-		case backendv1.CredentialProvider_AZURE:
+		case credentialv1.Credential_AZURE:
 			providerName = "Azure"
 		}
 

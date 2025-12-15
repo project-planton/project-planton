@@ -4,7 +4,3 @@ deps:
   - name: buf.build/bufbuild/protovalidate
     commit: 6c6e0d3c608e4549802254a2eee81bc8
     digest: b5:a7ca081f38656fc0f5aaa685cc111d3342876723851b47ca6b80cbb810cbb2380f8c444115c495ada58fa1f85eff44e68dc54a445761c195acdb5e8d9af675b6
-plugins:
-  - name: buf.build/project-planton/optional-linter
-    commit: 9c8ab12a043245c08a92d7657c0da20a
-    digest: p1:91443867a760267ac68f46348f806f236f9815edff4bab881b7093898936e4433ae2d239dc68c8069f8b7bea7433cba2a06579f0fd26cfce99efe0b86a031e27

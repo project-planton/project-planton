@@ -9,8 +9,9 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	cloudresourcev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1"
+	cloudresourcev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
+	commonsv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/commons"
 	"github.com/spf13/cobra"
 )
 
@@ -43,19 +44,19 @@ func cloudResourceListHandler(cmd *cobra.Command, args []string) {
 	pageSize, _ := cmd.Flags().GetInt32("size")
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCloudResourceServiceClient(
+	client := cloudresourcev1connect.NewCloudResourceQueryControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.ListCloudResourcesRequest{}
+	req := &cloudresourcev1.ListCloudResourcesRequest{}
 	if kind != "" {
-		req.Kind = &kind
+		req.Kind = kind
 	}
 
 	// Always include pagination (defaults applied in service if not provided)
-	req.PageInfo = &backendv1.PageInfo{
+	req.PageInfo = &commonsv1.PageInfo{
 		Num:  pageNum,
 		Size: pageSize,
 	}
@@ -65,7 +66,7 @@ func cloudResourceListHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.ListCloudResources(ctx, connect.NewRequest(req))
+	resp, err := client.List(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)

@@ -10,8 +10,11 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
+	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
 	"github.com/spf13/cobra"
 )
 
@@ -74,13 +77,13 @@ func credentialCreateHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCredentialServiceClient(
+	client := credentialv1connect.NewCredentialCommandControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request based on provider
-	var req *backendv1.CreateCredentialRequest
+	var req *credentialv1.CreateCredentialRequest
 
 	switch provider {
 	case "gcp":
@@ -104,7 +107,7 @@ func credentialCreateHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.CreateCredential(ctx, connect.NewRequest(req))
+	resp, err := client.Create(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
@@ -138,7 +141,7 @@ func credentialCreateHandler(cmd *cobra.Command, args []string) {
 	fmt.Printf("\n💡 This credential can now be automatically used when deploying %s resources.\n", strings.ToUpper(provider))
 }
 
-func buildGcpCredentialRequest(cmd *cobra.Command, name string) (*backendv1.CreateCredentialRequest, error) {
+func buildGcpCredentialRequest(cmd *cobra.Command, name string) (*credentialv1.CreateCredentialRequest, error) {
 	keyFile, _ := cmd.Flags().GetString("service-account-key")
 	if keyFile == "" {
 		return nil, fmt.Errorf("--service-account-key is required for GCP provider")
@@ -153,18 +156,20 @@ func buildGcpCredentialRequest(cmd *cobra.Command, name string) (*backendv1.Crea
 	// Base64 encode the key
 	keyBase64 := base64.StdEncoding.EncodeToString(keyContent)
 
-	return &backendv1.CreateCredentialRequest{
+	return &credentialv1.CreateCredentialRequest{
 		Name:     name,
-		Provider: backendv1.CredentialProvider_GCP,
-		CredentialData: &backendv1.CreateCredentialRequest_Gcp{
-			Gcp: &backendv1.GcpCredentialSpec{
-				ServiceAccountKeyBase64: keyBase64,
+		Provider: credentialv1.Credential_GCP,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Gcp{
+				Gcp: &gcpv1.GcpProviderConfig{
+					ServiceAccountKeyBase64: keyBase64,
+				},
 			},
 		},
 	}, nil
 }
 
-func buildAwsCredentialRequest(cmd *cobra.Command, name string) (*backendv1.CreateCredentialRequest, error) {
+func buildAwsCredentialRequest(cmd *cobra.Command, name string) (*credentialv1.CreateCredentialRequest, error) {
 	accountID, _ := cmd.Flags().GetString("account-id")
 	accessKeyID, _ := cmd.Flags().GetString("access-key-id")
 	secretAccessKey, _ := cmd.Flags().GetString("secret-access-key")
@@ -181,29 +186,31 @@ func buildAwsCredentialRequest(cmd *cobra.Command, name string) (*backendv1.Crea
 		return nil, fmt.Errorf("--secret-access-key is required for AWS provider")
 	}
 
-	spec := &backendv1.AwsCredentialSpec{
+	spec := &awsv1.AwsProviderConfig{
 		AccountId:       accountID,
 		AccessKeyId:     accessKeyID,
 		SecretAccessKey: secretAccessKey,
 	}
 
 	if region != "" {
-		spec.Region = &region
+		spec.Region = region
 	}
 	if sessionToken != "" {
-		spec.SessionToken = &sessionToken
+		spec.SessionToken = sessionToken
 	}
 
-	return &backendv1.CreateCredentialRequest{
+	return &credentialv1.CreateCredentialRequest{
 		Name:     name,
-		Provider: backendv1.CredentialProvider_AWS,
-		CredentialData: &backendv1.CreateCredentialRequest_Aws{
-			Aws: spec,
+		Provider: credentialv1.Credential_AWS,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Aws{
+				Aws: spec,
+			},
 		},
 	}, nil
 }
 
-func buildAzureCredentialRequest(cmd *cobra.Command, name string) (*backendv1.CreateCredentialRequest, error) {
+func buildAzureCredentialRequest(cmd *cobra.Command, name string) (*credentialv1.CreateCredentialRequest, error) {
 	clientID, _ := cmd.Flags().GetString("client-id")
 	clientSecret, _ := cmd.Flags().GetString("client-secret")
 	tenantID, _ := cmd.Flags().GetString("tenant-id")
@@ -222,15 +229,17 @@ func buildAzureCredentialRequest(cmd *cobra.Command, name string) (*backendv1.Cr
 		return nil, fmt.Errorf("--subscription-id is required for Azure provider")
 	}
 
-	return &backendv1.CreateCredentialRequest{
+	return &credentialv1.CreateCredentialRequest{
 		Name:     name,
-		Provider: backendv1.CredentialProvider_AZURE,
-		CredentialData: &backendv1.CreateCredentialRequest_Azure{
-			Azure: &backendv1.AzureCredentialSpec{
-				ClientId:       clientID,
-				ClientSecret:   clientSecret,
-				TenantId:       tenantID,
-				SubscriptionId: subscriptionID,
+		Provider: credentialv1.Credential_AZURE,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Azure{
+				Azure: &azurev1.AzureProviderConfig{
+					ClientId:       clientID,
+					ClientSecret:   clientSecret,
+					TenantId:       tenantID,
+					SubscriptionId: subscriptionID,
+				},
 			},
 		},
 	}, nil

@@ -10,8 +10,11 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
+	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
 	"github.com/spf13/cobra"
 )
 
@@ -68,34 +71,34 @@ func credentialUpdateHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCredentialServiceClient(
+	client := credentialv1connect.NewCredentialCommandControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Convert provider string to enum
-	var provider backendv1.CredentialProvider
+	var provider credentialv1.Credential_CredentialProvider
 	switch strings.ToLower(providerStr) {
 	case "gcp":
-		provider = backendv1.CredentialProvider_GCP
+		provider = credentialv1.Credential_GCP
 	case "aws":
-		provider = backendv1.CredentialProvider_AWS
+		provider = credentialv1.Credential_AWS
 	case "azure":
-		provider = backendv1.CredentialProvider_AZURE
+		provider = credentialv1.Credential_AZURE
 	default:
 		fmt.Printf("Error: Invalid provider '%s'. Valid values: gcp, aws, azure\n", providerStr)
 		os.Exit(1)
 	}
 
 	// Prepare request based on provider
-	req := &backendv1.UpdateCredentialRequest{
+	req := &credentialv1.UpdateCredentialRequest{
 		Id:       id,
 		Name:     name,
 		Provider: provider,
 	}
 
 	switch provider {
-	case backendv1.CredentialProvider_GCP:
+	case credentialv1.Credential_GCP:
 		serviceAccountKeyPath, _ := cmd.Flags().GetString("service-account-key")
 		if serviceAccountKeyPath == "" {
 			fmt.Println("Error: --service-account-key is required for GCP provider")
@@ -109,13 +112,15 @@ func credentialUpdateHandler(cmd *cobra.Command, args []string) {
 		}
 
 		serviceAccountKeyBase64 := base64.StdEncoding.EncodeToString(keyBytes)
-		req.CredentialData = &backendv1.UpdateCredentialRequest_Gcp{
-			Gcp: &backendv1.GcpCredentialSpec{
-				ServiceAccountKeyBase64: serviceAccountKeyBase64,
+		req.ProviderConfig = &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Gcp{
+				Gcp: &gcpv1.GcpProviderConfig{
+					ServiceAccountKeyBase64: serviceAccountKeyBase64,
+				},
 			},
 		}
 
-	case backendv1.CredentialProvider_AWS:
+	case credentialv1.Credential_AWS:
 		accountID, _ := cmd.Flags().GetString("account-id")
 		accessKeyID, _ := cmd.Flags().GetString("access-key-id")
 		secretAccessKey, _ := cmd.Flags().GetString("secret-access-key")
@@ -127,24 +132,26 @@ func credentialUpdateHandler(cmd *cobra.Command, args []string) {
 			os.Exit(1)
 		}
 
-		awsSpec := &backendv1.AwsCredentialSpec{
+		awsSpec := &awsv1.AwsProviderConfig{
 			AccountId:       accountID,
 			AccessKeyId:     accessKeyID,
 			SecretAccessKey: secretAccessKey,
 		}
 
 		if region != "" {
-			awsSpec.Region = &region
+			awsSpec.Region = region
 		}
 		if sessionToken != "" {
-			awsSpec.SessionToken = &sessionToken
+			awsSpec.SessionToken = sessionToken
 		}
 
-		req.CredentialData = &backendv1.UpdateCredentialRequest_Aws{
-			Aws: awsSpec,
+		req.ProviderConfig = &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Aws{
+				Aws: awsSpec,
+			},
 		}
 
-	case backendv1.CredentialProvider_AZURE:
+	case credentialv1.Credential_AZURE:
 		clientID, _ := cmd.Flags().GetString("client-id")
 		clientSecret, _ := cmd.Flags().GetString("client-secret")
 		tenantID, _ := cmd.Flags().GetString("tenant-id")
@@ -155,12 +162,14 @@ func credentialUpdateHandler(cmd *cobra.Command, args []string) {
 			os.Exit(1)
 		}
 
-		req.CredentialData = &backendv1.UpdateCredentialRequest_Azure{
-			Azure: &backendv1.AzureCredentialSpec{
-				ClientId:       clientID,
-				ClientSecret:   clientSecret,
-				TenantId:       tenantID,
-				SubscriptionId: subscriptionID,
+		req.ProviderConfig = &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Azure{
+				Azure: &azurev1.AzureProviderConfig{
+					ClientId:       clientID,
+					ClientSecret:   clientSecret,
+					TenantId:       tenantID,
+					SubscriptionId: subscriptionID,
+				},
 			},
 		}
 	}
@@ -170,7 +179,7 @@ func credentialUpdateHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.UpdateCredential(ctx, connect.NewRequest(req))
+	resp, err := client.Update(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
@@ -200,11 +209,11 @@ func credentialUpdateHandler(cmd *cobra.Command, args []string) {
 
 	providerName := "UNKNOWN"
 	switch cred.Provider {
-	case backendv1.CredentialProvider_GCP:
+	case credentialv1.Credential_GCP:
 		providerName = "GCP"
-	case backendv1.CredentialProvider_AWS:
+	case credentialv1.Credential_AWS:
 		providerName = "AWS"
-	case backendv1.CredentialProvider_AZURE:
+	case credentialv1.Credential_AZURE:
 		providerName = "Azure"
 	}
 	fmt.Printf("Provider: %s\n", providerName)
