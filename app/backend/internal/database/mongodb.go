@@ -16,25 +16,57 @@ type MongoDB struct {
 	Database *mongo.Database
 }
 
-// Connect establishes a connection to MongoDB.
+// Connect establishes a connection to MongoDB with retry logic.
+// This is especially useful in containerized environments where MongoDB might not be immediately available.
 func Connect(ctx context.Context, uri, databaseName string) (*MongoDB, error) {
 	clientOptions := options.Client().ApplyURI(uri)
 
-	// Set connection timeout
-	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
+	var client *mongo.Client
+	var err error
 
-	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to MongoDB: %w", err)
+	// Retry connection up to 10 times (30 seconds total)
+	maxRetries := 10
+	retryDelay := 3 * time.Second
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		logrus.WithFields(logrus.Fields{
+			"attempt": attempt,
+			"max":     maxRetries,
+		}).Info("Attempting to connect to MongoDB")
+
+		// Set connection timeout for this attempt
+		connectCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+
+		client, err = mongo.Connect(connectCtx, clientOptions)
+		if err != nil {
+			cancel()
+			logrus.WithError(err).Warnf("MongoDB connection attempt %d/%d failed", attempt, maxRetries)
+
+			if attempt < maxRetries {
+				logrus.Infof("Retrying in %v...", retryDelay)
+				time.Sleep(retryDelay)
+				continue
+			}
+			return nil, fmt.Errorf("failed to connect to MongoDB after %d attempts: %w", maxRetries, err)
+		}
+
+		// Ping the database to verify connection
+		if err := client.Ping(connectCtx, nil); err != nil {
+			cancel()
+			logrus.WithError(err).Warnf("MongoDB ping attempt %d/%d failed", attempt, maxRetries)
+
+			if attempt < maxRetries {
+				logrus.Infof("Retrying in %v...", retryDelay)
+				time.Sleep(retryDelay)
+				continue
+			}
+			return nil, fmt.Errorf("failed to ping MongoDB after %d attempts: %w", maxRetries, err)
+		}
+
+		cancel()
+		logrus.Info("Successfully connected to MongoDB")
+		break
 	}
-
-	// Ping the database to verify connection
-	if err := client.Ping(ctx, nil); err != nil {
-		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
-	}
-
-	logrus.Info("Successfully connected to MongoDB")
 
 	db := client.Database(databaseName)
 

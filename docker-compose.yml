@@ -8,6 +8,7 @@ services:
     networks:
       - project-planton-network
     environment:
+      - HOME=/home/appuser
       - MONGODB_URI=${MONGODB_URI:-mongodb://host.docker.internal:27017/project_planton}
       - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
       - SERVER_PORT=50051

@@ -1,9 +1,14 @@
-# Project Planton CLI Help
+# Project Planton CLI Command Reference
 
-This guide covers the configuration, deployment component management, and cloud resource management commands in the Project Planton CLI.
+**Last Updated:** December 12, 2025
+
+This comprehensive guide covers all Project Planton CLI commands including web app management, configuration, deployment components, cloud resources, credentials, and stack jobs.
+
+---
 
 ## Table of Contents
 
+- [Web App Management](#web-app-management) (Installation & Setup)
 - [Configuration Management](#configuration-management)
 - [Deployment Components](#deployment-components)
 - [Cloud Resources](#cloud-resources)
@@ -11,12 +16,561 @@ This guide covers the configuration, deployment component management, and cloud 
 - [Stack Jobs](#stack-jobs)
 - [Common Workflows](#common-workflows)
 - [Troubleshooting](#troubleshooting)
+- [Advanced Usage](#advanced-usage)
+
+---
+
+## Web App Management
+
+The Project Planton web app provides a unified web interface for managing cloud resources and deployments in a single Docker container. This section covers installation and lifecycle management.
+
+### Prerequisites
+
+- **Docker Engine** must be installed and running
+- **Project Planton CLI** installed via Homebrew
+
+### Installation Quick Start
+
+```bash
+# Install CLI
+brew install project-planton/tap/project-planton
+
+# Initialize web app (pulls Docker image, creates volumes, configures CLI)
+project-planton webapp init
+
+# Start the web app
+project-planton webapp start
+
+# Access the web interface
+open http://localhost:3000
+```
+
+### Commands
+
+#### `project-planton webapp init`
+
+Initialize and set up the Project Planton web app.
+
+**Description:**
+Downloads the unified Docker image, creates volumes for data persistence, sets up the container, and automatically configures the CLI to use the local backend.
+
+**Usage:**
+```bash
+project-planton webapp init
+```
+
+**What it does:**
+1. Checks Docker availability and validates Docker Engine is running
+2. Verifies no existing installation to prevent conflicts
+3. Pulls Docker image (`satishlleftbin/project-planton:latest`)
+4. Creates data volumes (MongoDB, Pulumi state, Go cache)
+5. Creates container with port mappings (3000, 50051)
+6. Automatically configures CLI backend URL to `http://localhost:50051`
+
+**Output:**
+```
+========================================
+🚀 Project Planton Web App Initialization
+========================================
+
+📋 Step 1/5: Checking Docker availability...
+✅ Docker is available and running
+
+📋 Step 2/5: Checking for existing installation...
+✅ No existing installation found
+
+📋 Step 3/5: Pulling Docker image...
+   Pulling satishlleftbin/project-planton:latest...
+✅ Docker image pulled successfully
+
+📋 Step 4/5: Creating Docker volumes and container...
+   ✓ Created MongoDB data volume
+   ✓ Created Pulumi state volume
+   ✓ Created Go cache volume
+   ✓ Created container
+✅ Container created successfully
+
+📋 Step 5/5: Configuring CLI...
+✅ CLI configured to use local backend
+
+========================================
+✨ Initialization Complete!
+========================================
+
+Next steps:
+  1. Start the web app:     planton webapp start
+  2. Check status:          planton webapp status
+  3. View logs:             planton webapp logs
+
+Once started, access the web interface at:
+  Frontend:  http://localhost:3000
+  Backend:   http://localhost:50051
+```
+
+**Errors:**
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| Docker not found | Docker not installed | Install Docker (see installation guide) |
+| Docker not running | Docker daemon stopped | Start Docker: `docker info` |
+| Container already exists | Previous installation | Run `planton webapp uninstall` first |
+
+**Time:** 2-5 minutes (depending on internet speed)
+
+---
+
+#### `project-planton webapp start`
+
+Start the Project Planton web app.
+
+**Description:**
+Starts the container and waits for all services (MongoDB, backend, frontend) to be healthy.
+
+**Usage:**
+```bash
+project-planton webapp start
+```
+
+**What it does:**
+1. Checks if container exists
+2. Checks if already running
+3. Starts the container
+4. Waits for services to be healthy (up to 60 seconds)
+5. Displays access URLs
+
+**Output:**
+```
+========================================
+🚀 Starting Project Planton Web App
+========================================
+
+🔄 Starting container...
+⏳ Waiting for services to start (this may take 30-60 seconds)...
+✅ All services are healthy
+
+========================================
+✨ Web App Started Successfully!
+========================================
+
+Access the web interface at:
+  🌐 Frontend:  http://localhost:3000
+  🔌 Backend:   http://localhost:50051
+
+Useful commands:
+  planton webapp status    # Check service status
+  planton webapp logs      # View service logs
+  planton webapp stop      # Stop the web app
+```
+
+**Errors:**
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| Container not found | Not initialized | Run `planton webapp init` |
+| Already running | Container is running | No action needed |
+| Timeout waiting for health | Services slow to start | Check logs: `planton webapp logs` |
+
+**Time:** 30-60 seconds
+
+---
+
+#### `project-planton webapp stop`
+
+Stop the Project Planton web app.
+
+**Description:**
+Gracefully stops the container. All data is preserved in volumes.
+
+**Usage:**
+```bash
+project-planton webapp stop
+```
+
+**What it does:**
+1. Checks if container exists and is running
+2. Stops the container gracefully
+3. Confirms data is preserved
+
+**Output:**
+```
+========================================
+🛑 Stopping Project Planton Web App
+========================================
+
+🔄 Stopping container...
+
+✅ Web app stopped successfully
+
+Data is preserved. To start again, run:
+  planton webapp start
+```
+
+**Time:** 5-10 seconds
+
+---
+
+#### `project-planton webapp status`
+
+Check the status of the Project Planton web app.
+
+**Description:**
+Displays container status, service health, and access URLs.
+
+**Usage:**
+```bash
+project-planton webapp status
+```
+
+**Output (Running):**
+```
+========================================
+📊 Project Planton Web App Status
+========================================
+
+Container Information:
+  Name:       project-planton-webapp
+  Status:     🟢 running
+  Image:      satishlleftbin/project-planton:latest
+
+Service Status:
+  MongoDB:     🟢 running (port 27017)
+  Backend:     🟢 running (port 50051)
+  Frontend:    🟢 running (port 3000)
+
+Access URLs:
+  🌐 Frontend:  http://localhost:3000
+  🔌 Backend:   http://localhost:50051
+
+Data Volumes:
+  MongoDB:     project-planton-mongodb-data
+  Pulumi:      project-planton-pulumi-state
+  Go Cache:    project-planton-go-cache
+```
+
+**Output (Stopped):**
+```
+========================================
+📊 Project Planton Web App Status
+========================================
+
+Container Information:
+  Name:       project-planton-webapp
+  Status:     🔴 stopped
+  Image:      satishlleftbin/project-planton:latest
+
+The web app is not running.
+
+To start the web app, run:
+  planton webapp start
+```
+
+---
+
+#### `project-planton webapp logs`
+
+View logs from the Project Planton web app.
+
+**Description:**
+Displays logs from all services in the container.
+
+**Usage:**
+```bash
+# View last 100 lines
+project-planton webapp logs
+
+# Follow logs in real-time
+project-planton webapp logs -f
+
+# Show last 500 lines
+project-planton webapp logs -n 500
+
+# Follow with custom tail
+project-planton webapp logs -f -n 200
+```
+
+**Flags:**
+
+| Flag | Short | Description | Default |
+|------|-------|-------------|---------|
+| `--follow` | `-f` | Stream logs in real-time | `false` |
+| `--tail` | `-n` | Number of lines to show | `100` |
+| `--service` | | Filter by service (future) | All services |
+
+**Output:**
+```
+[mongodb] 2025-12-11T10:30:00.000Z I NETWORK  [initandlisten] waiting for connections on port 27017
+[backend] 2025-12-11T10:30:05.000Z INFO Successfully connected to MongoDB
+[backend] 2025-12-11T10:30:05.000Z INFO Starting backend server on port 50051
+[frontend] 2025-12-11T10:30:08.000Z INFO Server started on http://0.0.0.0:3000
+```
+
+**Controls:**
+- Press `Ctrl+C` to stop following logs
+
+---
+
+#### `project-planton webapp restart`
+
+Restart the Project Planton web app.
+
+**Description:**
+Restarts the container and all services. Useful after configuration changes or when services are unresponsive.
+
+**Usage:**
+```bash
+project-planton webapp restart
+```
+
+**What it does:**
+1. Restarts the Docker container
+2. Waits for services to be healthy
+3. Displays access URLs
+
+**Output:**
+```
+========================================
+🔄 Restarting Project Planton Web App
+========================================
+
+🔄 Restarting container...
+⏳ Waiting for services to start (this may take 30-60 seconds)...
+✅ All services are healthy
+
+========================================
+✨ Web App Restarted Successfully!
+========================================
+
+Access the web interface at:
+  🌐 Frontend:  http://localhost:3000
+  🔌 Backend:   http://localhost:50051
+```
+
+**Time:** 30-60 seconds
+
+---
+
+#### `project-planton webapp uninstall`
+
+Uninstall the Project Planton web app.
+
+**Description:**
+Removes the container. Data volumes are preserved by default unless `--purge-data` is specified.
+
+**Usage:**
+```bash
+# Remove container, keep data
+project-planton webapp uninstall
+
+# Remove everything (including data)
+project-planton webapp uninstall --purge-data
+
+# Skip confirmation prompt
+project-planton webapp uninstall -f
+```
+
+**Flags:**
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--purge-data` | Delete all data volumes | `false` |
+| `--force` / `-f` | Skip confirmation | `false` |
+
+**Output (Default):**
+```
+========================================
+🗑️  Uninstalling Project Planton Web App
+========================================
+
+This will:
+  - Stop the web app container
+  - Remove the container
+  - Keep data volumes (MongoDB, Pulumi state, Go cache)
+
+Are you sure you want to continue? (yes/no): yes
+
+🔄 Stopping container...
+✅ Container stopped
+🔄 Removing container...
+✅ Container removed
+ℹ️  Data volumes preserved:
+   - project-planton-mongodb-data
+   - project-planton-pulumi-state
+   - project-planton-go-cache
+
+   To remove them manually, run:
+     docker volume rm project-planton-mongodb-data
+     docker volume rm project-planton-pulumi-state
+     docker volume rm project-planton-go-cache
+🔄 Cleaning up CLI configuration...
+✅ CLI configuration cleaned up
+
+========================================
+✨ Uninstall Complete!
+========================================
+
+To reinstall with existing data:
+  planton webapp init
+```
+
+**Output (With --purge-data):**
+```
+========================================
+🗑️  Uninstalling Project Planton Web App
+========================================
+
+This will:
+  - Stop the web app container
+  - Remove the container
+  - ⚠️  DELETE ALL DATA (MongoDB, Pulumi state, Go cache)
+
+Are you sure you want to continue? (yes/no): yes
+
+🔄 Stopping container...
+✅ Container stopped
+🔄 Removing container...
+✅ Container removed
+🔄 Removing data volumes...
+   ✓ Removed project-planton-mongodb-data
+   ✓ Removed project-planton-pulumi-state
+   ✓ Removed project-planton-go-cache
+✅ Data volumes removed
+🔄 Cleaning up CLI configuration...
+✅ CLI configuration cleaned up
+
+========================================
+✨ Uninstall Complete!
+========================================
+```
+
+**Time:** 10-20 seconds
+
+---
+
+### Web App Workflows
+
+#### First Time Setup
+
+```bash
+# 1. Initialize
+project-planton webapp init
+
+# 2. Start
+project-planton webapp start
+
+# 3. Access http://localhost:3000
+```
+
+#### Daily Usage
+
+```bash
+# Morning: Start the web app
+project-planton webapp start
+
+# Check if running
+project-planton webapp status
+
+# Evening: Stop to save resources
+project-planton webapp stop
+```
+
+#### Troubleshooting
+
+```bash
+# Check status
+project-planton webapp status
+
+# View recent logs
+project-planton webapp logs -n 500
+
+# Follow logs in real-time
+project-planton webapp logs -f
+
+# Restart if unresponsive
+project-planton webapp restart
+```
+
+#### Clean Reinstall
+
+```bash
+# Remove everything
+project-planton webapp uninstall --purge-data -f
+
+# Initialize fresh
+project-planton webapp init
+
+# Start
+project-planton webapp start
+```
+
+### Web App Tips
+
+- **Keep it running:** The web app starts quickly after initial setup
+- **Check logs first:** Most issues can be diagnosed from logs
+- **Data is safe:** Stopping the container doesn't delete data
+- **Resource usage:** ~500MB RAM, ~2GB disk when running
 
 ---
 
 ## Configuration Management
 
 The Project Planton CLI uses a configuration system similar to Git, allowing you to set and manage settings that persist across commands.
+
+### Commands
+
+#### `project-planton config set <key> <value>`
+
+Set a configuration value.
+
+**Available Keys:**
+
+- `backend-url` - URL of the Project Planton backend service
+
+**Example:**
+
+```bash
+project-planton config set backend-url http://localhost:50051
+project-planton config set backend-url https://api.project-planton.com
+```
+
+**Validation:**
+
+- `backend-url` must start with `http://` or `https://`
+
+#### `project-planton config get <key>`
+
+Get a configuration value.
+
+**Example:**
+
+```bash
+project-planton config get backend-url
+# Output: http://localhost:50051
+```
+
+**Error Handling:**
+
+- Returns exit code 1 if the key is not set
+- Prints error message for unknown keys
+
+#### `project-planton config list`
+
+List all configuration values.
+
+**Example:**
+
+```bash
+project-planton config list
+# Output: backend-url=http://localhost:50051
+
+# If no configuration is set:
+# Output: No configuration values set
+```
+
+### Configuration Storage
+
+- Configuration is stored in `~/.project-planton/config.yaml`
+- The configuration directory is created automatically with permissions `0755`
+- The configuration file has permissions `0600` (user read/write only)
 
 ### Commands
 
@@ -139,7 +693,18 @@ The command displays results in a table with the following columns:
 
 ### Prerequisites
 
-Before using the `list-deployment-components` command, you must configure the backend URL:
+**Option 1: Using Local Web App (Recommended)**
+
+If you're using the Project Planton web app, the backend URL is automatically configured:
+
+```bash
+project-planton webapp init
+project-planton webapp start
+```
+
+**Option 2: Using Remote/External Backend**
+
+If connecting to a remote backend, configure the URL manually:
 
 ```bash
 project-planton config set backend-url <your-backend-url>
@@ -771,7 +1336,18 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 
 ### Prerequisites
 
-Before using cloud resource commands, you must configure the backend URL:
+**Option 1: Using Local Web App (Recommended)**
+
+If you're using the Project Planton web app, the backend URL is automatically configured:
+
+```bash
+project-planton webapp init
+project-planton webapp start
+```
+
+**Option 2: Using Remote/External Backend**
+
+If connecting to a remote backend, configure the URL manually:
 
 ```bash
 project-planton config set backend-url <your-backend-url>
@@ -1156,7 +1732,19 @@ project-planton cloud-resource:apply --arg=resource.yaml
 
 #### Prerequisites
 
-Before using the credential:create command, you must configure the backend URL:
+**Option 1: Using Local Web App (Recommended)**
+
+If you're using the Project Planton web app:
+
+```bash
+# Backend URL is automatically configured during init
+project-planton webapp init
+project-planton webapp start
+```
+
+**Option 2: Using Remote/External Backend**
+
+If connecting to a remote backend:
 
 ```bash
 project-planton config set backend-url <your-backend-url>
@@ -1290,9 +1878,10 @@ No credentials found for provider: GCP
 
 #### Prerequisites
 
-Before using the credential:list command, you must configure the backend URL:
+Before using the credential:list command, ensure the backend is configured (automatically done if using `planton webapp init`):
 
 ```bash
+# If using remote backend, configure manually:
 project-planton config set backend-url <your-backend-url>
 ```
 
@@ -1406,9 +1995,10 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 
 #### Prerequisites
 
-Before using the credential:get command, you must configure the backend URL:
+Before using the credential:get command, ensure the backend is configured (automatically done if using `planton webapp init`):
 
 ```bash
+# If using remote backend, configure manually:
 project-planton config set backend-url <your-backend-url>
 ```
 
@@ -1583,9 +2173,10 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 
 #### Prerequisites
 
-Before using the credential:update command, you must configure the backend URL:
+Before using the credential:update command, ensure the backend is configured (automatically done if using `planton webapp init`):
 
 ```bash
+# If using remote backend, configure manually:
 project-planton config set backend-url <your-backend-url>
 ```
 
@@ -1677,9 +2268,10 @@ Error: Cannot connect to backend service at http://localhost:50051. Please check
 
 #### Prerequisites
 
-Before using the credential:delete command, you must configure the backend URL:
+Before using the credential:delete command, ensure the backend is configured (automatically done if using `planton webapp init`):
 
 ```bash
+# If using remote backend, configure manually:
 project-planton config set backend-url <your-backend-url>
 ```
 
@@ -1887,9 +2479,10 @@ project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=150
 
 #### Prerequisites
 
-Before using the stack-job:stream-output command, you must configure the backend URL:
+Before using the stack-job:stream-output command, ensure the backend is configured (automatically done if using `planton webapp init`):
 
 ```bash
+# If using remote backend, configure manually:
 project-planton config set backend-url <your-backend-url>
 ```
 
