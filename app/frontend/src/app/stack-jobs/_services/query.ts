@@ -1,16 +1,17 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { create } from '@bufbuild/protobuf';
+// Connect RPC clients accept messages directly, no wrapping needed
 import { AppContext } from '@/contexts';
 import { useConnectRpcClient } from '@/hooks';
-import { StackUpdateService } from '@/gen/proto/stack_job_service_pb';
+import { StackUpdateQueryController } from '@/gen/app/stackupdate/v1/query_pb';
 import {
   ListStackUpdatesRequest,
   ListStackUpdatesResponse,
   GetStackUpdateRequestSchema,
   StreamStackUpdateOutputRequestSchema,
   StreamStackUpdateOutputResponse,
-  StackUpdate,
-} from '@/gen/proto/stack_job_service_pb';
+} from '@/gen/app/stackupdate/v1/io_pb';
+import { StackUpdate } from '@/gen/app/stackupdate/v1/api_pb';
 
 interface QueryType {
   listStackUpdates: (input: ListStackUpdatesRequest) => Promise<ListStackUpdatesResponse>;
@@ -26,7 +27,7 @@ const RESOURCE_NAME = 'Stack Jobs';
 
 export const useStackUpdateQuery = () => {
   const { setPageLoading, openSnackbar } = useContext(AppContext);
-  const queryClient = useConnectRpcClient(StackUpdateService);
+  const queryClient = useConnectRpcClient(StackUpdateQueryController);
   const [query, setQuery] = useState<QueryType>(null);
 
   const stackUpdateQuery: QueryType = useMemo(
@@ -53,7 +54,7 @@ export const useStackUpdateQuery = () => {
           queryClient
             .getStackUpdate(create(GetStackUpdateRequestSchema, { id }))
             .then((response) => {
-              resolve(response.job);
+              resolve(response.stackUpdate!);
             })
             .catch((err) => {
               openSnackbar(err.message || `Could not get ${RESOURCE_NAME}!`, 'error');
@@ -71,7 +72,9 @@ export const useStackUpdateQuery = () => {
           lastSequenceNum: lastSequenceNum !== undefined ? lastSequenceNum : undefined,
         });
 
-        return queryClient.streamStackUpdateOutput(request, { signal });
+        return (
+          queryClient?.streamStackUpdateOutput(request, { signal }) || (async function* () {})()
+        );
       },
     }),
     [queryClient, setPageLoading, openSnackbar]

@@ -4,7 +4,7 @@
 
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
 import type { CivoRegion } from "../../region_pb";
 import { file_org_project_planton_provider_civo_region } from "../../region_pb";
 import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";

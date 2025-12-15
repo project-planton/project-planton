@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
 import type { KubernetesCertManagerSpec } from "./spec_pb";
 import { file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec } from "./spec_pb";
 import type { KubernetesCertManagerStackOutputs } from "./stack_outputs_pb";

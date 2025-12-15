@@ -1,14 +1,15 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { create } from '@bufbuild/protobuf';
+// Connect RPC clients accept messages directly, no wrapping needed
 import { AppContext } from '@/contexts';
 import { useConnectRpcClient } from '@/hooks';
-import { CloudResourceService } from '@/gen/proto/cloud_resource_service_pb';
+import { CloudResourceQueryController } from '@/gen/app/cloudresource/v1/query_pb';
 import {
   ListCloudResourcesRequest,
   ListCloudResourcesResponse,
   GetCloudResourceRequestSchema,
-  CloudResource,
-} from '@/gen/proto/cloud_resource_service_pb';
+} from '@/gen/app/cloudresource/v1/io_pb';
+import { CloudResource } from '@/gen/app/cloudresource/v1/api_pb';
 
 interface QueryType {
   listCloudResources: (input: ListCloudResourcesRequest) => Promise<ListCloudResourcesResponse>;
@@ -19,7 +20,7 @@ const RESOURCE_NAME = 'Cloud Resources';
 
 export const useCloudResourceQuery = () => {
   const { setPageLoading, openSnackbar } = useContext(AppContext);
-  const queryClient = useConnectRpcClient(CloudResourceService);
+  const queryClient = useConnectRpcClient(CloudResourceQueryController);
   const [query, setQuery] = useState<QueryType>(null);
 
   const cloudResourceQuery: QueryType = useMemo(
@@ -30,7 +31,7 @@ export const useCloudResourceQuery = () => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
           queryClient
-            .listCloudResources(input)
+            .list(input)
             .then((response) => {
               resolve(response);
             })
@@ -47,9 +48,9 @@ export const useCloudResourceQuery = () => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
           queryClient
-            .getCloudResource(create(GetCloudResourceRequestSchema, { id }))
+            .get(create(GetCloudResourceRequestSchema, { id }))
             .then((response) => {
-              resolve(response.resource);
+              resolve(response.resource!);
             })
             .catch((err) => {
               openSnackbar(err.message || `Could not get ${RESOURCE_NAME}!`, 'error');
@@ -61,7 +62,7 @@ export const useCloudResourceQuery = () => {
         });
       },
     }),
-    [queryClient]
+    [queryClient, setPageLoading, openSnackbar]
   );
 
   useEffect(() => {

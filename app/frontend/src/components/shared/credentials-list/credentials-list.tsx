@@ -11,9 +11,8 @@ import { useCredentialQuery, useCredentialCommand } from '@/app/credentials/_ser
 import {
   ListCredentialsRequestSchema,
   CredentialSummary,
-  CredentialProvider,
-  Credential,
-} from '@/gen/proto/credential_service_pb';
+} from '@/gen/app/credential/v1/io_pb';
+import { Credential, Credential_CredentialProvider } from '@/gen/app/credential/v1/api_pb';
 import { formatTimestampToDate } from '@/lib';
 import { create } from '@bufbuild/protobuf';
 import { providerConfig } from '@/app/credentials/_components/utils';
@@ -23,7 +22,7 @@ export function CredentialsList() {
   const { command } = useCredentialCommand();
   const [credentials, setCredentials] = useState<CredentialSummary[]>([]);
   const [apiLoading, setApiLoading] = useState(true);
-  const [providerFilter, setProviderFilter] = useState<CredentialProvider | undefined>();
+  const [providerFilter, setProviderFilter] = useState<Credential_CredentialProvider | undefined>();
 
   // Drawer state
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -37,12 +36,12 @@ export function CredentialsList() {
   const providerFilterOptions = useMemo(() => {
     const allOption = {
       label: 'All',
-      value: CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED.toString(),
+      value: Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED.toString(),
     };
-    const providerOptions = (Object.keys(providerConfig) as unknown as Array<CredentialProvider>)
+    const providerOptions = (Object.keys(providerConfig) as unknown as Array<Credential_CredentialProvider>)
       .filter((provider) => {
         // Filter out UNSPECIFIED (value 0) by comparing numeric enum values
-        return Number(provider) !== CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED;
+        return Number(provider) !== Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED;
       })
       .map((provider) => ({
         label: providerConfig[provider].label,
@@ -57,7 +56,7 @@ export function CredentialsList() {
       query
         .listCredentials(
           create(ListCredentialsRequestSchema, {
-            provider: providerFilter,
+            provider: providerFilter ?? Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
           })
         )
         .then((result) => {
@@ -85,7 +84,7 @@ export function CredentialsList() {
     if (value === '') {
       setProviderFilter(undefined);
     } else {
-      const provider = parseInt(value, 10) as CredentialProvider;
+      const provider = parseInt(value, 10) as Credential_CredentialProvider;
       setProviderFilter(provider);
     }
   }, []);
@@ -164,7 +163,7 @@ export function CredentialsList() {
   const tableDataTemplate = useMemo(
     () => ({
       provider: (val: string, row: CredentialSummary) => {
-        const provider = row.provider as CredentialProvider;
+        const provider = row.provider as Credential_CredentialProvider;
         return providerConfig[provider]?.label || 'Unknown';
       },
       createdAt: (val: string, row: CredentialSummary) => {
@@ -210,7 +209,7 @@ export function CredentialsList() {
             <SimpleSelect
               value={
                 providerFilter?.toString() ||
-                CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED.toString()
+                Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED.toString()
               }
               onChange={handleProviderFilterChange}
               fullWidth={false}

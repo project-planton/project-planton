@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
 import type { ContainerImage, ContainerResources } from "../../kubernetes_pb";
 import { file_org_project_planton_provider_kubernetes_kubernetes } from "../../kubernetes_pb";
 import { file_org_project_planton_provider_kubernetes_options } from "../../options_pb";
