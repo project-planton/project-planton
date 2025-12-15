@@ -4,7 +4,7 @@
 
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
 import type { DnsRecordType } from "../../../../shared/networking/enums/dnsrecordtype/dns_record_type_pb";
 import { file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_type } from "../../../../shared/networking/enums/dnsrecordtype/dns_record_type_pb";
 import type { Message } from "@bufbuild/protobuf";

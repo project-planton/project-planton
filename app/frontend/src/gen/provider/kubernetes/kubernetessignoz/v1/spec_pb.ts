@@ -4,7 +4,7 @@
 
 import type { GenExtension, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { extDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
 import type { FieldOptions } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
 import type { ContainerImage, ContainerResources } from "../../kubernetes_pb";

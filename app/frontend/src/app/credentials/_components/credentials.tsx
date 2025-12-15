@@ -5,20 +5,20 @@ import { StyledTabs } from '@/app/credentials/_components/styled';
 import { SectionHeader } from '@/components/shared/section-header';
 import { TabPanel } from '@/components/shared/tabpanel';
 import { Providers } from '@/app/credentials/_components/credentials-tab';
-import { CredentialProvider } from '@/gen/proto/credential_service_pb';
+import { Credential_CredentialProvider } from '@/gen/app/credential/v1/api_pb';
 import { CredentialDrawer } from '@/app/credentials/_components/forms';
 import { CredentialsList } from '@/components/shared/credentials-list';
 
 export default function Credentials() {
   const [tabIndex, setTabIndex] = useState<'providers' | 'credentials'>('providers');
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState<CredentialProvider | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState<Credential_CredentialProvider | null>(null);
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: 'providers' | 'credentials') => {
     setTabIndex(newValue);
   };
 
-  const handleProviderClick = (provider: CredentialProvider) => {
+  const handleProviderClick = (provider: Credential_CredentialProvider) => {
     setSelectedProvider(provider);
     setDrawerOpen(true);
   };

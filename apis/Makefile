@@ -2,9 +2,15 @@
 build: lint fmt
 	rm -rf generated/stubs
 	mkdir -p generated/stubs
-	buf generate
+	buf generate --include-imports
 	cp -R generated/stubs/go/github.com/project-planton/project-planton/apis/. .
 	cp -R generated/stubs/ts/org/project_planton/. ../app/frontend/src/gen/
+	# Copy buf/validate files if they exist (needed for validation imports)
+	@if [ -d "generated/stubs/ts/buf" ]; then \
+		cp -R generated/stubs/ts/buf ../app/frontend/src/gen/; \
+	fi
+	# Fix import paths in generated TypeScript files (buf/validate paths need adjustment after copying)
+	@find ../app/frontend/src/gen -name "*.ts" -type f -exec sed -i 's|../../../../buf/validate/validate_pb|../../buf/validate/validate_pb|g' {} \;
 	# Copy Connect client directories (they're in subdirectories like cloudresourcev1connect/)
 	@for dir in generated/stubs/go/github.com/project-planton/project-planton/apis/org/project_planton/app/*/v1/*connect; do \
 		if [ -d "$$dir" ]; then \

@@ -9,13 +9,11 @@ import { YamlEditor } from '@/components/shared/yaml-editor';
 import { AlertDialog } from '@/components/shared/alert-dialog';
 import { Refresh, Add } from '@mui/icons-material';
 import { useCloudResourceQuery, useCloudResourceCommand } from '@/app/cloud-resources/_services';
-import {
-  ListCloudResourcesRequestSchema,
-  CloudResource,
-  PageInfoSchema,
-} from '@/gen/proto/cloud_resource_service_pb';
+import { ListCloudResourcesRequestSchema } from '@/gen/app/cloudresource/v1/io_pb';
+import { CloudResource } from '@/gen/app/cloudresource/v1/api_pb';
+import { PageInfoSchema } from '@/gen/app/commons/page_info_pb';
 import { formatTimestampToDate } from '@/lib';
-import { StackUpdatesDrawer } from '@/components/shared/stackupdate';
+import { StackUpdatesDrawer } from '@/components/shared/stackjob';
 
 type DrawerMode = 'view' | 'edit' | 'create' | null;
 

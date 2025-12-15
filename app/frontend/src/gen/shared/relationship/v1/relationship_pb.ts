@@ -4,7 +4,7 @@
 
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
 import type { CloudResourceKind } from "../../cloudresourcekind/cloud_resource_kind_pb";
 import { file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind } from "../../cloudresourcekind/cloud_resource_kind_pb";

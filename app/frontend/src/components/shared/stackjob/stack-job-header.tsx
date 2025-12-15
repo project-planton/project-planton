@@ -2,7 +2,7 @@
 
 import { Typography, Divider, Stack, Box, Skeleton } from '@mui/material';
 import { HeaderContainer, TopSection, BottomSection, FlexCenterRow } from '@/app/stack-jobs/styled';
-import { StackUpdate } from '@/gen/proto/stack_job_service_pb';
+import { StackUpdate } from '@/gen/app/stackupdate/v1/api_pb';
 import { StatusChip } from '@/components/shared/status-chip';
 import { TextCopy } from '@/components/shared/text-copy';
 
