@@ -575,7 +575,7 @@ All data survives container restarts via Docker volumes:
 
 | Volume | Contents | Purpose |
 |--------|----------|---------|
-| `project-planton-mongodb-data` | MongoDB database | Cloud resources, credentials, stack jobs |
+| `project-planton-mongodb-data` | MongoDB database | Cloud resources, credentials, stack-updates |
 | `project-planton-pulumi-state` | Pulumi state files | Infrastructure state tracking |
 | `project-planton-go-cache` | Go build cache | Faster Pulumi deployments |
 

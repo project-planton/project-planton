@@ -6,8 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// StackJob represents a Pulumi stack deployment job in MongoDB.
-type StackJob struct {
+// StackUpdate represents a Pulumi stack deployment job in MongoDB.
+type StackUpdate struct {
 	ID              primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	CloudResourceID string             `bson:"cloud_resource_id" json:"cloud_resource_id"`
 	Status          string             `bson:"status" json:"status"`                     // success, failed, in_progress

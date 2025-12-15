@@ -139,7 +139,7 @@ Resolved seven critical blockers preventing deployments:
 ```
 1. User creates credential (stored in MongoDB)
 2. User deploys resource
-3. Backend creates stack job
+3. Backend creates stack-update
 4. Deployment goroutine starts
 5. Credential resolver queries database
 6. Pulumi module cloned using Git

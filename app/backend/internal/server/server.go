@@ -81,8 +81,8 @@ func NewServer(cfg *Config) *Server {
 	// Create repositories
 	deploymentComponentRepo := database.NewDeploymentComponentRepository(cfg.MongoDB)
 	cloudResourceRepo := database.NewCloudResourceRepository(cfg.MongoDB)
-	stackJobRepo := database.NewStackJobRepository(cfg.MongoDB)
-	stackJobStreamingResponseRepo := database.NewStackJobStreamingResponseRepository(cfg.MongoDB)
+	stackUpdateRepo := database.NewStackUpdateRepository(cfg.MongoDB)
+	stackUpdateStreamingResponseRepo := database.NewStackUpdateStreamingResponseRepository(cfg.MongoDB)
 	credentialRepo := database.NewCredentialRepository(cfg.MongoDB)
 
 	// Create credential resolver
@@ -90,8 +90,8 @@ func NewServer(cfg *Config) *Server {
 
 	// Create services
 	deploymentComponentService := service.NewDeploymentComponentService(deploymentComponentRepo)
-	stackJobService := service.NewStackJobService(stackJobRepo, cloudResourceRepo, stackJobStreamingResponseRepo, credentialResolver)
-	cloudResourceService := service.NewCloudResourceService(cloudResourceRepo, stackJobService)
+	stackUpdateService := service.NewStackUpdateService(stackUpdateRepo, cloudResourceRepo, stackUpdateStreamingResponseRepo, credentialResolver)
+	cloudResourceService := service.NewCloudResourceService(cloudResourceRepo, stackUpdateService)
 	credentialService := service.NewCredentialService(credentialRepo)
 
 	mux := http.NewServeMux()
@@ -108,9 +108,9 @@ func NewServer(cfg *Config) *Server {
 	credentialPath, credentialHandler := backendv1connect.NewCredentialServiceHandler(credentialService)
 	mux.Handle(credentialPath, corsMiddleware(credentialHandler))
 
-	// Register the StackJobService
-	stackJobPath, stackJobHandler := backendv1connect.NewStackJobServiceHandler(stackJobService)
-	mux.Handle(stackJobPath, corsMiddleware(stackJobHandler))
+	// Register the StackUpdateService
+	stackUpdatePath, stackUpdateHandler := backendv1connect.NewStackUpdateServiceHandler(stackUpdateService)
+	mux.Handle(stackUpdatePath, corsMiddleware(stackUpdateHandler))
 
 	// Add health check endpoint
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {

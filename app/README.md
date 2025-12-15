@@ -326,7 +326,7 @@ const response = await client.yourService.createResource(request);
 }
 ```
 
-#### `stackjobs`
+#### `stackupdates`
 ```javascript
 {
   _id: ObjectId,
@@ -338,7 +338,7 @@ const response = await client.yourService.createResource(request);
 }
 ```
 
-#### `stackjob_streaming_responses`
+#### `stackupdate_streaming_responses`
 ```javascript
 {
   _id: ObjectId,

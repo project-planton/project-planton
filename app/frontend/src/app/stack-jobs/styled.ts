@@ -1,7 +1,7 @@
 'use client';
 import { Box, Paper, Stack, styled } from '@mui/material';
 
-export const StackJobContainer = styled(Box)(({ theme }) => ({
+export const StackUpdateContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
 }));
 

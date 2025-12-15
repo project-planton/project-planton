@@ -3,11 +3,11 @@
 import { useEffect, useState, useMemo, useCallback, useContext, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { Box, Skeleton, Stack, Typography, Paper, Divider, Tabs, Tab } from '@mui/material';
-import { StackJobContainer, LogContainer, LogEntry } from '@/app/stack-jobs/styled';
-import { useStackJobQuery } from '@/app/stack-jobs/_services';
-import { StackJob } from '@/gen/proto/stack_job_service_pb';
+import { StackUpdateContainer, LogContainer, LogEntry } from '@/app/stack-jobs/styled';
+import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
+import { StackUpdate } from '@/gen/proto/stack_job_service_pb';
 import { Breadcrumb, BreadcrumbStartIcon, IBreadcrumbItem } from '@/components/shared/breadcrumb';
-import { StackJobsDrawer, StackJobHeader } from '@/components/shared/stackjob';
+import { StackUpdatesDrawer, StackUpdateHeader } from '@/components/shared/stackupdate';
 import { ICON_NAMES } from '@/components/shared/icon';
 import { formatTimestampToDate } from '@/lib';
 import { JsonCode } from '@/components/shared/syntax-highlighter';
@@ -20,12 +20,12 @@ interface StreamingLog {
   timestamp: Date;
 }
 
-export default function StackJobDetailPage() {
+export default function StackUpdateDetailPage() {
   const { theme } = useContext(AppContext);
   const params = useParams();
-  const { query } = useStackJobQuery();
-  const [stackJob, setStackJob] = useState<StackJob | null>(null);
-  const [stackJobsDrawerOpen, setStackJobsDrawerOpen] = useState(false);
+  const { query } = useStackUpdateQuery();
+  const [stackUpdate, setStackUpdate] = useState<StackUpdate | null>(null);
+  const [stackUpdatesDrawerOpen, setStackUpdatesDrawerOpen] = useState(false);
   const [streamingLogs, setStreamingLogs] = useState<StreamingLog[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -37,31 +37,31 @@ export default function StackJobDetailPage() {
   const isStreamingRef = useRef<boolean>(false);
   const hasLoadedLogsRef = useRef<boolean>(false);
 
-  const stackJobId = params?.id as string;
+  const stackUpdateId = params?.id as string;
 
-  const handleCloseStackJobs = useCallback(() => {
-    setStackJobsDrawerOpen(false);
+  const handleCloseStackUpdates = useCallback(() => {
+    setStackUpdatesDrawerOpen(false);
   }, []);
 
-  const handleStackJobsClick = useCallback(() => {
-    if (stackJob?.cloudResourceId) {
-      setStackJobsDrawerOpen(true);
+  const handleStackUpdatesClick = useCallback(() => {
+    if (stackUpdate?.cloudResourceId) {
+      setStackUpdatesDrawerOpen(true);
     }
-  }, [stackJob?.cloudResourceId]);
+  }, [stackUpdate?.cloudResourceId]);
 
   const breadcrumbs: IBreadcrumbItem[] = useMemo(() => {
     const items: IBreadcrumbItem[] = [];
 
-    // Always show the ID from params, even if stackJob is not loaded yet
-    if (stackJobId) {
+    // Always show the ID from params, even if stackUpdate is not loaded yet
+    if (stackUpdateId) {
       items.push({
-        name: stackJobId,
+        name: stackUpdateId,
         handler: undefined, // Last item is not clickable
       });
     }
 
     return items;
-  }, [stackJobId, handleStackJobsClick]);
+  }, [stackUpdateId, handleStackUpdatesClick]);
 
   // Auto-scroll to bottom when new logs arrive
   useEffect(() => {
@@ -79,16 +79,16 @@ export default function StackJobDetailPage() {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Fetch stack job details when intervalCount changes
+  // Fetch stack-update details when intervalCount changes
   useEffect(() => {
-    if (!query || !stackJobId) {
+    if (!query || !stackUpdateId) {
       return;
     }
 
     query
-      .getById(stackJobId)
+      .getById(stackUpdateId)
       .then((job) => {
-        setStackJob((prevJob) => {
+        setStackUpdate((prevJob) => {
           // Only update if status or output changed to avoid unnecessary re-renders
           if (!prevJob || prevJob.status !== job.status || prevJob.output !== job.output) {
             return job;
@@ -97,18 +97,18 @@ export default function StackJobDetailPage() {
         });
       })
       .catch((error) => {
-        console.error('Failed to fetch stack job:', error);
+        console.error('Failed to fetch stack-update:', error);
       });
-  }, [query, stackJobId, intervalCount]);
+  }, [query, stackUpdateId, intervalCount]);
 
   // Auto-start streaming when job is in progress or completed
   useEffect(() => {
-    if (!stackJob || !query || !stackJobId) {
+    if (!stackUpdate || !query || !stackUpdateId) {
       return;
     }
 
     // Reset streaming state if job ID changed
-    if (streamingJobIdRef.current && streamingJobIdRef.current !== stackJobId) {
+    if (streamingJobIdRef.current && streamingJobIdRef.current !== stackUpdateId) {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
         abortControllerRef.current = null;
@@ -121,14 +121,14 @@ export default function StackJobDetailPage() {
     }
 
     // Don't start if already streaming this job
-    if (streamingJobIdRef.current === stackJobId || hasStartedStreamingRef.current) {
+    if (streamingJobIdRef.current === stackUpdateId || hasStartedStreamingRef.current) {
       return;
     }
 
     // Start streaming for in-progress jobs or completed jobs (to load existing logs)
     const shouldStartStreaming =
-      stackJob.status === 'in_progress' ||
-      ((stackJob.status === 'success' || stackJob.status === 'failed') &&
+      stackUpdate.status === 'in_progress' ||
+      ((stackUpdate.status === 'success' || stackUpdate.status === 'failed') &&
         !hasLoadedLogsRef.current);
 
     if (!shouldStartStreaming) {
@@ -136,12 +136,12 @@ export default function StackJobDetailPage() {
     }
 
     // Mark that we're loading logs for completed jobs
-    if (stackJob.status === 'success' || stackJob.status === 'failed') {
+    if (stackUpdate.status === 'success' || stackUpdate.status === 'failed') {
       hasLoadedLogsRef.current = true;
     }
 
     // Mark as started to prevent re-triggering
-    streamingJobIdRef.current = stackJobId;
+    streamingJobIdRef.current = stackUpdateId;
     hasStartedStreamingRef.current = true;
     isStreamingRef.current = true;
     setIsStreaming(true);
@@ -154,7 +154,7 @@ export default function StackJobDetailPage() {
     // Start streaming in async function
     const streamAsync = async () => {
       try {
-        const stream = query.streamOutput(stackJobId, undefined, abortController.signal);
+        const stream = query.streamOutput(stackUpdateId, undefined, abortController.signal);
 
         for await (const response of stream) {
           if (abortController.signal.aborted) {
@@ -177,7 +177,7 @@ export default function StackJobDetailPage() {
             isStreamingRef.current = false;
             setIsStreaming(false);
             hasStartedStreamingRef.current = false;
-            if (streamingJobIdRef.current === stackJobId) {
+            if (streamingJobIdRef.current === stackUpdateId) {
               streamingJobIdRef.current = null;
             }
             break;
@@ -189,7 +189,7 @@ export default function StackJobDetailPage() {
           isStreamingRef.current = false;
           setIsStreaming(false);
           hasStartedStreamingRef.current = false;
-          if (streamingJobIdRef.current === stackJobId) {
+          if (streamingJobIdRef.current === stackUpdateId) {
             streamingJobIdRef.current = null;
           }
         }
@@ -198,9 +198,9 @@ export default function StackJobDetailPage() {
 
     streamAsync();
 
-    // Cleanup on unmount or when stackJobId changes
+    // Cleanup on unmount or when stackUpdateId changes
     return () => {
-      if (streamingJobIdRef.current === stackJobId) {
+      if (streamingJobIdRef.current === stackUpdateId) {
         if (abortControllerRef.current) {
           abortControllerRef.current.abort();
           abortControllerRef.current = null;
@@ -211,14 +211,14 @@ export default function StackJobDetailPage() {
         streamingJobIdRef.current = null;
       }
     };
-  }, [stackJob?.status, stackJobId, query]);
+  }, [stackUpdate?.status, stackUpdateId, query]);
 
-  const updatedTime = stackJob?.updatedAt
-    ? formatTimestampToDate(stackJob.updatedAt, 'DD/MM/YYYY, HH:mm:ss')
+  const updatedTime = stackUpdate?.updatedAt
+    ? formatTimestampToDate(stackUpdate.updatedAt, 'DD/MM/YYYY, HH:mm:ss')
     : '-';
 
   return (
-    <StackJobContainer>
+    <StackUpdateContainer>
       <Stack gap={2}>
         <Breadcrumb
           breadcrumbs={breadcrumbs}
@@ -227,11 +227,11 @@ export default function StackJobDetailPage() {
               icon={ICON_NAMES.INFRA_HUB}
               iconProps={{ sx: { filter: theme.mode === THEME.DARK ? 'invert(1)' : 'none' } }}
               label="Stack Jobs"
-              handler={handleStackJobsClick}
+              handler={handleStackUpdatesClick}
             />
           }
         />
-        <StackJobHeader stackJob={stackJob} updatedTime={updatedTime} />
+        <StackUpdateHeader stackUpdate={stackUpdate} updatedTime={updatedTime} />
 
         <Paper sx={{ p: 2 }}>
           <Tabs value={tabIndex} onChange={(_, newValue) => setTabIndex(newValue)}>
@@ -267,7 +267,7 @@ export default function StackJobDetailPage() {
                   >
                     {isStreaming
                       ? 'Waiting for logs...'
-                      : stackJob?.status === 'in_progress'
+                      : stackUpdate?.status === 'in_progress'
                         ? 'Click to start streaming'
                         : 'No logs available'}
                   </Typography>
@@ -309,8 +309,8 @@ export default function StackJobDetailPage() {
             </Box>
           ) : (
             <Box>
-              {stackJob ? (
-                <JsonCode content={stackJob?.output || {}} />
+              {stackUpdate ? (
+                <JsonCode content={stackUpdate?.output || {}} />
               ) : (
                 <Skeleton variant="rounded" width={'100%'} height={200} />
               )}
@@ -319,14 +319,14 @@ export default function StackJobDetailPage() {
         </Paper>
 
         {/* Stack Jobs Drawer */}
-        {stackJob?.cloudResourceId && (
-          <StackJobsDrawer
-            open={stackJobsDrawerOpen}
-            cloudResourceId={stackJob.cloudResourceId}
-            onClose={handleCloseStackJobs}
+        {stackUpdate?.cloudResourceId && (
+          <StackUpdatesDrawer
+            open={stackUpdatesDrawerOpen}
+            cloudResourceId={stackUpdate.cloudResourceId}
+            onClose={handleCloseStackUpdates}
           />
         )}
       </Stack>
-    </StackJobContainer>
+    </StackUpdateContainer>
   );
 }

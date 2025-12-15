@@ -16,14 +16,14 @@ import (
 // CloudResourceService implements the CloudResourceService RPC.
 type CloudResourceService struct {
 	repo            *database.CloudResourceRepository
-	stackJobService *StackJobService
+	stackUpdateService *StackUpdateService
 }
 
 // NewCloudResourceService creates a new service instance.
-func NewCloudResourceService(repo *database.CloudResourceRepository, stackJobService *StackJobService) *CloudResourceService {
+func NewCloudResourceService(repo *database.CloudResourceRepository, stackUpdateService *StackUpdateService) *CloudResourceService {
 	return &CloudResourceService{
 		repo:            repo,
-		stackJobService: stackJobService,
+		stackUpdateService: stackUpdateService,
 	}
 }
 
@@ -83,7 +83,7 @@ func (s *CloudResourceService) CreateCloudResource(
 	}
 
 	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
-	if s.stackJobService != nil {
+	if s.stackUpdateService != nil {
 		// Create a deployment request (no provider_config needed - will be resolved automatically)
 		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
 			Msg: &backendv1.DeployCloudResourceRequest{
@@ -93,7 +93,7 @@ func (s *CloudResourceService) CreateCloudResource(
 
 		// Trigger deployment asynchronously (don't wait for it)
 		go func() {
-			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+			_, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
 		}()
 	}
 
@@ -291,7 +291,7 @@ func (s *CloudResourceService) UpdateCloudResource(
 	}
 
 	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
-	if s.stackJobService != nil {
+	if s.stackUpdateService != nil {
 		// Create a deployment request (no provider_config needed - will be resolved automatically)
 		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
 			Msg: &backendv1.DeployCloudResourceRequest{
@@ -301,7 +301,7 @@ func (s *CloudResourceService) UpdateCloudResource(
 
 		// Trigger deployment asynchronously (don't wait for it)
 		go func() {
-			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+			_, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
 		}()
 	}
 
@@ -428,7 +428,7 @@ func (s *CloudResourceService) ApplyCloudResource(
 	}
 
 	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
-	if s.stackJobService != nil {
+	if s.stackUpdateService != nil {
 		// Create a deployment request (no provider_config needed - will be resolved automatically)
 		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
 			Msg: &backendv1.DeployCloudResourceRequest{
@@ -438,7 +438,7 @@ func (s *CloudResourceService) ApplyCloudResource(
 
 		// Trigger deployment asynchronously (don't wait for it)
 		go func() {
-			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+			_, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
 		}()
 	}
 

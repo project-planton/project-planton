@@ -16,11 +16,11 @@ Managing a Prometheus deployment within Kubernetes can be complex, especially wh
 ### Environment and Stack Integration
 
 - **Environment Info**: Automatically integrates with Planton Cloud's environment management, ensuring that Prometheus is deployed within the appropriate context.
-- **Stack Job Settings**: Supports configuration of stack job settings to enable consistent infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports configuration of stack-update settings to enable consistent infrastructure-as-code deployments.
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Credential ID**: The `kubernetes_credential_id` is required to securely manage the Kubernetes provider within the stack job, ensuring a secure and authenticated deployment process.
+- **Kubernetes Credential ID**: The `kubernetes_credential_id` is required to securely manage the Kubernetes provider within the stack-update, ensuring a secure and authenticated deployment process.
 
 ### Prometheus Container Configuration
 

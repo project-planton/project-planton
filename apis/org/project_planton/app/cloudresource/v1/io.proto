@@ -1,6 +1,9 @@
 syntax = "proto3";
 
-package org.project_planton.app.v1;
+package org.project_planton.app.cloudresource.v1;
+
+import "org/project_planton/app/cloudresource/v1/api.proto";
+import "org/project_planton/app/commons/page_info.proto";
 
 // Request message for creating a cloud resource.
 message CreateCloudResourceRequest {
@@ -14,21 +17,12 @@ message CreateCloudResourceResponse {
   CloudResource resource = 1;
 }
 
-// PageInfo represents pagination parameters.
-// Page numbers are 0-indexed (page 0 is the first page).
-message PageInfo {
-  // Page number (0-indexed, where 0 is the first page).
-  int32 num = 1;
-  // Number of items per page.
-  int32 size = 2;
-}
-
 // Request message for listing cloud resources.
 message ListCloudResourcesRequest {
   // Optional filter by kind (e.g., "CivoVpc", "AwsRdsInstance").
-  optional string kind = 1;
+  string kind = 1;
   // Pagination parameters (optional). If not provided, returns all resources.
-  optional PageInfo page_info = 2;
+  org.project_planton.app.commons.PageInfo page_info = 2;
 }
 
 // Response message containing a list of cloud resources.
@@ -96,7 +90,7 @@ message ApplyCloudResourceResponse {
 // Request message for counting cloud resources.
 message CountCloudResourcesRequest {
   // Optional filter by kind (e.g., "CivoVpc", "AwsRdsInstance").
-  optional string kind = 1;
+  string kind = 1;
 }
 
 // Response message containing the count of cloud resources.

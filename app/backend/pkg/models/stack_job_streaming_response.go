@@ -6,11 +6,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// StackJobStreamingResponse represents a streaming output chunk from a Pulumi deployment.
+// StackUpdateStreamingResponse represents a streaming output chunk from a Pulumi deployment.
 // Each chunk is stored separately to enable real-time monitoring and complete log history.
-type StackJobStreamingResponse struct {
+type StackUpdateStreamingResponse struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	StackJobID  string             `bson:"stack_job_id" json:"stack_job_id"` // Foreign key to stackjobs collection
+	StackUpdateID  string             `bson:"stack_job_id" json:"stack_job_id"` // Foreign key to stackupdates collection
 	Content     string             `bson:"content" json:"content"`           // The actual output content (line or chunk)
 	StreamType  string             `bson:"stream_type" json:"stream_type"`   // "stdout" or "stderr"
 	SequenceNum int                `bson:"sequence_num" json:"sequence_num"` // Order of this chunk (for reconstruction)

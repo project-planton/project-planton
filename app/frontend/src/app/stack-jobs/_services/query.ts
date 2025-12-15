@@ -2,40 +2,40 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { create } from '@bufbuild/protobuf';
 import { AppContext } from '@/contexts';
 import { useConnectRpcClient } from '@/hooks';
-import { StackJobService } from '@/gen/proto/stack_job_service_pb';
+import { StackUpdateService } from '@/gen/proto/stack_job_service_pb';
 import {
-  ListStackJobsRequest,
-  ListStackJobsResponse,
-  GetStackJobRequestSchema,
-  StreamStackJobOutputRequestSchema,
-  StreamStackJobOutputResponse,
-  StackJob,
+  ListStackUpdatesRequest,
+  ListStackUpdatesResponse,
+  GetStackUpdateRequestSchema,
+  StreamStackUpdateOutputRequestSchema,
+  StreamStackUpdateOutputResponse,
+  StackUpdate,
 } from '@/gen/proto/stack_job_service_pb';
 
 interface QueryType {
-  listStackJobs: (input: ListStackJobsRequest) => Promise<ListStackJobsResponse>;
-  getById: (id: string) => Promise<StackJob>;
+  listStackUpdates: (input: ListStackUpdatesRequest) => Promise<ListStackUpdatesResponse>;
+  getById: (id: string) => Promise<StackUpdate>;
   streamOutput: (
     jobId: string,
     lastSequenceNum?: number,
     signal?: AbortSignal
-  ) => AsyncIterable<StreamStackJobOutputResponse>;
+  ) => AsyncIterable<StreamStackUpdateOutputResponse>;
 }
 
 const RESOURCE_NAME = 'Stack Jobs';
 
-export const useStackJobQuery = () => {
+export const useStackUpdateQuery = () => {
   const { setPageLoading, openSnackbar } = useContext(AppContext);
-  const queryClient = useConnectRpcClient(StackJobService);
+  const queryClient = useConnectRpcClient(StackUpdateService);
   const [query, setQuery] = useState<QueryType>(null);
 
-  const stackJobQuery: QueryType = useMemo(
+  const stackUpdateQuery: QueryType = useMemo(
     () => ({
-      listStackJobs: (input: ListStackJobsRequest): Promise<ListStackJobsResponse> => {
+      listStackUpdates: (input: ListStackUpdatesRequest): Promise<ListStackUpdatesResponse> => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
           queryClient
-            .listStackJobs(input)
+            .listStackUpdates(input)
             .then((response) => {
               resolve(response);
             })
@@ -48,10 +48,10 @@ export const useStackJobQuery = () => {
             });
         });
       },
-      getById: (id: string): Promise<StackJob> => {
+      getById: (id: string): Promise<StackUpdate> => {
         return new Promise((resolve, reject) => {
           queryClient
-            .getStackJob(create(GetStackJobRequestSchema, { id }))
+            .getStackUpdate(create(GetStackUpdateRequestSchema, { id }))
             .then((response) => {
               resolve(response.job);
             })
@@ -65,13 +65,13 @@ export const useStackJobQuery = () => {
         jobId: string,
         lastSequenceNum?: number,
         signal?: AbortSignal
-      ): AsyncIterable<StreamStackJobOutputResponse> => {
-        const request = create(StreamStackJobOutputRequestSchema, {
+      ): AsyncIterable<StreamStackUpdateOutputResponse> => {
+        const request = create(StreamStackUpdateOutputRequestSchema, {
           jobId,
           lastSequenceNum: lastSequenceNum !== undefined ? lastSequenceNum : undefined,
         });
 
-        return queryClient.streamStackJobOutput(request, { signal });
+        return queryClient.streamStackUpdateOutput(request, { signal });
       },
     }),
     [queryClient, setPageLoading, openSnackbar]
@@ -79,9 +79,9 @@ export const useStackJobQuery = () => {
 
   useEffect(() => {
     if (queryClient && !query) {
-      setQuery(stackJobQuery);
+      setQuery(stackUpdateQuery);
     }
-  }, [queryClient, stackJobQuery, query]);
+  }, [queryClient, stackUpdateQuery, query]);
 
   return { query };
 };

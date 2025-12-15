@@ -1,10 +1,11 @@
 syntax = "proto3";
 
-package org.project_planton.app.v1;
+package org.project_planton.app.cloudresource.v1;
+
+import "org/project_planton/app/cloudresource/v1/io.proto";
 
 // CloudResourceQueryController provides operations for managing cloud resources.
 service CloudResourceQueryController {
-
   // ListCloudResources returns a list of all cloud resources.
   rpc List(ListCloudResourcesRequest) returns (ListCloudResourcesResponse);
 

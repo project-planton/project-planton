@@ -25,7 +25,7 @@ The system needed a way to execute Pulumi deployments for cloud resources manage
 Implemented a complete Stack Job service with gRPC APIs that:
 
 1. Accepts cloud resource deployment requests
-2. Creates stack job records in MongoDB with `in_progress` status
+2. Creates stack-update records in MongoDB with `in_progress` status
 3. Executes Pulumi CLI commands asynchronously in the background
 4. Captures Pulumi output (stdout, stderr, exit codes)
 5. Updates job status and stores deployment results
@@ -36,10 +36,10 @@ Implemented a complete Stack Job service with gRPC APIs that:
 ```
 Client Request (DeployCloudResource)
     ↓
-StackJobService.DeployCloudResource()
+StackUpdateService.DeployCloudResource()
     ↓
 1. Fetch CloudResource from DB
-2. Create StackJob with "in_progress" status
+2. Create StackUpdate with "in_progress" status
 3. Return job immediately
     ↓
 Background Goroutine
@@ -51,7 +51,7 @@ deployWithPulumi()
 3. Build stack input YAML
 4. Execute: pulumi up --stack <fqdn> --yes --skip-preview
 5. Capture stdout/stderr/exit_code
-6. Update StackJob with status and output
+6. Update StackUpdate with status and output
 ```
 
 **Data Flow**:
@@ -59,11 +59,11 @@ deployWithPulumi()
 ```
 CloudResource (MongoDB)
     ↓ (manifest YAML)
-StackJobService
+StackUpdateService
     ↓ (async execution)
 Pulumi CLI (pulumi up)
     ↓ (output)
-StackJob (MongoDB)
+StackUpdate (MongoDB)
     - status: success/failed/in_progress
     - output: JSON with stdout, stderr, exit_code, timestamp, stack_fqdn, error
 ```
@@ -77,16 +77,16 @@ Three main RPC methods:
 - **DeployCloudResource**: Initiates deployment for a cloud resource
 
   - Validates cloud resource exists
-  - Creates stack job record
+  - Creates stack-update record
   - Returns immediately with job ID
   - Executes Pulumi deployment asynchronously
 
-- **GetStackJob**: Retrieves a specific stack job by ID
+- **GetStackUpdate**: Retrieves a specific stack-update by ID
 
   - Returns job status, output, and timestamps
   - Used for polling deployment status
 
-- **ListStackJobs**: Lists stack jobs with optional filters
+- **ListStackUpdates**: Lists stack-updates with optional filters
   - Filter by cloud resource ID
   - Filter by status (success, failed, in_progress)
   - Sorted by creation date (newest first)
@@ -129,7 +129,7 @@ Deployment results stored as JSON in the `output` field:
 
 - Deployments run in background goroutines
 - API returns immediately with job ID
-- Clients can poll for status using `GetStackJob`
+- Clients can poll for status using `GetStackUpdate`
 - No request timeouts for long-running deployments
 
 **5. Error Handling**
@@ -149,15 +149,15 @@ Deployment results stored as JSON in the `output` field:
 Defines the gRPC service and messages:
 
 ```9:77:app/backend/apis/proto/stack_job_service.proto
-// StackJobService provides operations for managing Pulumi stack deployment jobs.
-service StackJobService {
+// StackUpdateService provides operations for managing Pulumi stack deployment jobs.
+service StackUpdateService {
   // DeployCloudResource deploys a cloud resource using Pulumi.
-  // Takes a cloud resource ID, fetches the manifest, executes pulumi up, and stores the result in stackjobs table.
+  // Takes a cloud resource ID, fetches the manifest, executes pulumi up, and stores the result in stackupdates table.
   rpc DeployCloudResource(DeployCloudResourceRequest) returns (DeployCloudResourceResponse);
-  // GetStackJob retrieves a stack job by ID.
-  rpc GetStackJob(GetStackJobRequest) returns (GetStackJobResponse);
-  // ListStackJobs lists stack jobs, optionally filtered by cloud resource ID or status.
-  rpc ListStackJobs(ListStackJobsRequest) returns (ListStackJobsResponse);
+  // GetStackUpdate retrieves a stack-update by ID.
+  rpc GetStackUpdate(GetStackUpdateRequest) returns (GetStackUpdateResponse);
+  // ListStackUpdates lists stack-updates, optionally filtered by cloud resource ID or status.
+  rpc ListStackUpdates(ListStackUpdatesRequest) returns (ListStackUpdatesResponse);
 }
 
 // Request message for deploying a cloud resource.
@@ -166,41 +166,41 @@ message DeployCloudResourceRequest {
   string cloud_resource_id = 1;
 }
 
-// Response message containing the created stack job.
+// Response message containing the created stack-update.
 message DeployCloudResourceResponse {
-  // The created stack job.
-  StackJob job = 1;
+  // The created stack-update.
+  StackUpdate job = 1;
 }
 
-// Request message for retrieving a stack job by ID.
-message GetStackJobRequest {
-  // The unique identifier of the stack job.
+// Request message for retrieving a stack-update by ID.
+message GetStackUpdateRequest {
+  // The unique identifier of the stack-update.
   string id = 1;
 }
 
-// Response message containing the retrieved stack job.
-message GetStackJobResponse {
-  // The requested stack job.
-  StackJob job = 1;
+// Response message containing the retrieved stack-update.
+message GetStackUpdateResponse {
+  // The requested stack-update.
+  StackUpdate job = 1;
 }
 
-// Request message for listing stack jobs.
-message ListStackJobsRequest {
+// Request message for listing stack-updates.
+message ListStackUpdatesRequest {
   // Optional filter by cloud resource ID.
   optional string cloud_resource_id = 1;
   // Optional filter by status (success, failed, in_progress).
   optional string status = 2;
 }
 
-// Response message containing a list of stack jobs.
-message ListStackJobsResponse {
-  // List of stack jobs.
-  repeated StackJob jobs = 1;
+// Response message containing a list of stack-updates.
+message ListStackUpdatesResponse {
+  // List of stack-updates.
+  repeated StackUpdate jobs = 1;
 }
 
-// StackJob represents a Pulumi stack deployment job.
-message StackJob {
-  // Unique identifier for the stack job.
+// StackUpdate represents a Pulumi stack deployment job.
+message StackUpdate {
+  // Unique identifier for the stack-update.
   string id = 1;
 
   // The cloud resource ID this job is associated with.
@@ -224,17 +224,17 @@ message StackJob {
 
 - `output` field stores JSON string for flexibility (can include any Pulumi output structure)
 - Status is a string enum: "success", "failed", "in_progress"
-- Optional filters in `ListStackJobsRequest` for flexible querying
+- Optional filters in `ListStackUpdatesRequest` for flexible querying
 
 ### 2. Data Model
 
 **File**: `app/backend/pkg/models/stack_job.go`
 
-MongoDB model for stack jobs:
+MongoDB model for stack-updates:
 
 ```9:17:app/backend/pkg/models/stack_job.go
-// StackJob represents a Pulumi stack deployment job in MongoDB.
-type StackJob struct {
+// StackUpdate represents a Pulumi stack deployment job in MongoDB.
+type StackUpdate struct {
 	ID              primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	CloudResourceID string             `bson:"cloud_resource_id" json:"cloud_resource_id"`
 	Status          string             `bson:"status" json:"status"`                     // success, failed, in_progress
@@ -244,7 +244,7 @@ type StackJob struct {
 }
 ```
 
-**MongoDB Collection**: `stackjobs`
+**MongoDB Collection**: `stackupdates`
 
 ### 3. Repository Layer
 
@@ -252,7 +252,7 @@ type StackJob struct {
 
 Provides data access methods:
 
-- **Create**: Insert new stack job with timestamps
+- **Create**: Insert new stack-update with timestamps
 - **FindByID**: Retrieve job by MongoDB ObjectID
 - **FindByCloudResourceID**: Get all jobs for a cloud resource (sorted newest first)
 - **Update**: Update job status and output
@@ -274,8 +274,8 @@ Main service implementation with three key methods:
 
 ```44:104:app/backend/internal/service/stack_job_service.go
 // DeployCloudResource deploys a cloud resource using Pulumi.
-// Fetches the manifest from the cloud resource ID, executes pulumi up, and stores the result in stackjobs table.
-func (s *StackJobService) DeployCloudResource(
+// Fetches the manifest from the cloud resource ID, executes pulumi up, and stores the result in stackupdates table.
+func (s *StackUpdateService) DeployCloudResource(
 	ctx context.Context,
 	req *connect.Request[backendv1.DeployCloudResourceRequest],
 ) (*connect.Response[backendv1.DeployCloudResourceResponse], error) {
@@ -295,16 +295,16 @@ func (s *StackJobService) DeployCloudResource(
 		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("cloud resource with ID '%s' not found", cloudResourceID))
 	}
 
-	// Create stack job with in_progress status
-	stackJob := &models.StackJob{
+	// Create stack-update with in_progress status
+	stackUpdate := &models.StackUpdate{
 		CloudResourceID: cloudResourceID,
 		Status:          "in_progress",
 	}
 
-	createdJob, err := s.stackJobRepo.Create(ctx, stackJob)
+	createdJob, err := s.stackUpdateRepo.Create(ctx, stackUpdate)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to create stack job")
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create stack job: %w", err))
+		logrus.WithError(err).Error("Failed to create stack-update")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create stack-update: %w", err))
 	}
 
 	// Execute Pulumi deployment asynchronously
@@ -316,7 +316,7 @@ func (s *StackJobService) DeployCloudResource(
 	}()
 
 	// Convert to proto
-	protoJob := &backendv1.StackJob{
+	protoJob := &backendv1.StackUpdate{
 		Id:              createdJob.ID.Hex(),
 		CloudResourceId: createdJob.CloudResourceID,
 		Status:          createdJob.Status,
@@ -339,8 +339,8 @@ func (s *StackJobService) DeployCloudResource(
 **deployWithPulumi** (core deployment logic):
 
 ```192:427:app/backend/internal/service/stack_job_service.go
-// deployWithPulumi executes pulumi up and stores output in stackjobs table
-func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
+// deployWithPulumi executes pulumi up and stores output in stackupdates table
+func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
 	// Write manifest to temp file
 	tmpFile, err := os.CreateTemp("", "manifest-*.yaml")
 	if err != nil {
@@ -535,7 +535,7 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 		// No error field for success
 	}
 
-	// Convert to JSON string and update stack job
+	// Convert to JSON string and update stack-update
 	outputJSON, jsonErr := json.Marshal(deploymentOutput)
 	if jsonErr != nil {
 		logrus.WithError(jsonErr).Error("Failed to marshal deployment output to JSON")
@@ -546,25 +546,25 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
 			"timestamp": time.Now().Format(time.RFC3339),
 		}
 		errorJSON, _ := json.Marshal(errorOutput)
-		updateJob := &models.StackJob{
+		updateJob := &models.StackUpdate{
 			Status: "failed",
 			Output: string(errorJSON),
 		}
-		if _, err := s.stackJobRepo.Update(ctx, jobID, updateJob); err != nil {
-			logrus.WithError(err).Error("Failed to update stack job with error")
+		if _, err := s.stackUpdateRepo.Update(ctx, jobID, updateJob); err != nil {
+			logrus.WithError(err).Error("Failed to update stack-update with error")
 		}
 		return fmt.Errorf("failed to marshal deployment output: %w", jsonErr)
 	}
 
-	// Update stack job with deployment output
-	updateJob := &models.StackJob{
+	// Update stack-update with deployment output
+	updateJob := &models.StackUpdate{
 		Status: status,
 		Output: string(outputJSON),
 	}
-	_, updateErr := s.stackJobRepo.Update(ctx, jobID, updateJob)
+	_, updateErr := s.stackUpdateRepo.Update(ctx, jobID, updateJob)
 	if updateErr != nil {
-		logrus.WithError(updateErr).Error("Failed to update stack job with deployment output")
-		return fmt.Errorf("failed to update stack job: %w", updateErr)
+		logrus.WithError(updateErr).Error("Failed to update stack-update with deployment output")
+		return fmt.Errorf("failed to update stack-update: %w", updateErr)
 	}
 
 	logrus.WithFields(logrus.Fields{
@@ -665,15 +665,15 @@ Updated with Pulumi environment variables:
 **System Integration**:
 
 - Pulumi CLI integrated into backend Docker image
-- Stack jobs stored in MongoDB `stackjobs` collection
+- Stack jobs stored in MongoDB `stackupdates` collection
 - gRPC service available for frontend integration
 
 ### Developer Experience
 
-**3 new gRPC RPC methods** for stack job management
-**1 new MongoDB collection** (`stackjobs`) for job tracking
-**1 new service** (`StackJobService`) for deployment orchestration
-**1 new repository** (`StackJobRepository`) for data access
+**3 new gRPC RPC methods** for stack-update management
+**1 new MongoDB collection** (`stackupdates`) for job tracking
+**1 new service** (`StackUpdateService`) for deployment orchestration
+**1 new repository** (`StackUpdateRepository`) for data access
 **Pulumi CLI** integrated into backend Docker image
 
 ### System Capabilities
@@ -713,7 +713,7 @@ DeployCloudResourceResponse {
 **gRPC Request**:
 
 ```protobuf
-GetStackJobRequest {
+GetStackUpdateRequest {
   id: "507f191e810c19729de860ea"
 }
 ```
@@ -721,7 +721,7 @@ GetStackJobRequest {
 **Response** (after deployment completes):
 
 ```protobuf
-GetStackJobResponse {
+GetStackUpdateResponse {
   job: {
     id: "507f191e810c19729de860ea"
     cloud_resource_id: "507f1f77bcf86cd799439011"
@@ -738,7 +738,7 @@ GetStackJobResponse {
 **gRPC Request**:
 
 ```protobuf
-ListStackJobsRequest {
+ListStackUpdatesRequest {
   cloud_resource_id: "507f1f77bcf86cd799439011"
   status: "failed"  // optional filter
 }
@@ -747,7 +747,7 @@ ListStackJobsRequest {
 **Response**:
 
 ```protobuf
-ListStackJobsResponse {
+ListStackUpdatesResponse {
   jobs: [
     {
       id: "507f191e810c19729de860ea"
@@ -795,8 +795,8 @@ ListStackJobsResponse {
 
 ## Technical Metrics
 
-- **3 gRPC RPC methods** for stack job management
-- **1 MongoDB collection** (`stackjobs`) for job storage
+- **3 gRPC RPC methods** for stack-update management
+- **1 MongoDB collection** (`stackupdates`) for job storage
 - **10-minute timeout** for Pulumi deployments
 - **Asynchronous execution** via goroutines
 - **JSON output format** for flexible deployment result storage
@@ -938,6 +938,6 @@ These limitations are intentional for the initial implementation and can be addr
 **Status**: ✅ Complete and Production Ready
 **Component**: Backend API - Stack Job Service, Pulumi CLI Integration
 **APIs Added**: 3 gRPC RPC methods
-**Database**: 1 new MongoDB collection (`stackjobs`)
+**Database**: 1 new MongoDB collection (`stackupdates`)
 **Docker**: Pulumi CLI v3.206.0 integrated
 **Location**: `app/backend/internal/service/`, `app/backend/internal/database/`, `app/backend/apis/proto/`

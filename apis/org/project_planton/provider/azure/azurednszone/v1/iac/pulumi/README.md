@@ -27,7 +27,7 @@ The module expects an `api-resource.yaml` file defining the desired state of the
 
 - **`azure_credential_id`** (required): The identifier for the Azure credentials used to authenticate with Azure services.
 - **`environment_info`**: Contains environment-specific information (currently not implemented).
-- **`stack_job_settings`**: Settings related to the stack job execution (currently not implemented).
+- **`stack_job_settings`**: Settings related to the stack-update execution (currently not implemented).
 
 ### Pulumi Module Functionality
 
@@ -58,7 +58,7 @@ The core functionality of this module revolves around setting up the Azure provi
 ## Future Enhancements
 
 - **Implement Resource Creation**: Extend the module to create AKS clusters and related Azure resources based on the provided specifications.
-- **Utilize Spec Fields**: Make use of `environment_info` and `stack_job_settings` to allow for more granular control over the deployment environment and stack job configurations.
+- **Utilize Spec Fields**: Make use of `environment_info` and `stack_job_settings` to allow for more granular control over the deployment environment and stack-update configurations.
 - **Enhance Output Management**: Capture and expose essential output parameters such as cluster endpoints, credentials, and configuration details.
 - **Error Handling and Validation**: Introduce comprehensive error handling and input validation to improve reliability and user experience.
 

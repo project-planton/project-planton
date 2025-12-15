@@ -335,7 +335,7 @@ message GcpCertManagerCertSpec {
 - [ ] **StackInput Message** - Defines `<Kind>StackInput` message:
   ```protobuf
   message <Kind>StackInput {
-    org.project_planton.shared.pulumi.StackJobSettings stack_job_settings = 1;
+    org.project_planton.shared.pulumi.StackUpdateSettings stack_job_settings = 1;
     <Kind>Spec spec = 2;
     <ProviderCredential> <provider>_credential = 3;
   }

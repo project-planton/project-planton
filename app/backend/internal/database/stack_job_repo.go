@@ -13,24 +13,24 @@ import (
 )
 
 const (
-	// StackJobCollectionName is the name of the MongoDB collection for stack jobs.
-	StackJobCollectionName = "stackjobs"
+	// StackUpdateCollectionName is the name of the MongoDB collection for stack-updates.
+	StackUpdateCollectionName = "stackupdates"
 )
 
-// StackJobRepository provides data access methods for stack jobs.
-type StackJobRepository struct {
+// StackUpdateRepository provides data access methods for stack-updates.
+type StackUpdateRepository struct {
 	collection *mongo.Collection
 }
 
-// NewStackJobRepository creates a new repository instance.
-func NewStackJobRepository(db *MongoDB) *StackJobRepository {
-	return &StackJobRepository{
-		collection: db.Database.Collection(StackJobCollectionName),
+// NewStackUpdateRepository creates a new repository instance.
+func NewStackUpdateRepository(db *MongoDB) *StackUpdateRepository {
+	return &StackUpdateRepository{
+		collection: db.Database.Collection(StackUpdateCollectionName),
 	}
 }
 
-// Create inserts a new stack job into MongoDB.
-func (r *StackJobRepository) Create(ctx context.Context, job *models.StackJob) (*models.StackJob, error) {
+// Create inserts a new stack-update into MongoDB.
+func (r *StackUpdateRepository) Create(ctx context.Context, job *models.StackUpdate) (*models.StackUpdate, error) {
 	now := time.Now()
 	job.ID = primitive.NewObjectID()
 	job.CreatedAt = now
@@ -38,33 +38,33 @@ func (r *StackJobRepository) Create(ctx context.Context, job *models.StackJob) (
 
 	result, err := r.collection.InsertOne(ctx, job)
 	if err != nil {
-		return nil, fmt.Errorf("failed to insert stack job: %w", err)
+		return nil, fmt.Errorf("failed to insert stack-update: %w", err)
 	}
 
 	job.ID = result.InsertedID.(primitive.ObjectID)
 	return job, nil
 }
 
-// FindByID retrieves a stack job by ID.
-func (r *StackJobRepository) FindByID(ctx context.Context, id string) (*models.StackJob, error) {
+// FindByID retrieves a stack-update by ID.
+func (r *StackUpdateRepository) FindByID(ctx context.Context, id string) (*models.StackUpdate, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("invalid ID format: %w", err)
 	}
 
-	var job models.StackJob
+	var job models.StackUpdate
 	err = r.collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&job)
 	if err == mongo.ErrNoDocuments {
 		return nil, nil // Not found, but not an error
 	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to query stack job by ID: %w", err)
+		return nil, fmt.Errorf("failed to query stack-update by ID: %w", err)
 	}
 	return &job, nil
 }
 
-// FindByCloudResourceID retrieves stack jobs by cloud resource ID, sorted by created_at descending.
-func (r *StackJobRepository) FindByCloudResourceID(ctx context.Context, cloudResourceID string) ([]*models.StackJob, error) {
+// FindByCloudResourceID retrieves stack-updates by cloud resource ID, sorted by created_at descending.
+func (r *StackUpdateRepository) FindByCloudResourceID(ctx context.Context, cloudResourceID string) ([]*models.StackUpdate, error) {
 	filter := bson.M{"cloud_resource_id": cloudResourceID}
 
 	findOptions := options.Find()
@@ -72,20 +72,20 @@ func (r *StackJobRepository) FindByCloudResourceID(ctx context.Context, cloudRes
 
 	cursor, err := r.collection.Find(ctx, filter, findOptions)
 	if err != nil {
-		return nil, fmt.Errorf("failed to query stack jobs: %w", err)
+		return nil, fmt.Errorf("failed to query stack-updates: %w", err)
 	}
 	defer cursor.Close(ctx)
 
-	var jobs []*models.StackJob
+	var jobs []*models.StackUpdate
 	if err := cursor.All(ctx, &jobs); err != nil {
-		return nil, fmt.Errorf("failed to decode stack jobs: %w", err)
+		return nil, fmt.Errorf("failed to decode stack-updates: %w", err)
 	}
 
 	return jobs, nil
 }
 
-// Update updates an existing stack job in MongoDB.
-func (r *StackJobRepository) Update(ctx context.Context, id string, job *models.StackJob) (*models.StackJob, error) {
+// Update updates an existing stack-update in MongoDB.
+func (r *StackUpdateRepository) Update(ctx context.Context, id string, job *models.StackUpdate) (*models.StackUpdate, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("invalid ID format: %w", err)
@@ -109,7 +109,7 @@ func (r *StackJobRepository) Update(ctx context.Context, id string, job *models.
 
 	opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
 
-	var updatedJob models.StackJob
+	var updatedJob models.StackUpdate
 	err = r.collection.FindOneAndUpdate(
 		ctx,
 		bson.M{"_id": objectID},
@@ -119,24 +119,24 @@ func (r *StackJobRepository) Update(ctx context.Context, id string, job *models.
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("stack job not found")
+			return nil, fmt.Errorf("stack-update not found")
 		}
-		return nil, fmt.Errorf("failed to update stack job: %w", err)
+		return nil, fmt.Errorf("failed to update stack-update: %w", err)
 	}
 
 	return &updatedJob, nil
 }
 
-// StackJobListOptions contains options for listing stack jobs.
-type StackJobListOptions struct {
+// StackUpdateListOptions contains options for listing stack-updates.
+type StackUpdateListOptions struct {
 	CloudResourceID *string
 	Status          *string
 	PageNum         *int32
 	PageSize        *int32
 }
 
-// List retrieves stack jobs with optional filters and pagination.
-func (r *StackJobRepository) List(ctx context.Context, opts *StackJobListOptions) ([]*models.StackJob, error) {
+// List retrieves stack-updates with optional filters and pagination.
+func (r *StackUpdateRepository) List(ctx context.Context, opts *StackUpdateListOptions) ([]*models.StackUpdate, error) {
 	filter := bson.M{}
 
 	if opts != nil {
@@ -167,20 +167,20 @@ func (r *StackJobRepository) List(ctx context.Context, opts *StackJobListOptions
 
 	cursor, err := r.collection.Find(ctx, filter, findOptions)
 	if err != nil {
-		return nil, fmt.Errorf("failed to query stack jobs: %w", err)
+		return nil, fmt.Errorf("failed to query stack-updates: %w", err)
 	}
 	defer cursor.Close(ctx)
 
-	var jobs []*models.StackJob
+	var jobs []*models.StackUpdate
 	if err := cursor.All(ctx, &jobs); err != nil {
-		return nil, fmt.Errorf("failed to decode stack jobs: %w", err)
+		return nil, fmt.Errorf("failed to decode stack-updates: %w", err)
 	}
 
 	return jobs, nil
 }
 
-// Count returns the total count of stack jobs with optional filters.
-func (r *StackJobRepository) Count(ctx context.Context, opts *StackJobListOptions) (int64, error) {
+// Count returns the total count of stack-updates with optional filters.
+func (r *StackUpdateRepository) Count(ctx context.Context, opts *StackUpdateListOptions) (int64, error) {
 	filter := bson.M{}
 
 	if opts != nil {
@@ -195,7 +195,7 @@ func (r *StackJobRepository) Count(ctx context.Context, opts *StackJobListOption
 
 	count, err := r.collection.CountDocuments(ctx, filter)
 	if err != nil {
-		return 0, fmt.Errorf("failed to count stack jobs: %w", err)
+		return 0, fmt.Errorf("failed to count stack-updates: %w", err)
 	}
 
 	return count, nil

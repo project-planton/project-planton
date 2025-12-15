@@ -39,7 +39,7 @@ metadata:
   name: my-azure-aks-cluster
 spec:
   azureProviderConfigId: my-azure-credential-id
-  stackJobSettings:
+  stackUpdateSettings:
     jobTimeout: 3600
 ```
 

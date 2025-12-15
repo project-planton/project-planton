@@ -16,7 +16,7 @@ Managing S3 buckets directly can be cumbersome due to the various configuration 
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system to deploy S3 buckets within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### AWS Credential Management
 

@@ -17,7 +17,7 @@ AWS IAM users provide long-lived programmatic credentials for CI/CD pipelines, t
 - console_url: AWS console sign-in URL
 
 ## How it works
-This resource is orchestrated by the Project Planton CLI as part of a stack job. The CLI validates your manifest, generates stack inputs, and invokes IaC backends in this repo:
+This resource is orchestrated by the Project Planton CLI as part of a stack-update. The CLI validates your manifest, generates stack inputs, and invokes IaC backends in this repo:
 - Pulumi (Go modules under iac/pulumi)
 - Terraform (modules under iac/tf)
 

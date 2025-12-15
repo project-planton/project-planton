@@ -38,7 +38,7 @@ func init() {
 		root.Plan,
 		root.Pulumi,
 		root.Refresh,
-		root.StackJobStreamOutputCmd,
+		root.StackUpdateStreamOutputCmd,
 		root.Tofu,
 		root.ValidateManifest,
 		root.Version,

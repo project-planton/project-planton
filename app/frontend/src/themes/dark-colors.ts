@@ -115,7 +115,7 @@ export const exceptionsDark = {
   50: '#31363D', // Border Lines
   60: '#2D3038', // Table Strokes
   70: '#262629', // Pop-ups and Sliders
-  80: '#0F142A', // StackJob Log section header
+  80: '#0F142A', // StackUpdate Log section header
   85: '#242C4B', // Header active bg color
   90: '#5CBBFF', // plantora msg bg
   95: '#001D47', // Banner BG

@@ -49,7 +49,7 @@ type AwsProviderConfig struct {
 	// The AWS region to be used when configuring this AWS credential.
 	// This optional field allows specifying the region in which resources will be created or managed.
 	// For more information do refer this link https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
-	Region *string `protobuf:"bytes,4,opt,name=region,proto3,oneof" json:"region,omitempty"`
+	Region string `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
 	// The AWS Session Token, required when using temporary security credentials.
 	// This field is optional and only needed when using temporary credentials obtained through
 	// AWS STS operations (e.g., AssumeRole, GetSessionToken).
@@ -112,8 +112,8 @@ func (x *AwsProviderConfig) GetSecretAccessKey() string {
 }
 
 func (x *AwsProviderConfig) GetRegion() string {
-	if x != nil && x.Region != nil {
-		return *x.Region
+	if x != nil {
+		return x.Region
 	}
 	return ""
 }
@@ -129,7 +129,7 @@ var File_org_project_planton_provider_aws_provider_proto protoreflect.FileDescri
 
 const file_org_project_planton_provider_aws_provider_proto_rawDesc = "" +
 	"\n" +
-	"/org/project_planton/provider/aws/provider.proto\x12 org.project_planton.provider.aws\x1a\x1bbuf/validate/validate.proto\"\xf8\x06\n" +
+	"/org/project_planton/provider/aws/provider.proto\x12 org.project_planton.provider.aws\x1a\x1bbuf/validate/validate.proto\"\xe8\x06\n" +
 	"\x11AwsProviderConfig\x12w\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tBX\xbaHU\xba\x01O\n" +
@@ -138,10 +138,9 @@ const file_org_project_planton_provider_aws_provider_proto_rawDesc = "" +
 	"\x19spec.access_key_id.prefix\x128Must start with 'AKIA' (long-term) or 'ASIA' (temporary)\x1a\x1bthis.matches('^A(K|S)IA.*')\xba\x01\x8b\x01\n" +
 	"\x19spec.access_key_id.format\x12GMust start with 'AKIA' or 'ASIA' followed by 16 alphanumeric characters\x1a%this.matches('^.{4}[a-zA-Z0-9]{16}$')\xc8\x01\x01r\x03\x98\x01\x14R\vaccessKeyId\x12\xdc\x02\n" +
 	"\x11secret_access_key\x18\x03 \x01(\tB\xaf\x02\xbaH\xab\x02\xba\x01\x9f\x02\n" +
-	"\x1aspec.aws.secret_access_key\x12\xdb\x01The provided AWS Secret Access Key is invalid. It must contain exactly 40 characters consisting of numbers, lowercase and uppercase letters, slashes (/), and plus signs (+). Please double-check your input and try again.\x1a#this.matches('^[0-9a-zA-Z/+]{40}$')\xc8\x01\x01r\x03\x98\x01(R\x0fsecretAccessKey\x12#\n" +
-	"\x06region\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01H\x00R\x06region\x88\x01\x01\x12#\n" +
-	"\rsession_token\x18\x05 \x01(\tR\fsessionTokenB\t\n" +
-	"\a_regionB\xa7\x02\n" +
+	"\x1aspec.aws.secret_access_key\x12\xdb\x01The provided AWS Secret Access Key is invalid. It must contain exactly 40 characters consisting of numbers, lowercase and uppercase letters, slashes (/), and plus signs (+). Please double-check your input and try again.\x1a#this.matches('^[0-9a-zA-Z/+]{40}$')\xc8\x01\x01r\x03\x98\x01(R\x0fsecretAccessKey\x12\x1e\n" +
+	"\x06region\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12#\n" +
+	"\rsession_token\x18\x05 \x01(\tR\fsessionTokenB\xa7\x02\n" +
 	"$com.org.project_planton.provider.awsB\rProviderProtoP\x01ZPgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws\xa2\x02\x04OPPA\xaa\x02\x1fOrg.ProjectPlanton.Provider.Aws\xca\x02\x1fOrg\\ProjectPlanton\\Provider\\Aws\xe2\x02+Org\\ProjectPlanton\\Provider\\Aws\\GPBMetadata\xea\x02\"Org::ProjectPlanton::Provider::Awsb\x06proto3"
 
 var (
@@ -173,7 +172,6 @@ func file_org_project_planton_provider_aws_provider_proto_init() {
 	if File_org_project_planton_provider_aws_provider_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_aws_provider_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

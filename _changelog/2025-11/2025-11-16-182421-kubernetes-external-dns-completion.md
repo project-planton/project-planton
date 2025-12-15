@@ -19,7 +19,7 @@ The KubernetesExternalDns component was audited at 59.20% completion with "Parti
 - **Zero test coverage**: No `api_test.go` - validation rules completely unverified
 - **No user documentation**: Missing README.md and examples.md at v1 level
 - **Empty Terraform implementation**: main.tf was 0 bytes, completely non-functional
-- **Wrong Pulumi overview.md**: Contained copy-paste boilerplate about "StackJobRunner"
+- **Wrong Pulumi overview.md**: Contained copy-paste boilerplate about "StackUpdateRunner"
 - **Missing supporting files**: No hack manifest, Pulumi README, or Terraform docs
 - **No locals.go**: Pulumi module lacked standard helper functions
 
@@ -84,7 +84,7 @@ The component manages DNS across 4 cloud providers with cloud-native authenticat
 
 #### Pulumi Enhancements
 4. **`iac/pulumi/overview.md`** - Fixed (was wrong content)
-   - Corrected from "StackJobRunner" boilerplate
+   - Corrected from "StackUpdateRunner" boilerplate
    - Now properly describes ExternalDNS architecture
    - Multi-cloud authentication patterns
    - Zone scoping and multi-instance support

@@ -39,7 +39,7 @@ metadata:
   name: my-azure-dns-zone
 spec:
   azureProviderConfigId: my-azure-credential-id
-  stackJobSettings:
+  stackUpdateSettings:
     jobTimeout: 3600
 ```
 

@@ -213,7 +213,7 @@ The following icon directories were not renamed as they weren't part of the refa
 - `perconapostgresqloperator/` (already had correct vendor name)
 - `perconaservermongodboperator/` (already had correct vendor name)
 - `perconaservermysqloperator/` (already had correct vendor name)
-- `stackjobrunnerkubernetes/` (not included in refactoring)
+- `stackupdaterunnerkubernetes/` (not included in refactoring)
 
 ## Testing
 

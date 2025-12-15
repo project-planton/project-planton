@@ -15,7 +15,7 @@ import {
   PageInfoSchema,
 } from '@/gen/proto/cloud_resource_service_pb';
 import { formatTimestampToDate } from '@/lib';
-import { StackJobsDrawer } from '@/components/shared/stackjob';
+import { StackUpdatesDrawer } from '@/components/shared/stackupdate';
 
 type DrawerMode = 'view' | 'edit' | 'create' | null;
 
@@ -94,8 +94,8 @@ export function CloudResourcesList({
   const [resourceToDelete, setResourceToDelete] = useState<CloudResource | null>(null);
 
   // Stack jobs drawer state
-  const [stackJobsDrawerOpen, setStackJobsDrawerOpen] = useState(false);
-  const [selectedResourceForStackJobs, setSelectedResourceForStackJobs] =
+  const [stackUpdatesDrawerOpen, setStackUpdatesDrawerOpen] = useState(false);
+  const [selectedResourceForStackUpdates, setSelectedResourceForStackUpdates] =
     useState<CloudResource | null>(null);
 
   // Function to call the API
@@ -234,14 +234,14 @@ export function CloudResourcesList({
     setResourceToDelete(null);
   }, []);
 
-  const handleOpenStackJobs = useCallback((row: CloudResource) => {
-    setSelectedResourceForStackJobs(row);
-    setStackJobsDrawerOpen(true);
+  const handleOpenStackUpdates = useCallback((row: CloudResource) => {
+    setSelectedResourceForStackUpdates(row);
+    setStackUpdatesDrawerOpen(true);
   }, []);
 
-  const handleCloseStackJobs = useCallback(() => {
-    setStackJobsDrawerOpen(false);
-    setSelectedResourceForStackJobs(null);
+  const handleCloseStackUpdates = useCallback(() => {
+    setStackUpdatesDrawerOpen(false);
+    setSelectedResourceForStackUpdates(null);
   }, []);
 
   const tableActions: ActionMenuProps<CloudResource>[] = useMemo(
@@ -263,7 +263,7 @@ export function CloudResourcesList({
       {
         text: 'Stack Jobs',
         handler: (row: CloudResource) => {
-          handleOpenStackJobs(row);
+          handleOpenStackUpdates(row);
         },
         isMenuAction: true,
       },
@@ -275,7 +275,7 @@ export function CloudResourcesList({
         isMenuAction: true,
       },
     ],
-    [handleOpenDrawer, handleConfirmDelete, handleOpenStackJobs]
+    [handleOpenDrawer, handleConfirmDelete, handleOpenStackUpdates]
   );
 
   const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
@@ -409,11 +409,11 @@ export function CloudResourcesList({
       />
 
       {/* Stack Jobs Drawer */}
-      {selectedResourceForStackJobs && (
-        <StackJobsDrawer
-          open={stackJobsDrawerOpen}
-          cloudResourceId={selectedResourceForStackJobs.id}
-          onClose={handleCloseStackJobs}
+      {selectedResourceForStackUpdates && (
+        <StackUpdatesDrawer
+          open={stackUpdatesDrawerOpen}
+          cloudResourceId={selectedResourceForStackUpdates.id}
+          onClose={handleCloseStackUpdates}
         />
       )}
     </>

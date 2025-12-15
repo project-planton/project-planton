@@ -15,24 +15,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var StackJobStreamOutputCmd = &cobra.Command{
+var StackUpdateStreamOutputCmd = &cobra.Command{
 	Use:   "stack-job:stream-output",
-	Short: "stream real-time output from a stack job",
-	Long:  "Stream real-time deployment logs from a stack job. Shows stdout and stderr output as it's generated during deployment.",
-	Run:   stackJobStreamOutputHandler,
+	Short: "stream real-time output from a stack-update",
+	Long:  "Stream real-time deployment logs from a stack-update. Shows stdout and stderr output as it's generated during deployment.",
+	Run:   stackUpdateStreamOutputHandler,
 }
 
 func init() {
-	StackJobStreamOutputCmd.Flags().StringP("id", "i", "", "unique identifier of the stack job (required)")
-	StackJobStreamOutputCmd.Flags().Int32P("last-sequence", "s", 0, "last sequence number received (for resuming stream from a specific point)")
-	StackJobStreamOutputCmd.MarkFlagRequired("id")
+	StackUpdateStreamOutputCmd.Flags().StringP("id", "i", "", "unique identifier of the stack-update (required)")
+	StackUpdateStreamOutputCmd.Flags().Int32P("last-sequence", "s", 0, "last sequence number received (for resuming stream from a specific point)")
+	StackUpdateStreamOutputCmd.MarkFlagRequired("id")
 }
 
-func stackJobStreamOutputHandler(cmd *cobra.Command, args []string) {
-	// Get stack job ID
+func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
+	// Get stack-update ID
 	jobID, _ := cmd.Flags().GetString("id")
 	if jobID == "" {
-		fmt.Println("Error: --id flag is required. Provide the stack job ID")
+		fmt.Println("Error: --id flag is required. Provide the stack-update ID")
 		fmt.Println("Usage: project-planton stack-job:stream-output --id=<stack-job-id>")
 		os.Exit(1)
 	}
@@ -48,13 +48,13 @@ func stackJobStreamOutputHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewStackJobServiceClient(
+	client := backendv1connect.NewStackUpdateServiceClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.StreamStackJobOutputRequest{
+	req := &backendv1.StreamStackUpdateOutputRequest{
 		JobId: jobID,
 	}
 	if lastSequenceNum > 0 {
@@ -75,13 +75,13 @@ func stackJobStreamOutputHandler(cmd *cobra.Command, args []string) {
 	}()
 
 	// Start streaming
-	fmt.Printf("🚀 Streaming output for stack job: %s\n", jobID)
+	fmt.Printf("🚀 Streaming output for stack-update: %s\n", jobID)
 	if lastSequenceNum > 0 {
 		fmt.Printf("   Resuming from sequence: %d\n", lastSequenceNum)
 	}
 	fmt.Println()
 
-	stream, err := client.StreamStackJobOutput(ctx, connect.NewRequest(req))
+	stream, err := client.StreamStackUpdateOutput(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("❌ Error: Cannot connect to backend service at %s. Please check:\n", backendURL)

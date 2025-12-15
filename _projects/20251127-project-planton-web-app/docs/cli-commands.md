@@ -2,7 +2,7 @@
 
 **Last Updated:** December 12, 2025
 
-This comprehensive guide covers all Project Planton CLI commands including web app management, configuration, deployment components, cloud resources, credentials, and stack jobs.
+This comprehensive guide covers all Project Planton CLI commands including web app management, configuration, deployment components, cloud resources, credentials, and stack-updates.
 
 ---
 
@@ -1194,10 +1194,10 @@ spec:
    - **Updates** the resource if it already exists (preserves ID and creation timestamp)
 3. **Automatically triggers** Pulumi deployment:
    - Resolves credentials from database based on provider
-   - Creates a stack job with status "in_progress"
+   - Creates a stack-update with status "in_progress"
    - Executes `pulumi up` asynchronously in the background
 4. **Returns** the resource with a flag indicating whether it was created or updated
-5. **Displays** deployment status message with instructions to check stack jobs
+5. **Displays** deployment status message with instructions to check stack-updates
 
 #### Idempotency
 
@@ -2293,23 +2293,23 @@ Additional credential providers coming soon:
 
 ## Stack Jobs
 
-Stack jobs represent deployment operations for cloud resources. You can stream real-time output from stack jobs to monitor deployment progress.
+Stack jobs represent deployment operations for cloud resources. You can stream real-time output from stack-updates to monitor deployment progress.
 
 ### `project-planton stack-job:stream-output`
 
-Stream real-time deployment logs from a stack job. Shows stdout and stderr output as it's generated during deployment.
+Stream real-time deployment logs from a stack-update. Shows stdout and stderr output as it's generated during deployment.
 
 #### Basic Usage
 
 ```bash
-# Stream output from a stack job
+# Stream output from a stack-update
 project-planton stack-job:stream-output --id=<stack-job-id>
 ```
 
 **Sample Output:**
 
 ```
-🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+🚀 Streaming output for stack-update: 69369e4ec78ad326a6e5aa8b
 
 [15:04:05.123] [stdout] [Seq: 1] Updating (example-env.GcpCloudSql.gcp-postgres-example):
 [15:04:05.234] [stdout] [Seq: 2]     pulumi:pulumi:Stack project-planton-examples-example-env.GcpCloudSql.gcp-postgres-example  Compiling the program ...
@@ -2334,7 +2334,7 @@ project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=100
 **Sample Output:**
 
 ```
-🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+🚀 Streaming output for stack-update: 69369e4ec78ad326a6e5aa8b
    Resuming from sequence: 100
 
 [15:05:01.234] [stdout] [Seq: 101] Continuing deployment...
@@ -2343,7 +2343,7 @@ project-planton stack-job:stream-output --id=<stack-job-id> --last-sequence=100
 
 #### Flags
 
-- `--id, -i` - Unique identifier of the stack job (required)
+- `--id, -i` - Unique identifier of the stack-update (required)
 - `--last-sequence, -s` - Last sequence number received (for resuming stream from a specific point, default: 0)
 - `--help, -h` - Show help information
 
@@ -2368,7 +2368,7 @@ The stream command supports graceful shutdown via interrupt signals:
 
 ```bash
 $ project-planton stack-job:stream-output --id=69369e4ec78ad326a6e5aa8b
-🚀 Streaming output for stack job: 69369e4ec78ad326a6e5aa8b
+🚀 Streaming output for stack-update: 69369e4ec78ad326a6e5aa8b
 
 [15:04:05.123] [stdout] [Seq: 1] Starting deployment...
 [15:04:06.456] [stdout] [Seq: 2] Compiling program...
@@ -2432,8 +2432,8 @@ project-planton config set backend-url http://localhost:50051
 
 **Solution:**
 
-- Verify the stack job ID is correct
-- Use `project-planton cloud-resource:get` to find the associated cloud resource and its stack jobs
+- Verify the stack-update ID is correct
+- Use `project-planton cloud-resource:get` to find the associated cloud resource and its stack-updates
 
 **Stream Error:**
 

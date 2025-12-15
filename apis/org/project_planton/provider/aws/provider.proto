@@ -64,7 +64,7 @@ message AwsProviderConfig {
   // The AWS region to be used when configuring this AWS credential.
   // This optional field allows specifying the region in which resources will be created or managed.
   // For more information do refer this link https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
-  optional string region = 4 [(buf.validate.field).required = true];
+  string region = 4 [(buf.validate.field).required = true];
 
   // The AWS Session Token, required when using temporary security credentials.
   // This field is optional and only needed when using temporary credentials obtained through

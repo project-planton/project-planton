@@ -1,17 +1,17 @@
 'use client';
 
 import { Drawer } from '@/components/shared/drawer';
-import { StackJobsList } from './stack-jobs-list';
-export interface StackJobsDrawerProps {
+import { StackUpdatesList } from './stack-jobs-list';
+export interface StackUpdatesDrawerProps {
   open: boolean;
   cloudResourceId: string;
   onClose: () => void;
 }
 
-export function StackJobsDrawer({ open, cloudResourceId, onClose }: StackJobsDrawerProps) {
+export function StackUpdatesDrawer({ open, cloudResourceId, onClose }: StackUpdatesDrawerProps) {
   return (
     <Drawer open={open} onClose={onClose} title="Stack Jobs" width={900}>
-      <StackJobsList cloudResourceId={cloudResourceId} />
+      <StackUpdatesList cloudResourceId={cloudResourceId} />
     </Drawer>
   );
 }

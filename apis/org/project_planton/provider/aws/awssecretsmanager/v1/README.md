@@ -16,7 +16,7 @@ Managing secrets securely is critical for maintaining the integrity and security
 ### Environment Integration
 
 - **Environment Info**: Integrates seamlessly with our environment management system to manage secrets within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### AWS Credential Management
 

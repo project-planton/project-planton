@@ -7,34 +7,34 @@ import { create } from '@bufbuild/protobuf';
 import { TableComp } from '@/components/shared/table';
 import { PAGINATION_MODE } from '@/models/table';
 import { StatusChip } from '@/components/shared/status-chip';
-import { useStackJobQuery } from '@/app/stack-jobs/_services';
+import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
 import {
-  ListStackJobsRequestSchema,
-  StackJob,
+  ListStackUpdatesRequestSchema,
+  StackUpdate,
 } from '@/gen/proto/stack_job_service_pb';
 import { PageInfoSchema } from '@/gen/proto/cloud_resource_service_pb';
 import { formatTimestampToDate } from '@/lib';
 
-export interface StackJobsListProps {
+export interface StackUpdatesListProps {
   cloudResourceId: string;
 }
 
-export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
+export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
   const router = useRouter();
-  const { query } = useStackJobQuery();
+  const { query } = useStackUpdateQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [stackJobs, setStackJobs] = useState<StackJob[]>([]);
+  const [stackUpdates, setStackUpdates] = useState<StackUpdate[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [apiLoading, setApiLoading] = useState(true);
 
   // Function to call the API
-  const handleLoadStackJobs = useCallback(() => {
+  const handleLoadStackUpdates = useCallback(() => {
     setApiLoading(true);
     if (query) {
       query
-        .listStackJobs(
-          create(ListStackJobsRequestSchema, {
+        .listStackUpdates(
+          create(ListStackUpdatesRequestSchema, {
             cloudResourceId,
             pageInfo: create(PageInfoSchema, {
               num: page,
@@ -43,7 +43,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
           })
         )
         .then((result) => {
-          setStackJobs(result.jobs);
+          setStackUpdates(result.jobs);
           setTotalPages(result.totalPages || 0);
           setApiLoading(false);
         })
@@ -61,9 +61,9 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
   // Auto-load on mount and when dependencies change
   useEffect(() => {
     if (query && cloudResourceId) {
-      handleLoadStackJobs();
+      handleLoadStackUpdates();
     }
-  }, [query, cloudResourceId, handleLoadStackJobs]);
+  }, [query, cloudResourceId, handleLoadStackUpdates]);
 
   // Handle page change
   const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
@@ -73,16 +73,16 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
 
   const tableDataTemplate = useMemo(
     () => ({
-      id: (val: string, row: StackJob) => {
+      id: (val: string, row: StackUpdate) => {
         return <Typography variant="subtitle2">{row.id.substring(0, 12)}...</Typography>;
       },
-      status: (val: string, row: StackJob) => {
+      status: (val: string, row: StackUpdate) => {
         return <StatusChip status={row.status || 'unknown'} />;
       },
-      createdAt: (val: string, row: StackJob) => {
+      createdAt: (val: string, row: StackUpdate) => {
         return row.createdAt ? formatTimestampToDate(row.createdAt, 'DD/MM/YYYY HH:mm') : '-';
       },
-      updatedAt: (val: string, row: StackJob) => {
+      updatedAt: (val: string, row: StackUpdate) => {
         return row.updatedAt ? formatTimestampToDate(row.updatedAt, 'DD/MM/YYYY HH:mm') : '-';
       },
     }),
@@ -91,7 +91,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
 
   const clickableColumns = useMemo(
     () => ({
-      id: (row: StackJob) => {
+      id: (row: StackUpdate) => {
         router.push(`/stack-jobs/${row.id}`);
       },
     }),
@@ -101,7 +101,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
   return (
     <Box>
       <TableComp
-        data={stackJobs}
+        data={stackUpdates}
         loading={apiLoading}
         options={{
           headers: ['ID', 'Status', 'Created At', 'Updated At'],
@@ -115,7 +115,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
           rowsPerPage: rowsPerPage,
           totalPages: totalPages,
           onPageChange: handlePageChange,
-          emptyMessage: 'No stack jobs found',
+          emptyMessage: 'No stack-updates found',
           border: true,
         }}
       />

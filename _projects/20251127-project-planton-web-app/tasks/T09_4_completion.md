@@ -27,7 +27,7 @@ Added automatic Pulumi deployment triggering to the `ApplyCloudResource` method,
 
 ```go
 // Trigger Pulumi deployment automatically (credentials will be resolved from database)
-if s.stackJobService != nil {
+if s.stackUpdateService != nil {
     // Create a deployment request (no provider_config needed - will be resolved automatically)
     deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
         Msg: &backendv1.DeployCloudResourceRequest{
@@ -37,7 +37,7 @@ if s.stackJobService != nil {
 
     // Trigger deployment asynchronously (don't wait for it)
     go func() {
-        _, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+        _, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
     }()
 }
 ```

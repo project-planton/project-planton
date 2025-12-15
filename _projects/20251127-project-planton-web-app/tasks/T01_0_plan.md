@@ -56,7 +56,7 @@ This plan breaks down the development of Project Planton Web App into manageable
 **Service Definitions (Connect-RPC):**
 - [ ] `DeploymentComponentService` (list, get, search)
 - [ ] `CloudResourceService` (create, list, get, update, delete)
-- [ ] `StackJobService` (get status, list jobs)
+- [ ] `StackUpdateService` (get status, list jobs)
 
 **Generate Code:**
 - [ ] Run buf generate for TypeScript (frontend)
@@ -86,7 +86,7 @@ This plan breaks down the development of Project Planton Web App into manageable
   - Various states (pending, running, failed)
   - Realistic outputs
 
-- [ ] Create mock stack jobs (3-5 examples)
+- [ ] Create mock stack-updates (3-5 examples)
   - In-progress deployments
   - Completed deployments
   - Failed deployments with errors
@@ -94,7 +94,7 @@ This plan breaks down the development of Project Planton Web App into manageable
 **Mock Service Implementation (TypeScript):**
 - [ ] `mockDeploymentComponentService.ts`
 - [ ] `mockCloudResourceService.ts`
-- [ ] `mockStackJobService.ts`
+- [ ] `mockStackUpdateService.ts`
 
 **Deliverables:**
 - Rich, realistic mock data
@@ -196,7 +196,7 @@ This plan breaks down the development of Project Planton Web App into manageable
   - Update resource
   - Delete resource
 
-- [ ] `StackJobService` implementation
+- [ ] `StackUpdateService` implementation
   - Get job status
   - List jobs for resource
   - Stream logs (future: real-time)
@@ -445,7 +445,7 @@ If time is tight, **absolute minimum for meetup demo**:
 4. **Create Mock Data** (unblocks frontend)
    - Realistic deployment components
    - Sample cloud resources
-   - Mock stack jobs
+   - Mock stack-updates
 
 5. **Build UI Components** (main frontend work)
    - Layout and navigation

@@ -18,7 +18,7 @@ Managing internet egress for private cloud infrastructure can be challenging. Tr
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with Project Planton's environment management system to deploy NAT gateways within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments using Pulumi or Terraform.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments using Pulumi or Terraform.
 
 ### GCP Credential Management
 

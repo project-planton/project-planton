@@ -39,7 +39,7 @@ metadata:
   name: my-azure-aks-node-pool
 spec:
   azureProviderConfigId: my-azure-credential-id
-  stackJobSettings:
+  stackUpdateSettings:
     jobTimeout: 3600
 ```
 

@@ -34,7 +34,7 @@ plantonCloud:
     infraProject: Opinionated chart that bundles dependencies (for example, ECS service plus VPC and security groups)
     service: Git repository onboarded for CI/CD
     pipeline: Build job (CI)
-    stackJob: Deploy job (CD/infra apply)
+    stackUpdate: Deploy job (CD/infra apply)
     variables: Refer as $variables-group/<group>/<key>
     secrets: Refer as $secrets-group/<group>/<key>
     packageRepositories: Maven, NPM, container registries
@@ -42,9 +42,9 @@ plantonCloud:
     connections: Cloud provider connections (credentials shared with the platform)
     automationMinutes:
       build: Minutes consumed by pipelines
-      deployment: Minutes consumed by stack jobs
+      deployment: Minutes consumed by stack-updates
   navigation:
-    dashboard: Members, automation minutes, IaC resources, recent pipelines, cloud resources, latest stack jobs
+    dashboard: Members, automation minutes, IaC resources, recent pipelines, cloud resources, latest stack-updates
     infraHub: Canvas and list views; resources graph; infra projects (charts) and cloud resources
     serviceHub: Repo import, pipeline selection (platform-managed or BYO Tekton), build methods (Buildpacks or Dockerfile), deploy settings
     kubernetesDashboard: Explore, edit, exec, and stream logs for Kubernetes resources
@@ -84,7 +84,7 @@ messaging:
   subhead: Project Planton APIs and modules under the hood, Planton Cloud experience on top
   heroBullets:
     - Infra charts and Lego blocks for fast provisioning
-    - Pipelines and stack jobs with logs and diffs
+    - Pipelines and stack-updates with logs and diffs
     - Kubernetes dashboard with exec and live edits
     - AI Copilot for forms and manifests
   kubeconPitch: >

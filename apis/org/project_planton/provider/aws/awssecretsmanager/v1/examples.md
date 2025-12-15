@@ -46,7 +46,7 @@ metadata:
   name: my-aws-secrets
 spec:
   awsProviderConfigId: my-aws-credential-id
-  stackJobSettings:
+  stackUpdateSettings:
     jobTimeout: 3600
   secretNames:
     - database-password

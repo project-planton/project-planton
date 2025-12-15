@@ -326,7 +326,7 @@ The theme system includes comprehensive color palettes for both modes:
 - **Secondary Colors**: Supporting colors for UI elements
 - **Grey Scale**: 11 shades for surfaces, text, and borders
 - **Semantic Colors**: Error, warning, success, info with full shade ranges
-- **Exception Colors**: Special use cases (stack jobs, triggers, banners, etc.)
+- **Exception Colors**: Special use cases (stack-updates, triggers, banners, etc.)
 - **Crimson Colors**: Code editor syntax highlighting colors
 
 **Dark Mode Colors** (`app/frontend/src/themes/dark-colors.ts`):

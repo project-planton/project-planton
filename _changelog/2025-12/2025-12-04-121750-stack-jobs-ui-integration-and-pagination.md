@@ -6,19 +6,19 @@
 
 ## Summary
 
-Integrated stack jobs functionality into the cloud resources web interface, enabling users to view and navigate stack jobs directly from the cloud resources list. Added a "Stack Jobs" menu option that opens a drawer showing paginated stack jobs for a selected cloud resource, with clickable rows that navigate to detailed stack job pages. Implemented server-side pagination in the backend ListStackJobs API to support efficient handling of large numbers of stack jobs. Enhanced DeployCloudResource API to accept user-provided provider credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes) via API request, with automatic fallback to environment variables. Fixed module directory path resolution for both Pulumi and OpenTofu modules.
+Integrated stack-updates functionality into the cloud resources web interface, enabling users to view and navigate stack-updates directly from the cloud resources list. Added a "Stack Jobs" menu option that opens a drawer showing paginated stack-updates for a selected cloud resource, with clickable rows that navigate to detailed stack-update pages. Implemented server-side pagination in the backend ListStackUpdates API to support efficient handling of large numbers of stack-updates. Enhanced DeployCloudResource API to accept user-provided provider credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes) via API request, with automatic fallback to environment variables. Fixed module directory path resolution for both Pulumi and OpenTofu modules.
 
 ## Problem Statement / Motivation
 
-The stack jobs feature existed in the backend but lacked a user interface for accessing and viewing stack jobs. Users needed a way to:
+The stack-updates feature existed in the backend but lacked a user interface for accessing and viewing stack-updates. Users needed a way to:
 
 ### Missing Capabilities
 
-- **No UI access to stack jobs**: Stack jobs could only be accessed via API, with no web interface
-- **No integration with cloud resources**: No way to view stack jobs associated with a cloud resource from the cloud resources list
-- **No detailed view**: No dedicated page to view complete stack job details including output JSON
-- **No pagination support**: Backend API didn't support pagination, which would cause performance issues with large numbers of stack jobs
-- **No navigation flow**: No intuitive way to navigate from cloud resources to their associated stack jobs
+- **No UI access to stack-updates**: Stack jobs could only be accessed via API, with no web interface
+- **No integration with cloud resources**: No way to view stack-updates associated with a cloud resource from the cloud resources list
+- **No detailed view**: No dedicated page to view complete stack-update details including output JSON
+- **No pagination support**: Backend API didn't support pagination, which would cause performance issues with large numbers of stack-updates
+- **No navigation flow**: No intuitive way to navigate from cloud resources to their associated stack-updates
 - **No user-provided credentials**: DeployCloudResource API only supported environment variables, requiring credentials to be pre-configured on the server
 - **Incorrect module paths**: Module directory resolution used incorrect API path structure (`apis/org/project_planton/provider` instead of `apis/project/planton/provider`)
 
@@ -26,20 +26,20 @@ The stack jobs feature existed in the backend but lacked a user interface for ac
 
 Without these improvements, users faced:
 
-- Inability to view stack jobs through the web interface
+- Inability to view stack-updates through the web interface
 - No way to see deployment history for cloud resources
-- Performance issues when loading large numbers of stack jobs
-- No detailed view of stack job execution results
+- Performance issues when loading large numbers of stack-updates
+- No detailed view of stack-update execution results
 - Requirement to pre-configure credentials on the server before deploying resources
 - Module path resolution failures for Pulumi and OpenTofu modules
 
 ## Solution / What's New
 
-Implemented a complete UI integration for stack jobs with four main components:
+Implemented a complete UI integration for stack-updates with four main components:
 
-1. **Stack Jobs Menu in Cloud Resources List**: Added "Stack Jobs" action menu item that opens a drawer showing all stack jobs for the selected cloud resource
-2. **Stack Jobs Detail Page**: Created a dedicated page (`/stack-jobs/[id]`) to view complete stack job details including status, timestamps, and full output JSON
-3. **Backend Pagination**: Added server-side pagination support to the ListStackJobs API with total pages calculation
+1. **Stack Jobs Menu in Cloud Resources List**: Added "Stack Jobs" action menu item that opens a drawer showing all stack-updates for the selected cloud resource
+2. **Stack Jobs Detail Page**: Created a dedicated page (`/stack-jobs/[id]`) to view complete stack-update details including status, timestamps, and full output JSON
+3. **Backend Pagination**: Added server-side pagination support to the ListStackUpdates API with total pages calculation
 4. **User-Provided Credentials Support**: Enhanced DeployCloudResource API to accept provider credentials via API request, with automatic validation and fallback to environment variables
 
 ### Architecture
@@ -50,11 +50,11 @@ Implemented a complete UI integration for stack jobs with four main components:
 Cloud Resources List Page
     ↓ User clicks "Stack Jobs" menu item
 Stack Jobs Drawer (opens)
-    ↓ Shows paginated list of stack jobs
-    ↓ User clicks on a stack job row
+    ↓ Shows paginated list of stack-updates
+    ↓ User clicks on a stack-update row
 Stack Job Detail Page (/stack-jobs/[id])
-    ↓ Shows full stack job details
-    ↓ Can navigate back to stack jobs list via breadcrumb
+    ↓ Shows full stack-update details
+    ↓ Can navigate back to stack-updates list via breadcrumb
 ```
 
 **Component Architecture**:
@@ -75,9 +75,9 @@ Cloud Resources List Component
 **Backend API Flow**:
 
 ```
-Frontend Request (ListStackJobs)
+Frontend Request (ListStackUpdates)
     ↓ With PageInfo (page, size)
-Backend Service (ListStackJobs)
+Backend Service (ListStackUpdates)
     ↓ Applies filters and pagination
 Repository Layer
     ↓ MongoDB query with skip/limit
@@ -90,18 +90,18 @@ Response (jobs + totalPages)
 **1. Stack Jobs Menu Integration**
 
 - Added "Stack Jobs" menu item to cloud resources action menu
-- Opens drawer when clicked, showing stack jobs for the selected cloud resource
+- Opens drawer when clicked, showing stack-updates for the selected cloud resource
 - Drawer uses the same drawer component pattern as other features
 - Maintains state for selected cloud resource
 
 **2. Stack Jobs List Component**
 
-- Displays stack jobs in a paginated table
+- Displays stack-updates in a paginated table
 - Shows ID (truncated), Status, Created At, Updated At columns
 - Status displayed with color-coded status chips
 - Clickable rows navigate to detail page
 - Server-side pagination with page navigation controls
-- Empty state message when no stack jobs found
+- Empty state message when no stack-updates found
 
 **3. Stack Job Detail Page**
 
@@ -113,12 +113,12 @@ Response (jobs + totalPages)
   - Last updated timestamp
 - Full JSON output displayed with syntax highlighting
 - Loading states with skeleton placeholders
-- Can open stack jobs drawer from breadcrumb to view all jobs for the same cloud resource
+- Can open stack-updates drawer from breadcrumb to view all jobs for the same cloud resource
 
 **4. Backend Pagination**
 
-- Added `PageInfo` support to `ListStackJobsRequest` proto
-- Added `total_pages` field to `ListStackJobsResponse` proto
+- Added `PageInfo` support to `ListStackUpdatesRequest` proto
+- Added `total_pages` field to `ListStackUpdatesResponse` proto
 - Repository layer supports pagination with MongoDB skip/limit
 - Total pages calculated using ceiling division: `(totalCount + pageSize - 1) / pageSize`
 - Default pagination: page 0, size 20 if not provided
@@ -145,11 +145,11 @@ Response (jobs + totalPages)
 
 **File**: `app/backend/apis/proto/stack_job_service.proto`
 
-Added pagination fields to the ListStackJobs API:
+Added pagination fields to the ListStackUpdates API:
 
 ```45:61:app/backend/apis/proto/stack_job_service.proto
-// Request message for listing stack jobs.
-message ListStackJobsRequest {
+// Request message for listing stack-updates.
+message ListStackUpdatesRequest {
   // Optional filter by cloud resource ID.
   optional string cloud_resource_id = 1;
   // Optional filter by status (success, failed, in_progress).
@@ -158,10 +158,10 @@ message ListStackJobsRequest {
   optional PageInfo page_info = 3;
 }
 
-// Response message containing a list of stack jobs.
-message ListStackJobsResponse {
-  // List of stack jobs.
-  repeated StackJob jobs = 1;
+// Response message containing a list of stack-updates.
+message ListStackUpdatesResponse {
+  // List of stack-updates.
+  repeated StackUpdate jobs = 1;
   // Total number of pages available (only set when page_info is provided).
   int32 total_pages = 2;
 }
@@ -212,12 +212,12 @@ message ProviderConfig {
 Implemented pagination logic in the service layer:
 
 ```145:220:app/backend/internal/service/stack_job_service.go
-// ListStackJobs lists stack jobs with optional filters and pagination.
-func (s *StackJobService) ListStackJobs(
+// ListStackUpdates lists stack-updates with optional filters and pagination.
+func (s *StackUpdateService) ListStackUpdates(
 	ctx context.Context,
-	req *connect.Request[backendv1.ListStackJobsRequest],
-) (*connect.Response[backendv1.ListStackJobsResponse], error) {
-	opts := &database.StackJobListOptions{}
+	req *connect.Request[backendv1.ListStackUpdatesRequest],
+) (*connect.Response[backendv1.ListStackUpdatesResponse], error) {
+	opts := &database.StackUpdateListOptions{}
 
 	if req.Msg.CloudResourceId != nil {
 		id := *req.Msg.CloudResourceId
@@ -240,10 +240,10 @@ func (s *StackJobService) ListStackJobs(
 	opts.PageSize = &pageSize
 
 	// Calculate total pages
-	totalCount, err := s.stackJobRepo.Count(ctx, opts)
+	totalCount, err := s.stackUpdateRepo.Count(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to count stack jobs for pagination")
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count stack jobs: %w", err))
+		logrus.WithError(err).Error("Failed to count stack-updates for pagination")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count stack-updates: %w", err))
 	}
 
 	var totalPages int32
@@ -256,17 +256,17 @@ func (s *StackJobService) ListStackJobs(
 		"status":            req.Msg.Status,
 		"page_num":          opts.PageNum,
 		"page_size":         opts.PageSize,
-	}).Info("Listing stack jobs")
+	}).Info("Listing stack-updates")
 
-	jobs, err := s.stackJobRepo.List(ctx, opts)
+	jobs, err := s.stackUpdateRepo.List(ctx, opts)
 	if err != nil {
-		logrus.WithError(err).Error("Failed to list stack jobs")
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list stack jobs: %w", err))
+		logrus.WithError(err).Error("Failed to list stack-updates")
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list stack-updates: %w", err))
 	}
 
-	protoJobs := make([]*backendv1.StackJob, 0, len(jobs))
+	protoJobs := make([]*backendv1.StackUpdate, 0, len(jobs))
 	for _, job := range jobs {
-		protoJob := &backendv1.StackJob{
+		protoJob := &backendv1.StackUpdate{
 			Id:              job.ID.Hex(),
 			CloudResourceId: job.CloudResourceID,
 			Status:          job.Status,
@@ -343,16 +343,16 @@ Added user-provided credentials support with validation:
 Added pagination support to repository layer:
 
 ```130:180:app/backend/internal/database/stack_job_repo.go
-// StackJobListOptions contains options for listing stack jobs.
-type StackJobListOptions struct {
+// StackUpdateListOptions contains options for listing stack-updates.
+type StackUpdateListOptions struct {
 	CloudResourceID *string
 	Status          *string
 	PageNum         *int32
 	PageSize        *int32
 }
 
-// List retrieves stack jobs with optional filters and pagination.
-func (r *StackJobRepository) List(ctx context.Context, opts *StackJobListOptions) ([]*models.StackJob, error) {
+// List retrieves stack-updates with optional filters and pagination.
+func (r *StackUpdateRepository) List(ctx context.Context, opts *StackUpdateListOptions) ([]*models.StackUpdate, error) {
 	filter := bson.M{}
 
 	if opts != nil {
@@ -383,13 +383,13 @@ func (r *StackJobRepository) List(ctx context.Context, opts *StackJobListOptions
 
 	cursor, err := r.collection.Find(ctx, filter, findOptions)
 	if err != nil {
-		return nil, fmt.Errorf("failed to query stack jobs: %w", err)
+		return nil, fmt.Errorf("failed to query stack-updates: %w", err)
 	}
 	defer cursor.Close(ctx)
 
-	var jobs []*models.StackJob
+	var jobs []*models.StackUpdate
 	if err := cursor.All(ctx, &jobs); err != nil {
-		return nil, fmt.Errorf("failed to decode stack jobs: %w", err)
+		return nil, fmt.Errorf("failed to decode stack-updates: %w", err)
 	}
 
 	return jobs, nil
@@ -399,8 +399,8 @@ func (r *StackJobRepository) List(ctx context.Context, opts *StackJobListOptions
 Added `Count` method for total pages calculation:
 
 ```182:202:app/backend/internal/database/stack_job_repo.go
-// Count returns the total count of stack jobs with optional filters.
-func (r *StackJobRepository) Count(ctx context.Context, opts *StackJobListOptions) (int64, error) {
+// Count returns the total count of stack-updates with optional filters.
+func (r *StackUpdateRepository) Count(ctx context.Context, opts *StackUpdateListOptions) (int64, error) {
 	filter := bson.M{}
 
 	if opts != nil {
@@ -415,7 +415,7 @@ func (r *StackJobRepository) Count(ctx context.Context, opts *StackJobListOption
 
 	count, err := r.collection.CountDocuments(ctx, filter)
 	if err != nil {
-		return 0, fmt.Errorf("failed to count stack jobs: %w", err)
+		return 0, fmt.Errorf("failed to count stack-updates: %w", err)
 	}
 
 	return count, nil
@@ -485,14 +485,14 @@ Fixed module path resolution:
 Added "Stack Jobs" menu item to cloud resources action menu:
 
 ```237:279:app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx
-  const handleOpenStackJobs = useCallback((row: CloudResource) => {
-    setSelectedResourceForStackJobs(row);
-    setStackJobsDrawerOpen(true);
+  const handleOpenStackUpdates = useCallback((row: CloudResource) => {
+    setSelectedResourceForStackUpdates(row);
+    setStackUpdatesDrawerOpen(true);
   }, []);
 
-  const handleCloseStackJobs = useCallback(() => {
-    setStackJobsDrawerOpen(false);
-    setSelectedResourceForStackJobs(null);
+  const handleCloseStackUpdates = useCallback(() => {
+    setStackUpdatesDrawerOpen(false);
+    setSelectedResourceForStackUpdates(null);
   }, []);
 
   const tableActions: ActionMenuProps<CloudResource>[] = useMemo(
@@ -514,7 +514,7 @@ Added "Stack Jobs" menu item to cloud resources action menu:
       {
         text: 'Stack Jobs',
         handler: (row: CloudResource) => {
-          handleOpenStackJobs(row);
+          handleOpenStackUpdates(row);
         },
         isMenuAction: true,
       },
@@ -526,38 +526,38 @@ Added "Stack Jobs" menu item to cloud resources action menu:
         isMenuAction: true,
       },
     ],
-    [handleOpenDrawer, handleConfirmDelete, handleOpenStackJobs]
+    [handleOpenDrawer, handleConfirmDelete, handleOpenStackUpdates]
   );
 ```
 
-Added stack jobs drawer state and rendering:
+Added stack-updates drawer state and rendering:
 
 ```96:99:app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx
   // Stack jobs drawer state
-  const [stackJobsDrawerOpen, setStackJobsDrawerOpen] = useState(false);
-  const [selectedResourceForStackJobs, setSelectedResourceForStackJobs] =
+  const [stackUpdatesDrawerOpen, setStackUpdatesDrawerOpen] = useState(false);
+  const [selectedResourceForStackUpdates, setSelectedResourceForStackUpdates] =
     useState<CloudResource | null>(null);
 ```
 
-**File**: `app/frontend/src/components/shared/stackjob/stack-jobs-drawer.tsx`
+**File**: `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx`
 
-Created drawer component for stack jobs list:
+Created drawer component for stack-updates list:
 
-```1:18:app/frontend/src/components/shared/stackjob/stack-jobs-drawer.tsx
+```1:18:app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx
 'use client';
 
 import { Drawer } from '@/components/shared/drawer';
-import { StackJobsList } from './stack-jobs-list';
-export interface StackJobsDrawerProps {
+import { StackUpdatesList } from './stack-jobs-list';
+export interface StackUpdatesDrawerProps {
   open: boolean;
   cloudResourceId: string;
   onClose: () => void;
 }
 
-export function StackJobsDrawer({ open, cloudResourceId, onClose }: StackJobsDrawerProps) {
+export function StackUpdatesDrawer({ open, cloudResourceId, onClose }: StackUpdatesDrawerProps) {
   return (
     <Drawer open={open} onClose={onClose} title="Stack Jobs" width={900}>
-      <StackJobsList cloudResourceId={cloudResourceId} />
+      <StackUpdatesList cloudResourceId={cloudResourceId} />
     </Drawer>
   );
 }
@@ -567,29 +567,29 @@ export function StackJobsDrawer({ open, cloudResourceId, onClose }: StackJobsDra
 
 - Reuses existing Drawer component
 - Width set to 900px for better table visibility
-- Passes cloudResourceId to filter stack jobs
+- Passes cloudResourceId to filter stack-updates
 
-**File**: `app/frontend/src/components/shared/stackjob/stack-jobs-list.tsx`
+**File**: `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx`
 
 Created list component with pagination:
 
-```22:124:app/frontend/src/components/shared/stackjob/stack-jobs-list.tsx
-export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
+```22:124:app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx
+export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
   const router = useRouter();
-  const { query } = useStackJobQuery();
+  const { query } = useStackUpdateQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [stackJobs, setStackJobs] = useState<StackJob[]>([]);
+  const [stackUpdates, setStackUpdates] = useState<StackUpdate[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [apiLoading, setApiLoading] = useState(true);
 
   // Function to call the API
-  const handleLoadStackJobs = useCallback(() => {
+  const handleLoadStackUpdates = useCallback(() => {
     setApiLoading(true);
     if (query) {
       query
-        .listStackJobs(
-          create(ListStackJobsRequestSchema, {
+        .listStackUpdates(
+          create(ListStackUpdatesRequestSchema, {
             cloudResourceId,
             pageInfo: create(PageInfoSchema, {
               num: page,
@@ -598,7 +598,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
           })
         )
         .then((result) => {
-          setStackJobs(result.jobs);
+          setStackUpdates(result.jobs);
           setTotalPages(result.totalPages || 0);
           setApiLoading(false);
         })
@@ -616,9 +616,9 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
   // Auto-load on mount and when dependencies change
   useEffect(() => {
     if (query && cloudResourceId) {
-      handleLoadStackJobs();
+      handleLoadStackUpdates();
     }
-  }, [query, cloudResourceId, handleLoadStackJobs]);
+  }, [query, cloudResourceId, handleLoadStackUpdates]);
 
   // Handle page change
   const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
@@ -628,16 +628,16 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
 
   const tableDataTemplate = useMemo(
     () => ({
-      id: (val: string, row: StackJob) => {
+      id: (val: string, row: StackUpdate) => {
         return <Typography variant="subtitle2">{row.id.substring(0, 12)}...</Typography>;
       },
-      status: (val: string, row: StackJob) => {
+      status: (val: string, row: StackUpdate) => {
         return <StatusChip status={row.status || 'unknown'} />;
       },
-      createdAt: (val: string, row: StackJob) => {
+      createdAt: (val: string, row: StackUpdate) => {
         return row.createdAt ? formatTimestampToDate(row.createdAt, 'DD/MM/YYYY HH:mm') : '-';
       },
-      updatedAt: (val: string, row: StackJob) => {
+      updatedAt: (val: string, row: StackUpdate) => {
         return row.updatedAt ? formatTimestampToDate(row.updatedAt, 'DD/MM/YYYY HH:mm') : '-';
       },
     }),
@@ -646,7 +646,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
 
   const clickableColumns = useMemo(
     () => ({
-      id: (row: StackJob) => {
+      id: (row: StackUpdate) => {
         router.push(`/stack-jobs/${row.id}`);
       },
     }),
@@ -656,7 +656,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
   return (
     <Box>
       <TableComp
-        data={stackJobs}
+        data={stackUpdates}
         loading={apiLoading}
         options={{
           headers: ['ID', 'Status', 'Created At', 'Updated At'],
@@ -670,7 +670,7 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
           rowsPerPage: rowsPerPage,
           totalPages: totalPages,
           onPageChange: handlePageChange,
-          emptyMessage: 'No stack jobs found',
+          emptyMessage: 'No stack-updates found',
           border: true,
         }}
       />
@@ -695,53 +695,53 @@ export function StackJobsList({ cloudResourceId }: StackJobsListProps) {
 Created detail page with breadcrumb navigation:
 
 ```16:96:app/frontend/src/app/stack-jobs/[id]/page.tsx
-export default function StackJobDetailPage() {
+export default function StackUpdateDetailPage() {
   const { theme } = useContext(AppContext);
   const params = useParams();
-  const { query } = useStackJobQuery();
-  const [stackJob, setStackJob] = useState<StackJob | null>(null);
-  const [stackJobsDrawerOpen, setStackJobsDrawerOpen] = useState(false);
+  const { query } = useStackUpdateQuery();
+  const [stackUpdate, setStackUpdate] = useState<StackUpdate | null>(null);
+  const [stackUpdatesDrawerOpen, setStackUpdatesDrawerOpen] = useState(false);
 
-  const stackJobId = params?.id as string;
+  const stackUpdateId = params?.id as string;
 
-  const handleCloseStackJobs = useCallback(() => {
-    setStackJobsDrawerOpen(false);
+  const handleCloseStackUpdates = useCallback(() => {
+    setStackUpdatesDrawerOpen(false);
   }, []);
 
-  const handleStackJobsClick = useCallback(() => {
-    if (stackJob?.cloudResourceId) {
-      setStackJobsDrawerOpen(true);
+  const handleStackUpdatesClick = useCallback(() => {
+    if (stackUpdate?.cloudResourceId) {
+      setStackUpdatesDrawerOpen(true);
     }
-  }, [stackJob?.cloudResourceId]);
+  }, [stackUpdate?.cloudResourceId]);
 
   const breadcrumbs: IBreadcrumbItem[] = useMemo(() => {
     const items: IBreadcrumbItem[] = [];
 
-    // Always show the ID from params, even if stackJob is not loaded yet
-    if (stackJobId) {
+    // Always show the ID from params, even if stackUpdate is not loaded yet
+    if (stackUpdateId) {
       items.push({
-        name: stackJobId,
+        name: stackUpdateId,
         handler: undefined, // Last item is not clickable
       });
     }
 
     return items;
-  }, [stackJobId, handleStackJobsClick]);
+  }, [stackUpdateId, handleStackUpdatesClick]);
 
   useEffect(() => {
-    if (query && stackJobId) {
-      query.getById(stackJobId).then((job) => {
-        setStackJob(job);
+    if (query && stackUpdateId) {
+      query.getById(stackUpdateId).then((job) => {
+        setStackUpdate(job);
       });
     }
-  }, [query, stackJobId]);
+  }, [query, stackUpdateId]);
 
-  const updatedTime = stackJob?.updatedAt
-    ? formatTimestampToDate(stackJob.updatedAt, 'DD/MM/YYYY, HH:mm:ss')
+  const updatedTime = stackUpdate?.updatedAt
+    ? formatTimestampToDate(stackUpdate.updatedAt, 'DD/MM/YYYY, HH:mm:ss')
     : '-';
 
   return (
-    <StackJobContainer>
+    <StackUpdateContainer>
       <Stack gap={2}>
         <Breadcrumb
           breadcrumbs={breadcrumbs}
@@ -750,30 +750,30 @@ export default function StackJobDetailPage() {
               icon={ICON_NAMES.INFRA_HUB}
               iconProps={{ sx: { filter: theme.mode === THEME.DARK ? 'invert(1)' : 'none' } }}
               label="Stack Jobs"
-              handler={handleStackJobsClick}
+              handler={handleStackUpdatesClick}
             />
           }
         />
-        <StackJobHeader stackJob={stackJob} updatedTime={updatedTime} />
+        <StackUpdateHeader stackUpdate={stackUpdate} updatedTime={updatedTime} />
 
         <Box>
-          {stackJob ? (
-            <JsonCode content={stackJob?.output || {}} />
+          {stackUpdate ? (
+            <JsonCode content={stackUpdate?.output || {}} />
           ) : (
             <Skeleton variant="rounded" width={'100%'} height={200} />
           )}
         </Box>
 
         {/* Stack Jobs Drawer */}
-        {stackJob?.cloudResourceId && (
-          <StackJobsDrawer
-            open={stackJobsDrawerOpen}
-            cloudResourceId={stackJob.cloudResourceId}
-            onClose={handleCloseStackJobs}
+        {stackUpdate?.cloudResourceId && (
+          <StackUpdatesDrawer
+            open={stackUpdatesDrawerOpen}
+            cloudResourceId={stackUpdate.cloudResourceId}
+            onClose={handleCloseStackUpdates}
           />
         )}
       </Stack>
-    </StackJobContainer>
+    </StackUpdateContainer>
   );
 }
 ```
@@ -782,39 +782,39 @@ export default function StackJobDetailPage() {
 
 - Dynamic route using Next.js `[id]` parameter
 - Breadcrumb navigation with clickable "Stack Jobs" link
-- Opens stack jobs drawer when breadcrumb is clicked
+- Opens stack-updates drawer when breadcrumb is clicked
 - Displays full JSON output with syntax highlighting
 - Loading states with skeleton placeholders
 - Stack job header component for key information
 
-**File**: `app/frontend/src/components/shared/stackjob/stack-job-header.tsx`
+**File**: `app/frontend/src/components/shared/stackupdate/stack-job-header.tsx`
 
 Created header component:
 
-```14:56:app/frontend/src/components/shared/stackjob/stack-job-header.tsx
-export function StackJobHeader({ stackJob, updatedTime }: StackJobHeaderProps) {
+```14:56:app/frontend/src/components/shared/stackupdate/stack-job-header.tsx
+export function StackUpdateHeader({ stackUpdate, updatedTime }: StackUpdateHeaderProps) {
   return (
     <HeaderContainer>
       <TopSection>
         <Stack gap={1}>
           <FlexCenterRow gap={0.5}>
-            {stackJob ? (
+            {stackUpdate ? (
               <Typography variant="caption" color="text.secondary">
-                {stackJob?.id}
+                {stackUpdate?.id}
               </Typography>
             ) : (
               <Skeleton variant="text" width={180} height={15} />
             )}
 
-            {stackJob ? (
-              <TextCopy text={stackJob?.id} />
+            {stackUpdate ? (
+              <TextCopy text={stackUpdate?.id} />
             ) : (
               <Skeleton variant="rectangular" width={10} height={10} />
             )}
           </FlexCenterRow>
           <Box>
-            {stackJob ? (
-              <StatusChip status={stackJob?.status || 'unknown'} />
+            {stackUpdate ? (
+              <StatusChip status={stackUpdate?.status || 'unknown'} />
             ) : (
               <Skeleton variant="rounded" width={80} height={20} />
             )}
@@ -824,7 +824,7 @@ export function StackJobHeader({ stackJob, updatedTime }: StackJobHeaderProps) {
       <Divider sx={{ marginY: 1.5 }} />
       <BottomSection>
         <Box />
-        {stackJob ? (
+        {stackUpdate ? (
           <Typography variant="subtitle2" color="text.secondary">
             {updatedTime}
           </Typography>
@@ -888,10 +888,10 @@ export const Breadcrumb: FC<IBreadcrumb> = ({ breadcrumbs, startBreadcrumb }) =>
 
 **File**: `app/frontend/src/components/shared/syntax-highlighter/json-code.tsx`
 
-Created JSON syntax highlighter component for displaying stack job output:
+Created JSON syntax highlighter component for displaying stack-update output:
 
 - Displays JSON with proper formatting and syntax highlighting
-- Used in stack job detail page to show deployment output
+- Used in stack-update detail page to show deployment output
 
 ## Benefits
 
@@ -913,7 +913,7 @@ Created JSON syntax highlighter component for displaying stack job output:
 **Performance**:
 
 - Server-side pagination loads only current page
-- Faster page loads for large numbers of stack jobs
+- Faster page loads for large numbers of stack-updates
 - Reduced memory usage in browser
 
 **Flexibility**:
@@ -939,7 +939,7 @@ Created JSON syntax highlighter component for displaying stack job output:
 
 **Scalability**:
 
-- Server-side pagination scales to handle thousands of stack jobs
+- Server-side pagination scales to handle thousands of stack-updates
 - Efficient database queries with skip/limit
 - Total count calculation only when needed
 
@@ -955,10 +955,10 @@ Created JSON syntax highlighter component for displaying stack job output:
 
 **New Capabilities**:
 
-- View stack jobs from cloud resources list
-- Navigate to detailed stack job pages
+- View stack-updates from cloud resources list
+- Navigate to detailed stack-update pages
 - View complete deployment output with syntax highlighting
-- Paginated browsing of stack jobs
+- Paginated browsing of stack-updates
 - Provide credentials per deployment via API
 - Automatic credential validation before deployment
 - Fixed module path resolution for reliable deployments
@@ -972,8 +972,8 @@ Created JSON syntax highlighter component for displaying stack job output:
 ### Developer Experience
 
 **1 new detail page** (`/stack-jobs/[id]`)
-**2 new reusable components** (StackJobsDrawer, StackJobsList)
-**1 new header component** (StackJobHeader)
+**2 new reusable components** (StackUpdatesDrawer, StackUpdatesList)
+**1 new header component** (StackUpdateHeader)
 **1 new breadcrumb component** for navigation
 **1 new syntax highlighter component** for JSON display
 **Backend pagination** support in service and repository layers
@@ -997,13 +997,13 @@ Created JSON syntax highlighter component for displaying stack job output:
 1. Navigate to Cloud Resources page
 2. Click action menu (three dots) on any cloud resource
 3. Select "Stack Jobs" from menu
-4. Drawer opens showing paginated list of stack jobs for that resource
+4. Drawer opens showing paginated list of stack-updates for that resource
 
 ### Viewing Stack Job Details
 
-1. From stack jobs drawer, click on any stack job row
+1. From stack-updates drawer, click on any stack-update row
 2. Navigate to `/stack-jobs/[id]` detail page
-3. View complete stack job information:
+3. View complete stack-update information:
    - Job ID (with copy button)
    - Status chip
    - Last updated timestamp
@@ -1012,7 +1012,7 @@ Created JSON syntax highlighter component for displaying stack job output:
 ### Navigating Back
 
 1. From detail page, click "Stack Jobs" in breadcrumb
-2. Opens drawer showing all stack jobs for the same cloud resource
+2. Opens drawer showing all stack-updates for the same cloud resource
 3. Can navigate between jobs or return to cloud resources list
 
 ### Backend API with Pagination
@@ -1020,7 +1020,7 @@ Created JSON syntax highlighter component for displaying stack job output:
 **Request**:
 
 ```protobuf
-ListStackJobsRequest {
+ListStackUpdatesRequest {
   cloud_resource_id: "507f1f77bcf86cd799439011"
   page_info: {
     num: 0  // page number (0-indexed)
@@ -1032,8 +1032,8 @@ ListStackJobsRequest {
 **Response**:
 
 ```protobuf
-ListStackJobsResponse {
-  jobs: [StackJob, ...]  // 10 items
+ListStackUpdatesResponse {
+  jobs: [StackUpdate, ...]  // 10 items
   total_pages: 5  // calculated total pages
 }
 ```
@@ -1070,7 +1070,7 @@ DeployCloudResourceRequest {
 
 **Modified**:
 
-- `app/backend/apis/proto/stack_job_service.proto` - Added PageInfo and total_pages to ListStackJobs API; Added ProviderConfig support to DeployCloudResourceRequest for user-provided credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
+- `app/backend/apis/proto/stack_job_service.proto` - Added PageInfo and total_pages to ListStackUpdates API; Added ProviderConfig support to DeployCloudResourceRequest for user-provided credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
 - `app/backend/internal/service/stack_job_service.go` - Implemented pagination logic with total pages calculation; Added user-provided credentials support with fallback to environment variables; Added provider credential validation based on resource kind; Removed logrus logging
 - `app/backend/internal/service/cloud_resource_service.go` - Removed logrus logging (code cleanup)
 - `app/backend/internal/service/deployment_component_service.go` - Removed logrus logging (code cleanup)
@@ -1094,16 +1094,16 @@ DeployCloudResourceRequest {
 - `app/frontend/src/app/stack-jobs/[id]/page.tsx` - Stack job detail page
 - `app/frontend/src/app/stack-jobs/_services/index.ts` - Stack jobs service exports
 - `app/frontend/src/app/stack-jobs/_services/query.ts` - Stack jobs query service
-- `app/frontend/src/app/stack-jobs/styled.ts` - Styled components for stack jobs pages
+- `app/frontend/src/app/stack-jobs/styled.ts` - Styled components for stack-updates pages
 
 ### UI Components
 
 **Created**:
 
-- `app/frontend/src/components/shared/stackjob/index.ts` - Stack job component exports
-- `app/frontend/src/components/shared/stackjob/stack-job-header.tsx` - Stack job header component
-- `app/frontend/src/components/shared/stackjob/stack-jobs-drawer.tsx` - Stack jobs drawer component
-- `app/frontend/src/components/shared/stackjob/stack-jobs-list.tsx` - Stack jobs list component with pagination
+- `app/frontend/src/components/shared/stackupdate/index.ts` - Stack job component exports
+- `app/frontend/src/components/shared/stackupdate/stack-job-header.tsx` - Stack job header component
+- `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx` - Stack jobs drawer component
+- `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx` - Stack jobs list component with pagination
 - `app/frontend/src/components/shared/breadcrumb/index.tsx` - Breadcrumb navigation component
 - `app/frontend/src/components/shared/breadcrumb/styled.ts` - Breadcrumb styling
 - `app/frontend/src/components/shared/status-chip/index.ts` - Status chip exports
@@ -1132,7 +1132,7 @@ DeployCloudResourceRequest {
 ## Technical Metrics
 
 - **1 new detail page** with dynamic routing
-- **4 new reusable components** for stack jobs UI
+- **4 new reusable components** for stack-updates UI
 - **1 new breadcrumb component** for navigation
 - **1 new status chip component** for status display
 - **1 new syntax highlighter component** for JSON display
@@ -1157,7 +1157,7 @@ This work complements:
 
 - **Cloud Resource Management** - Enables viewing deployment history for resources
 - **Stack Job API** - Provides UI for existing backend functionality
-- **Pagination System** - Extends pagination pattern to stack jobs
+- **Pagination System** - Extends pagination pattern to stack-updates
 
 ### Future Extensions
 
@@ -1165,10 +1165,10 @@ This work enables:
 
 - **Deployment Actions** - Can add deploy/retry actions from UI
 - **Real-time Updates** - Can add polling or WebSocket for live status updates
-- **Filtering** - Can add status filters to stack jobs list
-- **Export** - Can export stack job output as files
-- **Bulk Operations** - Can add bulk actions for multiple stack jobs
-- **Search** - Can add search functionality for stack jobs
+- **Filtering** - Can add status filters to stack-updates list
+- **Export** - Can export stack-update output as files
+- **Bulk Operations** - Can add bulk actions for multiple stack-updates
+- **Search** - Can add search functionality for stack-updates
 
 ## Known Limitations
 
@@ -1185,12 +1185,12 @@ These limitations are intentional for the initial implementation and can be addr
 
 ### Server-Side Pagination
 
-**Decision**: Implement server-side pagination for stack jobs list
+**Decision**: Implement server-side pagination for stack-updates list
 
 **Rationale**:
 
 - Consistent with cloud resources pagination pattern
-- Scales to handle large numbers of stack jobs
+- Scales to handle large numbers of stack-updates
 - Better performance than loading all jobs at once
 - Standard pattern for data-heavy applications
 
@@ -1200,7 +1200,7 @@ These limitations are intentional for the initial implementation and can be addr
 
 ### Drawer Pattern
 
-**Decision**: Use drawer component for stack jobs list instead of separate page
+**Decision**: Use drawer component for stack-updates list instead of separate page
 
 **Rationale**:
 
@@ -1209,7 +1209,7 @@ These limitations are intentional for the initial implementation and can be addr
 - Quick access without full page navigation
 - Can still navigate to detail page from drawer
 
-**Alternative considered**: Separate page for stack jobs list
+**Alternative considered**: Separate page for stack-updates list
 
 - Rejected because drawer provides better UX and keeps context
 
@@ -1220,7 +1220,7 @@ These limitations are intentional for the initial implementation and can be addr
 **Rationale**:
 
 - Provides clear navigation path
-- Enables quick return to stack jobs list
+- Enables quick return to stack-updates list
 - Consistent with common web navigation patterns
 - Opens drawer instead of navigating away (maintains context)
 
@@ -1308,4 +1308,4 @@ As part of code quality improvements, removed all logrus logging from the backen
 **Components Modified**: 2 existing components
 **Backend Changes**: Pagination support in service and repository; User-provided credentials support with validation
 **Infrastructure Changes**: Module path fixes for Pulumi and OpenTofu; Credential handling refactoring
-**Location**: `app/frontend/src/app/stack-jobs/`, `app/frontend/src/components/shared/stackjob/`, `app/backend/internal/service/`, `app/backend/internal/database/`, `pkg/iac/pulumi/pulumimodule/`, `pkg/iac/tofu/tofumodule/`, `pkg/iac/stackinput/stackinputproviderconfig/`
+**Location**: `app/frontend/src/app/stack-jobs/`, `app/frontend/src/components/shared/stackupdate/`, `app/backend/internal/service/`, `app/backend/internal/database/`, `pkg/iac/pulumi/pulumimodule/`, `pkg/iac/tofu/tofumodule/`, `pkg/iac/stackinput/stackinputproviderconfig/`

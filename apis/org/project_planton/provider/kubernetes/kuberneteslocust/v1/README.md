@@ -16,7 +16,7 @@ Running distributed load tests using Locust in Kubernetes environments can be co
 ### Environment Integration
 
 - **Environment Info**: Integrates seamlessly with our environment management system to deploy Locust within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
 
 ### Kubernetes Credential Management
 

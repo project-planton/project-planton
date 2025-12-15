@@ -15,7 +15,7 @@ Configuring AWS VPCs can be intricate due to the numerous networking components,
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system to deploy VPCs within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### AWS Credential Management
 

@@ -13,24 +13,24 @@ import (
 )
 
 const (
-	// StackJobStreamingResponseCollectionName is the name of the MongoDB collection for streaming responses.
-	StackJobStreamingResponseCollectionName = "stackjob_streaming_responses"
+	// StackUpdateStreamingResponseCollectionName is the name of the MongoDB collection for streaming responses.
+	StackUpdateStreamingResponseCollectionName = "stackupdate_streaming_responses"
 )
 
-// StackJobStreamingResponseRepository provides data access methods for streaming responses.
-type StackJobStreamingResponseRepository struct {
+// StackUpdateStreamingResponseRepository provides data access methods for streaming responses.
+type StackUpdateStreamingResponseRepository struct {
 	collection *mongo.Collection
 }
 
-// NewStackJobStreamingResponseRepository creates a new repository instance.
-func NewStackJobStreamingResponseRepository(db *MongoDB) *StackJobStreamingResponseRepository {
-	return &StackJobStreamingResponseRepository{
-		collection: db.Database.Collection(StackJobStreamingResponseCollectionName),
+// NewStackUpdateStreamingResponseRepository creates a new repository instance.
+func NewStackUpdateStreamingResponseRepository(db *MongoDB) *StackUpdateStreamingResponseRepository {
+	return &StackUpdateStreamingResponseRepository{
+		collection: db.Database.Collection(StackUpdateStreamingResponseCollectionName),
 	}
 }
 
 // Create inserts a new streaming response chunk into MongoDB.
-func (r *StackJobStreamingResponseRepository) Create(ctx context.Context, response *models.StackJobStreamingResponse) (*models.StackJobStreamingResponse, error) {
+func (r *StackUpdateStreamingResponseRepository) Create(ctx context.Context, response *models.StackUpdateStreamingResponse) (*models.StackUpdateStreamingResponse, error) {
 	now := time.Now()
 	response.ID = primitive.NewObjectID()
 	response.CreatedAt = now
@@ -45,7 +45,7 @@ func (r *StackJobStreamingResponseRepository) Create(ctx context.Context, respon
 }
 
 // CreateBatch inserts multiple streaming response chunks in a single operation.
-func (r *StackJobStreamingResponseRepository) CreateBatch(ctx context.Context, responses []*models.StackJobStreamingResponse) error {
+func (r *StackUpdateStreamingResponseRepository) CreateBatch(ctx context.Context, responses []*models.StackUpdateStreamingResponse) error {
 	if len(responses) == 0 {
 		return nil
 	}
@@ -66,9 +66,9 @@ func (r *StackJobStreamingResponseRepository) CreateBatch(ctx context.Context, r
 	return nil
 }
 
-// FindByStackJobID retrieves all streaming responses for a specific stack job, ordered by sequence number.
-func (r *StackJobStreamingResponseRepository) FindByStackJobID(ctx context.Context, stackJobID string) ([]*models.StackJobStreamingResponse, error) {
-	filter := bson.M{"stack_job_id": stackJobID}
+// FindByStackUpdateID retrieves all streaming responses for a specific stack-update, ordered by sequence number.
+func (r *StackUpdateStreamingResponseRepository) FindByStackUpdateID(ctx context.Context, stackUpdateID string) ([]*models.StackUpdateStreamingResponse, error) {
+	filter := bson.M{"stack_job_id": stackUpdateID}
 	// Use bson.D for ordered sort (sequence_num first, then created_at)
 	opts := options.Find().SetSort(bson.D{
 		{Key: "sequence_num", Value: 1},
@@ -81,7 +81,7 @@ func (r *StackJobStreamingResponseRepository) FindByStackJobID(ctx context.Conte
 	}
 	defer cursor.Close(ctx)
 
-	var responses []*models.StackJobStreamingResponse
+	var responses []*models.StackUpdateStreamingResponse
 	if err := cursor.All(ctx, &responses); err != nil {
 		return nil, fmt.Errorf("failed to decode streaming responses: %w", err)
 	}
@@ -89,9 +89,9 @@ func (r *StackJobStreamingResponseRepository) FindByStackJobID(ctx context.Conte
 	return responses, nil
 }
 
-// DeleteByStackJobID deletes all streaming responses for a specific stack job.
-func (r *StackJobStreamingResponseRepository) DeleteByStackJobID(ctx context.Context, stackJobID string) error {
-	filter := bson.M{"stack_job_id": stackJobID}
+// DeleteByStackUpdateID deletes all streaming responses for a specific stack-update.
+func (r *StackUpdateStreamingResponseRepository) DeleteByStackUpdateID(ctx context.Context, stackUpdateID string) error {
+	filter := bson.M{"stack_job_id": stackUpdateID}
 	result, err := r.collection.DeleteMany(ctx, filter)
 	if err != nil {
 		return fmt.Errorf("failed to delete streaming responses: %w", err)
@@ -101,12 +101,12 @@ func (r *StackJobStreamingResponseRepository) DeleteByStackJobID(ctx context.Con
 	return nil
 }
 
-// GetNextSequenceNum returns the next sequence number for a stack job.
-func (r *StackJobStreamingResponseRepository) GetNextSequenceNum(ctx context.Context, stackJobID string) (int, error) {
-	filter := bson.M{"stack_job_id": stackJobID}
+// GetNextSequenceNum returns the next sequence number for a stack-update.
+func (r *StackUpdateStreamingResponseRepository) GetNextSequenceNum(ctx context.Context, stackUpdateID string) (int, error) {
+	filter := bson.M{"stack_job_id": stackUpdateID}
 	opts := options.FindOne().SetSort(bson.M{"sequence_num": -1})
 
-	var lastResponse models.StackJobStreamingResponse
+	var lastResponse models.StackUpdateStreamingResponse
 	err := r.collection.FindOne(ctx, filter, opts).Decode(&lastResponse)
 	if err == mongo.ErrNoDocuments {
 		// No previous responses, start at 0
@@ -119,11 +119,11 @@ func (r *StackJobStreamingResponseRepository) GetNextSequenceNum(ctx context.Con
 	return lastResponse.SequenceNum + 1, nil
 }
 
-// FindByStackJobIDAfterSequence retrieves streaming responses for a stack job after a specific sequence number.
+// FindByStackUpdateIDAfterSequence retrieves streaming responses for a stack-update after a specific sequence number.
 // Used for resuming streams from a specific point.
-func (r *StackJobStreamingResponseRepository) FindByStackJobIDAfterSequence(ctx context.Context, stackJobID string, afterSequenceNum int) ([]*models.StackJobStreamingResponse, error) {
+func (r *StackUpdateStreamingResponseRepository) FindByStackUpdateIDAfterSequence(ctx context.Context, stackUpdateID string, afterSequenceNum int) ([]*models.StackUpdateStreamingResponse, error) {
 	filter := bson.M{
-		"stack_job_id": stackJobID,
+		"stack_job_id": stackUpdateID,
 		"sequence_num": bson.M{"$gt": afterSequenceNum},
 	}
 	// Use bson.D for ordered sort (sequence_num first, then created_at)
@@ -138,7 +138,7 @@ func (r *StackJobStreamingResponseRepository) FindByStackJobIDAfterSequence(ctx 
 	}
 	defer cursor.Close(ctx)
 
-	var responses []*models.StackJobStreamingResponse
+	var responses []*models.StackUpdateStreamingResponse
 	if err := cursor.All(ctx, &responses); err != nil {
 		return nil, fmt.Errorf("failed to decode streaming responses: %w", err)
 	}
