@@ -1,7 +1,7 @@
 .PHONY: build
 build: lint fmt
-	rm -rf generated/stubs generated/docs
-	mkdir -p generated/stubs generated/docs
+	rm -rf generated/stubs
+	mkdir -p generated/stubs
 	buf generate
 	cp -R generated/stubs/go/github.com/project-planton/project-planton/apis/. .
 	cp -R generated/stubs/ts/org/project_planton/. ../app/frontend/src/gen/
