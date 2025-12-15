@@ -133,12 +133,13 @@ COPY --from=frontend-builder /app/public /app/frontend/public
 COPY --from=frontend-builder /app/.next/standalone /app/frontend/
 COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
 
-# Create Pulumi and Go directories
+# Create Pulumi, Go, and Project Planton workspace directories
 RUN mkdir -p /home/appuser/.pulumi && \
     mkdir -p /home/appuser/.pulumi/state && \
     mkdir -p /home/appuser/go && \
     mkdir -p /home/appuser/go/cache && \
-    mkdir -p /home/appuser/go/tmp
+    mkdir -p /home/appuser/go/tmp && \
+    mkdir -p /home/appuser/.project-planton
 
 # Set up MongoDB directory permissions
 RUN mkdir -p /var/log/mongodb && \
@@ -150,7 +151,8 @@ COPY app/entrypoint-unified.sh /entrypoint-unified.sh
 RUN chmod +x /entrypoint-unified.sh
 
 # Set environment variables
-ENV GOPATH=/home/appuser/go \
+ENV HOME=/home/appuser \
+    GOPATH=/home/appuser/go \
     GOCACHE=/home/appuser/go/cache \
     GOTMPDIR=/home/appuser/go/tmp \
     PATH=$PATH:/usr/local/go/bin:/home/appuser/go/bin \
