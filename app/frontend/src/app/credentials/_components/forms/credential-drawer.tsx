@@ -22,11 +22,11 @@ import {
   Credential_CredentialProvider,
   Credential,
   CredentialProviderConfigSchema,
-} from '@/gen/app/credential/v1/api_pb';
-import { CreateCredentialRequest } from '@/gen/app/credential/v1/io_pb';
-import { GcpProviderConfig, GcpProviderConfigSchema } from '@/gen/provider/gcp/provider_pb';
-import { AwsProviderConfig, AwsProviderConfigSchema } from '@/gen/provider/aws/provider_pb';
-import { AzureProviderConfig, AzureProviderConfigSchema } from '@/gen/provider/azure/provider_pb';
+} from '@/gen/org/project_planton/app/credential/v1/api_pb';
+import { CreateCredentialRequest } from '@/gen/org/project_planton/app/credential/v1/io_pb';
+import { GcpProviderConfig, GcpProviderConfigSchema } from '@/gen/org/project_planton/provider/gcp/provider_pb';
+import { AwsProviderConfig, AwsProviderConfigSchema } from '@/gen/org/project_planton/provider/aws/provider_pb';
+import { AzureProviderConfig, AzureProviderConfigSchema } from '@/gen/org/project_planton/provider/azure/provider_pb';
 import { create } from '@bufbuild/protobuf';
 import { providerConfig } from '@/app/credentials/_components/utils';
 

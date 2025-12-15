@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { Box, Skeleton, Stack, Typography, Paper, Divider, Tabs, Tab } from '@mui/material';
 import { StackUpdateContainer, LogContainer, LogEntry } from '@/app/stack-jobs/styled';
 import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
-import { StackUpdate } from '@/gen/app/stackupdate/v1/api_pb';
+import { StackUpdate } from '@/gen/org/project_planton/app/stackupdate/v1/api_pb';
 import { Breadcrumb, BreadcrumbStartIcon, IBreadcrumbItem } from '@/components/shared/breadcrumb';
 import { StackUpdatesDrawer, StackUpdateHeader } from '@/components/shared/stackjob';
 import { ICON_NAMES } from '@/components/shared/icon';

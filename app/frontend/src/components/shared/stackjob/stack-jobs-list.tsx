@@ -8,9 +8,9 @@ import { TableComp } from '@/components/shared/table';
 import { PAGINATION_MODE } from '@/models/table';
 import { StatusChip } from '@/components/shared/status-chip';
 import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
-import { ListStackUpdatesRequestSchema } from '@/gen/app/stackupdate/v1/io_pb';
-import { StackUpdate } from '@/gen/app/stackupdate/v1/api_pb';
-import { PageInfoSchema } from '@/gen/app/commons/page_info_pb';
+import { ListStackUpdatesRequestSchema } from '@/gen/org/project_planton/app/stackupdate/v1/io_pb';
+import { StackUpdate } from '@/gen/org/project_planton/app/stackupdate/v1/api_pb';
+import { PageInfoSchema } from '@/gen/org/project_planton/app/commons/page_info_pb';
 import { formatTimestampToDate } from '@/lib';
 
 export interface StackUpdatesListProps {
