@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
 import type { CivoKubernetesNodePoolSpec } from "./spec_pb";
 import { file_org_project_planton_provider_civo_civokubernetesnodepool_v1_spec } from "./spec_pb";
 import type { CivoKubernetesNodePoolStackOutputs } from "./stack_outputs_pb";

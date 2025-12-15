@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
 import type { CloudflareLoadBalancerSpec } from "./spec_pb";
 import { file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec } from "./spec_pb";
 import type { CloudflareLoadBalancerStackOutputs } from "./stack_outputs_pb";

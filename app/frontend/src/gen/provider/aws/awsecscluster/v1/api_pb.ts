@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
 import type { AwsEcsClusterSpec } from "./spec_pb";
 import { file_org_project_planton_provider_aws_awsecscluster_v1_spec } from "./spec_pb";
 import type { AwsEcsClusterStackOutputs } from "./stack_outputs_pb";

@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
 import type { KubernetesNatsSpec } from "./spec_pb";
 import { file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec } from "./spec_pb";
 import type { KubernetesNatsStackOutputs } from "./stack_outputs_pb";

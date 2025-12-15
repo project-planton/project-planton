@@ -18,9 +18,6 @@ plugins:
     out: generated/stubs/go
   - remote: buf.build/grpc/go:v1.5.1
     out: generated/stubs/go
-  # Generate Go code for Connect RPC
-  - remote: buf.build/connectrpc/go:v1.19.1
-    out: generated/stubs/go
   # Generate TypeScript protobuf types compatible with Connect RPC binary format
   - remote: buf.build/bufbuild/es:v2.2.2
     out: generated/stubs/ts

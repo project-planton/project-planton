@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_buf_validate_validate } from "../../../../buf/validate/validate_pb";
+import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
 import type { AzureAksClusterSpec } from "./spec_pb";
 import { file_org_project_planton_provider_azure_azureakscluster_v1_spec } from "./spec_pb";
 import type { AzureAksClusterStackOutputs } from "./stack_outputs_pb";

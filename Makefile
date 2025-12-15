@@ -38,7 +38,7 @@ buf-generate: protos
 
 .PHONY: protos
 protos:
-	$(MAKE) -C apis build
+	pushd apis;make build;popd
 	${BAZEL} run //:gazelle
 
 .PHONY: buf-lint
@@ -84,7 +84,7 @@ generate-cloud-resource-kind-map:
 
 .PHONY: generate-kubernetes-types
 generate-kubernetes-types:
-	$(MAKE) -C pkg/kubernetes/kubernetestypes build
+	pushd pkg/kubernetes/kubernetestypes;make build;popd
 
 .PHONY: build-go
 build-go: fmt deps vet
@@ -145,7 +145,7 @@ show-todo:
 
 .PHONY: release-buf
 release-buf:
-	cd apis && buf push && buf push --label ${version}
+	pushd apis;buf push;buf push --label ${version};popd
 
 .PHONY: release-github
 release-github:
@@ -172,11 +172,11 @@ release: protos build-cli test release-github release-buf
 
 .PHONY: run-docs
 run-docs:
-	$(MAKE) -C docs run
+	pushd docs;make run;popd
 
 .PHONY: build-docs
 build-docs:
-	$(MAKE) -C docs build
+	pushd docs;make build;popd
 
 # ── website (site/) ────────────────────────────────────────────────────────────
 .PHONY: run-site
