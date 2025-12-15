@@ -5,6 +5,7 @@ build: lint fmt
 	buf generate
 	cp -R generated/stubs/go/github.com/project-planton/project-planton/apis/. .
 	cp -R generated/stubs/ts/org/project_planton/. ../app/frontend/src/gen/
+	rm -rf generated/stubs
 
 .PHONY: fmt
 fmt:
