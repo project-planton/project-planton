@@ -5,13 +5,11 @@ import (
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace) error {
+func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider) error {
 	//crate new certificate
 	addedCertificate, err := certmanagerv1.NewCertificate(ctx,
 		"ingress-certificate",
@@ -184,16 +182,10 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 			},
 		},
 	}
-	if createdNamespace != nil {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"http-external-redirect",
-			httpExternalRedirectArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"http-external-redirect",
-			httpExternalRedirectArgs)
-	}
+	_, err = gatewayv1.NewHTTPRoute(ctx,
+		"http-external-redirect",
+		httpExternalRedirectArgs,
+		pulumi.Provider(kubernetesProvider))
 
 	//create http-route for external-hostname with https listener
 	httpsExternalArgs := &gatewayv1.HTTPRouteArgs{
@@ -232,16 +224,10 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 			},
 		},
 	}
-	if createdNamespace != nil {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"https-external",
-			httpsExternalArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"https-external",
-			httpsExternalArgs)
-	}
+	_, err = gatewayv1.NewHTTPRoute(ctx,
+		"https-external",
+		httpsExternalArgs,
+		pulumi.Provider(kubernetesProvider))
 
 	//create http-route for setting up https-redirect for internal-hostname
 	httpInternalRedirectArgs := &gatewayv1.HTTPRouteArgs{
@@ -274,16 +260,10 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 			},
 		},
 	}
-	if createdNamespace != nil {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"http-internal-redirect",
-			httpInternalRedirectArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"http-internal-redirect",
-			httpInternalRedirectArgs)
-	}
+	_, err = gatewayv1.NewHTTPRoute(ctx,
+		"http-internal-redirect",
+		httpInternalRedirectArgs,
+		pulumi.Provider(kubernetesProvider))
 
 	//create http-route for internal-hostname with https listener
 	httpsInternalArgs := &gatewayv1.HTTPRouteArgs{
@@ -322,15 +302,12 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 			},
 		},
 	}
-	if createdNamespace != nil {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"https-internal",
-			httpsInternalArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		_, err = gatewayv1.NewHTTPRoute(ctx,
-			"https-internal",
-			httpsInternalArgs)
+	_, err = gatewayv1.NewHTTPRoute(ctx,
+		"https-internal",
+		httpsInternalArgs,
+		pulumi.Provider(kubernetesProvider))
+	if err != nil {
+		return errors.Wrap(err, "error creating https-internal route")
 	}
 	return nil
 }

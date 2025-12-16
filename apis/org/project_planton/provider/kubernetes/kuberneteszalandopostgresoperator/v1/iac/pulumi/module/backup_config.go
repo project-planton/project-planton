@@ -21,7 +21,7 @@ const (
 func createBackupResources(
 	ctx *pulumi.Context,
 	backupConfig *kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperatorBackupConfig,
-	namespace pulumi.StringOutput,
+	namespace string,
 	kubernetesProvider *pulumikubernetes.Provider,
 	labels map[string]string,
 ) (pulumi.StringOutput, error) {
@@ -41,7 +41,7 @@ func createBackupResources(
 		&corev1.SecretArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
 				Name:      pulumi.String(backupSecretName),
-				Namespace: namespace,
+				Namespace: pulumi.String(namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			}),
 			Type: pulumi.String("Opaque"),
@@ -97,7 +97,7 @@ func createBackupResources(
 		&corev1.ConfigMapArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
 				Name:      pulumi.String(backupConfigMapName),
-				Namespace: namespace,
+				Namespace: pulumi.String(namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			}),
 			Data: configMapData,

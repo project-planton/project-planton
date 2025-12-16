@@ -12,7 +12,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 )
 
-func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Namespace) (*batchv1.CronJob, error) {
+func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) (*batchv1.CronJob, error) {
 	target := locals.KubernetesCronJob
 
 	envVarInputs := make([]corev1.EnvVarInput, 0)
@@ -128,12 +128,12 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		&batchv1.CronJobArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(target.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: cronJobSpec,
 		},
-		pulumi.Parent(createdNamespace),
+		pulumi.Provider(kubernetesProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create cronjob")

@@ -23,9 +23,8 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.Kubernete
 	}
 
 	//conditionally create namespace resource based on create_namespace flag
-	var createdNamespace *kubernetescorev1.Namespace
 	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+		_, err = kubernetescorev1.NewNamespace(ctx,
 			locals.Namespace,
 			&kubernetescorev1.NamespaceArgs{
 				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
@@ -40,30 +39,30 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.Kubernete
 	}
 
 	//create kubernetes deployment resources
-	createdDeployment, err := deployment(ctx, locals, createdNamespace)
+	createdDeployment, err := deployment(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create microservice deployment")
 	}
 
 	//create kubernetes service resources
-	if err := service(ctx, locals, createdNamespace, createdDeployment); err != nil {
+	if err := service(ctx, locals, kubernetesProvider, createdDeployment); err != nil {
 		return errors.Wrap(err, "failed to create microservice kubernetes service resource")
 	}
 
 	//create kubernetes secret with app secrets
-	if err := secret(ctx, locals, createdNamespace); err != nil {
+	if err := secret(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create secret")
 	}
 
 	//create istio-ingress resources if ingress is enabled.
 	if locals.KubernetesDeployment.Spec.Ingress != nil && locals.KubernetesDeployment.Spec.Ingress.Enabled {
-		if err := ingress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+		if err := ingress(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create istio ingress resources")
 		}
 	}
 
 	//create pod disruption budget if enabled
-	if err := podDisruptionBudget(ctx, locals, createdNamespace); err != nil {
+	if err := podDisruptionBudget(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create pod disruption budget")
 	}
 

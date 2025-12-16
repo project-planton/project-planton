@@ -34,13 +34,6 @@ locals {
     : "kubernetes-ingress-nginx"
   )
 
-  # Namespace name - from created or existing namespace
-  namespace_name = (
-    var.spec.create_namespace
-    ? kubernetes_namespace.ingress_nginx[0].metadata[0].name
-    : data.kubernetes_namespace.existing[0].metadata[0].name
-  )
-
   # Helm chart configuration
   helm_chart_name       = "kubernetes-ingress-nginx"
   helm_chart_repo       = "https://kubernetes.github.io/ingress-nginx"

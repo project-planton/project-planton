@@ -4,8 +4,6 @@ import (
 	"github.com/pkg/errors"
 	kubernetessignozv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	kubernetesmetav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -19,35 +17,24 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessignozv1.KubernetesSig
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
 
-	//conditionally create namespace resource based on create_namespace flag
-	var createdNamespace *kubernetescorev1.Namespace
-	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
-			locals.Namespace,
-			&kubernetescorev1.NamespaceArgs{
-				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
-					&kubernetesmetav1.ObjectMetaArgs{
-						Name:   pulumi.String(locals.Namespace),
-						Labels: pulumi.ToStringMap(locals.KubernetesLabels),
-					}),
-			}, pulumi.Provider(kubernetesProvider))
-		if err != nil {
-			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
-		}
+	//conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	//deploy SigNoz using helm-chart
-	if err := signoz(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
+	if err := signoz(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create signoz helm-chart resources")
 	}
 
 	//create SigNoz UI ingress resources using Gateway API
-	if err := createSignozUIIngress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+	if err := createSignozUIIngress(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create signoz ui ingress resources")
 	}
 
 	//create OTEL Collector ingress resources using Gateway API
-	if err := createOtelCollectorIngress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+	if err := createOtelCollectorIngress(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create otel collector ingress resources")
 	}
 

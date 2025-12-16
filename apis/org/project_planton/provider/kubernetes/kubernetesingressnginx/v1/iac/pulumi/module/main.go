@@ -58,13 +58,13 @@ func Resources(ctx *pulumi.Context,
 	}
 
 	// ---------------------------------------------------------------------
-	// Namespace - Create or lookup based on create_namespace flag
+	// Namespace - conditionally create based on create_namespace flag
 	// ---------------------------------------------------------------------
-	var namespaceOutput pulumi.StringInput
-
+	// When create_namespace is false, we assume the namespace already exists
+	// and use locals.Namespace directly. No lookup is needed - the helm release
+	// will fail with a clear error if the namespace doesn't exist.
 	if spec.CreateNamespace {
-		// Create new namespace
-		ns, err := corev1.NewNamespace(ctx, locals.Namespace,
+		_, err := corev1.NewNamespace(ctx, locals.Namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name:   pulumi.String(locals.Namespace),
@@ -75,17 +75,6 @@ func Resources(ctx *pulumi.Context,
 		if err != nil {
 			return errors.Wrap(err, "failed to create namespace")
 		}
-		namespaceOutput = ns.Metadata.Name().Elem()
-	} else {
-		// Look up existing namespace
-		ns, err := corev1.GetNamespace(ctx, locals.Namespace,
-			pulumi.ID(locals.Namespace),
-			nil,
-			pulumi.Provider(kubeProvider))
-		if err != nil {
-			return errors.Wrap(err, "failed to lookup existing namespace")
-		}
-		namespaceOutput = ns.Metadata.Name().Elem()
 	}
 
 	// ---------------------------------------------------------------------
@@ -110,7 +99,7 @@ func Resources(ctx *pulumi.Context,
 	_, err = helm.NewRelease(ctx, vars.HelmChartName,
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(locals.ReleaseName),
-			Namespace:       namespaceOutput,
+			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(locals.ChartVersion),
 			CreateNamespace: pulumi.Bool(false),

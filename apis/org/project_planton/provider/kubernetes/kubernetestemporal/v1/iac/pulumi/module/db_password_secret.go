@@ -12,7 +12,7 @@ import (
 // dbPasswordSecret creates a Kubernetes Secret containing the external DB
 // password when, and only when, external_database is provided by the user.
 func dbPasswordSecret(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	if locals.KubernetesTemporal.Spec.Database.ExternalDatabase == nil {
 		// No external DB or no password: nothing to create.
@@ -20,12 +20,6 @@ func dbPasswordSecret(ctx *pulumi.Context, locals *Locals,
 	}
 
 	encoded := base64.StdEncoding.EncodeToString([]byte(locals.KubernetesTemporal.Spec.Database.ExternalDatabase.Password))
-
-	// Build resource options, conditionally adding parent if namespace was created
-	opts := []pulumi.ResourceOption{}
-	if createdNamespace != nil {
-		opts = append(opts, pulumi.Parent(createdNamespace))
-	}
 
 	_, err := kubernetescorev1.NewSecret(ctx,
 		vars.DatabasePasswordSecretName,
@@ -39,7 +33,7 @@ func dbPasswordSecret(ctx *pulumi.Context, locals *Locals,
 				vars.DatabasePasswordSecretKey: pulumi.String(encoded),
 			},
 			Type: pulumi.String("Opaque"),
-		}, opts...)
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create database password secret")
 	}

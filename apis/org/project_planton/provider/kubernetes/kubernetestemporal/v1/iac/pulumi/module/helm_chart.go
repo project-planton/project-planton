@@ -3,13 +3,12 @@ package module
 import (
 	"github.com/pkg/errors"
 	kubernetestemporalv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func helmChart(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	values := pulumi.Map{
 		"fullnameOverride": pulumi.String(locals.KubernetesTemporal.Metadata.Name),
@@ -165,12 +164,6 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// ------------------------------------------------------- install chart
-	// Build resource options, conditionally adding parent if namespace was created
-	opts := []pulumi.ResourceOption{}
-	if createdNamespace != nil {
-		opts = append(opts, pulumi.Parent(createdNamespace))
-	}
-
 	_, err := helmv3.NewChart(ctx,
 		locals.KubernetesTemporal.Metadata.Name,
 		helmv3.ChartArgs{
@@ -181,7 +174,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.HelmChartRepoUrl),
 			},
-		}, opts...)
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create temporal helm chart")
 	}

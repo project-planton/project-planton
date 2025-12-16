@@ -20,9 +20,8 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteskafkav1.KubernetesKafk
 	}
 
 	//conditionally create namespace resource based on create_namespace flag
-	var createdNamespace *kubernetescorev1.Namespace
 	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+		_, err = kubernetescorev1.NewNamespace(ctx,
 			locals.Namespace,
 			&kubernetescorev1.NamespaceArgs{
 				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
@@ -37,32 +36,32 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteskafkav1.KubernetesKafk
 	}
 
 	//create kafka cluster custom resource
-	createdKafkaCluster, err := kafkaCluster(ctx, locals, createdNamespace)
+	createdKafkaCluster, err := kafkaCluster(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create kafka-cluster resources")
 	}
 
 	//create kafka admin user
-	if err := kafkaAdminUser(ctx, locals, createdNamespace, createdKafkaCluster); err != nil {
+	if err := kafkaAdminUser(ctx, locals, kubernetesProvider, createdKafkaCluster); err != nil {
 		return errors.Wrap(err, "failed to create kafka admin user")
 	}
 
 	//create kafka topics
-	if err := kafkaTopics(ctx, locals, createdNamespace, createdKafkaCluster); err != nil {
+	if err := kafkaTopics(ctx, locals, kubernetesProvider, createdKafkaCluster); err != nil {
 		return errors.Wrap(err, "failed to create kafka topics")
 	}
 
 	//create schema-registry
 	if locals.KubernetesKafka.Spec.SchemaRegistryContainer != nil &&
 		locals.KubernetesKafka.Spec.SchemaRegistryContainer.IsEnabled {
-		if err := schemaRegistry(ctx, locals, kubernetesProvider, createdNamespace, createdKafkaCluster); err != nil {
+		if err := schemaRegistry(ctx, locals, kubernetesProvider, createdKafkaCluster); err != nil {
 			return errors.Wrap(err, "failed to create schema registry deployment")
 		}
 	}
 
 	//create kowl
 	if locals.KubernetesKafka.Spec.IsDeployKafkaUi {
-		if err := kowl(ctx, locals, kubernetesProvider, createdNamespace, createdKafkaCluster); err != nil {
+		if err := kowl(ctx, locals, kubernetesProvider, createdKafkaCluster); err != nil {
 			return errors.Wrap(err, "failed to create kowl deployment")
 		}
 	}

@@ -6,16 +6,14 @@ import (
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // createOtelCollectorIngress creates Kubernetes Gateway API resources for OpenTelemetry Collector external access
 // This includes Certificate, Gateway, and HTTPRoute resources for HTTP endpoint
-func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace) error {
+func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	// Skip if ingress is not enabled
 	if locals.KubernetesSignoz.Spec.Ingress == nil ||
@@ -98,11 +96,6 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 	}
 
 	// HTTPRoute for HTTP endpoint (routes to OTEL Collector HTTP port 4318)
-	httpRouteOpts := []pulumi.ResourceOption{}
-	if createdNamespace != nil {
-		httpRouteOpts = append(httpRouteOpts, pulumi.Parent(createdNamespace))
-	}
-
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"https-otel-http",
 		&gatewayv1.HTTPRouteArgs{
@@ -141,7 +134,7 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 					},
 				},
 			},
-		}, httpRouteOpts...)
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTPRoute for OTEL Collector HTTP endpoint")
 	}

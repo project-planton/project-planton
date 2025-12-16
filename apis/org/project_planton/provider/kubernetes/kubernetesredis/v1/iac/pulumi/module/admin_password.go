@@ -5,13 +5,16 @@ import (
 
 	"github.com/pkg/errors"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
+	kubernetesmeta "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func adminPassword(ctx *pulumi.Context, locals *Locals, namespace pulumi.StringInput) error {
-	createRandomPassword, err := random.NewRandomPassword(ctx,
+// adminPassword creates a random password and stores it in a Kubernetes Secret.
+func adminPassword(ctx *pulumi.Context, locals *Locals,
+	kubernetesProvider pulumi.ProviderResource) error {
+
+	createdRandomPassword, err := random.NewRandomPassword(ctx,
 		vars.RedisPasswordSecretName,
 		&random.RandomPasswordArgs{
 			Length:     pulumi.Int(12),
@@ -29,7 +32,7 @@ func adminPassword(ctx *pulumi.Context, locals *Locals, namespace pulumi.StringI
 	}
 
 	// encode the password in base64
-	base64Password := createRandomPassword.Result.ApplyT(func(p string) (string, error) {
+	base64Password := createdRandomPassword.Result.ApplyT(func(p string) (string, error) {
 		return base64.StdEncoding.EncodeToString([]byte(p)), nil
 	}).(pulumi.StringOutput)
 
@@ -37,16 +40,17 @@ func adminPassword(ctx *pulumi.Context, locals *Locals, namespace pulumi.StringI
 	createdSecret, err := kubernetescorev1.NewSecret(ctx,
 		vars.RedisPasswordSecretName,
 		&kubernetescorev1.SecretArgs{
-			Metadata: &metav1.ObjectMetaArgs{
+			Metadata: &kubernetesmeta.ObjectMetaArgs{
 				Name:      pulumi.String(vars.RedisPasswordSecretName),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
+				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Data: pulumi.StringMap{
 				vars.RedisPasswordSecretKey: base64Password,
 			},
-		})
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
-		return errors.Wrap(err, "failed to admin secret")
+		return errors.Wrap(err, "failed to create admin secret")
 	}
 
 	ctx.Export(OpUsername, pulumi.String("default"))

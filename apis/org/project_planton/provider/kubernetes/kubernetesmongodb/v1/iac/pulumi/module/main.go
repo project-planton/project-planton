@@ -6,7 +6,6 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetesmetav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
-	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -21,10 +20,10 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
 
-	// Create or reference namespace based on create_namespace flag
-	namespace, err := createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubernetesProvider)
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
 	if err != nil {
-		return errors.Wrap(err, "failed to create or get namespace")
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	//create new random secret to set as password
@@ -50,20 +49,20 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 	createdPasswordSecret, err := kubernetescorev1.NewSecret(ctx,
 		locals.KubernetesMongodb.Metadata.Name,
 		&kubernetescorev1.SecretArgs{
-			Metadata: &metav1.ObjectMetaArgs{
+			Metadata: &kubernetesmetav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesMongodb.Metadata.Name),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
 			},
 			StringData: pulumi.StringMap{
 				vars.MongodbRootPasswordKey: createdRandomString.Result,
 			},
-		})
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create password secret")
 	}
 
 	// Create MongoDB using Percona operator CRD
-	if err := mongodb(ctx, locals, namespace, createdPasswordSecret); err != nil {
+	if err := mongodb(ctx, locals, kubernetesProvider, createdPasswordSecret); err != nil {
 		return errors.Wrap(err, "failed to create MongoDB PerconaServerMongoDB resource")
 	}
 
@@ -74,7 +73,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 			&kubernetescorev1.ServiceArgs{
 				Metadata: &kubernetesmetav1.ObjectMetaArgs{
 					Name:      pulumi.String("ingress-external-lb"),
-					Namespace: namespace,
+					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 					Annotations: pulumi.StringMap{
 						"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressExternalHostname),
@@ -92,7 +91,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 					},
 					Selector: pulumi.ToStringMap(locals.MongodbPodSelectorLabels),
 				},
-			})
+			}, pulumi.Provider(kubernetesProvider))
 		if err != nil {
 			return errors.Wrapf(err, "failed to create external load balancer service")
 		}

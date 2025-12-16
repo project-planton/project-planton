@@ -8,7 +8,6 @@ import (
 )
 
 func harbor(ctx *pulumi.Context, locals *Locals,
-	namespace pulumi.StringInput,
 	kubernetesProvider pulumi.ProviderResource) error {
 
 	// https://github.com/goharbor/harbor-helm/blob/main/values.yaml
@@ -277,7 +276,7 @@ func harbor(ctx *pulumi.Context, locals *Locals,
 		locals.KubernetesHarbor.Metadata.Name,
 		&helmv3.ReleaseArgs{
 			Name:      pulumi.String(locals.KubernetesHarbor.Metadata.Name),
-			Namespace: namespace,
+			Namespace: pulumi.String(locals.Namespace),
 			Chart:     pulumi.String("harbor"),
 			RepositoryOpts: helmv3.RepositoryOptsArgs{
 				Repo: pulumi.String("https://helm.goharbor.io"),

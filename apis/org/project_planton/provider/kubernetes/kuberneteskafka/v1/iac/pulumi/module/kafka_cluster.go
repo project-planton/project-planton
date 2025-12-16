@@ -4,13 +4,12 @@ import (
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/strimzioperator/kubernetes/kafka/v1beta2"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func kafkaCluster(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) (*v1beta2.Kafka, error) {
+	kubernetesProvider pulumi.ProviderResource) (*v1beta2.Kafka, error) {
 	listenersArray := v1beta2.KafkaSpecKafkaListenersArray{}
 
 	listenersArray = append(listenersArray,
@@ -32,7 +31,7 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 			&certmanagerv1.CertificateArgs{
 				Metadata: metav1.ObjectMetaArgs{
 					Name:      pulumi.String(locals.Namespace),
-					Namespace: createdNamespace.Metadata.Name(),
+					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: certmanagerv1.CertificateSpecArgs{
@@ -43,7 +42,7 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 						Name: pulumi.String(locals.IngressCertClusterIssuerName),
 					},
 				},
-			}, pulumi.Parent(createdNamespace))
+			}, pulumi.Provider(kubernetesProvider))
 		if err != nil {
 			return nil, errors.Wrap(err, "error creating certificate for bootstrap server ingress")
 		}
@@ -55,7 +54,7 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 		&v1beta2.KafkaArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesKafka.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: v1beta2.KafkaSpecArgs{
@@ -103,7 +102,7 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create kafka-cluster")
 	}

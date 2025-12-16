@@ -8,7 +8,6 @@ import (
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -17,8 +16,7 @@ import (
 // ingress stack (no separate external LB Service).  Pattern copied from
 // your Solr example: Certificate ➜ Gateway ➜ HTTPS+redirect HTTPRoutes.
 func webUiIngress(ctx *pulumi.Context, locals *Locals,
-	kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	kubernetesProvider *kubernetes.Provider) error {
 
 	if locals.KubernetesTemporal.Spec.Ingress == nil ||
 		locals.KubernetesTemporal.Spec.Ingress.WebUi == nil ||
@@ -118,12 +116,6 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 		return errors.Wrap(err, "error creating UI gateway")
 	}
 
-	// Build resource options, conditionally adding parent if namespace was created
-	opts := []pulumi.ResourceOption{}
-	if createdNamespace != nil {
-		opts = append(opts, pulumi.Parent(createdNamespace))
-	}
-
 	// ----------------- HTTPRoute (redirect) --------------------------------
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"http-ui-external-redirect",
@@ -156,7 +148,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 					},
 				},
 			},
-		}, opts...)
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "error creating http→https redirect route")
 	}
@@ -199,7 +191,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 					},
 				},
 			},
-		}, opts...)
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTPS route for UI")
 	}

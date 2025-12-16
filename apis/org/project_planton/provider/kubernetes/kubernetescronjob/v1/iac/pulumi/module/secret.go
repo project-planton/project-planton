@@ -10,7 +10,7 @@ import (
 
 // secret creates a "main" Kubernetes Secret containing all secret environment variables
 // from KubernetesCronJob.Spec.Env.Secrets.
-func secret(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Namespace) error {
+func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	dataMap := make(map[string]string)
 
 	if locals.KubernetesCronJob.Spec.Env != nil && locals.KubernetesCronJob.Spec.Env.Secrets != nil {
@@ -28,13 +28,13 @@ func secret(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Namesp
 		&corev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String("main"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Type:       pulumi.String("Opaque"),
 			StringData: pulumi.ToStringMap(dataMap),
 		},
-		pulumi.Parent(createdNamespace),
+		pulumi.Provider(kubernetesProvider),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create secret resource")

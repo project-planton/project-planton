@@ -21,12 +21,8 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 	}
 
 	// 1. Namespace - conditionally create based on create_namespace flag
-	var namespaceOutput pulumi.StringOutput
-	var namespaceResource pulumi.Resource
-
 	if locals.KubernetesZalandoPostgresOperator.Spec.CreateNamespace {
-		// Create new namespace
-		createdNamespace, err := corev1.NewNamespace(ctx,
+		_, err := corev1.NewNamespace(ctx,
 			namespace,
 			&corev1.NamespaceArgs{
 				Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
@@ -39,19 +35,13 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 		if err != nil {
 			return errors.Wrap(err, "failed to create namespace")
 		}
-		namespaceOutput = createdNamespace.Metadata.Name().Elem()
-		namespaceResource = createdNamespace
-	} else {
-		// Use existing namespace - just reference the name
-		namespaceOutput = pulumi.String(namespace).ToStringOutput()
-		namespaceResource = nil
 	}
 
 	// 2. Create backup Secret and ConfigMap if backup_config is specified
 	backupConfigMapName, err := createBackupResources(
 		ctx,
 		locals.KubernetesZalandoPostgresOperator.Spec.BackupConfig,
-		namespaceOutput,
+		namespace,
 		kubernetesProvider,
 		locals.KubernetesLabels,
 	)
@@ -82,20 +72,11 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 	}).(pulumi.MapOutput)
 
 	// 4. Helm release
-	helmReleaseOpts := []pulumi.ResourceOption{
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
-	}
-
-	// Add parent dependency only if namespace was created
-	if namespaceResource != nil {
-		helmReleaseOpts = append(helmReleaseOpts, pulumi.Parent(namespaceResource))
-	}
-
 	_, err = helm.NewRelease(ctx,
 		"postgres-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
-			Namespace:       namespaceOutput,
+			Namespace:       pulumi.String(namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(vars.HelmChartVersion),
 			RepositoryOpts:  helm.RepositoryOptsArgs{Repo: pulumi.String(vars.HelmChartRepo)},
@@ -106,14 +87,15 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 			Timeout:         pulumi.Int(180),
 			Values:          helmValues,
 		},
-		helmReleaseOpts...,
+		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
+		pulumi.Provider(kubernetesProvider),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create helm release")
 	}
 
 	// 5. Export stack‑output(s)
-	ctx.Export(OpNamespace, namespaceOutput)
+	ctx.Export(OpNamespace, pulumi.String(namespace))
 
 	return nil
 }

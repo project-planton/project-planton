@@ -11,7 +11,7 @@ import (
 
 func ingress(ctx *pulumi.Context,
 	locals *Locals,
-	namespace pulumi.StringInput) error {
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	if locals.KubernetesGrafana.Spec.Ingress == nil ||
 		!locals.KubernetesGrafana.Spec.Ingress.Enabled {
@@ -40,7 +40,7 @@ func ingress(ctx *pulumi.Context,
 			&kubernetesnetworkingv1.IngressArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name:      pulumi.String(fmt.Sprintf("%s-external", locals.KubernetesGrafana.Metadata.Name)),
-					Namespace: namespace,
+					Namespace: pulumi.String(locals.Namespace),
 					Annotations: pulumi.StringMap{
 						"kubernetes.io/ingress.class": pulumi.String("nginx"),
 					},
@@ -68,7 +68,7 @@ func ingress(ctx *pulumi.Context,
 						},
 					},
 				},
-			})
+			}, pulumi.Provider(kubernetesProvider))
 		if err != nil {
 			return errors.Wrap(err, "failed to create external ingress")
 		}
@@ -81,7 +81,7 @@ func ingress(ctx *pulumi.Context,
 			&kubernetesnetworkingv1.IngressArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name:      pulumi.String(fmt.Sprintf("%s-internal", locals.KubernetesGrafana.Metadata.Name)),
-					Namespace: namespace,
+					Namespace: pulumi.String(locals.Namespace),
 					Annotations: pulumi.StringMap{
 						"kubernetes.io/ingress.class": pulumi.String("nginx-internal"),
 					},
@@ -109,7 +109,7 @@ func ingress(ctx *pulumi.Context,
 						},
 					},
 				},
-			})
+			}, pulumi.Provider(kubernetesProvider))
 		if err != nil {
 			return errors.Wrap(err, "failed to create internal ingress")
 		}

@@ -5,15 +5,12 @@ import (
 	elasticsearchv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/elasticsearch/v1"
 	kibanav1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/kibana/v1beta1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func elasticsearch(ctx *pulumi.Context,
 	locals *Locals,
-	namespaceInput pulumi.StringInput,
-	createdNamespace *kubernetescorev1.Namespace,
 	kubernetesProvider *kubernetes.Provider) error {
 
 	var volumeClaimTemplates = &elasticsearchv1.ElasticsearchSpecNodeSetsVolumeClaimTemplatesArray{}
@@ -37,16 +34,10 @@ func elasticsearch(ctx *pulumi.Context,
 		}
 	}
 
-	// Build resource options based on whether namespace was created
-	esResourceOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProvider)}
-	if createdNamespace != nil {
-		esResourceOpts = append(esResourceOpts, pulumi.Parent(createdNamespace))
-	}
-
 	createdElasticSearch, err := elasticsearchv1.NewElasticsearch(ctx, locals.KubernetesElasticsearch.Metadata.Name, &elasticsearchv1.ElasticsearchArgs{
 		Metadata: metav1.ObjectMetaArgs{
 			Name:      pulumi.String(locals.KubernetesElasticsearch.Metadata.Name),
-			Namespace: namespaceInput,
+			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 			Annotations: pulumi.StringMap{
 				"pulumi.com/patchForce": pulumi.String("true"),
@@ -97,25 +88,16 @@ func elasticsearch(ctx *pulumi.Context,
 				},
 			},
 		},
-	}, esResourceOpts...)
+	}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrapf(err, "failed to create elastic search")
 	}
 
 	if locals.KubernetesElasticsearch.Spec.Kibana.Enabled {
-		// Build resource options for Kibana
-		kibanaResourceOpts := []pulumi.ResourceOption{
-			pulumi.Provider(kubernetesProvider),
-			pulumi.DependsOn([]pulumi.Resource{createdElasticSearch}),
-		}
-		if createdNamespace != nil {
-			kibanaResourceOpts = append(kibanaResourceOpts, pulumi.Parent(createdNamespace))
-		}
-
 		_, err = kibanav1.NewKibana(ctx, locals.KubernetesElasticsearch.Metadata.Name, &kibanav1.KibanaArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesElasticsearch.Metadata.Name),
-				Namespace: namespaceInput,
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{
 					"pulumi.com/patchForce": pulumi.String("true"),
@@ -145,7 +127,7 @@ func elasticsearch(ctx *pulumi.Context,
 				},
 				ElasticsearchRef: kibanav1.KibanaSpecElasticsearchRefArgs{
 					Name:      createdElasticSearch.Metadata.Name().Elem(),
-					Namespace: namespaceInput,
+					Namespace: pulumi.String(locals.Namespace),
 				},
 				Http: kibanav1.KibanaSpecHttpArgs{
 					Tls: kibanav1.KibanaSpecHttpTlsArgs{
@@ -155,7 +137,7 @@ func elasticsearch(ctx *pulumi.Context,
 					},
 				},
 			},
-		}, kibanaResourceOpts...)
+		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{createdElasticSearch}))
 		if err != nil {
 			return errors.Wrapf(err, "failed to create kibana instance for the elastic search instance")
 		}

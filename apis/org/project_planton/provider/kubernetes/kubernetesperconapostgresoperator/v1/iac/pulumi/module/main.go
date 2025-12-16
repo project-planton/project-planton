@@ -4,78 +4,60 @@ import (
 	"github.com/pkg/errors"
 	kubernetesperconapostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
-	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
-	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Resources creates all Pulumi resources for the Percona Operator for PostgreSQL Kubernetes add-on.
 func Resources(ctx *pulumi.Context, stackInput *kubernetesperconapostgresoperatorv1.KubernetesPerconaPostgresOperatorStackInput) error {
-	// set up kubernetes provider from the supplied cluster credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+	// ----------------------------- locals ---------------------------------
+	locals := initializeLocals(ctx, stackInput)
+
+	// ------------------------- kubernetes provider ------------------------
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}
 
-	// use the configured chart version
-	chartVersion := locals.HelmChartVersion
-
-	// determine namespace - use from spec or default
-	namespace := stackInput.Target.Spec.Namespace.GetValue()
-
-	// conditionally create namespace based on create_namespace flag
-	var namespaceNameOutput pulumi.StringOutput
-	var helmParentOpts []pulumi.ResourceOption
-
-	if stackInput.Target.Spec.CreateNamespace {
-		// create dedicated namespace
-		ns, err := corev1.NewNamespace(ctx, namespace,
-			&corev1.NamespaceArgs{
-				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(namespace),
-				},
-			},
-			pulumi.Provider(kubeProvider))
-		if err != nil {
-			return errors.Wrap(err, "failed to create namespace")
-		}
-		namespaceNameOutput = ns.Metadata.Name().Elem()
-		helmParentOpts = []pulumi.ResourceOption{pulumi.Parent(ns)}
-	} else {
-		// use existing namespace - namespace should already exist in the cluster
-		namespaceNameOutput = pulumi.String(namespace).ToStringOutput()
-		helmParentOpts = []pulumi.ResourceOption{}
+	// ------------------------------ namespace ----------------------------
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
+	// ------------------------------ helm ----------------------------------
+	if err := helmChart(ctx, locals, kubernetesProvider); err != nil {
+		return errors.Wrap(err, "failed to deploy Percona Postgres Operator Helm chart")
+	}
+
+	return nil
+}
+
+// helmChart installs the Percona Postgres Operator Helm chart.
+func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	// prepare helm values with resource limits from spec
 	helmValues := pulumi.Map{
 		"resources": pulumi.Map{
 			"limits": pulumi.Map{
-				"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Cpu),
-				"memory": pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Memory),
+				"cpu":    pulumi.String(locals.KubernetesPerconaPostgresOperator.Spec.Container.Resources.Limits.Cpu),
+				"memory": pulumi.String(locals.KubernetesPerconaPostgresOperator.Spec.Container.Resources.Limits.Memory),
 			},
 			"requests": pulumi.Map{
-				"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Requests.Cpu),
-				"memory": pulumi.String(stackInput.Target.Spec.Container.Resources.Requests.Memory),
+				"cpu":    pulumi.String(locals.KubernetesPerconaPostgresOperator.Spec.Container.Resources.Requests.Cpu),
+				"memory": pulumi.String(locals.KubernetesPerconaPostgresOperator.Spec.Container.Resources.Requests.Memory),
 			},
 		},
 	}
 
 	// deploy the operator via Helm
-	helmOpts := []pulumi.ResourceOption{
-		pulumi.Provider(kubeProvider),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
-	}
-	helmOpts = append(helmOpts, helmParentOpts...)
-
-	_, err = helm.NewRelease(ctx, "kubernetes-percona-postgres-operator",
+	_, err := helm.NewRelease(ctx, "kubernetes-percona-postgres-operator",
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(locals.HelmChartName),
-			Namespace:       namespaceNameOutput,
-			Chart:           pulumi.String(locals.HelmChartName),
-			Version:         pulumi.String(chartVersion),
+			Name:            pulumi.String(vars.HelmChartName),
+			Namespace:       pulumi.String(locals.Namespace),
+			Chart:           pulumi.String(vars.HelmChartName),
+			Version:         pulumi.String(vars.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
 			CleanupOnFail:   pulumi.Bool(true),
@@ -83,16 +65,14 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconapostgresoperato
 			Timeout:         pulumi.Int(300),
 			Values:          helmValues,
 			RepositoryOpts: helm.RepositoryOptsArgs{
-				Repo: pulumi.String(locals.HelmChartRepo),
+				Repo: pulumi.String(vars.HelmChartRepo),
 			},
 		},
-		helmOpts...)
+		pulumi.Provider(kubernetesProvider),
+		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
 		return errors.Wrap(err, "failed to install kubernetes-percona-postgres-operator helm release")
 	}
-
-	// export stack outputs
-	ctx.Export(OpNamespace, namespaceNameOutput)
 
 	return nil
 }

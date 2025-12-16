@@ -11,7 +11,7 @@ import (
 
 func helmChart(ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	kubernetesProvider pulumi.ProviderResource,
 	createdAdminPasswordSecret *kubernetescorev1.Secret) error {
 
 	// https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
@@ -43,7 +43,7 @@ func helmChart(ctx *pulumi.Context,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.HelmChartRepoUrl),
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create helm chart")
 	}

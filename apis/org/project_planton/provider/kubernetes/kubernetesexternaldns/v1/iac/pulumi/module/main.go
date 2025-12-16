@@ -32,13 +32,10 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	releaseName := stackInput.Target.Metadata.Name
 	ksaName := releaseName // ServiceAccount name matches the release name
 
-	// Conditionally create or lookup namespace based on create_namespace flag
-	var ns *corev1.Namespace
-	var namespaceOutput pulumi.StringInput
-
+	// Conditionally create namespace based on create_namespace flag
 	if stackInput.Target.Spec.CreateNamespace {
 		// Create new namespace for ExternalDNS
-		createdNs, err := corev1.NewNamespace(ctx, namespace,
+		_, err := corev1.NewNamespace(ctx, namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name: pulumi.String(namespace),
@@ -48,21 +45,8 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 		if err != nil {
 			return errors.Wrapf(err, "failed to create %s namespace", namespace)
 		}
-		ns = createdNs
-		namespaceOutput = ns.Metadata.Name().Elem()
-	} else {
-		// Lookup existing namespace
-		existingNs, err := corev1.GetNamespace(ctx,
-			namespace,
-			pulumi.ID(namespace),
-			nil,
-			pulumi.Provider(kubeProvider))
-		if err != nil {
-			return errors.Wrapf(err, "failed to get existing namespace %s - ensure it exists before deployment", namespace)
-		}
-		ns = existingNs
-		namespaceOutput = pulumi.String(namespace)
 	}
+	// When create_namespace is false, we assume the namespace already exists
 
 	// Build ServiceAccount annotations and Helm values according to provider.
 	annotations := pulumi.StringMap{}
@@ -119,14 +103,13 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 			&corev1.SecretArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name:      pulumi.String(secretName),
-					Namespace: namespaceOutput,
+					Namespace: pulumi.String(namespace),
 				},
 				StringData: pulumi.StringMap{
 					"apiKey": pulumi.String(cf.ApiToken),
 				},
 			},
-			pulumi.Provider(kubeProvider),
-			pulumi.Parent(ns))
+			pulumi.Provider(kubeProvider))
 		if err != nil {
 			return errors.Wrap(err, "failed to create cloudflare api token secret")
 		}
@@ -184,12 +167,11 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 		&corev1.ServiceAccountArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:        pulumi.String(ksaName),
-				Namespace:   namespaceOutput,
+				Namespace:   pulumi.String(namespace),
 				Annotations: annotations,
 			},
 		},
-		pulumi.Provider(kubeProvider),
-		pulumi.Parent(ns))
+		pulumi.Provider(kubeProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create service account")
 	}
@@ -198,7 +180,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	_, err = helm.NewRelease(ctx, releaseName,
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(releaseName),
-			Namespace:       namespaceOutput,
+			Namespace:       pulumi.String(namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -211,14 +193,13 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 				Repo: pulumi.String(vars.HelmChartRepo),
 			},
 		},
-		pulumi.Provider(kubeProvider),
-		pulumi.Parent(ns))
+		pulumi.Provider(kubeProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to install kubernetes-external-dns helm release")
 	}
 
 	// Export stack outputs.
-	ctx.Export(OpNamespace, namespaceOutput)
+	ctx.Export(OpNamespace, pulumi.String(namespace))
 	ctx.Export(OpReleaseName, pulumi.String(releaseName))
 	ctx.Export(OpSolverSa, pulumi.String(ksaName))
 

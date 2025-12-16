@@ -10,26 +10,31 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// Resources is the single entry-point consumed by the ProjectPlanton
+// runtime. It wires together noun-style helpers in a Terraform-like
+// top-down order so the flow is easy for DevOps engineers to follow.
 func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGitlabStackInput) error {
-	// Initialize local values
+	// ----------------------------- locals ---------------------------------
 	locals := initializeLocals(stackInput)
 
-	// Create kubernetes-provider from the credential in the stack-input
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
+	// ------------------------- kubernetes provider ------------------------
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
 		stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to setup kubernetes provider")
 	}
 
-	// Conditionally create or use existing namespace
-	namespaceInput, err := createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubeProvider)
+	// ------------------------------ namespace ----------------------------
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
 	if err != nil {
-		return errors.Wrap(err, "failed to handle namespace")
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	// Export namespace for reference
-	ctx.Export("namespace", namespaceInput)
+	ctx.Export("namespace", pulumi.String(locals.Namespace))
 
+	// ------------------------------ service -------------------------------
 	// Create a placeholder service for GitLab
 	// Note: In production, this would typically use the official GitLab Helm chart
 	// https://docs.gitlab.com/charts/
@@ -38,7 +43,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 		&corev1.ServiceArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.ServiceName),
-				Namespace: namespaceInput,
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: &corev1.ServiceSpecArgs{
@@ -57,7 +62,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 				}),
 			},
 		},
-		pulumi.Provider(kubeProvider))
+		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create GitLab service")
 	}
@@ -67,7 +72,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 	ctx.Export("service_fqdn", pulumi.String(locals.ServiceFQDN))
 	ctx.Export("port_forward_command", pulumi.String(locals.PortForwardCmd))
 
-	// Create ingress if enabled
+	// ----------------------------- ingress --------------------------------
 	if locals.IngressHostname != "" {
 		serviceName := service.Metadata.Name().Elem()
 		_, err := networkingv1.NewIngress(ctx,
@@ -75,7 +80,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 			&networkingv1.IngressArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name:      pulumi.Sprintf("%s-ingress", locals.ServiceName),
-					Namespace: namespaceInput,
+					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 					Annotations: pulumi.StringMap{
 						"cert-manager.io/cluster-issuer": pulumi.String("letsencrypt-prod"),
@@ -114,7 +119,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 					},
 				},
 			},
-			pulumi.Provider(kubeProvider))
+			pulumi.Provider(kubernetesProvider))
 		if err != nil {
 			return errors.Wrap(err, "failed to create ingress")
 		}

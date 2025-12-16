@@ -19,10 +19,10 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	// Create or reference namespace based on create_namespace flag
-	namespace, err := createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubernetesProvider)
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
 	if err != nil {
-		return errors.Wrap(err, "failed to create or get namespace")
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	// Build restore configuration (standby block + STANDBY_* env vars)
@@ -65,7 +65,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 			// for zolando operator the name is required to be always prefixed by teamId
 			// a kubernetes service with the same name is created by the operator
 			Name:      pulumi.Sprintf("%s-%s", vars.TeamId, locals.KubernetesPostgres.Metadata.Name),
-			Namespace: namespace,
+			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		},
 		Spec: zalandov1.PostgresqlSpecArgs{
@@ -116,7 +116,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 		return nil
 	}
 
-	if err := ingress(ctx, locals, namespace, kubernetesProvider); err != nil {
+	if err := ingress(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create ingress")
 	}
 	return nil

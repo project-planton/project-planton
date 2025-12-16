@@ -23,13 +23,8 @@ func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 	// --------------------------------------------------------------------
 	// 1. Namespace - conditionally create based on create_namespace flag
 	// --------------------------------------------------------------------
-	var ns *corev1.Namespace
-	var err error
-	var namespaceOutput pulumi.StringInput
-
 	if locals.KubernetesElasticOperator.Spec.CreateNamespace {
-		// Create the namespace
-		ns, err = corev1.NewNamespace(ctx, namespace, &corev1.NamespaceArgs{
+		_, err := corev1.NewNamespace(ctx, namespace, &corev1.NamespaceArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
 				Name:   pulumi.String(namespace),
 				Labels: pulumi.ToStringMap(locals.KubeLabels),
@@ -38,10 +33,6 @@ func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 		if err != nil {
 			return errors.Wrap(err, "create namespace")
 		}
-		namespaceOutput = ns.Metadata.Name().Elem()
-	} else {
-		// Use existing namespace - just reference the name
-		namespaceOutput = pulumi.String(namespace)
 	}
 
 	// --------------------------------------------------------------------
@@ -85,16 +76,12 @@ func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 	// --------------------------------------------------------------------
 	helmReleaseOpts := []pulumi.ResourceOption{
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
+		pulumi.Provider(k8sProvider),
 	}
 
-	// Only set parent if we created the namespace
-	if ns != nil {
-		helmReleaseOpts = append(helmReleaseOpts, pulumi.Parent(ns))
-	}
-
-	_, err = helm.NewRelease(ctx, "kubernetes-elastic-operator", &helm.ReleaseArgs{
+	_, err := helm.NewRelease(ctx, "kubernetes-elastic-operator", &helm.ReleaseArgs{
 		Name:            pulumi.String(vars.HelmChartName),
-		Namespace:       namespaceOutput,
+		Namespace:       pulumi.String(namespace),
 		Chart:           pulumi.String(vars.HelmChartName),
 		Version:         pulumi.String(vars.HelmChartVersion),
 		RepositoryOpts:  helm.RepositoryOptsArgs{Repo: pulumi.String(vars.HelmChartRepo)},
@@ -112,7 +99,7 @@ func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 	// --------------------------------------------------------------------
 	// 4. Stack outputs
 	// --------------------------------------------------------------------
-	ctx.Export(OpNamespace, namespaceOutput)
+	ctx.Export(OpNamespace, pulumi.String(namespace))
 
 	return nil
 }

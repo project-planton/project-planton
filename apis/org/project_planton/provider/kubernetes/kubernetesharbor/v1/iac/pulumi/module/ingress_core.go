@@ -9,8 +9,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func createCoreIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	namespace pulumi.StringInput) error {
+func createCoreIngress(ctx *pulumi.Context, locals *Locals,
+	kubernetesProvider *kubernetes.Provider) error {
 
 	// Skip if ingress is not enabled
 	if locals.KubernetesHarbor.Spec.Ingress == nil ||
@@ -92,7 +92,7 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-external"),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -117,7 +117,7 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(locals.CoreServiceName),
-								Namespace: namespace,
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(variables.HarborCorePort),
 							},
 						},

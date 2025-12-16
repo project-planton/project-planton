@@ -4,78 +4,64 @@ import (
 	"github.com/pkg/errors"
 	kubernetesperconamysqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
-	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
-	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates all Pulumi resources for the Percona Operator for MySQL Kubernetes add-on.
+// Resources is the single entry-point consumed by the ProjectPlanton
+// runtime.  It wires together noun-style helpers in a Terraform-like
+// top-down order so the flow is easy for DevOps engineers to follow.
 func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamysqloperatorv1.KubernetesPerconaMysqlOperatorStackInput) error {
-	// set up kubernetes provider from the supplied cluster credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+	// ----------------------------- locals ---------------------------------
+	locals := initializeLocals(ctx, stackInput)
+
+	// ------------------------- kubernetes provider ------------------------
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}
 
-	// use the configured chart version
-	chartVersion := locals.HelmChartVersion
-
-	// determine namespace - use from spec (required field)
-	namespace := stackInput.Target.Spec.Namespace.GetValue()
-
-	// fallback to default if somehow empty (should not happen due to validation)
-	if namespace == "" {
-		namespace = "percona-mysql-operator"
+	// ------------------------------ namespace ----------------------------
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
-	// conditionally create namespace based on create_namespace flag
-	var createdNamespace *corev1.Namespace
-	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = corev1.NewNamespace(ctx, namespace,
-			&corev1.NamespaceArgs{
-				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(namespace),
-				},
-			},
-			pulumi.Provider(kubeProvider))
-		if err != nil {
-			return errors.Wrap(err, "failed to create namespace")
-		}
+	// ------------------------------ helm ----------------------------------
+	if err := helmChart(ctx, locals, kubernetesProvider); err != nil {
+		return errors.Wrap(err, "failed to deploy Percona MySQL Operator Helm chart")
 	}
+
+	return nil
+}
+
+// helmChart installs the Percona MySQL Operator Helm chart.
+func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
+	target := locals.KubernetesPerconaMysqlOperator
 
 	// prepare helm values with resource limits from spec
 	helmValues := pulumi.Map{
 		"resources": pulumi.Map{
 			"limits": pulumi.Map{
-				"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Cpu),
-				"memory": pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Memory),
+				"cpu":    pulumi.String(target.Spec.Container.Resources.Limits.Cpu),
+				"memory": pulumi.String(target.Spec.Container.Resources.Limits.Memory),
 			},
 			"requests": pulumi.Map{
-				"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Requests.Cpu),
-				"memory": pulumi.String(stackInput.Target.Spec.Container.Resources.Requests.Memory),
+				"cpu":    pulumi.String(target.Spec.Container.Resources.Requests.Cpu),
+				"memory": pulumi.String(target.Spec.Container.Resources.Requests.Memory),
 			},
 		},
 	}
 
 	// deploy the operator via Helm
-	helmReleaseOpts := []pulumi.ResourceOption{
-		pulumi.Provider(kubeProvider),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
-	}
-
-	// add namespace as parent only if it was created
-	if createdNamespace != nil {
-		helmReleaseOpts = append(helmReleaseOpts, pulumi.Parent(createdNamespace))
-	}
-
-	_, err = helm.NewRelease(ctx, "percona-mysql-operator",
+	_, err := helm.NewRelease(ctx, "percona-mysql-operator",
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(locals.HelmChartName),
-			Namespace:       pulumi.String(namespace),
-			Chart:           pulumi.String(locals.HelmChartName),
-			Version:         pulumi.String(chartVersion),
+			Name:            pulumi.String(vars.HelmChartName),
+			Namespace:       pulumi.String(locals.Namespace),
+			Chart:           pulumi.String(vars.HelmChartName),
+			Version:         pulumi.String(vars.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
 			CleanupOnFail:   pulumi.Bool(true),
@@ -83,16 +69,14 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamysqloperatorv1
 			Timeout:         pulumi.Int(300),
 			Values:          helmValues,
 			RepositoryOpts: helm.RepositoryOptsArgs{
-				Repo: pulumi.String(locals.HelmChartRepo),
+				Repo: pulumi.String(vars.HelmChartRepo),
 			},
 		},
-		helmReleaseOpts...)
+		pulumi.Provider(kubernetesProvider),
+		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
 		return errors.Wrap(err, "failed to install percona-mysql-operator helm release")
 	}
-
-	// export stack outputs
-	ctx.Export(OpNamespace, pulumi.String(namespace))
 
 	return nil
 }

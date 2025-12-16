@@ -4,8 +4,6 @@ import (
 	"github.com/pkg/errors"
 	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
-	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -28,52 +26,26 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescronjobv1.KubernetesCr
 		return errors.Wrap(err, "failed to create Kubernetes provider")
 	}
 
-	// Create or reference the namespace based on create_namespace flag
-	var createdNamespace *corev1.Namespace
-	if stackInput.Target.Spec.CreateNamespace {
-		// Create new namespace
-		createdNamespace, err = corev1.NewNamespace(
-			ctx,
-			locals.Namespace,
-			&corev1.NamespaceArgs{
-				Metadata: &metav1.ObjectMetaArgs{
-					Name:   pulumi.String(locals.Namespace),
-					Labels: pulumi.ToStringMap(locals.Labels),
-				},
-			},
-			pulumi.Provider(kubernetesProvider),
-		)
-		if err != nil {
-			return errors.Wrapf(err, "failed to create namespace %s", locals.Namespace)
-		}
-	} else {
-		// Reference existing namespace
-		createdNamespace, err = corev1.GetNamespace(
-			ctx,
-			locals.Namespace,
-			pulumi.ID(locals.Namespace),
-			nil,
-			pulumi.Provider(kubernetesProvider),
-		)
-		if err != nil {
-			return errors.Wrapf(err, "failed to get existing namespace %s", locals.Namespace)
-		}
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	// Create the main secret resource
-	if err := secret(ctx, locals, createdNamespace); err != nil {
+	if err := secret(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create secret")
 	}
 
 	// Create an image pull secret if Docker credentials are provided
 	if locals.ImagePullSecretData != nil {
-		if err := createImagePullSecret(ctx, locals, createdNamespace); err != nil {
+		if err := createImagePullSecret(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create image pull secret")
 		}
 	}
 
 	// Create the CronJob resource
-	_, err = cronJob(ctx, locals, createdNamespace)
+	_, err = cronJob(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create cronjob")
 	}
