@@ -30,8 +30,8 @@ func init() {
 
 func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 	// Get stack-update ID
-	jobID, _ := cmd.Flags().GetString("id")
-	if jobID == "" {
+	stackUpdateID, _ := cmd.Flags().GetString("id")
+	if stackUpdateID == "" {
 		fmt.Println("Error: --id flag is required. Provide the stack-update ID")
 		fmt.Println("Usage: project-planton stack-update:stream-output --id=<stack-update-id>")
 		os.Exit(1)
@@ -55,7 +55,7 @@ func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 
 	// Prepare request
 	req := &stackupdatev1.StreamStackUpdateOutputRequest{
-		JobId: jobID,
+		JobId: stackUpdateID,
 	}
 	if lastSequenceNum > 0 {
 		req.LastSequenceNum = lastSequenceNum
@@ -75,7 +75,7 @@ func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 	}()
 
 	// Start streaming
-	fmt.Printf("🚀 Streaming output for stack-update: %s\n", jobID)
+	fmt.Printf("🚀 Streaming output for stack-update: %s\n", stackUpdateID)
 	if lastSequenceNum > 0 {
 		fmt.Printf("   Resuming from sequence: %d\n", lastSequenceNum)
 	}
@@ -91,7 +91,7 @@ func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 			os.Exit(1)
 		}
 		if connect.CodeOf(err) == connect.CodeNotFound {
-			fmt.Printf("❌ Error: Stack job with ID '%s' not found\n", jobID)
+			fmt.Printf("❌ Error: Stack update with ID '%s' not found\n", stackUpdateID)
 			os.Exit(1)
 		}
 		fmt.Printf("❌ Error starting stream: %v\n", err)

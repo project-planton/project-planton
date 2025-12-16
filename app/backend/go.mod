@@ -1,6 +1,6 @@
 module github.com/project-planton/project-planton/app/backend
 
-go 1.24.7
+go 1.25.0
 
 require (
 	connectrpc.com/connect v1.16.2

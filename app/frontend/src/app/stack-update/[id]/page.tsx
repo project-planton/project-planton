@@ -226,7 +226,7 @@ export default function StackUpdateDetailPage() {
             <BreadcrumbStartIcon
               icon={ICON_NAMES.INFRA_HUB}
               iconProps={{ sx: { filter: theme.mode === THEME.DARK ? 'invert(1)' : 'none' } }}
-              label="Stack Jobs"
+              label="Stack Updates"
               handler={handleStackUpdatesClick}
             />
           }
@@ -318,7 +318,7 @@ export default function StackUpdateDetailPage() {
           )}
         </Paper>
 
-        {/* Stack Jobs Drawer */}
+        {/* Stack Updates Drawer */}
         {stackUpdate?.cloudResourceId && (
           <StackUpdatesDrawer
             open={stackUpdatesDrawerOpen}

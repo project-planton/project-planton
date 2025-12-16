@@ -39,7 +39,6 @@ use_repo(
     "com_github_onsi_ginkgo_v2",
     "com_github_onsi_gomega",
     "com_github_pkg_errors",
-    "com_github_project_planton_project_planton_app_backend",
     "com_github_pseudomuto_protoc_gen_doc",
     "com_github_pulumi_pulumi_aws_native_sdk",
     "com_github_pulumi_pulumi_aws_sdk_v6",
@@ -73,6 +72,7 @@ use_repo(
     "io_k8s_sigs_kustomize_kyaml",
     "io_k8s_sigs_yaml",
     "io_k8s_utils",
+    "org_golang_google_grpc",
     "org_golang_google_protobuf",
     "org_golang_x_tools",
 )

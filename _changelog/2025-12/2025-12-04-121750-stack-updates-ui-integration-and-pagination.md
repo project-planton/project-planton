@@ -1,4 +1,4 @@
-# Stack Jobs UI Integration and Backend Pagination
+# Stack Updates UI Integration and Backend Pagination
 
 **Date**: December 4, 2025
 **Type**: Feature, Enhancement
@@ -6,7 +6,7 @@
 
 ## Summary
 
-Integrated stack-updates functionality into the cloud resources web interface, enabling users to view and navigate stack-updates directly from the cloud resources list. Added a "Stack Jobs" menu option that opens a drawer showing paginated stack-updates for a selected cloud resource, with clickable rows that navigate to detailed stack-update pages. Implemented server-side pagination in the backend ListStackUpdates API to support efficient handling of large numbers of stack-updates. Enhanced DeployCloudResource API to accept user-provided provider credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes) via API request, with automatic fallback to environment variables. Fixed module directory path resolution for both Pulumi and OpenTofu modules.
+Integrated stack-updates functionality into the cloud resources web interface, enabling users to view and navigate stack-updates directly from the cloud resources list. Added a "Stack Updates" menu option that opens a drawer showing paginated stack-updates for a selected cloud resource, with clickable rows that navigate to detailed stack-update pages. Implemented server-side pagination in the backend ListStackUpdates API to support efficient handling of large numbers of stack-updates. Enhanced DeployCloudResource API to accept user-provided provider credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes) via API request, with automatic fallback to environment variables. Fixed module directory path resolution for both Pulumi and OpenTofu modules.
 
 ## Problem Statement / Motivation
 
@@ -37,8 +37,8 @@ Without these improvements, users faced:
 
 Implemented a complete UI integration for stack-updates with four main components:
 
-1. **Stack Jobs Menu in Cloud Resources List**: Added "Stack Jobs" action menu item that opens a drawer showing all stack-updates for the selected cloud resource
-2. **Stack Jobs Detail Page**: Created a dedicated page (`/stack-jobs/[id]`) to view complete stack-update details including status, timestamps, and full output JSON
+1. **Stack Updates Menu in Cloud Resources List**: Added "Stack Updates" action menu item that opens a drawer showing all stack-updates for the selected cloud resource
+2. **Stack Updates Detail Page**: Created a dedicated page (`/stack-updates/[id]`) to view complete stack-update details including status, timestamps, and full output JSON
 3. **Backend Pagination**: Added server-side pagination support to the ListStackUpdates API with total pages calculation
 4. **User-Provided Credentials Support**: Enhanced DeployCloudResource API to accept provider credentials via API request, with automatic validation and fallback to environment variables
 
@@ -48,11 +48,11 @@ Implemented a complete UI integration for stack-updates with four main component
 
 ```
 Cloud Resources List Page
-    ↓ User clicks "Stack Jobs" menu item
-Stack Jobs Drawer (opens)
+    ↓ User clicks "Stack Updates" menu item
+Stack Updates Drawer (opens)
     ↓ Shows paginated list of stack-updates
     ↓ User clicks on a stack-update row
-Stack Job Detail Page (/stack-jobs/[id])
+Stack Job Detail Page (/stack-updates/[id])
     ↓ Shows full stack-update details
     ↓ Can navigate back to stack-updates list via breadcrumb
 ```
@@ -61,9 +61,9 @@ Stack Job Detail Page (/stack-jobs/[id])
 
 ```
 Cloud Resources List Component
-    ├── Action Menu (View, Edit, Stack Jobs, Delete)
-    └── Stack Jobs Drawer
-        └── Stack Jobs List Component
+    ├── Action Menu (View, Edit, Stack Updates, Delete)
+    └── Stack Updates Drawer
+        └── Stack Updates List Component
             └── Table with Pagination
                 ↓ (on row click)
                 Stack Job Detail Page
@@ -87,14 +87,14 @@ Response (jobs + totalPages)
 
 ### Key Features
 
-**1. Stack Jobs Menu Integration**
+**1. Stack Updates Menu Integration**
 
-- Added "Stack Jobs" menu item to cloud resources action menu
+- Added "Stack Updates" menu item to cloud resources action menu
 - Opens drawer when clicked, showing stack-updates for the selected cloud resource
 - Drawer uses the same drawer component pattern as other features
 - Maintains state for selected cloud resource
 
-**2. Stack Jobs List Component**
+**2. Stack Updates List Component**
 
 - Displays stack-updates in a paginated table
 - Shows ID (truncated), Status, Created At, Updated At columns
@@ -105,8 +105,8 @@ Response (jobs + totalPages)
 
 **3. Stack Job Detail Page**
 
-- Dedicated route: `/stack-jobs/[id]`
-- Breadcrumb navigation with clickable "Stack Jobs" link
+- Dedicated route: `/stack-updates/[id]`
+- Breadcrumb navigation with clickable "Stack Updates" link
 - Stack job header showing:
   - Job ID with copy-to-clipboard functionality
   - Status chip
@@ -143,11 +143,11 @@ Response (jobs + totalPages)
 
 ### 1. Backend Pagination Support
 
-**File**: `app/backend/apis/proto/stack_job_service.proto`
+**File**: `app/backend/apis/proto/stack_update_service.proto`
 
 Added pagination fields to the ListStackUpdates API:
 
-```45:61:app/backend/apis/proto/stack_job_service.proto
+```45:61:app/backend/apis/proto/stack_update_service.proto
 // Request message for listing stack-updates.
 message ListStackUpdatesRequest {
   // Optional filter by cloud resource ID.
@@ -173,11 +173,11 @@ message ListStackUpdatesResponse {
 - `total_pages` only set when `page_info` is provided (backward compatible)
 - Pagination is optional to maintain backward compatibility
 
-**File**: `app/backend/apis/proto/stack_job_service.proto`
+**File**: `app/backend/apis/proto/stack_update_service.proto`
 
 Added ProviderConfig support for user-provided credentials:
 
-```22:122:app/backend/apis/proto/stack_job_service.proto
+```22:122:app/backend/apis/proto/stack_update_service.proto
 message DeployCloudResourceRequest {
   // The unique identifier of the cloud resource to deploy.
   string cloud_resource_id = 1;
@@ -207,11 +207,11 @@ message ProviderConfig {
 - Credentials are optional (fallback to environment variables)
 - Supports all major cloud providers used in the system
 
-**File**: `app/backend/internal/service/stack_job_service.go`
+**File**: `app/backend/internal/service/stack_update_service.go`
 
 Implemented pagination logic in the service layer:
 
-```145:220:app/backend/internal/service/stack_job_service.go
+```145:220:app/backend/internal/service/stack_update_service.go
 // ListStackUpdates lists stack-updates with optional filters and pagination.
 func (s *StackUpdateService) ListStackUpdates(
 	ctx context.Context,
@@ -281,11 +281,11 @@ func (s *StackUpdateService) ListStackUpdates(
 - Returns both jobs and totalPages in response
 - Maintains all existing filter capabilities (cloud_resource_id, status)
 
-**File**: `app/backend/internal/service/stack_job_service.go`
+**File**: `app/backend/internal/service/stack_update_service.go`
 
 Added user-provided credentials support with validation:
 
-```86:432:app/backend/internal/service/stack_job_service.go
+```86:432:app/backend/internal/service/stack_update_service.go
 	// Extract user-provided credentials from request (if provided)
 	var userProviderConfig *backendv1.ProviderConfig
 	if req.Msg.ProviderConfig != nil {
@@ -338,11 +338,11 @@ Added user-provided credentials support with validation:
 - Automatic cleanup of temporary credential files
 - Clear error messages for missing credentials
 
-**File**: `app/backend/internal/database/stack_job_repo.go`
+**File**: `app/backend/internal/database/stack_update_repo.go`
 
 Added pagination support to repository layer:
 
-```130:180:app/backend/internal/database/stack_job_repo.go
+```130:180:app/backend/internal/database/stack_update_repo.go
 // StackUpdateListOptions contains options for listing stack-updates.
 type StackUpdateListOptions struct {
 	CloudResourceID *string
@@ -398,7 +398,7 @@ func (r *StackUpdateRepository) List(ctx context.Context, opts *StackUpdateListO
 
 Added `Count` method for total pages calculation:
 
-```182:202:app/backend/internal/database/stack_job_repo.go
+```182:202:app/backend/internal/database/stack_update_repo.go
 // Count returns the total count of stack-updates with optional filters.
 func (r *StackUpdateRepository) Count(ctx context.Context, opts *StackUpdateListOptions) (int64, error) {
 	filter := bson.M{}
@@ -478,11 +478,11 @@ Fixed module path resolution:
 
 - Fixed path from `apis/org/project_planton/provider` to `apis/project/planton/provider`
 
-### 4. Frontend Stack Jobs Integration
+### 4. Frontend Stack Updates Integration
 
 **File**: `app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx`
 
-Added "Stack Jobs" menu item to cloud resources action menu:
+Added "Stack Updates" menu item to cloud resources action menu:
 
 ```237:279:app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx
   const handleOpenStackUpdates = useCallback((row: CloudResource) => {
@@ -512,7 +512,7 @@ Added "Stack Jobs" menu item to cloud resources action menu:
         isMenuAction: true,
       },
       {
-        text: 'Stack Jobs',
+        text: 'Stack Updates',
         handler: (row: CloudResource) => {
           handleOpenStackUpdates(row);
         },
@@ -539,15 +539,15 @@ Added stack-updates drawer state and rendering:
     useState<CloudResource | null>(null);
 ```
 
-**File**: `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx`
+**File**: `app/frontend/src/components/shared/stackupdate/stack-updates-drawer.tsx`
 
 Created drawer component for stack-updates list:
 
-```1:18:app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx
+```1:18:app/frontend/src/components/shared/stackupdate/stack-updates-drawer.tsx
 'use client';
 
 import { Drawer } from '@/components/shared/drawer';
-import { StackUpdatesList } from './stack-jobs-list';
+import { StackUpdatesList } from './stack-updates-list';
 export interface StackUpdatesDrawerProps {
   open: boolean;
   cloudResourceId: string;
@@ -556,7 +556,7 @@ export interface StackUpdatesDrawerProps {
 
 export function StackUpdatesDrawer({ open, cloudResourceId, onClose }: StackUpdatesDrawerProps) {
   return (
-    <Drawer open={open} onClose={onClose} title="Stack Jobs" width={900}>
+    <Drawer open={open} onClose={onClose} title="Stack Updates" width={900}>
       <StackUpdatesList cloudResourceId={cloudResourceId} />
     </Drawer>
   );
@@ -569,11 +569,11 @@ export function StackUpdatesDrawer({ open, cloudResourceId, onClose }: StackUpda
 - Width set to 900px for better table visibility
 - Passes cloudResourceId to filter stack-updates
 
-**File**: `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx`
+**File**: `app/frontend/src/components/shared/stackupdate/stack-updates-list.tsx`
 
 Created list component with pagination:
 
-```22:124:app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx
+```22:124:app/frontend/src/components/shared/stackupdate/stack-updates-list.tsx
 export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
   const router = useRouter();
   const { query } = useStackUpdateQuery();
@@ -647,7 +647,7 @@ export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
   const clickableColumns = useMemo(
     () => ({
       id: (row: StackUpdate) => {
-        router.push(`/stack-jobs/${row.id}`);
+        router.push(`/stack-updates/${row.id}`);
       },
     }),
     [router]
@@ -690,11 +690,11 @@ export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
 
 ### 5. Stack Job Detail Page
 
-**File**: `app/frontend/src/app/stack-jobs/[id]/page.tsx`
+**File**: `app/frontend/src/app/stack-updates/[id]/page.tsx`
 
 Created detail page with breadcrumb navigation:
 
-```16:96:app/frontend/src/app/stack-jobs/[id]/page.tsx
+```16:96:app/frontend/src/app/stack-updates/[id]/page.tsx
 export default function StackUpdateDetailPage() {
   const { theme } = useContext(AppContext);
   const params = useParams();
@@ -749,7 +749,7 @@ export default function StackUpdateDetailPage() {
             <BreadcrumbStartIcon
               icon={ICON_NAMES.INFRA_HUB}
               iconProps={{ sx: { filter: theme.mode === THEME.DARK ? 'invert(1)' : 'none' } }}
-              label="Stack Jobs"
+              label="Stack Updates"
               handler={handleStackUpdatesClick}
             />
           }
@@ -764,7 +764,7 @@ export default function StackUpdateDetailPage() {
           )}
         </Box>
 
-        {/* Stack Jobs Drawer */}
+        {/* Stack Updates Drawer */}
         {stackUpdate?.cloudResourceId && (
           <StackUpdatesDrawer
             open={stackUpdatesDrawerOpen}
@@ -781,7 +781,7 @@ export default function StackUpdateDetailPage() {
 **Key features**:
 
 - Dynamic route using Next.js `[id]` parameter
-- Breadcrumb navigation with clickable "Stack Jobs" link
+- Breadcrumb navigation with clickable "Stack Updates" link
 - Opens stack-updates drawer when breadcrumb is clicked
 - Displays full JSON output with syntax highlighting
 - Loading states with skeleton placeholders
@@ -971,7 +971,7 @@ Created JSON syntax highlighter component for displaying stack-update output:
 
 ### Developer Experience
 
-**1 new detail page** (`/stack-jobs/[id]`)
+**1 new detail page** (`/stack-updates/[id]`)
 **2 new reusable components** (StackUpdatesDrawer, StackUpdatesList)
 **1 new header component** (StackUpdateHeader)
 **1 new breadcrumb component** for navigation
@@ -992,17 +992,17 @@ Created JSON syntax highlighter component for displaying stack-update output:
 
 ## Usage Examples
 
-### Opening Stack Jobs from Cloud Resources
+### Opening Stack Updates from Cloud Resources
 
 1. Navigate to Cloud Resources page
 2. Click action menu (three dots) on any cloud resource
-3. Select "Stack Jobs" from menu
+3. Select "Stack Updates" from menu
 4. Drawer opens showing paginated list of stack-updates for that resource
 
 ### Viewing Stack Job Details
 
 1. From stack-updates drawer, click on any stack-update row
-2. Navigate to `/stack-jobs/[id]` detail page
+2. Navigate to `/stack-updates/[id]` detail page
 3. View complete stack-update information:
    - Job ID (with copy button)
    - Status chip
@@ -1011,7 +1011,7 @@ Created JSON syntax highlighter component for displaying stack-update output:
 
 ### Navigating Back
 
-1. From detail page, click "Stack Jobs" in breadcrumb
+1. From detail page, click "Stack Updates" in breadcrumb
 2. Opens drawer showing all stack-updates for the same cloud resource
 3. Can navigate between jobs or return to cloud resources list
 
@@ -1070,11 +1070,11 @@ DeployCloudResourceRequest {
 
 **Modified**:
 
-- `app/backend/apis/proto/stack_job_service.proto` - Added PageInfo and total_pages to ListStackUpdates API; Added ProviderConfig support to DeployCloudResourceRequest for user-provided credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
-- `app/backend/internal/service/stack_job_service.go` - Implemented pagination logic with total pages calculation; Added user-provided credentials support with fallback to environment variables; Added provider credential validation based on resource kind; Removed logrus logging
+- `app/backend/apis/proto/stack_update_service.proto` - Added PageInfo and total_pages to ListStackUpdates API; Added ProviderConfig support to DeployCloudResourceRequest for user-provided credentials (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
+- `app/backend/internal/service/stack_update_service.go` - Implemented pagination logic with total pages calculation; Added user-provided credentials support with fallback to environment variables; Added provider credential validation based on resource kind; Removed logrus logging
 - `app/backend/internal/service/cloud_resource_service.go` - Removed logrus logging (code cleanup)
 - `app/backend/internal/service/deployment_component_service.go` - Removed logrus logging (code cleanup)
-- `app/backend/internal/database/stack_job_repo.go` - Added pagination support with skip/limit and Count method
+- `app/backend/internal/database/stack_update_repo.go` - Added pagination support with skip/limit and Count method
 
 ### Infrastructure Code
 
@@ -1091,10 +1091,10 @@ DeployCloudResourceRequest {
 
 **Created**:
 
-- `app/frontend/src/app/stack-jobs/[id]/page.tsx` - Stack job detail page
-- `app/frontend/src/app/stack-jobs/_services/index.ts` - Stack jobs service exports
-- `app/frontend/src/app/stack-jobs/_services/query.ts` - Stack jobs query service
-- `app/frontend/src/app/stack-jobs/styled.ts` - Styled components for stack-updates pages
+- `app/frontend/src/app/stack-updates/[id]/page.tsx` - Stack job detail page
+- `app/frontend/src/app/stack-updates/_services/index.ts` - Stack jobs service exports
+- `app/frontend/src/app/stack-updates/_services/query.ts` - Stack jobs query service
+- `app/frontend/src/app/stack-updates/styled.ts` - Styled components for stack-updates pages
 
 ### UI Components
 
@@ -1102,8 +1102,8 @@ DeployCloudResourceRequest {
 
 - `app/frontend/src/components/shared/stackupdate/index.ts` - Stack job component exports
 - `app/frontend/src/components/shared/stackupdate/stack-update-header.tsx` - Stack job header component
-- `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx` - Stack jobs drawer component
-- `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx` - Stack jobs list component with pagination
+- `app/frontend/src/components/shared/stackupdate/stack-updates-drawer.tsx` - Stack jobs drawer component
+- `app/frontend/src/components/shared/stackupdate/stack-updates-list.tsx` - Stack jobs list component with pagination
 - `app/frontend/src/components/shared/breadcrumb/index.tsx` - Breadcrumb navigation component
 - `app/frontend/src/components/shared/breadcrumb/styled.ts` - Breadcrumb styling
 - `app/frontend/src/components/shared/status-chip/index.ts` - Status chip exports
@@ -1113,7 +1113,7 @@ DeployCloudResourceRequest {
 
 **Modified**:
 
-- `app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx` - Added "Stack Jobs" menu item and drawer integration
+- `app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx` - Added "Stack Updates" menu item and drawer integration
 - `app/frontend/src/components/shared/cloud-resources-list/index.ts` - Updated exports
 - `app/frontend/src/components/layout/styled.ts` - Updated layout styling
 - `app/frontend/src/components/shared/drawer/styled.ts` - Updated drawer styling
@@ -1215,7 +1215,7 @@ These limitations are intentional for the initial implementation and can be addr
 
 ### Breadcrumb Navigation
 
-**Decision**: Use breadcrumb with clickable "Stack Jobs" link that opens drawer
+**Decision**: Use breadcrumb with clickable "Stack Updates" link that opens drawer
 
 **Rationale**:
 
@@ -1288,7 +1288,7 @@ As part of code quality improvements, removed all logrus logging from the backen
 
 **Files Modified**:
 
-- `app/backend/internal/service/stack_job_service.go` - Removed all logrus calls (error, warning, and info logs)
+- `app/backend/internal/service/stack_update_service.go` - Removed all logrus calls (error, warning, and info logs)
 - `app/backend/internal/service/cloud_resource_service.go` - Removed all logrus calls
 - `app/backend/internal/service/deployment_component_service.go` - Removed all logrus calls
 
@@ -1302,10 +1302,10 @@ As part of code quality improvements, removed all logrus logging from the backen
 ---
 
 **Status**: ✅ Complete and Production Ready
-**Component**: Web Frontend - Stack Jobs UI Integration, Backend API - Pagination and Credentials, Infrastructure - Module Path Fixes
-**Pages Added**: 1 detail page (`/stack-jobs/[id]`)
+**Component**: Web Frontend - Stack Updates UI Integration, Backend API - Pagination and Credentials, Infrastructure - Module Path Fixes
+**Pages Added**: 1 detail page (`/stack-updates/[id]`)
 **Components Added**: 6 new reusable components
 **Components Modified**: 2 existing components
 **Backend Changes**: Pagination support in service and repository; User-provided credentials support with validation
 **Infrastructure Changes**: Module path fixes for Pulumi and OpenTofu; Credential handling refactoring
-**Location**: `app/frontend/src/app/stack-jobs/`, `app/frontend/src/components/shared/stackupdate/`, `app/backend/internal/service/`, `app/backend/internal/database/`, `pkg/iac/pulumi/pulumimodule/`, `pkg/iac/tofu/tofumodule/`, `pkg/iac/stackinput/stackinputproviderconfig/`
+**Location**: `app/frontend/src/app/stack-updates/`, `app/frontend/src/components/shared/stackupdate/`, `app/backend/internal/service/`, `app/backend/internal/database/`, `pkg/iac/pulumi/pulumimodule/`, `pkg/iac/tofu/tofumodule/`, `pkg/iac/stackinput/stackinputproviderconfig/`

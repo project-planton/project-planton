@@ -1,6 +1,6 @@
 module github.com/project-planton/project-planton/buf/lint/optional-linter
 
-go 1.24.7
+go 1.25.0
 
 require (
 	buf.build/go/bufplugin v0.9.0

@@ -105,7 +105,7 @@ export const infoLight = {
 
 export const exceptionsLight = {
   0: '#000000',
-  10: '#1f1f43', // Stack Job log background
+  10: '#1f1f43', // Stack Update log background
   15: '#03A5871A', // trigger background
   20: '#FFFFFF', // Secondary Button Background
   25: '#03A587', // trigger text

@@ -144,11 +144,11 @@ Deployment results stored as JSON in the `output` field:
 
 ### 1. Proto Definition
 
-**File**: `app/backend/apis/proto/stack_job_service.proto`
+**File**: `app/backend/apis/proto/stack_update_service.proto`
 
 Defines the gRPC service and messages:
 
-```9:77:app/backend/apis/proto/stack_job_service.proto
+```9:77:app/backend/apis/proto/stack_update_service.proto
 // StackUpdateService provides operations for managing Pulumi stack deployment jobs.
 service StackUpdateService {
   // DeployCloudResource deploys a cloud resource using Pulumi.
@@ -228,11 +228,11 @@ message StackUpdate {
 
 ### 2. Data Model
 
-**File**: `app/backend/pkg/models/stack_job.go`
+**File**: `app/backend/pkg/models/stack_update.go`
 
 MongoDB model for stack-updates:
 
-```9:17:app/backend/pkg/models/stack_job.go
+```9:17:app/backend/pkg/models/stack_update.go
 // StackUpdate represents a Pulumi stack deployment job in MongoDB.
 type StackUpdate struct {
 	ID              primitive.ObjectID `bson:"_id,omitempty" json:"id"`
@@ -248,7 +248,7 @@ type StackUpdate struct {
 
 ### 3. Repository Layer
 
-**File**: `app/backend/internal/database/stack_job_repo.go`
+**File**: `app/backend/internal/database/stack_update_repo.go`
 
 Provides data access methods:
 
@@ -266,13 +266,13 @@ Provides data access methods:
 
 ### 4. Service Implementation
 
-**File**: `app/backend/internal/service/stack_job_service.go`
+**File**: `app/backend/internal/service/stack_update_service.go`
 
 Main service implementation with three key methods:
 
 **DeployCloudResource**:
 
-```44:104:app/backend/internal/service/stack_job_service.go
+```44:104:app/backend/internal/service/stack_update_service.go
 // DeployCloudResource deploys a cloud resource using Pulumi.
 // Fetches the manifest from the cloud resource ID, executes pulumi up, and stores the result in stackupdates table.
 func (s *StackUpdateService) DeployCloudResource(
@@ -338,7 +338,7 @@ func (s *StackUpdateService) DeployCloudResource(
 
 **deployWithPulumi** (core deployment logic):
 
-```192:427:app/backend/internal/service/stack_job_service.go
+```192:427:app/backend/internal/service/stack_update_service.go
 // deployWithPulumi executes pulumi up and stores output in stackupdates table
 func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
 	// Write manifest to temp file
@@ -768,10 +768,10 @@ ListStackUpdatesResponse {
 
 **Created**:
 
-- `app/backend/apis/proto/stack_job_service.proto` - gRPC service definition
-- `app/backend/internal/service/stack_job_service.go` - Service implementation
-- `app/backend/internal/database/stack_job_repo.go` - Repository layer
-- `app/backend/pkg/models/stack_job.go` - Data model
+- `app/backend/apis/proto/stack_update_service.proto` - gRPC service definition
+- `app/backend/internal/service/stack_update_service.go` - Service implementation
+- `app/backend/internal/database/stack_update_repo.go` - Repository layer
+- `app/backend/pkg/models/stack_update.go` - Data model
 
 **Modified**:
 

@@ -105,7 +105,7 @@ export const infoDark = {
 
 export const exceptionsDark = {
   0: '#000000',
-  10: '#000000', // Stack Job log background
+  10: '#000000', // Stack Update log background
   15: '#1E2C31', // trigger background
   20: '#262629', // Secondary Button Background
   25: '#24C8FF', // trigger text

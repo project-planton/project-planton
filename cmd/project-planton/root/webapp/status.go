@@ -102,5 +102,3 @@ func printServiceStatus(serviceName, port string) {
 
 	fmt.Printf("  %-12s %s (port %s)\n", serviceName+":", status, port)
 }
-
-

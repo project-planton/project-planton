@@ -88,35 +88,35 @@ func (s *StackUpdateService) DeployCloudResource(
 		Status:          "in_progress",
 	}
 
-	createdJob, err := s.stackUpdateRepo.Create(ctx, stackUpdate)
+	createdStackUpdate, err := s.stackUpdateRepo.Create(ctx, stackUpdate)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create stack-update: %w", err))
 	}
 
 	// Execute Pulumi deployment asynchronously
 	// Credentials will be resolved automatically from database during deployment
-	jobID := createdJob.ID.Hex()
+	stackUpdateID := createdStackUpdate.ID.Hex()
 	go func() {
-		_ = s.deployWithPulumi(context.Background(), jobID, cloudResourceID, cloudResource.Manifest)
+		_ = s.deployWithPulumi(context.Background(), stackUpdateID, cloudResourceID, cloudResource.Manifest)
 	}()
 
 	// Convert to proto
-	protoJob := &stackupdatev1.StackUpdate{
-		Id:              createdJob.ID.Hex(),
-		CloudResourceId: createdJob.CloudResourceID,
-		Status:          createdJob.Status,
-		Output:          createdJob.Output,
+	protoStackUpdate := &stackupdatev1.StackUpdate{
+		Id:              createdStackUpdate.ID.Hex(),
+		CloudResourceId: createdStackUpdate.CloudResourceID,
+		Status:          createdStackUpdate.Status,
+		Output:          createdStackUpdate.Output,
 	}
 
-	if !createdJob.CreatedAt.IsZero() {
-		protoJob.CreatedAt = timestamppb.New(createdJob.CreatedAt)
+	if !createdStackUpdate.CreatedAt.IsZero() {
+		protoStackUpdate.CreatedAt = timestamppb.New(createdStackUpdate.CreatedAt)
 	}
-	if !createdJob.UpdatedAt.IsZero() {
-		protoJob.UpdatedAt = timestamppb.New(createdJob.UpdatedAt)
+	if !createdStackUpdate.UpdatedAt.IsZero() {
+		protoStackUpdate.UpdatedAt = timestamppb.New(createdStackUpdate.UpdatedAt)
 	}
 
 	return connect.NewResponse(&stackupdatev1.DeployCloudResourceResponse{
-		StackUpdate: protoJob,
+		StackUpdate: protoStackUpdate,
 	}), nil
 }
 
@@ -127,34 +127,34 @@ func (s *StackUpdateService) GetStackUpdate(
 ) (*connect.Response[stackupdatev1.GetStackUpdateResponse], error) {
 	id := req.Msg.Id
 	if id == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("stack job ID cannot be empty"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("stack update ID cannot be empty"))
 	}
 
-	job, err := s.stackUpdateRepo.FindByID(ctx, id)
+	stackUpdate, err := s.stackUpdateRepo.FindByID(ctx, id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch stack job: %w", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch stack update: %w", err))
 	}
 
-	if job == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("stack job with ID '%s' not found", id))
+	if stackUpdate == nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("stack update with ID '%s' not found", id))
 	}
 
-	protoJob := &stackupdatev1.StackUpdate{
-		Id:              job.ID.Hex(),
-		CloudResourceId: job.CloudResourceID,
-		Status:          job.Status,
-		Output:          job.Output,
+	protoStackUpdate := &stackupdatev1.StackUpdate{
+		Id:              stackUpdate.ID.Hex(),
+		CloudResourceId: stackUpdate.CloudResourceID,
+		Status:          stackUpdate.Status,
+		Output:          stackUpdate.Output,
 	}
 
-	if !job.CreatedAt.IsZero() {
-		protoJob.CreatedAt = timestamppb.New(job.CreatedAt)
+	if !stackUpdate.CreatedAt.IsZero() {
+		protoStackUpdate.CreatedAt = timestamppb.New(stackUpdate.CreatedAt)
 	}
-	if !job.UpdatedAt.IsZero() {
-		protoJob.UpdatedAt = timestamppb.New(job.UpdatedAt)
+	if !stackUpdate.UpdatedAt.IsZero() {
+		protoStackUpdate.UpdatedAt = timestamppb.New(stackUpdate.UpdatedAt)
 	}
 
 	return connect.NewResponse(&stackupdatev1.GetStackUpdateResponse{
-		StackUpdate: protoJob,
+		StackUpdate: protoStackUpdate,
 	}), nil
 }
 
@@ -196,32 +196,32 @@ func (s *StackUpdateService) ListStackUpdates(
 		totalPages = int32((totalCount + int64(pageSize) - 1) / int64(pageSize))
 	}
 
-	jobs, err := s.stackUpdateRepo.List(ctx, opts)
+	stackUpdates, err := s.stackUpdateRepo.List(ctx, opts)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list stack-updates: %w", err))
 	}
 
-	protoJobs := make([]*stackupdatev1.StackUpdate, 0, len(jobs))
-	for _, job := range jobs {
-		protoJob := &stackupdatev1.StackUpdate{
-			Id:              job.ID.Hex(),
-			CloudResourceId: job.CloudResourceID,
-			Status:          job.Status,
-			Output:          job.Output,
+	protoStackUpdates := make([]*stackupdatev1.StackUpdate, 0, len(stackUpdates))
+	for _, stackUpdate := range stackUpdates {
+		protoStackUpdate := &stackupdatev1.StackUpdate{
+			Id:              stackUpdate.ID.Hex(),
+			CloudResourceId: stackUpdate.CloudResourceID,
+			Status:          stackUpdate.Status,
+			Output:          stackUpdate.Output,
 		}
 
-		if !job.CreatedAt.IsZero() {
-			protoJob.CreatedAt = timestamppb.New(job.CreatedAt)
+		if !stackUpdate.CreatedAt.IsZero() {
+			protoStackUpdate.CreatedAt = timestamppb.New(stackUpdate.CreatedAt)
 		}
-		if !job.UpdatedAt.IsZero() {
-			protoJob.UpdatedAt = timestamppb.New(job.UpdatedAt)
+		if !stackUpdate.UpdatedAt.IsZero() {
+			protoStackUpdate.UpdatedAt = timestamppb.New(stackUpdate.UpdatedAt)
 		}
 
-		protoJobs = append(protoJobs, protoJob)
+		protoStackUpdates = append(protoStackUpdates, protoStackUpdate)
 	}
 
 	response := &stackupdatev1.ListStackUpdatesResponse{
-		StackUpdates:       protoJobs,
+		StackUpdates:       protoStackUpdates,
 		TotalPages: totalPages,
 	}
 
@@ -235,19 +235,19 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 	req *connect.Request[stackupdatev1.StreamStackUpdateOutputRequest],
 	stream *connect.ServerStream[stackupdatev1.StreamStackUpdateOutputResponse],
 ) error {
-	jobID := req.Msg.JobId
-	fmt.Printf("DEBUG: StreamStackUpdateOutput called with jobID=%s, lastSequenceNum=%v\n", jobID, req.Msg.LastSequenceNum)
-	if jobID == "" {
+	stackUpdateID := req.Msg.JobId
+	fmt.Printf("DEBUG: StreamStackUpdateOutput called with stackUpdateID=%s, lastSequenceNum=%v\n", stackUpdateID, req.Msg.LastSequenceNum)
+	if stackUpdateID == "" {
 		return connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("stack-update ID cannot be empty"))
 	}
 
 	// Verify the stack-update exists
-	job, err := s.stackUpdateRepo.FindByID(ctx, jobID)
+	stackUpdate, err := s.stackUpdateRepo.FindByID(ctx, stackUpdateID)
 	if err != nil {
 		return connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch stack-update: %w", err))
 	}
-	if job == nil {
-		return connect.NewError(connect.CodeNotFound, fmt.Errorf("stack-update with ID '%s' not found", jobID))
+	if stackUpdate == nil {
+		return connect.NewError(connect.CodeNotFound, fmt.Errorf("stack-update with ID '%s' not found", stackUpdateID))
 	}
 
 	// Get last sequence number if provided (for resuming)
@@ -275,12 +275,12 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 		startSequence = -1 // This will fetch all logs (sequence > -1 means all logs)
 	}
 
-	existingResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, jobID, startSequence)
+	existingResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, stackUpdateID, startSequence)
 	if err != nil {
 		return connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch existing streaming responses: %w", err))
 	}
 
-	fmt.Printf("DEBUG: Found %d existing responses for jobID=%s (startSequence=%d)\n", len(existingResponses), jobID, startSequence)
+	fmt.Printf("DEBUG: Found %d existing responses for stackUpdateID=%s (startSequence=%d)\n", len(existingResponses), stackUpdateID, startSequence)
 
 	// Send all existing responses
 	for _, resp := range existingResponses {
@@ -322,16 +322,16 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 		case <-ticker.C:
 			// Check if job is completed
 			if !jobCompleted {
-				updatedJob, err := s.stackUpdateRepo.FindByID(ctx, jobID)
-				if err == nil && updatedJob != nil {
-					if updatedJob.Status == "success" || updatedJob.Status == "failed" {
+				updatedStackUpdate, err := s.stackUpdateRepo.FindByID(ctx, stackUpdateID)
+				if err == nil && updatedStackUpdate != nil {
+					if updatedStackUpdate.Status == "success" || updatedStackUpdate.Status == "failed" {
 						jobCompleted = true
 					}
 				}
 			}
 
 			// Get new responses after current sequence number
-			newResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, jobID, currentSequenceNum)
+			newResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, stackUpdateID, currentSequenceNum)
 			if err != nil {
 				// Log error but continue polling
 				fmt.Printf("Warning: Failed to fetch streaming responses: %v\n", err)
@@ -339,7 +339,7 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 			}
 
 			if len(newResponses) > 0 {
-				fmt.Printf("DEBUG: Found %d new responses for jobID=%s (currentSeq=%d)\n", len(newResponses), jobID, currentSequenceNum)
+				fmt.Printf("DEBUG: Found %d new responses for stackUpdateID=%s (currentSeq=%d)\n", len(newResponses), stackUpdateID, currentSequenceNum)
 			}
 
 			// Send new responses
@@ -367,7 +367,7 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 			// If job is completed and we've sent all responses, send completion message
 			if jobCompleted {
 				// Check if there are any more responses
-				remainingResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, jobID, currentSequenceNum)
+				remainingResponses, err := s.streamingResponseRepo.FindByStackUpdateIDAfterSequence(ctx, stackUpdateID, currentSequenceNum)
 				if err == nil && len(remainingResponses) == 0 {
 					// Send final completion message
 					finalResponse := &stackupdatev1.StreamStackUpdateOutputResponse{
@@ -395,52 +395,52 @@ func (s *StackUpdateService) StreamStackUpdateOutput(
 // 6. Resolves credentials from database based on environment and provider
 // 7. Builds stack input YAML (with credentials)
 // 8. Executes pulumi up with resolved credentials
-func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
-	fmt.Printf("DEBUG: deployWithPulumi started for jobID=%s, cloudResourceID=%s\n", jobID, cloudResourceID)
+func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID string, cloudResourceID string, manifestYaml string) error {
+	fmt.Printf("DEBUG: deployWithPulumi started for stackUpdateID=%s, cloudResourceID=%s\n", stackUpdateID, cloudResourceID)
 
 	// Step 1: Write manifest to temp file
 	tmpFile, err := os.CreateTemp("", "manifest-*.yaml")
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to create temp file: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to create temp file: %w", err))
 	}
 	defer os.Remove(tmpFile.Name())
 
 	if _, err := tmpFile.WriteString(manifestYaml); err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to write manifest: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to write manifest: %w", err))
 	}
 	if err := tmpFile.Close(); err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to close temp file: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to close temp file: %w", err))
 	}
 
 	// Step 2: Load manifest and validate
 	manifestObject, err := manifest.LoadManifest(tmpFile.Name())
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to load manifest: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to load manifest: %w", err))
 	}
 
 	// Step 3: Extract stack FQDN from manifest labels (REQUIRED - fail if missing)
 	backendConfig, err := backendconfig.ExtractFromManifest(manifestObject)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to extract backend config from manifest: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to extract backend config from manifest: %w", err))
 	}
 	if backendConfig == nil || backendConfig.StackFqdn == "" {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("stack FQDN not found in manifest labels. Add 'pulumi.project-planton.org/stack.fqdn' label"))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("stack FQDN not found in manifest labels. Add 'pulumi.project-planton.org/stack.fqdn' label"))
 	}
 	stackFqdn := backendConfig.StackFqdn
 
 	// Step 4: Extract kind name (REQUIRED - fail if missing)
 	kindName, err := crkreflect.ExtractKindFromProto(manifestObject)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to extract kind from manifest: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to extract kind from manifest: %w", err))
 	}
 	if kindName == "" {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("kind field is required in manifest"))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("kind field is required in manifest"))
 	}
 
 	// Step 4.1: Get provider from kind enum (for credential validation)
 	kindEnum, err := crkreflect.KindByKindName(kindName)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to get kind enum for '%s': %w", kindName, err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to get kind enum for '%s': %w", kindName, err))
 	}
 	provider := crkreflect.GetProvider(kindEnum)
 
@@ -454,28 +454,28 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 	fmt.Printf("DEBUG: Getting Pulumi module path for kind=%s, stackFqdn=%s, moduleDir=%s\n", kindName, stackFqdn, moduleDir)
 	pulumiModulePath, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to get Pulumi module path: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to get Pulumi module path: %w", err))
 	}
 	fmt.Printf("DEBUG: Pulumi module path resolved: %s\n", pulumiModulePath)
 
 	// Step 7: Extract project name from stack FQDN
 	pulumiProjectName, err := pulumistack.ExtractProjectName(stackFqdn)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to extract project name from stack FQDN '%s': %w", stackFqdn, err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to extract project name from stack FQDN '%s': %w", stackFqdn, err))
 	}
 
 	// Step 8: Update Pulumi.yaml project name (REQUIRED - fail if error)
 	if err := pulumistack.UpdateProjectNameInPulumiYaml(pulumiModulePath, pulumiProjectName); err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to update Pulumi.yaml project name: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to update Pulumi.yaml project name: %w", err))
 	}
 
 	// Step 9: Initialize stack if it doesn't exist (idempotent)
 	// Note: pulumistack.Init writes to os.Stdout/Stderr, but we need to capture output
 	// So we'll handle stack initialization manually with output capture
-	if err := s.ensureStackInitialized(ctx, jobID, moduleDir, stackFqdn, tmpFile.Name(), pulumiModulePath); err != nil {
+	if err := s.ensureStackInitialized(ctx, stackUpdateID, moduleDir, stackFqdn, tmpFile.Name(), pulumiModulePath); err != nil {
 		// Check if error is "stack already exists" - that's OK
 		if !strings.Contains(err.Error(), "already exists") {
-			return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to initialize stack: %w", err))
+			return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to initialize stack: %w", err))
 		}
 		// Stack already exists, continue
 	}
@@ -485,7 +485,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 	// The provider is automatically determined from the kind (e.g., GcpCloudSql -> gcp)
 	providerConfig, err := s.credentialResolver.ResolveProviderConfig(ctx, kindName)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to resolve provider credentials: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to resolve provider credentials: %w", err))
 	}
 
 	// Step 11: Build provider config options from resolved credentials
@@ -531,13 +531,13 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 		kubernetesConfig,
 	)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to build provider config from user credentials: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to build provider config from user credentials: %w", err))
 	}
 	defer cleanupProviderConfigs()
 
 	// Validate that required credentials are provided based on provider enum
 	if err := s.validateProviderCredentials(provider, providerConfigOptions, kindName); err != nil {
-		return s.updateJobWithError(ctx, jobID, err)
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, err)
 	}
 
 	// Debug: Log which provider configs were found
@@ -554,7 +554,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 	// Step 11: Build stack input YAML (REQUIRED - fail if error)
 	stackInputYaml, err := stackinput.BuildStackInputYaml(manifestObject, providerConfigOptions)
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to build stack input YAML: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to build stack input YAML: %w", err))
 	}
 
 	// Debug: Check if provider config is in the stack input YAML
@@ -637,16 +637,16 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 	// Create pipes for streaming stdout and stderr
 	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to create stdout pipe: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to create stdout pipe: %w", err))
 	}
 	stderrPipe, err := cmd.StderrPipe()
 	if err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to create stderr pipe: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to create stderr pipe: %w", err))
 	}
 
 	// Start the command
 	if err := cmd.Start(); err != nil {
-		return s.updateJobWithError(ctx, jobID, fmt.Errorf("failed to start pulumi command: %w", err))
+		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to start pulumi command: %w", err))
 	}
 
 	// Stream output and store in database
@@ -683,7 +683,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 			mu.Unlock()
 
 			streamingResponse := &models.StackUpdateStreamingResponse{
-				StackUpdateID: jobID,
+				StackUpdateID: stackUpdateID,
 				Content:       line,
 				StreamType:    streamType,
 				SequenceNum:   currentSeq,
@@ -693,14 +693,14 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 			_, storeErr := s.streamingResponseRepo.Create(dbCtx, streamingResponse)
 			if storeErr != nil {
 				// Log error with more details
-				fmt.Printf("ERROR: Failed to store streaming response (seq=%d, type=%s, jobID=%s): %v\n",
-					currentSeq, streamType, jobID, storeErr)
+				fmt.Printf("ERROR: Failed to store streaming response (seq=%d, type=%s, stackUpdateID=%s): %v\n",
+					currentSeq, streamType, stackUpdateID, storeErr)
 			} else {
 				storedCount++
 				// Log successful storage (first few and then periodically)
 				if currentSeq < 5 || currentSeq%100 == 0 {
-					fmt.Printf("DEBUG: Stored streaming response (seq=%d, type=%s, jobID=%s, lineCount=%d)\n",
-						currentSeq, streamType, jobID, lineCount)
+					fmt.Printf("DEBUG: Stored streaming response (seq=%d, type=%s, stackUpdateID=%s, lineCount=%d)\n",
+						currentSeq, streamType, stackUpdateID, lineCount)
 				}
 			}
 		}
@@ -820,19 +820,19 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 			"timestamp": time.Now().Format(time.RFC3339),
 		}
 		errorJSON, _ := json.Marshal(errorOutput)
-		updateJob := &models.StackUpdate{
+		updateStackUpdate := &models.StackUpdate{
 			Status: "failed",
 			Output: string(errorJSON),
 		}
-		_, _ = s.stackUpdateRepo.Update(ctx, jobID, updateJob)
+		_, _ = s.stackUpdateRepo.Update(ctx, stackUpdateID, updateStackUpdate)
 		return fmt.Errorf("failed to marshal deployment output: %w", jsonErr)
 	}
 
-	updateJob := &models.StackUpdate{
+	updateStackUpdate := &models.StackUpdate{
 		Status: status,
 		Output: string(outputJSON),
 	}
-	_, updateErr := s.stackUpdateRepo.Update(ctx, jobID, updateJob)
+	_, updateErr := s.stackUpdateRepo.Update(ctx, stackUpdateID, updateStackUpdate)
 	if updateErr != nil {
 		return fmt.Errorf("failed to update stack-update: %w", updateErr)
 	}
@@ -841,7 +841,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string,
 }
 
 // ensureStackInitialized ensures the Pulumi stack exists, initializing it if needed
-func (s *StackUpdateService) ensureStackInitialized(ctx context.Context, jobID, moduleDir, stackFqdn, manifestPath, pulumiModulePath string) error {
+func (s *StackUpdateService) ensureStackInitialized(ctx context.Context, stackUpdateID, moduleDir, stackFqdn, manifestPath, pulumiModulePath string) error {
 	// Check if stack exists by trying to select it
 	checkCmd := exec.CommandContext(ctx, "pulumi", "stack", "select", stackFqdn)
 	checkCmd.Dir = pulumiModulePath
@@ -987,22 +987,22 @@ func ifEmpty(value, defaultValue string) string {
 	return "SET"
 }
 
-// updateJobWithError updates a stack-update with an error status
-func (s *StackUpdateService) updateJobWithError(ctx context.Context, jobID string, err error) error {
-	fmt.Printf("ERROR: Stack job %s failed: %v\n", jobID, err)
+// updateStackUpdateWithError updates a stack-update with an error status
+func (s *StackUpdateService) updateStackUpdateWithError(ctx context.Context, stackUpdateID string, err error) error {
+	fmt.Printf("ERROR: Stack update %s failed: %v\n", stackUpdateID, err)
 	errorOutput := map[string]interface{}{
 		"status":    "failed",
 		"error":     err.Error(),
 		"timestamp": time.Now().Format(time.RFC3339),
 	}
 	outputJSON, _ := json.Marshal(errorOutput)
-	updateJob := &models.StackUpdate{
+	updateStackUpdate := &models.StackUpdate{
 		Status: "failed",
 		Output: string(outputJSON),
 	}
-	_, updateErr := s.stackUpdateRepo.Update(ctx, jobID, updateJob)
+	_, updateErr := s.stackUpdateRepo.Update(ctx, stackUpdateID, updateStackUpdate)
 	if updateErr != nil {
-		fmt.Printf("ERROR: Failed to update job %s with error status: %v\n", jobID, updateErr)
+		fmt.Printf("ERROR: Failed to update stack update %s with error status: %v\n", stackUpdateID, updateErr)
 	}
 	return err
 }

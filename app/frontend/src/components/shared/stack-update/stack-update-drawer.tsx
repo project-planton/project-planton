@@ -10,7 +10,7 @@ export interface StackUpdatesDrawerProps {
 
 export function StackUpdatesDrawer({ open, cloudResourceId, onClose }: StackUpdatesDrawerProps) {
   return (
-    <Drawer open={open} onClose={onClose} title="Stack Jobs" width={900}>
+    <Drawer open={open} onClose={onClose} title="Stack Updates" width={900}>
       <StackUpdatesList cloudResourceId={cloudResourceId} />
     </Drawer>
   );

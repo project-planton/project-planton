@@ -12,14 +12,14 @@ import (
 )
 
 const (
-	DockerImageName  = "satishlleftbin/project-planton"
-	DockerImageTag   = "latest"
-	ContainerName    = "project-planton-webapp"
-	MongoDBVolume    = "project-planton-mongodb-data"
-	PulumiVolume     = "project-planton-pulumi-state"
-	GoCacheVolume    = "project-planton-go-cache"
-	BackendPort      = "50051"
-	FrontendPort     = "3000"
+	DockerImageName   = "satishlleftbin/project-planton"
+	DockerImageTag    = "latest"
+	ContainerName     = "project-planton-webapp"
+	MongoDBVolume     = "project-planton-mongodb-data"
+	PulumiVolume      = "project-planton-pulumi-state"
+	GoCacheVolume     = "project-planton-go-cache"
+	BackendPort       = "50051"
+	FrontendPort      = "3000"
 	DefaultBackendURL = "http://localhost:50051"
 )
 
@@ -215,5 +215,3 @@ func configureBackendURL() error {
 
 	return root.SaveConfigPublic(config)
 }
-
-

@@ -30,19 +30,19 @@ func NewStackUpdateRepository(db *MongoDB) *StackUpdateRepository {
 }
 
 // Create inserts a new stack-update into MongoDB.
-func (r *StackUpdateRepository) Create(ctx context.Context, job *models.StackUpdate) (*models.StackUpdate, error) {
+func (r *StackUpdateRepository) Create(ctx context.Context, stackUpdate *models.StackUpdate) (*models.StackUpdate, error) {
 	now := time.Now()
-	job.ID = primitive.NewObjectID()
-	job.CreatedAt = now
-	job.UpdatedAt = now
+	stackUpdate.ID = primitive.NewObjectID()
+	stackUpdate.CreatedAt = now
+	stackUpdate.UpdatedAt = now
 
-	result, err := r.collection.InsertOne(ctx, job)
+	result, err := r.collection.InsertOne(ctx, stackUpdate)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert stack-update: %w", err)
 	}
 
-	job.ID = result.InsertedID.(primitive.ObjectID)
-	return job, nil
+	stackUpdate.ID = result.InsertedID.(primitive.ObjectID)
+	return stackUpdate, nil
 }
 
 // FindByID retrieves a stack-update by ID.
@@ -52,15 +52,15 @@ func (r *StackUpdateRepository) FindByID(ctx context.Context, id string) (*model
 		return nil, fmt.Errorf("invalid ID format: %w", err)
 	}
 
-	var job models.StackUpdate
-	err = r.collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&job)
+	var stackUpdate models.StackUpdate
+	err = r.collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&stackUpdate)
 	if err == mongo.ErrNoDocuments {
 		return nil, nil // Not found, but not an error
 	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to query stack-update by ID: %w", err)
 	}
-	return &job, nil
+	return &stackUpdate, nil
 }
 
 // FindByCloudResourceID retrieves stack-updates by cloud resource ID, sorted by created_at descending.
@@ -76,46 +76,46 @@ func (r *StackUpdateRepository) FindByCloudResourceID(ctx context.Context, cloud
 	}
 	defer cursor.Close(ctx)
 
-	var jobs []*models.StackUpdate
-	if err := cursor.All(ctx, &jobs); err != nil {
+	var stackUpdates []*models.StackUpdate
+	if err := cursor.All(ctx, &stackUpdates); err != nil {
 		return nil, fmt.Errorf("failed to decode stack-updates: %w", err)
 	}
 
-	return jobs, nil
+	return stackUpdates, nil
 }
 
 // Update updates an existing stack-update in MongoDB.
-func (r *StackUpdateRepository) Update(ctx context.Context, id string, job *models.StackUpdate) (*models.StackUpdate, error) {
+func (r *StackUpdateRepository) Update(ctx context.Context, id string, stackUpdate *models.StackUpdate) (*models.StackUpdate, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, fmt.Errorf("invalid ID format: %w", err)
 	}
 
-	job.ID = objectID
-	job.UpdatedAt = time.Now()
+	stackUpdate.ID = objectID
+	stackUpdate.UpdatedAt = time.Now()
 
 	update := bson.M{
 		"$set": bson.M{},
 	}
 
 	// Only update fields that are provided (non-empty for strings)
-	if job.Status != "" {
-		update["$set"].(bson.M)["status"] = job.Status
+	if stackUpdate.Status != "" {
+		update["$set"].(bson.M)["status"] = stackUpdate.Status
 	}
-	if job.Output != "" {
-		update["$set"].(bson.M)["output"] = job.Output
+	if stackUpdate.Output != "" {
+		update["$set"].(bson.M)["output"] = stackUpdate.Output
 	}
-	update["$set"].(bson.M)["updated_at"] = job.UpdatedAt
+	update["$set"].(bson.M)["updated_at"] = stackUpdate.UpdatedAt
 
 	opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
 
-	var updatedJob models.StackUpdate
+	var updatedStackUpdate models.StackUpdate
 	err = r.collection.FindOneAndUpdate(
 		ctx,
 		bson.M{"_id": objectID},
 		update,
 		opts,
-	).Decode(&updatedJob)
+	).Decode(&updatedStackUpdate)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -124,7 +124,7 @@ func (r *StackUpdateRepository) Update(ctx context.Context, id string, job *mode
 		return nil, fmt.Errorf("failed to update stack-update: %w", err)
 	}
 
-	return &updatedJob, nil
+	return &updatedStackUpdate, nil
 }
 
 // StackUpdateListOptions contains options for listing stack-updates.
@@ -171,12 +171,12 @@ func (r *StackUpdateRepository) List(ctx context.Context, opts *StackUpdateListO
 	}
 	defer cursor.Close(ctx)
 
-	var jobs []*models.StackUpdate
-	if err := cursor.All(ctx, &jobs); err != nil {
+	var stackUpdates []*models.StackUpdate
+	if err := cursor.All(ctx, &stackUpdates); err != nil {
 		return nil, fmt.Errorf("failed to decode stack-updates: %w", err)
 	}
 
-	return jobs, nil
+	return stackUpdates, nil
 }
 
 // Count returns the total count of stack-updates with optional filters.

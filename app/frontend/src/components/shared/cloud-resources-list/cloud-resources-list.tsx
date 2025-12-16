@@ -91,7 +91,7 @@ export function CloudResourcesList({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resourceToDelete, setResourceToDelete] = useState<CloudResource | null>(null);
 
-  // Stack jobs drawer state
+  // Stack updates drawer state
   const [stackUpdatesDrawerOpen, setStackUpdatesDrawerOpen] = useState(false);
   const [selectedResourceForStackUpdates, setSelectedResourceForStackUpdates] =
     useState<CloudResource | null>(null);
@@ -259,7 +259,7 @@ export function CloudResourcesList({
         isMenuAction: true,
       },
       {
-        text: 'Stack Jobs',
+        text: 'Stack Updates',
         handler: (row: CloudResource) => {
           handleOpenStackUpdates(row);
         },
@@ -406,7 +406,7 @@ export function CloudResourcesList({
         cancelLabel="Cancel"
       />
 
-      {/* Stack Jobs Drawer */}
+      {/* Stack Updates Drawer */}
       {selectedResourceForStackUpdates && (
         <StackUpdatesDrawer
           open={stackUpdatesDrawerOpen}

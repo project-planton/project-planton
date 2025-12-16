@@ -149,5 +149,3 @@ func cleanupConfig() error {
 
 	return root.SaveConfigPublic(config)
 }
-
-

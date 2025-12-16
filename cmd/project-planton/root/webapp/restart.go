@@ -52,5 +52,3 @@ func restartHandler(cmd *cobra.Command, args []string) {
 	fmt.Println()
 	printAccessInfo()
 }
-
-

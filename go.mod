@@ -1,6 +1,6 @@
 module github.com/project-planton/project-planton
 
-go 1.24.7
+go 1.25.0
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20251209175733-2a1774d88802.1
@@ -16,7 +16,6 @@ require (
 	github.com/onsi/ginkgo/v2 v2.23.3
 	github.com/onsi/gomega v1.37.0
 	github.com/pkg/errors v0.9.1
-	github.com/project-planton/project-planton/app/backend v0.0.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pulumi/pulumi-aws-native/sdk v1.14.0
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.83.2
@@ -44,6 +43,7 @@ require (
 	github.com/spf13/pflag v1.0.9
 	github.com/stretchr/testify v1.11.1
 	github.com/zclconf/go-cty v1.13.2
+	google.golang.org/grpc v1.72.1
 	google.golang.org/protobuf v1.36.10
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/api v0.31.3
@@ -161,7 +161,6 @@ require (
 	golang.org/x/tools v0.40.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250811230008-5f3141c8851a // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250811230008-5f3141c8851a // indirect
-	google.golang.org/grpc v1.72.1 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect

@@ -23,7 +23,7 @@ interface QueryType {
   ) => AsyncIterable<StreamStackUpdateOutputResponse>;
 }
 
-const RESOURCE_NAME = 'Stack Jobs';
+const RESOURCE_NAME = 'Stack Updates';
 
 export const useStackUpdateQuery = () => {
   const { setPageLoading, openSnackbar } = useContext(AppContext);
