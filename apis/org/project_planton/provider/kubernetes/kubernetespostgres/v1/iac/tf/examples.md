@@ -23,6 +23,7 @@ module "postgres_dev" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "dev-postgres"
+    create_namespace = true
     container = {
       replicas = 1
       disk_size = "10Gi"
@@ -71,6 +72,7 @@ module "postgres_production" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "prod-postgres"
+    create_namespace = true
     container = {
       replicas = 1
       disk_size = "50Gi"
@@ -118,6 +120,7 @@ module "postgres_analytics" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "analytics-db"
+    create_namespace = true
     container = {
       replicas = 1
       disk_size = "200Gi"
@@ -163,6 +166,7 @@ module "postgres_minimal" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "minimal-postgres"
+    create_namespace = true
     container = {
       replicas = 1
       disk_size = "5Gi"
@@ -209,6 +213,7 @@ module "postgres_public" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "public-postgres"
+    create_namespace = true
     container = {
       replicas = 1
       disk_size = "30Gi"
@@ -303,6 +308,7 @@ module "postgres_env" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "app-postgres"
+    create_namespace = true
     container = {
       replicas = 1
       disk_size = var.resource_tier[var.environment].disk_size

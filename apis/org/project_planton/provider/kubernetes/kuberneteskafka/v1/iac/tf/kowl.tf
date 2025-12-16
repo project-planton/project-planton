@@ -11,7 +11,7 @@ resource "kubernetes_manifest" "kowl_configmap" {
     kind       = "ConfigMap"
     metadata = {
       name      = "kowl"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     data = {
@@ -55,7 +55,7 @@ resource "kubernetes_manifest" "kowl_deployment" {
     kind       = "Deployment"
     metadata = {
       name      = "kowl"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels = merge(local.final_labels, {
         "app" = "kowl"
       })
@@ -156,7 +156,7 @@ resource "kubernetes_manifest" "kowl_service" {
     kind       = "Service"
     metadata = {
       name      = "kowl"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {
@@ -286,7 +286,7 @@ resource "kubernetes_manifest" "kowl_http_route" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "kowl"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {
@@ -310,7 +310,7 @@ resource "kubernetes_manifest" "kowl_http_route" {
           backendRefs = [
             {
               name = "kowl" # reference the Service name
-              namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+              namespace = local.namespace
               port      = 80
             }
           ]

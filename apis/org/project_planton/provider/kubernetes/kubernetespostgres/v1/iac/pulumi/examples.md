@@ -14,6 +14,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "postgres-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -43,6 +44,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "postgres-db"
+  create_namespace: true
   container:
     replicas: 2
     resources:
@@ -76,6 +78,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "secure-postgres-db"
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -109,6 +112,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "minimal-postgres-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -123,4 +127,35 @@ spec:
 
 ---
 
-These examples demonstrate varying configurations for deploying PostgreSQL on Kubernetes using the `PostgresKubernetes` API resource. Each example includes different use cases such as handling environment variables, secrets, basic deployment, and minimum configuration setups for flexibility.
+# Example with Existing Namespace
+
+This example shows how to deploy PostgreSQL into an existing namespace that is managed separately.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: PostgresKubernetes
+metadata:
+  name: shared-postgres-db
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "shared-database-namespace"
+  create_namespace: false  # Use existing namespace
+  container:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+    diskSize: 20Gi
+  ingress:
+    enabled: false
+```
+
+---
+
+These examples demonstrate varying configurations for deploying PostgreSQL on Kubernetes using the `PostgresKubernetes` API resource. Each example includes different use cases such as handling environment variables, secrets, basic deployment, minimum configuration setups, and namespace management options for flexibility.

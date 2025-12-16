@@ -20,7 +20,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "kubernetes-altinity-operator"  # Optional: defaults to "kubernetes-altinity-operator"
+  namespace        = "kubernetes-altinity-operator"  # Optional: defaults to "kubernetes-altinity-operator"
+  create_namespace = true  # Create the namespace (default)
   
   container = {
     resources = {
@@ -106,7 +107,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "kubernetes-altinity-operator-prod"
+  namespace        = "kubernetes-altinity-operator-prod"
+  create_namespace = true  # Create the namespace
   
   container = {
     resources = {
@@ -150,7 +152,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "kubernetes-altinity-operator-dev"
+  namespace        = "kubernetes-altinity-operator-dev"
+  create_namespace = true  # Create the namespace
   
   container = {
     resources = {
@@ -334,6 +337,173 @@ terraform destroy -var-file="production.tfvars"
 ```
 
 **Warning**: This will remove the operator but not the CRDs or any ClickHouse clusters managed by it.
+
+---
+
+## Namespace Management
+
+The operator can either create a new namespace or use an existing one, controlled by the `create_namespace` flag in the spec.
+
+### Create New Namespace (Default)
+
+By default (`create_namespace = true`), the operator creates a new namespace:
+
+```hcl
+spec = {
+  namespace        = "kubernetes-altinity-operator"
+  create_namespace = true  # Explicitly create namespace (default)
+  
+  container = {
+    resources = {
+      requests = {
+        cpu    = "100m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1000m"
+        memory = "1Gi"
+      }
+    }
+  }
+}
+```
+
+### Use Existing Namespace
+
+If the namespace already exists (created externally or by another Terraform resource), set `create_namespace = false`:
+
+```hcl
+spec = {
+  namespace        = "kubernetes-altinity-operator"
+  create_namespace = false  # Do not create, use existing namespace
+  
+  container = {
+    resources = {
+      requests = {
+        cpu    = "100m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1000m"
+        memory = "1Gi"
+      }
+    }
+  }
+}
+```
+
+### When to Use `create_namespace = false`
+
+Set `create_namespace = false` in these scenarios:
+
+- **External Namespace Management**: Namespace created by another Terraform module or external process
+- **Pre-configured Namespace**: Namespace has specific ResourceQuotas, LimitRanges, or NetworkPolicies
+- **Shared Namespace**: Multiple resources share the same namespace
+- **Security Policies**: Namespace creation is restricted by organizational policies
+- **Multi-tenant Environments**: Centralized namespace provisioning system
+
+### Example: Using with Existing Namespace
+
+First, create the namespace separately:
+
+```hcl
+resource "kubernetes_namespace" "altinity_operator" {
+  metadata {
+    name = "kubernetes-altinity-operator"
+    
+    labels = {
+      "pod-security.kubernetes.io/enforce" = "restricted"
+      "managed-by"                          = "terraform"
+    }
+  }
+}
+
+resource "kubernetes_resource_quota" "altinity_operator" {
+  metadata {
+    name      = "altinity-operator-quota"
+    namespace = kubernetes_namespace.altinity_operator.metadata[0].name
+  }
+  
+  spec {
+    hard = {
+      "requests.cpu"    = "10"
+      "requests.memory" = "20Gi"
+      "limits.cpu"      = "20"
+      "limits.memory"   = "40Gi"
+    }
+  }
+}
+```
+
+Then deploy the operator using the existing namespace:
+
+```hcl
+module "kubernetes_altinity_operator" {
+  source = "../"
+
+  metadata = {
+    name = "kubernetes-altinity-operator"
+  }
+  
+  spec = {
+    namespace        = kubernetes_namespace.altinity_operator.metadata[0].name
+    create_namespace = false  # Use namespace created above
+    
+    container = {
+      resources = {
+        requests = {
+          cpu    = "100m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1000m"
+          memory = "1Gi"
+        }
+      }
+    }
+  }
+  
+  depends_on = [kubernetes_resource_quota.altinity_operator]
+}
+```
+
+### Example: Using with Data Source
+
+If the namespace exists outside of Terraform:
+
+```hcl
+data "kubernetes_namespace" "existing" {
+  metadata {
+    name = "kubernetes-altinity-operator"
+  }
+}
+
+module "kubernetes_altinity_operator" {
+  source = "../"
+
+  metadata = {
+    name = "kubernetes-altinity-operator"
+  }
+  
+  spec = {
+    namespace        = data.kubernetes_namespace.existing.metadata[0].name
+    create_namespace = false  # Namespace already exists
+    
+    container = {
+      resources = {
+        requests = {
+          cpu    = "100m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1000m"
+          memory = "1Gi"
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 

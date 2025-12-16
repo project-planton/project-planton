@@ -27,6 +27,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   schedule: "0 0 * * *"
   image:
     repo: busybox
@@ -62,6 +63,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   schedule: "0 9 * * 1"
   image:
     repo: org/reports-generator
@@ -100,6 +102,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   schedule: "0 3 * * *"
   image:
     repo: org/maintenance-tool
@@ -138,6 +141,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   schedule: "*/30 * * * *"
   concurrencyPolicy: "Forbid"
   backoffLimit: 3
@@ -178,6 +182,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   # Run at 23:30 on the last day of each month
   schedule: "30 23 28-31 * *"
   # This ensures if a schedule is missed for over 2 hours, it won't run retroactively
@@ -208,6 +213,84 @@ spec:
 - **startingDeadlineSeconds**: If a job can’t start within 2 hours of its scheduled time, it’s skipped.
 - **suspend**: Set to `true` to stop scheduling new runs; set back to `false` to resume.
 - **concurrencyPolicy**: `"Replace"` cancels the currently running job and starts a new run if it’s time again.
+
+---
+
+## 6. Namespace Management
+
+The `create_namespace` field controls whether the CronJob creates a new namespace or uses an existing one.
+
+### Creating a New Namespace
+
+Set `create_namespace: true` to automatically create the namespace with the CronJob:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: isolated-job
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-cronjobs
+  create_namespace: true
+  schedule: "0 2 * * *"
+  image:
+    repo: busybox
+    tag: latest
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  env: {}
+```
+
+- **create_namespace: true**: The Pulumi module will create the namespace `my-cronjobs` if it doesn't exist.
+- **Use case**: Ideal when you want dedicated namespace isolation for this CronJob.
+
+### Using an Existing Namespace
+
+Set `create_namespace: false` to deploy into a pre-existing namespace:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: shared-job
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: shared-batch-jobs
+  create_namespace: false
+  schedule: "0 4 * * *"
+  image:
+    repo: busybox
+    tag: latest
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  env: {}
+```
+
+- **create_namespace: false**: The Pulumi module will reference the existing `shared-batch-jobs` namespace.
+- **Use case**: Ideal for multi-tenant scenarios where multiple CronJobs share a namespace.
+- **Important**: Ensure the namespace exists before deploying, or the deployment will fail.
+
+### Best Practices
+
+- **Isolated workloads**: Use `create_namespace: true` for dedicated, single-purpose CronJobs.
+- **Shared namespaces**: Use `create_namespace: false` when multiple CronJobs need to coexist in the same namespace.
+- **GitOps workflows**: Set `create_namespace: false` and manage namespaces separately for better lifecycle control.
+- **Development environments**: Use `create_namespace: true` for quick iterations and easy cleanup.
 
 ---
 

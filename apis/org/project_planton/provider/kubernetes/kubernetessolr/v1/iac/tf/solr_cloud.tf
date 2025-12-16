@@ -9,7 +9,7 @@ resource "kubernetes_manifest" "solr_cloud" {
 
       metadata = {
         name      = var.metadata.name
-        namespace = kubernetes_namespace.solr_namespace.metadata[0].name
+        namespace = local.namespace
         labels    = local.final_labels
       }
 

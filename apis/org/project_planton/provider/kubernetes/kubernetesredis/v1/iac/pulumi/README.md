@@ -9,6 +9,7 @@
 - **status**: Provides real-time updates and outputs from the deployed infrastructure, enhancing visibility and monitoring.
 
 ### Comprehensive Redis Configuration
+- **Namespace Management**: Control namespace creation through the `create_namespace` flag. When set to `true`, the module creates a dedicated namespace with proper labels. When `false`, it uses an existing namespace, allowing integration with pre-configured namespace policies and quotas.
 - **Replicas Management**: Specify the number of Redis pods to ensure high availability and load distribution.
 - **Resource Allocation**: Define CPU and memory resources for each Redis container to optimize performance and cost.
 - **Persistence Control**: Toggle data persistence to ensure data durability across pod restarts, with configurable disk sizes for persistent volumes.

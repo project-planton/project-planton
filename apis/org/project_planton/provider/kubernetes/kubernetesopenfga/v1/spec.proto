@@ -19,18 +19,21 @@ extend google.protobuf.FieldOptions {
  * external access, and backend storage options.
  */
 message KubernetesOpenFgaSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the component.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The container specifications for the OpenFGA deployment.
-  KubernetesOpenFgaContainer container = 3 [(default_container) = {
+  KubernetesOpenFgaContainer container = 4 [(default_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -47,13 +50,13 @@ message KubernetesOpenFgaSpec {
   /**
    * The ingress configuration for the OpenFGA deployment.
    */
-  KubernetesOpenFgaIngress ingress = 4;
+  KubernetesOpenFgaIngress ingress = 5;
 
   /**
    * The data store configuration for OpenFGA.
    * This specifies the backend database engine and connection details.
    */
-  KubernetesOpenFgaDataStore datastore = 5 [(buf.validate.field).required = true];
+  KubernetesOpenFgaDataStore datastore = 6 [(buf.validate.field).required = true];
 }
 
 /**

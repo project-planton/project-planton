@@ -11,17 +11,13 @@ resource "kubernetes_secret" "this" {
   metadata {
     # Secret name is "main" - referenced by cron_job.tf
     name      = "main"
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace_name
     labels    = local.final_labels
   }
 
   type = "Opaque"
 
-  # `stringData` automatically converts each map value into a string,
+  # `data` automatically converts each map value into a string,
   # then Kubernetes encodes it as base64 in the final secret.
-  string_data = try(var.spec.env.secrets, {})
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
+  data = try(var.spec.env.secrets, {})
 }

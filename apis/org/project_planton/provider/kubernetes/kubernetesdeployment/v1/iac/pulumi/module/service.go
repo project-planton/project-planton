@@ -27,20 +27,32 @@ func service(ctx *pulumi.Context, locals *Locals,
 		})
 	}
 
-	_, err := kubernetescorev1.NewService(ctx,
-		locals.KubernetesDeployment.Spec.Version,
-		&kubernetescorev1.ServiceArgs{
-			Metadata: kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesDeployment.Spec.Version),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Spec: &kubernetescorev1.ServiceSpecArgs{
-				Type:     pulumi.String("ClusterIP"),
-				Selector: pulumi.ToStringMap(locals.SelectorLabels),
-				Ports:    portsArray,
-			},
-		}, pulumi.Parent(createdNamespace), pulumi.DependsOn([]pulumi.Resource{createdDeployment}))
+	serviceArgs := &kubernetescorev1.ServiceArgs{
+		Metadata: kubernetesmetav1.ObjectMetaArgs{
+			Name:      pulumi.String(locals.KubernetesDeployment.Spec.Version),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Spec: &kubernetescorev1.ServiceSpecArgs{
+			Type:     pulumi.String("ClusterIP"),
+			Selector: pulumi.ToStringMap(locals.SelectorLabels),
+			Ports:    portsArray,
+		},
+	}
+
+	var err error
+	if createdNamespace != nil {
+		_, err = kubernetescorev1.NewService(ctx,
+			locals.KubernetesDeployment.Spec.Version,
+			serviceArgs,
+			pulumi.Parent(createdNamespace),
+			pulumi.DependsOn([]pulumi.Resource{createdDeployment}))
+	} else {
+		_, err = kubernetescorev1.NewService(ctx,
+			locals.KubernetesDeployment.Spec.Version,
+			serviceArgs,
+			pulumi.DependsOn([]pulumi.Resource{createdDeployment}))
+	}
 	if err != nil {
 		return errors.Wrap(err, "failed to add service")
 	}

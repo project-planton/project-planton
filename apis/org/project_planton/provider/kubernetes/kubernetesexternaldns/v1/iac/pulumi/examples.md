@@ -34,6 +34,7 @@ func main() {
 							Value: "prod-gke-cluster",
 						},
 					},
+					CreateNamespace: true,  // Module will create the namespace
 					ProviderConfig: &kubernetesexternaldnsv1.KubernetesExternalDnsSpec_Gke{
 						Gke: &kubernetesexternaldnsv1.KubernetesExternalDnsGkeConfig{
 							ProjectId: &v1.StringValueOrRef{
@@ -85,6 +86,7 @@ func main() {
 							Value: "prod-eks-cluster",
 						},
 					},
+					CreateNamespace: true,  // Module will create the namespace
 					ProviderConfig: &kubernetesexternaldnsv1.KubernetesExternalDnsSpec_Eks{
 						Eks: &kubernetesexternaldnsv1.KubernetesExternalDnsEksConfig{
 							Route53ZoneId: &v1.StringValueOrRef{

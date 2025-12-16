@@ -16,7 +16,8 @@ module "mongodb_basic" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "basic-mongodb"
+    namespace        = "basic-mongodb"
+    create_namespace = true
 
     container = {
       replicas = 1
@@ -60,7 +61,8 @@ module "mongodb_persistent" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "persistent-mongodb"
+    namespace        = "persistent-mongodb"
+    create_namespace = true
 
     container = {
       replicas = 3
@@ -102,7 +104,8 @@ module "mongodb_with_ingress" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "ingress-mongodb"
+    namespace        = "ingress-mongodb"
+    create_namespace = true
 
     container = {
       replicas = 1
@@ -151,7 +154,8 @@ module "mongodb_production" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "production-mongodb"
+    namespace        = "production-mongodb"
+    create_namespace = true
 
     container = {
       replicas = 3
@@ -223,7 +227,8 @@ module "mongodb_dev" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "dev-mongodb"
+    namespace        = "dev-mongodb"
+    create_namespace = true
 
     container = {
       replicas = 1
@@ -265,7 +270,8 @@ module "mongodb_custom" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "custom-mongodb"
+    namespace        = "custom-mongodb"
+    create_namespace = true
 
     container = {
       replicas = 2
@@ -347,6 +353,53 @@ The password is stored in a Kubernetes secret:
 kubectl get secret <password_secret_name> -n <namespace> -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_PASSWORD}' | base64 -d
 ```
 
+## Example 7: Using Existing Namespace
+
+This example demonstrates using an existing namespace instead of creating a new one:
+
+```hcl
+module "mongodb_existing_ns" {
+  source = "./path/to/kubernetesmongodb/v1/iac/tf"
+
+  metadata = {
+    name = "existing-ns-mongodb"
+  }
+
+  spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace        = "existing-mongodb-namespace"
+    create_namespace = false
+
+    container = {
+      replicas = 3
+
+      resources = {
+        requests = {
+          cpu    = "200m"
+          memory = "512Mi"
+        }
+        limits = {
+          cpu    = "1000m"
+          memory = "2Gi"
+        }
+      }
+
+      persistence_enabled = true
+      disk_size          = "20Gi"
+    }
+
+    ingress = {
+      enabled  = false
+      hostname = ""
+    }
+  }
+}
+```
+
+**Note:** When `create_namespace = false`, the namespace must already exist before applying this module.
+
 ## Notes
 
 - The deployment uses the Percona Server for MongoDB Operator for production-grade database management
@@ -354,4 +407,5 @@ kubectl get secret <password_secret_name> -n <namespace> -o jsonpath='{.data.MON
 - For production deployments, it's recommended to use at least 3 replicas for high availability
 - Persistence should be enabled for production workloads to ensure data durability
 - The `unsafeFlags.replsetSize` option allows using fewer than 3 replicas for development/testing
+- Use `create_namespace = false` when deploying to namespaces with pre-configured policies, quotas, or RBAC
 

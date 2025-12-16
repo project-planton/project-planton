@@ -81,22 +81,24 @@ func (KubernetesNatsAuthScheme) EnumDescriptor() ([]byte, []int) {
 // NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
 type KubernetesNatsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// server container settings (replicas, resources, disk).
-	ServerContainer *KubernetesNatsServerContainer `protobuf:"bytes,3,opt,name=server_container,json=serverContainer,proto3" json:"server_container,omitempty"`
+	ServerContainer *KubernetesNatsServerContainer `protobuf:"bytes,4,opt,name=server_container,json=serverContainer,proto3" json:"server_container,omitempty"`
 	// disable jet-stream persistence
-	DisableJetStream bool `protobuf:"varint,4,opt,name=disable_jet_stream,json=disableJetStream,proto3" json:"disable_jet_stream,omitempty"`
+	DisableJetStream bool `protobuf:"varint,5,opt,name=disable_jet_stream,json=disableJetStream,proto3" json:"disable_jet_stream,omitempty"`
 	// authentication settings for the nats cluster.
-	Auth *KubernetesNatsAuth `protobuf:"bytes,5,opt,name=auth,proto3" json:"auth,omitempty"`
+	Auth *KubernetesNatsAuth `protobuf:"bytes,6,opt,name=auth,proto3" json:"auth,omitempty"`
 	// tls settings for the nats cluster.
-	TlsEnabled bool `protobuf:"varint,6,opt,name=tls_enabled,json=tlsEnabled,proto3" json:"tls_enabled,omitempty"`
+	TlsEnabled bool `protobuf:"varint,7,opt,name=tls_enabled,json=tlsEnabled,proto3" json:"tls_enabled,omitempty"`
 	// optional ingress configuration for external access.
-	Ingress *KubernetesNatsIngress `protobuf:"bytes,7,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesNatsIngress `protobuf:"bytes,8,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// toggle to deploy the nats-box utility pod.
-	DisableNatsBox bool `protobuf:"varint,8,opt,name=disable_nats_box,json=disableNatsBox,proto3" json:"disable_nats_box,omitempty"`
+	DisableNatsBox bool `protobuf:"varint,9,opt,name=disable_nats_box,json=disableNatsBox,proto3" json:"disable_nats_box,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -143,6 +145,13 @@ func (x *KubernetesNatsSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesNatsSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesNatsSpec) GetServerContainer() *KubernetesNatsServerContainer {
@@ -450,20 +459,21 @@ var File_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetesnats/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetesnats.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xef\x05\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetesnats/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetesnats.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x9a\x06\n" +
 	"\x12KubernetesNatsSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xb1\x01\n" +
-	"\x10server_container\x18\x03 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xb1\x01\n" +
+	"\x10server_container\x18\x04 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04100m\x12\x05256Mi\x1a\x0410GiR\x0fserverContainer\x12,\n" +
-	"\x12disable_jet_stream\x18\x04 \x01(\bR\x10disableJetStream\x12a\n" +
-	"\x04auth\x18\x05 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthR\x04auth\x12\x1f\n" +
-	"\vtls_enabled\x18\x06 \x01(\bR\n" +
+	"\x12disable_jet_stream\x18\x05 \x01(\bR\x10disableJetStream\x12a\n" +
+	"\x04auth\x18\x06 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsAuthR\x04auth\x12\x1f\n" +
+	"\vtls_enabled\x18\a \x01(\bR\n" +
 	"tlsEnabled\x12j\n" +
-	"\aingress\x18\a \x01(\v2P.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngressR\aingress\x12(\n" +
-	"\x10disable_nats_box\x18\b \x01(\bR\x0edisableNatsBox\"\xcb\x01\n" +
+	"\aingress\x18\b \x01(\v2P.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsIngressR\aingress\x12(\n" +
+	"\x10disable_nats_box\x18\t \x01(\bR\x0edisableNatsBox\"\xcb\x01\n" +
 	"\x1dKubernetesNatsServerContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\breplicas\x12Y\n" +
 	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12*\n" +

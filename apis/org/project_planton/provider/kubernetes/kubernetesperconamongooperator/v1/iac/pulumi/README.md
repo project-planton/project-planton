@@ -11,7 +11,7 @@
 ### Comprehensive Operator Configuration
 - **Resource Allocation**: Define CPU and memory resources for the operator pod to optimize performance and cost.
 - **Automated CRD Installation**: Automatically installs MongoDB CRDs required for cluster management.
-- **Namespace Management**: Creates a dedicated `percona-operator` namespace for clean resource isolation.
+- **Flexible Namespace Management**: Optionally creates a new namespace or uses an existing one based on the `create_namespace` flag.
 - **Helm-Based Deployment**: Leverages the official Percona Helm chart for reliable, version-controlled deployments.
 
 ### Seamless Kubernetes Integration
@@ -45,7 +45,7 @@ Refer to the examples section for detailed usage instructions.
 
 ### Components
 
-1. **Namespace Creation**: Creates the `percona-operator` namespace with proper labels
+1. **Namespace Creation**: Conditionally creates the namespace based on the `create_namespace` flag. If `false`, uses the specified existing namespace.
 2. **Helm Release**: Deploys the operator using the official Percona Helm chart
 3. **Resource Configuration**: Applies resource limits and requests from the spec
 4. **Output Capture**: Exports the namespace to stack outputs for reference
@@ -64,7 +64,8 @@ Refer to the examples section for detailed usage instructions.
 Defines the desired state of the operator deployment.
 
 - **target_cluster**: Target Kubernetes cluster configuration with credential reference
-- **namespace**: Optional namespace (defaults to "percona-operator")
+- **namespace**: Kubernetes namespace for the operator (required)
+- **create_namespace**: Whether to create the namespace (default: true). Set to false to use an existing namespace.
 - **container**: Container resource specifications for the operator pod
 
 ### KubernetesPerconaMongoOperatorSpecContainer

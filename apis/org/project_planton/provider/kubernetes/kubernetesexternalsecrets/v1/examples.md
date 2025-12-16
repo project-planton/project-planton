@@ -96,7 +96,112 @@ spec:
 
 ---
 
-## Example 3: EKS with AWS Secrets Manager (Auto-Created IRSA Role)
+## Example 3: Using Existing Namespace
+
+Deploy External Secrets to an existing namespace managed separately.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesExternalSecrets
+metadata:
+  name: external-secrets-existing-ns
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: platform-services  # Must already exist
+  create_namespace: false  # Use existing namespace
+  
+  poll_interval_seconds: 30
+  
+  container:
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+  
+  gke:
+    project_id:
+      value: my-gcp-project
+    gsa_email: external-secrets@my-gcp-project.iam.gserviceaccount.com
+```
+
+**Use case:**
+- Namespace `platform-services` is managed by platform team
+- Multiple platform components share the same namespace
+- Namespace has specific labels, quotas, or network policies
+- GitOps workflow where namespace is created separately
+
+**Prerequisites:**
+- Namespace must exist before deploying this component
+- You have permissions to create resources in that namespace
+
+**Important:** If the namespace doesn't exist, deployment will fail with "namespace not found" error.
+
+---
+
+## Example 4: Shared Namespace with Multiple Components
+
+Deploy External Secrets alongside other platform components in a shared namespace.
+
+```yaml
+# First, create the namespace (via separate manifest or KubernetesNamespace component)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform-infrastructure
+  labels:
+    managed-by: platform-team
+    environment: production
+
+---
+# Deploy External Secrets to the shared namespace
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesExternalSecrets
+metadata:
+  name: eso-shared-platform
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: platform-infrastructure
+  create_namespace: false  # Namespace already created above
+  
+  poll_interval_seconds: 60
+  
+  container:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 25m
+        memory: 64Mi
+  
+  gke:
+    project_id:
+      value: my-gcp-project
+    gsa_email: external-secrets@my-gcp-project.iam.gserviceaccount.com
+```
+
+**Benefits:**
+- Consolidate multiple platform components in one namespace
+- Easier resource management and monitoring
+- Shared quotas and RBAC policies
+- Reduced namespace sprawl
+
+**Pattern:**
+1. Create namespace with appropriate labels and policies
+2. Deploy External Secrets with `create_namespace: false`
+3. Deploy other platform components to the same namespace
+4. All components share the namespace lifecycle
+
+---
+
+## Example 5: EKS with AWS Secrets Manager (Auto-Created IRSA Role)
 
 Deploy ESO on Amazon EKS with automatic IRSA role creation.
 
@@ -155,7 +260,7 @@ spec:
 
 ---
 
-## Example 4: EKS with Custom IRSA Role
+## Example 6: EKS with Custom IRSA Role
 
 Provide your own IAM role ARN for fine-grained secret access.
 
@@ -214,7 +319,7 @@ spec:
 
 ---
 
-## Example 5: AKS with Azure Key Vault
+## Example 7: AKS with Azure Key Vault
 
 Deploy ESO on Azure Kubernetes Service using Azure Workload Identity.
 
@@ -279,7 +384,7 @@ az identity federated-credential create \
 
 ---
 
-## Example 6: Cost-Optimized Configuration (Hourly Polling)
+## Example 8: Cost-Optimized Configuration (Hourly Polling)
 
 Balance secret freshness with cloud API costs using longer poll intervals.
 
@@ -333,7 +438,7 @@ spec:
 
 ---
 
-## Example 7: High-Frequency Polling for Dynamic Secrets
+## Example 9: High-Frequency Polling for Dynamic Secrets
 
 Fast polling for short-lived credentials.
 
@@ -374,7 +479,7 @@ spec:
 
 ---
 
-## Example 8: Resource-Constrained Environment
+## Example 10: Resource-Constrained Environment
 
 Minimal resource footprint for dev/staging clusters.
 
@@ -419,7 +524,7 @@ spec:
 
 ---
 
-## Example 9: Production High-Availability Setup
+## Example 11: Production High-Availability Setup
 
 Production-ready configuration with optimal resources.
 
@@ -466,7 +571,7 @@ spec:
 
 ---
 
-## Example 10: Multi-Region AWS Setup
+## Example 12: Multi-Region AWS Setup
 
 ESO deployment that can access secrets from multiple AWS regions.
 

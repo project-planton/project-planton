@@ -21,15 +21,18 @@ extend google.protobuf.FieldOptions {
  * with features like automated upgrades, scaling, and ZooKeeper coordination.
  */
 message KubernetesClickHouseSpec {
-  // The Kubernetes cluster to install ClickHouse on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install ClickHouse.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
+
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
 
   /**
    * The name of the ClickHouse cluster.
@@ -37,10 +40,10 @@ message KubernetesClickHouseSpec {
    * Must be a valid DNS subdomain name (lowercase alphanumeric with hyphens).
    * Defaults to the resource metadata name if not specified.
    */
-  string cluster_name = 3 [(buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"];
+  string cluster_name = 4 [(buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"];
 
   // The container specifications for the ClickHouse deployment.
-  KubernetesClickHouseContainer container = 4 [(default_container) = {
+  KubernetesClickHouseContainer container = 5 [(default_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -57,17 +60,17 @@ message KubernetesClickHouseSpec {
   }];
 
   // The ingress configuration for the ClickHouse deployment.
-  KubernetesClickHouseIngress ingress = 5;
+  KubernetesClickHouseIngress ingress = 6;
 
   // The cluster configuration for ClickHouse sharding and replication.
-  KubernetesClickHouseClusterConfig cluster = 6;
+  KubernetesClickHouseClusterConfig cluster = 7;
 
   /**
    * The ClickHouse version to deploy (e.g., "24.3", "23.8").
    * If not specified, the operator's default stable version will be used.
    * It's recommended to specify a version for production deployments to ensure consistency.
    */
-  string version = 7;
+  string version = 8;
 
   /**
    * Coordination configuration for cluster operations.
@@ -78,7 +81,7 @@ message KubernetesClickHouseSpec {
    *
    * Advanced: Configure external Keeper or ZooKeeper for shared infrastructure scenarios.
    */
-  KubernetesClickHouseCoordinationConfig coordination = 8;
+  KubernetesClickHouseCoordinationConfig coordination = 9;
 
   /**
    * ZooKeeper configuration for cluster coordination.
@@ -88,7 +91,7 @@ message KubernetesClickHouseSpec {
    *
    * If both 'coordination' and 'zookeeper' are specified, 'coordination' takes precedence.
    */
-  KubernetesClickHouseZookeeperConfig zookeeper = 9 [deprecated = true];
+  KubernetesClickHouseZookeeperConfig zookeeper = 10 [deprecated = true];
 
   /**
    * Logging configuration for ClickHouse server.
@@ -97,7 +100,7 @@ message KubernetesClickHouseSpec {
    * Required field. Defaults to 'information' level (recommended for production).
    * Use 'debug' or 'trace' levels only for troubleshooting as they generate significant log volume.
    */
-  KubernetesClickHouseLoggingConfig logging = 10 [(buf.validate.field).required = true];
+  KubernetesClickHouseLoggingConfig logging = 11 [(buf.validate.field).required = true];
 }
 
 /**

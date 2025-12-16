@@ -6,23 +6,34 @@ kind: ElasticsearchKubernetes
 metadata:
   name: logging-cluster
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: logging
+  create_namespace: true
   elasticsearch:
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 1000m
-        memory: 2Gi
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      persistence_enabled: true
+      disk_size: 10Gi
   kibana:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
+    enabled: true
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
 ```
 
 ---
@@ -35,9 +46,14 @@ kind: ElasticsearchKubernetes
 metadata:
   name: search-service
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: search
+  create_namespace: true
   elasticsearch:
     container:
+      replicas: 3
       resources:
         requests:
           cpu: 1
@@ -45,12 +61,15 @@ spec:
         limits:
           cpu: 2
           memory: 4Gi
+      persistence_enabled: true
+      disk_size: 50Gi
     ingress:
       enabled: true
       hostname: search.example.com
   kibana:
     enabled: true
     container:
+      replicas: 1
       resources:
         requests:
           cpu: 200m
@@ -65,7 +84,7 @@ spec:
 
 ---
 
-# Example 3: Elasticsearch Deployment with Environment Variables
+# Example 3: Elasticsearch with Multiple Replicas
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -73,32 +92,39 @@ kind: ElasticsearchKubernetes
 metadata:
   name: logging-app
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: logging-app
+  create_namespace: true
   elasticsearch:
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-    env:
-      variables:
-        ELASTIC_PASSWORD: secret-password
-        NODE_NAME: "node-1"
+    container:
+      replicas: 5
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      persistence_enabled: true
+      disk_size: 20Gi
   kibana:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
+    enabled: true
+    container:
+      replicas: 2
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
 ```
 
 ---
 
-# Example 4: Minimal Elasticsearch Deployment (Empty Spec)
+# Example 4: Minimal Elasticsearch Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -106,5 +132,55 @@ kind: ElasticsearchKubernetes
 metadata:
   name: minimal-elasticsearch
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: minimal-es
+  create_namespace: true
+  elasticsearch:
+    container:
+      replicas: 1
+      persistence_enabled: false
+  kibana:
+    enabled: false
+```
+
+---
+
+# Example 5: Using Existing Namespace (create_namespace: false)
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ElasticsearchKubernetes
+metadata:
+  name: shared-elasticsearch
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false
+  elasticsearch:
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      persistence_enabled: true
+      disk_size: 10Gi
+  kibana:
+    enabled: true
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
 ```

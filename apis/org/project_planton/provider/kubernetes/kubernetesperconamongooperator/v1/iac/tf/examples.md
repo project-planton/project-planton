@@ -20,7 +20,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "percona-operator"  # Optional: defaults to "percona-operator"
+  namespace        = "percona-operator"  # Optional: defaults to "percona-operator"
+  create_namespace = true
   
   container = {
     resources = {
@@ -106,7 +107,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "percona-operator-prod"
+  namespace        = "percona-operator-prod"
+  create_namespace = true
   
   container = {
     resources = {
@@ -150,7 +152,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "percona-operator-dev"
+  namespace        = "percona-operator-dev"
+  create_namespace = true
   
   container = {
     resources = {
@@ -215,7 +218,75 @@ terraform apply -var-file="prod.tfvars"
 
 ---
 
-## Example 5: With Remote State
+## Example 5: Using Existing Namespace
+
+### Description
+
+Deploy the operator to an existing namespace managed separately (e.g., via separate Terraform resources or GitOps).
+
+### Prerequisites
+
+Create the namespace first:
+
+```bash
+kubectl create namespace shared-operators
+```
+
+Or define it in Terraform:
+
+```hcl
+resource "kubernetes_namespace" "shared_operators" {
+  metadata {
+    name = "shared-operators"
+    labels = {
+      managed-by = "terraform"
+      purpose    = "shared-services"
+    }
+  }
+}
+```
+
+### Configuration
+
+#### `existing-namespace.tfvars`
+
+```hcl
+metadata = {
+  name = "percona-operator-shared"
+}
+
+spec = {
+  namespace        = "shared-operators"
+  create_namespace = false  # Use existing namespace
+  
+  container = {
+    resources = {
+      requests = {
+        cpu    = "100m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1000m"
+        memory = "1Gi"
+      }
+    }
+  }
+}
+```
+
+### Deploy
+
+```bash
+terraform init
+terraform plan -var-file="existing-namespace.tfvars"
+terraform apply -var-file="existing-namespace.tfvars"
+```
+
+**Important**: Ensure the namespace `shared-operators` exists before applying.
+
+---
+
+## Example 6: With Remote State
 
 ### Description
 
@@ -246,7 +317,7 @@ terraform apply -var-file="production.tfvars"
 
 ---
 
-## Example 6: With Outputs for Integration
+## Example 7: With Outputs for Integration
 
 ### Description
 
@@ -376,6 +447,7 @@ inputs = {
   }
   
   spec = {
+    create_namespace = true
     container = {
       resources = {
         requests = {

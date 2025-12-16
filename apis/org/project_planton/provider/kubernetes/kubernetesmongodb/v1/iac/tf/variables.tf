@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install the component
     namespace = string
 
+    # flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The specifications for the MongoDB container deployment.
     container = object({
 

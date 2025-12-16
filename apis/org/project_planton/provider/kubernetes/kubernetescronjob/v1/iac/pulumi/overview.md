@@ -35,6 +35,12 @@ Key highlights of this module include:
   A standardized labeling strategy (e.g., `resource`, `resource_kind`) and alignment with the `metadata` fields ensure
   clear resource identification and traceability. This unifies deployments across various environments and teams.
 
+- **Flexible Namespace Management**  
+  Control whether the module creates a new namespace or references an existing one via the `create_namespace` flag. When
+  set to `true`, the module creates and manages the namespace with appropriate labels. When set to `false`, it references
+  an existing namespace, enabling multi-tenant scenarios where multiple CronJobs share a namespace or GitOps workflows
+  where namespace lifecycle is managed separately. This flexibility supports both isolated and shared deployment patterns.
+
 Overall, the **CronJobKubernetes** Pulumi module provides a robust, opinionated foundation for running scheduled jobs on
 Kubernetes. By codifying best practices and reducing boilerplate, it empowers you to focus on application logic rather
 than low-level infrastructure details. With minimal configuration, you can confidently provision CronJobs, integrate

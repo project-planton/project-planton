@@ -98,12 +98,17 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 	}
 
 	// HTTPRoute for HTTP endpoint (routes to OTEL Collector HTTP port 4318)
+	httpRouteOpts := []pulumi.ResourceOption{}
+	if createdNamespace != nil {
+		httpRouteOpts = append(httpRouteOpts, pulumi.Parent(createdNamespace))
+	}
+
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"https-otel-http",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-otel-http"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -129,14 +134,14 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								// Route to OTEL Collector HTTP port (4318)
 								Name:      pulumi.Sprintf("%s-otel-collector", locals.KubernetesSignoz.Metadata.Name),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(vars.OtelHttpPort),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, httpRouteOpts...)
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTPRoute for OTEL Collector HTTP endpoint")
 	}

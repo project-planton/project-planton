@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install the operator.
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The container specifications for the Neo4j deployment.
     container = object({
 
@@ -46,6 +49,24 @@ variable "spec" {
           memory = string
         })
       })
+
+      # Flag to enable or disable data persistence
+      persistence_enabled = optional(bool, false)
+
+      # Size of the persistent volume if persistence is enabled
+      disk_size = optional(string, "1Gi")
+    })
+
+    # Optional memory configuration for Neo4j
+    memory_config = optional(object({
+      # Maximum Java heap size
+      heap_max = optional(string, "")
+
+      # Page cache size for on-disk data
+      page_cache = optional(string, "")
+    }), {
+      heap_max   = ""
+      page_cache = ""
     })
 
     # The ingress configuration for the Neo4j deployment.

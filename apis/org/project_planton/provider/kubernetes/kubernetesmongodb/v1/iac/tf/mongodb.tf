@@ -24,17 +24,13 @@ resource "random_password" "mongodb_root_password" {
 resource "kubernetes_secret_v1" "mongodb_password" {
   metadata {
     name      = var.metadata.name
-    namespace = kubernetes_namespace_v1.mongodb_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
   }
 
   data = {
     "MONGODB_DATABASE_ADMIN_PASSWORD" = base64encode(random_password.mongodb_root_password.result)
   }
-
-  depends_on = [
-    kubernetes_namespace_v1.mongodb_namespace
-  ]
 }
 
 # Create PerconaServerMongoDB custom resource using the Percona operator
@@ -45,7 +41,7 @@ resource "kubernetes_manifest" "percona_server_mongodb" {
 
     metadata = {
       name      = var.metadata.name
-      namespace = kubernetes_namespace_v1.mongodb_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
 
@@ -100,7 +96,6 @@ resource "kubernetes_manifest" "percona_server_mongodb" {
   }
 
   depends_on = [
-    kubernetes_namespace_v1.mongodb_namespace,
     kubernetes_secret_v1.mongodb_password
   ]
 }
@@ -111,7 +106,7 @@ resource "kubernetes_service_v1" "mongodb_external_lb" {
 
   metadata {
     name      = "ingress-external-lb"
-    namespace = kubernetes_namespace_v1.mongodb_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
 
     annotations = {

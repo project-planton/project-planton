@@ -22,6 +22,19 @@ Deploying microservices to Kubernetes can be a complex task involving numerous c
 - **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 - **Docker Credential ID**: Provide credentials for pulling container images from private Docker registries, ensuring secure and efficient image retrieval.
 
+### Namespace Management
+
+- **Namespace Configuration**: Specify the Kubernetes namespace where the microservice will be deployed.
+- **Namespace Creation Control**: Use the `create_namespace` flag to control whether the module should create the namespace or use an existing one:
+  - **`create_namespace: true`** (default): The module creates the namespace with appropriate labels. Use this for new deployments or when you want the module to fully manage the namespace lifecycle.
+  - **`create_namespace: false`**: The module uses an existing namespace without creating it. Use this when:
+    - The namespace already exists in the cluster
+    - Multiple deployments share the same namespace
+    - Namespaces are managed centrally by cluster administrators
+    - Using GitOps workflows where namespaces are managed separately
+
+  **Important**: When `create_namespace: false`, you must ensure the namespace exists before deploying, otherwise the deployment will fail.
+
 ### Version Control
 
 - **Version Specification**: Deploy specific versions of microservices, such as the main branch or a particular merge request (`review-<id>`), facilitating controlled rollouts and testing.

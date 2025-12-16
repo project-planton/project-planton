@@ -1,12 +1,26 @@
+# Kubernetes GitLab Examples
+
+## Namespace Management
+
+All examples below demonstrate namespace management using the `create_namespace` flag:
+- When `create_namespace: true` (default), the module creates the namespace automatically
+- When `create_namespace: false`, you must create the namespace beforehand
+
+---
+
 # Example 1: Basic GitLab Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: gitlab-instance
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-instance
+  create_namespace: true
   container:
     resources:
       requests:
@@ -23,11 +37,15 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: gitlab-production
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: gitlab-production
+  create_namespace: true
   container:
     resources:
       requests:
@@ -47,11 +65,15 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: gitlab-custom
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-custom
+  create_namespace: true
   container:
     resources:
       requests:
@@ -64,21 +86,23 @@ spec:
 
 ---
 
-# Example 4: GitLab with Environment Variables
+# Example 4: GitLab Using Existing Namespace
+
+This example demonstrates deploying GitLab into a pre-existing namespace.
+The namespace must be created before applying this configuration.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
-  name: gitlab-env-vars
+  name: gitlab-shared
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false  # Namespace must already exist
   container:
-    env:
-      variables:
-        GITLAB_OMNIBUS_CONFIG: |
-          external_url 'http://gitlab.example.com'
-          gitlab_rails['gitlab_shell_ssh_port'] = 2222
     resources:
       requests:
         cpu: 250m
@@ -90,13 +114,25 @@ spec:
 
 ---
 
-# Example 5: Minimal GitLab Deployment (Empty Spec)
+# Example 5: Minimal GitLab Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: minimal-gitlab
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: minimal-gitlab
+  create_namespace: true
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
 ```

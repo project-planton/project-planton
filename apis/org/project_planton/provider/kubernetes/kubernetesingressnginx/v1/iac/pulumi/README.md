@@ -30,8 +30,10 @@ The module provides a simplified interface for deploying ingress controllers wit
    - Watches ingresses without explicit class
 
 4. **Namespace Management**
-   - Creates dedicated namespace `kubernetes-ingress-nginx`
-   - Applies resource labels for organization
+   - **Flexible namespace control**: Create new or use existing namespaces
+   - **User-specified names**: Configure custom namespace names
+   - **Label propagation**: Applies resource labels for organization
+   - **RBAC integration**: Works with existing namespace policies
 
 ## Module Structure
 
@@ -49,6 +51,7 @@ import (
     kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -56,13 +59,17 @@ import (
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         ingressSpec := &kubernetesingressnginxv1.KubernetesIngressNginxSpec{
-            TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-                CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-                    KubernetesCredentialId: "my-cluster-credential",
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "my-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "ingress-nginx",
                 },
             },
-            ChartVersion: "4.11.1",
-            Internal:     false,
+            CreateNamespace: true,
+            ChartVersion:    "4.11.1",
+            Internal:        false,
         }
 
         ingress := &kubernetesingressnginxv1.KubernetesIngressNginx{

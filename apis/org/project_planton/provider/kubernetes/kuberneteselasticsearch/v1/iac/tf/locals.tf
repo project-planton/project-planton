@@ -39,6 +39,9 @@ locals {
     : local.resource_id
   )
 
+  # Namespace name - either from created resource or from spec
+  namespace_name = var.spec.create_namespace ? kubernetes_namespace.elasticsearch_namespace[0].metadata[0].name : local.namespace
+
   # Service names and endpoints
   elasticsearch_kube_service_name = "${var.metadata.name}-es-http"
   elasticsearch_kube_service_fqdn = "${local.elasticsearch_kube_service_name}.${local.namespace}.svc.cluster.local"

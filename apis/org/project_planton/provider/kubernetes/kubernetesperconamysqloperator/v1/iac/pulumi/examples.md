@@ -26,9 +26,11 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-default
 spec:
-  targetCluster:
-    credentialId: my-k8s-cluster
-  namespace: percona-mysql-operator  # Optional: defaults to "percona-mysql-operator"
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: percona-mysql-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -76,9 +78,11 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-large
 spec:
-  targetCluster:
-    credentialId: production-k8s-cluster
-  namespace: percona-mysql-operator-prod  # Custom namespace for production
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: percona-mysql-operator-prod
+  create_namespace: true
   container:
     resources:
       requests:
@@ -113,9 +117,11 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-dev
 spec:
-  targetCluster:
-    credentialId: dev-k8s-cluster
-  namespace: percona-mysql-operator-dev
+  target_cluster:
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: percona-mysql-operator-dev
+  create_namespace: true
   container:
     resources:
       requests:
@@ -134,7 +140,60 @@ planton pulumi up --manifest percona-mysql-operator-dev.yaml
 
 ---
 
-## Example 4: Update Operator Resources
+## Example 4: Deploy Using Existing Namespace
+
+### Description
+
+Deploy the operator into a pre-existing namespace. This is useful when namespaces are managed separately or have pre-configured policies.
+
+### Prerequisites
+
+Ensure the namespace exists before deployment:
+
+```bash
+# Create namespace if it doesn't exist
+kubectl create namespace database-operators
+
+# Verify namespace exists
+kubectl get namespace database-operators
+```
+
+### Manifest
+
+Create a file named `percona-mysql-operator-existing-ns.yaml`:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesPerconaMysqlOperator
+metadata:
+  name: percona-mysql-operator-existing-ns
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: database-operators
+  create_namespace: false
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+### Deploy
+
+```bash
+planton pulumi up --manifest percona-mysql-operator-existing-ns.yaml
+```
+
+**Important:** With `create_namespace: false`, the namespace must exist before deployment. If the namespace doesn't exist, the deployment will fail.
+
+---
+
+## Example 5: Update Operator Resources
 
 ### Description
 
@@ -153,7 +212,7 @@ The Pulumi module will perform an in-place update of the Helm release.
 
 ---
 
-## Example 5: Destroy Operator Deployment
+## Example 6: Destroy Operator Deployment
 
 ### Description
 
@@ -186,8 +245,11 @@ kind: KubernetesPerconaMysqlOperator
 metadata:
   name: percona-mysql-operator-custom
 spec:
-  targetCluster:
-    credentialId: my-k8s-cluster
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: percona-mysql-operator
+  create_namespace: true
   container:
     resources:
       requests:

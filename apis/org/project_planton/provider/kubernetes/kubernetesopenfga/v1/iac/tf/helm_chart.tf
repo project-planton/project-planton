@@ -3,7 +3,7 @@ resource "helm_release" "openfga_helm_chart" {
   repository       = "https://openfga.github.io/helm-charts"
   chart            = "openfga"
   version          = "0.2.12"
-  namespace        = kubernetes_namespace.openfga_namespace.metadata[0].name
+  namespace        = local.namespace_name
   create_namespace = false
 
   values = [
@@ -27,7 +27,5 @@ resource "helm_release" "openfga_helm_chart" {
     })
   ]
 
-  depends_on = [
-    kubernetes_namespace.openfga_namespace
-  ]
+  # Implicit dependency through local.namespace_name reference
 }

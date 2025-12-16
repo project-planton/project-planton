@@ -12,18 +12,21 @@ import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 // This message specifies the parameters needed to create and manage an Argo CD deployment within a Kubernetes environment.
 // It includes container specifications and ingress settings to control resource allocation and external access.
 message KubernetesArgocdSpec {
-  // The Kubernetes cluster to install Argo CD on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install Argo CD.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The container specifications for the Argo CD deployment.
-  KubernetesArgocdContainer container = 3 [(buf.validate.field).required = true];
+  KubernetesArgocdContainer container = 4 [(buf.validate.field).required = true];
 
   // The ingress configuration for the Argo CD deployment.
   KubernetesArgocdIngress ingress = 5;

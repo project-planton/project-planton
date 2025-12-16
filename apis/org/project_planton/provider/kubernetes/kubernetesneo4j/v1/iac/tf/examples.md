@@ -2,6 +2,15 @@
 
 This document provides comprehensive Terraform examples for deploying Neo4j Community Edition on Kubernetes.
 
+## Namespace Management
+
+The `create_namespace` flag controls whether the Neo4j component creates the namespace or expects it to already exist:
+
+- **`create_namespace = true`** (recommended for new deployments): The component creates and manages the namespace
+- **`create_namespace = false`**: The component expects the namespace to already exist (useful when namespace is managed separately or by another component)
+
+---
+
 ## Example 1: Basic Neo4j Deployment
 
 A minimal configuration for development and testing.
@@ -19,7 +28,8 @@ module "neo4j_basic" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -75,7 +85,8 @@ module "neo4j_memory_optimized" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -123,7 +134,8 @@ module "neo4j_external" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -186,7 +198,8 @@ module "neo4j_production" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -249,7 +262,8 @@ module "neo4j_dev" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -310,7 +324,8 @@ module "neo4j_complete" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -359,7 +374,8 @@ module "neo4j_app" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -402,7 +418,8 @@ module "neo4j_analytics" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = {
@@ -567,7 +584,8 @@ module "neo4j" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     container = {
       resources = local.environment == "production" ? {

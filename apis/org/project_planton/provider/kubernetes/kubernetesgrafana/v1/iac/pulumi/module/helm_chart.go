@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -16,7 +15,7 @@ const (
 
 func helmChart(ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	namespace pulumi.StringInput) error {
 
 	// https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 	var helmValues = pulumi.Map{
@@ -38,12 +37,12 @@ func helmChart(ctx *pulumi.Context,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(grafanaHelmChartName),
 			Version:   pulumi.String(grafanaHelmChartVersion),
-			Namespace: createdNamespace.Metadata.Name().Elem(),
+			Namespace: namespace,
 			Values:    helmValues,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(grafanaHelmChartRepoUrl),
 			},
-		}, pulumi.Parent(createdNamespace))
+		})
 	if err != nil {
 		return errors.Wrap(err, "failed to create helm chart")
 	}

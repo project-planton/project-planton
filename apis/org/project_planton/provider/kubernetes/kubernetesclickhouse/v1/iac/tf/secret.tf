@@ -14,7 +14,7 @@ resource "random_password" "clickhouse_password" {
 resource "kubernetes_secret_v1" "clickhouse_password" {
   metadata {
     name      = var.metadata.name
-    namespace = kubernetes_namespace_v1.clickhouse_namespace.metadata[0].name
+    namespace = local.namespace
   }
 
   data = {

@@ -31,6 +31,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -72,6 +73,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -86,4 +88,55 @@ spec:
   ingress:
     enabled: true
     hostname: redis.example.com
+```
+
+---
+
+## Example 3: Redis with Existing Namespace
+
+### Description
+
+This example demonstrates deploying Redis into an existing namespace that has been pre-configured with ResourceQuotas, NetworkPolicies, or RBAC rules. By setting `create_namespace: false`, the module will use the existing namespace without attempting to create it.
+
+### Create and Apply
+
+1. **Ensure the namespace exists**:
+    ```shell
+    kubectl create namespace production-cache
+    ```
+
+2. **Create a YAML file** using the example below.
+3. **Apply the configuration** using the following command:
+
+    ```shell
+    planton apply -f <yaml-path>
+    ```
+
+### YAML Configuration
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: RedisKubernetes
+metadata:
+  name: production-redis
+spec:
+  target_cluster:
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: production-cache
+  create_namespace: false
+  container:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        cpu: 2
+        memory: 4Gi
+    persistenceEnabled: true
+    diskSize: 50Gi
+  ingress:
+    enabled: true
+    hostname: redis-prod.example.com
 ```

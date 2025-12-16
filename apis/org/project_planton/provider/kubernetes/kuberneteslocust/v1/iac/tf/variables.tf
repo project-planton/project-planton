@@ -20,6 +20,9 @@ variable "spec" {
     # Kubernetes namespace for Locust deployment
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The master container specifications for the Locust cluster.
     # This defines the resource allocation and number of replicas for the master node.
     master_container = object({

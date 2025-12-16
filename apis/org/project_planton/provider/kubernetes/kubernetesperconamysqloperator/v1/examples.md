@@ -31,6 +31,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: percona-mysql-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -70,6 +71,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: percona-mysql-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -109,6 +111,7 @@ spec:
     cluster_name: dev-gke-cluster
   namespace:
     value: percona-mysql-operator-dev
+  create_namespace: true
   container:
     resources:
       requests:
@@ -118,6 +121,60 @@ spec:
         cpu: 500m
         memory: 512Mi
 ```
+
+---
+
+## Example 4: Using Existing Namespace
+
+### Description
+
+This example demonstrates deploying the Percona Operator for MySQL into a pre-existing namespace. This is useful when namespaces are managed separately by platform teams or when namespace-level policies, quotas, or network policies are pre-configured.
+
+### Prerequisites
+
+Before applying this configuration, ensure the namespace exists:
+
+```shell
+# Create the namespace if it doesn't exist
+kubectl create namespace database-operators
+
+# Verify namespace exists
+kubectl get namespace database-operators
+```
+
+### Create and Apply
+
+1. **Create a YAML file** using the example below.
+2. **Apply the configuration** using the following command:
+
+    ```shell
+    planton pulumi up --manifest <yaml-path>
+    ```
+
+### YAML Configuration
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesPerconaMysqlOperator
+metadata:
+  name: percona-mysql-operator-existing-ns
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: database-operators
+  create_namespace: false
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+**Important:** With `create_namespace: false`, the namespace must exist before deployment. If the namespace doesn't exist, the deployment will fail.
 
 ---
 

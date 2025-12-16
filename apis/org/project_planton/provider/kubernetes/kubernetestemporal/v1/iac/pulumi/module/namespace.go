@@ -10,8 +10,14 @@ import (
 // namespace creates the Kubernetes namespace that will hold all
 // Temporal resources.  The returned object is used as Parent for every
 // subsequent resource so they inherit the correct namespace.
+// If create_namespace is false, returns nil (namespace must already exist).
 func namespace(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource) (*kubernetescorev1.Namespace, error) {
+
+	// Only create namespace if the flag is set to true
+	if !locals.KubernetesTemporal.Spec.CreateNamespace {
+		return nil, nil
+	}
 
 	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
 		locals.Namespace,

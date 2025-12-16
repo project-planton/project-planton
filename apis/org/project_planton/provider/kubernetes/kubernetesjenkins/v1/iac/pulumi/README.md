@@ -6,7 +6,7 @@
   
 - **Helm Chart Integration:** Jenkins is deployed using the official Helm chart. The module allows you to customize the deployment using `helm_values`, which can include adjustments to resource limits, environment variables, version tags, and other advanced configurations. For further details on the available Helm values, refer to the [Jenkins Helm chart documentation](https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml).
 
-- **Namespace and Kubernetes Resource Management:** The module creates a dedicated Kubernetes namespace for the Jenkins instance, ensuring proper isolation and organization of resources. It also manages other key resources like Kubernetes secrets (for admin credentials), services, and ingress controllers (if enabled).
+- **Namespace and Kubernetes Resource Management:** The module provides flexible namespace management through the `create_namespace` flag. When set to `true` (default), it creates a dedicated Kubernetes namespace for the Jenkins instance, ensuring proper isolation and organization of resources. When set to `false`, it uses an existing namespace, allowing for shared namespace deployments or centralized namespace management. The module also manages other key resources like Kubernetes secrets (for admin credentials), services, and ingress controllers (if enabled).
 
 - **Kubernetes Provider Setup:** Based on the `kubernetes_credential_id` provided in the spec, the module automatically sets up the required Kubernetes provider, allowing seamless interaction with the target Kubernetes cluster. The credentials are securely handled and used to authenticate with the cluster.
 
@@ -31,6 +31,8 @@ Refer to the **example section** for detailed usage instructions on how to confi
 The Pulumi module accepts the following key input parameters from the `JenkinsKubernetes` API resource:
 
 - **kubernetes_credential_id**: (Required) The ID of the Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
+- **namespace**: (Required) The Kubernetes namespace where Jenkins will be deployed.
+- **create_namespace**: (Optional, default: true) Controls whether the module should create the namespace or use an existing one. Set to `false` when using a pre-existing namespace.
 - **container resources**: (Required) Specifies the CPU and memory limits for the Jenkins container. This ensures that Jenkins runs with the appropriate resource allocation on the Kubernetes cluster.
 - **helm_values**: (Optional) A map of key-value pairs for customizing the Jenkins Helm chart deployment. These values can be used to modify resource configurations, environment variables, and other deployment settings.
 - **ingress**: (Optional) A detailed specification for setting up Kubernetes ingress to expose Jenkins externally.

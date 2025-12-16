@@ -14,6 +14,12 @@ kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: cronjobs
+  create_namespace: true
+  schedule: "0 0 * * *"
   image:
     repo: nginx
     tag: latest
@@ -34,6 +40,12 @@ kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: cronjobs
+  create_namespace: true
+  schedule: "0 0 * * *"
   env:
     variables:
       DATABASE_NAME: todo
@@ -58,6 +70,12 @@ kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: cronjobs
+  create_namespace: true
+  schedule: "0 0 * * *"
   env:
     secrets:
       # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
@@ -84,6 +102,12 @@ kind: CronJobKubernetes
 metadata:
   name: grpc-invoker
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: cronjobs
+  create_namespace: true
+  
   # The container image to use. In this case, a public image with grpcurl.
   image:
     repo: fullstorydev/grpcurl
@@ -133,4 +157,83 @@ spec:
 
   # If you miss a schedule, how long (in seconds) to still try to start. 0 = no deadline enforced.
   # startingDeadlineSeconds: 0
+```
+
+# Namespace Management
+
+The `create_namespace` field controls whether the namespace is automatically created or if an existing namespace should be used.
+
+## Creating a New Namespace
+
+Set `create_namespace: true` to automatically create the namespace:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: isolated-job
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-cronjobs
+  create_namespace: true
+  schedule: "0 2 * * *"
+  image:
+    repo: busybox
+    tag: latest
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+```
+
+**Use this when:**
+- You want dedicated namespace isolation for the CronJob
+- The namespace doesn't exist yet
+- You want the CronJob to manage its namespace lifecycle
+
+## Using an Existing Namespace
+
+Set `create_namespace: false` to deploy into a pre-existing namespace:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: shared-job
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: shared-batch-jobs
+  create_namespace: false
+  schedule: "0 4 * * *"
+  image:
+    repo: busybox
+    tag: latest
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+```
+
+**Use this when:**
+- Multiple CronJobs share the same namespace
+- The namespace is managed separately (e.g., by a platform team)
+- You're following a GitOps pattern where namespaces are pre-created
+- **Important:** Ensure the namespace exists before deploying, or the deployment will fail
+
+## Best Practices
+
+- **Isolated workloads**: Use `create_namespace: true` for dedicated, single-purpose CronJobs
+- **Shared namespaces**: Use `create_namespace: false` when multiple CronJobs need to coexist in the same namespace
+- **GitOps workflows**: Set `create_namespace: false` and manage namespaces separately for better lifecycle control
+- **Development environments**: Use `create_namespace: true` for quick iterations and easy cleanup
 ```

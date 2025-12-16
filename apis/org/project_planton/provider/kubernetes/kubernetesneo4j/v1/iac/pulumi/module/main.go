@@ -24,23 +24,26 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesneo4jv1.KubernetesNeo4
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
 
-	// Create a namespace for the Neo4j deployment. (Namespace name is derived from the resource metadata)
-	createdNamespace, err := kubernetescorev1.NewNamespace(
-		ctx,
-		locals.Namespace,
-		&kubernetescorev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:   pulumi.String(locals.Namespace),
-				Labels: pulumi.ToStringMap(locals.Labels),
+	// Conditionally create namespace resource based on create_namespace flag
+	var createdNamespace *kubernetescorev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = kubernetescorev1.NewNamespace(
+			ctx,
+			locals.Namespace,
+			&kubernetescorev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
+				},
 			},
-		},
-		pulumi.Provider(createdKubernetesProvider),
-	)
-	if err != nil {
-		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+			pulumi.Provider(createdKubernetesProvider),
+		)
+		if err != nil {
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+		}
 	}
 
-	// Install the Neo4j Helm chart in the newly created namespace, applying user-specified config.
+	// Install the Neo4j Helm chart, applying user-specified config.
 	if err := helmChart(ctx, locals, createdNamespace); err != nil {
 		return errors.Wrap(err, "failed to deploy neo4j helm chart")
 	}

@@ -66,6 +66,8 @@ kubernetes-elastic-operator
 ├── metadata: CloudResourceMetadata
 └── spec: KubernetesElasticOperatorSpec
     ├── target_cluster: KubernetesAddonTargetCluster
+    ├── namespace: StringValueOrRef
+    ├── create_namespace: bool
     └── container: KubernetesElasticOperatorSpecContainer
         └── resources: ContainerResources
             ├── limits: {cpu, memory}
@@ -74,7 +76,8 @@ kubernetes-elastic-operator
 
 ### Deployment Model
 
-**Namespace**: `elastic-system` (default)  
+**Namespace**: Configurable (default: `elastic-system`)  
+**Namespace Management**: Controlled by `create_namespace` flag
 **Installation Method**: Helm chart from official Elastic repository  
 **Operator Pod**: Single pod deployment (can be scaled for HA)  
 **CRDs Installed**: Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Agent, Logstash
@@ -121,6 +124,41 @@ spec:
   namespace:
     value: "elastic-system"
 ```
+
+### Namespace Management
+
+The `create_namespace` field controls whether the component creates the namespace or uses an existing one:
+
+**When `create_namespace: true` (default for new deployments):**
+- The component creates the specified namespace with appropriate labels
+- Namespace lifecycle is managed by this component
+- Useful for new installations
+
+**When `create_namespace: false`:**
+- The component assumes the namespace already exists
+- You must ensure the namespace is created beforehand
+- Useful when namespace is managed by another component or tool
+- Useful when namespace has specific configurations (quotas, policies) managed externally
+
+Example with namespace creation:
+
+```yaml
+spec:
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
+```
+
+Example using existing namespace:
+
+```yaml
+spec:
+  namespace:
+    value: "my-existing-namespace"
+  create_namespace: false
+```
+
+> **Note:** If `create_namespace: false`, ensure the namespace exists before deploying the operator, or the Helm release will fail.
 
 ## Usage Patterns
 

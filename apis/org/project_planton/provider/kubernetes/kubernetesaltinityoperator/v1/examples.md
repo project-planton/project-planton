@@ -32,6 +32,7 @@ spec:
     clusterName: my-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator  # Optional: defaults to "kubernetes-altinity-operator"
+  create_namespace: true  # Create the namespace (default behavior)
   container:
     resources:
       requests:
@@ -72,6 +73,7 @@ spec:
     clusterName: my-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator
+  create_namespace: true  # Create the namespace
   container:
     resources:
       requests:
@@ -112,6 +114,7 @@ spec:
     clusterName: my-local-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator-dev  # Custom namespace for dev environment
+  create_namespace: true  # Create the namespace
   container:
     resources:
       requests:

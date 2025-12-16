@@ -21,9 +21,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
     }
   }
 
-  depends_on = [
-    kubernetes_namespace.openfga_namespace
-  ]
+  # Implicit dependency through local.namespace_name reference
 }
 
 # Create a Gateway for external ingress (requires Gateway API CRDs).
@@ -97,7 +95,7 @@ resource "kubernetes_manifest" "http_route_external_redirect" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "http-external-redirect"
-      namespace = local.namespace
+      namespace = local.namespace_name
       labels    = local.final_labels
     }
     spec = {
@@ -142,7 +140,7 @@ resource "kubernetes_manifest" "http_route_https_external" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "https-external"
-      namespace = local.namespace
+      namespace = local.namespace_name
       labels    = local.final_labels
     }
     spec = {
@@ -169,7 +167,7 @@ resource "kubernetes_manifest" "http_route_https_external" {
           backendRefs = [
             {
               name      = local.kube_service_name
-              namespace = local.namespace
+              namespace = local.namespace_name
               port      = 8080
             }
           ]

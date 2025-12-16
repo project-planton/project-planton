@@ -12,6 +12,12 @@ import (
 
 func ingress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescorev1.Namespace,
 	kubernetesProvider *kubernetes.Provider) error {
+	// Create resource options based on whether namespace was created
+	var resourceOpts []pulumi.ResourceOption
+	if createdNamespace != nil {
+		resourceOpts = []pulumi.ResourceOption{pulumi.Parent(createdNamespace)}
+	}
+
 	// Create certificate
 	createdCertificate, err := certmanagerv1.NewCertificate(ctx,
 		"ingress-certificate",
@@ -95,7 +101,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetesco
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("http-external-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -121,7 +127,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetesco
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, resourceOpts...)
 
 	// Create HTTP route for external hostname for https listener
 	_, err = gatewayv1.NewHTTPRoute(ctx,
@@ -129,7 +135,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetesco
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-external"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -154,14 +160,14 @@ func ingress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetesco
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(locals.KubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(80),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, resourceOpts...)
 
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTP route")

@@ -15,24 +15,35 @@ locals {
 
   # Organization label only if var.metadata.org is non-empty
   org_label = (
-  var.metadata.org != null && var.metadata.org != ""
+    var.metadata.org != null && var.metadata.org != ""
   ) ? { "organization" = var.metadata.org } : {}
 
   # Environment label only if var.metadata.env is non-empty
   env_label = (
-  var.metadata.env != null &&
-  try(var.metadata.env, "") != ""
+    var.metadata.env != null &&
+    try(var.metadata.env, "") != ""
   ) ? { "environment" = var.metadata.env } : {}
 
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Fixed namespace for ingress-nginx addon
-  namespace = "kubernetes-ingress-nginx"
+  # Namespace from spec or default
+  namespace = (
+    var.spec.namespace != null && var.spec.namespace != ""
+    ? var.spec.namespace
+    : "kubernetes-ingress-nginx"
+  )
+
+  # Namespace name - from created or existing namespace
+  namespace_name = (
+    var.spec.create_namespace
+    ? kubernetes_namespace.ingress_nginx[0].metadata[0].name
+    : data.kubernetes_namespace.existing[0].metadata[0].name
+  )
 
   # Helm chart configuration
-  helm_chart_name    = "kubernetes-ingress-nginx"
-  helm_chart_repo    = "https://kubernetes.github.io/ingress-nginx"
+  helm_chart_name       = "kubernetes-ingress-nginx"
+  helm_chart_repo       = "https://kubernetes.github.io/ingress-nginx"
   default_chart_version = "4.11.1"
 
   # Use specified chart version or default

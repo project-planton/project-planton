@@ -21,6 +21,9 @@ variable "spec" {
     # Kubernetes namespace where operator will be deployed
     namespace = optional(string, "strimzi-kafka-operator")
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, true)
+
     # The container specifications for the Strimzi Kafka Operator deployment.
     container = object({
 

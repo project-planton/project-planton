@@ -1,5 +1,7 @@
-# Create namespace for Zalando Postgres Operator
+# Create namespace for Zalando Postgres Operator (conditionally)
 resource "kubernetes_namespace_v1" "postgres_operator" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
@@ -12,7 +14,7 @@ resource "kubernetes_secret_v1" "backup_credentials" {
 
   metadata {
     name      = local.backup_secret_name
-    namespace = kubernetes_namespace_v1.postgres_operator.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
   }
 
@@ -22,6 +24,10 @@ resource "kubernetes_secret_v1" "backup_credentials" {
   }
 
   type = "Opaque"
+
+  depends_on = [
+    kubernetes_namespace_v1.postgres_operator
+  ]
 }
 
 # Create ConfigMap for backup configuration (only when backup is configured)
@@ -30,7 +36,7 @@ resource "kubernetes_config_map_v1" "backup_config" {
 
   metadata {
     name      = local.backup_configmap_name
-    namespace = kubernetes_namespace_v1.postgres_operator.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
   }
 
@@ -55,6 +61,7 @@ resource "kubernetes_config_map_v1" "backup_config" {
   }
 
   depends_on = [
+    kubernetes_namespace_v1.postgres_operator,
     kubernetes_secret_v1.backup_credentials
   ]
 }
@@ -65,7 +72,7 @@ resource "helm_release" "postgres_operator" {
   repository = local.helm_chart_repository
   chart      = local.helm_chart_name
   version    = local.helm_chart_version
-  namespace  = kubernetes_namespace_v1.postgres_operator.metadata[0].name
+  namespace  = local.namespace
 
   # Wait for deployment to complete
   wait          = true
@@ -103,7 +110,7 @@ resource "helm_release" "postgres_operator" {
     for_each = local.has_backup_config ? [1] : []
     content {
       name  = "configKubernetes.pod_environment_configmap"
-      value = "${kubernetes_namespace_v1.postgres_operator.metadata[0].name}/${local.backup_configmap_name}"
+      value = "${local.namespace}/${local.backup_configmap_name}"
     }
   }
 

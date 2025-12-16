@@ -68,6 +68,9 @@ Specification for the Istio service mesh.
 
 ```hcl
 spec = {
+  namespace        = "istio-system"
+  create_namespace = true
+
   container = {
     resources = {
       requests = {
@@ -108,6 +111,9 @@ module "istio" {
   }
 
   spec = {
+    namespace        = "istio-system"
+    create_namespace = true
+
     container = {
       resources = {
         requests = {
@@ -147,6 +153,9 @@ module "istio_prod" {
   }
 
   spec = {
+    namespace        = "istio-system"
+    create_namespace = true
+
     container = {
       resources = {
         requests = {
@@ -189,6 +198,9 @@ module "istio_ha" {
   }
 
   spec = {
+    namespace        = "istio-system"
+    create_namespace = true
+
     container = {
       resources = {
         requests = {
@@ -234,6 +246,9 @@ module "istio" {
   }
 
   spec = {
+    namespace        = "istio-system"
+    create_namespace = true
+
     container = {
       resources = {
         requests = {
@@ -454,7 +469,130 @@ resource "kubernetes_manifest" "gateway" {
 }
 ```
 
+## Namespace Management
+
+The module manages two Istio namespaces:
+
+- **istio-system**: Control plane namespace (istiod, base CRDs)
+- **istio-ingress**: Ingress gateway namespace
+
+### Automatic Namespace Creation
+
+Set `create_namespace = true` to automatically create both namespaces:
+
+```hcl
+module "istio" {
+  source = "path/to/module"
+
+  metadata = {
+    name = "prod-istio"
+  }
+
+  spec = {
+    namespace        = "istio-system"
+    create_namespace = true  # Creates both namespaces automatically
+
+    container = {
+      resources = {
+        requests = {
+          cpu    = "500m"
+          memory = "512Mi"
+        }
+        limits = {
+          cpu    = "2000m"
+          memory = "2Gi"
+        }
+      }
+    }
+  }
+}
+```
+
+### Using Existing Namespaces
+
+Set `create_namespace = false` to use pre-existing namespaces:
+
+```hcl
+module "istio" {
+  source = "path/to/module"
+
+  metadata = {
+    name = "prod-istio"
+  }
+
+  spec = {
+    namespace        = "istio-system"
+    create_namespace = false  # Use existing namespaces
+
+    container = {
+      resources = {
+        requests = {
+          cpu    = "500m"
+          memory = "512Mi"
+        }
+        limits = {
+          cpu    = "2000m"
+          memory = "2Gi"
+        }
+      }
+    }
+  }
+}
+```
+
+**Prerequisites when using existing namespaces:**
+- Both `istio-system` and `istio-ingress` namespaces must already exist
+- Namespaces should have appropriate labels and RBAC configured
+
+**Create namespaces manually if needed:**
+
+```bash
+kubectl create namespace istio-system
+kubectl create namespace istio-ingress
+```
+
+Or using Terraform:
+
+```hcl
+resource "kubernetes_namespace_v1" "istio_system" {
+  metadata {
+    name = "istio-system"
+  }
+}
+
+resource "kubernetes_namespace_v1" "istio_ingress" {
+  metadata {
+    name = "istio-ingress"
+  }
+}
+
+module "istio" {
+  source = "path/to/module"
+  
+  # ... configuration ...
+  
+  depends_on = [
+    kubernetes_namespace_v1.istio_system,
+    kubernetes_namespace_v1.istio_ingress
+  ]
+}
+```
+
 ## Troubleshooting
+
+### Namespace Not Found Error
+
+If you encounter "namespace not found" errors:
+
+1. Verify `create_namespace` setting:
+   ```bash
+   # If create_namespace = false, check namespaces exist
+   kubectl get namespace istio-system istio-ingress
+   ```
+
+2. Solutions:
+   - Set `create_namespace = true` to let the module create namespaces
+   - Or manually create the namespaces before running `terraform apply`
 
 ### Control Plane Not Starting
 

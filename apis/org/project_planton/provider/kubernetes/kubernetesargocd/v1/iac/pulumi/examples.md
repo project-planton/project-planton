@@ -2,7 +2,7 @@ Here are a few examples for the `KubernetesArgocd` API resource, demonstrating h
 
 ---
 
-# Example 1: Basic Argo CD Deployment
+# Example 1: Basic Argo CD Deployment with Namespace Creation
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -14,6 +14,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: argocd
+  create_namespace: true
   container:
     resources:
       requests:
@@ -38,6 +39,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: argocd-prod
+  create_namespace: true
   container:
     resources:
       requests:
@@ -65,6 +67,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: argocd-custom
+  create_namespace: true
   container:
     resources:
       requests:
@@ -92,6 +95,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: argocd-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -103,5 +107,33 @@ spec:
   ingress:
     enabled: true
     hostname: argocd.prod.example.com
+```
+
+---
+
+# Example 5: Argo CD with Pre-existing Namespace
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesArgocd
+metadata:
+  name: argocd-existing-ns
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: platform-tools  # Must exist before deployment
+  create_namespace: false  # Use existing namespace
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 2
+        memory: 2Gi
+  ingress:
+    enabled: true
+    hostname: argocd.platform.example.com
 ```
 

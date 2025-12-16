@@ -96,7 +96,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "http-external-redirect"
-        namespace = kubernetes_namespace.solr_namespace.metadata[0].name
+        namespace = local.namespace
         labels    = local.final_labels
       }
       spec = {
@@ -140,7 +140,7 @@ resource "kubernetes_manifest" "https_external_route" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "https-external"
-        namespace = kubernetes_namespace.solr_namespace.metadata[0].name
+        namespace = local.namespace
         labels    = local.final_labels
       }
       spec = {
@@ -165,7 +165,7 @@ resource "kubernetes_manifest" "https_external_route" {
             backendRefs = [
               {
                 name      = local.kube_service_name
-                namespace = kubernetes_namespace.solr_namespace.metadata[0].name
+                namespace = local.namespace
                 port      = 80
               }
             ]

@@ -18,6 +18,17 @@ Deploying the Altinity ClickHouse Operator manually in Kubernetes can be complex
 - **Target Cluster Configuration**: This resource integrates seamlessly with Planton Cloud's Kubernetes cluster credential management system, ensuring that the operator is deployed to the correct cluster.
 - **Namespace Isolation**: The operator is deployed in a dedicated `kubernetes-altinity-operator` namespace for clean resource separation.
 
+### Namespace Management
+
+- **Flexible Namespace Creation**: Control whether the operator creates a new namespace or uses an existing one via the `create_namespace` flag
+- **Default Behavior**: By default (`create_namespace: true`), a dedicated namespace is created for the operator
+- **Existing Namespace Support**: Set `create_namespace: false` to deploy into a pre-existing namespace managed separately
+- **Use Cases for External Namespace Management**:
+  - Integration with centralized namespace provisioning systems
+  - Namespaces with pre-configured ResourceQuotas and LimitRanges
+  - Multi-tenant environments with strict namespace governance
+  - Namespaces created by KubernetesNamespace resource with custom policies
+
 ### Operator Configuration
 
 #### Resource Management

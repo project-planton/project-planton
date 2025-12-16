@@ -14,6 +14,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: solr-instance-basic
+  createNamespace: true
   solrContainer:
     replicas: 1
     image:
@@ -53,6 +54,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: solr-instance-custom
+  createNamespace: true
   solrContainer:
     replicas: 3
     image:
@@ -96,6 +98,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: solr-instance-ingress
+  createNamespace: true
   solrContainer:
     replicas: 2
     image:
@@ -138,6 +141,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: solr-instance-no-ingress
+  createNamespace: true
   solrContainer:
     replicas: 1
     image:
@@ -164,6 +168,59 @@ spec:
         memory: 1Gi
     diskSize: "1Gi"
 ```
+
+## Example 5: Using Existing Namespace
+
+This example shows how to deploy Solr into an existing namespace that's managed separately. This is useful when multiple components share a namespace or when namespace management is centralized.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: SolrKubernetes
+metadata:
+  name: solr-shared-namespace
+spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: shared-services
+  createNamespace: false  # Don't create namespace, use existing one
+  solrContainer:
+    replicas: 1
+    image:
+      repo: solr
+      tag: 8.7.0
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+    diskSize: "1Gi"
+  zookeeperContainer:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+    diskSize: "1Gi"
+```
+
+## Namespace Management
+
+The Solr Kubernetes component provides flexible namespace management through the `createNamespace` flag:
+
+- **createNamespace: true** (default) - The module creates the namespace with proper labels and manages its lifecycle. The namespace will be created by the Pulumi module and all child resources will depend on it.
+
+- **createNamespace: false** - The module uses an existing namespace. You're responsible for ensuring the namespace exists before deploying Solr. This is useful when:
+  - Multiple components share a namespace
+  - Namespace is managed by a separate infrastructure module
+  - Organization policies require centralized namespace management
+
+When using an existing namespace (createNamespace: false), ensure the namespace exists before running `pulumi up`, otherwise the deployment will fail.
 
 ## Usage
 

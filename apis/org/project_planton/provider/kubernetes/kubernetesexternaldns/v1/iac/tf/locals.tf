@@ -36,6 +36,15 @@ locals {
   # Namespace with default (StringValueOrRef)
   namespace = try(var.spec.namespace.value, "kubernetes-external-dns")
 
+  # Namespace reference - either created or existing
+  namespace_name = try(var.spec.create_namespace, false) ? (
+    length(kubernetes_namespace.external_dns) > 0 ? 
+      kubernetes_namespace.external_dns[0].metadata[0].name : local.namespace
+  ) : (
+    length(data.kubernetes_namespace.existing) > 0 ? 
+      data.kubernetes_namespace.existing[0].metadata[0].name : local.namespace
+  )
+
   # Release name matches the resource name for multi-instance support
   release_name = var.metadata.name
   ksa_name     = local.release_name

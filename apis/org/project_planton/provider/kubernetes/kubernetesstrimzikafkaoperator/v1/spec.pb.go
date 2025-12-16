@@ -29,12 +29,14 @@ const (
 // It includes container specifications to control resource allocation.
 type KubernetesStrimziKafkaOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this operator on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the Strimzi Kafka Operator deployment.
-	Container     *KubernetesStrimziKafkaOperatorSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container     *KubernetesStrimziKafkaOperatorSpecContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,6 +83,13 @@ func (x *KubernetesStrimziKafkaOperatorSpec) GetNamespace() *v1.StringValueOrRef
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesStrimziKafkaOperatorSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesStrimziKafkaOperatorSpec) GetContainer() *KubernetesStrimziKafkaOperatorSpecContainer {
@@ -141,11 +150,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_
 
 const file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xa2\x03\n" +
+	"Torg/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/spec.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xcd\x03\n" +
 	"\"KubernetesStrimziKafkaOperatorSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x9c\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2v.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xab\x01\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x9c\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2v.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xab\x01\n" +
 	"+KubernetesStrimziKafkaOperatorSpecContainer\x12|\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +

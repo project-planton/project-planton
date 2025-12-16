@@ -32,6 +32,11 @@ kind: KubernetesZalandoPostgresOperator
 metadata:
   name: postgres-operator
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -96,6 +101,8 @@ variable "metadata" {
 ```hcl
 variable "spec" {
   type = object({
+    namespace        = string
+    create_namespace = bool
     container = object({
       resources = object({
         limits = object({
@@ -140,6 +147,8 @@ module "postgres_operator" {
   }
 
   spec = {
+    namespace        = "postgres-operator"
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -170,6 +179,8 @@ module "postgres_operator" {
   }
 
   spec = {
+    namespace        = "postgres-operator"
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -213,12 +224,13 @@ module "postgres_operator" {
 
 ### Always Created
 
-1. **Kubernetes Namespace**: `postgres-operator`
-2. **Helm Release**: `postgres-operator` (from Zalando Helm chart)
+1. **Helm Release**: `postgres-operator` (from Zalando Helm chart)
 
-### Conditionally Created (when `backup_config` provided)
+### Conditionally Created
 
-3. **Kubernetes Secret**: `r2-postgres-backup-credentials`
+2. **Kubernetes Namespace**: Created only when `create_namespace: true`
+
+3. **Kubernetes Secret**: `r2-postgres-backup-credentials` (only when `backup_config` provided)
    - Contains R2 access key ID and secret access key
 4. **Kubernetes ConfigMap**: `postgres-pod-backup-config`
    - Contains WAL-G environment variables
@@ -226,12 +238,36 @@ module "postgres_operator" {
 
 ## Configuration Details
 
+### Namespace Management
+
+Control whether the namespace should be created or use an existing one:
+
+```hcl
+spec = {
+  namespace        = "postgres-operator"
+  create_namespace = true  # Creates the namespace
+}
+```
+
+**Using Existing Namespace:**
+
+```hcl
+spec = {
+  namespace        = "existing-postgres-namespace"
+  create_namespace = false  # Uses existing namespace
+}
+```
+
+**Important**: When `create_namespace = false`, the namespace must already exist in the cluster.
+
 ### Resource Limits
 
 The operator container resources are fully configurable:
 
 ```hcl
 spec = {
+  namespace        = "postgres-operator"
+  create_namespace = true
   container = {
     resources = {
       requests = {
@@ -476,10 +512,10 @@ export TF_VAR_r2_secret_access_key="your-secret-key"
 
 ## Limitations
 
-1. **Fixed Namespace**: Operator always deploys to `postgres-operator` namespace
-2. **Single Operator**: Designed for one operator instance per cluster
-3. **R2 Only**: Backup currently only supports Cloudflare R2
-4. **Helm Chart Version**: Module uses pinned version `1.12.2`
+1. **Single Operator**: Designed for one operator instance per cluster
+2. **R2 Only**: Backup currently only supports Cloudflare R2
+3. **Helm Chart Version**: Module uses pinned version `1.12.2`
+4. **Namespace Existence**: When `create_namespace: false`, namespace must already exist (no validation at plan time)
 
 ## Migration from Pulumi
 

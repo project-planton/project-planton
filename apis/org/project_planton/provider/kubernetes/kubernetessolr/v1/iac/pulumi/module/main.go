@@ -19,18 +19,21 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolrv1.KubernetesSolrS
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
 
-	//create namespace resource
-	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
-		locals.Namespace,
-		&kubernetescorev1.NamespaceArgs{
-			Metadata: kubernetesmetav1.ObjectMetaPtrInput(
-				&kubernetesmetav1.ObjectMetaArgs{
-					Name:   pulumi.String(locals.Namespace),
-					Labels: pulumi.ToStringMap(locals.Labels),
-				}),
-		}, pulumi.Provider(kubernetesProvider))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+	//conditionally create namespace resource based on create_namespace flag
+	var createdNamespace *kubernetescorev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+			locals.Namespace,
+			&kubernetescorev1.NamespaceArgs{
+				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
+					&kubernetesmetav1.ObjectMetaArgs{
+						Name:   pulumi.String(locals.Namespace),
+						Labels: pulumi.ToStringMap(locals.Labels),
+					}),
+			}, pulumi.Provider(kubernetesProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+		}
 	}
 
 	//create solr-cloud custom resource
@@ -46,4 +49,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolrv1.KubernetesSolrS
 	}
 
 	return nil
+}
+
+// optionalParent returns a pulumi.Parent option if the namespace is not nil, otherwise returns an empty slice
+func optionalParent(namespace *kubernetescorev1.Namespace) []pulumi.ResourceOption {
+	if namespace != nil {
+		return []pulumi.ResourceOption{pulumi.Parent(namespace)}
+	}
+	return []pulumi.ResourceOption{}
 }

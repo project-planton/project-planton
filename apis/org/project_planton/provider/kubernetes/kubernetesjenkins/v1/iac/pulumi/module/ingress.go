@@ -97,7 +97,7 @@ func ingress(ctx *pulumi.Context,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("http-external-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -131,7 +131,7 @@ func ingress(ctx *pulumi.Context,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-external"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -156,7 +156,7 @@ func ingress(ctx *pulumi.Context,
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(locals.KubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(80),
 							},
 						},

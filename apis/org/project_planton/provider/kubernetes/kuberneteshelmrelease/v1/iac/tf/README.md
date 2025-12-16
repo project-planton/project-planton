@@ -1,6 +1,6 @@
 # Terraform Module to Deploy a HelmChart
 
-This Terraform module deploys Helm charts to a Kubernetes cluster using the KubernetesHelmRelease resource.
+This Terraform module deploys Helm charts to a Kubernetes cluster using the KubernetesHelmRelease resource. It supports both creating new namespaces and deploying to existing namespaces based on the `create_namespace` flag.
 
 ## Usage
 

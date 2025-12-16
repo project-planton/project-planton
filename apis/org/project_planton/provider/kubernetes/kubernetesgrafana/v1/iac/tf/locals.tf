@@ -49,6 +49,11 @@ locals {
   # Handy port-forward command
   kube_port_forward_command = "kubectl port-forward -n ${local.namespace} service/${local.kube_service_name} 8080:80"
 
+  # Namespace to use - either created or referenced
+  namespace_name = try(var.spec.create_namespace, false) ? (
+    length(kubernetes_namespace_v1.grafana_namespace) > 0 ? kubernetes_namespace_v1.grafana_namespace[0].metadata[0].name : local.namespace
+  ) : local.namespace
+
   # Safely handle optional ingress values
   ingress_is_enabled = try(var.spec.ingress.enabled, false)
   

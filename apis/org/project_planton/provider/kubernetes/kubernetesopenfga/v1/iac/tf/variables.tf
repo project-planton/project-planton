@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install the component
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The container specifications for the OpenFGA deployment.
     container = object({
 

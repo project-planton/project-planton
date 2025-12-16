@@ -30,12 +30,14 @@ const (
 // and external access.
 type KubernetesJenkinsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The CPU and memory resources allocated to the Jenkins container.
-	ContainerResources *kubernetes.ContainerResources `protobuf:"bytes,3,opt,name=container_resources,json=containerResources,proto3" json:"container_resources,omitempty"`
+	ContainerResources *kubernetes.ContainerResources `protobuf:"bytes,4,opt,name=container_resources,json=containerResources,proto3" json:"container_resources,omitempty"`
 	// A map of key-value pairs that provide additional customization options for the Helm chart used to deploy Jenkins.
 	// These values allow for further refinement of the deployment, such as customizing resource limits, setting environment variables,
 	// or specifying version tags. For detailed information on the available options, refer to the Helm chart documentation at:
@@ -89,6 +91,13 @@ func (x *KubernetesJenkinsSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesJenkinsSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesJenkinsSpec) GetContainerResources() *kubernetes.ContainerResources {
@@ -173,11 +182,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc0\x05\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesjenkins/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xeb\x05\n" +
 	"\x15KubernetesJenkinsSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x8f\x01\n" +
-	"\x13container_resources\x18\x03 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x8f\x01\n" +
+	"\x13container_resources\x18\x04 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x12containerResources\x12\x84\x01\n" +

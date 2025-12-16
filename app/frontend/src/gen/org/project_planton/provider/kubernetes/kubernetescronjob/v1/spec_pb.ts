@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkdvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2Nyb25qb2IvdjEvc3BlYy5wcm90bxI8b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNjcm9uam9iLnYxIs8IChVLdWJlcm5ldGVzQ3JvbkpvYlNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRJGCgVpbWFnZRgDIAEoCzI3Lm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5Db250YWluZXJJbWFnZRJxCglyZXNvdXJjZXMYBCABKAsyOy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuQ29udGFpbmVyUmVzb3VyY2VzQiG6+6QCHAoMCgUxMDAwbRIDMUdpEgwKAzUwbRIFMTAwTWkSawoDZW52GAUgASgLMl4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNjcm9uam9iLnYxLkt1YmVybmV0ZXNDcm9uSm9iQ29udGFpbmVyQXBwRW52EhgKCHNjaGVkdWxlGAYgASgJQga6SAPIAQESMwoZc3RhcnRpbmdfZGVhZGxpbmVfc2Vjb25kcxgHIAEoBEILukgD2AEBiqYdATBIAIgBARJIChJjb25jdXJyZW5jeV9wb2xpY3kYCCABKAlCJ7pIGnIYUgVBbGxvd1IGRm9yYmlkUgdSZXBsYWNliqYdBkZvcmJpZEgBiAEBEh8KB3N1c3BlbmQYCSABKAhCCYqmHQVmYWxzZUgCiAEBEjEKHXN1Y2Nlc3NmdWxfam9ic19oaXN0b3J5X2xpbWl0GAogASgNQgWKph0BM0gDiAEBEi0KGWZhaWxlZF9qb2JzX2hpc3RvcnlfbGltaXQYCyABKA1CBYqmHQExSASIAQESIQoNYmFja29mZl9saW1pdBgMIAEoDUIFiqYdATZIBYgBARJFCg5yZXN0YXJ0X3BvbGljeRgNIAEoCUIoukgcchpSBkFsd2F5c1IJT25GYWlsdXJlUgVOZXZlcoqmHQVOZXZlckgGiAEBEg8KB2NvbW1hbmQYDiADKAkSDAoEYXJncxgPIAMoCUIcChpfc3RhcnRpbmdfZGVhZGxpbmVfc2Vjb25kc0IVChNfY29uY3VycmVuY3lfcG9saWN5QgoKCF9zdXNwZW5kQiAKHl9zdWNjZXNzZnVsX2pvYnNfaGlzdG9yeV9saW1pdEIcChpfZmFpbGVkX2pvYnNfaGlzdG9yeV9saW1pdEIQCg5fYmFja29mZl9saW1pdEIRCg9fcmVzdGFydF9wb2xpY3kihQMKIEt1YmVybmV0ZXNDcm9uSm9iQ29udGFpbmVyQXBwRW52EoABCgl2YXJpYWJsZXMYASADKAsybS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2Nyb25qb2IudjEuS3ViZXJuZXRlc0Nyb25Kb2JDb250YWluZXJBcHBFbnYuVmFyaWFibGVzRW50cnkSfAoHc2VjcmV0cxgCIAMoCzJrLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzY3JvbmpvYi52MS5LdWJlcm5ldGVzQ3JvbkpvYkNvbnRhaW5lckFwcEVudi5TZWNyZXRzRW50cnkaMAoOVmFyaWFibGVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARouCgxTZWNyZXRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AULjAwpAY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzY3JvbmpvYi52MUIJU3BlY1Byb3RvUAFagAFnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2Nyb25qb2IvdjE7a3ViZXJuZXRlc2Nyb25qb2J2MaICBU9QUEtLqgI7T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkt1YmVybmV0ZXMuS3ViZXJuZXRlc2Nyb25qb2IuVjHKAjtPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzY3JvbmpvYlxWMeICR09yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNjcm9uam9iXFYxXEdQQk1ldGFkYXRh6gJAT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6Okt1YmVybmV0ZXM6Okt1YmVybmV0ZXNjcm9uam9iOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_options, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
+  fileDesc("CkdvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2Nyb25qb2IvdjEvc3BlYy5wcm90bxI8b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNjcm9uam9iLnYxIukIChVLdWJlcm5ldGVzQ3JvbkpvYlNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEkYKBWltYWdlGAQgASgLMjcub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lckltYWdlEnEKCXJlc291cmNlcxgFIAEoCzI7Lm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5Db250YWluZXJSZXNvdXJjZXNCIbr7pAIcCgwKBTEwMDBtEgMxR2kSDAoDNTBtEgUxMDBNaRJrCgNlbnYYBiABKAsyXi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2Nyb25qb2IudjEuS3ViZXJuZXRlc0Nyb25Kb2JDb250YWluZXJBcHBFbnYSGAoIc2NoZWR1bGUYByABKAlCBrpIA8gBARIzChlzdGFydGluZ19kZWFkbGluZV9zZWNvbmRzGAggASgEQgu6SAPYAQGKph0BMEgAiAEBEkgKEmNvbmN1cnJlbmN5X3BvbGljeRgJIAEoCUInukgachhSBUFsbG93UgZGb3JiaWRSB1JlcGxhY2WKph0GRm9yYmlkSAGIAQESHwoHc3VzcGVuZBgKIAEoCEIJiqYdBWZhbHNlSAKIAQESMQodc3VjY2Vzc2Z1bF9qb2JzX2hpc3RvcnlfbGltaXQYCyABKA1CBYqmHQEzSAOIAQESLQoZZmFpbGVkX2pvYnNfaGlzdG9yeV9saW1pdBgMIAEoDUIFiqYdATFIBIgBARIhCg1iYWNrb2ZmX2xpbWl0GA0gASgNQgWKph0BNkgFiAEBEkUKDnJlc3RhcnRfcG9saWN5GA4gASgJQii6SBxyGlIGQWx3YXlzUglPbkZhaWx1cmVSBU5ldmVyiqYdBU5ldmVySAaIAQESDwoHY29tbWFuZBgPIAMoCRIMCgRhcmdzGBAgAygJQhwKGl9zdGFydGluZ19kZWFkbGluZV9zZWNvbmRzQhUKE19jb25jdXJyZW5jeV9wb2xpY3lCCgoIX3N1c3BlbmRCIAoeX3N1Y2Nlc3NmdWxfam9ic19oaXN0b3J5X2xpbWl0QhwKGl9mYWlsZWRfam9ic19oaXN0b3J5X2xpbWl0QhAKDl9iYWNrb2ZmX2xpbWl0QhEKD19yZXN0YXJ0X3BvbGljeSKFAwogS3ViZXJuZXRlc0Nyb25Kb2JDb250YWluZXJBcHBFbnYSgAEKCXZhcmlhYmxlcxgBIAMoCzJtLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzY3JvbmpvYi52MS5LdWJlcm5ldGVzQ3JvbkpvYkNvbnRhaW5lckFwcEVudi5WYXJpYWJsZXNFbnRyeRJ8CgdzZWNyZXRzGAIgAygLMmsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNjcm9uam9iLnYxLkt1YmVybmV0ZXNDcm9uSm9iQ29udGFpbmVyQXBwRW52LlNlY3JldHNFbnRyeRowCg5WYXJpYWJsZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGi4KDFNlY3JldHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQuMDCkBjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNjcm9uam9iLnYxQglTcGVjUHJvdG9QAVqAAWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIva3ViZXJuZXRlcy9rdWJlcm5ldGVzY3JvbmpvYi92MTtrdWJlcm5ldGVzY3JvbmpvYnYxogIFT1BQS0uqAjtPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzY3JvbmpvYi5WMcoCO09yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNjcm9uam9iXFYx4gJHT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2Nyb25qb2JcVjFcR1BCTWV0YWRhdGHqAkBPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc2Nyb25qb2I6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_options, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
 
 /**
  * *
@@ -32,18 +32,25 @@ export const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_s
  */
 export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec"> & {
   /**
-   * The Kubernetes cluster to install this cron-job on.
+   * Target Kubernetes Cluster
    *
    * @generated from field: org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
    */
   targetCluster?: KubernetesClusterSelector;
 
   /**
-   * Kubernetes namespace to install the cron-job.
+   * Kubernetes Namespace
    *
    * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2;
    */
   namespace?: StringValueOrRef;
+
+  /**
+   * flag to indicate if the namespace should be created
+   *
+   * @generated from field: bool create_namespace = 3;
+   */
+  createNamespace: boolean;
 
   /**
    * *
@@ -51,7 +58,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * The `pull_secret_name` is determined by looking up the
    * `container_image_artifact_store_id` from the environment where the cron-job is deployed.
    *
-   * @generated from field: org.project_planton.provider.kubernetes.ContainerImage image = 3;
+   * @generated from field: org.project_planton.provider.kubernetes.ContainerImage image = 4;
    */
   image?: ContainerImage;
 
@@ -61,7 +68,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * If not specified, default container resources (limits.cpu=1000m, limits.memory=1Gi,
    * requests.cpu=50m, requests.memory=100Mi) are applied.
    *
-   * @generated from field: org.project_planton.provider.kubernetes.ContainerResources resources = 4;
+   * @generated from field: org.project_planton.provider.kubernetes.ContainerResources resources = 5;
    */
   resources?: ContainerResources;
 
@@ -71,7 +78,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * This includes both straightforward environment variables (key=value)
    * and references to secrets.
    *
-   * @generated from field: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv env = 5;
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv env = 6;
    */
   env?: KubernetesCronJobContainerAppEnv;
 
@@ -80,7 +87,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * A cron schedule expression in standard Cron format, e.g. "0 0 * * *".
    * This field is required.
    *
-   * @generated from field: string schedule = 6;
+   * @generated from field: string schedule = 7;
    */
   schedule: string;
 
@@ -89,7 +96,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * Optional deadline in seconds for starting the job if it misses its scheduled time.
    * If set to 0, no deadline is enforced.
    *
-   * @generated from field: optional uint64 starting_deadline_seconds = 7;
+   * @generated from field: optional uint64 starting_deadline_seconds = 8;
    */
   startingDeadlineSeconds?: bigint;
 
@@ -99,7 +106,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * Allowed values are: "Allow", "Forbid", "Replace".
    * Default is "Forbid".
    *
-   * @generated from field: optional string concurrency_policy = 8;
+   * @generated from field: optional string concurrency_policy = 9;
    */
   concurrencyPolicy?: string;
 
@@ -108,7 +115,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * If true, no subsequent runs are scheduled.
    * Default is false.
    *
-   * @generated from field: optional bool suspend = 9;
+   * @generated from field: optional bool suspend = 10;
    */
   suspend?: boolean;
 
@@ -117,7 +124,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * Number of successful finished jobs to retain.
    * Default is 3.
    *
-   * @generated from field: optional uint32 successful_jobs_history_limit = 10;
+   * @generated from field: optional uint32 successful_jobs_history_limit = 11;
    */
   successfulJobsHistoryLimit?: number;
 
@@ -126,7 +133,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * Number of failed finished jobs to retain.
    * Default is 1.
    *
-   * @generated from field: optional uint32 failed_jobs_history_limit = 11;
+   * @generated from field: optional uint32 failed_jobs_history_limit = 12;
    */
   failedJobsHistoryLimit?: number;
 
@@ -135,7 +142,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * Number of retries before marking this job as failed.
    * Default is 6.
    *
-   * @generated from field: optional uint32 backoff_limit = 12;
+   * @generated from field: optional uint32 backoff_limit = 13;
    */
   backoffLimit?: number;
 
@@ -145,7 +152,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * Allowed values: "Always", "OnFailure", "Never".
    * Default is "Never".
    *
-   * @generated from field: optional string restart_policy = 13;
+   * @generated from field: optional string restart_policy = 14;
    */
   restartPolicy?: string;
 
@@ -155,7 +162,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * If omitted, the default ENTRYPOINT in the image will be used.
    * Example: ["sh","-c","echo Hello from Cron"]
    *
-   * @generated from field: repeated string command = 14;
+   * @generated from field: repeated string command = 15;
    */
   command: string[];
 
@@ -165,7 +172,7 @@ export type KubernetesCronJobSpec = Message<"org.project_planton.provider.kubern
    * If omitted, the default CMD in the image will be used.
    * Example: ["-f","/path/to/config.yaml"]
    *
-   * @generated from field: repeated string args = 15;
+   * @generated from field: repeated string args = 16;
    */
   args: string[];
 };

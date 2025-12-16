@@ -91,12 +91,17 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvid
 	}
 
 	// Create HTTPRoute for HTTPS traffic to SigNoz frontend service
+	httpRouteOpts := []pulumi.ResourceOption{}
+	if createdNamespace != nil {
+		httpRouteOpts = append(httpRouteOpts, pulumi.Parent(createdNamespace))
+	}
+
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"https-external",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-external"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -122,14 +127,14 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvid
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								// Route to the actual frontend service created by SigNoz Helm chart
 								Name:      pulumi.Sprintf("%s-frontend", locals.KubernetesSignoz.Metadata.Name),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(vars.SignozFrontendPort),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, httpRouteOpts...)
 
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTPS route for SigNoz UI")

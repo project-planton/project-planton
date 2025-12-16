@@ -9,17 +9,12 @@ resource "kubernetes_secret" "this" {
 
   metadata {
     name      = var.spec.version
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
   }
 
   type = "Opaque"
 
   # Populate the secret with key-value pairs.
-  # Note: 'string_data' automatically converts the map values into string form.
-  string_data = try(var.spec.container.app.env.secrets, {})
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
+  data = { for k, v in try(var.spec.container.app.env.secrets, {}) : k => base64encode(v) }
 }

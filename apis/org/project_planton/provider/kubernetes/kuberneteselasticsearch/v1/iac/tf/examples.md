@@ -60,7 +60,8 @@ module "logging_cluster" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "logging"
+    namespace        = "logging"
+    create_namespace = true
     elasticsearch = {
       container = {
         replicas            = 1
@@ -164,7 +165,8 @@ module "search_service" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "search"
+    namespace        = "search"
+    create_namespace = true
     elasticsearch = {
       container = {
         replicas            = 3
@@ -268,7 +270,8 @@ module "persistent_cluster" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "elasticsearch-prod"
+    namespace        = "elasticsearch-prod"
+    create_namespace = true
     elasticsearch = {
       container = {
         persistence_enabled = true
@@ -327,6 +330,7 @@ spec:
   target_cluster:
     cluster_name: my-gke-cluster
   namespace: elasticsearch
+  create_namespace: true
 ```
 
 ### Terraform Usage
@@ -343,13 +347,93 @@ module "minimal_elasticsearch" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "elasticsearch"
+    namespace        = "elasticsearch"
+    create_namespace = true
     # All other fields will use defaults from the proto schema
   }
 }
 ```
 
 This minimal example provides only the required fields. All other fields use the default values configured in the proto schema.
+
+---
+
+## Example 5: Using Existing Namespace (create_namespace: false)
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ElasticsearchKubernetes
+metadata:
+  name: shared-elasticsearch
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace: shared-services
+  create_namespace: false
+```
+
+### Terraform Usage
+
+```hcl
+module "shared_elasticsearch" {
+  source = "../"
+
+  metadata = {
+    name = "shared-elasticsearch"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace        = "shared-services"
+    create_namespace = false
+    elasticsearch = {
+      container = {
+        replicas            = 1
+        persistence_enabled = true
+        disk_size          = "10Gi"
+        resources = {
+          requests = {
+            cpu    = "500m"
+            memory = "1Gi"
+          }
+          limits = {
+            cpu    = "1000m"
+            memory = "2Gi"
+          }
+        }
+      }
+      ingress = {
+        enabled  = false
+        hostname = ""
+      }
+    }
+    kibana = {
+      enabled = true
+      container = {
+        replicas = 1
+        resources = {
+          requests = {
+            cpu    = "200m"
+            memory = "512Mi"
+          }
+          limits = {
+            cpu    = "500m"
+            memory = "1Gi"
+          }
+        }
+      }
+      ingress = {
+        enabled  = false
+        hostname = ""
+      }
+    }
+  }
+}
+```
+
+**Note**: When `create_namespace: false`, ensure the namespace `shared-services` exists before applying this configuration.
 
 ---
 

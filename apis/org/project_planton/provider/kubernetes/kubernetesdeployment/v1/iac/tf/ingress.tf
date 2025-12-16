@@ -192,7 +192,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "http-external-redirect"
-      namespace = kubernetes_namespace.this.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {
@@ -234,7 +234,7 @@ resource "kubernetes_manifest" "https_external" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "https-external"
-      namespace = kubernetes_namespace.this.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {
@@ -259,7 +259,7 @@ resource "kubernetes_manifest" "https_external" {
           backendRefs = [
             {
               name      = local.kube_service_name
-              namespace = kubernetes_namespace.this.metadata[0].name
+              namespace = local.namespace
               port      = local.ingress_port
             }
           ]
@@ -285,7 +285,7 @@ resource "kubernetes_manifest" "http_internal_redirect" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "http-internal-redirect"
-      namespace = kubernetes_namespace.this.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {
@@ -327,7 +327,7 @@ resource "kubernetes_manifest" "https_internal" {
     kind       = "HTTPRoute"
     metadata = {
       name      = "https-internal"
-      namespace = kubernetes_namespace.this.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {
@@ -352,7 +352,7 @@ resource "kubernetes_manifest" "https_internal" {
           backendRefs = [
             {
               name      = local.kube_service_name
-              namespace = kubernetes_namespace.this.metadata[0].name
+              namespace = local.namespace
               port      = local.ingress_port
             }
           ]

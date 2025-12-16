@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # Elasticsearch configuration
     elasticsearch = object({
       # Container configuration

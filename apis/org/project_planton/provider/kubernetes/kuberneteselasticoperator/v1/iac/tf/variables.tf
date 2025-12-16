@@ -25,6 +25,9 @@ variable "spec" {
     # Kubernetes namespace to install the operator.
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, false)
+
     # The container specifications for the ECK operator.
     container = object({
 

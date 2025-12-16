@@ -69,6 +69,22 @@ For more details, see: [MIGRATION.md](MIGRATION.md) or https://github.com/bitnam
 3. **Validate & Observe**  
    Check the logs of your SigNoz deployment, confirm the Namespace, Deployments, and Services are created, and if ingress is enabled, verify external access.
 
+## Namespace Management
+
+The Pulumi module provides flexible namespace management through the `create_namespace` flag in your specification:
+
+- **When `create_namespace` is `true`**: The module creates the specified namespace on the target cluster. This is the recommended approach for new deployments.
+
+- **When `create_namespace` is `false`**: The module uses an existing namespace. The namespace must already exist on the cluster, or the deployment will fail. This is useful when:
+  - The namespace is managed by a separate process or team
+  - Multiple components share the same namespace
+  - Namespace creation is controlled by organizational policies
+
+**Implementation Details**:
+- When `create_namespace` is `false`, the `createdNamespace` variable in `main.go` is `nil`
+- All resources that reference the namespace use `pulumi.String(locals.Namespace)` instead of `createdNamespace.Metadata.Name()`
+- Parent/dependency relationships are handled conditionally to work with optional namespace creation
+
 ## Module Structure
 
 1. **Initialization**  
@@ -77,8 +93,8 @@ For more details, see: [MIGRATION.md](MIGRATION.md) or https://github.com/bitnam
 2. **Provider Setup**  
    Establishes a Pulumi Kubernetes Provider for your target cluster.
 
-3. **Namespace Creation**  
-   Creates (or identifies) a namespace to house all your SigNoz resources.
+3. **Namespace Creation** (Conditional)  
+   Creates a namespace to house all your SigNoz resources if `create_namespace` is `true`. If `false`, uses the existing namespace specified in the configuration.
 
 4. **Helm Chart Deployment**  
    Deploys the SigNoz Helm chart with configured values for:

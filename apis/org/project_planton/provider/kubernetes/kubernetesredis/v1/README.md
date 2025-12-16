@@ -40,6 +40,15 @@ Deploying Redis in a Kubernetes environment can be complex, especially when deal
 
 - **Disk Size**: Define the size of the persistent storage attached to each Redis pod. If persistence is enabled, this field is mandatory, and the specified disk size is used to store Redis data across pod restarts.
 
+### Namespace Management
+
+- **Flexible Namespace Control**: The `create_namespace` flag provides fine-grained control over namespace creation:
+  - **When `true` (Recommended for most use cases)**: The module creates a dedicated namespace with appropriate resource labels for tracking and organization. This is ideal for new deployments, testing, and isolated environments.
+  - **When `false`**: The module uses an existing namespace without attempting to create it. The namespace must exist before deployment. This is suitable for environments with pre-configured namespaces that have existing ResourceQuotas, LimitRanges, NetworkPolicies, or RBAC policies.
+- **Use Cases**:
+  - Set to `true`: New deployments, development environments, testing scenarios
+  - Set to `false`: Production environments with governed namespaces, multi-tenant clusters, compliance-driven deployments
+
 ### Ingress Configuration
 
 - **Ingress Hostname Control**: Configure a LoadBalancer service with external-dns annotations to expose the Redis service. Users have full control over the ingress hostname, allowing custom DNS patterns like `redis.example.com` or `cache-prod.company.com`. When ingress is enabled, the hostname field is required and the system creates a LoadBalancer service with the specified hostname configured via external-dns.

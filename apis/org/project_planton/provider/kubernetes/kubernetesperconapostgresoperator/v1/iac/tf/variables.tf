@@ -17,6 +17,11 @@ variable "spec" {
     # Kubernetes namespace to install the operator.
     namespace = string
 
+    # Flag to indicate if the namespace should be created.
+    # If true, the namespace will be created by this module.
+    # If false, the namespace is expected to already exist.
+    create_namespace = bool
+
     # The container specifications for the operator deployment.
     container = object({
       # The CPU and memory resources allocated to the operator container.

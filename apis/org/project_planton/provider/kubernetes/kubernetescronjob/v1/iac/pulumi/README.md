@@ -29,6 +29,11 @@
   Seamlessly integrates Docker registry credentials if your images are stored in private repositories, creating
   `kubernetes.io/dockerconfigjson` secrets and referencing them in your CronJob.
 
+- **Flexible Namespace Management**  
+  Control namespace creation with the `create_namespace` boolean flag. Set to `true` to automatically create and manage
+  a dedicated namespace with appropriate labels. Set to `false` to reference an existing namespace, enabling shared
+  namespace patterns for multi-tenant scenarios or GitOps workflows where namespace lifecycle is managed separately.
+
 - **Output Exports**  
   Provides essential outputs (e.g., namespace name). You can further integrate these into other stages of your pipeline
   if needed.
@@ -68,8 +73,9 @@ to deploy your CronJob to the specified Kubernetes cluster.
 2. **Provider Setup**  
    Creates a Pulumi Kubernetes Provider using your specified cluster credentials.
 
-3. **Namespace Creation**  
-   Ensures a dedicated Kubernetes Namespace is created or identified, grouping all relevant CronJob resources.
+3. **Namespace Creation or Reference**  
+   Based on the `create_namespace` flag, either creates a new dedicated Kubernetes Namespace with proper labels or
+   references an existing namespace. This groups all relevant CronJob resources appropriately.
 
 4. **Secret Management**  
    Generates a “main” Kubernetes Secret to store environment secrets for your CronJob container. Keeps sensitive data

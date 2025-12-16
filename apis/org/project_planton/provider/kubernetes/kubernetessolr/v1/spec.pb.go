@@ -32,18 +32,20 @@ const (
 // including resource allocation, data persistence, and external access through ingress.
 type KubernetesSolrSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the component.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The specifications for the Solr container deployment.
-	SolrContainer *KubernetesSolrSolrContainer `protobuf:"bytes,3,opt,name=solr_container,json=solrContainer,proto3" json:"solr_container,omitempty"`
+	SolrContainer *KubernetesSolrSolrContainer `protobuf:"bytes,4,opt,name=solr_container,json=solrContainer,proto3" json:"solr_container,omitempty"`
 	// The Solr-specific configuration options.
-	Config *KubernetesSolrSolrConfig `protobuf:"bytes,4,opt,name=config,proto3" json:"config,omitempty"`
+	Config *KubernetesSolrSolrConfig `protobuf:"bytes,5,opt,name=config,proto3" json:"config,omitempty"`
 	// The specifications for the Zookeeper container deployment.
-	ZookeeperContainer *KubernetesSolrZookeeperContainer `protobuf:"bytes,5,opt,name=zookeeper_container,json=zookeeperContainer,proto3" json:"zookeeper_container,omitempty"`
+	ZookeeperContainer *KubernetesSolrZookeeperContainer `protobuf:"bytes,6,opt,name=zookeeper_container,json=zookeeperContainer,proto3" json:"zookeeper_container,omitempty"`
 	// The ingress configuration for the Solr deployment.
-	Ingress       *KubernetesSolrIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesSolrIngress `protobuf:"bytes,7,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -90,6 +92,13 @@ func (x *KubernetesSolrSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesSolrSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesSolrSpec) GetSolrContainer() *KubernetesSolrSolrContainer {
@@ -419,21 +428,22 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc2\x06\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xed\x06\n" +
 	"\x12KubernetesSolrSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xb8\x01\n" +
-	"\x0esolr_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xb8\x01\n" +
+	"\x0esolr_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031Gi\"\r\n" +
 	"\x04solr\x12\x058.7.0R\rsolrContainer\x12k\n" +
-	"\x06config\x18\x04 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfigR\x06config\x12\xb8\x01\n" +
-	"\x13zookeeper_container\x18\x05 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
+	"\x06config\x18\x05 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfigR\x06config\x12\xb8\x01\n" +
+	"\x13zookeeper_container\x18\x06 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12j\n" +
-	"\aingress\x18\x06 \x01(\v2P.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngressR\aingress\"\xcc\x01\n" +
+	"\aingress\x18\a \x01(\v2P.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrIngressR\aingress\"\xcc\x01\n" +
 	"\x15KubernetesSolrIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +

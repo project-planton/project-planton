@@ -21,7 +21,7 @@ const (
 func createBackupResources(
 	ctx *pulumi.Context,
 	backupConfig *kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperatorBackupConfig,
-	namespace pulumi.StringInput,
+	namespace pulumi.StringOutput,
 	kubernetesProvider *pulumikubernetes.Provider,
 	labels map[string]string,
 ) (pulumi.StringOutput, error) {

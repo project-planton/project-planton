@@ -11,7 +11,7 @@ resource "kubernetes_manifest" "schema_registry_deployment" {
     kind       = "Deployment"
     metadata = {
       name      = "schema-registry"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels = merge(local.final_labels, {
         "app" = "schema-registry"
       })
@@ -101,7 +101,6 @@ resource "kubernetes_manifest" "schema_registry_deployment" {
   }
 
   depends_on = [
-    kubernetes_namespace_v1.kafka_namespace,
     kubernetes_manifest.kafka_cluster
   ]
 }
@@ -115,7 +114,7 @@ resource "kubernetes_manifest" "schema_registry_service" {
     kind       = "Service"
     metadata = {
       name      = "sr"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {

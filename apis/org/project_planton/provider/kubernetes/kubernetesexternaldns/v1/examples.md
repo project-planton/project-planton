@@ -18,6 +18,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   gke:
     project_id:
       value: my-gcp-project
@@ -52,6 +53,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   gke:
     project_id:
       ref: gcp-project-platform
@@ -80,6 +82,7 @@ spec:
     cluster_name: prod-eks-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   eks:
     route53_zone_id:
       value: Z1234567890ABC
@@ -111,6 +114,7 @@ spec:
     cluster_name: prod-eks-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   eks:
     route53_zone_id:
       value: Z1234567890ABC
@@ -138,6 +142,7 @@ spec:
     cluster_name: prod-aks-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   aks:
     dns_zone_id:
       value: /subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com
@@ -171,6 +176,7 @@ spec:
     cluster_name: my-k8s-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   cloudflare:
     api_token: your-cloudflare-api-token-here
     dns_zone_id:
@@ -204,6 +210,7 @@ spec:
     cluster_name: my-k8s-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   cloudflare:
     api_token: your-cloudflare-api-token-here
     dns_zone_id:
@@ -233,6 +240,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: dns-automation
+  create_namespace: true  # Creates namespace if it doesn't exist
   kubernetes_external_dns_version: v0.14.0
   helm_chart_version: 1.14.0
   gke:
@@ -269,6 +277,7 @@ spec:
     cluster_name: shared-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   gke:
     project_id:
       value: my-gcp-project
@@ -287,6 +296,7 @@ spec:
     cluster_name: shared-cluster
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   gke:
     project_id:
       value: my-gcp-project
@@ -321,6 +331,7 @@ spec:
     cluster_name: my-gke-cluster-resource
   namespace:
     value: kubernetes-external-dns
+  create_namespace: true  # Creates namespace if it doesn't exist
   gke:
     project_id:
       ref: gcp-project-platform
@@ -332,6 +343,38 @@ spec:
 - All resource IDs are managed centrally in Project Planton
 - Safer than hardcoding values
 - Easier to manage across multiple environments
+
+---
+
+## Example 11: Using Existing Namespace
+
+Deploy ExternalDNS into a pre-existing namespace managed separately.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesExternalDns
+metadata:
+  name: external-dns-existing-ns
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-dns-automation  # Must exist before deployment
+  create_namespace: false  # Use existing namespace
+  gke:
+    project_id:
+      value: my-gcp-project
+    dns_zone_id:
+      value: my-dns-zone-id
+```
+
+**Use case:**
+- Namespace is managed by a separate tool (Terraform, kubectl, etc.)
+- Namespace requires special labels, annotations, or resource quotas
+- Shared namespace used by multiple components
+- GitOps workflow where namespace is created separately
+
+**Important**: The namespace must exist before deploying this resource, or the deployment will fail with an error message indicating the namespace was not found.
 
 ---
 

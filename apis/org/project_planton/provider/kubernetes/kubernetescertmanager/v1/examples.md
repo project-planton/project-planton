@@ -18,6 +18,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "kubernetes-cert-manager"
+  createNamespace: true
   
   acme:
     email: "admin@example.com"
@@ -49,6 +50,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "kubernetes-cert-manager"
+  createNamespace: true
   
   acme:
     email: "certs@acme-corp.com"
@@ -81,6 +83,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "kubernetes-cert-manager"
+  createNamespace: true
   
   acme:
     email: "platform@example.com"
@@ -116,6 +119,7 @@ spec:
     clusterName: "my-eks-cluster"
   namespace:
     value: "kubernetes-cert-manager"
+  createNamespace: true
   
   acme:
     email: "devops@example.com"
@@ -152,6 +156,7 @@ spec:
     clusterName: "my-aks-cluster"
   namespace:
     value: "kubernetes-cert-manager"
+  createNamespace: true
   
   acme:
     email: "it@example.com"
@@ -188,6 +193,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "kubernetes-cert-manager"
+  createNamespace: true
   
   acme:
     email: "certificates@multi-cloud.com"
@@ -242,6 +248,7 @@ spec:
     clusterName: "my-staging-cluster"
   namespace:
     value: "cert-manager-staging"
+  createNamespace: true
   
   acme:
     email: "staging@example.com"
@@ -276,6 +283,7 @@ spec:
     clusterName: "my-production-cluster"
   namespace:
     value: "security-cert-manager"
+  createNamespace: false  # Use existing namespace with custom security policies
   kubernetesCertManagerVersion: "v1.19.1"
   helmChartVersion: "v1.19.1"
   

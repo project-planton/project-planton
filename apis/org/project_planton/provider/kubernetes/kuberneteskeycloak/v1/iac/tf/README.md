@@ -66,6 +66,13 @@ Specification for the Keycloak deployment.
 
 ```hcl
 spec = {
+  target_cluster = {
+    cluster_name = "prod-gke-cluster"
+  }
+  namespace = {
+    value = "keycloak-prod"
+  }
+  create_namespace = true
   container = {
     resources = {
       requests = {
@@ -84,6 +91,32 @@ spec = {
   }
 }
 ```
+
+#### Namespace Management
+
+The `spec.namespace` and `spec.create_namespace` fields control namespace behavior:
+
+```hcl
+spec = {
+  target_cluster = {
+    cluster_name = "prod-gke-cluster"
+  }
+  namespace = {
+    value = "keycloak-prod"
+  }
+  create_namespace = true  # Module creates namespace
+  
+  # ... other spec fields
+}
+```
+
+**Namespace Control:**
+
+- When `create_namespace = true`: Module creates the namespace
+- When `create_namespace = false`: Namespace must already exist
+- The namespace name is specified in `spec.namespace.value`
+
+This allows flexibility in namespace lifecycle management, enabling use of either module-managed or externally-managed namespaces.
 
 ## Module Outputs
 
@@ -109,6 +142,13 @@ module "keycloak" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "dev-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-dev"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -145,6 +185,13 @@ module "keycloak_public" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-prod"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {

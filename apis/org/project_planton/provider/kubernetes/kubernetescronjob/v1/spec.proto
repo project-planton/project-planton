@@ -16,29 +16,32 @@ import "org/project_planton/shared/options/options.proto";
  * cron-job is deployed, executed, and how concurrency and retries are handled.
  */
 message KubernetesCronJobSpec {
-  // The Kubernetes cluster to install this cron-job on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the cron-job.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   /**
    * The container image to be used for the application.
    * The `pull_secret_name` is determined by looking up the
    * `container_image_artifact_store_id` from the environment where the cron-job is deployed.
    */
-  org.project_planton.provider.kubernetes.ContainerImage image = 3;
+  org.project_planton.provider.kubernetes.ContainerImage image = 4;
 
   /**
    * The CPU and memory resources allocated to the cron-job container.
    * If not specified, default container resources (limits.cpu=1000m, limits.memory=1Gi,
    * requests.cpu=50m, requests.memory=100Mi) are applied.
    */
-  org.project_planton.provider.kubernetes.ContainerResources resources = 4 [(org.project_planton.provider.kubernetes.default_container_resources) = {
+  org.project_planton.provider.kubernetes.ContainerResources resources = 5 [(org.project_planton.provider.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"
       memory: "1Gi"
@@ -54,19 +57,19 @@ message KubernetesCronJobSpec {
    * This includes both straightforward environment variables (key=value)
    * and references to secrets.
    */
-  KubernetesCronJobContainerAppEnv env = 5;
+  KubernetesCronJobContainerAppEnv env = 6;
 
   /**
    * A cron schedule expression in standard Cron format, e.g. "0 0 * * *".
    * This field is required.
    */
-  string schedule = 6 [(buf.validate.field).required = true];
+  string schedule = 7 [(buf.validate.field).required = true];
 
   /**
    * Optional deadline in seconds for starting the job if it misses its scheduled time.
    * If set to 0, no deadline is enforced.
    */
-  optional uint64 starting_deadline_seconds = 7 [
+  optional uint64 starting_deadline_seconds = 8 [
     (org.project_planton.shared.options.default) = "0",
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
@@ -76,7 +79,7 @@ message KubernetesCronJobSpec {
    * Allowed values are: "Allow", "Forbid", "Replace".
    * Default is "Forbid".
    */
-  optional string concurrency_policy = 8 [
+  optional string concurrency_policy = 9 [
     (org.project_planton.shared.options.default) = "Forbid",
     (buf.validate.field).string = {
       in: [
@@ -91,32 +94,32 @@ message KubernetesCronJobSpec {
    * If true, no subsequent runs are scheduled.
    * Default is false.
    */
-  optional bool suspend = 9 [(org.project_planton.shared.options.default) = "false"];
+  optional bool suspend = 10 [(org.project_planton.shared.options.default) = "false"];
 
   /**
    * Number of successful finished jobs to retain.
    * Default is 3.
    */
-  optional uint32 successful_jobs_history_limit = 10 [(org.project_planton.shared.options.default) = "3"];
+  optional uint32 successful_jobs_history_limit = 11 [(org.project_planton.shared.options.default) = "3"];
 
   /**
    * Number of failed finished jobs to retain.
    * Default is 1.
    */
-  optional uint32 failed_jobs_history_limit = 11 [(org.project_planton.shared.options.default) = "1"];
+  optional uint32 failed_jobs_history_limit = 12 [(org.project_planton.shared.options.default) = "1"];
 
   /**
    * Number of retries before marking this job as failed.
    * Default is 6.
    */
-  optional uint32 backoff_limit = 12 [(org.project_planton.shared.options.default) = "6"];
+  optional uint32 backoff_limit = 13 [(org.project_planton.shared.options.default) = "6"];
 
   /**
    * Pod restart policy.
    * Allowed values: "Always", "OnFailure", "Never".
    * Default is "Never".
    */
-  optional string restart_policy = 13 [
+  optional string restart_policy = 14 [
     (org.project_planton.shared.options.default) = "Never",
     (buf.validate.field).string = {
       in: [
@@ -132,14 +135,14 @@ message KubernetesCronJobSpec {
    * If omitted, the default ENTRYPOINT in the image will be used.
    * Example: ["sh","-c","echo Hello from Cron"]
    */
-  repeated string command = 14;
+  repeated string command = 15;
 
   /**
    * An optional list of arguments passed to the container command or the image's default ENTRYPOINT.
    * If omitted, the default CMD in the image will be used.
    * Example: ["-f","/path/to/config.yaml"]
    */
-  repeated string args = 15;
+  repeated string args = 16;
 }
 
 /**

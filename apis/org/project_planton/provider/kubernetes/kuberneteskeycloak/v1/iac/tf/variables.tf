@@ -16,6 +16,19 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # Target Kubernetes cluster
+    target_cluster = object({
+      cluster_name = string
+    })
+
+    # Kubernetes namespace
+    namespace = object({
+      value = string
+    })
+
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The container specifications for the Keycloak deployment.
     container = object({
 

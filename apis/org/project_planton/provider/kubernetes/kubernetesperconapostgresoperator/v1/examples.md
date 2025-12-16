@@ -2,6 +2,15 @@
 
 Below are examples demonstrating how to configure and deploy the `KubernetesPerconaPostgresOperator` API resource using various specifications. Follow the instructions to create and apply each YAML configuration using the Planton CLI.
 
+## Namespace Management
+
+The `create_namespace` field controls whether the deployment creates the namespace or uses an existing one:
+
+- **`create_namespace: true`** - The deployment creates and manages the namespace. Recommended for new deployments.
+- **`create_namespace: false`** - The deployment uses an existing namespace. Use this when namespaces are managed separately.
+
+**Important**: When using `create_namespace: false`, ensure the namespace exists before deployment.
+
 ---
 
 ## Example 1: Basic Operator Deployment
@@ -31,6 +40,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -70,6 +80,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -109,6 +120,7 @@ spec:
     cluster_name: "my-local-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator-dev"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -118,6 +130,60 @@ spec:
         cpu: 500m
         memory: 512Mi
 ```
+
+---
+
+## Example 4: Using Existing Namespace
+
+### Description
+
+This example demonstrates deploying the operator into a pre-existing namespace managed by your platform team or GitOps system.
+
+### Prerequisites
+
+Ensure the namespace exists before deployment:
+
+```shell
+kubectl create namespace percona-operators
+```
+
+### Create and Apply
+
+1. **Create a YAML file** using the example below.
+2. **Apply the configuration** using the following command:
+
+    ```shell
+    planton pulumi up --manifest <yaml-path>
+    ```
+
+### YAML Configuration
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesPerconaPostgresOperator
+metadata:
+  name: percona-pg-operator-shared
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "percona-operators"
+  create_namespace: false
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+### Notes
+
+- The namespace `percona-operators` must exist before deployment
+- This approach is useful when namespace management is centralized
+- On deletion, the namespace will not be removed, only the operator resources
 
 ---
 

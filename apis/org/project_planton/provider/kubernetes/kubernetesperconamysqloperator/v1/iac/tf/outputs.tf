@@ -1,6 +1,6 @@
 output "namespace" {
   description = "The Kubernetes namespace where the Percona Operator for MySQL is installed"
-  value       = kubernetes_namespace.percona_mysql_operator.metadata[0].name
+  value       = local.namespace
 }
 
 output "operator_version" {

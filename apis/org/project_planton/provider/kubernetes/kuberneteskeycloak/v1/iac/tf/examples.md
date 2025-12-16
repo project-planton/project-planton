@@ -32,6 +32,13 @@ module "keycloak_basic" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "dev-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-basic"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -90,6 +97,13 @@ module "keycloak_public" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-public"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -145,6 +159,13 @@ module "keycloak_dev" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "dev-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-dev"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -186,6 +207,13 @@ module "keycloak_high_resources" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-enterprise"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -249,6 +277,13 @@ module "keycloak_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-prod-auth"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -395,6 +430,13 @@ module "keycloak" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "${each.key}-gke-cluster"
+    }
+    namespace = {
+      value = "keycloak-${each.key}"
+    }
+    create_namespace = true
     container = {
       resources = {
         requests = {

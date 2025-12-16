@@ -17,14 +17,25 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) (*appsv1.Deployment, error) {
 
 	// create service account
-	createdServiceAccount, err := kubernetescorev1.NewServiceAccount(ctx,
-		locals.KubernetesDeployment.Metadata.Name,
-		&kubernetescorev1.ServiceAccountArgs{
-			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
-			}),
-		}, pulumi.Parent(createdNamespace))
+	serviceAccountArgs := &kubernetescorev1.ServiceAccountArgs{
+		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
+			Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
+			Namespace: pulumi.String(locals.Namespace),
+		}),
+	}
+
+	var createdServiceAccount *kubernetescorev1.ServiceAccount
+	var err error
+	if createdNamespace != nil {
+		createdServiceAccount, err = kubernetescorev1.NewServiceAccount(ctx,
+			locals.KubernetesDeployment.Metadata.Name,
+			serviceAccountArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		createdServiceAccount, err = kubernetescorev1.NewServiceAccount(ctx,
+			locals.KubernetesDeployment.Metadata.Name,
+			serviceAccountArgs)
+	}
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add service account")
 	}
@@ -140,37 +151,51 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 	}
 
 	//create deployment
-	createdDeployment, err := appsv1.NewDeployment(ctx,
-		locals.KubernetesDeployment.Spec.Version,
-		&appsv1.DeploymentArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-				Annotations: pulumi.StringMap{
-					"pulumi.com/patchForce": pulumi.String("true"),
-				},
+	deploymentArgs := &appsv1.DeploymentArgs{
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+			Annotations: pulumi.StringMap{
+				"pulumi.com/patchForce": pulumi.String("true"),
 			},
-			Spec: &appsv1.DeploymentSpecArgs{
-				Replicas: pulumi.Int(locals.KubernetesDeployment.Spec.Availability.MinReplicas),
-				Strategy: buildDeploymentStrategy(locals.KubernetesDeployment.Spec.Availability.DeploymentStrategy),
-				Selector: &metav1.LabelSelectorArgs{
-					MatchLabels: pulumi.ToStringMap(locals.SelectorLabels),
-				},
-				Template: &kubernetescorev1.PodTemplateSpecArgs{
-					Metadata: &metav1.ObjectMetaArgs{
-						Labels: pulumi.ToStringMap(locals.Labels),
-					},
-					Spec: podSpecArgs,
-				},
+		},
+		Spec: &appsv1.DeploymentSpecArgs{
+			Replicas: pulumi.Int(locals.KubernetesDeployment.Spec.Availability.MinReplicas),
+			Strategy: buildDeploymentStrategy(locals.KubernetesDeployment.Spec.Availability.DeploymentStrategy),
+			Selector: &metav1.LabelSelectorArgs{
+				MatchLabels: pulumi.ToStringMap(locals.SelectorLabels),
 			},
-		}, pulumi.Parent(createdNamespace), pulumi.IgnoreChanges([]string{
-			//WARNING: adding metdata.managedFields to ignoreChanges is rejected from kubernetes api-server for some reason
-			//although the issue must have been resolved by now,per, https://github.com/pulumi/pulumi-kubernetes/issues/1075,
-			//apparently it is not.
-			//error from the api-server is "metadata.managedFields must be nil"
-			//"metadata.managedFields", "status",
-		}))
+			Template: &kubernetescorev1.PodTemplateSpecArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Labels: pulumi.ToStringMap(locals.Labels),
+				},
+				Spec: podSpecArgs,
+			},
+		},
+	}
+
+	ignoreChangesOpt := pulumi.IgnoreChanges([]string{
+		//WARNING: adding metdata.managedFields to ignoreChanges is rejected from kubernetes api-server for some reason
+		//although the issue must have been resolved by now,per, https://github.com/pulumi/pulumi-kubernetes/issues/1075,
+		//apparently it is not.
+		//error from the api-server is "metadata.managedFields must be nil"
+		//"metadata.managedFields", "status",
+	})
+
+	var createdDeployment *appsv1.Deployment
+	if createdNamespace != nil {
+		createdDeployment, err = appsv1.NewDeployment(ctx,
+			locals.KubernetesDeployment.Spec.Version,
+			deploymentArgs,
+			pulumi.Parent(createdNamespace),
+			ignoreChangesOpt)
+	} else {
+		createdDeployment, err = appsv1.NewDeployment(ctx,
+			locals.KubernetesDeployment.Spec.Version,
+			deploymentArgs,
+			ignoreChangesOpt)
+	}
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add deployment")
 	}

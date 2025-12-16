@@ -16,6 +16,10 @@
 
 - **Namespace Isolation**: The module provisions a Kubernetes namespace for Grafana, ensuring the deployment is isolated from other applications running in the cluster. It also reuses existing namespaces if specified.
 
+- **Flexible Namespace Management**: The module provides control over namespace creation through the `create_namespace` flag:
+  - When `create_namespace: true`, the module creates a dedicated namespace with appropriate resource labels for tracking and organization.
+  - When `create_namespace: false` (default), the module uses an existing namespace, which must be created beforehand. This is useful for deploying multiple components into a shared namespace or when namespace lifecycle is managed separately.
+
 - **Output Management**: The module captures and stores essential deployment details in `status.outputs`, such as:
   - The namespace where Grafana is deployed.
   - The service name that exposes Grafana within the Kubernetes cluster.

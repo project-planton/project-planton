@@ -83,17 +83,21 @@ crds, err := pulumiyaml.NewConfigFile(ctx, "solr-operator-crds",
 pulumi.DependsOn([]pulumi.Resource{crds})
 ```
 
-### 2. Dedicated Namespace
+### 2. Namespace Management
 
-**Decision**: Deploy operator to `solr-operator` namespace, always.
+**Decision**: Support both namespace creation and usage of existing namespaces via `create_namespace` flag.
 
 **Rationale**:
-- Isolation from user workloads
-- Clear ownership and lifecycle management
-- Standard practice for cluster-scoped operators
-- Simplifies RBAC and network policies
+- **Flexibility**: Users can choose their namespace management strategy
+- **GitOps Compatibility**: Allows separate namespace lifecycle management
+- **Multi-tenant Support**: Platform teams can pre-provision namespaces with policies
+- **Backward Compatibility**: Default behavior (false) prevents accidental namespace creation
 
-**Future Consideration**: Could make namespace configurable, but current approach follows convention-over-configuration.
+**Implementation**:
+- When `create_namespace: true`: Create namespace resource, set as parent for CRDs and Helm
+- When `create_namespace: false`: Reference namespace by name, no parent relationship
+
+**Tradeoff**: Requires users to understand namespace lifecycle implications.
 
 ### 3. Atomic Helm Deployment
 

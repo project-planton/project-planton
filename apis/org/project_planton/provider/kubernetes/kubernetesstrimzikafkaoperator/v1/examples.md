@@ -12,6 +12,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "strimzi-kafka-operator"
+  createNamespace: true
   container: {}
 ```
 
@@ -27,6 +28,7 @@ spec:
     clusterName: "production-gke-cluster"
   namespace:
     value: "strimzi-kafka-operator"
+  createNamespace: true
   container:
     resources:
       requests:
@@ -49,6 +51,7 @@ spec:
     clusterName: "prod-gke-cluster-01"
   namespace:
     value: "strimzi-kafka-operator"
+  createNamespace: true
   container:
     resources:
       requests:
@@ -57,6 +60,37 @@ spec:
       limits:
         cpu: 1000m
         memory: 1Gi
+```
+
+## Example 4: Using Existing Namespace
+
+This example demonstrates using a pre-existing namespace. The namespace must already exist in the cluster before deploying the operator.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesStrimziKafkaOperator
+metadata:
+  name: kafka-operator-existing-ns
+spec:
+  targetCluster:
+    clusterName: "my-gke-cluster"
+  namespace:
+    value: "platform-operators"
+  createNamespace: false
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+**Note:** When `createNamespace: false`, ensure the namespace exists before deployment. This is useful when:
+- The namespace has pre-configured quotas, labels, or annotations
+- Multiple operators share the same namespace
+- Namespace lifecycle is managed by a separate GitOps process
 ```
 
 ## Post-Deployment: Kafka Cluster Examples

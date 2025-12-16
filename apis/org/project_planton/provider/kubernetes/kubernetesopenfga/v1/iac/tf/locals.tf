@@ -30,6 +30,17 @@ locals {
   # Use resource_id as the namespace name
   namespace = local.resource_id
 
+  # Reference to the namespace name (either created or existing)
+  namespace_name = var.spec.create_namespace ? (
+    length(kubernetes_namespace.openfga_namespace) > 0 ?
+    kubernetes_namespace.openfga_namespace[0].metadata[0].name :
+    local.namespace
+  ) : (
+    length(data.kubernetes_namespace.existing_namespace) > 0 ?
+    data.kubernetes_namespace.existing_namespace[0].metadata[0].name :
+    local.namespace
+  )
+
   # Service name (using metadata.name directly)
   kube_service_name = var.metadata.name
 

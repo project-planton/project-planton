@@ -10,7 +10,11 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-basic
 spec:
-  kubernetesProviderConfigId: cluster-credential-12345
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "prometheus-basic"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -32,7 +36,11 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-with-persistence
 spec:
-  kubernetesProviderConfigId: cluster-credential-67890
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "prometheus-persistence"
+  create_namespace: true
   container:
     replicas: 2
     resources:
@@ -42,8 +50,8 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    isPersistenceEnabled: true
-    diskSize: "5Gi"
+    persistence_enabled: true
+    disk_size: "5Gi"
 ```
 
 ## Example 3: Prometheus with Ingress Configuration
@@ -56,7 +64,11 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-with-ingress
 spec:
-  kubernetesProviderConfigId: cluster-credential-24680
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "prometheus-ingress"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -67,9 +79,8 @@ spec:
         cpu: 2
         memory: 2Gi
   ingress:
-    isEnabled: true
-    ingressClass: "nginx"
-    host: "prometheus.example.com"
+    enabled: true
+    hostname: "prometheus.example.com"
 ```
 
 ## Example 4: Prometheus with Custom Resource Limits and No Persistence
@@ -82,7 +93,11 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-custom-limits
 spec:
-  kubernetesProviderConfigId: cluster-credential-112233
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "prometheus-custom"
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -92,5 +107,5 @@ spec:
       limits:
         cpu: 500m
         memory: 1Gi
-    isPersistenceEnabled: false
+    persistence_enabled: false
 ```

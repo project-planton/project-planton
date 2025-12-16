@@ -159,27 +159,29 @@ func (KubernetesClickHouseLoggingConfig_LogLevel) EnumDescriptor() ([]byte, []in
 // with features like automated upgrades, scaling, and ZooKeeper coordination.
 type KubernetesClickHouseSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install ClickHouse on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install ClickHouse.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// *
 	// The name of the ClickHouse cluster.
 	// This is used as the identifier for the ClickHouseInstallation custom resource.
 	// Must be a valid DNS subdomain name (lowercase alphanumeric with hyphens).
 	// Defaults to the resource metadata name if not specified.
-	ClusterName string `protobuf:"bytes,3,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	ClusterName string `protobuf:"bytes,4,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// The container specifications for the ClickHouse deployment.
-	Container *KubernetesClickHouseContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesClickHouseContainer `protobuf:"bytes,5,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the ClickHouse deployment.
-	Ingress *KubernetesClickHouseIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesClickHouseIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The cluster configuration for ClickHouse sharding and replication.
-	Cluster *KubernetesClickHouseClusterConfig `protobuf:"bytes,6,opt,name=cluster,proto3" json:"cluster,omitempty"`
+	Cluster *KubernetesClickHouseClusterConfig `protobuf:"bytes,7,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	// *
 	// The ClickHouse version to deploy (e.g., "24.3", "23.8").
 	// If not specified, the operator's default stable version will be used.
 	// It's recommended to specify a version for production deployments to ensure consistency.
-	Version string `protobuf:"bytes,7,opt,name=version,proto3" json:"version,omitempty"`
+	Version string `protobuf:"bytes,8,opt,name=version,proto3" json:"version,omitempty"`
 	// *
 	// Coordination configuration for cluster operations.
 	// Required when cluster.is_enabled = true.
@@ -188,7 +190,7 @@ type KubernetesClickHouseSpec struct {
 	// This is more efficient than ZooKeeper and easier to manage.
 	//
 	// Advanced: Configure external Keeper or ZooKeeper for shared infrastructure scenarios.
-	Coordination *KubernetesClickHouseCoordinationConfig `protobuf:"bytes,8,opt,name=coordination,proto3" json:"coordination,omitempty"`
+	Coordination *KubernetesClickHouseCoordinationConfig `protobuf:"bytes,9,opt,name=coordination,proto3" json:"coordination,omitempty"`
 	// *
 	// ZooKeeper configuration for cluster coordination.
 	//
@@ -198,14 +200,14 @@ type KubernetesClickHouseSpec struct {
 	// If both 'coordination' and 'zookeeper' are specified, 'coordination' takes precedence.
 	//
 	// Deprecated: Marked as deprecated in org/project_planton/provider/kubernetes/kubernetesclickhouse/v1/spec.proto.
-	Zookeeper *KubernetesClickHouseZookeeperConfig `protobuf:"bytes,9,opt,name=zookeeper,proto3" json:"zookeeper,omitempty"`
+	Zookeeper *KubernetesClickHouseZookeeperConfig `protobuf:"bytes,10,opt,name=zookeeper,proto3" json:"zookeeper,omitempty"`
 	// *
 	// Logging configuration for ClickHouse server.
 	// Controls the verbosity of ClickHouse server logs.
 	//
 	// Required field. Defaults to 'information' level (recommended for production).
 	// Use 'debug' or 'trace' levels only for troubleshooting as they generate significant log volume.
-	Logging       *KubernetesClickHouseLoggingConfig `protobuf:"bytes,10,opt,name=logging,proto3" json:"logging,omitempty"`
+	Logging       *KubernetesClickHouseLoggingConfig `protobuf:"bytes,11,opt,name=logging,proto3" json:"logging,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -252,6 +254,13 @@ func (x *KubernetesClickHouseSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesClickHouseSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesClickHouseSpec) GetClusterName() string {
@@ -926,22 +935,23 @@ var File_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesclickhouse/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesclickhouse.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x9f\t\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesclickhouse/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesclickhouse.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xca\t\n" +
 	"\x18KubernetesClickHouseSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12I\n" +
-	"\fcluster_name\x18\x03 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vclusterName\x12\xaa\x01\n" +
-	"\tcontainer\x18\x04 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainerB,ʵ\xfd\x01'\b\x01\x12\x1b\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12I\n" +
+	"\fcluster_name\x18\x04 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vclusterName\x12\xaa\x01\n" +
+	"\tcontainer\x18\x05 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainerB,ʵ\xfd\x01'\b\x01\x12\x1b\n" +
 	"\f\n" +
 	"\x052000m\x12\x034Gi\x12\v\n" +
 	"\x04500m\x12\x031Gi\x18\x01\"\x0450GiR\tcontainer\x12v\n" +
-	"\aingress\x18\x05 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseIngressR\aingress\x12|\n" +
-	"\acluster\x18\x06 \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseClusterConfigR\acluster\x12\x18\n" +
-	"\aversion\x18\a \x01(\tR\aversion\x12\x8b\x01\n" +
-	"\fcoordination\x18\b \x01(\v2g.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfigR\fcoordination\x12\x86\x01\n" +
-	"\tzookeeper\x18\t \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseZookeeperConfigB\x02\x18\x01R\tzookeeper\x12\x84\x01\n" +
-	"\alogging\x18\n" +
-	" \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfigB\x06\xbaH\x03\xc8\x01\x01R\alogging\"\xc7\x04\n" +
+	"\aingress\x18\x06 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseIngressR\aingress\x12|\n" +
+	"\acluster\x18\a \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseClusterConfigR\acluster\x12\x18\n" +
+	"\aversion\x18\b \x01(\tR\aversion\x12\x8b\x01\n" +
+	"\fcoordination\x18\t \x01(\v2g.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseCoordinationConfigR\fcoordination\x12\x86\x01\n" +
+	"\tzookeeper\x18\n" +
+	" \x01(\v2d.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseZookeeperConfigB\x02\x18\x01R\tzookeeper\x12\x84\x01\n" +
+	"\alogging\x18\v \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseLoggingConfigB\x06\xbaH\x03\xc8\x01\x01R\alogging\"\xc7\x04\n" +
 	"\x1dKubernetesClickHouseContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12Y\n" +
 	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12/\n" +

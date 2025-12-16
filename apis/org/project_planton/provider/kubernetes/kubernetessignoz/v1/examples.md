@@ -20,7 +20,11 @@ kind: SignozKubernetes
 metadata:
   name: basic-signoz
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "signoz"
+  create_namespace: true
   signozContainer:
     replicas: 1
     resources:
@@ -71,7 +75,11 @@ kind: SignozKubernetes
 metadata:
   name: production-signoz
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "prod-gke-cluster"
+  namespace:
+    value: "signoz-prod"
+  create_namespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -134,7 +142,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-external-clickhouse
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "signoz"
+  create_namespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -177,7 +189,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-with-ingress
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "signoz"
+  create_namespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -235,7 +251,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-custom-images
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "signoz"
+  create_namespace: true
   signozContainer:
     replicas: 2
     image:
@@ -295,7 +315,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-custom-helm
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "signoz"
+  create_namespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -358,7 +382,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-high-volume
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "prod-gke-cluster"
+  namespace:
+    value: "signoz-prod"
+  create_namespace: true
   signozContainer:
     replicas: 3
     resources:
@@ -421,7 +449,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-dev
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "dev-cluster"
+  namespace:
+    value: "signoz-dev"
+  create_namespace: true
   signozContainer:
     replicas: 1
     resources:
@@ -471,7 +503,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-s3-archiving
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "prod-gke-cluster"
+  namespace:
+    value: "signoz-prod"
+  create_namespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -518,7 +554,79 @@ spec:
 
 ---
 
+---
+
+## Example w/ Existing Namespace (create_namespace: false)
+
+This example demonstrates using an existing namespace that is managed separately. The namespace must already exist on the cluster before deploying SigNoz.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: SignozKubernetes
+metadata:
+  name: signoz-shared-namespace
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "observability"  # This namespace must already exist
+  create_namespace: false
+  signozContainer:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+  otelCollectorContainer:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 8Gi
+  database:
+    isExternal: false
+    managedDatabase:
+      container:
+        replicas: 1
+        isPersistenceEnabled: true
+        diskSize: 50Gi
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 8Gi
+      cluster:
+        isEnabled: false
+      zookeeper:
+        isEnabled: false
+```
+
+**Important**: When `create_namespace` is `false`, you must ensure the namespace exists before deploying. This is useful when:
+- The namespace is shared with other applications
+- Namespace creation is controlled by a separate team or process
+- You're following organizational policies that require centralized namespace management
+
+---
+
 ## Important Notes
+
+### Namespace Management
+
+All examples above use `create_namespace: true`, which means the component will create the namespace automatically. If you prefer to manage the namespace separately:
+
+- Set `create_namespace: false`
+- Ensure the namespace exists on the cluster before deployment
+- The deployment will fail if the namespace doesn't exist
+
+See the "Example w/ Existing Namespace" above for a complete example.
 
 ### Ingress Configuration
 

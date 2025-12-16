@@ -2,6 +2,15 @@
 
 This document provides practical examples for deploying the Percona Operator for PostgreSQL using Terraform.
 
+## Namespace Management
+
+The `create_namespace` field controls whether the module creates the namespace or uses an existing one:
+
+- **`create_namespace = true`** - The module creates and manages the namespace. Use this for new deployments or when you want the module to handle namespace lifecycle.
+- **`create_namespace = false`** - The module expects the namespace to already exist. Use this when namespaces are managed separately by platform teams or GitOps workflows.
+
+**Important**: When using `create_namespace = false`, ensure the namespace exists before deployment, otherwise Terraform apply will fail.
+
 ---
 
 ## Example 1: Basic Deployment
@@ -23,7 +32,8 @@ spec = {
   target_cluster = {
     cluster_name = "my-gke-cluster"
   }
-  namespace = "kubernetes-percona-postgres-operator"
+  namespace        = "kubernetes-percona-postgres-operator"
+  create_namespace = true
   
   container = {
     resources = {
@@ -112,7 +122,8 @@ spec = {
   target_cluster = {
     cluster_name = "production-gke-cluster"
   }
-  namespace = "kubernetes-percona-postgres-operator-prod"
+  namespace        = "kubernetes-percona-postgres-operator-prod"
+  create_namespace = true
   
   container = {
     resources = {
@@ -159,7 +170,8 @@ spec = {
   target_cluster = {
     cluster_name = "dev-gke-cluster"
   }
-  namespace = "kubernetes-percona-postgres-operator-dev"
+  namespace        = "kubernetes-percona-postgres-operator-dev"
+  create_namespace = true
   
   container = {
     resources = {
@@ -186,7 +198,68 @@ terraform apply -var-file="dev.tfvars"
 
 ---
 
-## Example 4: Multi-Environment Setup
+## Example 4: Using Existing Namespace
+
+### Description
+
+Deploy the operator into a namespace that already exists and is managed separately.
+
+### Prerequisites
+
+Create the namespace first:
+```bash
+kubectl create namespace percona-operators
+kubectl label namespace percona-operators managed-by=platform-team
+```
+
+### Configuration
+
+#### `existing-namespace.tfvars`
+
+```hcl
+metadata = {
+  name = "percona-pg-operator-shared"
+}
+
+spec = {
+  target_cluster = {
+    cluster_name = "shared-cluster"
+  }
+  namespace        = "percona-operators"
+  create_namespace = false
+  
+  container = {
+    resources = {
+      requests = {
+        cpu    = "100m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1000m"
+        memory = "1Gi"
+      }
+    }
+  }
+}
+```
+
+### Deploy
+
+```bash
+terraform init
+terraform plan -var-file="existing-namespace.tfvars"
+terraform apply -var-file="existing-namespace.tfvars"
+```
+
+### Notes
+
+- The namespace `percona-operators` must exist before running terraform apply
+- This approach is useful when namespace management is centralized or follows specific governance policies
+- On destroy, the namespace will not be deleted, only the operator resources
+
+---
+
+## Example 5: Multi-Environment Setup
 
 ### Description
 
@@ -224,7 +297,7 @@ terraform apply -var-file="prod.tfvars"
 
 ---
 
-## Example 5: With Remote State
+## Example 6: With Remote State
 
 ### Description
 
@@ -255,7 +328,7 @@ terraform apply -var-file="production.tfvars"
 
 ---
 
-## Example 6: With Outputs for Integration
+## Example 7: With Outputs for Integration
 
 ### Description
 
@@ -343,7 +416,10 @@ To remove the operator:
 terraform destroy -var-file="production.tfvars"
 ```
 
-**Warning**: This will remove the operator but not the CRDs or any PostgreSQL clusters managed by it.
+**Warning**: 
+- This will remove the operator but not the CRDs or any PostgreSQL clusters managed by it.
+- If `create_namespace = true` was used, the namespace will be deleted during destroy.
+- If `create_namespace = false` was used, the namespace will remain after destroy.
 
 ---
 

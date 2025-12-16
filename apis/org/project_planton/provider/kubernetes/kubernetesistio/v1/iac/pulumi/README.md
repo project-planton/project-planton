@@ -32,6 +32,7 @@ The module provides a simplified interface for deploying Istio with:
 4. **Dual Namespace Architecture**
    - `istio-system` for control plane components
    - `istio-ingress` for ingress gateway (security best practice)
+   - Configurable namespace creation via `CreateNamespace` flag
 
 ## Module Structure
 
@@ -55,11 +56,15 @@ import (
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         istioSpec := &kubernetesistiov1.KubernetesIstioSpec{
-            TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-                CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-                    KubernetesCredentialId: "my-cluster-credential",
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "my-gke-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "istio-system",
                 },
             },
+            CreateNamespace: true,
             Container: &kubernetesistiov1.KubernetesIstioSpecContainer{
                 Resources: &kubernetes.ContainerResources{
                     Requests: &kubernetes.CpuMemory{
@@ -100,11 +105,15 @@ func main() {
 
 ```go
 istioSpec := &kubernetesistiov1.KubernetesIstioSpec{
-    TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-        CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-            KubernetesCredentialId: "prod-cluster-credential",
+    TargetCluster: &kubernetes.KubernetesClusterSelector{
+        ClusterName: "prod-gke-cluster",
+    },
+    Namespace: &foreignkeyv1.StringValueOrRef{
+        LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+            Value: "istio-system",
         },
     },
+    CreateNamespace: true,
     Container: &kubernetesistiov1.KubernetesIstioSpecContainer{
         Resources: &kubernetes.ContainerResources{
             Requests: &kubernetes.CpuMemory{
@@ -124,11 +133,15 @@ istioSpec := &kubernetesistiov1.KubernetesIstioSpec{
 
 ```go
 istioSpec := &kubernetesistiov1.KubernetesIstioSpec{
-    TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-        CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-            KubernetesCredentialId: "ha-cluster-credential",
+    TargetCluster: &kubernetes.KubernetesClusterSelector{
+        ClusterName: "prod-ha-gke-cluster",
+    },
+    Namespace: &foreignkeyv1.StringValueOrRef{
+        LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+            Value: "istio-system",
         },
     },
+    CreateNamespace: true,
     Container: &kubernetesistiov1.KubernetesIstioSpecContainer{
         Resources: &kubernetes.ContainerResources{
             Requests: &kubernetes.CpuMemory{
@@ -283,7 +296,68 @@ istioctl version
 istioctl verify-install
 ```
 
+## Namespace Management
+
+The module manages two Istio namespaces:
+
+- **istio-system**: Control plane namespace (istiod, base CRDs)
+- **istio-ingress**: Ingress gateway namespace
+
+### Automatic Namespace Creation
+
+Set `CreateNamespace: true` (default behavior):
+
+```go
+istioSpec := &kubernetesistiov1.KubernetesIstioSpec{
+    CreateNamespace: true,  // Creates both namespaces automatically
+    // ... other fields
+}
+```
+
+The module will create both `istio-system` and `istio-ingress` namespaces.
+
+### Using Existing Namespaces
+
+Set `CreateNamespace: false` to use pre-existing namespaces:
+
+```go
+istioSpec := &kubernetesistiov1.KubernetesIstioSpec{
+    CreateNamespace: false,  // Use existing namespaces
+    // ... other fields
+}
+```
+
+**Prerequisites:**
+- Both `istio-system` and `istio-ingress` namespaces must already exist
+- Namespaces should have appropriate labels and RBAC configured
+
+**Verification:**
+
+Before deploying with `CreateNamespace: false`, verify namespaces exist:
+
+```bash
+kubectl get namespace istio-system istio-ingress
+```
+
 ## Troubleshooting
+
+### Namespace Not Found Error
+
+If you see errors like "namespace not found" during deployment:
+
+1. Check if `CreateNamespace` is set correctly:
+   ```bash
+   # If CreateNamespace: false, verify namespaces exist
+   kubectl get namespace istio-system istio-ingress
+   ```
+
+2. If namespaces don't exist, either:
+   - Set `CreateNamespace: true` in your spec
+   - Or create the namespaces manually:
+     ```bash
+     kubectl create namespace istio-system
+     kubectl create namespace istio-ingress
+     ```
 
 ### Control Plane Not Starting
 

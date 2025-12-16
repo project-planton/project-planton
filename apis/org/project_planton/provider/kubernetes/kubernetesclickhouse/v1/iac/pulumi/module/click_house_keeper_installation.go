@@ -4,7 +4,6 @@ import (
 	"github.com/pkg/errors"
 	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
 	clickhousekeeperv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/altinityoperator/kubernetes/clickhouse_keeper/v1"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -17,7 +16,7 @@ import (
 func clickhouseKeeperInstallation(
 	ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	namespace pulumi.StringInput,
 	keeperConfig *kubernetesclickhousev1.KubernetesClickHouseKeeperConfig,
 ) error {
 	// Apply defaults if keeper_config is not specified
@@ -43,7 +42,7 @@ func clickhouseKeeperInstallation(
 		&clickhousekeeperv1.ClickHouseKeeperInstallationArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(keeperName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: namespace,
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: &clickhousekeeperv1.ClickHouseKeeperInstallationSpecArgs{
@@ -52,7 +51,6 @@ func clickhouseKeeperInstallation(
 				Templates: buildKeeperTemplates(diskSize, keeperConfig),
 			},
 		},
-		pulumi.Parent(createdNamespace),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create ClickHouseKeeperInstallation")

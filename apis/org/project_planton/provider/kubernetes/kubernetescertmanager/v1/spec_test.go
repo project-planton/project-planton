@@ -37,6 +37,7 @@ var _ = ginkgo.Describe("KubernetesCertManager Custom Validation Tests", func() 
 						Value: "test-namespace",
 					},
 				},
+				CreateNamespace: true,
 				Acme: &AcmeConfig{
 					Email: "admin@example.com",
 				},

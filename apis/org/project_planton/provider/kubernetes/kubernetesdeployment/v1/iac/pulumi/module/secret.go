@@ -25,19 +25,27 @@ func secret(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescor
 	}
 
 	// create a standard kubernetes secret with name "main"
-	_, err := kubernetescorev1.NewSecret(ctx,
-		"main",
-		&kubernetescorev1.SecretArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String("main"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Type:       pulumi.String("Opaque"),
-			StringData: pulumi.ToStringMap(dataMap),
+	secretArgs := &kubernetescorev1.SecretArgs{
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String("main"),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
 		},
-		pulumi.Parent(createdNamespace),
-	)
+		Type:       pulumi.String("Opaque"),
+		StringData: pulumi.ToStringMap(dataMap),
+	}
+
+	var err error
+	if createdNamespace != nil {
+		_, err = kubernetescorev1.NewSecret(ctx,
+			"main",
+			secretArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		_, err = kubernetescorev1.NewSecret(ctx,
+			"main",
+			secretArgs)
+	}
 	if err != nil {
 		return errors.Wrap(err, "failed to create secret resource")
 	}

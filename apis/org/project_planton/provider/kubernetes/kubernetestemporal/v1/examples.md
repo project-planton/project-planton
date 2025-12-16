@@ -21,6 +21,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: temporal-basic
+  create_namespace: true
   database:
     backend: cassandra
   ingress:
@@ -53,6 +54,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: temporal-prod
+  create_namespace: true
   database:
     backend: postgresql
     external_database:
@@ -90,6 +92,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: temporal-observability
+  create_namespace: true
   database:
     backend: cassandra
   external_elasticsearch:
@@ -171,4 +174,63 @@ spec:
 
 - Useful when integrating with existing database management procedures, enforcing naming conventions, or preventing
   automatic schema alterations.
+
+---
+
+## Namespace Management
+
+### Example 6: Using Existing Namespace
+
+Deploy Temporal into an existing namespace without creating it:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-existing-ns
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: existing-temporal-namespace
+  create_namespace: false  # Use existing namespace
+  database:
+    backend: cassandra
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend.example.com
+```
+
+**Use Case:**
+
+- When namespace is pre-created with specific policies, quotas, or RBAC
+- In environments with strict namespace governance
+- When multiple components share the same namespace
+
+### Example 7: Creating New Namespace (Default Behavior)
+
+Create a new namespace for Temporal deployment:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-new-ns
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: temporal-namespace
+  create_namespace: true  # Create new namespace (this is the default)
+  database:
+    backend: cassandra
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend.example.com
+```
+
+**Note:** If `create_namespace` is omitted, it defaults to `true` for backward compatibility. The module will create
+the namespace with appropriate labels and metadata.
 

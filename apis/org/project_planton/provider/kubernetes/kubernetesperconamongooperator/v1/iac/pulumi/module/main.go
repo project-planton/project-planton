@@ -25,16 +25,19 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 	// determine namespace - use from spec or default
 	namespace := stackInput.Target.Spec.Namespace.GetValue()
 
-	// create dedicated namespace
-	ns, err := corev1.NewNamespace(ctx, namespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(namespace),
+	// conditionally create namespace resource based on create_namespace flag
+	var createdNamespace *corev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = corev1.NewNamespace(ctx, namespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name: pulumi.String(namespace),
+				},
 			},
-		},
-		pulumi.Provider(kubeProvider))
-	if err != nil {
-		return errors.Wrap(err, "failed to create namespace")
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create namespace")
+		}
 	}
 
 	// prepare helm values with resource limits from spec
@@ -53,11 +56,20 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 		},
 	}
 
+	// prepare helm release options
+	helmOpts := []pulumi.ResourceOption{
+		pulumi.Provider(kubeProvider),
+		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
+	}
+	if createdNamespace != nil {
+		helmOpts = append(helmOpts, pulumi.Parent(createdNamespace))
+	}
+
 	// deploy the operator via Helm
 	_, err = helm.NewRelease(ctx, "percona-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(locals.HelmChartName),
-			Namespace:       ns.Metadata.Name(),
+			Namespace:       pulumi.String(namespace),
 			Chart:           pulumi.String(locals.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -70,15 +82,17 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamongooperatorv1
 				Repo: pulumi.String(locals.HelmChartRepo),
 			},
 		},
-		pulumi.Provider(kubeProvider),
-		pulumi.Parent(ns),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
+		helmOpts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to install percona-operator helm release")
 	}
 
 	// export stack outputs
-	ctx.Export(OpNamespace, ns.Metadata.Name())
+	if createdNamespace != nil {
+		ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
+	} else {
+		ctx.Export(OpNamespace, pulumi.String(namespace))
+	}
 
 	return nil
 }

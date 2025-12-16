@@ -66,8 +66,10 @@ to apply the resource on your cluster.
 2. **Provider Setup**  
    Establishes a Pulumi Kubernetes Provider for your target cluster.
 
-3. **Namespace Creation**  
-   Creates (or identifies) a namespace to house all your microservice resources.
+3. **Namespace Management**  
+   Creates or uses a Kubernetes namespace to house all your microservice resources, controlled by the `create_namespace` flag:
+   - **`create_namespace: true`**: The module creates the namespace with appropriate labels
+   - **`create_namespace: false`**: The module uses an existing namespace (which must already exist in the cluster)
 
 4. **Image Pull Secret (Optional)**  
    If Docker credentials (`docker_config_json`) are provided, creates a `kubernetes.io/dockerconfigjson` secret and

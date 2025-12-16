@@ -18,7 +18,7 @@ type Locals struct {
 	KubernetesMongodb        *kubernetesmongodbv1.KubernetesMongodb
 	Namespace                string
 	MongodbPodSelectorLabels map[string]string
-	KubernetesLabels         map[string]string
+	Labels                   map[string]string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMongodbStackInput) *Locals {
@@ -28,22 +28,22 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.Kuber
 
 	target := stackInput.Target
 
-	locals.KubernetesLabels = map[string]string{
+	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_KubernetesMongodb.String(),
 	}
 
 	if target.Metadata.Id != "" {
-		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
 	if target.Metadata.Org != "" {
-		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = target.Metadata.Org
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
 	if target.Metadata.Env != "" {
-		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = target.Metadata.Env
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
 	// get namespace from spec, it is required field

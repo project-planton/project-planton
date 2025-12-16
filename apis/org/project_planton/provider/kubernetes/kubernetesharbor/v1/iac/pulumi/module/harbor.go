@@ -3,13 +3,12 @@ package module
 import (
 	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func harbor(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	namespace pulumi.StringInput,
 	kubernetesProvider pulumi.ProviderResource) error {
 
 	// https://github.com/goharbor/harbor-helm/blob/main/values.yaml
@@ -278,7 +277,7 @@ func harbor(ctx *pulumi.Context, locals *Locals,
 		locals.KubernetesHarbor.Metadata.Name,
 		&helmv3.ReleaseArgs{
 			Name:      pulumi.String(locals.KubernetesHarbor.Metadata.Name),
-			Namespace: createdNamespace.Metadata.Name(),
+			Namespace: namespace,
 			Chart:     pulumi.String("harbor"),
 			RepositoryOpts: helmv3.RepositoryOptsArgs{
 				Repo: pulumi.String("https://helm.goharbor.io"),
@@ -286,7 +285,6 @@ func harbor(ctx *pulumi.Context, locals *Locals,
 			Values: helmValues,
 		},
 		pulumi.Provider(kubernetesProvider),
-		pulumi.Parent(createdNamespace),
 	)
 
 	return err

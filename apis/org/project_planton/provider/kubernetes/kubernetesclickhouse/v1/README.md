@@ -22,6 +22,22 @@ Deploying ClickHouse on Kubernetes requires managing complex distributed systems
 
 - **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 
+### Namespace Management
+
+The ClickHouse component provides flexible namespace management to accommodate different deployment scenarios:
+
+- **Automatic Namespace Creation**: Set `create_namespace: true` to have the component create and manage the namespace with appropriate labels and metadata. This is ideal when the component should own the namespace lifecycle.
+
+- **Existing Namespace**: Set `create_namespace: false` to deploy into an existing namespace. This is useful when:
+  - The namespace is managed by a separate process or tool
+  - Multiple components share the same namespace
+  - Namespace configuration (labels, annotations, quotas) is managed externally
+
+**Prerequisites when using existing namespace** (`create_namespace: false`):
+- The namespace must exist before deployment
+- You must have permissions to create resources in that namespace
+- Namespace labels and metadata are not managed by this component
+
 ### Cluster Configuration
 
 - **Cluster Name**: Configurable cluster identifier used for the ClickHouseInstallation resource.

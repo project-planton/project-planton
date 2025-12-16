@@ -118,13 +118,19 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 		return errors.Wrap(err, "error creating UI gateway")
 	}
 
+	// Build resource options, conditionally adding parent if namespace was created
+	opts := []pulumi.ResourceOption{}
+	if createdNamespace != nil {
+		opts = append(opts, pulumi.Parent(createdNamespace))
+	}
+
 	// ----------------- HTTPRoute (redirect) --------------------------------
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"http-ui-external-redirect",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("http-ui-external-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -150,7 +156,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, opts...)
 	if err != nil {
 		return errors.Wrap(err, "error creating http→https redirect route")
 	}
@@ -161,7 +167,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-ui-external"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -186,14 +192,14 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(locals.UIServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(vars.UIPort),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, opts...)
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTPS route for UI")
 	}

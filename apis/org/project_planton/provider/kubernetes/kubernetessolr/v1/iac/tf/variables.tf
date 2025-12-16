@@ -17,6 +17,9 @@ variable "spec" {
     # Kubernetes namespace to install the component
     namespace = string
 
+    # flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The specifications for the Solr container deployment.
     solr_container = object({
 

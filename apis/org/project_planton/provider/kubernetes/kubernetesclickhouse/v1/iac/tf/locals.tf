@@ -30,8 +30,8 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Use resource_id as the namespace name
-  namespace = local.resource_id
+  # Namespace is always the value from spec - the create_namespace flag only controls whether we create it
+  namespace = var.spec.namespace
 
   # Determine cluster name - use spec.cluster_name if provided, otherwise use metadata.name
   cluster_name = coalesce(try(var.spec.cluster_name, ""), var.metadata.name)

@@ -27,6 +27,11 @@ kind: RedisKubernetes
 metadata:
   name: basic-redis
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -64,6 +69,11 @@ kind: RedisKubernetes
 metadata:
   name: persistent-redis
 spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
+  create_namespace: true
   container:
     replicas: 3
     resources:

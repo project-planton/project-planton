@@ -31,6 +31,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: default
+  create_namespace: true
   repo: https://charts.bitnami.com/bitnami
   name: nginx
   version: 15.14.0
@@ -55,6 +56,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: default
+  create_namespace: true
   repo: https://charts.bitnami.com/bitnami
   name: nginx
   version: 15.14.0
@@ -89,6 +91,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: wordpress
+  create_namespace: true
   repo: https://charts.bitnami.com/bitnami
   name: wordpress
   version: 19.0.0
@@ -125,6 +128,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: redis
+  create_namespace: true
   repo: https://charts.bitnami.com/bitnami
   name: redis
   version: 18.19.0
@@ -152,7 +156,57 @@ spec:
 
 ---
 
-## Example 5: Production PostgreSQL Deployment
+## Example 5: Using Existing Namespace
+
+Deploy NGINX to an existing namespace without creating it.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: HelmRelease
+metadata:
+  name: nginx-existing-ns
+spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: existing-namespace
+  create_namespace: false
+  repo: https://charts.bitnami.com/bitnami
+  name: nginx
+  version: 15.14.0
+  values: {}
+```
+
+**Use Case:** Deploy to a namespace that already exists and is managed separately.
+
+---
+
+## Example 6: Creating Namespace with Helm Release (Default)
+
+Explicitly create the namespace along with the Helm release.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: HelmRelease
+metadata:
+  name: redis-new-ns
+spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: redis-app
+  create_namespace: true
+  repo: https://charts.bitnami.com/bitnami
+  name: redis
+  version: 18.19.0
+  values: {}
+```
+
+**Use Case:** Create both namespace and Helm release together (default behavior).
+
+---
+
+## Example 7: Production PostgreSQL Deployment
 
 Deploy PostgreSQL with replication, persistence, and backup configuration.
 
@@ -169,6 +223,7 @@ spec:
     cluster_name: prod-cluster
   namespace:
     value: postgres
+  create_namespace: true
   repo: https://charts.bitnami.com/bitnami
   name: postgresql
   version: 14.3.0
@@ -206,7 +261,7 @@ spec:
 
 ---
 
-## Example 6: Monitoring Stack with Prometheus
+## Example 8: Monitoring Stack with Prometheus
 
 Deploy Prometheus for cluster monitoring with persistent storage and retention.
 
@@ -220,6 +275,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: monitoring
+  create_namespace: true
   repo: https://prometheus-community.github.io/helm-charts
   name: prometheus
   version: 25.11.0
@@ -257,7 +313,7 @@ spec:
 
 ---
 
-## Example 7: Private Helm Repository with Authentication
+## Example 9: Private Helm Repository with Authentication
 
 Deploy a chart from a private Helm repository requiring authentication.
 
@@ -273,6 +329,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: default
+  create_namespace: true
   repo: https://private-charts.company.com/charts
   name: internal-app
   version: 2.1.0
@@ -299,7 +356,7 @@ spec:
 
 ---
 
-## Example 8: OCI Registry Helm Chart
+## Example 10: OCI Registry Helm Chart
 
 Deploy a Helm chart stored in an OCI-compliant registry (e.g., GitHub Container Registry, Amazon ECR).
 
@@ -313,6 +370,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: default
+  create_namespace: true
   repo: oci://ghcr.io/company/charts
   name: myapp
   version: 1.5.0
@@ -335,7 +393,7 @@ spec:
 
 ---
 
-## Example 9: Multi-Environment Configuration (Development)
+## Example 11: Multi-Environment Configuration (Development)
 
 Development environment configuration with minimal resources and debugging enabled.
 
@@ -352,6 +410,7 @@ spec:
     cluster_name: dev-cluster
   namespace:
     value: myapp-dev
+  create_namespace: true
   repo: https://charts.company.com/stable
   name: myapp
   version: 3.2.0
@@ -385,7 +444,7 @@ spec:
 
 ---
 
-## Example 10: Multi-Environment Configuration (Production)
+## Example 12: Multi-Environment Configuration (Production)
 
 Production environment with high availability, autoscaling, and security features.
 
@@ -403,6 +462,7 @@ spec:
     cluster_name: prod-cluster
   namespace:
     value: myapp-prod
+  create_namespace: true
   repo: https://charts.company.com/stable
   name: myapp
   version: 3.2.0

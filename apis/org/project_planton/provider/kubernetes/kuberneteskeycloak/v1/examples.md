@@ -10,6 +10,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: keycloak
+  create_namespace: true
   container:
     resources:
       requests:
@@ -33,7 +34,8 @@ spec:
   target_cluster:
     cluster_name: my-cluster
   namespace:
-    value: keycloak
+    value: keycloak-ingress
+  create_namespace: true
   container:
     resources:
       requests:
@@ -58,7 +60,8 @@ spec:
   target_cluster:
     cluster_name: my-cluster
   namespace:
-    value: keycloak
+    value: keycloak-minimal
+  create_namespace: true
   container:
     resources:
       requests:
@@ -67,6 +70,8 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
+  ingress:
+    enabled: false
 ```
 
 # Example 4: Keycloak Kubernetes with High Resource Allocation
@@ -81,6 +86,7 @@ spec:
     cluster_name: prod-cluster
   namespace:
     value: keycloak-prod
+  create_namespace: true
   container:
     resources:
       requests:
@@ -106,6 +112,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: keycloak-dev
+  create_namespace: true
   container:
     resources:
       requests:
@@ -114,6 +121,57 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
+  ingress:
+    enabled: false
+```
+
+# Example 6: Keycloak with Namespace Creation
+
+```yaml
+apiVersion: kubernetes.project-planton.cloud/v1
+kind: KubernetesKeycloak
+metadata:
+  name: keycloak-with-namespace
+spec:
+  target_cluster:
+    cluster_name: "prod-gke-cluster"
+  namespace:
+    value: "keycloak-dedicated"
+  create_namespace: true  # Module creates the namespace
+  container:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+  ingress:
+    enabled: true
+    hostname: "auth.example.com"
+```
+
+# Example 7: Keycloak in Pre-existing Namespace
+
+```yaml
+apiVersion: kubernetes.project-planton.cloud/v1
+kind: KubernetesKeycloak
+metadata:
+  name: keycloak-shared
+spec:
+  target_cluster:
+    cluster_name: "prod-gke-cluster"
+  namespace:
+    value: "shared-auth"
+  create_namespace: false  # Assumes namespace already exists
+  container:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
   ingress:
     enabled: false
 ```

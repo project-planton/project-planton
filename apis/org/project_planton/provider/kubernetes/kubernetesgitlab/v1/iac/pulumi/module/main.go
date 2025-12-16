@@ -4,15 +4,124 @@ import (
 	"github.com/pkg/errors"
 	kubernetesgitlabv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
+	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
+	networkingv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/networking/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGitlabStackInput) error {
-	//create kubernetes-provider from the credential in the stack-input
-	_, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
+	// Initialize local values
+	locals := initializeLocals(stackInput)
+
+	// Create kubernetes-provider from the credential in the stack-input
+	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
 		stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
-		return errors.Wrap(err, "failed to setup gcp provider")
+		return errors.Wrap(err, "failed to setup kubernetes provider")
+	}
+
+	// Conditionally create or use existing namespace
+	namespaceInput, err := createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubeProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to handle namespace")
+	}
+
+	// Export namespace for reference
+	ctx.Export("namespace", namespaceInput)
+
+	// Create a placeholder service for GitLab
+	// Note: In production, this would typically use the official GitLab Helm chart
+	// https://docs.gitlab.com/charts/
+	service, err := corev1.NewService(ctx,
+		locals.ServiceName,
+		&corev1.ServiceArgs{
+			Metadata: &metav1.ObjectMetaArgs{
+				Name:      pulumi.String(locals.ServiceName),
+				Namespace: namespaceInput,
+				Labels:    pulumi.ToStringMap(locals.Labels),
+			},
+			Spec: &corev1.ServiceSpecArgs{
+				Type: pulumi.String("ClusterIP"),
+				Ports: corev1.ServicePortArray{
+					&corev1.ServicePortArgs{
+						Name:       pulumi.String("http"),
+						Port:       pulumi.Int(80),
+						TargetPort: pulumi.Int(8080),
+						Protocol:   pulumi.String("TCP"),
+					},
+				},
+				Selector: pulumi.ToStringMap(map[string]string{
+					"app":         "gitlab",
+					"resource_id": locals.Labels["resource_id"],
+				}),
+			},
+		},
+		pulumi.Provider(kubeProvider))
+	if err != nil {
+		return errors.Wrap(err, "failed to create GitLab service")
+	}
+
+	// Export service information
+	ctx.Export("service_name", service.Metadata.Name())
+	ctx.Export("service_fqdn", pulumi.String(locals.ServiceFQDN))
+	ctx.Export("port_forward_command", pulumi.String(locals.PortForwardCmd))
+
+	// Create ingress if enabled
+	if locals.IngressHostname != "" {
+		serviceName := service.Metadata.Name().Elem()
+		_, err := networkingv1.NewIngress(ctx,
+			locals.ServiceName+"-ingress",
+			&networkingv1.IngressArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name:      pulumi.Sprintf("%s-ingress", locals.ServiceName),
+					Namespace: namespaceInput,
+					Labels:    pulumi.ToStringMap(locals.Labels),
+					Annotations: pulumi.StringMap{
+						"cert-manager.io/cluster-issuer": pulumi.String("letsencrypt-prod"),
+					},
+				},
+				Spec: &networkingv1.IngressSpecArgs{
+					IngressClassName: pulumi.String("istio"),
+					Tls: networkingv1.IngressTLSArray{
+						&networkingv1.IngressTLSArgs{
+							Hosts: pulumi.StringArray{
+								pulumi.String(locals.IngressHostname),
+							},
+							SecretName: pulumi.Sprintf("%s-tls", locals.ServiceName),
+						},
+					},
+					Rules: networkingv1.IngressRuleArray{
+						&networkingv1.IngressRuleArgs{
+							Host: pulumi.String(locals.IngressHostname),
+							Http: &networkingv1.HTTPIngressRuleValueArgs{
+								Paths: networkingv1.HTTPIngressPathArray{
+									&networkingv1.HTTPIngressPathArgs{
+										Path:     pulumi.String("/"),
+										PathType: pulumi.String("Prefix"),
+										Backend: &networkingv1.IngressBackendArgs{
+											Service: &networkingv1.IngressServiceBackendArgs{
+												Name: serviceName,
+												Port: &networkingv1.ServiceBackendPortArgs{
+													Number: pulumi.Int(80),
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create ingress")
+		}
+
+		// Export ingress hostname
+		ctx.Export("ingress_hostname", pulumi.String(locals.IngressHostname))
+		ctx.Export("external_url", pulumi.Sprintf("https://%s", locals.IngressHostname))
 	}
 
 	return nil

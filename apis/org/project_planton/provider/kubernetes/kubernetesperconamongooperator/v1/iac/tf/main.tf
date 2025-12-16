@@ -1,6 +1,8 @@
 # Terraform module for Percona Operator for MongoDB
 
 resource "kubernetes_namespace" "percona_operator" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.labels
@@ -12,7 +14,7 @@ resource "helm_release" "percona_operator" {
   repository = local.helm_chart_repo
   chart      = local.helm_chart_name
   version    = local.helm_chart_version
-  namespace  = kubernetes_namespace.percona_operator.metadata[0].name
+  namespace  = var.spec.create_namespace ? kubernetes_namespace.percona_operator[0].metadata[0].name : local.namespace
 
   set {
     name  = "resources.limits.cpu"

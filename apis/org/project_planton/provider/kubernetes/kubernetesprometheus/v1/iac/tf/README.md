@@ -2,25 +2,62 @@
 
 ## Key Features
 
-### 1. **Kubernetes Provider Integration**
+### 1. **Namespace Management**
+
+The module provides flexible namespace management through the `create_namespace` configuration option:
+
+- **`create_namespace = true`** (recommended for new deployments): The module creates the namespace with appropriate labels and metadata. Use this when deploying Prometheus to a new, dedicated namespace.
+- **`create_namespace = false`**: The module uses an existing namespace without creating it. Use this when:
+  - The namespace already exists and is managed separately
+  - Another team or process manages namespace creation
+  - You're deploying multiple components to a shared namespace
+  - You have specific namespace configuration requirements managed outside this module
+
+**Example with namespace creation:**
+```hcl
+module "prometheus" {
+  source = "..."
+  
+  spec = {
+    namespace = "prometheus"
+    create_namespace = true  # Module creates the namespace
+    container = { ... }
+  }
+}
+```
+
+**Example with existing namespace:**
+```hcl
+module "prometheus" {
+  source = "..."
+  
+  spec = {
+    namespace = "monitoring"  # Must already exist
+    create_namespace = false  # Module uses existing namespace
+    container = { ... }
+  }
+}
+```
+
+### 2. **Kubernetes Provider Integration**
    The module creates a Kubernetes namespace foundation using the credentials configured in your Terraform environment. This integration automates the setup of necessary Kubernetes resources for Prometheus deployment, establishing a secure and organized environment for your monitoring stack.
 
-### 2. **Prometheus Pod Deployment Foundation**
+### 3. **Prometheus Pod Deployment Foundation**
    The module provisions the namespace and configuration foundation for Prometheus pods based on the number of replicas defined in the `spec`. Developers can configure CPU and memory requests and limits to control the resource usage of each Prometheus pod. This ensures that the deployment can scale based on operational requirements while maintaining efficient resource consumption.
 
-### 3. **Persistent Storage Options**
+### 4. **Persistent Storage Options**
    The module supports configuration for enabling persistence for Prometheus data. When persistence is enabled in the spec, Prometheus' in-memory data can be backed up to a persistent volume, ensuring that data is retained across pod restarts. The size of the persistent volume can be customized through the `spec`, and the backed-up data will be restored when Prometheus pods are restarted.
 
-### 4. **Ingress Configuration**
+### 5. **Ingress Configuration**
    The module offers optional ingress configuration, which allows external access to Prometheus from outside the Kubernetes cluster. If ingress is enabled, developers can define the DNS domain to expose Prometheus securely to external clients. This is especially useful for teams looking to integrate Prometheus monitoring across distributed environments.
 
-### 5. **Terraform Infrastructure-as-Code**
+### 6. **Terraform Infrastructure-as-Code**
    This module uses Terraform, providing developers with all the advantages of infrastructure-as-code, such as version control, state management, and declarative configuration. This makes it easy to manage Prometheus deployments in a consistent and repeatable manner across multiple environments and cloud platforms.
 
-### 6. **Modular and Scalable Design**
+### 7. **Modular and Scalable Design**
    The module is designed to be modular, allowing developers to easily customize and scale their Prometheus deployments. Whether it's defining the number of replicas or tuning resource allocations, the module supports various configurations, making it suitable for a wide range of use cases—from small-scale monitoring setups to large, distributed environments.
 
-### 7. **Terraform Outputs**
+### 8. **Terraform Outputs**
    Upon successful deployment, the module provides several outputs that are essential for managing and accessing the Prometheus instance:
    - **Namespace**: The namespace in which Prometheus is deployed, ensuring logical separation from other workloads.
    - **Service Name**: The Kubernetes service associated with Prometheus for internal access.

@@ -56,6 +56,7 @@ spec:
     clusterName: "<cluster-name>"
   namespace: # Required
     value: "solr-operator-system"
+  create_namespace: false # Optional - whether to create the namespace
   container:
     resources: # Optional - defaults provided
       requests:
@@ -80,6 +81,20 @@ If not provided, the operator deploys to the default cluster.
 #### `namespace` (required)
 
 Kubernetes namespace where the operator will be deployed. Default: `"solr-operator-system"`
+
+#### `create_namespace` (optional)
+
+Controls whether the component should create the namespace or use an existing one.
+
+- **`true`**: Component creates the namespace if it doesn't exist
+- **`false`** (default): Component uses an existing namespace (must exist before deployment)
+
+**Use Cases:**
+- Set to `true` when deploying to a new namespace that doesn't exist yet
+- Set to `false` when namespace is managed separately (e.g., via KubernetesNamespace resource or external process)
+- Set to `false` in multi-tenant scenarios where namespaces are pre-provisioned
+
+**Default:** `false` (namespace must exist)
 
 #### `container` (required)
 

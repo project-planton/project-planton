@@ -3,7 +3,7 @@ resource "kubernetes_service" "redis_external_lb" {
 
   metadata {
     name      = "ingress-external-lb"
-    namespace = kubernetes_namespace.redis_namespace.metadata[0].name
+    namespace = local.namespace
 
     labels = local.final_labels
 

@@ -38,6 +38,7 @@ var _ = ginkgo.Describe("KubernetesCronJob Custom Validation Tests", func() {
 						Value: "test-namespace",
 					},
 				},
+				CreateNamespace: true,
 				Image: &kubernetes.ContainerImage{
 					Repo: "busybox",
 					Tag:  "latest",
@@ -68,8 +69,16 @@ var _ = ginkgo.Describe("KubernetesCronJob Custom Validation Tests", func() {
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("cron_job_kubernetes", func() {
+		ginkgo.Context("cron_job_kubernetes with create_namespace=true", func() {
 			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("cron_job_kubernetes with create_namespace=false", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.CreateNamespace = false
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})

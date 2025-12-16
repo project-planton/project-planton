@@ -4,7 +4,7 @@
 
 output "namespace" {
   description = "Namespace where ExternalDNS is deployed"
-  value       = kubernetes_namespace.external_dns.metadata[0].name
+  value       = local.namespace_name
 }
 
 output "release_name" {

@@ -5,8 +5,10 @@
 # the official NATS Helm chart.
 ##############################################
 
-# Create namespace for NATS deployment
+# Create namespace for NATS deployment (conditionally based on create_namespace flag)
 resource "kubernetes_namespace" "nats_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.labels
@@ -35,7 +37,7 @@ resource "kubernetes_secret_v1" "nats_bearer_token_secret" {
 
   metadata {
     name      = "auth-nats"
-    namespace = kubernetes_namespace.nats_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.labels
   }
 
@@ -52,7 +54,7 @@ resource "kubernetes_secret_v1" "nats_admin_secret" {
 
   metadata {
     name      = "auth-nats"
-    namespace = kubernetes_namespace.nats_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.labels
   }
 
@@ -70,7 +72,7 @@ resource "kubernetes_secret_v1" "nats_noauth_secret" {
 
   metadata {
     name      = "no-auth-user"
-    namespace = kubernetes_namespace.nats_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.labels
   }
 
@@ -123,7 +125,7 @@ resource "kubernetes_secret_v1" "nats_tls_secret" {
 
   metadata {
     name      = "tls-${var.metadata.name}"
-    namespace = kubernetes_namespace.nats_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.labels
   }
 
@@ -141,7 +143,7 @@ resource "helm_release" "nats" {
   repository = "https://nats-io.github.io/k8s/helm/charts"
   chart      = "nats"
   version    = "1.3.6"
-  namespace  = kubernetes_namespace.nats_namespace.metadata[0].name
+  namespace  = local.namespace
 
   values = [
     yamlencode({
@@ -257,7 +259,6 @@ resource "helm_release" "nats" {
   ]
 
   depends_on = [
-    kubernetes_namespace.nats_namespace,
     kubernetes_secret_v1.nats_bearer_token_secret,
     kubernetes_secret_v1.nats_admin_secret,
     kubernetes_secret_v1.nats_noauth_secret,
@@ -271,7 +272,7 @@ resource "kubernetes_service_v1" "nats_external_lb" {
 
   metadata {
     name      = "nats-external-lb"
-    namespace = kubernetes_namespace.nats_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.labels
 
     annotations = try(var.spec.ingress.hostname, "") != "" ? {

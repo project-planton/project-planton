@@ -5,13 +5,12 @@ import (
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func createCoreIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	namespace pulumi.StringInput) error {
 
 	// Skip if ingress is not enabled
 	if locals.KubernetesHarbor.Spec.Ingress == nil ||
@@ -93,7 +92,7 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-external"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: namespace,
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -118,14 +117,14 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(locals.CoreServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: namespace,
 								Port:      pulumi.Int(variables.HarborCorePort),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
 
 	return err
 }

@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install PostgreSQL.
     namespace = string
 
+    # flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The container specifications for the PostgreSQL deployment.
     container = object({
 

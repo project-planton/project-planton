@@ -16,7 +16,24 @@ Deploying the Percona Operator for PostgreSQL manually in Kubernetes can be comp
 ### Kubernetes Cluster Integration
 
 - **Target Cluster Configuration**: This resource integrates seamlessly with Planton Cloud's Kubernetes cluster credential management system, ensuring that the operator is deployed to the correct cluster.
-- **Namespace Isolation**: The operator is deployed in a dedicated `kubernetes-percona-postgres-operator` namespace for clean resource separation.
+- **Namespace Isolation**: The operator is deployed in a dedicated namespace for clean resource separation.
+
+### Namespace Management
+
+This component provides flexible namespace management through the `create_namespace` flag:
+
+- **Automatic Namespace Creation** (`create_namespace: true`): The module creates and manages the namespace for you. This is ideal for:
+  - New deployments where the namespace doesn't exist
+  - Self-contained deployments where you want the module to handle all resources
+  - Development and testing environments
+
+- **Use Existing Namespace** (`create_namespace: false`): The module expects the namespace to already exist in the cluster. This is useful for:
+  - Environments where namespace creation is controlled by platform teams
+  - Multi-tenant clusters with pre-configured namespaces
+  - Organizations with strict namespace governance policies
+  - GitOps workflows where namespaces are managed separately
+
+**Important**: When `create_namespace: false`, ensure the specified namespace exists before deploying the operator, otherwise the deployment will fail.
 
 ### Operator Configuration
 

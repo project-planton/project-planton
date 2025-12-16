@@ -18,18 +18,21 @@ extend google.protobuf.FieldOptions {
  * It includes container specifications and ingress settings to control resource allocation and external access.
  */
 message KubernetesRedisSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the operator.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The container specifications for the Redis deployment.
-  KubernetesRedisContainer container = 3 [(default_container) = {
+  KubernetesRedisContainer container = 4 [(default_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -46,7 +49,7 @@ message KubernetesRedisSpec {
   }];
 
   //The ingress configuration for the Redis deployment.
-  KubernetesRedisIngress ingress = 4;
+  KubernetesRedisIngress ingress = 5;
 }
 
 // KubernetesRedisContainer defines the container specifications for the Redis deployment.

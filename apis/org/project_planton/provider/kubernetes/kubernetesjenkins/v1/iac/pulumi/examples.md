@@ -10,6 +10,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "jenkins"
+  create_namespace: true
   container_resources:
     requests:
       cpu: 50m
@@ -37,6 +38,7 @@ spec:
     cluster_name: "production-gke-cluster"
   namespace:
     value: "jenkins"
+  create_namespace: true
   container_resources:
     requests:
       cpu: 100m
@@ -69,6 +71,7 @@ spec:
     cluster_name: "dev-gke-cluster"
   namespace:
     value: "jenkins"
+  create_namespace: true
   container_resources:
     requests:
       cpu: 50m
@@ -96,6 +99,7 @@ spec:
     cluster_name: "production-gke-cluster"
   namespace:
     value: "jenkins"
+  create_namespace: true
   container_resources:
     requests:
       cpu: 500m
@@ -127,6 +131,7 @@ spec:
     cluster_name: "dev-gke-cluster"
   namespace:
     value: "jenkins"
+  create_namespace: true
   container_resources:
     requests:
       cpu: 50m
@@ -136,4 +141,34 @@ spec:
       memory: 1Gi
   ingress:
     enabled: false
+```
+
+# Example 6: Jenkins Kubernetes Using Existing Namespace
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesJenkins
+metadata:
+  name: jenkins-existing-namespace
+spec:
+  target_cluster:
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: "ci-cd-tools"
+  # Set to false to use an existing namespace instead of creating a new one
+  create_namespace: false
+  container_resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+  helm_values:
+    persistence:
+      enabled: true
+      size: 20Gi
+  ingress:
+    enabled: true
+    hostname: jenkins.example.com
 ```

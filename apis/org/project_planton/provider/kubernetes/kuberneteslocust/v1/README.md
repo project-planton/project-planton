@@ -22,6 +22,19 @@ Running distributed load tests using Locust in Kubernetes environments can be co
 
 - **Kubernetes Credential ID**: Utilizes the specified Kubernetes credentials (`kubernetes_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
 
+### Namespace Management
+
+- **Namespace Configuration**: Specify the Kubernetes namespace where Locust will be deployed using the `namespace` field.
+- **Namespace Creation Control**: Use the `create_namespace` flag to control whether the module should create the namespace or use an existing one:
+  - **`create_namespace: true`**: The module creates the namespace with appropriate labels. Use this for new deployments or when you want the module to fully manage the namespace lifecycle.
+  - **`create_namespace: false`**: The module uses an existing namespace without creating it. Use this when:
+    - The namespace already exists in the cluster
+    - Multiple deployments share the same namespace
+    - Namespaces are managed centrally by cluster administrators
+    - Using GitOps workflows where namespaces are managed separately
+
+  **Important**: When `create_namespace: false`, you must ensure the namespace exists before deploying, otherwise the deployment will fail.
+
 ### Customizable Locust Deployment
 
 #### Locust Master and Worker Configuration

@@ -28,11 +28,35 @@ project-planton pulumi up --manifest manifest.yaml --module-dir ${KUBERNETES_EXT
 
 This module creates:
 
-1. **Kubernetes Namespace**: Dedicated namespace for External Secrets Operator (default: `external-secrets`)
+1. **Kubernetes Namespace** (conditional): 
+   - Created when `create_namespace: true` (default)
+   - Skipped when `create_namespace: false` (uses existing namespace)
 2. **ServiceAccount**: With cloud provider annotations (Workload Identity, IRSA, or Managed Identity)
 3. **Helm Release**: External Secrets Operator from the official ESO Helm chart
 4. **ClusterSecretStore**: Automatically configured for your cloud provider
 5. **RBAC Resources**: ClusterRole and ClusterRoleBinding for ESO controller
+
+### Namespace Management
+
+**New in this version**: You can now control whether the component creates the namespace or uses an existing one.
+
+**Create namespace (default):**
+```yaml
+spec:
+  namespace:
+    value: external-secrets
+  create_namespace: true  # or omit this field
+```
+
+**Use existing namespace:**
+```yaml
+spec:
+  namespace:
+    value: platform-services
+  create_namespace: false  # namespace must already exist
+```
+
+See the main [README](../../README.md#namespace-management) for detailed namespace management patterns.
 
 ### Cloud Provider Authentication
 
@@ -245,6 +269,21 @@ kubectl describe clustersecretstore <name>
 
 # Look for validation errors or auth failures
 kubectl logs -n external-secrets -l app.kubernetes.io/name=external-secrets --tail=100
+```
+
+### Namespace Already Exists Error
+
+```
+Error: namespaces "external-secrets" already exists
+```
+
+**Fix**: Set `create_namespace: false` in your manifest to use the existing namespace instead of trying to create it.
+
+```yaml
+spec:
+  namespace:
+    value: external-secrets
+  create_namespace: false  # Use existing namespace
 ```
 
 ### Authentication Failures

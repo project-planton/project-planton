@@ -33,8 +33,15 @@ locals {
 
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace is the resource_id
-  namespace = local.resource_id
+  # Namespace from spec
+  namespace = var.spec.namespace
+
+  # Namespace reference - either created or existing
+  namespace_name = var.spec.create_namespace ? (
+    length(kubernetes_namespace.gitlab) > 0 ? kubernetes_namespace.gitlab[0].metadata[0].name : local.namespace
+  ) : (
+    length(data.kubernetes_namespace.existing) > 0 ? data.kubernetes_namespace.existing[0].metadata[0].name : local.namespace
+  )
 
   # GitLab service name
   gitlab_service_name = "${var.metadata.name}-gitlab"
@@ -42,7 +49,7 @@ locals {
   gitlab_port         = 80
 
   # Ingress configuration
-  ingress_is_enabled       = try(var.spec.ingress.enabled, false)
+  ingress_is_enabled        = try(var.spec.ingress.is_enabled, false)
   ingress_external_hostname = try(var.spec.ingress.hostname, null)
 
   # Certificate issuer: extract domain from hostname

@@ -10,7 +10,7 @@
 
 - **Custom Helm Values**: The `HelmRelease` API resource allows users to pass custom key-value pairs as Helm chart values. This feature provides flexibility in configuring Helm charts according to specific application requirements.
 
-- **Namespace Management**: The module can automatically manage Kubernetes namespaces for Helm releases. If a namespace is not explicitly defined, the module will ensure that the release is deployed in an appropriate namespace and capture that information in the output.
+- **Namespace Management**: The module supports both creating new namespaces and using existing ones based on the `create_namespace` flag. When set to `true`, a new namespace is created with appropriate labels. When set to `false`, the specified namespace name is used, assuming it already exists in the cluster.
 
 - **Helm Chart Versioning**: Users can specify exact versions of Helm charts, ensuring compatibility and control over application deployments. This enables precise management of application lifecycle and infrastructure as versions of Helm charts change.
 

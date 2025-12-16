@@ -100,33 +100,35 @@ func (KubernetesHarborStorageType) EnumDescriptor() ([]byte, []int) {
 // deployment patterns from simple single-node installations to production-grade high-availability clusters.
 type KubernetesHarborSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for Harbor Core (API server, authentication, webhook).
-	CoreContainer *KubernetesHarborContainer `protobuf:"bytes,3,opt,name=core_container,json=coreContainer,proto3" json:"core_container,omitempty"`
+	CoreContainer *KubernetesHarborContainer `protobuf:"bytes,4,opt,name=core_container,json=coreContainer,proto3" json:"core_container,omitempty"`
 	// The container specifications for Harbor Portal (web UI).
-	PortalContainer *KubernetesHarborContainer `protobuf:"bytes,4,opt,name=portal_container,json=portalContainer,proto3" json:"portal_container,omitempty"`
+	PortalContainer *KubernetesHarborContainer `protobuf:"bytes,5,opt,name=portal_container,json=portalContainer,proto3" json:"portal_container,omitempty"`
 	// The container specifications for Harbor Registry (Docker/OCI registry backend).
-	RegistryContainer *KubernetesHarborContainer `protobuf:"bytes,5,opt,name=registry_container,json=registryContainer,proto3" json:"registry_container,omitempty"`
+	RegistryContainer *KubernetesHarborContainer `protobuf:"bytes,6,opt,name=registry_container,json=registryContainer,proto3" json:"registry_container,omitempty"`
 	// The container specifications for Harbor Jobservice (background job execution).
-	JobserviceContainer *KubernetesHarborContainer `protobuf:"bytes,6,opt,name=jobservice_container,json=jobserviceContainer,proto3" json:"jobservice_container,omitempty"`
+	JobserviceContainer *KubernetesHarborContainer `protobuf:"bytes,7,opt,name=jobservice_container,json=jobserviceContainer,proto3" json:"jobservice_container,omitempty"`
 	// The database configuration for Harbor, supporting both self-managed and external PostgreSQL.
-	Database *KubernetesHarborDatabaseConfig `protobuf:"bytes,7,opt,name=database,proto3" json:"database,omitempty"`
+	Database *KubernetesHarborDatabaseConfig `protobuf:"bytes,8,opt,name=database,proto3" json:"database,omitempty"`
 	// The cache configuration for Harbor, supporting both self-managed and external Redis.
-	Cache *KubernetesHarborCacheConfig `protobuf:"bytes,8,opt,name=cache,proto3" json:"cache,omitempty"`
+	Cache *KubernetesHarborCacheConfig `protobuf:"bytes,9,opt,name=cache,proto3" json:"cache,omitempty"`
 	// The object storage configuration for Harbor artifact storage.
-	Storage *KubernetesHarborStorageConfig `protobuf:"bytes,9,opt,name=storage,proto3" json:"storage,omitempty"`
+	Storage *KubernetesHarborStorageConfig `protobuf:"bytes,10,opt,name=storage,proto3" json:"storage,omitempty"`
 	// The ingress configuration for Harbor UI and registry endpoints.
-	Ingress *KubernetesHarborIngress `protobuf:"bytes,10,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesHarborIngress `protobuf:"bytes,11,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// *
 	// A map of key-value pairs that provide additional customization options for the Harbor Helm chart.
 	// These values allow for further refinement of the deployment, such as enabling Trivy scanner,
 	// configuring Notary for image signing, or customizing authentication providers.
 	// For detailed information on available options, refer to the Helm chart documentation at:
 	// https://github.com/goharbor/harbor-helm
-	HelmValues    map[string]string `protobuf:"bytes,11,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	HelmValues    map[string]string `protobuf:"bytes,12,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -173,6 +175,13 @@ func (x *KubernetesHarborSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesHarborSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesHarborSpec) GetCoreContainer() *KubernetesHarborContainer {
@@ -1648,32 +1657,33 @@ var File_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetesharbor/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesharbor.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd9\f\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetesharbor/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesharbor.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x84\r\n" +
 	"\x14KubernetesHarborSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa5\x01\n" +
-	"\x0ecore_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x8a\xa9\x96\x02!\b\x01\x12\x1d\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xa5\x01\n" +
+	"\x0ecore_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x8a\xa9\x96\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04200m\x12\x05512MiR\rcoreContainer\x12\xaa\x01\n" +
-	"\x10portal_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB'\x92\xa9\x96\x02\"\b\x01\x12\x1e\n" +
+	"\x10portal_container\x18\x05 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB'\x92\xa9\x96\x02\"\b\x01\x12\x1e\n" +
 	"\r\n" +
 	"\x04500m\x12\x05512Mi\x12\r\n" +
 	"\x04100m\x12\x05256MiR\x0fportalContainer\x12\xad\x01\n" +
-	"\x12registry_container\x18\x05 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x9a\xa9\x96\x02!\b\x01\x12\x1d\n" +
+	"\x12registry_container\x18\x06 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\x9a\xa9\x96\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04200m\x12\x05512MiR\x11registryContainer\x12\xb1\x01\n" +
-	"\x14jobservice_container\x18\x06 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\xa2\xa9\x96\x02!\b\x01\x12\x1d\n" +
+	"\x14jobservice_container\x18\a \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerB&\xa2\xa9\x96\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
 	"\x04100m\x12\x05256MiR\x13jobserviceContainer\x12\x7f\n" +
-	"\bdatabase\x18\a \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12v\n" +
-	"\x05cache\x18\b \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfigB\x06\xbaH\x03\xc8\x01\x01R\x05cache\x12|\n" +
-	"\astorage\x18\t \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfigB\x06\xbaH\x03\xc8\x01\x01R\astorage\x12n\n" +
-	"\aingress\x18\n" +
-	" \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressR\aingress\x12\x82\x01\n" +
-	"\vhelm_values\x18\v \x03(\v2a.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntryR\n" +
+	"\bdatabase\x18\b \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12v\n" +
+	"\x05cache\x18\t \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborCacheConfigB\x06\xbaH\x03\xc8\x01\x01R\x05cache\x12|\n" +
+	"\astorage\x18\n" +
+	" \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborStorageConfigB\x06\xbaH\x03\xc8\x01\x01R\astorage\x12n\n" +
+	"\aingress\x18\v \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborIngressR\aingress\x12\x82\x01\n" +
+	"\vhelm_values\x18\f \x03(\v2a.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +

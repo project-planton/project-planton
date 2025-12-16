@@ -13,7 +13,7 @@ import (
 func clickhouseInstallation(
 	ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	namespace pulumi.StringInput,
 	createdSecret *kubernetescorev1.Secret,
 ) error {
 	spec := locals.KubernetesClickHouse.Spec
@@ -36,7 +36,7 @@ func clickhouseInstallation(
 		&altinityv1.ClickHouseInstallationArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(clusterName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: namespace,
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: &altinityv1.ClickHouseInstallationSpecArgs{
@@ -45,7 +45,6 @@ func clickhouseInstallation(
 				Templates:     buildTemplates(spec, version),
 			},
 		},
-		pulumi.Parent(createdNamespace),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create ClickHouseInstallation")

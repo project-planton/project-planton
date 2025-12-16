@@ -24,38 +24,41 @@ enum KubernetesTemporalDatabaseBackend {
 
 // temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
 message KubernetesTemporalSpec {
-  // The Kubernetes cluster to install Temporal on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install Temporal.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // database configuration
-  KubernetesTemporalDatabaseConfig database = 3 [(buf.validate.field).required = true];
+  KubernetesTemporalDatabaseConfig database = 4 [(buf.validate.field).required = true];
   // disables temporal web ui
-  bool disable_web_ui = 4;
+  bool disable_web_ui = 5;
   // enables embedded elasticsearch for temporal
   // this is ignored if external elasticsearch is set
-  bool enable_embedded_elasticsearch = 5;
+  bool enable_embedded_elasticsearch = 6;
   // enables monitoring stack for temporal
   // enabling this will deploy prometheus and grafana
-  bool enable_monitoring_stack = 6;
+  bool enable_monitoring_stack = 7;
   //number of cassandra nodes to be deployed
   //this is only honored when the backend is cassandra, and no external database is provided.
-  optional int32 cassandra_replicas = 7 [(org.project_planton.shared.options.default) = "1"];
+  optional int32 cassandra_replicas = 8 [(org.project_planton.shared.options.default) = "1"];
   //The ingress configuration for the temporal deployment.
   //if enabled, the frontend will be exposed using a load-balancer
   // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-  KubernetesTemporalIngress ingress = 8;
+  KubernetesTemporalIngress ingress = 9;
   // external elasticsearch configuration to be used by temporal for configuring observability.
-  KubernetesTemporalExternalElasticsearch external_elasticsearch = 9;
+  KubernetesTemporalExternalElasticsearch external_elasticsearch = 10;
   // version of the Temporal Helm chart to deploy (e.g., "0.62.0")
   // if not specified, the default version configured in the Pulumi module will be used
-  string version = 10;
+  string version = 11;
 }
 
 // groups database configuration settings.

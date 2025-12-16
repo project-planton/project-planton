@@ -165,6 +165,47 @@ This creates an External Secrets Operator deployment that:
 | `key_vault_resource_id` | Azure Key Vault resource ID |
 | `managed_identity_client_id` | Azure Managed Identity client ID |
 
+## Namespace Management
+
+The component provides flexible namespace management to support different deployment patterns:
+
+### Create Namespace (Default Behavior)
+
+When `create_namespace: true` (or omitted), the component creates and manages the namespace:
+
+```yaml
+spec:
+  namespace:
+    value: external-secrets
+  create_namespace: true  # Component creates the namespace
+  # ...
+```
+
+**Use when:**
+- Deploying to a new cluster where namespace doesn't exist
+- You want the component to manage namespace lifecycle
+- Single-component deployment (namespace is exclusive to this component)
+
+### Use Existing Namespace
+
+When `create_namespace: false`, the component uses an existing namespace:
+
+```yaml
+spec:
+  namespace:
+    value: platform-services  # Must already exist
+  create_namespace: false  # Use existing namespace
+  # ...
+```
+
+**Use when:**
+- Deploying multiple components to the same namespace
+- Namespace is managed separately (e.g., by platform team)
+- Namespace has specific labels, annotations, or RBAC policies
+- GitOps workflow where namespace is created via separate manifest
+
+**Important**: When using `create_namespace: false`, ensure the namespace exists before deploying this component. The deployment will fail if the namespace doesn't exist.
+
 ## Prerequisites
 
 ### For GKE

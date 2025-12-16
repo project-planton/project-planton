@@ -3,7 +3,7 @@
 
 output "namespace" {
   description = "Kubernetes namespace in which Argo CD is created"
-  value       = kubernetes_namespace.argocd_namespace.metadata[0].name
+  value       = local.namespace_name
 }
 
 output "service" {

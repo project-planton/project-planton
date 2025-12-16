@@ -17,6 +17,9 @@ variable "spec" {
     # Kubernetes namespace to install Temporal
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, true)
+
     # Database configuration
     database = object({
       # Selected database backend: cassandra, postgresql, or mysql

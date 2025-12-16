@@ -34,6 +34,52 @@ The following key inputs are supported by the module from the `KeycloakKubernete
 
 - **ingress**: (Optional) Configures an ingress controller to expose Keycloak externally, allowing access to the service from outside the Kubernetes cluster. The ingress configuration includes options for defining the host, paths, and TLS settings for secure access.
 
+### Namespace Management
+
+- **namespace**: (Required) The Kubernetes namespace where Keycloak will be deployed. Can be a literal value or reference to a KubernetesNamespace resource.
+
+- **create_namespace**: (Optional, default: false) Controls whether the module should create the namespace:
+  - `true`: The module will create the namespace specified in the `namespace` field
+  - `false`: The namespace must already exist; the module will only use it
+
+**Example with namespace creation:**
+
+```yaml
+spec:
+  target_cluster:
+    cluster_name: "prod-gke"
+  namespace:
+    value: "auth-keycloak"
+  create_namespace: true
+  container:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+```
+
+**Example using existing namespace:**
+
+```yaml
+spec:
+  target_cluster:
+    cluster_name: "prod-gke"
+  namespace:
+    value: "shared-auth"
+  create_namespace: false  # Assumes 'shared-auth' namespace already exists
+  container:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+```
+
 ## Outputs
 
 The module provides several key outputs for managing and accessing the deployed Keycloak instance:

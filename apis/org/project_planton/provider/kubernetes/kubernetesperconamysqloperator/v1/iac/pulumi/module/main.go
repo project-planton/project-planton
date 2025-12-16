@@ -30,16 +30,19 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamysqloperatorv1
 		namespace = "percona-mysql-operator"
 	}
 
-	// create dedicated namespace
-	ns, err := corev1.NewNamespace(ctx, namespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(namespace),
+	// conditionally create namespace based on create_namespace flag
+	var createdNamespace *corev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = corev1.NewNamespace(ctx, namespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name: pulumi.String(namespace),
+				},
 			},
-		},
-		pulumi.Provider(kubeProvider))
-	if err != nil {
-		return errors.Wrap(err, "failed to create namespace")
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create namespace")
+		}
 	}
 
 	// prepare helm values with resource limits from spec
@@ -57,10 +60,20 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamysqloperatorv1
 	}
 
 	// deploy the operator via Helm
+	helmReleaseOpts := []pulumi.ResourceOption{
+		pulumi.Provider(kubeProvider),
+		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
+	}
+
+	// add namespace as parent only if it was created
+	if createdNamespace != nil {
+		helmReleaseOpts = append(helmReleaseOpts, pulumi.Parent(createdNamespace))
+	}
+
 	_, err = helm.NewRelease(ctx, "percona-mysql-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(locals.HelmChartName),
-			Namespace:       ns.Metadata.Name(),
+			Namespace:       pulumi.String(namespace),
 			Chart:           pulumi.String(locals.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -73,15 +86,13 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesperconamysqloperatorv1
 				Repo: pulumi.String(locals.HelmChartRepo),
 			},
 		},
-		pulumi.Provider(kubeProvider),
-		pulumi.Parent(ns),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
+		helmReleaseOpts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to install percona-mysql-operator helm release")
 	}
 
 	// export stack outputs
-	ctx.Export(OpNamespace, ns.Metadata.Name())
+	ctx.Export(OpNamespace, pulumi.String(namespace))
 
 	return nil
 }

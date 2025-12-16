@@ -55,6 +55,15 @@ Deploying Kafka on Kubernetes involves intricate configurations, including broke
 - **Kafka UI Deployment**: Optionally deploy a Kafka UI component for easier management and monitoring.
 - **Custom Configurations**: Utilize maps for advanced configurations, allowing for fine-tuning of Kafka and Zookeeper settings.
 
+### Namespace Management
+
+The component provides flexible namespace management through the `create_namespace` flag:
+
+- **Automatic Creation** (`create_namespace: true`): The module creates the namespace with appropriate labels and manages its lifecycle. This is the recommended approach for most use cases.
+- **External Management** (`create_namespace: false`): Use an existing namespace created separately (e.g., via KubernetesNamespace component or other tooling). The module will deploy resources into the specified namespace without creating it.
+
+This flexibility allows integration with existing namespace management practices, centralized governance policies, and multi-tenant cluster configurations.
+
 ## Benefits
 
 - **Consistency Across Deployments**: Using a standardized API resource ensures deployments are predictable and maintainable.

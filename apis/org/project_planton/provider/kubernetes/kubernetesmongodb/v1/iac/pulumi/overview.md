@@ -2,6 +2,19 @@
 
 The **MongodbKubernetes** API resource provides an intuitive, production-grade way to deploy and manage MongoDB database clusters on Kubernetes using the **Percona Server for MongoDB Operator**. This Pulumi module interprets a `MongodbKubernetesStackInput`, which includes Kubernetes credentials and your MongoDB cluster specification, and generates a `PerconaServerMongoDB` custom resource that the Percona operator reconciles into a fully functional MongoDB deployment.
 
+## Namespace Management
+
+This module provides flexible namespace management through the `create_namespace` field in the spec:
+
+- **`create_namespace: true`**: Creates a new namespace with resource labels for tracking
+  - Ideal for new deployments and isolated environments
+  - Namespace is automatically created before MongoDB resources
+  
+- **`create_namespace: false`**: Uses an existing namespace
+  - Namespace must exist before applying this module
+  - Suitable for environments with pre-configured policies, quotas, or RBAC
+  - Allows sharing the namespace with other resources
+
 ## Architecture
 
 The deployment follows a modern, operator-based architecture that separates concerns and leverages Kubernetes-native patterns:

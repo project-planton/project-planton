@@ -15,7 +15,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/spec.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CktvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2hlbG1yZWxlYXNlL3YxL3NwZWMucHJvdG8SQG9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzaGVsbXJlbGVhc2UudjEizQMKGUt1YmVybmV0ZXNIZWxtUmVsZWFzZVNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIUCgRyZXBvGAMgASgJQga6SAPIAQESFAoEbmFtZRgEIAEoCUIGukgDyAEBEhcKB3ZlcnNpb24YBSABKAlCBrpIA8gBARJ3CgZ2YWx1ZXMYBiADKAsyZy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2hlbG1yZWxlYXNlLnYxLkt1YmVybmV0ZXNIZWxtUmVsZWFzZVNwZWMuVmFsdWVzRW50cnkaLQoLVmFsdWVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AUL/AwpEY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzaGVsbXJlbGVhc2UudjFCCVNwZWNQcm90b1ABWogBZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXNoZWxtcmVsZWFzZS92MTtrdWJlcm5ldGVzaGVsbXJlbGVhc2V2MaICBU9QUEtLqgI/T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkt1YmVybmV0ZXMuS3ViZXJuZXRlc2hlbG1yZWxlYXNlLlYxygI/T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2hlbG1yZWxlYXNlXFYx4gJLT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2hlbG1yZWxlYXNlXFYxXEdQQk1ldGFkYXRh6gJET3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6Okt1YmVybmV0ZXM6Okt1YmVybmV0ZXNoZWxtcmVsZWFzZTo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
+  fileDesc("CktvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2hlbG1yZWxlYXNlL3YxL3NwZWMucHJvdG8SQG9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzaGVsbXJlbGVhc2UudjEi5wMKGUt1YmVybmV0ZXNIZWxtUmVsZWFzZVNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEhQKBHJlcG8YBCABKAlCBrpIA8gBARIUCgRuYW1lGAUgASgJQga6SAPIAQESFwoHdmVyc2lvbhgGIAEoCUIGukgDyAEBEncKBnZhbHVlcxgHIAMoCzJnLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzaGVsbXJlbGVhc2UudjEuS3ViZXJuZXRlc0hlbG1SZWxlYXNlU3BlYy5WYWx1ZXNFbnRyeRotCgtWYWx1ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQv8DCkRjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNoZWxtcmVsZWFzZS52MUIJU3BlY1Byb3RvUAFaiAFnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2hlbG1yZWxlYXNlL3YxO2t1YmVybmV0ZXNoZWxtcmVsZWFzZXYxogIFT1BQS0uqAj9PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzaGVsbXJlbGVhc2UuVjHKAj9PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzaGVsbXJlbGVhc2VcVjHiAktPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzaGVsbXJlbGVhc2VcVjFcR1BCTWV0YWRhdGHqAkRPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc2hlbG1yZWxlYXNlOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * **KubernetesHelmReleaseSpec** defines the configuration for deploying a Helm release on a Kubernetes cluster.
@@ -26,25 +26,32 @@ export const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_
  */
 export type KubernetesHelmReleaseSpec = Message<"org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec"> & {
   /**
-   * The Kubernetes cluster to install this component on.
+   * Target Kubernetes Cluster
    *
    * @generated from field: org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
    */
   targetCluster?: KubernetesClusterSelector;
 
   /**
-   * Kubernetes namespace to install the operator.
+   * Kubernetes Namespace
    *
    * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2;
    */
   namespace?: StringValueOrRef;
 
   /**
+   * flag to indicate if the namespace should be created
+   *
+   * @generated from field: bool create_namespace = 3;
+   */
+  createNamespace: boolean;
+
+  /**
    * The repository URL where the Helm chart is hosted.
    * For example, "https://charts.helm.sh/stable".
    * an example for chart-repo (redis chart) can be found in https://artifacthub.io/packages/helm/bitnami/redis?modal=install
    *
-   * @generated from field: string repo = 3;
+   * @generated from field: string repo = 4;
    */
   repo: string;
 
@@ -52,7 +59,7 @@ export type KubernetesHelmReleaseSpec = Message<"org.project_planton.provider.ku
    * The name of the Helm chart to deploy.
    * For example, "nginx-ingress".
    *
-   * @generated from field: string name = 4;
+   * @generated from field: string name = 5;
    */
   name: string;
 
@@ -60,7 +67,7 @@ export type KubernetesHelmReleaseSpec = Message<"org.project_planton.provider.ku
    * The version of the Helm chart to deploy.
    * For example, "1.41.3".
    *
-   * @generated from field: string version = 5;
+   * @generated from field: string version = 6;
    */
   version: string;
 
@@ -68,7 +75,7 @@ export type KubernetesHelmReleaseSpec = Message<"org.project_planton.provider.ku
    * A map of key-value pairs representing custom values for the Helm chart.
    * These values override the default settings in the chart's values.yaml file.
    *
-   * @generated from field: map<string, string> values = 6;
+   * @generated from field: map<string, string> values = 7;
    */
   values: { [key: string]: string };
 };

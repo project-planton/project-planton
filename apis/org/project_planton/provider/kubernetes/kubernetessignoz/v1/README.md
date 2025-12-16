@@ -128,6 +128,21 @@ Provide additional customization through Helm values:
 - Configure S3 archiving for long-term data retention
 - For detailed options, refer to the [SigNoz Helm Chart documentation](https://github.com/SigNoz/charts)
 
+## Namespace Management
+
+The SigNoz Kubernetes component provides flexible namespace management through the `create_namespace` flag:
+
+- **When `create_namespace` is `true`**: The component will create the specified namespace on the target cluster. This is the recommended approach for new deployments where the namespace doesn't exist yet.
+
+- **When `create_namespace` is `false`**: The component will use an existing namespace on the cluster. The namespace must already exist, or the deployment will fail. This is useful when:
+  - The namespace is managed by a separate process or team
+  - Multiple components share the same namespace
+  - Namespace creation is controlled by organizational policies
+
+**Default Behavior**: There is no default value; `create_namespace` must be explicitly set to either `true` or `false`.
+
+**Best Practice**: For most deployments, set `create_namespace` to `true` to let the component manage its own namespace. Only set it to `false` when you have specific requirements for external namespace management.
+
 ## Architecture
 
 SigNoz consists of four main components working together:

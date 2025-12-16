@@ -78,6 +78,59 @@ project-planton pulumi up \
 
 You can now immediately request certificates—no manual ClusterIssuer creation needed.
 
+## Namespace Management
+
+The addon provides control over namespace creation through the `createNamespace` field, giving you flexibility in how namespaces are managed.
+
+### Default Behavior (createNamespace: false)
+
+By default, the addon **expects the namespace to already exist** before deployment:
+
+- The namespace must be created separately (either manually or by another resource)
+- Useful when namespaces are managed centrally or require specific configurations
+- Follows GitOps best practices where infrastructure is explicitly declared
+- Deployment will fail if the namespace doesn't exist (fail-fast behavior)
+
+**Example with existing namespace**:
+```yaml
+spec:
+  namespace:
+    value: "cert-manager"  # Must already exist
+  createNamespace: false   # Default value
+  # ... rest of configuration
+```
+
+### Automatic Creation (createNamespace: true)
+
+When set to `true`, the addon creates the namespace during deployment:
+
+- Namespace is created with basic metadata only
+- Convenient for quick deployments and testing
+- Namespace will be deleted if the addon is destroyed
+
+**Example with automatic creation**:
+```yaml
+spec:
+  namespace:
+    value: "cert-manager"  # Will be created
+  createNamespace: true
+  # ... rest of configuration
+```
+
+### When to Use Each Approach
+
+**Use `createNamespace: false` (default) when**:
+- Namespaces have specific labels, annotations, or resource quotas
+- Following GitOps practices with namespace-as-code
+- Multiple components share the same namespace
+- Namespace lifecycle should be independent of the addon
+
+**Use `createNamespace: true` when**:
+- Quick testing or proof-of-concept deployments
+- Namespace is dedicated to this addon only
+- Simple deployments without special namespace requirements
+- You want the addon to manage the complete lifecycle
+
 ## Configuration Reference
 
 ### Common Fields
@@ -86,6 +139,7 @@ You can now immediately request certificates—no manual ClusterIssuer creation 
 |-------|------|---------|-------------|
 | `targetCluster` | object | required | Identifies which Kubernetes cluster to install on |
 | `namespace` | string | `"kubernetes-cert-manager"` | Kubernetes namespace where kubernetes-cert-manager will be deployed |
+| `createNamespace` | bool | `false` | Whether to create the namespace (false=use existing, true=create new) |
 | `kubernetesCertManagerVersion` | string | `"v1.19.1"` | kubernetes-cert-manager version (minimum v1.16.4) |
 | `helmChartVersion` | string | `"v1.19.1"` | Helm chart version to deploy |
 | `skipInstallSelfSignedIssuer` | bool | `false` | Skip creating a self-signed ClusterIssuer |

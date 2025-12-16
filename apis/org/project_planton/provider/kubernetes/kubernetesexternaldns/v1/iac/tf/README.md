@@ -12,7 +12,7 @@ This Terraform module deploys [ExternalDNS](https://github.com/kubernetes-sigs/e
 - **Cloudflare DNS**: Uses API tokens (stored as Kubernetes secrets)
 
 The module creates:
-- Kubernetes namespace
+- Kubernetes namespace (or uses existing namespace)
 - Service account with cloud provider annotations
 - Secret (for Cloudflare)
 - Helm release with provider-specific configuration
@@ -90,7 +90,10 @@ module "external_dns" {
   }
 
   spec = {
-    namespace = "kubernetes-external-dns"  # optional, defaults to "kubernetes-external-dns"
+    namespace = {
+      value = "kubernetes-external-dns"  # optional, defaults to "kubernetes-external-dns"
+    }
+    create_namespace = true  # optional, defaults to false
     
     gke = {
       project_id = {
@@ -145,6 +148,40 @@ module "external_dns" {
 }
 ```
 
+## Namespace Management
+
+The module provides flexible namespace management through the `create_namespace` flag:
+
+### Automatic Namespace Creation
+
+When `create_namespace` is set to `true`, the module creates the namespace:
+
+```hcl
+spec = {
+  namespace = {
+    value = "kubernetes-external-dns"
+  }
+  create_namespace = true  # Module will create the namespace
+  # ... provider config
+}
+```
+
+### Using Existing Namespace
+
+When `create_namespace` is `false` (default), the module uses a data source to lookup the existing namespace:
+
+```hcl
+spec = {
+  namespace = {
+    value = "existing-namespace"
+  }
+  create_namespace = false  # Namespace must already exist
+  # ... provider config
+}
+```
+
+**Important**: If `create_namespace` is `false` and the namespace doesn't exist, the Terraform apply will fail with an error indicating the namespace was not found. This behavior ensures that namespace management is explicit and prevents accidental namespace creation when working with pre-configured namespaces that may have specific labels, annotations, or resource quotas.
+
 ## Variables
 
 ### `metadata` (Required)
@@ -172,7 +209,10 @@ The `spec` variable defines the ExternalDNS configuration. Choose **one** provid
 
 ```hcl
 spec = {
-  namespace = "kubernetes-external-dns"  # Optional
+  namespace = {
+    value = "kubernetes-external-dns"  # Optional
+  }
+  create_namespace = true  # Optional, defaults to false
   kubernetes_external_dns_version = "v0.19.0"  # Optional
   helm_chart_version = "1.19.0"  # Optional
   

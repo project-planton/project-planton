@@ -16,16 +16,16 @@ import (
 func createPasswordSecret(
 	ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	namespace pulumi.StringInput,
 ) (*kubernetescorev1.Secret, error) {
 	// Generate cryptographically secure random password
-	createdRandomString, err := generateRandomPassword(ctx, createdNamespace)
+	createdRandomString, err := generateRandomPassword(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to generate random password")
 	}
 
 	// Create Kubernetes Secret to store the password
-	createdSecret, err := createKubernetesSecret(ctx, locals, createdNamespace, createdRandomString)
+	createdSecret, err := createKubernetesSecret(ctx, locals, namespace, createdRandomString)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create password secret")
 	}
@@ -37,7 +37,6 @@ func createPasswordSecret(
 // Password contains a mix of uppercase, lowercase, numbers, and safe special characters
 func generateRandomPassword(
 	ctx *pulumi.Context,
-	createdNamespace *kubernetescorev1.Namespace,
 ) (*random.RandomPassword, error) {
 	// Generate random password with complexity requirements
 	// Use only safe special characters to avoid encoding problems in connection strings
@@ -55,7 +54,7 @@ func generateRandomPassword(
 			MinLower:   pulumi.Int(3),
 			// Safe special characters that work in connection strings and URLs
 			OverrideSpecial: pulumi.String("-_+="),
-		}, pulumi.Parent(createdNamespace))
+		})
 
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to generate random password value")
@@ -69,7 +68,7 @@ func generateRandomPassword(
 func createKubernetesSecret(
 	ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	namespace pulumi.StringInput,
 	randomPassword *random.RandomPassword,
 ) (*kubernetescorev1.Secret, error) {
 	// Create secret with the generated password
@@ -79,12 +78,12 @@ func createKubernetesSecret(
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesClickHouse.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: namespace,
 			},
 			StringData: pulumi.StringMap{
 				vars.ClickhousePasswordKey: randomPassword.Result,
 			},
-		}, pulumi.Parent(createdNamespace))
+		})
 
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create kubernetes secret")

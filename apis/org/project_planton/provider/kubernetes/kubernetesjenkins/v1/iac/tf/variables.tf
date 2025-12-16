@@ -25,6 +25,9 @@ variable "spec" {
     # Kubernetes namespace to install Jenkins.
     namespace = string
 
+    # flag to indicate if the namespace should be created
+    create_namespace = optional(bool, true)
+
     # The CPU and memory resources allocated to the Jenkins container.
     container_resources = object({
 

@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install the microservice.
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The version of the microservice being deployed.
     # This is usually either "main" (the default git branch name) or "review-<id>" where <id> is the merge request number.
     # It must be between 1 and 20 characters and can only contain lowercase letters, numbers, and hyphens.

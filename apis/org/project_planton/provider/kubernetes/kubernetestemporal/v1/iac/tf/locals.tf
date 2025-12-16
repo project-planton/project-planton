@@ -31,8 +31,8 @@ locals {
   # Merge all labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace uses the resource_id
-  namespace = local.resource_id
+  # Namespace from spec
+  namespace = var.spec.namespace
 
   # Service names
   frontend_service_name = "${var.metadata.name}-frontend"

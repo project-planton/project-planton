@@ -29,12 +29,14 @@ const (
 // It includes container specifications for resource allocation to the Istio control plane (istiod).
 type KubernetesIstioSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this addon on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the Istio control plane (istiod) deployment.
-	Container     *KubernetesIstioSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container     *KubernetesIstioSpecContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,6 +83,13 @@ func (x *KubernetesIstioSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesIstioSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesIstioSpec) GetContainer() *KubernetesIstioSpecContainer {
@@ -141,11 +150,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesistio_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kubernetesistio_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kubernetesistio/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesistio.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xf4\x02\n" +
+	"Eorg/project_planton/provider/kubernetes/kubernetesistio/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesistio.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x9f\x03\n" +
 	"\x13KubernetesIstioSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12~\n" +
-	"\tcontainer\x18\x03 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesistio.v1.KubernetesIstioSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9c\x01\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12~\n" +
+	"\tcontainer\x18\x04 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesistio.v1.KubernetesIstioSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9c\x01\n" +
 	"\x1cKubernetesIstioSpecContainer\x12|\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +

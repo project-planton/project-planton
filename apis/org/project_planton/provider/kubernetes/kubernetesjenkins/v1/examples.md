@@ -6,6 +6,7 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-instance-basic
 spec:
+  create_namespace: true
   container:
     resources:
       requests:
@@ -30,6 +31,7 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-instance-custom
 spec:
+  create_namespace: true
   container:
     resources:
       requests:
@@ -63,6 +65,7 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-no-ingress
 spec:
+  create_namespace: true
   container:
     resources:
       requests:
@@ -87,6 +90,7 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-high-resources
 spec:
+  create_namespace: true
   container:
     resources:
       requests:
@@ -119,6 +123,7 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-minimal
 spec:
+  create_namespace: true
   container:
     resources:
       requests:
@@ -129,4 +134,32 @@ spec:
         memory: 1Gi
   ingress:
     enabled: false
+```
+
+# Example 6: Jenkins Kubernetes Using Existing Namespace
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: JenkinsKubernetes
+metadata:
+  name: jenkins-existing-namespace
+spec:
+  # Set to false to use an existing namespace instead of creating a new one
+  create_namespace: false
+  namespace: ci-cd-tools
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+  helm_values:
+    persistence:
+      enabled: true
+      size: 20Gi
+  ingress:
+    enabled: true
+    hostname: jenkins.example.com
 ```

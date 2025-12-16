@@ -2,11 +2,22 @@
 # main.tf
 ###########################
 
-# Create namespace
+# Conditional namespace creation
 resource "kubernetes_namespace" "external_dns" {
+  count = try(var.spec.create_namespace, false) ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
+  }
+}
+
+# Data source for existing namespace
+data "kubernetes_namespace" "existing" {
+  count = try(var.spec.create_namespace, false) ? 0 : 1
+
+  metadata {
+    name = local.namespace
   }
 }
 
@@ -14,7 +25,7 @@ resource "kubernetes_namespace" "external_dns" {
 resource "kubernetes_service_account" "external_dns" {
   metadata {
     name        = local.ksa_name
-    namespace   = kubernetes_namespace.external_dns.metadata[0].name
+    namespace   = local.namespace_name
     annotations = local.sa_annotations
     labels      = local.final_labels
   }
@@ -26,7 +37,7 @@ resource "kubernetes_secret" "cloudflare_api_token" {
 
   metadata {
     name      = local.cf_secret_name
-    namespace = kubernetes_namespace.external_dns.metadata[0].name
+    namespace = local.namespace_name
     labels    = local.final_labels
   }
 
@@ -40,7 +51,7 @@ resource "kubernetes_secret" "cloudflare_api_token" {
 # Deploy ExternalDNS via Helm
 resource "helm_release" "external_dns" {
   name       = local.release_name
-  namespace  = kubernetes_namespace.external_dns.metadata[0].name
+  namespace  = local.namespace_name
   repository = local.helm_repo_url
   chart      = local.helm_chart_name
   version    = local.helm_chart_version
@@ -184,6 +195,7 @@ resource "helm_release" "external_dns" {
 
   depends_on = [
     kubernetes_namespace.external_dns,
+    data.kubernetes_namespace.existing,
     kubernetes_service_account.external_dns
   ]
 }

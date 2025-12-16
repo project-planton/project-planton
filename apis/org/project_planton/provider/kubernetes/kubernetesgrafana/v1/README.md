@@ -57,3 +57,26 @@ Monitoring and visualizing system metrics are crucial for maintaining the health
 - **Resource Optimization**: Enables precise control over resource allocation for containers, optimizing performance and cost.
 - **Flexibility**: Customize Grafana configurations to meet specific monitoring requirements without compromising best practices.
 - **Enhanced Observability**: Provides a centralized platform for visualizing metrics and logs, improving system observability and facilitating proactive issue detection.
+
+## Namespace Management
+
+The Grafana Kubernetes component provides flexible namespace management through the `create_namespace` flag in the spec:
+
+### Namespace Creation Control
+
+- **`create_namespace: true`**: The component will create a dedicated namespace for Grafana with appropriate resource labels for tracking and organization. All Grafana resources (helm chart, ingress, etc.) will be deployed into this created namespace. The namespace will be managed as part of the component's lifecycle.
+
+- **`create_namespace: false`** (default): The component will deploy Grafana resources into an existing namespace specified in the `namespace` field. The namespace must already exist before deployment. This is useful when you want to deploy multiple components into a shared namespace or when namespace creation is managed separately.
+
+### When to Use Each Option
+
+**Use `create_namespace: true` when:**
+- You want the component to fully manage its namespace lifecycle
+- You're deploying Grafana in isolation
+- You want automatic cleanup when the component is destroyed
+
+**Use `create_namespace: false` when:**
+- The namespace already exists and is managed separately
+- You're deploying multiple components into a shared namespace
+- You have existing namespace policies or quotas that should not be modified
+- You want to preserve the namespace when the component is destroyed

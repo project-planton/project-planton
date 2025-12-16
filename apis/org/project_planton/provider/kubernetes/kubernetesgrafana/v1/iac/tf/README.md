@@ -5,10 +5,18 @@ This Terraform module deploys Grafana on a Kubernetes cluster.
 ## Overview
 
 This module provisions:
-- A dedicated Kubernetes namespace for Grafana
+- A Kubernetes namespace for Grafana (optionally created or referenced)
 - Grafana deployment via Helm chart
 - Optional Ingress resources for external and internal access
 - Service resources for internal communication
+
+### Namespace Management
+
+The module provides flexible namespace management through the `create_namespace` flag:
+
+- **`create_namespace: true`**: The module creates a dedicated namespace with appropriate resource labels for tracking and organization. All Grafana resources are deployed into this created namespace, and the namespace is managed as part of the component's lifecycle.
+
+- **`create_namespace: false`** (default): The module uses an existing namespace specified in the `namespace` field. The namespace must already exist before deployment. This is useful when deploying multiple components into a shared namespace or when namespace lifecycle is managed separately.
 
 ## Prerequisites
 
@@ -59,6 +67,9 @@ Specification for the Grafana deployment.
 
 ```hcl
 spec = {
+  namespace = "grafana"          # Kubernetes namespace name
+  create_namespace = true        # Whether to create the namespace (default: false)
+  
   container = {
     resources = {
       requests = {

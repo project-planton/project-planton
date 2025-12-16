@@ -35,16 +35,26 @@ func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
 		pdbSpec.MinAvailable = pulumi.Int(1)
 	}
 
-	_, err := policyv1.NewPodDisruptionBudget(ctx,
-		"pdb",
-		&policyv1.PodDisruptionBudgetArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Spec: pdbSpec,
-		}, pulumi.Parent(createdNamespace))
+	pdbArgs := &policyv1.PodDisruptionBudgetArgs{
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Spec: pdbSpec,
+	}
+
+	var err error
+	if createdNamespace != nil {
+		_, err = policyv1.NewPodDisruptionBudget(ctx,
+			"pdb",
+			pdbArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		_, err = policyv1.NewPodDisruptionBudget(ctx,
+			"pdb",
+			pdbArgs)
+	}
 	if err != nil {
 		return errors.Wrap(err, "failed to create pod disruption budget")
 	}

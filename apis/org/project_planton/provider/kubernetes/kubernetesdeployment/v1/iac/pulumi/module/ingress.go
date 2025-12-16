@@ -154,151 +154,183 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 	}
 
 	//create http-route for setting up https-redirect for external-hostname
-	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-external-redirect",
-		&gatewayv1.HTTPRouteArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-external-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Spec: gatewayv1.HTTPRouteSpecArgs{
-				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
-				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
-					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
-						Namespace:   createdExternalGateway.Metadata.Namespace(),
-						SectionName: pulumi.String("http-external"),
-					},
+	httpExternalRedirectArgs := &gatewayv1.HTTPRouteArgs{
+		Metadata: metav1.ObjectMetaArgs{
+			Name:      pulumi.String("http-external-redirect"),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Spec: gatewayv1.HTTPRouteSpecArgs{
+			Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
+			ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
+				gatewayv1.HTTPRouteSpecParentRefsArgs{
+					Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+					Namespace:   createdExternalGateway.Metadata.Namespace(),
+					SectionName: pulumi.String("http-external"),
 				},
-				Rules: gatewayv1.HTTPRouteSpecRulesArray{
-					gatewayv1.HTTPRouteSpecRulesArgs{
-						Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
-							gatewayv1.HTTPRouteSpecRulesFiltersArgs{
-								RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
-									Scheme:     pulumi.String("https"),
-									StatusCode: pulumi.Int(301),
-								},
-								Type: pulumi.String("RequestRedirect"),
+			},
+			Rules: gatewayv1.HTTPRouteSpecRulesArray{
+				gatewayv1.HTTPRouteSpecRulesArgs{
+					Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
+						gatewayv1.HTTPRouteSpecRulesFiltersArgs{
+							RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
+								Scheme:     pulumi.String("https"),
+								StatusCode: pulumi.Int(301),
 							},
+							Type: pulumi.String("RequestRedirect"),
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		},
+	}
+	if createdNamespace != nil {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"http-external-redirect",
+			httpExternalRedirectArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"http-external-redirect",
+			httpExternalRedirectArgs)
+	}
 
 	//create http-route for external-hostname with https listener
-	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-external",
-		&gatewayv1.HTTPRouteArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-external"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Spec: gatewayv1.HTTPRouteSpecArgs{
-				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
-				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
-					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
-						Namespace:   createdExternalGateway.Metadata.Namespace(),
-						SectionName: pulumi.String("https-external"),
-					},
+	httpsExternalArgs := &gatewayv1.HTTPRouteArgs{
+		Metadata: metav1.ObjectMetaArgs{
+			Name:      pulumi.String("https-external"),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Spec: gatewayv1.HTTPRouteSpecArgs{
+			Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
+			ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
+				gatewayv1.HTTPRouteSpecParentRefsArgs{
+					Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+					Namespace:   createdExternalGateway.Metadata.Namespace(),
+					SectionName: pulumi.String("https-external"),
 				},
-				Rules: gatewayv1.HTTPRouteSpecRulesArray{
-					gatewayv1.HTTPRouteSpecRulesArgs{
-						Matches: gatewayv1.HTTPRouteSpecRulesMatchesArray{
-							gatewayv1.HTTPRouteSpecRulesMatchesArgs{
-								Path: gatewayv1.HTTPRouteSpecRulesMatchesPathArgs{
-									Type:  pulumi.String("PathPrefix"),
-									Value: pulumi.String("/"),
-								},
+			},
+			Rules: gatewayv1.HTTPRouteSpecRulesArray{
+				gatewayv1.HTTPRouteSpecRulesArgs{
+					Matches: gatewayv1.HTTPRouteSpecRulesMatchesArray{
+						gatewayv1.HTTPRouteSpecRulesMatchesArgs{
+							Path: gatewayv1.HTTPRouteSpecRulesMatchesPathArgs{
+								Type:  pulumi.String("PathPrefix"),
+								Value: pulumi.String("/"),
 							},
 						},
-						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
-							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
-								Name:      pulumi.String(locals.KubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
-								Port:      destinationServicePort,
-							},
+					},
+					BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
+						gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
+							Name:      pulumi.String(locals.KubeServiceName),
+							Namespace: pulumi.String(locals.Namespace),
+							Port:      destinationServicePort,
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		},
+	}
+	if createdNamespace != nil {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"https-external",
+			httpsExternalArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"https-external",
+			httpsExternalArgs)
+	}
 
 	//create http-route for setting up https-redirect for internal-hostname
-	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-internal-redirect",
-		&gatewayv1.HTTPRouteArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-internal-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Spec: gatewayv1.HTTPRouteSpecArgs{
-				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressInternalHostname)},
-				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
-					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-internal", locals.Namespace),
-						Namespace:   createdInternalGateway.Metadata.Namespace(),
-						SectionName: pulumi.String("http-external"),
-					},
+	httpInternalRedirectArgs := &gatewayv1.HTTPRouteArgs{
+		Metadata: metav1.ObjectMetaArgs{
+			Name:      pulumi.String("http-internal-redirect"),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Spec: gatewayv1.HTTPRouteSpecArgs{
+			Hostnames: pulumi.StringArray{pulumi.String(locals.IngressInternalHostname)},
+			ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
+				gatewayv1.HTTPRouteSpecParentRefsArgs{
+					Name:        pulumi.Sprintf("%s-internal", locals.Namespace),
+					Namespace:   createdInternalGateway.Metadata.Namespace(),
+					SectionName: pulumi.String("http-external"),
 				},
-				Rules: gatewayv1.HTTPRouteSpecRulesArray{
-					gatewayv1.HTTPRouteSpecRulesArgs{
-						Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
-							gatewayv1.HTTPRouteSpecRulesFiltersArgs{
-								RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
-									Scheme:     pulumi.String("https"),
-									StatusCode: pulumi.Int(301),
-								},
-								Type: pulumi.String("RequestRedirect"),
+			},
+			Rules: gatewayv1.HTTPRouteSpecRulesArray{
+				gatewayv1.HTTPRouteSpecRulesArgs{
+					Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
+						gatewayv1.HTTPRouteSpecRulesFiltersArgs{
+							RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
+								Scheme:     pulumi.String("https"),
+								StatusCode: pulumi.Int(301),
 							},
+							Type: pulumi.String("RequestRedirect"),
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		},
+	}
+	if createdNamespace != nil {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"http-internal-redirect",
+			httpInternalRedirectArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"http-internal-redirect",
+			httpInternalRedirectArgs)
+	}
 
 	//create http-route for internal-hostname with https listener
-	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-internal",
-		&gatewayv1.HTTPRouteArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-internal"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Spec: gatewayv1.HTTPRouteSpecArgs{
-				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressInternalHostname)},
-				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
-					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-internal", locals.Namespace),
-						Namespace:   createdInternalGateway.Metadata.Namespace(),
-						SectionName: pulumi.String("https-internal"),
-					},
+	httpsInternalArgs := &gatewayv1.HTTPRouteArgs{
+		Metadata: metav1.ObjectMetaArgs{
+			Name:      pulumi.String("https-internal"),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Spec: gatewayv1.HTTPRouteSpecArgs{
+			Hostnames: pulumi.StringArray{pulumi.String(locals.IngressInternalHostname)},
+			ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
+				gatewayv1.HTTPRouteSpecParentRefsArgs{
+					Name:        pulumi.Sprintf("%s-internal", locals.Namespace),
+					Namespace:   createdInternalGateway.Metadata.Namespace(),
+					SectionName: pulumi.String("https-internal"),
 				},
-				Rules: gatewayv1.HTTPRouteSpecRulesArray{
-					gatewayv1.HTTPRouteSpecRulesArgs{
-						Matches: gatewayv1.HTTPRouteSpecRulesMatchesArray{
-							gatewayv1.HTTPRouteSpecRulesMatchesArgs{
-								Path: gatewayv1.HTTPRouteSpecRulesMatchesPathArgs{
-									Type:  pulumi.String("PathPrefix"),
-									Value: pulumi.String("/"),
-								},
+			},
+			Rules: gatewayv1.HTTPRouteSpecRulesArray{
+				gatewayv1.HTTPRouteSpecRulesArgs{
+					Matches: gatewayv1.HTTPRouteSpecRulesMatchesArray{
+						gatewayv1.HTTPRouteSpecRulesMatchesArgs{
+							Path: gatewayv1.HTTPRouteSpecRulesMatchesPathArgs{
+								Type:  pulumi.String("PathPrefix"),
+								Value: pulumi.String("/"),
 							},
 						},
-						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
-							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
-								Name:      pulumi.String(locals.KubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
-								Port:      destinationServicePort,
-							},
+					},
+					BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
+						gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
+							Name:      pulumi.String(locals.KubeServiceName),
+							Namespace: pulumi.String(locals.Namespace),
+							Port:      destinationServicePort,
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		},
+	}
+	if createdNamespace != nil {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"https-internal",
+			httpsInternalArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		_, err = gatewayv1.NewHTTPRoute(ctx,
+			"https-internal",
+			httpsInternalArgs)
+	}
 	return nil
 }

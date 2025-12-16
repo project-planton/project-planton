@@ -12,6 +12,7 @@ import (
 
 func ingress(ctx *pulumi.Context,
 	locals *Locals,
+	namespaceInput pulumi.StringInput,
 	createdNamespace *kubernetescorev1.Namespace,
 	kubernetesProvider *kubernetes.Provider) error {
 	// Create certificate
@@ -94,12 +95,17 @@ func ingress(ctx *pulumi.Context,
 		}
 
 		//create http-route for setting up https-redirect for external-hostname
+		httpRedirectResourceOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{elasticsearchCreatedGateway})}
+		if createdNamespace != nil {
+			httpRedirectResourceOpts = append(httpRedirectResourceOpts, pulumi.Parent(createdNamespace))
+		}
+
 		_, err = gatewayv1.NewHTTPRoute(ctx,
 			"http-external-redirect",
 			&gatewayv1.HTTPRouteArgs{
 				Metadata: metav1.ObjectMetaArgs{
 					Name:      pulumi.String("http-external-redirect"),
-					Namespace: createdNamespace.Metadata.Name(),
+					Namespace: namespaceInput,
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -125,15 +131,20 @@ func ingress(ctx *pulumi.Context,
 						},
 					},
 				},
-			}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{createdCertificate}))
+			}, httpRedirectResourceOpts...)
 
 		// Create HTTP route for external hostname for https listener
+		httpsExternalResourceOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProvider)}
+		if createdNamespace != nil {
+			httpsExternalResourceOpts = append(httpsExternalResourceOpts, pulumi.Parent(createdNamespace))
+		}
+
 		_, err = gatewayv1.NewHTTPRoute(ctx,
 			"https-external",
 			&gatewayv1.HTTPRouteArgs{
 				Metadata: metav1.ObjectMetaArgs{
 					Name:      pulumi.String("https-external"),
-					Namespace: createdNamespace.Metadata.Name(),
+					Namespace: namespaceInput,
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -158,14 +169,14 @@ func ingress(ctx *pulumi.Context,
 							BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 								gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 									Name:      pulumi.String(locals.ElasticsearchKubeServiceName),
-									Namespace: createdNamespace.Metadata.Name(),
+									Namespace: namespaceInput,
 									Port:      pulumi.Int(vars.ElasticsearchPort),
 								},
 							},
 						},
 					},
 				},
-			}, pulumi.Parent(createdNamespace))
+			}, httpsExternalResourceOpts...)
 
 		if err != nil {
 			return errors.Wrap(err, "error creating HTTP route")
@@ -230,12 +241,17 @@ func ingress(ctx *pulumi.Context,
 		}
 
 		//create http-route for setting up https-redirect for external-hostname
+		kibanaHttpRedirectResourceOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProvider)}
+		if createdNamespace != nil {
+			kibanaHttpRedirectResourceOpts = append(kibanaHttpRedirectResourceOpts, pulumi.Parent(createdNamespace))
+		}
+
 		_, err = gatewayv1.NewHTTPRoute(ctx,
 			"http-kb-external-redirect",
 			&gatewayv1.HTTPRouteArgs{
 				Metadata: metav1.ObjectMetaArgs{
 					Name:      pulumi.String("http-kb-external-redirect"),
-					Namespace: createdNamespace.Metadata.Name(),
+					Namespace: namespaceInput,
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -261,15 +277,20 @@ func ingress(ctx *pulumi.Context,
 						},
 					},
 				},
-			}, pulumi.Parent(createdNamespace))
+			}, kibanaHttpRedirectResourceOpts...)
 
 		// Create HTTP route for external hostname for https listener
+		kibanaHttpsExternalResourceOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProvider)}
+		if createdNamespace != nil {
+			kibanaHttpsExternalResourceOpts = append(kibanaHttpsExternalResourceOpts, pulumi.Parent(createdNamespace))
+		}
+
 		_, err = gatewayv1.NewHTTPRoute(ctx,
 			"https-kb-external",
 			&gatewayv1.HTTPRouteArgs{
 				Metadata: metav1.ObjectMetaArgs{
 					Name:      pulumi.String("https-kb-external"),
-					Namespace: createdNamespace.Metadata.Name(),
+					Namespace: namespaceInput,
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -294,14 +315,14 @@ func ingress(ctx *pulumi.Context,
 							BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 								gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 									Name:      pulumi.String(locals.KibanaKubeServiceName),
-									Namespace: createdNamespace.Metadata.Name(),
+									Namespace: namespaceInput,
 									Port:      pulumi.Int(5601),
 								},
 							},
 						},
 					},
 				},
-			}, pulumi.Parent(createdNamespace))
+			}, kibanaHttpsExternalResourceOpts...)
 
 		if err != nil {
 			return errors.Wrap(err, "error creating HTTP route")

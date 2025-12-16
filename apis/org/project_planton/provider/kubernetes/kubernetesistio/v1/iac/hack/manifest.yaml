@@ -7,6 +7,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: local-kind-cluster
+  namespace:
+    value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:

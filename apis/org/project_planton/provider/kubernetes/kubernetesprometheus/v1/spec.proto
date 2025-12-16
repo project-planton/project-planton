@@ -15,23 +15,26 @@ import "org/project_planton/shared/options/options.proto";
  * It includes container specifications and ingress settings to control resource allocation and external access.
  */
 message KubernetesPrometheusSpec {
-  // The Kubernetes cluster to install Prometheus on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install Prometheus.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The container specifications for the Prometheus deployment.
-  KubernetesPrometheusContainer container = 3 [(buf.validate.field).required = true];
+  KubernetesPrometheusContainer container = 4 [(buf.validate.field).required = true];
 
   /**
    * The ingress configuration for the Prometheus deployment.
    */
-  KubernetesPrometheusIngress ingress = 4;
+  KubernetesPrometheusIngress ingress = 5;
 }
 
 /**

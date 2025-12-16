@@ -24,7 +24,8 @@ func Resources(ctx *pulumi.Context,
 	}
 
 	// ------------------------------ namespace ----------------------------
-	createdNamespace, err := namespace(ctx, locals, kubernetesProvider)
+	// Conditionally create namespace based on create_namespace flag
+	createdNamespace, err := namespace(ctx, stackInput, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create namespace")
 	}

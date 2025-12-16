@@ -23,18 +23,21 @@ extend google.protobuf.FieldOptions {
  * deployment patterns from simple single-node installations to production-grade distributed clusters.
  */
 message KubernetesSignozSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the component.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The container specifications for the main SigNoz binary (UI, API server, Ruler, Alertmanager).
-  KubernetesSignozContainer signoz_container = 3 [(default_signoz_container) = {
+  KubernetesSignozContainer signoz_container = 4 [(default_signoz_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -49,7 +52,7 @@ message KubernetesSignozSpec {
   }];
 
   // The container specifications for the OpenTelemetry Collector (data ingestion gateway).
-  KubernetesSignozContainer otel_collector_container = 4 [(default_otel_collector_container) = {
+  KubernetesSignozContainer otel_collector_container = 5 [(default_otel_collector_container) = {
     replicas: 2
     resources: {
       limits: {
@@ -64,10 +67,10 @@ message KubernetesSignozSpec {
   }];
 
   // The database configuration for SigNoz, supporting both self-managed and external ClickHouse.
-  KubernetesSignozDatabaseConfig database = 5 [(buf.validate.field).required = true];
+  KubernetesSignozDatabaseConfig database = 6 [(buf.validate.field).required = true];
 
   // The ingress configuration for SigNoz UI and OpenTelemetry Collector endpoints.
-  KubernetesSignozIngress ingress = 6;
+  KubernetesSignozIngress ingress = 7;
 
   /**
    * A map of key-value pairs that provide additional customization options for the SigNoz Helm chart.
@@ -76,7 +79,7 @@ message KubernetesSignozSpec {
    * For detailed information on available options, refer to the Helm chart documentation at:
    * https://github.com/SigNoz/charts
    */
-  map<string, string> helm_values = 7;
+  map<string, string> helm_values = 8;
 }
 
 /**

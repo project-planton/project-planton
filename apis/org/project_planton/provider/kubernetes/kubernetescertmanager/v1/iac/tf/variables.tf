@@ -20,6 +20,9 @@ variable "spec" {
     # Kubernetes namespace where cert-manager will be deployed
     namespace = optional(string, "kubernetes-cert-manager")
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, false)
+
     # cert-manager version (e.g., "v1.19.1")
     kubernetes_cert_manager_version = optional(string, "v1.19.1")
 

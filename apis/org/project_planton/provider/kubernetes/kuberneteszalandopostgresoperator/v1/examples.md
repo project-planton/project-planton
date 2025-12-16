@@ -52,6 +52,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -94,6 +95,35 @@ postgresqls.acid.zalan.do
 
 ---
 
+## Using Existing Namespace
+
+If you have a pre-existing namespace and don't want the module to create it, set `create_namespace: false`:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesZalandoPostgresOperator
+metadata:
+  name: postgres-operator
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: existing-postgres-namespace
+  create_namespace: false  # Use existing namespace
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+**Important**: The namespace must already exist in the cluster when `create_namespace: false`.
+
+---
+
 ## Production Deployment with Backups
 
 Production-ready configuration with Cloudflare R2 backups, custom schedules, and enhanced resource limits.
@@ -119,6 +149,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -237,6 +268,7 @@ spec:
     cluster_name: dev-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -261,6 +293,7 @@ spec:
     cluster_name: staging-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -285,6 +318,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -328,6 +362,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -353,6 +388,7 @@ spec:
     cluster_name: dev-gke-cluster
   namespace:
     value: postgres-operator-dev
+  create_namespace: true
   container:
     resources:
       requests:
@@ -379,6 +415,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: postgres-operator-prod
+  create_namespace: true
   container:
     resources:
       requests:
@@ -549,6 +586,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -662,6 +700,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: postgres-operator-prod
+  create_namespace: true
   container:
     resources:
       requests:

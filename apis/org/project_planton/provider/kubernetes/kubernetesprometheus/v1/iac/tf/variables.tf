@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install Prometheus.
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The container specifications for the Prometheus deployment.
     container = object({
 

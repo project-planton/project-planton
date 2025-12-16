@@ -37,6 +37,7 @@ var _ = ginkgo.Describe("KubernetesKafka Custom Validation Tests", func() {
 						Value: "test-namespace",
 					},
 				},
+				CreateNamespace: true,
 				KafkaTopics: []*KafkaTopic{
 					{
 						Name: "my-topic1",

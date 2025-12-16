@@ -1,5 +1,17 @@
 # Terraform Module to Deploy a Microservice on Kubernetes
 
+## Namespace Management
+
+This module supports flexible namespace management through the `create_namespace` variable:
+
+- **`create_namespace = true`**: The module creates the namespace with appropriate labels. Use this for new deployments.
+- **`create_namespace = false`**: The module uses an existing namespace without creating it. The namespace must already exist in the cluster. Use this when:
+  - Multiple deployments share the same namespace
+  - Namespaces are managed centrally
+  - Using GitOps workflows where namespaces are managed separately
+
+## Usage Commands
+
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
   --backend-config="bucket=planton-cloud-tf-state-backend" \

@@ -1,5 +1,7 @@
-# Create namespace for Harbor
-resource "kubernetes_namespace" "harbor" {
+# Conditionally create namespace for Harbor if create_namespace is true
+resource "kubernetes_namespace_v1" "harbor_namespace" {
+  count = var.harbor_kubernetes.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.labels

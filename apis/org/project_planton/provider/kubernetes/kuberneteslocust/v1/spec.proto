@@ -18,19 +18,22 @@ extend google.protobuf.FieldOptions {
 // and Helm chart values for customizing the deployment. By configuring these parameters, you can set up a scalable
 // and customizable load testing environment to simulate user traffic and measure application performance.
 message KubernetesLocustSpec {
-  // The Kubernetes cluster to install Locust on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install Locust.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The master container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the master node.
-  KubernetesLocustContainer master_container = 3 [(default_master_container) = {
+  KubernetesLocustContainer master_container = 4 [(default_master_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -46,7 +49,7 @@ message KubernetesLocustSpec {
 
   // The worker container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the worker nodes.
-  KubernetesLocustContainer worker_container = 4 [(default_worker_container) = {
+  KubernetesLocustContainer worker_container = 5 [(default_worker_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -61,19 +64,19 @@ message KubernetesLocustSpec {
   }];
 
   // The ingress configuration for the Locust deployment.
-  KubernetesLocustIngress ingress = 5;
+  KubernetesLocustIngress ingress = 6;
 
   // The load test parameters, including the main test script, additional library files,
   // and extra Python pip packages needed for test execution.
   // This specifies how the Locust nodes will simulate traffic and interact with the target application.
-  KubernetesLocustLoadTest load_test = 6 [(buf.validate.field).required = true];
+  KubernetesLocustLoadTest load_test = 7 [(buf.validate.field).required = true];
 
   // A map of key-value pairs providing additional customization options for the Helm chart used
   // to deploy the Locust cluster. These values allow for further refinement of the deployment,
   // such as customizing resource limits, setting environment variables, or specifying version tags.
   // For detailed information on the available options, refer to the Helm chart documentation at:
   // https://github.com/deliveryhero/helm-charts/tree/master/stable/locust#values
-  map<string, string> helm_values = 7;
+  map<string, string> helm_values = 8;
 }
 
 // **KubernetesLocustContainer** specifies the container configuration for Locust master and worker nodes.

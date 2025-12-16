@@ -40,6 +40,7 @@ import (
     kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -47,13 +48,17 @@ import (
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         ingressSpec := &kubernetesingressnginxv1.KubernetesIngressNginxSpec{
-            TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-                CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-                    KubernetesCredentialId: "my-cluster-credential",
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "my-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "ingress-nginx",
                 },
             },
-            ChartVersion: "4.11.1",
-            Internal:     false,
+            CreateNamespace: true,
+            ChartVersion:    "4.11.1",
+            Internal:        false,
         }
 
         ingress := &kubernetesingressnginxv1.KubernetesIngressNginx{
@@ -61,6 +66,60 @@ func main() {
             Kind:       "KubernetesIngressNginx",
             Metadata: &shared.CloudResourceMetadata{
                 Name: "basic-ingress",
+            },
+            Spec: ingressSpec,
+        }
+
+        stackInput := &kubernetesingressnginxv1.KubernetesIngressNginxStackInput{
+            Target: ingress,
+        }
+
+        if err := module.Resources(ctx, stackInput); err != nil {
+            return err
+        }
+
+        return nil
+    })
+}
+```
+
+## Example 1b: Using Existing Namespace
+
+Deploy to a namespace created by your platform team.
+
+```go
+package main
+
+import (
+    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func main() {
+    pulumi.Run(func(ctx *pulumi.Context) error {
+        ingressSpec := &kubernetesingressnginxv1.KubernetesIngressNginxSpec{
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "my-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "platform-ingress",
+                },
+            },
+            CreateNamespace: false,  // Use existing namespace
+            ChartVersion:    "4.11.1",
+            Internal:        false,
+        }
+
+        ingress := &kubernetesingressnginxv1.KubernetesIngressNginx{
+            ApiVersion: "kubernetes.project-planton.org/v1",
+            Kind:       "KubernetesIngressNginx",
+            Metadata: &shared.CloudResourceMetadata{
+                Name: "existing-ns-ingress",
             },
             Spec: ingressSpec,
         }
@@ -89,6 +148,7 @@ import (
     kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
     "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
     "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -96,13 +156,17 @@ import (
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         ingressSpec := &kubernetesingressnginxv1.KubernetesIngressNginxSpec{
-            TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-                CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-                    KubernetesCredentialId: "gke-cluster-credential",
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "gke-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "ingress-nginx",
                 },
             },
-            ChartVersion: "4.11.1",
-            Internal:     false,
+            CreateNamespace: true,
+            ChartVersion:    "4.11.1",
+            Internal:        false,
             ProviderConfig: &kubernetesingressnginxv1.KubernetesIngressNginxSpec_Gke{
                 Gke: &kubernetesingressnginxv1.KubernetesIngressNginxGkeConfig{
                     StaticIpName: "prod-ingress-static-ip",
@@ -160,13 +224,17 @@ import (
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         ingressSpec := &kubernetesingressnginxv1.KubernetesIngressNginxSpec{
-            TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-                CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-                    KubernetesCredentialId: "eks-cluster-credential",
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "eks-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "ingress-nginx",
                 },
             },
-            ChartVersion: "4.11.1",
-            Internal:     false,
+            CreateNamespace: true,
+            ChartVersion:    "4.11.1",
+            Internal:        false,
             ProviderConfig: &kubernetesingressnginxv1.KubernetesIngressNginxSpec_Eks{
                 Eks: &kubernetesingressnginxv1.KubernetesIngressNginxEksConfig{
                     AdditionalSecurityGroupIds: []*foreignkeyv1.StringValueOrRef{
@@ -224,13 +292,17 @@ import (
 func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         ingressSpec := &kubernetesingressnginxv1.KubernetesIngressNginxSpec{
-            TargetCluster: &kubernetes.KubernetesAddonTargetCluster{
-                CredentialSource: &kubernetes.KubernetesAddonTargetCluster_KubernetesCredentialId{
-                    KubernetesCredentialId: "aks-cluster-credential",
+            TargetCluster: &kubernetes.KubernetesClusterSelector{
+                ClusterName: "aks-cluster",
+            },
+            Namespace: &foreignkeyv1.StringValueOrRef{
+                LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+                    Value: "ingress-nginx",
                 },
             },
-            ChartVersion: "4.11.1",
-            Internal:     false,
+            CreateNamespace: true,
+            ChartVersion:    "4.11.1",
+            Internal:        false,
             ProviderConfig: &kubernetesingressnginxv1.KubernetesIngressNginxSpec_Aks{
                 Aks: &kubernetesingressnginxv1.KubernetesIngressNginxAksConfig{
                     ManagedIdentityClientId: "12345678-1234-1234-1234-123456789012",

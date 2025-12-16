@@ -25,6 +25,9 @@ variable "spec" {
     # Kubernetes namespace to install Grafana.
     namespace = string
 
+    # flag to indicate if the namespace should be created
+    create_namespace = optional(bool, false)
+
     # The container specifications for the Grafana deployment.
     container = object({
 

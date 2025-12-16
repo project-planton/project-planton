@@ -28,6 +28,7 @@ spec:
     cluster_name: dev-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -90,6 +91,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -140,6 +142,72 @@ kubectl get pods -n my-app
 
 ---
 
+## Example 2.5: Using Existing Namespaces
+
+When namespaces are managed externally (e.g., via KubernetesNamespace resource or pre-provisioned).
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesIstio
+metadata:
+  name: prod-istio-existing-ns
+  labels:
+    environment: production
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: istio-system
+  create_namespace: false  # Use existing namespaces
+  container:
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+```
+
+**Use Case:** Centralized namespace management, multi-tenant clusters with namespace-level policies, GitOps workflows where namespaces are managed separately.
+
+**Resource Footprint:**
+- Same as standard production deployment
+- Assumes namespaces are pre-configured with appropriate labels and RBAC
+
+**Prerequisites:**
+- Both `istio-system` and `istio-ingress` namespaces must already exist in the cluster
+- Namespaces should have appropriate labels and RBAC configured
+- Sufficient resource quotas allocated to both namespaces
+
+**Deployment:**
+
+Before deploying Istio, ensure namespaces exist:
+```bash
+kubectl get namespace istio-system istio-ingress
+```
+
+If namespaces don't exist, create them:
+```bash
+kubectl create namespace istio-system
+kubectl create namespace istio-ingress
+```
+
+Then deploy Istio:
+```bash
+project-planton apply -f prod-istio-existing-ns.yaml
+```
+
+**Verification:**
+
+Confirm Istio is using the existing namespaces:
+```bash
+kubectl get pods -n istio-system
+kubectl get pods -n istio-ingress
+```
+
+---
+
 ## Example 3: High-Availability Production
 
 Configuration for high-traffic production environments requiring maximum reliability.
@@ -158,6 +226,7 @@ spec:
     cluster_name: prod-ha-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -233,6 +302,7 @@ spec:
     cluster_name: edge-k3s-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -305,6 +375,7 @@ spec:
     cluster_name: enterprise-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:

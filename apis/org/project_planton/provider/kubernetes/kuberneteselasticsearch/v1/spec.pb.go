@@ -31,14 +31,16 @@ const (
 // including resource allocation, persistence settings, and external access through ingress.
 type KubernetesElasticsearchSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install Elasticsearch on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install Elasticsearch.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The elasticsearch configuration.
-	Elasticsearch *KubernetesElasticsearchElasticsearchSpec `protobuf:"bytes,3,opt,name=elasticsearch,proto3" json:"elasticsearch,omitempty"`
+	Elasticsearch *KubernetesElasticsearchElasticsearchSpec `protobuf:"bytes,4,opt,name=elasticsearch,proto3" json:"elasticsearch,omitempty"`
 	// The kibana configuration.
-	Kibana        *KubernetesElasticsearchKibanaSpec `protobuf:"bytes,4,opt,name=kibana,proto3" json:"kibana,omitempty"`
+	Kibana        *KubernetesElasticsearchKibanaSpec `protobuf:"bytes,5,opt,name=kibana,proto3" json:"kibana,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -85,6 +87,13 @@ func (x *KubernetesElasticsearchSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesElasticsearchSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesElasticsearchSpec) GetElasticsearch() *KubernetesElasticsearchElasticsearchSpec {
@@ -442,16 +451,17 @@ var File_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec
 
 const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xec\x04\n" +
+	"Morg/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/spec.proto\x12Borg.project_planton.provider.kubernetes.kuberneteselasticsearch.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x97\x05\n" +
 	"\x1bKubernetesElasticsearchSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xc2\x01\n" +
-	"\relasticsearch\x18\x03 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xc2\x01\n" +
+	"\relasticsearch\x18\x04 \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
 	"'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\relasticsearch\x12\xa8\x01\n" +
-	"\x06kibana\x18\x04 \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecB)\xd2\xc4\xf8\x01$\b\x01\x12 \b\x01\x12\x1c\n" +
+	"\x06kibana\x18\x05 \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecB)\xd2\xc4\xf8\x01$\b\x01\x12 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x06kibana\"\xba\x02\n" +

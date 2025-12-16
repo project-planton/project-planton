@@ -1,5 +1,30 @@
 # Harbor Kubernetes API - Example Configurations
 
+## Namespace Management
+
+All Harbor deployments require a namespace. Control namespace management with the `create_namespace` flag:
+
+- **`create_namespace: true`** - Component creates and manages the namespace with appropriate labels
+- **`create_namespace: false`** - Deploy into an existing namespace (must exist before deployment)
+
+**Managed namespace example:**
+```yaml
+spec:
+  namespace:
+    value: "harbor-prod"
+  create_namespace: true  # Component creates the namespace
+```
+
+**Existing namespace example:**
+```yaml
+spec:
+  namespace:
+    value: "container-registry"
+  create_namespace: false  # Must exist before deployment
+```
+
+---
+
 ## Example w/ Basic Configuration (Evaluation)
 
 ### Create Using CLI
@@ -20,7 +45,11 @@ kind: HarborKubernetes
 metadata:
   name: basic-harbor
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: basic-harbor
+  create_namespace: true
   coreContainer:
     replicas: 1
     resources:
@@ -103,7 +132,11 @@ kind: HarborKubernetes
 metadata:
   name: production-harbor
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: production-harbor
+  create_namespace: true
   coreContainer:
     replicas: 2
     resources:
@@ -184,7 +217,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-gcp
 spec:
-  kubernetesProviderConfigId: my-gke-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-gcp
+  create_namespace: true
   coreContainer:
     replicas: 2
     resources:
@@ -241,7 +278,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-azure
 spec:
-  kubernetesProviderConfigId: my-aks-cluster-credential-id
+  targetCluster:
+    clusterName: my-aks-cluster
+  namespace:
+    value: harbor-azure
+  create_namespace: true
   coreContainer:
     replicas: 2
   portalContainer:
@@ -337,7 +378,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-dev
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-dev
+  create_namespace: true
   coreContainer:
     replicas: 1
     resources:
@@ -418,7 +463,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-minio
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-minio
+  create_namespace: true
   coreContainer:
     replicas: 2
   portalContainer:
@@ -465,7 +514,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-with-trivy
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-with-trivy
+  create_namespace: true
   coreContainer:
     replicas: 2
   portalContainer:
@@ -520,7 +573,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-oidc
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-oidc
+  create_namespace: true
   coreContainer:
     replicas: 2
   portalContainer:
@@ -575,7 +632,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-primary
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-primary
+  create_namespace: true
   coreContainer:
     replicas: 2
   portalContainer:
@@ -625,7 +686,11 @@ kind: HarborKubernetes
 metadata:
   name: harbor-notary
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: harbor-notary
+  create_namespace: true
   coreContainer:
     replicas: 2
   portalContainer:

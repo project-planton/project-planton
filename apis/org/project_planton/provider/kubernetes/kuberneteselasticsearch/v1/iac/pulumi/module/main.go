@@ -18,22 +18,33 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteselasticsearchv1.Kubern
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	createdNamespace, err := kubernetescorev1.NewNamespace(ctx, locals.Namespace,
-		&kubernetescorev1.NamespaceArgs{
-			Metadata: metav1.ObjectMetaPtrInput(
-				&metav1.ObjectMetaArgs{
-					Name:   pulumi.String(locals.Namespace),
-					Labels: pulumi.ToStringMap(locals.Labels),
-				}),
-		}, pulumi.Provider(kubernetesProvider))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create namespace")
+	var createdNamespace *kubernetescorev1.Namespace
+	var namespaceInput pulumi.StringInput
+
+	// Conditionally create namespace based on create_namespace flag
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = kubernetescorev1.NewNamespace(ctx, locals.Namespace,
+			&kubernetescorev1.NamespaceArgs{
+				Metadata: metav1.ObjectMetaPtrInput(
+					&metav1.ObjectMetaArgs{
+						Name:   pulumi.String(locals.Namespace),
+						Labels: pulumi.ToStringMap(locals.Labels),
+					}),
+			}, pulumi.Provider(kubernetesProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to create namespace")
+		}
+		namespaceInput = createdNamespace.Metadata.Name().Elem()
+		//export name of the namespace
+		ctx.Export(OpNamespace, createdNamespace.Metadata.Name().Elem())
+	} else {
+		// Use existing namespace - just reference it by name
+		namespaceInput = pulumi.String(locals.Namespace)
+		//export name of the namespace
+		ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 	}
 
-	//export name of the namespace
-	ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
-
-	if err := elasticsearch(ctx, locals, createdNamespace); err != nil {
+	if err := elasticsearch(ctx, locals, namespaceInput, createdNamespace, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create elastic search resources")
 	}
 
@@ -43,7 +54,7 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteselasticsearchv1.Kubern
 			locals.KubernetesElasticsearch.Spec.Kibana.Enabled &&
 			locals.KubernetesElasticsearch.Spec.Kibana.Ingress != nil &&
 			locals.KubernetesElasticsearch.Spec.Kibana.Ingress.Enabled) {
-		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
+		if err := ingress(ctx, locals, namespaceInput, createdNamespace, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create ingress resources")
 		}
 	}

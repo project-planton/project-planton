@@ -1,6 +1,6 @@
 output "namespace" {
   description = "The Kubernetes namespace where the Percona Operator for MongoDB is installed"
-  value       = kubernetes_namespace.percona_operator.metadata[0].name
+  value       = var.spec.create_namespace ? kubernetes_namespace.percona_operator[0].metadata[0].name : local.namespace
 }
 
 output "operator_version" {

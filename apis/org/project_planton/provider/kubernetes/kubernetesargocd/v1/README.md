@@ -19,6 +19,21 @@ We developed this API resource to streamline the deployment and configuration of
 - **Resource Configuration**: Allows customization of CPU and memory resources for the Argo CD container.
 - **Ingress Support**: Provides options to configure ingress specifications for network routing and access.
 - **Integration**: Works seamlessly with Kubernetes clusters using provided credentials.
+- **Flexible Namespace Management**: Supports both automatic namespace creation and use of pre-existing namespaces.
+
+## Namespace Management
+
+The KubernetesArgoCD resource provides flexible namespace management to accommodate different operational requirements:
+
+- **Automatic Creation** (`create_namespace: true`): The module creates and manages the namespace with appropriate labels and configurations. This is ideal for development environments and scenarios where the deployment tool has full cluster permissions.
+
+- **External Management** (`create_namespace: false`): The module uses a pre-existing namespace that must be created before deployment. This is useful for:
+  - Environments where namespace creation requires elevated privileges
+  - Integration with namespace policies and resource quotas managed separately
+  - GitOps workflows where namespaces are managed by other tools or processes
+  - Multi-tenant clusters with strict namespace governance
+
+**Important**: When using `create_namespace: false`, ensure the specified namespace exists before deploying, or the deployment will fail with a namespace not found error.
 
 ## Use Cases
 

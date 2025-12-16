@@ -55,6 +55,10 @@ Create a `stack-input.json` file:
     "target_cluster": {
       "kubernetes_credential_id": "my-cluster-cred"
     },
+    "namespace": {
+      "value": "elastic-system"
+    },
+    "create_namespace": true,
     "container": {
       "resources": {
         "requests": {
@@ -71,6 +75,10 @@ Create a `stack-input.json` file:
 }
 ```
 
+**Namespace Configuration:**
+- `namespace.value`: The name of the namespace (default: `elastic-system`)
+- `create_namespace`: Set to `true` to create the namespace, or `false` to use an existing one
+
 ### 3. Deploy
 
 ```bash
@@ -86,18 +94,31 @@ kubectl get crds | grep elastic
 
 ## Module Components
 
-### Namespace Creation
+### Namespace Management
 
-Creates the `elastic-system` namespace with Planton labels:
+The module supports two modes of namespace management:
+
+**1. Creating the Namespace (create_namespace: true)**
+
+When `spec.create_namespace` is `true`, the module creates the namespace with Planton labels:
 
 ```go
-ns, err := corev1.NewNamespace(ctx, vars.Namespace, &corev1.NamespaceArgs{
-    Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-        Name:   pulumi.String(vars.Namespace),
-        Labels: pulumi.ToStringMap(locals.KubeLabels),
-    }),
-}, pulumi.Provider(k8sProvider))
+if locals.KubernetesElasticOperator.Spec.CreateNamespace {
+    ns, err := corev1.NewNamespace(ctx, namespace, &corev1.NamespaceArgs{
+        Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
+            Name:   pulumi.String(namespace),
+            Labels: pulumi.ToStringMap(locals.KubeLabels),
+        }),
+    }, pulumi.Provider(k8sProvider))
+}
 ```
+
+**2. Using Existing Namespace (create_namespace: false)**
+
+When `spec.create_namespace` is `false`, the module assumes the namespace already exists and only references it by name. This is useful when:
+- The namespace is managed by another component (e.g., KubernetesNamespace)
+- The namespace has specific resource quotas or policies managed externally
+- You want to deploy multiple operators into a shared namespace
 
 ### Helm Release
 

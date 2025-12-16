@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "clickhouse_installation" {
 
     metadata = {
       name      = local.cluster_name
-      namespace = kubernetes_namespace_v1.clickhouse_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
 

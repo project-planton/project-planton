@@ -10,32 +10,35 @@ import "org/project_planton/shared/options/options.proto";
 // KubernetesCertManagerSpec defines configuration for kubernetes-cert-manager on any cluster.
 // The addon automatically creates a ClusterIssuer with multiple DNS solvers based on the provided DNS provider configurations.
 message KubernetesCertManagerSpec {
-  // The Kubernetes cluster to install this addon on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace where kubernetes-cert-manager will be deployed.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // kubernetes-cert-manager version such as "v1.19.1". Used to set the image tag.
   // Minimum version v1.16.4 is enforced for Cloudflare API compatibility.
-  optional string kubernetes_cert_manager_version = 3 [(org.project_planton.shared.options.default) = "v1.19.1"];
+  optional string kubernetes_cert_manager_version = 4 [(org.project_planton.shared.options.default) = "v1.19.1"];
 
   // Helm chart version to deploy. If not specified, uses the default version.
-  optional string helm_chart_version = 4 [(org.project_planton.shared.options.default) = "v1.19.1"];
+  optional string helm_chart_version = 5 [(org.project_planton.shared.options.default) = "v1.19.1"];
 
   // skip installation of self-signed issuer.
-  bool skip_install_self_signed_issuer = 5;
+  bool skip_install_self_signed_issuer = 6;
 
   // Global ACME configuration used for all DNS providers.
-  AcmeConfig acme = 6 [(buf.validate.field).required = true];
+  AcmeConfig acme = 7 [(buf.validate.field).required = true];
 
   // List of DNS provider configurations. Each provider can manage multiple DNS zones.
   // The addon will create a single ClusterIssuer with multiple solvers based on these configurations.
-  repeated DnsProviderConfig dns_providers = 7 [(buf.validate.field).repeated.min_items = 1];
+  repeated DnsProviderConfig dns_providers = 8 [(buf.validate.field).repeated.min_items = 1];
 }
 
 // AcmeConfig defines global ACME settings for certificate issuance.

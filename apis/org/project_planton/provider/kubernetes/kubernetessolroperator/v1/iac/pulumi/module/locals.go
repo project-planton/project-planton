@@ -7,9 +7,6 @@ import (
 
 // locals computes derived configuration values from the stack input
 type locals struct {
-	// namespace is the Kubernetes namespace for operator deployment
-	namespace string
-
 	// labels are common labels applied to all resources
 	labels pulumi.StringMap
 
@@ -48,14 +45,7 @@ func newLocals(stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackI
 		}
 	}
 
-	// get namespace from spec
-	namespace := vars.Namespace
-	if stackInput.Target != nil && stackInput.Target.Spec != nil && stackInput.Target.Spec.Namespace != nil {
-		namespace = stackInput.Target.Spec.Namespace.GetValue()
-	}
-
 	return &locals{
-		namespace:    namespace,
 		labels:       labels,
 		operatorName: operatorName,
 		chartVersion: vars.DefaultStableVersion,

@@ -10,6 +10,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "locust-test"
+  create_namespace: true
   master_container:
     resources:
       requests:
@@ -53,6 +54,7 @@ spec:
     clusterName: "production-gke-cluster"
   namespace:
     value: "locust-prod"
+  create_namespace: true
   master_container:
     resources:
       requests:
@@ -108,6 +110,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "locust-tls"
+  create_namespace: true
   master_container:
     resources:
       requests:
@@ -160,6 +163,7 @@ spec:
     clusterName: "dev-cluster"
   namespace:
     value: "locust-dev"
+  create_namespace: true
   master_container:
     resources:
       requests:
@@ -212,6 +216,7 @@ spec:
     clusterName: "test-cluster"
   namespace:
     value: "locust-minimal"
+  create_namespace: true
   master_container:
     resources:
       requests:
@@ -230,6 +235,59 @@ spec:
         cpu: 500m
         memory: 512Mi
     replicas: 1
+  load_test:
+    name: minimal-test
+    main_py_content: |
+      from locust import HttpUser, task
+
+      class MyUser(HttpUser):
+          @task
+          def my_task(self):
+              self.client.get("/")
+  ingress:
+    enabled: false
+```
+
+# Example 6: Using Existing Namespace
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesLocust
+metadata:
+  name: locust-existing-ns
+spec:
+  targetCluster:
+    clusterName: "prod-gke-cluster"
+  namespace:
+    value: "shared-load-testing"
+  create_namespace: false  # Use existing namespace
+  master_container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+    replicas: 1
+  worker_container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+    replicas: 2
+  load_test:
+    name: existing-ns-test
+    main_py_content: |
+      from locust import HttpUser, task
+
+      class MyUser(HttpUser):
+          @task
+          def my_task(self):
+              self.client.get("/api/test")
   ingress:
     enabled: false
 ```

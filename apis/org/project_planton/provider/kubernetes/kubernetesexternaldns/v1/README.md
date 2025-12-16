@@ -145,9 +145,38 @@ This creates an ExternalDNS deployment that:
 |-------|-------------|---------|
 | `target_cluster` | Kubernetes cluster to deploy ExternalDNS on | Required |
 | `namespace` | Kubernetes namespace for ExternalDNS | `kubernetes-external-dns` |
+| `create_namespace` | Whether to create the namespace (if false, namespace must exist) | `false` |
 | `kubernetes_external_dns_version` | ExternalDNS image version | `v0.19.0` |
 | `helm_chart_version` | Helm chart version | `1.19.0` |
 | `provider_config` | Cloud provider configuration (gke, eks, aks, or cloudflare) | Required |
+
+## Namespace Management
+
+The component provides flexible namespace management through the `create_namespace` flag:
+
+### Automatic Namespace Creation
+
+When `create_namespace` is set to `true`, the module creates the namespace:
+
+```yaml
+spec:
+  namespace:
+    value: kubernetes-external-dns
+  create_namespace: true  # Module will create the namespace
+```
+
+### Using Existing Namespace
+
+When `create_namespace` is `false` (default), the namespace must exist before deployment:
+
+```yaml
+spec:
+  namespace:
+    value: existing-namespace
+  create_namespace: false  # Namespace must already exist
+```
+
+**Important**: If `create_namespace` is `false` and the namespace doesn't exist, deployment will fail with a clear error message.
 
 ### GKE Configuration
 

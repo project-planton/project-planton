@@ -22,10 +22,6 @@ resource "kubernetes_manifest" "ingress_certificate" {
       }
     }
   }
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
 }
 
 # Create external gateway (requires Gateway API CRDs).

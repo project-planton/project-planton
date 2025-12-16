@@ -12,6 +12,31 @@ Deploying Harbor on Kubernetes involves complex configurations, including managi
 - **Enable Production-Grade Deployments**: Support high-availability configurations with external managed databases, Redis Sentinel, and object storage.
 - **Secure Artifact Management**: Configure role-based access control, vulnerability scanning, and content signing.
 
+## Namespace Management
+
+Harbor Kubernetes provides flexible namespace management through the `create_namespace` flag:
+
+- **Managed Namespace** (`create_namespace: true`): The component creates and manages the namespace with appropriate resource labels for tracking and organization
+- **Existing Namespace** (`create_namespace: false`): Deploy into a pre-existing namespace that must be created before deployment
+
+### Example - Managed Namespace
+
+```yaml
+spec:
+  namespace:
+    value: "harbor-prod"
+  create_namespace: true  # Component creates the namespace
+```
+
+### Example - Existing Namespace
+
+```yaml
+spec:
+  namespace:
+    value: "container-registry"
+  create_namespace: false  # Must exist before deployment
+```
+
 ## What is Harbor?
 
 Harbor is an open source cloud-native registry that secures artifacts with policies and role-based access control, ensures images are scanned and free from vulnerabilities, and signs images as trusted. Harbor delivers compliance, performance, and interoperability to help consistently and securely manage artifacts across cloud-native compute platforms like Kubernetes.

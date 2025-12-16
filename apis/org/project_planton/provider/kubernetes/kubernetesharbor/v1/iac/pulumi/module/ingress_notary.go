@@ -1,13 +1,12 @@
 package module
 
 import (
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func createNotaryIngress(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	namespace pulumi.StringInput) error {
 
 	// Skip if Notary ingress is not enabled
 	if locals.KubernetesHarbor.Spec.Ingress == nil ||

@@ -37,6 +37,7 @@ var _ = ginkgo.Describe("KubernetesRedis Custom Validation Tests", func() {
 						Value: "test-namespace",
 					},
 				},
+				CreateNamespace: true,
 				Container: &KubernetesRedisContainer{
 					Replicas:           1,
 					PersistenceEnabled: true,
@@ -61,9 +62,50 @@ var _ = ginkgo.Describe("KubernetesRedis Custom Validation Tests", func() {
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("redis_kubernetes", func() {
+		ginkgo.Context("redis_kubernetes with create_namespace true", func() {
 			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("redis_kubernetes with create_namespace false", func() {
+			ginkgo.It("should not return a validation error", func() {
+				inputWithoutNamespaceCreation := &KubernetesRedis{
+					ApiVersion: "kubernetes.project-planton.org/v1",
+					Kind:       "KubernetesRedis",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-redis-existing-ns",
+					},
+					Spec: &KubernetesRedisSpec{
+						TargetCluster: &kubernetes.KubernetesClusterSelector{
+							ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+							ClusterName: "test-cluster",
+						},
+						Namespace: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "existing-namespace",
+							},
+						},
+						CreateNamespace: false,
+						Container: &KubernetesRedisContainer{
+							Replicas:           1,
+							PersistenceEnabled: true,
+							DiskSize:           "10Gi",
+							Resources: &kubernetes.ContainerResources{
+								Limits: &kubernetes.CpuMemory{
+									Cpu:    "1000m",
+									Memory: "1Gi",
+								},
+								Requests: &kubernetes.CpuMemory{
+									Cpu:    "50m",
+									Memory: "100Mi",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(inputWithoutNamespaceCreation)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})

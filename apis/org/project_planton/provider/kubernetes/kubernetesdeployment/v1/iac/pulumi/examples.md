@@ -20,6 +20,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "minimal-example"
+  create_namespace: true
   version: main
   container:
     app:
@@ -64,6 +65,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "env-example"
+  create_namespace: true
   version: main
   container:
     app:
@@ -112,6 +114,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "db-credentials-example"
+  create_namespace: true
   version: main
   container:
     app:
@@ -162,6 +165,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "sidecar-example"
+  create_namespace: true
   version: "v2"
   container:
     app:
@@ -226,6 +230,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "ingress-example"
+  create_namespace: true
   version: main
   container:
     app:
@@ -272,6 +277,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "hpa-example"
+  create_namespace: true
   version: "3.0"
   container:
     app:
@@ -305,6 +311,56 @@ spec:
 - The deployment will start with 2 replicas.
 - When CPU usage rises above ~70%, autoscaling increments the pod count until usage stabilizes or the cluster limit is
   reached.
+
+---
+
+## 7. Using an Existing Namespace
+
+If the namespace already exists in the cluster (created by another process or team), you can skip namespace creation by
+setting `create_namespace: false`. This is useful when:
+- Multiple deployments share the same namespace
+- Namespaces are managed centrally by cluster administrators
+- Using GitOps workflows where namespaces are managed separately
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: MicroserviceKubernetes
+metadata:
+  name: existing-ns-example
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "shared-services"
+  create_namespace: false  # Use existing namespace
+  version: main
+  container:
+    app:
+      image:
+        repo: org/my-service
+        tag: "1.0.0"
+      ports:
+        - name: http
+          containerPort: 8080
+          networkProtocol: TCP
+          appProtocol: http
+          servicePort: 80
+          isIngressPort: false
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+```
+
+**Key points**:
+
+- `create_namespace: false` tells the module to use the existing namespace without creating it
+- The namespace "shared-services" must already exist in the cluster
+- If the namespace doesn't exist, deployment will fail with a "namespace not found" error
+- All resources (deployment, service, secrets) will still be created in the specified namespace
 
 ---
 

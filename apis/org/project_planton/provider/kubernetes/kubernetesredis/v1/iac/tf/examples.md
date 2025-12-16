@@ -26,6 +26,7 @@ module "redis_dev" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -78,6 +79,7 @@ module "redis_production" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -129,6 +131,7 @@ module "redis_ha" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 3
@@ -191,6 +194,7 @@ module "redis_minimal" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -241,6 +245,7 @@ module "redis_public" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -342,6 +347,7 @@ module "redis_env" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = var.resource_tier[var.environment].replicas

@@ -33,22 +33,24 @@ const (
 // resource allocation, data persistence, and external access.
 type KubernetesKafkaSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// A list of Kafka topics to be created in the Kafka cluster.
-	KafkaTopics []*KafkaTopic `protobuf:"bytes,3,rep,name=kafka_topics,json=kafkaTopics,proto3" json:"kafka_topics,omitempty"`
+	KafkaTopics []*KafkaTopic `protobuf:"bytes,4,rep,name=kafka_topics,json=kafkaTopics,proto3" json:"kafka_topics,omitempty"`
 	// The specifications for the Kafka broker containers.
-	BrokerContainer *KubernetesKafkaBrokerContainer `protobuf:"bytes,4,opt,name=broker_container,json=brokerContainer,proto3" json:"broker_container,omitempty"`
+	BrokerContainer *KubernetesKafkaBrokerContainer `protobuf:"bytes,5,opt,name=broker_container,json=brokerContainer,proto3" json:"broker_container,omitempty"`
 	// The specifications for the Zookeeper containers.
-	ZookeeperContainer *KubernetesKafkaZookeeperContainer `protobuf:"bytes,5,opt,name=zookeeper_container,json=zookeeperContainer,proto3" json:"zookeeper_container,omitempty"`
+	ZookeeperContainer *KubernetesKafkaZookeeperContainer `protobuf:"bytes,6,opt,name=zookeeper_container,json=zookeeperContainer,proto3" json:"zookeeper_container,omitempty"`
 	// The specifications for the Schema Registry containers.
-	SchemaRegistryContainer *KubernetesKafkaSchemaRegistryContainer `protobuf:"bytes,6,opt,name=schema_registry_container,json=schemaRegistryContainer,proto3" json:"schema_registry_container,omitempty"`
+	SchemaRegistryContainer *KubernetesKafkaSchemaRegistryContainer `protobuf:"bytes,7,opt,name=schema_registry_container,json=schemaRegistryContainer,proto3" json:"schema_registry_container,omitempty"`
 	// The ingress configuration for the Kafka deployment.
-	Ingress *KubernetesKafkaIngress `protobuf:"bytes,7,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesKafkaIngress `protobuf:"bytes,8,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// A flag to toggle the deployment of the Kafka UI component.
-	IsDeployKafkaUi bool `protobuf:"varint,8,opt,name=is_deploy_kafka_ui,json=isDeployKafkaUi,proto3" json:"is_deploy_kafka_ui,omitempty"`
+	IsDeployKafkaUi bool `protobuf:"varint,9,opt,name=is_deploy_kafka_ui,json=isDeployKafkaUi,proto3" json:"is_deploy_kafka_ui,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -95,6 +97,13 @@ func (x *KubernetesKafkaSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesKafkaSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesKafkaSpec) GetKafkaTopics() []*KafkaTopic {
@@ -515,22 +524,23 @@ var File_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x96\b\n" +
+	"Eorg/project_planton/provider/kubernetes/kuberneteskafka/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kuberneteskafka.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xc1\b\n" +
 	"\x13KubernetesKafkaSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12i\n" +
-	"\fkafka_topics\x18\x03 \x03(\v2F.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopicR\vkafkaTopics\x12\xb1\x01\n" +
-	"\x10broker_container\x18\x04 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainerB*\x8a\xee\xff\x01%\b\x01\x12\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12i\n" +
+	"\fkafka_topics\x18\x04 \x03(\v2F.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KafkaTopicR\vkafkaTopics\x12\xb1\x01\n" +
+	"\x10broker_container\x18\x05 \x01(\v2Z.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaBrokerContainerB*\x8a\xee\xff\x01%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\x0fbrokerContainer\x12\xba\x01\n" +
-	"\x13zookeeper_container\x18\x05 \x01(\v2].org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainerB*\x92\xee\xff\x01%\b\x01\x12\x1c\n" +
+	"\x13zookeeper_container\x18\x06 \x01(\v2].org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaZookeeperContainerB*\x92\xee\xff\x01%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12\x9e\x01\n" +
-	"\x19schema_registry_container\x18\x06 \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainerR\x17schemaRegistryContainer\x12l\n" +
-	"\aingress\x18\a \x01(\v2R.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaIngressR\aingress\x125\n" +
-	"\x12is_deploy_kafka_ui\x18\b \x01(\bB\b\x92\xa6\x1d\x04trueR\x0fisDeployKafkaUi\"\xcd\x01\n" +
+	"\x19schema_registry_container\x18\a \x01(\v2b.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaSchemaRegistryContainerR\x17schemaRegistryContainer\x12l\n" +
+	"\aingress\x18\b \x01(\v2R.org.project_planton.provider.kubernetes.kuberneteskafka.v1.KubernetesKafkaIngressR\aingress\x125\n" +
+	"\x12is_deploy_kafka_ui\x18\t \x01(\bB\b\x92\xa6\x1d\x04trueR\x0fisDeployKafkaUi\"\xcd\x01\n" +
 	"\x16KubernetesKafkaIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +

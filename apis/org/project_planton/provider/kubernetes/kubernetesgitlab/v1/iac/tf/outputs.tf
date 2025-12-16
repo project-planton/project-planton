@@ -4,7 +4,7 @@
 
 output "namespace" {
   description = "Namespace where GitLab is deployed"
-  value       = kubernetes_namespace.gitlab.metadata[0].name
+  value       = local.namespace_name
 }
 
 output "service_name" {
