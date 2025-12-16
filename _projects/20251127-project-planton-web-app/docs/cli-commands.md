@@ -13,7 +13,7 @@ This comprehensive guide covers all Project Planton CLI commands including web a
 - [Deployment Components](#deployment-components)
 - [Cloud Resources](#cloud-resources)
 - [Credentials](#credentials)
-- [Stack Jobs](#stack-jobs)
+- [Stack Jobs](#stack-update)
 - [Common Workflows](#common-workflows)
 - [Troubleshooting](#troubleshooting)
 - [Advanced Usage](#advanced-usage)

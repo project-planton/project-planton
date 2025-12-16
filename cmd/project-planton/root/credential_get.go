@@ -106,7 +106,8 @@ func credentialGetHandler(cmd *cobra.Command, args []string) {
 		switch cred.Provider {
 		case credentialv1.Credential_GCP:
 			if gcp := cred.ProviderConfig.GetGcp(); gcp != nil {
-				fmt.Printf("Service Account Key (Base64): %s\n", maskSensitive(gcp.ServiceAccountKeyBase64))
+				// Note: ServiceAccountKeyBase64 field actually contains decoded JSON string (not base64)
+				fmt.Printf("Service Account Key (JSON): %s\n", maskSensitive(gcp.ServiceAccountKeyBase64))
 			}
 		case credentialv1.Credential_AWS:
 			if aws := cred.ProviderConfig.GetAws(); aws != nil {

@@ -53,7 +53,7 @@ export function CredentialDrawer({
   const isView = mode === 'view';
   const submitLabel = mode === 'edit' ? 'Update' : 'Create';
 
-  const { register, handleSubmit, reset, setValue, control } = useForm<CredentialFormData>({
+  const { register, handleSubmit, reset, setValue, control, watch } = useForm<CredentialFormData>({
     defaultValues: {
       name: '',
       provider: Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
@@ -65,7 +65,6 @@ export function CredentialDrawer({
 
   useEffect(() => {
     if (initialProvider) {
-      console.log('initialProvider', initialProvider);
       setValue('provider', initialProvider);
     }
   }, [initialProvider, setValue]);
@@ -244,7 +243,12 @@ export function CredentialDrawer({
                 />
               )}
               {formProvider == Credential_CredentialProvider.GCP && (
-                <GcpCredentialForm register={register} disabled={isView} />
+                <GcpCredentialForm
+                  setValue={setValue}
+                  watch={watch}
+                  disabled={isView}
+                  credentialName={selectedCredential?.name}
+                />
               )}
               {formProvider == Credential_CredentialProvider.AWS && (
                 <AwsCredentialForm register={register} disabled={isView} />

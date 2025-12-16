@@ -33,7 +33,6 @@ func init() {
 		root.CredentialUpdateCmd,
 		root.Destroy,
 		root.Init,
-		root.ListDeploymentComponent,
 		root.LoadManifest,
 		root.Plan,
 		root.Pulumi,
