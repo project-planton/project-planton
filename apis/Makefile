@@ -1,9 +1,10 @@
 .PHONY: build
 build: lint fmt
-	rm -rf generated/stubs generated/docs
-	mkdir -p generated/stubs generated/docs
+	rm -rf generated/stubs
+	mkdir -p generated/stubs
 	buf generate
 	cp -R generated/stubs/go/github.com/project-planton/project-planton/apis/. .
+	cp -R generated/stubs/ts/. ../app/frontend/src/gen/
 	rm -rf generated/stubs
 
 .PHONY: fmt
@@ -19,5 +20,5 @@ build-optional-linter-plugin:
 	@cd ../buf/lint/optional-linter && $(MAKE) build
 
 .PHONY: buf-lint
-buf-lint:
+buf-lint: build-optional-linter-plugin
 	buf lint

@@ -19,16 +19,14 @@ import {
 } from '@/app/credentials/_components/forms';
 import { useCredentialCommand } from '@/app/credentials/_services';
 import {
-  CredentialProvider,
+  Credential_CredentialProvider,
   Credential,
-  CreateCredentialRequest,
-  GcpCredentialSpec,
-  AwsCredentialSpec,
-  AzureCredentialSpec,
-  GcpCredentialSpecSchema,
-  AwsCredentialSpecSchema,
-  AzureCredentialSpecSchema,
-} from '@/gen/proto/credential_service_pb';
+  CredentialProviderConfigSchema,
+} from '@/gen/org/project_planton/app/credential/v1/api_pb';
+import { CreateCredentialRequest } from '@/gen/org/project_planton/app/credential/v1/io_pb';
+import { GcpProviderConfig, GcpProviderConfigSchema } from '@/gen/org/project_planton/provider/gcp/provider_pb';
+import { AwsProviderConfig, AwsProviderConfigSchema } from '@/gen/org/project_planton/provider/aws/provider_pb';
+import { AzureProviderConfig, AzureProviderConfigSchema } from '@/gen/org/project_planton/provider/azure/provider_pb';
 import { create } from '@bufbuild/protobuf';
 import { providerConfig } from '@/app/credentials/_components/utils';
 
@@ -40,7 +38,7 @@ interface CredentialDrawerProps {
   onClose: () => void;
   onSaveSuccess: () => void;
   selectedCredential?: Credential | null;
-  initialProvider?: CredentialProvider;
+  initialProvider?: Credential_CredentialProvider;
 }
 
 export function CredentialDrawer({
@@ -58,7 +56,7 @@ export function CredentialDrawer({
   const { register, handleSubmit, reset, setValue, control } = useForm<CredentialFormData>({
     defaultValues: {
       name: '',
-      provider: CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
+      provider: Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
       gcp: {},
       aws: {},
       azure: {},
@@ -75,10 +73,10 @@ export function CredentialDrawer({
   const formProvider = useWatch({ control, name: 'provider' });
 
   const providerOptions = useMemo(() => {
-    return (Object.keys(providerConfig) as unknown as Array<CredentialProvider>)
+    return (Object.keys(providerConfig) as unknown as Array<Credential_CredentialProvider>)
       .filter((provider) => {
         // Filter out UNSPECIFIED (value 0) by comparing numeric enum values
-        return Number(provider) !== CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED;
+        return Number(provider) !== Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED;
       })
       .map((provider) => ({
         label: providerConfig[provider].label,
@@ -89,7 +87,7 @@ export function CredentialDrawer({
   // Populate form when selectedCredential changes
   useEffect(() => {
     if (selectedCredential && (mode === 'view' || mode === 'edit')) {
-      const credentialData = selectedCredential.credentialData;
+      const providerConfigData = selectedCredential.providerConfig;
       const formData: CredentialFormData = {
         name: selectedCredential.name,
         provider: selectedCredential.provider,
@@ -97,31 +95,31 @@ export function CredentialDrawer({
         aws: {},
         azure: {},
       };
-      if (credentialData?.case === 'gcp') {
+      if (providerConfigData?.data?.case === 'gcp') {
         formData.gcp = {
-          serviceAccountKeyBase64: credentialData.value.serviceAccountKeyBase64,
+          serviceAccountKeyBase64: providerConfigData.data.value.serviceAccountKeyBase64,
         };
-      } else if (credentialData?.case === 'aws') {
+      } else if (providerConfigData?.data?.case === 'aws') {
         formData.aws = {
-          accountId: credentialData.value.accountId,
-          accessKeyId: credentialData.value.accessKeyId,
-          secretAccessKey: credentialData.value.secretAccessKey,
-          region: credentialData.value.region,
-          sessionToken: credentialData.value.sessionToken,
+          accountId: providerConfigData.data.value.accountId,
+          accessKeyId: providerConfigData.data.value.accessKeyId,
+          secretAccessKey: providerConfigData.data.value.secretAccessKey,
+          region: providerConfigData.data.value.region,
+          sessionToken: providerConfigData.data.value.sessionToken,
         };
-      } else if (credentialData?.case === 'azure') {
+      } else if (providerConfigData?.data?.case === 'azure') {
         formData.azure = {
-          clientId: credentialData.value.clientId,
-          clientSecret: credentialData.value.clientSecret,
-          tenantId: credentialData.value.tenantId,
-          subscriptionId: credentialData.value.subscriptionId,
+          clientId: providerConfigData.data.value.clientId,
+          clientSecret: providerConfigData.data.value.clientSecret,
+          tenantId: providerConfigData.data.value.tenantId,
+          subscriptionId: providerConfigData.data.value.subscriptionId,
         };
       }
       reset(formData);
     } else if (mode === 'create') {
       reset({
         name: '',
-        provider: initialProvider || CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
+        provider: initialProvider || Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
         gcp: {},
         aws: {},
         azure: {},
@@ -133,45 +131,54 @@ export function CredentialDrawer({
     (formData: CredentialFormData) => {
       if (!command) return;
 
-      let credentialData: CreateCredentialRequest['credentialData'];
+      let providerConfig: CreateCredentialRequest['providerConfig'];
 
-      if (formData.provider == CredentialProvider.GCP && formData.gcp?.serviceAccountKeyBase64) {
-        credentialData = {
-          case: 'gcp',
-          value: create(GcpCredentialSpecSchema, formData.gcp as GcpCredentialSpec),
-        };
+      if (
+        formData.provider == Credential_CredentialProvider.GCP &&
+        formData.gcp?.serviceAccountKeyBase64
+      ) {
+        providerConfig = create(CredentialProviderConfigSchema, {
+          data: {
+            case: 'gcp',
+            value: create(GcpProviderConfigSchema, formData.gcp as GcpProviderConfig),
+          },
+        });
       } else if (
-        formData.provider == CredentialProvider.AWS &&
+        formData.provider == Credential_CredentialProvider.AWS &&
         formData.aws?.accountId &&
         formData.aws?.accessKeyId &&
         formData.aws?.secretAccessKey
       ) {
-        credentialData = {
-          case: 'aws',
-          value: create(AwsCredentialSpecSchema, formData.aws as AwsCredentialSpec),
-        };
+        providerConfig = create(CredentialProviderConfigSchema, {
+          data: {
+            case: 'aws',
+            value: create(AwsProviderConfigSchema, formData.aws as AwsProviderConfig),
+          },
+        });
       } else if (
-        formData.provider == CredentialProvider.AZURE &&
+        formData.provider == Credential_CredentialProvider.AZURE &&
         formData.azure?.clientId &&
         formData.azure?.clientSecret &&
         formData.azure?.tenantId &&
         formData.azure?.subscriptionId
       ) {
-        credentialData = {
-          case: 'azure',
-          value: create(AzureCredentialSpecSchema, formData.azure as AzureCredentialSpec),
-        };
+        providerConfig = create(CredentialProviderConfigSchema, {
+          data: {
+            case: 'azure',
+            value: create(AzureProviderConfigSchema, formData.azure as AzureProviderConfig),
+          },
+        });
       } else {
         return;
       }
 
       if (mode === 'create') {
-        command.create(formData.name, formData.provider, credentialData).then(() => {
+        command.create(formData.name, formData.provider, providerConfig).then(() => {
           onSaveSuccess();
         });
       } else if (mode === 'edit' && selectedCredential) {
         command
-          .update(selectedCredential.id, formData.name, formData.provider, credentialData)
+          .update(selectedCredential.id, formData.name, formData.provider, providerConfig)
           .then(() => {
             onSaveSuccess();
           });
@@ -183,7 +190,7 @@ export function CredentialDrawer({
   const handleClose = () => {
     reset({
       name: '',
-      provider: initialProvider || CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
+      provider: initialProvider || Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
       gcp: {},
       aws: {},
       azure: {},
@@ -194,7 +201,7 @@ export function CredentialDrawer({
   const onProviderChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       if (isView || initialProvider) return;
-      const newProvider = parseInt(e.target.value, 10) as CredentialProvider;
+      const newProvider = parseInt(e.target.value, 10) as Credential_CredentialProvider;
       setValue('provider', newProvider);
       setValue('gcp', {});
       setValue('aws', {});
@@ -236,13 +243,13 @@ export function CredentialDrawer({
                   disabled={isView}
                 />
               )}
-              {formProvider == CredentialProvider.GCP && (
+              {formProvider == Credential_CredentialProvider.GCP && (
                 <GcpCredentialForm register={register} disabled={isView} />
               )}
-              {formProvider == CredentialProvider.AWS && (
+              {formProvider == Credential_CredentialProvider.AWS && (
                 <AwsCredentialForm register={register} disabled={isView} />
               )}
-              {formProvider == CredentialProvider.AZURE && (
+              {formProvider == Credential_CredentialProvider.AZURE && (
                 <AzureCredentialForm register={register} disabled={isView} />
               )}
             </Stack>

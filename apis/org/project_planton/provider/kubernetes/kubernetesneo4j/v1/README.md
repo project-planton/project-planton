@@ -16,7 +16,7 @@ Managing Neo4j in a Kubernetes environment can be challenging due to the complex
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system, deploying Neo4j within a specific environment.
-- **Stack Job Settings**: Supports custom stack job settings to ensure consistent and repeatable provisioning of Neo4j instances using infrastructure-as-code.
+- **Stack Job Settings**: Supports custom stack-update settings to ensure consistent and repeatable provisioning of Neo4j instances using infrastructure-as-code.
 
 ### Kubernetes Credential Management
 

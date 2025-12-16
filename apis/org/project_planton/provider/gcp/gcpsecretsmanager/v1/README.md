@@ -16,7 +16,7 @@ Securely managing secrets is critical for maintaining the integrity and security
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system to manage secrets within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### GCP Credential Management
 

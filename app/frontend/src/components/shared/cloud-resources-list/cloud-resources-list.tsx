@@ -9,13 +9,11 @@ import { YamlEditor } from '@/components/shared/yaml-editor';
 import { AlertDialog } from '@/components/shared/alert-dialog';
 import { Refresh, Add } from '@mui/icons-material';
 import { useCloudResourceQuery, useCloudResourceCommand } from '@/app/cloud-resources/_services';
-import {
-  ListCloudResourcesRequestSchema,
-  CloudResource,
-  PageInfoSchema,
-} from '@/gen/proto/cloud_resource_service_pb';
+import { ListCloudResourcesRequestSchema } from '@/gen/org/project_planton/app/cloudresource/v1/io_pb';
+import { CloudResource } from '@/gen/org/project_planton/app/cloudresource/v1/api_pb';
+import { PageInfoSchema } from '@/gen/org/project_planton/app/commons/page_info_pb';
 import { formatTimestampToDate } from '@/lib';
-import { StackJobsDrawer } from '@/components/shared/stackjob';
+import { StackUpdatesDrawer } from '@/components/shared/stack-update';
 
 type DrawerMode = 'view' | 'edit' | 'create' | null;
 
@@ -93,9 +91,9 @@ export function CloudResourcesList({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resourceToDelete, setResourceToDelete] = useState<CloudResource | null>(null);
 
-  // Stack jobs drawer state
-  const [stackJobsDrawerOpen, setStackJobsDrawerOpen] = useState(false);
-  const [selectedResourceForStackJobs, setSelectedResourceForStackJobs] =
+  // Stack updates drawer state
+  const [stackUpdatesDrawerOpen, setStackUpdatesDrawerOpen] = useState(false);
+  const [selectedResourceForStackUpdates, setSelectedResourceForStackUpdates] =
     useState<CloudResource | null>(null);
 
   // Function to call the API
@@ -234,14 +232,14 @@ export function CloudResourcesList({
     setResourceToDelete(null);
   }, []);
 
-  const handleOpenStackJobs = useCallback((row: CloudResource) => {
-    setSelectedResourceForStackJobs(row);
-    setStackJobsDrawerOpen(true);
+  const handleOpenStackUpdates = useCallback((row: CloudResource) => {
+    setSelectedResourceForStackUpdates(row);
+    setStackUpdatesDrawerOpen(true);
   }, []);
 
-  const handleCloseStackJobs = useCallback(() => {
-    setStackJobsDrawerOpen(false);
-    setSelectedResourceForStackJobs(null);
+  const handleCloseStackUpdates = useCallback(() => {
+    setStackUpdatesDrawerOpen(false);
+    setSelectedResourceForStackUpdates(null);
   }, []);
 
   const tableActions: ActionMenuProps<CloudResource>[] = useMemo(
@@ -261,9 +259,9 @@ export function CloudResourcesList({
         isMenuAction: true,
       },
       {
-        text: 'Stack Jobs',
+        text: 'Stack Updates',
         handler: (row: CloudResource) => {
-          handleOpenStackJobs(row);
+          handleOpenStackUpdates(row);
         },
         isMenuAction: true,
       },
@@ -275,7 +273,7 @@ export function CloudResourcesList({
         isMenuAction: true,
       },
     ],
-    [handleOpenDrawer, handleConfirmDelete, handleOpenStackJobs]
+    [handleOpenDrawer, handleConfirmDelete, handleOpenStackUpdates]
   );
 
   const handlePageChange = useCallback((newPage: number, newRowsPerPage: number) => {
@@ -408,12 +406,12 @@ export function CloudResourcesList({
         cancelLabel="Cancel"
       />
 
-      {/* Stack Jobs Drawer */}
-      {selectedResourceForStackJobs && (
-        <StackJobsDrawer
-          open={stackJobsDrawerOpen}
-          cloudResourceId={selectedResourceForStackJobs.id}
-          onClose={handleCloseStackJobs}
+      {/* Stack Updates Drawer */}
+      {selectedResourceForStackUpdates && (
+        <StackUpdatesDrawer
+          open={stackUpdatesDrawerOpen}
+          cloudResourceId={selectedResourceForStackUpdates.id}
+          onClose={handleCloseStackUpdates}
         />
       )}
     </>

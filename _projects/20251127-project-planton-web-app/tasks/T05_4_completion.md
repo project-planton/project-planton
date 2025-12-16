@@ -3,7 +3,7 @@
 **Status:** ✅ COMPLETED
 **Date:** December 3, 2025
 **Type:** Feature
-**Changelog:** `2025-12-03-171627-pulumi-cli-stack-job-api-implementation.md`
+**Changelog:** `2025-12-03-171627-pulumi-cli-stack-update-api-implementation.md`
 
 ---
 
@@ -20,17 +20,17 @@ Three main RPC methods:
 **DeployCloudResource:**
 - Initiates deployment for a cloud resource
 - Validates cloud resource exists
-- Creates stack job record
+- Creates stack-update record
 - Returns immediately with job ID
 - Executes Pulumi deployment asynchronously
 
-**GetStackJob:**
-- Retrieves a specific stack job by ID
+**GetStackUpdate:**
+- Retrieves a specific stack-update by ID
 - Returns job status, output, and timestamps
 - Used for polling deployment status
 
-**ListStackJobs:**
-- Lists stack jobs with optional filters
+**ListStackUpdates:**
+- Lists stack-updates with optional filters
 - Filter by cloud resource ID
 - Filter by status (success, failed, in_progress)
 - Sorted by creation date (newest first)
@@ -70,7 +70,7 @@ Results stored as JSON in the `output` field:
 
 - Deployments run in background goroutines
 - API returns immediately with job ID
-- Clients can poll for status using GetStackJob
+- Clients can poll for status using GetStackUpdate
 - No request timeouts for long-running deployments
 
 ### 5. Docker Integration
@@ -84,7 +84,7 @@ Results stored as JSON in the `output` field:
 ### Data Model
 
 ```go
-type StackJob struct {
+type StackUpdate struct {
     ID              primitive.ObjectID `bson:"_id,omitempty"`
     CloudResourceID string             `bson:"cloud_resource_id"`
     Status          string             `bson:"status"` // success, failed, in_progress
@@ -94,20 +94,20 @@ type StackJob struct {
 }
 ```
 
-**MongoDB Collection:** `stackjobs`
+**MongoDB Collection:** `stackupdates`
 
 ### Deployment Flow
 
 ```
 1. User calls DeployCloudResource API
-2. Backend creates StackJob with "in_progress" status
+2. Backend creates StackUpdate with "in_progress" status
 3. Returns job immediately
 4. Background goroutine starts
 5. Load manifest, extract stack FQDN
 6. Build stack input YAML
 7. Execute: pulumi up --stack <fqdn> --yes --skip-preview
 8. Capture stdout/stderr/exit_code
-9. Update StackJob with status and output
+9. Update StackUpdate with status and output
 ```
 
 ## Files Created
@@ -145,8 +145,8 @@ type StackJob struct {
 
 ## Technical Metrics
 
-- **3 gRPC RPC methods** for stack job management
-- **1 MongoDB collection** (stackjobs)
+- **3 gRPC RPC methods** for stack-update management
+- **1 MongoDB collection** (stackupdates)
 - **10-minute timeout** for Pulumi deployments
 - **Asynchronous execution** via goroutines
 - **JSON output format** for flexible result storage

@@ -154,7 +154,7 @@ Copied component logos from the planton-cloud repository and reorganized them to
 
 **Icons Copied**:
 - 13 Kubernetes addon logos
-- 25 Kubernetes workload logos (includes stackjobrunnerkubernetes missing 1 component to make 36 total)
+- 25 Kubernetes workload logos (includes stackupdaterunnerkubernetes missing 1 component to make 36 total)
 - 1 Snowflake logo
 
 ### 4. Documentation Index Updates

@@ -16,7 +16,7 @@ Deploying applications using Helm charts on Kubernetes can be complex due to var
 ### Environment Integration
 
 - **Environment Info**: Integrates seamlessly with our environment management system to deploy Helm releases within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
 
 ### Kubernetes Credential Management
 

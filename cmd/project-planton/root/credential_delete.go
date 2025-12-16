@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
 	"github.com/spf13/cobra"
 )
 
@@ -42,13 +42,13 @@ func credentialDeleteHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCredentialServiceClient(
+	client := credentialv1connect.NewCredentialCommandControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.DeleteCredentialRequest{
+	req := &credentialv1.DeleteCredentialRequest{
 		Id: id,
 	}
 
@@ -57,7 +57,7 @@ func credentialDeleteHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.DeleteCredential(ctx, connect.NewRequest(req))
+	resp, err := client.Delete(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)

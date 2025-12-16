@@ -8,3 +8,5 @@ bin/
 
 # Go build cache
 *.sum
+
+backend-server

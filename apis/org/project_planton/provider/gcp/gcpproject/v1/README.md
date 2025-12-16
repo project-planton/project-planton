@@ -16,7 +16,7 @@ Managing DNS zones and records can be intricate due to the complexities of DNS p
 ### Environment Integration
 
 - **Environment Info**: Integrates seamlessly with our environment management system to deploy DNS configurations within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### GCP Credential Management
 

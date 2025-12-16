@@ -9,15 +9,15 @@
 
 ## Overview
 
-Integrated stack jobs functionality into the cloud resources web interface, enabling users to view and navigate stack jobs directly from the cloud resources list. Added server-side pagination to ListStackJobs API, enhanced DeployCloudResource API to accept user-provided credentials, and fixed module directory path resolution.
+Integrated stack-updates functionality into the cloud resources web interface, enabling users to view and navigate stack-updates directly from the cloud resources list. Added server-side pagination to ListStackUpdates API, enhanced DeployCloudResource API to accept user-provided credentials, and fixed module directory path resolution.
 
 ## What Was Accomplished
 
 ### 1. Stack Jobs Menu Integration
 
 Added "Stack Jobs" action menu that:
-- Opens drawer showing paginated stack jobs for selected cloud resource
-- Displays stack jobs in sortable table
+- Opens drawer showing paginated stack-updates for selected cloud resource
+- Displays stack-updates in sortable table
 - Provides clickable rows that navigate to detailed pages
 - Shows job status with color-coded chips
 
@@ -33,7 +33,7 @@ Created dedicated page (`/stack-jobs/[id]`) with:
 
 ### 3. Backend Stack Jobs Pagination
 
-Implemented server-side pagination for ListStackJobs:
+Implemented server-side pagination for ListStackUpdates:
 - Added `PageInfo` support to request message
 - Added `total_pages` field to response
 - Repository supports pagination with MongoDB skip/limit
@@ -75,19 +75,19 @@ Removed redundant logrus logging from service layer:
 Cloud Resources List Page
     ↓ User clicks "Stack Jobs" menu item
 Stack Jobs Drawer (opens)
-    ↓ Shows paginated list of stack jobs
-    ↓ User clicks on a stack job row
+    ↓ Shows paginated list of stack-updates
+    ↓ User clicks on a stack-update row
 Stack Job Detail Page (/stack-jobs/[id])
-    ↓ Shows full stack job details
+    ↓ Shows full stack-update details
     ↓ Can navigate back via breadcrumb
 ```
 
 ### Backend API Flow
 
 ```
-Frontend Request (ListStackJobs)
+Frontend Request (ListStackUpdates)
     ↓ With PageInfo (page, size)
-Backend Service (ListStackJobs)
+Backend Service (ListStackUpdates)
     ↓ Applies filters and pagination
 Repository Layer
     ↓ MongoDB query with skip/limit
@@ -119,10 +119,10 @@ Cleanup temporary files
 - `app/frontend/src/app/stack-jobs/styled.ts` - Styled components
 
 ### UI Components
-- `app/frontend/src/components/shared/stackjob/index.ts` - Stack job component exports
-- `app/frontend/src/components/shared/stackjob/stack-job-header.tsx` - Job header component
-- `app/frontend/src/components/shared/stackjob/stack-jobs-drawer.tsx` - Drawer component
-- `app/frontend/src/components/shared/stackjob/stack-jobs-list.tsx` - List component with pagination
+- `app/frontend/src/components/shared/stackupdate/index.ts` - Stack job component exports
+- `app/frontend/src/components/shared/stackupdate/stack-update-header.tsx` - Job header component
+- `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx` - Drawer component
+- `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx` - List component with pagination
 - `app/frontend/src/components/shared/breadcrumb/index.tsx` - Breadcrumb navigation
 - `app/frontend/src/components/shared/breadcrumb/styled.ts` - Breadcrumb styling
 - `app/frontend/src/components/shared/status-chip/index.ts` - Status chip exports
@@ -164,7 +164,7 @@ Cleanup temporary files
 
 ✅ **Stack Jobs UI integration** with cloud resources list
 ✅ **Stack Jobs detail page** with full job information
-✅ **Server-side pagination** for stack jobs
+✅ **Server-side pagination** for stack-updates
 ✅ **User-provided credentials** support in deploy API
 ✅ **Module path fixes** for Pulumi and OpenTofu
 ✅ **Breadcrumb navigation** for better UX
@@ -174,7 +174,7 @@ Cleanup temporary files
 ## Technical Metrics
 
 - **1 new detail page** with dynamic routing
-- **6 new reusable components** for stack jobs UI
+- **6 new reusable components** for stack-updates UI
 - **Server-side pagination** in backend and frontend
 - **8 cloud providers** supported for user credentials
 - **Default page size**: 10 items per page (frontend), 20 (backend)
@@ -193,7 +193,7 @@ Cleanup temporary files
 - No need to pre-configure credentials on server
 
 ### For Developers
-- Reusable stack jobs components
+- Reusable stack-updates components
 - Consistent pagination pattern
 - Type-safe implementation with TypeScript
 - Scalable server-side pagination

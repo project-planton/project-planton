@@ -10,7 +10,9 @@ import (
 	"github.com/project-planton/project-planton/app/backend/internal/service"
 	"github.com/sirupsen/logrus"
 
-	backendv1connect "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	cloudresourcev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
+	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
+	stackupdatev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1/stackupdatev1connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
@@ -79,38 +81,44 @@ func corsMiddleware(next http.Handler) http.Handler {
 // NewServer creates a new server instance.
 func NewServer(cfg *Config) *Server {
 	// Create repositories
-	deploymentComponentRepo := database.NewDeploymentComponentRepository(cfg.MongoDB)
 	cloudResourceRepo := database.NewCloudResourceRepository(cfg.MongoDB)
-	stackJobRepo := database.NewStackJobRepository(cfg.MongoDB)
-	stackJobStreamingResponseRepo := database.NewStackJobStreamingResponseRepository(cfg.MongoDB)
+	stackUpdateRepo := database.NewStackUpdateRepository(cfg.MongoDB)
+	stackUpdateStreamingResponseRepo := database.NewStackUpdateStreamingResponseRepository(cfg.MongoDB)
 	credentialRepo := database.NewCredentialRepository(cfg.MongoDB)
 
 	// Create credential resolver
 	credentialResolver := service.NewCredentialResolver(credentialRepo)
 
 	// Create services
-	deploymentComponentService := service.NewDeploymentComponentService(deploymentComponentRepo)
-	stackJobService := service.NewStackJobService(stackJobRepo, cloudResourceRepo, stackJobStreamingResponseRepo, credentialResolver)
-	cloudResourceService := service.NewCloudResourceService(cloudResourceRepo, stackJobService)
+	stackUpdateService := service.NewStackUpdateService(stackUpdateRepo, cloudResourceRepo, stackUpdateStreamingResponseRepo, credentialResolver)
+	cloudResourceService := service.NewCloudResourceService(cloudResourceRepo, stackUpdateService)
 	credentialService := service.NewCredentialService(credentialRepo)
 
 	mux := http.NewServeMux()
 
-	// Register the DeploymentComponentService
-	deploymentComponentPath, deploymentComponentHandler := backendv1connect.NewDeploymentComponentServiceHandler(deploymentComponentService)
-	mux.Handle(deploymentComponentPath, corsMiddleware(deploymentComponentHandler))
+	// Register the CloudResourceCommandController (Create, Update, Delete, Apply)
+	cloudResourceCommandPath, cloudResourceCommandHandler := cloudresourcev1connect.NewCloudResourceCommandControllerHandler(cloudResourceService)
+	mux.Handle(cloudResourceCommandPath, corsMiddleware(cloudResourceCommandHandler))
 
-	// Register the CloudResourceService
-	cloudResourcePath, cloudResourceHandler := backendv1connect.NewCloudResourceServiceHandler(cloudResourceService)
-	mux.Handle(cloudResourcePath, corsMiddleware(cloudResourceHandler))
+	// Register the CloudResourceQueryController (List, Get, Count)
+	cloudResourceQueryPath, cloudResourceQueryHandler := cloudresourcev1connect.NewCloudResourceQueryControllerHandler(cloudResourceService)
+	mux.Handle(cloudResourceQueryPath, corsMiddleware(cloudResourceQueryHandler))
 
-	// Register the CredentialService
-	credentialPath, credentialHandler := backendv1connect.NewCredentialServiceHandler(credentialService)
-	mux.Handle(credentialPath, corsMiddleware(credentialHandler))
+	// Register the StackUpdateCommandController (DeployCloudResource)
+	stackUpdateCommandPath, stackUpdateCommandHandler := stackupdatev1connect.NewStackUpdateCommandControllerHandler(stackUpdateService)
+	mux.Handle(stackUpdateCommandPath, corsMiddleware(stackUpdateCommandHandler))
 
-	// Register the StackJobService
-	stackJobPath, stackJobHandler := backendv1connect.NewStackJobServiceHandler(stackJobService)
-	mux.Handle(stackJobPath, corsMiddleware(stackJobHandler))
+	// Register the StackUpdateQueryController (GetStackUpdate, ListStackUpdates, StreamStackUpdateOutput)
+	stackUpdateQueryPath, stackUpdateQueryHandler := stackupdatev1connect.NewStackUpdateQueryControllerHandler(stackUpdateService)
+	mux.Handle(stackUpdateQueryPath, corsMiddleware(stackUpdateQueryHandler))
+
+	// Register the CredentialCommandController
+	credentialCommandPath, credentialCommandHandler := credentialv1connect.NewCredentialCommandControllerHandler(credentialService)
+	mux.Handle(credentialCommandPath, corsMiddleware(credentialCommandHandler))
+
+	// Register the CredentialQueryController
+	credentialQueryPath, credentialQueryHandler := credentialv1connect.NewCredentialQueryControllerHandler(credentialService)
+	mux.Handle(credentialQueryPath, corsMiddleware(credentialQueryHandler))
 
 	// Add health check endpoint
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {

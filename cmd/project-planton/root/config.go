@@ -11,9 +11,9 @@ import (
 )
 
 type Config struct {
-	BackendURL         string `yaml:"backend-url,omitempty"`
-	WebAppContainerID  string `yaml:"webapp-container-id,omitempty"`
-	WebAppVersion      string `yaml:"webapp-version,omitempty"`
+	BackendURL        string `yaml:"backend-url,omitempty"`
+	WebAppContainerID string `yaml:"webapp-container-id,omitempty"`
+	WebAppVersion     string `yaml:"webapp-version,omitempty"`
 }
 
 var ConfigCmd = &cobra.Command{

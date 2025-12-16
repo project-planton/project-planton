@@ -457,7 +457,7 @@ open http://localhost:3000
 
 # 7. Deploy the resource (should trigger Pulumi)
 
-# 8. Check stack job status
+# 8. Check stack-update status
 
 # 9. Stop
 planton webapp stop

@@ -14,7 +14,7 @@ AWS IAM roles enable secure delegation of permissions to AWS services, applicati
 - role_name: Name of the IAM role in AWS
 
 ## How it works
-This resource is orchestrated by the Project Planton CLI as part of a stack job. The CLI validates your manifest, generates stack inputs, and invokes IaC backends in this repo:
+This resource is orchestrated by the Project Planton CLI as part of a stack-update. The CLI validates your manifest, generates stack inputs, and invokes IaC backends in this repo:
 - Pulumi (Go modules under iac/pulumi)
 - Terraform (modules under iac/tf)
 

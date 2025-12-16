@@ -174,8 +174,8 @@ func createAwsProviderConfigFileFromProto(awsConfig *awsv1.AwsProviderConfig) (s
 
 	// Region is required for Pulumi AWS provider - default to us-east-1 if not provided
 	region := "us-east-1" // default region
-	if awsConfig.Region != nil && *awsConfig.Region != "" {
-		region = *awsConfig.Region
+	if awsConfig.Region != "" {
+		region = awsConfig.Region
 	}
 	awsCredMap["region"] = region
 

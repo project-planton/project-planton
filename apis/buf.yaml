@@ -2,12 +2,12 @@ version: v2
 name: buf.build/project-planton/apis
 deps:
   - buf.build/bufbuild/protovalidate
-plugins:
-  - plugin: buf.build/project-planton/optional-linter:v0.1.0
+# plugins:
+#   - plugin: buf.build/project-planton/optional-linter:v0.1.0
 lint:
   use:
     - STANDARD
-    - DEFAULT_REQUIRES_OPTIONAL
+    # - DEFAULT_REQUIRES_OPTIONAL  # Disabled until plugin is published to BSR
   except:
     - FIELD_NOT_REQUIRED
     - PACKAGE_NO_IMPORT_CYCLE

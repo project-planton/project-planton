@@ -32,5 +32,3 @@ func init() {
 	WebAppCmd.AddCommand(RestartCmd)
 	WebAppCmd.AddCommand(UninstallCmd)
 }
-
-

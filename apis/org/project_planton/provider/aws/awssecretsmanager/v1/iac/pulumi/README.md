@@ -27,7 +27,7 @@ The module expects an `api-resource.yaml` file defining the desired state of the
 - **`awsProviderConfigId`** (required): The identifier for the AWS credentials used to authenticate with AWS services.
 - **`secretNames`** (optional): A list of secret names to be created in AWS Secrets Manager.
 - **`environmentInfo`**: Contains environment-specific information (can be ignored if not used).
-- **`stackJobSettings`**: Settings related to the stack job execution (can be ignored if not used).
+- **`stackUpdateSettings`**: Settings related to the stack-update execution (can be ignored if not used).
 
 ### Pulumi Module Functionality
 
@@ -62,7 +62,7 @@ The core functionality of this module revolves around creating secrets in AWS Se
 
 - **Secret Value Management**: Implement functionality to securely set and update secret values.
 - **Advanced Error Handling**: Introduce more robust error handling and input validation to improve reliability.
-- **Environment and Stack Job Settings**: Utilize `environmentInfo` and `stackJobSettings` to allow for more granular control over deployment environments and execution settings.
+- **Environment and Stack Job Settings**: Utilize `environmentInfo` and `stackUpdateSettings` to allow for more granular control over deployment environments and execution settings.
 - **Multi-Region Support**: Extend the module to support creating secrets across multiple AWS regions.
 
 ## Documentation

@@ -16,7 +16,7 @@ Monitoring and visualizing system metrics are crucial for maintaining the health
 ### Environment Integration
 
 - **Environment Info**: Integrates seamlessly with our environment management system to deploy Grafana within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
 
 ### Kubernetes Credential Management
 

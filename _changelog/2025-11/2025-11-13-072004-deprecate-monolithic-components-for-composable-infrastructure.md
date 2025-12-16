@@ -6,7 +6,7 @@
 
 ## Summary
 
-Deprecated 6 monolithic deployment components and consolidated GCP GKE Cluster variants to align with the composable infrastructure philosophy. Removed bundled "all-in-one" components (AwsStaticWebsite, GcpStaticWebsite, GcpGkeAddonBundle, KubernetesHttpEndpoint, StackJobRunnerKubernetes) in favor of individual, focused components that can be composed together. Consolidated GcpGkeClusterCore into GcpGkeCluster, eliminating naming confusion. Renumbered all cloud resource kind enum values to maintain sequential ordering without gaps.
+Deprecated 6 monolithic deployment components and consolidated GCP GKE Cluster variants to align with the composable infrastructure philosophy. Removed bundled "all-in-one" components (AwsStaticWebsite, GcpStaticWebsite, GcpGkeAddonBundle, KubernetesHttpEndpoint, StackUpdateRunnerKubernetes) in favor of individual, focused components that can be composed together. Consolidated GcpGkeClusterCore into GcpGkeCluster, eliminating naming confusion. Renumbered all cloud resource kind enum values to maintain sequential ordering without gaps.
 
 ## Problem Statement / Motivation
 
@@ -66,7 +66,7 @@ Before this refactoring:
    - Doesn't fit the "workload" or "addon" categories
    - Needed a separate "config" category (planned for future)
 
-5. **Unimplemented APIs**: `StackJobRunnerKubernetes` existed in the enum but had no implementation, documentation, or purpose
+5. **Unimplemented APIs**: `StackUpdateRunnerKubernetes` existed in the enum but had no implementation, documentation, or purpose
 
 ## Solution / What's New
 
@@ -203,7 +203,7 @@ Each component can now be:
 - Configured with cloud-provider-specific options
 - Composed as needed for each environment
 
-#### 4. StackJobRunnerKubernetes (Enum 820)
+#### 4. StackUpdateRunnerKubernetes (Enum 820)
 
 **Why Deprecated**: Unimplemented API with no IaC modules, no documentation, and no current purpose in the platform.
 
@@ -320,7 +320,7 @@ Removed 5 deprecated component folders and all their contents:
 - `apis/org/project_planton/provider/gcp/gcpstaticwebsite/` (complete implementation)
 - `apis/org/project_planton/provider/gcp/gcpgkeaddonbundle/` (complete implementation)
 - `apis/org/project_planton/provider/kubernetes/workload/kuberneteshttpendpoint/` (complete implementation)
-- `apis/org/project_planton/provider/kubernetes/workload/stackjobrunnerkubernetes/` (complete implementation)
+- `apis/org/project_planton/provider/kubernetes/workload/stackupdaterunnerkubernetes/` (complete implementation)
 
 Each deletion automatically cleaned up:
 - Protocol Buffer API definitions
@@ -394,7 +394,7 @@ GcpGkeAddonBundle = 607
 GcpStaticWebsite = 610
 GcpGkeClusterCore = 615
 KubernetesHttpEndpoint = 809
-StackJobRunnerKubernetes = 820
+StackUpdateRunnerKubernetes = 820
 ```
 
 **Kept unchanged**:
@@ -594,7 +594,7 @@ This is a **breaking change** for users with existing deployments using deprecat
 - GcpGkeAddonBundle
 - GcpGkeClusterCore (renamed to GcpGkeCluster)
 - KubernetesHttpEndpoint
-- StackJobRunnerKubernetes
+- StackUpdateRunnerKubernetes
 
 **Migration Required For**:
 
@@ -668,7 +668,7 @@ The commercial Planton Cloud platform will need updates:
 **Deleted**: 5 complete component directories with all contents
 - AWS: 1 component (awsstaticwebsite)
 - GCP: 2 components (gcpstaticwebsite, gcpgkeaddonbundle)
-- Kubernetes: 2 components (kuberneteshttpendpoint, stackjobrunnerkubernetes)
+- Kubernetes: 2 components (kuberneteshttpendpoint, stackupdaterunnerkubernetes)
 
 **Renamed/Refactored**: 1 component (GcpGkeClusterCore → GcpGkeCluster)
 - Proto files: 4 files
@@ -848,7 +848,7 @@ These will be addressed in follow-up work as part of the platform rollout.
 - ❌ Cannot deploy new GcpStaticWebsite resources
 - ❌ Cannot deploy new GcpGkeAddonBundle resources
 - ❌ Cannot deploy new KubernetesHttpEndpoint resources
-- ❌ Cannot deploy new StackJobRunnerKubernetes resources
+- ❌ Cannot deploy new StackUpdateRunnerKubernetes resources
 - ❌ GcpGkeClusterCore kind name no longer recognized
 
 **Migration Required**:

@@ -110,5 +110,3 @@ func printAccessInfo() {
 	fmt.Println("  planton webapp stop      # Stop the web app")
 	fmt.Println()
 }
-
-

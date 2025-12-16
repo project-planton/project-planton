@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	"github.com/project-planton/project-planton/app/backend/internal/database"
-	"google.golang.org/protobuf/types/known/timestamppb"
+	// "google.golang.org/protobuf/types/known/timestamppb"
 
-	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
+	// "connectrpc.com/connect"
+	// TODO: Add deployment component proto definitions
+	// backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
 )
 
 // DeploymentComponentService implements the DeploymentComponentService RPC.
@@ -24,12 +25,18 @@ func NewDeploymentComponentService(repo *database.DeploymentComponentRepository)
 }
 
 // ListDeploymentComponents retrieves a list of deployment components with optional filters.
+// TODO: Implement once deployment component proto definitions are available
 func (s *DeploymentComponentService) ListDeploymentComponents(
 	ctx context.Context,
-	req *connect.Request[backendv1.ListDeploymentComponentsRequest],
+	// req *connect.Request[backendv1.ListDeploymentComponentsRequest],
+) (interface{}, error) {
+	_ = ctx
+	return nil, fmt.Errorf("deployment component service not yet implemented - proto definitions missing")
+	/* req *connect.Request[backendv1.ListDeploymentComponentsRequest],
 ) (*connect.Response[backendv1.ListDeploymentComponentsResponse], error) {
 	opts := &database.ListOptions{}
-	if req.Msg.Provider != nil {
+	_ = opts
+	/* if req.Msg.Provider != nil {
 		provider := *req.Msg.Provider
 		opts.Provider = &provider
 	}
@@ -68,4 +75,5 @@ func (s *DeploymentComponentService) ListDeploymentComponents(
 	return connect.NewResponse(&backendv1.ListDeploymentComponentsResponse{
 		Components: protoComponents,
 	}), nil
+	*/
 }

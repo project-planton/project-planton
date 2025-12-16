@@ -10,7 +10,7 @@ Fixed a critical runtime panic in the GCP Cloud SQL Pulumi module that occurred 
 
 ## Problem Statement / Motivation
 
-When attempting to preview or deploy a GCP Cloud SQL instance using the Pulumi module with a manifest file, the stack job runner would panic with a type assertion error. This made the GCP Cloud SQL resource completely unusable via the Pulumi execution path, blocking any database deployments.
+When attempting to preview or deploy a GCP Cloud SQL instance using the Pulumi module with a manifest file, the stack-update runner would panic with a type assertion error. This made the GCP Cloud SQL resource completely unusable via the Pulumi execution path, blocking any database deployments.
 
 ### Pain Points
 

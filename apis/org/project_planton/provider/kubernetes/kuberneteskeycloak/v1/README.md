@@ -16,7 +16,7 @@ Deploying Keycloak on Kubernetes can be challenging due to the various configura
 ### Environment Integration
 
 - **Environment Info**: Integrates seamlessly with our environment management system to deploy Keycloak within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments, ensuring consistent and repeatable provisioning processes.
 
 ### Kubernetes Credential Management
 

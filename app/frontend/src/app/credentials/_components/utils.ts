@@ -1,4 +1,4 @@
-import { CredentialProvider } from '@/gen/proto/credential_service_pb';
+import { Credential_CredentialProvider } from '@/gen/org/project_planton/app/credential/v1/api_pb';
 import { ICON_NAMES } from '@/components/shared/icon';
 
 export interface ProviderConfig {
@@ -7,23 +7,23 @@ export interface ProviderConfig {
   icon?: ICON_NAMES;
 }
 
-export const providerConfig: Record<CredentialProvider, ProviderConfig> = {
-  [CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED]: {
+export const providerConfig: Record<Credential_CredentialProvider, ProviderConfig> = {
+  [Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED]: {
     label: 'Unspecified',
     description: '',
     icon: undefined,
   },
-  [CredentialProvider.GCP]: {
+  [Credential_CredentialProvider.GCP]: {
     label: 'Google Cloud Platform',
     description: 'Link your GCP Organization to start deploying infrastructure',
     icon: ICON_NAMES.GCP,
   },
-  [CredentialProvider.AWS]: {
+  [Credential_CredentialProvider.AWS]: {
     label: 'Amazon Web Services',
     description: 'Link your AWS Account to start deploying infrastructure',
     icon: ICON_NAMES.AWS,
   },
-  [CredentialProvider.AZURE]: {
+  [Credential_CredentialProvider.AZURE]: {
     label: 'Microsoft Azure',
     description: 'Link your Azure Subscription to start deploying infrastructure',
     icon: ICON_NAMES.AZURE,

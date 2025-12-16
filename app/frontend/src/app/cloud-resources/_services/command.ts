@@ -1,8 +1,9 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { create } from '@bufbuild/protobuf';
+// Connect RPC clients accept messages directly, no wrapping needed
 import { AppContext } from '@/contexts';
 import { useConnectRpcClient } from '@/hooks';
-import { CloudResourceService } from '@/gen/proto/cloud_resource_service_pb';
+import { CloudResourceCommandController } from '@/gen/org/project_planton/app/cloudresource/v1/command_pb';
 import {
   CreateCloudResourceRequestSchema,
   CreateCloudResourceResponse,
@@ -10,8 +11,8 @@ import {
   UpdateCloudResourceResponse,
   DeleteCloudResourceRequestSchema,
   DeleteCloudResourceResponse,
-  CloudResource,
-} from '@/gen/proto/cloud_resource_service_pb';
+} from '@/gen/org/project_planton/app/cloudresource/v1/io_pb';
+import { CloudResource } from '@/gen/org/project_planton/app/cloudresource/v1/api_pb';
 
 interface CommandType {
   create: (manifest: string) => Promise<CloudResource>;
@@ -23,7 +24,7 @@ const RESOURCE_NAME = 'Cloud Resource';
 
 export const useCloudResourceCommand = () => {
   const { setPageLoading, openSnackbar } = useContext(AppContext);
-  const commandClient = useConnectRpcClient(CloudResourceService);
+  const commandClient = useConnectRpcClient(CloudResourceCommandController);
   const [command, setCommand] = useState<CommandType>(null);
 
   const commandApis: CommandType = useMemo(
@@ -32,7 +33,7 @@ export const useCloudResourceCommand = () => {
         setPageLoading(true);
         return new Promise((resolve, reject) => {
           commandClient
-            .createCloudResource(create(CreateCloudResourceRequestSchema, { manifest }))
+            .create(create(CreateCloudResourceRequestSchema, { manifest }))
             .then((response: CreateCloudResourceResponse) => {
               if (response?.resource) {
                 openSnackbar(
@@ -55,7 +56,7 @@ export const useCloudResourceCommand = () => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
           commandClient
-            .updateCloudResource(create(UpdateCloudResourceRequestSchema, { id, manifest }))
+            .update(create(UpdateCloudResourceRequestSchema, { id, manifest }))
             .then((response: UpdateCloudResourceResponse) => {
               if (response?.resource) {
                 openSnackbar(
@@ -78,7 +79,7 @@ export const useCloudResourceCommand = () => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
           commandClient
-            .deleteCloudResource(create(DeleteCloudResourceRequestSchema, { id }))
+            .delete(create(DeleteCloudResourceRequestSchema, { id }))
             .then((response: DeleteCloudResourceResponse) => {
               openSnackbar(response.message || `${RESOURCE_NAME} deleted successfully`, 'success');
               resolve();

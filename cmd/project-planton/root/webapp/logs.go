@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	logsFollow bool
-	logsTail   string
+	logsFollow  bool
+	logsTail    string
 	logsService string
 )
 
@@ -82,5 +82,3 @@ func logsHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 }
-
-

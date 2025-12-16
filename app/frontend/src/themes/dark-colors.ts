@@ -105,7 +105,7 @@ export const infoDark = {
 
 export const exceptionsDark = {
   0: '#000000',
-  10: '#000000', // Stack Job log background
+  10: '#000000', // Stack Update log background
   15: '#1E2C31', // trigger background
   20: '#262629', // Secondary Button Background
   25: '#24C8FF', // trigger text
@@ -115,7 +115,7 @@ export const exceptionsDark = {
   50: '#31363D', // Border Lines
   60: '#2D3038', // Table Strokes
   70: '#262629', // Pop-ups and Sliders
-  80: '#0F142A', // StackJob Log section header
+  80: '#0F142A', // StackUpdate Log section header
   85: '#242C4B', // Header active bg color
   90: '#5CBBFF', // plantora msg bg
   95: '#001D47', // Banner BG

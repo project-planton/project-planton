@@ -15,7 +15,7 @@ Deploying MongoDB on Kubernetes involves complex configurations, including resou
 ### Environment Configuration
 
 - **Environment Info**: Tailor MongoDB deployments to specific environments (development, staging, production) using environment-specific information.
-- **Stack Job Settings**: Integrate with infrastructure-as-code (IaC) tools through stack job settings for automated and repeatable deployments.
+- **Stack Job Settings**: Integrate with infrastructure-as-code (IaC) tools through stack-update settings for automated and repeatable deployments.
 
 ### Credential Management
 

@@ -16,7 +16,7 @@ Deploying GitLab on Kubernetes can be complex due to the intricacies involved in
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system to deploy GitLab within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### Kubernetes Credential Management
 

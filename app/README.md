@@ -49,7 +49,7 @@ app/
 - Cloud resource CRUD operations
 - Asynchronous Pulumi deployments
 - Credential management with automatic resolution
-- Stack job tracking and streaming
+- Stack update tracking and streaming
 - Server-side pagination
 
 ### Structure
@@ -110,7 +110,7 @@ go test ./...
 
 - Cloud resource management interface
 - Dark/light theme system (200+ color definitions)
-- Stack job tracking and detail pages
+- Stack update tracking and detail pages
 - Real-time deployment output display
 - Server-side pagination
 - YAML editor with syntax highlighting
@@ -123,7 +123,7 @@ frontend/
 │   ├── app/              # Next.js pages (App Router)
 │   │   ├── dashboard/
 │   │   ├── cloud-resources/
-│   │   └── stack-jobs/
+│   │   └── stack-updates/
 │   ├── components/       # Reusable UI components
 │   │   ├── layout/       # Header, sidebar, theme switch
 │   │   └── shared/       # Tables, drawers, dialogs
@@ -326,7 +326,7 @@ const response = await client.yourService.createResource(request);
 }
 ```
 
-#### `stackjobs`
+#### `stackupdates`
 ```javascript
 {
   _id: ObjectId,
@@ -338,11 +338,11 @@ const response = await client.yourService.createResource(request);
 }
 ```
 
-#### `stackjob_streaming_responses`
+#### `stackupdate_streaming_responses`
 ```javascript
 {
   _id: ObjectId,
-  stack_job_id: "uuid",
+  stack_update_id: "uuid",
   output: "deployment log line",
   timestamp: ISODate,
   sequence: 123

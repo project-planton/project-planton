@@ -24,7 +24,7 @@ Added automatic Pulumi deployment triggering to the `ApplyCloudResource` method,
 
 ```go
 // Trigger Pulumi deployment automatically (credentials will be resolved from database)
-if s.stackJobService != nil {
+if s.stackUpdateService != nil {
     // Create a deployment request (no provider_config needed - will be resolved automatically)
     deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
         Msg: &backendv1.DeployCloudResourceRequest{
@@ -34,7 +34,7 @@ if s.stackJobService != nil {
 
     // Trigger deployment asynchronously (don't wait for it)
     go func() {
-        _, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+        _, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
     }()
 }
 ```
@@ -83,7 +83,7 @@ Updated At: 2025-12-11 08:50:26
 
 🚀 Pulumi deployment has been triggered automatically.
    Deployment is running in the background.
-   Use 'project-planton stack-job:list' to check deployment status.
+   Use 'project-planton stack-update:list' to check deployment status.
 ```
 
 ### 3. Updated CLI Documentation

@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"strings"
 
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
 	"github.com/project-planton/project-planton/app/backend/internal/database"
 	"github.com/project-planton/project-planton/app/backend/pkg/models"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
@@ -25,11 +28,11 @@ func NewCredentialResolver(credentialRepo *database.CredentialRepository) *Crede
 }
 
 // ResolveProviderConfig resolves provider credentials from the database based on the provider from cloud resource kind.
-// Returns a ProviderConfig proto message that can be used for deployment.
+// Returns a CredentialProviderConfig proto message that can be used for deployment.
 func (r *CredentialResolver) ResolveProviderConfig(
 	ctx context.Context,
 	kindName string,
-) (*backendv1.ProviderConfig, error) {
+) (*credentialv1.CredentialProviderConfig, error) {
 	// Step 1: Get the CloudResourceKind enum from kind name
 	kindEnum, err := crkreflect.KindByKindName(kindName)
 	if err != nil {
@@ -57,27 +60,29 @@ func (r *CredentialResolver) ResolveProviderConfig(
 		return nil, fmt.Errorf("no %s credential found. Please create a %s credential first", strings.ToUpper(providerString), strings.ToUpper(providerString))
 	}
 
-	// Convert to ProviderConfig based on provider type
+	// Convert to CredentialProviderConfig based on provider type
 	switch providerString {
 	case "aws":
 		awsCred := credInterface.(*models.AwsCredential)
-		return &backendv1.ProviderConfig{
-			Config: &backendv1.ProviderConfig_Aws{
-				Aws: &backendv1.AwsProviderConfig{
+		region := awsCred.Region
+		sessionToken := awsCred.SessionToken
+		return &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Aws{
+				Aws: &awsv1.AwsProviderConfig{
 					AccountId:       awsCred.AccountID,
 					AccessKeyId:     awsCred.AccessKeyID,
 					SecretAccessKey: awsCred.SecretAccessKey,
-					Region:          &awsCred.Region,
-					SessionToken:    &awsCred.SessionToken,
+					Region:          region,
+					SessionToken:    sessionToken,
 				},
 			},
 		}, nil
 
 	case "gcp":
 		gcpCred := credInterface.(*models.GcpCredential)
-		return &backendv1.ProviderConfig{
-			Config: &backendv1.ProviderConfig_Gcp{
-				Gcp: &backendv1.GcpProviderConfig{
+		return &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Gcp{
+				Gcp: &gcpv1.GcpProviderConfig{
 					ServiceAccountKeyBase64: gcpCred.ServiceAccountKeyBase64,
 				},
 			},
@@ -85,9 +90,9 @@ func (r *CredentialResolver) ResolveProviderConfig(
 
 	case "azure":
 		azureCred := credInterface.(*models.AzureCredential)
-		return &backendv1.ProviderConfig{
-			Config: &backendv1.ProviderConfig_Azure{
-				Azure: &backendv1.AzureProviderConfig{
+		return &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Azure{
+				Azure: &azurev1.AzureProviderConfig{
 					ClientId:       azureCred.ClientID,
 					ClientSecret:   azureCred.ClientSecret,
 					TenantId:       azureCred.TenantID,

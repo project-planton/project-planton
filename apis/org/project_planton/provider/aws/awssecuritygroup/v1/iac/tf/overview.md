@@ -93,7 +93,7 @@ Indicates if the resource is active, updated, or marked for cleanup.
 • **status.audit**  
 Creation and last-updated timestamps, plus user info (if available).
 
-• **status.stackJobId**  
+• **status.stackUpdateId**  
 The ID of the Pulumi/Terraform job that performed the provisioning.
 
 • **status.outputs**  

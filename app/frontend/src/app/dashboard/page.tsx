@@ -11,7 +11,7 @@ import {
 } from '@/app/dashboard/styled';
 import { CloudResourcesList } from '@/components/shared/cloud-resources-list';
 import { useCloudResourceQuery } from '@/app/cloud-resources/_services';
-import { ListCloudResourcesRequestSchema } from '@/gen/proto/cloud_resource_service_pb';
+import { ListCloudResourcesRequestSchema } from '@/gen/org/project_planton/app/cloudresource/v1/io_pb';
 
 export default function DashboardPage() {
   const { query } = useCloudResourceQuery();

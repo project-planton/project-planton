@@ -9,29 +9,30 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
+	cloudresourcev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1"
+	stackupdatev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // CloudResourceService implements the CloudResourceService RPC.
 type CloudResourceService struct {
-	repo            *database.CloudResourceRepository
-	stackJobService *StackJobService
+	repo               *database.CloudResourceRepository
+	stackUpdateService *StackUpdateService
 }
 
 // NewCloudResourceService creates a new service instance.
-func NewCloudResourceService(repo *database.CloudResourceRepository, stackJobService *StackJobService) *CloudResourceService {
+func NewCloudResourceService(repo *database.CloudResourceRepository, stackUpdateService *StackUpdateService) *CloudResourceService {
 	return &CloudResourceService{
-		repo:            repo,
-		stackJobService: stackJobService,
+		repo:               repo,
+		stackUpdateService: stackUpdateService,
 	}
 }
 
-// CreateCloudResource creates a new cloud resource from a YAML manifest.
-func (s *CloudResourceService) CreateCloudResource(
+// Create creates a new cloud resource from a YAML manifest.
+func (s *CloudResourceService) Create(
 	ctx context.Context,
-	req *connect.Request[backendv1.CreateCloudResourceRequest],
-) (*connect.Response[backendv1.CreateCloudResourceResponse], error) {
+	req *connect.Request[cloudresourcev1.CreateCloudResourceRequest],
+) (*connect.Response[cloudresourcev1.CreateCloudResourceResponse], error) {
 	manifest := req.Msg.Manifest
 	if manifest == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest cannot be empty"))
@@ -83,22 +84,22 @@ func (s *CloudResourceService) CreateCloudResource(
 	}
 
 	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
-	if s.stackJobService != nil {
+	if s.stackUpdateService != nil {
 		// Create a deployment request (no provider_config needed - will be resolved automatically)
-		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
-			Msg: &backendv1.DeployCloudResourceRequest{
+		deployReq := &connect.Request[stackupdatev1.DeployCloudResourceRequest]{
+			Msg: &stackupdatev1.DeployCloudResourceRequest{
 				CloudResourceId: createdResource.ID.Hex(),
 			},
 		}
 
 		// Trigger deployment asynchronously (don't wait for it)
 		go func() {
-			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+			_, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
 		}()
 	}
 
 	// Convert to proto
-	protoResource := &backendv1.CloudResource{
+	protoResource := &cloudresourcev1.CloudResource{
 		Id:       createdResource.ID.Hex(),
 		Name:     createdResource.Name,
 		Kind:     createdResource.Kind,
@@ -112,19 +113,19 @@ func (s *CloudResourceService) CreateCloudResource(
 		protoResource.UpdatedAt = timestamppb.New(createdResource.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.CreateCloudResourceResponse{
+	return connect.NewResponse(&cloudresourcev1.CreateCloudResourceResponse{
 		Resource: protoResource,
 	}), nil
 }
 
-// ListCloudResources retrieves cloud resources with optional pagination.
-func (s *CloudResourceService) ListCloudResources(
+// List retrieves cloud resources with optional pagination.
+func (s *CloudResourceService) List(
 	ctx context.Context,
-	req *connect.Request[backendv1.ListCloudResourcesRequest],
-) (*connect.Response[backendv1.ListCloudResourcesResponse], error) {
+	req *connect.Request[cloudresourcev1.ListCloudResourcesRequest],
+) (*connect.Response[cloudresourcev1.ListCloudResourcesResponse], error) {
 	opts := &database.CloudResourceListOptions{}
-	if req.Msg.Kind != nil {
-		kind := *req.Msg.Kind
+	if req.Msg.Kind != "" {
+		kind := req.Msg.Kind
 		opts.Kind = &kind
 	}
 
@@ -154,9 +155,9 @@ func (s *CloudResourceService) ListCloudResources(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list cloud resources: %w", err))
 	}
 
-	protoResources := make([]*backendv1.CloudResource, 0, len(resources))
+	protoResources := make([]*cloudresourcev1.CloudResource, 0, len(resources))
 	for _, res := range resources {
-		protoRes := &backendv1.CloudResource{
+		protoRes := &cloudresourcev1.CloudResource{
 			Id:       res.ID.Hex(),
 			Name:     res.Name,
 			Kind:     res.Kind,
@@ -173,7 +174,7 @@ func (s *CloudResourceService) ListCloudResources(
 		protoResources = append(protoResources, protoRes)
 	}
 
-	response := &backendv1.ListCloudResourcesResponse{
+	response := &cloudresourcev1.ListCloudResourcesResponse{
 		Resources:  protoResources,
 		TotalPages: totalPages,
 	}
@@ -181,11 +182,11 @@ func (s *CloudResourceService) ListCloudResources(
 	return connect.NewResponse(response), nil
 }
 
-// GetCloudResource retrieves a cloud resource by ID.
-func (s *CloudResourceService) GetCloudResource(
+// Get retrieves a cloud resource by ID.
+func (s *CloudResourceService) Get(
 	ctx context.Context,
-	req *connect.Request[backendv1.GetCloudResourceRequest],
-) (*connect.Response[backendv1.GetCloudResourceResponse], error) {
+	req *connect.Request[cloudresourcev1.GetCloudResourceRequest],
+) (*connect.Response[cloudresourcev1.GetCloudResourceResponse], error) {
 	id := req.Msg.Id
 	if id == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
@@ -200,7 +201,7 @@ func (s *CloudResourceService) GetCloudResource(
 		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("cloud resource with ID '%s' not found", id))
 	}
 
-	protoResource := &backendv1.CloudResource{
+	protoResource := &cloudresourcev1.CloudResource{
 		Id:       resource.ID.Hex(),
 		Name:     resource.Name,
 		Kind:     resource.Kind,
@@ -214,16 +215,16 @@ func (s *CloudResourceService) GetCloudResource(
 		protoResource.UpdatedAt = timestamppb.New(resource.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.GetCloudResourceResponse{
+	return connect.NewResponse(&cloudresourcev1.GetCloudResourceResponse{
 		Resource: protoResource,
 	}), nil
 }
 
-// UpdateCloudResource updates an existing cloud resource from a YAML manifest.
-func (s *CloudResourceService) UpdateCloudResource(
+// Update updates an existing cloud resource from a YAML manifest.
+func (s *CloudResourceService) Update(
 	ctx context.Context,
-	req *connect.Request[backendv1.UpdateCloudResourceRequest],
-) (*connect.Response[backendv1.UpdateCloudResourceResponse], error) {
+	req *connect.Request[cloudresourcev1.UpdateCloudResourceRequest],
+) (*connect.Response[cloudresourcev1.UpdateCloudResourceResponse], error) {
 	id := req.Msg.Id
 	if id == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
@@ -291,22 +292,22 @@ func (s *CloudResourceService) UpdateCloudResource(
 	}
 
 	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
-	if s.stackJobService != nil {
+	if s.stackUpdateService != nil {
 		// Create a deployment request (no provider_config needed - will be resolved automatically)
-		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
-			Msg: &backendv1.DeployCloudResourceRequest{
+		deployReq := &connect.Request[stackupdatev1.DeployCloudResourceRequest]{
+			Msg: &stackupdatev1.DeployCloudResourceRequest{
 				CloudResourceId: id,
 			},
 		}
 
 		// Trigger deployment asynchronously (don't wait for it)
 		go func() {
-			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+			_, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
 		}()
 	}
 
 	// Convert to proto
-	protoResource := &backendv1.CloudResource{
+	protoResource := &cloudresourcev1.CloudResource{
 		Id:       updatedResource.ID.Hex(),
 		Name:     updatedResource.Name,
 		Kind:     updatedResource.Kind,
@@ -320,16 +321,16 @@ func (s *CloudResourceService) UpdateCloudResource(
 		protoResource.UpdatedAt = timestamppb.New(updatedResource.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.UpdateCloudResourceResponse{
+	return connect.NewResponse(&cloudresourcev1.UpdateCloudResourceResponse{
 		Resource: protoResource,
 	}), nil
 }
 
-// DeleteCloudResource deletes a cloud resource by ID.
-func (s *CloudResourceService) DeleteCloudResource(
+// Delete deletes a cloud resource by ID.
+func (s *CloudResourceService) Delete(
 	ctx context.Context,
-	req *connect.Request[backendv1.DeleteCloudResourceRequest],
-) (*connect.Response[backendv1.DeleteCloudResourceResponse], error) {
+	req *connect.Request[cloudresourcev1.DeleteCloudResourceRequest],
+) (*connect.Response[cloudresourcev1.DeleteCloudResourceResponse], error) {
 	id := req.Msg.Id
 	if id == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("resource ID cannot be empty"))
@@ -350,16 +351,16 @@ func (s *CloudResourceService) DeleteCloudResource(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete cloud resource: %w", err))
 	}
 
-	return connect.NewResponse(&backendv1.DeleteCloudResourceResponse{
+	return connect.NewResponse(&cloudresourcev1.DeleteCloudResourceResponse{
 		Message: fmt.Sprintf("Cloud resource '%s' deleted successfully", resource.Name),
 	}), nil
 }
 
 // ApplyCloudResource creates or updates a cloud resource (upsert operation).
-func (s *CloudResourceService) ApplyCloudResource(
+func (s *CloudResourceService) Apply(
 	ctx context.Context,
-	req *connect.Request[backendv1.ApplyCloudResourceRequest],
-) (*connect.Response[backendv1.ApplyCloudResourceResponse], error) {
+	req *connect.Request[cloudresourcev1.ApplyCloudResourceRequest],
+) (*connect.Response[cloudresourcev1.ApplyCloudResourceResponse], error) {
 	manifest := req.Msg.Manifest
 	if manifest == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("manifest cannot be empty"))
@@ -428,22 +429,22 @@ func (s *CloudResourceService) ApplyCloudResource(
 	}
 
 	// Trigger Pulumi deployment automatically (credentials will be resolved from database)
-	if s.stackJobService != nil {
+	if s.stackUpdateService != nil {
 		// Create a deployment request (no provider_config needed - will be resolved automatically)
-		deployReq := &connect.Request[backendv1.DeployCloudResourceRequest]{
-			Msg: &backendv1.DeployCloudResourceRequest{
+		deployReq := &connect.Request[stackupdatev1.DeployCloudResourceRequest]{
+			Msg: &stackupdatev1.DeployCloudResourceRequest{
 				CloudResourceId: resultResource.ID.Hex(),
 			},
 		}
 
 		// Trigger deployment asynchronously (don't wait for it)
 		go func() {
-			_, _ = s.stackJobService.DeployCloudResource(context.Background(), deployReq)
+			_, _ = s.stackUpdateService.DeployCloudResource(context.Background(), deployReq)
 		}()
 	}
 
 	// Convert to proto
-	protoResource := &backendv1.CloudResource{
+	protoResource := &cloudresourcev1.CloudResource{
 		Id:       resultResource.ID.Hex(),
 		Name:     resultResource.Name,
 		Kind:     resultResource.Kind,
@@ -457,20 +458,20 @@ func (s *CloudResourceService) ApplyCloudResource(
 		protoResource.UpdatedAt = timestamppb.New(resultResource.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.ApplyCloudResourceResponse{
+	return connect.NewResponse(&cloudresourcev1.ApplyCloudResourceResponse{
 		Resource: protoResource,
 		Created:  created,
 	}), nil
 }
 
 // CountCloudResources returns the total count of cloud resources.
-func (s *CloudResourceService) CountCloudResources(
+func (s *CloudResourceService) Count(
 	ctx context.Context,
-	req *connect.Request[backendv1.CountCloudResourcesRequest],
-) (*connect.Response[backendv1.CountCloudResourcesResponse], error) {
+	req *connect.Request[cloudresourcev1.CountCloudResourcesRequest],
+) (*connect.Response[cloudresourcev1.CountCloudResourcesResponse], error) {
 	opts := &database.CloudResourceListOptions{}
-	if req.Msg.Kind != nil {
-		kind := *req.Msg.Kind
+	if req.Msg.Kind != "" {
+		kind := req.Msg.Kind
 		opts.Kind = &kind
 	}
 
@@ -479,7 +480,7 @@ func (s *CloudResourceService) CountCloudResources(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to count cloud resources: %w", err))
 	}
 
-	return connect.NewResponse(&backendv1.CountCloudResourcesResponse{
+	return connect.NewResponse(&cloudresourcev1.CountCloudResourcesResponse{
 		Count: count,
 	}), nil
 }

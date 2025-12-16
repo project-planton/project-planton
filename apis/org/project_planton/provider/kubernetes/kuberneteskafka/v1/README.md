@@ -15,7 +15,7 @@ Deploying Kafka on Kubernetes involves intricate configurations, including broke
 ### Environment Configuration
 
 - **Environment Info**: Tailor Kafka deployments to specific environments (development, staging, production) using environment-specific information.
-- **Stack Job Settings**: Integrate with infrastructure-as-code (IaC) tools through stack job settings for automated and repeatable deployments.
+- **Stack Job Settings**: Integrate with infrastructure-as-code (IaC) tools through stack-update settings for automated and repeatable deployments.
 
 ### Credential Management
 

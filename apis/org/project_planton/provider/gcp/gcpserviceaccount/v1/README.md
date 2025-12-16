@@ -28,7 +28,7 @@ developed this API resource. It enables you to:
 
 - **Environment Info**: Integrates seamlessly with ProjectPlanton's environment management system to deploy service
   account configurations within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 - **Multi-Backend Support**: The same manifest works with both Pulumi and Terraform backends, providing flexibility in
   tool choice.
 

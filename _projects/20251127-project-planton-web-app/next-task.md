@@ -35,7 +35,7 @@ The Project Planton Web App has successfully completed 7 major task groups repre
 ### **T05: Pulumi CLI Stack Job API** (Dec 3, 2025)
 - Asynchronous Pulumi deployment execution
 - Stack job tracking with MongoDB
-- DeployCloudResource, GetStackJob, ListStackJobs APIs
+- DeployCloudResource, GetStackUpdate, ListStackUpdates APIs
 - Pulumi CLI v3.206.0 integration in Docker
 
 ### **T06: KubernetesRedis Image Migration** (Dec 4, 2025)
@@ -46,7 +46,7 @@ The Project Planton Web App has successfully completed 7 major task groups repre
 
 ### **T07: Stack Jobs UI Integration** (Dec 4, 2025)
 - Stack jobs drawer and detail page
-- Server-side pagination for stack jobs
+- Server-side pagination for stack-updates
 - User-provided credentials support (8 providers)
 - Module path fixes for Pulumi/OpenTofu
 - Breadcrumb navigation and JSON syntax highlighting
@@ -83,9 +83,9 @@ The Project Planton Web App has successfully completed 7 major task groups repre
 
 ### **Database (MongoDB)**
 ✅ `cloud_resources` collection
-✅ `stackjobs` collection
+✅ `stackupdates` collection
 ✅ `credentials` collection (unified)
-✅ `stackjob_streaming_responses` collection
+✅ `stackupdate_streaming_responses` collection
 
 ### **Infrastructure**
 ✅ Docker containerization

@@ -16,7 +16,7 @@ Managing artifact repositories directly in GCP can be complex due to the various
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system to deploy artifact repositories within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
+- **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
 
 ### GCP Credential Management
 

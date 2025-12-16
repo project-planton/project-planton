@@ -49,5 +49,3 @@ func stopHandler(cmd *cobra.Command, args []string) {
 	fmt.Println("  planton webapp start")
 	fmt.Println()
 }
-
-

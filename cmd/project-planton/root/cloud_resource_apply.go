@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	cloudresourcev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1"
+	cloudresourcev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 )
@@ -77,7 +77,7 @@ func cloudResourceApplyHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCloudResourceServiceClient(
+	client := cloudresourcev1connect.NewCloudResourceCommandControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
@@ -93,11 +93,11 @@ func cloudResourceApplyHandler(cmd *cobra.Command, args []string) {
 	fmt.Printf("Applying cloud resource: kind=%s, name=%s\n", kind, name)
 	fmt.Printf("Checking if resource exists...\n")
 
-	applyReq := &backendv1.ApplyCloudResourceRequest{
+	applyReq := &cloudresourcev1.ApplyCloudResourceRequest{
 		Manifest: string(manifestContent),
 	}
 
-	applyResp, err := client.ApplyCloudResource(ctx, connect.NewRequest(applyReq))
+	applyResp, err := client.Apply(ctx, connect.NewRequest(applyReq))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
@@ -140,5 +140,5 @@ func cloudResourceApplyHandler(cmd *cobra.Command, args []string) {
 
 	fmt.Printf("\n🚀 Pulumi deployment has been triggered automatically.\n")
 	fmt.Printf("   Deployment is running in the background.\n")
-	fmt.Printf("   Use 'project-planton stack-job:list' to check deployment status.\n")
+	fmt.Printf("   Use 'project-planton stack-update:list' to check deployment status.\n")
 }

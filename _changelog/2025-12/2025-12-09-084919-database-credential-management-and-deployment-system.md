@@ -306,7 +306,7 @@ func credentialCreateHandler(cmd *cobra.Command, args []string) {
 Deployment flow with credential resolution:
 
 ```go
-func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID, cloudResourceID, manifestYaml string) error {
+func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID, cloudResourceID, manifestYaml string) error {
 
     // Step 1-9: Load manifest, get Pulumi module, initialize stack
 
@@ -325,8 +325,8 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID, cloudReso
 The streaming response system stores each line of Pulumi output in MongoDB:
 
 ```go
-streamingResponse := &models.StackJobStreamingResponse{
-    StackJobID:  jobID,
+streamingResponse := &models.StackUpdateStreamingResponse{
+    StackUpdateID:  jobID,
     Content:     line,
     StreamType:  "stdout", // or "stderr"
     SequenceNum: currentSeq,
@@ -334,7 +334,7 @@ streamingResponse := &models.StackJobStreamingResponse{
 s.streamingResponseRepo.Create(ctx, streamingResponse)
 ```
 
-Frontend can then stream these responses in real-time via the `StreamStackJobOutput` RPC.
+Frontend can then stream these responses in real-time via the `StreamStackUpdateOutput` RPC.
 
 ---
 
@@ -487,7 +487,7 @@ Also removed Pulumi plugin pre-installation from Dockerfile to prevent future bl
 Added comprehensive debug logging to trace deployment execution:
 
 ```go
-func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
+func (s *StackUpdateService) deployWithPulumi(ctx context.Context, jobID string, cloudResourceID string, manifestYaml string) error {
     fmt.Printf("DEBUG: deployWithPulumi started for jobID=%s, cloudResourceID=%s\n", jobID, cloudResourceID)
 
     fmt.Printf("DEBUG: Getting Pulumi module path for kind=%s, stackFqdn=%s\n", kindName, stackFqdn)
@@ -497,7 +497,7 @@ func (s *StackJobService) deployWithPulumi(ctx context.Context, jobID string, cl
     // ... more debug logging at each step
 }
 
-func (s *StackJobService) updateJobWithError(ctx context.Context, jobID string, err error) error {
+func (s *StackUpdateService) updateJobWithError(ctx context.Context, jobID string, err error) error {
     fmt.Printf("ERROR: Stack job %s failed: %v\n", jobID, err)
     // ... error handling
 }
@@ -559,7 +559,7 @@ After completing the backend credential management and Docker deployment fixes, 
    project-planton deploy --manifest gcp-postgres.yaml
    ```
 
-5. **Backend creates stack job**: Stored in `stack_jobs` collection
+5. **Backend creates stack-update**: Stored in `stack_jobs` collection
 
 6. **Deployment goroutine starts**:
 
@@ -581,9 +581,9 @@ After completing the backend credential management and Docker deployment fixes, 
 
 11. **Pulumi executes with credentials**: Provider config built from database credential
 
-12. **Output streams to database**: Each line stored in `stackjob_streaming_responses`
+12. **Output streams to database**: Each line stored in `stackupdate_streaming_responses`
 
-13. **Frontend streams to user**: Real-time progress via `StreamStackJobOutput` RPC
+13. **Frontend streams to user**: Real-time progress via `StreamStackUpdateOutput` RPC
 
 ## Verification Logs
 
@@ -599,7 +599,7 @@ Updating files: 100% (5796/5796), done.
 
 DEBUG: Pulumi module path resolved: /home/appuser/.project-planton/pulumi/.../apis/org/project_planton/provider/gcp/gcpcloudsql/v1/iac/pulumi
 
-DEBUG: StreamStackJobOutput called with jobID=69371f5df0252a928b927d9b
+DEBUG: StreamStackUpdateOutput called with jobID=69371f5df0252a928b927d9b
 DEBUG: Found 2 new responses (currentSeq=71)
 DEBUG: Sending response seq=72, type=stdout, content=@ updating....
 DEBUG: Sending response seq=73, type=stdout, content=Installing plugin kubernetes-4.18.4: done
@@ -957,7 +957,7 @@ Each requires:
 
 - **Layer caching**: Pre-download common Go modules in base layer
 - **Plugin pre-installation**: Optional for air-gapped environments
-- **Parallel deployments**: Support multiple stack jobs concurrently
+- **Parallel deployments**: Support multiple stack-updates concurrently
 - **Resource pooling**: Reuse Go build environments
 
 ### Monitoring
