@@ -16,6 +16,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "solr-operator-system"
+  create_namespace: true
   container: {}
 ```
 
@@ -45,6 +46,7 @@ spec:
     clusterName: "production-gke-cluster"
   namespace:
     value: "solr-operator-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -81,6 +83,7 @@ spec:
     clusterName: "prod-k8s-cluster-01"
   namespace:
     value: "solr-operator-system"
+  create_namespace: false
   container:
     resources:
       requests:
@@ -117,6 +120,7 @@ spec:
     clusterName: "prod-gke-cluster"
   namespace:
     value: "solr-operator-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -157,6 +161,7 @@ spec:
     clusterName: "dev-cluster"
   namespace:
     value: "solr-operator-system"
+  create_namespace: false
   container:
     resources:
       requests:
@@ -195,6 +200,7 @@ spec:
     clusterName: "enterprise-prod-cluster"
   namespace:
     value: "solr-operator-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -214,6 +220,44 @@ spec:
 - Large enterprise deployments
 - Multi-tenant platforms offering Solr-as-a-Service
 - High-throughput environments with frequent scale operations
+
+---
+
+## Example 7: Using Existing Namespace
+
+Deploy operator to a pre-existing namespace managed separately.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesSolrOperator
+metadata:
+  name: solr-operator-existing-ns
+spec:
+  targetCluster:
+    clusterName: "my-cluster"
+  namespace:
+    value: "solr-operator-system"
+  create_namespace: false  # Namespace must already exist
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+**What this creates:**
+- Deploys operator to existing `solr-operator-system` namespace
+- Namespace must be created beforehand (manually or via KubernetesNamespace resource)
+- Ideal for GitOps workflows where namespaces are managed separately
+
+**When to use:**
+- Namespace is managed by platform team
+- Using KubernetesNamespace resource for namespace lifecycle
+- RBAC policies require separate namespace management
+- Multi-component deployments sharing a namespace
 
 ---
 

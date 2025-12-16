@@ -2,34 +2,26 @@
 resource "kubernetes_config_map" "main_py" {
   metadata {
     name      = "main-py"
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = var.spec.create_namespace ? kubernetes_namespace.this[0].metadata[0].name : local.namespace
     labels    = local.final_labels
   }
 
   data = {
     "main.py" = var.spec.load_test.main_py_content
   }
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
 }
 
 # Additional library files (lib_files_content)
 resource "kubernetes_config_map" "lib_files" {
   metadata {
     name      = "lib-files"
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = var.spec.create_namespace ? kubernetes_namespace.this[0].metadata[0].name : local.namespace
     labels    = local.final_labels
   }
 
   # Because lib_files_content is a map of filename->content,
   # we can directly assign it to the data block.
   data = var.spec.load_test.lib_files_content
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
 }
 
 # Merge base helm values with user-provided overrides
@@ -85,7 +77,7 @@ resource "helm_release" "this" {
   chart = "locust"
   # set the chart version you want to deploy
   version          = "0.31.5"
-  namespace        = kubernetes_namespace.this.metadata[0].name
+  namespace        = var.spec.create_namespace ? kubernetes_namespace.this[0].metadata[0].name : local.namespace
   create_namespace = false
 
   values = [
@@ -93,7 +85,6 @@ resource "helm_release" "this" {
   ]
 
   depends_on = [
-    kubernetes_namespace.this,
     kubernetes_config_map.main_py,
     kubernetes_config_map.lib_files
   ]

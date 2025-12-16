@@ -31,6 +31,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
 ```
@@ -58,6 +59,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: true
 ```
@@ -68,6 +70,40 @@ spec:
 - Creates internal load balancer
 - Not accessible from public internet
 - Accessible from within VPC/VPN
+
+---
+
+## Example 2b: Using Existing Namespace
+
+Deploy to a pre-existing namespace managed by your platform team.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesIngressNginx
+metadata:
+  name: ingress-with-existing-ns
+spec:
+  target_cluster:
+    cluster_name: my-cluster
+  namespace:
+    value: platform-ingress
+  create_namespace: false
+  chart_version: "4.11.1"
+  internal: false
+```
+
+**Prerequisites:**
+1. Namespace must already exist:
+   ```bash
+   kubectl create namespace platform-ingress
+   ```
+
+**Use Case:** Organizations with centralized namespace management, shared infrastructure namespaces.
+
+**Result:**
+- Uses existing namespace `platform-ingress`
+- No namespace creation attempted
+- Works with existing RBAC, policies, quotas
 
 ---
 
@@ -88,6 +124,7 @@ spec:
     cluster_name: gke-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   gke:
@@ -123,6 +160,7 @@ spec:
     cluster_name: gke-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: true
   gke:
@@ -155,6 +193,7 @@ spec:
     cluster_name: eks-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   eks:
@@ -191,6 +230,7 @@ spec:
     cluster_name: eks-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: true
   eks:
@@ -226,6 +266,7 @@ spec:
     cluster_name: aks-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   aks:
@@ -259,6 +300,7 @@ spec:
     cluster_name: aks-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   aks:
@@ -300,6 +342,7 @@ spec:
     cluster_name: dev-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   # chart_version omitted - uses default stable version
   internal: false
 ```
@@ -333,6 +376,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   gke:
@@ -355,6 +399,7 @@ spec:
     cluster_name: prod-eks-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   eks:
@@ -381,6 +426,7 @@ spec:
     cluster_name: prod-aks-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
   aks:
@@ -389,6 +435,51 @@ spec:
 ```
 
 **Use Case:** Consistent production deployments across multiple cloud providers.
+
+---
+
+## Namespace Management Patterns
+
+### Pattern 1: Component Manages Namespace (Default)
+
+The component creates and manages its own namespace:
+
+```yaml
+spec:
+  namespace:
+    value: my-ingress-namespace
+  create_namespace: true
+```
+
+### Pattern 2: Platform Team Manages Namespace
+
+Platform team creates namespace with policies, component just uses it:
+
+```bash
+# Platform team
+kubectl create namespace shared-ingress
+kubectl apply -f network-policies.yaml
+kubectl apply -f resource-quotas.yaml
+```
+
+```yaml
+# Application team
+spec:
+  namespace:
+    value: shared-ingress
+  create_namespace: false
+```
+
+### Pattern 3: Reference KubernetesNamespace Resource
+
+Use a KubernetesNamespace resource reference:
+
+```yaml
+spec:
+  namespace:
+    ref: my-namespace-resource-id
+  create_namespace: false  # Referenced namespace already exists
+```
 
 ---
 
@@ -556,6 +647,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
 ---
@@ -569,6 +661,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: true
 ```
@@ -588,6 +681,7 @@ spec:
     cluster_name: my-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
 ```

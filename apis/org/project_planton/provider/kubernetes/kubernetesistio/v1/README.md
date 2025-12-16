@@ -47,11 +47,21 @@ Easy control over control plane resources:
 - **Upgrade Path**: Clear path to upgrade Istio versions through chart version updates
 - **Consistency**: All three components (base, istiod, gateway) use the same chart version
 
-### Namespace Isolation
+### Namespace Management
 
-- **istio-system**: Dedicated namespace for Istio control plane components
-- **istio-ingress**: Separate namespace for ingress gateway (security best practice)
-- **Clear Separation**: Control plane and data plane components are logically separated
+The KubernetesIstio component manages two namespaces:
+
+1. **istio-system**: Main namespace for control plane components (istiod, base CRDs)
+2. **istio-ingress**: Dedicated namespace for ingress gateway
+
+**Namespace Creation Options**:
+
+- **Automatic Creation** (`create_namespace: true`): The component creates both namespaces automatically
+- **Use Existing** (`create_namespace: false`): Both namespaces must already exist in the cluster
+
+**Important**: When using existing namespaces (`create_namespace: false`), ensure both `istio-system` and `istio-ingress` are created before deploying this component.
+
+**Security Best Practice**: Separating control plane and ingress gateway into distinct namespaces provides better isolation and follows Istio's recommended architecture.
 
 ## How It Works
 
@@ -104,6 +114,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -128,6 +139,7 @@ spec:
     cluster_name: prod-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:
@@ -152,6 +164,7 @@ spec:
     cluster_name: dev-gke-cluster
   namespace:
     value: istio-system
+  create_namespace: true
   container:
     resources:
       requests:

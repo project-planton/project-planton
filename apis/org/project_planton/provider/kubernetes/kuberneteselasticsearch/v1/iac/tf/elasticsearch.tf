@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "elasticsearch" {
       kind       = "Elasticsearch"
       metadata = {
         name      = var.metadata.name
-        namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+        namespace = local.namespace_name
         labels    = local.final_labels
         annotations = {
           "pulumi.com/patchForce" = "true"
@@ -95,7 +95,7 @@ resource "kubernetes_manifest" "kibana" {
       metadata = {
         # Same name as ES or adapt as needed
         name      = var.metadata.name
-        namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+        namespace = local.namespace_name
         labels    = local.final_labels
         annotations = {
           "pulumi.com/patchForce" = "true"
@@ -128,7 +128,7 @@ resource "kubernetes_manifest" "kibana" {
         # Reference our just-created Elasticsearch
         elasticsearchRef = {
           name      = kubernetes_manifest.elasticsearch.manifest["metadata"]["name"]
-          namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+          namespace = local.namespace_name
         }
 
         # Disable the self-signed cert for Kibana’s HTTP, same as ES

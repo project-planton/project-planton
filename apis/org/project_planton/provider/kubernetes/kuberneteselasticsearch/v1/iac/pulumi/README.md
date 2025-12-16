@@ -47,7 +47,7 @@ configurations, and resource customization, providing a comprehensive solution f
 - [Installation](#installation)
 - [Usage](#usage)
 - [Module Components](#module-components)
-    - [Namespace Creation](#namespace-creation)
+    - [Namespace Management](#namespace-management)
     - [Elasticsearch Deployment](#elasticsearch-deployment)
     - [Kibana Deployment](#kibana-deployment)
     - [Ingress Configuration](#ingress-configuration)
@@ -85,10 +85,18 @@ Refer to [example](example.md) for usage instructions.
 
 ## Module Components
 
-### Namespace Creation
+### Namespace Management
 
-The module creates a dedicated Kubernetes namespace for the Elasticsearch and Kibana deployments, ensuring resource
-isolation and easier management.
+The module provides flexible namespace management through the `create_namespace` flag:
+
+- **`create_namespace: true`** (recommended): The module will create the namespace with proper labels and configuration. Use this when you want the component to manage the full namespace lifecycle.
+
+- **`create_namespace: false`**: The module will use an existing namespace. The namespace must already exist in the cluster. Use this when:
+  - The namespace is managed separately (e.g., by another component or tool)
+  - You're deploying multiple resources into a shared namespace
+  - Namespace policies are managed centrally
+
+**Important**: When `create_namespace: false`, ensure the namespace exists before deploying this component, or the deployment will fail.
 
 ### Elasticsearch Deployment
 

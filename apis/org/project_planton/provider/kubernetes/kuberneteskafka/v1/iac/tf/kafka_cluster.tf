@@ -8,7 +8,7 @@ resource "kubernetes_manifest" "kafka_cluster" {
     kind       = "Kafka"
     metadata = {
       name      = local.resource_id
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {

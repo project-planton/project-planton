@@ -1,147 +1,196 @@
-# Terraform Examples for KubernetesGitlab
+# Kubernetes GitLab Terraform Examples
 
-Complete Terraform configurations for deploying GitLab on Kubernetes.
+## Namespace Management
+
+All examples demonstrate namespace management using the `create_namespace` variable:
+- When `create_namespace = true`, the Terraform module creates the namespace automatically
+- When `create_namespace = false`, the namespace must exist before applying Terraform
 
 ---
 
-## Example 1: Basic GitLab Deployment
-
-Minimal GitLab deployment with default settings:
+# Example 1: Basic GitLab Deployment with Namespace Creation
 
 ```hcl
-terraform {
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = ">= 2.23.0"
-    }
-  }
-}
-
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
-
-module "gitlab_basic" {
-  source = "../"
+module "gitlab_instance" {
+  source = "./terraform/modules/kubernetes-gitlab"
 
   metadata = {
-    name = "gitlab-basic"
+    name = "gitlab-instance"
+    id   = "gitlab-inst-001"
+    org  = "my-org"
+    env  = "dev"
   }
 
   spec = {
-    target_cluster = {
-      cluster_name = "my-gke-cluster"
-    }
-    namespace = "gitlab-basic"
+    namespace        = "gitlab-instance"
+    create_namespace = true
+
     container = {
       resources = {
-        limits = {
-          cpu    = "1000m"
-          memory = "1Gi"
-        }
         requests = {
           cpu    = "50m"
-          memory = "100Mi"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1"
+          memory = "1Gi"
         }
       }
+    }
+
+    ingress = {
+      is_enabled = false
+      dns_domain = ""
     }
   }
 }
 
 output "namespace" {
-  value = module.gitlab_basic.namespace
+  value = module.gitlab_instance.namespace
 }
 
-output "port_forward_command" {
-  value = module.gitlab_basic.port_forward_command
+output "service_name" {
+  value = module.gitlab_instance.service_name
 }
 ```
 
 ---
 
-## Example 2: GitLab with Ingress
-
-GitLab deployment with external access via ingress:
+# Example 2: GitLab with Ingress and Custom Hostname
 
 ```hcl
-module "gitlab_with_ingress" {
-  source = "../"
+module "gitlab_production" {
+  source = "./terraform/modules/kubernetes-gitlab"
 
   metadata = {
-    name = "gitlab-prod"
+    name = "gitlab-production"
+    id   = "gitlab-prod-001"
+    org  = "my-org"
     env  = "production"
-    org  = "my-company"
   }
 
   spec = {
-    target_cluster = {
-      cluster_name = "my-gke-cluster"
-    }
-    namespace = "gitlab-prod"
+    namespace        = "gitlab-production"
+    create_namespace = true
+
     container = {
       resources = {
-        limits = {
-          cpu    = "2000m"
-          memory = "4Gi"
-        }
         requests = {
-          cpu    = "500m"
+          cpu    = "200m"
+          memory = "512Mi"
+        }
+        limits = {
+          cpu    = "2"
+          memory = "2Gi"
+        }
+      }
+    }
+
+    ingress = {
+      is_enabled = true
+      hostname   = "gitlab.example.com"
+    }
+  }
+}
+
+output "external_url" {
+  value       = module.gitlab_production.external_url
+  description = "External URL for accessing GitLab"
+}
+```
+
+---
+
+# Example 3: GitLab Using Existing Namespace
+
+This example demonstrates deploying GitLab into a pre-existing namespace.
+The namespace must be created before applying this Terraform configuration.
+
+```hcl
+# First, ensure the namespace exists
+resource "kubernetes_namespace" "shared_services" {
+  metadata {
+    name = "shared-services"
+    labels = {
+      environment = "shared"
+      managed_by  = "terraform"
+    }
+  }
+}
+
+module "gitlab_shared" {
+  source = "./terraform/modules/kubernetes-gitlab"
+
+  metadata = {
+    name = "gitlab-shared"
+    id   = "gitlab-shared-001"
+    org  = "my-org"
+    env  = "shared"
+  }
+
+  spec = {
+    namespace        = "shared-services"
+    create_namespace = false  # Use existing namespace
+
+    container = {
+      resources = {
+        requests = {
+          cpu    = "250m"
+          memory = "512Mi"
+        }
+        limits = {
+          cpu    = "1"
           memory = "1Gi"
         }
       }
     }
+
     ingress = {
-      enabled  = true
-      hostname = "gitlab.example.com"
+      is_enabled = false
+      dns_domain = ""
     }
   }
-}
 
-output "gitlab_url" {
-  value = module.gitlab_with_ingress.external_endpoint
-}
-
-output "internal_endpoint" {
-  value = module.gitlab_with_ingress.internal_endpoint
+  # Ensure namespace exists before creating GitLab resources
+  depends_on = [kubernetes_namespace.shared_services]
 }
 ```
 
 ---
 
-## Example 3: High-Resource GitLab
-
-GitLab deployment with high resource allocations for large teams:
+# Example 4: GitLab with Custom Resources
 
 ```hcl
-module "gitlab_high_resources" {
-  source = "../"
+module "gitlab_custom" {
+  source = "./terraform/modules/kubernetes-gitlab"
 
   metadata = {
-    name = "gitlab-enterprise"
-    env  = "production"
+    name = "gitlab-custom"
+    id   = "gitlab-custom-001"
+    org  = "my-org"
+    env  = "staging"
   }
 
   spec = {
-    target_cluster = {
-      cluster_name = "my-gke-cluster"
-    }
-    namespace = "gitlab-enterprise"
+    namespace        = "gitlab-custom"
+    create_namespace = true
+
     container = {
       resources = {
-        limits = {
-          cpu    = "8000m"
-          memory = "16Gi"
-        }
         requests = {
-          cpu    = "2000m"
+          cpu    = "500m"
+          memory = "1Gi"
+        }
+        limits = {
+          cpu    = "3"
           memory = "4Gi"
         }
       }
     }
+
     ingress = {
-      enabled  = true
-      hostname = "gitlab.company.com"
+      is_enabled = false
+      dns_domain = ""
     }
   }
 }
@@ -149,327 +198,67 @@ module "gitlab_high_resources" {
 
 ---
 
-## Example 4: Development GitLab
-
-Minimal resources for development/testing:
+# Example 5: Minimal GitLab Deployment
 
 ```hcl
-module "gitlab_dev" {
-  source = "../"
+module "minimal_gitlab" {
+  source = "./terraform/modules/kubernetes-gitlab"
 
   metadata = {
-    name = "gitlab-dev"
-    env  = "development"
+    name = "minimal-gitlab"
   }
 
   spec = {
-    target_cluster = {
-      cluster_name = "my-gke-cluster"
-    }
-    namespace = "gitlab-dev"
+    namespace        = "minimal-gitlab"
+    create_namespace = true
+
     container = {
       resources = {
-        limits = {
-          cpu    = "500m"
-          memory = "512Mi"
-        }
         requests = {
-          cpu    = "100m"
-          memory = "256Mi"
+          cpu    = "50m"
+          memory = "100Mi"
+        }
+        limits = {
+          cpu    = "1"
+          memory = "1Gi"
         }
       }
     }
-  }
-}
 
-output "dev_port_forward" {
-  value = module.gitlab_dev.port_forward_command
-}
-```
-
----
-
-## Example 5: Multi-Environment Setup
-
-Deploy GitLab to multiple environments:
-
-```hcl
-variable "environments" {
-  description = "Map of environments"
-  type = map(object({
-    cpu_limit      = string
-    memory_limit   = string
-    cpu_request    = string
-    memory_request = string
-    ingress_enabled = bool
-    hostname       = string
-  }))
-  
-  default = {
-    dev = {
-      cpu_limit       = "1000m"
-      memory_limit    = "1Gi"
-      cpu_request     = "200m"
-      memory_request  = "512Mi"
-      ingress_enabled = false
-      hostname        = ""
+    ingress = {
+      is_enabled = false
+      dns_domain = ""
     }
-    staging = {
-      cpu_limit       = "2000m"
-      memory_limit    = "2Gi"
-      cpu_request     = "500m"
-      memory_request  = "1Gi"
-      ingress_enabled = true
-      hostname        = "gitlab-staging.example.com"
-    }
-    prod = {
-      cpu_limit       = "4000m"
-      memory_limit    = "8Gi"
-      cpu_request     = "1000m"
-      memory_request  = "2Gi"
-      ingress_enabled = true
-      hostname        = "gitlab.example.com"
-    }
-  }
-}
-
-module "gitlab" {
-  source   = "../"
-  for_each = var.environments
-
-  metadata = {
-    name = "gitlab-${each.key}"
-    env  = each.key
-  }
-
-  spec = {
-    target_cluster = {
-      cluster_name = "my-gke-cluster"
-    }
-    namespace = "gitlab-${each.key}"
-    container = {
-      resources = {
-        limits = {
-          cpu    = each.value.cpu_limit
-          memory = each.value.memory_limit
-        }
-        requests = {
-          cpu    = each.value.cpu_request
-          memory = each.value.memory_request
-        }
-      }
-    }
-    ingress = each.value.ingress_enabled ? {
-      enabled  = true
-      hostname = each.value.hostname
-    } : null
-  }
-}
-
-output "gitlab_endpoints" {
-  value = {
-    for env, instance in module.gitlab :
-    env => instance.external_endpoint != null ? instance.external_endpoint : instance.internal_endpoint
   }
 }
 ```
 
 ---
 
-## Example 6: Using Variables
+## Usage
 
-Store configuration in `terraform.tfvars`:
+1. Initialize Terraform:
+   ```bash
+   terraform init
+   ```
 
-```hcl
-# terraform.tfvars
-gitlab_name     = "gitlab-main"
-environment     = "production"
-cpu_limit       = "4000m"
-memory_limit    = "8Gi"
-cpu_request     = "1000m"
-memory_request  = "2Gi"
-ingress_enabled = true
-hostname        = "gitlab.mycompany.com"
-```
+2. Review the plan:
+   ```bash
+   terraform plan
+   ```
 
-Main configuration:
+3. Apply the configuration:
+   ```bash
+   terraform apply
+   ```
 
-```hcl
-# main.tf
-variable "gitlab_name" {
-  description = "Name for the GitLab deployment"
-  type        = string
-}
+4. Access GitLab:
+   - If ingress is enabled, use the external URL from outputs
+   - If ingress is disabled, use the port-forward command from outputs
 
-variable "environment" {
-  description = "Environment (dev, staging, prod)"
-  type        = string
-}
+## Important Notes
 
-variable "cpu_limit" {
-  description = "CPU limit"
-  type        = string
-}
-
-variable "memory_limit" {
-  description = "Memory limit"
-  type        = string
-}
-
-variable "cpu_request" {
-  description = "CPU request"
-  type        = string
-}
-
-variable "memory_request" {
-  description = "Memory request"
-  type        = string
-}
-
-variable "ingress_enabled" {
-  description = "Enable ingress"
-  type        = bool
-}
-
-variable "hostname" {
-  description = "Ingress hostname"
-  type        = string
-}
-
-module "gitlab" {
-  source = "../"
-
-  metadata = {
-    name = var.gitlab_name
-    env  = var.environment
-  }
-
-  spec = {
-    target_cluster = {
-      cluster_name = "my-gke-cluster"
-    }
-    namespace = var.gitlab_name
-    container = {
-      resources = {
-        limits = {
-          cpu    = var.cpu_limit
-          memory = var.memory_limit
-        }
-        requests = {
-          cpu    = var.cpu_request
-          memory = var.memory_request
-        }
-      }
-    }
-    ingress = var.ingress_enabled ? {
-      enabled  = true
-      hostname = var.hostname
-    } : null
-  }
-}
-```
-
----
-
-## Running the Examples
-
-### Initialize Terraform
-
-```bash
-terraform init
-```
-
-### Plan the deployment
-
-```bash
-terraform plan
-```
-
-### Apply the configuration
-
-```bash
-terraform apply
-```
-
-### Destroy resources
-
-```bash
-terraform destroy
-```
-
----
-
-## Testing GitLab Deployment
-
-After deployment, test access:
-
-### Internal Access (Port Forward)
-
-```bash
-# Get the port-forward command from outputs
-terraform output port_forward_command
-
-# Run the command (example)
-kubectl port-forward -n gitlab-prod svc/gitlab-prod-gitlab 80:80
-
-# Access in browser
-open http://localhost:80
-```
-
-### External Access (if Ingress enabled)
-
-```bash
-# Get the external endpoint
-terraform output gitlab_url
-
-# Access in browser
-open https://gitlab.example.com
-```
-
----
-
-## Production Considerations
-
-For production GitLab deployments, consider:
-
-1. **Use Official Helm Chart**: The official GitLab Helm chart provides complete features
-2. **External Databases**: Configure external PostgreSQL and Redis
-3. **Object Storage**: Set up S3, GCS, or Azure Blob for artifacts and uploads
-4. **GitLab Runner**: Deploy GitLab Runner for CI/CD pipelines
-5. **High Availability**: Configure multiple replicas for critical components
-6. **Backups**: Implement regular backup strategy
-7. **Monitoring**: Enable Prometheus metrics and alerting
-8. **SSL Certificates**: Use cert-manager for automatic certificate management
-
----
-
-## Troubleshooting
-
-### Check Deployment Status
-
-```bash
-# List all resources in namespace
-kubectl get all -n <namespace>
-
-# Check pod logs
-kubectl logs -n <namespace> <pod-name>
-
-# Describe resources
-kubectl describe pod -n <namespace> <pod-name>
-```
-
-### Access Issues
-
-```bash
-# Check service endpoints
-kubectl get endpoints -n <namespace>
-
-# Check ingress status
-kubectl get ingress -n <namespace>
-kubectl describe ingress -n <namespace> <ingress-name>
-```
-
----
-
-For more information, see the [README](README.md).
-
+- When `create_namespace = false`, ensure the namespace exists before applying
+- The module automatically handles namespace dependencies
+- Resource labels are applied for tracking and organization
+- Ingress configuration requires appropriate ingress controller in the cluster

@@ -2,11 +2,22 @@
 # main.tf
 ###########################
 
-# Create namespace for GitLab
+# Conditional namespace creation for GitLab
 resource "kubernetes_namespace" "gitlab" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
+  }
+}
+
+# Data source for existing namespace
+data "kubernetes_namespace" "existing" {
+  count = var.spec.create_namespace ? 0 : 1
+
+  metadata {
+    name = local.namespace
   }
 }
 
@@ -36,7 +47,7 @@ resource "kubernetes_namespace" "gitlab" {
 resource "kubernetes_service" "gitlab" {
   metadata {
     name      = local.gitlab_service_name
-    namespace = kubernetes_namespace.gitlab.metadata[0].name
+    namespace = local.namespace_name
     labels    = local.final_labels
   }
 
@@ -62,7 +73,7 @@ resource "kubernetes_ingress_v1" "gitlab" {
 
   metadata {
     name      = "${var.metadata.name}-ingress"
-    namespace = kubernetes_namespace.gitlab.metadata[0].name
+    namespace = local.namespace_name
     labels    = local.final_labels
 
     annotations = {
@@ -98,5 +109,9 @@ resource "kubernetes_ingress_v1" "gitlab" {
       }
     }
   }
-}
 
+  depends_on = [
+    kubernetes_namespace.gitlab,
+    data.kubernetes_namespace.existing
+  ]
+}

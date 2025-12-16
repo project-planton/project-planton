@@ -1,6 +1,6 @@
 output "namespace" {
   description = "Kubernetes namespace where Harbor is deployed"
-  value       = kubernetes_namespace.harbor.metadata[0].name
+  value       = local.namespace
 }
 
 output "core_service" {

@@ -31,6 +31,7 @@ var _ = ginkgo.Describe("KubernetesSignozSpec validations", func() {
 					Value: "test-namespace",
 				},
 			},
+			CreateNamespace: true,
 			SignozContainer: &KubernetesSignozContainer{
 				Replicas: 1,
 				Resources: &kubernetes.ContainerResources{

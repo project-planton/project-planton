@@ -13,7 +13,10 @@
 
 - **Pulumi-Driven Infrastructure Management**: Built using Pulumi’s Go SDK, this module automates the lifecycle of GitLab infrastructure within Kubernetes. The integration with Pulumi ensures that changes to the API resource are automatically reflected in the Kubernetes infrastructure, simplifying updates and scaling operations.
 
-- **Namespace Isolation**: The module creates or reuses a Kubernetes namespace for GitLab, ensuring that the deployment is isolated from other workloads running within the cluster.
+- **Flexible Namespace Management**: The module provides flexible namespace management through the `create_namespace` flag:
+  - When `create_namespace: true`, the module automatically creates a dedicated namespace with appropriate labels
+  - When `create_namespace: false`, the module uses an existing namespace (which must be created beforehand)
+  - This ensures GitLab deployments are isolated from other workloads while supporting different namespace management strategies
 
 - **Comprehensive Output Management**: After provisioning, the module provides essential information such as:
   - The Kubernetes namespace where GitLab is deployed.
@@ -32,6 +35,48 @@ planton pulumi up --stack-input <api-resource.yaml>
 
 Refer to the **Examples** section for detailed usage instructions.
 
+## Namespace Management
+
+The module supports flexible namespace management through the `create_namespace` configuration:
+
+### Creating a New Namespace
+
+Set `create_namespace: true` in your API resource to have the module create the namespace automatically:
+
+```yaml
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-prod
+  create_namespace: true
+```
+
+The module will:
+- Create a new Kubernetes namespace with the specified name
+- Apply resource labels for tracking (resource_id, resource_kind, organization, environment)
+- Manage the namespace as part of the Pulumi stack lifecycle
+
+### Using an Existing Namespace
+
+Set `create_namespace: false` to deploy into an existing namespace:
+
+```yaml
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false
+```
+
+**Important:** The namespace must exist before running `pulumi up`, otherwise the deployment will fail.
+
+This is useful when:
+- The namespace is managed by a separate process or team
+- Multiple applications share the same namespace
+- Namespace policies or quotas are pre-configured
+
 ## Pulumi Integration
 
 The module is built on top of Pulumi’s Go SDK, providing deep integration with Kubernetes. It processes the `GitlabKubernetes` API resource and translates it into the necessary Kubernetes resources, such as services, namespaces, and ingress configurations. Pulumi manages the lifecycle of the resources, ensuring that the GitLab deployment can be easily updated, scaled, or removed by modifying the API resource YAML file.
@@ -40,7 +85,10 @@ The module is built on top of Pulumi’s Go SDK, providing deep integration with
 
 1. **Kubernetes Provider**: The module configures the Kubernetes provider using the `kubernetes_credential_id` provided in the API resource, ensuring that all resources are deployed in the correct Kubernetes cluster.
 
-2. **Namespace Management**: The module creates a Kubernetes namespace for the GitLab deployment or reuses an existing namespace if specified, providing isolation for GitLab from other resources in the cluster.
+2. **Namespace Management**: The module provides conditional namespace creation based on the `create_namespace` flag:
+   - **Automatic Creation** (`create_namespace: true`): Creates a new namespace with resource labels for tracking and organization
+   - **Existing Namespace** (`create_namespace: false`): Uses a pre-existing namespace, which must be created before deployment
+   - This provides flexibility for different namespace management strategies while ensuring proper isolation
 
 3. **Kubernetes Services**: The module provisions a Kubernetes service to expose the GitLab instance either within the cluster or externally, depending on the configuration.
 

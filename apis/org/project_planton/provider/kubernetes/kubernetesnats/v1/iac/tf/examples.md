@@ -18,7 +18,8 @@ module "nats_basic" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "nats-basic"
+    namespace        = "nats-basic"
+    create_namespace = true
 
     server_container = {
       replicas = 3
@@ -69,7 +70,8 @@ module "nats_secure" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "nats-secure"
+    namespace        = "nats-secure"
+    create_namespace = true
 
     server_container = {
       replicas = 5
@@ -130,7 +132,8 @@ module "nats_basic_auth" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "nats-basic-auth"
+    namespace        = "nats-basic-auth"
+    create_namespace = true
 
     server_container = {
       replicas = 3
@@ -187,6 +190,12 @@ module "nats_external" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace        = "nats-external"
+    create_namespace = true
+
     server_container = {
       replicas = 3
       resources = {
@@ -248,6 +257,12 @@ module "nats_minimal" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace        = "nats-minimal"
+    create_namespace = true
+
     server_container = {
       replicas = 1
       resources = {
@@ -298,6 +313,12 @@ module "nats_ha" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace        = "nats-ha-metrics"
+    create_namespace = true
+
     server_container = {
       replicas = 7
       resources = {
@@ -325,7 +346,7 @@ module "nats_ha" {
       }
     }
 
-    tls_enabled      = true
+    tls_enabled        = true
     disable_jet_stream = false
 
     ingress = {
@@ -375,6 +396,12 @@ module "nats_production" {
   }
 
   spec = {
+    target_cluster = {
+      cluster_name = "prod-gke-cluster"
+    }
+    namespace        = "nats-prod"
+    create_namespace = true
+
     server_container = {
       replicas = 5
       resources = {
@@ -395,7 +422,7 @@ module "nats_production" {
       scheme  = "bearer_token"
     }
 
-    tls_enabled      = true
+    tls_enabled        = true
     disable_jet_stream = false
     disable_nats_box   = false
 
@@ -422,6 +449,67 @@ output "nats_production_external_hostname" {
   value       = module.nats_production.external_hostname
 }
 ```
+
+## Example 8: NATS with Pre-existing Namespace
+
+Deploy NATS into an existing namespace that you manage separately.
+
+```hcl
+module "nats_existing_ns" {
+  source = "./path/to/kubernetesnats/v1/iac/tf"
+
+  metadata = {
+    name = "nats-existing-ns"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace        = "shared-messaging"
+    create_namespace = false # Don't create the namespace
+
+    server_container = {
+      replicas = 3
+      resources = {
+        limits = {
+          cpu    = "1000m"
+          memory = "2Gi"
+        }
+        requests = {
+          cpu    = "100m"
+          memory = "256Mi"
+        }
+      }
+      disk_size = "10Gi"
+    }
+
+    auth = {
+      enabled = true
+      scheme  = "basic_auth"
+    }
+
+    tls_enabled = true
+  }
+}
+
+# Output connection details
+output "nats_namespace" {
+  description = "The namespace where NATS is deployed (pre-existing)"
+  value       = module.nats_existing_ns.namespace
+}
+
+output "nats_internal_url" {
+  description = "Internal cluster URL for NATS clients"
+  value       = module.nats_existing_ns.internal_client_url
+}
+```
+
+**Use Case:**
+
+* Suitable when the namespace already exists with specific ResourceQuotas, LimitRanges, or NetworkPolicies
+* Useful in GitOps workflows where namespace creation is handled separately
+* Allows sharing a namespace across multiple messaging components
 
 ## Retrieving Authentication Credentials
 

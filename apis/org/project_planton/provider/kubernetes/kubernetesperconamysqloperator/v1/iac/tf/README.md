@@ -41,9 +41,9 @@ tf/
 
 ## Resources Created
 
-1. **Kubernetes Namespace**: `percona-mysql-operator`
+1. **Kubernetes Namespace**: Conditionally created based on `create_namespace` flag
 2. **Helm Release**: Deploys the Percona Operator for MySQL
-3. **CRDs**: PerconaServerMySQL and related custom resources
+3. **CRDs**: PerconaServerMySQL and related custom resources (installed by Helm chart)
 
 ## Input Variables
 
@@ -67,7 +67,10 @@ Specification for the operator deployment.
 **Type**: `object`
 
 **Fields**:
-- `namespace` (string, optional): Namespace to install the operator (defaults to "percona-mysql-operator")
+- `namespace` (string, required): Namespace to install the operator
+- `create_namespace` (bool, required): Whether to create the namespace
+  - `true`: Module creates the namespace before deploying the operator
+  - `false`: Module expects the namespace to already exist
 - `container` (object, required): Container specifications
   - `resources` (object, required): Resource allocations
     - `limits` (object): Maximum resources
@@ -84,7 +87,7 @@ The Kubernetes namespace where the operator is deployed.
 
 **Type**: `string`
 
-**Value**: `percona-mysql-operator` (or custom namespace from spec)
+**Value**: The namespace name from the spec (regardless of whether it was created by this module or already existed)
 
 ## Usage
 
@@ -99,6 +102,9 @@ module "percona_mysql_operator" {
   }
 
   spec = {
+    namespace        = "percona-mysql-operator"
+    create_namespace = true
+    
     container = {
       resources = {
         requests = {
@@ -130,7 +136,9 @@ module "percona_mysql_operator_large" {
   }
 
   spec = {
-    namespace = "percona-mysql-operator-prod"
+    namespace        = "percona-mysql-operator-prod"
+    create_namespace = true
+    
     container = {
       resources = {
         requests = {
@@ -146,6 +154,49 @@ module "percona_mysql_operator_large" {
   }
 }
 ```
+
+## Namespace Management
+
+The module provides flexible namespace management through the `create_namespace` variable:
+
+### Automatic Namespace Creation
+
+Set `create_namespace = true` to have the module create the namespace automatically:
+
+```hcl
+spec = {
+  namespace        = "percona-mysql-operator"
+  create_namespace = true
+  # ...
+}
+```
+
+**Use cases:**
+- Initial operator installation
+- Development and testing environments
+- Simplified deployment workflows
+
+### Using Existing Namespace
+
+Set `create_namespace = false` to use a pre-existing namespace:
+
+```hcl
+spec = {
+  namespace        = "database-operators"
+  create_namespace = false
+  # ...
+}
+```
+
+**Prerequisites:**
+- Namespace must exist before running `terraform apply`
+- Create with: `kubectl create namespace database-operators`
+
+**Use cases:**
+- Namespaces managed by platform teams
+- Pre-configured namespace policies or quotas
+- Shared namespaces across multiple components
+- Environments with restricted namespace creation permissions
 
 ## Deployment
 

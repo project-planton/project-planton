@@ -6,7 +6,7 @@
   
 - **Unified API Structure**: The module follows the Kubernetes-like resource modeling with fields like `apiVersion`, `kind`, `metadata`, and `spec`. This ensures a consistent structure that is easy to understand and reuse across different environments and infrastructures.
 
-- **Kubernetes Native Deployment**: The module automatically provisions namespaces, services, and ingress for ArgoCD. It integrates directly with your Kubernetes cluster, ensuring that all necessary resources are created and managed within the cluster.
+- **Kubernetes Native Deployment**: The module optionally provisions namespaces (based on the `create_namespace` flag), and automatically provisions services and ingress for ArgoCD. It integrates directly with your Kubernetes cluster, ensuring that all necessary resources are created and managed within the cluster.
 
 - **Ingress Support**: This module supports Kubernetes ingress configuration for exposing ArgoCD to external traffic. Users can easily configure custom hostnames and TLS settings to expose the ArgoCD UI to the internet or internal networks.
 
@@ -43,7 +43,7 @@ This module is built using Pulumi’s Go SDK and integrates seamlessly with Kube
 
 1. **Kubernetes Provider**: The module uses the Kubernetes provider configured via the provided `kubernetes_credential_id`, ensuring that resources are created in the specified Kubernetes cluster.
 
-2. **Namespace Management**: The module automatically creates or updates a Kubernetes namespace for the ArgoCD deployment, ensuring proper resource isolation.
+2. **Namespace Management**: The module can automatically create a Kubernetes namespace for the ArgoCD deployment, or use an existing namespace based on the `create_namespace` flag, ensuring proper resource isolation and flexibility in namespace governance.
 
 3. **Kubernetes Services**: Kubernetes services are created for ArgoCD, making it accessible within the cluster and optionally exposing it to the external world via ingress.
 

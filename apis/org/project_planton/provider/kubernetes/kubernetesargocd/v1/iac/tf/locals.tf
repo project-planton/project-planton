@@ -32,8 +32,15 @@ locals {
   # Merge all labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace is set to resource_id (following workload pattern with 'argo' prefix)
-  namespace = "argo-${local.resource_id}"
+  # Namespace from spec
+  namespace = var.spec.namespace
+
+  # Namespace reference - either created or existing
+  namespace_name = var.spec.create_namespace ? (
+    length(kubernetes_namespace.argocd_namespace) > 0 ? kubernetes_namespace.argocd_namespace[0].metadata[0].name : local.namespace
+  ) : (
+    length(data.kubernetes_namespace.existing) > 0 ? data.kubernetes_namespace.existing[0].metadata[0].name : local.namespace
+  )
 
   # Argo CD Helm chart configuration
   argocd_chart_repo    = "https://argoproj.github.io/argo-helm"

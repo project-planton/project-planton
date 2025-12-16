@@ -31,8 +31,8 @@ locals {
   # Merge all labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Fixed namespace for Zalando Postgres Operator
-  namespace = "postgres-operator"
+  # Namespace for Zalando Postgres Operator (from spec)
+  namespace = var.spec.namespace
 
   # Service name
   service_name = "postgres-operator"

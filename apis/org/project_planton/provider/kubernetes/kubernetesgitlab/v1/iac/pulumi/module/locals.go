@@ -1,16 +1,45 @@
 package module
 
 import (
+	"fmt"
+
+	kubernetesgitlabv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 )
 
-// getNamespace returns the namespace for the GitLab deployment
-// Uses the resource ID as the namespace name
-func getNamespace(metadata *shared.CloudResourceMetadata) string {
-	if metadata.Id != "" {
-		return metadata.Id
+// Locals holds computed values for the GitLab deployment
+type Locals struct {
+	Namespace       string
+	Labels          map[string]string
+	ServiceName     string
+	ServiceFQDN     string
+	PortForwardCmd  string
+	IngressHostname string
+}
+
+// initializeLocals creates and initializes local values from the stack input
+func initializeLocals(stackInput *kubernetesgitlabv1.KubernetesGitlabStackInput) *Locals {
+	l := &Locals{}
+
+	target := stackInput.Target
+
+	// Extract namespace from spec (required field)
+	l.Namespace = target.Spec.Namespace.GetValue()
+
+	// Build standard labels
+	l.Labels = getLabels(target.Metadata)
+
+	// Service configuration
+	l.ServiceName = target.Metadata.Name
+	l.ServiceFQDN = fmt.Sprintf("%s.%s.svc.cluster.local", l.ServiceName, l.Namespace)
+	l.PortForwardCmd = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:80", l.Namespace, l.ServiceName)
+
+	// Ingress configuration (if enabled)
+	if target.Spec.Ingress != nil && target.Spec.Ingress.Enabled && target.Spec.Ingress.Hostname != "" {
+		l.IngressHostname = target.Spec.Ingress.Hostname
 	}
-	return metadata.Name
+
+	return l
 }
 
 // getLabels returns the standard labels for GitLab resources

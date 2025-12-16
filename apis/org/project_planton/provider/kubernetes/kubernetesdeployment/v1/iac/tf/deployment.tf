@@ -2,19 +2,15 @@
 resource "kubernetes_service_account" "this" {
   metadata {
     name      = local.resource_id
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace
   }
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
 }
 
 # 3) Create the Deployment
 resource "kubernetes_deployment" "this" {
   metadata {
     name      = var.metadata.name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
     annotations = {
       # Example annotation (remove or modify as needed)

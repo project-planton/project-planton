@@ -25,11 +25,13 @@ project-planton pulumi up --manifest hack/manifest.yaml --module-dir ${KUBERNETE
 
 This module creates:
 
-1. **Kubernetes Namespace**: Dedicated namespace for cert-manager (default: `kubernetes-cert-manager`)
+1. **Kubernetes Namespace**: Created if `createNamespace: true`, otherwise looks up existing namespace (default: `kubernetes-cert-manager`)
 2. **ServiceAccount**: With workload identity annotations for GCP/AWS/Azure providers
 3. **Helm Release**: kubernetes-cert-manager chart from Jetstack
 4. **Kubernetes Secrets**: For Cloudflare API tokens (one per Cloudflare provider)
 5. **ClusterIssuers**: One per domain across all DNS providers
+
+**Note**: By default (`createNamespace: false`), the namespace must exist before deployment. Set `createNamespace: true` in the manifest to have the module create it automatically.
 
 ### Environment Variables
 

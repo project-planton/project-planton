@@ -40,11 +40,29 @@ terraform {
 }
 ```
 
+## Namespace Management
+
+The Terraform module provides flexible namespace management through the `create_namespace` variable:
+
+- **When `create_namespace` is `true`**: The module creates the specified namespace using the Kubernetes provider. This is the recommended approach for new deployments.
+
+- **When `create_namespace` is `false`**: The module uses an existing namespace. The namespace must already exist on the cluster, or the deployment will fail. This is useful when:
+  - The namespace is managed by a separate Terraform module or process
+  - Multiple components share the same namespace
+  - Namespace creation is controlled by organizational policies
+
+**Implementation Details**:
+- Uses `count` parameter for conditional resource creation: `count = var.spec.create_namespace ? 1 : 0`
+- Namespace name is always referenced via `local.namespace` (not the resource reference)
+- Dependencies are handled conditionally using ternary operators in `depends_on`
+
+**Best Practice**: Set `create_namespace` to `true` for most deployments to let the module manage its own namespace. Only set it to `false` when you have specific requirements for external namespace management.
+
 ## Module Structure
 
 The module creates the following resources:
 
-1. **Kubernetes Namespace**: Dedicated namespace for SigNoz deployment
+1. **Kubernetes Namespace** (Conditional): Created only when `create_namespace` is `true`
 2. **SigNoz Helm Release**: Deploys SigNoz with configured components:
    - SigNoz binary (UI, API, Ruler, Alertmanager)
    - OpenTelemetry Collector
@@ -93,6 +111,9 @@ module "signoz" {
   }
 
   spec = {
+    namespace        = "signoz-dev"
+    create_namespace = true
+
     signoz_container = {
       replicas = 1
       resources = {

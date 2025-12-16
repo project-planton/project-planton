@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace to install ClickHouse
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The name of the ClickHouse cluster (used for ClickHouseInstallation resource name)
     # Defaults to metadata.name if not specified
     cluster_name = optional(string)

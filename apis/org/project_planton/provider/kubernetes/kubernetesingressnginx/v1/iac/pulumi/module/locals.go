@@ -44,8 +44,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesingressnginxv1.
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	// Use fixed namespace for this addon
-	locals.Namespace = vars.Namespace
+	// Extract namespace from spec or use default
+	locals.Namespace = target.Spec.Namespace.GetValue()
+	if locals.Namespace == "" {
+		locals.Namespace = vars.Namespace
+	}
 
 	// Determine chart version
 	locals.ChartVersion = target.Spec.ChartVersion

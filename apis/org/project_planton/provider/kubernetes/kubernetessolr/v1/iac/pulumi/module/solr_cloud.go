@@ -15,7 +15,7 @@ func solrCloud(ctx *pulumi.Context, locals *Locals,
 		&v1beta1.SolrCloudArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesSolr.Metadata.Name),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: v1beta1.SolrCloudSpecArgs{
@@ -84,7 +84,7 @@ func solrCloud(ctx *pulumi.Context, locals *Locals,
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, optionalParent(createdNamespace)...)
 	if err != nil {
 		return errors.Wrap(err, "failed to create solr-cloud resource")
 	}

@@ -33,6 +33,9 @@ locals {
   # Namespace from spec.namespace (StringValueOrRef), with fallback to resource_id
   namespace_name = try(var.spec.namespace.value, local.resource_id)
 
+  # Flag to determine if namespace should be created
+  create_namespace = try(var.spec.create_namespace, true)
+
   # The helm release fields for direct reference:
   helm_repo    = var.spec.repo
   helm_chart   = var.spec.name

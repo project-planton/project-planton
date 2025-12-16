@@ -20,6 +20,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "nats-basic"
+  create_namespace: true
   serverContainer:
     replicas: 3
     diskSize: "10Gi"
@@ -49,6 +50,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "nats-secure"
+  create_namespace: true
   serverContainer:
     replicas: 5
     resources:
@@ -86,6 +88,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "nats-external"
+  create_namespace: true
   serverContainer:
     replicas: 3
     diskSize: "10Gi"
@@ -120,6 +123,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "nats-minimal"
+  create_namespace: true
   serverContainer:
     replicas: 1
     resources:
@@ -156,6 +160,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "nats-ha-metrics"
+  create_namespace: true
   serverContainer:
     replicas: 7
     resources:
@@ -181,3 +186,35 @@ spec:
 
 * Recommended for production-critical workloads requiring high availability, robust persistence, secure authentication,
   and detailed observability through Prometheus monitoring.
+
+---
+
+## Example 6: NATS with Pre-existing Namespace
+
+Deploy NATS into an existing namespace that you manage separately.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: NatsKubernetes
+metadata:
+  name: nats-existing-ns
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "shared-messaging"
+  create_namespace: false
+  serverContainer:
+    replicas: 3
+    diskSize: "10Gi"
+  auth:
+    enabled: true
+    scheme: basic_auth
+  tlsEnabled: true
+```
+
+**Use Case:**
+
+* Suitable when the namespace already exists with specific ResourceQuotas, LimitRanges, or NetworkPolicies
+* Useful in GitOps workflows where namespace creation is handled separately
+* Allows sharing a namespace across multiple messaging components

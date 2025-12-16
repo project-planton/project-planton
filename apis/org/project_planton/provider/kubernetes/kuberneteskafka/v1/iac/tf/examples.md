@@ -17,6 +17,7 @@ This document provides Terraform-specific examples for deploying Apache Kafka on
 4. [Custom Topic Configuration](#example-4-custom-topic-configuration)
 5. [Schema Registry without Kafka UI](#example-5-schema-registry-without-kafka-ui)
 6. [Production High-Availability Cluster](#example-6-production-high-availability-cluster)
+7. [External Namespace Management](#example-7-external-namespace-management)
 
 ---
 
@@ -36,7 +37,8 @@ module "kafka_basic" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "kafka-basic"
+    namespace        = "kafka-basic"
+    create_namespace = true
 
     kafka_topics = [
       {
@@ -114,7 +116,8 @@ module "kafka_full" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "kafka-prod"
+    namespace        = "kafka-prod"
+    create_namespace = true
 
     kafka_topics = [
       {
@@ -213,7 +216,8 @@ module "kafka_minimal" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "kafka-minimal"
+    namespace        = "kafka-minimal"
+    create_namespace = true
 
     broker_container = {
       replicas = 1
@@ -277,7 +281,8 @@ module "kafka_custom_topics" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "kafka-topics"
+    namespace        = "kafka-topics"
+    create_namespace = true
 
     kafka_topics = [
       {
@@ -370,7 +375,8 @@ module "kafka_schema_only" {
     target_cluster = {
       cluster_name = "my-gke-cluster"
     }
-    namespace = "kafka-schema"
+    namespace        = "kafka-schema"
+    create_namespace = true
 
     kafka_topics = [
       {
@@ -462,7 +468,8 @@ module "kafka_production" {
     target_cluster = {
       cluster_name = "my-eks-cluster"
     }
-    namespace = "kafka-production"
+    namespace        = "kafka-production"
+    create_namespace = true
 
     kafka_topics = [
       {
@@ -698,6 +705,80 @@ kubectl get storageclass
 6. **Use Schema Registry**: For production data pipelines requiring schema evolution
 7. **Set Resource Limits**: Prevent resource contention with appropriate limits
 8. **Regular Backups**: Implement backup strategy for critical topics
+
+---
+
+## Example 7: External Namespace Management
+
+Use an externally managed namespace (e.g., created separately via KubernetesNamespace component).
+
+```hcl
+module "kafka_external_ns" {
+  source = "path/to/module"
+
+  metadata = {
+    name = "kafka-external-namespace"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace        = "existing-kafka-namespace"
+    create_namespace = false  # Namespace managed externally
+
+    kafka_topics = [
+      {
+        name       = "my-topic"
+        partitions = 3
+        replicas   = 2
+      }
+    ]
+
+    broker_container = {
+      replicas = 1
+      resources = {
+        requests = {
+          cpu    = "100m"
+          memory = "512Mi"
+        }
+        limits = {
+          cpu    = "1"
+          memory = "1Gi"
+        }
+      }
+      disk_size = "20Gi"
+    }
+
+    zookeeper_container = {
+      replicas = 3
+      resources = {
+        requests = {
+          cpu    = "50m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "500m"
+          memory = "512Mi"
+        }
+      }
+      disk_size = "10Gi"
+    }
+
+    ingress = {
+      enabled = false
+    }
+
+    is_deploy_kafka_ui = false
+  }
+}
+```
+
+**Use Case:** Environments where namespace management is centralized or governed by policies.
+
+**Prerequisites:**
+- The namespace `existing-kafka-namespace` must already exist in the cluster
+- Ensure the service account has appropriate RBAC permissions in that namespace
 
 ---
 

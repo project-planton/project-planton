@@ -13,14 +13,18 @@ Deploying GitLab on Kubernetes can be complex due to the intricacies involved in
 
 ## Key Features
 
+### Cluster Targeting and Namespace Management
+
+- **Target Cluster Selection**: Specify the Kubernetes cluster where GitLab should be deployed using the `target_cluster` field
+- **Namespace Configuration**: Define the namespace for GitLab resources using the `namespace` field
+- **Flexible Namespace Creation**: Control namespace creation with the `create_namespace` flag:
+  - `true`: The module automatically creates the namespace with appropriate labels
+  - `false`: Use an existing namespace (must be created beforehand)
+
 ### Environment Integration
 
 - **Environment Info**: Seamlessly integrates with our environment management system to deploy GitLab within specific environments.
 - **Stack Job Settings**: Supports custom stack-update settings for infrastructure-as-code deployments.
-
-### Kubernetes Credential Management
-
-- **Kubernetes Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable GitLab Deployment
 
@@ -35,6 +39,46 @@ Deploying GitLab on Kubernetes can be complex due to the intricacies involved in
 ### Ingress Configuration
 
 - **Ingress Spec**: Configure ingress settings to expose the GitLab service outside the cluster, including hostname, TLS settings, and ingress annotations.
+
+## Namespace Management
+
+The GitLab component provides flexible namespace management to suit different deployment scenarios:
+
+### Automatic Namespace Creation (create_namespace: true)
+
+When `create_namespace` is set to `true`, the module:
+- Creates a dedicated namespace for GitLab resources
+- Applies resource labels for tracking and organization
+- Manages namespace lifecycle as part of the deployment
+
+**Example:**
+```yaml
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: gitlab-prod
+  create_namespace: true
+```
+
+### Using Existing Namespace (create_namespace: false)
+
+When `create_namespace` is set to `false`:
+- The namespace must exist before deployment
+- GitLab resources will be created in the specified namespace
+- Useful for shared namespaces or when namespace is managed externally
+
+**Example:**
+```yaml
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false
+```
+
+**Note:** When using an existing namespace, ensure it exists before deploying GitLab, otherwise the deployment will fail.
 
 ## Benefits
 

@@ -4,6 +4,9 @@ locals {
   # Namespace (use from spec or default)
   namespace = var.spec.namespace
 
+  # Namespace reference (either created or looked up)
+  namespace_name = var.spec.create_namespace ? kubernetes_namespace.cert_manager[0].metadata[0].name : data.kubernetes_namespace.cert_manager[0].metadata[0].name
+
   # Helm chart constants
   helm_chart_name    = "cert-manager"
   helm_chart_repo    = "https://charts.jetstack.io"

@@ -27,37 +27,64 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 	// (No release_channel field yet – stick to default stable.)
 	chartVersion := vars.DefaultStableVersion
 
-	// ---- namespaces ----
-	sysNS, err := corev1.NewNamespace(ctx, vars.SystemNamespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(vars.SystemNamespace),
-			},
-		},
-		pulumi.Provider(kubernetesProviderConfig))
-	if err != nil {
-		return errors.Wrap(err, "failed to create istio-system namespace")
+	// ---- determine namespace ----
+	// Extract namespace value from StringValueOrRef
+	namespace := spec.Namespace.GetValue()
+	if namespace == "" {
+		namespace = vars.SystemNamespace // fallback to "istio-system"
 	}
 
-	gwNS, err := corev1.NewNamespace(ctx, vars.GatewayNamespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(vars.GatewayNamespace),
+	// ---- conditionally create namespaces ----
+	var sysNS *corev1.Namespace
+	var gwNS *corev1.Namespace
+	var sysNSName pulumi.StringOutput
+	var gwNSName pulumi.StringOutput
+
+	if spec.CreateNamespace {
+		// Create istio-system namespace
+		sysNS, err = corev1.NewNamespace(ctx, vars.SystemNamespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name: pulumi.String(vars.SystemNamespace),
+				},
 			},
-		},
-		pulumi.Provider(kubernetesProviderConfig))
-	if err != nil {
-		return errors.Wrap(err, "failed to create istio-ingress namespace")
+			pulumi.Provider(kubernetesProviderConfig))
+		if err != nil {
+			return errors.Wrap(err, "failed to create istio-system namespace")
+		}
+		sysNSName = sysNS.Metadata.Name().Elem()
+
+		// Create istio-ingress namespace
+		gwNS, err = corev1.NewNamespace(ctx, vars.GatewayNamespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name: pulumi.String(vars.GatewayNamespace),
+				},
+			},
+			pulumi.Provider(kubernetesProviderConfig))
+		if err != nil {
+			return errors.Wrap(err, "failed to create istio-ingress namespace")
+		}
+		gwNSName = gwNS.Metadata.Name().Elem()
+	} else {
+		// Use existing namespaces - convert strings to StringOutput
+		sysNSName = pulumi.String(vars.SystemNamespace).ToStringOutput()
+		gwNSName = pulumi.String(vars.GatewayNamespace).ToStringOutput()
 	}
 
 	// convenience for repeated repo opts
 	repo := helm.RepositoryOptsArgs{Repo: pulumi.String(vars.HelmRepo)}
 
 	// ---- istio/base ----
+	baseReleaseOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProviderConfig)}
+	if spec.CreateNamespace && sysNS != nil {
+		baseReleaseOpts = append(baseReleaseOpts, pulumi.Parent(sysNS))
+	}
+
 	_, err = helm.NewRelease(ctx, "istio-base",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.BaseChart),
-			Namespace:       sysNS.Metadata.Name(),
+			Namespace:       sysNSName,
 			Chart:           pulumi.String(vars.BaseChart),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -67,8 +94,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 			Timeout:         pulumi.Int(180),
 			RepositoryOpts:  repo,
 		},
-		pulumi.Provider(kubernetesProviderConfig),
-		pulumi.Parent(sysNS))
+		baseReleaseOpts...)
 	if err != nil {
 		return errors.Wrap(err, "installing istio/base")
 	}
@@ -93,10 +119,15 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 		}
 	}
 
+	istiodReleaseOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProviderConfig)}
+	if spec.CreateNamespace && sysNS != nil {
+		istiodReleaseOpts = append(istiodReleaseOpts, pulumi.Parent(sysNS))
+	}
+
 	_, err = helm.NewRelease(ctx, "istiod",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.IstiodChart),
-			Namespace:       sysNS.Metadata.Name(),
+			Namespace:       sysNSName,
 			Chart:           pulumi.String(vars.IstiodChart),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -107,17 +138,21 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 			Values:          istiodValues,
 			RepositoryOpts:  repo,
 		},
-		pulumi.Provider(kubernetesProviderConfig),
-		pulumi.Parent(sysNS))
+		istiodReleaseOpts...)
 	if err != nil {
 		return errors.Wrap(err, "installing istiod control‑plane")
 	}
 
 	// ---- ingress‑gateway ----
+	gatewayReleaseOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProviderConfig)}
+	if spec.CreateNamespace && gwNS != nil {
+		gatewayReleaseOpts = append(gatewayReleaseOpts, pulumi.Parent(gwNS))
+	}
+
 	_, err = helm.NewRelease(ctx, "istio-gateway",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.GatewayChart),
-			Namespace:       gwNS.Metadata.Name(),
+			Namespace:       gwNSName,
 			Chart:           pulumi.String(vars.GatewayChart),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -132,18 +167,17 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 				},
 			},
 		},
-		pulumi.Provider(kubernetesProviderConfig),
-		pulumi.Parent(gwNS))
+		gatewayReleaseOpts...)
 	if err != nil {
 		return errors.Wrap(err, "installing istio ingress‑gateway")
 	}
 
 	// ---- stack outputs ----
-	ctx.Export(OpNamespace, sysNS.Metadata.Name())
+	ctx.Export(OpNamespace, sysNSName)
 	ctx.Export(OpService, pulumi.String("istiod"))
-	ctx.Export(OpPortForwardCommand, pulumi.Sprintf("kubectl port-forward -n %s svc/istiod 15014:15014", sysNS.Metadata.Name()))
-	ctx.Export(OpKubeEndpoint, pulumi.Sprintf("istiod.%s.svc.cluster.local:15012", sysNS.Metadata.Name()))
-	ctx.Export(OpIngressEndpoint, pulumi.Sprintf("istio-gateway.%s.svc.cluster.local:80", gwNS.Metadata.Name()))
+	ctx.Export(OpPortForwardCommand, pulumi.Sprintf("kubectl port-forward -n %s svc/istiod 15014:15014", sysNSName))
+	ctx.Export(OpKubeEndpoint, pulumi.Sprintf("istiod.%s.svc.cluster.local:15012", sysNSName))
+	ctx.Export(OpIngressEndpoint, pulumi.Sprintf("istio-gateway.%s.svc.cluster.local:80", gwNSName))
 
 	return nil
 }

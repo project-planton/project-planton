@@ -1,7 +1,18 @@
 # Kubernetes Cert-Manager Terraform Module
 
-# Create namespace for cert-manager
+# Conditionally create namespace for cert-manager
 resource "kubernetes_namespace" "cert_manager" {
+  count = var.spec.create_namespace ? 1 : 0
+  
+  metadata {
+    name = local.namespace
+  }
+}
+
+# Look up existing namespace when not creating
+data "kubernetes_namespace" "cert_manager" {
+  count = var.spec.create_namespace ? 0 : 1
+  
   metadata {
     name = local.namespace
   }
@@ -11,7 +22,7 @@ resource "kubernetes_namespace" "cert_manager" {
 resource "kubernetes_service_account" "cert_manager" {
   metadata {
     name        = local.ksa_name
-    namespace   = kubernetes_namespace.cert_manager.metadata[0].name
+    namespace   = local.namespace_name
     annotations = local.sa_annotations
   }
 }
@@ -22,7 +33,7 @@ resource "helm_release" "cert_manager" {
   repository = local.helm_chart_repo
   chart      = local.helm_chart_name
   version    = local.helm_chart_version
-  namespace  = kubernetes_namespace.cert_manager.metadata[0].name
+  namespace  = local.namespace_name
 
   # Wait for resources to be ready
   wait          = true
@@ -69,14 +80,12 @@ resource "kubernetes_secret" "cloudflare" {
 
   metadata {
     name      = "cert-manager-${each.key}-credentials"
-    namespace = kubernetes_namespace.cert_manager.metadata[0].name
+    namespace = local.namespace_name
   }
 
   data = {
     "api-token" = each.value.cloudflare.api_token
   }
-
-  depends_on = [kubernetes_namespace.cert_manager]
 }
 
 # Create ClusterIssuer resources (one per domain)

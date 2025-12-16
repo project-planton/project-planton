@@ -10,6 +10,31 @@ The **Altinity ClickHouse Operator** must be installed on your cluster before de
 
 ---
 
+## Namespace Management
+
+All examples below should include the `create_namespace` field to control namespace management:
+
+- **`create_namespace: true`** - The component creates and manages the namespace with appropriate labels
+- **`create_namespace: false`** - Deploy into an existing namespace (must exist before deployment)
+
+**Example with managed namespace:**
+```yaml
+spec:
+  namespace:
+    value: "clickhouse-prod"
+  create_namespace: true  # Component creates the namespace
+```
+
+**Example with existing namespace:**
+```yaml
+spec:
+  namespace:
+    value: "data-platform"
+  create_namespace: false  # Must exist before deployment
+```
+
+---
+
 ## 1. Minimal Standalone Instance
 
 A simple single-node ClickHouse deployment suitable for development and testing.
@@ -24,6 +49,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: dev-clickhouse
+  create_namespace: true
   clusterName: dev-cluster
   container:
     replicas: 1
@@ -62,6 +88,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: prod-clickhouse
+  create_namespace: true
   clusterName: production-analytics
   version: "24.3"
   container:
@@ -100,6 +127,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: distributed-analytics
+  create_namespace: true
   clusterName: analytics-cluster
   container:
     isPersistenceEnabled: true
@@ -142,6 +170,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: ha-clickhouse
+  create_namespace: true
   clusterName: ha-analytics
   version: "24.3"
   container:
@@ -196,6 +225,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: enterprise-clickhouse
+  create_namespace: true
   clusterName: enterprise-cluster
   container:
     isPersistenceEnabled: true
@@ -241,6 +271,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: enterprise-with-zk
+  create_namespace: true
   clusterName: enterprise-cluster
   cluster:
     isEnabled: true
@@ -276,6 +307,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: test-clickhouse
+  create_namespace: true
   clusterName: test-cluster
   container:
     replicas: 1
@@ -311,6 +343,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: public-analytics
+  create_namespace: true
   clusterName: public-cluster
   container:
     replicas: 1
@@ -353,6 +386,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: signoz-backend
+  create_namespace: true
   clusterName: cluster  # SigNoz requires cluster name to be "cluster"
   version: "24.8"
   container:
@@ -404,6 +438,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: staging-clickhouse
+  create_namespace: true
   clusterName: staging-analytics
   version: "24.4"  # Testing newer version
   container:
@@ -431,6 +466,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: production-clickhouse
+  create_namespace: true
   clusterName: production-analytics
   version: "24.3"  # Stable version
   container:

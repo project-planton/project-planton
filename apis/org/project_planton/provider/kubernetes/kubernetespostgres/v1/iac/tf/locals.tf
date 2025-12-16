@@ -51,4 +51,7 @@ locals {
   # Ingress configuration
   ingress_is_enabled        = try(var.spec.ingress.enabled, false)
   ingress_external_hostname = try(var.spec.ingress.hostname, null)
+
+  # Namespace reference: use created namespace name if created, otherwise use local.namespace
+  namespace_name = var.spec.create_namespace ? kubernetes_namespace_v1.postgres_namespace[0].metadata[0].name : local.namespace
 }

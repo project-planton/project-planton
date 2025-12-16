@@ -100,6 +100,26 @@ var _ = ginkgo.Describe("KubernetesAltinityOperatorSpec validations", func() {
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
+
+		ginkgo.Context("spec with namespace creation flag", func() {
+			ginkgo.It("should validate successfully when create_namespace is true", func() {
+				spec.CreateNamespace = true
+				err := protovalidate.Validate(spec)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should validate successfully when create_namespace is false", func() {
+				spec.CreateNamespace = false
+				err := protovalidate.Validate(spec)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should validate successfully when create_namespace is not set (default)", func() {
+				// create_namespace defaults to false when not explicitly set
+				err := protovalidate.Validate(spec)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
 	})
 
 	ginkgo.Describe("When invalid input is passed", func() {

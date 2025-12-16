@@ -21,18 +21,35 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteshelmreleasev1.Kubernet
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	//create namespace resource
-	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
-		locals.Namespace,
-		&kubernetescorev1.NamespaceArgs{
-			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:   pulumi.String(locals.Namespace),
-				Labels: pulumi.ToStringMap(locals.Labels),
-			}),
-		},
-		pulumi.Provider(kubernetesProvider))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+	//conditionally create namespace resource based on create_namespace flag
+	var createdNamespace *kubernetescorev1.Namespace
+	var namespaceOutput pulumi.StringInput
+
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+			locals.Namespace,
+			&kubernetescorev1.NamespaceArgs{
+				Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
+				}),
+			},
+			pulumi.Provider(kubernetesProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+		}
+		namespaceOutput = createdNamespace.Metadata.Name().Elem()
+	} else {
+		// Use existing namespace - just reference the name
+		namespaceOutput = pulumi.String(locals.Namespace)
+	}
+
+	//prepare helm chart resource options
+	helmReleaseOpts := []pulumi.ResourceOption{}
+
+	// Only set parent if we created the namespace
+	if createdNamespace != nil {
+		helmReleaseOpts = append(helmReleaseOpts, pulumi.Parent(createdNamespace))
 	}
 
 	//install helm-chart
@@ -41,12 +58,12 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteshelmreleasev1.Kubernet
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(locals.KubernetesHelmRelease.Spec.Name),
 			Version:   pulumi.String(locals.KubernetesHelmRelease.Spec.Version),
-			Namespace: createdNamespace.Metadata.Name().Elem(),
+			Namespace: namespaceOutput,
 			Values:    convertstringmaps.ConvertGoStringMapToPulumiMap(locals.KubernetesHelmRelease.Spec.Values),
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(locals.KubernetesHelmRelease.Spec.Repo),
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, helmReleaseOpts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to create helm-chart")
 	}

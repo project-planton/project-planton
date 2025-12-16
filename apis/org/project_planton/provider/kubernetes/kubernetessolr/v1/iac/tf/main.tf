@@ -41,7 +41,10 @@
 
 # Create dedicated namespace for Solr deployment
 # This isolates Solr resources and provides a security boundary
+# The namespace is conditionally created based on the create_namespace flag
 resource "kubernetes_namespace" "solr_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels

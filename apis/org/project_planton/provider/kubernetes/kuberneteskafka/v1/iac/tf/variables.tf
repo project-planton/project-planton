@@ -18,6 +18,9 @@ variable "spec" {
     # Kubernetes namespace
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # A list of Kafka topics to be created in the Kafka cluster.
     kafka_topics = list(object({
 

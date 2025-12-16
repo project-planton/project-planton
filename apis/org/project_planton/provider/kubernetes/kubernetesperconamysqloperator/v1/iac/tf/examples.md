@@ -20,7 +20,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "percona-mysql-operator"  # Optional: defaults to "percona-mysql-operator"
+  namespace        = "percona-mysql-operator"
+  create_namespace = true
   
   container = {
     resources = {
@@ -106,7 +107,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "percona-mysql-operator-prod"
+  namespace        = "percona-mysql-operator-prod"
+  create_namespace = true
   
   container = {
     resources = {
@@ -150,7 +152,8 @@ metadata = {
 }
 
 spec = {
-  namespace = "percona-mysql-operator-dev"
+  namespace        = "percona-mysql-operator-dev"
+  create_namespace = true
   
   container = {
     resources = {
@@ -177,7 +180,69 @@ terraform apply -var-file="dev.tfvars"
 
 ---
 
-## Example 4: Multi-Environment Setup
+## Example 4: Using Existing Namespace
+
+### Description
+
+Deploy the operator into a pre-existing namespace. This is useful when namespaces are managed separately by platform teams or when namespace-level policies, quotas, or network policies are pre-configured.
+
+### Prerequisites
+
+Create the namespace before deployment:
+
+```bash
+# Create namespace
+kubectl create namespace database-operators
+
+# Verify namespace exists
+kubectl get namespace database-operators
+```
+
+### Configuration
+
+#### `existing-namespace.tfvars`
+
+```hcl
+metadata = {
+  name = "percona-mysql-operator-existing-ns"
+  labels = {
+    environment = "production"
+    managed-by  = "terraform"
+  }
+}
+
+spec = {
+  namespace        = "database-operators"
+  create_namespace = false
+  
+  container = {
+    resources = {
+      requests = {
+        cpu    = "100m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1000m"
+        memory = "1Gi"
+      }
+    }
+  }
+}
+```
+
+### Deploy
+
+```bash
+terraform init
+terraform plan -var-file="existing-namespace.tfvars"
+terraform apply -var-file="existing-namespace.tfvars"
+```
+
+**Important:** With `create_namespace = false`, the namespace must exist before deployment. If the namespace doesn't exist, Terraform will fail during apply.
+
+---
+
+## Example 5: Multi-Environment Setup
 
 ### Description
 
@@ -215,7 +280,7 @@ terraform apply -var-file="prod.tfvars"
 
 ---
 
-## Example 5: With Remote State
+## Example 6: With Remote State
 
 ### Description
 
@@ -246,7 +311,7 @@ terraform apply -var-file="production.tfvars"
 
 ---
 
-## Example 6: With Outputs for Integration
+## Example 7: With Outputs for Integration
 
 ### Description
 
@@ -376,6 +441,9 @@ inputs = {
   }
   
   spec = {
+    namespace        = "percona-mysql-operator"
+    create_namespace = true
+    
     container = {
       resources = {
         requests = {

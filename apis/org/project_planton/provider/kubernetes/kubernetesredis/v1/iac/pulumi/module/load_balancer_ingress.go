@@ -7,14 +7,14 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func loadBalancerIngress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescorev1.Namespace) error {
+func loadBalancerIngress(ctx *pulumi.Context, locals *Locals, namespace pulumi.StringInput) error {
 	_, err := kubernetescorev1.NewService(ctx,
 		"ingress-external-lb",
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
 				Name:      pulumi.String("ingress-external-lb"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    createdNamespace.Metadata.Labels(),
+				Namespace: namespace,
+				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{
 					"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressExternalHostname),
 				},
@@ -32,7 +32,7 @@ func loadBalancerIngress(ctx *pulumi.Context, locals *Locals, createdNamespace *
 				},
 				Selector: pulumi.ToStringMap(locals.RedisPodSelectorLabels),
 			},
-		}, pulumi.Parent(createdNamespace))
+		})
 	if err != nil {
 		return errors.Wrapf(err, "failed to create external load balancer service")
 	}

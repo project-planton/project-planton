@@ -5,8 +5,10 @@
 # using the official Neo4j Helm chart.
 ##############################################
 
-# Create namespace for Neo4j deployment
+# Conditionally create namespace for Neo4j deployment
 resource "kubernetes_namespace_v1" "neo4j_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.labels
@@ -19,7 +21,7 @@ resource "helm_release" "neo4j" {
   repository = local.neo4j_helm_chart_repo
   chart      = local.neo4j_helm_chart_name
   version    = local.neo4j_helm_chart_version
-  namespace  = kubernetes_namespace_v1.neo4j_namespace.metadata[0].name
+  namespace  = local.namespace
 
   values = [
     yamlencode({
@@ -40,14 +42,12 @@ resource "helm_release" "neo4j" {
       }
 
       # External service configuration for ingress
-      externalService = local.ingress_enabled ? {
-        enabled = true
-        type    = "LoadBalancer"
-        annotations = local.ingress_external_hostname != "" ? {
+      externalService = {
+        enabled = local.ingress_enabled
+        type    = local.ingress_enabled ? "LoadBalancer" : ""
+        annotations = local.ingress_enabled && local.ingress_external_hostname != "" ? {
           "external-dns.alpha.kubernetes.io/hostname" = local.ingress_external_hostname
         } : {}
-      } : {
-        enabled = false
       }
 
       # Persistent storage configuration

@@ -59,6 +59,19 @@ Control load balancer exposure with a single flag:
 
 This setting automatically applies the correct cloud-specific annotations and configurations.
 
+### Namespace Management
+
+The component provides flexible namespace management:
+
+- **Automatic Creation**: Set `create_namespace: true` to let the module create the namespace
+- **Use Existing**: Set `create_namespace: false` to use a pre-existing namespace
+- **Custom Names**: Specify any namespace name via the `namespace` field
+
+This flexibility allows you to:
+- Use namespace-scoped RBAC and policies
+- Deploy to shared namespaces managed by platform teams
+- Integrate with namespace lifecycle management tools
+
 ### Version Management
 
 - Specify exact Helm chart versions for reproducible deployments
@@ -119,6 +132,7 @@ spec:
     cluster_name: my-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: false
 ```
@@ -135,6 +149,7 @@ spec:
     cluster_name: gke-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   internal: true
   gke:
@@ -153,6 +168,7 @@ spec:
     cluster_name: eks-prod-cluster
   namespace:
     value: ingress-nginx
+  create_namespace: true
   chart_version: "4.11.1"
   eks:
     subnet_ids:

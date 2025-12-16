@@ -26,7 +26,8 @@ module "daily_backup_cronjob" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     schedule = "0 0 * * *"
     
@@ -76,7 +77,8 @@ module "weekly_report_cronjob" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     schedule = "0 9 * * 1"  # Every Monday at 9:00 AM
     
@@ -133,7 +135,8 @@ module "db_maintenance_cronjob" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     schedule = "0 3 * * *"  # Daily at 3:00 AM
     
@@ -198,7 +201,8 @@ module "heavy_lift_cronjob" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     schedule = "*/30 * * * *"  # Every 30 minutes
     
@@ -260,7 +264,8 @@ module "end_of_month_report" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     # Run at 23:30 on the last day of each month
     schedule = "30 23 28-31 * *"
@@ -334,7 +339,8 @@ module "grpc_invoker_cronjob" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     schedule = "0 0 * * *"  # Daily at midnight
     
@@ -408,7 +414,8 @@ module "private_registry_cronjob" {
       cluster_name = "my-gke-cluster"
     }
     
-    namespace = "my-namespace"
+    namespace        = "my-namespace"
+    create_namespace = true
     
     schedule = "0 */6 * * *"  # Every 6 hours
     
@@ -454,6 +461,129 @@ variable "gcp_service_account_key" {
 - **docker_config_json**: Standard Docker config format for registry authentication
 - The module creates a Kubernetes secret of type `kubernetes.io/dockerconfigjson`
 - Automatically attached as imagePullSecret to the CronJob
+
+---
+
+## 8. Namespace Management
+
+The `create_namespace` field controls whether the Terraform module creates a new namespace or references an existing one.
+
+### Creating a New Namespace
+
+Set `create_namespace = true` to automatically create the namespace with the CronJob:
+
+```hcl
+module "isolated_cronjob" {
+  source = "./path/to/kubernetes-cronjob-module"
+
+  metadata = {
+    name = "isolated-job"
+    id   = "isolated-job-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace        = "my-cronjobs"
+    create_namespace = true
+    
+    schedule = "0 2 * * *"
+    
+    image = {
+      repo = "busybox"
+      tag  = "latest"
+    }
+    
+    resources = {
+      limits = {
+        cpu    = "500m"
+        memory = "256Mi"
+      }
+      requests = {
+        cpu    = "100m"
+        memory = "128Mi"
+      }
+    }
+  }
+}
+```
+
+**Key Points:**
+- **create_namespace = true**: The module creates the namespace `my-cronjobs` with appropriate labels
+- **Use case**: Ideal when you want dedicated namespace isolation for this CronJob
+- **Cleanup**: Destroying the module will also destroy the namespace and all its resources
+
+### Using an Existing Namespace
+
+Set `create_namespace = false` to deploy into a pre-existing namespace:
+
+```hcl
+module "shared_cronjob" {
+  source = "./path/to/kubernetes-cronjob-module"
+
+  metadata = {
+    name = "shared-job"
+    id   = "shared-job-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace        = "shared-batch-jobs"
+    create_namespace = false
+    
+    schedule = "0 4 * * *"
+    
+    image = {
+      repo = "busybox"
+      tag  = "latest"
+    }
+    
+    resources = {
+      limits = {
+        cpu    = "500m"
+        memory = "256Mi"
+      }
+      requests = {
+        cpu    = "100m"
+        memory = "128Mi"
+      }
+    }
+  }
+}
+```
+
+**Key Points:**
+- **create_namespace = false**: The module references the existing `shared-batch-jobs` namespace
+- **Use case**: Ideal for multi-tenant scenarios where multiple CronJobs share a namespace
+- **Important**: Ensure the namespace exists before applying, or Terraform will fail
+- **Cleanup**: Destroying the module will only destroy the CronJob, not the shared namespace
+
+### Terraform Implementation Details
+
+When `create_namespace = true`:
+- Uses `resource "kubernetes_namespace" "this"` with count = 1
+- Namespace gets labels matching the CronJob metadata
+
+When `create_namespace = false`:
+- Uses `data "kubernetes_namespace" "existing"` to reference the namespace
+- Namespace must exist before running `terraform apply`
+
+### Best Practices
+
+- **Isolated workloads**: Use `create_namespace = true` for dedicated, single-purpose CronJobs
+- **Shared namespaces**: Use `create_namespace = false` when multiple CronJobs need to coexist
+- **GitOps workflows**: Set `create_namespace = false` and manage namespaces separately for better lifecycle control
+- **Development environments**: Use `create_namespace = true` for quick iterations and easy cleanup
+- **Production**: Consider managing namespaces separately with dedicated Terraform modules for better governance
 
 ---
 

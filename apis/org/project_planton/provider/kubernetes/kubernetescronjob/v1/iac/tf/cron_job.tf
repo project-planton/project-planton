@@ -6,33 +6,29 @@
 resource "kubernetes_service_account" "this" {
   metadata {
     name      = local.resource_id
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace_name
   }
-
-  depends_on = [kubernetes_namespace.this]
 }
 
 # 2) Create an optional image pull secret if Docker credentials are provided
 resource "kubernetes_secret" "image_pull_secret" {
   metadata {
     name      = "image-pull-secret"
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace_name
     labels    = local.final_labels
   }
   type = "kubernetes.io/dockerconfigjson"
 
-  string_data = var.docker_config_json != "" ? {
+  data = var.docker_config_json != "" ? {
     ".dockerconfigjson" = var.docker_config_json
   } : {}
-
-  depends_on = [kubernetes_namespace.this]
 }
 
 # 3) Create the CronJob
 resource "kubernetes_cron_job" "this" {
   metadata {
     name      = var.metadata.name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace_name
     labels    = local.final_labels
   }
 
@@ -54,6 +50,10 @@ resource "kubernetes_cron_job" "this" {
     null)
 
     job_template {
+      metadata {
+        labels = local.final_labels
+      }
+      
       spec {
         backoff_limit = try(var.spec.backoff_limit, 6)
 
@@ -140,8 +140,4 @@ resource "kubernetes_cron_job" "this" {
       }
     }
   }
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
 }

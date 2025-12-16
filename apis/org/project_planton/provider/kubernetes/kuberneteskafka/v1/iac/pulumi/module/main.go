@@ -19,19 +19,21 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteskafkav1.KubernetesKafk
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
 
-	//create namespace resource
-	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
-		locals.Namespace,
-		&kubernetescorev1.NamespaceArgs{
-			Metadata: kubernetesmetav1.ObjectMetaPtrInput(
-				&kubernetesmetav1.ObjectMetaArgs{
-					Name:   pulumi.String(locals.Namespace),
-					Labels: pulumi.ToStringMap(locals.Labels),
-				}),
-		},
-		pulumi.Provider(kubernetesProvider))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+	//conditionally create namespace resource based on create_namespace flag
+	var createdNamespace *kubernetescorev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+			locals.Namespace,
+			&kubernetescorev1.NamespaceArgs{
+				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
+					&kubernetesmetav1.ObjectMetaArgs{
+						Name:   pulumi.String(locals.Namespace),
+						Labels: pulumi.ToStringMap(locals.Labels),
+					}),
+			}, pulumi.Provider(kubernetesProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+		}
 	}
 
 	//create kafka cluster custom resource

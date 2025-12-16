@@ -2,6 +2,39 @@
 
 This document provides examples of using the KubernetesHarbor Pulumi module directly in your Pulumi programs.
 
+## Namespace Management
+
+All Harbor deployments require a namespace. Control namespace management with the `CreateNamespace` flag:
+
+- **`CreateNamespace: true`** - Component creates and manages the namespace with appropriate labels
+- **`CreateNamespace: false`** - Deploy into an existing namespace (must exist before deployment)
+
+**Managed namespace example:**
+```go
+Spec: &kubernetesharborv1.KubernetesHarborSpec{
+    Namespace: &foreignkeyv1.StringValueOrRef{
+        LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+            Value: "harbor-prod",
+        },
+    },
+    CreateNamespace: true,  // Component creates the namespace
+    // ... rest of spec
+}
+```
+
+**Existing namespace example:**
+```go
+Spec: &kubernetesharborv1.KubernetesHarborSpec{
+    Namespace: &foreignkeyv1.StringValueOrRef{
+        LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+            Value: "container-registry",
+        },
+    },
+    CreateNamespace: false,  // Must exist before deployment
+    // ... rest of spec
+}
+```
+
 ## Prerequisites
 
 - Pulumi CLI installed
@@ -49,7 +82,6 @@ func main() {
         // Define Harbor configuration
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
             TargetCluster: &kubernetes.KubernetesClusterSelector{
-                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
                 ClusterName: "my-gke-cluster",
             },
             Namespace: &foreignkeyv1.StringValueOrRef{
@@ -57,6 +89,7 @@ func main() {
                     Value: "harbor-dev",
                 },
             },
+            CreateNamespace: true,
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 1,
                 Resources: &kubernetes.ContainerResources{
@@ -219,7 +252,6 @@ func main() {
 
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
             TargetCluster: &kubernetes.KubernetesClusterSelector{
-                ClusterKind: cloudresourcekind.CloudResourceKind_AwsEksCluster,
                 ClusterName: "my-eks-cluster",
             },
             Namespace: &foreignkeyv1.StringValueOrRef{
@@ -227,6 +259,7 @@ func main() {
                     Value: "harbor-prod",
                 },
             },
+            CreateNamespace: true,
             // Harbor Core - 3 replicas for HA
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 3,
@@ -395,7 +428,6 @@ func main() {
 
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
             TargetCluster: &kubernetes.KubernetesClusterSelector{
-                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
                 ClusterName: "my-gke-cluster",
             },
             Namespace: &foreignkeyv1.StringValueOrRef{
@@ -403,6 +435,7 @@ func main() {
                     Value: "harbor-gcp",
                 },
             },
+            CreateNamespace: true,
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 2,
                 Resources: &kubernetes.ContainerResources{
@@ -514,7 +547,6 @@ func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
             TargetCluster: &kubernetes.KubernetesClusterSelector{
-                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
                 ClusterName: "my-gke-cluster",
             },
             Namespace: &foreignkeyv1.StringValueOrRef{
@@ -522,6 +554,7 @@ func main() {
                     Value: "harbor-advanced",
                 },
             },
+            CreateNamespace: true,
             CoreContainer: &kubernetesharborv1.KubernetesHarborContainer{
                 Replicas: 2,
             },
@@ -616,7 +649,6 @@ func main() {
     pulumi.Run(func(ctx *pulumi.Context) error {
         harborSpec := &kubernetesharborv1.KubernetesHarborSpec{
             TargetCluster: &kubernetes.KubernetesClusterSelector{
-                ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
                 ClusterName: "my-gke-cluster",
             },
             Namespace: &foreignkeyv1.StringValueOrRef{
@@ -624,6 +656,7 @@ func main() {
                     Value: "harbor-minio",
                 },
             },
+            CreateNamespace: true,
             CoreContainer:       &kubernetesharborv1.KubernetesHarborContainer{Replicas: 1},
             PortalContainer:     &kubernetesharborv1.KubernetesHarborContainer{Replicas: 1},
             RegistryContainer:   &kubernetesharborv1.KubernetesHarborContainer{Replicas: 1},

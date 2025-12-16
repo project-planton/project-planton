@@ -2,21 +2,35 @@ package module
 
 import (
 	"github.com/pkg/errors"
+	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetesmetav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// createNamespace creates a dedicated Kubernetes namespace for the ClickHouse deployment
-// The namespace is labeled with resource metadata for tracking and organization
+// createOrGetNamespace conditionally creates a Kubernetes namespace or returns the name of an existing one
+// based on the create_namespace flag in the spec.
 //
-// All ClickHouse resources (pods, services, secrets, ConfigMaps) are created within this namespace
-// providing isolation and making it easy to manage the entire deployment as a unit
-func createNamespace(
+// When create_namespace is true:
+//   - Creates a dedicated namespace with resource metadata labels for tracking and organization
+//   - All ClickHouse resources will be created within this namespace
+//
+// When create_namespace is false:
+//   - Returns the namespace name from spec without creating it
+//   - The namespace must exist before deployment
+//   - Resources will be deployed into the existing namespace
+func createOrGetNamespace(
 	ctx *pulumi.Context,
 	locals *Locals,
+	spec *kubernetesclickhousev1.KubernetesClickHouseSpec,
 	kubernetesProvider pulumi.ProviderResource,
-) (*kubernetescorev1.Namespace, error) {
+) (pulumi.StringInput, error) {
+	// If create_namespace is false, use the existing namespace
+	if !spec.CreateNamespace {
+		return pulumi.String(locals.Namespace), nil
+	}
+
+	// Create a new namespace
 	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
 		locals.Namespace,
 		&kubernetescorev1.NamespaceArgs{
@@ -31,5 +45,5 @@ func createNamespace(
 		return nil, errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
 	}
 
-	return createdNamespace, nil
+	return createdNamespace.Metadata.Name().Elem(), nil
 }

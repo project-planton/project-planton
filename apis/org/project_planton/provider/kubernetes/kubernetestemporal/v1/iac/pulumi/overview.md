@@ -71,7 +71,7 @@ The module is organized into focused, single-purpose files following Go conventi
 
 | File | Resource Type | Creates |
 |------|---------------|---------|
-| `namespace.go` | Namespace | Kubernetes namespace with labels |
+| `namespace.go` | Namespace | Kubernetes namespace with labels (conditional) |
 | `db_password_secret.go` | Secret | External database password (conditional) |
 | `helm_chart.go` | Helm Chart | Temporal Helm chart with all values |
 | `frontend_ingress.go` | LoadBalancer Service | gRPC frontend external access |
@@ -154,6 +154,25 @@ else:
 
 **Default**: `0.62.0` (tested and verified)
 
+### 7. Conditional Namespace Creation
+
+**Decision**: Namespace creation is controlled by `spec.create_namespace` boolean flag
+
+**Rationale**:
+- Production environments often have pre-existing namespaces with policies, quotas, RBAC
+- Some organizations require namespace creation through separate governance processes
+- Provides flexibility for both greenfield and brownfield deployments
+
+**Implementation**: 
+- When `create_namespace = true`: Module creates namespace with proper labels
+- When `create_namespace = false`: Module assumes namespace exists, skips creation
+- All child resources work identically in both modes
+- Default is `true` for backward compatibility and ease of use
+
+**Trade-offs**:
+- Users must ensure namespace exists when `create_namespace = false`
+- No validation that existing namespace has proper labels or configuration
+
 ## Data Flow
 
 ### Input → Locals → Resources
@@ -193,13 +212,15 @@ Outputs are exported **eagerly** during `initializeLocals` to ensure they're ava
 ### Explicit Dependencies
 
 ```
-namespace
+namespace (if create_namespace = true)
   ├─> db_password_secret (if external DB)
   │     └─> helm_chart
   └─> helm_chart
         ├─> frontend_ingress
         ├─> frontend_http_ingress
         └─> web_ui_ingress
+
+If create_namespace = false, all resources deploy to existing namespace
 ```
 
 ### Implicit Dependencies (via values)

@@ -98,7 +98,7 @@ resource "kubernetes_manifest" "elasticsearch_http_external_redirect" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "http-external-redirect"
-        namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+        namespace = local.namespace_name
         labels    = local.final_labels
       }
       spec = {
@@ -144,7 +144,7 @@ resource "kubernetes_manifest" "elasticsearch_https_external" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "https-external"
-        namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+        namespace = local.namespace_name
         labels    = local.final_labels
       }
       spec = {
@@ -171,7 +171,7 @@ resource "kubernetes_manifest" "elasticsearch_https_external" {
             backendRefs = [
               {
                 name      = local.elasticsearch_kube_service_name
-                namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+                namespace = local.namespace_name
                 port      = local.elasticsearch_port
               }
             ]
@@ -261,7 +261,7 @@ resource "kubernetes_manifest" "kibana_http_external_redirect" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "http-kb-external-redirect"
-        namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+        namespace = local.namespace_name
         labels    = local.final_labels
       }
       spec = {
@@ -307,7 +307,7 @@ resource "kubernetes_manifest" "kibana_https_external" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "https-kb-external"
-        namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+        namespace = local.namespace_name
         labels    = local.final_labels
       }
       spec = {
@@ -334,7 +334,7 @@ resource "kubernetes_manifest" "kibana_https_external" {
             backendRefs = [
               {
                 name      = local.kibana_kube_service_name
-                namespace = kubernetes_namespace.elasticsearch_namespace.metadata[0].name
+                namespace = local.namespace_name
                 port      = local.kibana_port
               }
             ]

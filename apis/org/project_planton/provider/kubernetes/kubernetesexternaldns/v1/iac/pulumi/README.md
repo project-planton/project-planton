@@ -12,7 +12,7 @@ This Pulumi module deploys [ExternalDNS](https://github.com/kubernetes-sigs/exte
 - **Cloudflare DNS**: API tokens (stored as Kubernetes secrets)
 
 The module handles:
-- Namespace creation
+- Namespace creation (or lookup of existing namespace)
 - Service account configuration with cloud provider annotations
 - Secret creation (for Cloudflare)
 - Helm chart deployment with provider-specific values
@@ -139,6 +139,40 @@ Use the provided debug script to run Pulumi with detailed logging:
 cd iac/pulumi
 ./debug.sh
 ```
+
+## Namespace Management
+
+The module provides flexible namespace management through the `create_namespace` flag:
+
+### Automatic Namespace Creation
+
+When `create_namespace` is set to `true`, the module creates the namespace using `corev1.NewNamespace()`:
+
+```yaml
+spec:
+  namespace:
+    value: kubernetes-external-dns
+  create_namespace: true  # Module will create the namespace
+```
+
+### Using Existing Namespace
+
+When `create_namespace` is `false` (default), the module uses `corev1.GetNamespace()` to lookup the existing namespace:
+
+```yaml
+spec:
+  namespace:
+    value: existing-namespace
+  create_namespace: false  # Namespace must already exist
+```
+
+**Important**: If `create_namespace` is `false` and the namespace doesn't exist, the Pulumi deployment will fail with an error message:
+
+```
+failed to get existing namespace <name> - ensure it exists before deployment
+```
+
+This behavior ensures that namespace management is explicit and prevents accidental namespace creation when working with pre-configured namespaces that may have specific labels, annotations, or resource quotas.
 
 ## Module Implementation
 

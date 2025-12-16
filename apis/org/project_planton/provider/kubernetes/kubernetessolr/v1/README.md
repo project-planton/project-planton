@@ -39,6 +39,20 @@ Deploying Solr in Kubernetes often involves various components, such as managing
 
 - **Ingress Spec**: Use Kubernetes ingress configurations to expose the Solr service securely, enabling external access as needed.
 
+### Namespace Management
+
+The Solr Kubernetes component provides flexible namespace management through the `create_namespace` flag:
+
+- **create_namespace: true** (default) - The module creates the namespace with proper labels and manages its lifecycle. This is ideal for dedicated Solr deployments where the namespace is fully managed by this component.
+
+- **create_namespace: false** - The module uses an existing namespace. You're responsible for ensuring the namespace exists before deployment. This is useful when:
+  - Multiple components share a namespace
+  - Namespace is managed by a separate infrastructure module
+  - Organization policies require centralized namespace management
+  - Using a GitOps approach with namespace management in a separate layer
+
+When using an existing namespace (`create_namespace: false`), ensure the namespace exists before deploying, otherwise the deployment will fail.
+
 ## Benefits
 
 - **Simplified Deployment**: This API resource abstracts the complexities of deploying and managing Solr in Kubernetes, offering a straightforward approach.

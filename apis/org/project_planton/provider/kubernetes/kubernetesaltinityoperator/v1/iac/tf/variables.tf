@@ -17,6 +17,9 @@ variable "spec" {
     # Kubernetes namespace to install the operator. Defaults to "kubernetes-altinity-operator" if not provided.
     namespace = optional(string, "")
 
+    # Flag to indicate if the namespace should be created. Defaults to true.
+    create_namespace = optional(bool, true)
+
     # The container specifications for the operator deployment.
     container = object({
       # The CPU and memory resources allocated to the operator container.

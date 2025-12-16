@@ -21,6 +21,9 @@ variable "spec" {
     # Kubernetes namespace where operator will be deployed
     namespace = optional(string, "solr-operator-system")
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, false)
+
     # The container specifications for the Apache Solr Operator deployment.
     container = object({
 

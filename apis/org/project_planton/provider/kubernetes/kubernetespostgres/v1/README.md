@@ -36,6 +36,16 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 
 - **Disk Size**: Configure the storage size for each PostgreSQL instance. The default value is `1Gi`, but you can specify a different size based on your requirements.
 
+### Namespace Management
+
+- **Flexible Namespace Control**: Choose whether the component creates the namespace or uses an existing one
+  - Set `create_namespace: true` to have the component create and manage the namespace
+  - Set `create_namespace: false` to deploy into an existing namespace that you manage separately
+- **Use Cases**:
+  - **New deployments**: Use `create_namespace: true` for component-managed namespace with proper labels
+  - **Shared namespaces**: Use `create_namespace: false` when multiple components share a namespace
+  - **Pre-configured environments**: Use `create_namespace: false` when namespaces are created by platform teams
+
 ### Ingress Configuration
 
 - **Ingress Spec**: Manage and control external access to the PostgreSQL instance by configuring ingress with a custom hostname. When enabled, creates a LoadBalancer service with external-dns annotations for automatic DNS configuration. Users specify the exact hostname (e.g., `postgres.example.com`) instead of auto-constructed patterns, providing full control over the ingress endpoint.
@@ -62,6 +72,7 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 - **Consistent Configuration**: Ensures PostgreSQL deployments follow a consistent configuration across different Kubernetes clusters and environments.
 - **Resource Optimization**: Enables fine-tuning of CPU, memory, and storage allocations to optimize the performance of PostgreSQL instances.
 - **Secure Access**: Configures ingress rules to allow secure and controlled access to PostgreSQL instances.
+- **Flexible Namespace Management**: Supports both component-managed and externally-managed namespaces for different deployment scenarios.
 - **Automated Backups**: Continuous backup to R2/S3 with configurable schedules, ensuring data protection without manual intervention.
 - **Disaster Recovery Ready**: Restore databases across clusters from backup files alone, enabling recovery even when source cluster is completely destroyed.
 - **Operator Flexibility**: Technology-agnostic restore design works across different PostgreSQL operators without API changes.

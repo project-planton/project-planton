@@ -22,23 +22,42 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesaltinityoperatorv1.Kub
 	// initialize local values with computed data transformations
 	locals := newLocals(stackInput)
 
-	// create dedicated namespace
-	ns, err := corev1.NewNamespace(ctx, locals.Namespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(locals.Namespace),
+	// conditionally create namespace if requested
+	var nsName pulumi.StringInput
+	var helmReleaseOpts []pulumi.ResourceOption
+
+	if stackInput.Target.Spec.CreateNamespace {
+		// create dedicated namespace
+		ns, err := corev1.NewNamespace(ctx, locals.Namespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name: pulumi.String(locals.Namespace),
+				},
 			},
-		},
-		pulumi.Provider(kubeProvider))
-	if err != nil {
-		return errors.Wrap(err, "failed to create namespace")
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create namespace")
+		}
+		nsName = ns.Metadata.Name().Elem()
+		helmReleaseOpts = []pulumi.ResourceOption{
+			pulumi.Provider(kubeProvider),
+			pulumi.Parent(ns),
+			pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
+		}
+	} else {
+		// use existing namespace name directly
+		nsName = pulumi.String(locals.Namespace)
+		helmReleaseOpts = []pulumi.ResourceOption{
+			pulumi.Provider(kubeProvider),
+			pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
+		}
 	}
 
 	// deploy the operator via Helm
 	_, err = helm.NewRelease(ctx, "kubernetes-altinity-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
-			Namespace:       ns.Metadata.Name(),
+			Namespace:       nsName,
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(vars.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -51,15 +70,13 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesaltinityoperatorv1.Kub
 				Repo: pulumi.String(vars.HelmChartRepo),
 			},
 		},
-		pulumi.Provider(kubeProvider),
-		pulumi.Parent(ns),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
+		helmReleaseOpts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to install kubernetes-altinity-operator helm release")
 	}
 
 	// export stack outputs
-	ctx.Export(OpNamespace, ns.Metadata.Name())
+	ctx.Export(OpNamespace, nsName)
 
 	return nil
 }

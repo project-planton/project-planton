@@ -8,6 +8,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "test-k8s-cluster-cred"
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
   container:
     resources:
       requests:

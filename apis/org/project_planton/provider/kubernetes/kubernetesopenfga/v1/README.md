@@ -45,6 +45,27 @@ Deploying OpenFGA in Kubernetes can involve complex configurations, especially w
 
 - **URI**: Defines the connection URI for the selected data store engine. The URI should be appropriately formatted based on the engine type (e.g., `mysql://user:password@host:port/database` or `postgres://user:password@host:port/database`).
 
+### Namespace Management
+
+The OpenFGA Kubernetes API resource provides flexible namespace management through the `create_namespace` flag:
+
+- **create_namespace**: Boolean flag controlling namespace creation behavior
+    - `true`: The module will create the specified namespace (recommended for most deployments)
+    - `false`: The module expects the namespace to already exist and will use it
+
+**When to use create_namespace: true**
+- Fresh deployments where namespace doesn't exist
+- Isolated deployments where you want the module to manage the full lifecycle
+- Development/test environments
+- Single-component namespaces
+
+**When to use create_namespace: false**
+- Namespace is managed by a separate KubernetesNamespace resource
+- Namespace is pre-created by cluster administrators
+- Multiple components sharing the same namespace
+- Production environments with strict namespace management policies
+- Organizations with centralized namespace governance
+
 ## Benefits
 
 - **Simplified Deployment**: Reduces the complexities of deploying OpenFGA on Kubernetes with a standardized and easy-to-use API resource.
@@ -52,3 +73,4 @@ Deploying OpenFGA in Kubernetes can involve complex configurations, especially w
 - **Resource Optimization**: Allows for fine-tuning resource allocations to optimize performance and cost-efficiency.
 - **Data Store Flexibility**: Supports both MySQL and PostgreSQL as data store engines, providing flexibility in database management.
 - **Secure Access**: Configures ingress rules for secure and controlled access to the OpenFGA instance.
+- **Flexible Namespace Management**: Control whether namespaces are created or managed externally, supporting various organizational policies.

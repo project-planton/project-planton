@@ -14,6 +14,80 @@ planton apply -f <yaml-path>
 
 ---
 
+## Namespace Management Examples
+
+### Example w/ Automatic Namespace Creation
+
+This example shows how to have the component create and manage the namespace:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickHouseKubernetes
+metadata:
+  name: managed-clickhouse
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "clickhouse-managed"
+  create_namespace: true  # Component will create the namespace
+  container:
+    replicas: 1
+    persistenceEnabled: true
+    diskSize: 50Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+```
+
+**Use this when**:
+- The component should own the namespace lifecycle
+- You want namespace labels automatically managed
+- Deploying to a dedicated namespace
+
+### Example w/ Existing Namespace
+
+This example shows how to deploy into an existing namespace:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickHouseKubernetes
+metadata:
+  name: shared-clickhouse
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "data-platform"
+  create_namespace: false  # Namespace must already exist
+  container:
+    replicas: 1
+    persistenceEnabled: true
+    diskSize: 50Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+```
+
+**Use this when**:
+- Deploying to a shared namespace with other components
+- Namespace is managed by another tool (Terraform, kubectl, etc.)
+- Namespace has special configuration (quotas, policies, labels)
+
+**Prerequisites**:
+- Namespace `data-platform` must exist before deployment
+- You must have permissions to create resources in the namespace
+
+---
+
 ## Example w/ Basic Standalone Configuration
 
 This example demonstrates a minimal standalone ClickHouse deployment suitable for development and testing.

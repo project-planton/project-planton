@@ -38,6 +38,10 @@ module "external_dns_gke" {
   }
 
   spec = {
+    namespace = {
+      value = "kubernetes-external-dns"
+    }
+    create_namespace = true  # Creates namespace if it doesn't exist
     gke = {
       project_id = {
         value = "my-gcp-project"
@@ -106,6 +110,10 @@ module "external_dns_eks" {
   }
 
   spec = {
+    namespace = {
+      value = "kubernetes-external-dns"
+    }
+    create_namespace = true  # Creates namespace if it doesn't exist
     eks = {
       route53_zone_id = {
         value = "Z1234567890ABC"
@@ -175,6 +183,10 @@ module "external_dns_aks" {
   }
 
   spec = {
+    namespace = {
+      value = "kubernetes-external-dns"
+    }
+    create_namespace = true  # Creates namespace if it doesn't exist
     aks = {
       dns_zone_id = {
         value = "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg/providers/Microsoft.Network/dnszones/example.com"
@@ -227,6 +239,10 @@ module "external_dns_cloudflare" {
   }
 
   spec = {
+    namespace = {
+      value = "kubernetes-external-dns"
+    }
+    create_namespace = true  # Creates namespace if it doesn't exist
     cloudflare = {
       api_token = var.cloudflare_api_token
       dns_zone_id = {

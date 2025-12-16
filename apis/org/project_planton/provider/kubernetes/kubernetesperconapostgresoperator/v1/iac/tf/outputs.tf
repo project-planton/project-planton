@@ -1,6 +1,6 @@
 output "namespace" {
   description = "The Kubernetes namespace where the Percona Operator for PostgreSQL is installed"
-  value       = kubernetes_namespace.kubernetes_percona_postgres_operator.metadata[0].name
+  value       = helm_release.kubernetes_percona_postgres_operator.namespace
 }
 
 output "operator_version" {

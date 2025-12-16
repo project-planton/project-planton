@@ -3,11 +3,15 @@
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-instance
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "grafana"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -24,11 +28,15 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-prod
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "production-gke-cluster"
+  namespace:
+    value: "grafana"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -48,11 +56,15 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: grafana-with-env
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "dev-gke-cluster"
+  namespace:
+    value: "grafana"
+  create_namespace: true
   container:
     env:
       variables:
@@ -97,13 +109,18 @@ spec:
 
 ---
 
-# Example 5: Minimal Grafana Deployment (Empty Spec)
+# Example 5: Minimal Grafana Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GrafanaKubernetes
+kind: KubernetesGrafana
 metadata:
   name: minimal-grafana
 spec:
-  kubernetesProviderConfigId: my-k8s-credentials
+  target_cluster:
+    cluster_name: "dev-gke-cluster"
+  namespace:
+    value: "grafana"
+  create_namespace: true
+  container: {}
 ```

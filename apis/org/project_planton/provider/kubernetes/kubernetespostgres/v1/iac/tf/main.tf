@@ -1,4 +1,7 @@
+# Conditionally create namespace for PostgreSQL if create_namespace is true
 resource "kubernetes_namespace_v1" "postgres_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
@@ -11,8 +14,8 @@ resource "kubernetes_service_v1" "external_lb" {
 
   metadata {
     name      = "ingress-external-lb"
-    namespace = kubernetes_namespace_v1.postgres_namespace.metadata[0].name
-    labels    = kubernetes_namespace_v1.postgres_namespace.metadata[0].labels
+    namespace = local.namespace_name
+    labels    = local.final_labels
     annotations = {
       "external-dns.alpha.kubernetes.io/hostname" = local.ingress_external_hostname
     }
@@ -32,7 +35,6 @@ resource "kubernetes_service_v1" "external_lb" {
   }
 
   depends_on = [
-    kubernetes_namespace_v1.postgres_namespace,
     kubernetes_manifest.database
   ]
 }

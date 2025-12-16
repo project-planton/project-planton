@@ -1,4 +1,6 @@
-resource "kubernetes_namespace" "grafana_namespace" {
+resource "kubernetes_namespace_v1" "grafana_namespace" {
+  count = try(var.spec.create_namespace, false) ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
@@ -7,7 +9,7 @@ resource "kubernetes_namespace" "grafana_namespace" {
 
 resource "helm_release" "grafana" {
   name       = var.metadata.name
-  namespace  = kubernetes_namespace.grafana_namespace.metadata[0].name
+  namespace  = local.namespace_name
   repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
   version    = "8.7.0"
@@ -63,7 +65,7 @@ resource "kubernetes_ingress_v1" "grafana_external" {
 
   metadata {
     name      = "${var.metadata.name}-external"
-    namespace = kubernetes_namespace.grafana_namespace.metadata[0].name
+    namespace = local.namespace_name
     annotations = {
       "kubernetes.io/ingress.class" = "nginx"
     }
@@ -97,7 +99,7 @@ resource "kubernetes_ingress_v1" "grafana_internal" {
 
   metadata {
     name      = "${var.metadata.name}-internal"
-    namespace = kubernetes_namespace.grafana_namespace.metadata[0].name
+    namespace = local.namespace_name
     annotations = {
       "kubernetes.io/ingress.class" = "nginx-internal"
     }

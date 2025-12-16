@@ -1,5 +1,19 @@
 # Terraform Module to Deploy MongoDB on Kubernetes
 
+## Namespace Management
+
+This module provides flexible namespace management through the `create_namespace` variable:
+
+- **`create_namespace = true`**: Creates a new namespace with resource labels for tracking
+  - Ideal for new deployments and isolated environments
+  - Namespace is automatically created before MongoDB resources
+  
+- **`create_namespace = false`**: Uses an existing namespace
+  - Namespace must exist before applying this module
+  - Suitable for environments with pre-configured policies, quotas, or RBAC
+
+## Usage
+
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
   --backend-config="bucket=planton-cloud-tf-state-backend" \

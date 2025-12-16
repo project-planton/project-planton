@@ -7,7 +7,7 @@ resource "kubernetes_manifest" "kafka_admin_user" {
     kind       = "KafkaUser"
     metadata = {
       name      = "admin"
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       # Merge our final_labels with the label needed to associate this user with the Kafka cluster.
       labels    = merge(local.final_labels, {
         "strimzi.io/cluster" = local.resource_id

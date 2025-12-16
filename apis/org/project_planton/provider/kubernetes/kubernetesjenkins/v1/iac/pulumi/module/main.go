@@ -18,22 +18,25 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.KubernetesJe
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	//create namespace resource
-	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
-		locals.Namespace,
-		&kubernetescorev1.NamespaceArgs{
-			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:   pulumi.String(locals.Namespace),
-				Labels: pulumi.ToStringMap(locals.Labels),
-			}),
-		},
-		pulumi.Provider(kubernetesProvider))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+	//conditionally create namespace resource based on create_namespace flag
+	var createdNamespace *kubernetescorev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+			locals.Namespace,
+			&kubernetescorev1.NamespaceArgs{
+				Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
+				}),
+			},
+			pulumi.Provider(kubernetesProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+		}
 	}
 
 	//export name of the namespace
-	ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	//create admin-password secret
 	createdAdminPasswordSecret, err := adminCredentials(ctx, locals, createdNamespace)

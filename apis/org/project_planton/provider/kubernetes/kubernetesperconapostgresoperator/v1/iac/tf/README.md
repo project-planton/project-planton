@@ -15,7 +15,7 @@ This Terraform module deploys the Percona Operator for PostgreSQL to a Kubernete
 - **Helm Chart Deployment**: Deploys using the official Percona Helm chart
 - **CRD Installation**: Automatically installs PostgreSQL Custom Resource Definitions
 - **Resource Configuration**: Configurable CPU and memory resources for the operator pod
-- **Namespace Isolation**: Creates dedicated namespace for the operator
+- **Flexible Namespace Management**: Optionally create a new namespace or use an existing one
 
 ### Infrastructure as Code
 - **Declarative Configuration**: Define desired state using Terraform syntax
@@ -41,9 +41,9 @@ tf/
 
 ## Resources Created
 
-1. **Kubernetes Namespace**: `kubernetes-percona-postgres-operator`
+1. **Kubernetes Namespace**: Conditionally created based on `create_namespace` flag
 2. **Helm Release**: Deploys the Percona Operator for PostgreSQL
-3. **CRDs**: PerconaPGCluster and related custom resources
+3. **CRDs**: PerconaPGCluster and related custom resources (installed by Helm chart)
 
 ## Input Variables
 
@@ -67,7 +67,10 @@ Specification for the operator deployment.
 **Type**: `object`
 
 **Fields**:
-- `namespace` (string, optional): Namespace to install the operator (defaults to "kubernetes-percona-postgres-operator")
+- `namespace` (string, required): Namespace to install the operator
+- `create_namespace` (bool, required): Whether to create the namespace
+  - `true`: Module creates and manages the namespace
+  - `false`: Module uses an existing namespace (must already exist)
 - `container` (object, required): Container specifications
   - `resources` (object, required): Resource allocations
     - `limits` (object): Maximum resources
@@ -99,6 +102,9 @@ module "percona_pg_operator" {
   }
 
   spec = {
+    namespace        = "kubernetes-percona-postgres-operator"
+    create_namespace = true
+    
     container = {
       resources = {
         requests = {
@@ -130,7 +136,9 @@ module "percona_pg_operator_large" {
   }
 
   spec = {
-    namespace = "kubernetes-percona-postgres-operator-prod"
+    namespace        = "kubernetes-percona-postgres-operator-prod"
+    create_namespace = true
+    
     container = {
       resources = {
         requests = {

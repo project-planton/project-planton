@@ -2,6 +2,15 @@
 
 This document provides examples of deploying the Percona Operator for PostgreSQL using the Pulumi module.
 
+## Namespace Management
+
+The `create_namespace` field controls whether the module creates the namespace or uses an existing one:
+
+- **`create_namespace: true`** - The module creates and manages the namespace. Use this for new deployments or when you want the module to handle namespace lifecycle.
+- **`create_namespace: false`** - The module expects the namespace to already exist. Use this when namespaces are managed separately by platform teams or GitOps workflows.
+
+**Important**: When using `create_namespace: false`, ensure the namespace exists before deployment, otherwise the Helm release will fail.
+
 ---
 
 ## Example 1: Deploy with Default Resources
@@ -30,6 +39,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -81,6 +91,7 @@ spec:
     cluster_name: "production-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator-prod"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -119,6 +130,7 @@ spec:
     cluster_name: "dev-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator-dev"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -137,7 +149,59 @@ planton pulumi up --manifest percona-pg-operator-dev.yaml
 
 ---
 
-## Example 4: Update Operator Resources
+## Example 4: Deploy with Existing Namespace
+
+### Description
+
+Deploy the operator into an existing namespace managed by your platform team or GitOps system.
+
+### Prerequisites
+
+Ensure the namespace already exists:
+```bash
+kubectl create namespace percona-operators
+```
+
+### Manifest
+
+Create a file named `percona-pg-operator-existing-ns.yaml`:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesPerconaPostgresOperator
+metadata:
+  name: percona-pg-operator-existing-ns
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "percona-operators"
+  create_namespace: false
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+### Deploy
+
+```bash
+planton pulumi up --manifest percona-pg-operator-existing-ns.yaml
+```
+
+### Notes
+
+- The namespace `percona-operators` must exist before running this deployment
+- This approach is useful in environments where namespace creation is restricted or managed separately
+- If the namespace doesn't exist, the deployment will fail
+
+---
+
+## Example 5: Update Operator Resources
 
 ### Description
 
@@ -156,7 +220,7 @@ The Pulumi module will perform an in-place update of the Helm release.
 
 ---
 
-## Example 5: Destroy Operator Deployment
+## Example 6: Destroy Operator Deployment
 
 ### Description
 
@@ -170,10 +234,12 @@ planton pulumi destroy --manifest percona-pg-operator.yaml
 
 This will:
 1. Remove the Helm release
-2. Delete the operator namespace
+2. Delete the operator namespace (if `create_namespace: true` was used)
 3. Remove all associated resources
 
-**Note**: This does not automatically remove CRDs or any PostgreSQL clusters deployed by the operator.
+**Note**: 
+- This does not automatically remove CRDs or any PostgreSQL clusters deployed by the operator.
+- If `create_namespace: false` was used, the namespace will not be deleted during destroy.
 
 ---
 
@@ -193,6 +259,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "kubernetes-percona-postgres-operator"
+  create_namespace: true
   container:
     resources:
       requests:

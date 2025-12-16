@@ -123,5 +123,29 @@ var _ = ginkgo.Describe("KubernetesIstioSpec validations", func() {
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
+
+		ginkgo.Context("spec with create_namespace flag", func() {
+			ginkgo.It("should not return error when create_namespace is true", func() {
+				spec.CreateNamespace = true
+				err := protovalidate.Validate(spec)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return error when create_namespace is false", func() {
+				spec.CreateNamespace = false
+				err := protovalidate.Validate(spec)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should handle create_namespace with all other fields set", func() {
+				spec.CreateNamespace = true
+				spec.Container.Resources.Requests.Cpu = "500m"
+				spec.Container.Resources.Requests.Memory = "512Mi"
+				spec.Container.Resources.Limits.Cpu = "2000m"
+				spec.Container.Resources.Limits.Memory = "4Gi"
+				err := protovalidate.Validate(spec)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
 	})
 })

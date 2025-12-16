@@ -469,6 +469,273 @@ spec:
 
 ---
 
+## Namespace Management: Isolation vs. Multi-tenancy
+
+One of the critical architectural decisions for Kubernetes CronJobs is namespace management: should each CronJob get its own dedicated namespace, or should multiple CronJobs share a common namespace? This decision impacts resource isolation, RBAC boundaries, operational complexity, and cleanup patterns.
+
+### The Two Patterns
+
+#### Pattern 1: Dedicated Namespace (Isolation)
+
+Each CronJob is deployed into its own namespace, created and managed by the CronJob deployment.
+
+**Configuration:**
+```yaml
+spec:
+  namespace:
+    value: my-backup-job
+  create_namespace: true
+```
+
+**Characteristics:**
+- **Isolation**: The CronJob has complete namespace isolation
+- **Clean boundaries**: RBAC policies can be scoped to just this namespace
+- **Easy cleanup**: Deleting the namespace removes all related resources
+- **Resource quotas**: Can apply namespace-level quotas without affecting other workloads
+
+**When to use:**
+- CronJobs with sensitive operations requiring RBAC isolation
+- Jobs that benefit from their own resource quota
+- Development and testing environments where quick cleanup is important
+- Jobs that are logically independent and have distinct lifecycles
+
+**Trade-offs:**
+- More namespaces to manage and monitor
+- Higher operational overhead (each namespace appears in lists, dashboards)
+- Potential for namespace sprawl in large organizations
+
+#### Pattern 2: Shared Namespace (Multi-tenancy)
+
+Multiple CronJobs are deployed into a common namespace, pre-created and managed separately.
+
+**Configuration:**
+```yaml
+spec:
+  namespace:
+    value: batch-jobs
+  create_namespace: false
+```
+
+**Characteristics:**
+- **Consolidation**: All batch jobs grouped logically in one namespace
+- **Simplified monitoring**: Single namespace to watch for job status
+- **Shared quotas**: All jobs share the namespace's resource quota
+- **Centralized RBAC**: One set of RBAC rules applies to all jobs
+
+**When to use:**
+- Many related CronJobs (e.g., all nightly batch processing)
+- GitOps workflows where namespaces are managed separately
+- Organizations with strict namespace governance
+- Jobs that share common ConfigMaps or Secrets
+
+**Trade-offs:**
+- Less isolation (all jobs see each other)
+- Shared resource quotas can lead to contention
+- Cleanup requires careful labeling to avoid removing other jobs' resources
+- RBAC becomes more complex (need to grant permissions selectively)
+
+### Design Rationale: The `create_namespace` Flag
+
+The `create_namespace` boolean flag provides explicit control over namespace lifecycle:
+
+**`create_namespace: true` (Default for new deployments):**
+- The deployment module creates and manages the namespace
+- Namespace gets appropriate labels matching the CronJob metadata
+- Destroying the CronJob also destroys the namespace
+- Enables the "cattle" approach: treat each CronJob as disposable
+
+**`create_namespace: false` (For shared namespaces):**
+- The deployment module references an existing namespace
+- Namespace must exist before deployment (deployment fails otherwise)
+- Destroying the CronJob leaves the namespace intact
+- Enables the "pets" approach: careful curation of a stable namespace
+
+### Best Practices
+
+#### For Isolated CronJobs
+
+1. **Use descriptive namespace names**: Name the namespace after the job's purpose (e.g., `db-backup-prod`, `cache-warmer-staging`)
+2. **Apply resource quotas**: Prevent runaway jobs from exhausting cluster resources
+3. **Label consistently**: Use consistent labeling (e.g., `app`, `team`, `environment`) for monitoring and cost allocation
+4. **Document ownership**: Add annotations indicating the team or service owning the namespace
+
+Example:
+```yaml
+metadata:
+  name: monthly-report-generator
+spec:
+  namespace:
+    value: monthly-reports
+  create_namespace: true
+```
+
+#### For Shared Namespaces
+
+1. **Pre-create with governance**: Create the namespace separately using a centralized IaC module with appropriate RBAC and quotas
+2. **Use strict labeling**: Every resource (CronJob, Secret, ConfigMap) must have labels identifying its owning job
+3. **Monitor namespace-level metrics**: Watch for resource contention and quota exhaustion
+4. **Implement cleanup policies**: Use Kubernetes TTL controllers or external tools to clean up completed jobs
+
+Example namespace setup:
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: batch-jobs
+  labels:
+    purpose: scheduled-batch
+    team: platform
+  annotations:
+    scheduler: cron
+```
+
+Example CronJob referencing it:
+```yaml
+metadata:
+  name: nightly-aggregation
+  labels:
+    job-type: aggregation
+    schedule: nightly
+spec:
+  namespace:
+    value: batch-jobs
+  create_namespace: false
+```
+
+### GitOps Considerations
+
+In GitOps workflows (ArgoCD, Flux), namespace management follows a specific pattern:
+
+**Recommended approach:**
+1. Create a separate Git repository or directory for namespace definitions
+2. Deploy namespaces first using a dedicated ArgoCD Application or Flux Kustomization
+3. Set CronJob `create_namespace: false` and reference the pre-created namespaces
+4. This ensures namespaces are created in the correct order and can be managed independently
+
+**Directory structure:**
+```
+gitops-repo/
+  infrastructure/
+    namespaces/
+      batch-jobs-namespace.yaml
+      monitoring-namespace.yaml
+  applications/
+    cronjobs/
+      nightly-backup.yaml  # create_namespace: false
+      weekly-cleanup.yaml  # create_namespace: false
+```
+
+**ArgoCD Application ordering:**
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namespaces
+spec:
+  # Deployed first
+  source:
+    path: infrastructure/namespaces
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cronjobs
+spec:
+  # Deployed after namespaces
+  source:
+    path: applications/cronjobs
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false  # Fail if namespace doesn't exist
+```
+
+### Security and RBAC Implications
+
+Namespace choice has direct security implications:
+
+**Dedicated namespaces:**
+- **Principle of least privilege**: ServiceAccounts can be scoped to just one namespace
+- **Blast radius containment**: Compromise of one job doesn't affect others
+- **Audit clarity**: Namespace-level audit logs show only one job's activity
+
+**Shared namespaces:**
+- **Complex RBAC**: Must use RoleBindings with fine-grained resource matching
+- **Secret sprawl risk**: All jobs can potentially list Secrets in the namespace
+- **Network policies**: Harder to implement pod-to-pod isolation
+
+**Recommendation:** For security-sensitive operations (database access, API key usage, PII processing), always use dedicated namespaces with `create_namespace: true`.
+
+### Cost and Resource Management
+
+Namespace strategy affects resource management:
+
+**Dedicated namespaces:**
+- Apply ResourceQuotas per job to prevent resource hogging
+- Easier to track costs with namespace-level tags
+- Can use LimitRanges to enforce pod-level resource bounds
+
+**Shared namespaces:**
+- Single quota shared by all jobs (can lead to contention)
+- Harder to attribute costs to individual jobs
+- Requires careful label-based monitoring for cost allocation
+
+**Example ResourceQuota for dedicated namespace:**
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: backup-job-quota
+  namespace: db-backup-prod
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 8Gi
+    persistentvolumeclaims: "1"
+```
+
+### Migration Strategy
+
+If you need to migrate between patterns:
+
+**From shared to dedicated:**
+1. Deploy new CronJob with `create_namespace: true` and different name
+2. Verify it works correctly
+3. Suspend the old CronJob (`suspend: true`)
+4. After one cycle, delete the old CronJob
+5. The old namespace remains (since it was shared)
+
+**From dedicated to shared:**
+1. Pre-create the shared namespace
+2. Deploy new CronJob with `create_namespace: false` referencing shared namespace
+3. Verify it works correctly
+4. Delete old CronJob (its dedicated namespace gets deleted automatically)
+5. Update Git/IaC to prevent accidental recreation
+
+### Summary: Choosing the Right Pattern
+
+| Factor | Dedicated Namespace | Shared Namespace |
+|--------|-------------------|------------------|
+| **Isolation** | ✅ High | ❌ Low |
+| **RBAC Simplicity** | ✅ Simple | ❌ Complex |
+| **Operational Overhead** | ❌ Higher | ✅ Lower |
+| **GitOps Compatibility** | ⚠️ Moderate | ✅ High |
+| **Resource Quotas** | ✅ Per-job control | ⚠️ Shared quota |
+| **Cost Attribution** | ✅ Easy | ⚠️ Requires labels |
+| **Cleanup** | ✅ Automatic | ⚠️ Manual/complex |
+| **Multi-tenancy** | ❌ Not applicable | ✅ Ideal |
+
+**General recommendation:**
+- **Production, security-sensitive jobs**: Use dedicated namespaces (`create_namespace: true`)
+- **Related batch jobs in a mature GitOps environment**: Use shared namespaces (`create_namespace: false`)
+- **Development/testing**: Use dedicated namespaces for easy cleanup
+- **When in doubt**: Start with dedicated namespaces, migrate to shared only when operational overhead becomes a problem
+
+The `create_namespace` flag makes this choice explicit and reversible, allowing teams to adapt their namespace strategy as their operational maturity evolves.
+
+---
+
 ## Conclusion: Production-Ready by Default
 
 Kubernetes CronJobs are a powerful primitive for scheduled automation, but the native API's defaults and complexity make it easy to deploy unreliable, insecure, or resource-exhausting workloads. The deployment landscape ranges from anti-patterns (manual `kubectl apply`) to production-proven approaches (GitOps with ArgoCD/Flux), with IaC tools providing unified infrastructure management.

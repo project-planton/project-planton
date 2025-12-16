@@ -8,8 +8,9 @@ This document provides Terraform-specific examples for deploying Helm charts usi
 2. [Helm Release with Custom Values](#example-2-helm-release-with-custom-values)
 3. [WordPress with Ingress](#example-3-wordpress-with-ingress)
 4. [Production PostgreSQL](#example-4-production-postgresql)
-5. [Multi-Environment Setup](#example-5-multi-environment-setup)
-6. [Using Terraform Variables](#example-6-using-terraform-variables)
+5. [Using Existing Namespace](#example-5-using-existing-namespace)
+6. [Multi-Environment Setup](#example-6-multi-environment-setup)
+7. [Using Terraform Variables](#example-7-using-terraform-variables)
 
 ---
 
@@ -55,6 +56,10 @@ module "nginx_helm_release" {
   }
 
   spec = {
+    namespace = {
+      value = "default"
+    }
+    create_namespace = true
     repo    = "https://charts.bitnami.com/bitnami"
     name    = "nginx"
     version = "15.14.0"
@@ -96,6 +101,10 @@ module "nginx_ha" {
   }
 
   spec = {
+    namespace = {
+      value = "nginx"
+    }
+    create_namespace = true
     repo    = "https://charts.bitnami.com/bitnami"
     name    = "nginx"
     version = "15.14.0"
@@ -134,6 +143,10 @@ module "wordpress" {
   }
 
   spec = {
+    namespace = {
+      value = "wordpress"
+    }
+    create_namespace = true
     repo    = "https://charts.bitnami.com/bitnami"
     name    = "wordpress"
     version = "19.0.0"
@@ -184,6 +197,10 @@ module "postgresql" {
   }
 
   spec = {
+    namespace = {
+      value = "postgres"
+    }
+    create_namespace = true
     repo    = "https://charts.bitnami.com/bitnami"
     name    = "postgresql"
     version = "14.3.0"
@@ -210,7 +227,40 @@ module "postgresql" {
 
 ---
 
-## Example 5: Multi-Environment Setup
+## Example 5: Using Existing Namespace
+
+Deploy a Helm release to an existing namespace without creating it.
+
+### main.tf
+
+```hcl
+module "redis_existing_ns" {
+  source = "path/to/kuberneteshelmrelease/v1/iac/tf"
+
+  metadata = {
+    name = "redis-cache"
+  }
+
+  spec = {
+    namespace = {
+      value = "existing-redis-namespace"
+    }
+    create_namespace = false  # Do not create namespace
+    repo    = "https://charts.bitnami.com/bitnami"
+    name    = "redis"
+    version = "18.19.0"
+    values = {}
+  }
+}
+```
+
+**Use Case:** Deploy to a namespace that already exists and is managed separately, such as a namespace created by another module or manually.
+
+**Note:** Ensure the namespace exists before applying this configuration, otherwise the Helm release will fail.
+
+---
+
+## Example 6: Multi-Environment Setup
 
 Use Terraform workspaces or separate configurations for different environments.
 
@@ -280,6 +330,10 @@ module "myapp" {
   }
 
   spec = {
+    namespace = {
+      value = "myapp-${var.environment}"
+    }
+    create_namespace = true
     repo    = "https://charts.company.com/stable"
     name    = "myapp"
     version = var.helm_chart_version
@@ -310,7 +364,7 @@ terraform apply -var-file=terraform.tfvars
 
 ---
 
-## Example 6: Using Terraform Variables
+## Example 7: Using Terraform Variables
 
 Parameterize your Helm release configuration using Terraform variables.
 
@@ -372,6 +426,10 @@ module "helm_release" {
   }
 
   spec = {
+    namespace = {
+      value = "default"
+    }
+    create_namespace = true
     repo    = var.chart_repository
     name    = var.chart_name
     version = var.chart_version

@@ -12,7 +12,7 @@ resource "kubernetes_manifest" "kafka_topic" {
     kind       = "KafkaTopic"
     metadata = {
       name      = each.value.name
-      namespace = kubernetes_namespace_v1.kafka_namespace.metadata[0].name
+      namespace = local.namespace
       labels    = local.final_labels
     }
     spec = {

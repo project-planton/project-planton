@@ -5,7 +5,7 @@ resource "helm_release" "jenkins" {
   chart      = local.jenkins_chart_name
   version    = local.jenkins_chart_version
 
-  namespace = kubernetes_namespace.jenkins_namespace.metadata[0].name
+  namespace = local.namespace
 
   # Merge container_resources into the user-defined helm_values:
   # "controller.resources" is how the Jenkins chart configures pod resource requests/limits.

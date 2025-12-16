@@ -11,6 +11,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "grafana"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -35,6 +36,7 @@ spec:
     cluster_name: "production-gke-cluster"
   namespace:
     value: "grafana"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -62,6 +64,7 @@ spec:
     cluster_name: "dev-gke-cluster"
   namespace:
     value: "grafana"
+  create_namespace: true
   container:
     env:
       variables:
@@ -92,6 +95,7 @@ spec:
     cluster_name: "production-gke-cluster"
   namespace:
     value: "grafana"
+  create_namespace: true
   container:
     env:
       secrets:
@@ -121,5 +125,6 @@ spec:
     cluster_name: "dev-gke-cluster"
   namespace:
     value: "grafana"
+  create_namespace: true
   container: {}
 ```

@@ -3,7 +3,7 @@ resource "kubernetes_service_v1" "ingress_external_lb" {
 
   metadata {
     name      = "ingress-external-lb"
-    namespace = kubernetes_namespace_v1.clickhouse_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
     annotations = {
       "external-dns.alpha.kubernetes.io/hostname" = local.ingress_external_hostname

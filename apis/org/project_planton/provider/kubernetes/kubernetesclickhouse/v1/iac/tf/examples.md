@@ -8,6 +8,15 @@ The **Altinity ClickHouse Operator** must be installed on your Kubernetes cluste
 
 ---
 
+## Namespace Management
+
+All examples include the `create_namespace` field to control namespace management:
+
+- **`create_namespace = true`** - Module creates and manages the namespace
+- **`create_namespace = false`** - Deploy into an existing namespace (must exist before applying)
+
+---
+
 ## Example 1: Minimal Standalone Configuration
 
 ```hcl
@@ -22,7 +31,8 @@ module "clickhouse_basic" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "basic-clickhouse"
+    namespace        = "basic-clickhouse"
+    create_namespace = true
     
     cluster_name = "dev-cluster"
     
@@ -63,7 +73,8 @@ module "clickhouse_production" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "prod-clickhouse"
+    namespace        = "prod-clickhouse"
+    create_namespace = true
     
     cluster_name = "production-analytics"
     version      = "24.8"
@@ -103,7 +114,8 @@ module "clickhouse_distributed" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "distributed-analytics"
+    namespace        = "distributed-analytics"
+    create_namespace = true
     
     cluster_name = "analytics-cluster"
     
@@ -154,7 +166,8 @@ module "clickhouse_ha" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "ha-clickhouse"
+    namespace        = "ha-clickhouse"
+    create_namespace = true
     
     cluster_name = "ha-analytics"
     version      = "24.8"
@@ -205,7 +218,8 @@ module "clickhouse_external_zk" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "enterprise-clickhouse"
+    namespace        = "enterprise-clickhouse"
+    create_namespace = true
     
     cluster_name = "enterprise-cluster"
     
@@ -264,7 +278,8 @@ module "clickhouse_public" {
     target_cluster = {
       name = "my-gke-cluster"
     }
-    namespace = "public-clickhouse"
+    namespace        = "public-clickhouse"
+    create_namespace = true
     
     cluster_name = "public-cluster"
     

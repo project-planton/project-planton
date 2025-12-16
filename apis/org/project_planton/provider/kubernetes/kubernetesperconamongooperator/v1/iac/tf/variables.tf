@@ -20,6 +20,9 @@ variable "spec" {
     # Kubernetes namespace to install the operator. Defaults to "percona-operator" if not provided.
     namespace = optional(string, "percona-operator")
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, true)
+
     # The container specifications for the operator deployment.
     container = object({
       # The CPU and memory resources allocated to the operator container.

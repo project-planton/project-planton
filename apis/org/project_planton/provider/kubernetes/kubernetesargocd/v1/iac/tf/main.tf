@@ -1,8 +1,19 @@
-# Kubernetes namespace for Argo CD
+# Conditional namespace creation for Argo CD
 resource "kubernetes_namespace" "argocd_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
+  }
+}
+
+# Data source for existing namespace
+data "kubernetes_namespace" "existing" {
+  count = var.spec.create_namespace ? 0 : 1
+
+  metadata {
+    name = local.namespace
   }
 }
 
@@ -12,7 +23,7 @@ resource "helm_release" "argocd" {
   repository = local.argocd_chart_repo
   chart      = local.argocd_chart_name
   version    = local.argocd_chart_version
-  namespace  = kubernetes_namespace.argocd_namespace.metadata[0].name
+  namespace  = local.namespace_name
 
   # Wait for resources to be ready
   wait          = true
@@ -97,6 +108,9 @@ resource "helm_release" "argocd" {
     })
   ]
 
-  depends_on = [kubernetes_namespace.argocd_namespace]
+  depends_on = [
+    kubernetes_namespace.argocd_namespace,
+    data.kubernetes_namespace.existing
+  ]
 }
 

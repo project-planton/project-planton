@@ -2,6 +2,19 @@
 
 The **Mongodb Kubernetes API Resource** provides a standardized and efficient way to deploy MongoDB onto Kubernetes clusters. This API resource simplifies the deployment process by encapsulating all necessary configurations, enabling consistent and repeatable MongoDB deployments across various environments.
 
+## Namespace Management
+
+This component provides flexible namespace management through the `create_namespace` field in the spec:
+
+- **`create_namespace: true`**: Creates a new namespace with resource labels for tracking
+  - Ideal for new deployments and isolated environments
+  - Namespace is automatically created before MongoDB resources
+  
+- **`create_namespace: false`**: Uses an existing namespace
+  - Namespace must exist before applying this component
+  - Suitable for environments with pre-configured policies, quotas, or RBAC
+  - Allows sharing the namespace with other resources
+
 ## Purpose
 
 Deploying MongoDB on Kubernetes involves complex configurations, including resource management, storage persistence, and environment settings. The Mongodb Kubernetes API Resource aims to:

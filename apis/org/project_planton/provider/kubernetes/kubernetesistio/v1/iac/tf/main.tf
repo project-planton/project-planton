@@ -31,8 +31,12 @@
 #
 # The istio-system namespace hosts the Istio
 # control plane components (istiod).
+#
+# Only created if var.spec.create_namespace is true.
 ##############################################
 resource "kubernetes_namespace" "istio_system" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.system_namespace
     labels = local.final_labels
@@ -44,8 +48,12 @@ resource "kubernetes_namespace" "istio_system" {
 #
 # The istio-ingress namespace hosts the Istio
 # ingress gateway for handling external traffic.
+#
+# Only created if var.spec.create_namespace is true.
 ##############################################
 resource "kubernetes_namespace" "istio_ingress" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.gateway_namespace
     labels = local.final_labels
@@ -62,7 +70,7 @@ resource "kubernetes_namespace" "istio_ingress" {
 ##############################################
 resource "helm_release" "istio_base" {
   name       = local.base_chart_name
-  namespace  = kubernetes_namespace.istio_system.metadata[0].name
+  namespace  = local.system_namespace
   repository = local.helm_repo
   chart      = local.base_chart_name
   version    = local.chart_version
@@ -87,7 +95,7 @@ resource "helm_release" "istio_base" {
 ##############################################
 resource "helm_release" "istiod" {
   name       = local.istiod_chart_name
-  namespace  = kubernetes_namespace.istio_system.metadata[0].name
+  namespace  = local.system_namespace
   repository = local.helm_repo
   chart      = local.istiod_chart_name
   version    = local.chart_version
@@ -133,7 +141,7 @@ resource "helm_release" "istiod" {
 ##############################################
 resource "helm_release" "istio_gateway" {
   name       = local.gateway_chart_name
-  namespace  = kubernetes_namespace.istio_ingress.metadata[0].name
+  namespace  = local.gateway_namespace
   repository = local.helm_repo
   chart      = local.gateway_chart_name
   version    = local.chart_version

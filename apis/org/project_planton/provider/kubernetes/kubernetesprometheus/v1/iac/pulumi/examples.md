@@ -14,6 +14,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -39,6 +40,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   container:
     replicas: 2
     resources:
@@ -48,8 +50,8 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    isPersistenceEnabled: true
-    diskSize: "5Gi"
+    persistence_enabled: true
+    disk_size: "5Gi"
 ```
 
 ## Example 3: Prometheus with Ingress Configuration
@@ -66,6 +68,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -76,9 +79,8 @@ spec:
         cpu: 2
         memory: 2Gi
   ingress:
-    isEnabled: true
-    ingressClass: "nginx"
-    host: "prometheus.example.com"
+    enabled: true
+    hostname: "prometheus.example.com"
 ```
 
 ## Example 4: Prometheus with Custom Resource Limits and No Persistence
@@ -95,6 +97,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: my-namespace
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -104,5 +107,5 @@ spec:
       limits:
         cpu: 500m
         memory: 1Gi
-    isPersistenceEnabled: false
+    persistence_enabled: false
 ```

@@ -24,6 +24,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "my-app-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -62,6 +63,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "my-public-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -104,6 +106,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "my-app-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -156,6 +159,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "restored-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -229,6 +233,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "restored-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -303,6 +308,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "restored-db-simple"
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -353,6 +359,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "ha-db"
+  create_namespace: true
   container:
     # Multiple replicas for high availability
     replicas: 3
@@ -407,6 +414,7 @@ spec:
     cluster_name: "my-gke-cluster"
   namespace:
     value: "dev-db"
+  create_namespace: true
   container:
     replicas: 1
     resources:

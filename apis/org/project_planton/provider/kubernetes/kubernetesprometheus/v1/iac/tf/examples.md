@@ -27,6 +27,7 @@ module "prometheus_dev" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -79,6 +80,7 @@ module "prometheus_production" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 2
@@ -130,6 +132,7 @@ module "prometheus_analytics" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 3
@@ -188,6 +191,7 @@ module "prometheus_minimal" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -238,6 +242,7 @@ module "prometheus_public" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = 1
@@ -339,6 +344,7 @@ module "prometheus_env" {
     }
     
     namespace = "my-namespace"
+    create_namespace = true
     
     container = {
       replicas = var.resource_tier[var.environment].replicas

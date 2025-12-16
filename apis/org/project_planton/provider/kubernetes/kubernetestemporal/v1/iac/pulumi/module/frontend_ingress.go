@@ -21,6 +21,12 @@ func frontendIngress(ctx *pulumi.Context, locals *Locals,
 		return nil
 	}
 
+	// Build resource options, conditionally adding parent if namespace was created
+	opts := []pulumi.ResourceOption{}
+	if createdNamespace != nil {
+		opts = append(opts, pulumi.Parent(createdNamespace))
+	}
+
 	selector := map[string]string{
 		"app.kubernetes.io/instance": locals.KubernetesTemporal.Metadata.Name,
 		// Temporal Helm labels its pods with workload-name = “temporal-frontend”
@@ -32,8 +38,8 @@ func frontendIngress(ctx *pulumi.Context, locals *Locals,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
 				Name:      pulumi.String("frontend-external-lb"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    createdNamespace.Metadata.Labels(),
+				Namespace: pulumi.String(locals.Namespace),
+				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{
 					"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressFrontendGrpcHostname),
 				},
@@ -50,7 +56,7 @@ func frontendIngress(ctx *pulumi.Context, locals *Locals,
 				},
 				Selector: pulumi.ToStringMap(selector),
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, opts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to create frontend gRPC load balancer service")
 	}

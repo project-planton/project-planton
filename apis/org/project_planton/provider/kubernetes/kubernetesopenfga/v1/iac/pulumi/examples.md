@@ -14,6 +14,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: open-fga-service
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -45,6 +46,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: open-fga-service
+  create_namespace: true
   container:
     replicas: 2
     resources:
@@ -75,6 +77,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: basic-openfga
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -103,6 +106,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: open-fga-high-availability
+  create_namespace: true
   container:
     replicas: 5
     resources:
@@ -118,4 +122,33 @@ spec:
   datastore:
     engine: postgres
     uri: postgres://user:securepassword@ha-db-host:5432/openfga
+```
+
+---
+
+# Example with Pre-existing Namespace
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: OpenFgaKubernetes
+metadata:
+  name: openfga-shared-namespace
+spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false  # Namespace is managed externally
+  container:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+  datastore:
+    engine: postgres
+    uri: postgres://user:password@db-host:5432/openfga
 ```

@@ -80,8 +80,12 @@ The operator typically installs in the `clickhouse-operator` namespace and watch
 2. **Provider Setup**  
    Establishes a Pulumi Kubernetes Provider using the supplied cluster credentials.
 
-3. **Namespace Creation**  
-   Creates a dedicated namespace for your ClickHouse resources with appropriate labels for resource tracking.
+3. **Namespace Management**  
+   Conditionally creates or references a namespace based on the `create_namespace` flag:
+   - When `create_namespace: true`: Creates a dedicated namespace with appropriate labels for resource tracking
+   - When `create_namespace: false`: Uses an existing namespace (must exist before deployment)
+   
+   This flexibility allows you to either let the component manage the namespace lifecycle or deploy into a shared/externally-managed namespace.
 
 4. **Secret Management**  
    Generates a cryptographically secure random password and stores it in a Kubernetes Secret for ClickHouse authentication.

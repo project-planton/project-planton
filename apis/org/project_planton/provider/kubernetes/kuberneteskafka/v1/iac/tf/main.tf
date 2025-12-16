@@ -79,8 +79,11 @@
 #
 # Kafka and related components run in a dedicated
 # namespace for isolation and resource management.
+# The namespace is only created if create_namespace is true.
 ##############################################
 resource "kubernetes_namespace_v1" "kafka_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels

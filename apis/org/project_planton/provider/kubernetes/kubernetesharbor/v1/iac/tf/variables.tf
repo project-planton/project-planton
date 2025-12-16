@@ -6,7 +6,8 @@ variable "harbor_kubernetes" {
       id   = optional(string)
     })
     spec = object({
-      namespace = string
+      namespace        = string
+      create_namespace = bool
       core_container = optional(object({
         replicas = number
         resources = optional(object({

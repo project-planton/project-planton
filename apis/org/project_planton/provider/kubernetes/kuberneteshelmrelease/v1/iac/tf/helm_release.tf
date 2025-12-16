@@ -7,8 +7,8 @@ resource "helm_release" "helm_chart" {
   chart      = local.helm_chart
   version = local.helm_version
 
-  # Install the chart into the namespace we created
-  namespace = kubernetes_namespace.helm_release_namespace.metadata[0].name
+  # Use created namespace if available, otherwise use namespace name directly
+  namespace = local.create_namespace ? kubernetes_namespace.helm_release_namespace[0].metadata[0].name : local.namespace_name
 
   # # "values" must be a list of YAML strings
   # values = [

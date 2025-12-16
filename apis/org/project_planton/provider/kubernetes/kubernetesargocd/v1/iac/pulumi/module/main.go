@@ -21,18 +21,38 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesargocdv1.KubernetesArg
 		return errors.Wrap(err, "failed to setup kubernetes provider")
 	}
 
-	// Create namespace for Argo CD
-	namespace, err := corev1.NewNamespace(ctx,
-		locals.Namespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:   pulumi.String(locals.Namespace),
-				Labels: pulumi.ToStringMap(locals.Labels),
+	// Conditionally create or lookup namespace based on create_namespace flag
+	var namespace *corev1.Namespace
+	var namespaceOutput pulumi.StringInput
+
+	if stackInput.Target.Spec.CreateNamespace {
+		// Create new namespace for Argo CD
+		ns, err := corev1.NewNamespace(ctx,
+			locals.Namespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
+				},
 			},
-		},
-		pulumi.Provider(kubeProvider))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
+		}
+		namespace = ns
+		namespaceOutput = namespace.Metadata.Name().Elem()
+	} else {
+		// Lookup existing namespace
+		ns, err := corev1.GetNamespace(ctx,
+			locals.Namespace,
+			pulumi.ID(locals.Namespace),
+			nil,
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrapf(err, "failed to get existing namespace %s - ensure it exists before deployment", locals.Namespace)
+		}
+		namespace = ns
+		namespaceOutput = pulumi.String(locals.Namespace)
 	}
 
 	// Get resource specifications
@@ -107,7 +127,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesargocdv1.KubernetesArg
 	_, err = helm.NewRelease(ctx, "argocd",
 		&helm.ReleaseArgs{
 			Name:      pulumi.String(resourceId),
-			Namespace: namespace.Metadata.Name(),
+			Namespace: namespaceOutput,
 			Chart:     pulumi.String("argo-cd"),
 			Version:   pulumi.String("7.7.12"), // Pin to stable version
 			RepositoryOpts: &helm.RepositoryOptsArgs{

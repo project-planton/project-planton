@@ -29,17 +29,28 @@ func imagePullSecret(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Create image pull secret resource
-	createdImagePullSecret, err := kubernetescorev1.NewSecret(ctx,
-		"image-pull-secret",
-		&kubernetescorev1.SecretArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String("image-pull-secret"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.Labels),
-			},
-			Type:       pulumi.String("kubernetes.io/dockerconfigjson"),
-			StringData: pulumi.ToStringMap(locals.ImagePullSecretData),
-		}, pulumi.Parent(createdNamespace))
+	secretArgs := &kubernetescorev1.SecretArgs{
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String("image-pull-secret"),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Type:       pulumi.String("kubernetes.io/dockerconfigjson"),
+		StringData: pulumi.ToStringMap(locals.ImagePullSecretData),
+	}
+
+	var createdImagePullSecret *kubernetescorev1.Secret
+	var err error
+	if createdNamespace != nil {
+		createdImagePullSecret, err = kubernetescorev1.NewSecret(ctx,
+			"image-pull-secret",
+			secretArgs,
+			pulumi.Parent(createdNamespace))
+	} else {
+		createdImagePullSecret, err = kubernetescorev1.NewSecret(ctx,
+			"image-pull-secret",
+			secretArgs)
+	}
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create image pull secret")
 	}

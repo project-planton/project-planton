@@ -1,5 +1,20 @@
 # Terraform Module to Deploy Jenkins on Kubernetes
 
+## Namespace Management
+
+This module provides flexible namespace management through the `create_namespace` variable in the spec:
+
+- **`create_namespace: true`** (default): The module creates a dedicated Kubernetes namespace with appropriate labels
+- **`create_namespace: false`**: The module uses an existing namespace without creating it. This is useful when:
+  - The namespace already exists in the cluster
+  - Multiple deployments share the same namespace
+  - Namespaces are managed centrally by cluster administrators
+  - Using GitOps workflows where namespaces are managed separately
+
+**Important**: When `create_namespace: false`, ensure the namespace exists before applying this module, otherwise the deployment will fail.
+
+## Usage
+
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
   --backend-config="bucket=planton-cloud-tf-state-backend" \

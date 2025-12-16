@@ -36,6 +36,12 @@ Deploying applications using Helm charts on Kubernetes can be complex due to var
 - **Automated Helm Operations**: Automates the Helm chart installation, upgrade, and rollback processes, reducing manual intervention.
 - **Consistent Configuration**: Ensures that all deployments use the same configurations unless explicitly overridden, promoting consistency.
 
+### Namespace Management
+
+- **Flexible Namespace Handling**: Control whether the namespace should be created or if an existing namespace should be used.
+- **create_namespace Flag**: Set to `true` to automatically create the namespace, or `false` to use an existing namespace.
+- **Namespace Reference**: Support for both literal namespace names and references to KubernetesNamespace resources.
+
 ## Benefits
 
 - **Simplified Deployment**: Abstracts the complexities of Helm and Kubernetes configurations into an easy-to-use API resource.

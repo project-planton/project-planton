@@ -69,9 +69,22 @@ Refer to [example](example.md) for usage instructions.
 
 ## Module Components
 
-### Namespace Creation
+### Namespace Management
 
-The module creates a dedicated Kubernetes namespace for the Kafka cluster, ensuring resource isolation.
+The module provides flexible namespace management through the `create_namespace` flag:
+
+- **Automatic Creation** (`create_namespace: true`): The module creates a dedicated Kubernetes namespace with appropriate labels, ensuring resource isolation and lifecycle management.
+- **External Management** (`create_namespace: false`): Use an existing namespace managed outside this module (e.g., via KubernetesNamespace component or manual creation). Resources will be deployed into the specified namespace without attempting to create it.
+
+**When to use `create_namespace: true`:**
+- New deployments where namespace doesn't exist
+- Full lifecycle management by the module
+- Default and recommended approach
+
+**When to use `create_namespace: false`:**
+- Namespace is managed by a centralized governance system
+- Pre-existing namespace with specific configurations
+- Multi-tenant environments with namespace policies
 
 ### Kafka Cluster Deployment
 

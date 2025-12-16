@@ -1,5 +1,14 @@
 # Neo4j Kubernetes API - Example Configurations
 
+## Namespace Management
+
+The `create_namespace` flag controls whether the Neo4j component creates the namespace or expects it to already exist:
+
+- **`create_namespace: true`** (recommended for new deployments): The component creates and manages the namespace
+- **`create_namespace: false`**: The component expects the namespace to already exist (useful when namespace is managed separately or by another component)
+
+---
+
 ## Example w/ Basic Configuration
 
 ### Create Using CLI
@@ -20,7 +29,11 @@ kind: Neo4jKubernetes
 metadata:
   name: basic-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: neo4j
+  create_namespace: true
   container:
     resources:
       requests:
@@ -43,7 +56,11 @@ kind: Neo4jKubernetes
 metadata:
   name: ingress-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: neo4j
+  create_namespace: true
   container:
     resources:
       requests:
@@ -69,7 +86,11 @@ kind: Neo4jKubernetes
 metadata:
   name: custom-resources-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: neo4j
+  create_namespace: true
   container:
     resources:
       requests:
@@ -92,7 +113,11 @@ kind: Neo4jKubernetes
 metadata:
   name: minimal-neo4j
 spec:
-  kubernetesProviderConfigId: my-cluster-credential-id
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: neo4j
+  create_namespace: true
   container:
     resources:
       requests:

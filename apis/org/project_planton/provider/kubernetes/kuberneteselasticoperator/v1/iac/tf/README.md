@@ -29,6 +29,8 @@ module "eck_operator" {
   }
 
   spec = {
+    namespace        = "elastic-system"
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -59,6 +61,8 @@ module "eck_operator_ha" {
   }
 
   spec = {
+    namespace        = "elastic-system"
+    create_namespace = true
     container = {
       resources = {
         requests = {
@@ -68,6 +72,38 @@ module "eck_operator_ha" {
         limits = {
           cpu    = "2000m"
           memory = "2Gi"
+        }
+      }
+    }
+  }
+}
+```
+
+### Using Existing Namespace
+
+```hcl
+module "eck_operator_existing_ns" {
+  source = "./path/to/kubernetes-elastic-operator/iac/tf"
+
+  metadata = {
+    name = "eck-operator"
+    id   = "eck-op-prod"
+    org  = "platform"
+    env  = "production"
+  }
+
+  spec = {
+    namespace        = "platform-operators"  # Use existing namespace
+    create_namespace = false                 # Don't create the namespace
+    container = {
+      resources = {
+        requests = {
+          cpu    = "50m"
+          memory = "100Mi"
+        }
+        limits = {
+          cpu    = "1000m"
+          memory = "1Gi"
         }
       }
     }
@@ -97,6 +133,8 @@ module "eck_operator_ha" {
 
 | Field | Description | Type | Required |
 |-------|-------------|------|----------|
+| namespace | Kubernetes namespace name | string | yes |
+| create_namespace | Whether to create the namespace (true) or use existing (false) | bool | no (default: false) |
 | container.resources | Container resource limits and requests | object | yes |
 
 ## Outputs
@@ -109,8 +147,32 @@ module "eck_operator_ha" {
 
 ## Resources Created
 
-- **kubernetes_namespace.elastic_system**: Dedicated namespace for ECK operator
+- **kubernetes_namespace.elastic_system** (conditional): Dedicated namespace for ECK operator (only created if `spec.create_namespace` is `true`)
 - **helm_release.eck_operator**: Helm release for ECK operator chart
+
+## Namespace Management
+
+The module supports two modes for namespace management:
+
+### Create Namespace (create_namespace: true)
+
+When `spec.create_namespace` is set to `true`, the module creates the namespace with:
+- Planton labels for resource tracking
+- Proper metadata and organization labels
+- Lifecycle management tied to this component
+
+### Use Existing Namespace (create_namespace: false)
+
+When `spec.create_namespace` is set to `false`:
+- The module assumes the namespace already exists
+- You must ensure the namespace is created before applying this module
+- Useful when namespace is managed by another component or has specific configurations (quotas, policies)
+
+**Example use cases for existing namespace:**
+- Namespace is created by a separate KubernetesNamespace component
+- Multiple operators share a common namespace (e.g., `platform-operators`)
+- Namespace has custom resource quotas or network policies
+- GitOps workflow where namespaces are managed separately
 
 ## Module Constants
 

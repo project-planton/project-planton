@@ -37,8 +37,11 @@ locals {
   # Get namespace from spec
   namespace = var.spec.namespace
 
-  # The microservice version is used as the Service name (per the code logic).
-  kube_service_name = var.spec.version
+  # Namespace name to use in all resources (created or existing)
+  namespace_name = var.spec.create_namespace ? kubernetes_namespace.this[0].metadata[0].name : data.kubernetes_namespace.existing[0].metadata[0].name
+
+  # The cronjob name is used for identification
+  kube_service_name = var.metadata.name
 
   # Internal DNS name for the service
   kube_service_fqdn = "${local.kube_service_name}.${local.namespace}.svc.cluster.local"

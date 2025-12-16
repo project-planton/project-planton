@@ -1,5 +1,7 @@
-# Create namespace for Temporal deployment
+# Create namespace for Temporal deployment (only if create_namespace is true)
 resource "kubernetes_namespace_v1" "temporal_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
@@ -12,7 +14,7 @@ resource "kubernetes_secret_v1" "db_password" {
 
   metadata {
     name      = local.database_secret_name
-    namespace = kubernetes_namespace_v1.temporal_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
   }
 
@@ -29,7 +31,7 @@ resource "helm_release" "temporal" {
   repository = local.helm_chart_repository
   chart      = local.helm_chart_name
   version    = local.helm_chart_version
-  namespace  = kubernetes_namespace_v1.temporal_namespace.metadata[0].name
+  namespace  = local.namespace
 
   # Wait for deployment to complete
   wait          = true
@@ -434,7 +436,6 @@ resource "helm_release" "temporal" {
   }
 
   depends_on = [
-    kubernetes_namespace_v1.temporal_namespace,
     kubernetes_secret_v1.db_password
   ]
 }
@@ -445,7 +446,7 @@ resource "kubernetes_service_v1" "frontend_grpc_lb" {
 
   metadata {
     name      = "${var.metadata.name}-frontend-grpc-lb"
-    namespace = kubernetes_namespace_v1.temporal_namespace.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
     annotations = {
       "external-dns.alpha.kubernetes.io/hostname" = local.frontend_grpc_hostname

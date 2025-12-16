@@ -20,6 +20,8 @@ kind: KubernetesMongodb
 metadata:
   name: basic-mongodb
 spec:
+  namespace: mongodb-namespace
+  createNamespace: true
   container:
     replicas: 1
     resources:
@@ -44,6 +46,8 @@ kind: KubernetesMongodb
 metadata:
   name: persistent-mongodb
 spec:
+  namespace: mongodb-namespace
+  createNamespace: true
   container:
     replicas: 3
     persistenceEnabled: true
@@ -69,6 +73,8 @@ kind: KubernetesMongodb
 metadata:
   name: custom-mongodb
 spec:
+  namespace: mongodb-namespace
+  createNamespace: true
   container:
     replicas: 2
     persistenceEnabled: true
@@ -97,6 +103,8 @@ kind: KubernetesMongodb
 metadata:
   name: ingress-mongodb
 spec:
+  namespace: mongodb-namespace
+  createNamespace: true
   container:
     replicas: 1
     persistenceEnabled: true
@@ -125,6 +133,8 @@ kind: KubernetesMongodb
 metadata:
   name: production-mongodb
 spec:
+  namespace: mongodb-prod
+  createNamespace: true
   container:
     replicas: 3
     persistenceEnabled: true
@@ -139,4 +149,31 @@ spec:
   ingress:
     enabled: true
     hostname: mongodb.prod.example.com
+```
+
+---
+
+## Example w/ Existing Namespace
+
+This example demonstrates using an existing namespace instead of creating a new one. This is useful when you have pre-configured policies, quotas, or RBAC rules in the namespace.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesMongodb
+metadata:
+  name: existing-ns-mongodb
+spec:
+  namespace: existing-mongodb-namespace
+  createNamespace: false
+  container:
+    replicas: 3
+    persistenceEnabled: true
+    diskSize: 20Gi
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
 ```

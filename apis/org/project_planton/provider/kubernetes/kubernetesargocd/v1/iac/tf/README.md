@@ -43,7 +43,7 @@ project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 
 This module deploys the following resources:
 
-1. **Kubernetes Namespace**: A dedicated namespace for Argo CD (prefixed with `argo-`)
+1. **Kubernetes Namespace**: An optionally created dedicated namespace for Argo CD (based on `create_namespace` flag)
 2. **Argo CD Helm Release**: The official argo-cd chart from https://argoproj.github.io/argo-helm
 3. **Core Components**:
    - API Server (with configured resource limits)
@@ -58,6 +58,33 @@ The module reads configuration from the `KubernetesArgocd` manifest and applies 
 - **Container Resources**: CPU and memory limits/requests for all components
 - **Ingress**: Optional ingress configuration for external access
 - **Labels**: Resource labels for organization and tracking
+- **Namespace Management**: Control whether the namespace should be created or use an existing one
+
+## Namespace Management
+
+The module supports two namespace management modes:
+
+### Automatic Creation (create_namespace: true)
+
+The module creates and manages the namespace with appropriate labels. This is the default behavior and is suitable for:
+- Development and testing environments
+- Scenarios where the deployment tool has full cluster permissions
+- Simplified deployment workflows
+
+### Use Existing Namespace (create_namespace: false)
+
+The module uses a pre-existing namespace. This is recommended for:
+- Production environments with strict namespace governance
+- Multi-tenant clusters with namespace policies
+- Environments where namespace creation requires elevated privileges
+
+**Important**: When using `create_namespace: false`, ensure the namespace exists before running terraform apply:
+
+```bash
+kubectl create namespace <namespace-name>
+```
+
+If the namespace doesn't exist, the deployment will fail with a "namespace not found" error.
 
 ## Outputs
 

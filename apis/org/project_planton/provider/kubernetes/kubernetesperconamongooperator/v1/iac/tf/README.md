@@ -15,7 +15,7 @@ This Terraform module deploys the Percona Operator for MongoDB to a Kubernetes c
 - **Helm Chart Deployment**: Deploys using the official Percona Helm chart
 - **CRD Installation**: Automatically installs MongoDB Custom Resource Definitions
 - **Resource Configuration**: Configurable CPU and memory resources for the operator pod
-- **Namespace Isolation**: Creates dedicated namespace for the operator
+- **Flexible Namespace Management**: Optionally creates namespace or uses existing one
 
 ### Infrastructure as Code
 - **Declarative Configuration**: Define desired state using Terraform syntax
@@ -41,7 +41,7 @@ tf/
 
 ## Resources Created
 
-1. **Kubernetes Namespace**: `percona-operator`
+1. **Kubernetes Namespace** (optional): Created only if `create_namespace` is true
 2. **Helm Release**: Deploys the Percona Operator for MongoDB
 3. **CRDs**: PerconaServerMongoDB and related custom resources
 
@@ -68,6 +68,7 @@ Specification for the operator deployment.
 
 **Fields**:
 - `namespace` (string, optional): Namespace to install the operator (defaults to "percona-operator")
+- `create_namespace` (bool, optional): Whether to create the namespace (defaults to true)
 - `container` (object, required): Container specifications
   - `resources` (object, required): Resource allocations
     - `limits` (object): Maximum resources
@@ -143,6 +144,63 @@ module "percona_operator_large" {
         }
       }
     }
+  }
+}
+```
+
+## Namespace Management
+
+The module supports two namespace management strategies:
+
+### 1. Module-Managed Namespace (Default)
+
+Set `create_namespace = true` (or omit, as true is the default):
+
+```hcl
+spec = {
+  namespace        = "percona-operator"
+  create_namespace = true
+  # ...
+}
+```
+
+The module will create the namespace with appropriate labels.
+
+### 2. Externally-Managed Namespace
+
+Set `create_namespace = false`:
+
+```hcl
+spec = {
+  namespace        = "shared-operators"
+  create_namespace = false
+  # ...
+}
+```
+
+The namespace must exist before applying this module. Create it separately:
+
+```bash
+kubectl create namespace shared-operators
+```
+
+Or manage it with a separate Terraform resource:
+
+```hcl
+resource "kubernetes_namespace" "shared" {
+  metadata {
+    name = "shared-operators"
+    # custom labels, annotations, etc.
+  }
+}
+
+module "percona_operator" {
+  source = "./tf"
+  
+  spec = {
+    namespace        = kubernetes_namespace.shared.metadata[0].name
+    create_namespace = false
+    # ...
   }
 }
 ```

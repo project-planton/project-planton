@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func adminPassword(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescorev1.Namespace) error {
+func adminPassword(ctx *pulumi.Context, locals *Locals, namespace pulumi.StringInput) error {
 	createRandomPassword, err := random.NewRandomPassword(ctx,
 		vars.RedisPasswordSecretName,
 		&random.RandomPasswordArgs{
@@ -39,12 +39,12 @@ func adminPassword(ctx *pulumi.Context, locals *Locals, createdNamespace *kubern
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.RedisPasswordSecretName),
-				Namespace: pulumi.String(locals.Namespace),
+				Namespace: namespace,
 			},
 			Data: pulumi.StringMap{
 				vars.RedisPasswordSecretKey: base64Password,
 			},
-		}, pulumi.Parent(createdNamespace))
+		})
 	if err != nil {
 		return errors.Wrap(err, "failed to admin secret")
 	}

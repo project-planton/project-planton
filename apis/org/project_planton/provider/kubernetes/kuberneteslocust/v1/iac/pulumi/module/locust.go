@@ -12,17 +12,23 @@ import (
 
 func locust(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
+	// Create resource options based on whether namespace was created
+	var resourceOpts []pulumi.ResourceOption
+	if createdNamespace != nil {
+		resourceOpts = []pulumi.ResourceOption{pulumi.Parent(createdNamespace)}
+	}
+
 	// Create a ConfigMap for the main.py file
 	_, err := kubernetescorev1.NewConfigMap(ctx, "main-py", &kubernetescorev1.ConfigMapArgs{
 		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
 			Name:      pulumi.String(vars.MainPyConfigMapName),
-			Namespace: createdNamespace.Metadata.Name(),
+			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		}),
 		Data: pulumi.StringMap{
 			"main.py": pulumi.String(locals.KubernetesLocust.Spec.LoadTest.MainPyContent),
 		},
-	}, pulumi.Parent(createdNamespace))
+	}, resourceOpts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to create main py configmap")
 	}
@@ -31,11 +37,11 @@ func locust(ctx *pulumi.Context, locals *Locals,
 	_, err = kubernetescorev1.NewConfigMap(ctx, "lib-files", &kubernetescorev1.ConfigMapArgs{
 		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
 			Name:      pulumi.String(vars.LibFilesConfigMapName),
-			Namespace: createdNamespace.Metadata.Name(),
+			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		}),
 		Data: pulumi.ToStringMap(locals.KubernetesLocust.Spec.LoadTest.LibFilesContent),
-	}, pulumi.Parent(createdNamespace))
+	}, resourceOpts...)
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create lib files configmap")
@@ -73,7 +79,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String("https://charts.deliveryhero.io"), // The URL for the Helm chart repository
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, resourceOpts...)
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create locust resource")

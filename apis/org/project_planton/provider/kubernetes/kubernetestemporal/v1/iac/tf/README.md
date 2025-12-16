@@ -1,4 +1,32 @@
-# Terraform Module to Deploy Redis on Kubernetes
+# Terraform Module to Deploy Temporal on Kubernetes
+
+## Namespace Management
+
+This module supports two namespace management modes:
+
+### 1. Create New Namespace (Default)
+
+```hcl
+spec = {
+  namespace = "temporal-prod"
+  create_namespace = true  # Module creates namespace
+  # ...
+}
+```
+
+### 2. Use Existing Namespace
+
+```hcl
+spec = {
+  namespace = "existing-namespace"  
+  create_namespace = false  # Namespace must exist
+  # ...
+}
+```
+
+**Important**: When `create_namespace = false`, ensure the namespace exists before running `terraform apply`.
+
+## Usage
 
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \

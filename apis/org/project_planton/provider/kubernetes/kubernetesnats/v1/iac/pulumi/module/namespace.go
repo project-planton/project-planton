@@ -2,19 +2,29 @@ package module
 
 import (
 	"github.com/pkg/errors"
+	kubernetesnatsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetesmeta "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// namespace creates the Kubernetes namespace that will hold every
-// resource in the KubernetesNats deployment.  We return the created
-// object so that downstream helpers can set it as Parent and inherit
-// the namespace automatically.
+// namespace conditionally creates the Kubernetes namespace that will hold every
+// resource in the KubernetesNats deployment based on the create_namespace flag.
+// We return the created object (or nil if not created) so that downstream helpers
+// can set it as Parent and inherit the namespace automatically.
 //
-// Terraform equivalent: a standalone kubernetes_namespace resource.
-func namespace(ctx *pulumi.Context, locals *Locals,
-	kubernetesProvider pulumi.ProviderResource) (*kubernetescorev1.Namespace, error) {
+// If create_namespace is false, the namespace is assumed to exist and is not created.
+// In this case, nil is returned and downstream resources will use the namespace name
+// directly from locals.Namespace.
+//
+// Terraform equivalent: a standalone kubernetes_namespace resource with count.
+func namespace(ctx *pulumi.Context, stackInput *kubernetesnatsv1.KubernetesNatsStackInput,
+	locals *Locals, kubernetesProvider pulumi.ProviderResource) (*kubernetescorev1.Namespace, error) {
+
+	// Only create namespace if the flag is set to true
+	if !stackInput.Target.Spec.CreateNamespace {
+		return nil, nil
+	}
 
 	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,
 		locals.Namespace,

@@ -31,8 +31,9 @@ Deploy and configure the Zalando Postgres Operator on Kubernetes clusters with:
 │  ┌──────────────────────────────────────────────────────────┐            │
 │  │            postgresOperator Function                      │            │
 │  │                                                           │            │
-│  │  1. Create Namespace                                     │            │
-│  │     └─► postgres-operator (with labels)                 │            │
+│  │  1. Create or Use Namespace (conditional)                │            │
+│  │     ├─► If create_namespace=true: Create namespace      │            │
+│  │     └─► If create_namespace=false: Use existing         │            │
 │  │                                                           │            │
 │  │  2. createBackupResources (if backup_config provided)   │            │
 │  │     ├─► Secret: r2-postgres-backup-credentials          │            │
@@ -130,19 +131,32 @@ KubernetesZalandoPostgresOperatorStackInput (Protobuf)
 
 ## Design Decisions
 
-### 1. Fixed Namespace
+### 1. Conditional Namespace Creation
 
-**Decision**: Always deploy to `postgres-operator` namespace
+**Decision**: Allow users to choose between creating namespace or using existing one via `create_namespace` flag
 
 **Rationale**:
+- Provides flexibility for different deployment scenarios
+- Some environments have pre-existing namespaces managed by platform teams
+- Allows integration with existing namespace management workflows
 - Zalando operator is cluster-scoped (watches all namespaces)
 - Single operator instance per cluster is the recommended pattern
-- Fixed namespace simplifies multi-environment deployments
-- Avoids namespace conflicts and confusion
+
+**Implementation**:
+```go
+if locals.KubernetesZalandoPostgresOperator.Spec.CreateNamespace {
+    // Create new namespace
+    createdNamespace, err := corev1.NewNamespace(ctx, ...)
+    namespaceOutput = createdNamespace.Metadata.Name()
+} else {
+    // Use existing namespace - just reference the name
+    namespaceOutput = pulumi.String(namespace).ToStringOutput()
+}
+```
 
 **Trade-offs**:
-- Less flexibility (cannot deploy multiple operator instances)
-- **Benefit**: Consistent deployment pattern across environments
+- More complexity in handling namespace references
+- **Benefit**: Flexibility for different operational models
 
 ### 2. Conditional Backup Resources
 
@@ -467,10 +481,10 @@ To add new exports:
 ## Known Limitations
 
 1. **Single Operator Per Cluster**: Module assumes one operator instance per Kubernetes cluster
-2. **Fixed Namespace**: Cannot deploy to custom namespace
-3. **R2 Only**: Backup currently only supports Cloudflare R2 (not AWS S3, GCS, Azure Blob)
-4. **No Operator HA**: Module doesn't configure operator high availability (multiple replicas)
-5. **Limited Helm Customization**: Only exposes a subset of Helm chart values
+2. **R2 Only**: Backup currently only supports Cloudflare R2 (not AWS S3, GCS, Azure Blob)
+3. **No Operator HA**: Module doesn't configure operator high availability (multiple replicas)
+4. **Limited Helm Customization**: Only exposes a subset of Helm chart values
+5. **Namespace Existence**: When `create_namespace: false`, the namespace must already exist (no validation at plan time)
 
 ## Performance Considerations
 

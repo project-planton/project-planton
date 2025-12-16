@@ -31,6 +31,7 @@ spec:
     clusterName: "my-gke-cluster"
   namespace:
     value: "strimzi-kafka-operator"
+  createNamespace: true
   container:
     resources:
       requests:
@@ -52,7 +53,7 @@ cd iac/pulumi && pulumi up
 
 ## What Gets Created
 
-- **Namespace**: `strimzi-kafka-operator`
+- **Namespace**: `strimzi-kafka-operator` (if `createNamespace: true`)
 - **Operator Deployment**: Watches for Kafka CRDs cluster-wide
 - **CRDs**: Kafka, KafkaTopic, KafkaUser, KafkaConnect, KafkaBridge, KafkaMirrorMaker2
 - **RBAC**: Cluster-wide permissions for operator
@@ -101,11 +102,16 @@ spec:
 ### Spec
 
 - **`targetCluster`** (optional): Kubernetes cluster to deploy operator
+- **`namespace`** (required): Kubernetes namespace for the operator
+- **`createNamespace`** (optional, default: `false`): Whether to create the namespace
+  - `true`: Module creates the namespace with appropriate labels
+  - `false`: Module assumes namespace already exists (must be pre-created)
 - **`container.resources`**: Operator pod resource limits
 
 ### Defaults
 
 ```yaml
+createNamespace: false  # Namespace must exist
 container:
   resources:
     requests:
@@ -115,6 +121,21 @@ container:
       cpu: "1000m"
       memory: "1Gi"
 ```
+
+## Namespace Management
+
+### When to use `createNamespace: true`
+- **Simple deployments**: Let the module manage the full lifecycle
+- **New clusters**: No pre-existing namespace configuration
+- **Isolated operator**: Dedicated namespace for this operator only
+
+### When to use `createNamespace: false`
+- **Pre-configured namespaces**: Namespace has specific ResourceQuotas, NetworkPolicies, or LimitRanges
+- **Shared namespaces**: Multiple operators in the same namespace
+- **GitOps workflows**: Namespace managed by ArgoCD/Flux
+- **Multi-tenant environments**: Namespace lifecycle controlled by platform team
+
+**Note:** The protobuf boolean default is `false`, so you must explicitly set `createNamespace: true` if you want the module to create the namespace.
 
 ## Architecture
 

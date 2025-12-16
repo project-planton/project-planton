@@ -85,4 +85,22 @@ var _ = ginkgo.Describe("KubernetesPerconaMysqlOperator Validation Tests", func(
 			})
 		})
 	})
+
+	ginkgo.Describe("Namespace creation flag", func() {
+		ginkgo.Context("When create_namespace is true", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.CreateNamespace = true
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When create_namespace is false", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.CreateNamespace = false
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
 })

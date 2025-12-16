@@ -2,6 +2,8 @@
 # This is a placeholder - the operator is primarily deployed via Helm/Pulumi
 
 resource "kubernetes_namespace" "kubernetes_altinity_operator" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name = local.namespace
   }
@@ -12,7 +14,7 @@ resource "helm_release" "kubernetes_altinity_operator" {
   repository = "https://docs.altinity.com/clickhouse-operator/"
   chart      = "altinity-clickhouse-operator"
   version    = "0.25.4"
-  namespace  = kubernetes_namespace.kubernetes_altinity_operator.metadata[0].name
+  namespace  = local.namespace
 
   set {
     name  = "operator.createCRD"

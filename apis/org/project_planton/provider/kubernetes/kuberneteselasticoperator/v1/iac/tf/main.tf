@@ -28,13 +28,15 @@
 ##############################################
 
 ##############################################
-# 1. Create Namespace
+# 1. Namespace Management
 #
-# ECK operator runs in the elastic-system namespace
-# by default. This provides isolation and makes it
-# easy to manage the operator lifecycle.
+# Conditionally create namespace based on
+# spec.create_namespace flag. If false, the
+# namespace is assumed to already exist.
 ##############################################
 resource "kubernetes_namespace" "elastic_system" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
@@ -53,15 +55,18 @@ resource "kubernetes_namespace" "elastic_system" {
 #  - Automatically manage Elastic Stack deployments
 #  - Handle certificate management and rotation
 #  - Orchestrate rolling upgrades
+#
+# The namespace reference depends on whether we created
+# it or are using an existing one.
 ##############################################
 resource "helm_release" "eck_operator" {
   name       = local.helm_chart_name
   repository = local.helm_chart_repo
   chart      = local.helm_chart_name
   version    = local.helm_chart_version
-  namespace  = kubernetes_namespace.elastic_system.metadata[0].name
+  namespace  = local.namespace
 
-  # Disable namespace creation since we create it above
+  # Disable namespace creation - we either created it above or it already exists
   create_namespace = false
 
   # Helm release options
@@ -98,6 +103,7 @@ resource "helm_release" "eck_operator" {
     ]
   }
 
+  # Only depend on namespace if we created it
   depends_on = [
     kubernetes_namespace.elastic_system
   ]

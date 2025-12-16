@@ -16,7 +16,7 @@ Deploying the Percona Operator for MongoDB manually in Kubernetes can be complex
 ### Kubernetes Cluster Integration
 
 - **Target Cluster Configuration**: This resource integrates seamlessly with Planton Cloud's Kubernetes cluster credential management system, ensuring that the operator is deployed to the correct cluster.
-- **Namespace Isolation**: The operator is deployed in a dedicated `percona-operator` namespace for clean resource separation.
+- **Flexible Namespace Management**: Choose whether to create a new namespace or use an existing one, providing flexibility for different deployment scenarios.
 
 ### Operator Configuration
 
@@ -38,6 +38,20 @@ Deploying the Percona Operator for MongoDB manually in Kubernetes can be complex
 #### Cluster-Wide Watching
 
 - **Multi-Namespace Support**: The operator watches all namespaces by default, allowing MongoDB clusters to be deployed in any namespace within the cluster.
+
+### Namespace Management
+
+The module provides flexible namespace handling through the `create_namespace` flag:
+
+- **Create New Namespace (`create_namespace: true`)**: The module will create a dedicated namespace for the operator. Use this when deploying to a fresh environment or when you want the operator isolated in its own namespace.
+
+- **Use Existing Namespace (`create_namespace: false`)**: The module will use an existing namespace specified in the `namespace` field. Use this when:
+  - The namespace already exists in your cluster
+  - You have pre-configured namespace with specific policies, quotas, or RBAC
+  - You want to deploy the operator alongside other resources in a shared namespace
+  - You're using a GitOps workflow where namespaces are managed separately
+
+**Important**: When using an existing namespace (`create_namespace: false`), ensure the namespace exists before deploying the operator, otherwise the deployment will fail.
 
 ### Helm Chart Based Deployment
 

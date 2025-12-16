@@ -79,6 +79,45 @@ pulumi stack output namespace
 
 No additional configuration is currently required. The operator uses default resource limits and chart versions.
 
+## Namespace Management
+
+The module supports two namespace management modes controlled by the `create_namespace` flag in the spec:
+
+### Create Namespace (create_namespace: true)
+
+The module creates the namespace if it doesn't exist:
+
+```yaml
+spec:
+  namespace:
+    value: "solr-operator"
+  create_namespace: true
+```
+
+**Use when:**
+- Deploying to a new namespace
+- Component owns the namespace lifecycle
+- Simplifying deployment (one resource creates everything)
+
+### Use Existing Namespace (create_namespace: false)
+
+The module uses an existing namespace without creating it:
+
+```yaml
+spec:
+  namespace:
+    value: "solr-operator"
+  create_namespace: false
+```
+
+**Use when:**
+- Namespace is managed separately (e.g., via KubernetesNamespace resource)
+- Platform team controls namespace lifecycle
+- Multiple components share the same namespace
+- Namespace has pre-configured RBAC, quotas, or network policies
+
+**Important:** The namespace must exist before running `pulumi up` when `create_namespace: false`.
+
 ## Helm Chart Details
 
 The module deploys the official Apache Solr Operator Helm chart:

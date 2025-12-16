@@ -26,6 +26,7 @@ module "minimal_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "minimal-example"
+    create_namespace = true
     version = "main"
     
     container = {
@@ -94,6 +95,7 @@ module "env_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "env-example"
+    create_namespace = true
     version = "main"
     
     container = {
@@ -165,6 +167,7 @@ module "db_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "db-credentials-example"
+    create_namespace = true
     version = "main"
     
     container = {
@@ -254,6 +257,7 @@ module "sidecar_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "sidecar-example"
+    create_namespace = true
     version = "v2"
     
     container = {
@@ -358,6 +362,7 @@ module "ingress_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "ingress-example"
+    create_namespace = true
     version = "main"
     
     container = {
@@ -444,6 +449,7 @@ module "hpa_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "hpa-example"
+    create_namespace = true
     version = "v3.0"
     
     container = {
@@ -524,6 +530,7 @@ module "production_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "production-api"
+    create_namespace = true
     version = "v1.0"
     
     container = {
@@ -675,6 +682,7 @@ module "private_registry_microservice" {
       cluster_name = "my-gke-cluster"
     }
     namespace = "private-app"
+    create_namespace = true
     version = "main"
     
     container = {
@@ -966,6 +974,84 @@ kubectl logs -n <namespace> <pod-name>
 # Execute into pod
 kubectl exec -it -n <namespace> <pod-name> -- /bin/sh
 ```
+
+---
+
+## 9. Using an Existing Namespace
+
+If the namespace already exists in the cluster (created by another process or team), you can skip namespace creation by setting `create_namespace = false`. This is useful when:
+- Multiple deployments share the same namespace
+- Namespaces are managed centrally by cluster administrators
+- Using GitOps workflows where namespaces are managed separately
+
+```hcl
+module "existing_ns_microservice" {
+  source = "./path/to/microservice-kubernetes-module"
+
+  metadata = {
+    name = "existing-ns-example"
+    id   = "existing-ns-example-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "shared-services"
+    create_namespace = false  # Use existing namespace
+    version = "main"
+    
+    container = {
+      app = {
+        image = {
+          repo = "my-org/my-service"
+          tag  = "1.0.0"
+        }
+        
+        ports = [
+          {
+            name             = "http"
+            container_port   = 8080
+            network_protocol = "TCP"
+            app_protocol     = "http"
+            service_port     = 80
+            is_ingress_port  = false
+          }
+        ]
+        
+        resources = {
+          requests = {
+            cpu    = "100m"
+            memory = "128Mi"
+          }
+          limits = {
+            cpu    = "500m"
+            memory = "512Mi"
+          }
+        }
+        
+        env = {
+          variables = {}
+          secrets   = {}
+        }
+      }
+    }
+    
+    ingress = {
+      is_enabled = false
+      dns_domain = ""
+    }
+  }
+}
+```
+
+**Key Points:**
+- `create_namespace = false` tells the module to use the existing namespace without creating it
+- The namespace "shared-services" must already exist in the cluster
+- If the namespace doesn't exist, deployment will fail with a "namespace not found" error
+- All resources (deployment, service, secrets) will still be created in the specified namespace
 
 ---
 

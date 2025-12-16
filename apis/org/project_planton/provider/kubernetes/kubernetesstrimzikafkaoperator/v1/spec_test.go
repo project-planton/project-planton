@@ -37,6 +37,7 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 						Value: "strimzi-kafka-operator",
 					},
 				},
+				CreateNamespace: true,
 				Container: &KubernetesStrimziKafkaOperatorSpecContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
@@ -75,7 +76,8 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 								Value: "strimzi-kafka-operator",
 							},
 						},
-						Container: &KubernetesStrimziKafkaOperatorSpecContainer{},
+						CreateNamespace: false,
+						Container:       &KubernetesStrimziKafkaOperatorSpecContainer{},
 					},
 				}
 				err := protovalidate.Validate(minimalInput)
@@ -97,6 +99,7 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 								Value: "strimzi-kafka-operator",
 							},
 						},
+						CreateNamespace: true,
 						Container: &KubernetesStrimziKafkaOperatorSpecContainer{
 							Resources: &kubernetes.ContainerResources{
 								Limits: &kubernetes.CpuMemory{
@@ -134,10 +137,57 @@ var _ = ginkgo.Describe("KubernetesStrimziKafkaOperator Validation Tests", func(
 								Value: "strimzi-kafka-operator",
 							},
 						},
-						Container: &KubernetesStrimziKafkaOperatorSpecContainer{},
+						CreateNamespace: true,
+						Container:       &KubernetesStrimziKafkaOperatorSpecContainer{},
 					},
 				}
 				err := protovalidate.Validate(selectorInput)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with create_namespace set to true", func() {
+			ginkgo.It("should not return a validation error", func() {
+				createNsInput := &KubernetesStrimziKafkaOperator{
+					ApiVersion: "kubernetes.project-planton.org/v1",
+					Kind:       "KubernetesStrimziKafkaOperator",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "create-ns-operator",
+					},
+					Spec: &KubernetesStrimziKafkaOperatorSpec{
+						Namespace: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "strimzi-kafka-operator",
+							},
+						},
+						CreateNamespace: true,
+						Container:       &KubernetesStrimziKafkaOperatorSpecContainer{},
+					},
+				}
+				err := protovalidate.Validate(createNsInput)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with create_namespace set to false", func() {
+			ginkgo.It("should not return a validation error", func() {
+				noCreateNsInput := &KubernetesStrimziKafkaOperator{
+					ApiVersion: "kubernetes.project-planton.org/v1",
+					Kind:       "KubernetesStrimziKafkaOperator",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "no-create-ns-operator",
+					},
+					Spec: &KubernetesStrimziKafkaOperatorSpec{
+						Namespace: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "strimzi-kafka-operator",
+							},
+						},
+						CreateNamespace: false,
+						Container:       &KubernetesStrimziKafkaOperatorSpecContainer{},
+					},
+				}
+				err := protovalidate.Validate(noCreateNsInput)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})

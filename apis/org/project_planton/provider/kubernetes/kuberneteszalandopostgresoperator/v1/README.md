@@ -12,6 +12,7 @@ This Project Planton component abstracts the complexity of deploying and configu
 
 ### Operator Management
 - **Automated Deployment**: One-command deployment of the Zalando Postgres Operator via Helm
+- **Namespace Management**: Choose to create a new namespace or use an existing one with the `create_namespace` flag
 - **Resource Control**: Configure CPU and memory limits for the operator container
 - **Label Inheritance**: Automatically propagates organization, environment, and resource labels to managed databases
 - **Production-Ready Defaults**: Sensible default resource allocations (1 CPU, 1Gi memory limits; 50m CPU, 100Mi memory requests)
@@ -96,7 +97,7 @@ project-planton terraform apply --manifest postgres-operator.yaml
 
 ### Basic Configuration
 
-The minimal configuration requires only the container resource specifications:
+The minimal configuration requires the target cluster, namespace, and container resource specifications:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -104,6 +105,11 @@ kind: KubernetesZalandoPostgresOperator
 metadata:
   name: postgres-operator
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: postgres-operator
+  create_namespace: true  # Creates the namespace
   container:
     resources:
       requests:
@@ -113,6 +119,33 @@ spec:
         cpu: 1000m
         memory: 1Gi
 ```
+
+### Using Existing Namespace
+
+If you have a pre-existing namespace, set `create_namespace: false`:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesZalandoPostgresOperator
+metadata:
+  name: postgres-operator
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: existing-postgres-namespace
+  create_namespace: false  # Use existing namespace
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+**Important**: When `create_namespace: false`, the namespace must already exist in the target cluster. The deployment will fail if the namespace doesn't exist.
 
 ### Production Configuration with Backups
 
@@ -127,6 +160,11 @@ metadata:
     org: my-company
     env: production
 spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: postgres-operator
+  create_namespace: true
   container:
     resources:
       requests:
@@ -158,6 +196,14 @@ spec:
 | `org` | string | No | Organization label for multi-tenancy |
 | `env` | string | No | Environment label (dev, staging, prod) |
 
+#### Spec: Cluster and Namespace
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `target_cluster.cluster_name` | string | Yes | - | Name of the target Kubernetes cluster |
+| `namespace.value` | string | Yes | - | Kubernetes namespace for the operator |
+| `create_namespace` | bool | Yes | - | Whether to create the namespace (true) or use existing (false) |
+
 #### Spec: Container
 
 | Field | Type | Required | Default | Description |
@@ -187,7 +233,9 @@ spec:
 
 ### Deployment Architecture
 
-1. **Namespace Creation**: Creates `postgres-operator` namespace with Project Planton labels
+1. **Namespace Management**: 
+   - If `create_namespace: true` - Creates namespace with Project Planton labels
+   - If `create_namespace: false` - Uses existing namespace (must already exist)
 2. **Backup Resources** (if configured):
    - Creates Kubernetes Secret with R2 credentials
    - Creates ConfigMap with WAL-G environment variables
@@ -211,7 +259,7 @@ When backup configuration is provided:
 
 After deployment, the following resources exist in the cluster:
 
-- **Namespace**: `postgres-operator` (contains all operator resources)
+- **Namespace**: Specified namespace (created only if `create_namespace: true`)
 - **Deployment**: `postgres-operator` (the operator controller)
 - **Service**: `postgres-operator` (webhook and metrics endpoints)
 - **ConfigMaps**: Operator configuration + backup config (if enabled)

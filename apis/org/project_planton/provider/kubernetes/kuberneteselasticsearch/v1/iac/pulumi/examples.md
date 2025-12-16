@@ -11,6 +11,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: logging
+  create_namespace: true
   elasticsearch:
     container:
       replicas: 1
@@ -50,6 +51,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: search
+  create_namespace: true
   elasticsearch:
     container:
       replicas: 3
@@ -95,6 +97,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: logging-app
+  create_namespace: true
   elasticsearch:
     container:
       replicas: 5
@@ -111,6 +114,46 @@ spec:
     enabled: true
     container:
       replicas: 2
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+```
+
+---
+
+# Example 4: Using Existing Namespace (create_namespace: false)
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ElasticsearchKubernetes
+metadata:
+  name: shared-elasticsearch
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false
+  elasticsearch:
+    container:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      persistence_enabled: true
+      disk_size: 10Gi
+  kibana:
+    enabled: true
+    container:
+      replicas: 1
       resources:
         requests:
           cpu: 200m

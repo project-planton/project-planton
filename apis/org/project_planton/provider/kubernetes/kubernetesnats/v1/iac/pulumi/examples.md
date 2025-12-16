@@ -15,6 +15,13 @@ const natsBasic = new kubernetesnats.NatsKubernetes("nats-basic", {
         name: "nats-basic",
     },
     spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-basic",
+        },
+        createNamespace: true,
         serverContainer: {
             replicas: 3,
             resources: {
@@ -55,6 +62,13 @@ const natsSecure = new kubernetesnats.NatsKubernetes("nats-secure", {
         env: "production",
     },
     spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-secure",
+        },
+        createNamespace: true,
         serverContainer: {
             replicas: 5,
             resources: {
@@ -98,6 +112,13 @@ const natsBasicAuth = new kubernetesnats.NatsKubernetes("nats-basic-auth", {
         name: "nats-basic-auth",
     },
     spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-basic-auth",
+        },
+        createNamespace: true,
         serverContainer: {
             replicas: 3,
             resources: {
@@ -139,6 +160,13 @@ const natsExternal = new kubernetesnats.NatsKubernetes("nats-external", {
         name: "nats-external",
     },
     spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-external",
+        },
+        createNamespace: true,
         serverContainer: {
             replicas: 3,
             resources: {
@@ -186,6 +214,13 @@ const natsMinimal = new kubernetesnats.NatsKubernetes("nats-minimal", {
         env: "development",
     },
     spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-minimal",
+        },
+        createNamespace: true,
         serverContainer: {
             replicas: 1,
             resources: {
@@ -225,6 +260,13 @@ const natsHA = new kubernetesnats.NatsKubernetes("nats-ha-metrics", {
         env: "production",
     },
     spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-ha-metrics",
+        },
+        createNamespace: true,
         serverContainer: {
             replicas: 7,
             resources: {
@@ -312,6 +354,58 @@ export const username = authSecret.data.apply(d =>
 export const password = authSecret.data.apply(d => 
     Buffer.from(d["password"], "base64").toString());
 ```
+
+## Example 7: Using Pre-existing Namespace
+
+Deploy NATS into an existing namespace that's managed separately.
+
+```typescript
+import * as pulumi from "@pulumi/pulumi";
+import * as k8s from "@pulumi/kubernetes";
+import * as kubernetesnats from "@project-planton/kubernetesnats";
+
+// Assume namespace is created elsewhere (e.g., GitOps, separate stack)
+const existingNamespace = "shared-messaging";
+
+const natsWithExistingNs = new kubernetesnats.NatsKubernetes("nats-existing-ns", {
+    metadata: {
+        name: "nats-existing-ns",
+    },
+    spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: existingNamespace,
+        },
+        createNamespace: false, // Don't create the namespace
+        serverContainer: {
+            replicas: 3,
+            resources: {
+                limits: {
+                    cpu: "1000m",
+                    memory: "2Gi",
+                },
+                requests: {
+                    cpu: "100m",
+                    memory: "256Mi",
+                },
+            },
+            diskSize: "10Gi",
+        },
+        auth: {
+            enabled: true,
+            scheme: "basic_auth",
+        },
+        tlsEnabled: true,
+    },
+});
+
+export const namespace = existingNamespace;
+export const internalClientUrl = natsWithExistingNs.internalClientUrl;
+```
+
+**Use Case**: Ideal for GitOps workflows or when namespace has specific ResourceQuotas, NetworkPolicies, or other configurations managed separately.
 
 ## Notes
 

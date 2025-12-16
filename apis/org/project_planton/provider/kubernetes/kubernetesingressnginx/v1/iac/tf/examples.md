@@ -28,8 +28,10 @@ module "ingress_nginx" {
   }
 
   spec = {
-    chart_version = "4.11.1"
-    internal      = false
+    namespace        = "ingress-nginx"
+    create_namespace = true
+    chart_version    = "4.11.1"
+    internal         = false
   }
 }
 
@@ -72,8 +74,10 @@ module "gke_ingress" {
   }
 
   spec = {
-    chart_version = "4.11.1"
-    internal      = false
+    namespace        = "ingress-nginx"
+    create_namespace = true
+    chart_version    = "4.11.1"
+    internal         = false
     gke = {
       static_ip_name = "prod-ingress-static-ip"
     }
@@ -119,8 +123,10 @@ module "gke_internal_ingress" {
   }
 
   spec = {
-    chart_version = "4.11.1"
-    internal      = true
+    namespace        = "ingress-nginx"
+    create_namespace = true
+    chart_version    = "4.11.1"
+    internal         = true
     gke = {
       subnetwork_self_link = "projects/my-project/regions/us-west1/subnetworks/private-subnet"
     }
@@ -150,8 +156,10 @@ module "eks_ingress" {
   }
 
   spec = {
-    chart_version = "4.11.1"
-    internal      = false
+    namespace        = "ingress-nginx"
+    create_namespace = true
+    chart_version    = "4.11.1"
+    internal         = false
     eks = {
       subnet_ids = [
         "subnet-public-1a",
@@ -194,8 +202,10 @@ module "aks_ingress" {
   }
 
   spec = {
-    chart_version = "4.11.1"
-    internal      = false
+    namespace        = "ingress-nginx"
+    create_namespace = true
+    chart_version    = "4.11.1"
+    internal         = false
     aks = {
       managed_identity_client_id = "12345678-1234-1234-1234-123456789012"
       public_ip_name             = "prod-ingress-public-ip"
@@ -274,8 +284,10 @@ module "ingress_nginx" {
   }
 
   spec = {
-    chart_version = "4.11.1"
-    internal      = var.is_internal
+    namespace        = "ingress-nginx"
+    create_namespace = true
+    chart_version    = "4.11.1"
+    internal         = var.is_internal
   }
 }
 

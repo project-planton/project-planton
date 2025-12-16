@@ -1,8 +1,18 @@
+# Kubernetes GitLab Pulumi Examples
+
+## Namespace Management
+
+All examples demonstrate namespace management using the `create_namespace` flag:
+- When `create_namespace: true`, the Pulumi module creates the namespace automatically
+- When `create_namespace: false`, the namespace must exist before deployment
+
+---
+
 # Example 1: Basic GitLab Deployment
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: gitlab-instance
 spec:
@@ -10,6 +20,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: gitlab-instance
+  create_namespace: true
   container:
     resources:
       requests:
@@ -26,14 +37,15 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: gitlab-production
 spec:
   target_cluster:
-    cluster_name: my-gke-cluster
+    cluster_name: prod-gke-cluster
   namespace:
     value: gitlab-production
+  create_namespace: true
   container:
     resources:
       requests:
@@ -53,7 +65,7 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: gitlab-custom
 spec:
@@ -61,6 +73,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: gitlab-custom
+  create_namespace: true
   container:
     resources:
       requests:
@@ -73,24 +86,23 @@ spec:
 
 ---
 
-# Example 4: GitLab with Environment Variables
+# Example 4: GitLab Using Existing Namespace
+
+This example demonstrates deploying GitLab into a pre-existing namespace.
+The namespace must be created before running Pulumi.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
-  name: gitlab-env-vars
+  name: gitlab-shared
 spec:
   target_cluster:
     cluster_name: my-gke-cluster
   namespace:
-    value: gitlab-env-vars
+    value: shared-services
+  create_namespace: false  # Namespace must already exist
   container:
-    env:
-      variables:
-        GITLAB_OMNIBUS_CONFIG: |
-          external_url 'http://gitlab.example.com'
-          gitlab_rails['gitlab_shell_ssh_port'] = 2222
     resources:
       requests:
         cpu: 250m
@@ -106,7 +118,7 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: GitlabKubernetes
+kind: KubernetesGitlab
 metadata:
   name: minimal-gitlab
 spec:
@@ -114,6 +126,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: minimal-gitlab
+  create_namespace: true
   container:
     resources:
       requests:

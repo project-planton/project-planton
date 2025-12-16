@@ -18,6 +18,10 @@ variable "spec" {
     # Kubernetes namespace to install Argo CD.
     namespace = string
 
+    # Flag to indicate if the namespace should be created by the module.
+    # Set to true to create the namespace, false to use an existing namespace.
+    create_namespace = bool
+
     # The container specifications for the Argo CD deployment.
     container = object({
 

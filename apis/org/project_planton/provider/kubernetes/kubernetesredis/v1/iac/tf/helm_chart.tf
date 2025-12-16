@@ -3,7 +3,7 @@ resource "helm_release" "redis" {
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "redis"
   version    = "17.10.1"
-  namespace  = kubernetes_namespace.redis_namespace.metadata[0].name
+  namespace  = local.namespace
 
   # Convert your entire map into a single YAML string
   values = [

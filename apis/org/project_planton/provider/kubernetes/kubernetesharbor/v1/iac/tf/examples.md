@@ -1,5 +1,32 @@
 # Harbor Kubernetes Terraform - Examples
 
+## Namespace Management
+
+All Harbor deployments require a namespace. Control namespace management with the `create_namespace` flag:
+
+- **`create_namespace = true`** - Component creates and manages the namespace with appropriate labels
+- **`create_namespace = false`** - Deploy into an existing namespace (must exist before deployment)
+
+**Managed namespace example:**
+```hcl
+spec = {
+  namespace        = "harbor-prod"
+  create_namespace = true  # Component creates the namespace
+  # ... rest of spec
+}
+```
+
+**Existing namespace example:**
+```hcl
+spec = {
+  namespace        = "container-registry"
+  create_namespace = false  # Must exist before deployment
+  # ... rest of spec
+}
+```
+
+---
+
 ## Basic Example
 
 ```hcl
@@ -14,7 +41,8 @@ module "harbor_basic" {
       target_cluster = {
         cluster_name = "my-gke-cluster"
       }
-      namespace = "harbor-dev"
+      namespace        = "harbor-dev"
+      create_namespace = true
       database = {
         is_external = false
       }
@@ -46,7 +74,8 @@ module "harbor_production" {
       target_cluster = {
         cluster_name = "my-eks-cluster"
       }
-      namespace = "harbor-prod"
+      namespace        = "harbor-prod"
+      create_namespace = true
       database = {
         is_external = true
         external_database = {

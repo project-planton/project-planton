@@ -34,12 +34,18 @@ func helmChart(
 		}
 	}
 
+	// Build helm options, conditionally adding parent if namespace was created
+	helmOptions := []pulumi.ResourceOption{}
+	if createdNamespace != nil {
+		helmOptions = append(helmOptions, pulumi.Parent(createdNamespace))
+	}
+
 	_, err := helmv3.NewChart(ctx,
 		locals.KubernetesNeo4J.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.Neo4jHelmChartName),
 			Version:   pulumi.String(vars.Neo4jHelmChartVersion),
-			Namespace: createdNamespace.Metadata.Name().Elem(),
+			Namespace: pulumi.String(locals.Namespace),
 			Values: pulumi.Map{
 				"neo4j": pulumi.Map{
 					"name": pulumi.String(locals.KubernetesNeo4J.Metadata.Name),
@@ -76,7 +82,7 @@ func helmChart(
 				Repo: pulumi.String(vars.Neo4jHelmChartRepoUrl),
 			},
 		},
-		pulumi.Parent(createdNamespace),
+		helmOptions...,
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to deploy neo4j helm chart")

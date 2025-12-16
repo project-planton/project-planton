@@ -93,7 +93,7 @@ resource "kubernetes_manifest" "jenkins_http_external_redirect" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "http-external-redirect"
-        namespace = kubernetes_namespace.jenkins_namespace.metadata[0].name
+        namespace = local.namespace
         labels    = local.final_labels
       }
       spec = {
@@ -136,7 +136,7 @@ resource "kubernetes_manifest" "jenkins_https_external" {
       kind       = "HTTPRoute"
       metadata = {
         name      = "https-external"
-        namespace = kubernetes_namespace.jenkins_namespace.metadata[0].name
+        namespace = local.namespace
         labels    = local.final_labels
       }
       spec = {
@@ -161,7 +161,7 @@ resource "kubernetes_manifest" "jenkins_https_external" {
             backendRefs = [
               {
                 name      = local.jenkins_kube_service_name
-                namespace = kubernetes_namespace.jenkins_namespace.metadata[0].name
+                namespace = local.namespace
                 port      = 80
               }
             ]

@@ -9,9 +9,9 @@ This document provides practical examples for deploying the Elastic Cloud on Kub
 
 ---
 
-## 1. Basic Installation
+## 1. Basic Installation with Namespace Creation
 
-Deploy ECK operator with default resource configuration.
+Deploy ECK operator with default resource configuration, creating a new namespace.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -21,6 +21,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "my-k8s-cluster"
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -32,16 +35,60 @@ spec:
 ```
 
 **What this does:**
-- Installs ECK operator version 2.14.0 in the `elastic-system` namespace
+- Creates the `elastic-system` namespace with appropriate labels
+- Installs ECK operator version 2.14.0 in the created namespace
 - Allocates 50m CPU and 100Mi memory as baseline (requests)
 - Limits operator to 1 CPU core and 1Gi memory maximum
 - Uses Kubernetes credential ID to access the target cluster
 
-**When to use:** Standard production deployment for managing moderate-sized Elastic Stack installations (1-5 Elasticsearch clusters).
+**When to use:** Standard production deployment for managing moderate-sized Elastic Stack installations (1-5 Elasticsearch clusters) when you want the component to manage the namespace lifecycle.
 
 ---
 
-## 2. High-Availability Production Configuration
+## 2. Using Existing Namespace
+
+Deploy ECK operator into an existing namespace that's managed elsewhere.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesElasticOperator
+metadata:
+  name: eck-operator
+spec:
+  target_cluster:
+    kubernetes_credential_id: "my-k8s-cluster"
+  namespace:
+    value: "platform-operators"
+  create_namespace: false
+  container:
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "100Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+```
+
+**What this does:**
+- Uses the existing `platform-operators` namespace
+- Does NOT create or manage the namespace
+- Installs ECK operator version 2.14.0 in the existing namespace
+- Allocates standard resource requests and limits
+
+**When to use:**
+- When namespace is managed by another component (e.g., KubernetesNamespace)
+- When namespace has specific resource quotas or policies managed externally
+- When deploying multiple operators into a shared namespace
+- When namespace lifecycle should be independent of this component
+
+**Prerequisites:**
+- The namespace must exist before applying this manifest
+- You must have permissions to deploy resources in the namespace
+
+---
+
+## 3. High-Availability Production Configuration
 
 For large-scale production environments managing multiple Elasticsearch clusters.
 
@@ -56,6 +103,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "production-cluster"
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -92,6 +142,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "dev-cluster"
+  namespace:
+    value: "elastic-dev"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -103,6 +156,7 @@ spec:
 ```
 
 **What this does:**
+- Creates the `elastic-dev` namespace for development isolation
 - Reduces resource footprint for development/testing scenarios
 - 25m CPU and 64Mi memory minimal baseline
 - Limited to 500m CPU (0.5 cores) and 512Mi memory
@@ -129,6 +183,9 @@ spec:
   target_cluster:
     kubernetes_cluster_selector:
       name: "staging-cluster"
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -141,6 +198,7 @@ spec:
 
 **What this does:**
 - Uses cluster selector to identify the target Kubernetes cluster
+- Creates the `elastic-system` namespace
 - Useful when cluster is in the same environment as the operator
 - Provides dynamic cluster selection based on naming
 
@@ -167,6 +225,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "prod-cluster"
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -189,6 +250,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "staging-cluster"
+  namespace:
+    value: "elastic-system"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -211,6 +275,9 @@ metadata:
 spec:
   target_cluster:
     kubernetes_credential_id: "dev-cluster"
+  namespace:
+    value: "elastic-dev"
+  create_namespace: true
   container:
     resources:
       requests:

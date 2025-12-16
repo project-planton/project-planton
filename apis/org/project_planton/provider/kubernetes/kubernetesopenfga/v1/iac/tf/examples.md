@@ -17,6 +17,7 @@ module "openfga_basic" {
       name = "my-gke-cluster"
     }
     namespace = "basic-openfga"
+    create_namespace = true
 
     container = {
       replicas = 1
@@ -63,6 +64,7 @@ module "openfga_with_ingress" {
       name = "my-gke-cluster"
     }
     namespace = "ingress-openfga"
+    create_namespace = true
 
     container = {
       replicas = 2
@@ -107,6 +109,7 @@ module "openfga_mysql" {
       name = "my-gke-cluster"
     }
     namespace = "mysql-openfga"
+    create_namespace = true
 
     container = {
       replicas = 1
@@ -158,6 +161,7 @@ module "openfga_production" {
       name = "my-gke-cluster"
     }
     namespace = "production-openfga"
+    create_namespace = true
 
     container = {
       replicas = 5
@@ -230,6 +234,7 @@ module "openfga_dev" {
       name = "my-gke-cluster"
     }
     namespace = "dev-openfga"
+    create_namespace = true
 
     container = {
       replicas = 1
@@ -275,6 +280,7 @@ module "openfga_staging" {
       name = "my-gke-cluster"
     }
     namespace = "staging-openfga"
+    create_namespace = true
 
     container = {
       replicas = 3
@@ -305,6 +311,52 @@ module "openfga_staging" {
       "playground.enabled" = "true"
       "log.level" = "info"
       "metrics.enabled" = "true"
+    }
+  }
+}
+
+```
+
+## Example 7: Using Pre-existing Namespace
+
+```hcl
+module "openfga_shared_namespace" {
+  source = "./path/to/kubernetesopenfga/v1/iac/tf"
+
+  metadata = {
+    name = "openfga-shared"
+  }
+
+  spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "shared-services"
+    create_namespace = false  # Namespace is managed externally
+
+    container = {
+      replicas = 2
+
+      resources = {
+        requests = {
+          cpu    = "50m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1000m"
+          memory = "1Gi"
+        }
+      }
+    }
+
+    datastore = {
+      engine = "postgres"
+      uri    = "postgres://user:password@db-host:5432/openfga"
+    }
+
+    ingress = {
+      enabled  = false
+      hostname = ""
     }
   }
 }

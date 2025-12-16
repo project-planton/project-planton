@@ -11,7 +11,7 @@
 ### Comprehensive Operator Configuration
 - **Resource Allocation**: Define CPU and memory resources for the operator pod to optimize performance and cost.
 - **Automated CRD Installation**: Automatically installs PostgreSQL CRDs required for cluster management.
-- **Namespace Management**: Creates a dedicated `kubernetes-percona-postgres-operator` namespace for clean resource isolation.
+- **Flexible Namespace Management**: Optionally create a new namespace or use an existing one via the `create_namespace` flag.
 - **Helm-Based Deployment**: Leverages the official Percona Helm chart for reliable, version-controlled deployments.
 
 ### Seamless Kubernetes Integration
@@ -45,7 +45,7 @@ Refer to the examples section for detailed usage instructions.
 
 ### Components
 
-1. **Namespace Creation**: Creates the `kubernetes-percona-postgres-operator` namespace with proper labels
+1. **Namespace Management**: Conditionally creates a namespace based on the `create_namespace` flag, or uses an existing namespace
 2. **Helm Release**: Deploys the operator using the official Percona Helm chart
 3. **Resource Configuration**: Applies resource limits and requests from the spec
 4. **Output Capture**: Exports the namespace to stack outputs for reference
@@ -64,7 +64,10 @@ Refer to the examples section for detailed usage instructions.
 Defines the desired state of the operator deployment.
 
 - **target_cluster**: Target Kubernetes cluster configuration with credential reference
-- **namespace**: Optional namespace (defaults to "kubernetes-percona-postgres-operator")
+- **namespace**: Namespace where the operator will be deployed
+- **create_namespace**: Boolean flag to control namespace creation
+  - `true`: Module creates and manages the namespace
+  - `false`: Module uses an existing namespace (must already exist)
 - **container**: Container resource specifications for the operator pod
 
 ### KubernetesPerconaPostgresOperatorSpecContainer

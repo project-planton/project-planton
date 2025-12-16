@@ -12,6 +12,13 @@ Deploying cron-jobs to Kubernetes can be a complex task involving numerous confi
 
 ## Key Features
 
+### Namespace Management
+
+- **Flexible Namespace Control**: Choose between creating a new dedicated namespace or deploying into an existing shared namespace via the `create_namespace` boolean flag.
+- **Isolated Deployments**: When `create_namespace` is `true`, each CronJob gets its own namespace with proper labeling for resource tracking.
+- **Multi-tenant Support**: When `create_namespace` is `false`, multiple CronJobs can share the same namespace, ideal for batch job workloads.
+- **GitOps Compatible**: Support for pre-created namespaces managed outside the CronJob lifecycle.
+
 ### Container Specification
 
 - **App Container Configuration**: Define the main application container, including:

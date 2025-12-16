@@ -18,6 +18,11 @@ kind: OpenFgaKubernetes
 metadata:
   name: basic-openfga
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: basic-openfga
+  create_namespace: true
   container:
     replicas: 1
     resources:
@@ -52,6 +57,11 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-service
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: open-fga-service
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -89,6 +99,11 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-mysql
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: open-fga-mysql
+  create_namespace: true
   container:
     replicas: 2
     resources:
@@ -123,6 +138,11 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-high-availability
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: open-fga-high-availability
+  create_namespace: true
   container:
     replicas: 5
     resources:
@@ -160,6 +180,11 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-production
 spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: open-fga-production
+  create_namespace: true
   container:
     replicas: 3
     resources:
@@ -175,4 +200,43 @@ spec:
   datastore:
     engine: postgres
     uri: postgres://openfga_user:securepassword@prod-db-host:5432/openfga_prod?sslmode=require
+```
+
+---
+
+## Example with Pre-existing Namespace
+
+### Create using CLI
+
+Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
+
+```shell
+planton apply -f <yaml-path>
+```
+
+### YAML Configuration
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: OpenFgaKubernetes
+metadata:
+  name: openfga-shared-namespace
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: shared-services
+  create_namespace: false  # Namespace already exists and is managed externally
+  container:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+  datastore:
+    engine: postgres
+    uri: postgres://user:password@db-host:5432/openfga
 ```

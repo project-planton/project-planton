@@ -27,7 +27,8 @@ spec = {
   target_cluster = {
     name = "my-gke-cluster"
   }
-  namespace = "solr-instance-basic"
+  namespace        = "solr-instance-basic"
+  create_namespace = true
 
   solr_container = {
     replicas = 1
@@ -110,7 +111,8 @@ spec = {
   target_cluster = {
     name = "my-gke-cluster"
   }
-  namespace = "solr-instance-custom"
+  namespace        = "solr-instance-custom"
+  create_namespace = true
 
   solr_container = {
     replicas = 3
@@ -195,7 +197,8 @@ spec = {
   target_cluster = {
     name = "my-gke-cluster"
   }
-  namespace = "solr-instance-ingress"
+  namespace        = "solr-instance-ingress"
+  create_namespace = true
 
   solr_container = {
     replicas = 2
@@ -288,7 +291,8 @@ spec = {
   target_cluster = {
     name = "my-gke-cluster"
   }
-  namespace = "solr-instance-gc-tuned"
+  namespace        = "solr-instance-gc-tuned"
+  create_namespace = true
 
   solr_container = {
     replicas = 1
@@ -346,6 +350,123 @@ terraform apply -var-file="gc-tuning-solr.tfvars"
 
 ---
 
+## Example 5: Using Existing Namespace
+
+This example shows how to deploy Solr into an existing namespace that's managed separately. This is useful when multiple components share a namespace or when namespace management is centralized.
+
+### Configuration (`existing-namespace-solr.tfvars`)
+
+```hcl
+metadata = {
+  name = "solr-shared-namespace"
+}
+
+spec = {
+  target_cluster = {
+    name = "my-gke-cluster"
+  }
+  namespace        = "shared-services"
+  create_namespace = false  # Don't create namespace, use existing one
+
+  solr_container = {
+    replicas = 1
+    image = {
+      repo = "solr"
+      tag  = "8.7.0"
+    }
+    resources = {
+      requests = {
+        cpu    = "50m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1"
+        memory = "1Gi"
+      }
+    }
+    disk_size = "1Gi"
+  }
+
+  config = {}
+
+  zookeeper_container = {
+    replicas = 1
+    resources = {
+      requests = {
+        cpu    = "50m"
+        memory = "256Mi"
+      }
+      limits = {
+        cpu    = "1"
+        memory = "1Gi"
+      }
+    }
+    disk_size = "1Gi"
+  }
+
+  ingress = {
+    is_enabled = false
+    dns_domain = ""
+  }
+}
+```
+
+### Prerequisites
+
+Ensure the namespace exists before deployment:
+
+```bash
+# Create the namespace if it doesn't exist
+kubectl create namespace shared-services
+
+# Or verify it exists
+kubectl get namespace shared-services
+```
+
+### Deploy
+
+```bash
+cd iac/tf
+terraform init
+terraform plan -var-file="existing-namespace-solr.tfvars"
+terraform apply -var-file="existing-namespace-solr.tfvars"
+```
+
+---
+
+## Namespace Management
+
+The Solr Kubernetes Terraform module provides flexible namespace management through the `create_namespace` variable:
+
+### create_namespace = true (default)
+
+When set to `true`, the module:
+- Creates the namespace with proper labels
+- Manages the namespace lifecycle
+- Automatically destroys the namespace when running `terraform destroy`
+
+**Use when:**
+- Deploying a dedicated Solr instance with its own namespace
+- You want Terraform to fully manage the namespace lifecycle
+- No other components share the namespace
+
+### create_namespace = false
+
+When set to `false`, the module:
+- Uses an existing namespace
+- Does not create or manage the namespace
+- Requires the namespace to exist before deployment
+
+**Use when:**
+- Multiple components share a namespace
+- Namespace is managed by a separate Terraform module or process
+- Organization policies require centralized namespace management
+- Using a GitOps approach with namespace management in a separate layer
+
+**Important**: When using `create_namespace = false`, ensure the namespace exists before running `terraform apply`, otherwise the deployment will fail.
+
+---
+
 ## Common Operations
 
 ### Scaling Solr Replicas
@@ -357,7 +478,8 @@ spec = {
   target_cluster = {
     name = "my-gke-cluster"
   }
-  namespace = "your-namespace"
+  namespace        = "your-namespace"
+  create_namespace = true
 
   solr_container = {
     replicas = 5  # Scale from 3 to 5
@@ -379,7 +501,8 @@ spec = {
   target_cluster = {
     name = "my-gke-cluster"
   }
-  namespace = "your-namespace"
+  namespace        = "your-namespace"
+  create_namespace = true
 
   solr_container = {
     image = {

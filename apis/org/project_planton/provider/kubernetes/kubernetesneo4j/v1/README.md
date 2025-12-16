@@ -38,6 +38,13 @@ This ensures that the Neo4j container can handle load efficiently while preventi
 
 - **Ingress Spec**: Configure ingress rules to expose the Neo4j service externally, allowing secure access to the database from outside the cluster. This includes options for handling public or private access based on organizational requirements.
 
+### Namespace Management
+
+- **Namespace Creation Control**: Use the `create_namespace` boolean flag to control whether the component creates the Kubernetes namespace or expects it to already exist.
+  - Set to `true` to have the component create and manage the namespace
+  - Set to `false` when the namespace is managed separately (e.g., by a KubernetesNamespace resource or external tooling)
+- **Namespace Reference**: The `namespace` field uses `StringValueOrRef`, allowing you to specify the namespace name directly or reference a KubernetesNamespace resource
+
 ## Benefits
 
 - **Simplified Deployment**: Reduces the complexities of setting up Neo4j on Kubernetes by providing a standardized and easy-to-use API resource.

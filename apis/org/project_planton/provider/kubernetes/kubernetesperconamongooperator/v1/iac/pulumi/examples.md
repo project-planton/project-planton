@@ -29,6 +29,7 @@ spec:
   targetCluster:
     credentialId: my-k8s-cluster
   namespace: percona-operator  # Optional: defaults to "percona-operator"
+  createNamespace: true
   container:
     resources:
       requests:
@@ -79,6 +80,7 @@ spec:
   targetCluster:
     credentialId: production-k8s-cluster
   namespace: percona-operator-prod  # Custom namespace for production
+  createNamespace: true
   container:
     resources:
       requests:
@@ -116,6 +118,7 @@ spec:
   targetCluster:
     credentialId: dev-k8s-cluster
   namespace: percona-operator-dev
+  createNamespace: true
   container:
     resources:
       requests:
@@ -134,7 +137,55 @@ planton pulumi up --manifest percona-operator-dev.yaml
 
 ---
 
-## Example 4: Update Operator Resources
+## Example 4: Deploy to Existing Namespace
+
+### Description
+
+Deploy the operator to an existing namespace managed separately (e.g., via GitOps or separate Terraform).
+
+### Prerequisites
+
+Ensure the namespace exists:
+
+```bash
+kubectl create namespace shared-operators
+```
+
+### Manifest
+
+Create a file named `percona-operator-existing-ns.yaml`:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesPerconaMongoOperator
+metadata:
+  name: percona-operator-existing
+spec:
+  targetCluster:
+    credentialId: my-k8s-cluster
+  namespace: shared-operators
+  createNamespace: false  # Use existing namespace
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+### Deploy
+
+```bash
+planton pulumi up --manifest percona-operator-existing-ns.yaml
+```
+
+**Important**: The namespace `shared-operators` must exist before running this command.
+
+---
+
+## Example 5: Update Operator Resources
 
 ### Description
 
@@ -153,7 +204,7 @@ The Pulumi module will perform an in-place update of the Helm release.
 
 ---
 
-## Example 5: Destroy Operator Deployment
+## Example 6: Destroy Operator Deployment
 
 ### Description
 
@@ -188,6 +239,7 @@ metadata:
 spec:
   targetCluster:
     credentialId: my-k8s-cluster
+  createNamespace: true
   container:
     resources:
       requests:

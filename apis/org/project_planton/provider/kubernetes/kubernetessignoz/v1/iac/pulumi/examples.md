@@ -18,6 +18,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: signoz-dev
+  createNamespace: true
   signozContainer:
     replicas: 1
     resources:
@@ -78,6 +79,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: signoz-production
+  createNamespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -151,6 +153,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: signoz-external-ch
+  createNamespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -203,6 +206,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: signoz-ingress
+  createNamespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -266,6 +270,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-custom-images
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz
+  createNamespace: true
   signozContainer:
     replicas: 2
     image:
@@ -331,6 +340,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-custom-helm
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz
+  createNamespace: true
   signozContainer:
     replicas: 2
     resources:
@@ -395,6 +409,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-high-volume
 spec:
+  targetCluster:
+    clusterName: prod-gke-cluster
+  namespace:
+    value: signoz-prod
+  createNamespace: true
   signozContainer:
     replicas: 3
     resources:
@@ -464,6 +483,11 @@ kind: SignozKubernetes
 metadata:
   name: signoz-official-images
 spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz
+  createNamespace: true
   signozContainer:
     replicas: 1
     resources:

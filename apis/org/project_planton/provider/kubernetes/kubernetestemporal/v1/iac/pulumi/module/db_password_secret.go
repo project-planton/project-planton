@@ -21,19 +21,25 @@ func dbPasswordSecret(ctx *pulumi.Context, locals *Locals,
 
 	encoded := base64.StdEncoding.EncodeToString([]byte(locals.KubernetesTemporal.Spec.Database.ExternalDatabase.Password))
 
+	// Build resource options, conditionally adding parent if namespace was created
+	opts := []pulumi.ResourceOption{}
+	if createdNamespace != nil {
+		opts = append(opts, pulumi.Parent(createdNamespace))
+	}
+
 	_, err := kubernetescorev1.NewSecret(ctx,
 		vars.DatabasePasswordSecretName,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.DatabasePasswordSecretName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Data: pulumi.StringMap{
 				vars.DatabasePasswordSecretKey: pulumi.String(encoded),
 			},
 			Type: pulumi.String("Opaque"),
-		}, pulumi.Parent(createdNamespace))
+		}, opts...)
 	if err != nil {
 		return errors.Wrap(err, "failed to create database password secret")
 	}

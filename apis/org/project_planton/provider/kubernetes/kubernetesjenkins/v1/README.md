@@ -21,6 +21,19 @@ Deploying Jenkins on Kubernetes involves complex configurations, including conta
 
 - **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 
+### Namespace Management
+
+- **Namespace Configuration**: Specify the Kubernetes namespace where Jenkins will be deployed.
+- **Namespace Creation Control**: Use the `create_namespace` flag to control whether the module should create the namespace or use an existing one:
+  - **`create_namespace: true`** (default): The module creates the namespace with appropriate labels. Use this for new deployments or when you want the module to fully manage the namespace lifecycle.
+  - **`create_namespace: false`**: The module uses an existing namespace without creating it. Use this when:
+    - The namespace already exists in the cluster
+    - Multiple deployments share the same namespace
+    - Namespaces are managed centrally by cluster administrators
+    - Using GitOps workflows where namespaces are managed separately
+
+  **Important**: When `create_namespace: false`, you must ensure the namespace exists before deploying, otherwise the deployment will fail.
+
 ### Container Specification
 
 - **Jenkins Container Resources**: Define CPU and memory resources for the Jenkins container to optimize performance and resource utilization. Recommended defaults are:

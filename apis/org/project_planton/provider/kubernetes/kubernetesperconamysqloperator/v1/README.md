@@ -16,7 +16,53 @@ Deploying the Percona Operator for MySQL manually in Kubernetes can be complex, 
 ### Kubernetes Cluster Integration
 
 - **Target Cluster Configuration**: This resource integrates seamlessly with Planton Cloud's Kubernetes cluster credential management system, ensuring that the operator is deployed to the correct cluster.
-- **Namespace Isolation**: The operator is deployed in a dedicated `percona-mysql-operator` namespace for clean resource separation.
+- **Namespace Isolation**: The operator is deployed in a dedicated namespace for clean resource separation.
+
+### Namespace Management
+
+The component provides flexible namespace management through the `create_namespace` flag:
+
+#### Automatic Namespace Creation (`create_namespace: true`)
+
+When enabled, the component automatically creates the specified namespace before deploying the operator. This is the recommended approach for new deployments.
+
+**Use cases:**
+- Initial operator installation in a new cluster
+- Development and testing environments
+- Simplified deployment where namespace creation is delegated to the component
+
+**Example:**
+```yaml
+spec:
+  namespace:
+    value: percona-mysql-operator
+  create_namespace: true
+```
+
+#### Using Existing Namespace (`create_namespace: false`)
+
+When disabled, the component expects the namespace to already exist in the cluster. The operator will be deployed into the existing namespace without attempting to create it.
+
+**Use cases:**
+- Namespaces managed separately (e.g., by platform team or GitOps)
+- Namespaces with pre-configured policies, quotas, or network policies
+- Multi-component deployments where namespace is shared
+- Environments with strict RBAC where component lacks namespace creation permissions
+
+**Prerequisites:**
+- Namespace must exist before operator deployment
+- Namespace must be accessible with provided credentials
+- Verify namespace exists: `kubectl get namespace <namespace-name>`
+
+**Example:**
+```yaml
+spec:
+  namespace:
+    value: percona-mysql-operator
+  create_namespace: false
+```
+
+**Important:** If `create_namespace` is set to `false` and the namespace doesn't exist, the deployment will fail.
 
 ### Operator Configuration
 

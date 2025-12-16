@@ -1,7 +1,7 @@
 resource "kubernetes_service" "this" {
   metadata {
     name      = var.spec.version
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = local.namespace
     labels    = local.final_labels
   }
 

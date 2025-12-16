@@ -5,6 +5,11 @@ metadata:
   labels:
     environment: test
 spec:
+  target_cluster:
+    cluster_name: "test-gke-cluster"
+  namespace:
+    value: "keycloak-test"
+  create_namespace: true
   container:
     resources:
       requests:
@@ -14,6 +19,6 @@ spec:
         cpu: 1000m
         memory: 1Gi
   ingress:
-    is_enabled: false
-    dns_domain: ""
+    enabled: false
+    hostname: ""
 

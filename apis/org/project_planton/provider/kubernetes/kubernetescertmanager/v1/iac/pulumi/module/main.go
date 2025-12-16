@@ -39,16 +39,29 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	// get chart version from spec (proto default: "v1.19.1")
 	chartVersion := spec.GetHelmChartVersion()
 
-	// create cert‑manager namespace
-	ns, err := corev1.NewNamespace(ctx, namespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(namespace),
+	// conditionally create or lookup cert‑manager namespace based on spec.CreateNamespace
+	var ns *corev1.Namespace
+	if spec.CreateNamespace {
+		// create new namespace
+		ns, err = corev1.NewNamespace(ctx, namespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name: pulumi.String(namespace),
+				},
 			},
-		},
-		pulumi.Provider(kubeProvider))
-	if err != nil {
-		return errors.Wrap(err, "failed to create namespace")
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create namespace")
+		}
+	} else {
+		// lookup existing namespace
+		ns, err = corev1.GetNamespace(ctx, namespace,
+			pulumi.ID(namespace),
+			nil,
+			pulumi.Provider(kubeProvider))
+		if err != nil {
+			return errors.Wrap(err, "failed to lookup existing namespace")
+		}
 	}
 
 	// build identity annotation map for ServiceAccount

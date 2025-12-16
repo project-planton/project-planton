@@ -13,6 +13,10 @@ module "locust_basic" {
   }
 
   spec = {
+    target_cluster_name = "my-gke-cluster"
+    namespace           = "locust-test"
+    create_namespace    = true
+
     master_container = {
       resources = {
         requests = {
@@ -71,6 +75,10 @@ module "locust_with_ingress" {
   }
 
   spec = {
+    target_cluster_name = "production-gke-cluster"
+    namespace           = "locust-prod"
+    create_namespace    = true
+
     master_container = {
       resources = {
         requests = {
@@ -148,6 +156,10 @@ module "locust_tls" {
   }
 
   spec = {
+    target_cluster_name = "my-gke-cluster"
+    namespace           = "locust-tls"
+    create_namespace    = true
+
     master_container = {
       resources = {
         requests = {
@@ -219,6 +231,10 @@ module "locust_external_lib" {
   }
 
   spec = {
+    target_cluster_name = "dev-cluster"
+    namespace           = "locust-dev"
+    create_namespace    = true
+
     master_container = {
       resources = {
         requests = {
@@ -291,6 +307,10 @@ module "locust_minimal" {
   }
 
   spec = {
+    target_cluster_name = "test-cluster"
+    namespace           = "locust-minimal"
+    create_namespace    = true
+
     master_container = {
       resources = {
         requests = {
@@ -317,6 +337,80 @@ module "locust_minimal" {
         }
       }
       replicas = 1
+    }
+
+    load_test = {
+      name            = "minimal-test"
+      main_py_content = <<-EOT
+        from locust import HttpUser, task
+
+        class MyUser(HttpUser):
+            @task
+            def my_task(self):
+                self.client.get("/")
+      EOT
+    }
+
+    ingress = {
+      enabled = false
+    }
+  }
+}
+```
+
+## Example 6: Using Existing Namespace
+
+```hcl
+module "locust_existing_namespace" {
+  source = "./path/to/kuberneteslocust/v1/iac/tf"
+
+  metadata = {
+    name = "locust-prod"
+  }
+
+  spec = {
+    target_cluster_name = "prod-gke-cluster"
+    namespace           = "shared-load-testing"
+    create_namespace    = false  # Use existing namespace
+
+    master_container = {
+      resources = {
+        requests = {
+          cpu    = "100m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1"
+          memory = "1Gi"
+        }
+      }
+      replicas = 1
+    }
+
+    worker_container = {
+      resources = {
+        requests = {
+          cpu    = "100m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1"
+          memory = "1Gi"
+        }
+      }
+      replicas = 2
+    }
+
+    load_test = {
+      name            = "existing-ns-test"
+      main_py_content = <<-EOT
+        from locust import HttpUser, task
+
+        class MyUser(HttpUser):
+            @task
+            def my_task(self):
+                self.client.get("/api/test")
+      EOT
     }
 
     ingress = {

@@ -8,7 +8,7 @@ This Terraform module deploys production-grade ClickHouse clusters on Kubernetes
 
 - **Operator-Based Deployment**: Uses the Altinity ClickHouse Operator for production-grade cluster management
 - **CRD-Native**: Deploys ClickHouseInstallation custom resources that the operator reconciles
-- **Namespace Management**: Automatically creates and manages a dedicated Kubernetes namespace
+- **Flexible Namespace Management**: Conditionally creates and manages a namespace or deploys into existing namespaces based on the `create_namespace` flag
 - **Persistence**: Configurable persistent volumes for data storage with flexible sizing
 - **Clustering**: Optional sharding and replication for distributed deployments
 - **ZooKeeper Integration**: Auto-managed ZooKeeper for cluster coordination, or configure external ZooKeeper
@@ -20,6 +20,23 @@ This Terraform module deploys production-grade ClickHouse clusters on Kubernetes
 ## Prerequisites
 
 The **Altinity ClickHouse Operator** must be installed on your Kubernetes cluster before using this module. Install the operator using the `ClickhouseOperatorKubernetes` module.
+
+## Namespace Management
+
+This module provides flexible namespace management through the `create_namespace` flag:
+
+- **`create_namespace = true`**: The module creates and manages the namespace with appropriate labels
+- **`create_namespace = false`**: Deploy into an existing namespace (namespace must exist before applying)
+
+**When to use `create_namespace = true`:**
+- Component should own the namespace lifecycle
+- Dedicated namespace for this ClickHouse deployment
+- Want automatic label management
+
+**When to use `create_namespace = false`:**
+- Namespace is managed by another Terraform module or tool
+- Deploying multiple components into a shared namespace
+- Namespace has special configuration (quotas, policies) managed externally
 
 ## Usage
 
@@ -36,8 +53,10 @@ module "clickhouse" {
   }
 
   spec = {
-    cluster_name = "production-analytics"
-    version      = "24.8"
+    namespace        = "clickhouse-prod"
+    create_namespace = true
+    cluster_name     = "production-analytics"
+    version          = "24.8"
     
     container = {
       replicas               = 1

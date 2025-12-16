@@ -6,7 +6,7 @@ resource "kubernetes_manifest" "database" {
       # For the Zalando operator, the name must be prefixed by the teamId (which is "db")
       # followed by our stable resource ID.
       name      = "db-${local.resource_id}"
-      namespace = kubernetes_namespace_v1.postgres_namespace.metadata[0].name
+      namespace = local.namespace_name
       labels    = local.final_labels
     }
     spec = {
@@ -50,7 +50,4 @@ resource "kubernetes_manifest" "database" {
       }
     }
   }
-  depends_on = [
-    kubernetes_namespace_v1.postgres_namespace
-  ]
 }

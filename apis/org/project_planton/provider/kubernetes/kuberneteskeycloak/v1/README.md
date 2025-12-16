@@ -40,6 +40,18 @@ Deploying Keycloak on Kubernetes can be challenging due to the various configura
     - **TLS Settings**: Enable TLS to secure connections to Keycloak.
     - **Ingress Annotations**: Customize ingress controller behavior with annotations (e.g., for specific ingress controllers like NGINX or Istio).
 
+### Namespace Management
+
+- **Namespace Specification**: Define the target Kubernetes namespace for the Keycloak deployment using the `namespace` field
+- **Namespace Creation Control**: Use the `create_namespace` boolean flag to control namespace lifecycle:
+  - `true`: The infrastructure module will create the namespace
+  - `false`: The namespace must already exist and will only be referenced
+
+This provides flexibility for different deployment scenarios:
+- **Isolated deployments**: Create dedicated namespaces per Keycloak instance
+- **Shared namespaces**: Deploy multiple components into pre-existing namespaces
+- **External namespace management**: Use tools like Terraform or ArgoCD to manage namespace lifecycle separately
+
 ### High Availability and Scalability
 
 - **Replicas**: Although not explicitly specified in the spec, you can configure the number of replicas for the Keycloak deployment to ensure high availability and handle increased load.

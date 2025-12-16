@@ -17,6 +17,9 @@ variable "spec" {
     # Kubernetes namespace to install the component
     namespace = string
 
+    # Flag to indicate if the namespace should be created
+    create_namespace = bool
+
     # The container specifications for the main SigNoz binary (UI, API server, Ruler, Alertmanager).
     signoz_container = object({
 

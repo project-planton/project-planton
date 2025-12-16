@@ -16,6 +16,18 @@ variable "spec" {
   description = "spec"
   type = object({
 
+    # Kubernetes namespace for the Helm release
+    namespace = optional(object({
+      value = optional(string)
+      ref = optional(object({
+        kind = optional(string)
+        name = optional(string)
+      }))
+    }))
+
+    # Flag to indicate if the namespace should be created
+    create_namespace = optional(bool, true)
+
     # The repository URL where the Helm chart is hosted.
     # For example, "https://charts.helm.sh/stable".
     # an example for chart-repo (redis chart) can be found in https://artifacthub.io/packages/helm/bitnami/redis?modal=install

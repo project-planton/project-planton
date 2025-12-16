@@ -9,6 +9,7 @@ The module provides automatic configuration for:
 - **Multi-Cloud Support**: GCP, AWS, and Azure
 - **Load Balancer Setup**: Native cloud load balancer integration
 - **Internal/External Control**: Toggle private vs public access
+- **Namespace Management**: Create new or use existing namespaces
 - **Static IP Assignment**: Cloud-specific static IP support
 - **Security Integration**: Security groups, managed identities
 

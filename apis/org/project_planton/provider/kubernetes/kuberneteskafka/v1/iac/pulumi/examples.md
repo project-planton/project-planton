@@ -10,6 +10,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: kafka-basic
+  create_namespace: true
   kafka_topics:
     - name: my-topic
       partitions: 3
@@ -51,6 +52,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: kafka-with-registry
+  create_namespace: true
   kafka_topics:
     - name: my-topic
       partitions: 3
@@ -107,6 +109,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: kafka-minimal
+  create_namespace: true
   broker_container:
     replicas: 1
     resources:
@@ -144,6 +147,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: kafka-topics
+  create_namespace: true
   kafka_topics:
     - name: logs
       partitions: 5
@@ -194,6 +198,7 @@ spec:
     cluster_name: my-gke-cluster
   namespace:
     value: kafka-schema-registry
+  create_namespace: true
   kafka_topics:
     - name: transactions
       partitions: 3
@@ -231,4 +236,47 @@ spec:
   ingress:
     enabled: true
   is_deploy_kafka_ui: false
-``` 
+```
+
+# Example 6: Kafka Kubernetes with External Namespace Management
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KafkaKubernetes
+metadata:
+  name: kafka-external-namespace
+spec:
+  target_cluster:
+    cluster_name: my-gke-cluster
+  namespace:
+    value: existing-kafka-namespace
+  create_namespace: false  # Namespace managed externally
+  kafka_topics:
+    - name: my-topic
+      partitions: 3
+      replicas: 2
+  broker_container:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+    diskSize: 20Gi
+  zookeeper_container:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    diskSize: 10Gi
+  ingress:
+    enabled: false
+  is_deploy_kafka_ui: false
+```
+

@@ -38,7 +38,7 @@ func helmChart(ctx *pulumi.Context,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
 			Version:   pulumi.String(vars.HelmChartVersion),
-			Namespace: createdNamespace.Metadata.Name().Elem(),
+			Namespace: pulumi.String(locals.Namespace),
 			Values:    helmValues,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.HelmChartRepoUrl),

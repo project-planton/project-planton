@@ -22,6 +22,41 @@ Managing a Prometheus deployment within Kubernetes can be complex, especially wh
 
 - **Kubernetes Credential ID**: The `kubernetes_credential_id` is required to securely manage the Kubernetes provider within the stack-update, ensuring a secure and authenticated deployment process.
 
+### Namespace Management
+
+The `create_namespace` field controls whether the module creates the Kubernetes namespace or expects it to already exist:
+
+- **`create_namespace: true`** (recommended for new deployments): The module creates the namespace with appropriate labels and metadata. Use this when deploying Prometheus to a new, dedicated namespace.
+- **`create_namespace: false`**: The module uses an existing namespace without creating it. Use this when:
+  - The namespace already exists and is managed separately
+  - Another team or process manages namespace creation
+  - You're deploying multiple components to a shared namespace
+  - You have specific namespace configuration requirements managed outside this component
+
+**Example with namespace creation:**
+```yaml
+spec:
+  target_cluster:
+    cluster_name: "my-cluster"
+  namespace:
+    value: "prometheus"
+  create_namespace: true  # Module creates the namespace
+  container:
+    replicas: 1
+```
+
+**Example with existing namespace:**
+```yaml
+spec:
+  target_cluster:
+    cluster_name: "my-cluster"
+  namespace:
+    value: "monitoring"  # Must already exist
+  create_namespace: false  # Module uses existing namespace
+  container:
+    replicas: 1
+```
+
 ### Prometheus Container Configuration
 
 #### Resource Management

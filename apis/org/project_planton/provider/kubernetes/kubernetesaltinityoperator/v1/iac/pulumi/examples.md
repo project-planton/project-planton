@@ -31,6 +31,7 @@ spec:
     clusterName: my-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator  # Optional: defaults to "kubernetes-altinity-operator"
+  create_namespace: true  # Create the namespace (default behavior)
   container:
     resources:
       requests:
@@ -83,6 +84,7 @@ spec:
     clusterName: production-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator-prod  # Custom namespace for production
+  create_namespace: true  # Create the namespace
   container:
     resources:
       requests:
@@ -122,6 +124,7 @@ spec:
     clusterName: dev-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator-dev
+  create_namespace: true  # Create the namespace
   container:
     resources:
       requests:
@@ -197,6 +200,7 @@ spec:
     clusterName: my-k8s-cluster
   namespace:
     value: kubernetes-altinity-operator
+  create_namespace: true  # Create the namespace
   container:
     resources:
       requests:
@@ -239,6 +243,119 @@ export KUBERNETES_CREDENTIAL=/path/to/kubeconfig
 
 # Run debug script
 ./debug.sh
+```
+
+---
+
+## Namespace Management
+
+The operator can either create a new namespace or use an existing one, controlled by the `create_namespace` flag.
+
+### Create New Namespace (Default)
+
+By default, the operator creates a new namespace for deployment:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesAltinityOperator
+metadata:
+  name: kubernetes-altinity-operator-with-ns
+spec:
+  targetCluster:
+    clusterName: my-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator
+  create_namespace: true  # Explicitly create namespace (default behavior)
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+### Use Existing Namespace
+
+If you've already created the namespace separately (e.g., using `KubernetesNamespace` resource or externally), set `create_namespace: false`:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesAltinityOperator
+metadata:
+  name: kubernetes-altinity-operator-existing-ns
+spec:
+  targetCluster:
+    clusterName: my-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator  # Must already exist
+  create_namespace: false  # Do not create, use existing namespace
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+```
+
+### When to Use `create_namespace: false`
+
+Set `create_namespace: false` in these scenarios:
+
+- **Centralized Namespace Management**: Namespace created by another resource or process
+- **KubernetesNamespace Resource**: Using the `KubernetesNamespace` resource with specific policies, labels, or annotations
+- **Pre-configured Policies**: Namespace has pre-configured RBAC, ResourceQuotas, or NetworkPolicies
+- **Multi-tenant Environments**: Namespaces managed by a centralized governance system
+- **Security Requirements**: Namespace creation restricted to specific teams/processes
+
+### Example: Using with KubernetesNamespace Resource
+
+First, create the namespace with custom policies:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesNamespace
+metadata:
+  name: altinity-operator-namespace
+spec:
+  targetCluster:
+    clusterName: my-k8s-cluster
+  name: kubernetes-altinity-operator
+  resourceQuota:
+    limits:
+      cpu: "10"
+      memory: "20Gi"
+  limitRange:
+    - type: Container
+      max:
+        cpu: "2"
+        memory: "4Gi"
+```
+
+Then deploy the operator using the existing namespace:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesAltinityOperator
+metadata:
+  name: kubernetes-altinity-operator
+spec:
+  targetCluster:
+    clusterName: my-k8s-cluster
+  namespace:
+    value: kubernetes-altinity-operator
+  create_namespace: false  # Namespace created above
+  container:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
 ```
 
 ---

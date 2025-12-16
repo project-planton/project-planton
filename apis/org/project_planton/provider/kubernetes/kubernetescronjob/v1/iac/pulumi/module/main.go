@@ -28,20 +28,36 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescronjobv1.KubernetesCr
 		return errors.Wrap(err, "failed to create Kubernetes provider")
 	}
 
-	// Create (or get) the namespace resource
-	createdNamespace, err := corev1.NewNamespace(
-		ctx,
-		locals.Namespace,
-		&corev1.NamespaceArgs{
-			Metadata: &metav1.ObjectMetaArgs{
-				Name:   pulumi.String(locals.Namespace),
-				Labels: pulumi.ToStringMap(locals.Labels),
+	// Create or reference the namespace based on create_namespace flag
+	var createdNamespace *corev1.Namespace
+	if stackInput.Target.Spec.CreateNamespace {
+		// Create new namespace
+		createdNamespace, err = corev1.NewNamespace(
+			ctx,
+			locals.Namespace,
+			&corev1.NamespaceArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
+				},
 			},
-		},
-		pulumi.Provider(kubernetesProvider),
-	)
-	if err != nil {
-		return errors.Wrapf(err, "failed to create namespace %s", locals.Namespace)
+			pulumi.Provider(kubernetesProvider),
+		)
+		if err != nil {
+			return errors.Wrapf(err, "failed to create namespace %s", locals.Namespace)
+		}
+	} else {
+		// Reference existing namespace
+		createdNamespace, err = corev1.GetNamespace(
+			ctx,
+			locals.Namespace,
+			pulumi.ID(locals.Namespace),
+			nil,
+			pulumi.Provider(kubernetesProvider),
+		)
+		if err != nil {
+			return errors.Wrapf(err, "failed to get existing namespace %s", locals.Namespace)
+		}
 	}
 
 	// Create the main secret resource

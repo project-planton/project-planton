@@ -67,7 +67,15 @@
 ##############################################
 
 ##############################################
-# 1. Create Namespace
+# 1. Create Namespace (Conditional)
+#
+# The namespace is only created if spec.create_namespace
+# is set to true. If false, the namespace specified in
+# spec.namespace.value is assumed to already exist.
+#
+# This gives users control over namespace lifecycle:
+# - create_namespace: true  -> Module manages namespace
+# - create_namespace: false -> User manages namespace externally
 #
 # Keycloak runs in a dedicated namespace for
 # isolation and resource management. This follows
@@ -75,6 +83,8 @@
 # better security and operational clarity.
 ##############################################
 resource "kubernetes_namespace_v1" "keycloak_namespace" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
@@ -104,14 +114,22 @@ resource "kubernetes_namespace_v1" "keycloak_namespace" {
 # The Helm chart deployment would be added here in a full implementation,
 # configured using the variables from variables.tf and locals from locals.tf.
 #
+# Namespace Dependency:
+# When namespace creation is enabled (create_namespace = true), the Helm
+# chart should reference: kubernetes_namespace_v1.keycloak_namespace[0].metadata[0].name
+# When disabled (create_namespace = false), use local.namespace directly.
+#
 # Example Helm deployment (to be implemented):
 #
 # resource "helm_release" "keycloak" {
 #   name       = "keycloak"
-#   namespace  = kubernetes_namespace_v1.keycloak_namespace.metadata[0].name
+#   namespace  = local.namespace
 #   repository = "https://charts.bitnami.com/bitnami"
 #   chart      = "keycloak"
 #   version    = "latest"
+#
+#   # If namespace is created by this module, add dependency:
+#   # depends_on = var.spec.create_namespace ? [kubernetes_namespace_v1.keycloak_namespace[0]] : []
 #
 #   values = [
 #     yamlencode({

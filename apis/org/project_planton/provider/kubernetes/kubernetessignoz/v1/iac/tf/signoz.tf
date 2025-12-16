@@ -3,7 +3,7 @@ resource "helm_release" "signoz" {
   repository = "https://charts.signoz.io"
   chart      = "signoz"
   version    = "0.52.0"
-  namespace  = kubernetes_namespace_v1.signoz_namespace.metadata[0].name
+  namespace  = local.namespace
 
   values = [
     yamlencode(
@@ -161,8 +161,9 @@ resource "helm_release" "signoz" {
     )
   ]
 
-  depends_on = [
-    kubernetes_namespace_v1.signoz_namespace
-  ]
+  # Note: No explicit depends_on needed here because:
+  # - When create_namespace=true, Terraform creates namespace first (count=1) then helm release
+  # - When create_namespace=false, namespace already exists, so no dependency needed
+  # - Using local.namespace (string) instead of resource reference avoids conditional dependency issues
 }
 

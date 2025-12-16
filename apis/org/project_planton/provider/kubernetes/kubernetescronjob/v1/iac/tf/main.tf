@@ -25,7 +25,11 @@
 ##############################################
 
 ##############################################
-# 1. Create Namespace
+# 1. Create or Reference Namespace
+#
+# Conditionally create namespace based on create_namespace flag:
+#  - If true: Create new namespace with labels
+#  - If false: Reference existing namespace
 #
 # Each CronJob gets its own namespace for:
 #  - Resource isolation
@@ -33,9 +37,20 @@
 #  - Easier cleanup and management
 ##############################################
 resource "kubernetes_namespace" "this" {
+  count = var.spec.create_namespace ? 1 : 0
+
   metadata {
     name   = local.namespace
     labels = local.final_labels
+  }
+}
+
+# Data source for existing namespace (when not creating)
+data "kubernetes_namespace" "existing" {
+  count = var.spec.create_namespace ? 0 : 1
+
+  metadata {
+    name = local.namespace
   }
 }
 
