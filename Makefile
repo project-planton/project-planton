@@ -97,8 +97,16 @@ build-go: fmt deps vet
 .PHONY: build-cli
 build-cli: build-go
 
+.PHONY: build-backend
+build-backend:
+	$(MAKE) -C app/backend build
+
+.PHONY: build-frontend
+build-frontend:
+	$(MAKE) -C app/frontend build
+
 .PHONY: build
-build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle bazel-build-cli build-cli
+build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle bazel-build-cli build-cli build-backend build-frontend
 
 ${build_dir}/${name}: build-go
 
