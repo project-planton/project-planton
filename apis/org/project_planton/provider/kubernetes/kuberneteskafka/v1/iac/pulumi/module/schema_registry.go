@@ -7,7 +7,6 @@ import (
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/strimzioperator/kubernetes/kafka/v1beta2"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -16,8 +15,7 @@ import (
 	k8scorev1 "k8s.io/api/core/v1"
 )
 
-func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace,
+func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource,
 	createdKafkaCluster *v1beta2.Kafka) error {
 
 	labels := locals.Labels
@@ -29,7 +27,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 		&appsv1.DeploymentArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.SchemaRegistryDeploymentName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
 			Spec: &appsv1.DeploymentSpecArgs{
@@ -115,7 +113,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 				},
 			},
 		},
-		pulumi.Parent(createdKafkaCluster))
+		pulumi.Provider(kubernetesProvider))
 
 	//create kubernetes service
 	createdService, err := kubernetescorev1.NewService(ctx,
@@ -123,7 +121,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 		&kubernetescorev1.ServiceArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.SchemaRegistryKubeServiceName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 			},
 			Spec: &kubernetescorev1.ServiceSpecArgs{
 				Type: pulumi.String("ClusterIP"),
@@ -139,7 +137,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 					},
 				},
 			},
-		}, pulumi.Parent(createdKafkaCluster))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrapf(err, "failed to add schema registry service")
 	}
@@ -235,7 +233,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("schema-registry"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -259,14 +257,14 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(vars.SchemaRegistryKubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(80),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace), pulumi.DependsOn([]pulumi.Resource{createdService}))
+		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{createdService}))
 
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTP route for schema-registry")

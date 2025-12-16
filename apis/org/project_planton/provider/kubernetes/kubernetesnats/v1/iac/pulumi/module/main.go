@@ -25,23 +25,23 @@ func Resources(ctx *pulumi.Context,
 
 	// ------------------------------ namespace ----------------------------
 	// Conditionally create namespace based on create_namespace flag
-	createdNamespace, err := namespace(ctx, stackInput, locals, kubernetesProvider)
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	// ----------------------------- secrets --------------------------------
-	if err := tlsSecret(ctx, locals, createdNamespace); err != nil {
+	if err := tlsSecret(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create TLS secret")
 	}
 
 	// ------------------------------ helm ----------------------------------
-	if err := helmChart(ctx, locals, createdNamespace); err != nil {
+	if err := helmChart(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to deploy NATS Helm chart")
 	}
 
 	// ----------------------------- ingress --------------------------------
-	if err := ingress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+	if err := ingress(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create external ingress")
 	}
 

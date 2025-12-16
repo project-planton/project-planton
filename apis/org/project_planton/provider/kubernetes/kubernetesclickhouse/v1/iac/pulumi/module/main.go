@@ -19,13 +19,15 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesclickhousev1.Kubernete
 	}
 
 	// Create or reference namespace for ClickHouse resources based on create_namespace flag
-	namespace, err := createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubernetesProvider)
+	// Note: We discard the return value as we use locals.Namespace (string) for resource metadata
+	// and pass kubernetesProvider directly to all functions for provider configuration
+	_, err = createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create or get namespace")
 	}
 
 	// Create password secret for ClickHouse authentication
-	createdSecret, err := createPasswordSecret(ctx, locals, namespace)
+	createdSecret, err := createPasswordSecret(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create password secret")
 	}
@@ -33,18 +35,18 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesclickhousev1.Kubernete
 	// Create ClickHouseKeeperInstallation if auto-managed Keeper is requested
 	if shouldCreateClickHouseKeeper(locals.KubernetesClickHouse.Spec) {
 		keeperConfig := getKeeperConfig(locals.KubernetesClickHouse.Spec)
-		if err := clickhouseKeeperInstallation(ctx, locals, namespace, keeperConfig); err != nil {
+		if err := clickhouseKeeperInstallation(ctx, locals, kubernetesProvider, keeperConfig); err != nil {
 			return errors.Wrap(err, "failed to create ClickHouseKeeperInstallation")
 		}
 	}
 
 	// Create ClickHouseInstallation CRD using Altinity operator
-	if err := clickhouseInstallation(ctx, locals, namespace, createdSecret); err != nil {
+	if err := clickhouseInstallation(ctx, locals, kubernetesProvider, createdSecret); err != nil {
 		return errors.Wrap(err, "failed to create ClickHouseInstallation")
 	}
 
 	// Create ingress LoadBalancer service if enabled
-	if err := createIngressLoadBalancer(ctx, locals, namespace, kubernetesProvider); err != nil {
+	if err := createIngressLoadBalancer(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create ingress load balancer")
 	}
 

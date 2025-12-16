@@ -16,7 +16,7 @@ import (
 func clickhouseKeeperInstallation(
 	ctx *pulumi.Context,
 	locals *Locals,
-	namespace pulumi.StringInput,
+	kubernetesProvider pulumi.ProviderResource,
 	keeperConfig *kubernetesclickhousev1.KubernetesClickHouseKeeperConfig,
 ) error {
 	// Apply defaults if keeper_config is not specified
@@ -42,7 +42,7 @@ func clickhouseKeeperInstallation(
 		&clickhousekeeperv1.ClickHouseKeeperInstallationArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(keeperName),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: &clickhousekeeperv1.ClickHouseKeeperInstallationSpecArgs{
@@ -50,7 +50,7 @@ func clickhouseKeeperInstallation(
 				// Defaults removed - not supported in Altinity operator 0.23.6
 				Templates: buildKeeperTemplates(diskSize, keeperConfig),
 			},
-		},
+		}, pulumi.Provider(kubernetesProvider),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create ClickHouseKeeperInstallation")

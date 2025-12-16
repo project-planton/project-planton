@@ -4,14 +4,12 @@ import (
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace) error {
+func ingress(ctx *pulumi.Context, locals *Locals,
+	kubernetesProvider pulumi.ProviderResource) error {
 	// Create new certificate
 	addedCertificate, err := certmanagerv1.NewCertificate(ctx,
 		"ingress-certificate",
@@ -122,7 +120,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 					},
 				},
 			},
-		}, optionalParent(createdNamespace)...)
+		}, pulumi.Provider(kubernetesProvider))
 
 	// Create HTTP route for external hostname for https listener
 	_, err = gatewayv1.NewHTTPRoute(ctx,
@@ -162,7 +160,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 					},
 				},
 			},
-		}, optionalParent(createdNamespace)...)
+		}, pulumi.Provider(kubernetesProvider))
 
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTP route for external hostname")

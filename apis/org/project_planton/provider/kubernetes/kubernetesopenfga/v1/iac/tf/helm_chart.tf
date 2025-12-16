@@ -3,7 +3,7 @@ resource "helm_release" "openfga_helm_chart" {
   repository       = "https://openfga.github.io/helm-charts"
   chart            = "openfga"
   version          = "0.2.12"
-  namespace        = local.namespace_name
+  namespace        = local.namespace
   create_namespace = false
 
   values = [
@@ -26,6 +26,4 @@ resource "helm_release" "openfga_helm_chart" {
       }
     })
   ]
-
-  # Implicit dependency through local.namespace_name reference
 }

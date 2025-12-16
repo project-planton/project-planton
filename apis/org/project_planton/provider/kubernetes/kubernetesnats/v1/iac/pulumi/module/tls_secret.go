@@ -18,7 +18,7 @@ import (
 // single CN = "<namespace>.svc".  If the user needs full ACME / cert-manager
 // workflow, they can fork the module later.
 func tlsSecret(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	if !locals.KubernetesNats.Spec.TlsEnabled {
 		return nil
@@ -30,7 +30,7 @@ func tlsSecret(ctx *pulumi.Context, locals *Locals,
 		&tls.PrivateKeyArgs{
 			Algorithm: pulumi.String("RSA"),
 			RsaBits:   pulumi.Int(2048),
-		}, pulumi.Parent(createdNamespace))
+		})
 	if err != nil {
 		return errors.Wrap(err, "failed to create private key")
 	}
@@ -50,7 +50,7 @@ func tlsSecret(ctx *pulumi.Context, locals *Locals,
 			ValidityPeriodHours: pulumi.Int(int(time.Hour*24*365*5) / int(time.Hour)),
 			EarlyRenewalHours:   pulumi.Int(720), // 30 days before expiry
 			IsCaCertificate:     pulumi.Bool(false),
-		}, pulumi.Parent(createdNamespace))
+		})
 	if err != nil {
 		return errors.Wrap(err, "failed to create self-signed certificate")
 	}
@@ -61,7 +61,7 @@ func tlsSecret(ctx *pulumi.Context, locals *Locals,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &kubernetesmeta.ObjectMetaArgs{
 				Name:      pulumi.String(locals.TlsSecretName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			StringData: pulumi.StringMap{
@@ -69,7 +69,7 @@ func tlsSecret(ctx *pulumi.Context, locals *Locals,
 				"tls.key": createdPrivateKey.PrivateKeyPem,
 			},
 			Type: pulumi.String("kubernetes.io/tls"),
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create TLS secret")
 	}

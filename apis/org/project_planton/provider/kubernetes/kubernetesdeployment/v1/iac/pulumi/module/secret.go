@@ -8,7 +8,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func secret(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescorev1.Namespace) error {
+func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	dataMap := make(map[string]string)
 
 	//add all secrets to data map
@@ -35,17 +35,10 @@ func secret(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescor
 		StringData: pulumi.ToStringMap(dataMap),
 	}
 
-	var err error
-	if createdNamespace != nil {
-		_, err = kubernetescorev1.NewSecret(ctx,
-			"main",
-			secretArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		_, err = kubernetescorev1.NewSecret(ctx,
-			"main",
-			secretArgs)
-	}
+	_, err := kubernetescorev1.NewSecret(ctx,
+		"main",
+		secretArgs,
+		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create secret resource")
 	}

@@ -8,15 +8,17 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// helmChart installs the upstream Redis Helm chart and tailors it to the spec.
 func helmChart(ctx *pulumi.Context, locals *Locals,
-	namespace pulumi.StringInput) error {
-	//install helm-chart
+	kubernetesProvider pulumi.ProviderResource) error {
+
+	// install helm-chart
 	_, err := helmv3.NewChart(ctx,
 		locals.KubernetesRedis.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
 			Version:   pulumi.String(vars.HelmChartVersion),
-			Namespace: namespace,
+			Namespace: pulumi.String(locals.Namespace),
 			//https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
 			Values: pulumi.Map{
 				"fullnameOverride": pulumi.String(locals.KubernetesRedis.Metadata.Name),
@@ -48,11 +50,11 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 					"existingSecretPasswordKey": pulumi.String(vars.RedisPasswordSecretKey),
 				},
 			},
-			//if you need to add the repository, you can specify `repo url`:
+			// if you need to add the repository, you can specify `repo url`:
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.HelmChartRepoUrl),
 			},
-		})
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create helm chart")
 	}

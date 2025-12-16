@@ -16,7 +16,7 @@ import (
 func createPasswordSecret(
 	ctx *pulumi.Context,
 	locals *Locals,
-	namespace pulumi.StringInput,
+	kubernetesProvider pulumi.ProviderResource,
 ) (*kubernetescorev1.Secret, error) {
 	// Generate cryptographically secure random password
 	createdRandomString, err := generateRandomPassword(ctx)
@@ -25,7 +25,7 @@ func createPasswordSecret(
 	}
 
 	// Create Kubernetes Secret to store the password
-	createdSecret, err := createKubernetesSecret(ctx, locals, namespace, createdRandomString)
+	createdSecret, err := createKubernetesSecret(ctx, locals, kubernetesProvider, createdRandomString)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create password secret")
 	}
@@ -68,7 +68,7 @@ func generateRandomPassword(
 func createKubernetesSecret(
 	ctx *pulumi.Context,
 	locals *Locals,
-	namespace pulumi.StringInput,
+	kubernetesProvider pulumi.ProviderResource,
 	randomPassword *random.RandomPassword,
 ) (*kubernetescorev1.Secret, error) {
 	// Create secret with the generated password
@@ -78,12 +78,12 @@ func createKubernetesSecret(
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesClickHouse.Metadata.Name),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
 			},
 			StringData: pulumi.StringMap{
 				vars.ClickhousePasswordKey: randomPassword.Result,
 			},
-		})
+		}, pulumi.Provider(kubernetesProvider))
 
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create kubernetes secret")

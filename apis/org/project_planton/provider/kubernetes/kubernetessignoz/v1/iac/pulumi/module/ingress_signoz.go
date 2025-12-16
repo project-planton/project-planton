@@ -4,16 +4,14 @@ import (
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // createSignozUIIngress creates Kubernetes Gateway API resources for SigNoz UI external access
 // This includes Certificate, Gateway, and HTTPRoute resources following the Gateway API standard
-func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace) error {
+func createSignozUIIngress(ctx *pulumi.Context, locals *Locals,
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	// Skip if ingress is not enabled
 	if locals.KubernetesSignoz.Spec.Ingress == nil ||
@@ -91,11 +89,6 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvid
 	}
 
 	// Create HTTPRoute for HTTPS traffic to SigNoz frontend service
-	httpRouteOpts := []pulumi.ResourceOption{}
-	if createdNamespace != nil {
-		httpRouteOpts = append(httpRouteOpts, pulumi.Parent(createdNamespace))
-	}
-
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"https-external",
 		&gatewayv1.HTTPRouteArgs{
@@ -134,8 +127,7 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvid
 					},
 				},
 			},
-		}, httpRouteOpts...)
-
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTPS route for SigNoz UI")
 	}

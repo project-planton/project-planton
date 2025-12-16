@@ -76,11 +76,6 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 	repo := helm.RepositoryOptsArgs{Repo: pulumi.String(vars.HelmRepo)}
 
 	// ---- istio/base ----
-	baseReleaseOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProviderConfig)}
-	if spec.CreateNamespace && sysNS != nil {
-		baseReleaseOpts = append(baseReleaseOpts, pulumi.Parent(sysNS))
-	}
-
 	_, err = helm.NewRelease(ctx, "istio-base",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.BaseChart),
@@ -94,7 +89,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 			Timeout:         pulumi.Int(180),
 			RepositoryOpts:  repo,
 		},
-		baseReleaseOpts...)
+		pulumi.Provider(kubernetesProviderConfig))
 	if err != nil {
 		return errors.Wrap(err, "installing istio/base")
 	}
@@ -119,11 +114,6 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 		}
 	}
 
-	istiodReleaseOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProviderConfig)}
-	if spec.CreateNamespace && sysNS != nil {
-		istiodReleaseOpts = append(istiodReleaseOpts, pulumi.Parent(sysNS))
-	}
-
 	_, err = helm.NewRelease(ctx, "istiod",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.IstiodChart),
@@ -138,17 +128,12 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 			Values:          istiodValues,
 			RepositoryOpts:  repo,
 		},
-		istiodReleaseOpts...)
+		pulumi.Provider(kubernetesProviderConfig))
 	if err != nil {
 		return errors.Wrap(err, "installing istiod control‑plane")
 	}
 
 	// ---- ingress‑gateway ----
-	gatewayReleaseOpts := []pulumi.ResourceOption{pulumi.Provider(kubernetesProviderConfig)}
-	if spec.CreateNamespace && gwNS != nil {
-		gatewayReleaseOpts = append(gatewayReleaseOpts, pulumi.Parent(gwNS))
-	}
-
 	_, err = helm.NewRelease(ctx, "istio-gateway",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.GatewayChart),
@@ -167,7 +152,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 				},
 			},
 		},
-		gatewayReleaseOpts...)
+		pulumi.Provider(kubernetesProviderConfig))
 	if err != nil {
 		return errors.Wrap(err, "installing istio ingress‑gateway")
 	}

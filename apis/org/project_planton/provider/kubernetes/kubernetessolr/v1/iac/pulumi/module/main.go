@@ -4,8 +4,6 @@ import (
 	"github.com/pkg/errors"
 	kubernetessolrv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	kubernetesmetav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -19,42 +17,23 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolrv1.KubernetesSolrS
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
 
-	//conditionally create namespace resource based on create_namespace flag
-	var createdNamespace *kubernetescorev1.Namespace
-	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
-			locals.Namespace,
-			&kubernetescorev1.NamespaceArgs{
-				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
-					&kubernetesmetav1.ObjectMetaArgs{
-						Name:   pulumi.String(locals.Namespace),
-						Labels: pulumi.ToStringMap(locals.Labels),
-					}),
-			}, pulumi.Provider(kubernetesProvider))
-		if err != nil {
-			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
-		}
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
 	//create solr-cloud custom resource
-	if err := solrCloud(ctx, locals, createdNamespace); err != nil {
+	if err := solrCloud(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create helm-chart resources")
 	}
 
 	//create istio-ingress resources if ingress is enabled.
 	if locals.KubernetesSolr.Spec.Ingress.Enabled {
-		if err := ingress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+		if err := ingress(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create istio ingress resources")
 		}
 	}
 
 	return nil
-}
-
-// optionalParent returns a pulumi.Parent option if the namespace is not nil, otherwise returns an empty slice
-func optionalParent(namespace *kubernetescorev1.Namespace) []pulumi.ResourceOption {
-	if namespace != nil {
-		return []pulumi.ResourceOption{pulumi.Parent(namespace)}
-	}
-	return []pulumi.ResourceOption{}
 }

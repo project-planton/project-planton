@@ -14,7 +14,7 @@ import (
 )
 
 func deployment(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) (*appsv1.Deployment, error) {
+	kubernetesProvider pulumi.ProviderResource) (*appsv1.Deployment, error) {
 
 	// create service account
 	serviceAccountArgs := &kubernetescorev1.ServiceAccountArgs{
@@ -24,18 +24,10 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		}),
 	}
 
-	var createdServiceAccount *kubernetescorev1.ServiceAccount
-	var err error
-	if createdNamespace != nil {
-		createdServiceAccount, err = kubernetescorev1.NewServiceAccount(ctx,
-			locals.KubernetesDeployment.Metadata.Name,
-			serviceAccountArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		createdServiceAccount, err = kubernetescorev1.NewServiceAccount(ctx,
-			locals.KubernetesDeployment.Metadata.Name,
-			serviceAccountArgs)
-	}
+	createdServiceAccount, err := kubernetescorev1.NewServiceAccount(ctx,
+		locals.KubernetesDeployment.Metadata.Name,
+		serviceAccountArgs,
+		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add service account")
 	}
@@ -139,7 +131,7 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Create image pull secret if configured
-	createdImagePullSecret, err := imagePullSecret(ctx, locals, createdNamespace)
+	createdImagePullSecret, err := imagePullSecret(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return nil, err
 	}
@@ -183,19 +175,11 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		//"metadata.managedFields", "status",
 	})
 
-	var createdDeployment *appsv1.Deployment
-	if createdNamespace != nil {
-		createdDeployment, err = appsv1.NewDeployment(ctx,
-			locals.KubernetesDeployment.Spec.Version,
-			deploymentArgs,
-			pulumi.Parent(createdNamespace),
-			ignoreChangesOpt)
-	} else {
-		createdDeployment, err = appsv1.NewDeployment(ctx,
-			locals.KubernetesDeployment.Spec.Version,
-			deploymentArgs,
-			ignoreChangesOpt)
-	}
+	createdDeployment, err := appsv1.NewDeployment(ctx,
+		locals.KubernetesDeployment.Spec.Version,
+		deploymentArgs,
+		pulumi.Provider(kubernetesProvider),
+		ignoreChangesOpt)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add deployment")
 	}

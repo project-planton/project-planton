@@ -32,12 +32,11 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 	// --------------------------------------------------------------------
 	// 1. Namespace - conditionally create based on create_namespace flag
 	// --------------------------------------------------------------------
-	var ns *corev1.Namespace
 	var namespaceOutput pulumi.StringInput
 
 	if stackInput.Target.Spec.CreateNamespace {
 		// Create the namespace
-		ns, err = corev1.NewNamespace(ctx, namespace,
+		createdNs, err := corev1.NewNamespace(ctx, namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Name: pulumi.String(namespace),
@@ -47,7 +46,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 		if err != nil {
 			return errors.Wrap(err, "failed to create namespace")
 		}
-		namespaceOutput = ns.Metadata.Name().Elem()
+		namespaceOutput = createdNs.Metadata.Name().Elem()
 	} else {
 		// Use existing namespace - just reference the name
 		namespaceOutput = pulumi.String(namespace)
@@ -56,19 +55,11 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 	// --------------------------------------------------------------------
 	// 2. Apply CRDs required by the operator
 	// --------------------------------------------------------------------
-	crdsOpts := []pulumi.ResourceOption{
-		pulumi.Provider(kubeProvider),
-	}
-	// Only set parent if we created the namespace
-	if ns != nil {
-		crdsOpts = append(crdsOpts, pulumi.Parent(ns))
-	}
-
 	crds, err := pulumiyaml.NewConfigFile(ctx, "solr-operator-crds",
 		&pulumiyaml.ConfigFileArgs{
 			File: vars.CrdManifestDownloadURL,
 		},
-		crdsOpts...)
+		pulumi.Provider(kubeProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to apply CRDs")
 	}
@@ -76,16 +67,6 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 	// --------------------------------------------------------------------
 	// 3. Deploy the operator via Helm
 	// --------------------------------------------------------------------
-	helmReleaseOpts := []pulumi.ResourceOption{
-		pulumi.Provider(kubeProvider),
-		pulumi.DependsOn([]pulumi.Resource{crds}),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
-	}
-	// Only set parent if we created the namespace
-	if ns != nil {
-		helmReleaseOpts = append(helmReleaseOpts, pulumi.Parent(ns))
-	}
-
 	_, err = helm.NewRelease(ctx, "solr-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
@@ -102,7 +83,9 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 				Repo: pulumi.String(vars.HelmChartRepo),
 			},
 		},
-		helmReleaseOpts...)
+		pulumi.Provider(kubeProvider),
+		pulumi.DependsOn([]pulumi.Resource{crds}),
+		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
 		return errors.Wrap(err, "failed to install solr‑operator helm release")
 	}

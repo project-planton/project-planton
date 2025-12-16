@@ -4,13 +4,11 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/mergestringmaps"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func signoz(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
 	kubernetesProvider pulumi.ProviderResource) error {
 
 	// https://github.com/SigNoz/charts/blob/main/charts/signoz/values.yaml
@@ -203,7 +201,7 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.HelmChartRepoUrl),
 			},
-		}, pulumi.Parent(createdNamespace), pulumi.Provider(kubernetesProvider))
+		}, pulumi.Provider(kubernetesProvider))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create signoz helm-chart")

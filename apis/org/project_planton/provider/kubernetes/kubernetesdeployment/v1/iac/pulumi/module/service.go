@@ -9,7 +9,7 @@ import (
 )
 
 func service(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace, createdDeployment *appsv1.Deployment) error {
+	kubernetesProvider pulumi.ProviderResource, createdDeployment *appsv1.Deployment) error {
 
 	//if the service ports are empty, we don't need to create a service
 	if len(locals.KubernetesDeployment.Spec.Container.App.Ports) == 0 {
@@ -40,19 +40,11 @@ func service(ctx *pulumi.Context, locals *Locals,
 		},
 	}
 
-	var err error
-	if createdNamespace != nil {
-		_, err = kubernetescorev1.NewService(ctx,
-			locals.KubernetesDeployment.Spec.Version,
-			serviceArgs,
-			pulumi.Parent(createdNamespace),
-			pulumi.DependsOn([]pulumi.Resource{createdDeployment}))
-	} else {
-		_, err = kubernetescorev1.NewService(ctx,
-			locals.KubernetesDeployment.Spec.Version,
-			serviceArgs,
-			pulumi.DependsOn([]pulumi.Resource{createdDeployment}))
-	}
+	_, err := kubernetescorev1.NewService(ctx,
+		locals.KubernetesDeployment.Spec.Version,
+		serviceArgs,
+		pulumi.Provider(kubernetesProvider),
+		pulumi.DependsOn([]pulumi.Resource{createdDeployment}))
 	if err != nil {
 		return errors.Wrap(err, "failed to add service")
 	}

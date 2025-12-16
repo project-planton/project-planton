@@ -3,13 +3,12 @@ package module
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/solroperator/kubernetes/solr/v1beta1"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func solrCloud(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	kubernetesProvider pulumi.ProviderResource) error {
 	//create solr-operator's solrcloud resource
 	_, err := v1beta1.NewSolrCloud(ctx, "solr-cloud",
 		&v1beta1.SolrCloudArgs{
@@ -84,7 +83,7 @@ func solrCloud(ctx *pulumi.Context, locals *Locals,
 					},
 				},
 			},
-		}, optionalParent(createdNamespace)...)
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create solr-cloud resource")
 	}

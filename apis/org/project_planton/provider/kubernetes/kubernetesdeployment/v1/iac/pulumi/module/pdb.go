@@ -2,7 +2,6 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	policyv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/policy/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -11,7 +10,7 @@ import (
 // podDisruptionBudget creates a PodDisruptionBudget resource if configured.
 // PodDisruptionBudgets ensure minimum availability during voluntary disruptions like node maintenance.
 func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	// Check if PDB is enabled
 	pdbConfig := locals.KubernetesDeployment.Spec.Availability.PodDisruptionBudget
@@ -44,17 +43,10 @@ func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
 		Spec: pdbSpec,
 	}
 
-	var err error
-	if createdNamespace != nil {
-		_, err = policyv1.NewPodDisruptionBudget(ctx,
-			"pdb",
-			pdbArgs,
-			pulumi.Parent(createdNamespace))
-	} else {
-		_, err = policyv1.NewPodDisruptionBudget(ctx,
-			"pdb",
-			pdbArgs)
-	}
+	_, err := policyv1.NewPodDisruptionBudget(ctx,
+		"pdb",
+		pdbArgs,
+		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create pod disruption budget")
 	}

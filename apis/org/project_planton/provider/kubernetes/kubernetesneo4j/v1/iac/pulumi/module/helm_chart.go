@@ -5,7 +5,6 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -14,7 +13,7 @@ import (
 func helmChart(
 	ctx *pulumi.Context,
 	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
+	kubernetesProvider pulumi.ProviderResource,
 ) error {
 	container := locals.KubernetesNeo4J.Spec.Container
 
@@ -32,12 +31,6 @@ func helmChart(
 		externalSvc["annotations"] = pulumi.StringMap{
 			"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressExternalHostname),
 		}
-	}
-
-	// Build helm options, conditionally adding parent if namespace was created
-	helmOptions := []pulumi.ResourceOption{}
-	if createdNamespace != nil {
-		helmOptions = append(helmOptions, pulumi.Parent(createdNamespace))
 	}
 
 	_, err := helmv3.NewChart(ctx,
@@ -82,7 +75,7 @@ func helmChart(
 				Repo: pulumi.String(vars.Neo4jHelmChartRepoUrl),
 			},
 		},
-		helmOptions...,
+		pulumi.Provider(kubernetesProvider),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to deploy neo4j helm chart")

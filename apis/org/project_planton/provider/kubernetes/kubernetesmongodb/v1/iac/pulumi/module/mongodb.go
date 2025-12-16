@@ -15,7 +15,7 @@ import (
 func mongodb(
 	ctx *pulumi.Context,
 	locals *Locals,
-	namespace pulumi.StringInput,
+	kubernetesProvider pulumi.ProviderResource,
 	createdSecret *kubernetescorev1.Secret,
 ) error {
 	spec := locals.KubernetesMongodb.Spec
@@ -32,7 +32,7 @@ func mongodb(
 		&psmdbv1.PerconaServerMongoDBArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.KubernetesMongodb.Metadata.Name),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: &psmdbv1.PerconaServerMongoDBSpecArgs{
@@ -45,7 +45,7 @@ func mongodb(
 					ReplsetSize: pulumi.Bool(true),
 				},
 			},
-		},
+		}, pulumi.Provider(kubernetesProvider),
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create PerconaServerMongoDB")

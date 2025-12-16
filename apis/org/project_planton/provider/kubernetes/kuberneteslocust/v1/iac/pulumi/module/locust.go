@@ -11,12 +11,7 @@ import (
 )
 
 func locust(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
-	// Create resource options based on whether namespace was created
-	var resourceOpts []pulumi.ResourceOption
-	if createdNamespace != nil {
-		resourceOpts = []pulumi.ResourceOption{pulumi.Parent(createdNamespace)}
-	}
+	kubernetesProvider pulumi.ProviderResource) error {
 
 	// Create a ConfigMap for the main.py file
 	_, err := kubernetescorev1.NewConfigMap(ctx, "main-py", &kubernetescorev1.ConfigMapArgs{
@@ -28,7 +23,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 		Data: pulumi.StringMap{
 			"main.py": pulumi.String(locals.KubernetesLocust.Spec.LoadTest.MainPyContent),
 		},
-	}, resourceOpts...)
+	}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create main py configmap")
 	}
@@ -41,7 +36,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		}),
 		Data: pulumi.ToStringMap(locals.KubernetesLocust.Spec.LoadTest.LibFilesContent),
-	}, resourceOpts...)
+	}, pulumi.Provider(kubernetesProvider))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create lib files configmap")
@@ -79,7 +74,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String("https://charts.deliveryhero.io"), // The URL for the Helm chart repository
 			},
-		}, resourceOpts...)
+		}, pulumi.Provider(kubernetesProvider))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create locust resource")

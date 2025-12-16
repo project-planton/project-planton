@@ -19,9 +19,8 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.KubernetesJe
 	}
 
 	//conditionally create namespace resource based on create_namespace flag
-	var createdNamespace *kubernetescorev1.Namespace
 	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+		_, err = kubernetescorev1.NewNamespace(ctx,
 			locals.Namespace,
 			&kubernetescorev1.NamespaceArgs{
 				Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
@@ -39,19 +38,19 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.KubernetesJe
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	//create admin-password secret
-	createdAdminPasswordSecret, err := adminCredentials(ctx, locals, createdNamespace)
+	createdAdminPasswordSecret, err := adminCredentials(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create admin password resources")
 	}
 
 	//install the jenkins helm-chart
-	if err := helmChart(ctx, locals, createdNamespace, createdAdminPasswordSecret); err != nil {
+	if err := helmChart(ctx, locals, kubernetesProvider, createdAdminPasswordSecret); err != nil {
 		return errors.Wrap(err, "failed to create helm-chart resources")
 	}
 
 	//create istio-ingress resources if ingress is enabled.
 	if locals.KubernetesJenkins.Spec.Ingress.Enabled {
-		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
+		if err := ingress(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create ingress resources")
 		}
 	}

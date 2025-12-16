@@ -4,17 +4,12 @@ import (
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func ingress(ctx *pulumi.Context,
-	locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace,
-	kubernetesProvider *kubernetes.Provider,
-	labels map[string]string) error {
+// ingress creates Istio Gateway and HTTPRoute resources for external access when ingress is enabled.
+func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	// Create certificate
 	createdCertificate, err := certmanagerv1.NewCertificate(ctx,
 		"ingress-certificate",
@@ -92,13 +87,13 @@ func ingress(ctx *pulumi.Context,
 		return errors.Wrap(err, "error creating gateway")
 	}
 
-	//create http-route for setting up https-redirect for external-hostname
+	// Create http-route for setting up https-redirect for external-hostname
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"http-external-redirect",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("http-external-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -124,15 +119,18 @@ func ingress(ctx *pulumi.Context,
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
+	if err != nil {
+		return errors.Wrap(err, "error creating HTTP redirect route")
+	}
 
-	//Create HTTP route for external hostname for https listener
+	// Create HTTP route for external hostname for https listener
 	_, err = gatewayv1.NewHTTPRoute(ctx,
 		"https-external",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("https-external"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -157,17 +155,16 @@ func ingress(ctx *pulumi.Context,
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(locals.KubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(8080),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
-
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
-		return errors.Wrap(err, "error creating HTTP route")
+		return errors.Wrap(err, "error creating HTTPS route")
 	}
 
 	return nil

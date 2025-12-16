@@ -3,12 +3,11 @@ package module
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/strimzioperator/kubernetes/kafka/v1beta2"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func kafkaAdminUser(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescorev1.Namespace,
+func kafkaAdminUser(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource,
 	createdKafkaCluster *v1beta2.Kafka) error {
 
 	labels := locals.Labels
@@ -20,7 +19,7 @@ func kafkaAdminUser(ctx *pulumi.Context, locals *Locals, createdNamespace *kuber
 		&v1beta2.KafkaUserArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.AdminUsername),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
 			Spec: v1beta2.KafkaUserSpecArgs{

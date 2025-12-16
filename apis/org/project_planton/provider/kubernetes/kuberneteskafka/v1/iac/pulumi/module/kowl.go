@@ -8,15 +8,13 @@ import (
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/strimzioperator/kubernetes/kafka/v1beta2"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
-	createdNamespace *kubernetescorev1.Namespace,
+func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource,
 	createdKafkaCluster *v1beta2.Kafka) error {
 
 	type kowlConfigTemplateInput struct {
@@ -46,9 +44,9 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 			Data: pulumi.ToStringMap(map[string]string{vars.KowlConfigKeyName: string(kowlConfig)}),
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.KowlConfigMapName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to add config-map")
 	}
@@ -59,7 +57,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 	_, err = appsv1.NewDeployment(ctx, vars.KowlDeploymentName, &appsv1.DeploymentArgs{
 		Metadata: &metav1.ObjectMetaArgs{
 			Name:      pulumi.String(vars.KowlDeploymentName),
-			Namespace: createdNamespace.Metadata.Name(),
+			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(labels),
 		},
 		Spec: &appsv1.DeploymentSpecArgs{
@@ -133,7 +131,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 			},
 		},
 	},
-		pulumi.Parent(createdNamespace), pulumi.DependsOn([]pulumi.Resource{createdKafkaCluster, createdConfigMap}),
+		pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{createdKafkaCluster, createdConfigMap}),
 		pulumi.IgnoreChanges([]string{"metadata", "status"}))
 	if err != nil {
 		return errors.Wrap(err, "failed to add kowl deployment")
@@ -145,7 +143,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 		&kubernetescorev1.ServiceArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(vars.KowlKubeServiceName),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 			},
 			Spec: &kubernetescorev1.ServiceSpecArgs{
 				Type: pulumi.String("ClusterIP"),
@@ -161,7 +159,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrapf(err, "failed to add kowl service")
 	}
@@ -258,7 +256,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String("kowl"),
-				Namespace: createdNamespace.Metadata.Name(),
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
 			Spec: gatewayv1.HTTPRouteSpecArgs{
@@ -282,14 +280,14 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
 								Name:      pulumi.String(vars.KowlKubeServiceName),
-								Namespace: createdNamespace.Metadata.Name(),
+								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(80),
 							},
 						},
 					},
 				},
 			},
-		}, pulumi.Parent(createdNamespace), pulumi.DependsOn([]pulumi.Resource{createdService}))
+		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{createdService}))
 
 	if err != nil {
 		return errors.Wrap(err, "error creating HTTP route for kowl")

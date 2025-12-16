@@ -20,9 +20,8 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteslocustv1.KubernetesLoc
 	}
 
 	//conditionally create namespace resource based on create_namespace flag
-	var createdNamespace *kubernetescorev1.Namespace
 	if stackInput.Target.Spec.CreateNamespace {
-		createdNamespace, err = kubernetescorev1.NewNamespace(ctx,
+		_, err = kubernetescorev1.NewNamespace(ctx,
 			locals.Namespace,
 			&kubernetescorev1.NamespaceArgs{
 				Metadata: kubernetesmetav1.ObjectMetaPtrInput(
@@ -37,13 +36,13 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteslocustv1.KubernetesLoc
 	}
 
 	//create locust resources
-	if err := locust(ctx, locals, createdNamespace); err != nil {
+	if err := locust(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create helm-chart resources")
 	}
 
 	//create istio-ingress resources if ingress is enabled.
 	if locals.KubernetesLocust.Spec.Ingress.Enabled {
-		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
+		if err := ingress(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create istio ingress resources")
 		}
 	}

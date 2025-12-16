@@ -7,35 +7,42 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// Resources is the single entry-point consumed by the ProjectPlanton
+// runtime. It wires together noun-style helpers in a Terraform-like
+// top-down order so the flow is easy for DevOps engineers to follow.
 func Resources(ctx *pulumi.Context, stackInput *kubernetesredisv1.KubernetesRedisStackInput) error {
+	// ----------------------------- locals ---------------------------------
 	locals := initializeLocals(ctx, stackInput)
 
-	//create kubernetes-provider from the credential in the stack-input
+	// ------------------------- kubernetes provider ------------------------
 	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
 		stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
-		return errors.Wrap(err, "failed to setup gcp provider")
+		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}
 
-	// Create or reference namespace based on create_namespace flag
-	namespace, err := createOrGetNamespace(ctx, locals, stackInput.Target.Spec, kubernetesProvider)
+	// ------------------------------ namespace ----------------------------
+	// Conditionally create namespace based on create_namespace flag
+	_, err = namespace(ctx, stackInput, locals, kubernetesProvider)
 	if err != nil {
-		return errors.Wrap(err, "failed to create or get namespace")
+		return errors.Wrap(err, "failed to create namespace")
 	}
 
-	if err := adminPassword(ctx, locals, namespace); err != nil {
+	// ----------------------------- secrets --------------------------------
+	if err := adminPassword(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create admin secret")
 	}
-	//install the redis helm-chart
-	if err := helmChart(ctx, locals, namespace); err != nil {
+
+	// ------------------------------ helm ----------------------------------
+	if err := helmChart(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create helm-chart resources")
 	}
 
-	//if ingress is enabled, create load-balancer ingress resources
+	// ----------------------------- ingress --------------------------------
 	if locals.KubernetesRedis.Spec.Ingress != nil &&
 		locals.KubernetesRedis.Spec.Ingress.Enabled &&
 		locals.KubernetesRedis.Spec.Ingress.Hostname != "" {
-		if err := loadBalancerIngress(ctx, locals, namespace); err != nil {
+		if err := loadBalancerIngress(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create load-balancer ingress resources")
 		}
 	}

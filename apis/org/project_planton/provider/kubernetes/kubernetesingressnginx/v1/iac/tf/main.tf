@@ -8,18 +8,9 @@ resource "kubernetes_namespace" "ingress_nginx" {
   }
 }
 
-# Look up existing namespace if create_namespace is false
-data "kubernetes_namespace" "existing" {
-  count = var.spec.create_namespace ? 0 : 1
-
-  metadata {
-    name = local.namespace
-  }
-}
-
 resource "helm_release" "ingress_nginx" {
   name       = local.release_name
-  namespace  = local.namespace_name
+  namespace  = local.namespace
   repository = local.helm_chart_repo
   chart      = local.helm_chart_name
   version    = local.chart_version

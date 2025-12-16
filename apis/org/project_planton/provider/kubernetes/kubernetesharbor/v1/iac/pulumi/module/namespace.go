@@ -8,26 +8,26 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// createOrGetNamespace conditionally creates a Kubernetes namespace or returns the name of an existing one
-// based on the create_namespace flag in the spec.
+// namespace conditionally creates the Kubernetes namespace that will hold every
+// resource in the KubernetesHarbor deployment based on the create_namespace flag.
 //
-// When create_namespace is true:
+// If create_namespace is true:
 //   - Creates a dedicated namespace with resource metadata labels for tracking and organization
 //   - All Harbor resources will be created within this namespace
 //
-// When create_namespace is false:
-//   - Returns the namespace name from spec without creating it
+// If create_namespace is false:
+//   - Returns nil without creating the namespace
 //   - The namespace must exist before deployment
-//   - Resources will be deployed into the existing namespace
-func createOrGetNamespace(
+//   - Resources will use locals.Namespace directly for the namespace name
+func namespace(
 	ctx *pulumi.Context,
 	locals *Locals,
 	spec *kubernetesharborv1.KubernetesHarborSpec,
 	kubernetesProvider pulumi.ProviderResource,
-) (pulumi.StringInput, error) {
-	// If create_namespace is false, use the existing namespace
+) (*kubernetescorev1.Namespace, error) {
+	// Only create namespace if the flag is set to true
 	if !spec.CreateNamespace {
-		return pulumi.String(locals.Namespace), nil
+		return nil, nil
 	}
 
 	// Create a new namespace
@@ -45,5 +45,5 @@ func createOrGetNamespace(
 		return nil, errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
 	}
 
-	return createdNamespace.Metadata.Name().Elem(), nil
+	return createdNamespace, nil
 }

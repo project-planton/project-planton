@@ -15,7 +15,6 @@ import (
 func createIngressLoadBalancer(
 	ctx *pulumi.Context,
 	locals *Locals,
-	namespace pulumi.StringInput,
 	kubernetesProvider pulumi.ProviderResource,
 ) error {
 	// Skip if ingress is not enabled
@@ -29,7 +28,7 @@ func createIngressLoadBalancer(
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
 				Name:      pulumi.String("ingress-external-lb"),
-				Namespace: namespace,
+				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 				Annotations: pulumi.StringMap{
 					// External DNS annotation for automatic DNS record creation

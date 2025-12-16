@@ -4,12 +4,11 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/strimzioperator/kubernetes/kafka/v1beta2"
-	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func kafkaTopics(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetescorev1.Namespace,
+func kafkaTopics(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource,
 	createdKafkaCluster *v1beta2.Kafka) error {
 	for _, kafkaTopic := range locals.KubernetesKafka.Spec.KafkaTopics {
 
@@ -23,7 +22,7 @@ func kafkaTopics(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernet
 			&v1beta2.KafkaTopicArgs{
 				Metadata: metav1.ObjectMetaArgs{
 					Name:      pulumi.String(kafkaTopic.Name),
-					Namespace: createdNamespace.Metadata.Name(),
+					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: v1beta2.KafkaTopicSpecArgs{
