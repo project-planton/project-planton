@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
 	"github.com/spf13/cobra"
 )
 
@@ -42,13 +42,13 @@ func credentialGetHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCredentialServiceClient(
+	client := credentialv1connect.NewCredentialQueryControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.GetCredentialRequest{
+	req := &credentialv1.GetCredentialRequest{
 		Id: id,
 	}
 
@@ -57,7 +57,7 @@ func credentialGetHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.GetCredential(ctx, connect.NewRequest(req))
+	resp, err := client.Get(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)
@@ -84,11 +84,11 @@ func credentialGetHandler(cmd *cobra.Command, args []string) {
 
 	providerName := "UNKNOWN"
 	switch cred.Provider {
-	case backendv1.CredentialProvider_GCP:
+	case credentialv1.Credential_GCP:
 		providerName = "GCP"
-	case backendv1.CredentialProvider_AWS:
+	case credentialv1.Credential_AWS:
 		providerName = "AWS"
-	case backendv1.CredentialProvider_AZURE:
+	case credentialv1.Credential_AZURE:
 		providerName = "Azure"
 	}
 	fmt.Printf("Provider:   %s\n", providerName)
@@ -102,29 +102,31 @@ func credentialGetHandler(cmd *cobra.Command, args []string) {
 
 	fmt.Println("\nCredential Data:")
 	fmt.Println("----------------")
-	switch cred.Provider {
-	case backendv1.CredentialProvider_GCP:
-		if gcp := cred.GetGcp(); gcp != nil {
-			fmt.Printf("Service Account Key (Base64): %s\n", maskSensitive(gcp.ServiceAccountKeyBase64))
-		}
-	case backendv1.CredentialProvider_AWS:
-		if aws := cred.GetAws(); aws != nil {
-			fmt.Printf("Account ID:       %s\n", aws.AccountId)
-			fmt.Printf("Access Key ID:   %s\n", maskSensitive(aws.AccessKeyId))
-			fmt.Printf("Secret Key:       %s\n", maskSensitive(aws.SecretAccessKey))
-			if aws.Region != nil {
-				fmt.Printf("Region:          %s\n", *aws.Region)
+	if cred.ProviderConfig != nil {
+		switch cred.Provider {
+		case credentialv1.Credential_GCP:
+			if gcp := cred.ProviderConfig.GetGcp(); gcp != nil {
+				fmt.Printf("Service Account Key (Base64): %s\n", maskSensitive(gcp.ServiceAccountKeyBase64))
 			}
-			if aws.SessionToken != nil {
-				fmt.Printf("Session Token:   %s\n", maskSensitive(*aws.SessionToken))
+		case credentialv1.Credential_AWS:
+			if aws := cred.ProviderConfig.GetAws(); aws != nil {
+				fmt.Printf("Account ID:       %s\n", aws.AccountId)
+				fmt.Printf("Access Key ID:   %s\n", maskSensitive(aws.AccessKeyId))
+				fmt.Printf("Secret Key:       %s\n", maskSensitive(aws.SecretAccessKey))
+				if aws.Region != "" {
+					fmt.Printf("Region:          %s\n", aws.Region)
+				}
+				if aws.SessionToken != "" {
+					fmt.Printf("Session Token:   %s\n", maskSensitive(aws.SessionToken))
+				}
 			}
-		}
-	case backendv1.CredentialProvider_AZURE:
-		if azure := cred.GetAzure(); azure != nil {
-			fmt.Printf("Client ID:        %s\n", azure.ClientId)
-			fmt.Printf("Client Secret:    %s\n", maskSensitive(azure.ClientSecret))
-			fmt.Printf("Tenant ID:        %s\n", azure.TenantId)
-			fmt.Printf("Subscription ID:  %s\n", azure.SubscriptionId)
+		case credentialv1.Credential_AZURE:
+			if azure := cred.ProviderConfig.GetAzure(); azure != nil {
+				fmt.Printf("Client ID:        %s\n", azure.ClientId)
+				fmt.Printf("Client Secret:    %s\n", maskSensitive(azure.ClientSecret))
+				fmt.Printf("Tenant ID:        %s\n", azure.TenantId)
+				fmt.Printf("Subscription ID:  %s\n", azure.SubscriptionId)
+			}
 		}
 	}
 }

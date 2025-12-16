@@ -9,7 +9,10 @@ import (
 	"github.com/project-planton/project-planton/app/backend/pkg/models"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
+	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -27,16 +30,16 @@ func NewCredentialService(credentialRepo *database.CredentialRepository) *Creden
 	}
 }
 
-// CreateCredential creates a new cloud provider credential.
-func (s *CredentialService) CreateCredential(
+// Create creates a new cloud provider credential.
+func (s *CredentialService) Create(
 	ctx context.Context,
-	req *connect.Request[backendv1.CreateCredentialRequest],
-) (*connect.Response[backendv1.CreateCredentialResponse], error) {
+	req *connect.Request[credentialv1.CreateCredentialRequest],
+) (*connect.Response[credentialv1.CreateCredentialResponse], error) {
 	// Validate common fields
 	if req.Msg.Name == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("name is required"))
 	}
-	if req.Msg.Provider == backendv1.CredentialProvider_CREDENTIAL_PROVIDER_UNSPECIFIED {
+	if req.Msg.Provider == credentialv1.Credential_CREDENTIAL_PROVIDER_UNSPECIFIED {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider is required"))
 	}
 
@@ -44,12 +47,12 @@ func (s *CredentialService) CreateCredential(
 
 	// Handle based on provider type
 	switch req.Msg.Provider {
-	case backendv1.CredentialProvider_GCP:
-		return s.createGcpCredential(ctx, req.Msg.Name, req.Msg.GetGcp(), now)
-	case backendv1.CredentialProvider_AWS:
-		return s.createAwsCredential(ctx, req.Msg.Name, req.Msg.GetAws(), now)
-	case backendv1.CredentialProvider_AZURE:
-		return s.createAzureCredential(ctx, req.Msg.Name, req.Msg.GetAzure(), now)
+	case credentialv1.Credential_GCP:
+		return s.createGcpCredential(ctx, req.Msg.Name, req.Msg.ProviderConfig, now)
+	case credentialv1.Credential_AWS:
+		return s.createAwsCredential(ctx, req.Msg.Name, req.Msg.ProviderConfig, now)
+	case credentialv1.Credential_AZURE:
+		return s.createAzureCredential(ctx, req.Msg.Name, req.Msg.ProviderConfig, now)
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported provider: %v", req.Msg.Provider))
 	}
@@ -59,28 +62,34 @@ func (s *CredentialService) CreateCredential(
 func (s *CredentialService) createGcpCredential(
 	ctx context.Context,
 	name string,
-	spec *backendv1.GcpCredentialSpec,
+	providerConfig *credentialv1.CredentialProviderConfig,
 	now time.Time,
-) (*connect.Response[backendv1.CreateCredentialResponse], error) {
-	if spec == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("gcp credential spec is required"))
+) (*connect.Response[credentialv1.CreateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
 	}
-	if spec.ServiceAccountKeyBase64 == "" {
+	gcpConfig, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Gcp)
+	if !ok || gcpConfig == nil || gcpConfig.Gcp == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("gcp provider_config is required"))
+	}
+	if gcpConfig.Gcp.ServiceAccountKeyBase64 == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("service_account_key_base64 is required"))
 	}
 
-	createdCredential, err := s.credentialRepo.CreateGcp(ctx, name, spec.ServiceAccountKeyBase64)
+	createdCredential, err := s.credentialRepo.CreateGcp(ctx, name, gcpConfig.Gcp.ServiceAccountKeyBase64)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create GCP credential: %w", err))
 	}
 
-	protoCredential := &backendv1.Credential{
+	protoCredential := &credentialv1.Credential{
 		Id:       createdCredential.ID.Hex(),
 		Name:     createdCredential.Name,
-		Provider: backendv1.CredentialProvider_GCP,
-		CredentialData: &backendv1.Credential_Gcp{
-			Gcp: &backendv1.GcpCredentialSpec{
-				ServiceAccountKeyBase64: createdCredential.ServiceAccountKeyBase64,
+		Provider: credentialv1.Credential_GCP,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Gcp{
+				Gcp: &gcpv1.GcpProviderConfig{
+					ServiceAccountKeyBase64: createdCredential.ServiceAccountKeyBase64,
+				},
 			},
 		},
 	}
@@ -92,7 +101,7 @@ func (s *CredentialService) createGcpCredential(
 		protoCredential.UpdatedAt = timestamppb.New(createdCredential.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.CreateCredentialResponse{
+	return connect.NewResponse(&credentialv1.CreateCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
@@ -101,56 +110,49 @@ func (s *CredentialService) createGcpCredential(
 func (s *CredentialService) createAwsCredential(
 	ctx context.Context,
 	name string,
-	spec *backendv1.AwsCredentialSpec,
+	providerConfig *credentialv1.CredentialProviderConfig,
 	now time.Time,
-) (*connect.Response[backendv1.CreateCredentialResponse], error) {
-	if spec == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("aws credential spec is required"))
+) (*connect.Response[credentialv1.CreateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
 	}
-	if spec.AccountId == "" {
+	awsConfig, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Aws)
+	if !ok || awsConfig == nil || awsConfig.Aws == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("aws provider_config is required"))
+	}
+	if awsConfig.Aws.AccountId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("account_id is required"))
 	}
-	if spec.AccessKeyId == "" {
+	if awsConfig.Aws.AccessKeyId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("access_key_id is required"))
 	}
-	if spec.SecretAccessKey == "" {
+	if awsConfig.Aws.SecretAccessKey == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("secret_access_key is required"))
 	}
 
-	region := ""
-	if spec.Region != nil {
-		region = *spec.Region
-	}
-	sessionToken := ""
-	if spec.SessionToken != nil {
-		sessionToken = *spec.SessionToken
-	}
+	region := awsConfig.Aws.Region
+	sessionToken := awsConfig.Aws.SessionToken
 
-	createdCredential, err := s.credentialRepo.CreateAws(ctx, name, spec.AccountId, spec.AccessKeyId, spec.SecretAccessKey, region, sessionToken)
+	createdCredential, err := s.credentialRepo.CreateAws(ctx, name, awsConfig.Aws.AccountId, awsConfig.Aws.AccessKeyId, awsConfig.Aws.SecretAccessKey, region, sessionToken)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create AWS credential: %w", err))
 	}
 
-	protoCredential := &backendv1.Credential{
+	protoCredential := &credentialv1.Credential{
 		Id:       createdCredential.ID.Hex(),
 		Name:     createdCredential.Name,
-		Provider: backendv1.CredentialProvider_AWS,
-		CredentialData: &backendv1.Credential_Aws{
-			Aws: &backendv1.AwsCredentialSpec{
-				AccountId:       createdCredential.AccountID,
-				AccessKeyId:     createdCredential.AccessKeyID,
-				SecretAccessKey: createdCredential.SecretAccessKey,
+		Provider: credentialv1.Credential_AWS,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Aws{
+				Aws: &awsv1.AwsProviderConfig{
+					AccountId:       createdCredential.AccountID,
+					AccessKeyId:     createdCredential.AccessKeyID,
+					SecretAccessKey: createdCredential.SecretAccessKey,
+					Region:          createdCredential.Region,
+					SessionToken:    createdCredential.SessionToken,
+				},
 			},
 		},
-	}
-
-	if createdCredential.Region != "" {
-		region := createdCredential.Region
-		protoCredential.GetAws().Region = &region
-	}
-	if createdCredential.SessionToken != "" {
-		sessionToken := createdCredential.SessionToken
-		protoCredential.GetAws().SessionToken = &sessionToken
 	}
 
 	if !createdCredential.CreatedAt.IsZero() {
@@ -160,7 +162,7 @@ func (s *CredentialService) createAwsCredential(
 		protoCredential.UpdatedAt = timestamppb.New(createdCredential.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.CreateCredentialResponse{
+	return connect.NewResponse(&credentialv1.CreateCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
@@ -169,40 +171,46 @@ func (s *CredentialService) createAwsCredential(
 func (s *CredentialService) createAzureCredential(
 	ctx context.Context,
 	name string,
-	spec *backendv1.AzureCredentialSpec,
+	providerConfig *credentialv1.CredentialProviderConfig,
 	now time.Time,
-) (*connect.Response[backendv1.CreateCredentialResponse], error) {
-	if spec == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("azure credential spec is required"))
+) (*connect.Response[credentialv1.CreateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
 	}
-	if spec.ClientId == "" {
+	azureConfig, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Azure)
+	if !ok || azureConfig == nil || azureConfig.Azure == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("azure provider_config is required"))
+	}
+	if azureConfig.Azure.ClientId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_id is required"))
 	}
-	if spec.ClientSecret == "" {
+	if azureConfig.Azure.ClientSecret == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_secret is required"))
 	}
-	if spec.TenantId == "" {
+	if azureConfig.Azure.TenantId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("tenant_id is required"))
 	}
-	if spec.SubscriptionId == "" {
+	if azureConfig.Azure.SubscriptionId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("subscription_id is required"))
 	}
 
-	createdCredential, err := s.credentialRepo.CreateAzure(ctx, name, spec.ClientId, spec.ClientSecret, spec.TenantId, spec.SubscriptionId)
+	createdCredential, err := s.credentialRepo.CreateAzure(ctx, name, azureConfig.Azure.ClientId, azureConfig.Azure.ClientSecret, azureConfig.Azure.TenantId, azureConfig.Azure.SubscriptionId)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create Azure credential: %w", err))
 	}
 
-	protoCredential := &backendv1.Credential{
+	protoCredential := &credentialv1.Credential{
 		Id:       createdCredential.ID.Hex(),
 		Name:     createdCredential.Name,
-		Provider: backendv1.CredentialProvider_AZURE,
-		CredentialData: &backendv1.Credential_Azure{
-			Azure: &backendv1.AzureCredentialSpec{
-				ClientId:       createdCredential.ClientID,
-				ClientSecret:   createdCredential.ClientSecret,
-				TenantId:       createdCredential.TenantID,
-				SubscriptionId: createdCredential.SubscriptionID,
+		Provider: credentialv1.Credential_AZURE,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Azure{
+				Azure: &azurev1.AzureProviderConfig{
+					ClientId:       createdCredential.ClientID,
+					ClientSecret:   createdCredential.ClientSecret,
+					TenantId:       createdCredential.TenantID,
+					SubscriptionId: createdCredential.SubscriptionID,
+				},
 			},
 		},
 	}
@@ -214,27 +222,27 @@ func (s *CredentialService) createAzureCredential(
 		protoCredential.UpdatedAt = timestamppb.New(createdCredential.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.CreateCredentialResponse{
+	return connect.NewResponse(&credentialv1.CreateCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
 
-// ListCredentials lists all credentials with optional provider filter.
-func (s *CredentialService) ListCredentials(
+// List lists all credentials with optional provider filter.
+func (s *CredentialService) List(
 	ctx context.Context,
-	req *connect.Request[backendv1.ListCredentialsRequest],
-) (*connect.Response[backendv1.ListCredentialsResponse], error) {
+	req *connect.Request[credentialv1.ListCredentialsRequest],
+) (*connect.Response[credentialv1.ListCredentialsResponse], error) {
 	// Convert provider enum to string for database query
 	var providerFilter *string
-	if req.Msg.Provider != nil && *req.Msg.Provider != backendv1.CredentialProvider_CREDENTIAL_PROVIDER_UNSPECIFIED {
+	if req.Msg.Provider != credentialv1.Credential_CREDENTIAL_PROVIDER_UNSPECIFIED {
 		// Convert CredentialProvider enum to string
 		var provider string
-		switch *req.Msg.Provider {
-		case backendv1.CredentialProvider_GCP:
+		switch req.Msg.Provider {
+		case credentialv1.Credential_GCP:
 			provider = "gcp"
-		case backendv1.CredentialProvider_AWS:
+		case credentialv1.Credential_AWS:
 			provider = "aws"
-		case backendv1.CredentialProvider_AZURE:
+		case credentialv1.Credential_AZURE:
 			provider = "azure"
 		}
 		if provider != "" {
@@ -249,9 +257,9 @@ func (s *CredentialService) ListCredentials(
 	}
 
 	// Convert to proto summaries (without sensitive data)
-	summaries := make([]*backendv1.CredentialSummary, 0, len(credentials))
+	summaries := make([]*credentialv1.CredentialSummary, 0, len(credentials))
 	for _, cred := range credentials {
-		summary := &backendv1.CredentialSummary{
+		summary := &credentialv1.CredentialSummary{
 			Id:   cred["_id"].(primitive.ObjectID).Hex(),
 			Name: cred["name"].(string),
 		}
@@ -260,11 +268,11 @@ func (s *CredentialService) ListCredentials(
 		providerStr := cred["provider"].(string)
 		switch providerStr {
 		case "gcp":
-			summary.Provider = backendv1.CredentialProvider_GCP
+			summary.Provider = credentialv1.Credential_GCP
 		case "aws":
-			summary.Provider = backendv1.CredentialProvider_AWS
+			summary.Provider = credentialv1.Credential_AWS
 		case "azure":
-			summary.Provider = backendv1.CredentialProvider_AZURE
+			summary.Provider = credentialv1.Credential_AZURE
 		}
 
 		// Add timestamps if present
@@ -278,16 +286,16 @@ func (s *CredentialService) ListCredentials(
 		summaries = append(summaries, summary)
 	}
 
-	return connect.NewResponse(&backendv1.ListCredentialsResponse{
+	return connect.NewResponse(&credentialv1.ListCredentialsResponse{
 		Credentials: summaries,
 	}), nil
 }
 
-// GetCredential retrieves a credential by ID.
-func (s *CredentialService) GetCredential(
+// Get retrieves a credential by ID.
+func (s *CredentialService) Get(
 	ctx context.Context,
-	req *connect.Request[backendv1.GetCredentialRequest],
-) (*connect.Response[backendv1.GetCredentialResponse], error) {
+	req *connect.Request[credentialv1.GetCredentialRequest],
+) (*connect.Response[credentialv1.GetCredentialResponse], error) {
 	if req.Msg.Id == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("id is required"))
 	}
@@ -302,7 +310,7 @@ func (s *CredentialService) GetCredential(
 
 	// Convert to proto based on provider
 	providerStr := doc["provider"].(string)
-	var protoCredential *backendv1.Credential
+	var protoCredential *credentialv1.Credential
 
 	switch providerStr {
 	case "gcp":
@@ -310,13 +318,13 @@ func (s *CredentialService) GetCredential(
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to convert credential: %w", err))
 		}
-		protoCredential = &backendv1.Credential{
+		protoCredential = &credentialv1.Credential{
 			Id:       gcpCred.ID.Hex(),
 			Name:     gcpCred.Name,
-			Provider: backendv1.CredentialProvider_GCP,
-			CredentialData: &backendv1.Credential_Gcp{
-				Gcp: &backendv1.GcpCredentialSpec{
-					ServiceAccountKeyBase64: gcpCred.ServiceAccountKeyBase64,
+			Provider: credentialv1.Credential_GCP,
+			ProviderConfig: &credentialv1.CredentialProviderConfig{
+				Data: &credentialv1.CredentialProviderConfig_Gcp{
+					Gcp: &gcpv1.GcpProviderConfig{ServiceAccountKeyBase64: gcpCred.ServiceAccountKeyBase64},
 				},
 			},
 		}
@@ -331,25 +339,21 @@ func (s *CredentialService) GetCredential(
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to convert credential: %w", err))
 		}
-		protoCredential = &backendv1.Credential{
+		protoCredential = &credentialv1.Credential{
 			Id:       awsCred.ID.Hex(),
 			Name:     awsCred.Name,
-			Provider: backendv1.CredentialProvider_AWS,
-			CredentialData: &backendv1.Credential_Aws{
-				Aws: &backendv1.AwsCredentialSpec{
-					AccountId:       awsCred.AccountID,
-					AccessKeyId:     awsCred.AccessKeyID,
-					SecretAccessKey: awsCred.SecretAccessKey,
+			Provider: credentialv1.Credential_AWS,
+			ProviderConfig: &credentialv1.CredentialProviderConfig{
+				Data: &credentialv1.CredentialProviderConfig_Aws{
+					Aws: &awsv1.AwsProviderConfig{
+						AccountId:       awsCred.AccountID,
+						AccessKeyId:     awsCred.AccessKeyID,
+						SecretAccessKey: awsCred.SecretAccessKey,
+						Region:          awsCred.Region,
+						SessionToken:    awsCred.SessionToken,
+					},
 				},
 			},
-		}
-		if awsCred.Region != "" {
-			region := awsCred.Region
-			protoCredential.GetAws().Region = &region
-		}
-		if awsCred.SessionToken != "" {
-			sessionToken := awsCred.SessionToken
-			protoCredential.GetAws().SessionToken = &sessionToken
 		}
 		if !awsCred.CreatedAt.IsZero() {
 			protoCredential.CreatedAt = timestamppb.New(awsCred.CreatedAt)
@@ -362,16 +366,18 @@ func (s *CredentialService) GetCredential(
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to convert credential: %w", err))
 		}
-		protoCredential = &backendv1.Credential{
+		protoCredential = &credentialv1.Credential{
 			Id:       azureCred.ID.Hex(),
 			Name:     azureCred.Name,
-			Provider: backendv1.CredentialProvider_AZURE,
-			CredentialData: &backendv1.Credential_Azure{
-				Azure: &backendv1.AzureCredentialSpec{
-					ClientId:       azureCred.ClientID,
-					ClientSecret:   azureCred.ClientSecret,
-					TenantId:       azureCred.TenantID,
-					SubscriptionId: azureCred.SubscriptionID,
+			Provider: credentialv1.Credential_AZURE,
+			ProviderConfig: &credentialv1.CredentialProviderConfig{
+				Data: &credentialv1.CredentialProviderConfig_Azure{
+					Azure: &azurev1.AzureProviderConfig{
+						ClientId:       azureCred.ClientID,
+						ClientSecret:   azureCred.ClientSecret,
+						TenantId:       azureCred.TenantID,
+						SubscriptionId: azureCred.SubscriptionID,
+					},
 				},
 			},
 		}
@@ -385,34 +391,34 @@ func (s *CredentialService) GetCredential(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported provider: %s", providerStr))
 	}
 
-	return connect.NewResponse(&backendv1.GetCredentialResponse{
+	return connect.NewResponse(&credentialv1.GetCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
 
-// UpdateCredential updates an existing credential.
-func (s *CredentialService) UpdateCredential(
+// Update updates an existing credential.
+func (s *CredentialService) Update(
 	ctx context.Context,
-	req *connect.Request[backendv1.UpdateCredentialRequest],
-) (*connect.Response[backendv1.UpdateCredentialResponse], error) {
+	req *connect.Request[credentialv1.UpdateCredentialRequest],
+) (*connect.Response[credentialv1.UpdateCredentialResponse], error) {
 	if req.Msg.Id == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("id is required"))
 	}
 	if req.Msg.Name == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("name is required"))
 	}
-	if req.Msg.Provider == backendv1.CredentialProvider_CREDENTIAL_PROVIDER_UNSPECIFIED {
+	if req.Msg.Provider == credentialv1.Credential_CREDENTIAL_PROVIDER_UNSPECIFIED {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider is required"))
 	}
 
 	// Handle based on provider type
 	switch req.Msg.Provider {
-	case backendv1.CredentialProvider_GCP:
-		return s.updateGcpCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.GetGcp())
-	case backendv1.CredentialProvider_AWS:
-		return s.updateAwsCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.GetAws())
-	case backendv1.CredentialProvider_AZURE:
-		return s.updateAzureCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.GetAzure())
+	case credentialv1.Credential_GCP:
+		return s.updateGcpCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.ProviderConfig)
+	case credentialv1.Credential_AWS:
+		return s.updateAwsCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.ProviderConfig)
+	case credentialv1.Credential_AZURE:
+		return s.updateAzureCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.ProviderConfig)
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported provider: %v", req.Msg.Provider))
 	}
@@ -422,16 +428,20 @@ func (s *CredentialService) UpdateCredential(
 func (s *CredentialService) updateGcpCredential(
 	ctx context.Context,
 	id, name string,
-	spec *backendv1.GcpCredentialSpec,
-) (*connect.Response[backendv1.UpdateCredentialResponse], error) {
-	if spec == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("gcp credential spec is required"))
+	providerConfig *credentialv1.CredentialProviderConfig,
+) (*connect.Response[credentialv1.UpdateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
 	}
-	if spec.ServiceAccountKeyBase64 == "" {
+	gcpConfig, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Gcp)
+	if !ok || gcpConfig == nil || gcpConfig.Gcp == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("gcp provider_config is required"))
+	}
+	if gcpConfig.Gcp.ServiceAccountKeyBase64 == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("service_account_key_base64 is required"))
 	}
 
-	updatedCredential, err := s.credentialRepo.UpdateGcp(ctx, id, name, spec.ServiceAccountKeyBase64)
+	updatedCredential, err := s.credentialRepo.UpdateGcp(ctx, id, name, gcpConfig.Gcp.ServiceAccountKeyBase64)
 	if err != nil {
 		if err.Error() == fmt.Sprintf("GCP credential with ID '%s' not found", id) {
 			return nil, connect.NewError(connect.CodeNotFound, err)
@@ -439,13 +449,15 @@ func (s *CredentialService) updateGcpCredential(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update GCP credential: %w", err))
 	}
 
-	protoCredential := &backendv1.Credential{
+	protoCredential := &credentialv1.Credential{
 		Id:       updatedCredential.ID.Hex(),
 		Name:     updatedCredential.Name,
-		Provider: backendv1.CredentialProvider_GCP,
-		CredentialData: &backendv1.Credential_Gcp{
-			Gcp: &backendv1.GcpCredentialSpec{
-				ServiceAccountKeyBase64: updatedCredential.ServiceAccountKeyBase64,
+		Provider: credentialv1.Credential_GCP,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Gcp{
+				Gcp: &gcpv1.GcpProviderConfig{
+					ServiceAccountKeyBase64: updatedCredential.ServiceAccountKeyBase64,
+				},
 			},
 		},
 	}
@@ -457,7 +469,7 @@ func (s *CredentialService) updateGcpCredential(
 		protoCredential.UpdatedAt = timestamppb.New(updatedCredential.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.UpdateCredentialResponse{
+	return connect.NewResponse(&credentialv1.UpdateCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
@@ -466,31 +478,26 @@ func (s *CredentialService) updateGcpCredential(
 func (s *CredentialService) updateAwsCredential(
 	ctx context.Context,
 	id, name string,
-	spec *backendv1.AwsCredentialSpec,
-) (*connect.Response[backendv1.UpdateCredentialResponse], error) {
-	if spec == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("aws credential spec is required"))
+	providerConfig *credentialv1.CredentialProviderConfig,
+) (*connect.Response[credentialv1.UpdateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
 	}
-	if spec.AccountId == "" {
+	awsConfig, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Aws)
+	if !ok || awsConfig == nil || awsConfig.Aws == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("aws provider_config is required"))
+	}
+	if awsConfig.Aws.AccountId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("account_id is required"))
 	}
-	if spec.AccessKeyId == "" {
+	if awsConfig.Aws.AccessKeyId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("access_key_id is required"))
 	}
-	if spec.SecretAccessKey == "" {
+	if awsConfig.Aws.SecretAccessKey == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("secret_access_key is required"))
 	}
 
-	region := ""
-	if spec.Region != nil {
-		region = *spec.Region
-	}
-	sessionToken := ""
-	if spec.SessionToken != nil {
-		sessionToken = *spec.SessionToken
-	}
-
-	updatedCredential, err := s.credentialRepo.UpdateAws(ctx, id, name, spec.AccountId, spec.AccessKeyId, spec.SecretAccessKey, region, sessionToken)
+	updatedCredential, err := s.credentialRepo.UpdateAws(ctx, id, name, awsConfig.Aws.AccountId, awsConfig.Aws.AccessKeyId, awsConfig.Aws.SecretAccessKey, awsConfig.Aws.Region, awsConfig.Aws.SessionToken)
 	if err != nil {
 		if err.Error() == fmt.Sprintf("AWS credential with ID '%s' not found", id) {
 			return nil, connect.NewError(connect.CodeNotFound, err)
@@ -498,26 +505,21 @@ func (s *CredentialService) updateAwsCredential(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update AWS credential: %w", err))
 	}
 
-	protoCredential := &backendv1.Credential{
+	protoCredential := &credentialv1.Credential{
 		Id:       updatedCredential.ID.Hex(),
 		Name:     updatedCredential.Name,
-		Provider: backendv1.CredentialProvider_AWS,
-		CredentialData: &backendv1.Credential_Aws{
-			Aws: &backendv1.AwsCredentialSpec{
-				AccountId:       updatedCredential.AccountID,
-				AccessKeyId:     updatedCredential.AccessKeyID,
-				SecretAccessKey: updatedCredential.SecretAccessKey,
+		Provider: credentialv1.Credential_AWS,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Aws{
+				Aws: &awsv1.AwsProviderConfig{
+					AccountId:       updatedCredential.AccountID,
+					AccessKeyId:     updatedCredential.AccessKeyID,
+					SecretAccessKey: updatedCredential.SecretAccessKey,
+					Region:          updatedCredential.Region,
+					SessionToken:    updatedCredential.SessionToken,
+				},
 			},
 		},
-	}
-
-	if updatedCredential.Region != "" {
-		region := updatedCredential.Region
-		protoCredential.GetAws().Region = &region
-	}
-	if updatedCredential.SessionToken != "" {
-		sessionToken := updatedCredential.SessionToken
-		protoCredential.GetAws().SessionToken = &sessionToken
 	}
 
 	if !updatedCredential.CreatedAt.IsZero() {
@@ -527,7 +529,7 @@ func (s *CredentialService) updateAwsCredential(
 		protoCredential.UpdatedAt = timestamppb.New(updatedCredential.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.UpdateCredentialResponse{
+	return connect.NewResponse(&credentialv1.UpdateCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
@@ -536,25 +538,29 @@ func (s *CredentialService) updateAwsCredential(
 func (s *CredentialService) updateAzureCredential(
 	ctx context.Context,
 	id, name string,
-	spec *backendv1.AzureCredentialSpec,
-) (*connect.Response[backendv1.UpdateCredentialResponse], error) {
-	if spec == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("azure credential spec is required"))
+	providerConfig *credentialv1.CredentialProviderConfig,
+) (*connect.Response[credentialv1.UpdateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
 	}
-	if spec.ClientId == "" {
+	azureConfig, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Azure)
+	if !ok || azureConfig == nil || azureConfig.Azure == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("azure provider_config is required"))
+	}
+	if azureConfig.Azure.ClientId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_id is required"))
 	}
-	if spec.ClientSecret == "" {
+	if azureConfig.Azure.ClientSecret == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_secret is required"))
 	}
-	if spec.TenantId == "" {
+	if azureConfig.Azure.TenantId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("tenant_id is required"))
 	}
-	if spec.SubscriptionId == "" {
+	if azureConfig.Azure.SubscriptionId == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("subscription_id is required"))
 	}
 
-	updatedCredential, err := s.credentialRepo.UpdateAzure(ctx, id, name, spec.ClientId, spec.ClientSecret, spec.TenantId, spec.SubscriptionId)
+	updatedCredential, err := s.credentialRepo.UpdateAzure(ctx, id, name, azureConfig.Azure.ClientId, azureConfig.Azure.ClientSecret, azureConfig.Azure.TenantId, azureConfig.Azure.SubscriptionId)
 	if err != nil {
 		if err.Error() == fmt.Sprintf("Azure credential with ID '%s' not found", id) {
 			return nil, connect.NewError(connect.CodeNotFound, err)
@@ -562,16 +568,18 @@ func (s *CredentialService) updateAzureCredential(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update Azure credential: %w", err))
 	}
 
-	protoCredential := &backendv1.Credential{
+	protoCredential := &credentialv1.Credential{
 		Id:       updatedCredential.ID.Hex(),
 		Name:     updatedCredential.Name,
-		Provider: backendv1.CredentialProvider_AZURE,
-		CredentialData: &backendv1.Credential_Azure{
-			Azure: &backendv1.AzureCredentialSpec{
-				ClientId:       updatedCredential.ClientID,
-				ClientSecret:   updatedCredential.ClientSecret,
-				TenantId:       updatedCredential.TenantID,
-				SubscriptionId: updatedCredential.SubscriptionID,
+		Provider: credentialv1.Credential_AZURE,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Azure{
+				Azure: &azurev1.AzureProviderConfig{
+					ClientId:       updatedCredential.ClientID,
+					ClientSecret:   updatedCredential.ClientSecret,
+					TenantId:       updatedCredential.TenantID,
+					SubscriptionId: updatedCredential.SubscriptionID,
+				},
 			},
 		},
 	}
@@ -583,16 +591,16 @@ func (s *CredentialService) updateAzureCredential(
 		protoCredential.UpdatedAt = timestamppb.New(updatedCredential.UpdatedAt)
 	}
 
-	return connect.NewResponse(&backendv1.UpdateCredentialResponse{
+	return connect.NewResponse(&credentialv1.UpdateCredentialResponse{
 		Credential: protoCredential,
 	}), nil
 }
 
-// DeleteCredential deletes a credential by ID.
-func (s *CredentialService) DeleteCredential(
+// Delete deletes a credential by ID.
+func (s *CredentialService) Delete(
 	ctx context.Context,
-	req *connect.Request[backendv1.DeleteCredentialRequest],
-) (*connect.Response[backendv1.DeleteCredentialResponse], error) {
+	req *connect.Request[credentialv1.DeleteCredentialRequest],
+) (*connect.Response[credentialv1.DeleteCredentialResponse], error) {
 	if req.Msg.Id == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("id is required"))
 	}
@@ -605,7 +613,7 @@ func (s *CredentialService) DeleteCredential(
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete credential: %w", err))
 	}
 
-	return connect.NewResponse(&backendv1.DeleteCredentialResponse{
+	return connect.NewResponse(&credentialv1.DeleteCredentialResponse{
 		Message: fmt.Sprintf("Credential with ID '%s' deleted successfully", req.Msg.Id),
 	}), nil
 }

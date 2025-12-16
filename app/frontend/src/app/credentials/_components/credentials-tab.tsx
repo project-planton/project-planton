@@ -2,7 +2,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Grid2, InputAdornment } from '@mui/material';
 import { Search } from '@mui/icons-material';
-import { CredentialProvider } from '@/gen/proto/credential_service_pb';
+import { Credential_CredentialProvider } from '@/gen/org/project_planton/app/credential/v1/api_pb';
 import { Icon, ICON_NAMES } from '@/components/shared/icon';
 import { FlexCenterRow } from '@/components/shared/resource-header/styled';
 import {
@@ -18,11 +18,11 @@ import {
 import { providerConfig } from '@/app/credentials/_components/utils';
 
 export interface ProviderCardProps {
-  provider: CredentialProvider;
+  provider: Credential_CredentialProvider;
   title: string;
   description: string;
   icon?: ICON_NAMES;
-  onClick: (provider: CredentialProvider) => void;
+  onClick: (provider: Credential_CredentialProvider) => void;
 }
 
 export function ProviderCard({ provider, title, description, onClick }: ProviderCardProps) {
@@ -54,17 +54,17 @@ export function ProviderCard({ provider, title, description, onClick }: Provider
 }
 
 interface IProviders {
-  onProviderClick: (provider: CredentialProvider) => void;
+  onProviderClick: (provider: Credential_CredentialProvider) => void;
 }
 
 export function Providers({ onProviderClick }: IProviders) {
   const [searchValue, setSearchValue] = useState('');
 
   const allProviders = useMemo(() => {
-    return (Object.keys(providerConfig) as unknown as Array<CredentialProvider>)
+    return (Object.keys(providerConfig) as unknown as Array<Credential_CredentialProvider>)
       .filter((provider) => {
         // Filter out UNSPECIFIED (value 0) by comparing numeric enum values
-        return Number(provider) !== CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED;
+        return Number(provider) !== Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED;
       })
       .map((provider) => {
         const config = providerConfig[provider];

@@ -1,14 +1,15 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { create } from '@bufbuild/protobuf';
+// Connect RPC clients accept messages directly, no wrapping needed
 import { AppContext } from '@/contexts';
 import { useConnectRpcClient } from '@/hooks';
-import { CredentialService } from '@/gen/proto/credential_service_pb';
+import { CredentialQueryController } from '@/gen/org/project_planton/app/credential/v1/query_pb';
 import {
   ListCredentialsRequest,
   ListCredentialsResponse,
   GetCredentialRequestSchema,
-  Credential,
-} from '@/gen/proto/credential_service_pb';
+} from '@/gen/org/project_planton/app/credential/v1/io_pb';
+import { Credential } from '@/gen/org/project_planton/app/credential/v1/api_pb';
 
 interface QueryType {
   listCredentials: (input: ListCredentialsRequest) => Promise<ListCredentialsResponse>;
@@ -19,7 +20,7 @@ const RESOURCE_NAME = 'Credentials';
 
 export const useCredentialQuery = () => {
   const { setPageLoading, openSnackbar } = useContext(AppContext);
-  const queryClient = useConnectRpcClient(CredentialService);
+  const queryClient = useConnectRpcClient(CredentialQueryController);
   const [query, setQuery] = useState<QueryType | null>(null);
 
   const credentialQuery: QueryType = useMemo(
@@ -27,8 +28,7 @@ export const useCredentialQuery = () => {
       listCredentials: (input: ListCredentialsRequest): Promise<ListCredentialsResponse> => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
-          queryClient
-            .listCredentials(input)
+          queryClient.list(input)
             .then(resolve)
             .catch((err) => {
               openSnackbar(err.message || `Could not get ${RESOURCE_NAME}!`, 'error');
@@ -42,8 +42,7 @@ export const useCredentialQuery = () => {
       getById: (id: string): Promise<Credential> => {
         return new Promise((resolve, reject) => {
           setPageLoading(true);
-          queryClient
-            .getCredential(create(GetCredentialRequestSchema, { id }))
+          queryClient.get(create(GetCredentialRequestSchema, { id }))
             .then((response) => {
               resolve(response.credential!);
             })
@@ -57,7 +56,7 @@ export const useCredentialQuery = () => {
         });
       },
     }),
-    [queryClient]
+    [queryClient, setPageLoading, openSnackbar]
   );
 
   useEffect(() => {

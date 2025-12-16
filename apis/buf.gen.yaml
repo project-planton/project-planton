@@ -23,6 +23,7 @@ plugins:
     out: generated/stubs/ts
     opt:
       - target=ts
+    include_imports: true
   # Generate TypeScript code for Connect RPC
   - remote: buf.build/connectrpc/es:v1.6.1
     out: generated/stubs/ts

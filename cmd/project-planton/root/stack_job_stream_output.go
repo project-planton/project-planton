@@ -10,13 +10,13 @@ import (
 	"syscall"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	stackupdatev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1"
+	stackupdatev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1/stackupdatev1connect"
 	"github.com/spf13/cobra"
 )
 
 var StackUpdateStreamOutputCmd = &cobra.Command{
-	Use:   "stack-job:stream-output",
+	Use:   "stack-update:stream-output",
 	Short: "stream real-time output from a stack-update",
 	Long:  "Stream real-time deployment logs from a stack-update. Shows stdout and stderr output as it's generated during deployment.",
 	Run:   stackUpdateStreamOutputHandler,
@@ -33,7 +33,7 @@ func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 	jobID, _ := cmd.Flags().GetString("id")
 	if jobID == "" {
 		fmt.Println("Error: --id flag is required. Provide the stack-update ID")
-		fmt.Println("Usage: project-planton stack-job:stream-output --id=<stack-job-id>")
+		fmt.Println("Usage: project-planton stack-update:stream-output --id=<stack-update-id>")
 		os.Exit(1)
 	}
 
@@ -48,17 +48,17 @@ func stackUpdateStreamOutputHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewStackUpdateServiceClient(
+	client := stackupdatev1connect.NewStackUpdateQueryControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.StreamStackUpdateOutputRequest{
+	req := &stackupdatev1.StreamStackUpdateOutputRequest{
 		JobId: jobID,
 	}
 	if lastSequenceNum > 0 {
-		req.LastSequenceNum = &lastSequenceNum
+		req.LastSequenceNum = lastSequenceNum
 	}
 
 	// Create context with cancellation support

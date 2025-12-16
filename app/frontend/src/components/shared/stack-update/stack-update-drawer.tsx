@@ -1,7 +1,7 @@
 'use client';
 
 import { Drawer } from '@/components/shared/drawer';
-import { StackUpdatesList } from './stack-jobs-list';
+import { StackUpdatesList } from './stack-update-list';
 export interface StackUpdatesDrawerProps {
   open: boolean;
   cloudResourceId: string;

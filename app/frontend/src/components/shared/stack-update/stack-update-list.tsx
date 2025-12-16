@@ -7,12 +7,10 @@ import { create } from '@bufbuild/protobuf';
 import { TableComp } from '@/components/shared/table';
 import { PAGINATION_MODE } from '@/models/table';
 import { StatusChip } from '@/components/shared/status-chip';
-import { useStackUpdateQuery } from '@/app/stack-jobs/_services';
-import {
-  ListStackUpdatesRequestSchema,
-  StackUpdate,
-} from '@/gen/proto/stack_job_service_pb';
-import { PageInfoSchema } from '@/gen/proto/cloud_resource_service_pb';
+import { useStackUpdateQuery } from '@/app/stack-update/_services';
+import { ListStackUpdatesRequestSchema } from '@/gen/org/project_planton/app/stackupdate/v1/io_pb';
+import { StackUpdate } from '@/gen/org/project_planton/app/stackupdate/v1/api_pb';
+import { PageInfoSchema } from '@/gen/org/project_planton/app/commons/page_info_pb';
 import { formatTimestampToDate } from '@/lib';
 
 export interface StackUpdatesListProps {
@@ -43,7 +41,7 @@ export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
           })
         )
         .then((result) => {
-          setStackUpdates(result.jobs);
+          setStackUpdates(result.stackUpdates);
           setTotalPages(result.totalPages || 0);
           setApiLoading(false);
         })
@@ -92,7 +90,7 @@ export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
   const clickableColumns = useMemo(
     () => ({
       id: (row: StackUpdate) => {
-        router.push(`/stack-jobs/${row.id}`);
+        router.push(`/stack-update/${row.id}`);
       },
     }),
     [router]
@@ -122,4 +120,3 @@ export function StackUpdatesList({ cloudResourceId }: StackUpdatesListProps) {
     </Box>
   );
 }
-

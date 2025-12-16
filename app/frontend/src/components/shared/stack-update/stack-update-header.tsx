@@ -1,8 +1,8 @@
 'use client';
 
 import { Typography, Divider, Stack, Box, Skeleton } from '@mui/material';
-import { HeaderContainer, TopSection, BottomSection, FlexCenterRow } from '@/app/stack-jobs/styled';
-import { StackUpdate } from '@/gen/proto/stack_job_service_pb';
+import { HeaderContainer, TopSection, BottomSection, FlexCenterRow } from '@/app/stack-update/styled';
+import { StackUpdate } from '@/gen/org/project_planton/app/stackupdate/v1/api_pb';
 import { StatusChip } from '@/components/shared/status-chip';
 import { TextCopy } from '@/components/shared/text-copy';
 

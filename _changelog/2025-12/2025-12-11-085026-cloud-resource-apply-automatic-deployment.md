@@ -83,7 +83,7 @@ Updated At: 2025-12-11 08:50:26
 
 🚀 Pulumi deployment has been triggered automatically.
    Deployment is running in the background.
-   Use 'project-planton stack-job:list' to check deployment status.
+   Use 'project-planton stack-update:list' to check deployment status.
 ```
 
 ### 3. Updated CLI Documentation

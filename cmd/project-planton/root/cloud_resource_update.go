@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	backendv1 "github.com/project-planton/project-planton/app/backend/apis/gen/go/proto"
-	"github.com/project-planton/project-planton/app/backend/apis/gen/go/proto/backendv1connect"
+	cloudresourcev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1"
+	cloudresourcev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
 	"github.com/spf13/cobra"
 )
 
@@ -59,13 +59,13 @@ func cloudResourceUpdateHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Create Connect-RPC client
-	client := backendv1connect.NewCloudResourceServiceClient(
+	client := cloudresourcev1connect.NewCloudResourceCommandControllerClient(
 		http.DefaultClient,
 		backendURL,
 	)
 
 	// Prepare request
-	req := &backendv1.UpdateCloudResourceRequest{
+	req := &cloudresourcev1.UpdateCloudResourceRequest{
 		Id:       id,
 		Manifest: string(manifestContent),
 	}
@@ -75,7 +75,7 @@ func cloudResourceUpdateHandler(cmd *cobra.Command, args []string) {
 	defer cancel()
 
 	// Make the API call
-	resp, err := client.UpdateCloudResource(ctx, connect.NewRequest(req))
+	resp, err := client.Update(ctx, connect.NewRequest(req))
 	if err != nil {
 		if connect.CodeOf(err) == connect.CodeUnavailable {
 			fmt.Printf("Error: Cannot connect to backend service at %s. Please check:\n", backendURL)

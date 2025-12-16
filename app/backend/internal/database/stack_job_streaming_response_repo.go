@@ -68,7 +68,7 @@ func (r *StackUpdateStreamingResponseRepository) CreateBatch(ctx context.Context
 
 // FindByStackUpdateID retrieves all streaming responses for a specific stack-update, ordered by sequence number.
 func (r *StackUpdateStreamingResponseRepository) FindByStackUpdateID(ctx context.Context, stackUpdateID string) ([]*models.StackUpdateStreamingResponse, error) {
-	filter := bson.M{"stack_job_id": stackUpdateID}
+	filter := bson.M{"stack_update_id": stackUpdateID}
 	// Use bson.D for ordered sort (sequence_num first, then created_at)
 	opts := options.Find().SetSort(bson.D{
 		{Key: "sequence_num", Value: 1},
@@ -91,7 +91,7 @@ func (r *StackUpdateStreamingResponseRepository) FindByStackUpdateID(ctx context
 
 // DeleteByStackUpdateID deletes all streaming responses for a specific stack-update.
 func (r *StackUpdateStreamingResponseRepository) DeleteByStackUpdateID(ctx context.Context, stackUpdateID string) error {
-	filter := bson.M{"stack_job_id": stackUpdateID}
+	filter := bson.M{"stack_update_id": stackUpdateID}
 	result, err := r.collection.DeleteMany(ctx, filter)
 	if err != nil {
 		return fmt.Errorf("failed to delete streaming responses: %w", err)
@@ -103,7 +103,7 @@ func (r *StackUpdateStreamingResponseRepository) DeleteByStackUpdateID(ctx conte
 
 // GetNextSequenceNum returns the next sequence number for a stack-update.
 func (r *StackUpdateStreamingResponseRepository) GetNextSequenceNum(ctx context.Context, stackUpdateID string) (int, error) {
-	filter := bson.M{"stack_job_id": stackUpdateID}
+	filter := bson.M{"stack_update_id": stackUpdateID}
 	opts := options.FindOne().SetSort(bson.M{"sequence_num": -1})
 
 	var lastResponse models.StackUpdateStreamingResponse
@@ -123,8 +123,8 @@ func (r *StackUpdateStreamingResponseRepository) GetNextSequenceNum(ctx context.
 // Used for resuming streams from a specific point.
 func (r *StackUpdateStreamingResponseRepository) FindByStackUpdateIDAfterSequence(ctx context.Context, stackUpdateID string, afterSequenceNum int) ([]*models.StackUpdateStreamingResponse, error) {
 	filter := bson.M{
-		"stack_job_id": stackUpdateID,
-		"sequence_num": bson.M{"$gt": afterSequenceNum},
+		"stack_update_id": stackUpdateID,
+		"sequence_num":    bson.M{"$gt": afterSequenceNum},
 	}
 	// Use bson.D for ordered sort (sequence_num first, then created_at)
 	opts := options.Find().SetSort(bson.D{
