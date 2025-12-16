@@ -29,12 +29,14 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesGitlabSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the GitLab deployment.
-	Container *KubernetesGitlabSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesGitlabSpecContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the GitLab deployment.
 	Ingress       *KubernetesGitlabIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -83,6 +85,13 @@ func (x *KubernetesGitlabSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesGitlabSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesGitlabSpec) GetContainer() *KubernetesGitlabSpecContainer {
@@ -207,11 +216,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesgitlab_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetesgitlab_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetesgitlab/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesgitlab.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe8\x03\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetesgitlab/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetesgitlab.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x93\x04\n" +
 	"\x14KubernetesGitlabSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x80\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetesgitlab.v1.KubernetesGitlabSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12n\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x80\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetesgitlab.v1.KubernetesGitlabSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12n\n" +
 	"\aingress\x18\x05 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesgitlab.v1.KubernetesGitlabIngressR\aingress\"\xce\x01\n" +
 	"\x17KubernetesGitlabIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +

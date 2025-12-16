@@ -16,18 +16,21 @@ extend google.protobuf.FieldOptions {
 
 // NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
 message KubernetesNatsSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the operator.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // server container settings (replicas, resources, disk).
-  KubernetesNatsServerContainer server_container = 3 [(default_server_container) = {
+  KubernetesNatsServerContainer server_container = 4 [(default_server_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -41,16 +44,17 @@ message KubernetesNatsSpec {
     }
     disk_size: "10Gi"
   }];
+
   // disable jet-stream persistence
-  bool disable_jet_stream = 4;
+  bool disable_jet_stream = 5;
   // authentication settings for the nats cluster.
-  KubernetesNatsAuth auth = 5;
+  KubernetesNatsAuth auth = 6;
   // tls settings for the nats cluster.
-  bool tls_enabled = 6;
+  bool tls_enabled = 7;
   // optional ingress configuration for external access.
-  KubernetesNatsIngress ingress = 7;
+  KubernetesNatsIngress ingress = 8;
   // toggle to deploy the nats-box utility pod.
-  bool disable_nats_box = 8;
+  bool disable_nats_box = 9;
 }
 
 // server container settings for the nats stateful-set.

@@ -27,15 +27,17 @@ const (
 // KubernetesIngressNginxSpec defines configuration for ingress‑nginx on any cluster.
 type KubernetesIngressNginxSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this addon on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// Upstream Helm chart version tag (e.g. "4.11.1").
-	ChartVersion string `protobuf:"bytes,3,opt,name=chart_version,json=chartVersion,proto3" json:"chart_version,omitempty"`
+	ChartVersion string `protobuf:"bytes,4,opt,name=chart_version,json=chartVersion,proto3" json:"chart_version,omitempty"`
 	// Deploy the controller with an **internal** load balancer.
 	// The default (false) produces an external LB where the provider supports it.
-	Internal bool `protobuf:"varint,4,opt,name=internal,proto3" json:"internal,omitempty"`
+	Internal bool `protobuf:"varint,5,opt,name=internal,proto3" json:"internal,omitempty"`
 	// Provider‑specific glue (exactly one block may be set).
 	//
 	// Types that are valid to be assigned to ProviderConfig:
@@ -90,6 +92,13 @@ func (x *KubernetesIngressNginxSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesIngressNginxSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesIngressNginxSpec) GetChartVersion() string {
@@ -351,12 +360,13 @@ var File_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_
 
 const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetesingressnginx.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb7\x05\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetesingressnginx/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetesingressnginx.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe2\x05\n" +
 	"\x1aKubernetesIngressNginxSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12#\n" +
-	"\rchart_version\x18\x03 \x01(\tR\fchartVersion\x12\x1a\n" +
-	"\binternal\x18\x04 \x01(\bR\binternal\x12v\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12#\n" +
+	"\rchart_version\x18\x04 \x01(\tR\fchartVersion\x12\x1a\n" +
+	"\binternal\x18\x05 \x01(\bR\binternal\x12v\n" +
 	"\x03gke\x18d \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxGkeConfigH\x00R\x03gke\x12v\n" +
 	"\x03eks\x18e \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxEksConfigH\x00R\x03eks\x12v\n" +
 	"\x03aks\x18f \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1.KubernetesIngressNginxAksConfigH\x00R\x03aksB\x11\n" +

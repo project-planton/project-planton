@@ -29,22 +29,24 @@ const (
 // The addon automatically creates a ClusterIssuer with multiple DNS solvers based on the provided DNS provider configurations.
 type KubernetesCertManagerSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this addon on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace where kubernetes-cert-manager will be deployed.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// kubernetes-cert-manager version such as "v1.19.1". Used to set the image tag.
 	// Minimum version v1.16.4 is enforced for Cloudflare API compatibility.
-	KubernetesCertManagerVersion *string `protobuf:"bytes,3,opt,name=kubernetes_cert_manager_version,json=kubernetesCertManagerVersion,proto3,oneof" json:"kubernetes_cert_manager_version,omitempty"`
+	KubernetesCertManagerVersion *string `protobuf:"bytes,4,opt,name=kubernetes_cert_manager_version,json=kubernetesCertManagerVersion,proto3,oneof" json:"kubernetes_cert_manager_version,omitempty"`
 	// Helm chart version to deploy. If not specified, uses the default version.
-	HelmChartVersion *string `protobuf:"bytes,4,opt,name=helm_chart_version,json=helmChartVersion,proto3,oneof" json:"helm_chart_version,omitempty"`
+	HelmChartVersion *string `protobuf:"bytes,5,opt,name=helm_chart_version,json=helmChartVersion,proto3,oneof" json:"helm_chart_version,omitempty"`
 	// skip installation of self-signed issuer.
-	SkipInstallSelfSignedIssuer bool `protobuf:"varint,5,opt,name=skip_install_self_signed_issuer,json=skipInstallSelfSignedIssuer,proto3" json:"skip_install_self_signed_issuer,omitempty"`
+	SkipInstallSelfSignedIssuer bool `protobuf:"varint,6,opt,name=skip_install_self_signed_issuer,json=skipInstallSelfSignedIssuer,proto3" json:"skip_install_self_signed_issuer,omitempty"`
 	// Global ACME configuration used for all DNS providers.
-	Acme *AcmeConfig `protobuf:"bytes,6,opt,name=acme,proto3" json:"acme,omitempty"`
+	Acme *AcmeConfig `protobuf:"bytes,7,opt,name=acme,proto3" json:"acme,omitempty"`
 	// List of DNS provider configurations. Each provider can manage multiple DNS zones.
 	// The addon will create a single ClusterIssuer with multiple solvers based on these configurations.
-	DnsProviders  []*DnsProviderConfig `protobuf:"bytes,7,rep,name=dns_providers,json=dnsProviders,proto3" json:"dns_providers,omitempty"`
+	DnsProviders  []*DnsProviderConfig `protobuf:"bytes,8,rep,name=dns_providers,json=dnsProviders,proto3" json:"dns_providers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -91,6 +93,13 @@ func (x *KubernetesCertManagerSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesCertManagerSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesCertManagerSpec) GetKubernetesCertManagerVersion() string {
@@ -564,15 +573,16 @@ var File_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x83\x06\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetescertmanager/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetescertmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xae\x06\n" +
 	"\x19KubernetesCertManagerSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12W\n" +
-	"\x1fkubernetes_cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x00R\x1ckubernetesCertManagerVersion\x88\x01\x01\x12>\n" +
-	"\x12helm_chart_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x10helmChartVersion\x88\x01\x01\x12D\n" +
-	"\x1fskip_install_self_signed_issuer\x18\x05 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12h\n" +
-	"\x04acme\x18\x06 \x01(\v2L.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfigB\x06\xbaH\x03\xc8\x01\x01R\x04acme\x12\x82\x01\n" +
-	"\rdns_providers\x18\a \x03(\v2S.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\"\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12W\n" +
+	"\x1fkubernetes_cert_manager_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x00R\x1ckubernetesCertManagerVersion\x88\x01\x01\x12>\n" +
+	"\x12helm_chart_version\x18\x05 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x10helmChartVersion\x88\x01\x01\x12D\n" +
+	"\x1fskip_install_self_signed_issuer\x18\x06 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12h\n" +
+	"\x04acme\x18\a \x01(\v2L.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.AcmeConfigB\x06\xbaH\x03\xc8\x01\x01R\x04acme\x12\x82\x01\n" +
+	"\rdns_providers\x18\b \x03(\v2S.org.project_planton.provider.kubernetes.kubernetescertmanager.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\"\n" +
 	" _kubernetes_cert_manager_versionB\x15\n" +
 	"\x13_helm_chart_version\"\x86\x01\n" +
 	"\n" +

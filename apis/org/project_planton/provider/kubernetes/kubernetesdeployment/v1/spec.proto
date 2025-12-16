@@ -15,20 +15,23 @@ import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
  * and availability options for zero-downtime deployments.
  */
 message KubernetesDeploymentSpec {
-  // The Kubernetes cluster to install this microservice on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the microservice.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   //The version of the microservice being deployed.
   //This is usually either "main" (the default git branch name) or "review-<id>" where <id> is the merge request number.
   //It must be between 1 and 30 characters and can only contain lowercase letters, numbers, and hyphens.
-  string version = 3 [
+  string version = 4 [
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 30,
     (buf.validate.field).cel = {

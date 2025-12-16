@@ -31,28 +31,30 @@ const (
 // and customizable load testing environment to simulate user traffic and measure application performance.
 type KubernetesLocustSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install Locust on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install Locust.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The master container specifications for the Locust cluster.
 	// This defines the resource allocation and number of replicas for the master node.
-	MasterContainer *KubernetesLocustContainer `protobuf:"bytes,3,opt,name=master_container,json=masterContainer,proto3" json:"master_container,omitempty"`
+	MasterContainer *KubernetesLocustContainer `protobuf:"bytes,4,opt,name=master_container,json=masterContainer,proto3" json:"master_container,omitempty"`
 	// The worker container specifications for the Locust cluster.
 	// This defines the resource allocation and number of replicas for the worker nodes.
-	WorkerContainer *KubernetesLocustContainer `protobuf:"bytes,4,opt,name=worker_container,json=workerContainer,proto3" json:"worker_container,omitempty"`
+	WorkerContainer *KubernetesLocustContainer `protobuf:"bytes,5,opt,name=worker_container,json=workerContainer,proto3" json:"worker_container,omitempty"`
 	// The ingress configuration for the Locust deployment.
-	Ingress *KubernetesLocustIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesLocustIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The load test parameters, including the main test script, additional library files,
 	// and extra Python pip packages needed for test execution.
 	// This specifies how the Locust nodes will simulate traffic and interact with the target application.
-	LoadTest *KubernetesLocustLoadTest `protobuf:"bytes,6,opt,name=load_test,json=loadTest,proto3" json:"load_test,omitempty"`
+	LoadTest *KubernetesLocustLoadTest `protobuf:"bytes,7,opt,name=load_test,json=loadTest,proto3" json:"load_test,omitempty"`
 	// A map of key-value pairs providing additional customization options for the Helm chart used
 	// to deploy the Locust cluster. These values allow for further refinement of the deployment,
 	// such as customizing resource limits, setting environment variables, or specifying version tags.
 	// For detailed information on the available options, refer to the Helm chart documentation at:
 	// https://github.com/deliveryhero/helm-charts/tree/master/stable/locust#values
-	HelmValues    map[string]string `protobuf:"bytes,7,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	HelmValues    map[string]string `protobuf:"bytes,8,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -99,6 +101,13 @@ func (x *KubernetesLocustSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesLocustSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesLocustSpec) GetMasterContainer() *KubernetesLocustContainer {
@@ -364,21 +373,22 @@ var File_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xfb\a\n" +
+	"Forg/project_planton/provider/kubernetes/kuberneteslocust/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kuberneteslocust.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xa6\b\n" +
 	"\x14KubernetesLocustSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa8\x01\n" +
-	"\x10master_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xa8\x01\n" +
+	"\x10master_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x0fmasterContainer\x12\xa8\x01\n" +
-	"\x10worker_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x92\xe8\x81\x02 \b\x01\x12\x1c\n" +
+	"\x10worker_container\x18\x05 \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerB%\x92\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x0fworkerContainer\x12n\n" +
-	"\aingress\x18\x05 \x01(\v2T.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngressR\aingress\x12z\n" +
-	"\tload_test\x18\x06 \x01(\v2U.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTestB\x06\xbaH\x03\xc8\x01\x01R\bloadTest\x12\x82\x01\n" +
-	"\vhelm_values\x18\a \x03(\v2a.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntryR\n" +
+	"\aingress\x18\x06 \x01(\v2T.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustIngressR\aingress\x12z\n" +
+	"\tload_test\x18\a \x01(\v2U.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustLoadTestB\x06\xbaH\x03\xc8\x01\x01R\bloadTest\x12\x82\x01\n" +
+	"\vhelm_values\x18\b \x03(\v2a.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +

@@ -30,14 +30,16 @@ const (
 // and availability options for zero-downtime deployments.
 type KubernetesDeploymentSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this microservice on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the microservice.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The version of the microservice being deployed.
 	// This is usually either "main" (the default git branch name) or "review-<id>" where <id> is the merge request number.
 	// It must be between 1 and 30 characters and can only contain lowercase letters, numbers, and hyphens.
-	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	Version string `protobuf:"bytes,4,opt,name=version,proto3" json:"version,omitempty"`
 	// The container specifications for the microservice deployment.
 	// This includes configurations for the main application container and any sidecar containers.
 	Container *KubernetesDeploymentContainer `protobuf:"bytes,5,opt,name=container,proto3" json:"container,omitempty"`
@@ -93,6 +95,13 @@ func (x *KubernetesDeploymentSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesDeploymentSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesDeploymentSpec) GetVersion() string {
@@ -828,11 +837,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xec\x06\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x97\a\n" +
 	"\x18KubernetesDeploymentSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xe9\x01\n" +
-	"\aversion\x18\x03 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xe9\x01\n" +
+	"\aversion\x18\x04 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
 	"\x12spec.version.chars\x128Only lowercase letters, numbers, and hyphens are allowed\x1a\x1cthis.matches('^[a-z0-9-]+$')\xba\x01R\n" +
 	"\x1dspec.version.no-hyphen-ending\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x1eR\aversion\x12\x84\x01\n" +
 	"\tcontainer\x18\x05 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +

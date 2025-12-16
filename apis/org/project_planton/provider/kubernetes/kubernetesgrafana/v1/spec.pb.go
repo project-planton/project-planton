@@ -29,12 +29,14 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesGrafanaSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the Grafana deployment.
-	Container *KubernetesGrafanaSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesGrafanaSpecContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Grafana deployment.
 	Ingress       *KubernetesGrafanaIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -83,6 +85,13 @@ func (x *KubernetesGrafanaSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesGrafanaSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesGrafanaSpec) GetContainer() *KubernetesGrafanaSpecContainer {
@@ -208,11 +217,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesgrafana_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xed\x03\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesgrafana/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesgrafana.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x98\x04\n" +
 	"\x15KubernetesGrafanaSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x82\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12p\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x82\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12p\n" +
 	"\aingress\x18\x05 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesgrafana.v1.KubernetesGrafanaIngressR\aingress\"\xcf\x01\n" +
 	"\x18KubernetesGrafanaIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +

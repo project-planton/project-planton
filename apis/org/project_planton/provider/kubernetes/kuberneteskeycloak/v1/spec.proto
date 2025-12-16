@@ -12,21 +12,24 @@ import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 // This message specifies the parameters needed to create and manage a Keycloak deployment within a Kubernetes environment.
 // It includes container specifications and ingress settings to control resource allocation and external access.
 message KubernetesKeycloakSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the component.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The container specifications for the Keycloak deployment.
-  KubernetesKeycloakContainer container = 3;
+  KubernetesKeycloakContainer container = 4;
 
   // The ingress configuration for the Keycloak deployment.
-  KubernetesKeycloakIngress ingress = 4;
+  KubernetesKeycloakIngress ingress = 5;
 }
 
 /**

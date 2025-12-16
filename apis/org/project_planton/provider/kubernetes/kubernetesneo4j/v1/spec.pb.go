@@ -28,12 +28,14 @@ const (
 // KubernetesNeo4jSpec holds the minimal required fields to deploy a single-node Neo4j Community instance on Kubernetes.
 type KubernetesNeo4JSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The specifications for the Neo4j container deployment.
-	Container *KubernetesNeo4JContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesNeo4JContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	// Optional extra memory config for Neo4j (heap, page cache).
 	// By default, we rely on Neo4j's internal defaults if unset.
 	MemoryConfig *KubernetesNeo4JMemoryConfig `protobuf:"bytes,5,opt,name=memory_config,json=memoryConfig,proto3" json:"memory_config,omitempty"`
@@ -85,6 +87,13 @@ func (x *KubernetesNeo4JSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesNeo4JSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesNeo4JSpec) GetContainer() *KubernetesNeo4JContainer {
@@ -312,11 +321,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto p
 
 const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xff\x04\n" +
+	"Eorg/project_planton/provider/kubernetes/kubernetesneo4j/v1/spec.proto\x12:org.project_planton.provider.kubernetes.kubernetesneo4j.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xaa\x05\n" +
 	"\x13KubernetesNeo4jSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x9c\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainerB(\x92\xb0\x8d\x13#\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x9c\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainerB(\x92\xb0\x8d\x13#\n" +
 	"\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +

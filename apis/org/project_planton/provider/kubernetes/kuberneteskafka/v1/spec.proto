@@ -21,21 +21,24 @@ extend google.protobuf.FieldOptions {
 // By configuring these parameters, you can set up a Kafka cluster tailored to your application's needs, including
 // resource allocation, data persistence, and external access.
 message KubernetesKafkaSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the operator.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // A list of Kafka topics to be created in the Kafka cluster.
-  repeated KafkaTopic kafka_topics = 3;
+  repeated KafkaTopic kafka_topics = 4;
 
   // The specifications for the Kafka broker containers.
-  KubernetesKafkaBrokerContainer broker_container = 4 [(default_broker_container) = {
+  KubernetesKafkaBrokerContainer broker_container = 5 [(default_broker_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -51,7 +54,7 @@ message KubernetesKafkaSpec {
   }];
 
   // The specifications for the Zookeeper containers.
-  KubernetesKafkaZookeeperContainer zookeeper_container = 5 [(default_zookeeper_container) = {
+  KubernetesKafkaZookeeperContainer zookeeper_container = 6 [(default_zookeeper_container) = {
     replicas: 1
     resources: {
       limits: {
@@ -67,13 +70,13 @@ message KubernetesKafkaSpec {
   }];
 
   // The specifications for the Schema Registry containers.
-  KubernetesKafkaSchemaRegistryContainer schema_registry_container = 6;
+  KubernetesKafkaSchemaRegistryContainer schema_registry_container = 7;
 
   // The ingress configuration for the Kafka deployment.
-  KubernetesKafkaIngress ingress = 7;
+  KubernetesKafkaIngress ingress = 8;
 
   // A flag to toggle the deployment of the Kafka UI component.
-  bool is_deploy_kafka_ui = 8 [(org.project_planton.shared.options.recommended_default) = "true"];
+  bool is_deploy_kafka_ui = 9 [(org.project_planton.shared.options.recommended_default) = "true"];
 }
 
 /**

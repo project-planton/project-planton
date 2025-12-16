@@ -33,25 +33,27 @@ const (
 // deployment patterns from simple single-node installations to production-grade distributed clusters.
 type KubernetesSignozSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this component on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the component.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the main SigNoz binary (UI, API server, Ruler, Alertmanager).
-	SignozContainer *KubernetesSignozContainer `protobuf:"bytes,3,opt,name=signoz_container,json=signozContainer,proto3" json:"signoz_container,omitempty"`
+	SignozContainer *KubernetesSignozContainer `protobuf:"bytes,4,opt,name=signoz_container,json=signozContainer,proto3" json:"signoz_container,omitempty"`
 	// The container specifications for the OpenTelemetry Collector (data ingestion gateway).
-	OtelCollectorContainer *KubernetesSignozContainer `protobuf:"bytes,4,opt,name=otel_collector_container,json=otelCollectorContainer,proto3" json:"otel_collector_container,omitempty"`
+	OtelCollectorContainer *KubernetesSignozContainer `protobuf:"bytes,5,opt,name=otel_collector_container,json=otelCollectorContainer,proto3" json:"otel_collector_container,omitempty"`
 	// The database configuration for SigNoz, supporting both self-managed and external ClickHouse.
-	Database *KubernetesSignozDatabaseConfig `protobuf:"bytes,5,opt,name=database,proto3" json:"database,omitempty"`
+	Database *KubernetesSignozDatabaseConfig `protobuf:"bytes,6,opt,name=database,proto3" json:"database,omitempty"`
 	// The ingress configuration for SigNoz UI and OpenTelemetry Collector endpoints.
-	Ingress *KubernetesSignozIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesSignozIngress `protobuf:"bytes,7,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// *
 	// A map of key-value pairs that provide additional customization options for the SigNoz Helm chart.
 	// These values allow for further refinement of the deployment, such as setting environment variables,
 	// configuring alerting integrations, or customizing retention policies.
 	// For detailed information on available options, refer to the Helm chart documentation at:
 	// https://github.com/SigNoz/charts
-	HelmValues    map[string]string `protobuf:"bytes,7,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	HelmValues    map[string]string `protobuf:"bytes,8,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,6 +100,13 @@ func (x *KubernetesSignozSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesSignozSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesSignozSpec) GetSignozContainer() *KubernetesSignozContainer {
@@ -915,21 +924,22 @@ var File_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto 
 
 const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetessignoz.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x8f\b\n" +
+	"Forg/project_planton/provider/kubernetes/kubernetessignoz/v1/spec.proto\x12;org.project_planton.provider.kubernetes.kubernetessignoz.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xba\b\n" +
 	"\x14KubernetesSignozSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa9\x01\n" +
-	"\x10signoz_container\x18\x03 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerB&\x8a\xb8\x91\x02!\b\x01\x12\x1d\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xa9\x01\n" +
+	"\x10signoz_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerB&\x8a\xb8\x91\x02!\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04200m\x12\x05512MiR\x0fsignozContainer\x12\xb6\x01\n" +
-	"\x18otel_collector_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerB$\x92\xb8\x91\x02\x1f\b\x02\x12\x1b\n" +
+	"\x18otel_collector_container\x18\x05 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerB$\x92\xb8\x91\x02\x1f\b\x02\x12\x1b\n" +
 	"\f\n" +
 	"\x052000m\x12\x034Gi\x12\v\n" +
 	"\x04500m\x12\x031GiR\x16otelCollectorContainer\x12\x7f\n" +
-	"\bdatabase\x18\x05 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12n\n" +
-	"\aingress\x18\x06 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressR\aingress\x12\x82\x01\n" +
-	"\vhelm_values\x18\a \x03(\v2a.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntryR\n" +
+	"\bdatabase\x18\x06 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12n\n" +
+	"\aingress\x18\a \x01(\v2T.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozIngressR\aingress\x12\x82\x01\n" +
+	"\vhelm_values\x18\b \x03(\v2a.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +

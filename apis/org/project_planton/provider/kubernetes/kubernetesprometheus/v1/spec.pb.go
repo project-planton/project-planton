@@ -31,15 +31,17 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesPrometheusSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install Prometheus on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install Prometheus.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the Prometheus deployment.
-	Container *KubernetesPrometheusContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesPrometheusContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	// *
 	// The ingress configuration for the Prometheus deployment.
-	Ingress       *KubernetesPrometheusIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *KubernetesPrometheusIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -86,6 +88,13 @@ func (x *KubernetesPrometheusSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesPrometheusSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesPrometheusSpec) GetContainer() *KubernetesPrometheusContainer {
@@ -242,12 +251,13 @@ var File_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xf8\x03\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesprometheus/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesprometheus.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa3\x04\n" +
 	"\x18KubernetesPrometheusSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\x84\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
-	"\aingress\x18\x04 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngressR\aingress\"\xd2\x01\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x84\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
+	"\aingress\x18\x05 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesprometheus.v1.KubernetesPrometheusIngressR\aingress\"\xd2\x01\n" +
 	"\x1bKubernetesPrometheusIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +

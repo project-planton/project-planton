@@ -29,14 +29,16 @@ const (
 // It includes container specifications and backup configuration settings to control resource allocation and data protection.
 type KubernetesZalandoPostgresOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install this operator on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install the operator.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the operator deployment.
-	Container *KubernetesZalandoPostgresOperatorSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesZalandoPostgresOperatorSpecContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	// Optional: Backup configuration for all databases managed by this operator
-	BackupConfig  *KubernetesZalandoPostgresOperatorBackupConfig `protobuf:"bytes,4,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
+	BackupConfig  *KubernetesZalandoPostgresOperatorBackupConfig `protobuf:"bytes,5,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,6 +85,13 @@ func (x *KubernetesZalandoPostgresOperatorSpec) GetNamespace() *v1.StringValueOr
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesZalandoPostgresOperatorSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesZalandoPostgresOperatorSpec) GetContainer() *KubernetesZalandoPostgresOperatorSpecContainer {
@@ -326,12 +335,13 @@ var File_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperat
 
 const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xce\x04\n" +
+	"Worg/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/spec.proto\x12Lorg.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xf9\x04\n" +
 	"%KubernetesZalandoPostgresOperatorSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa2\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
-	"\rbackup_config\x18\x04 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xae\x01\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xa2\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2|.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\xa0\x01\n" +
+	"\rbackup_config\x18\x05 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorBackupConfigR\fbackupConfig\"\xae\x01\n" +
 	".KubernetesZalandoPostgresOperatorSpecContainer\x12|\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +

@@ -14,18 +14,21 @@ extend google.protobuf.FieldOptions {
 
 // KubernetesNeo4jSpec holds the minimal required fields to deploy a single-node Neo4j Community instance on Kubernetes.
 message KubernetesNeo4jSpec {
-  // The Kubernetes cluster to install this component on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install the operator.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The specifications for the Neo4j container deployment.
-  KubernetesNeo4jContainer container = 3 [(default_container) = {
+  KubernetesNeo4jContainer container = 4 [(default_container) = {
     resources: {
       limits: {
         cpu: "1000m"

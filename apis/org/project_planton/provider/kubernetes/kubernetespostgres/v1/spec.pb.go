@@ -278,18 +278,20 @@ func (x *KubernetesPostgresBackupConfig) GetRestore() *KubernetesPostgresRestore
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KubernetesPostgresSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install PostgreSQL on.
+	// Target Kubernetes Cluster
 	TargetCluster *kubernetes.KubernetesClusterSelector `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Kubernetes namespace to install PostgreSQL.
+	// Kubernetes Namespace
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// flag to indicate if the namespace should be created
+	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// The container specifications for the PostgreSQL deployment.
-	Container *KubernetesPostgresContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *KubernetesPostgresContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the PostgreSQL deployment.
-	Ingress *KubernetesPostgresIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *KubernetesPostgresIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// Optional: Per-database backup configuration
 	// When specified, these settings override the operator-level backup configuration
 	// If not specified, the database inherits operator-level backup settings
-	BackupConfig  *KubernetesPostgresBackupConfig `protobuf:"bytes,5,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
+	BackupConfig  *KubernetesPostgresBackupConfig `protobuf:"bytes,6,opt,name=backup_config,json=backupConfig,proto3" json:"backup_config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -336,6 +338,13 @@ func (x *KubernetesPostgresSpec) GetNamespace() *v1.StringValueOrRef {
 		return x.Namespace
 	}
 	return nil
+}
+
+func (x *KubernetesPostgresSpec) GetCreateNamespace() bool {
+	if x != nil {
+		return x.CreateNamespace
+	}
+	return false
 }
 
 func (x *KubernetesPostgresSpec) GetContainer() *KubernetesPostgresContainer {
@@ -530,16 +539,17 @@ const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_pr
 	"\arestore\x18\x06 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresRestoreConfigH\x01R\arestore\x88\x01\x01B\x10\n" +
 	"\x0e_enable_backupB\n" +
 	"\n" +
-	"\b_restore\"\x97\x05\n" +
+	"\b_restore\"\xc2\x05\n" +
 	"\x16KubernetesPostgresSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
-	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12\xa4\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xa4\x01\n" +
+	"\tcontainer\x18\x04 \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12r\n" +
-	"\aingress\x18\x04 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngressR\aingress\x12\x82\x01\n" +
-	"\rbackup_config\x18\x05 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfigR\fbackupConfig\"\xd3\x02\n" +
+	"\aingress\x18\x05 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresIngressR\aingress\x12\x82\x01\n" +
+	"\rbackup_config\x18\x06 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresBackupConfigR\fbackupConfig\"\xd3\x02\n" +
 	"\x1bKubernetesPostgresContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
 	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +

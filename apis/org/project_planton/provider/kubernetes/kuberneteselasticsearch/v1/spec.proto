@@ -18,18 +18,21 @@ extend google.protobuf.FieldOptions {
 // By configuring these parameters, you can set up an Elasticsearch deployment tailored to your application's needs,
 // including resource allocation, persistence settings, and external access through ingress.
 message KubernetesElasticsearchSpec {
-  // The Kubernetes cluster to install Elasticsearch on.
+  // Target Kubernetes Cluster
   org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
 
-  // Kubernetes namespace to install Elasticsearch.
+  // Kubernetes Namespace
   org.project_planton.shared.foreignkey.v1.StringValueOrRef namespace = 2 [
     (buf.validate.field).required = true,
     (org.project_planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
 
+  // flag to indicate if the namespace should be created
+  bool create_namespace = 3;
+
   // The elasticsearch configuration.
-  KubernetesElasticsearchElasticsearchSpec elasticsearch = 3 [(default_elasticsearch_spec) = {
+  KubernetesElasticsearchElasticsearchSpec elasticsearch = 4 [(default_elasticsearch_spec) = {
     container: {
       replicas: 1
       resources: {
@@ -48,7 +51,7 @@ message KubernetesElasticsearchSpec {
   }];
 
   // The kibana configuration.
-  KubernetesElasticsearchKibanaSpec kibana = 4 [(default_kibana_spec) = {
+  KubernetesElasticsearchKibanaSpec kibana = 5 [(default_kibana_spec) = {
     enabled: true
     container: {
       replicas: 1
