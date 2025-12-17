@@ -135,7 +135,7 @@ export function CredentialsList() {
           setDeleteDialogOpen(false);
           setCredentialToDelete(null);
         })
-        .catch((err: any) => {
+        .catch(() => {
           setDeleteDialogOpen(false);
           setCredentialToDelete(null);
         });

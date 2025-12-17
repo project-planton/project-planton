@@ -84,7 +84,7 @@ export const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
-export const DrawerContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const DrawerContainer = styled(Box)<BoxProps>(() => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',

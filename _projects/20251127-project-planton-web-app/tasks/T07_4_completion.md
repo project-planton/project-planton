@@ -3,7 +3,7 @@
 **Status:** ✅ COMPLETED
 **Date:** December 4, 2025
 **Type:** Feature, Enhancement
-**Changelog:** `2025-12-04-121750-stack-jobs-ui-integration-and-pagination.md`
+**Changelog:** `2025-12-04-121750-stack-update-ui-integration-and-pagination.md`
 
 ---
 
@@ -16,6 +16,7 @@ Integrated stack-updates functionality into the cloud resources web interface, e
 ### 1. Stack Jobs Menu Integration
 
 Added "Stack Jobs" action menu that:
+
 - Opens drawer showing paginated stack-updates for selected cloud resource
 - Displays stack-updates in sortable table
 - Provides clickable rows that navigate to detailed pages
@@ -23,7 +24,8 @@ Added "Stack Jobs" action menu that:
 
 ### 2. Stack Jobs Detail Page
 
-Created dedicated page (`/stack-jobs/[id]`) with:
+Created dedicated page (`/stack-update/[id]`) with:
+
 - Breadcrumb navigation with clickable "Stack Jobs" link
 - Job ID with copy-to-clipboard functionality
 - Status chip for visual status indication
@@ -34,6 +36,7 @@ Created dedicated page (`/stack-jobs/[id]`) with:
 ### 3. Backend Stack Jobs Pagination
 
 Implemented server-side pagination for ListStackUpdates:
+
 - Added `PageInfo` support to request message
 - Added `total_pages` field to response
 - Repository supports pagination with MongoDB skip/limit
@@ -44,6 +47,7 @@ Implemented server-side pagination for ListStackUpdates:
 ### 4. User-Provided Credentials Support
 
 Enhanced DeployCloudResource API to accept provider credentials:
+
 - Added `ProviderConfig` message supporting all providers (AWS, GCP, Azure, Atlas, Cloudflare, Confluent, Snowflake, Kubernetes)
 - Credentials priority: User-provided > Environment variables
 - Automatic credential validation based on resource provider
@@ -54,6 +58,7 @@ Enhanced DeployCloudResource API to accept provider credentials:
 ### 5. Module Path Fixes
 
 Fixed module directory path resolution:
+
 - **Pulumi**: Corrected from `apis/org/project_planton/provider` to `apis/project/planton/provider`
 - **OpenTofu**: Corrected from `apis/org/project_planton/provider` to `apis/project/planton/provider`
 - Fixed version check logic in Pulumi module directory
@@ -62,6 +67,7 @@ Fixed module directory path resolution:
 ### 6. Code Quality Improvements
 
 Removed redundant logrus logging from service layer:
+
 - Removed from `stack_job_service.go`
 - Removed from `cloud_resource_service.go`
 - Removed from `deployment_component_service.go`
@@ -77,7 +83,7 @@ Cloud Resources List Page
 Stack Jobs Drawer (opens)
     ↓ Shows paginated list of stack-updates
     ↓ User clicks on a stack-update row
-Stack Job Detail Page (/stack-jobs/[id])
+Stack Job Detail Page (/stack-update/[id])
     ↓ Shows full stack-update details
     ↓ Can navigate back via breadcrumb
 ```
@@ -113,16 +119,18 @@ Cleanup temporary files
 ## Files Created
 
 ### Frontend Pages
-- `app/frontend/src/app/stack-jobs/[id]/page.tsx` - Stack job detail page
-- `app/frontend/src/app/stack-jobs/_services/index.ts` - Service exports
-- `app/frontend/src/app/stack-jobs/_services/query.ts` - Stack jobs query service
-- `app/frontend/src/app/stack-jobs/styled.ts` - Styled components
+
+- `app/frontend/src/app/stack-update/[id]/page.tsx` - Stack job detail page
+- `app/frontend/src/app/stack-update/_services/index.ts` - Service exports
+- `app/frontend/src/app/stack-update/_services/query.ts` - Stack jobs query service
+- `app/frontend/src/app/stack-update/styled.ts` - Styled components
 
 ### UI Components
+
 - `app/frontend/src/components/shared/stackupdate/index.ts` - Stack job component exports
 - `app/frontend/src/components/shared/stackupdate/stack-update-header.tsx` - Job header component
-- `app/frontend/src/components/shared/stackupdate/stack-jobs-drawer.tsx` - Drawer component
-- `app/frontend/src/components/shared/stackupdate/stack-jobs-list.tsx` - List component with pagination
+- `app/frontend/src/components/shared/stackupdate/stack-update-drawer.tsx` - Drawer component
+- `app/frontend/src/components/shared/stackupdate/stack-update-list.tsx` - List component with pagination
 - `app/frontend/src/components/shared/breadcrumb/index.tsx` - Breadcrumb navigation
 - `app/frontend/src/components/shared/breadcrumb/styled.ts` - Breadcrumb styling
 - `app/frontend/src/components/shared/status-chip/index.ts` - Status chip exports
@@ -131,11 +139,13 @@ Cleanup temporary files
 - `app/frontend/src/components/shared/syntax-highlighter/json-code.tsx` - JSON syntax highlighter
 
 ### Infrastructure
+
 - `pkg/iac/stackinput/stackinputproviderconfig/user_provider.go` - User credentials handling
 
 ## Files Modified
 
 ### Backend API
+
 - `app/backend/apis/proto/stack_job_service.proto` - Added PageInfo and ProviderConfig support
 - `app/backend/internal/service/stack_job_service.go` - Pagination logic, user credentials support, removed logrus
 - `app/backend/internal/service/cloud_resource_service.go` - Removed logrus logging
@@ -143,10 +153,12 @@ Cleanup temporary files
 - `app/backend/internal/database/stack_job_repo.go` - Added pagination support
 
 ### Infrastructure Code
+
 - `pkg/iac/pulumi/pulumimodule/module_directory.go` - Fixed API path and version check
 - `pkg/iac/tofu/tofumodule/module_directory.go` - Fixed API path
 
 ### Frontend Components
+
 - `app/frontend/src/components/shared/cloud-resources-list/cloud-resources-list.tsx` - Added Stack Jobs menu
 - `app/frontend/src/components/shared/cloud-resources-list/index.ts` - Updated exports
 - `app/frontend/src/components/layout/styled.ts` - Updated layout styling
@@ -155,9 +167,11 @@ Cleanup temporary files
 ## Files Deleted
 
 ### Infrastructure
+
 - `pkg/iac/stackinput/stackinputproviderconfig/env_provider.go` - Functionality consolidated into user_provider.go
 
 ### Frontend
+
 - `app/frontend/src/components/shared/cloud-resources-list/styled.ts` - No longer needed
 
 ## Key Features Delivered
@@ -184,6 +198,7 @@ Cleanup temporary files
 ## Benefits
 
 ### For End Users
+
 - Stack jobs accessible directly from cloud resources
 - Intuitive navigation flow from resources to jobs to details
 - Paginated list prevents performance issues
@@ -193,6 +208,7 @@ Cleanup temporary files
 - No need to pre-configure credentials on server
 
 ### For Developers
+
 - Reusable stack-updates components
 - Consistent pagination pattern
 - Type-safe implementation with TypeScript
@@ -205,6 +221,7 @@ Cleanup temporary files
 ### Logrus Removal from Service APIs
 
 Removed all logrus logging from backend service layer:
+
 - Most error logs were redundant (errors returned via Connect RPC)
 - Info/warning logs were nice-to-have but not essential
 - Simplifies codebase and reduces dependencies
@@ -222,11 +239,13 @@ Removed all logrus logging from backend service layer:
 ## Related Work
 
 **Built on:**
+
 - Pulumi CLI Stack Job API (Dec 3, 2025)
 - Cloud Resource UI Enhancements (Dec 3, 2025)
 - Cloud Resource Web UI (Dec 1, 2025)
 
 **Enables:**
+
 - Deployment actions from UI
 - Real-time status updates
 - Stack job filtering in UI
@@ -238,5 +257,4 @@ Removed all logrus logging from backend service layer:
 
 **Completion Date:** December 4, 2025
 **Status:** ✅ Production Ready
-**Location:** `app/frontend/src/app/stack-jobs/`, `app/backend/internal/service/`, `pkg/iac/`
-
+**Location:** `app/frontend/src/app/stack-update/`, `app/backend/internal/service/`, `pkg/iac/`
