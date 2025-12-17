@@ -4,7 +4,7 @@
 # ==========================================
 # Stage 1: Build Backend
 # ==========================================
-FROM golang:1.24.7-alpine AS backend-builder
+FROM golang:1.25-alpine AS backend-builder
 
 # Install build dependencies
 RUN apk add --no-cache git make bash curl wget
@@ -35,9 +35,6 @@ WORKDIR /build/app/backend
 
 # Download dependencies
 RUN go mod download
-
-# Generate proto code
-RUN make generate
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/server ./cmd/server
@@ -102,7 +99,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy Go 1.24.7 from builder stage
+# Copy Go 1.25 from builder stage
 COPY --from=backend-builder /usr/local/go /usr/local/go
 
 # Install Pulumi CLI
