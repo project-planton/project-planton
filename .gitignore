@@ -40,5 +40,3 @@ web-app/src/gen/
 
 *.sh
 **/*.env
-
-**/BUILD.bazel

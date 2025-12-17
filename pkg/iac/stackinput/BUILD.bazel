@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "stackinput",
+    srcs = [
+        "providers.go",
+        "stack_input.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/iac/stackinput",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/iac/stackinput/stackinputproviderconfig",
+        "//pkg/protobufyaml",
+        "@com_github_pkg_errors//:errors",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+        "@org_golang_google_protobuf//encoding/protojson",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

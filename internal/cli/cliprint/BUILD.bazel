@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cliprint",
+    srcs = [
+        "print.go",
+        "symbols.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/internal/cli/cliprint",
+    visibility = ["//:__subpackages__"],
+    deps = ["@com_github_fatih_color//:color"],
+)

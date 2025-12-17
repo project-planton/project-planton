@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "project-planton",
+    srcs = ["root.go"],
+    importpath = "github.com/project-planton/project-planton/cmd/project-planton",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cmd/project-planton/root",
+        "//cmd/project-planton/root/webapp",
+        "@com_github_spf13_cobra//:cobra",
+    ],
+)

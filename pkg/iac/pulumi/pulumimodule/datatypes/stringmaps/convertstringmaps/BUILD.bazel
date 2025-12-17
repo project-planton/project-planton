@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "convertstringmaps",
+    srcs = ["convert_string_maps.go"],
+    importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_pulumi_pulumi_sdk_v3//go/pulumi"],
+)
+
+go_test(
+    name = "convertstringmaps_test",
+    srcs = ["convert_string_maps_test.go"],
+    embed = [":convertstringmaps"],
+    deps = [
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+        "@com_github_stretchr_testify//assert",
+    ],
+)
