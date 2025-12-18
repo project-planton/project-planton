@@ -85,7 +85,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	}
 
 	// deploy cert‑manager helm chart with DNS resolver configuration
-	helmRelease, err := helm.NewRelease(ctx, "kubernetes-cert-manager",
+	helmRelease, err := helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
 			Namespace:       pulumi.String(locals.Namespace),
@@ -225,7 +225,7 @@ func createClusterIssuerForDomain(
 	// create the ClusterIssuer for this domain
 	_, err := apiextensionsv1.NewCustomResource(ctx, issuerName,
 		&apiextensionsv1.CustomResourceArgs{
-			ApiVersion: pulumi.String("kubernetes-cert-manager.io/v1"),
+			ApiVersion: pulumi.String("cert-manager.io/v1"),
 			Kind:       pulumi.String("ClusterIssuer"),
 			Metadata: &metav1.ObjectMetaArgs{
 				Name: pulumi.String(issuerName),
