@@ -12,10 +12,10 @@ import (
 //  1. coordination field (new API)
 //  2. zookeeper field (deprecated, backward compat)
 //  3. default (auto-managed ClickHouse Keeper)
-func buildCoordinationConfig(spec *kubernetesclickhousev1.KubernetesClickHouseSpec) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
+func buildCoordinationConfig(spec *kubernetesclickhousev1.KubernetesClickHouseSpec, keeperServiceName string) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
 	// Priority: coordination field takes precedence over deprecated zookeeper field
 	if spec.Coordination != nil {
-		return buildCoordinationFromNewField(spec.Coordination)
+		return buildCoordinationFromNewField(spec.Coordination, keeperServiceName)
 	}
 
 	// Backward compatibility: fall back to deprecated zookeeper field
@@ -26,12 +26,12 @@ func buildCoordinationConfig(spec *kubernetesclickhousev1.KubernetesClickHouseSp
 	// Default: auto-managed ClickHouse Keeper with single replica
 	// Note: ClickHouse Keeper must be deployed separately via ClickHouseKeeperInstallation
 	// This references the Keeper service that should exist
-	return buildDefaultKeeperReference()
+	return buildDefaultKeeperReference(keeperServiceName)
 }
 
 // buildCoordinationFromNewField handles the new coordination configuration
 // Routes to appropriate builder based on coordination type
-func buildCoordinationFromNewField(coordination *kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
+func buildCoordinationFromNewField(coordination *kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig, keeperServiceName string) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
 	coordinationType := coordination.Type
 
 	// Default unspecified to keeper
@@ -41,15 +41,15 @@ func buildCoordinationFromNewField(coordination *kubernetesclickhousev1.Kubernet
 
 	switch coordinationType {
 	case kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig_keeper:
-		return buildAutoManagedKeeperReference(coordination)
+		return buildAutoManagedKeeperReference(coordination, keeperServiceName)
 
 	case kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig_external_keeper:
-		return buildExternalKeeperReference(coordination)
+		return buildExternalKeeperReference(coordination, keeperServiceName)
 
 	case kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig_external_zookeeper:
-		return buildExternalZookeeperReference(coordination)
+		return buildExternalZookeeperReference(coordination, keeperServiceName)
 	}
 
 	// Fallback to default
-	return buildDefaultKeeperReference()
+	return buildDefaultKeeperReference(keeperServiceName)
 }

@@ -39,6 +39,10 @@ locals {
   neo4j_helm_chart_repo    = "https://helm.neo4j.com/neo4j"
   neo4j_helm_chart_version = "2025.03.0"
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # The Neo4j Helm chart creates a secret named "<release>-auth" for the password
+  password_secret_name = "${var.metadata.name}-auth"
+
   # Service name created by the Helm chart (follows Neo4j chart naming pattern)
   service_name = "${var.metadata.name}-neo4j"
 

@@ -30,6 +30,17 @@ type Locals struct {
 	ImagePullSecretData          map[string]string
 	Labels                       map[string]string
 	SelectorLabels               map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	EnvSecretName                  string
+	ImagePullSecretName            string
+	IngressCertificateName         string
+	ExternalGatewayName            string
+	InternalGatewayName            string
+	HttpExternalRedirectRouteName  string
+	HttpsExternalRouteName         string
+	HttpInternalRedirectRouteName  string
+	HttpsInternalRouteName         string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.KubernetesDeploymentStackInput) (*Locals, error) {
@@ -70,6 +81,19 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.Ku
 
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "deploy-my-app")
+	locals.EnvSecretName = fmt.Sprintf("%s-env-secrets", target.Metadata.Name)
+	locals.ImagePullSecretName = fmt.Sprintf("%s-image-pull", target.Metadata.Name)
+	locals.IngressCertificateName = fmt.Sprintf("%s-ingress-cert", target.Metadata.Name)
+	locals.ExternalGatewayName = fmt.Sprintf("%s-external", target.Metadata.Name)
+	locals.InternalGatewayName = fmt.Sprintf("%s-internal", target.Metadata.Name)
+	locals.HttpExternalRedirectRouteName = fmt.Sprintf("%s-http-external-redirect", target.Metadata.Name)
+	locals.HttpsExternalRouteName = fmt.Sprintf("%s-https-external", target.Metadata.Name)
+	locals.HttpInternalRedirectRouteName = fmt.Sprintf("%s-http-internal-redirect", target.Metadata.Name)
+	locals.HttpsInternalRouteName = fmt.Sprintf("%s-https-internal", target.Metadata.Name)
 
 	// Priority 1: StackInput (used by Planton Cloud - takes precedence)
 	// If present, use it and don't check the label at all

@@ -28,10 +28,10 @@ func frontendIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	_, err := kubernetescorev1.NewService(ctx,
-		"frontend-external-lb",
+		locals.FrontendGrpcLbServiceName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String("frontend-external-lb"),
+				Name:      pulumi.String(locals.FrontendGrpcLbServiceName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{

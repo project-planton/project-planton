@@ -1,5 +1,6 @@
 # Create a certificate using cert-manager (requires cert-manager CRDs).
 # Only create it if ingress is enabled.
+# Uses computed name from locals to avoid conflicts when multiple instances share a namespace.
 resource "kubernetes_manifest" "ingress_certificate" {
   count = local.ingress_is_enabled ? 1 : 0
 
@@ -7,7 +8,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
     apiVersion = "cert-manager.io/v1"
     kind       = "Certificate"
     metadata = {
-      name      = local.resource_id
+      name      = local.ingress_certificate_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -24,6 +25,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
 
 # Create a Gateway for external ingress (requires Gateway API CRDs).
 # Only create it if ingress is enabled.
+# Uses computed name from locals to avoid conflicts when multiple instances share a namespace.
 resource "kubernetes_manifest" "gateway" {
   count = local.ingress_is_enabled ? 1 : 0
 
@@ -31,7 +33,7 @@ resource "kubernetes_manifest" "gateway" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "Gateway"
     metadata = {
-      name      = "${local.resource_id}-external"
+      name      = local.ingress_gateway_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -85,6 +87,7 @@ resource "kubernetes_manifest" "gateway" {
 
 # Create an HTTPRoute that redirects HTTP to HTTPS for the external hostname.
 # Only create it if ingress is enabled.
+# Uses computed name from locals to avoid conflicts when multiple instances share a namespace.
 resource "kubernetes_manifest" "http_route_external_redirect" {
   count = local.ingress_is_enabled ? 1 : 0
 
@@ -92,7 +95,7 @@ resource "kubernetes_manifest" "http_route_external_redirect" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "http-external-redirect"
+      name      = local.ingress_http_redirect_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -102,7 +105,7 @@ resource "kubernetes_manifest" "http_route_external_redirect" {
       ]
       parentRefs = [
         {
-          name        = "${local.resource_id}-external"
+          name        = local.ingress_gateway_name
           namespace   = "istio-ingress"
           sectionName = "http-external"
         }
@@ -130,6 +133,7 @@ resource "kubernetes_manifest" "http_route_external_redirect" {
 
 # Create an HTTPS route for the external hostname to route traffic to the OpenFGA service.
 # Only create it if ingress is enabled.
+# Uses computed name from locals to avoid conflicts when multiple instances share a namespace.
 resource "kubernetes_manifest" "http_route_https_external" {
   count = local.ingress_is_enabled ? 1 : 0
 
@@ -137,7 +141,7 @@ resource "kubernetes_manifest" "http_route_https_external" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "https-external"
+      name      = local.ingress_https_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -147,7 +151,7 @@ resource "kubernetes_manifest" "http_route_https_external" {
       ]
       parentRefs = [
         {
-          name        = "${local.resource_id}-external"
+          name        = local.ingress_gateway_name
           namespace   = "istio-ingress"
           sectionName = "https-external"
         }

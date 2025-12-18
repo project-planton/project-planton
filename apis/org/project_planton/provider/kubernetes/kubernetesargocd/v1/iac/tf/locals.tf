@@ -78,7 +78,9 @@ locals {
 
   # Certificate configuration for ingress
   ingress_cert_cluster_issuer_name = local.ingress_dns_domain
-  ingress_cert_secret_name         = local.resource_id
+  # Computed TLS secret name to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  ingress_cert_secret_name         = "${var.metadata.name}-tls"
 
   # Hostnames list for certificate
   ingress_hostnames = compact([

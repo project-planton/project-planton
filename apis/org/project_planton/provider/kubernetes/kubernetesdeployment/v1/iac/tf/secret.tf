@@ -1,5 +1,6 @@
 ##############################################
 # Create a Kubernetes Secret instead of ExternalSecret
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 ##############################################
 resource "kubernetes_secret" "this" {
   count = (
@@ -8,7 +9,7 @@ resource "kubernetes_secret" "this" {
   ) ? 1 : 0
 
   metadata {
-    name      = var.spec.version
+    name      = local.env_secret_name
     namespace = local.namespace
     labels    = local.final_labels
   }

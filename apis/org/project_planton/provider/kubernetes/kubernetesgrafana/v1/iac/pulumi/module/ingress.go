@@ -1,8 +1,6 @@
 package module
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	kubernetesnetworkingv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/networking/v1"
@@ -28,7 +26,7 @@ func ingress(ctx *pulumi.Context,
 	// Extract internal hostname without https:// prefix
 	internalHost := ""
 	if locals.IngressInternalHostname != "" {
-		internalHost = fmt.Sprintf("internal-%s", locals.KubernetesGrafana.Spec.Ingress.Hostname)
+		internalHost = "internal-" + locals.KubernetesGrafana.Spec.Ingress.Hostname
 	}
 
 	pathType := "Prefix"
@@ -36,10 +34,10 @@ func ingress(ctx *pulumi.Context,
 	// Create external ingress if hostname is provided
 	if externalHost != "" {
 		_, err := kubernetesnetworkingv1.NewIngress(ctx,
-			fmt.Sprintf("%s-external", locals.KubernetesGrafana.Metadata.Name),
+			locals.ExternalIngressName,
 			&kubernetesnetworkingv1.IngressArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name:      pulumi.String(fmt.Sprintf("%s-external", locals.KubernetesGrafana.Metadata.Name)),
+					Name:      pulumi.String(locals.ExternalIngressName),
 					Namespace: pulumi.String(locals.Namespace),
 					Annotations: pulumi.StringMap{
 						"kubernetes.io/ingress.class": pulumi.String("nginx"),
@@ -77,10 +75,10 @@ func ingress(ctx *pulumi.Context,
 	// Create internal ingress if hostname is provided
 	if internalHost != "" {
 		_, err := kubernetesnetworkingv1.NewIngress(ctx,
-			fmt.Sprintf("%s-internal", locals.KubernetesGrafana.Metadata.Name),
+			locals.InternalIngressName,
 			&kubernetesnetworkingv1.IngressArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name:      pulumi.String(fmt.Sprintf("%s-internal", locals.KubernetesGrafana.Metadata.Name)),
+					Name:      pulumi.String(locals.InternalIngressName),
 					Namespace: pulumi.String(locals.Namespace),
 					Annotations: pulumi.StringMap{
 						"kubernetes.io/ingress.class": pulumi.String("nginx-internal"),

@@ -77,14 +77,14 @@ resource "kubernetes_deployment" "this" {
             }
           }
 
-          # Add env variables from secrets (referenced by var.spec.version)
+          # Add env variables from secrets (using computed secret name)
           dynamic "env" {
             for_each = try(var.spec.container.app.env.secrets, {})
             content {
               name = env.key
               value_from {
                 secret_key_ref {
-                  name = var.spec.version
+                  name = local.env_secret_name
                   key  = env.key
                 }
               }

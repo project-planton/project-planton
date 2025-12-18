@@ -12,10 +12,10 @@ func loadBalancerIngress(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource) error {
 
 	_, err := kubernetescorev1.NewService(ctx,
-		"ingress-external-lb",
+		locals.ExternalLbServiceName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmeta.ObjectMetaArgs{
-				Name:      pulumi.String("ingress-external-lb"),
+				Name:      pulumi.String(locals.ExternalLbServiceName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{

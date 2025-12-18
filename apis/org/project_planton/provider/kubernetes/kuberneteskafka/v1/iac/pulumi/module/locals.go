@@ -26,6 +26,18 @@ type Locals struct {
 	BootstrapKubeServiceFqdn         string
 	BootstrapKubeServiceName         string
 
+	// Prefixed resource names to avoid conflicts when multiple Kafka instances share a namespace
+	KafkaClusterName                     string
+	KafkaIngressCertName                 string
+	KafkaIngressCertSecretName           string
+	AdminUsername                        string
+	AdminPasswordSecretName              string
+	SchemaRegistryDeploymentName         string
+	SchemaRegistryKubeServiceName        string
+	KowlConfigMapName                    string
+	KowlDeploymentName                   string
+	KowlKubeServiceName                  string
+
 	// schema registry
 	IngressSchemaRegistryCertSecretName   string
 	IngressExternalSchemaRegistryHostname string
@@ -74,11 +86,23 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
-	ctx.Export(OpUsername, pulumi.String(vars.AdminUsername))
-	ctx.Export(OpPasswordSecretName, pulumi.String(vars.SaslPasswordSecretName))
+	// Prefixed resource names to avoid conflicts when multiple Kafka instances share a namespace
+	locals.KafkaClusterName = target.Metadata.Name
+	locals.KafkaIngressCertName = fmt.Sprintf("%s-kafka-ingress", target.Metadata.Name)
+	locals.KafkaIngressCertSecretName = fmt.Sprintf("cert-%s-kafka-ingress", target.Metadata.Name)
+	locals.AdminUsername = fmt.Sprintf("%s-admin", target.Metadata.Name)
+	locals.AdminPasswordSecretName = fmt.Sprintf("%s-admin", target.Metadata.Name)
+	locals.SchemaRegistryDeploymentName = fmt.Sprintf("%s-schema-registry", target.Metadata.Name)
+	locals.SchemaRegistryKubeServiceName = fmt.Sprintf("%s-sr", target.Metadata.Name)
+	locals.KowlConfigMapName = fmt.Sprintf("%s-kowl", target.Metadata.Name)
+	locals.KowlDeploymentName = fmt.Sprintf("%s-kowl", target.Metadata.Name)
+	locals.KowlKubeServiceName = fmt.Sprintf("%s-kowl", target.Metadata.Name)
+
+	ctx.Export(OpUsername, pulumi.String(locals.AdminUsername))
+	ctx.Export(OpPasswordSecretName, pulumi.String(locals.AdminPasswordSecretName))
 	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.SaslPasswordKeyInSecret))
 
-	locals.BootstrapKubeServiceName = fmt.Sprintf("%s-kafka-bootstrap", locals.Namespace)
+	locals.BootstrapKubeServiceName = fmt.Sprintf("%s-kafka-bootstrap", target.Metadata.Name)
 
 	locals.BootstrapKubeServiceFqdn = fmt.Sprintf("%s.%s.svc", locals.BootstrapKubeServiceName, locals.Namespace)
 
@@ -86,7 +110,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 	if locals.KubernetesKafka.Spec.SchemaRegistryContainer != nil &&
 		locals.KubernetesKafka.Spec.SchemaRegistryContainer.IsEnabled {
 
-		locals.IngressSchemaRegistryCertSecretName = fmt.Sprintf("cert-%s-schema-registry", locals.Namespace)
+		locals.IngressSchemaRegistryCertSecretName = fmt.Sprintf("cert-%s-schema-registry", target.Metadata.Name)
 
 		locals.IngressExternalSchemaRegistryHostname = fmt.Sprintf("schema-registry-%s", target.Spec.Ingress.Hostname)
 
@@ -99,19 +123,19 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskafkav1.Kuberne
 			locals.IngressExternalSchemaRegistryHostname,
 			locals.IngressInternalSchemaRegistryHostname,
 		}
-		locals.SchemaRegistryKubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", vars.SchemaRegistryKubeServiceName, locals.Namespace)
+		locals.SchemaRegistryKubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.SchemaRegistryKubeServiceName, locals.Namespace)
 	}
 
 	// kowl related locals data
 	if locals.KubernetesKafka.Spec.IsDeployKafkaUi {
 
-		locals.IngressKowlCertSecretName = fmt.Sprintf("cert-%s-kowl", locals.Namespace)
+		locals.IngressKowlCertSecretName = fmt.Sprintf("cert-%s-kowl", target.Metadata.Name)
 
 		locals.IngressExternalKowlHostname = fmt.Sprintf("ui-%s", target.Spec.Ingress.Hostname)
 
 		ctx.Export(OpKafkaUiExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalKowlHostname))
 
-		locals.KowlKubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", vars.KowlKubeServiceName, locals.Namespace)
+		locals.KowlKubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KowlKubeServiceName, locals.Namespace)
 	}
 
 	if target.Spec.Ingress == nil ||

@@ -37,8 +37,21 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Use resource_id as the namespace name
-  namespace = local.resource_id
+  # Get namespace from spec
+  namespace = var.spec.namespace
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "deploy-my-app")
+  env_secret_name                   = "${var.metadata.name}-env-secrets"
+  image_pull_secret_name            = "${var.metadata.name}-image-pull"
+  ingress_certificate_name          = "${var.metadata.name}-ingress-cert"
+  external_gateway_name             = "${var.metadata.name}-external"
+  internal_gateway_name             = "${var.metadata.name}-internal"
+  http_external_redirect_route_name = "${var.metadata.name}-http-external-redirect"
+  https_external_route_name         = "${var.metadata.name}-https-external"
+  http_internal_redirect_route_name = "${var.metadata.name}-http-internal-redirect"
+  https_internal_route_name         = "${var.metadata.name}-https-internal"
 
   # The microservice version is used as the Service name (per the code logic).
   kube_service_name = var.spec.version

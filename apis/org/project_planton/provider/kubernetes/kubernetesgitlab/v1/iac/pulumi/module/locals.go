@@ -15,6 +15,12 @@ type Locals struct {
 	ServiceFQDN     string
 	PortForwardCmd  string
 	IngressHostname string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "gitlab-prod")
+	IngressName   string
+	TlsSecretName string
 }
 
 // initializeLocals creates and initializes local values from the stack input
@@ -38,6 +44,11 @@ func initializeLocals(stackInput *kubernetesgitlabv1.KubernetesGitlabStackInput)
 	if target.Spec.Ingress != nil && target.Spec.Ingress.Enabled && target.Spec.Ingress.Hostname != "" {
 		l.IngressHostname = target.Spec.Ingress.Hostname
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	l.IngressName = fmt.Sprintf("%s-ingress", target.Metadata.Name)
+	l.TlsSecretName = fmt.Sprintf("%s-tls", target.Metadata.Name)
 
 	return l
 }

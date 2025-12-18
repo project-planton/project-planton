@@ -11,10 +11,10 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 	//create kubernetes-service of type load-balancer(external)
 	//this load-balancer can be used by postgres clients outside the kubernetes cluster.
 	_, err := kubernetescorev1.NewService(ctx,
-		"ingress-external-lb",
+		locals.ExternalLbServiceName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String("ingress-external-lb"),
+				Name:      pulumi.String(locals.ExternalLbServiceName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 				Annotations: pulumi.StringMap{

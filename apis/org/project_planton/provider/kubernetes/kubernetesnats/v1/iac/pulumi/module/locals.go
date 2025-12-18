@@ -20,6 +20,12 @@ type Locals struct {
 	ClientURLExternal string
 	TlsSecretName     string
 	TlsSecretKey      string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	AuthSecretName        string
+	NoAuthUserSecretName  string
+	ExternalLbServiceName string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -53,6 +59,13 @@ func initializeLocals(ctx *pulumi.Context,
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "nats-my-bus")
+	locals.AuthSecretName = fmt.Sprintf("%s-auth", target.Metadata.Name)
+	locals.NoAuthUserSecretName = fmt.Sprintf("%s-no-auth-user", target.Metadata.Name)
+	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
+
 	// ------------------------- internal client URL ---------------------------
 	// Helm chart installs a Service named "<name>-nats".  Port 4222 is fixed.
 	serviceName := fmt.Sprintf("%s-nats", target.Metadata.Name)
@@ -72,12 +85,12 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// -------------------- auth / token secret outputs ------------------------
 	// Secret names are deterministic so callers / automation can pre-bake RBAC.
-	ctx.Export(OpAuthSecretName, pulumi.String(vars.AdminAuthSecretName))
+	ctx.Export(OpAuthSecretName, pulumi.String(locals.AuthSecretName))
 	ctx.Export(OpAuthSecretKey, pulumi.String(vars.AdminAuthSecretKey))
 
 	// ----------------------- TLS certificate secret --------------------------
 	if target.Spec.TlsEnabled {
-		locals.TlsSecretName = fmt.Sprintf("tls-%s", locals.Namespace)
+		locals.TlsSecretName = fmt.Sprintf("%s-tls", target.Metadata.Name)
 		locals.TlsSecretKey = vars.TlsCertKey
 		ctx.Export(OpTlsSecretName, pulumi.String(locals.TlsSecretName))
 		ctx.Export(OpTlsSecretKey, pulumi.String(locals.TlsSecretKey))

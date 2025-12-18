@@ -2,7 +2,8 @@ resource "kubernetes_service_v1" "ingress_external_lb" {
   count = local.ingress_is_enabled ? 1 : 0
 
   metadata {
-    name      = "ingress-external-lb"
+    # Use computed name to avoid conflicts when multiple instances share a namespace
+    name      = local.external_lb_service_name
     namespace = local.namespace
     labels    = local.final_labels
     annotations = {

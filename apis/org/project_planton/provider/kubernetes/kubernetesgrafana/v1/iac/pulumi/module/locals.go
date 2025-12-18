@@ -20,6 +20,11 @@ type Locals struct {
 	KubernetesGrafana        *kubernetesgrafanav1.KubernetesGrafana
 	GrafanaPodSelectorLabels map[string]string
 	Labels                   map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	ExternalIngressName string
+	InternalIngressName string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesgrafanav1.KubernetesGrafanaStackInput) *Locals {
@@ -56,6 +61,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesgrafanav1.Kuber
 		"app.kubernetes.io/name":     "grafana",
 		"app.kubernetes.io/instance": target.Metadata.Name,
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.ExternalIngressName = fmt.Sprintf("%s-external", target.Metadata.Name)
+	locals.InternalIngressName = fmt.Sprintf("%s-internal", target.Metadata.Name)
 
 	locals.KubeServiceName = fmt.Sprintf("%s-grafana", target.Metadata.Name)
 

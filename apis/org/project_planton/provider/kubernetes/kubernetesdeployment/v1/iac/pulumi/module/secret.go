@@ -24,10 +24,10 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 		}
 	}
 
-	// create a standard kubernetes secret with name "main"
+	// create a standard kubernetes secret with computed name to avoid conflicts
 	secretArgs := &kubernetescorev1.SecretArgs{
 		Metadata: &metav1.ObjectMetaArgs{
-			Name:      pulumi.String("main"),
+			Name:      pulumi.String(locals.EnvSecretName),
 			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		},
@@ -36,7 +36,7 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 	}
 
 	_, err := kubernetescorev1.NewSecret(ctx,
-		"main",
+		locals.EnvSecretName,
 		secretArgs,
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {

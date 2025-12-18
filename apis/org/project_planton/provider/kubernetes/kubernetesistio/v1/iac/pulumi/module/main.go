@@ -14,6 +14,9 @@ import (
 // Kubernetes cluster.  It honours spec.container.resources for the Istiod
 // deployment, allowing callers to tune CPU / memory without touching Helm YAML.
 func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackInput) error {
+	// Initialize locals with computed values
+	locals := initializeLocals(ctx, in)
+
 	// Kubernetes provider from cluster‑credential
 	kubernetesProviderConfig, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, in.ProviderConfig, "kubernetes")
@@ -27,13 +30,6 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 	// (No release_channel field yet – stick to default stable.)
 	chartVersion := vars.DefaultStableVersion
 
-	// ---- determine namespace ----
-	// Extract namespace value from StringValueOrRef
-	namespace := spec.Namespace.GetValue()
-	if namespace == "" {
-		namespace = vars.SystemNamespace // fallback to "istio-system"
-	}
-
 	// ---- conditionally create namespaces ----
 	var sysNS *corev1.Namespace
 	var gwNS *corev1.Namespace
@@ -42,10 +38,10 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 
 	if spec.CreateNamespace {
 		// Create istio-system namespace
-		sysNS, err = corev1.NewNamespace(ctx, vars.SystemNamespace,
+		sysNS, err = corev1.NewNamespace(ctx, locals.SystemNamespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(vars.SystemNamespace),
+					Name: pulumi.String(locals.SystemNamespace),
 				},
 			},
 			pulumi.Provider(kubernetesProviderConfig))
@@ -55,10 +51,10 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 		sysNSName = sysNS.Metadata.Name().Elem()
 
 		// Create istio-ingress namespace
-		gwNS, err = corev1.NewNamespace(ctx, vars.GatewayNamespace,
+		gwNS, err = corev1.NewNamespace(ctx, locals.GatewayNamespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(vars.GatewayNamespace),
+					Name: pulumi.String(locals.GatewayNamespace),
 				},
 			},
 			pulumi.Provider(kubernetesProviderConfig))
@@ -68,17 +64,18 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 		gwNSName = gwNS.Metadata.Name().Elem()
 	} else {
 		// Use existing namespaces - convert strings to StringOutput
-		sysNSName = pulumi.String(vars.SystemNamespace).ToStringOutput()
-		gwNSName = pulumi.String(vars.GatewayNamespace).ToStringOutput()
+		sysNSName = pulumi.String(locals.SystemNamespace).ToStringOutput()
+		gwNSName = pulumi.String(locals.GatewayNamespace).ToStringOutput()
 	}
 
 	// convenience for repeated repo opts
 	repo := helm.RepositoryOptsArgs{Repo: pulumi.String(vars.HelmRepo)}
 
 	// ---- istio/base ----
-	_, err = helm.NewRelease(ctx, "istio-base",
+	// Helm release name uses {metadata.name}-base to avoid conflicts when multiple instances share a namespace
+	_, err = helm.NewRelease(ctx, locals.BaseReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.BaseChart),
+			Name:            pulumi.String(locals.BaseReleaseName),
 			Namespace:       sysNSName,
 			Chart:           pulumi.String(vars.BaseChart),
 			Version:         pulumi.String(chartVersion),
@@ -114,9 +111,10 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 		}
 	}
 
-	_, err = helm.NewRelease(ctx, "istiod",
+	// Helm release name uses {metadata.name}-istiod to avoid conflicts when multiple instances share a namespace
+	_, err = helm.NewRelease(ctx, locals.IstiodReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.IstiodChart),
+			Name:            pulumi.String(locals.IstiodReleaseName),
 			Namespace:       sysNSName,
 			Chart:           pulumi.String(vars.IstiodChart),
 			Version:         pulumi.String(chartVersion),
@@ -134,9 +132,10 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 	}
 
 	// ---- ingress‑gateway ----
-	_, err = helm.NewRelease(ctx, "istio-gateway",
+	// Helm release name uses {metadata.name}-gateway to avoid conflicts when multiple instances share a namespace
+	_, err = helm.NewRelease(ctx, locals.GatewayReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.GatewayChart),
+			Name:            pulumi.String(locals.GatewayReleaseName),
 			Namespace:       gwNSName,
 			Chart:           pulumi.String(vars.GatewayChart),
 			Version:         pulumi.String(chartVersion),
@@ -159,10 +158,10 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 
 	// ---- stack outputs ----
 	ctx.Export(OpNamespace, sysNSName)
-	ctx.Export(OpService, pulumi.String("istiod"))
-	ctx.Export(OpPortForwardCommand, pulumi.Sprintf("kubectl port-forward -n %s svc/istiod 15014:15014", sysNSName))
-	ctx.Export(OpKubeEndpoint, pulumi.Sprintf("istiod.%s.svc.cluster.local:15012", sysNSName))
-	ctx.Export(OpIngressEndpoint, pulumi.Sprintf("istio-gateway.%s.svc.cluster.local:80", gwNSName))
+	ctx.Export(OpService, pulumi.String(locals.IstiodReleaseName))
+	ctx.Export(OpPortForwardCommand, pulumi.Sprintf("kubectl port-forward -n %s svc/%s 15014:15014", sysNSName, locals.IstiodReleaseName))
+	ctx.Export(OpKubeEndpoint, pulumi.Sprintf("%s.%s.svc.cluster.local:15012", locals.IstiodReleaseName, sysNSName))
+	ctx.Export(OpIngressEndpoint, pulumi.Sprintf("%s.%s.svc.cluster.local:80", locals.GatewayReleaseName, gwNSName))
 
 	return nil
 }

@@ -30,8 +30,16 @@ locals {
   # Namespace from spec.namespace (StringValueOrRef), with fallback to default pattern
   namespace = try(var.spec.namespace.value, "keycloak-${var.metadata.name}")
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "keycloak-my-auth")
+  password_secret_name     = "${var.metadata.name}-password"
+  db_password_secret_name  = "${var.metadata.name}-db-password"
+  external_lb_service_name = "${var.metadata.name}-external-lb"
+
   # Service configuration
-  service_name = "keycloak-${var.metadata.name}"
+  # service_name uses just the metadata.name; Helm chart handles its own suffixes
+  service_name = var.metadata.name
   service_port = 8080
 
   # Ingress configuration

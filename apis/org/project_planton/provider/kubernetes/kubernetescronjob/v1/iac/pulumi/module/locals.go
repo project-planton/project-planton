@@ -1,6 +1,7 @@
 package module
 
 import (
+	"fmt"
 	"strconv"
 
 	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
@@ -15,6 +16,10 @@ type Locals struct {
 	Namespace           string
 	Labels              map[string]string
 	ImagePullSecretData map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	EnvSecretsSecretName   string
+	ImagePullSecretName    string
 }
 
 // initializeLocals configures the Locals struct from the given stack input.
@@ -56,6 +61,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetescronjobv1.Kuber
 			".dockerconfigjson": stackInput.DockerConfigJson,
 		}
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.EnvSecretsSecretName = fmt.Sprintf("%s-env-secrets", target.Metadata.Name)
+	locals.ImagePullSecretName = fmt.Sprintf("%s-image-pull-secret", target.Metadata.Name)
 
 	return locals, nil
 }

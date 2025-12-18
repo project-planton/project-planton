@@ -52,9 +52,10 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 	}
 
 	// deploy the operator via Helm
-	_, err := helm.NewRelease(ctx, "kubernetes-percona-postgres-operator",
+	// Use locals.HelmReleaseName to avoid conflicts when multiple instances share a namespace
+	_, err := helm.NewRelease(ctx, locals.HelmReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
+			Name:            pulumi.String(locals.HelmReleaseName),
 			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(vars.HelmChartVersion),

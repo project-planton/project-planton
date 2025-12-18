@@ -26,6 +26,16 @@ type Locals struct {
 	IngressCertClusterIssuerName         string
 	IngressCertSecretName                string
 	Labels                               map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	IngressCertificateName               string
+	ElasticsearchExternalGatewayName     string
+	ElasticsearchHttpRedirectRouteName   string
+	ElasticsearchHttpsRouteName          string
+	KibanaExternalGatewayName            string
+	KibanaHttpRedirectRouteName          string
+	KibanaHttpsRouteName                 string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteselasticsearchv1.KubernetesElasticsearchStackInput) *Locals {
@@ -128,8 +138,19 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteselasticsearchv1
 		if len(parts) > 1 {
 			locals.IngressCertClusterIssuerName = strings.Join(parts[1:], ".")
 		}
-		locals.IngressCertSecretName = locals.Namespace
+		// Use metadata.name prefix for cert secret to avoid conflicts in shared namespaces
+		locals.IngressCertSecretName = fmt.Sprintf("%s-ingress-cert", target.Metadata.Name)
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.IngressCertificateName = fmt.Sprintf("%s-ingress-cert", target.Metadata.Name)
+	locals.ElasticsearchExternalGatewayName = fmt.Sprintf("%s-es-external-gateway", target.Metadata.Name)
+	locals.ElasticsearchHttpRedirectRouteName = fmt.Sprintf("%s-es-http-redirect", target.Metadata.Name)
+	locals.ElasticsearchHttpsRouteName = fmt.Sprintf("%s-es-https-route", target.Metadata.Name)
+	locals.KibanaExternalGatewayName = fmt.Sprintf("%s-kb-external-gateway", target.Metadata.Name)
+	locals.KibanaHttpRedirectRouteName = fmt.Sprintf("%s-kb-http-redirect", target.Metadata.Name)
+	locals.KibanaHttpsRouteName = fmt.Sprintf("%s-kb-https-route", target.Metadata.Name)
 
 	return locals
 }

@@ -5,9 +5,8 @@ var vars = struct {
 	HelmChartName    string
 	HelmChartRepoUrl string
 	HelmChartVersion string
-	// Secret for external DB password
-	DatabasePasswordSecretKey  string
-	DatabasePasswordSecretName string
+	// Secret key for external DB password (name is computed in locals)
+	DatabasePasswordSecretKey string
 	// Service ports
 	FrontendGrpcPort int
 	FrontendHttpPort int
@@ -27,8 +26,7 @@ var vars = struct {
 	HelmChartRepoUrl: "https://go.temporal.io/helm-charts",
 	HelmChartVersion: "0.62.0",
 
-	DatabasePasswordSecretKey:  "password",
-	DatabasePasswordSecretName: "temporal-db-password",
+	DatabasePasswordSecretKey: "password",
 
 	FrontendGrpcPort: 7233,
 	FrontendHttpPort: 7243,

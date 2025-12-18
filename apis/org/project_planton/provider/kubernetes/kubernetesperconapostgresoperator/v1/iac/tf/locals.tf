@@ -7,6 +7,10 @@ locals {
   # Namespace - use from spec or default to "kubernetes-percona-postgres-operator"
   namespace = var.spec.namespace != "" ? var.spec.namespace : "kubernetes-percona-postgres-operator"
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # The Helm release name uses metadata.name to ensure uniqueness within the namespace
+  helm_release_name = var.metadata.name
+
   # Metadata labels
   labels = merge(
     var.metadata.labels != null ? var.metadata.labels : {},

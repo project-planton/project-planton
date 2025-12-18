@@ -15,6 +15,9 @@ type Locals struct {
 	Namespace                      string
 	Labels                         map[string]string
 	KubernetesPerconaMongoOperator *kubernetesperconamongooperatorv1.KubernetesPerconaMongoOperator
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	HelmReleaseName string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -44,6 +47,10 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name} for the Helm release name
+	locals.HelmReleaseName = target.Metadata.Name
 
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))

@@ -31,8 +31,16 @@ locals {
   # Merge all labels
   labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace is the resource name
-  namespace = var.metadata.name
+  # Get namespace from spec
+  namespace = var.spec.namespace
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "nats-my-bus")
+  auth_secret_name         = "${var.metadata.name}-auth"
+  no_auth_user_secret_name = "${var.metadata.name}-no-auth-user"
+  tls_secret_name          = "${var.metadata.name}-tls"
+  external_lb_service_name = "${var.metadata.name}-external-lb"
 
   # NATS service name (created by Helm chart)
   nats_service_name = "${var.metadata.name}-nats"

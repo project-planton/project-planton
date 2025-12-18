@@ -54,7 +54,7 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 					Name: pulumi.String(secretKey),
 					ValueFrom: &corev1.EnvVarSourceArgs{
 						SecretKeyRef: &corev1.SecretKeySelectorArgs{
-							Name: pulumi.String("main"),
+							Name: pulumi.String(locals.EnvSecretsSecretName),
 							Key:  pulumi.String(secretKey),
 						},
 					},
@@ -98,7 +98,7 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 	if locals.ImagePullSecretData != nil {
 		podSpecArgs.ImagePullSecrets = corev1.LocalObjectReferenceArray{
 			corev1.LocalObjectReferenceArgs{
-				Name: pulumi.String("image-pull-secret"),
+				Name: pulumi.String(locals.ImagePullSecretName),
 			},
 		}
 	}

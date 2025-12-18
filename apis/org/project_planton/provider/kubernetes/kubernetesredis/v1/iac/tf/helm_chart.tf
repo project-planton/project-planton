@@ -55,7 +55,7 @@ resource "helm_release" "redis" {
       }
 
       auth = {
-        existingSecret            = "redis-password"
+        existingSecret            = local.password_secret_name
         existingSecretPasswordKey = "password"
       }
     })

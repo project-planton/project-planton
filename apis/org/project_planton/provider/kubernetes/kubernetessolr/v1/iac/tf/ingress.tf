@@ -7,7 +7,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
       apiVersion = "cert-manager.io/v1"
       kind       = "Certificate"
       metadata = {
-        name      = local.resource_id
+        name      = local.certificate_name
         namespace = local.istio_ingress_namespace
         labels    = local.final_labels
       }
@@ -32,7 +32,7 @@ resource "kubernetes_manifest" "external_gateway" {
       apiVersion = "gateway.networking.k8s.io/v1beta1"
       kind       = "Gateway"
       metadata = {
-        name      = "${local.resource_id}-external"
+        name      = local.external_gateway_name
         namespace = local.istio_ingress_namespace
         labels    = local.final_labels
       }
@@ -95,7 +95,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
       apiVersion = "gateway.networking.k8s.io/v1beta1"
       kind       = "HTTPRoute"
       metadata = {
-        name      = "http-external-redirect"
+        name      = local.http_external_redirect_route_name
         namespace = local.namespace
         labels    = local.final_labels
       }
@@ -103,7 +103,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
         hostnames = [local.ingress_external_hostname]
         parentRefs = [
           {
-            name        = "${local.resource_id}-external"
+            name        = local.external_gateway_name
             namespace   = local.istio_ingress_namespace
             sectionName = "http-external"
           }
@@ -139,7 +139,7 @@ resource "kubernetes_manifest" "https_external_route" {
       apiVersion = "gateway.networking.k8s.io/v1beta1"
       kind       = "HTTPRoute"
       metadata = {
-        name      = "https-external"
+        name      = local.https_external_route_name
         namespace = local.namespace
         labels    = local.final_labels
       }
@@ -147,7 +147,7 @@ resource "kubernetes_manifest" "https_external_route" {
         hostnames = [local.ingress_external_hostname]
         parentRefs = [
           {
-            name        = "${local.resource_id}-external"
+            name        = local.external_gateway_name
             namespace   = local.istio_ingress_namespace
             sectionName = "https-external"
           }

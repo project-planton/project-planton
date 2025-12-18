@@ -22,10 +22,10 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals,
 
 	// Create TLS certificate for Harbor Core/Portal
 	addedCertificate, err := certmanagerv1.NewCertificate(ctx,
-		"ingress-certificate",
+		locals.IngressCertificateName,
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.Namespace),
+				Name:      pulumi.String(locals.IngressCertificateName),
 				Namespace: pulumi.String(variables.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -44,10 +44,10 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals,
 
 	// Create Gateway for external Harbor Core/Portal access
 	createdGateway, err := gatewayv1.NewGateway(ctx,
-		"external",
+		locals.IngressGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-external", locals.Namespace),
+				Name:      pulumi.String(locals.IngressGatewayName),
 				Namespace: pulumi.String(variables.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -88,10 +88,10 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals,
 
 	// Create HTTPRoute for HTTPS traffic to Harbor Core service
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-external",
+		locals.IngressHttpRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-external"),
+				Name:      pulumi.String(locals.IngressHttpRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -99,7 +99,7 @@ func createCoreIngress(ctx *pulumi.Context, locals *Locals,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+						Name:        pulumi.String(locals.IngressGatewayName),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},

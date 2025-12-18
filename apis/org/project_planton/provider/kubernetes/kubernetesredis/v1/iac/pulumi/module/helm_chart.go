@@ -45,10 +45,10 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 						"size":    pulumi.String(locals.KubernetesRedis.Spec.Container.DiskSize),
 					},
 				},
-				"auth": pulumi.Map{
-					"existingSecret":            pulumi.String(vars.RedisPasswordSecretName),
-					"existingSecretPasswordKey": pulumi.String(vars.RedisPasswordSecretKey),
-				},
+			"auth": pulumi.Map{
+				"existingSecret":            pulumi.String(locals.PasswordSecretName),
+				"existingSecretPasswordKey": pulumi.String(vars.RedisPasswordSecretKey),
+			},
 			},
 			// if you need to add the repository, you can specify `repo url`:
 			FetchArgs: helmv3.FetchArgs{

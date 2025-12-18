@@ -67,9 +67,12 @@ resource "kubernetes_namespace" "istio_ingress" {
 # from the official Istio Helm repository.
 #
 # This must be installed before istiod.
+#
+# Helm release name uses {metadata.name}-base to
+# avoid conflicts when multiple instances share a namespace.
 ##############################################
 resource "helm_release" "istio_base" {
-  name       = local.base_chart_name
+  name       = local.base_release_name
   namespace  = local.system_namespace
   repository = local.helm_repo
   chart      = local.base_chart_name
@@ -92,9 +95,12 @@ resource "helm_release" "istio_base" {
 #  - Galley (configuration validation)
 #
 # Resource limits are configured from the spec.
+#
+# Helm release name uses {metadata.name}-istiod to
+# avoid conflicts when multiple instances share a namespace.
 ##############################################
 resource "helm_release" "istiod" {
-  name       = local.istiod_chart_name
+  name       = local.istiod_release_name
   namespace  = local.system_namespace
   repository = local.helm_repo
   chart      = local.istiod_chart_name
@@ -138,9 +144,12 @@ resource "helm_release" "istiod" {
 #
 # Configured as ClusterIP by default (can be
 # exposed via LoadBalancer or other ingress).
+#
+# Helm release name uses {metadata.name}-gateway to
+# avoid conflicts when multiple instances share a namespace.
 ##############################################
 resource "helm_release" "istio_gateway" {
-  name       = local.gateway_chart_name
+  name       = local.gateway_release_name
   namespace  = local.gateway_namespace
   repository = local.helm_repo
   chart      = local.gateway_chart_name

@@ -8,10 +8,10 @@ import (
 
 // buildExternalZookeeperReference creates configuration for external ZooKeeper
 // Connects to existing ZooKeeper infrastructure (legacy systems, shared with Kafka, etc.)
-func buildExternalZookeeperReference(coordination *kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
+func buildExternalZookeeperReference(coordination *kubernetesclickhousev1.KubernetesClickHouseCoordinationConfig, keeperServiceName string) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
 	if coordination.ExternalConfig == nil || len(coordination.ExternalConfig.Nodes) == 0 {
 		// No external nodes specified, fallback to default Keeper
-		return buildDefaultKeeperReference()
+		return buildDefaultKeeperReference(keeperServiceName)
 	}
 
 	// Build node references from external config

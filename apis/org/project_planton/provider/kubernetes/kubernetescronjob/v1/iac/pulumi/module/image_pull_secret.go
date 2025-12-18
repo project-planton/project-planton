@@ -7,14 +7,14 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// createImagePullSecret creates a Secret named "image-pull-secret" in the target namespace,
+// createImagePullSecret creates an image pull Secret in the target namespace,
 // using the Docker credentials from locals.ImagePullSecretData.
 func createImagePullSecret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	_, err := corev1.NewSecret(ctx,
-		"image-pull-secret",
+		locals.ImagePullSecretName,
 		&corev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String("image-pull-secret"),
+				Name:      pulumi.String(locals.ImagePullSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

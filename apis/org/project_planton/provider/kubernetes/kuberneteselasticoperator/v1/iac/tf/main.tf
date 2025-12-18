@@ -58,9 +58,12 @@ resource "kubernetes_namespace" "elastic_system" {
 #
 # The namespace reference depends on whether we created
 # it or are using an existing one.
+#
+# Uses computed helm_release_name to avoid conflicts
+# when multiple instances share a namespace.
 ##############################################
 resource "helm_release" "eck_operator" {
-  name       = local.helm_chart_name
+  name       = local.helm_release_name
   repository = local.helm_chart_repo
   chart      = local.helm_chart_name
   version    = local.helm_chart_version

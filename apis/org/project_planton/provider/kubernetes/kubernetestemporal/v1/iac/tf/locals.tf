@@ -97,7 +97,10 @@ locals {
   helm_chart_name       = "temporal"
   helm_chart_repository = "https://go.temporal.io/helm-charts"
   helm_chart_version    = var.spec.version
-  database_secret_name  = "temporal-db-password"
-  database_secret_key   = "password"
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  database_secret_name = "${var.metadata.name}-db-password"
+  database_secret_key  = "password"
 }
 

@@ -6,6 +6,7 @@
 ##############################################
 
 # Create a certificate using cert-manager
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "ingress_certificate" {
   # Only create if ingress is enabled
   count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
@@ -14,7 +15,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
     apiVersion = "cert-manager.io/v1"
     kind       = "Certificate"
     metadata = {
-      name      = local.resource_id
+      name      = local.ingress_certificate_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -26,7 +27,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
         ]
         : hostname if hostname != null
       ]
-      secretName = local.ingress_cert_secret_name
+      secretName = local.ingress_certificate_name
       issuerRef = {
         kind = "ClusterIssuer"
         name = local.ingress_cert_cluster_issuer_name
@@ -40,6 +41,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
 }
 
 # Create external Gateway
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "gateway_external" {
   count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
 
@@ -47,7 +49,7 @@ resource "kubernetes_manifest" "gateway_external" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "Gateway"
     metadata = {
-      name      = "${local.resource_id}-external"
+      name      = local.external_gateway_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -69,7 +71,7 @@ resource "kubernetes_manifest" "gateway_external" {
             mode = "Terminate"
             certificateRefs = [
               {
-                name = local.ingress_cert_secret_name
+                name = local.ingress_certificate_name
               }
             ]
           }
@@ -100,6 +102,7 @@ resource "kubernetes_manifest" "gateway_external" {
 }
 
 # Create internal Gateway
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "gateway_internal" {
   count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
 
@@ -107,7 +110,7 @@ resource "kubernetes_manifest" "gateway_internal" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "Gateway"
     metadata = {
-      name      = "${local.resource_id}-internal"
+      name      = local.internal_gateway_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -129,7 +132,7 @@ resource "kubernetes_manifest" "gateway_internal" {
             mode = "Terminate"
             certificateRefs = [
               {
-                name = local.ingress_cert_secret_name
+                name = local.ingress_certificate_name
               }
             ]
           }
@@ -184,6 +187,7 @@ locals {
 # External Host
 # -------------
 # 1) HTTP -> HTTPS redirect
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "http_external_redirect" {
   count = local.ingress_is_enabled && local.ingress_external_hostname != null ? 1 : 0
 
@@ -191,7 +195,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "http-external-redirect"
+      name      = local.http_external_redirect_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -199,7 +203,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
       hostnames = [local.ingress_external_hostname]
       parentRefs = [
         {
-          name        = "${local.resource_id}-external"
+          name        = local.external_gateway_name
           namespace   = "istio-ingress"
           sectionName = "http-external"
         }
@@ -226,6 +230,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
 }
 
 # 2) HTTPS route
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "https_external" {
   count = local.ingress_is_enabled && local.ingress_external_hostname != null ? 1 : 0
 
@@ -233,7 +238,7 @@ resource "kubernetes_manifest" "https_external" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "https-external"
+      name      = local.https_external_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -241,7 +246,7 @@ resource "kubernetes_manifest" "https_external" {
       hostnames = [local.ingress_external_hostname]
       parentRefs = [
         {
-          name        = "${local.resource_id}-external"
+          name        = local.external_gateway_name
           namespace   = "istio-ingress"
           sectionName = "https-external"
         }
@@ -277,6 +282,7 @@ resource "kubernetes_manifest" "https_external" {
 # Internal Host
 # -------------
 # 3) HTTP -> HTTPS redirect
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "http_internal_redirect" {
   count = local.ingress_is_enabled && local.ingress_internal_hostname != null ? 1 : 0
 
@@ -284,7 +290,7 @@ resource "kubernetes_manifest" "http_internal_redirect" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "http-internal-redirect"
+      name      = local.http_internal_redirect_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -292,7 +298,7 @@ resource "kubernetes_manifest" "http_internal_redirect" {
       hostnames = [local.ingress_internal_hostname]
       parentRefs = [
         {
-          name        = "${local.resource_id}-internal"
+          name        = local.internal_gateway_name
           namespace   = "istio-ingress"
           sectionName = "http-internal"
         }
@@ -319,6 +325,7 @@ resource "kubernetes_manifest" "http_internal_redirect" {
 }
 
 # 4) HTTPS route
+# Uses computed name to avoid conflicts when multiple deployments share a namespace
 resource "kubernetes_manifest" "https_internal" {
   count = local.ingress_is_enabled && local.ingress_internal_hostname != null ? 1 : 0
 
@@ -326,7 +333,7 @@ resource "kubernetes_manifest" "https_internal" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "https-internal"
+      name      = local.https_internal_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -334,7 +341,7 @@ resource "kubernetes_manifest" "https_internal" {
       hostnames = [local.ingress_internal_hostname]
       parentRefs = [
         {
-          name        = "${local.resource_id}-internal"
+          name        = local.internal_gateway_name
           namespace   = "istio-ingress"
           sectionName = "https-internal"
         }

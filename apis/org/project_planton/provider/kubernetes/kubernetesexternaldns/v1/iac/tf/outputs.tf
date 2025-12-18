@@ -29,6 +29,6 @@ output "gke_service_account_email" {
 
 output "cloudflare_secret_name" {
   description = "Kubernetes secret name for Cloudflare API token (Cloudflare only)"
-  value       = local.is_cloudflare ? local.cf_secret_name : null
+  value       = local.is_cloudflare ? local.cloudflare_api_token_secret_name : null
 }
 

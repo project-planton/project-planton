@@ -2,7 +2,7 @@ resource "kubernetes_service" "redis_external_lb" {
   count = var.spec.ingress.enabled && var.spec.ingress.hostname != "" ? 1 : 0
 
   metadata {
-    name      = "ingress-external-lb"
+    name      = local.external_lb_service_name
     namespace = local.namespace
 
     labels = local.final_labels

@@ -12,30 +12,27 @@ locals {
   helm_chart_repo    = "https://charts.jetstack.io"
   helm_chart_version = var.spec.helm_chart_version
 
-  # ServiceAccount name
-  ksa_name = "cert-manager"
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "cert-manager-prod")
+  # ServiceAccount name uses metadata.name for uniqueness
+  ksa_name = var.metadata.name
 
   # Build ServiceAccount annotations for workload identity
   # Multiple providers may configure different annotations
   sa_annotations = merge(
-    # GCP Workload Identity
-    [for provider in var.spec.dns_providers :
-      provider.gcp_cloud_dns != null ? {
-        "iam.gke.io/gcp-service-account" = provider.gcp_cloud_dns.service_account_email
-      } : {}
-    ]...,
-    # AWS IRSA
-    [for provider in var.spec.dns_providers :
-      provider.aws_route53 != null ? {
-        "eks.amazonaws.com/role-arn" = provider.aws_route53.role_arn
-      } : {}
-    ]...,
-    # Azure Managed Identity
-    [for provider in var.spec.dns_providers :
-      provider.azure_dns != null ? {
-        "azure.workload.identity/client-id" = provider.azure_dns.client_id
-      } : {}
-    ]...
+    { for provider in var.spec.dns_providers :
+      "iam.gke.io/gcp-service-account" => provider.gcp_cloud_dns.service_account_email
+      if provider.gcp_cloud_dns != null
+    },
+    { for provider in var.spec.dns_providers :
+      "eks.amazonaws.com/role-arn" => provider.aws_route53.role_arn
+      if provider.aws_route53 != null
+    },
+    { for provider in var.spec.dns_providers :
+      "azure.workload.identity/client-id" => provider.azure_dns.client_id
+      if provider.azure_dns != null
+    }
   )
 
   # Extract Cloudflare providers for secret creation
@@ -48,10 +45,10 @@ locals {
   cluster_issuers = flatten([
     for provider in var.spec.dns_providers : [
       for zone in provider.dns_zones : {
-        domain       = zone
+        domain        = zone
         provider_name = provider.name
-        acme_email   = var.spec.acme.email
-        acme_server  = var.spec.acme.server
+        acme_email    = var.spec.acme.email
+        acme_server   = var.spec.acme.server
 
         # Provider-specific configuration
         gcp_cloud_dns = provider.gcp_cloud_dns
@@ -63,23 +60,33 @@ locals {
   ])
 
   # Outputs for stack_outputs
-  release_name = local.helm_chart_name
+  release_name = "cert-manager"
 
   # Solver identity (first non-null identity found)
-  solver_identity = coalesce(
+  solver_identity = try(
     [for provider in var.spec.dns_providers :
-      provider.gcp_cloud_dns != null ? provider.gcp_cloud_dns.service_account_email : null
-    ]...,
-    [for provider in var.spec.dns_providers :
-      provider.aws_route53 != null ? provider.aws_route53.role_arn : null
-    ]...,
-    [for provider in var.spec.dns_providers :
-      provider.azure_dns != null ? provider.azure_dns.client_id : null
-    ]...,
-    ""
+      provider.gcp_cloud_dns.service_account_email
+      if provider.gcp_cloud_dns != null
+    ][0],
+    try(
+      [for provider in var.spec.dns_providers :
+        provider.aws_route53.role_arn
+        if provider.aws_route53 != null
+      ][0],
+      try(
+        [for provider in var.spec.dns_providers :
+          provider.azure_dns.client_id
+          if provider.azure_dns != null
+        ][0],
+        ""
+      )
+    )
   )
+}
 
+locals {
   # Cloudflare secret name (first cloudflare provider's secret)
-  cloudflare_secret_name = length(local.cloudflare_providers) > 0 ? "cert-manager-${local.cloudflare_providers[0].name}-credentials" : ""
+  # Uses metadata.name prefix for uniqueness when multiple instances share a namespace
+  cloudflare_secret_name = length(local.cloudflare_providers) > 0 ? "${var.metadata.name}-${local.cloudflare_providers[0].name}-credentials" : ""
 }
 

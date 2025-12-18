@@ -43,8 +43,10 @@ locals {
     length(data.kubernetes_namespace.existing) > 0 ? data.kubernetes_namespace.existing[0].metadata[0].name : local.namespace
   )
 
-  # GitLab service name
-  gitlab_service_name = "${var.metadata.name}-gitlab"
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "gitlab-prod")
+  gitlab_service_name = var.metadata.name
   gitlab_service_fqdn = "${local.gitlab_service_name}.${local.namespace}.svc.cluster.local"
   gitlab_port         = 80
 
@@ -52,12 +54,15 @@ locals {
   ingress_is_enabled        = try(var.spec.ingress.is_enabled, false)
   ingress_external_hostname = try(var.spec.ingress.hostname, null)
 
+  # Computed resource names for ingress-related resources
+  ingress_name = "${var.metadata.name}-ingress"
+
   # Certificate issuer: extract domain from hostname
   ingress_cert_cluster_issuer_name = local.ingress_is_enabled && local.ingress_external_hostname != null ? (
     join(".", slice(split(".", local.ingress_external_hostname), 1, length(split(".", local.ingress_external_hostname))))
   ) : ""
 
-  ingress_cert_secret_name = local.resource_id
+  ingress_cert_secret_name = "${var.metadata.name}-tls"
 
   # Istio ingress configuration
   istio_ingress_namespace      = "istio-ingress"

@@ -7,6 +7,11 @@ locals {
   # Namespace - use from spec or default to "percona-mysql-operator"
   namespace = var.spec.namespace != "" ? var.spec.namespace : "percona-mysql-operator"
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "pxc-operator-prod")
+  helm_release_name = "${var.metadata.name}-pxc-operator"
+
   # Metadata labels
   labels = merge(
     var.metadata.labels != null ? var.metadata.labels : {},

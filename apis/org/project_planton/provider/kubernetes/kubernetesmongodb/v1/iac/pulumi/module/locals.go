@@ -19,6 +19,10 @@ type Locals struct {
 	Namespace                string
 	MongodbPodSelectorLabels map[string]string
 	Labels                   map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	PasswordSecretName    string
+	ExternalLbServiceName string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMongodbStackInput) *Locals {
@@ -49,11 +53,16 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.Kuber
 	// get namespace from spec, it is required field
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.PasswordSecretName = fmt.Sprintf("%s-password", target.Metadata.Name)
+	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
+
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	ctx.Export(OpUsername, pulumi.String(vars.RootUsername))
-	ctx.Export(OpPasswordSecretName, pulumi.String(target.Metadata.Name))
+	ctx.Export(OpPasswordSecretName, pulumi.String(locals.PasswordSecretName))
 	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.MongodbRootPasswordKey))
 
 	locals.KubeServiceName = target.Metadata.Name

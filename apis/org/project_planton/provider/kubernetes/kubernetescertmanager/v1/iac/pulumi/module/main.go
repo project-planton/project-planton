@@ -16,6 +16,9 @@ import (
 
 // Resources create all Pulumi resources for the Cert‑Manager Kubernetes add‑on.
 func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.KubernetesCertManagerStackInput) error {
+	// Initialize locals with computed values
+	locals := initializeLocals(ctx, stackInput)
+
 	// set up a kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
@@ -33,18 +36,15 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 		return errors.New("spec.dns_providers must contain at least one provider")
 	}
 
-	// get namespace from spec (proto default: "kubernetes-cert-manager")
-	namespace := spec.GetNamespace().GetValue()
-
 	// get chart version from spec (proto default: "v1.19.1")
 	chartVersion := spec.GetHelmChartVersion()
 
 	// conditionally create namespace based on spec.CreateNamespace
 	if spec.CreateNamespace {
-		_, err = corev1.NewNamespace(ctx, namespace,
+		_, err = corev1.NewNamespace(ctx, locals.Namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(namespace),
+					Name: pulumi.String(locals.Namespace),
 				},
 			},
 			pulumi.Provider(kubeProvider))
@@ -70,11 +70,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	}
 
 	// create a ServiceAccount with the chosen annotations
-	_, err = corev1.NewServiceAccount(ctx, vars.KsaName,
+	// ServiceAccount name uses metadata.name for uniqueness when multiple instances share a namespace
+	_, err = corev1.NewServiceAccount(ctx, locals.ServiceAccountName,
 		&corev1.ServiceAccountArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:        pulumi.String(vars.KsaName),
-				Namespace:   pulumi.String(namespace),
+				Name:        pulumi.String(locals.ServiceAccountName),
+				Namespace:   pulumi.String(locals.Namespace),
 				Annotations: annotations,
 			},
 		},
@@ -87,7 +88,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	helmRelease, err := helm.NewRelease(ctx, "kubernetes-cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
-			Namespace:       pulumi.String(namespace),
+			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -99,7 +100,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 				"installCRDs": pulumi.Bool(true),
 				"serviceAccount": pulumi.Map{
 					"create": pulumi.Bool(false),
-					"name":   pulumi.String(vars.KsaName),
+					"name":   pulumi.String(locals.ServiceAccountName),
 				},
 				// Configure DNS resolvers for reliable DNS-01 propagation checks
 				"extraArgs": pulumi.Array{
@@ -117,15 +118,16 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	}
 
 	// create secrets for Cloudflare providers
+	// Secret names use locals.CloudflareSecretName() for uniqueness when multiple instances share a namespace
 	cloudflareSecrets := make(map[string]pulumi.StringOutput)
 	for _, dnsProvider := range spec.DnsProviders {
 		if cf := dnsProvider.GetCloudflare(); cf != nil {
-			secretName := fmt.Sprintf("kubernetes-cert-manager-%s-credentials", dnsProvider.Name)
+			secretName := locals.CloudflareSecretName(dnsProvider.Name)
 			secret, err := corev1.NewSecret(ctx, secretName,
 				&corev1.SecretArgs{
 					Metadata: &metav1.ObjectMetaArgs{
 						Name:      pulumi.String(secretName),
-						Namespace: pulumi.String(namespace),
+						Namespace: pulumi.String(locals.Namespace),
 					},
 					StringData: pulumi.StringMap{
 						"api-token": pulumi.String(cf.ApiToken),
@@ -153,7 +155,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescertmanagerv1.Kubernet
 	}
 
 	// export stack outputs
-	ctx.Export(OpNamespace, pulumi.String(namespace))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 	ctx.Export(OpReleaseName, pulumi.String(vars.HelmChartName))
 	ctx.Export(OpClusterIssuerNames, pulumi.ToStringArray(clusterIssuerNames))
 

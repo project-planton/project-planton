@@ -22,6 +22,15 @@ type Locals struct {
 	Namespace                    string
 	KubernetesLocust             *kuberneteslocustv1.KubernetesLocust
 	Labels                       map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	MainPyConfigMapName          string
+	LibFilesConfigMapName        string
+	IngressCertificateName       string
+	ExternalGatewayName          string
+	HttpExternalRedirectRouteName string
+	HttpsExternalRouteName       string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteslocustv1.KubernetesLocustStackInput) *Locals {
@@ -59,6 +68,16 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteslocustv1.Kubern
 
 	//export kubernetes service name
 	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.MainPyConfigMapName = fmt.Sprintf("%s-main-py", target.Metadata.Name)
+	locals.LibFilesConfigMapName = fmt.Sprintf("%s-lib-files", target.Metadata.Name)
+	locals.IngressCertificateName = fmt.Sprintf("%s-certificate", target.Metadata.Name)
+	locals.ExternalGatewayName = fmt.Sprintf("%s-external", target.Metadata.Name)
+	locals.HttpExternalRedirectRouteName = fmt.Sprintf("%s-http-external-redirect", target.Metadata.Name)
+	locals.HttpsExternalRouteName = fmt.Sprintf("%s-https-external", target.Metadata.Name)
+	locals.IngressCertSecretName = fmt.Sprintf("%s-tls", target.Metadata.Name)
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KubeServiceName, locals.Namespace)
 
@@ -100,8 +119,6 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteslocustv1.Kubern
 	// Extract the domain from hostname for certificate issuer name
 	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
 	locals.IngressCertClusterIssuerName = dnsDomain
-
-	locals.IngressCertSecretName = locals.Namespace
 
 	return locals
 }

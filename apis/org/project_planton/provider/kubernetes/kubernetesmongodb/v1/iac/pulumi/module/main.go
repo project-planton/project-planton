@@ -28,7 +28,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 
 	//create new random secret to set as password
 	createdRandomString, err := random.NewRandomPassword(ctx,
-		"root-password",
+		locals.PasswordSecretName,
 		&random.RandomPasswordArgs{
 			Length:     pulumi.Int(12),
 			Special:    pulumi.Bool(true),
@@ -47,10 +47,10 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 	// Create kubernetes secret to store generated password
 	// Percona operator expects plaintext passwords in StringData (Kubernetes auto-encodes)
 	createdPasswordSecret, err := kubernetescorev1.NewSecret(ctx,
-		locals.KubernetesMongodb.Metadata.Name,
+		locals.PasswordSecretName,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesMongodb.Metadata.Name),
+				Name:      pulumi.String(locals.PasswordSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 			},
 			StringData: pulumi.StringMap{
@@ -69,10 +69,10 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesmongodbv1.KubernetesMo
 	//create service of type load-balancer if ingress is enabled.
 	if locals.KubernetesMongodb.Spec.Ingress.Enabled {
 		_, err := kubernetescorev1.NewService(ctx,
-			"ingress-external-lb",
+			locals.ExternalLbServiceName,
 			&kubernetescorev1.ServiceArgs{
 				Metadata: &kubernetesmetav1.ObjectMetaArgs{
-					Name:      pulumi.String("ingress-external-lb"),
+					Name:      pulumi.String(locals.ExternalLbServiceName),
 					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 					Annotations: pulumi.StringMap{

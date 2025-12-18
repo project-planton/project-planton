@@ -13,14 +13,11 @@ var vars = struct {
 	Neo4jHelmChartVersion string
 
 	// The secret key for the admin password inside the Kubernetes secret.
+	// The Neo4j Helm chart creates a secret with key "neo4j-password".
 	Neo4jPasswordSecretKey string
-
-	// The name of the Kubernetes secret that stores the admin password.
-	Neo4jPasswordSecretName string
 }{
-	Neo4jHelmChartName:      "neo4j",
-	Neo4jHelmChartRepoUrl:   "https://helm.neo4j.com/neo4j",
-	Neo4jHelmChartVersion:   "2025.03.0",
-	Neo4jPasswordSecretKey:  "password",
-	Neo4jPasswordSecretName: "neo4j-admin-password",
+	Neo4jHelmChartName:     "neo4j",
+	Neo4jHelmChartRepoUrl:  "https://helm.neo4j.com/neo4j",
+	Neo4jHelmChartVersion:  "2025.03.0",
+	Neo4jPasswordSecretKey: "neo4j-password",
 }

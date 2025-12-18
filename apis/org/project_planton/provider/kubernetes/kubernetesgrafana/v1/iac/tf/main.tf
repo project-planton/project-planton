@@ -64,7 +64,7 @@ resource "kubernetes_ingress_v1" "grafana_external" {
   count = local.ingress_is_enabled && local.ingress_external_hostname != "" ? 1 : 0
 
   metadata {
-    name      = "${var.metadata.name}-external"
+    name      = local.external_ingress_name
     namespace = local.namespace_name
     annotations = {
       "kubernetes.io/ingress.class" = "nginx"
@@ -98,7 +98,7 @@ resource "kubernetes_ingress_v1" "grafana_internal" {
   count = local.ingress_is_enabled && local.ingress_internal_hostname != "" ? 1 : 0
 
   metadata {
-    name      = "${var.metadata.name}-internal"
+    name      = local.internal_ingress_name
     namespace = local.namespace_name
     annotations = {
       "kubernetes.io/ingress.class" = "nginx-internal"

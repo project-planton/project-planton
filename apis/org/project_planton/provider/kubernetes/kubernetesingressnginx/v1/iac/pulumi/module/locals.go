@@ -56,9 +56,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesingressnginxv1.
 		locals.ChartVersion = vars.DefaultChartVersion
 	}
 
-	// Service names follow Helm chart defaults
-	locals.ReleaseName = vars.HelmChartName
-	locals.ServiceName = vars.HelmChartName + "-controller"
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "nginx-public")
+	locals.ReleaseName = target.Metadata.Name
+	locals.ServiceName = target.Metadata.Name + "-controller"
 	locals.ServiceType = "LoadBalancer"
 
 	// Export stack outputs

@@ -14,9 +14,9 @@ func locust(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource) error {
 
 	// Create a ConfigMap for the main.py file
-	_, err := kubernetescorev1.NewConfigMap(ctx, "main-py", &kubernetescorev1.ConfigMapArgs{
+	_, err := kubernetescorev1.NewConfigMap(ctx, locals.MainPyConfigMapName, &kubernetescorev1.ConfigMapArgs{
 		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-			Name:      pulumi.String(vars.MainPyConfigMapName),
+			Name:      pulumi.String(locals.MainPyConfigMapName),
 			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		}),
@@ -29,9 +29,9 @@ func locust(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Create a ConfigMap for the lib files
-	_, err = kubernetescorev1.NewConfigMap(ctx, "lib-files", &kubernetescorev1.ConfigMapArgs{
+	_, err = kubernetescorev1.NewConfigMap(ctx, locals.LibFilesConfigMapName, &kubernetescorev1.ConfigMapArgs{
 		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-			Name:      pulumi.String(vars.LibFilesConfigMapName),
+			Name:      pulumi.String(locals.LibFilesConfigMapName),
 			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		}),
@@ -56,8 +56,8 @@ func locust(ctx *pulumi.Context, locals *Locals,
 		},
 		"loadtest": pulumi.Map{
 			"name":                        pulumi.String(locals.KubernetesLocust.Spec.LoadTest.Name),
-			"locust_locustfile_configmap": pulumi.String(vars.MainPyConfigMapName),
-			"locust_lib_configmap":        pulumi.String(vars.LibFilesConfigMapName),
+			"locust_locustfile_configmap": pulumi.String(locals.MainPyConfigMapName),
+			"locust_lib_configmap":        pulumi.String(locals.LibFilesConfigMapName),
 		},
 	}
 	mergestringmaps.MergeMapToPulumiMap(helmValues, locals.KubernetesLocust.Spec.HelmValues)

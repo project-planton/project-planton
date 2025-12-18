@@ -22,6 +22,13 @@ type Locals struct {
 	KubeServiceName              string
 	KubePortForwardCommand       string
 	Labels                       map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	AdminCredentialsSecretName string
+	IngressCertificateName     string
+	ExternalGatewayName        string
+	HttpRedirectRouteName      string
+	HttpsRouteName             string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.KubernetesJenkinsStackInput) *Locals {
@@ -59,6 +66,15 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.Kuber
 
 	//export kubernetes service name
 	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "jenkins-my-ci")
+	locals.AdminCredentialsSecretName = fmt.Sprintf("%s-admin-credentials", target.Metadata.Name)
+	locals.IngressCertificateName = fmt.Sprintf("%s-ingress-cert", target.Metadata.Name)
+	locals.ExternalGatewayName = fmt.Sprintf("%s-external", target.Metadata.Name)
+	locals.HttpRedirectRouteName = fmt.Sprintf("%s-http-redirect", target.Metadata.Name)
+	locals.HttpsRouteName = fmt.Sprintf("%s-https", target.Metadata.Name)
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
 		target.Metadata.Name, locals.Namespace)
@@ -102,7 +118,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesjenkinsv1.Kuber
 	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
 	locals.IngressCertClusterIssuerName = dnsDomain
 
-	locals.IngressCertSecretName = locals.Namespace
+	locals.IngressCertSecretName = fmt.Sprintf("%s-tls", target.Metadata.Name)
 
 	return locals
 }

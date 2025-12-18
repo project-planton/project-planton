@@ -88,7 +88,9 @@ locals {
   cf_api_token = local.is_cloudflare ? try(var.spec.cloudflare.api_token, "") : ""
   cf_dns_zone_id = local.is_cloudflare ? try(var.spec.cloudflare.dns_zone_id.value, "") : ""
   cf_is_proxied = local.is_cloudflare ? try(var.spec.cloudflare.is_proxied, false) : false
-  cf_secret_name = local.is_cloudflare ? "cloudflare-api-token-${local.release_name}" : ""
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  cloudflare_api_token_secret_name = local.is_cloudflare ? "${local.release_name}-cloudflare-api-token" : ""
 
   # Service account annotations
   sa_annotations = (

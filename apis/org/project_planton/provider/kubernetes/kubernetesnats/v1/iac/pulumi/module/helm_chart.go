@@ -81,33 +81,33 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 				return errors.Wrap(err, "generate auth token")
 			}
 
-			_, err = kubernetescorev1.NewSecret(ctx, "auth-token-secret",
-				&kubernetescorev1.SecretArgs{
-					Metadata: &kubernetesmeta.ObjectMetaArgs{
-						Name:      pulumi.String(vars.AdminAuthSecretName),
-						Namespace: pulumi.String(locals.Namespace),
-						Labels:    pulumi.ToStringMap(locals.Labels),
-					},
-					StringData: pulumi.StringMap{vars.AdminAuthSecretKey: token.Result},
-					Type:       pulumi.String("Opaque"),
-				}, pulumi.Provider(kubernetesProvider))
+		_, err = kubernetescorev1.NewSecret(ctx, locals.AuthSecretName,
+			&kubernetescorev1.SecretArgs{
+				Metadata: &kubernetesmeta.ObjectMetaArgs{
+					Name:      pulumi.String(locals.AuthSecretName),
+					Namespace: pulumi.String(locals.Namespace),
+					Labels:    pulumi.ToStringMap(locals.Labels),
+				},
+				StringData: pulumi.StringMap{vars.AdminAuthSecretKey: token.Result},
+				Type:       pulumi.String("Opaque"),
+			}, pulumi.Provider(kubernetesProvider))
 			if err != nil {
 				return errors.Wrap(err, "create bearer-token secret")
 			}
 
-			values["auth"] = pulumi.Map{
-				"enabled": pulumi.Bool(true),
-				"token": pulumi.Map{
-					"users": pulumi.Array{
-						pulumi.Map{
-							"existingSecret": pulumi.Map{
-								"name": pulumi.String(vars.AdminAuthSecretName),
-								"key":  pulumi.String(vars.AdminAuthSecretKey),
-							},
+		values["auth"] = pulumi.Map{
+			"enabled": pulumi.Bool(true),
+			"token": pulumi.Map{
+				"users": pulumi.Array{
+					pulumi.Map{
+						"existingSecret": pulumi.Map{
+							"name": pulumi.String(locals.AuthSecretName),
+							"key":  pulumi.String(vars.AdminAuthSecretKey),
 						},
 					},
 				},
-			}
+			},
+		}
 
 		// basic-auth
 		// ---------------- basic auth ------------------
@@ -120,29 +120,29 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 				return errors.Wrap(err, "generate admin password")
 			}
 
-			_, err = kubernetescorev1.NewSecret(ctx, "auth-basic-secret",
-				&kubernetescorev1.SecretArgs{
-					Metadata: &kubernetesmeta.ObjectMetaArgs{
-						Name:      pulumi.String(vars.AdminAuthSecretName),
-						Namespace: pulumi.String(locals.Namespace),
-						Labels:    pulumi.ToStringMap(locals.Labels),
-					},
-					StringData: pulumi.StringMap{
-						vars.NatsUserSecretKeyUsername: pulumi.String(vars.AdminUsername),
-						vars.NatsUserSecretKeyPassword: adminPass.Result,
-					},
-					Type: pulumi.String("Opaque"),
-				}, pulumi.Provider(kubernetesProvider))
+		_, err = kubernetescorev1.NewSecret(ctx, locals.AuthSecretName,
+			&kubernetescorev1.SecretArgs{
+				Metadata: &kubernetesmeta.ObjectMetaArgs{
+					Name:      pulumi.String(locals.AuthSecretName),
+					Namespace: pulumi.String(locals.Namespace),
+					Labels:    pulumi.ToStringMap(locals.Labels),
+				},
+				StringData: pulumi.StringMap{
+					vars.NatsUserSecretKeyUsername: pulumi.String(vars.AdminUsername),
+					vars.NatsUserSecretKeyPassword: adminPass.Result,
+				},
+				Type: pulumi.String("Opaque"),
+			}, pulumi.Provider(kubernetesProvider))
 			if err != nil {
 				return errors.Wrap(err, "create admin secret")
 			}
 
 			// optional no-auth user
 			if na := auth.NoAuthUser; na != nil && na.Enabled {
-				_, err = kubernetescorev1.NewSecret(ctx, vars.NoAuthUserSecretName,
+				_, err = kubernetescorev1.NewSecret(ctx, locals.NoAuthUserSecretName,
 					&kubernetescorev1.SecretArgs{
 						Metadata: &kubernetesmeta.ObjectMetaArgs{
-							Name:      pulumi.String(vars.NoAuthUserSecretName),
+							Name:      pulumi.String(locals.NoAuthUserSecretName),
 							Namespace: pulumi.String(locals.Namespace),
 							Labels:    pulumi.ToStringMap(locals.Labels),
 						},
@@ -178,7 +178,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 						"name": pulumi.String(vars.AdminUserPasswordEnvVarName),
 						"valueFrom": pulumi.Map{
 							"secretKeyRef": pulumi.Map{
-								"name": pulumi.String(vars.AdminAuthSecretName),
+								"name": pulumi.String(locals.AuthSecretName),
 								"key":  pulumi.String(vars.NatsUserSecretKeyPassword),
 							},
 						},

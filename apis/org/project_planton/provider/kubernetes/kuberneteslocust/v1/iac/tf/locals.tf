@@ -55,5 +55,14 @@ locals {
 
   # For certificate creation (using the same logic as in code)
   ingress_cert_cluster_issuer_name = local.ingress_dns_domain != "" ? local.ingress_dns_domain : null
-  ingress_cert_secret_name         = local.resource_id
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  main_py_configmap_name            = "${var.metadata.name}-main-py"
+  lib_files_configmap_name          = "${var.metadata.name}-lib-files"
+  ingress_certificate_name          = "${var.metadata.name}-certificate"
+  ingress_cert_secret_name          = "${var.metadata.name}-tls"
+  external_gateway_name             = "${var.metadata.name}-external"
+  http_external_redirect_route_name = "${var.metadata.name}-http-external-redirect"
+  https_external_route_name         = "${var.metadata.name}-https-external"
 }

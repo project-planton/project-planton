@@ -22,11 +22,12 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Create TLS certificate for the SigNoz UI
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
 	addedCertificate, err := certmanagerv1.NewCertificate(ctx,
-		"ingress-certificate",
+		locals.SignozCertificateName,
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.Namespace),
+				Name:      pulumi.String(locals.SignozCertificateName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -44,11 +45,12 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Create Gateway for external SigNoz UI access
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
 	createdGateway, err := gatewayv1.NewGateway(ctx,
-		"external",
+		locals.SignozGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-external", locals.Namespace),
+				Name:      pulumi.String(locals.SignozGatewayName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -89,11 +91,12 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Create HTTPRoute for HTTPS traffic to SigNoz frontend service
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-external",
+		locals.SignozHTTPRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-external"),
+				Name:      pulumi.String(locals.SignozHTTPRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -101,7 +104,7 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+						Name:        pulumi.String(locals.SignozGatewayName),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},

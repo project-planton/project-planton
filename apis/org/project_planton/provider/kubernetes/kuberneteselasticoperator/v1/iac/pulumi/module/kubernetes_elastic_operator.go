@@ -14,19 +14,13 @@ import (
 func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 	k8sProvider *pulumikubernetes.Provider) error {
 
-	// Get namespace from spec
-	namespace := locals.KubernetesElasticOperator.Spec.Namespace.GetValue()
-	if namespace == "" {
-		namespace = vars.Namespace // fallback to default
-	}
-
 	// --------------------------------------------------------------------
 	// 1. Namespace - conditionally create based on create_namespace flag
 	// --------------------------------------------------------------------
 	if locals.KubernetesElasticOperator.Spec.CreateNamespace {
-		_, err := corev1.NewNamespace(ctx, namespace, &corev1.NamespaceArgs{
+		_, err := corev1.NewNamespace(ctx, locals.Namespace, &corev1.NamespaceArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:   pulumi.String(namespace),
+				Name:   pulumi.String(locals.Namespace),
 				Labels: pulumi.ToStringMap(locals.KubeLabels),
 			}),
 		}, pulumi.Provider(k8sProvider))
@@ -79,9 +73,10 @@ func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 		pulumi.Provider(k8sProvider),
 	}
 
-	_, err := helm.NewRelease(ctx, "kubernetes-elastic-operator", &helm.ReleaseArgs{
-		Name:            pulumi.String(vars.HelmChartName),
-		Namespace:       pulumi.String(namespace),
+	// Use computed HelmReleaseName to avoid conflicts when multiple instances share a namespace
+	_, err := helm.NewRelease(ctx, locals.HelmReleaseName, &helm.ReleaseArgs{
+		Name:            pulumi.String(locals.HelmReleaseName),
+		Namespace:       pulumi.String(locals.Namespace),
 		Chart:           pulumi.String(vars.HelmChartName),
 		Version:         pulumi.String(vars.HelmChartVersion),
 		RepositoryOpts:  helm.RepositoryOptsArgs{Repo: pulumi.String(vars.HelmChartRepo)},
@@ -95,11 +90,6 @@ func kubernetesElasticOperator(ctx *pulumi.Context, locals *Locals,
 	if err != nil {
 		return errors.Wrap(err, "install helm chart")
 	}
-
-	// --------------------------------------------------------------------
-	// 4. Stack outputs
-	// --------------------------------------------------------------------
-	ctx.Export(OpNamespace, pulumi.String(namespace))
 
 	return nil
 }

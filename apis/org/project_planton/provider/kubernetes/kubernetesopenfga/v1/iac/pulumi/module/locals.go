@@ -22,6 +22,13 @@ type Locals struct {
 	KubeServiceName              string
 	KubePortForwardCommand       string
 	Labels                       map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	IngressCertificateName       string
+	IngressGatewayName           string
+	IngressHttpRedirectRouteName string
+	IngressHttpsRouteName        string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesopenfgav1.KubernetesOpenFgaStackInput) *Locals {
@@ -99,7 +106,14 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesopenfgav1.Kuber
 		locals.IngressCertClusterIssuerName = strings.Join(parts[1:], ".")
 	}
 
-	locals.IngressCertSecretName = locals.Namespace
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "openfga-my-instance")
+	locals.IngressCertSecretName = fmt.Sprintf("%s-tls", target.Metadata.Name)
+	locals.IngressCertificateName = fmt.Sprintf("%s-certificate", target.Metadata.Name)
+	locals.IngressGatewayName = fmt.Sprintf("%s-external", target.Metadata.Name)
+	locals.IngressHttpRedirectRouteName = fmt.Sprintf("%s-http-redirect", target.Metadata.Name)
+	locals.IngressHttpsRouteName = fmt.Sprintf("%s-https", target.Metadata.Name)
 
 	return locals
 }

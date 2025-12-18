@@ -10,7 +10,7 @@ resource "kubernetes_namespace" "kubernetes_altinity_operator" {
 }
 
 resource "helm_release" "kubernetes_altinity_operator" {
-  name       = "altinity-clickhouse-operator"
+  name       = local.helm_release_name
   repository = "https://docs.altinity.com/clickhouse-operator/"
   chart      = "altinity-clickhouse-operator"
   version    = "0.25.4"

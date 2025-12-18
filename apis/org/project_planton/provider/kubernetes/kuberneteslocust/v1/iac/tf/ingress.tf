@@ -6,7 +6,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
     apiVersion = "cert-manager.io/v1"
     kind       = "Certificate"
     metadata = {
-      name      = local.resource_id
+      name      = local.ingress_certificate_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -32,7 +32,7 @@ resource "kubernetes_manifest" "gateway" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "Gateway"
     metadata = {
-      name      = "${local.resource_id}-external"
+      name      = local.external_gateway_name
       namespace = "istio-ingress"
       labels    = local.final_labels
     }
@@ -92,7 +92,7 @@ resource "kubernetes_manifest" "http_route_external_redirect" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "http-external-redirect"
+      name      = local.http_external_redirect_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -102,7 +102,7 @@ resource "kubernetes_manifest" "http_route_external_redirect" {
       ]
       parentRefs = [
         {
-          name        = "${local.resource_id}-external"
+          name        = local.external_gateway_name
           namespace   = "istio-ingress"
           sectionName = "http-external"
         }
@@ -136,7 +136,7 @@ resource "kubernetes_manifest" "http_route_https_external" {
     apiVersion = "gateway.networking.k8s.io/v1beta1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "https-external"
+      name      = local.https_external_route_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -146,7 +146,7 @@ resource "kubernetes_manifest" "http_route_https_external" {
       ]
       parentRefs = [
         {
-          name        = "${local.resource_id}-external"
+          name        = local.external_gateway_name
           namespace   = "istio-ingress"
           sectionName = "https-external"
         }

@@ -15,15 +15,14 @@ resource "random_password" "jenkins_admin_password" {
 locals {
   jenkins_admin_username            = "admin"
   jenkins_admin_password_secret_key = "admin-password"
-  jenkins_admin_secret_name         = "${local.resource_id}-admin-secret"
   jenkins_admin_password_b64 = base64encode(random_password.jenkins_admin_password.result)
 }
 
 # 3) Create or update the K8s secret containing the Jenkins admin password
 resource "kubernetes_secret" "jenkins_admin_secret" {
   metadata {
-    # Use a different name so Helm doesn't collide
-    name      = "${local.resource_id}-admin-secret"
+    # Use computed name to avoid conflicts when multiple instances share a namespace
+    name      = local.admin_credentials_secret_name
     namespace = local.namespace
   }
 

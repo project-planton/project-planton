@@ -19,6 +19,11 @@ type Locals struct {
 	Namespace                   string
 	ClickhousePodSelectorLabels map[string]string
 	KubernetesLabels            map[string]string
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	PasswordSecretName       string
+	ExternalLbServiceName    string
+	KeeperInstallationName   string
+	KeeperServiceName        string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesclickhousev1.KubernetesClickHouseStackInput) *Locals {
@@ -49,9 +54,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesclickhousev1.Ku
 	// Get namespace from spec (required field)
 	locals.Namespace = target.Spec.Namespace.GetValue()
 
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "clickhouse-my-db")
+	locals.PasswordSecretName = fmt.Sprintf("%s-password", target.Metadata.Name)
+	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
+	locals.KeeperInstallationName = fmt.Sprintf("%s-keeper", target.Metadata.Name)
+	// Altinity operator creates keeper service with pattern: keeper-<chk-name>
+	locals.KeeperServiceName = fmt.Sprintf("keeper-%s", locals.KeeperInstallationName)
+
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 	ctx.Export(OpUsername, pulumi.String(vars.DefaultUsername))
-	ctx.Export(OpPasswordSecretName, pulumi.String(target.Metadata.Name))
+	ctx.Export(OpPasswordSecretName, pulumi.String(locals.PasswordSecretName))
 	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.ClickhousePasswordKey))
 
 	locals.KubeServiceName = target.Metadata.Name

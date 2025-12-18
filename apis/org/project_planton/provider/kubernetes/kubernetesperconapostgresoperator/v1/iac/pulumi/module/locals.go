@@ -15,6 +15,10 @@ type Locals struct {
 	Namespace                         string
 	Labels                            map[string]string
 	KubernetesPerconaPostgresOperator *kubernetesperconapostgresoperatorv1.KubernetesPerconaPostgresOperator
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name} - users can include component type in name if needed
+	HelmReleaseName string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -47,6 +51,10 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// The Helm release name uses metadata.name to ensure uniqueness within the namespace
+	locals.HelmReleaseName = target.Metadata.Name
 
 	return locals
 }

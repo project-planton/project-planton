@@ -5,7 +5,7 @@ output "namespace" {
 
 output "helm_release_name" {
   description = "The name of the Helm release for ECK operator"
-  value       = local.helm_chart_name
+  value       = local.helm_release_name
 }
 
 output "operator_version" {

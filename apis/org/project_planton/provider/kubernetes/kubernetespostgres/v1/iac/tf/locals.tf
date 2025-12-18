@@ -54,4 +54,8 @@ locals {
 
   # Namespace reference: use created namespace name if created, otherwise use local.namespace
   namespace_name = var.spec.create_namespace ? kubernetes_namespace_v1.postgres_namespace[0].metadata[0].name : local.namespace
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  external_lb_service_name = "${var.metadata.name}-external-lb"
 }

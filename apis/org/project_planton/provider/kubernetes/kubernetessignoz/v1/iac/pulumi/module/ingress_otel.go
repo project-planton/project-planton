@@ -1,8 +1,6 @@
 package module
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
@@ -24,22 +22,22 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Certificate for OTEL Collector HTTP endpoint
-	otelCertName := fmt.Sprintf("cert-%s-otel-http", locals.Namespace)
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
 	otelHostnames := []string{
 		locals.OtelCollectorExternalHttpHostname,
 	}
 
 	addedOtelCertificate, err := certmanagerv1.NewCertificate(ctx,
-		"otel-ingress-certificate",
+		locals.OtelCertificateName,
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(otelCertName),
+				Name:      pulumi.String(locals.OtelCertificateName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: certmanagerv1.CertificateSpecArgs{
 				DnsNames:   pulumi.ToStringArray(otelHostnames),
-				SecretName: pulumi.String(otelCertName),
+				SecretName: pulumi.String(locals.OtelCertificateName),
 				IssuerRef: certmanagerv1.CertificateSpecIssuerRefArgs{
 					Kind: pulumi.String("ClusterIssuer"),
 					Name: pulumi.String(locals.IngressCertClusterIssuerName),
@@ -51,11 +49,12 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Gateway for OTEL Collector HTTP endpoint
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
 	createdOtelGateway, err := gatewayv1.NewGateway(ctx,
-		"otel-http-external",
+		locals.OtelGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-otel-http-external", locals.Namespace),
+				Name:      pulumi.String(locals.OtelGatewayName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -78,7 +77,7 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
 							Mode: pulumi.String("Terminate"),
 							CertificateRefs: gatewayv1.GatewaySpecListenersTlsCertificateRefsArray{
 								gatewayv1.GatewaySpecListenersTlsCertificateRefsArgs{
-									Name: pulumi.String(otelCertName),
+									Name: pulumi.String(locals.OtelCertificateName),
 								},
 							},
 						},
@@ -96,11 +95,12 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// HTTPRoute for HTTP endpoint (routes to OTEL Collector HTTP port 4318)
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-otel-http",
+		locals.OtelHTTPRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-otel-http"),
+				Name:      pulumi.String(locals.OtelHTTPRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -108,7 +108,7 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.OtelCollectorExternalHttpHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-otel-http-external", locals.Namespace),
+						Name:        pulumi.String(locals.OtelGatewayName),
 						Namespace:   createdOtelGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-otel-http"),
 					},

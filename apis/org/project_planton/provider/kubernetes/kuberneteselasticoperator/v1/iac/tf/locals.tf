@@ -45,6 +45,10 @@ locals {
   helm_chart_repo    = "https://helm.elastic.co"
   helm_chart_version = "2.14.0"
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # The Helm release name uses metadata.name to ensure uniqueness
+  helm_release_name = var.metadata.name
+
   # Labels to inherit in ECK-managed resources
   inherited_labels = [
     "resource",

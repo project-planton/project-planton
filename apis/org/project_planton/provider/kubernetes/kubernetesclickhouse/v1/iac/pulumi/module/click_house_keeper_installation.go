@@ -32,9 +32,9 @@ func clickhouseKeeperInstallation(
 		}
 	}
 
-	// Keeper name - use "keeper" as the standard name
-	// This creates a service named "keeper-keeper" following pattern "keeper-<name>"
-	keeperName := "keeper"
+	// Keeper name - use computed name to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-keeper
+	keeperName := locals.KeeperInstallationName
 
 	// Build the ClickHouseKeeperInstallation CRD
 	_, err := clickhousekeeperv1.NewClickHouseKeeperInstallation(ctx,

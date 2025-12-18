@@ -11,6 +11,9 @@ type locals struct {
 	labels       pulumi.StringMap
 	operatorName string
 	chartVersion string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	HelmReleaseName string
 }
 
 // newLocals creates computed values from stack input
@@ -49,5 +52,9 @@ func newLocals(stackInput *kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKaf
 		labels:       labels,
 		operatorName: operatorName,
 		chartVersion: vars.HelmChartVersion,
+
+		// Computed resource names to avoid conflicts when multiple instances share a namespace
+		// Format: {metadata.name} - users can prefix with component type if needed (e.g., "strimzi-prod")
+		HelmReleaseName: operatorName,
 	}
 }
