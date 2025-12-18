@@ -23,11 +23,12 @@ func createIngressLoadBalancer(
 	}
 
 	// Create LoadBalancer service with external DNS annotation
+	// Use computed name to avoid conflicts when multiple instances share a namespace
 	_, err := kubernetescorev1.NewService(ctx,
-		"ingress-external-lb",
+		locals.ExternalLbServiceName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String("ingress-external-lb"),
+				Name:      pulumi.String(locals.ExternalLbServiceName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 				Annotations: pulumi.StringMap{

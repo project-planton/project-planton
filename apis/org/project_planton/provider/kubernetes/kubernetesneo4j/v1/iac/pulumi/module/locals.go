@@ -37,6 +37,10 @@ type Locals struct {
 
 	// A convenient port-forwarding command for local development.
 	KubePortForwardCommand string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// The Neo4j Helm chart creates a secret named "<release>-auth" for the password
+	PasswordSecretName string
 }
 
 // initializeLocals populates Locals from the stack input and
@@ -80,6 +84,10 @@ func initializeLocals(
 		"app.kubernetes.io/instance":  target.Metadata.Name,
 		"app.kubernetes.io/component": "primary",
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// The Neo4j Helm chart creates a secret named "<release>-auth" for the password
+	locals.PasswordSecretName = fmt.Sprintf("%s-auth", target.Metadata.Name)
 
 	// Construct a service name and FQDN.
 	locals.KubeServiceName = fmt.Sprintf("%s-neo4j", target.Metadata.Name)

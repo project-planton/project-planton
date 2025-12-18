@@ -40,7 +40,7 @@ func clickhouseInstallation(
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
 			Spec: &altinityv1.ClickHouseInstallationSpecArgs{
-				Configuration: buildConfiguration(clusterName, spec, createdSecret),
+				Configuration: buildConfiguration(clusterName, spec, createdSecret, locals.KeeperServiceName),
 				Defaults:      buildDefaults(),
 				Templates:     buildTemplates(spec, version),
 			},
@@ -58,6 +58,7 @@ func buildConfiguration(
 	clusterName string,
 	spec *kubernetesclickhousev1.KubernetesClickHouseSpec,
 	createdSecret *kubernetescorev1.Secret,
+	keeperServiceName string,
 ) *altinityv1.ClickHouseInstallationSpecConfigurationArgs {
 	// Build users configuration with secret reference
 	// Using modern valueFrom.secretKeyRef syntax (recommended since operator v0.23.x)
@@ -129,7 +130,7 @@ func buildConfiguration(
 
 	// Add coordination configuration for clustered deployments
 	if isClustered {
-		config.Zookeeper = buildCoordinationConfig(spec)
+		config.Zookeeper = buildCoordinationConfig(spec, keeperServiceName)
 	}
 
 	return config

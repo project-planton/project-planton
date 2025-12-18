@@ -27,8 +27,8 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Namespace is the resource ID
-  namespace = local.resource_id
+  # Namespace comes from spec (required field)
+  namespace = var.spec.namespace
 
   # Service name (using metadata.name directly)
   kube_service_name = var.metadata.name
@@ -50,5 +50,12 @@ locals {
       length(split(".", local.ingress_external_hostname))))
   ) : null
 
-  ingress_cert_secret_name = local.resource_id
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "openfga-my-instance")
+  ingress_cert_secret_name         = "${var.metadata.name}-tls"
+  ingress_certificate_name         = "${var.metadata.name}-certificate"
+  ingress_gateway_name             = "${var.metadata.name}-external"
+  ingress_http_redirect_route_name = "${var.metadata.name}-http-redirect"
+  ingress_https_route_name         = "${var.metadata.name}-https"
 }

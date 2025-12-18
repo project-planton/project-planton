@@ -3,7 +3,7 @@
 
 output "namespace" {
   description = "Kubernetes namespace where cert-manager was deployed"
-  value       = kubernetes_namespace.cert_manager.metadata[0].name
+  value       = local.namespace_name
 }
 
 output "release_name" {

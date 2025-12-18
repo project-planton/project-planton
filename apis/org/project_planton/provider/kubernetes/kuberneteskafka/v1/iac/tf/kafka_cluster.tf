@@ -22,7 +22,7 @@ resource "kubernetes_manifest" "kafka_cluster" {
         # Configure simple authorization with an 'admin' superuser
         authorization = {
           type = "simple"
-          superUsers = ["admin"]
+          superUsers = [local.admin_username]
         }
 
         # Example default configuration. You can override or extend this.

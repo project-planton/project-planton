@@ -12,6 +12,9 @@ import (
 
 // Resources installs the External‑Secrets operator (ESO) into the target cluster.
 func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesExternalSecretsStackInput) error {
+	// Initialize locals with computed values
+	locals := initializeLocals(ctx, in)
+
 	// set up provider from credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, in.ProviderConfig, "kubernetes")
@@ -23,18 +26,13 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 	// choose chart version – today we expose only a stable channel
 	chartVersion := vars.DefaultStableVersion
 
-	// 1. Get namespace name from spec
-	namespaceName := spec.Namespace.GetValue()
-	if namespaceName == "" {
-		namespaceName = vars.Namespace
-	}
-
-	// 2. Conditionally create namespace based on create_namespace flag
+	// Conditionally create namespace based on create_namespace flag
 	if spec.CreateNamespace {
-		_, err = corev1.NewNamespace(ctx, namespaceName,
+		_, err = corev1.NewNamespace(ctx, locals.Namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(namespaceName),
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
 				},
 			},
 			pulumi.Provider(kubeProvider))
@@ -43,7 +41,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 		}
 	}
 
-	// 3. identity annotations
+	// identity annotations
 	annotations := pulumi.StringMap{}
 	var identity pulumi.StringInput
 
@@ -58,13 +56,14 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 		identity = pulumi.String(aks.ManagedIdentityClientId)
 	}
 
-	// 4. service account
-	sa, err := corev1.NewServiceAccount(ctx, vars.KsaName,
+	// service account - using computed name from locals to avoid conflicts
+	sa, err := corev1.NewServiceAccount(ctx, locals.ServiceAccountName,
 		&corev1.ServiceAccountArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:        pulumi.String(vars.KsaName),
-				Namespace:   pulumi.String(namespaceName),
+				Name:        pulumi.String(locals.ServiceAccountName),
+				Namespace:   pulumi.String(locals.Namespace),
 				Annotations: annotations,
+				Labels:      pulumi.ToStringMap(locals.Labels),
 			},
 		},
 		pulumi.Provider(kubeProvider))
@@ -72,7 +71,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 		return errors.Wrap(err, "failed to create service account")
 	}
 
-	// 5. translate optional container resources into helm values
+	// translate optional container resources into helm values
 	resVals := pulumi.Map{}
 	if c := spec.GetContainer(); c != nil && c.Resources != nil {
 		req := c.Resources.GetRequests()
@@ -104,11 +103,11 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 		}
 	}
 
-	// 6. helm release
-	_, err = helm.NewRelease(ctx, "kubernetes-external-secrets",
+	// helm release - using computed release name from locals to avoid conflicts
+	_, err = helm.NewRelease(ctx, locals.HelmReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
-			Namespace:       pulumi.String(namespaceName),
+			Name:            pulumi.String(locals.HelmReleaseName),
+			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(chartVersion),
 			CreateNamespace: pulumi.Bool(false),
@@ -119,7 +118,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 			Values: pulumi.Map{
 				"installCRDs": pulumi.Bool(true),
 				"serviceAccount": pulumi.Map{
-					"name":   pulumi.String(vars.KsaName),
+					"name":   pulumi.String(locals.ServiceAccountName),
 					"create": pulumi.Bool(false),
 				},
 				"env": pulumi.Map{
@@ -138,9 +137,8 @@ func Resources(ctx *pulumi.Context, in *kubernetesexternalsecretsv1.KubernetesEx
 		return errors.Wrap(err, "failed to install external‑secrets helm release")
 	}
 
-	// 7. stack outputs
-	ctx.Export(OpNamespace, pulumi.String(namespaceName))
-	ctx.Export(OpReleaseName, pulumi.String(vars.HelmChartName))
+	// stack outputs
+	ctx.Export(OpReleaseName, pulumi.String(locals.HelmReleaseName))
 	ctx.Export(OpOperatorSA, sa.Metadata.Name())
 	if identity != nil {
 		ctx.Export(OpIdentity, identity)

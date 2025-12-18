@@ -13,7 +13,8 @@ resource "kubernetes_service_account" "this" {
 # 2) Create an optional image pull secret if Docker credentials are provided
 resource "kubernetes_secret" "image_pull_secret" {
   metadata {
-    name      = "image-pull-secret"
+    # Computed name to avoid conflicts when multiple instances share a namespace
+    name      = local.image_pull_secret_name
     namespace = local.namespace_name
     labels    = local.final_labels
   }
@@ -104,14 +105,14 @@ resource "kubernetes_cron_job" "this" {
                 }
               }
 
-              # Add env variables from secrets (stored in the "main" secret)
+              # Add env variables from secrets (stored in the env-secrets secret)
               dynamic "env" {
                 for_each = try(var.spec.env.secrets, {})
                 content {
                   name = env.key
                   value_from {
                     secret_key_ref {
-                      name = "main"
+                      name = local.env_secrets_secret_name
                       key  = env.key
                     }
                   }

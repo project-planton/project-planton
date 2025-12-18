@@ -1,7 +1,6 @@
 package module
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -28,8 +27,8 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Hostname + cert secret name
-	uiHostname := locals.IngressUIHostname                    // User-specified hostname
-	certSecret := fmt.Sprintf("%s-ui-cert", locals.Namespace) // deterministic
+	uiHostname := locals.IngressUIHostname       // User-specified hostname
+	certSecret := locals.UiCertSecretName        // Computed from metadata.name
 
 	// Extract domain from hostname for ClusterIssuer name
 	hostnameParts := strings.Split(uiHostname, ".")
@@ -61,9 +60,9 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// --------------------- Gateway -----------------------------------------
-	gwName := pulumi.Sprintf("%s-external", locals.Namespace)
+	gwName := pulumi.String(locals.UiGatewayName)
 	createdGateway, err := gatewayv1.NewGateway(ctx,
-		"external-ui",
+		locals.UiGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      gwName,
@@ -118,10 +117,10 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 
 	// ----------------- HTTPRoute (redirect) --------------------------------
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-ui-external-redirect",
+		locals.UiHttpRedirectRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-ui-external-redirect"),
+				Name:      pulumi.String(locals.UiHttpRedirectRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -155,10 +154,10 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 
 	// ----------------- HTTPRoute (HTTPS) -----------------------------------
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-ui-external",
+		locals.UiHttpsRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-ui-external"),
+				Name:      pulumi.String(locals.UiHttpsRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

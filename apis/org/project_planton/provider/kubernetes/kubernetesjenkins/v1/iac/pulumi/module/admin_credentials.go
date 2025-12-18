@@ -38,10 +38,10 @@ func adminCredentials(ctx *pulumi.Context,
 
 	// Create or update the secret
 	createdAdminPasswordSecret, err := kubernetescorev1.NewSecret(ctx,
-		locals.KubernetesJenkins.Metadata.Name,
+		locals.AdminCredentialsSecretName,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesJenkins.Metadata.Name),
+				Name:      pulumi.String(locals.AdminCredentialsSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 			},
 			Data: pulumi.StringMap{

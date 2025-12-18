@@ -56,9 +56,11 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 	}
 
 	// deploy the operator via Helm
-	_, err := helm.NewRelease(ctx, "percona-mysql-operator",
+	// Use locals.HelmReleaseName for the Kubernetes release name to avoid conflicts
+	// when multiple instances are deployed to the same namespace
+	_, err := helm.NewRelease(ctx, locals.HelmReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
+			Name:            pulumi.String(locals.HelmReleaseName),
 			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(vars.HelmChartVersion),

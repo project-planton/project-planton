@@ -37,6 +37,11 @@ locals {
   # Get namespace from spec
   namespace = var.spec.namespace
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Users can prefix metadata.name with component type if needed (e.g., "redis-my-cache")
+  password_secret_name      = "${var.metadata.name}-password"
+  external_lb_service_name  = "${var.metadata.name}-external-lb"
+
   # Service name
   kube_service_name = "${var.metadata.name}-master"
 

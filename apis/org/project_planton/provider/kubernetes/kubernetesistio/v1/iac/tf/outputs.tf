@@ -5,7 +5,7 @@ output "namespace" {
 
 output "service" {
   description = "The name of the istiod service."
-  value       = "istiod"
+  value       = local.istiod_release_name
 }
 
 output "port_forward_command" {

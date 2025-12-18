@@ -16,7 +16,7 @@ locals {
 
 resource "kubernetes_secret" "redis_admin_secret" {
   metadata {
-    name      = "redis-password"
+    name      = local.password_secret_name
     namespace = local.namespace
   }
 

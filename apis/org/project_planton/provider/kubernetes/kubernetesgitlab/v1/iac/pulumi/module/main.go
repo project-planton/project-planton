@@ -76,10 +76,10 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 	if locals.IngressHostname != "" {
 		serviceName := service.Metadata.Name().Elem()
 		_, err := networkingv1.NewIngress(ctx,
-			locals.ServiceName+"-ingress",
+			locals.IngressName,
 			&networkingv1.IngressArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name:      pulumi.Sprintf("%s-ingress", locals.ServiceName),
+					Name:      pulumi.String(locals.IngressName),
 					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 					Annotations: pulumi.StringMap{
@@ -93,7 +93,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesgitlabv1.KubernetesGit
 							Hosts: pulumi.StringArray{
 								pulumi.String(locals.IngressHostname),
 							},
-							SecretName: pulumi.Sprintf("%s-tls", locals.ServiceName),
+							SecretName: pulumi.String(locals.TlsSecretName),
 						},
 					},
 					Rules: networkingv1.IngressRuleArray{

@@ -19,14 +19,14 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 	createdKafkaCluster *v1beta2.Kafka) error {
 
 	labels := locals.Labels
-	labels["app"] = vars.SchemaRegistryDeploymentName
+	labels["app"] = locals.SchemaRegistryDeploymentName
 
 	//create schema-registry deployment
 	_, err := appsv1.NewDeployment(ctx,
-		vars.SchemaRegistryDeploymentName,
+		locals.SchemaRegistryDeploymentName,
 		&appsv1.DeploymentArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(vars.SchemaRegistryDeploymentName),
+				Name:      pulumi.String(locals.SchemaRegistryDeploymentName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -34,13 +34,13 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 				Replicas: pulumi.Int(1),
 				Selector: &metav1.LabelSelectorArgs{
 					MatchLabels: pulumi.StringMap{
-						"app": pulumi.String(vars.SchemaRegistryDeploymentName),
+						"app": pulumi.String(locals.SchemaRegistryDeploymentName),
 					},
 				},
 				Template: &corev1.PodTemplateSpecArgs{
 					Metadata: &metav1.ObjectMetaArgs{
 						Labels: pulumi.StringMap{
-							"app": pulumi.String(vars.SchemaRegistryDeploymentName),
+							"app": pulumi.String(locals.SchemaRegistryDeploymentName),
 						},
 					},
 					Spec: &corev1.PodSpecArgs{
@@ -49,7 +49,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 						//},
 						Containers: corev1.ContainerArray{
 							&corev1.ContainerArgs{
-								Name:  pulumi.String(vars.SchemaRegistryDeploymentName),
+								Name:  pulumi.String(locals.SchemaRegistryDeploymentName),
 								Image: pulumi.String(vars.SchemaRegistryDockerImage),
 								Ports: corev1.ContainerPortArray{
 									&corev1.ContainerPortArgs{
@@ -97,15 +97,15 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 										Value: pulumi.Sprintf("%s:%d", locals.BootstrapKubeServiceFqdn,
 											vars.InternalListenerPortNumber),
 									}),
-									corev1.EnvVarInput(corev1.EnvVarArgs{
-										Name: pulumi.String("SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG"),
-										ValueFrom: &corev1.EnvVarSourceArgs{
-											SecretKeyRef: &corev1.SecretKeySelectorArgs{
-												Name: pulumi.String(vars.SaslPasswordSecretName),
-												Key:  pulumi.String(vars.SaslJaasConfigKeyInSecret),
-											},
+								corev1.EnvVarInput(corev1.EnvVarArgs{
+									Name: pulumi.String("SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG"),
+									ValueFrom: &corev1.EnvVarSourceArgs{
+										SecretKeyRef: &corev1.SecretKeySelectorArgs{
+											Name: pulumi.String(locals.AdminPasswordSecretName),
+											Key:  pulumi.String(vars.SaslJaasConfigKeyInSecret),
 										},
-									}),
+									},
+								}),
 								},
 							},
 						},
@@ -117,16 +117,16 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 
 	//create kubernetes service
 	createdService, err := kubernetescorev1.NewService(ctx,
-		vars.SchemaRegistryDeploymentName,
+		locals.SchemaRegistryDeploymentName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(vars.SchemaRegistryKubeServiceName),
+				Name:      pulumi.String(locals.SchemaRegistryKubeServiceName),
 				Namespace: pulumi.String(locals.Namespace),
 			},
 			Spec: &kubernetescorev1.ServiceSpecArgs{
 				Type: pulumi.String("ClusterIP"),
 				Selector: pulumi.StringMap{
-					"app": pulumi.String(vars.SchemaRegistryDeploymentName),
+					"app": pulumi.String(locals.SchemaRegistryDeploymentName),
 				},
 				Ports: kubernetescorev1.ServicePortArray{
 					&kubernetescorev1.ServicePortArgs{
@@ -153,7 +153,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name: pulumi.String(fmt.Sprintf("%s-schema-registry",
-					locals.Namespace)),
+					locals.KubernetesKafka.Metadata.Name)),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -175,7 +175,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 		"schema-registry",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name: pulumi.Sprintf("%s-schema-registry-external", locals.Namespace),
+				Name: pulumi.Sprintf("%s-schema-registry-external", locals.KubernetesKafka.Metadata.Name),
 				// All gateway resources should be created in the ingress deployment namespace
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
@@ -232,7 +232,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 		"schema-registry",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("schema-registry"),
+				Name:      pulumi.String(fmt.Sprintf("%s-schema-registry", locals.KubernetesKafka.Metadata.Name)),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -240,7 +240,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalSchemaRegistryHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:      pulumi.Sprintf("%s-schema-registry-external", locals.Namespace),
+						Name:      pulumi.Sprintf("%s-schema-registry-external", locals.KubernetesKafka.Metadata.Name),
 						Namespace: createdGateway.Metadata.Namespace(),
 					},
 				},
@@ -256,7 +256,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 						},
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
-								Name:      pulumi.String(vars.SchemaRegistryKubeServiceName),
+								Name:      pulumi.String(locals.SchemaRegistryKubeServiceName),
 								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(80),
 							},

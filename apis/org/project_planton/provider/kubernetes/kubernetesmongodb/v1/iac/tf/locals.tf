@@ -46,4 +46,9 @@ locals {
   # Ingress configuration
   ingress_is_enabled        = try(var.spec.ingress.enabled, false)
   ingress_external_hostname = try(var.spec.ingress.hostname, null)
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  password_secret_name     = "${var.metadata.name}-password"
+  external_lb_service_name = "${var.metadata.name}-external-lb"
 }

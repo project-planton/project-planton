@@ -73,7 +73,7 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 					Name: pulumi.String(environmentSecretKey),
 					ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
 						SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
-							Name: pulumi.String(locals.KubernetesDeployment.Spec.Version),
+							Name: pulumi.String(locals.EnvSecretName),
 							Key:  pulumi.String(environmentSecretKey),
 						},
 					},

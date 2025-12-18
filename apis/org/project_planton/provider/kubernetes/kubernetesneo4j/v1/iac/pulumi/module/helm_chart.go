@@ -1,8 +1,6 @@
 package module
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -86,10 +84,10 @@ func helmChart(
 	// ---------------------------------------------------------------------
 	ctx.Export(OpUsername, pulumi.String("neo4j"))
 
-	// the chart creates: <release>-auth  with key "neo4j-password"
-	secretName := fmt.Sprintf("%s-auth", locals.KubernetesNeo4J.Metadata.Name)
-	ctx.Export(OpPasswordSecretName, pulumi.String(secretName))
-	ctx.Export(OpPasswordSecretKey, pulumi.String("neo4j-password"))
+	// The Helm chart creates: <release>-auth with key "neo4j-password"
+	// Using locals.PasswordSecretName to ensure consistency and avoid conflicts
+	ctx.Export(OpPasswordSecretName, pulumi.String(locals.PasswordSecretName))
+	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.Neo4jPasswordSecretKey))
 
 	return nil
 }

@@ -72,7 +72,7 @@ resource "kubernetes_ingress_v1" "gitlab" {
   count = local.ingress_is_enabled ? 1 : 0
 
   metadata {
-    name      = "${var.metadata.name}-ingress"
+    name      = local.ingress_name
     namespace = local.namespace_name
     labels    = local.final_labels
 

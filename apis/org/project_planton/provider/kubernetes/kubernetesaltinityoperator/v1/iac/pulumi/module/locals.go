@@ -19,6 +19,10 @@ type locals struct {
 
 	// HelmValues is the prepared configuration map for the Helm chart
 	HelmValues pulumi.Map
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	HelmReleaseName string
 }
 
 // newLocals creates and initializes local values from the stack input
@@ -31,6 +35,10 @@ func newLocals(stackInput *kubernetesaltinityoperatorv1.KubernetesAltinityOperat
 	if l.Namespace == "" {
 		l.Namespace = vars.DefaultNamespace
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	l.HelmReleaseName = target.Metadata.Name
 
 	// Build standard labels for all resources
 	l.Labels = map[string]string{

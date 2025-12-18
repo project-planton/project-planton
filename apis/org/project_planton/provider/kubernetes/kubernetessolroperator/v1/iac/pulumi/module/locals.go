@@ -1,53 +1,76 @@
 package module
 
 import (
+	"fmt"
+	"strconv"
+
 	kubernetessolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// locals computes derived configuration values from the stack input
-type locals struct {
-	// labels are common labels applied to all resources
-	labels pulumi.StringMap
+// Locals holds computed configuration values from the stack input
+type Locals struct {
+	// KubernetesSolrOperator is the target resource
+	KubernetesSolrOperator *kubernetessolroperatorv1.KubernetesSolrOperator
 
-	// operatorName is the name of the operator deployment
-	operatorName string
+	// Namespace is the Kubernetes namespace to deploy to
+	Namespace string
 
-	// chartVersion is the Helm chart version to install
-	chartVersion string
+	// Labels are common labels applied to all resources
+	Labels map[string]string
+
+	// HelmReleaseName is the name of the Helm release (prefixed with metadata.name for uniqueness)
+	HelmReleaseName string
+
+	// CrdsResourceName is the name of the CRDs ConfigFile resource (prefixed for uniqueness)
+	CrdsResourceName string
+
+	// ChartVersion is the Helm chart version to install
+	ChartVersion string
 }
 
-// newLocals creates computed values from stack input
-func newLocals(stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackInput) *locals {
-	// Use metadata.name or default to "solr-operator"
-	operatorName := "solr-operator"
-	if stackInput.Target != nil && stackInput.Target.Metadata != nil && stackInput.Target.Metadata.Name != "" {
-		operatorName = stackInput.Target.Metadata.Name
-	}
+// initializeLocals creates computed values from stack input
+func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackInput) *Locals {
+	locals := &Locals{}
+
+	locals.KubernetesSolrOperator = stackInput.Target
+
+	target := stackInput.Target
 
 	// Build common labels
-	labels := pulumi.StringMap{
-		"app.kubernetes.io/name":       pulumi.String("solr-operator"),
-		"app.kubernetes.io/managed-by": pulumi.String("project-planton"),
-		"planton.cloud/resource-kind":  pulumi.String("kubernetes-solr-operator"),
+	locals.Labels = map[string]string{
+		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_KubernetesSolrOperator.String(),
 	}
 
-	// Add metadata labels if provided
-	if stackInput.Target != nil && stackInput.Target.Metadata != nil {
-		if stackInput.Target.Metadata.Name != "" {
-			labels["planton.cloud/resource-id"] = pulumi.String(stackInput.Target.Metadata.Name)
-		}
-		if stackInput.Target.Metadata.Org != "" {
-			labels["planton.cloud/organization"] = pulumi.String(stackInput.Target.Metadata.Org)
-		}
-		if stackInput.Target.Metadata.Env != "" {
-			labels["planton.cloud/environment"] = pulumi.String(stackInput.Target.Metadata.Env)
-		}
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	return &locals{
-		labels:       labels,
-		operatorName: operatorName,
-		chartVersion: vars.DefaultStableVersion,
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
+
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
+	}
+
+	// Get namespace from spec, it is required field
+	locals.Namespace = target.Spec.Namespace.GetValue()
+
+	// Export namespace as an output
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Users can prefix metadata.name with component type if needed (e.g., "solr-operator-prod")
+	locals.HelmReleaseName = target.Metadata.Name
+	locals.CrdsResourceName = fmt.Sprintf("%s-crds", target.Metadata.Name)
+
+	// Use stable chart version
+	locals.ChartVersion = vars.DefaultStableVersion
+
+	return locals
 }

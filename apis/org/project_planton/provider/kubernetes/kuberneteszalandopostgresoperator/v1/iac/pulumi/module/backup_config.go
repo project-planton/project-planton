@@ -11,15 +11,11 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-const (
-	backupSecretName    = "r2-postgres-backup-credentials"
-	backupConfigMapName = "postgres-pod-backup-config"
-)
-
 // createBackupResources creates the Secret and ConfigMap for PostgreSQL backups using Cloudflare R2.
 // Returns the ConfigMap name if backup is configured, empty string otherwise.
 func createBackupResources(
 	ctx *pulumi.Context,
+	locals *Locals,
 	backupConfig *kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperatorBackupConfig,
 	namespace string,
 	kubernetesProvider *pulumikubernetes.Provider,
@@ -37,10 +33,10 @@ func createBackupResources(
 
 	// 1. Create Secret for R2 credentials
 	createdSecret, err := corev1.NewSecret(ctx,
-		backupSecretName,
+		locals.BackupSecretName,
 		&corev1.SecretArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:      pulumi.String(backupSecretName),
+				Name:      pulumi.String(locals.BackupSecretName),
 				Namespace: pulumi.String(namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			}),
@@ -93,10 +89,10 @@ func createBackupResources(
 
 	// 5. Create ConfigMap
 	createdConfigMap, err := corev1.NewConfigMap(ctx,
-		backupConfigMapName,
+		locals.BackupConfigMapName,
 		&corev1.ConfigMapArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:      pulumi.String(backupConfigMapName),
+				Name:      pulumi.String(locals.BackupConfigMapName),
 				Namespace: pulumi.String(namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			}),

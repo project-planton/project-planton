@@ -9,8 +9,8 @@ resource "kubernetes_secret" "this" {
   ) ? 1 : 0
 
   metadata {
-    # Secret name is "main" - referenced by cron_job.tf
-    name      = "main"
+    # Computed name to avoid conflicts when multiple instances share a namespace
+    name      = local.env_secrets_secret_name
     namespace = local.namespace_name
     labels    = local.final_labels
   }

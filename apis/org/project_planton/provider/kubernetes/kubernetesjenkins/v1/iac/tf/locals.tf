@@ -79,4 +79,14 @@ locals {
   # If you install Jenkins via Helm with a particular name, set that here.
   # If your helm chart sets the service name as "<chartName>-jenkins", adapt accordingly.
   jenkins_kube_service_name = "${local.resource_id}-jenkins"
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "jenkins-my-ci")
+  admin_credentials_secret_name = "${var.metadata.name}-admin-credentials"
+  ingress_certificate_name      = "${var.metadata.name}-ingress-cert"
+  external_gateway_name         = "${var.metadata.name}-external"
+  http_redirect_route_name      = "${var.metadata.name}-http-redirect"
+  https_route_name              = "${var.metadata.name}-https"
+  tls_secret_name               = "${var.metadata.name}-tls"
 }

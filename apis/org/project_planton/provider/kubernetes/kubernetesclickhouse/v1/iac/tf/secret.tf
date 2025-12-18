@@ -13,7 +13,8 @@ resource "random_password" "clickhouse_password" {
 
 resource "kubernetes_secret_v1" "clickhouse_password" {
   metadata {
-    name      = var.metadata.name
+    # Use computed name to avoid conflicts when multiple instances share a namespace
+    name      = local.password_secret_name
     namespace = local.namespace
   }
 

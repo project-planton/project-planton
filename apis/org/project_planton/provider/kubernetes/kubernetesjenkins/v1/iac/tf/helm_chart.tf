@@ -19,7 +19,7 @@ resource "helm_release" "jenkins" {
               "tag" = "latest"  # Or your chosen tag
             },
             "admin" = {
-              "existingSecret" = local.jenkins_admin_secret_name,
+              "existingSecret" = local.admin_credentials_secret_name,
               "passwordKey"    = local.jenkins_admin_password_secret_key
             },
             "resources" = {

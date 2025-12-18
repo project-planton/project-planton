@@ -11,11 +11,12 @@ import (
 // ingress creates Istio Gateway and HTTPRoute resources for external access when ingress is enabled.
 func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	// Create certificate
+	// Uses computed name from locals to avoid conflicts when multiple instances share a namespace
 	createdCertificate, err := certmanagerv1.NewCertificate(ctx,
-		"ingress-certificate",
+		locals.IngressCertificateName,
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.Namespace),
+				Name:      pulumi.String(locals.IngressCertificateName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -33,11 +34,12 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 	}
 
 	// Create external gateway
+	// Uses computed name from locals to avoid conflicts when multiple instances share a namespace
 	createdGateway, err := gatewayv1.NewGateway(ctx,
-		"external",
+		locals.IngressGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-external", locals.Namespace),
+				Name:      pulumi.String(locals.IngressGatewayName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -88,11 +90,12 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 	}
 
 	// Create http-route for setting up https-redirect for external-hostname
+	// Uses computed name from locals to avoid conflicts when multiple instances share a namespace
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-external-redirect",
+		locals.IngressHttpRedirectRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-external-redirect"),
+				Name:      pulumi.String(locals.IngressHttpRedirectRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -100,7 +103,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+						Name:        pulumi.String(locals.IngressGatewayName),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("http-external"),
 					},
@@ -125,11 +128,12 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 	}
 
 	// Create HTTP route for external hostname for https listener
+	// Uses computed name from locals to avoid conflicts when multiple instances share a namespace
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-external",
+		locals.IngressHttpsRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-external"),
+				Name:      pulumi.String(locals.IngressHttpsRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -137,7 +141,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+						Name:        pulumi.String(locals.IngressGatewayName),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},

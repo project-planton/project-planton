@@ -13,66 +13,58 @@ import (
 
 // Resources creates all Pulumi resources for the Apache Solr Operator Kubernetes add‑on.
 func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.KubernetesSolrOperatorStackInput) error {
-	// set up kubernetes provider from the supplied cluster credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+	// Initialize locals with computed values
+	locals := initializeLocals(ctx, stackInput)
+
+	// Set up kubernetes provider from the supplied cluster credential
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}
 
-	// always install the stable chart version for now
-	var chartVersion = vars.DefaultStableVersion
-
-	// Get namespace from spec
-	namespace := stackInput.Target.Spec.Namespace.GetValue()
-	if namespace == "" {
-		namespace = vars.Namespace // fallback to default
-	}
-
 	// --------------------------------------------------------------------
 	// 1. Namespace - conditionally create based on create_namespace flag
 	// --------------------------------------------------------------------
-	var namespaceOutput pulumi.StringInput
-
 	if stackInput.Target.Spec.CreateNamespace {
-		// Create the namespace
-		createdNs, err := corev1.NewNamespace(ctx, namespace,
+		_, err := corev1.NewNamespace(ctx, locals.Namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(namespace),
+					Name:   pulumi.String(locals.Namespace),
+					Labels: pulumi.ToStringMap(locals.Labels),
 				},
 			},
-			pulumi.Provider(kubeProvider))
+			pulumi.Provider(kubernetesProvider))
 		if err != nil {
 			return errors.Wrap(err, "failed to create namespace")
 		}
-		namespaceOutput = createdNs.Metadata.Name().Elem()
-	} else {
-		// Use existing namespace - just reference the name
-		namespaceOutput = pulumi.String(namespace)
 	}
 
 	// --------------------------------------------------------------------
 	// 2. Apply CRDs required by the operator
+	// Uses computed CrdsResourceName to avoid conflicts when multiple
+	// instances share a namespace.
 	// --------------------------------------------------------------------
-	crds, err := pulumiyaml.NewConfigFile(ctx, "solr-operator-crds",
+	crds, err := pulumiyaml.NewConfigFile(ctx, locals.CrdsResourceName,
 		&pulumiyaml.ConfigFileArgs{
 			File: vars.CrdManifestDownloadURL,
 		},
-		pulumi.Provider(kubeProvider))
+		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to apply CRDs")
 	}
 
 	// --------------------------------------------------------------------
 	// 3. Deploy the operator via Helm
+	// Uses computed HelmReleaseName to avoid conflicts when multiple
+	// instances share a namespace.
 	// --------------------------------------------------------------------
-	_, err = helm.NewRelease(ctx, "solr-operator",
+	_, err = helm.NewRelease(ctx, locals.HelmReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
-			Namespace:       namespaceOutput,
+			Name:            pulumi.String(locals.HelmReleaseName),
+			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
-			Version:         pulumi.String(chartVersion),
+			Version:         pulumi.String(locals.ChartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
 			CleanupOnFail:   pulumi.Bool(true),
@@ -83,17 +75,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 				Repo: pulumi.String(vars.HelmChartRepo),
 			},
 		},
-		pulumi.Provider(kubeProvider),
+		pulumi.Provider(kubernetesProvider),
 		pulumi.DependsOn([]pulumi.Resource{crds}),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
 		return errors.Wrap(err, "failed to install solr‑operator helm release")
 	}
-
-	// --------------------------------------------------------------------
-	// 4. Export stack outputs
-	// --------------------------------------------------------------------
-	ctx.Export(OpNamespace, namespaceOutput)
 
 	return nil
 }

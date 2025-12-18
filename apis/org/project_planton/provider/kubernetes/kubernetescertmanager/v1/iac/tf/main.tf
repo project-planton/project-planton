@@ -45,41 +45,28 @@ resource "helm_release" "cert_manager" {
   cleanup_on_fail = true
 
   # Helm values
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
-
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = local.ksa_name
-  }
-
-  # Configure DNS resolvers for reliable DNS-01 propagation checks
-  set {
-    name  = "extraArgs[0]"
-    value = "--dns01-recursive-nameservers-only"
-  }
-
-  set {
-    name  = "extraArgs[1]"
-    value = "--dns01-recursive-nameservers=1.1.1.1:53,8.8.8.8:53"
-  }
+  values = [yamlencode({
+    installCRDs = true
+    serviceAccount = {
+      create = false
+      name   = local.ksa_name
+    }
+    extraArgs = [
+      "--dns01-recursive-nameservers-only",
+      "--dns01-recursive-nameservers=1.1.1.1:53,8.8.8.8:53"
+    ]
+  })]
 
   depends_on = [kubernetes_service_account.cert_manager]
 }
 
 # Create Kubernetes Secrets for Cloudflare providers
+# Secret names use metadata.name prefix for uniqueness when multiple instances share a namespace
 resource "kubernetes_secret" "cloudflare" {
   for_each = { for provider in local.cloudflare_providers : provider.name => provider }
 
   metadata {
-    name      = "cert-manager-${each.key}-credentials"
+    name      = "${var.metadata.name}-${each.key}-credentials"
     namespace = local.namespace_name
   }
 
@@ -136,11 +123,12 @@ resource "kubernetes_manifest" "cluster_issuer" {
             }
           } :
           # Cloudflare solver
+          # Uses computed secret name with metadata.name prefix for uniqueness
           each.value.cloudflare != null ? {
             dns01 = {
               cloudflare = {
                 apiTokenSecretRef = {
-                  name = "cert-manager-${each.value.provider_name}-credentials"
+                  name = "${var.metadata.name}-${each.value.provider_name}-credentials"
                   key  = "api-token"
                 }
               }

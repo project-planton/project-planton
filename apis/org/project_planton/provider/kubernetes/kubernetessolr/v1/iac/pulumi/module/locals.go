@@ -22,6 +22,13 @@ type Locals struct {
 	Namespace                    string
 	KubernetesSolr               *kubernetessolrv1.KubernetesSolr
 	Labels                       map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	CertificateName              string
+	ExternalGatewayName          string
+	HttpExternalRedirectRouteName string
+	HttpsExternalRouteName       string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessolrv1.KubernetesSolrStackInput) *Locals {
@@ -101,7 +108,13 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessolrv1.Kubernet
 	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
 	locals.IngressCertClusterIssuerName = dnsDomain
 
-	locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.Namespace)
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.IngressCertSecretName = fmt.Sprintf("%s-cert-tls", target.Metadata.Name)
+	locals.CertificateName = fmt.Sprintf("%s-cert", target.Metadata.Name)
+	locals.ExternalGatewayName = fmt.Sprintf("%s-external", target.Metadata.Name)
+	locals.HttpExternalRedirectRouteName = fmt.Sprintf("%s-http-external-redirect", target.Metadata.Name)
+	locals.HttpsExternalRouteName = fmt.Sprintf("%s-https-external", target.Metadata.Name)
 
 	return locals
 }

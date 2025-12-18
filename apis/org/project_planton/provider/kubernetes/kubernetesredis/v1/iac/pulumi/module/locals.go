@@ -11,14 +11,16 @@ import (
 )
 
 type Locals struct {
-	IngressExternalHostname string
-	KubePortForwardCommand  string
-	KubeServiceFqdn         string
-	KubeServiceName         string
-	Namespace               string
-	KubernetesRedis         *kubernetesredisv1.KubernetesRedis
-	RedisPodSelectorLabels  map[string]string
-	Labels                  map[string]string
+	IngressExternalHostname  string
+	KubePortForwardCommand   string
+	KubeServiceFqdn          string
+	KubeServiceName          string
+	Namespace                string
+	KubernetesRedis          *kubernetesredisv1.KubernetesRedis
+	RedisPodSelectorLabels   map[string]string
+	Labels                   map[string]string
+	PasswordSecretName       string
+	ExternalLbServiceName    string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesredisv1.KubernetesRedisStackInput) *Locals {
@@ -57,6 +59,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesredisv1.Kuberne
 		"app.kubernetes.io/instance":  target.Metadata.Name,
 		"app.kubernetes.io/name":      "redis",
 	}
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Users can prefix metadata.name with component type if needed (e.g., "redis-my-cache")
+	locals.PasswordSecretName = fmt.Sprintf("%s-password", target.Metadata.Name)
+	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
 
 	locals.KubeServiceName = fmt.Sprintf("%s-master", target.Metadata.Name)
 

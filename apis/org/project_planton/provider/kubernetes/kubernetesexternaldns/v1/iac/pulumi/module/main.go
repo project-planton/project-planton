@@ -14,6 +14,9 @@ import (
 
 // Resources creates all Pulumi resources for the ExternalDNS Kubernetes add‑on.
 func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.KubernetesExternalDnsStackInput) error {
+	// Initialize locals with computed values
+	locals := initializeLocals(stackInput)
+
 	// Set up the Kubernetes provider from the supplied cluster credential.
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
@@ -23,27 +26,18 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 
 	spec := stackInput.Target.Spec
 
-	// Namespace and chart version with proper defaults
-	namespace := getNamespace(spec)
-	chartVersion := getHelmChartVersion(spec)
-
-	// Use the resource name as the Helm release name (e.g., "kubernetes-external-dns-planton-cloud")
-	// This allows multiple ExternalDNS instances for different domains in the same namespace
-	releaseName := stackInput.Target.Metadata.Name
-	ksaName := releaseName // ServiceAccount name matches the release name
-
 	// Conditionally create namespace based on create_namespace flag
-	if stackInput.Target.Spec.CreateNamespace {
+	if spec.CreateNamespace {
 		// Create new namespace for ExternalDNS
-		_, err := corev1.NewNamespace(ctx, namespace,
+		_, err := corev1.NewNamespace(ctx, locals.Namespace,
 			&corev1.NamespaceArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name: pulumi.String(namespace),
+					Name: pulumi.String(locals.Namespace),
 				},
 			},
 			pulumi.Provider(kubeProvider))
 		if err != nil {
-			return errors.Wrapf(err, "failed to create %s namespace", namespace)
+			return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
 		}
 	}
 	// When create_namespace is false, we assume the namespace already exists
@@ -53,60 +47,53 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	values := pulumi.Map{
 		"serviceAccount": pulumi.Map{
 			"create": pulumi.Bool(false),
-			"name":   pulumi.String(ksaName),
+			"name":   pulumi.String(locals.KsaName),
 		},
 	}
 
 	switch {
-	case spec.GetGke() != nil:
-		gke := spec.GetGke()
+	case locals.IsGke:
 		values["provider"] = pulumi.String("google")
 		values["google"] = pulumi.Map{
-			"project": pulumi.String(gke.ProjectId.GetValue()),
+			"project": pulumi.String(locals.GkeProjectId),
 		}
 		// Zone‑filter keeps ExternalDNS scoped to the desired zone.
 		values["zoneIdFilters"] = pulumi.StringArray{
-			pulumi.String(gke.DnsZoneId.GetValue()),
+			pulumi.String(locals.GkeDnsZoneId),
 		}
 		// Best‑effort GSA e‑mail derivation; users can override by patching the SA.
-		gsaEmail := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", ksaName, gke.ProjectId.GetValue())
-		annotations["iam.gke.io/gcp-service-account"] = pulumi.String(gsaEmail)
+		annotations["iam.gke.io/gcp-service-account"] = pulumi.String(locals.GkeGsaEmail)
 
-	case spec.GetEks() != nil:
-		eks := spec.GetEks()
+	case locals.IsEks:
 		values["provider"] = pulumi.String("aws")
 		values["zoneIdFilters"] = pulumi.StringArray{
-			pulumi.String(eks.Route53ZoneId.GetValue()),
+			pulumi.String(locals.EksRoute53ZoneId),
 		}
-		if eks.IrsaRoleArnOverride != "" {
-			annotations["eks.amazonaws.com/role-arn"] = pulumi.String(eks.IrsaRoleArnOverride)
+		if locals.EksIrsaRoleArn != "" {
+			annotations["eks.amazonaws.com/role-arn"] = pulumi.String(locals.EksIrsaRoleArn)
 		}
 
-	case spec.GetAks() != nil:
-		aks := spec.GetAks()
+	case locals.IsAks:
 		values["provider"] = pulumi.String("azure")
 		values["zoneIdFilters"] = pulumi.StringArray{
-			pulumi.String(aks.DnsZoneId.GetValue()),
+			pulumi.String(locals.AksDnsZoneId),
 		}
-		if aks.ManagedIdentityClientId != "" {
+		if locals.AksManagedIdentityClientId != "" {
 			annotations["azure.workload.identity/client-id"] =
-				pulumi.String(aks.ManagedIdentityClientId)
+				pulumi.String(locals.AksManagedIdentityClientId)
 		}
 
-	case spec.GetCloudflare() != nil:
-		cf := spec.GetCloudflare()
-
-		// Create secret for Cloudflare API token with domain-specific name
-		// Note: The Helm chart expects the key to be "apiKey" even for tokens
-		secretName := fmt.Sprintf("cloudflare-api-token-%s", releaseName)
-		secret, err := corev1.NewSecret(ctx, secretName,
+	case locals.IsCloudflare:
+		// Create secret for Cloudflare API token with unique name
+		// Uses computed name: {metadata.name}-cloudflare-api-token
+		secret, err := corev1.NewSecret(ctx, locals.CloudflareApiTokenSecretName,
 			&corev1.SecretArgs{
 				Metadata: &metav1.ObjectMetaArgs{
-					Name:      pulumi.String(secretName),
-					Namespace: pulumi.String(namespace),
+					Name:      pulumi.String(locals.CloudflareApiTokenSecretName),
+					Namespace: pulumi.String(locals.Namespace),
 				},
 				StringData: pulumi.StringMap{
-					"apiKey": pulumi.String(cf.ApiToken),
+					"apiKey": pulumi.String(locals.CfApiToken),
 				},
 			},
 			pulumi.Provider(kubeProvider))
@@ -140,11 +127,11 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 		// Configure extra args for Cloudflare-specific features only
 		extraArgs := pulumi.StringArray{
 			pulumi.String("--cloudflare-dns-records-per-page=5000"),
-			pulumi.String(fmt.Sprintf("--zone-id-filter=%s", cf.DnsZoneId.GetValue())),
+			pulumi.String(fmt.Sprintf("--zone-id-filter=%s", locals.CfDnsZoneId)),
 		}
 
 		// Add proxy flag if enabled
-		if cf.IsProxied {
+		if locals.CfIsProxied {
 			extraArgs = append(extraArgs, pulumi.String("--cloudflare-proxied"))
 		}
 
@@ -155,19 +142,18 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	}
 
 	// Honor an optional custom ExternalDNS version.
-	kubernetesExternalDnsVersion := spec.GetKubernetesExternalDnsVersion()
-	if kubernetesExternalDnsVersion != "" {
+	if locals.ExternalDnsVersion != "" {
 		values["image"] = pulumi.Map{
-			"tag": pulumi.String(kubernetesExternalDnsVersion),
+			"tag": pulumi.String(locals.ExternalDnsVersion),
 		}
 	}
 
 	// Create the ServiceAccount.
-	_, err = corev1.NewServiceAccount(ctx, ksaName,
+	_, err = corev1.NewServiceAccount(ctx, locals.KsaName,
 		&corev1.ServiceAccountArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:        pulumi.String(ksaName),
-				Namespace:   pulumi.String(namespace),
+				Name:        pulumi.String(locals.KsaName),
+				Namespace:   pulumi.String(locals.Namespace),
 				Annotations: annotations,
 			},
 		},
@@ -177,12 +163,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	}
 
 	// Deploy the Helm release.
-	_, err = helm.NewRelease(ctx, releaseName,
+	_, err = helm.NewRelease(ctx, locals.ReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(releaseName),
-			Namespace:       pulumi.String(namespace),
+			Name:            pulumi.String(locals.ReleaseName),
+			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
-			Version:         pulumi.String(chartVersion),
+			Version:         pulumi.String(locals.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),
 			Atomic:          pulumi.Bool(true),
 			CleanupOnFail:   pulumi.Bool(true),
@@ -199,9 +185,9 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 	}
 
 	// Export stack outputs.
-	ctx.Export(OpNamespace, pulumi.String(namespace))
-	ctx.Export(OpReleaseName, pulumi.String(releaseName))
-	ctx.Export(OpSolverSa, pulumi.String(ksaName))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+	ctx.Export(OpReleaseName, pulumi.String(locals.ReleaseName))
+	ctx.Export(OpSolverSa, pulumi.String(locals.KsaName))
 
 	return nil
 }

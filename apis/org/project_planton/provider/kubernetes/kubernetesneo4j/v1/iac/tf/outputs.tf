@@ -30,7 +30,7 @@ output "username" {
 
 output "password_secret_name" {
   description = "Name of the Kubernetes secret containing the Neo4j password."
-  value       = "${var.metadata.name}-auth"
+  value       = local.password_secret_name
 }
 
 output "password_secret_key" {

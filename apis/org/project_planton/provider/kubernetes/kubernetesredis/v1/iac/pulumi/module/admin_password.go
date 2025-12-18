@@ -15,7 +15,7 @@ func adminPassword(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource) error {
 
 	createdRandomPassword, err := random.NewRandomPassword(ctx,
-		vars.RedisPasswordSecretName,
+		locals.PasswordSecretName,
 		&random.RandomPasswordArgs{
 			Length:     pulumi.Int(12),
 			Special:    pulumi.Bool(true),
@@ -38,10 +38,10 @@ func adminPassword(ctx *pulumi.Context, locals *Locals,
 
 	// create or update the secret
 	createdSecret, err := kubernetescorev1.NewSecret(ctx,
-		vars.RedisPasswordSecretName,
+		locals.PasswordSecretName,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &kubernetesmeta.ObjectMetaArgs{
-				Name:      pulumi.String(vars.RedisPasswordSecretName),
+				Name:      pulumi.String(locals.PasswordSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

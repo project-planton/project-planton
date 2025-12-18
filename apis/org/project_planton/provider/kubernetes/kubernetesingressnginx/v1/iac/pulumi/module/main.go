@@ -96,7 +96,7 @@ func Resources(ctx *pulumi.Context,
 		},
 	}
 
-	_, err = helm.NewRelease(ctx, vars.HelmChartName,
+	_, err = helm.NewRelease(ctx, locals.ReleaseName,
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(locals.ReleaseName),
 			Namespace:       pulumi.String(locals.Namespace),

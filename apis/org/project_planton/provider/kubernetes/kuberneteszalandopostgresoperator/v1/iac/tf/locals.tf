@@ -43,9 +43,12 @@ locals {
   helm_chart_version    = "1.12.2"
 
   # Backup configuration
-  has_backup_config     = var.spec.backup_config != null
-  backup_secret_name    = "r2-postgres-backup-credentials"
-  backup_configmap_name = "postgres-pod-backup-config"
+  has_backup_config = var.spec.backup_config != null
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  backup_secret_name    = "${var.metadata.name}-backup-credentials"
+  backup_configmap_name = "${var.metadata.name}-backup-config"
 
   # R2 configuration (when backup is enabled)
   r2_account_id    = try(var.spec.backup_config.r2_config.cloudflare_account_id, "")

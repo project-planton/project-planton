@@ -28,10 +28,10 @@ func imagePullSecret(ctx *pulumi.Context, locals *Locals,
 		return nil, nil
 	}
 
-	// Create image pull secret resource
+	// Create image pull secret resource with computed name to avoid conflicts
 	secretArgs := &kubernetescorev1.SecretArgs{
 		Metadata: &metav1.ObjectMetaArgs{
-			Name:      pulumi.String("image-pull-secret"),
+			Name:      pulumi.String(locals.ImagePullSecretName),
 			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		},
@@ -40,7 +40,7 @@ func imagePullSecret(ctx *pulumi.Context, locals *Locals,
 	}
 
 	createdImagePullSecret, err := kubernetescorev1.NewSecret(ctx,
-		"image-pull-secret",
+		locals.ImagePullSecretName,
 		secretArgs,
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {

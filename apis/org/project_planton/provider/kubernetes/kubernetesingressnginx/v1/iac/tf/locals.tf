@@ -46,9 +46,11 @@ locals {
     : local.default_chart_version
   )
 
-  # Service names follow Helm chart defaults
-  release_name = local.helm_chart_name
-  service_name = "${local.helm_chart_name}-controller"
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "nginx-public")
+  release_name = var.metadata.name
+  service_name = "${var.metadata.name}-controller"
   service_type = "LoadBalancer"
 
   # Determine service annotations based on cloud provider and internal flag

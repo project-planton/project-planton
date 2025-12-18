@@ -1,6 +1,8 @@
 # Deploy the Schema Registry if enabled in var.spec.schema_registry_container.is_enabled == true.
 # For simplicity, this is a minimal example showing how you might deploy Confluent Schema Registry.
 # The Pulumi code sets up environment variables to connect to Kafka with SCRAM-SHA-512.
+# Resource names are prefixed with the metadata name to avoid conflicts when multiple
+# Kafka instances share the same namespace.
 
 # This resource is created only when is_schema_registry_enabled is true.
 resource "kubernetes_manifest" "schema_registry_deployment" {
@@ -10,29 +12,29 @@ resource "kubernetes_manifest" "schema_registry_deployment" {
     apiVersion = "apps/v1"
     kind       = "Deployment"
     metadata = {
-      name      = "schema-registry"
+      name      = local.schema_registry_deployment_name
       namespace = local.namespace
       labels = merge(local.final_labels, {
-        "app" = "schema-registry"
+        "app" = local.schema_registry_deployment_name
       })
     }
     spec = {
       replicas = try(var.spec.schema_registry_container.replicas, 1)
       selector = {
         matchLabels = {
-          "app" = "schema-registry"
+          "app" = local.schema_registry_deployment_name
         }
       }
       template = {
         metadata = {
           labels = {
-            "app" = "schema-registry"
+            "app" = local.schema_registry_deployment_name
           }
         }
         spec = {
           containers = [
             {
-              name  = "schema-registry"
+              name  = local.schema_registry_deployment_name
               image = "confluentinc/cp-schema-registry:7.2.6"
 
               ports = [
@@ -87,7 +89,7 @@ resource "kubernetes_manifest" "schema_registry_deployment" {
                   name = "SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG"
                   valueFrom = {
                     secretKeyRef = {
-                      name = "admin"  # The KafkaUser Secret defaults to the same name as the user
+                      name = local.admin_password_secret_name  # The KafkaUser Secret uses the same name as the user
                       key = "sasl.jaas.config"
                     }
                   }
@@ -113,7 +115,7 @@ resource "kubernetes_manifest" "schema_registry_service" {
     apiVersion = "v1"
     kind       = "Service"
     metadata = {
-      name      = "sr"
+      name      = local.schema_registry_kube_service_name
       namespace = local.namespace
       labels    = local.final_labels
     }
@@ -121,7 +123,7 @@ resource "kubernetes_manifest" "schema_registry_service" {
       type = "ClusterIP"
 
       selector = {
-        "app" = "schema-registry"
+        "app" = local.schema_registry_deployment_name
       }
 
       ports = [

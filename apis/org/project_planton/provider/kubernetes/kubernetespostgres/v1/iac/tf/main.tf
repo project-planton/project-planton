@@ -13,7 +13,7 @@ resource "kubernetes_service_v1" "external_lb" {
   count = local.ingress_is_enabled && local.ingress_external_hostname != null ? 1 : 0
 
   metadata {
-    name      = "ingress-external-lb"
+    name      = local.external_lb_service_name
     namespace = local.namespace_name
     labels    = local.final_labels
     annotations = {

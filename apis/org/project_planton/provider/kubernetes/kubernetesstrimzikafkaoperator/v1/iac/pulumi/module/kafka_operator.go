@@ -50,9 +50,9 @@ func kafkaOperator(
 	// ---------------------------------------------------------------------
 	_, err := helm.NewRelease(
 		ctx,
-		"kubernetes-strimzi-kafka-operator",
+		l.HelmReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
+			Name:            pulumi.String(l.HelmReleaseName),
 			Namespace:       pulumi.String(l.namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(vars.HelmChartVersion),

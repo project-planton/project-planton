@@ -36,7 +36,7 @@ resource "kubernetes_secret" "cloudflare_api_token" {
   count = local.is_cloudflare ? 1 : 0
 
   metadata {
-    name      = local.cf_secret_name
+    name      = local.cloudflare_api_token_secret_name
     namespace = local.namespace_name
     labels    = local.final_labels
   }
@@ -157,7 +157,7 @@ resource "helm_release" "external_dns" {
     for_each = local.is_cloudflare ? [1] : []
     content {
       name  = "env[0].valueFrom.secretKeyRef.name"
-      value = local.cf_secret_name
+      value = local.cloudflare_api_token_secret_name
     }
   }
 

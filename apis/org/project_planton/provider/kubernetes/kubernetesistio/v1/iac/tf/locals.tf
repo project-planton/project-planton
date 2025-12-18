@@ -32,26 +32,33 @@ locals {
   gateway_namespace = "istio-ingress"
 
   # Helm chart configuration
-  helm_repo           = "https://istio-release.storage.googleapis.com/charts"
-  base_chart_name     = "base"
-  istiod_chart_name   = "istiod"
-  gateway_chart_name  = "gateway"
+  helm_repo             = "https://istio-release.storage.googleapis.com/charts"
+  base_chart_name       = "base"
+  istiod_chart_name     = "istiod"
+  gateway_chart_name    = "gateway"
   default_chart_version = "1.22.3"
 
   # Use specified chart version or default (currently no version field in spec, using default)
   chart_version = local.default_chart_version
 
+  # Computed Helm release names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{chart}
+  # Users can prefix metadata.name with component type if needed (e.g., "istio-prod")
+  base_release_name    = "${var.metadata.name}-base"
+  istiod_release_name  = "${var.metadata.name}-istiod"
+  gateway_release_name = "${var.metadata.name}-gateway"
+
   # Gateway service configuration
-  gateway_service_name = "istio-gateway"
+  gateway_service_name = local.gateway_release_name
   gateway_port         = 80
 
-  # Port forward command for istiod
-  port_forward_command = "kubectl port-forward -n ${local.system_namespace} svc/istiod 15014:15014"
+  # Port forward command for istiod (uses computed release name)
+  port_forward_command = "kubectl port-forward -n ${local.system_namespace} svc/${local.istiod_release_name} 15014:15014"
 
-  # Kubernetes endpoint for istiod
-  kube_endpoint = "istiod.${local.system_namespace}.svc.cluster.local:15012"
+  # Kubernetes endpoint for istiod (uses computed release name)
+  kube_endpoint = "${local.istiod_release_name}.${local.system_namespace}.svc.cluster.local:15012"
 
-  # Ingress endpoint (gateway service endpoint)
-  ingress_endpoint = "${local.gateway_service_name}.${local.gateway_namespace}.svc.cluster.local:${local.gateway_port}"
+  # Ingress endpoint (gateway service endpoint, uses computed release name)
+  ingress_endpoint = "${local.gateway_release_name}.${local.gateway_namespace}.svc.cluster.local:${local.gateway_port}"
 }
 

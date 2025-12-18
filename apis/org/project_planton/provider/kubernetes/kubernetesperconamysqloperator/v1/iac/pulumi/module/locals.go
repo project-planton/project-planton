@@ -1,6 +1,7 @@
 package module
 
 import (
+	"fmt"
 	"strconv"
 
 	kubernetesperconamysqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1"
@@ -15,6 +16,8 @@ type Locals struct {
 	Namespace                      string
 	Labels                         map[string]string
 	KubernetesPerconaMysqlOperator *kubernetesperconamysqloperatorv1.KubernetesPerconaMysqlOperator
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	HelmReleaseName string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -47,6 +50,11 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// export namespace as an output
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "pxc-operator-prod")
+	locals.HelmReleaseName = fmt.Sprintf("%s-pxc-operator", target.Metadata.Name)
 
 	return locals
 }

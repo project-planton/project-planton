@@ -71,7 +71,16 @@ locals {
     join(".", slice(split(".", local.ingress_hostnames[0]), 1, length(split(".", local.ingress_hostnames[0]))))
   ) : ""
 
-  ingress_cert_secret_name = local.resource_id
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  ingress_certificate_name             = "${var.metadata.name}-ingress-cert"
+  ingress_cert_secret_name             = "${var.metadata.name}-ingress-cert"
+  elasticsearch_external_gateway_name  = "${var.metadata.name}-es-external-gateway"
+  elasticsearch_http_redirect_route_name = "${var.metadata.name}-es-http-redirect"
+  elasticsearch_https_route_name       = "${var.metadata.name}-es-https-route"
+  kibana_external_gateway_name         = "${var.metadata.name}-kb-external-gateway"
+  kibana_http_redirect_route_name      = "${var.metadata.name}-kb-http-redirect"
+  kibana_https_route_name              = "${var.metadata.name}-kb-https-route"
 
   # These match your Pulumi vars. Adjust as needed or make them variables.
   istio_ingress_namespace      = "istio-ingress"

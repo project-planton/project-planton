@@ -64,7 +64,14 @@ locals {
 
   # Certificate references
   ingress_cert_cluster_issuer_name = local.ingress_dns_domain
-  ingress_cert_secret_name         = "cert-${local.resource_id}"
+  ingress_cert_secret_name         = "${var.metadata.name}-cert-tls"
+
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  certificate_name                  = "${var.metadata.name}-cert"
+  external_gateway_name             = "${var.metadata.name}-external"
+  http_external_redirect_route_name = "${var.metadata.name}-http-external-redirect"
+  https_external_route_name         = "${var.metadata.name}-https-external"
 
   # Hardcode or customize these as needed, matching the Pulumi vars struct.
   # If you prefer, you can turn these into variables with variable "..." blocks.

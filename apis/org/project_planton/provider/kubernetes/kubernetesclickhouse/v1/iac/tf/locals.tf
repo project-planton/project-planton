@@ -42,6 +42,15 @@ locals {
   # The service name for ClickHouse
   kube_service_name = var.metadata.name
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  # Users can prefix metadata.name with component type if needed (e.g., "clickhouse-my-db")
+  password_secret_name     = "${var.metadata.name}-password"
+  external_lb_service_name = "${var.metadata.name}-external-lb"
+  keeper_installation_name = "${var.metadata.name}-keeper"
+  # Altinity operator creates keeper service with pattern: keeper-<chk-name>
+  keeper_service_name      = "keeper-${local.keeper_installation_name}"
+
   # Altinity operator uses these labels for pod selection
   # These labels are automatically applied by the operator to ClickHouse pods
   clickhouse_pod_selector_labels = {

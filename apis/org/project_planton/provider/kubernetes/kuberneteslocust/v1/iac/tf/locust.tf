@@ -1,7 +1,7 @@
 # Main Python script (main.py)
 resource "kubernetes_config_map" "main_py" {
   metadata {
-    name      = "main-py"
+    name      = local.main_py_configmap_name
     namespace = var.spec.create_namespace ? kubernetes_namespace.this[0].metadata[0].name : local.namespace
     labels    = local.final_labels
   }
@@ -14,7 +14,7 @@ resource "kubernetes_config_map" "main_py" {
 # Additional library files (lib_files_content)
 resource "kubernetes_config_map" "lib_files" {
   metadata {
-    name      = "lib-files"
+    name      = local.lib_files_configmap_name
     namespace = var.spec.create_namespace ? kubernetes_namespace.this[0].metadata[0].name : local.namespace
     labels    = local.final_labels
   }
@@ -59,8 +59,8 @@ locals {
 
     loadtest = {
       name                        = var.spec.load_test.name
-      locust_locustfile_configmap = "main-py"
-      locust_lib_configmap        = "lib-files"
+      locust_locustfile_configmap = local.main_py_configmap_name
+      locust_lib_configmap        = local.lib_files_configmap_name
     }
   }
 

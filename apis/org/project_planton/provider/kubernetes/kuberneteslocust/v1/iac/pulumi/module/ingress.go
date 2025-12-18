@@ -13,10 +13,10 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 
 	// Create certificate
 	createdCertificate, err := certmanagerv1.NewCertificate(ctx,
-		"ingress-certificate",
+		locals.IngressCertificateName,
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.Namespace),
+				Name:      pulumi.String(locals.IngressCertificateName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -35,10 +35,10 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 
 	// Create external gateway
 	createdGateway, err := gatewayv1.NewGateway(ctx,
-		"external",
+		locals.ExternalGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-external", locals.Namespace),
+				Name:      pulumi.String(locals.ExternalGatewayName),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -90,10 +90,10 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 
 	//create http-route for setting up https-redirect for external-hostname
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-external-redirect",
+		locals.HttpExternalRedirectRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-external-redirect"),
+				Name:      pulumi.String(locals.HttpExternalRedirectRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -101,7 +101,7 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+						Name:        pulumi.String(locals.ExternalGatewayName),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("http-external"),
 					},
@@ -124,10 +124,10 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 
 	// Create HTTP route for external hostname for https listener
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-external",
+		locals.HttpsExternalRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-external"),
+				Name:      pulumi.String(locals.HttpsExternalRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -135,7 +135,7 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
+						Name:        pulumi.String(locals.ExternalGatewayName),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},

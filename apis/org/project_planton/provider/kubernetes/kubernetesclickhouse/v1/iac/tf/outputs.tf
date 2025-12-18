@@ -30,7 +30,7 @@ output "username" {
 
 output "password_secret_name" {
   description = "Name of the Secret holding the ClickHouse password."
-  value       = local.kube_service_name
+  value       = local.password_secret_name
 }
 
 output "password_secret_key" {

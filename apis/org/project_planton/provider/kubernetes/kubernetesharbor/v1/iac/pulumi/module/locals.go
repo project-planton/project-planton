@@ -30,6 +30,12 @@ type Locals struct {
 	NotaryExternalHostname       string
 	DatabaseEndpoint             string
 	RedisEndpoint                string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	IngressCertificateName string
+	IngressGatewayName     string
+	IngressHttpRouteName   string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesharborv1.KubernetesHarborStackInput) *Locals {
@@ -138,7 +144,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesharborv1.Kubern
 			locals.IngressCertClusterIssuerName = strings.Join(hostnameParts[1:], ".")
 		}
 
-		locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.Namespace)
+		// Computed resource names to avoid conflicts when multiple instances share a namespace
+		// Format: {metadata.name}-{purpose}
+		locals.IngressCertSecretName = fmt.Sprintf("%s-ingress-cert", target.Metadata.Name)
+		locals.IngressCertificateName = fmt.Sprintf("%s-ingress-cert", target.Metadata.Name)
+		locals.IngressGatewayName = fmt.Sprintf("%s-external", target.Metadata.Name)
+		locals.IngressHttpRouteName = fmt.Sprintf("%s-https-external", target.Metadata.Name)
 	}
 
 	// Ingress configuration for Notary

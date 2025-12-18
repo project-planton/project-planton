@@ -23,8 +23,6 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 		return nil // no external exposure requested
 	}
 
-	svcName := "nats-external-lb"
-
 	selector := map[string]string{
 		// Matches labels applied by the official nats Helm chart v1.x
 		"app.kubernetes.io/name":      "nats",
@@ -38,10 +36,10 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	createdLoadBalancerService, err := kubernetescorev1.NewService(ctx,
-		svcName,
+		locals.ExternalLbServiceName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: &kubernetesmeta.ObjectMetaArgs{
-				Name:        pulumi.String(svcName),
+				Name:        pulumi.String(locals.ExternalLbServiceName),
 				Namespace:   pulumi.String(locals.Namespace),
 				Labels:      pulumi.ToStringMap(locals.Labels),
 				Annotations: annotations,

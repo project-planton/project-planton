@@ -73,11 +73,12 @@ func createKubernetesSecret(
 ) (*kubernetescorev1.Secret, error) {
 	// Create secret with the generated password
 	// Note: Kubernetes automatically base64 encodes secret data, so we use StringData instead
+	// Use computed name to avoid conflicts when multiple instances share a namespace
 	createdSecret, err := kubernetescorev1.NewSecret(ctx,
-		locals.KubernetesClickHouse.Metadata.Name,
+		locals.PasswordSecretName,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesClickHouse.Metadata.Name),
+				Name:      pulumi.String(locals.PasswordSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 			},
 			StringData: pulumi.StringMap{

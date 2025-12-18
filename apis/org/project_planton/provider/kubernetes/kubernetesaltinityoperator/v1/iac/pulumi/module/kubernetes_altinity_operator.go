@@ -39,9 +39,9 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesaltinityoperatorv1.Kub
 
 // helmChart deploys the Altinity ClickHouse Operator Helm chart.
 func helmChart(ctx *pulumi.Context, locals *locals, kubernetesProvider pulumi.ProviderResource) error {
-	_, err := helm.NewRelease(ctx, "kubernetes-altinity-operator",
+	_, err := helm.NewRelease(ctx, locals.HelmReleaseName,
 		&helm.ReleaseArgs{
-			Name:            pulumi.String(vars.HelmChartName),
+			Name:            pulumi.String(locals.HelmReleaseName),
 			Namespace:       pulumi.String(locals.Namespace),
 			Chart:           pulumi.String(vars.HelmChartName),
 			Version:         pulumi.String(vars.HelmChartVersion),
@@ -58,7 +58,7 @@ func helmChart(ctx *pulumi.Context, locals *locals, kubernetesProvider pulumi.Pr
 		pulumi.Provider(kubernetesProvider),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
-		return errors.Wrap(err, "failed to install kubernetes-altinity-operator helm release")
+		return errors.Wrap(err, "failed to install helm release")
 	}
 
 	return nil

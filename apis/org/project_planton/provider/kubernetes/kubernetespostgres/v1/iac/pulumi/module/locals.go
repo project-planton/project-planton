@@ -18,6 +18,9 @@ type Locals struct {
 	Namespace               string
 	KubernetesPostgres      *kubernetespostgresv1.KubernetesPostgres
 	Labels                  map[string]string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	ExternalLbServiceName string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesPostgresStackInput) *Locals {
@@ -76,6 +79,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetespostgresv1.Kube
 
 	//export kube-port-forward command
 	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||

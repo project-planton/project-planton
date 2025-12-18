@@ -67,4 +67,9 @@ locals {
   ingress_cert_cluster_issuer_name = local.ingress_dns_domain != "" ? local.ingress_dns_domain : null
   ingress_cert_secret_name         = local.resource_id
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  env_secrets_secret_name = "${var.metadata.name}-env-secrets"
+  image_pull_secret_name  = "${var.metadata.name}-image-pull-secret"
+
 }

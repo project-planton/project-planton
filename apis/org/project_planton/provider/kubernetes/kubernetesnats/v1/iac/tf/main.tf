@@ -36,7 +36,7 @@ resource "kubernetes_secret_v1" "nats_bearer_token_secret" {
   count = try(var.spec.auth.enabled, false) && try(var.spec.auth.scheme, "") == "bearer_token" ? 1 : 0
 
   metadata {
-    name      = "auth-nats"
+    name      = local.auth_secret_name
     namespace = local.namespace
     labels    = local.labels
   }
@@ -53,7 +53,7 @@ resource "kubernetes_secret_v1" "nats_admin_secret" {
   count = try(var.spec.auth.enabled, false) && try(var.spec.auth.scheme, "") == "basic_auth" ? 1 : 0
 
   metadata {
-    name      = "auth-nats"
+    name      = local.auth_secret_name
     namespace = local.namespace
     labels    = local.labels
   }
@@ -71,7 +71,7 @@ resource "kubernetes_secret_v1" "nats_noauth_secret" {
   count = try(var.spec.auth.enabled, false) && try(var.spec.auth.scheme, "") == "basic_auth" && try(var.spec.auth.no_auth_user.enabled, false) ? 1 : 0
 
   metadata {
-    name      = "no-auth-user"
+    name      = local.no_auth_user_secret_name
     namespace = local.namespace
     labels    = local.labels
   }
@@ -124,7 +124,7 @@ resource "kubernetes_secret_v1" "nats_tls_secret" {
   count = try(var.spec.tls_enabled, false) ? 1 : 0
 
   metadata {
-    name      = "tls-${var.metadata.name}"
+    name      = local.tls_secret_name
     namespace = local.namespace
     labels    = local.labels
   }
@@ -271,7 +271,7 @@ resource "kubernetes_service_v1" "nats_external_lb" {
   count = try(var.spec.ingress.enabled, false) ? 1 : 0
 
   metadata {
-    name      = "nats-external-lb"
+    name      = local.external_lb_service_name
     namespace = local.namespace
     labels    = local.labels
 

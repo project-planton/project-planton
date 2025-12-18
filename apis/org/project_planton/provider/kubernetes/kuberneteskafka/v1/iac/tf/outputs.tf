@@ -5,12 +5,12 @@ output "namespace" {
 
 output "username" {
   description = "The Kafka admin username."
-  value       = "admin"
+  value       = local.admin_username
 }
 
 output "password_secret_name" {
   description = "The name of the Secret containing the Kafka admin SCRAM-SHA-512 credentials."
-  value       = "admin"
+  value       = local.admin_password_secret_name
 }
 
 output "password_secret_key" {

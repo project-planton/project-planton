@@ -12,9 +12,12 @@ import (
 type Locals struct {
 	KubernetesElasticOperator *kuberneteselasticoperatorv1.KubernetesElasticOperator
 	KubeLabels                map[string]string
+	Namespace                 string
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	HelmReleaseName string
 }
 
-func initializeLocals(_ *pulumi.Context, in *kuberneteselasticoperatorv1.KubernetesElasticOperatorStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, in *kuberneteselasticoperatorv1.KubernetesElasticOperatorStackInput) *Locals {
 	var l Locals
 	l.KubernetesElasticOperator = in.Target
 
@@ -33,5 +36,19 @@ func initializeLocals(_ *pulumi.Context, in *kuberneteselasticoperatorv1.Kuberne
 	if env := in.Target.Metadata.Env; env != "" {
 		l.KubeLabels[kuberneteslabelkeys.Environment] = env
 	}
+
+	// Get namespace from spec, fallback to default
+	l.Namespace = in.Target.Spec.Namespace.GetValue()
+	if l.Namespace == "" {
+		l.Namespace = vars.Namespace
+	}
+
+	// Export namespace as an output
+	ctx.Export(OpNamespace, pulumi.String(l.Namespace))
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// The Helm release name uses metadata.name to ensure uniqueness
+	l.HelmReleaseName = in.Target.Metadata.Name
+
 	return &l
 }

@@ -1,6 +1,8 @@
 package module
 
 import (
+	"fmt"
+
 	kuberneteskeycloakv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -19,6 +21,12 @@ type Locals struct {
 	// Keycloak service configuration
 	ServiceName string
 	ServicePort int
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	PasswordSecretName    string // Keycloak admin password secret
+	DbPasswordSecretName  string // PostgreSQL database password secret
+	ExternalLbServiceName string // External LoadBalancer service for ingress
 
 	// Stack outputs
 	PortForwardCommand string
@@ -58,13 +66,23 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteskeycloakv1.Kube
 		locals.Hostname = stackInput.Target.Spec.Ingress.Hostname
 	}
 
+	target := stackInput.Target
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	// Users can prefix metadata.name with component type if needed (e.g., "keycloak-my-auth")
+	locals.PasswordSecretName = fmt.Sprintf("%s-password", target.Metadata.Name)
+	locals.DbPasswordSecretName = fmt.Sprintf("%s-db-password", target.Metadata.Name)
+	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
+
 	// Service configuration
-	locals.ServiceName = "keycloak-" + stackInput.Target.Metadata.Name
+	// ServiceName uses just the metadata.name; Helm chart handles its own suffixes
+	locals.ServiceName = target.Metadata.Name
 	locals.ServicePort = 8080
 
 	// Stack outputs
-	locals.PortForwardCommand = "kubectl port-forward -n " + locals.Namespace + " svc/" + locals.ServiceName + " 8080:8080"
-	locals.KubeEndpoint = locals.ServiceName + "." + locals.Namespace + ".svc.cluster.local:" + "8080"
+	locals.PortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s svc/%s 8080:8080", locals.Namespace, locals.ServiceName)
+	locals.KubeEndpoint = fmt.Sprintf("%s.%s.svc.cluster.local:8080", locals.ServiceName, locals.Namespace)
 
 	if locals.IngressEnabled && locals.Hostname != "" {
 		locals.ExternalHostname = "https://" + locals.Hostname

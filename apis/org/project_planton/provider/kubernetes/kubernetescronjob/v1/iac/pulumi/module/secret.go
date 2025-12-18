@@ -22,12 +22,12 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 
 	// If there are no secrets, we don't need to create a secret resource.
 	// But for consistency, let's create it regardless in case any
-	// future changes rely on the "main" secret existing.
+	// future changes rely on the env secrets secret existing.
 	_, err := corev1.NewSecret(ctx,
-		"main",
+		locals.EnvSecretsSecretName,
 		&corev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String("main"),
+				Name:      pulumi.String(locals.EnvSecretsSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

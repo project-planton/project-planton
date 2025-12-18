@@ -22,10 +22,10 @@ func dbPasswordSecret(ctx *pulumi.Context, locals *Locals,
 	encoded := base64.StdEncoding.EncodeToString([]byte(locals.KubernetesTemporal.Spec.Database.ExternalDatabase.Password))
 
 	_, err := kubernetescorev1.NewSecret(ctx,
-		vars.DatabasePasswordSecretName,
+		locals.DatabasePasswordSecretName,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(vars.DatabasePasswordSecretName),
+				Name:      pulumi.String(locals.DatabasePasswordSecretName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

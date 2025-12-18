@@ -43,6 +43,11 @@ locals {
   # Service name
   kube_service_name = "${var.metadata.name}-grafana"
 
+  # Computed resource names to avoid conflicts when multiple instances share a namespace
+  # Format: {metadata.name}-{purpose}
+  external_ingress_name = "${var.metadata.name}-external"
+  internal_ingress_name = "${var.metadata.name}-internal"
+
   # Internal DNS name for the service
   kube_service_fqdn = "${local.kube_service_name}.${local.namespace}.svc.cluster.local"
 

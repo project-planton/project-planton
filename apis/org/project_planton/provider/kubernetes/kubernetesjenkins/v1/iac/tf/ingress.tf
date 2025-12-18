@@ -7,13 +7,13 @@ resource "kubernetes_manifest" "ingress_certificate" {
       apiVersion = "cert-manager.io/v1"
       kind       = "Certificate"
       metadata = {
-        name      = local.resource_id
+        name      = local.ingress_certificate_name
         namespace = local.istio_ingress_namespace
         labels    = local.final_labels
       }
       spec = {
         dnsNames   = local.ingress_hostnames
-        secretName = local.ingress_cert_secret_name
+        secretName = local.tls_secret_name
         issuerRef = {
           kind = "ClusterIssuer"
           name = local.ingress_cert_cluster_issuer_name
@@ -31,7 +31,7 @@ resource "kubernetes_manifest" "jenkins_external_gateway" {
       apiVersion = "gateway.networking.k8s.io/v1beta1"
       kind       = "Gateway"
       metadata = {
-        name      = "${local.resource_id}-external"
+        name      = local.external_gateway_name
         namespace = local.istio_ingress_namespace
         labels    = local.final_labels
       }
@@ -53,7 +53,7 @@ resource "kubernetes_manifest" "jenkins_external_gateway" {
               mode = "Terminate"
               certificateRefs = [
                 {
-                  name = local.ingress_cert_secret_name
+                  name = local.tls_secret_name
                 }
               ]
             }
@@ -92,7 +92,7 @@ resource "kubernetes_manifest" "jenkins_http_external_redirect" {
       apiVersion = "gateway.networking.k8s.io/v1beta1"
       kind       = "HTTPRoute"
       metadata = {
-        name      = "http-external-redirect"
+        name      = local.http_redirect_route_name
         namespace = local.namespace
         labels    = local.final_labels
       }
@@ -100,7 +100,7 @@ resource "kubernetes_manifest" "jenkins_http_external_redirect" {
         hostnames = [local.ingress_external_hostname]
         parentRefs = [
           {
-            name        = "${local.resource_id}-external"
+            name        = local.external_gateway_name
             namespace   = local.istio_ingress_namespace
             sectionName = "http-external"
           }
@@ -135,7 +135,7 @@ resource "kubernetes_manifest" "jenkins_https_external" {
       apiVersion = "gateway.networking.k8s.io/v1beta1"
       kind       = "HTTPRoute"
       metadata = {
-        name      = "https-external"
+        name      = local.https_route_name
         namespace = local.namespace
         labels    = local.final_labels
       }
@@ -143,7 +143,7 @@ resource "kubernetes_manifest" "jenkins_https_external" {
         hostnames = [local.ingress_external_hostname]
         parentRefs = [
           {
-            name        = "${local.resource_id}-external"
+            name        = local.external_gateway_name
             namespace   = local.istio_ingress_namespace
             sectionName = "https-external"
           }

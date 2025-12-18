@@ -10,7 +10,8 @@ resource "kubernetes_namespace" "kubernetes_percona_postgres_operator" {
 }
 
 resource "helm_release" "kubernetes_percona_postgres_operator" {
-  name       = local.helm_chart_name
+  # Use local.helm_release_name to avoid conflicts when multiple instances share a namespace
+  name       = local.helm_release_name
   repository = local.helm_chart_repo
   chart      = local.helm_chart_name
   version    = local.helm_chart_version

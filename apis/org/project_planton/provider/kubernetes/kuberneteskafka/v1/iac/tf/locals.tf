@@ -37,6 +37,18 @@ locals {
     : local.resource_id
   )
 
+  # Prefixed resource names to avoid conflicts when multiple Kafka instances share a namespace
+  kafka_cluster_name               = var.metadata.name
+  kafka_ingress_cert_name          = "${var.metadata.name}-kafka-ingress"
+  kafka_ingress_cert_secret_name   = "cert-${var.metadata.name}-kafka-ingress"
+  admin_username                   = "${var.metadata.name}-admin"
+  admin_password_secret_name       = "${var.metadata.name}-admin"
+  schema_registry_deployment_name  = "${var.metadata.name}-schema-registry"
+  schema_registry_kube_service_name = "${var.metadata.name}-sr"
+  kowl_config_map_name             = "${var.metadata.name}-kowl"
+  kowl_deployment_name             = "${var.metadata.name}-kowl"
+  kowl_kube_service_name           = "${var.metadata.name}-kowl"
+
   # Kafka broker container replicas (for convenience)
   broker_replicas = try(var.spec.broker_container.replicas, 1)
 
@@ -48,7 +60,7 @@ locals {
   ingress_dns_domain = try(var.spec.ingress.dns_domain, "")
 
   # Name and FQDN for the Kafka bootstrap service inside the cluster
-  bootstrap_kube_service_name = "${local.resource_id}-kafka-bootstrap"
+  bootstrap_kube_service_name = "${var.metadata.name}-kafka-bootstrap"
   bootstrap_kube_service_fqdn = "${local.bootstrap_kube_service_name}.${local.namespace}.svc"
 
   # External and internal bootstrap hostnames (null if ingress is disabled)
@@ -88,15 +100,21 @@ locals {
   # Schema Registry external and internal hostnames (null if ingress or registry is disabled)
   schema_registry_external_hostname = (
   local.ingress_is_enabled && local.ingress_dns_domain != "" && local.is_schema_registry_enabled
-  ) ? "${local.resource_id}-schema-registry.${local.ingress_dns_domain}" : null
+  ) ? "${var.metadata.name}-schema-registry.${local.ingress_dns_domain}" : null
 
   schema_registry_internal_hostname = (
   local.ingress_is_enabled && local.ingress_dns_domain != "" && local.is_schema_registry_enabled
-  ) ? "${local.resource_id}-schema-registry-internal.${local.ingress_dns_domain}" : null
+  ) ? "${var.metadata.name}-schema-registry-internal.${local.ingress_dns_domain}" : null
 
   schema_registry_hostnames = concat(
     compact([local.schema_registry_external_hostname, local.schema_registry_internal_hostname])
   )
+
+  # Schema Registry FQDN for internal cluster access
+  schema_registry_kube_service_fqdn = "${local.schema_registry_kube_service_name}.${local.namespace}.svc.cluster.local"
+
+  # Ingress certificate secret name for Schema Registry
+  ingress_schema_registry_cert_secret_name = "cert-${var.metadata.name}-schema-registry"
 
   # Flag to indicate whether we deploy a Kafka UI (Kowl)
   is_deploy_kafka_ui = try(var.spec.is_deploy_kafka_ui, true)
@@ -104,5 +122,11 @@ locals {
   # Kowl external hostname (null if ingress is disabled or if we're not deploying it)
   kowl_external_hostname = (
   local.ingress_is_enabled && local.ingress_dns_domain != "" && local.is_deploy_kafka_ui
-  ) ? "${local.resource_id}-kowl.${local.ingress_dns_domain}" : null
+  ) ? "${var.metadata.name}-kowl.${local.ingress_dns_domain}" : null
+
+  # Kowl service FQDN for internal cluster access
+  kowl_kube_service_fqdn = "${local.kowl_kube_service_name}.${local.namespace}.svc.cluster.local"
+
+  # Ingress certificate secret name for Kowl
+  ingress_kowl_cert_secret_name = "cert-${var.metadata.name}-kowl"
 }

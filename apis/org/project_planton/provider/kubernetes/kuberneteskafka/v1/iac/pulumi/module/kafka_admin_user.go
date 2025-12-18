@@ -18,7 +18,7 @@ func kafkaAdminUser(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 		"admin-user",
 		&v1beta2.KafkaUserArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(vars.AdminUsername),
+				Name:      pulumi.String(locals.AdminUsername),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},

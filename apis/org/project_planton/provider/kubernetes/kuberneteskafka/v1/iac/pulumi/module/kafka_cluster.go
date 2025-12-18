@@ -30,13 +30,13 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 			"kafka-ingress-certificate",
 			&certmanagerv1.CertificateArgs{
 				Metadata: metav1.ObjectMetaArgs{
-					Name:      pulumi.String(locals.Namespace),
+					Name:      pulumi.String(locals.KafkaIngressCertName),
 					Namespace: pulumi.String(locals.Namespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},
 				Spec: certmanagerv1.CertificateSpecArgs{
 					DnsNames:   pulumi.ToStringArray(locals.IngressHostnames),
-					SecretName: pulumi.String(vars.BootstrapServerIngressCertSecretName),
+					SecretName: pulumi.String(locals.KafkaIngressCertSecretName),
 					IssuerRef: certmanagerv1.CertificateSpecIssuerRefArgs{
 						Kind: pulumi.String("ClusterIssuer"),
 						Name: pulumi.String(locals.IngressCertClusterIssuerName),
@@ -63,11 +63,11 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 					TopicOperator: v1beta2.KafkaSpecEntityOperatorTopicOperatorArgs{},
 					UserOperator:  v1beta2.KafkaSpecEntityOperatorUserOperatorArgs{},
 				},
-				Kafka: v1beta2.KafkaSpecKafkaArgs{
-					Authorization: v1beta2.KafkaSpecKafkaAuthorizationArgs{
-						SuperUsers: pulumi.StringArray{pulumi.String(vars.AdminUsername)},
-						Type:       pulumi.String("simple"),
-					},
+			Kafka: v1beta2.KafkaSpecKafkaArgs{
+				Authorization: v1beta2.KafkaSpecKafkaAuthorizationArgs{
+					SuperUsers: pulumi.StringArray{pulumi.String(locals.AdminUsername)},
+					Type:       pulumi.String("simple"),
+				},
 					Config:    vars.KafkaClusterDefaultConfig,
 					Listeners: listenersArray,
 					Replicas:  pulumi.Int(locals.KubernetesKafka.Spec.BrokerContainer.Replicas),
@@ -147,7 +147,7 @@ func getIngressListeners(locals *Locals) v1beta2.KafkaSpecKafkaListenersArray {
 				BrokerCertChainAndKey: &v1beta2.KafkaSpecKafkaListenersConfigurationBrokerCertChainAndKeyArgs{
 					Certificate: pulumi.String("tls.crt"),
 					Key:         pulumi.String("tls.key"),
-					SecretName:  pulumi.String(vars.BootstrapServerIngressCertSecretName),
+					SecretName:  pulumi.String(locals.KafkaIngressCertSecretName),
 				},
 			},
 		})
@@ -176,7 +176,7 @@ func getIngressListeners(locals *Locals) v1beta2.KafkaSpecKafkaListenersArray {
 			BrokerCertChainAndKey: &v1beta2.KafkaSpecKafkaListenersConfigurationBrokerCertChainAndKeyArgs{
 				Certificate: pulumi.String("tls.crt"),
 				Key:         pulumi.String("tls.key"),
-				SecretName:  pulumi.String(vars.BootstrapServerIngressCertSecretName),
+				SecretName:  pulumi.String(locals.KafkaIngressCertSecretName),
 			},
 		},
 	})

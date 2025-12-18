@@ -120,7 +120,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesargocdv1.Kubern
 	// For example: "argocd.example.com" -> "example.com"
 	dnsDomain := extractDomainFromHostname(target.Spec.Ingress.Hostname)
 	locals.IngressCertClusterIssuerName = dnsDomain
-	locals.IngressCertSecretName = resourceId
+	// Computed TLS secret name to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.IngressCertSecretName = fmt.Sprintf("%s-tls", target.Metadata.Name)
 
 	return locals
 }

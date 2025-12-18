@@ -27,6 +27,15 @@ type Locals struct {
 	IngressCertSecretName             string
 	OtelCollectorExternalHttpHostname string
 	ClickhouseEndpoint                string
+
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	SignozCertificateName string
+	SignozGatewayName     string
+	SignozHTTPRouteName   string
+	OtelCertificateName   string
+	OtelGatewayName       string
+	OtelHTTPRouteName     string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessignozv1.KubernetesSignozStackInput) *Locals {
@@ -97,6 +106,15 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessignozv1.Kubern
 		ctx.Export(OpClickhousePasswordSecretKey, pulumi.String("admin-password"))
 	}
 
+	// Computed resource names to avoid conflicts when multiple instances share a namespace
+	// Format: {metadata.name}-{purpose}
+	locals.SignozCertificateName = fmt.Sprintf("%s-signoz-cert", target.Metadata.Name)
+	locals.SignozGatewayName = fmt.Sprintf("%s-signoz-external-gateway", target.Metadata.Name)
+	locals.SignozHTTPRouteName = fmt.Sprintf("%s-signoz-https-route", target.Metadata.Name)
+	locals.OtelCertificateName = fmt.Sprintf("%s-otel-http-cert", target.Metadata.Name)
+	locals.OtelGatewayName = fmt.Sprintf("%s-otel-http-external-gateway", target.Metadata.Name)
+	locals.OtelHTTPRouteName = fmt.Sprintf("%s-otel-https-route", target.Metadata.Name)
+
 	// Ingress configuration for SigNoz UI
 	if target.Spec.Ingress != nil &&
 		target.Spec.Ingress.Ui != nil &&
@@ -117,7 +135,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessignozv1.Kubern
 			locals.IngressCertClusterIssuerName = strings.Join(hostnameParts[1:], ".")
 		}
 
-		locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.Namespace)
+		// Use computed name to avoid conflicts when multiple instances share a namespace
+		locals.IngressCertSecretName = locals.SignozCertificateName
 	}
 
 	// Ingress configuration for OTel Collector

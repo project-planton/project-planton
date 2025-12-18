@@ -23,7 +23,7 @@ resource "random_password" "mongodb_root_password" {
 # Percona operator expects plaintext passwords in StringData (Kubernetes auto-encodes)
 resource "kubernetes_secret_v1" "mongodb_password" {
   metadata {
-    name      = var.metadata.name
+    name      = local.password_secret_name
     namespace = local.namespace
     labels    = local.final_labels
   }
@@ -105,7 +105,7 @@ resource "kubernetes_service_v1" "mongodb_external_lb" {
   count = local.ingress_is_enabled ? 1 : 0
 
   metadata {
-    name      = "ingress-external-lb"
+    name      = local.external_lb_service_name
     namespace = local.namespace
     labels    = local.final_labels
 

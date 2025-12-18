@@ -1,7 +1,6 @@
 package module
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -27,8 +26,8 @@ func frontendHttpIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Hostname + cert secret name
-	httpHostname := locals.IngressFrontendHttpHostname                   // User-specified hostname
-	certSecret := fmt.Sprintf("%s-frontend-http-cert", locals.Namespace) // deterministic
+	httpHostname := locals.IngressFrontendHttpHostname        // User-specified hostname
+	certSecret := locals.FrontendHttpCertSecretName           // Computed from metadata.name
 
 	// Extract domain from hostname for ClusterIssuer name
 	hostnameParts := strings.Split(httpHostname, ".")
@@ -60,9 +59,9 @@ func frontendHttpIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// --------------------- Gateway -----------------------------------------
-	gwName := pulumi.Sprintf("%s-frontend-http-external", locals.Namespace)
+	gwName := pulumi.String(locals.FrontendHttpGatewayName)
 	createdGateway, err := gatewayv1.NewGateway(ctx,
-		"external-frontend-http",
+		locals.FrontendHttpGatewayName,
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      gwName,
@@ -117,10 +116,10 @@ func frontendHttpIngress(ctx *pulumi.Context, locals *Locals,
 
 	// ----------------- HTTPRoute (redirect) --------------------------------
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-frontend-http-external-redirect",
+		locals.FrontendHttpRedirectRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-frontend-http-external-redirect"),
+				Name:      pulumi.String(locals.FrontendHttpRedirectRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -154,10 +153,10 @@ func frontendHttpIngress(ctx *pulumi.Context, locals *Locals,
 
 	// ----------------- HTTPRoute (HTTPS) -----------------------------------
 	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-frontend-http-external",
+		locals.FrontendHttpsRouteName,
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-frontend-http-external"),
+				Name:      pulumi.String(locals.FrontendHttpsRouteName),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

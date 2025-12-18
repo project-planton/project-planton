@@ -29,7 +29,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 	kowlConfig, err := fileutil.RenderTemplate(&kowlConfigTemplateInput{
 		BootstrapKubeServiceFqdn:       locals.BootstrapKubeServiceFqdn,
 		BootstrapServerKubeServicePort: vars.InternalListenerPortNumber,
-		SaslUsername:                   vars.AdminUsername,
+		SaslUsername:                   locals.AdminUsername,
 		SchemaRegistryHostname:         locals.SchemaRegistryKubeServiceFqdn,
 		RefreshIntervalMinutes:         vars.KowlRefreshIntervalMinutes,
 		IsSchemaRegistryEnabled:        locals.KubernetesKafka.Spec.SchemaRegistryContainer.IsEnabled,
@@ -39,11 +39,11 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 	}
 
 	createdConfigMap, err := kubernetescorev1.NewConfigMap(ctx,
-		vars.KowlConfigMapName,
+		locals.KowlConfigMapName,
 		&kubernetescorev1.ConfigMapArgs{
 			Data: pulumi.ToStringMap(map[string]string{vars.KowlConfigKeyName: string(kowlConfig)}),
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(vars.KowlConfigMapName),
+				Name:      pulumi.String(locals.KowlConfigMapName),
 				Namespace: pulumi.String(locals.Namespace),
 			},
 		}, pulumi.Provider(kubernetesProvider))
@@ -52,11 +52,11 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 	}
 
 	labels := locals.Labels
-	labels["app"] = vars.KowlDeploymentName
+	labels["app"] = locals.KowlDeploymentName
 
-	_, err = appsv1.NewDeployment(ctx, vars.KowlDeploymentName, &appsv1.DeploymentArgs{
+	_, err = appsv1.NewDeployment(ctx, locals.KowlDeploymentName, &appsv1.DeploymentArgs{
 		Metadata: &metav1.ObjectMetaArgs{
-			Name:      pulumi.String(vars.KowlDeploymentName),
+			Name:      pulumi.String(locals.KowlDeploymentName),
 			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(labels),
 		},
@@ -64,13 +64,13 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 			Replicas: pulumi.Int(1),
 			Selector: &metav1.LabelSelectorArgs{
 				MatchLabels: pulumi.StringMap{
-					"app": pulumi.String(vars.KowlDeploymentName),
+					"app": pulumi.String(locals.KowlDeploymentName),
 				},
 			},
 			Template: &kubernetescorev1.PodTemplateSpecArgs{
 				Metadata: &metav1.ObjectMetaArgs{
 					Labels: pulumi.StringMap{
-						"app": pulumi.String(vars.KowlDeploymentName),
+						"app": pulumi.String(locals.KowlDeploymentName),
 					},
 				},
 				Spec: &kubernetescorev1.PodSpecArgs{
@@ -84,7 +84,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 					},
 					Containers: kubernetescorev1.ContainerArray{
 						&kubernetescorev1.ContainerArgs{
-							Name:  pulumi.String(vars.KowlDeploymentName),
+							Name:  pulumi.String(locals.KowlDeploymentName),
 							Image: pulumi.String(vars.KowlDockerImage),
 							Args: pulumi.ToStringArray([]string{
 								//https://github.com/cloudhut/charts/blob/master/kowl/templates/deployment.yaml
@@ -102,7 +102,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 									Name: pulumi.String(vars.KowlEnvVarNameKafkaSaslPassword),
 									ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
 										SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
-											Name: pulumi.String(vars.SaslPasswordSecretName),
+											Name: pulumi.String(locals.AdminPasswordSecretName),
 											Key:  pulumi.String(vars.SaslPasswordKeyInSecret),
 										},
 									},
@@ -139,16 +139,16 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 
 	//create service
 	createdService, err := kubernetescorev1.NewService(ctx,
-		vars.KowlDeploymentName,
+		locals.KowlDeploymentName,
 		&kubernetescorev1.ServiceArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(vars.KowlKubeServiceName),
+				Name:      pulumi.String(locals.KowlKubeServiceName),
 				Namespace: pulumi.String(locals.Namespace),
 			},
 			Spec: &kubernetescorev1.ServiceSpecArgs{
 				Type: pulumi.String("ClusterIP"),
 				Selector: pulumi.StringMap{
-					"app": pulumi.String(vars.KowlDeploymentName),
+					"app": pulumi.String(locals.KowlDeploymentName),
 				},
 				Ports: kubernetescorev1.ServicePortArray{
 					&kubernetescorev1.ServicePortArgs{
@@ -174,7 +174,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 		"kowl-ingress-certificate",
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(fmt.Sprintf("%s-kowl", locals.Namespace)),
+				Name:      pulumi.String(fmt.Sprintf("%s-kowl", locals.KubernetesKafka.Metadata.Name)),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -198,7 +198,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 		"kowl",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name: pulumi.Sprintf("%s-kowl-external", locals.Namespace),
+				Name: pulumi.Sprintf("%s-kowl-external", locals.KubernetesKafka.Metadata.Name),
 				// All gateway resources should be created in the ingress deployment namespace
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
@@ -255,7 +255,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 		"kowl",
 		&gatewayv1.HTTPRouteArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("kowl"),
+				Name:      pulumi.String(fmt.Sprintf("%s-kowl", locals.KubernetesKafka.Metadata.Name)),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -263,7 +263,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalKowlHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:      pulumi.Sprintf("%s-kowl-external", locals.Namespace),
+						Name:      pulumi.Sprintf("%s-kowl-external", locals.KubernetesKafka.Metadata.Name),
 						Namespace: createdGateway.Metadata.Namespace(),
 					},
 				},
@@ -279,7 +279,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provide
 						},
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
-								Name:      pulumi.String(vars.KowlKubeServiceName),
+								Name:      pulumi.String(locals.KowlKubeServiceName),
 								Namespace: pulumi.String(locals.Namespace),
 								Port:      pulumi.Int(80),
 							},
