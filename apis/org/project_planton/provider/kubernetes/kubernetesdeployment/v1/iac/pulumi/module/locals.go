@@ -32,15 +32,15 @@ type Locals struct {
 	SelectorLabels               map[string]string
 
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
-	EnvSecretName                  string
-	ImagePullSecretName            string
-	IngressCertificateName         string
-	ExternalGatewayName            string
-	InternalGatewayName            string
-	HttpExternalRedirectRouteName  string
-	HttpsExternalRouteName         string
-	HttpInternalRedirectRouteName  string
-	HttpsInternalRouteName         string
+	EnvSecretName                 string
+	ImagePullSecretName           string
+	IngressCertificateName        string
+	ExternalGatewayName           string
+	InternalGatewayName           string
+	HttpExternalRedirectRouteName string
+	HttpsExternalRouteName        string
+	HttpInternalRedirectRouteName string
+	HttpsInternalRouteName        string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.KubernetesDeploymentStackInput) (*Locals, error) {

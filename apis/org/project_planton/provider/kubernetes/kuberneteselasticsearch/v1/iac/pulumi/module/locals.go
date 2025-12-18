@@ -29,13 +29,13 @@ type Locals struct {
 
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
 	// Format: {metadata.name}-{purpose}
-	IngressCertificateName               string
-	ElasticsearchExternalGatewayName     string
-	ElasticsearchHttpRedirectRouteName   string
-	ElasticsearchHttpsRouteName          string
-	KibanaExternalGatewayName            string
-	KibanaHttpRedirectRouteName          string
-	KibanaHttpsRouteName                 string
+	IngressCertificateName             string
+	ElasticsearchExternalGatewayName   string
+	ElasticsearchHttpRedirectRouteName string
+	ElasticsearchHttpsRouteName        string
+	KibanaExternalGatewayName          string
+	KibanaHttpRedirectRouteName        string
+	KibanaHttpsRouteName               string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteselasticsearchv1.KubernetesElasticsearchStackInput) *Locals {

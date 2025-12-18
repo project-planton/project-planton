@@ -63,11 +63,11 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 					TopicOperator: v1beta2.KafkaSpecEntityOperatorTopicOperatorArgs{},
 					UserOperator:  v1beta2.KafkaSpecEntityOperatorUserOperatorArgs{},
 				},
-			Kafka: v1beta2.KafkaSpecKafkaArgs{
-				Authorization: v1beta2.KafkaSpecKafkaAuthorizationArgs{
-					SuperUsers: pulumi.StringArray{pulumi.String(locals.AdminUsername)},
-					Type:       pulumi.String("simple"),
-				},
+				Kafka: v1beta2.KafkaSpecKafkaArgs{
+					Authorization: v1beta2.KafkaSpecKafkaAuthorizationArgs{
+						SuperUsers: pulumi.StringArray{pulumi.String(locals.AdminUsername)},
+						Type:       pulumi.String("simple"),
+					},
 					Config:    vars.KafkaClusterDefaultConfig,
 					Listeners: listenersArray,
 					Replicas:  pulumi.Int(locals.KubernetesKafka.Spec.BrokerContainer.Replicas),

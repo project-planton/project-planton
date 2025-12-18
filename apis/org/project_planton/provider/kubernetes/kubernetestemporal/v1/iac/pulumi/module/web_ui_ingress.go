@@ -27,8 +27,8 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Hostname + cert secret name
-	uiHostname := locals.IngressUIHostname       // User-specified hostname
-	certSecret := locals.UiCertSecretName        // Computed from metadata.name
+	uiHostname := locals.IngressUIHostname // User-specified hostname
+	certSecret := locals.UiCertSecretName  // Computed from metadata.name
 
 	// Extract domain from hostname for ClusterIssuer name
 	hostnameParts := strings.Split(uiHostname, ".")

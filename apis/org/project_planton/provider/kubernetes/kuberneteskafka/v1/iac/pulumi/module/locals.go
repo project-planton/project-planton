@@ -27,16 +27,16 @@ type Locals struct {
 	BootstrapKubeServiceName         string
 
 	// Prefixed resource names to avoid conflicts when multiple Kafka instances share a namespace
-	KafkaClusterName                     string
-	KafkaIngressCertName                 string
-	KafkaIngressCertSecretName           string
-	AdminUsername                        string
-	AdminPasswordSecretName              string
-	SchemaRegistryDeploymentName         string
-	SchemaRegistryKubeServiceName        string
-	KowlConfigMapName                    string
-	KowlDeploymentName                   string
-	KowlKubeServiceName                  string
+	KafkaClusterName              string
+	KafkaIngressCertName          string
+	KafkaIngressCertSecretName    string
+	AdminUsername                 string
+	AdminPasswordSecretName       string
+	SchemaRegistryDeploymentName  string
+	SchemaRegistryKubeServiceName string
+	KowlConfigMapName             string
+	KowlDeploymentName            string
+	KowlKubeServiceName           string
 
 	// schema registry
 	IngressSchemaRegistryCertSecretName   string

@@ -34,20 +34,20 @@ type Locals struct {
 	CloudflareApiTokenSecretName string
 
 	// GKE-specific configuration
-	GkeProjectId    string
-	GkeDnsZoneId    string
-	GkeGsaEmail     string
-	IsGke           bool
+	GkeProjectId string
+	GkeDnsZoneId string
+	GkeGsaEmail  string
+	IsGke        bool
 
 	// EKS-specific configuration
-	EksRoute53ZoneId   string
-	EksIrsaRoleArn     string
-	IsEks              bool
+	EksRoute53ZoneId string
+	EksIrsaRoleArn   string
+	IsEks            bool
 
 	// AKS-specific configuration
-	AksDnsZoneId                string
-	AksManagedIdentityClientId  string
-	IsAks                       bool
+	AksDnsZoneId               string
+	AksManagedIdentityClientId string
+	IsAks                      bool
 
 	// Cloudflare-specific configuration
 	CfApiToken   string

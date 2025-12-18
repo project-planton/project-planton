@@ -5,7 +5,6 @@ go_library(
     srcs = [
         "cloud_resource.go",
         "credential.go",
-        "deployment_component.go",
         "stack_update.go",
         "stack_update_streaming_response.go",
     ],

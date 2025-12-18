@@ -25,12 +25,12 @@ type Locals struct {
 
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
 	// Format: {metadata.name}-{purpose}
-	MainPyConfigMapName          string
-	LibFilesConfigMapName        string
-	IngressCertificateName       string
-	ExternalGatewayName          string
+	MainPyConfigMapName           string
+	LibFilesConfigMapName         string
+	IngressCertificateName        string
+	ExternalGatewayName           string
 	HttpExternalRedirectRouteName string
-	HttpsExternalRouteName       string
+	HttpsExternalRouteName        string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteslocustv1.KubernetesLocustStackInput) *Locals {

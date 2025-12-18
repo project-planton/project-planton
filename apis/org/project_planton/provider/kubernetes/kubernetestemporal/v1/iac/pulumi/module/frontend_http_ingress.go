@@ -26,8 +26,8 @@ func frontendHttpIngress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	// Hostname + cert secret name
-	httpHostname := locals.IngressFrontendHttpHostname        // User-specified hostname
-	certSecret := locals.FrontendHttpCertSecretName           // Computed from metadata.name
+	httpHostname := locals.IngressFrontendHttpHostname // User-specified hostname
+	certSecret := locals.FrontendHttpCertSecretName    // Computed from metadata.name
 
 	// Extract domain from hostname for ClusterIssuer name
 	hostnameParts := strings.Split(httpHostname, ".")

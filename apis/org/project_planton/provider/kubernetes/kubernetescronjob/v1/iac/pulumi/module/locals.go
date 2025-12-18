@@ -18,8 +18,8 @@ type Locals struct {
 	ImagePullSecretData map[string]string
 
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
-	EnvSecretsSecretName   string
-	ImagePullSecretName    string
+	EnvSecretsSecretName string
+	ImagePullSecretName  string
 }
 
 // initializeLocals configures the Locals struct from the given stack input.

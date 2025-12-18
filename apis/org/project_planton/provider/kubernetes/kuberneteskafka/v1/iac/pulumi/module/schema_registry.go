@@ -97,15 +97,15 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 										Value: pulumi.Sprintf("%s:%d", locals.BootstrapKubeServiceFqdn,
 											vars.InternalListenerPortNumber),
 									}),
-								corev1.EnvVarInput(corev1.EnvVarArgs{
-									Name: pulumi.String("SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG"),
-									ValueFrom: &corev1.EnvVarSourceArgs{
-										SecretKeyRef: &corev1.SecretKeySelectorArgs{
-											Name: pulumi.String(locals.AdminPasswordSecretName),
-											Key:  pulumi.String(vars.SaslJaasConfigKeyInSecret),
+									corev1.EnvVarInput(corev1.EnvVarArgs{
+										Name: pulumi.String("SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG"),
+										ValueFrom: &corev1.EnvVarSourceArgs{
+											SecretKeyRef: &corev1.SecretKeySelectorArgs{
+												Name: pulumi.String(locals.AdminPasswordSecretName),
+												Key:  pulumi.String(vars.SaslJaasConfigKeyInSecret),
+											},
 										},
-									},
-								}),
+									}),
 								},
 							},
 						},

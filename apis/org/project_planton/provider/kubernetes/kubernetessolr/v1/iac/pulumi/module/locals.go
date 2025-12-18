@@ -25,10 +25,10 @@ type Locals struct {
 
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
 	// Format: {metadata.name}-{purpose}
-	CertificateName              string
-	ExternalGatewayName          string
+	CertificateName               string
+	ExternalGatewayName           string
 	HttpExternalRedirectRouteName string
-	HttpsExternalRouteName       string
+	HttpsExternalRouteName        string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessolrv1.KubernetesSolrStackInput) *Locals {

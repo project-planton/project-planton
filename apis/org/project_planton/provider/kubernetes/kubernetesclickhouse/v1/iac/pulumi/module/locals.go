@@ -20,10 +20,10 @@ type Locals struct {
 	ClickhousePodSelectorLabels map[string]string
 	KubernetesLabels            map[string]string
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
-	PasswordSecretName       string
-	ExternalLbServiceName    string
-	KeeperInstallationName   string
-	KeeperServiceName        string
+	PasswordSecretName     string
+	ExternalLbServiceName  string
+	KeeperInstallationName string
+	KeeperServiceName      string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesclickhousev1.KubernetesClickHouseStackInput) *Locals {

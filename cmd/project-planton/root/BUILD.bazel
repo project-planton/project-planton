@@ -18,7 +18,6 @@ go_library(
         "credential_update.go",
         "destroy.go",
         "init.go",
-        "list_deployment_component.go",
         "load_manifest.go",
         "plan.go",
         "pulumi.go",

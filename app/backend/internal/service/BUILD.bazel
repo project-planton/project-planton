@@ -6,7 +6,6 @@ go_library(
         "cloud_resource_service.go",
         "credential_resolver.go",
         "credential_service.go",
-        "deployment_component_service.go",
         "stack_update_service.go",
     ],
     importpath = "github.com/project-planton/project-planton/app/backend/internal/service",

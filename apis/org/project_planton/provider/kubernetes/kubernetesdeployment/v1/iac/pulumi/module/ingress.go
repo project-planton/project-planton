@@ -56,34 +56,34 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 						Hostname: pulumi.String(locals.IngressExternalHostname),
 						Port:     pulumi.Int(443),
 						Protocol: pulumi.String("HTTPS"),
-					Tls: &gatewayv1.GatewaySpecListenersTlsArgs{
-						Mode: pulumi.String("Terminate"),
-						CertificateRefs: gatewayv1.GatewaySpecListenersTlsCertificateRefsArray{
-							gatewayv1.GatewaySpecListenersTlsCertificateRefsArgs{
-								Name: pulumi.String(locals.IngressCertificateName),
+						Tls: &gatewayv1.GatewaySpecListenersTlsArgs{
+							Mode: pulumi.String("Terminate"),
+							CertificateRefs: gatewayv1.GatewaySpecListenersTlsCertificateRefsArray{
+								gatewayv1.GatewaySpecListenersTlsCertificateRefsArgs{
+									Name: pulumi.String(locals.IngressCertificateName),
+								},
+							},
+						},
+						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
+							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
+								From: pulumi.String("All"),
 							},
 						},
 					},
-					AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
-						Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
-							From: pulumi.String("All"),
-						},
-					},
-				},
-				&gatewayv1.GatewaySpecListenersArgs{
-					Name:     pulumi.String("http-external"),
-					Hostname: pulumi.String(locals.IngressExternalHostname),
-					Port:     pulumi.Int(80),
-					Protocol: pulumi.String("HTTP"),
-					AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
-						Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
-							From: pulumi.String("All"),
+					&gatewayv1.GatewaySpecListenersArgs{
+						Name:     pulumi.String("http-external"),
+						Hostname: pulumi.String(locals.IngressExternalHostname),
+						Port:     pulumi.Int(80),
+						Protocol: pulumi.String("HTTP"),
+						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
+							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
+								From: pulumi.String("All"),
+							},
 						},
 					},
 				},
 			},
-		},
-	}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{addedCertificate}))
+		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{addedCertificate}))
 	if err != nil {
 		return errors.Wrap(err, "error creating gateway for ingress from external clients")
 	}
@@ -107,19 +107,19 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 					},
 				},
 				Listeners: gatewayv1.GatewaySpecListenersArray{
-				&gatewayv1.GatewaySpecListenersArgs{
-					Name:     pulumi.String("https-internal"),
-					Hostname: pulumi.String(locals.IngressInternalHostname),
-					Port:     pulumi.Int(443),
-					Protocol: pulumi.String("HTTPS"),
-					Tls: &gatewayv1.GatewaySpecListenersTlsArgs{
-						Mode: pulumi.String("Terminate"),
-						CertificateRefs: gatewayv1.GatewaySpecListenersTlsCertificateRefsArray{
-							gatewayv1.GatewaySpecListenersTlsCertificateRefsArgs{
-								Name: pulumi.String(locals.IngressCertificateName),
+					&gatewayv1.GatewaySpecListenersArgs{
+						Name:     pulumi.String("https-internal"),
+						Hostname: pulumi.String(locals.IngressInternalHostname),
+						Port:     pulumi.Int(443),
+						Protocol: pulumi.String("HTTPS"),
+						Tls: &gatewayv1.GatewaySpecListenersTlsArgs{
+							Mode: pulumi.String("Terminate"),
+							CertificateRefs: gatewayv1.GatewaySpecListenersTlsCertificateRefsArray{
+								gatewayv1.GatewaySpecListenersTlsCertificateRefsArgs{
+									Name: pulumi.String(locals.IngressCertificateName),
+								},
 							},
 						},
-					},
 						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
 							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
 								From: pulumi.String("All"),

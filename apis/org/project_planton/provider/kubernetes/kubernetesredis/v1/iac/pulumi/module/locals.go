@@ -11,16 +11,16 @@ import (
 )
 
 type Locals struct {
-	IngressExternalHostname  string
-	KubePortForwardCommand   string
-	KubeServiceFqdn          string
-	KubeServiceName          string
-	Namespace                string
-	KubernetesRedis          *kubernetesredisv1.KubernetesRedis
-	RedisPodSelectorLabels   map[string]string
-	Labels                   map[string]string
-	PasswordSecretName       string
-	ExternalLbServiceName    string
+	IngressExternalHostname string
+	KubePortForwardCommand  string
+	KubeServiceFqdn         string
+	KubeServiceName         string
+	Namespace               string
+	KubernetesRedis         *kubernetesredisv1.KubernetesRedis
+	RedisPodSelectorLabels  map[string]string
+	Labels                  map[string]string
+	PasswordSecretName      string
+	ExternalLbServiceName   string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesredisv1.KubernetesRedisStackInput) *Locals {
