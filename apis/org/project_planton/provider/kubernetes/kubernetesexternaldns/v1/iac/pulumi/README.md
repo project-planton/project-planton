@@ -85,7 +85,7 @@ target:
       kubernetes_cluster_id:
         value: prod-gke-cluster
     # Optional: override defaults
-    namespace: kubernetes-external-dns  # default
+    namespace: external-dns  # default
     kubernetes_external_dns_version: v0.19.0  # default
     helm_chart_version: 1.19.0  # default
     # Provider config (choose one):
@@ -151,7 +151,7 @@ When `create_namespace` is set to `true`, the module creates the namespace using
 ```yaml
 spec:
   namespace:
-    value: kubernetes-external-dns
+    value: external-dns
   create_namespace: true  # Module will create the namespace
 ```
 
@@ -205,7 +205,7 @@ values["zoneIdFilters"] = [dns_zone_id]
   gcloud iam service-accounts add-iam-policy-binding \
     <release-name>@<project-id>.iam.gserviceaccount.com \
     --role roles/iam.workloadIdentityUser \
-    --member "serviceAccount:<project-id>.svc.id.goog[kubernetes-external-dns/<release-name>]"
+    --member "serviceAccount:<project-id>.svc.id.goog[external-dns/<release-name>]"
   ```
 
 #### EKS (AWS Route53)
@@ -324,7 +324,7 @@ Each instance:
 
 **ExternalDNS pod not starting?**
 ```bash
-kubectl logs -n kubernetes-external-dns <pod-name>
+kubectl logs -n external-dns <pod-name>
 ```
 
 **Authentication errors?**

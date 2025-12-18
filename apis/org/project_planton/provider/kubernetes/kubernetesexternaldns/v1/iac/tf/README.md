@@ -91,7 +91,7 @@ module "external_dns" {
 
   spec = {
     namespace = {
-      value = "kubernetes-external-dns"  # optional, defaults to "kubernetes-external-dns"
+      value = "external-dns"  # optional, defaults to "external-dns"
     }
     create_namespace = true  # optional, defaults to false
     
@@ -159,7 +159,7 @@ When `create_namespace` is set to `true`, the module creates the namespace:
 ```hcl
 spec = {
   namespace = {
-    value = "kubernetes-external-dns"
+    value = "external-dns"
   }
   create_namespace = true  # Module will create the namespace
   # ... provider config
@@ -210,7 +210,7 @@ The `spec` variable defines the ExternalDNS configuration. Choose **one** provid
 ```hcl
 spec = {
   namespace = {
-    value = "kubernetes-external-dns"  # Optional
+    value = "external-dns"  # Optional
   }
   create_namespace = true  # Optional, defaults to false
   kubernetes_external_dns_version = "v0.19.0"  # Optional

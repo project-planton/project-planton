@@ -181,7 +181,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 		},
 		pulumi.Provider(kubeProvider))
 	if err != nil {
-		return errors.Wrap(err, "failed to install kubernetes-external-dns helm release")
+		return errors.Wrap(err, "failed to install external-dns helm release")
 	}
 
 	// Export stack outputs.

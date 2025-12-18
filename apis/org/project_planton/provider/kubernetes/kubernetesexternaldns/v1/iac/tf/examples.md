@@ -39,7 +39,7 @@ module "external_dns_gke" {
 
   spec = {
     namespace = {
-      value = "kubernetes-external-dns"
+      value = "external-dns"
     }
     create_namespace = true  # Creates namespace if it doesn't exist
     gke = {
@@ -111,7 +111,7 @@ module "external_dns_eks" {
 
   spec = {
     namespace = {
-      value = "kubernetes-external-dns"
+      value = "external-dns"
     }
     create_namespace = true  # Creates namespace if it doesn't exist
     eks = {
@@ -184,7 +184,7 @@ module "external_dns_aks" {
 
   spec = {
     namespace = {
-      value = "kubernetes-external-dns"
+      value = "external-dns"
     }
     create_namespace = true  # Creates namespace if it doesn't exist
     aks = {
@@ -240,7 +240,7 @@ module "external_dns_cloudflare" {
 
   spec = {
     namespace = {
-      value = "kubernetes-external-dns"
+      value = "external-dns"
     }
     create_namespace = true  # Creates namespace if it doesn't exist
     cloudflare = {

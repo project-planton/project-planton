@@ -5,6 +5,6 @@ var vars = struct {
 	HelmChartName string
 	HelmChartRepo string
 }{
-	HelmChartName: "kubernetes-external-dns",
-	HelmChartRepo: "https://kubernetes-sigs.github.io/kubernetes-external-dns/",
+	HelmChartName: "external-dns",
+	HelmChartRepo: "https://kubernetes-sigs.github.io/external-dns/",
 }

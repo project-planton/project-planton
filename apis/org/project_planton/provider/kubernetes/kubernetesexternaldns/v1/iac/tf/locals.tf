@@ -34,7 +34,7 @@ locals {
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
   # Namespace with default (StringValueOrRef)
-  namespace = try(var.spec.namespace.value, "kubernetes-external-dns")
+  namespace = try(var.spec.namespace.value, "external-dns")
 
   # Namespace reference - either created or existing
   namespace_name = try(var.spec.create_namespace, false) ? (

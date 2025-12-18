@@ -124,7 +124,7 @@ func initializeLocals(stackInput *kubernetesexternaldnsv1.KubernetesExternalDnsS
 func getNamespace(spec *kubernetesexternaldnsv1.KubernetesExternalDnsSpec) string {
 	namespace := spec.Namespace.GetValue()
 	if namespace == "" {
-		return "kubernetes-external-dns" // default
+		return "external-dns" // default
 	}
 	return namespace
 }
