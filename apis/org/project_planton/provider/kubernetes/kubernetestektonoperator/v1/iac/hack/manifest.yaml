@@ -1,0 +1,22 @@
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTektonOperator
+metadata:
+  name: tekton-operator-test
+  labels:
+    app: tekton
+    environment: development
+spec:
+  target_cluster:
+    kubernetes_credential_id: "test-k8s-cluster-cred"
+  container:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+  components:
+    pipelines: true
+    triggers: true
+    dashboard: true
