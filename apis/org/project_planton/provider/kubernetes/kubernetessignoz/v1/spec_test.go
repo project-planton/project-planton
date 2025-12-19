@@ -135,7 +135,11 @@ var _ = ginkgo.Describe("KubernetesSignozSpec validations", func() {
 						ClusterName: proto.String("cluster"),
 						IsSecure:    false,
 						Username:    "signoz",
-						Password:    "my-password",
+						Password: &kubernetes.KubernetesSensitiveValue{
+							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+								StringValue: "my-password",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(spec)
@@ -198,7 +202,11 @@ var _ = ginkgo.Describe("KubernetesSignozSpec validations", func() {
 						TcpPort:     proto.Int32(9000),
 						ClusterName: proto.String("cluster"),
 						Username:    "signoz",
-						Password:    "my-password",
+						Password: &kubernetes.KubernetesSensitiveValue{
+							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+								StringValue: "my-password",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(spec)
@@ -214,7 +222,11 @@ var _ = ginkgo.Describe("KubernetesSignozSpec validations", func() {
 						TcpPort:     proto.Int32(0),
 						ClusterName: proto.String("cluster"),
 						Username:    "signoz",
-						Password:    "my-password",
+						Password: &kubernetes.KubernetesSensitiveValue{
+							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+								StringValue: "my-password",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(spec)

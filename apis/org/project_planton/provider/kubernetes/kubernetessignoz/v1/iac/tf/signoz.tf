@@ -108,15 +108,25 @@ resource "helm_release" "signoz" {
           }
 
           # External ClickHouse configuration
-          externalClickhouse = var.spec.database.is_external && var.spec.database.external_database != null ? {
-            host     = var.spec.database.external_database.host
-            httpPort = var.spec.database.external_database.http_port
-            tcpPort  = var.spec.database.external_database.tcp_port
-            cluster  = var.spec.database.external_database.cluster_name
-            secure   = var.spec.database.external_database.is_secure
-            user     = var.spec.database.external_database.username
-            password = var.spec.database.external_database.password
-          } : null
+          externalClickhouse = var.spec.database.is_external && var.spec.database.external_database != null ? merge(
+            {
+              host     = var.spec.database.external_database.host
+              httpPort = var.spec.database.external_database.http_port
+              tcpPort  = var.spec.database.external_database.tcp_port
+              cluster  = var.spec.database.external_database.cluster_name
+              secure   = var.spec.database.external_database.is_secure
+              user     = var.spec.database.external_database.username
+            },
+            # Handle password - either as plain string or from existing secret
+            try(var.spec.database.external_database.password.secret_ref, null) != null ? {
+              # Use existing Kubernetes secret for password
+              existingSecret            = var.spec.database.external_database.password.secret_ref.name
+              existingSecretPasswordKey = var.spec.database.external_database.password.secret_ref.key
+            } : try(var.spec.database.external_database.password.string_value, null) != null ? {
+              # Use plain string password
+              password = var.spec.database.external_database.password.string_value
+            } : {}
+          ) : null
 
           # Zookeeper configuration (required for distributed ClickHouse)
           zookeeper = !var.spec.database.is_external && local.zookeeper_is_enabled && var.spec.database.managed_database.zookeeper.container != null ? merge(
