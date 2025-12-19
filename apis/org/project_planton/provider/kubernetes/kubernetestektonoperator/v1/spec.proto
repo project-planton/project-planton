@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.kubernetestektonoperator.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/options.proto";
+import "org/project_planton/provider/kubernetes/target_cluster.proto";
+
+// KubernetesTektonOperatorSpec defines the configuration for deploying the Tekton Operator on a Kubernetes cluster.
+// Tekton Operator manages the lifecycle of Tekton components including Pipelines, Triggers, and Dashboard.
+// This message specifies the parameters needed to install and configure the Tekton Operator.
+message KubernetesTektonOperatorSpec {
+  // Target Kubernetes Cluster where the Tekton Operator will be deployed.
+  org.project_planton.provider.kubernetes.KubernetesClusterSelector target_cluster = 1;
+
+  // The container specifications for the Tekton Operator deployment.
+  KubernetesTektonOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
+
+  // Configuration for which Tekton components to install.
+  KubernetesTektonOperatorComponents components = 3 [(buf.validate.field).required = true];
+}
+
+// KubernetesTektonOperatorSpecContainer specifies the container configuration for the Tekton Operator.
+// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
+message KubernetesTektonOperatorSpecContainer {
+  // The CPU and memory resources allocated to the Tekton Operator container.
+  org.project_planton.provider.kubernetes.ContainerResources resources = 1 [(org.project_planton.provider.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "500m"
+      memory: "512Mi"
+    }
+    requests: {
+      cpu: "100m"
+      memory: "128Mi"
+    }
+  }];
+}
+
+// KubernetesTektonOperatorComponents specifies which Tekton components should be installed by the operator.
+// At least one component must be enabled.
+message KubernetesTektonOperatorComponents {
+  // Enable Tekton Pipelines component for running CI/CD pipelines.
+  // Pipelines is the core component and is typically always enabled.
+  bool pipelines = 1;
+
+  // Enable Tekton Triggers component for event-driven pipeline execution.
+  // Triggers allows pipelines to be started by external events like webhooks.
+  bool triggers = 2;
+
+  // Enable Tekton Dashboard for a web-based UI to view and manage pipelines.
+  bool dashboard = 3;
+
+  // Ensure at least one component is enabled.
+  option (buf.validate.message).cel = {
+    id: "components.at_least_one"
+    expression: "this.pipelines || this.triggers || this.dashboard"
+    message: "at least one Tekton component (pipelines, triggers, or dashboard) must be enabled"
+  };
+}
