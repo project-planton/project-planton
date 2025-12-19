@@ -1,0 +1,3 @@
+name: kubernetes-gateway-api-crds
+runtime: go
+description: Pulumi module for KubernetesGatewayApiCrds - installs Gateway API CRDs on Kubernetes clusters

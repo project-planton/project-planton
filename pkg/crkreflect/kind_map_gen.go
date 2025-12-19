@@ -102,6 +102,7 @@ import (
 	kuberneteselasticsearchv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1"
 	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	kubernetesexternalsecretsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1"
+	kubernetesgatewayapicrdsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1"
 	kubernetesgitlabv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
 	kubernetesgrafanav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1"
 	kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
@@ -265,6 +266,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesElasticsearch:           &kuberneteselasticsearchv1.KubernetesElasticsearch{},
 	cloudresourcekind.CloudResourceKind_KubernetesExternalDns:             &kubernetesexternaldnsv1.KubernetesExternalDns{},
 	cloudresourcekind.CloudResourceKind_KubernetesExternalSecrets:         &kubernetesexternalsecretsv1.KubernetesExternalSecrets{},
+	cloudresourcekind.CloudResourceKind_KubernetesGatewayApiCrds:          &kubernetesgatewayapicrdsv1.KubernetesGatewayApiCrds{},
 	cloudresourcekind.CloudResourceKind_KubernetesGitlab:                  &kubernetesgitlabv1.KubernetesGitlab{},
 	cloudresourcekind.CloudResourceKind_KubernetesGrafana:                 &kubernetesgrafanav1.KubernetesGrafana{},
 	cloudresourcekind.CloudResourceKind_KubernetesHarbor:                  &kubernetesharborv1.KubernetesHarbor{},
