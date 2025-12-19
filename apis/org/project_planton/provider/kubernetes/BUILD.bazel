@@ -4,6 +4,7 @@ go_library(
     name = "kubernetes",
     srcs = [
         "kubernetes.pb.go",
+        "kubernetes_secret.pb.go",
         "options.pb.go",
         "probe.pb.go",
         "provider.pb.go",

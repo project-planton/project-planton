@@ -132,9 +132,16 @@ spec:
 
 ---
 
-## Example w/ External ClickHouse
+## Example w/ External ClickHouse (Password from Kubernetes Secret - Recommended)
 
-This example demonstrates how to connect SigNoz to an external ClickHouse instance instead of deploying a self-managed one. This is useful when ClickHouse is managed by a separate team or cloud provider.
+This example demonstrates how to connect SigNoz to an external ClickHouse instance using a password stored in a Kubernetes Secret. This is the recommended approach for production deployments.
+
+First, create a Kubernetes Secret with the ClickHouse password:
+```bash
+kubectl create secret generic clickhouse-credentials \
+  --from-literal=password=your-secure-password \
+  --namespace=signoz
+```
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -174,7 +181,60 @@ spec:
       clusterName: cluster
       isSecure: false
       username: signoz
-      password: my-secure-password
+      # Reference an existing Kubernetes Secret for the password
+      password:
+        secretRef:
+          name: clickhouse-credentials
+          key: password
+```
+
+---
+
+## Example w/ External ClickHouse (Plain String Password)
+
+This example demonstrates how to connect SigNoz to an external ClickHouse instance using a plain string password. This approach is suitable for development/testing but not recommended for production.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: SignozKubernetes
+metadata:
+  name: signoz-external-clickhouse-dev
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "signoz-dev"
+  create_namespace: true
+  signozContainer:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+  otelCollectorContainer:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 8Gi
+  database:
+    isExternal: true
+    externalDatabase:
+      host: clickhouse.database.svc.cluster.local
+      httpPort: 8123
+      tcpPort: 9000
+      clusterName: cluster
+      isSecure: false
+      username: signoz
+      # Plain string password (not recommended for production)
+      password:
+        stringValue: my-secure-password
 ```
 
 ---

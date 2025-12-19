@@ -69,15 +69,29 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 				helmValues["clickhouse"] = pulumi.Map{
 					"enabled": pulumi.Bool(false),
 				}
-				helmValues["externalClickhouse"] = pulumi.Map{
+				externalClickhouseValues := pulumi.Map{
 					"host":     pulumi.String(ext.Host),
 					"httpPort": pulumi.Int(int(ext.GetHttpPort())),
 					"tcpPort":  pulumi.Int(int(ext.GetTcpPort())),
 					"cluster":  pulumi.String(ext.GetClusterName()),
 					"secure":   pulumi.Bool(ext.IsSecure),
 					"user":     pulumi.String(ext.Username),
-					"password": pulumi.String(ext.Password),
 				}
+
+				// Handle password - either as plain string or from existing secret
+				if ext.Password != nil {
+					if ext.Password.GetSecretRef() != nil {
+						// Use existing Kubernetes secret for password
+						secretRef := ext.Password.GetSecretRef()
+						externalClickhouseValues["existingSecret"] = pulumi.String(secretRef.Name)
+						externalClickhouseValues["existingSecretPasswordKey"] = pulumi.String(secretRef.Key)
+					} else if ext.Password.GetStringValue() != "" {
+						// Use plain string password
+						externalClickhouseValues["password"] = pulumi.String(ext.Password.GetStringValue())
+					}
+				}
+
+				helmValues["externalClickhouse"] = externalClickhouseValues
 			}
 		} else {
 			// Self-managed ClickHouse configuration

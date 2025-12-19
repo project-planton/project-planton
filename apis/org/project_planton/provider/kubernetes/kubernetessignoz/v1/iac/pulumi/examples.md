@@ -139,9 +139,16 @@ spec:
 
 ---
 
-## 3. External ClickHouse Configuration
+## 3. External ClickHouse with Password from Kubernetes Secret (Recommended)
 
-Example connecting SigNoz to an existing external ClickHouse instance instead of deploying one within the cluster.
+Example connecting SigNoz to an existing external ClickHouse instance using a password stored in a Kubernetes Secret. This is the recommended approach for production deployments.
+
+First, create a Kubernetes Secret with the ClickHouse password:
+```bash
+kubectl create secret generic clickhouse-credentials \
+  --from-literal=password=your-secure-password \
+  --namespace=signoz-external-ch
+```
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -181,14 +188,72 @@ spec:
       clusterName: cluster
       isSecure: false
       username: signoz
-      password: my-secure-password
+      # Reference an existing Kubernetes Secret for the password
+      password:
+        secretRef:
+          name: clickhouse-credentials
+          key: password
 ```
 
 **Key points**:
 - No ClickHouse or Zookeeper deployed by SigNoz
 - Connects to external ClickHouse instance
+- Password securely stored in Kubernetes Secret
 - Reduced operational overhead
 - Ideal for centralized database management
+
+---
+
+## 3b. External ClickHouse with Plain String Password
+
+Example connecting SigNoz to an external ClickHouse instance using a plain string password. This approach is suitable for development/testing but not recommended for production.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: SignozKubernetes
+metadata:
+  name: signoz-external-ch-dev
+spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: signoz-external-ch
+  createNamespace: true
+  signozContainer:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+  otelCollectorContainer:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 8Gi
+  database:
+    isExternal: true
+    externalDatabase:
+      host: clickhouse.database.svc.cluster.local
+      httpPort: 8123
+      tcpPort: 9000
+      clusterName: cluster
+      isSecure: false
+      username: signoz
+      # Plain string password (not recommended for production)
+      password:
+        stringValue: my-secure-password
+```
+
+**Key points**:
+- Plain text password in configuration (avoid in production)
+- Suitable for development/testing environments
 
 ---
 

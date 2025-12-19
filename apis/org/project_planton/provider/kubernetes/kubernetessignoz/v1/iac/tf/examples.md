@@ -172,11 +172,16 @@ module "signoz_production" {
 
 ---
 
-## Example 3: External ClickHouse Configuration
+## Example 3: External ClickHouse with Password from Kubernetes Secret (Recommended)
 
-This example demonstrates connecting SigNoz to an existing external ClickHouse instance.
+This example demonstrates connecting SigNoz to an existing external ClickHouse instance using a password stored in a Kubernetes Secret. This is the recommended approach for production deployments.
 
 ```hcl
+# First, create a Kubernetes Secret with the ClickHouse password:
+# kubectl create secret generic clickhouse-credentials \
+#   --from-literal=password=your-secure-password \
+#   --namespace=signoz-external
+
 module "signoz_external_clickhouse" {
   source = "./path/to/module"
 
@@ -227,7 +232,80 @@ module "signoz_external_clickhouse" {
         cluster_name = "cluster"
         is_secure    = false
         username     = "signoz"
-        password     = var.clickhouse_password # Store in variable or secret manager
+        # Reference an existing Kubernetes Secret for the password
+        password = {
+          secret_ref = {
+            name = "clickhouse-credentials"
+            key  = "password"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+## Example 3b: External ClickHouse with Plain String Password
+
+This example demonstrates connecting SigNoz to an external ClickHouse instance using a plain string password. This approach is suitable for development/testing but not recommended for production.
+
+```hcl
+module "signoz_external_clickhouse_string" {
+  source = "./path/to/module"
+
+  metadata = {
+    name = "signoz-external"
+    org  = "mycompany"
+    env  = "development"
+  }
+
+  spec = {
+    namespace        = "signoz-external"
+    create_namespace = true
+
+    signoz_container = {
+      replicas = 2
+      resources = {
+        requests = {
+          cpu    = "500m"
+          memory = "1Gi"
+        }
+        limits = {
+          cpu    = "2000m"
+          memory = "4Gi"
+        }
+      }
+    }
+
+    otel_collector_container = {
+      replicas = 3
+      resources = {
+        requests = {
+          cpu    = "1000m"
+          memory = "2Gi"
+        }
+        limits = {
+          cpu    = "4000m"
+          memory = "8Gi"
+        }
+      }
+    }
+
+    database = {
+      is_external = true
+      external_database = {
+        host         = "clickhouse.database.svc.cluster.local"
+        http_port    = 8123
+        tcp_port     = 9000
+        cluster_name = "cluster"
+        is_secure    = false
+        username     = "signoz"
+        # Plain string password (not recommended for production)
+        password = {
+          string_value = var.clickhouse_password
+        }
       }
     }
   }
