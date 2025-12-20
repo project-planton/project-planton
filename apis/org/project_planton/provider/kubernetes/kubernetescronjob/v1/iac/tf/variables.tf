@@ -57,6 +57,60 @@ variable "spec" {
     })
     command = optional(list(string))
     args    = optional(list(string))
+
+    # ConfigMaps to create alongside the CronJob.
+    # Key is the ConfigMap name, value is the content.
+    config_maps = optional(map(string), {})
+
+    # Volume mounts for the CronJob container.
+    # Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+    volume_mounts = optional(list(object({
+      # Name of the volume mount. Must be unique within the container.
+      name = string
+
+      # Path within the container at which the volume should be mounted.
+      mount_path = string
+
+      # Whether the volume should be mounted read-only.
+      read_only = optional(bool, false)
+
+      # Path within the volume from which the container's volume should be mounted.
+      sub_path = optional(string)
+
+      # ConfigMap volume source.
+      config_map = optional(object({
+        name         = string
+        key          = optional(string)
+        path         = optional(string)
+        default_mode = optional(number)
+      }))
+
+      # Secret volume source.
+      secret = optional(object({
+        name         = string
+        key          = optional(string)
+        path         = optional(string)
+        default_mode = optional(number)
+      }))
+
+      # HostPath volume source.
+      host_path = optional(object({
+        path = string
+        type = optional(string)
+      }))
+
+      # EmptyDir volume source.
+      empty_dir = optional(object({
+        medium     = optional(string)
+        size_limit = optional(string)
+      }))
+
+      # PVC volume source.
+      pvc = optional(object({
+        claim_name = string
+        read_only  = optional(bool, false)
+      }))
+    })), [])
   })
 }
 

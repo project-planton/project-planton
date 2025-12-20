@@ -44,6 +44,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetescronjobv1.KubernetesCr
 		}
 	}
 
+	// Create ConfigMaps
+	_, err = configMaps(ctx, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create configmaps")
+	}
+
 	// Create the CronJob resource
 	_, err = cronJob(ctx, locals, kubernetesProvider)
 	if err != nil {

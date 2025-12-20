@@ -394,7 +394,236 @@ module "grpc_invoker_cronjob" {
 
 ---
 
-## 7. Docker Registry Authentication
+## 7. ConfigMap and Volume Mounts
+
+Deploy a CronJob with inline ConfigMaps and volume mounts for configuration files.
+
+```hcl
+module "backup_cronjob" {
+  source = "./path/to/kubernetes-cronjob-module"
+
+  metadata = {
+    name = "db-backup"
+    id   = "db-backup-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace        = "database"
+    create_namespace = true
+    
+    schedule = "0 2 * * *"  # Daily at 2:00 AM
+    
+    concurrency_policy = "Forbid"
+    
+    image = {
+      repo = "postgres"
+      tag  = "15"
+    }
+    
+    # Create ConfigMaps with inline content
+    config_maps = {
+      "backup-script" = <<-EOT
+        #!/bin/bash
+        echo "Starting backup at $(date)"
+        pg_dump -h $DB_HOST -U $DB_USER $DB_NAME > /backup/dump.sql
+        gzip /backup/dump.sql
+        echo "Backup completed"
+      EOT
+    }
+    
+    # Mount ConfigMaps and create temporary storage
+    volume_mounts = [
+      {
+        name       = "backup-script"
+        mount_path = "/scripts/backup.sh"
+        config_map = {
+          name         = "backup-script"
+          key          = "backup-script"
+          path         = "backup.sh"
+          default_mode = 493  # 0755 - executable
+        }
+      },
+      {
+        name       = "backup-data"
+        mount_path = "/backup"
+        empty_dir = {
+          size_limit = "1Gi"
+        }
+      }
+    ]
+    
+    command = ["/bin/bash", "/scripts/backup.sh"]
+    
+    env = {
+      variables = {
+        DB_HOST = "postgres.database.svc"
+        DB_NAME = "myapp"
+      }
+      secrets = {
+        DB_USER = "admin"
+      }
+    }
+    
+    resources = {
+      limits = {
+        cpu    = "500m"
+        memory = "512Mi"
+      }
+      requests = {
+        cpu    = "100m"
+        memory = "256Mi"
+      }
+    }
+    
+    successful_jobs_history_limit = 3
+    failed_jobs_history_limit     = 1
+  }
+}
+```
+
+**Key Points:**
+- **config_maps**: Map of ConfigMap names to content (created by the module)
+- **volume_mounts**: List of volumes to mount into the container
+- **config_map volume**: Mount a ConfigMap key as a file with custom permissions
+- **empty_dir volume**: Temporary storage for the backup (deleted when pod terminates)
+- **default_mode = 493**: Decimal for 0755 permissions (executable script)
+
+---
+
+## 8. Multiple Volume Types
+
+Example showing various volume mount types for complex configurations.
+
+```hcl
+module "data_processor_cronjob" {
+  source = "./path/to/kubernetes-cronjob-module"
+
+  metadata = {
+    name = "data-processor"
+    id   = "data-processor-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace        = "batch-jobs"
+    create_namespace = true
+    
+    schedule = "0 */6 * * *"  # Every 6 hours
+    
+    image = {
+      repo = "python"
+      tag  = "3.11-slim"
+    }
+    
+    # Multiple ConfigMaps for different purposes
+    config_maps = {
+      "processor-script" = <<-EOT
+        #!/bin/bash
+        source /config/settings.env
+        python /scripts/process.py --config /config/processor.yaml
+      EOT
+      
+      "processor-config" = <<-EOT
+        input_bucket: s3://data-input
+        output_bucket: s3://data-output
+        batch_size: 1000
+        compression: gzip
+      EOT
+      
+      "settings-env" = <<-EOT
+        export AWS_REGION=us-west-2
+        export LOG_LEVEL=info
+      EOT
+    }
+    
+    volume_mounts = [
+      # Executable script from ConfigMap
+      {
+        name       = "processor-script"
+        mount_path = "/scripts/run.sh"
+        config_map = {
+          name         = "processor-script"
+          key          = "processor-script"
+          path         = "run.sh"
+          default_mode = 493  # 0755
+        }
+      },
+      # YAML config file from ConfigMap
+      {
+        name       = "processor-config"
+        mount_path = "/config/processor.yaml"
+        config_map = {
+          name = "processor-config"
+          key  = "processor-config"
+          path = "processor.yaml"
+        }
+      },
+      # Environment file from ConfigMap
+      {
+        name       = "settings-env"
+        mount_path = "/config/settings.env"
+        config_map = {
+          name = "settings-env"
+          key  = "settings-env"
+          path = "settings.env"
+        }
+      },
+      # Memory-backed temp directory (fast I/O)
+      {
+        name       = "temp-work"
+        mount_path = "/tmp/work"
+        empty_dir = {
+          medium     = "Memory"
+          size_limit = "512Mi"
+        }
+      },
+      # TLS certificates from existing Secret
+      {
+        name       = "tls-certs"
+        mount_path = "/certs"
+        read_only  = true
+        secret = {
+          name = "api-tls-certs"
+        }
+      }
+    ]
+    
+    command = ["/bin/bash", "/scripts/run.sh"]
+    
+    resources = {
+      limits = {
+        cpu    = "2"
+        memory = "4Gi"
+      }
+      requests = {
+        cpu    = "500m"
+        memory = "1Gi"
+      }
+    }
+  }
+}
+```
+
+**Key Points:**
+- **Multiple ConfigMaps**: Different configs for different purposes
+- **Memory-backed EmptyDir**: `medium = "Memory"` uses RAM for fast I/O
+- **Secret volume**: Mount existing secrets (must be pre-created)
+- **read_only**: Protect sensitive volumes from accidental writes
+
+---
+
+## 9. Docker Registry Authentication
 
 When using private container registries, provide Docker credentials.
 
@@ -464,7 +693,7 @@ variable "gcp_service_account_key" {
 
 ---
 
-## 8. Namespace Management
+## 10. Namespace Management
 
 The `create_namespace` field controls whether the Terraform module creates a new namespace or references an existing one.
 
@@ -711,6 +940,8 @@ kubectl create job --from=cronjob/<cronjob-name> <test-job-name> -n <namespace>
 - **Scheduling**: Use standard cron format in the `schedule` field
 - **Resources**: Always define CPU/memory requests and limits
 - **Environment**: Use `env.variables` for config, `env.secrets` for sensitive data
+- **ConfigMaps**: Use `config_maps` to create inline configuration content
+- **Volume Mounts**: Use `volume_mounts` to mount ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs
 - **Concurrency**: Set `concurrency_policy` to control overlapping runs
 - **Retry**: Configure `backoff_limit` for failure handling
 - **History**: Use history limits to manage completed job retention

@@ -63,12 +63,16 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 		}
 	}
 
+	// Build volume mounts and volumes from spec
+	volumeMounts, volumes := buildVolumeMountsAndVolumes(target.Spec.VolumeMounts)
+
 	mainContainer := &corev1.ContainerArgs{
 		Name: pulumi.String("cronjob-container"),
 		Image: pulumi.String(fmt.Sprintf("%s:%s",
 			target.Spec.Image.Repo,
 			target.Spec.Image.Tag)),
-		Env: corev1.EnvVarArray(envVarInputs),
+		Env:          corev1.EnvVarArray(envVarInputs),
+		VolumeMounts: volumeMounts,
 		Resources: corev1.ResourceRequirementsArgs{
 			Limits: pulumi.ToStringMap(map[string]string{
 				"cpu":    target.Spec.Resources.Limits.Cpu,
@@ -93,6 +97,7 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 		Containers: corev1.ContainerArray{
 			mainContainer,
 		},
+		Volumes: volumes,
 	}
 
 	if locals.ImagePullSecretData != nil {

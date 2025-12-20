@@ -130,6 +130,91 @@ resource "kubernetes_cron_job" "this" {
                   memory = try(var.spec.resources.requests.memory, null)
                 }
               }
+
+              # Volume mounts for the container
+              dynamic "volume_mount" {
+                for_each = try(var.spec.volume_mounts, [])
+                content {
+                  name       = volume_mount.value.name
+                  mount_path = volume_mount.value.mount_path
+                  read_only  = try(volume_mount.value.read_only, false)
+                  sub_path   = try(volume_mount.value.sub_path, null)
+                }
+              }
+            }
+
+            # ConfigMap volumes
+            dynamic "volume" {
+              for_each = [for vm in try(var.spec.volume_mounts, []) : vm if vm.config_map != null]
+              content {
+                name = volume.value.name
+                config_map {
+                  name         = volume.value.config_map.name
+                  default_mode = try(volume.value.config_map.default_mode, null)
+                  dynamic "items" {
+                    for_each = volume.value.config_map.key != null ? [1] : []
+                    content {
+                      key  = volume.value.config_map.key
+                      path = try(volume.value.config_map.path, volume.value.config_map.key)
+                    }
+                  }
+                }
+              }
+            }
+
+            # Secret volumes
+            dynamic "volume" {
+              for_each = [for vm in try(var.spec.volume_mounts, []) : vm if vm.secret != null]
+              content {
+                name = volume.value.name
+                secret {
+                  secret_name  = volume.value.secret.name
+                  default_mode = try(volume.value.secret.default_mode, null)
+                  dynamic "items" {
+                    for_each = volume.value.secret.key != null ? [1] : []
+                    content {
+                      key  = volume.value.secret.key
+                      path = try(volume.value.secret.path, volume.value.secret.key)
+                    }
+                  }
+                }
+              }
+            }
+
+            # HostPath volumes
+            dynamic "volume" {
+              for_each = [for vm in try(var.spec.volume_mounts, []) : vm if vm.host_path != null]
+              content {
+                name = volume.value.name
+                host_path {
+                  path = volume.value.host_path.path
+                  type = try(volume.value.host_path.type, null)
+                }
+              }
+            }
+
+            # EmptyDir volumes
+            dynamic "volume" {
+              for_each = [for vm in try(var.spec.volume_mounts, []) : vm if vm.empty_dir != null]
+              content {
+                name = volume.value.name
+                empty_dir {
+                  medium     = try(volume.value.empty_dir.medium, null)
+                  size_limit = try(volume.value.empty_dir.size_limit, null)
+                }
+              }
+            }
+
+            # PVC volumes
+            dynamic "volume" {
+              for_each = [for vm in try(var.spec.volume_mounts, []) : vm if vm.pvc != null]
+              content {
+                name = volume.value.name
+                persistent_volume_claim {
+                  claim_name = volume.value.pvc.claim_name
+                  read_only  = try(volume.value.pvc.read_only, false)
+                }
+              }
             }
 
             # If the image pull secret is non-empty, attach it
@@ -141,4 +226,9 @@ resource "kubernetes_cron_job" "this" {
       }
     }
   }
+
+  depends_on = [
+    kubernetes_namespace.this,
+    kubernetes_config_map.this
+  ]
 }
