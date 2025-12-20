@@ -1,0 +1,223 @@
+package kubernetesstatefulsetv1
+
+import (
+	"testing"
+
+	"buf.build/go/protovalidate"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+)
+
+func TestKubernetesStatefulSet(t *testing.T) {
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "KubernetesStatefulSet Suite")
+}
+
+var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() {
+	var input *KubernetesStatefulSet
+
+	ginkgo.BeforeEach(func() {
+		input = &KubernetesStatefulSet{
+			ApiVersion: "kubernetes.project-planton.org/v1",
+			Kind:       "KubernetesStatefulSet",
+			Metadata: &shared.CloudResourceMetadata{
+				Name: "test-statefulset",
+			},
+			Spec: &KubernetesStatefulSetSpec{
+				TargetCluster: &kubernetes.KubernetesClusterSelector{
+					ClusterKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster,
+					ClusterName: "test-cluster",
+				},
+				Namespace: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+						Value: "test-namespace",
+					},
+				},
+				Container: &KubernetesStatefulSetContainer{
+					App: &KubernetesStatefulSetContainerApp{
+						Image: &kubernetes.ContainerImage{
+							Repo: "postgres",
+							Tag:  "15",
+						},
+						Resources: &kubernetes.ContainerResources{
+							Limits: &kubernetes.CpuMemory{
+								Cpu:    "1000m",
+								Memory: "1Gi",
+							},
+							Requests: &kubernetes.CpuMemory{
+								Cpu:    "50m",
+								Memory: "100Mi",
+							},
+						},
+						Ports: []*KubernetesStatefulSetContainerAppPort{
+							{
+								Name:            "postgres",
+								ContainerPort:   5432,
+								ServicePort:     5432,
+								NetworkProtocol: "TCP",
+								AppProtocol:     "tcp",
+							},
+						},
+						VolumeMounts: []*KubernetesStatefulSetContainerVolumeMount{
+							{
+								Name:      "data",
+								MountPath: "/var/lib/postgresql/data",
+							},
+						},
+					},
+				},
+				VolumeClaimTemplates: []*KubernetesStatefulSetVolumeClaimTemplate{
+					{
+						Name:        "data",
+						Size:        "10Gi",
+						AccessModes: []string{"ReadWriteOnce"},
+					},
+				},
+			},
+		}
+	})
+
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("statefulset_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Ingress validation", func() {
+		ginkgo.Context("When ingress is enabled without hostname", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Ingress = &KubernetesStatefulSetIngress{
+					Enabled:  true,
+					Hostname: "",
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is disabled", func() {
+			ginkgo.It("should not require hostname", func() {
+				input.Spec.Ingress = &KubernetesStatefulSetIngress{
+					Enabled:  false,
+					Hostname: "",
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When ingress is enabled with hostname", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.Ingress = &KubernetesStatefulSetIngress{
+					Enabled:  true,
+					Hostname: "myapp.example.com",
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Volume claim template validation", func() {
+		ginkgo.Context("When size is invalid", func() {
+			ginkgo.It("should return a validation error for invalid size format", func() {
+				input.Spec.VolumeClaimTemplates[0].Size = "invalid"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When access mode is invalid", func() {
+			ginkgo.It("should return a validation error for invalid access mode", func() {
+				input.Spec.VolumeClaimTemplates[0].AccessModes = []string{"InvalidMode"}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When access mode is valid", func() {
+			ginkgo.It("should not return a validation error for ReadWriteMany", func() {
+				input.Spec.VolumeClaimTemplates[0].AccessModes = []string{"ReadWriteMany"}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Pod management policy validation", func() {
+		ginkgo.Context("When pod management policy is OrderedReady", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.PodManagementPolicy = "OrderedReady"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When pod management policy is Parallel", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.PodManagementPolicy = "Parallel"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When pod management policy is invalid", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.PodManagementPolicy = "Invalid"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When pod management policy is empty", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.PodManagementPolicy = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Namespace creation flag", func() {
+		ginkgo.Context("When create_namespace is true", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.CreateNamespace = true
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When create_namespace is false", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.CreateNamespace = false
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Port validation", func() {
+		ginkgo.Context("When port name is invalid", func() {
+			ginkgo.It("should return a validation error for underscore in name", func() {
+				input.Spec.Container.App.Ports[0].Name = "my_port"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When network protocol is invalid", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Container.App.Ports[0].NetworkProtocol = "HTTP"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
+})

@@ -508,6 +508,17 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "k8stktn"
   }];
+  KubernetesStatefulSet = 840 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "k8ssts"
+    is_service_kind: true
+  }];
+  KubernetesDaemonSet = 841 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "k8sds"
+  }];
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200 [(kind_meta) = {

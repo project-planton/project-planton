@@ -1,0 +1,355 @@
+package module
+
+import (
+	"fmt"
+
+	"github.com/pkg/errors"
+	kubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
+	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
+	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
+	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func statefulSet(ctx *pulumi.Context, locals *Locals,
+	kubernetesProvider pulumi.ProviderResource,
+	headlessService *kubernetescorev1.Service) (*appsv1.StatefulSet, error) {
+
+	target := locals.KubernetesStatefulSet
+
+	// Create service account
+	serviceAccountArgs := &kubernetescorev1.ServiceAccountArgs{
+		Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
+			Name:      pulumi.String(target.Metadata.Name),
+			Namespace: pulumi.String(locals.Namespace),
+		}),
+	}
+
+	createdServiceAccount, err := kubernetescorev1.NewServiceAccount(ctx,
+		target.Metadata.Name,
+		serviceAccountArgs,
+		pulumi.Provider(kubernetesProvider))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to add service account")
+	}
+
+	envVarInputs := make([]kubernetescorev1.EnvVarInput, 0)
+
+	// Add HOSTNAME env var
+	envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+		Name: pulumi.String("HOSTNAME"),
+		ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
+			FieldRef: &kubernetescorev1.ObjectFieldSelectorArgs{
+				FieldPath: pulumi.String("status.podIP"),
+			},
+		},
+	}))
+
+	// Add K8S_POD_ID env var
+	envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+		Name: pulumi.String("K8S_POD_ID"),
+		ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
+			FieldRef: &kubernetescorev1.ObjectFieldSelectorArgs{
+				ApiVersion: pulumi.String("v1"),
+				FieldPath:  pulumi.String("metadata.name"),
+			},
+		},
+	}))
+
+	// Add K8S_POD_NAMESPACE env var
+	envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+		Name: pulumi.String("K8S_POD_NAMESPACE"),
+		ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
+			FieldRef: &kubernetescorev1.ObjectFieldSelectorArgs{
+				ApiVersion: pulumi.String("v1"),
+				FieldPath:  pulumi.String("metadata.namespace"),
+			},
+		},
+	}))
+
+	if target.Spec.Container.App.Env != nil {
+		if target.Spec.Container.App.Env.Variables != nil {
+			sortedEnvVariableKeys := sortstringmap.SortMap(target.Spec.Container.App.Env.Variables)
+
+			for _, environmentVariableKey := range sortedEnvVariableKeys {
+				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+					Name:  pulumi.String(environmentVariableKey),
+					Value: pulumi.String(target.Spec.Container.App.Env.Variables[environmentVariableKey]),
+				}))
+			}
+		}
+
+		if target.Spec.Container.App.Env.Secrets != nil {
+			sortedEnvironmentSecretKeys := sortstringmap.SortMap(target.Spec.Container.App.Env.Secrets)
+
+			for _, environmentSecretKey := range sortedEnvironmentSecretKeys {
+				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+					Name: pulumi.String(environmentSecretKey),
+					ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
+						SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
+							Name: pulumi.String(locals.EnvSecretName),
+							Key:  pulumi.String(environmentSecretKey),
+						},
+					},
+				}))
+			}
+		}
+	}
+
+	portsArray := make(kubernetescorev1.ContainerPortArray, 0)
+	for _, p := range target.Spec.Container.App.Ports {
+		portsArray = append(portsArray, &kubernetescorev1.ContainerPortArgs{
+			Name:          pulumi.String(p.Name),
+			ContainerPort: pulumi.Int(p.ContainerPort),
+		})
+	}
+
+	// Build volume mounts
+	volumeMountsArray := make(kubernetescorev1.VolumeMountArray, 0)
+	for _, vm := range target.Spec.Container.App.VolumeMounts {
+		volumeMount := &kubernetescorev1.VolumeMountArgs{
+			Name:      pulumi.String(vm.Name),
+			MountPath: pulumi.String(vm.MountPath),
+			ReadOnly:  pulumi.Bool(vm.ReadOnly),
+		}
+		if vm.SubPath != "" {
+			volumeMount.SubPath = pulumi.String(vm.SubPath)
+		}
+		volumeMountsArray = append(volumeMountsArray, volumeMount)
+	}
+
+	containerInputs := make([]kubernetescorev1.ContainerInput, 0)
+
+	mainContainer := &kubernetescorev1.ContainerArgs{
+		Name: pulumi.String("app"),
+		Image: pulumi.String(fmt.Sprintf("%s:%s",
+			target.Spec.Container.App.Image.Repo,
+			target.Spec.Container.App.Image.Tag)),
+		Env:   kubernetescorev1.EnvVarArray(envVarInputs),
+		Ports: portsArray,
+		Resources: kubernetescorev1.ResourceRequirementsArgs{
+			Limits: pulumi.ToStringMap(map[string]string{
+				"cpu":    target.Spec.Container.App.Resources.Limits.Cpu,
+				"memory": target.Spec.Container.App.Resources.Limits.Memory,
+			}),
+			Requests: pulumi.ToStringMap(map[string]string{
+				"cpu":    target.Spec.Container.App.Resources.Requests.Cpu,
+				"memory": target.Spec.Container.App.Resources.Requests.Memory,
+			}),
+		},
+		LivenessProbe:  buildProbe(target.Spec.Container.App.LivenessProbe),
+		ReadinessProbe: buildProbe(target.Spec.Container.App.ReadinessProbe),
+		StartupProbe:   buildProbe(target.Spec.Container.App.StartupProbe),
+		VolumeMounts:   volumeMountsArray,
+	}
+
+	// Add command if specified
+	if len(target.Spec.Container.App.Command) > 0 {
+		mainContainer.Command = pulumi.ToStringArray(target.Spec.Container.App.Command)
+	}
+
+	// Add args if specified
+	if len(target.Spec.Container.App.Args) > 0 {
+		mainContainer.Args = pulumi.ToStringArray(target.Spec.Container.App.Args)
+	}
+
+	containerInputs = append(containerInputs, kubernetescorev1.ContainerInput(mainContainer))
+
+	podSpecArgs := &kubernetescorev1.PodSpecArgs{
+		ServiceAccountName: createdServiceAccount.Metadata.Name(),
+		Containers:         kubernetescorev1.ContainerArray(containerInputs),
+		// Wait for 60 seconds before sending the termination signal
+		TerminationGracePeriodSeconds: pulumi.IntPtr(60),
+	}
+
+	// Create image pull secret if configured
+	createdImagePullSecret, err := imagePullSecret(ctx, locals, kubernetesProvider)
+	if err != nil {
+		return nil, err
+	}
+	if createdImagePullSecret != nil {
+		podSpecArgs.ImagePullSecrets = kubernetescorev1.LocalObjectReferenceArray{
+			kubernetescorev1.LocalObjectReferenceArgs{
+				Name: createdImagePullSecret.Metadata.Name(),
+			}}
+	}
+
+	// Build volume claim templates
+	volumeClaimTemplates := make(kubernetescorev1.PersistentVolumeClaimTypeArray, 0)
+	for _, vct := range target.Spec.VolumeClaimTemplates {
+		accessModes := pulumi.StringArray{}
+		if len(vct.AccessModes) == 0 {
+			accessModes = append(accessModes, pulumi.String("ReadWriteOnce"))
+		} else {
+			for _, am := range vct.AccessModes {
+				accessModes = append(accessModes, pulumi.String(am))
+			}
+		}
+
+		pvcSpec := &kubernetescorev1.PersistentVolumeClaimSpecArgs{
+			AccessModes: accessModes,
+			Resources: &kubernetescorev1.VolumeResourceRequirementsArgs{
+				Requests: pulumi.StringMap{
+					"storage": pulumi.String(vct.Size),
+				},
+			},
+		}
+
+		if vct.StorageClass != "" {
+			pvcSpec.StorageClassName = pulumi.String(vct.StorageClass)
+		}
+
+		volumeClaimTemplates = append(volumeClaimTemplates, &kubernetescorev1.PersistentVolumeClaimTypeArgs{
+			Metadata: &metav1.ObjectMetaArgs{
+				Name: pulumi.String(vct.Name),
+			},
+			Spec: pvcSpec,
+		})
+	}
+
+	// Determine replicas
+	replicas := int(1)
+	if target.Spec.Availability != nil && target.Spec.Availability.Replicas > 0 {
+		replicas = int(target.Spec.Availability.Replicas)
+	}
+
+	// Determine pod management policy
+	podManagementPolicy := "OrderedReady"
+	if target.Spec.PodManagementPolicy != "" {
+		podManagementPolicy = target.Spec.PodManagementPolicy
+	}
+
+	statefulSetArgs := &appsv1.StatefulSetArgs{
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String(target.Metadata.Name),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+			Annotations: pulumi.StringMap{
+				"pulumi.com/patchForce": pulumi.String("true"),
+			},
+		},
+		Spec: &appsv1.StatefulSetSpecArgs{
+			ServiceName:          pulumi.String(locals.HeadlessServiceName),
+			Replicas:             pulumi.Int(replicas),
+			PodManagementPolicy:  pulumi.String(podManagementPolicy),
+			VolumeClaimTemplates: volumeClaimTemplates,
+			Selector: &metav1.LabelSelectorArgs{
+				MatchLabels: pulumi.ToStringMap(locals.SelectorLabels),
+			},
+			Template: &kubernetescorev1.PodTemplateSpecArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Labels: pulumi.ToStringMap(locals.Labels),
+				},
+				Spec: podSpecArgs,
+			},
+		},
+	}
+
+	createdStatefulSet, err := appsv1.NewStatefulSet(ctx,
+		target.Metadata.Name,
+		statefulSetArgs,
+		pulumi.Provider(kubernetesProvider),
+		pulumi.DependsOn([]pulumi.Resource{headlessService}))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to add statefulset")
+	}
+
+	return createdStatefulSet, nil
+}
+
+// buildProbe converts a proto Probe definition into a Pulumi Kubernetes ProbeArgs.
+func buildProbe(protoProbe *kubernetesv1.Probe) *kubernetescorev1.ProbeArgs {
+	if protoProbe == nil {
+		return nil
+	}
+
+	probe := &kubernetescorev1.ProbeArgs{}
+
+	if protoProbe.InitialDelaySeconds > 0 {
+		probe.InitialDelaySeconds = pulumi.Int(protoProbe.InitialDelaySeconds)
+	}
+	if protoProbe.PeriodSeconds > 0 {
+		probe.PeriodSeconds = pulumi.Int(protoProbe.PeriodSeconds)
+	}
+	if protoProbe.TimeoutSeconds > 0 {
+		probe.TimeoutSeconds = pulumi.Int(protoProbe.TimeoutSeconds)
+	}
+	if protoProbe.SuccessThreshold > 0 {
+		probe.SuccessThreshold = pulumi.Int(protoProbe.SuccessThreshold)
+	}
+	if protoProbe.FailureThreshold > 0 {
+		probe.FailureThreshold = pulumi.Int(protoProbe.FailureThreshold)
+	}
+
+	switch handler := protoProbe.Handler.(type) {
+	case *kubernetesv1.Probe_Grpc:
+		grpcAction := &kubernetescorev1.GRPCActionArgs{
+			Port: pulumi.Int(handler.Grpc.Port),
+		}
+		if handler.Grpc.Service != "" {
+			grpcAction.Service = pulumi.StringPtr(handler.Grpc.Service)
+		}
+		probe.Grpc = grpcAction
+
+	case *kubernetesv1.Probe_HttpGet:
+		httpGet := &kubernetescorev1.HTTPGetActionArgs{}
+
+		if handler.HttpGet.Path != "" {
+			httpGet.Path = pulumi.String(handler.HttpGet.Path)
+		}
+
+		switch port := handler.HttpGet.Port.(type) {
+		case *kubernetesv1.HTTPGetAction_PortNumber:
+			httpGet.Port = pulumi.Int(port.PortNumber)
+		case *kubernetesv1.HTTPGetAction_PortName:
+			httpGet.Port = pulumi.String(port.PortName)
+		}
+
+		if handler.HttpGet.Host != "" {
+			httpGet.Host = pulumi.String(handler.HttpGet.Host)
+		}
+
+		if handler.HttpGet.Scheme != "" {
+			httpGet.Scheme = pulumi.String(handler.HttpGet.Scheme)
+		}
+
+		if len(handler.HttpGet.HttpHeaders) > 0 {
+			headers := make(kubernetescorev1.HTTPHeaderArray, 0, len(handler.HttpGet.HttpHeaders))
+			for _, h := range handler.HttpGet.HttpHeaders {
+				headers = append(headers, &kubernetescorev1.HTTPHeaderArgs{
+					Name:  pulumi.String(h.Name),
+					Value: pulumi.String(h.Value),
+				})
+			}
+			httpGet.HttpHeaders = headers
+		}
+
+		probe.HttpGet = httpGet
+
+	case *kubernetesv1.Probe_TcpSocket:
+		tcpSocket := &kubernetescorev1.TCPSocketActionArgs{}
+
+		switch port := handler.TcpSocket.Port.(type) {
+		case *kubernetesv1.TCPSocketAction_PortNumber:
+			tcpSocket.Port = pulumi.Int(port.PortNumber)
+		case *kubernetesv1.TCPSocketAction_PortName:
+			tcpSocket.Port = pulumi.String(port.PortName)
+		}
+
+		if handler.TcpSocket.Host != "" {
+			tcpSocket.Host = pulumi.String(handler.TcpSocket.Host)
+		}
+
+		probe.TcpSocket = tcpSocket
+
+	case *kubernetesv1.Probe_Exec:
+		if len(handler.Exec.Command) > 0 {
+			probe.Exec = &kubernetescorev1.ExecActionArgs{
+				Command: pulumi.ToStringArray(handler.Exec.Command),
+			}
+		}
+	}
+
+	return probe
+}

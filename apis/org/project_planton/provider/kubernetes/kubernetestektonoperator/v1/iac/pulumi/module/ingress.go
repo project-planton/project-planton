@@ -180,4 +180,3 @@ func dashboardIngress(ctx *pulumi.Context, locals *Locals,
 
 	return nil
 }
-
