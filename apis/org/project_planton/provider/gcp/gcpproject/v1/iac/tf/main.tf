@@ -21,11 +21,7 @@ resource "google_project" "this" {
   folder_id           = local.parent_folder_id
   labels              = local.gcp_labels
   auto_create_network = local.auto_create_network
-
-  # Prevent accidental deletion
-  lifecycle {
-    prevent_destroy = false # Can be set to true for production projects
-  }
+  deletion_policy     = local.deletion_policy
 }
 
 # Enable specified Google Cloud APIs

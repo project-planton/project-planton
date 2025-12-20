@@ -37,5 +37,10 @@ locals {
 
   # IAM owner member (optional)
   owner_member = var.spec.owner_member != null && var.spec.owner_member != "" ? var.spec.owner_member : null
+
+  # Deletion policy configuration
+  # When delete_protection is true, set to "PREVENT" to block project deletion
+  # When delete_protection is false or not set, use "DELETE" for normal deletion behavior
+  deletion_policy = var.spec.delete_protection == true ? "PREVENT" : "DELETE"
 }
 

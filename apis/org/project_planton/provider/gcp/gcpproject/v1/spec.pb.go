@@ -116,9 +116,15 @@ type GcpProjectSpec struct {
 	//	"group:devops-admins@example.com"
 	//	"user:alice@example.com"
 	//	"serviceAccount:ci-automation@example.iam.gserviceaccount.com"
-	OwnerMember   string `protobuf:"bytes,9,opt,name=owner_member,json=ownerMember,proto3" json:"owner_member,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	OwnerMember string `protobuf:"bytes,9,opt,name=owner_member,json=ownerMember,proto3" json:"owner_member,omitempty"`
+	// If true, enables deletion protection on the GCP project.
+	// When enabled, the project cannot be deleted until this flag is set to false.
+	// This is a GCP-native feature (not a Pulumi/Terraform lifecycle option)
+	// that provides an additional layer of protection against accidental deletion.
+	// Defaults to false.
+	DeleteProtection *bool `protobuf:"varint,10,opt,name=delete_protection,json=deleteProtection,proto3,oneof" json:"delete_protection,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *GcpProjectSpec) Reset() {
@@ -214,11 +220,18 @@ func (x *GcpProjectSpec) GetOwnerMember() string {
 	return ""
 }
 
+func (x *GcpProjectSpec) GetDeleteProtection() bool {
+	if x != nil && x.DeleteProtection != nil {
+		return *x.DeleteProtection
+	}
+	return false
+}
+
 var File_org_project_planton_provider_gcp_gcpproject_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9org/project_planton/provider/gcp/gcpproject/v1/spec.proto\x12.org.project_planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xf4\x05\n" +
+	"9org/project_planton/provider/gcp/gcpproject/v1/spec.proto\x12.org.project_planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xc7\x06\n" +
 	"\x0eGcpProjectSpec\x12F\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tB'\xbaH$\xc8\x01\x01r\x1f\x10\x06\x18\x1e2\x19^[a-z][a-z0-9-]*[a-z0-9]$R\tprojectId\x12-\n" +
@@ -232,12 +245,15 @@ const file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "
 	"\x17disable_default_network\x18\a \x01(\bB\b\x8a\xa6\x1d\x04trueH\x01R\x15disableDefaultNetwork\x88\x01\x01\x12K\n" +
 	"\fenabled_apis\x18\b \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12-\n" +
 	"\fowner_member\x18\t \x01(\tB\n" +
-	"\xbaH\a\xd8\x01\x01r\x02`\x01R\vownerMember\x1a9\n" +
+	"\xbaH\a\xd8\x01\x01r\x02`\x01R\vownerMember\x12;\n" +
+	"\x11delete_protection\x18\n" +
+	" \x01(\bB\t\x8a\xa6\x1d\x05falseH\x02R\x10deleteProtection\x88\x01\x01\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\r\n" +
 	"\v_add_suffixB\x1a\n" +
-	"\x18_disable_default_network*]\n" +
+	"\x18_disable_default_networkB\x14\n" +
+	"\x12_delete_protection*]\n" +
 	"\x14GcpProjectParentType\x12'\n" +
 	"#gcp_project_parent_type_unspecified\x10\x00\x12\x10\n" +
 	"\forganization\x10\x01\x12\n" +

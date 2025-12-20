@@ -76,4 +76,11 @@ message GcpProjectSpec {
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string.email = true
   ];
+
+  // If true, enables deletion protection on the GCP project.
+  // When enabled, the project cannot be deleted until this flag is set to false.
+  // This is a GCP-native feature (not a Pulumi/Terraform lifecycle option)
+  // that provides an additional layer of protection against accidental deletion.
+  // Defaults to false.
+  optional bool delete_protection = 10 [(org.project_planton.shared.options.default) = "false"];
 }

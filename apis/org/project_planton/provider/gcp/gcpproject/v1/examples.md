@@ -66,7 +66,7 @@ spec:
 
 ## Example 3: Production-Grade Project with Full Security Hardening
 
-A production project with comprehensive security, governance labels, and all essential APIs.
+A production project with comprehensive security, governance labels, deletion protection, and all essential APIs.
 
 ```yaml
 apiVersion: gcp.project.planton.cloud/v1
@@ -85,6 +85,7 @@ spec:
     compliance: pci-dss
     criticality: high
   disableDefaultNetwork: true  # CRITICAL: Never use default network in production
+  deleteProtection: true  # CRITICAL: Prevent accidental project deletion
   enabledApis:
     - compute.googleapis.com
     - storage.googleapis.com
@@ -102,7 +103,7 @@ spec:
   ownerMember: "group:platform-admins@example.com"
 ```
 
-**Use Case:** Production environment for critical payment processing workload with full observability, security, and compliance.
+**Use Case:** Production environment for critical payment processing workload with full observability, security, deletion protection, and compliance.
 
 ---
 
@@ -276,25 +277,32 @@ spec:
 - **`spec.disableDefaultNetwork`**: Boolean (default: `true`). If `true`, the insecure default VPC is deleted. **Best practice: always set to `true` in production.**
 - **`spec.enabledApis`**: List of Google Cloud APIs to enable (e.g., `compute.googleapis.com`). Must end with `.googleapis.com`.
 - **`spec.ownerMember`**: IAM member to grant `roles/owner` at project creation. Format: `user:email`, `group:email`, or `serviceAccount:email`.
+- **`spec.deleteProtection`**: Boolean (default: `false`). If `true`, enables GCP-native deletion protection. **Best practice: always set to `true` for critical production projects.**
 
 ---
 
 ## Best Practices
 
-### 1. Always Disable Default Network in Production
+### 1. Enable Deletion Protection for Critical Projects
+```yaml
+deleteProtection: true
+```
+GCP-native deletion protection prevents accidental project deletion. **Always enable for production workloads.**
+
+### 2. Always Disable Default Network in Production
 ```yaml
 disableDefaultNetwork: true
 ```
 The default network is overly permissive and violates security best practices.
 
-### 2. Use Folders for Hierarchy
+### 3. Use Folders for Hierarchy
 ```yaml
 parentType: folder
 parentId: "your-folder-id"
 ```
 Flat hierarchies (all projects under organization) are an anti-pattern.
 
-### 3. Apply Governance Labels
+### 4. Apply Governance Labels
 ```yaml
 labels:
   env: prod
@@ -304,13 +312,13 @@ labels:
 ```
 Labels are critical for cost allocation and resource filtering.
 
-### 4. Grant Permissions to Groups, Not Users
+### 5. Grant Permissions to Groups, Not Users
 ```yaml
 ownerMember: "group:devops-admins@example.com"
 ```
 Using groups makes permission management scalable.
 
-### 5. Enable Required APIs at Creation Time
+### 6. Enable Required APIs at Creation Time
 ```yaml
 enabledApis:
   - compute.googleapis.com
