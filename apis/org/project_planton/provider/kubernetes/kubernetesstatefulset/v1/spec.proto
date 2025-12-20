@@ -7,6 +7,7 @@ import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/probe.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/provider/kubernetes/volume_mount.proto";
 import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 /**
@@ -57,6 +58,20 @@ message KubernetesStatefulSetSpec {
     message: 'Pod management policy must be either "OrderedReady" or "Parallel"'
     expression: 'size(this) == 0 || this in ["OrderedReady", "Parallel"]'
   }];
+
+  /**
+   * ConfigMaps to create alongside the StatefulSet.
+   * Key is the ConfigMap name, value is the content.
+   * These ConfigMaps can be referenced in volume mounts.
+   *
+   * Example:
+   *   config_maps:
+   *     app-config: |
+   *       database:
+   *         host: localhost
+   *         port: 5432
+   */
+  map<string, string> config_maps = 9;
 }
 
 /**
@@ -136,9 +151,23 @@ message KubernetesStatefulSetContainerApp {
 
   /**
    * Volume mounts for the application container.
-   * These mount the persistent volumes defined in volume_claim_templates.
+   * Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+   * For PVC mounts, reference volume_claim_template names or existing PVCs.
+   * ConfigMaps defined in spec.config_maps can be referenced here.
+   *
+   * Example:
+   *   volume_mounts:
+   *     - name: data
+   *       mount_path: /var/lib/data
+   *       pvc:
+   *         claim_name: data
+   *     - name: config-volume
+   *       mount_path: /etc/app/config.yaml
+   *       config_map:
+   *         name: app-config
+   *         key: app-config
    */
-  repeated KubernetesStatefulSetContainerVolumeMount volume_mounts = 5;
+  repeated org.project_planton.provider.kubernetes.VolumeMount volume_mounts = 5;
 
   /**
    * Liveness probe configuration.
@@ -224,24 +253,6 @@ message KubernetesStatefulSetContainerAppPort {
 
   // A flag indicating whether this port should be exposed via ingress.
   bool is_ingress_port = 6;
-}
-
-/**
- * **KubernetesStatefulSetContainerVolumeMount** specifies a volume mount for the container.
- */
-message KubernetesStatefulSetContainerVolumeMount {
-  // The name of the volume to mount. Must match a volume_claim_template name.
-  string name = 1 [(buf.validate.field).required = true];
-
-  // The path within the container at which the volume should be mounted.
-  string mount_path = 2 [(buf.validate.field).required = true];
-
-  // Whether the volume should be read-only.
-  bool read_only = 3;
-
-  // Path within the volume from which the container's volume should be mounted.
-  // Defaults to "" (volume's root).
-  string sub_path = 4;
 }
 
 /**
