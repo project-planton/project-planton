@@ -18,6 +18,10 @@ var _ = ginkgo.Describe("KubernetesTektonOperatorSpec Validation Tests", func() 
 	var spec *KubernetesTektonOperatorSpec
 
 	ginkgo.BeforeEach(func() {
+		// Note: Tekton Operator uses fixed namespaces managed by the operator:
+		// - 'tekton-operator' for the operator
+		// - 'tekton-pipelines' for components (Pipelines, Triggers, Dashboard)
+		// Therefore, no namespace field is included in the spec.
 		spec = &KubernetesTektonOperatorSpec{
 			Container: &KubernetesTektonOperatorSpecContainer{
 				Resources: &kubernetes.ContainerResources{

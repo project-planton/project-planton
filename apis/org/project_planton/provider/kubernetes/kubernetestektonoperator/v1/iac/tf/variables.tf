@@ -12,6 +12,12 @@ variable "metadata" {
 }
 
 variable "spec" {
+  # IMPORTANT: Namespace Behavior
+  # Unlike other Kubernetes components in Project Planton, the Tekton Operator uses fixed namespaces
+  # that are managed by the operator itself:
+  # - The Tekton Operator is installed in the 'tekton-operator' namespace
+  # - Tekton components (Pipelines, Triggers, Dashboard) are installed in the 'tekton-pipelines' namespace
+  # These namespaces are automatically created and managed by the Tekton Operator and cannot be customized.
   description = "Specification for KubernetesTektonOperator"
   type = object({
 

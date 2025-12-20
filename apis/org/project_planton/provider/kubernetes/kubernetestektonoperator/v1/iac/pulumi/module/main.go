@@ -8,6 +8,10 @@ import (
 )
 
 // Resources is the Pulumi entry-point.
+// Note: Tekton Operator manages its own namespaces:
+// - 'tekton-operator' for the operator itself
+// - 'tekton-pipelines' for Tekton components (Pipelines, Triggers, Dashboard)
+// These namespaces are automatically created by the Tekton Operator and cannot be customized.
 func Resources(ctx *pulumi.Context,
 	in *kubernetestektonoperatorv1.KubernetesTektonOperatorStackInput) error {
 

@@ -46,11 +46,27 @@ The operator deployment can be configured with custom resource allocations:
 - **Resource Requests**: Guaranteed baseline resources for operator pod
 - **Default Configuration**: Pre-configured with production-ready defaults
 
+## ⚠️ Important: Fixed Namespace Architecture
+
+**Unlike other Kubernetes components in Project Planton, the Tekton Operator uses fixed namespaces** that are managed by the operator itself:
+
+| Component | Namespace | Description |
+|-----------|-----------|-------------|
+| Tekton Operator | `tekton-operator` | The operator controller pod |
+| Tekton Pipelines | `tekton-pipelines` | Pipeline controller and webhooks |
+| Tekton Triggers | `tekton-pipelines` | Event listeners and webhooks |
+| Tekton Dashboard | `tekton-pipelines` | Web-based UI |
+
+**These namespaces are automatically created and managed by the Tekton Operator and cannot be customized.**
+
+This is a fundamental design decision of the Tekton Operator project. For more information, see:
+- https://tekton.dev/docs/operator/tektonconfig/
+
 ## Component Structure
 
 ### API Definition
 
-The KubernetesTektonOperator API follows Project Planton's standard resource structure:
+The KubernetesTektonOperator API follows Project Planton's resource structure:
 
 ```
 kubernetes-tekton-operator

@@ -27,6 +27,14 @@ const (
 // KubernetesTektonOperatorSpec defines the configuration for deploying the Tekton Operator on a Kubernetes cluster.
 // Tekton Operator manages the lifecycle of Tekton components including Pipelines, Triggers, and Dashboard.
 // This message specifies the parameters needed to install and configure the Tekton Operator.
+//
+// IMPORTANT: Namespace Behavior
+// Unlike other Kubernetes components in Project Planton, the Tekton Operator uses fixed namespaces
+// that are managed by the operator itself:
+// - The Tekton Operator is installed in the 'tekton-operator' namespace
+// - Tekton components (Pipelines, Triggers, Dashboard) are installed in the 'tekton-pipelines' namespace
+// These namespaces are automatically created and managed by the Tekton Operator and cannot be customized.
+// See: https://tekton.dev/docs/operator/tektonconfig/
 type KubernetesTektonOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Target Kubernetes Cluster where the Tekton Operator will be deployed.

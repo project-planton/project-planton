@@ -1,3 +1,10 @@
+# KubernetesTektonOperator - Test Manifest
+#
+# IMPORTANT: Tekton Operator uses fixed namespaces managed by the operator:
+# - 'tekton-operator' for the operator itself
+# - 'tekton-pipelines' for components (Pipelines, Triggers, Dashboard)
+# These namespaces are automatically created and cannot be customized.
+
 apiVersion: kubernetes.project-planton.org/v1
 kind: KubernetesTektonOperator
 metadata:
@@ -7,7 +14,7 @@ metadata:
     environment: development
 spec:
   target_cluster:
-    kubernetes_credential_id: "test-k8s-cluster-cred"
+    cluster_name: "test-k8s-cluster"
   container:
     resources:
       requests:

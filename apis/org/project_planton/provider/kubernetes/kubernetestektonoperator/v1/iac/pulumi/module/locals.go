@@ -44,7 +44,10 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetestektonoperatorv1.Kubern
 		l.KubeLabels[kuberneteslabelkeys.Environment] = env
 	}
 
-	// Use default namespaces for Tekton Operator
+	// Tekton Operator uses fixed namespaces managed by the operator itself:
+	// - 'tekton-operator' for the operator
+	// - 'tekton-pipelines' for components (Pipelines, Triggers, Dashboard)
+	// These cannot be customized by the user.
 	l.OperatorNamespace = vars.OperatorNamespace
 	l.ComponentsNamespace = vars.ComponentsNamespace
 	l.TektonConfigName = vars.TektonConfigName
