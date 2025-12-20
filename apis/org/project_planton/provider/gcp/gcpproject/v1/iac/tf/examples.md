@@ -130,7 +130,8 @@ module "prod_payment_processing" {
       compliance  = "pci-dss"
       criticality = "high"
     }
-    disable_default_network = true  # CRITICAL
+    disable_default_network = true  # CRITICAL: Disable insecure default network
+    delete_protection       = true  # CRITICAL: Prevent accidental project deletion
     enabled_apis = [
       "compute.googleapis.com",
       "storage.googleapis.com",

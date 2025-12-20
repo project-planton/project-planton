@@ -102,6 +102,34 @@ spec:
 
 ---
 
+## Example with Deletion Protection
+
+This example enables GCP-native deletion protection, which prevents the project from being accidentally deleted.
+This is a critical safety feature for production projects.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpProject
+metadata:
+  name: production-project-protected
+spec:
+  projectId: prod-protected-proj
+  parentType: folder
+  parentId: "345678901234"
+  billingAccountId: "0123AB-4567CD-89EFGH"
+  labels:
+    env: "prod"
+    criticality: "high"
+  disableDefaultNetwork: true
+  deleteProtection: true  # CRITICAL: Prevent accidental deletion
+  enabledApis:
+    - "compute.googleapis.com"
+    - "storage.googleapis.com"
+    - "container.googleapis.com"
+```
+
+---
+
 ## Example Granting Owner Role to a Specific Member
 
 This project grants the Owner role to a specified user during creation (for automation or administrative tasks).

@@ -23,5 +23,6 @@ variable "spec" {
     disable_default_network = optional(bool)         # If true, delete auto-created default VPC (default: true)
     enabled_apis            = optional(list(string)) # List of APIs to enable (e.g., "compute.googleapis.com")
     owner_member            = optional(string)       # IAM member to grant Owner role (e.g., "user:alice@example.com", "group:admins@example.com")
+    delete_protection       = optional(bool)         # If true, enables GCP-native deletion protection (default: false)
   })
 }

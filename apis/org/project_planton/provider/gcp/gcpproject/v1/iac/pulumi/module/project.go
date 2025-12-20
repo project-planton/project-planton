@@ -49,12 +49,20 @@ func project(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*o
 		projectId = pulumi.String(locals.GcpProject.Spec.ProjectId)
 	}
 
+	// Determine deletion policy based on delete_protection flag
+	// When delete_protection is true, set to "PREVENT" to block project deletion
+	deletionPolicy := "DELETE"
+	if locals.GcpProject.Spec.GetDeleteProtection() {
+		deletionPolicy = "PREVENT"
+	}
+
 	projectArgs := &organizations.ProjectArgs{
 		Name:              pulumi.String(locals.GcpProject.Metadata.Name),
 		ProjectId:         projectId,
 		BillingAccount:    pulumi.String(locals.GcpProject.Spec.BillingAccountId),
 		Labels:            pulumi.ToStringMap(locals.GcpLabels),
 		AutoCreateNetwork: pulumi.Bool(!locals.GcpProject.Spec.GetDisableDefaultNetwork()),
+		DeletionPolicy:    pulumi.String(deletionPolicy),
 	}
 
 	if locals.GcpProject.Spec.ParentType == gcpprojectv1.GcpProjectParentType_organization {
