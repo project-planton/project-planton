@@ -96,7 +96,35 @@ type KubernetesCronJobSpec struct {
 	// An optional list of arguments passed to the container command or the image's default ENTRYPOINT.
 	// If omitted, the default CMD in the image will be used.
 	// Example: ["-f","/path/to/config.yaml"]
-	Args          []string `protobuf:"bytes,16,rep,name=args,proto3" json:"args,omitempty"`
+	Args []string `protobuf:"bytes,16,rep,name=args,proto3" json:"args,omitempty"`
+	// *
+	// ConfigMaps to create alongside the CronJob.
+	// Key is the ConfigMap name, value is the content.
+	// These ConfigMaps can be referenced in volume mounts.
+	//
+	// Example:
+	//
+	//	config_maps:
+	//	  backup-script: |
+	//	    #!/bin/bash
+	//	    echo "Running backup..."
+	//	    pg_dump $DATABASE_URL > /backup/dump.sql
+	ConfigMaps map[string]string `protobuf:"bytes,17,rep,name=config_maps,json=configMaps,proto3" json:"config_maps,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// *
+	// Volume mounts for the CronJob container.
+	// Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+	// ConfigMaps defined in spec.config_maps can be referenced here.
+	//
+	// Example:
+	//
+	//	volume_mounts:
+	//	  - name: backup-script
+	//	    mountPath: /scripts/backup.sh
+	//	    configMap:
+	//	      name: backup-script
+	//	      key: backup-script
+	//	      path: backup.sh
+	VolumeMounts  []*kubernetes.VolumeMount `protobuf:"bytes,18,rep,name=volume_mounts,json=volumeMounts,proto3" json:"volume_mounts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -243,6 +271,20 @@ func (x *KubernetesCronJobSpec) GetArgs() []string {
 	return nil
 }
 
+func (x *KubernetesCronJobSpec) GetConfigMaps() map[string]string {
+	if x != nil {
+		return x.ConfigMaps
+	}
+	return nil
+}
+
+func (x *KubernetesCronJobSpec) GetVolumeMounts() []*kubernetes.VolumeMount {
+	if x != nil {
+		return x.VolumeMounts
+	}
+	return nil
+}
+
 // *
 // KubernetesCronJobContainerAppEnv defines the environment variables
 // and secrets for the cron-job container.
@@ -304,8 +346,7 @@ var File_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xca\n" +
-	"\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetescronjob/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xeb\f\n" +
 	"\x15KubernetesCronJobSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -326,7 +367,13 @@ const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_pro
 	"\rbackoff_limit\x18\r \x01(\rB\x05\x8a\xa6\x1d\x016H\x05R\fbackoffLimit\x88\x01\x01\x12T\n" +
 	"\x0erestart_policy\x18\x0e \x01(\tB(\xbaH\x1cr\x1aR\x06AlwaysR\tOnFailureR\x05Never\x8a\xa6\x1d\x05NeverH\x06R\rrestartPolicy\x88\x01\x01\x12\x18\n" +
 	"\acommand\x18\x0f \x03(\tR\acommand\x12\x12\n" +
-	"\x04args\x18\x10 \x03(\tR\x04argsB\x1c\n" +
+	"\x04args\x18\x10 \x03(\tR\x04args\x12\x84\x01\n" +
+	"\vconfig_maps\x18\x11 \x03(\v2c.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.ConfigMapsEntryR\n" +
+	"configMaps\x12Y\n" +
+	"\rvolume_mounts\x18\x12 \x03(\v24.org.project_planton.provider.kubernetes.VolumeMountR\fvolumeMounts\x1a=\n" +
+	"\x0fConfigMapsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x1c\n" +
 	"\x1a_starting_deadline_secondsB\x15\n" +
 	"\x13_concurrency_policyB\n" +
 	"\n" +
@@ -358,30 +405,34 @@ func file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_prot
 	return file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_goTypes = []any{
 	(*KubernetesCronJobSpec)(nil),            // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec
 	(*KubernetesCronJobContainerAppEnv)(nil), // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
-	nil,                                      // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
-	nil,                                      // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
-	(*kubernetes.KubernetesClusterSelector)(nil), // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	(*v1.StringValueOrRef)(nil),                  // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	(*kubernetes.ContainerImage)(nil),            // 6: org.project_planton.provider.kubernetes.ContainerImage
-	(*kubernetes.ContainerResources)(nil),        // 7: org.project_planton.provider.kubernetes.ContainerResources
+	nil,                                      // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.ConfigMapsEntry
+	nil,                                      // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
+	nil,                                      // 4: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
+	(*kubernetes.KubernetesClusterSelector)(nil), // 5: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 6: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.ContainerImage)(nil),            // 7: org.project_planton.provider.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil),        // 8: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.VolumeMount)(nil),               // 9: org.project_planton.provider.kubernetes.VolumeMount
 }
 var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_depIdxs = []int32{
-	4, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	5, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	6, // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	7, // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	5, // 0: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	6, // 1: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	7, // 2: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	8, // 3: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
 	1, // 4: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.env:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv
-	2, // 5: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
-	3, // 6: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	2, // 5: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.config_maps:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.ConfigMapsEntry
+	9, // 6: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.volume_mounts:type_name -> org.project_planton.provider.kubernetes.VolumeMount
+	3, // 7: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
+	4, // 8: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_init() }
@@ -396,7 +447,7 @@ func file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

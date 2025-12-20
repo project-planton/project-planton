@@ -44,6 +44,23 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesdaemonsetv1.Kubernetes
 		}
 	}
 
+	// Create ConfigMaps
+	_, err = configMaps(ctx, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create configmaps")
+	}
+
+	// Create ServiceAccount
+	serviceAccountName, err := serviceAccount(ctx, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create service account")
+	}
+
+	// Create RBAC resources
+	if err := rbac(ctx, locals, serviceAccountName, kubernetesProvider); err != nil {
+		return errors.Wrap(err, "failed to create rbac resources")
+	}
+
 	// Create the main secret resource for environment secrets
 	if err := secret(ctx, locals, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create secret")
@@ -57,7 +74,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesdaemonsetv1.Kubernetes
 	}
 
 	// Create the DaemonSet resource
-	if err := daemonSet(ctx, locals, kubernetesProvider); err != nil {
+	if err := daemonSet(ctx, locals, serviceAccountName, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create daemonset")
 	}
 

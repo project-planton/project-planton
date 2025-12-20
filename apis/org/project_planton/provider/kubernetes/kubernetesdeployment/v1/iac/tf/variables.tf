@@ -112,6 +112,62 @@ variable "spec" {
           # A flag indicating whether this port should be exposed via ingress.
           is_ingress_port = bool
         }))
+
+        # Volume mounts for the application container.
+        # Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+        volume_mounts = optional(list(object({
+          # Name of the volume mount. Must be unique within the container.
+          name = string
+
+          # Path within the container at which the volume should be mounted.
+          mount_path = string
+
+          # Whether the volume should be mounted read-only.
+          read_only = optional(bool, false)
+
+          # Path within the volume from which the container's volume should be mounted.
+          sub_path = optional(string)
+
+          # ConfigMap volume source.
+          config_map = optional(object({
+            name         = string
+            key          = optional(string)
+            path         = optional(string)
+            default_mode = optional(number)
+          }))
+
+          # Secret volume source.
+          secret = optional(object({
+            name         = string
+            key          = optional(string)
+            path         = optional(string)
+            default_mode = optional(number)
+          }))
+
+          # HostPath volume source.
+          host_path = optional(object({
+            path = string
+            type = optional(string)
+          }))
+
+          # EmptyDir volume source.
+          empty_dir = optional(object({
+            medium     = optional(string)
+            size_limit = optional(string)
+          }))
+
+          # PVC volume source.
+          pvc = optional(object({
+            claim_name = string
+            read_only  = optional(bool, false)
+          }))
+        })), [])
+
+        # Command to run in the container (overrides the container image's ENTRYPOINT).
+        command = optional(list(string), [])
+
+        # Arguments to pass to the command (overrides the container image's CMD).
+        args = optional(list(string), [])
       })
 
       # A list of sidecar containers to be deployed alongside the main application container.
@@ -185,6 +241,11 @@ variable "spec" {
       # The dns domain.
       dns_domain = string
     })
+
+    # ConfigMaps to create alongside the deployment.
+    # Key is the ConfigMap name, value is the content.
+    # These ConfigMaps can be referenced in volume mounts.
+    config_maps = optional(map(string), {})
 
     # The availability configuration for the microservice.
     # This includes settings for minimum replicas and autoscaling options.

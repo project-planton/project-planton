@@ -38,6 +38,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.Kubernete
 		}
 	}
 
+	//create ConfigMaps from spec before deployment
+	_, err = configMaps(ctx, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create configmaps")
+	}
+
 	//create kubernetes deployment resources
 	createdDeployment, err := deployment(ctx, locals, kubernetesProvider)
 	if err != nil {

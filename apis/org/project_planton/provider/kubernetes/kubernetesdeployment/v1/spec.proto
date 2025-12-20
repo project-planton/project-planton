@@ -7,6 +7,7 @@ import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/probe.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/provider/kubernetes/volume_mount.proto";
 import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 /**
@@ -59,6 +60,24 @@ message KubernetesDeploymentSpec {
   //The availability configuration for the microservice.
   //This includes settings for replicas, autoscaling, deployment strategy, and pod disruption budgets.
   KubernetesDeploymentAvailability availability = 7;
+
+  /**
+   * ConfigMaps to create alongside the deployment.
+   * Key is the ConfigMap name, value is the content.
+   * For multi-key ConfigMaps, use YAML format in the value.
+   * These ConfigMaps can be referenced in volume mounts.
+   *
+   * Example:
+   *   config_maps:
+   *     app-config: |
+   *       key1: value1
+   *       key2: value2
+   *     nginx-conf: |
+   *       server {
+   *         listen 80;
+   *       }
+   */
+  map<string, string> config_maps = 8;
 }
 
 /**
@@ -164,6 +183,33 @@ message KubernetesDeploymentContainerApp {
    * Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
    */
   org.project_planton.provider.kubernetes.Probe startup_probe = 7;
+
+  /**
+   * Volume mounts for the application container.
+   * Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+   * ConfigMaps defined in spec.config_maps can be referenced here.
+   *
+   * Example:
+   *   volume_mounts:
+   *     - name: config-volume
+   *       mount_path: /etc/app/config.yaml
+   *       config_map:
+   *         name: app-config
+   *         key: app-config
+   */
+  repeated org.project_planton.provider.kubernetes.VolumeMount volume_mounts = 8;
+
+  /**
+   * Command to run in the container (overrides the container image's ENTRYPOINT).
+   * Example: ["/bin/sh", "-c"]
+   */
+  repeated string command = 9;
+
+  /**
+   * Arguments to pass to the command (overrides the container image's CMD).
+   * Example: ["echo hello"]
+   */
+  repeated string args = 10;
 }
 
 /**

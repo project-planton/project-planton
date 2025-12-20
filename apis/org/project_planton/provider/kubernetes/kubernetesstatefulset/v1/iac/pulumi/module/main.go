@@ -38,6 +38,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesstatefulsetv1.Kubernet
 		}
 	}
 
+	// Create ConfigMaps from spec before StatefulSet
+	_, err = configMaps(ctx, locals, kubernetesProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create configmaps")
+	}
+
 	// Create the headless service for stable network identity (required for StatefulSet)
 	createdHeadlessService, err := headlessService(ctx, locals, kubernetesProvider)
 	if err != nil {

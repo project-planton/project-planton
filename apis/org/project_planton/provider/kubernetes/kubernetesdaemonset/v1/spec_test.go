@@ -242,15 +242,117 @@ var _ = ginkgo.Describe("KubernetesDaemonSet Custom Validation Tests", func() {
 	})
 
 	ginkgo.Describe("Volume mount validation", func() {
-		ginkgo.Context("When volume mount is specified", func() {
+		ginkgo.Context("When volume mount with hostPath is specified", func() {
 			ginkgo.It("should pass validation", func() {
-				input.Spec.Container.App.VolumeMounts = []*KubernetesDaemonSetVolumeMount{
+				input.Spec.Container.App.VolumeMounts = []*kubernetes.VolumeMount{
 					{
 						Name:      "varlog",
 						MountPath: "/var/log",
-						HostPath:  "/var/log",
 						ReadOnly:  true,
+						HostPath: &kubernetes.HostPathVolumeSource{
+							Path: "/var/log",
+							Type: "Directory",
+						},
 					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When volume mount with configMap is specified", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.Container.App.VolumeMounts = []*kubernetes.VolumeMount{
+					{
+						Name:      "config",
+						MountPath: "/etc/app/config.yaml",
+						ConfigMap: &kubernetes.ConfigMapVolumeSource{
+							Name: "app-config",
+							Key:  "config.yaml",
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("RBAC validation", func() {
+		ginkgo.Context("When RBAC with cluster rules is specified", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.CreateServiceAccount = true
+				input.Spec.Rbac = &KubernetesDaemonSetRbac{
+					ClusterRules: []*KubernetesDaemonSetRbacRule{
+						{
+							ApiGroups: []string{""},
+							Resources: []string{"pods", "nodes"},
+							Verbs:     []string{"get", "list", "watch"},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When RBAC rule has empty api_groups", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.CreateServiceAccount = true
+				input.Spec.Rbac = &KubernetesDaemonSetRbac{
+					ClusterRules: []*KubernetesDaemonSetRbacRule{
+						{
+							ApiGroups: []string{},
+							Resources: []string{"pods"},
+							Verbs:     []string{"get"},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When RBAC rule has empty resources", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.CreateServiceAccount = true
+				input.Spec.Rbac = &KubernetesDaemonSetRbac{
+					ClusterRules: []*KubernetesDaemonSetRbacRule{
+						{
+							ApiGroups: []string{""},
+							Resources: []string{},
+							Verbs:     []string{"get"},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When RBAC rule has empty verbs", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.CreateServiceAccount = true
+				input.Spec.Rbac = &KubernetesDaemonSetRbac{
+					ClusterRules: []*KubernetesDaemonSetRbacRule{
+						{
+							ApiGroups: []string{""},
+							Resources: []string{"pods"},
+							Verbs:     []string{},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("ConfigMaps validation", func() {
+		ginkgo.Context("When configMaps is specified", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.ConfigMaps = map[string]string{
+					"app-config": "key: value",
 				}
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())

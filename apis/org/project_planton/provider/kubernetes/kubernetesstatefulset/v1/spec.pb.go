@@ -57,8 +57,21 @@ type KubernetesStatefulSetSpec struct {
 	// "OrderedReady" (default): Pods are created in order and wait for previous pod to be ready.
 	// "Parallel": All pods are created/deleted simultaneously.
 	PodManagementPolicy string `protobuf:"bytes,8,opt,name=pod_management_policy,json=podManagementPolicy,proto3" json:"pod_management_policy,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// *
+	// ConfigMaps to create alongside the StatefulSet.
+	// Key is the ConfigMap name, value is the content.
+	// These ConfigMaps can be referenced in volume mounts.
+	//
+	// Example:
+	//
+	//	config_maps:
+	//	  app-config: |
+	//	    database:
+	//	      host: localhost
+	//	      port: 5432
+	ConfigMaps    map[string]string `protobuf:"bytes,9,rep,name=config_maps,json=configMaps,proto3" json:"config_maps,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *KubernetesStatefulSetSpec) Reset() {
@@ -145,6 +158,13 @@ func (x *KubernetesStatefulSetSpec) GetPodManagementPolicy() string {
 		return x.PodManagementPolicy
 	}
 	return ""
+}
+
+func (x *KubernetesStatefulSetSpec) GetConfigMaps() map[string]string {
+	if x != nil {
+		return x.ConfigMaps
+	}
+	return nil
 }
 
 // *
@@ -280,8 +300,23 @@ type KubernetesStatefulSetContainerApp struct {
 	Ports []*KubernetesStatefulSetContainerAppPort `protobuf:"bytes,4,rep,name=ports,proto3" json:"ports,omitempty"`
 	// *
 	// Volume mounts for the application container.
-	// These mount the persistent volumes defined in volume_claim_templates.
-	VolumeMounts []*KubernetesStatefulSetContainerVolumeMount `protobuf:"bytes,5,rep,name=volume_mounts,json=volumeMounts,proto3" json:"volume_mounts,omitempty"`
+	// Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+	// For PVC mounts, reference volume_claim_template names or existing PVCs.
+	// ConfigMaps defined in spec.config_maps can be referenced here.
+	//
+	// Example:
+	//
+	//	volume_mounts:
+	//	  - name: data
+	//	    mount_path: /var/lib/data
+	//	    pvc:
+	//	      claim_name: data
+	//	  - name: config-volume
+	//	    mount_path: /etc/app/config.yaml
+	//	    config_map:
+	//	      name: app-config
+	//	      key: app-config
+	VolumeMounts []*kubernetes.VolumeMount `protobuf:"bytes,5,rep,name=volume_mounts,json=volumeMounts,proto3" json:"volume_mounts,omitempty"`
 	// *
 	// Liveness probe configuration.
 	// Periodic probe of container liveness. Container will be restarted if the probe fails.
@@ -365,7 +400,7 @@ func (x *KubernetesStatefulSetContainerApp) GetPorts() []*KubernetesStatefulSetC
 	return nil
 }
 
-func (x *KubernetesStatefulSetContainerApp) GetVolumeMounts() []*KubernetesStatefulSetContainerVolumeMount {
+func (x *KubernetesStatefulSetContainerApp) GetVolumeMounts() []*kubernetes.VolumeMount {
 	if x != nil {
 		return x.VolumeMounts
 	}
@@ -560,81 +595,6 @@ func (x *KubernetesStatefulSetContainerAppPort) GetIsIngressPort() bool {
 }
 
 // *
-// **KubernetesStatefulSetContainerVolumeMount** specifies a volume mount for the container.
-type KubernetesStatefulSetContainerVolumeMount struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the volume to mount. Must match a volume_claim_template name.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The path within the container at which the volume should be mounted.
-	MountPath string `protobuf:"bytes,2,opt,name=mount_path,json=mountPath,proto3" json:"mount_path,omitempty"`
-	// Whether the volume should be read-only.
-	ReadOnly bool `protobuf:"varint,3,opt,name=read_only,json=readOnly,proto3" json:"read_only,omitempty"`
-	// Path within the volume from which the container's volume should be mounted.
-	// Defaults to "" (volume's root).
-	SubPath       string `protobuf:"bytes,4,opt,name=sub_path,json=subPath,proto3" json:"sub_path,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) Reset() {
-	*x = KubernetesStatefulSetContainerVolumeMount{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*KubernetesStatefulSetContainerVolumeMount) ProtoMessage() {}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use KubernetesStatefulSetContainerVolumeMount.ProtoReflect.Descriptor instead.
-func (*KubernetesStatefulSetContainerVolumeMount) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) GetMountPath() string {
-	if x != nil {
-		return x.MountPath
-	}
-	return ""
-}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) GetReadOnly() bool {
-	if x != nil {
-		return x.ReadOnly
-	}
-	return false
-}
-
-func (x *KubernetesStatefulSetContainerVolumeMount) GetSubPath() string {
-	if x != nil {
-		return x.SubPath
-	}
-	return ""
-}
-
-// *
 // **KubernetesStatefulSetAvailability** specifies the availability configuration for the stateful set.
 type KubernetesStatefulSetAvailability struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -650,7 +610,7 @@ type KubernetesStatefulSetAvailability struct {
 
 func (x *KubernetesStatefulSetAvailability) Reset() {
 	*x = KubernetesStatefulSetAvailability{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[7]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -662,7 +622,7 @@ func (x *KubernetesStatefulSetAvailability) String() string {
 func (*KubernetesStatefulSetAvailability) ProtoMessage() {}
 
 func (x *KubernetesStatefulSetAvailability) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[7]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -675,7 +635,7 @@ func (x *KubernetesStatefulSetAvailability) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use KubernetesStatefulSetAvailability.ProtoReflect.Descriptor instead.
 func (*KubernetesStatefulSetAvailability) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{7}
+	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *KubernetesStatefulSetAvailability) GetReplicas() int32 {
@@ -711,7 +671,7 @@ type KubernetesStatefulSetPodDisruptionBudget struct {
 
 func (x *KubernetesStatefulSetPodDisruptionBudget) Reset() {
 	*x = KubernetesStatefulSetPodDisruptionBudget{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[8]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -723,7 +683,7 @@ func (x *KubernetesStatefulSetPodDisruptionBudget) String() string {
 func (*KubernetesStatefulSetPodDisruptionBudget) ProtoMessage() {}
 
 func (x *KubernetesStatefulSetPodDisruptionBudget) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[8]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -736,7 +696,7 @@ func (x *KubernetesStatefulSetPodDisruptionBudget) ProtoReflect() protoreflect.M
 
 // Deprecated: Use KubernetesStatefulSetPodDisruptionBudget.ProtoReflect.Descriptor instead.
 func (*KubernetesStatefulSetPodDisruptionBudget) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{8}
+	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *KubernetesStatefulSetPodDisruptionBudget) GetEnabled() bool {
@@ -783,7 +743,7 @@ type KubernetesStatefulSetVolumeClaimTemplate struct {
 
 func (x *KubernetesStatefulSetVolumeClaimTemplate) Reset() {
 	*x = KubernetesStatefulSetVolumeClaimTemplate{}
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[9]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -795,7 +755,7 @@ func (x *KubernetesStatefulSetVolumeClaimTemplate) String() string {
 func (*KubernetesStatefulSetVolumeClaimTemplate) ProtoMessage() {}
 
 func (x *KubernetesStatefulSetVolumeClaimTemplate) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[9]
+	mi := &file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -808,7 +768,7 @@ func (x *KubernetesStatefulSetVolumeClaimTemplate) ProtoReflect() protoreflect.M
 
 // Deprecated: Use KubernetesStatefulSetVolumeClaimTemplate.ProtoReflect.Descriptor instead.
 func (*KubernetesStatefulSetVolumeClaimTemplate) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{9}
+	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *KubernetesStatefulSetVolumeClaimTemplate) GetName() string {
@@ -843,7 +803,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetesstatefulset/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesstatefulset.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xad\b\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetesstatefulset/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesstatefulset.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xfb\t\n" +
 	"\x19KubernetesStatefulSetSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -853,14 +813,19 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec
 	"\favailability\x18\x06 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailabilityR\favailability\x12\xa0\x01\n" +
 	"\x16volume_claim_templates\x18\a \x03(\v2j.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetVolumeClaimTemplateR\x14volumeClaimTemplates\x12\xd5\x01\n" +
 	"\x15pod_management_policy\x18\b \x01(\tB\xa0\x01\xbaH\x9c\x01\xba\x01\x98\x01\n" +
-	"\x1aspec.pod_management_policy\x12APod management policy must be either \"OrderedReady\" or \"Parallel\"\x1a7size(this) == 0 || this in [\"OrderedReady\", \"Parallel\"]R\x13podManagementPolicy\"\xd3\x01\n" +
+	"\x1aspec.pod_management_policy\x12APod management policy must be either \"OrderedReady\" or \"Parallel\"\x1a7size(this) == 0 || this in [\"OrderedReady\", \"Parallel\"]R\x13podManagementPolicy\x12\x8c\x01\n" +
+	"\vconfig_maps\x18\t \x03(\v2k.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.ConfigMapsEntryR\n" +
+	"configMaps\x1a=\n" +
+	"\x0fConfigMapsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd3\x01\n" +
 	"\x1cKubernetesStatefulSetIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
 	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xef\x01\n" +
 	"\x1eKubernetesStatefulSetContainer\x12}\n" +
 	"\x03app\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12N\n" +
-	"\bsidecars\x18\x02 \x03(\v22.org.project_planton.provider.kubernetes.ContainerR\bsidecars\"\xf0\b\n" +
+	"\bsidecars\x18\x02 \x03(\v22.org.project_planton.provider.kubernetes.ContainerR\bsidecars\"\xb8\b\n" +
 	"!KubernetesStatefulSetContainerApp\x12\x8d\x02\n" +
 	"\x05image\x18\x01 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageB\xbd\x01\xbaH\xb9\x01\xba\x01Z\n" +
 	"\x1dspec.container.app.image.repo\x12\x16Image repo is required\x1a!has(this.repo) && this.repo != ''\xba\x01V\n" +
@@ -870,8 +835,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12x\n" +
 	"\x03env\x18\x03 \x01(\v2f.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnvR\x03env\x12}\n" +
-	"\x05ports\x18\x04 \x03(\v2g.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppPortR\x05ports\x12\x90\x01\n" +
-	"\rvolume_mounts\x18\x05 \x03(\v2k.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerVolumeMountR\fvolumeMounts\x12U\n" +
+	"\x05ports\x18\x04 \x03(\v2g.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppPortR\x05ports\x12Y\n" +
+	"\rvolume_mounts\x18\x05 \x03(\v24.org.project_planton.provider.kubernetes.VolumeMountR\fvolumeMounts\x12U\n" +
 	"\x0eliveness_probe\x18\x06 \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\rlivenessProbe\x12W\n" +
 	"\x0freadiness_probe\x18\a \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\x0ereadinessProbe\x12S\n" +
 	"\rstartup_probe\x18\b \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\fstartupProbe\x12\x18\n" +
@@ -895,13 +860,7 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec
 	")spec.container.app.ports.network_protocol\x12<The network protocol must be one of \"SCTP\", \"TCP\", or \"UDP\".\x1a\x1ethis in [\"SCTP\", \"TCP\", \"UDP\"]\xc8\x01\x01R\x0fnetworkProtocol\x12)\n" +
 	"\fapp_protocol\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vappProtocol\x12)\n" +
 	"\fservice_port\x18\x05 \x01(\x05B\x06\xbaH\x03\xc8\x01\x01R\vservicePort\x12&\n" +
-	"\x0fis_ingress_port\x18\x06 \x01(\bR\risIngressPort\"\xa6\x01\n" +
-	")KubernetesStatefulSetContainerVolumeMount\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12%\n" +
-	"\n" +
-	"mount_path\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tmountPath\x12\x1b\n" +
-	"\tread_only\x18\x03 \x01(\bR\breadOnly\x12\x19\n" +
-	"\bsub_path\x18\x04 \x01(\tR\asubPath\"\xe0\x01\n" +
+	"\x0fis_ingress_port\x18\x06 \x01(\bR\risIngressPort\"\xe0\x01\n" +
 	"!KubernetesStatefulSetAvailability\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12\x9e\x01\n" +
 	"\x15pod_disruption_budget\x18\x02 \x01(\v2j.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetPodDisruptionBudgetR\x13podDisruptionBudget\"\x92\x01\n" +
@@ -932,16 +891,16 @@ func file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_
 
 var file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_goTypes = []any{
-	(*KubernetesStatefulSetSpec)(nil),                 // 0: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec
-	(*KubernetesStatefulSetIngress)(nil),              // 1: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetIngress
-	(*KubernetesStatefulSetContainer)(nil),            // 2: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer
-	(*KubernetesStatefulSetContainerApp)(nil),         // 3: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp
-	(*KubernetesStatefulSetContainerAppEnv)(nil),      // 4: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv
-	(*KubernetesStatefulSetContainerAppPort)(nil),     // 5: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppPort
-	(*KubernetesStatefulSetContainerVolumeMount)(nil), // 6: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerVolumeMount
-	(*KubernetesStatefulSetAvailability)(nil),         // 7: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability
-	(*KubernetesStatefulSetPodDisruptionBudget)(nil),  // 8: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetPodDisruptionBudget
-	(*KubernetesStatefulSetVolumeClaimTemplate)(nil),  // 9: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetVolumeClaimTemplate
+	(*KubernetesStatefulSetSpec)(nil),                // 0: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec
+	(*KubernetesStatefulSetIngress)(nil),             // 1: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetIngress
+	(*KubernetesStatefulSetContainer)(nil),           // 2: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer
+	(*KubernetesStatefulSetContainerApp)(nil),        // 3: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp
+	(*KubernetesStatefulSetContainerAppEnv)(nil),     // 4: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv
+	(*KubernetesStatefulSetContainerAppPort)(nil),    // 5: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppPort
+	(*KubernetesStatefulSetAvailability)(nil),        // 6: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability
+	(*KubernetesStatefulSetPodDisruptionBudget)(nil), // 7: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetPodDisruptionBudget
+	(*KubernetesStatefulSetVolumeClaimTemplate)(nil), // 8: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetVolumeClaimTemplate
+	nil, // 9: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.ConfigMapsEntry
 	nil, // 10: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.VariablesEntry
 	nil, // 11: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntry
 	(*kubernetes.KubernetesClusterSelector)(nil), // 12: org.project_planton.provider.kubernetes.KubernetesClusterSelector
@@ -949,33 +908,35 @@ var file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_p
 	(*kubernetes.Container)(nil),                 // 14: org.project_planton.provider.kubernetes.Container
 	(*kubernetes.ContainerImage)(nil),            // 15: org.project_planton.provider.kubernetes.ContainerImage
 	(*kubernetes.ContainerResources)(nil),        // 16: org.project_planton.provider.kubernetes.ContainerResources
-	(*kubernetes.Probe)(nil),                     // 17: org.project_planton.provider.kubernetes.Probe
+	(*kubernetes.VolumeMount)(nil),               // 17: org.project_planton.provider.kubernetes.VolumeMount
+	(*kubernetes.Probe)(nil),                     // 18: org.project_planton.provider.kubernetes.Probe
 }
 var file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_depIdxs = []int32{
 	12, // 0: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	13, // 1: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	2,  // 2: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer
 	1,  // 3: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetIngress
-	7,  // 4: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.availability:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability
-	9,  // 5: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.volume_claim_templates:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetVolumeClaimTemplate
-	3,  // 6: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp
-	14, // 7: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer.sidecars:type_name -> org.project_planton.provider.kubernetes.Container
-	15, // 8: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	16, // 9: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	4,  // 10: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv
-	5,  // 11: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppPort
-	6,  // 12: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.volume_mounts:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerVolumeMount
-	17, // 13: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.liveness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	17, // 14: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.readiness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	17, // 15: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.startup_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	10, // 16: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.VariablesEntry
-	11, // 17: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntry
-	8,  // 18: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetPodDisruptionBudget
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	6,  // 4: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.availability:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability
+	8,  // 5: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.volume_claim_templates:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetVolumeClaimTemplate
+	9,  // 6: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.config_maps:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpec.ConfigMapsEntry
+	3,  // 7: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp
+	14, // 8: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainer.sidecars:type_name -> org.project_planton.provider.kubernetes.Container
+	15, // 9: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	16, // 10: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	4,  // 11: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv
+	5,  // 12: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppPort
+	17, // 13: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.volume_mounts:type_name -> org.project_planton.provider.kubernetes.VolumeMount
+	18, // 14: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.liveness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
+	18, // 15: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.readiness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
+	18, // 16: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerApp.startup_probe:type_name -> org.project_planton.provider.kubernetes.Probe
+	10, // 17: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.VariablesEntry
+	11, // 18: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntry
+	7,  // 19: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetPodDisruptionBudget
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_init() }
