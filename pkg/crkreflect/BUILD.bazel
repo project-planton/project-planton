@@ -129,6 +129,7 @@ go_library(
         "//apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1:kuberneteskafka",
         "//apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1:kuberneteskeycloak",
         "//apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1:kuberneteslocust",
+        "//apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1:kubernetesmanifest",
         "//apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1:kubernetesmongodb",
         "//apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1:kubernetesnamespace",
         "//apis/org/project_planton/provider/kubernetes/kubernetesnats/v1:kubernetesnats",
