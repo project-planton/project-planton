@@ -114,6 +114,7 @@ import (
 	kuberneteskafkav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1"
 	kuberneteskeycloakv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1"
 	kuberneteslocustv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1"
+	kubernetesmanifestv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1"
 	kubernetesmongodbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1"
 	kubernetesnamespacev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1"
 	kubernetesnatsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
@@ -282,6 +283,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesKafka:                   &kuberneteskafkav1.KubernetesKafka{},
 	cloudresourcekind.CloudResourceKind_KubernetesKeycloak:                &kuberneteskeycloakv1.KubernetesKeycloak{},
 	cloudresourcekind.CloudResourceKind_KubernetesLocust:                  &kuberneteslocustv1.KubernetesLocust{},
+	cloudresourcekind.CloudResourceKind_KubernetesManifest:                &kubernetesmanifestv1.KubernetesManifest{},
 	cloudresourcekind.CloudResourceKind_KubernetesMongodb:                 &kubernetesmongodbv1.KubernetesMongodb{},
 	cloudresourcekind.CloudResourceKind_KubernetesNamespace:               &kubernetesnamespacev1.KubernetesNamespace{},
 	cloudresourcekind.CloudResourceKind_KubernetesNats:                    &kubernetesnatsv1.KubernetesNats{},

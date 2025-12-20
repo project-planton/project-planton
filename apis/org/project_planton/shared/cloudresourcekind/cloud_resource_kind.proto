@@ -519,6 +519,11 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "k8sds"
   }];
+  KubernetesManifest = 842 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "k8smfst"
+  }];
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200 [(kind_meta) = {
