@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	kubernetessolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
@@ -27,8 +28,11 @@ type Locals struct {
 	// CrdsResourceName is the name of the CRDs ConfigFile resource (prefixed for uniqueness)
 	CrdsResourceName string
 
-	// ChartVersion is the Helm chart version to install
+	// ChartVersion is the Helm chart version to install (without 'v' prefix)
 	ChartVersion string
+
+	// CrdManifestURL is the URL to download CRDs from
+	CrdManifestURL string
 }
 
 // initializeLocals creates computed values from stack input
@@ -69,8 +73,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.
 	locals.HelmReleaseName = target.Metadata.Name
 	locals.CrdsResourceName = fmt.Sprintf("%s-crds", target.Metadata.Name)
 
-	// Use stable chart version
-	locals.ChartVersion = vars.DefaultStableVersion
+	// Helm chart version without 'v' prefix
+	// The default version (v0.9.1) is set in spec.proto via options.default
+	locals.ChartVersion = strings.TrimPrefix(target.Spec.OperatorVersion, "v")
+
+	// CRD manifest URL uses version without 'v' prefix
+	locals.CrdManifestURL = fmt.Sprintf(vars.CrdManifestURLFormat, locals.ChartVersion)
 
 	return locals
 }

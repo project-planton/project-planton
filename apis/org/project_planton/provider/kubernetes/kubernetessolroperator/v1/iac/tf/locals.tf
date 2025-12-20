@@ -37,17 +37,17 @@ locals {
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
   # Solr Operator configuration
-  namespace = (
-    var.spec.namespace != null && var.spec.namespace != ""
-    ? var.spec.namespace
-    : "solr-operator" # fallback to default
-  )
-  helm_chart_name    = "solr-operator"
-  helm_chart_repo    = "https://solr.apache.org/charts"
-  helm_chart_version = "0.7.0"
+  # Namespace comes from input (var.spec.namespace)
+  namespace       = var.spec.namespace
+  helm_chart_name = "solr-operator"
+  helm_chart_repo = "https://solr.apache.org/charts"
 
-  # CRD manifest URL (must match the chart version)
-  crd_manifest_url = "https://solr.apache.org/operator/downloads/crds/v0.7.0/all-with-dependencies.yaml"
+  # Helm chart version (strip 'v' prefix if present)
+  # The default version (v0.9.1) is set in variables.tf
+  helm_chart_version = trimprefix(var.spec.operator_version, "v")
+
+  # CRD manifest URL (must match the operator version)
+  crd_manifest_url = "https://solr.apache.org/operator/downloads/crds/${var.spec.operator_version}/all-with-dependencies.yaml"
 
   # Computed resource names to avoid conflicts when multiple instances share a namespace
   # The Helm release name uses metadata.name to ensure uniqueness

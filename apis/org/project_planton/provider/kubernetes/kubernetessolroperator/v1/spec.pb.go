@@ -10,6 +10,7 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -35,8 +36,11 @@ type KubernetesSolrOperatorSpec struct {
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// flag to indicate if the namespace should be created
 	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
+	// The version of the Apache Solr Operator to deploy.
+	// https://github.com/apache/solr-operator/releases
+	OperatorVersion string `protobuf:"bytes,4,opt,name=operator_version,json=operatorVersion,proto3" json:"operator_version,omitempty"`
 	// The container specifications for the Apache Solr Operator deployment.
-	Container     *KubernetesSolrOperatorSpecContainer `protobuf:"bytes,4,opt,name=container,proto3" json:"container,omitempty"`
+	Container     *KubernetesSolrOperatorSpecContainer `protobuf:"bytes,5,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -90,6 +94,13 @@ func (x *KubernetesSolrOperatorSpec) GetCreateNamespace() bool {
 		return x.CreateNamespace
 	}
 	return false
+}
+
+func (x *KubernetesSolrOperatorSpec) GetOperatorVersion() string {
+	if x != nil {
+		return x.OperatorVersion
+	}
+	return ""
 }
 
 func (x *KubernetesSolrOperatorSpec) GetContainer() *KubernetesSolrOperatorSpecContainer {
@@ -150,12 +161,14 @@ var File_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_
 
 const file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/kubernetes/kubernetessolroperator/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetessolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb5\x03\n" +
+	"Lorg/project_planton/provider/kubernetes/kubernetessolroperator/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.kubernetessolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xec\x03\n" +
 	"\x1aKubernetesSolrOperatorSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
-	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\x8c\x01\n" +
-	"\tcontainer\x18\x04 \x01(\v2f.org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa3\x01\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x125\n" +
+	"\x10operator_version\x18\x04 \x01(\tB\n" +
+	"\x8a\xa6\x1d\x06v0.9.1R\x0foperatorVersion\x12\x8c\x01\n" +
+	"\tcontainer\x18\x05 \x01(\v2f.org.project_planton.provider.kubernetes.kubernetessolroperator.v1.KubernetesSolrOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa3\x01\n" +
 	"#KubernetesSolrOperatorSpecContainer\x12|\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
