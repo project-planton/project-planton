@@ -39,4 +39,3 @@ func configMaps(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.P
 
 	return result, nil
 }
-

@@ -62,15 +62,15 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 								AppProtocol:     "tcp",
 							},
 						},
-					VolumeMounts: []*kubernetes.VolumeMount{
-						{
-							Name:      "data",
-							MountPath: "/var/lib/postgresql/data",
-							Pvc: &kubernetes.PvcVolumeSource{
-								ClaimName: "data",
+						VolumeMounts: []*kubernetes.VolumeMount{
+							{
+								Name:      "data",
+								MountPath: "/var/lib/postgresql/data",
+								Pvc: &kubernetes.PvcVolumeSource{
+									ClaimName: "data",
+								},
 							},
 						},
-					},
 					},
 				},
 				VolumeClaimTemplates: []*KubernetesStatefulSetVolumeClaimTemplate{
