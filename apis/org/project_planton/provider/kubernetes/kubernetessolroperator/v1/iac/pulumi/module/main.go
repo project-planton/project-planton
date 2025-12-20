@@ -47,7 +47,7 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 	// --------------------------------------------------------------------
 	crds, err := pulumiyaml.NewConfigFile(ctx, locals.CrdsResourceName,
 		&pulumiyaml.ConfigFileArgs{
-			File: vars.CrdManifestDownloadURL,
+			File: locals.CrdManifestURL,
 		},
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {

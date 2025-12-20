@@ -49,7 +49,7 @@ message KubernetesSolrSpec {
     disk_size: "1Gi"
     image: {
       repo: "solr"
-      tag: "8.7.0"
+      tag: "9.10.0"
     }
   }];
 

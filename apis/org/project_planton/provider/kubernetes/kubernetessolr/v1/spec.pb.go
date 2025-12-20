@@ -428,16 +428,16 @@ var File_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto pr
 
 const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xed\x06\n" +
+	"Dorg/project_planton/provider/kubernetes/kubernetessolr/v1/spec.proto\x129org.project_planton.provider.kubernetes.kubernetessolr.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xee\x06\n" +
 	"\x12KubernetesSolrSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
-	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xb8\x01\n" +
-	"\x0esolr_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12\xb9\x01\n" +
+	"\x0esolr_container\x18\x04 \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerB:\x8aև\x025\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x1a\x031Gi\"\r\n" +
-	"\x04solr\x12\x058.7.0R\rsolrContainer\x12k\n" +
+	"\x0350m\x12\x05100Mi\x1a\x031Gi\"\x0e\n" +
+	"\x04solr\x12\x069.10.0R\rsolrContainer\x12k\n" +
 	"\x06config\x18\x05 \x01(\v2S.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrConfigR\x06config\x12\xb8\x01\n" +
 	"\x13zookeeper_container\x18\x06 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +

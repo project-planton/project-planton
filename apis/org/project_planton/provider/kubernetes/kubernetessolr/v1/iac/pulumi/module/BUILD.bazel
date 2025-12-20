@@ -9,7 +9,7 @@ go_library(
         "namespace.go",
         "outputs.go",
         "solr_cloud.go",
-        "variables.go",
+        "vars.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],

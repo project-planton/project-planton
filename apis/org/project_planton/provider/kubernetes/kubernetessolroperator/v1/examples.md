@@ -21,7 +21,7 @@ spec:
 ```
 
 **What this creates:**
-- Deploys operator with default resource limits (50m CPU, 100Mi memory requests)
+- Deploys operator version v0.9.1 (default) with default resource limits (50m CPU, 100Mi memory requests)
 - Registers SolrCloud, SolrBackup, and SolrPrometheusExporter CRDs
 - Operator manages all SolrCloud resources in the cluster
 
@@ -32,9 +32,9 @@ spec:
 
 ---
 
-## Example 2: Operator with Custom Resource Limits
+## Example 2: Operator with Specific Version and Custom Resources
 
-Increase operator resources when managing a large number of Solr clusters or high-churn environments.
+Specify a specific operator version and increase resources for production environments.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -47,6 +47,8 @@ spec:
   namespace:
     value: "solr-operator-system"
   create_namespace: true
+  # Specify operator version - see https://github.com/apache/solr-operator/releases
+  operator_version: "v0.9.1"
   container:
     resources:
       requests:

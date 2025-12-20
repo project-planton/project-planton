@@ -24,6 +24,10 @@ variable "spec" {
     # Flag to indicate if the namespace should be created
     create_namespace = optional(bool, false)
 
+    # The version of the Apache Solr Operator to deploy
+    # https://github.com/apache/solr-operator/releases
+    operator_version = optional(string, "v0.9.1")
+
     # The container specifications for the Apache Solr Operator deployment.
     container = object({
 
