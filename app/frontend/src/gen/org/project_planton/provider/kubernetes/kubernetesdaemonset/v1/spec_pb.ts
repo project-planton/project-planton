@@ -12,6 +12,8 @@ import type { Probe } from "../../probe_pb";
 import { file_org_project_planton_provider_kubernetes_probe } from "../../probe_pb";
 import type { KubernetesClusterSelector } from "../../target_cluster_pb";
 import { file_org_project_planton_provider_kubernetes_target_cluster } from "../../target_cluster_pb";
+import type { VolumeMount } from "../../volume_mount_pb";
+import { file_org_project_planton_provider_kubernetes_volume_mount } from "../../volume_mount_pb";
 import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -20,7 +22,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetesdaemonset/v1/spec.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CklvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2RhZW1vbnNldC92MS9zcGVjLnByb3RvEj5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MSK0BgoXS3ViZXJuZXRlc0RhZW1vblNldFNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEncKCWNvbnRhaW5lchgEIAEoCzJcLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJCBrpIA8gBARKAAQoNbm9kZV9zZWxlY3RvchgFIAMoCzJpLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRTcGVjLk5vZGVTZWxlY3RvckVudHJ5EnIKC3RvbGVyYXRpb25zGAYgAygLMl0ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFRvbGVyYXRpb24SegoPdXBkYXRlX3N0cmF0ZWd5GAcgASgLMmEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFVwZGF0ZVN0cmF0ZWd5EhkKEW1pbl9yZWFkeV9zZWNvbmRzGAggASgFGjMKEU5vZGVTZWxlY3RvckVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEi2gEKHEt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXISdAoDYXBwGAEgASgLMl8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcEIGukgDyAEBEkQKCHNpZGVjYXJzGAIgAygLMjIub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lciLuCAofS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcBKGAgoFaW1hZ2UYASABKAsyNy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuQ29udGFpbmVySW1hZ2VCvQG6SLkBugFaCh1zcGVjLmNvbnRhaW5lci5hcHAuaW1hZ2UucmVwbxIWSW1hZ2UgcmVwbyBpcyByZXF1aXJlZBohaGFzKHRoaXMucmVwbykgJiYgdGhpcy5yZXBvICE9ICcnugFWChxzcGVjLmNvbnRhaW5lci5hcHAuaW1hZ2UudGFnEhVJbWFnZSB0YWcgaXMgcmVxdWlyZWQaH2hhcyh0aGlzLnRhZykgJiYgdGhpcy50YWcgIT0gJyfIAQEScQoJcmVzb3VyY2VzGAIgASgLMjsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lclJlc291cmNlc0IhuvukAhwKDAoFMTAwMG0SAzFHaRIMCgM1MG0SBTEwME1pEm8KA2VudhgDIAEoCzJiLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJBcHBFbnYScgoFcG9ydHMYBCADKAsyYy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MS5LdWJlcm5ldGVzRGFlbW9uU2V0Q29udGFpbmVyQXBwUG9ydBJ1Cg12b2x1bWVfbW91bnRzGAUgAygLMl4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFZvbHVtZU1vdW50EkYKDmxpdmVuZXNzX3Byb2JlGAYgASgLMi4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLlByb2JlEkcKD3JlYWRpbmVzc19wcm9iZRgHIAEoCzIuLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5Qcm9iZRJFCg1zdGFydHVwX3Byb2JlGAggASgLMi4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLlByb2JlEg8KB2NvbW1hbmQYCSADKAkSDAoEYXJncxgKIAMoCRJ8ChBzZWN1cml0eV9jb250ZXh0GAsgASgLMmIub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFNlY3VyaXR5Q29udGV4dCKQAwoiS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcEVudhKEAQoJdmFyaWFibGVzGAEgAygLMnEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcEVudi5WYXJpYWJsZXNFbnRyeRKAAQoHc2VjcmV0cxgCIAMoCzJvLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJBcHBFbnYuU2VjcmV0c0VudHJ5GjAKDlZhcmlhYmxlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaLgoMU2VjcmV0c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiiQQKI0t1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJBcHBQb3J0EvwBCgRuYW1lGAEgASgJQu0BukjpAboB4gEKHXNwZWMuY29udGFpbmVyLmFwcC5wb3J0cy5uYW1lEpIBTmFtZSBmb3IgcG9ydHMgbXVzdCBvbmx5IGNvbnRhaW4gbG93ZXJjYXNlIGFscGhhbnVtZXJpYyBjaGFyYWN0ZXJzIGFuZCBoeXBoZW5zLiBQb3J0IG5hbWVzIG11c3QgYWxzbyBzdGFydCBhbmQgZW5kIHdpdGggYW4gYWxwaGFudW1lcmljIGNoYXJhY3Rlci4aLHRoaXMubWF0Y2hlcygnXlthLXowLTldW2EtejAtOS1dKlthLXowLTldJCcpyAEBEh4KDmNvbnRhaW5lcl9wb3J0GAIgASgFQga6SAPIAQESrwEKEG5ldHdvcmtfcHJvdG9jb2wYAyABKAlClAG6SJABugGJAQopc3BlYy5jb250YWluZXIuYXBwLnBvcnRzLm5ldHdvcmtfcHJvdG9jb2wSPFRoZSBuZXR3b3JrIHByb3RvY29sIG11c3QgYmUgb25lIG9mICJTQ1RQIiwgIlRDUCIsIG9yICJVRFAiLhoedGhpcyBpbiBbIlNDVFAiLCAiVENQIiwgIlVEUCJdyAEBEhEKCWhvc3RfcG9ydBgEIAEoBSKQAQoeS3ViZXJuZXRlc0RhZW1vblNldFZvbHVtZU1vdW50EhQKBG5hbWUYASABKAlCBrpIA8gBARIaCgptb3VudF9wYXRoGAIgASgJQga6SAPIAQESEQoJaG9zdF9wYXRoGAMgASgJEhYKDmhvc3RfcGF0aF90eXBlGAQgASgJEhEKCXJlYWRfb25seRgFIAEoCCKzAwodS3ViZXJuZXRlc0RhZW1vblNldFRvbGVyYXRpb24SCwoDa2V5GAEgASgJEpABCghvcGVyYXRvchgCIAEoCUJ+ukh7ugF4ChlzcGVjLnRvbGVyYXRpb25zLm9wZXJhdG9yEjBUaGUgb3BlcmF0b3IgbXVzdCBiZSBvbmUgb2YgIkV4aXN0cyIgb3IgIkVxdWFsIi4aKXRoaXMgPT0gIiIgfHwgdGhpcyBpbiBbIkV4aXN0cyIsICJFcXVhbCJdEg0KBXZhbHVlGAMgASgJEsYBCgZlZmZlY3QYBCABKAlCtQG6SLEBugGtAQoXc3BlYy50b2xlcmF0aW9ucy5lZmZlY3QSS1RoZSBlZmZlY3QgbXVzdCBiZSBvbmUgb2YgIk5vU2NoZWR1bGUiLCAiUHJlZmVyTm9TY2hlZHVsZSIsIG9yICJOb0V4ZWN1dGUiLhpFdGhpcyA9PSAiIiB8fCB0aGlzIGluIFsiTm9TY2hlZHVsZSIsICJQcmVmZXJOb1NjaGVkdWxlIiwgIk5vRXhlY3V0ZSJdEhoKEnRvbGVyYXRpb25fc2Vjb25kcxgFIAEoAyLPAgohS3ViZXJuZXRlc0RhZW1vblNldFVwZGF0ZVN0cmF0ZWd5Eq8BCgR0eXBlGAEgASgJQqABukicAboBmAEKGXNwZWMudXBkYXRlX3N0cmF0ZWd5LnR5cGUSRlRoZSB1cGRhdGUgc3RyYXRlZ3kgdHlwZSBtdXN0IGJlIG9uZSBvZiAiUm9sbGluZ1VwZGF0ZSIgb3IgIk9uRGVsZXRlIi4aM3RoaXMgPT0gIiIgfHwgdGhpcyBpbiBbIlJvbGxpbmdVcGRhdGUiLCAiT25EZWxldGUiXRJ4Cg5yb2xsaW5nX3VwZGF0ZRgCIAEoCzJgLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRSb2xsaW5nVXBkYXRlIk4KIEt1YmVybmV0ZXNEYWVtb25TZXRSb2xsaW5nVXBkYXRlEhcKD21heF91bmF2YWlsYWJsZRgBIAEoCRIRCgltYXhfc3VyZ2UYAiABKAkilgIKIkt1YmVybmV0ZXNEYWVtb25TZXRTZWN1cml0eUNvbnRleHQSEgoKcHJpdmlsZWdlZBgBIAEoCBITCgtydW5fYXNfdXNlchgCIAEoAxIUCgxydW5fYXNfZ3JvdXAYAyABKAMSFwoPcnVuX2FzX25vbl9yb290GAQgASgIEiEKGXJlYWRfb25seV9yb290X2ZpbGVzeXN0ZW0YBSABKAgSdQoMY2FwYWJpbGl0aWVzGAYgASgLMl8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldENhcGFiaWxpdGllcyI8Ch9LdWJlcm5ldGVzRGFlbW9uU2V0Q2FwYWJpbGl0aWVzEgsKA2FkZBgBIAMoCRIMCgRkcm9wGAIgAygJQvEDCkJjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjFCCVNwZWNQcm90b1ABWoQBZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXNkYWVtb25zZXQvdjE7a3ViZXJuZXRlc2RhZW1vbnNldHYxogIFT1BQS0uqAj1PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzZGFlbW9uc2V0LlYxygI9T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2RhZW1vbnNldFxWMeICSU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNkYWVtb25zZXRcVjFcR1BCTWV0YWRhdGHqAkJPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc2RhZW1vbnNldDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_options, file_org_project_planton_provider_kubernetes_probe, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
+  fileDesc("CklvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2RhZW1vbnNldC92MS9zcGVjLnByb3RvEj5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MSKKCQoXS3ViZXJuZXRlc0RhZW1vblNldFNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEncKCWNvbnRhaW5lchgEIAEoCzJcLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJCBrpIA8gBARKAAQoNbm9kZV9zZWxlY3RvchgFIAMoCzJpLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRTcGVjLk5vZGVTZWxlY3RvckVudHJ5EnIKC3RvbGVyYXRpb25zGAYgAygLMl0ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFRvbGVyYXRpb24SegoPdXBkYXRlX3N0cmF0ZWd5GAcgASgLMmEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFVwZGF0ZVN0cmF0ZWd5EhkKEW1pbl9yZWFkeV9zZWNvbmRzGAggASgFEh4KFmNyZWF0ZV9zZXJ2aWNlX2FjY291bnQYCSABKAgSHAoUc2VydmljZV9hY2NvdW50X25hbWUYCiABKAkSfAoLY29uZmlnX21hcHMYCyADKAsyZy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MS5LdWJlcm5ldGVzRGFlbW9uU2V0U3BlYy5Db25maWdNYXBzRW50cnkSZQoEcmJhYxgMIAEoCzJXLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRSYmFjGjMKEU5vZGVTZWxlY3RvckVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaMQoPQ29uZmlnTWFwc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEi2gEKHEt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXISdAoDYXBwGAEgASgLMl8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcEIGukgDyAEBEkQKCHNpZGVjYXJzGAIgAygLMjIub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lciLECAofS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcBKGAgoFaW1hZ2UYASABKAsyNy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuQ29udGFpbmVySW1hZ2VCvQG6SLkBugFaCh1zcGVjLmNvbnRhaW5lci5hcHAuaW1hZ2UucmVwbxIWSW1hZ2UgcmVwbyBpcyByZXF1aXJlZBohaGFzKHRoaXMucmVwbykgJiYgdGhpcy5yZXBvICE9ICcnugFWChxzcGVjLmNvbnRhaW5lci5hcHAuaW1hZ2UudGFnEhVJbWFnZSB0YWcgaXMgcmVxdWlyZWQaH2hhcyh0aGlzLnRhZykgJiYgdGhpcy50YWcgIT0gJyfIAQEScQoJcmVzb3VyY2VzGAIgASgLMjsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lclJlc291cmNlc0IhuvukAhwKDAoFMTAwMG0SAzFHaRIMCgM1MG0SBTEwME1pEm8KA2VudhgDIAEoCzJiLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJBcHBFbnYScgoFcG9ydHMYBCADKAsyYy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MS5LdWJlcm5ldGVzRGFlbW9uU2V0Q29udGFpbmVyQXBwUG9ydBJLCg12b2x1bWVfbW91bnRzGAUgAygLMjQub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLlZvbHVtZU1vdW50EkYKDmxpdmVuZXNzX3Byb2JlGAYgASgLMi4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLlByb2JlEkcKD3JlYWRpbmVzc19wcm9iZRgHIAEoCzIuLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5Qcm9iZRJFCg1zdGFydHVwX3Byb2JlGAggASgLMi4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLlByb2JlEg8KB2NvbW1hbmQYCSADKAkSDAoEYXJncxgKIAMoCRJ8ChBzZWN1cml0eV9jb250ZXh0GAsgASgLMmIub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFNlY3VyaXR5Q29udGV4dCKQAwoiS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcEVudhKEAQoJdmFyaWFibGVzGAEgAygLMnEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldENvbnRhaW5lckFwcEVudi5WYXJpYWJsZXNFbnRyeRKAAQoHc2VjcmV0cxgCIAMoCzJvLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJBcHBFbnYuU2VjcmV0c0VudHJ5GjAKDlZhcmlhYmxlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaLgoMU2VjcmV0c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiiQQKI0t1YmVybmV0ZXNEYWVtb25TZXRDb250YWluZXJBcHBQb3J0EvwBCgRuYW1lGAEgASgJQu0BukjpAboB4gEKHXNwZWMuY29udGFpbmVyLmFwcC5wb3J0cy5uYW1lEpIBTmFtZSBmb3IgcG9ydHMgbXVzdCBvbmx5IGNvbnRhaW4gbG93ZXJjYXNlIGFscGhhbnVtZXJpYyBjaGFyYWN0ZXJzIGFuZCBoeXBoZW5zLiBQb3J0IG5hbWVzIG11c3QgYWxzbyBzdGFydCBhbmQgZW5kIHdpdGggYW4gYWxwaGFudW1lcmljIGNoYXJhY3Rlci4aLHRoaXMubWF0Y2hlcygnXlthLXowLTldW2EtejAtOS1dKlthLXowLTldJCcpyAEBEh4KDmNvbnRhaW5lcl9wb3J0GAIgASgFQga6SAPIAQESrwEKEG5ldHdvcmtfcHJvdG9jb2wYAyABKAlClAG6SJABugGJAQopc3BlYy5jb250YWluZXIuYXBwLnBvcnRzLm5ldHdvcmtfcHJvdG9jb2wSPFRoZSBuZXR3b3JrIHByb3RvY29sIG11c3QgYmUgb25lIG9mICJTQ1RQIiwgIlRDUCIsIG9yICJVRFAiLhoedGhpcyBpbiBbIlNDVFAiLCAiVENQIiwgIlVEUCJdyAEBEhEKCWhvc3RfcG9ydBgEIAEoBSKzAwodS3ViZXJuZXRlc0RhZW1vblNldFRvbGVyYXRpb24SCwoDa2V5GAEgASgJEpABCghvcGVyYXRvchgCIAEoCUJ+ukh7ugF4ChlzcGVjLnRvbGVyYXRpb25zLm9wZXJhdG9yEjBUaGUgb3BlcmF0b3IgbXVzdCBiZSBvbmUgb2YgIkV4aXN0cyIgb3IgIkVxdWFsIi4aKXRoaXMgPT0gIiIgfHwgdGhpcyBpbiBbIkV4aXN0cyIsICJFcXVhbCJdEg0KBXZhbHVlGAMgASgJEsYBCgZlZmZlY3QYBCABKAlCtQG6SLEBugGtAQoXc3BlYy50b2xlcmF0aW9ucy5lZmZlY3QSS1RoZSBlZmZlY3QgbXVzdCBiZSBvbmUgb2YgIk5vU2NoZWR1bGUiLCAiUHJlZmVyTm9TY2hlZHVsZSIsIG9yICJOb0V4ZWN1dGUiLhpFdGhpcyA9PSAiIiB8fCB0aGlzIGluIFsiTm9TY2hlZHVsZSIsICJQcmVmZXJOb1NjaGVkdWxlIiwgIk5vRXhlY3V0ZSJdEhoKEnRvbGVyYXRpb25fc2Vjb25kcxgFIAEoAyLPAgohS3ViZXJuZXRlc0RhZW1vblNldFVwZGF0ZVN0cmF0ZWd5Eq8BCgR0eXBlGAEgASgJQqABukicAboBmAEKGXNwZWMudXBkYXRlX3N0cmF0ZWd5LnR5cGUSRlRoZSB1cGRhdGUgc3RyYXRlZ3kgdHlwZSBtdXN0IGJlIG9uZSBvZiAiUm9sbGluZ1VwZGF0ZSIgb3IgIk9uRGVsZXRlIi4aM3RoaXMgPT0gIiIgfHwgdGhpcyBpbiBbIlJvbGxpbmdVcGRhdGUiLCAiT25EZWxldGUiXRJ4Cg5yb2xsaW5nX3VwZGF0ZRgCIAEoCzJgLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRSb2xsaW5nVXBkYXRlIk4KIEt1YmVybmV0ZXNEYWVtb25TZXRSb2xsaW5nVXBkYXRlEhcKD21heF91bmF2YWlsYWJsZRgBIAEoCRIRCgltYXhfc3VyZ2UYAiABKAkilgIKIkt1YmVybmV0ZXNEYWVtb25TZXRTZWN1cml0eUNvbnRleHQSEgoKcHJpdmlsZWdlZBgBIAEoCBITCgtydW5fYXNfdXNlchgCIAEoAxIUCgxydW5fYXNfZ3JvdXAYAyABKAMSFwoPcnVuX2FzX25vbl9yb290GAQgASgIEiEKGXJlYWRfb25seV9yb290X2ZpbGVzeXN0ZW0YBSABKAgSdQoMY2FwYWJpbGl0aWVzGAYgASgLMl8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldENhcGFiaWxpdGllcyI8Ch9LdWJlcm5ldGVzRGFlbW9uU2V0Q2FwYWJpbGl0aWVzEgsKA2FkZBgBIAMoCRIMCgRkcm9wGAIgAygJIoMCChdLdWJlcm5ldGVzRGFlbW9uU2V0UmJhYxJyCg1jbHVzdGVyX3J1bGVzGAEgAygLMlsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjEuS3ViZXJuZXRlc0RhZW1vblNldFJiYWNSdWxlEnQKD25hbWVzcGFjZV9ydWxlcxgCIAMoCzJbLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzZGFlbW9uc2V0LnYxLkt1YmVybmV0ZXNEYWVtb25TZXRSYmFjUnVsZSKJAQobS3ViZXJuZXRlc0RhZW1vblNldFJiYWNSdWxlEhwKCmFwaV9ncm91cHMYASADKAlCCLpIBZIBAggBEhsKCXJlc291cmNlcxgCIAMoCUIIukgFkgECCAESFwoFdmVyYnMYAyADKAlCCLpIBZIBAggBEhYKDnJlc291cmNlX25hbWVzGAQgAygJQvEDCkJjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNkYWVtb25zZXQudjFCCVNwZWNQcm90b1ABWoQBZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXNkYWVtb25zZXQvdjE7a3ViZXJuZXRlc2RhZW1vbnNldHYxogIFT1BQS0uqAj1PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzZGFlbW9uc2V0LlYxygI9T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2RhZW1vbnNldFxWMeICSU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNkYWVtb25zZXRcVjFcR1BCTWV0YWRhdGHqAkJPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc2RhZW1vbnNldDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_options, file_org_project_planton_provider_kubernetes_probe, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_provider_kubernetes_volume_mount, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * *
@@ -93,6 +95,56 @@ export type KubernetesDaemonSetSpec = Message<"org.project_planton.provider.kube
    * @generated from field: int32 min_ready_seconds = 8;
    */
   minReadySeconds: number;
+
+  /**
+   * *
+   * Flag to indicate if a ServiceAccount should be created for this DaemonSet.
+   * If true, a ServiceAccount with the name specified in service_account_name
+   * (or the DaemonSet name if not specified) will be created.
+   * The DaemonSet pods will use this ServiceAccount.
+   *
+   * @generated from field: bool create_service_account = 9;
+   */
+  createServiceAccount: boolean;
+
+  /**
+   * *
+   * Name of the ServiceAccount to use for the DaemonSet pods.
+   * If create_service_account is true, a ServiceAccount with this name will be created.
+   * If create_service_account is false, this references an existing ServiceAccount.
+   * If not specified and create_service_account is true, uses the DaemonSet name.
+   *
+   * @generated from field: string service_account_name = 10;
+   */
+  serviceAccountName: string;
+
+  /**
+   * *
+   * ConfigMaps to create alongside the DaemonSet.
+   * Key is the ConfigMap name, value is the content.
+   * These ConfigMaps can be referenced in volume mounts.
+   *
+   * Example:
+   *   config_maps:
+   *     vector-config: |
+   *       data_dir: /var/lib/vector
+   *       sources:
+   *         kubernetes_logs:
+   *           type: kubernetes_logs
+   *
+   * @generated from field: map<string, string> config_maps = 11;
+   */
+  configMaps: { [key: string]: string };
+
+  /**
+   * *
+   * RBAC configuration for the DaemonSet ServiceAccount.
+   * Allows defining ClusterRole and Role permissions.
+   * Only used if create_service_account is true.
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbac rbac = 12;
+   */
+  rbac?: KubernetesDaemonSetRbac;
 };
 
 /**
@@ -175,11 +227,12 @@ export type KubernetesDaemonSetContainerApp = Message<"org.project_planton.provi
   /**
    * *
    * Volume mounts for the container.
-   * DaemonSets commonly need to mount host paths for log collection, node monitoring, etc.
+   * Supports ConfigMap, Secret, HostPath, EmptyDir, and PVC volumes.
+   * DaemonSets commonly need HostPath mounts for log collection, node monitoring, etc.
    *
-   * @generated from field: repeated org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetVolumeMount volume_mounts = 5;
+   * @generated from field: repeated org.project_planton.provider.kubernetes.VolumeMount volume_mounts = 5;
    */
-  volumeMounts: KubernetesDaemonSetVolumeMount[];
+  volumeMounts: VolumeMount[];
 
   /**
    * *
@@ -319,57 +372,6 @@ export const KubernetesDaemonSetContainerAppPortSchema: GenMessage<KubernetesDae
 
 /**
  * *
- * **KubernetesDaemonSetVolumeMount** defines a volume mount for the DaemonSet container.
- *
- * @generated from message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetVolumeMount
- */
-export type KubernetesDaemonSetVolumeMount = Message<"org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetVolumeMount"> & {
-  /**
-   * Name of the volume.
-   *
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  /**
-   * Path within the container at which the volume should be mounted.
-   *
-   * @generated from field: string mount_path = 2;
-   */
-  mountPath: string;
-
-  /**
-   * Host path to mount into the container.
-   * Used for accessing node-level files/directories.
-   *
-   * @generated from field: string host_path = 3;
-   */
-  hostPath: string;
-
-  /**
-   * Type of host path (DirectoryOrCreate, Directory, FileOrCreate, File, Socket, CharDevice, BlockDevice).
-   *
-   * @generated from field: string host_path_type = 4;
-   */
-  hostPathType: string;
-
-  /**
-   * Whether the volume should be mounted read-only.
-   *
-   * @generated from field: bool read_only = 5;
-   */
-  readOnly: boolean;
-};
-
-/**
- * Describes the message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetVolumeMount.
- * Use `create(KubernetesDaemonSetVolumeMountSchema)` to create a new message.
- */
-export const KubernetesDaemonSetVolumeMountSchema: GenMessage<KubernetesDaemonSetVolumeMount> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 5);
-
-/**
- * *
  * **KubernetesDaemonSetToleration** defines a toleration for the DaemonSet pods.
  *
  * @generated from message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetToleration
@@ -419,7 +421,7 @@ export type KubernetesDaemonSetToleration = Message<"org.project_planton.provide
  * Use `create(KubernetesDaemonSetTolerationSchema)` to create a new message.
  */
 export const KubernetesDaemonSetTolerationSchema: GenMessage<KubernetesDaemonSetToleration> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 6);
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 5);
 
 /**
  * *
@@ -451,7 +453,7 @@ export type KubernetesDaemonSetUpdateStrategy = Message<"org.project_planton.pro
  * Use `create(KubernetesDaemonSetUpdateStrategySchema)` to create a new message.
  */
 export const KubernetesDaemonSetUpdateStrategySchema: GenMessage<KubernetesDaemonSetUpdateStrategy> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 7);
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 6);
 
 /**
  * *
@@ -486,7 +488,7 @@ export type KubernetesDaemonSetRollingUpdate = Message<"org.project_planton.prov
  * Use `create(KubernetesDaemonSetRollingUpdateSchema)` to create a new message.
  */
 export const KubernetesDaemonSetRollingUpdateSchema: GenMessage<KubernetesDaemonSetRollingUpdate> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 8);
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 7);
 
 /**
  * *
@@ -544,7 +546,7 @@ export type KubernetesDaemonSetSecurityContext = Message<"org.project_planton.pr
  * Use `create(KubernetesDaemonSetSecurityContextSchema)` to create a new message.
  */
 export const KubernetesDaemonSetSecurityContextSchema: GenMessage<KubernetesDaemonSetSecurityContext> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 9);
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 8);
 
 /**
  * *
@@ -573,5 +575,96 @@ export type KubernetesDaemonSetCapabilities = Message<"org.project_planton.provi
  * Use `create(KubernetesDaemonSetCapabilitiesSchema)` to create a new message.
  */
 export const KubernetesDaemonSetCapabilitiesSchema: GenMessage<KubernetesDaemonSetCapabilities> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 9);
+
+/**
+ * *
+ * KubernetesDaemonSetRbac defines RBAC permissions for the DaemonSet ServiceAccount.
+ * Creates ClusterRole/ClusterRoleBinding for cluster-wide permissions
+ * and Role/RoleBinding for namespace-scoped permissions.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbac
+ */
+export type KubernetesDaemonSetRbac = Message<"org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbac"> & {
+  /**
+   * *
+   * Cluster-wide RBAC rules.
+   * Creates a ClusterRole and ClusterRoleBinding.
+   * Use for permissions that span across namespaces (e.g., reading all pods).
+   *
+   * @generated from field: repeated org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule cluster_rules = 1;
+   */
+  clusterRules: KubernetesDaemonSetRbacRule[];
+
+  /**
+   * *
+   * Namespace-scoped RBAC rules.
+   * Creates a Role and RoleBinding in the DaemonSet's namespace.
+   * Use for permissions limited to the deployment namespace.
+   *
+   * @generated from field: repeated org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule namespace_rules = 2;
+   */
+  namespaceRules: KubernetesDaemonSetRbacRule[];
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbac.
+ * Use `create(KubernetesDaemonSetRbacSchema)` to create a new message.
+ */
+export const KubernetesDaemonSetRbacSchema: GenMessage<KubernetesDaemonSetRbac> = /*@__PURE__*/
   messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 10);
+
+/**
+ * *
+ * KubernetesDaemonSetRbacRule defines a single RBAC policy rule.
+ * Maps directly to Kubernetes RBAC PolicyRule.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule
+ */
+export type KubernetesDaemonSetRbacRule = Message<"org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule"> & {
+  /**
+   * *
+   * API groups containing the resources.
+   * Use "" for core API group.
+   * Example: [""], ["apps"], ["batch"]
+   *
+   * @generated from field: repeated string api_groups = 1;
+   */
+  apiGroups: string[];
+
+  /**
+   * *
+   * Resources this rule applies to.
+   * Example: ["pods", "services"], ["deployments"], ["configmaps", "secrets"]
+   *
+   * @generated from field: repeated string resources = 2;
+   */
+  resources: string[];
+
+  /**
+   * *
+   * Verbs specifying the actions allowed.
+   * Example: ["get", "list", "watch"], ["create", "update", "delete"]
+   *
+   * @generated from field: repeated string verbs = 3;
+   */
+  verbs: string[];
+
+  /**
+   * *
+   * Resource names to limit the rule to specific resources.
+   * If empty, the rule applies to all resources of the specified type.
+   * Example: ["my-configmap", "my-secret"]
+   *
+   * @generated from field: repeated string resource_names = 4;
+   */
+  resourceNames: string[];
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule.
+ * Use `create(KubernetesDaemonSetRbacRuleSchema)` to create a new message.
+ */
+export const KubernetesDaemonSetRbacRuleSchema: GenMessage<KubernetesDaemonSetRbacRule> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec, 11);
 

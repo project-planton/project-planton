@@ -3,12 +3,15 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "configmap.go",
         "daemonset.go",
         "image_pull_secret.go",
         "locals.go",
         "main.go",
         "outputs.go",
+        "rbac.go",
         "secret.go",
+        "service_account.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
@@ -23,6 +26,7 @@ go_library(
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/apps/v1:apps",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/core/v1:core",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/rbac/v1:rbac",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

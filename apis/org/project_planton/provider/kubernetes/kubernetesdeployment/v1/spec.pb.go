@@ -48,7 +48,24 @@ type KubernetesDeploymentSpec struct {
 	Ingress *KubernetesDeploymentIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The availability configuration for the microservice.
 	// This includes settings for replicas, autoscaling, deployment strategy, and pod disruption budgets.
-	Availability  *KubernetesDeploymentAvailability `protobuf:"bytes,7,opt,name=availability,proto3" json:"availability,omitempty"`
+	Availability *KubernetesDeploymentAvailability `protobuf:"bytes,7,opt,name=availability,proto3" json:"availability,omitempty"`
+	// *
+	// ConfigMaps to create alongside the deployment.
+	// Key is the ConfigMap name, value is the content.
+	// For multi-key ConfigMaps, use YAML format in the value.
+	// These ConfigMaps can be referenced in volume mounts.
+	//
+	// Example:
+	//
+	//	config_maps:
+	//	  app-config: |
+	//	    key1: value1
+	//	    key2: value2
+	//	  nginx-conf: |
+	//	    server {
+	//	      listen 80;
+	//	    }
+	ConfigMaps    map[string]string `protobuf:"bytes,8,rep,name=config_maps,json=configMaps,proto3" json:"config_maps,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -128,6 +145,13 @@ func (x *KubernetesDeploymentSpec) GetIngress() *KubernetesDeploymentIngress {
 func (x *KubernetesDeploymentSpec) GetAvailability() *KubernetesDeploymentAvailability {
 	if x != nil {
 		return x.Availability
+	}
+	return nil
+}
+
+func (x *KubernetesDeploymentSpec) GetConfigMaps() map[string]string {
+	if x != nil {
+		return x.ConfigMaps
 	}
 	return nil
 }
@@ -285,7 +309,29 @@ type KubernetesDeploymentContainerApp struct {
 	// All other probes are disabled if a startup probe is provided, until it succeeds.
 	// Useful for slow-starting containers to avoid them getting killed by liveness probes before they are up.
 	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
-	StartupProbe  *kubernetes.Probe `protobuf:"bytes,7,opt,name=startup_probe,json=startupProbe,proto3" json:"startup_probe,omitempty"`
+	StartupProbe *kubernetes.Probe `protobuf:"bytes,7,opt,name=startup_probe,json=startupProbe,proto3" json:"startup_probe,omitempty"`
+	// *
+	// Volume mounts for the application container.
+	// Supports mounting ConfigMaps, Secrets, HostPaths, EmptyDirs, and PVCs.
+	// ConfigMaps defined in spec.config_maps can be referenced here.
+	//
+	// Example:
+	//
+	//	volume_mounts:
+	//	  - name: config-volume
+	//	    mount_path: /etc/app/config.yaml
+	//	    config_map:
+	//	      name: app-config
+	//	      key: app-config
+	VolumeMounts []*kubernetes.VolumeMount `protobuf:"bytes,8,rep,name=volume_mounts,json=volumeMounts,proto3" json:"volume_mounts,omitempty"`
+	// *
+	// Command to run in the container (overrides the container image's ENTRYPOINT).
+	// Example: ["/bin/sh", "-c"]
+	Command []string `protobuf:"bytes,9,rep,name=command,proto3" json:"command,omitempty"`
+	// *
+	// Arguments to pass to the command (overrides the container image's CMD).
+	// Example: ["echo hello"]
+	Args          []string `protobuf:"bytes,10,rep,name=args,proto3" json:"args,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -365,6 +411,27 @@ func (x *KubernetesDeploymentContainerApp) GetReadinessProbe() *kubernetes.Probe
 func (x *KubernetesDeploymentContainerApp) GetStartupProbe() *kubernetes.Probe {
 	if x != nil {
 		return x.StartupProbe
+	}
+	return nil
+}
+
+func (x *KubernetesDeploymentContainerApp) GetVolumeMounts() []*kubernetes.VolumeMount {
+	if x != nil {
+		return x.VolumeMounts
+	}
+	return nil
+}
+
+func (x *KubernetesDeploymentContainerApp) GetCommand() []string {
+	if x != nil {
+		return x.Command
+	}
+	return nil
+}
+
+func (x *KubernetesDeploymentContainerApp) GetArgs() []string {
+	if x != nil {
+		return x.Args
 	}
 	return nil
 }
@@ -837,7 +904,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x97\a\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe3\b\n" +
 	"\x18KubernetesDeploymentSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -847,14 +914,19 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_
 	"\x1dspec.version.no-hyphen-ending\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x1eR\aversion\x12\x84\x01\n" +
 	"\tcontainer\x18\x05 \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12v\n" +
 	"\aingress\x18\x06 \x01(\v2\\.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngressR\aingress\x12\x85\x01\n" +
-	"\favailability\x18\a \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityR\favailability\"\xd2\x01\n" +
+	"\favailability\x18\a \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityR\favailability\x12\x8a\x01\n" +
+	"\vconfig_maps\x18\b \x03(\v2i.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ConfigMapsEntryR\n" +
+	"configMaps\x1a=\n" +
+	"\x0fConfigMapsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd2\x01\n" +
 	"\x1bKubernetesDeploymentIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
 	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xec\x01\n" +
 	"\x1dKubernetesDeploymentContainer\x12{\n" +
 	"\x03app\x18\x01 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12N\n" +
-	"\bsidecars\x18\x02 \x03(\v22.org.project_planton.provider.kubernetes.ContainerR\bsidecars\"\xaa\a\n" +
+	"\bsidecars\x18\x02 \x03(\v22.org.project_planton.provider.kubernetes.ContainerR\bsidecars\"\xb3\b\n" +
 	" KubernetesDeploymentContainerApp\x12\x8d\x02\n" +
 	"\x05image\x18\x01 \x01(\v27.org.project_planton.provider.kubernetes.ContainerImageB\xbd\x01\xbaH\xb9\x01\xba\x01Z\n" +
 	"\x1dspec.container.app.image.repo\x12\x16Image repo is required\x1a!has(this.repo) && this.repo != ''\xba\x01V\n" +
@@ -867,7 +939,11 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_
 	"\x05ports\x18\x04 \x03(\v2e.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPortR\x05ports\x12U\n" +
 	"\x0eliveness_probe\x18\x05 \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\rlivenessProbe\x12W\n" +
 	"\x0freadiness_probe\x18\x06 \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\x0ereadinessProbe\x12S\n" +
-	"\rstartup_probe\x18\a \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\fstartupProbe\"\xc1\x03\n" +
+	"\rstartup_probe\x18\a \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\fstartupProbe\x12Y\n" +
+	"\rvolume_mounts\x18\b \x03(\v24.org.project_planton.provider.kubernetes.VolumeMountR\fvolumeMounts\x12\x18\n" +
+	"\acommand\x18\t \x03(\tR\acommand\x12\x12\n" +
+	"\x04args\x18\n" +
+	" \x03(\tR\x04args\"\xc1\x03\n" +
 	"#KubernetesDeploymentContainerAppEnv\x12\x91\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2s.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntryR\tvariables\x12\x8b\x01\n" +
 	"\asecrets\x18\x02 \x03(\v2q.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
@@ -917,7 +993,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_p
 	return file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_goTypes = []any{
 	(*KubernetesDeploymentSpec)(nil),                // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec
 	(*KubernetesDeploymentIngress)(nil),             // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngress
@@ -929,40 +1005,44 @@ var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 	(*KubernetesDeploymentAvailabilityHpa)(nil),     // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
 	(*KubernetesDeploymentDeploymentStrategy)(nil),  // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
 	(*KubernetesDeploymentPodDisruptionBudget)(nil), // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
-	nil, // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
-	nil, // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
-	(*kubernetes.KubernetesClusterSelector)(nil), // 12: org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	(*v1.StringValueOrRef)(nil),                  // 13: org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	(*kubernetes.Container)(nil),                 // 14: org.project_planton.provider.kubernetes.Container
-	(*kubernetes.ContainerImage)(nil),            // 15: org.project_planton.provider.kubernetes.ContainerImage
-	(*kubernetes.ContainerResources)(nil),        // 16: org.project_planton.provider.kubernetes.ContainerResources
-	(*kubernetes.Probe)(nil),                     // 17: org.project_planton.provider.kubernetes.Probe
+	nil, // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ConfigMapsEntry
+	nil, // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
+	nil, // 12: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
+	(*kubernetes.KubernetesClusterSelector)(nil), // 13: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*v1.StringValueOrRef)(nil),                  // 14: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.Container)(nil),                 // 15: org.project_planton.provider.kubernetes.Container
+	(*kubernetes.ContainerImage)(nil),            // 16: org.project_planton.provider.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil),        // 17: org.project_planton.provider.kubernetes.ContainerResources
+	(*kubernetes.Probe)(nil),                     // 18: org.project_planton.provider.kubernetes.Probe
+	(*kubernetes.VolumeMount)(nil),               // 19: org.project_planton.provider.kubernetes.VolumeMount
 }
 var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_depIdxs = []int32{
-	12, // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	13, // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	13, // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	14, // 1: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	2,  // 2: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer
 	1,  // 3: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentIngress
 	6,  // 4: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.availability:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability
-	3,  // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
-	14, // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.sidecars:type_name -> org.project_planton.provider.kubernetes.Container
-	15, // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
-	16, // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	4,  // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
-	5,  // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
-	17, // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.liveness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	17, // 12: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.readiness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	17, // 13: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.startup_probe:type_name -> org.project_planton.provider.kubernetes.Probe
-	10, // 14: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
-	11, // 15: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
-	7,  // 16: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.horizontal_pod_autoscaling:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
-	8,  // 17: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.deployment_strategy:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
-	9,  // 18: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	10, // 5: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.config_maps:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.ConfigMapsEntry
+	3,  // 6: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.app:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp
+	15, // 7: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainer.sidecars:type_name -> org.project_planton.provider.kubernetes.Container
+	16, // 8: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.image:type_name -> org.project_planton.provider.kubernetes.ContainerImage
+	17, // 9: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	4,  // 10: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.env:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv
+	5,  // 11: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.ports:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppPort
+	18, // 12: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.liveness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
+	18, // 13: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.readiness_probe:type_name -> org.project_planton.provider.kubernetes.Probe
+	18, // 14: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.startup_probe:type_name -> org.project_planton.provider.kubernetes.Probe
+	19, // 15: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerApp.volume_mounts:type_name -> org.project_planton.provider.kubernetes.VolumeMount
+	11, // 16: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntry
+	12, // 17: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry
+	7,  // 18: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.horizontal_pod_autoscaling:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
+	8,  // 19: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.deployment_strategy:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
+	9,  // 20: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_init() }
@@ -976,7 +1056,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_p
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

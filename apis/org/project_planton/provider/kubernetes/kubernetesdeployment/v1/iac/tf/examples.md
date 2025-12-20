@@ -1055,6 +1055,329 @@ module "existing_ns_microservice" {
 
 ---
 
+## 10. ConfigMaps and Volume Mounts
+
+Deploy applications with configuration files using ConfigMaps and volume mounts.
+
+```hcl
+module "configmap_microservice" {
+  source = "./path/to/microservice-kubernetes-module"
+
+  metadata = {
+    name = "config-app"
+    id   = "config-app-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "config-app"
+    create_namespace = true
+    version = "main"
+    
+    # ConfigMaps to create alongside the deployment
+    config_maps = {
+      "app-config" = <<-EOT
+        database:
+          host: postgres.default.svc
+          port: 5432
+        cache:
+          host: redis.default.svc
+          port: 6379
+        logging:
+          level: info
+          format: json
+      EOT
+      
+      "routes-config" = <<-EOT
+        routes:
+          - path: /api/v1
+            upstream: http://backend:8080
+          - path: /health
+            upstream: http://localhost:8080/healthz
+      EOT
+    }
+    
+    container = {
+      app = {
+        image = {
+          repo = "my-org/config-app"
+          tag  = "v1.0.0"
+        }
+        
+        ports = [
+          {
+            name             = "http"
+            container_port   = 8080
+            network_protocol = "TCP"
+            app_protocol     = "http"
+            service_port     = 80
+            is_ingress_port  = false
+          }
+        ]
+        
+        resources = {
+          requests = {
+            cpu    = "100m"
+            memory = "128Mi"
+          }
+          limits = {
+            cpu    = "500m"
+            memory = "512Mi"
+          }
+        }
+        
+        env = {
+          variables = {
+            CONFIG_PATH = "/etc/app/config.yaml"
+          }
+          secrets = {}
+        }
+        
+        # Volume mounts to mount ConfigMaps as files
+        volume_mounts = [
+          {
+            name       = "app-config-volume"
+            mount_path = "/etc/app/config.yaml"
+            config_map = {
+              name = "app-config"
+              key  = "app-config"  # Key in the ConfigMap
+            }
+          },
+          {
+            name       = "routes-config-volume"
+            mount_path = "/etc/app/routes.yaml"
+            config_map = {
+              name = "routes-config"
+              key  = "routes-config"
+            }
+          }
+        ]
+      }
+    }
+    
+    ingress = {
+      is_enabled = false
+      dns_domain = ""
+    }
+  }
+}
+```
+
+**Key Points:**
+- `config_maps` creates ConfigMap resources with YAML/text content
+- `volume_mounts` mounts ConfigMaps as files in the container
+- Each ConfigMap key becomes a file when mounted
+- Content is stored under a key with the same name as the ConfigMap
+
+---
+
+## 11. Command and Args Override
+
+Override container entrypoint and arguments.
+
+```hcl
+module "custom_command_microservice" {
+  source = "./path/to/microservice-kubernetes-module"
+
+  metadata = {
+    name = "custom-cmd"
+    id   = "custom-cmd-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "custom-cmd"
+    create_namespace = true
+    version = "main"
+    
+    container = {
+      app = {
+        image = {
+          repo = "busybox"
+          tag  = "latest"
+        }
+        
+        ports = [
+          {
+            name             = "http"
+            container_port   = 8080
+            network_protocol = "TCP"
+            app_protocol     = "http"
+            service_port     = 80
+            is_ingress_port  = false
+          }
+        ]
+        
+        resources = {
+          requests = {
+            cpu    = "50m"
+            memory = "64Mi"
+          }
+          limits = {
+            cpu    = "100m"
+            memory = "128Mi"
+          }
+        }
+        
+        env = {
+          variables = {}
+          secrets   = {}
+        }
+        
+        # Override container entrypoint
+        command = ["/bin/sh", "-c"]
+        
+        # Override container arguments
+        args = ["echo 'Starting application' && exec /app/server --config /etc/config.yaml"]
+      }
+    }
+    
+    ingress = {
+      is_enabled = false
+      dns_domain = ""
+    }
+  }
+}
+```
+
+**Key Points:**
+- `command` overrides the container image's ENTRYPOINT
+- `args` overrides the container image's CMD
+- Useful for custom startup scripts or debug containers
+
+---
+
+## 12. Multiple Volume Types
+
+Combine different volume types for complex applications.
+
+```hcl
+module "multi_volume_microservice" {
+  source = "./path/to/microservice-kubernetes-module"
+
+  metadata = {
+    name = "multi-volume"
+    id   = "multi-volume-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "multi-volume"
+    create_namespace = true
+    version = "main"
+    
+    config_maps = {
+      "app-config" = <<-EOT
+        server:
+          port: 8080
+          timeout: 30s
+      EOT
+    }
+    
+    container = {
+      app = {
+        image = {
+          repo = "my-org/multi-volume-app"
+          tag  = "v1.0.0"
+        }
+        
+        ports = [
+          {
+            name             = "http"
+            container_port   = 8080
+            network_protocol = "TCP"
+            app_protocol     = "http"
+            service_port     = 80
+            is_ingress_port  = false
+          }
+        ]
+        
+        resources = {
+          requests = {
+            cpu    = "200m"
+            memory = "256Mi"
+          }
+          limits = {
+            cpu    = "1"
+            memory = "1Gi"
+          }
+        }
+        
+        env = {
+          variables = {}
+          secrets   = {}
+        }
+        
+        volume_mounts = [
+          # ConfigMap as file
+          {
+            name       = "config"
+            mount_path = "/etc/app/config.yaml"
+            config_map = {
+              name = "app-config"
+              key  = "app-config"
+            }
+          },
+          # Secret volume
+          {
+            name       = "tls-certs"
+            mount_path = "/etc/tls"
+            read_only  = true
+            secret = {
+              name = "my-tls-secret"
+            }
+          },
+          # EmptyDir for caching
+          {
+            name       = "cache"
+            mount_path = "/tmp/cache"
+            empty_dir = {
+              medium     = "Memory"
+              size_limit = "256Mi"
+            }
+          },
+          # PVC for persistent data
+          {
+            name       = "data"
+            mount_path = "/data"
+            pvc = {
+              claim_name = "data-pvc"
+              read_only  = false
+            }
+          }
+        ]
+      }
+    }
+    
+    ingress = {
+      is_enabled = false
+      dns_domain = ""
+    }
+  }
+}
+```
+
+**Key Points:**
+- Multiple volume types can be combined in one deployment
+- `config_map`: Mount ConfigMaps as files
+- `secret`: Mount Secrets as files (for TLS certs, credentials)
+- `empty_dir`: Temporary storage, optionally memory-backed
+- `pvc`: Persistent storage from PersistentVolumeClaim
+
+---
+
 ## Summary
 
 This Terraform module provides a comprehensive, production-ready solution for deploying microservices to Kubernetes:

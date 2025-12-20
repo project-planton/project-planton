@@ -90,42 +90,59 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		})
 	}
 
-	containerInputs := make([]kubernetescorev1.ContainerInput, 0)
-	//add main container
-	containerInputs = append(containerInputs, kubernetescorev1.ContainerInput(
-		&kubernetescorev1.ContainerArgs{
-			Name: pulumi.String("microservice"),
-			Image: pulumi.String(fmt.Sprintf("%s:%s",
-				locals.KubernetesDeployment.Spec.Container.App.Image.Repo,
-				locals.KubernetesDeployment.Spec.Container.App.Image.Tag)),
-			Env:   kubernetescorev1.EnvVarArray(envVarInputs),
-			Ports: portsArray,
-			Resources: kubernetescorev1.ResourceRequirementsArgs{
-				Limits: pulumi.ToStringMap(map[string]string{
-					"cpu":    locals.KubernetesDeployment.Spec.Container.App.Resources.Limits.Cpu,
-					"memory": locals.KubernetesDeployment.Spec.Container.App.Resources.Limits.Memory,
-				}),
-				Requests: pulumi.ToStringMap(map[string]string{
-					"cpu":    locals.KubernetesDeployment.Spec.Container.App.Resources.Requests.Cpu,
-					"memory": locals.KubernetesDeployment.Spec.Container.App.Resources.Requests.Memory,
-				}),
-			},
-			LivenessProbe:  buildProbe(locals.KubernetesDeployment.Spec.Container.App.LivenessProbe),
-			ReadinessProbe: buildProbe(locals.KubernetesDeployment.Spec.Container.App.ReadinessProbe),
-			StartupProbe:   buildProbe(locals.KubernetesDeployment.Spec.Container.App.StartupProbe),
-			Lifecycle: kubernetescorev1.LifecycleArgs{
-				PreStop: kubernetescorev1.LifecycleHandlerArgs{
-					Exec: kubernetescorev1.ExecActionArgs{
-						//wait for 60 seconds before killing the main process
-						Command: pulumi.ToStringArray([]string{"/bin/sleep", "60"}),
-					},
+	// Build volume mounts and volumes from spec
+	volumeMounts, volumes := buildVolumeMountsAndVolumes(locals.KubernetesDeployment.Spec)
+
+	// Build container args
+	containerArgs := &kubernetescorev1.ContainerArgs{
+		Name: pulumi.String("microservice"),
+		Image: pulumi.String(fmt.Sprintf("%s:%s",
+			locals.KubernetesDeployment.Spec.Container.App.Image.Repo,
+			locals.KubernetesDeployment.Spec.Container.App.Image.Tag)),
+		Env:          kubernetescorev1.EnvVarArray(envVarInputs),
+		Ports:        portsArray,
+		VolumeMounts: volumeMounts,
+		Resources: kubernetescorev1.ResourceRequirementsArgs{
+			Limits: pulumi.ToStringMap(map[string]string{
+				"cpu":    locals.KubernetesDeployment.Spec.Container.App.Resources.Limits.Cpu,
+				"memory": locals.KubernetesDeployment.Spec.Container.App.Resources.Limits.Memory,
+			}),
+			Requests: pulumi.ToStringMap(map[string]string{
+				"cpu":    locals.KubernetesDeployment.Spec.Container.App.Resources.Requests.Cpu,
+				"memory": locals.KubernetesDeployment.Spec.Container.App.Resources.Requests.Memory,
+			}),
+		},
+		LivenessProbe:  buildProbe(locals.KubernetesDeployment.Spec.Container.App.LivenessProbe),
+		ReadinessProbe: buildProbe(locals.KubernetesDeployment.Spec.Container.App.ReadinessProbe),
+		StartupProbe:   buildProbe(locals.KubernetesDeployment.Spec.Container.App.StartupProbe),
+		Lifecycle: kubernetescorev1.LifecycleArgs{
+			PreStop: kubernetescorev1.LifecycleHandlerArgs{
+				Exec: kubernetescorev1.ExecActionArgs{
+					//wait for 60 seconds before killing the main process
+					Command: pulumi.ToStringArray([]string{"/bin/sleep", "60"}),
 				},
 			},
-		}))
+		},
+	}
+
+	// Add command if specified
+	if len(locals.KubernetesDeployment.Spec.Container.App.Command) > 0 {
+		containerArgs.Command = pulumi.ToStringArray(locals.KubernetesDeployment.Spec.Container.App.Command)
+	}
+
+	// Add args if specified
+	if len(locals.KubernetesDeployment.Spec.Container.App.Args) > 0 {
+		containerArgs.Args = pulumi.ToStringArray(locals.KubernetesDeployment.Spec.Container.App.Args)
+	}
+
+	containerInputs := make([]kubernetescorev1.ContainerInput, 0)
+	//add main container
+	containerInputs = append(containerInputs, kubernetescorev1.ContainerInput(containerArgs))
 
 	podSpecArgs := &kubernetescorev1.PodSpecArgs{
 		ServiceAccountName: createdServiceAccount.Metadata.Name(),
 		Containers:         kubernetescorev1.ContainerArray(containerInputs),
+		Volumes:            volumes,
 		//wait for 60 seconds before sending the termination signal to the processes in the pod
 		TerminationGracePeriodSeconds: pulumi.IntPtr(60),
 	}
@@ -314,4 +331,109 @@ func buildDeploymentStrategy(protoStrategy *kubernetesdeploymentv1.KubernetesDep
 	}
 
 	return strategy
+}
+
+// buildVolumeMountsAndVolumes processes the volume_mounts spec and returns
+// Pulumi volume mounts for the container and volumes for the pod spec.
+func buildVolumeMountsAndVolumes(
+	spec *kubernetesdeploymentv1.KubernetesDeploymentSpec,
+) (kubernetescorev1.VolumeMountArray, kubernetescorev1.VolumeArray) {
+	volumeMounts := make(kubernetescorev1.VolumeMountArray, 0)
+	volumes := make(kubernetescorev1.VolumeArray, 0)
+
+	if spec.Container == nil || spec.Container.App == nil || spec.Container.App.VolumeMounts == nil {
+		return volumeMounts, volumes
+	}
+
+	for _, vm := range spec.Container.App.VolumeMounts {
+		// Add volume mount to container
+		volumeMountArgs := &kubernetescorev1.VolumeMountArgs{
+			Name:      pulumi.String(vm.Name),
+			MountPath: pulumi.String(vm.MountPath),
+			ReadOnly:  pulumi.Bool(vm.ReadOnly),
+		}
+		if vm.SubPath != "" {
+			volumeMountArgs.SubPath = pulumi.String(vm.SubPath)
+		}
+		volumeMounts = append(volumeMounts, volumeMountArgs)
+
+		// Add corresponding volume to pod spec
+		volumeArgs := &kubernetescorev1.VolumeArgs{
+			Name: pulumi.String(vm.Name),
+		}
+
+		// Determine volume type based on which source is set
+		switch {
+		case vm.ConfigMap != nil:
+			configMapVolumeSource := &kubernetescorev1.ConfigMapVolumeSourceArgs{
+				Name: pulumi.String(vm.ConfigMap.Name),
+			}
+			if vm.ConfigMap.Key != "" {
+				path := vm.ConfigMap.Path
+				if path == "" {
+					path = vm.ConfigMap.Key
+				}
+				configMapVolumeSource.Items = kubernetescorev1.KeyToPathArray{
+					&kubernetescorev1.KeyToPathArgs{
+						Key:  pulumi.String(vm.ConfigMap.Key),
+						Path: pulumi.String(path),
+					},
+				}
+			}
+			if vm.ConfigMap.DefaultMode > 0 {
+				configMapVolumeSource.DefaultMode = pulumi.Int(vm.ConfigMap.DefaultMode)
+			}
+			volumeArgs.ConfigMap = configMapVolumeSource
+
+		case vm.Secret != nil:
+			secretVolumeSource := &kubernetescorev1.SecretVolumeSourceArgs{
+				SecretName: pulumi.String(vm.Secret.Name),
+			}
+			if vm.Secret.Key != "" {
+				path := vm.Secret.Path
+				if path == "" {
+					path = vm.Secret.Key
+				}
+				secretVolumeSource.Items = kubernetescorev1.KeyToPathArray{
+					&kubernetescorev1.KeyToPathArgs{
+						Key:  pulumi.String(vm.Secret.Key),
+						Path: pulumi.String(path),
+					},
+				}
+			}
+			if vm.Secret.DefaultMode > 0 {
+				secretVolumeSource.DefaultMode = pulumi.Int(vm.Secret.DefaultMode)
+			}
+			volumeArgs.Secret = secretVolumeSource
+
+		case vm.HostPath != nil:
+			hostPathVolumeSource := &kubernetescorev1.HostPathVolumeSourceArgs{
+				Path: pulumi.String(vm.HostPath.Path),
+			}
+			if vm.HostPath.Type != "" {
+				hostPathVolumeSource.Type = pulumi.StringPtr(vm.HostPath.Type)
+			}
+			volumeArgs.HostPath = hostPathVolumeSource
+
+		case vm.EmptyDir != nil:
+			emptyDirVolumeSource := &kubernetescorev1.EmptyDirVolumeSourceArgs{}
+			if vm.EmptyDir.Medium != "" {
+				emptyDirVolumeSource.Medium = pulumi.String(vm.EmptyDir.Medium)
+			}
+			if vm.EmptyDir.SizeLimit != "" {
+				emptyDirVolumeSource.SizeLimit = pulumi.String(vm.EmptyDir.SizeLimit)
+			}
+			volumeArgs.EmptyDir = emptyDirVolumeSource
+
+		case vm.Pvc != nil:
+			volumeArgs.PersistentVolumeClaim = &kubernetescorev1.PersistentVolumeClaimVolumeSourceArgs{
+				ClaimName: pulumi.String(vm.Pvc.ClaimName),
+				ReadOnly:  pulumi.Bool(vm.Pvc.ReadOnly),
+			}
+		}
+
+		volumes = append(volumes, volumeArgs)
+	}
+
+	return volumeMounts, volumes
 }
