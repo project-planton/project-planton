@@ -13,6 +13,13 @@
 #  1. Tekton Operator (via kubectl_manifest)
 #  2. TektonConfig CRD (to configure components)
 #
+# IMPORTANT: Namespace Behavior
+# Tekton Operator manages its own namespaces:
+# - 'tekton-operator' for the operator itself
+# - 'tekton-pipelines' for Tekton components
+# These are automatically created by the operator
+# and cannot be customized by the user.
+#
 # The Tekton Operator extends the Kubernetes API
 # with Custom Resource Definitions (CRDs) and
 # provides automated operations including:
@@ -54,7 +61,8 @@ resource "kubectl_manifest" "tekton_operator" {
 #
 # Configure which Tekton components to install.
 # The operator will reconcile this and install
-# the requested components.
+# the requested components in 'tekton-pipelines'
+# namespace.
 #
 # Profiles:
 #  - all: Pipelines + Triggers + Dashboard

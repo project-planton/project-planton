@@ -1,465 +1,737 @@
-# KubernetesTektonOperator - Research Documentation
+# Deploying Tekton on Kubernetes: From kubectl to Production
 
-## Introduction
+## The Production Reality
 
-This document provides comprehensive research on deploying Tekton, a Kubernetes-native CI/CD framework, using an operator-based approach. It covers the deployment landscape, installation methods, architectural decisions, and best practices for production deployments.
+Five months running Tekton in production taught us: **installation is the easy part**. The hard part is integrating Tekton with your platform—streaming events to webhook receivers, exposing the dashboard securely, forwarding pod logs to your observability stack in real-time. When you `kubectl apply` Tekton's release YAML, you get a CI/CD engine. But you don't get the connective tissue that makes it production-ready.
 
-## What is Tekton?
+This document explores how to deploy Tekton on Kubernetes, from the simplest kubectl approach to fully integrated production deployments. We'll examine the Tekton Operator (which automates lifecycle management), the critical configuration that most deployments need, and the integrations that transform Tekton from an isolated system into a platform component.
 
-Tekton is an open-source, cloud-native CI/CD framework that provides Kubernetes-style building blocks for creating continuous integration and delivery pipelines. Originally developed by Google as part of the Knative project, Tekton has become a standalone project under the Continuous Delivery Foundation (CDF).
+## The Deployment Spectrum
 
-### Core Components
+### Level 0: Manual Release YAML (Quick Start, Not Production)
 
-**Tekton Pipelines**
-The core component providing the building blocks for CI/CD:
-- **Tasks**: Individual units of work (build, test, deploy)
-- **Pipelines**: Ordered collection of tasks
-- **TaskRuns/PipelineRuns**: Execution instances
-- **Workspaces**: Shared storage between tasks
-
-**Tekton Triggers**
-Event-driven pipeline execution:
-- **EventListeners**: HTTP endpoints receiving events
-- **TriggerBindings**: Extract data from event payloads
-- **TriggerTemplates**: Create pipeline runs from events
-- **Interceptors**: Process and validate events (GitHub, GitLab, CEL)
-
-**Tekton Dashboard**
-Web-based UI for:
-- Viewing pipeline definitions and runs
-- Monitoring execution status
-- Triggering manual pipeline runs
-- Inspecting logs and results
-
-**Tekton Operator**
-Lifecycle management for all Tekton components:
-- Simplified installation and upgrades
-- Configuration through TektonConfig CRD
-- Component health monitoring
-- Version compatibility management
-
-## The Evolution of Tekton
-
-### Origins (2018-2019)
-
-Tekton emerged from the Knative project's Build component:
-- Originally part of Knative's serverless platform
-- Extracted as standalone project in early 2019
-- Joined Continuous Delivery Foundation as founding project
-
-### Maturation (2020-2022)
-
-Significant developments:
-- v1 API stability for core resources
-- Tekton Operator for simplified management
-- Tekton Hub for reusable task catalog
-- Tekton Chains for software supply chain security
-- Growing ecosystem of integrations
-
-### Current State (2023-Present)
-
-- Production-ready for enterprise deployments
-- Strong community and vendor support
-- Integration with major cloud platforms
-- SLSA compliance capabilities via Tekton Chains
-
-## Deployment Methods Comparison
-
-### Method 1: Manual YAML Installation
-
-Apply release manifests directly from GitHub releases.
+The Tekton documentation starts here:
 
 ```bash
-# Install Tekton Pipelines
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+# Install Tekton Pipelines v1.11.2
+kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/previous/v1.11.2/release.yaml
 
 # Install Tekton Triggers
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
+kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/previous/v0.25.0/release.yaml
 
 # Install Tekton Dashboard
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/dashboard/latest/release.yaml
+kubectl apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/release.yaml
 ```
 
-**Pros:**
-- Simple and direct
-- Full control over versions
-- No additional dependencies
+**What you get**: Tekton Pipelines controller, webhook, and CRDs in the `tekton-pipelines` namespace. Triggers and Dashboard in their respective namespaces. Everything runs with default settings.
 
-**Cons:**
-- Manual version management
-- No unified configuration
-- Complex upgrades
-- No dependency resolution
+**What you don't get**:
+- No ingress for the dashboard (ClusterIP service only)
+- No cloud events configuration (no webhook integration)
+- No custom timeouts or service accounts
+- No integration with your logging stack
+- Manual upgrades (remember to update CRDs in correct order)
 
-### Method 2: Tekton Operator
+**Verdict**: Excellent for learning Tekton, running local experiments, or proof-of-concept demos. Not sustainable for production. Every configuration change means editing ConfigMaps post-install. Upgrades require coordination across multiple manifests. Suitable only if you have <5 pipelines and a single operator who knows kubectl.
 
-Use the Tekton Operator for lifecycle management.
+### Level 1: Helm Charts (Better, Still Manual)
+
+Community Helm charts exist for Tekton Pipelines:
 
 ```bash
+helm repo add eddycharly https://eddycharly.github.io/helm-charts
+helm install tekton-pipelines eddycharly/pipelines --version 1.15.0
+```
+
+**What you gain**:
+- Values-based configuration (set defaults via `values.yaml`)
+- Versioned deployments (Helm tracks what you installed)
+- Easier upgrades (`helm upgrade`)
+- Parameterization (ingress, service accounts, etc.)
+
+**What you still manage manually**:
+- ConfigMap settings for cloud events sink, timeouts, feature flags
+- Dashboard ingress and authentication
+- Log collection integration
+- Ensuring compatibility between Pipelines/Triggers/Dashboard versions
+
+**Verdict**: Improvement over raw kubectl. Good for teams already using Helm for everything. But Helm charts for Tekton are community-maintained (not official Tekton project), which means version lag and potential abandonment. Most Tekton users don't use Helm—they use the official manifests or the Operator.
+
+### Level 2: Tekton Operator (Production Standard)
+
+The Tekton Operator is an official Kubernetes operator that manages Tekton component lifecycle via CRDs:
+
+```yaml
 # Install Tekton Operator
-kubectl apply -f https://storage.googleapis.com/tekton-releases/operator/latest/release.yaml
+kubectl apply -f https://storage.googleapis.com/tekton-releases/operator/previous/v0.78.0/release.yaml
 
-# Create TektonConfig
-kubectl apply -f - <<EOF
+# Configure Tekton via TektonConfig CRD
 apiVersion: operator.tekton.dev/v1alpha1
 kind: TektonConfig
 metadata:
   name: config
 spec:
-  profile: all
+  profile: all  # Installs Pipelines, Triggers, Dashboard
   targetNamespace: tekton-pipelines
-EOF
 ```
 
-**Pros:**
-- Unified management
-- Automatic upgrades
-- Version compatibility
-- Health monitoring
-- CRD-based configuration
+**What the Operator manages**:
+- Installation of Pipelines, Triggers, Dashboard with version compatibility
+- Automatic creation of CRDs, controllers, webhooks, RBAC
+- Unified configuration via TektonConfig CR
+- Self-healing (recreates components if deleted)
+- Simplified upgrades (update operator version or TektonConfig)
 
-**Cons:**
-- Additional operator overhead
-- Slightly more complex initial setup
-- Operator-managed namespaces
-
-### Method 3: Helm Charts
-
-Use community Helm charts for installation.
-
-```bash
-helm repo add cdf https://cdf.open-cd.dev/tekton-helm-chart
-helm install tekton-pipelines cdf/tekton-pipeline
-```
-
-**Pros:**
-- Familiar Helm workflow
-- Value-based configuration
-- Easy rollbacks
-
-**Cons:**
-- Charts may lag behind releases
-- Community-maintained (not official)
-- Potential compatibility issues
-
-### Method 4: GitOps (Argo CD / Flux)
-
-Declarative deployment using GitOps tools.
+**Key insight**: The TektonConfig CR exposes most Tekton ConfigMap settings as first-class fields. Instead of editing `config-defaults` manually, you set:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: tekton-operator
 spec:
-  source:
-    repoURL: https://github.com/tektoncd/operator
-    path: config/crs
-  destination:
-    namespace: tekton-operator
-```
-
-**Pros:**
-- Declarative and auditable
-- Version-controlled configuration
-- Automatic sync and drift detection
-
-**Cons:**
-- Requires GitOps tooling
-- Additional infrastructure
-- More complex setup
-
-### Comparison Table
-
-| Method | Ease of Install | Upgrade Path | Configuration | Recommended For |
-|--------|----------------|--------------|---------------|-----------------|
-| Manual YAML | Easy | Manual | Limited | Development/testing |
-| Operator | Medium | Automatic | CRD-based | Production |
-| Helm | Easy | helm upgrade | Values file | Helm-native teams |
-| GitOps | Complex | Automatic | Declarative | GitOps workflows |
-
-## Why Tekton Operator?
-
-### 80/20 Analysis
-
-The Tekton Operator approach addresses 80% of deployment needs with 20% of the complexity:
-
-**Essential Features (In Scope):**
-1. Component selection (Pipelines, Triggers, Dashboard)
-2. Unified configuration via TektonConfig
-3. Automatic version compatibility
-4. Health monitoring and self-healing
-5. Simplified upgrades
-
-**Advanced Features (Out of Scope for Basic Deployment):**
-- Tekton Chains (supply chain security)
-- Tekton Results (long-term storage)
-- Custom interceptors
-- Multi-tenant configurations
-- Advanced pruning policies
-
-### Operator Benefits
-
-**Lifecycle Management**
-- Single control point for all Tekton components
-- Automatic handling of component dependencies
-- Version compatibility enforcement
-- Rolling update orchestration
-
-**Configuration Simplicity**
-```yaml
-apiVersion: operator.tekton.dev/v1alpha1
-kind: TektonConfig
-metadata:
-  name: config
-spec:
-  profile: all  # or: basic, lite
   pipeline:
-    disable-affinity-assistant: true
-  trigger:
-    enable-api-fields: stable
+    defaultServiceAccount: pipeline
+    defaultTimeoutMinutes: 60
+    defaultCloudEventsSink: "http://webhook-receiver.default.svc:8080/tekton"
+    defaultPodTemplate:
+      nodeSelector:
+        workload: builds
 ```
 
-**Observability**
-- Component health status in TektonConfig
-- Ready conditions for each component
-- Event-based status updates
+The operator propagates these into Tekton's ConfigMaps. Change the CR, and the operator reconciles the ConfigMaps automatically.
 
-## Project Planton's Approach
+**Advanced customization**: For settings the operator doesn't expose directly, use the `options` field:
 
-### Design Decisions
+```yaml
+spec:
+  pipeline:
+    options:
+      configMaps:
+        config-events:  # Custom ConfigMap creation
+          data:
+            sink: "http://custom-sink.company.net"
+            formats: "tektonv1"
+      deployments:
+        tekton-pipelines-controller:  # Inject env vars into controller
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: tekton-pipelines-controller
+                    env:
+                      - name: CONFIG_LOGGING_NAME
+                        value: pipeline-config-logging
+```
 
-**1. Operator-Based Deployment**
-- Chose Tekton Operator over manual installation
-- Provides unified management interface
-- Enables declarative component configuration
+This pattern allows **operator-managed deployment with manual customization** where needed.
 
-**2. Component Selection**
-- Exposed Pipelines, Triggers, Dashboard as toggles
-- At least one component must be enabled
-- Default: Pipelines only (minimal footprint)
+**What you still handle**:
+- Dashboard ingress (operator deploys the dashboard pod, not the ingress)
+- Authentication (Tekton Dashboard has no built-in auth)
+- Log collection (DaemonSet for pod logs)
+- Integration with your broader platform
 
-**3. Resource Configuration**
-- Configurable operator container resources
-- Sensible defaults for production use
-- Separate from component resources (managed by operator)
+**Verdict**: This is the production standard. The operator reduces operational toil while maintaining flexibility. Used extensively in OpenShift (Red Hat's distribution of Tekton) and increasingly in vanilla Kubernetes. If you're running Tekton long-term, the operator pays for itself in upgrade ease and config consistency.
 
-**4. Target Cluster Abstraction**
-- Consistent cluster targeting across components
-- Credential management via KubernetesProviderConfig
-- Support for multi-cluster deployments
+## Critical Production Integrations
 
-### API Design Rationale
+Installing Tekton is table stakes. Making it production-ready requires three integrations.
 
-```protobuf
-message KubernetesTektonOperatorSpec {
-  // Target cluster for deployment
-  KubernetesClusterSelector target_cluster = 1;
-  
-  // Operator container resources (not component resources)
-  KubernetesTektonOperatorSpecContainer container = 2;
-  
-  // Component selection
-  KubernetesTektonOperatorComponents components = 3;
+### 1. Cloud Events Sink: Wiring Tekton into Your Platform
+
+Tekton can emit CloudEvents for every pipeline lifecycle transition:
+- PipelineRun Started
+- PipelineRun Running
+- PipelineRun Succeeded/Failed
+- TaskRun Started/Running/Succeeded/Failed
+
+**Why this matters**: Your platform needs to react to pipeline results. When a build succeeds, update a deployment record. When a build fails, notify the developer. When a pipeline starts, show "building..." in your UI.
+
+**Configuration (Tekton v1.8+)**:
+
+Create or update the `config-events` ConfigMap (or use TektonConfig's `defaultCloudEventsSink` field):
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-events
+  namespace: tekton-pipelines
+data:
+  sink: "http://main.service-app-prod-tekton-webhooks-receiver/service-hub/tekton/cloud-event"
+  formats: "tektonv1"
+```
+
+**How it works**: Tekton's controller sends HTTP POSTs to your sink URL. Each event is a CloudEvents v1.0 envelope with:
+- Headers: `Ce-Type` (event type), `Ce-Source` (resource URI), `Ce-Id` (UUID), `Ce-Time`
+- Body: Full PipelineRun or TaskRun JSON at the time of the event
+
+**Example payload** for a successful PipelineRun:
+
+```json
+{
+  "pipelineRun": {
+    "metadata": { "name": "build-api-123", ... },
+    "spec": { ... },
+    "status": {
+      "conditions": [{"type": "Succeeded", "status": "True"}],
+      "startTime": "...",
+      "completionTime": "..."
+    }
+  }
 }
 ```
 
-**Why These Fields?**
+Your webhook receiver parses this to extract pipeline results, update databases, send notifications, etc.
 
-1. **target_cluster**: Standard Project Planton pattern for Kubernetes deployments
-2. **container**: Control operator pod resources; component resources managed by TektonConfig
-3. **components**: Simple boolean flags for essential components; advanced config via native CRDs
+**Reliability**: Tekton uses asynchronous delivery with exponential backoff retry. If your sink is down, Tekton will retry sending events without blocking pipeline execution. Events may arrive out-of-order during retries. For critical audit trails, consider also using Tekton Results (stores run history in a database) as a backup.
 
-### What We Deliberately Exclude
+**Real-world usage at Planton Cloud**: The sink points to an internal service that updates the ServiceHub database with pipeline status and triggers downstream actions (deployment, notifications). This integration is **essential**—without it, Tekton runs in isolation with no way for the platform to know when builds complete.
 
-**Not Exposed via API:**
-- TektonConfig advanced settings (use native CRD post-deployment)
-- Tekton Chains configuration
-- Tekton Results configuration
-- Custom pruning policies
-- Network policies
+### 2. Dashboard Exposure and Authentication
 
-**Rationale:** These advanced features are either rarely used or require deep understanding of Tekton internals. Users needing them can apply native CRDs alongside the operator deployment.
+The Tekton Dashboard provides a web UI for viewing pipelines, logs, and run history. Out of the box, it's a ClusterIP service on port 9097—only accessible via `kubectl port-forward`.
 
-## Implementation Landscape
+**Production requirements**:
+1. **External access** via Ingress, Gateway, or LoadBalancer
+2. **Authentication** (Tekton Dashboard has no built-in auth)
+3. **Read-only mode** for most users (safety)
 
-### IaC Approach
+**Exposing the Dashboard**:
 
-**Pulumi Module:**
-1. Deploy Tekton Operator manifests
-2. Wait for operator readiness
-3. Create TektonConfig based on component selection
-4. Export relevant outputs
+Create an Ingress (or Gateway with HTTPRoute for Gateway API):
 
-**Terraform Module:**
-1. Apply Tekton Operator manifests
-2. Wait for CRD availability
-3. Create TektonConfig resource
-4. Export relevant outputs
-
-### Resource Creation Flow
-
-```
-KubernetesTektonOperator (Project Planton)
-    ↓
-Tekton Operator Deployment (IaC Module)
-    ↓
-TektonConfig CRD (IaC Module)
-    ↓
-Tekton Components (Managed by Operator)
-    • tekton-pipelines-controller
-    • tekton-pipelines-webhook
-    • tekton-triggers-controller (if enabled)
-    • tekton-triggers-webhook (if enabled)
-    • tekton-dashboard (if enabled)
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tekton.company.com
+      secretName: tekton-dashboard-tls
+  rules:
+    - host: tekton.company.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tekton-dashboard
+                port:
+                  number: 9097
 ```
 
-### Namespace Strategy
+**Authentication patterns**:
+
+The Dashboard itself doesn't authenticate users. You must layer auth in front:
+
+**Option A: OAuth2 Proxy (Recommended)**
+
+Deploy an OAuth2 proxy that requires login (Google, Okta, GitHub):
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy
+spec:
+  template:
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:latest
+          args:
+            - --provider=oidc
+            - --oidc-issuer-url=https://accounts.google.com
+            - --email-domain=company.com
+            - --upstream=http://tekton-dashboard.tekton-pipelines.svc:9097
+            - --http-address=0.0.0.0:4180
+```
+
+Point your Ingress to the proxy service instead of the dashboard directly. Users must authenticate before accessing the dashboard.
+
+**Option B: Network-Based (Simpler, Less Secure)**
+
+Expose dashboard only on internal network (VPN required) or use basic HTTP auth at the ingress. Quick to set up but lacks fine-grained user tracking.
+
+**Read-only vs Read-write**:
+
+Tekton Dashboard ships with two installation manifests:
+- `release.yaml` - Read-only mode (default, safer)
+- `release-full.yaml` - Read-write mode (allows creating/deleting resources)
+
+In read-only mode, the dashboard's service account can only view Tekton resources. Users see pipeline status and logs but can't trigger new runs or delete pipelines. **Use read-only for most users**. Grant read-write access only to CI admins who need to manage pipelines via UI.
+
+**Real-world at Planton Cloud**: Dashboard is critical for developers to debug failed builds. We expose it via Istio Gateway with HTTPS. Authentication is handled at the gateway level. Most users have read-only access; only platform engineers have write access via CLI/GitOps.
+
+### 3. Log Collection: Real-Time Streaming and Long-Term Storage
+
+Tekton task logs flow through Kubernetes container stdout/stderr. By default, you view them with `kubectl logs`. For production, you need centralized log collection and real-time streaming.
+
+**The Log Pipeline**:
 
 ```
-tekton-operator/      # Operator namespace
-  └── tekton-operator-controller
+Tekton TaskRun Pods (stdout/stderr)
+         ↓
+Log Collector DaemonSet (Vector or Fluent Bit)
+         ↓
+Message Bus (NATS) or Log Store (Elasticsearch, Loki)
+         ↓
+Real-Time UI + Long-Term Archive
+```
+
+**Vector vs Fluent Bit**:
+
+Both work as DaemonSets that tail pod logs and forward them. Key differences:
+
+| Aspect | Vector | Fluent Bit |
+|--------|--------|------------|
+| **Language** | Rust (modern, high-performance) | C (battle-tested, low footprint) |
+| **Configuration** | VRL (Vector Remap Language) - powerful transforms | Fluent config (simpler but less flexible) |
+| **NATS Support** | Native NATS sink | NATS output plugin |
+| **Memory** | ~50-100MB per node | ~30-50MB per node |
+| **Community Momentum** | Growing (CNCF, backed by Datadog) | Established (widely deployed) |
+| **Production Maturity** | Proven at scale, newer codebase | Proven for years, very stable |
+
+**Planton Cloud's choice**: Migrated from Fluent Bit to Vector when switching from Kafka to NATS. Vector's native NATS sink and powerful transforms aligned better with the new architecture. Teams report that Vector "just works" with complex routing and is easier to debug than Fluent Bit's configuration syntax.
+
+**Vector configuration for Tekton + NATS**:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vector-config
+  namespace: logging
+data:
+  vector.yaml: |
+    sources:
+      kubernetes_logs:
+        type: kubernetes_logs
+        namespace_labels:
+          - namespace
+        pod_labels:
+          - tekton.dev/pipelineRun
+          - tekton.dev/taskRun
+    
+    transforms:
+      filter_tekton:
+        type: filter
+        inputs: [kubernetes_logs]
+        condition: '.kubernetes.namespace_labels.namespace == "tekton-pipelines"'
+      
+      parse_tekton_metadata:
+        type: remap
+        inputs: [filter_tekton]
+        source: |
+          .pipeline_run = .kubernetes.pod_labels."tekton.dev/pipelineRun"
+          .task_run = .kubernetes.pod_labels."tekton.dev/taskRun"
+    
+    sinks:
+      nats_stream:
+        type: nats
+        inputs: [parse_tekton_metadata]
+        url: "nats://nats.messaging.svc:4222"
+        subject: "tekton.logs.{{ pipeline_run }}"
+        encoding:
+          codec: json
+```
+
+**How this enables real-time logs**:
+1. Vector captures all pod logs in `tekton-pipelines` namespace
+2. Extracts pipeline/task metadata from pod labels
+3. Publishes to NATS subject `tekton.logs.<pipeline-run-id>`
+4. Your web console subscribes to that subject for live log streaming
+5. Logs also archived to object storage (R2, S3) after pipeline completes
+
+**DaemonSet deployment**: Deploy Vector as a DaemonSet with node-level access to `/var/log/containers`. Each node runs one Vector pod that tails logs for all pods on that node. This is the standard Kubernetes logging pattern—no changes to Tekton pods required.
+
+**Alternative: Fluent Bit** works similarly. If you already run Fluent Bit cluster-wide, configure it to forward Tekton logs to your chosen destination. The configuration is more verbose but well-documented.
+
+## Tekton Operator: Managed Lifecycle with Configuration Flexibility
+
+The Tekton Operator shifts Tekton from "installed software" to "managed resource." Instead of applying release YAMLs, you create a TektonConfig CR:
+
+```yaml
+apiVersion: operator.tekton.dev/v1alpha1
+kind: TektonConfig
+metadata:
+  name: config
+spec:
+  profile: all  # Pipelines + Triggers + Dashboard
+  targetNamespace: tekton-pipelines
   
-tekton-pipelines/     # Component namespace (managed by operator)
-  ├── tekton-pipelines-controller
-  ├── tekton-pipelines-webhook
-  ├── tekton-triggers-controller
-  ├── tekton-triggers-webhook
-  └── tekton-dashboard
+  pipeline:
+    # Defaults for all PipelineRuns
+    defaultServiceAccount: pipeline
+    defaultTimeoutMinutes: 60
+    defaultCloudEventsSink: "http://webhook.company.svc/tekton-events"
+    
+    # Global pod template
+    defaultPodTemplate:
+      nodeSelector:
+        workload: ci-builds
+      tolerations:
+        - key: ci
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+    
+    # Feature flags
+    enableApiFields: stable  # or beta, alpha
+    enableTektonOciBundles: true
 ```
+
+**What happens**:
+1. Operator reads TektonConfig
+2. Determines which components to install (based on `profile`)
+3. Deploys Tekton Pipelines, Triggers, Dashboard as specified
+4. Creates ConfigMaps (`config-defaults`, `config-features`, etc.) with your settings
+5. Monitors components, recreates if deleted
+6. Handles upgrades when you update TektonConfig
+
+**Upgrade workflow**:
+
+```bash
+# Update operator version
+kubectl apply -f https://storage.googleapis.com/tekton-releases/operator/previous/v0.80.0/release.yaml
+
+# Operator auto-updates TektonPipeline to compatible version
+# Or explicitly set version in TektonConfig if you want control
+```
+
+**Advanced configuration via `options`**:
+
+For settings not exposed as first-class TektonConfig fields, use `options` to inject custom ConfigMaps or environment variables:
+
+```yaml
+spec:
+  pipeline:
+    options:
+      configMaps:
+        config-logging:
+          data:
+            loglevel.controller: "info"
+            loglevel.webhook: "debug"
+            zap-logger-config: |
+              {
+                "level": "info",
+                "encoding": "json",
+                "outputPaths": ["stdout"],
+                "errorOutputPaths": ["stderr"]
+              }
+      
+      deployments:
+        tekton-pipelines-controller:
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: tekton-pipelines-controller
+                    env:
+                      - name: CONFIG_LOGGING_NAME
+                        value: config-logging
+```
+
+This override mechanism provides **escape hatches** for any setting. Most production deployments use a combination of first-class fields (for common settings) and `options` (for niche requirements).
+
+## The 80/20 Configuration: What Production Actually Needs
+
+After surveying production Tekton deployments, most configure the same 20% of settings:
+
+### Essential Settings
+
+**1. Service Account** (`defaultServiceAccount`)
+
+Don't use the `default` service account. Create a dedicated `pipeline` service account with:
+- ImagePullSecrets for your container registry
+- RBAC to access Secrets, ConfigMaps, and deploy resources
+- Cloud provider IAM bindings (if using Workload Identity or IRSA)
+
+**2. Timeouts** (`defaultTimeoutMinutes`)
+
+Tekton's default is 60 minutes. Adjust based on your workloads:
+- Backend builds: 15-30 minutes
+- Integration tests: 60-90 minutes
+- Long-running migrations: 120+ minutes
+
+Set a sensible default to prevent hung builds from consuming resources indefinitely.
+
+**3. Cloud Events Sink** (`defaultCloudEventsSink`)
+
+If you integrate Tekton with external systems (which most production platforms do), this is **mandatory**. Point it to your webhook receiver, event bus, or notification service.
+
+**4. Resource Limits** (`defaultContainerResourceRequirements`)
+
+Prevent runaway builds from hogging nodes:
+
+```yaml
+defaultContainerResourceRequirements:
+  default:  # Applied to all step containers without explicit resources
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "2000m"
+      memory: "2Gi"
+```
+
+This ensures every Tekton step has a CPU/memory ceiling. Adjust based on your typical build patterns.
+
+**5. Node Placement** (`defaultPodTemplate`)
+
+If you have dedicated build nodes (common in production):
+
+```yaml
+defaultPodTemplate:
+  nodeSelector:
+    pool: tekton-builds
+  tolerations:
+    - key: build-workload
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
+```
+
+All Tekton tasks run on your build node pool, isolated from application workloads.
+
+### Dashboard Configuration
+
+**6. Ingress Host** (Dashboard access)
+
+Users need a URL like `https://tekton.company.com`. This requires an Ingress or Gateway resource pointing to `tekton-dashboard` service.
+
+**7. Authentication** (Security)
+
+Layer auth via OAuth2 Proxy or restrict network access. Never expose an unauthenticated Tekton Dashboard publicly.
+
+**8. Read-Only Mode** (Default)
+
+Install Dashboard with read-only permissions unless write access is explicitly needed. Most users just need to view logs and pipeline status.
+
+### Log Collection
+
+**9. Vector/Fluent Bit DaemonSet** (Log aggregation)
+
+Deploy a cluster-wide log collector configured to:
+- Tail logs from `tekton-pipelines` namespace
+- Extract pipeline/task metadata from pod labels
+- Forward to your logging backend (NATS, Elasticsearch, Loki)
+
+**10. NATS Integration** (If using event-driven architecture)
+
+Configure Vector to publish logs to NATS subjects:
+
+```
+tekton.logs.<pipeline-run-id>
+```
+
+Your UI subscribes to these subjects for real-time log streaming.
+
+## What Project Planton Supports
+
+The KubernetesTektonOperator component deploys Tekton via the official Tekton Operator with an opinionated, production-ready configuration:
+
+**Deployment method**: Tekton Operator (Level 2)
+
+**Why**: The operator handles component lifecycle, version compatibility, and upgrades. We layer additional configuration on top via TektonConfig and custom resources.
+
+**Exposed configuration**:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTektonOperator
+metadata:
+  name: tekton-ci
+spec:
+  operatorVersion: v0.78.0
+  
+  container:
+    resources:  # Operator pod resources
+      requests: {cpu: 100m, memory: 128Mi}
+      limits: {cpu: 500m, memory: 512Mi}
+  
+  components:
+    pipelines: true
+    triggers: true
+    dashboard: true
+  
+  # Future fields (to be added):
+  # cloudEventsSink: "http://webhook-receiver.svc:8080/tekton"
+  # dashboardIngress:
+  #   enabled: true
+  #   host: "tekton.company.com"
+  #   tls: true
+  # logCollection:
+  #   enabled: true
+  #   backend: nats
+  #   natsURL: "nats://nats.messaging.svc:4222"
+```
+
+**Current limitations** (to be addressed):
+- Cloud events sink must be configured manually via TektonConfig patch
+- Dashboard ingress must be created separately
+- Log collection (Vector/Fluent Bit) must be deployed independently
+
+**Roadmap**: Add first-class fields for cloud events, dashboard exposure, and log collection to enable fully automated, production-ready Tekton deployment in a single manifest.
+
+## Migration from Manual to Operator-Managed
+
+If you're running a manual Tekton installation and want to migrate to the operator:
+
+### Pre-Migration Checklist
+
+1. **Export current configuration**:
+   ```bash
+   kubectl get configmap -n tekton-pipelines config-defaults -o yaml > config-backup.yaml
+   kubectl get configmap -n tekton-pipelines feature-flags -o yaml > features-backup.yaml
+   ```
+
+2. **Document custom settings**:
+   - Cloud events sink URL
+   - Default service account name
+   - Custom timeouts or pod templates
+   - Enabled feature flags
+
+3. **Prepare TektonConfig CR** with these settings translated to TektonConfig fields
+
+### Migration Steps (5-10 minutes downtime)
+
+**1. Quiesce pipelines**:
+- Stop new pipeline triggers
+- Wait for running PipelineRuns to complete
+- Verify: `kubectl get pipelinerun -A --field-selector=status.conditions[0].status!=False,status.conditions[0].status!=True`
+
+**2. Deploy Tekton Operator**:
+```bash
+kubectl apply -f https://storage.googleapis.com/tekton-releases/operator/previous/v0.78.0/release.yaml
+```
+
+**3. Remove old Tekton controllers** (but keep CRDs and CRs):
+```bash
+kubectl delete deployment -n tekton-pipelines tekton-pipelines-controller
+kubectl delete deployment -n tekton-pipelines tekton-pipelines-webhook
+kubectl delete deployment -n tekton-triggers tekton-triggers-controller
+# DO NOT delete CRDs or PipelineRun/TaskRun resources
+```
+
+**4. Create TektonConfig CR** with your settings:
+```bash
+kubectl apply -f tekton-config.yaml
+```
+
+**5. Wait for operator to install components**:
+```bash
+kubectl get tektonconfig config -w
+# Wait for READY=True
+```
+
+**6. Verify**:
+```bash
+# Check controllers running
+kubectl get pods -n tekton-pipelines
+
+# Verify ConfigMaps updated
+kubectl get configmap -n tekton-pipelines config-defaults -o yaml
+
+# Run test pipeline
+kubectl create -f test-pipeline-run.yaml
+```
+
+### Rollback Plan
+
+If migration fails:
+1. Delete TektonConfig: `kubectl delete tektonconfig config`
+2. Re-apply old Tekton manifests: `kubectl apply -f tekton-v1.1.0-release.yaml`
+3. Controllers restart, pick up existing PipelineRuns
+
+**Safety**: Don't delete CRDs or pipeline resources during migration. The operator uses the same CRDs as manual installation.
+
+**Testing**: Practice this in a staging cluster first. The actual migration takes 5-10 minutes, but preparation prevents surprises.
 
 ## Production Best Practices
 
-### Resource Planning
+### Configuration Management
 
-**Operator Resources:**
-| Environment | CPU Request | Memory Request | CPU Limit | Memory Limit |
-|-------------|-------------|----------------|-----------|--------------|
-| Development | 50m | 64Mi | 200m | 256Mi |
-| Staging | 100m | 128Mi | 500m | 512Mi |
-| Production | 200m | 256Mi | 1000m | 1Gi |
+**Store TektonConfig in Git**: Treat TektonConfig like application code. Changes go through review, testing, GitOps deployment.
 
-**Component Resources (via TektonConfig):**
-Managed separately through TektonConfig CRD after initial deployment.
+**Use `options` for custom settings**: If a ConfigMap field isn't exposed by TektonConfig, use `options` to inject it. This keeps configuration declarative.
 
-### High Availability
+**Version pinning**: Pin `operatorVersion` to a known-good version. Test upgrades in dev before rolling to production.
 
-**Operator:**
-- Single replica by default (Tekton Operator design)
-- Uses leader election for HA
-- Pod disruption budgets recommended
+### Security
 
-**Components:**
-- Controllers use leader election
-- Webhooks can be scaled for HA
-- Dashboard can be scaled with replicas
+**Service accounts**: Use dedicated service accounts with least privilege. Don't grant cluster-admin to pipeline service accounts.
 
-### Security Considerations
+**Network policies**: Restrict which namespaces Tekton pods can communicate with. Pipelines shouldn't access production databases directly.
 
-**RBAC:**
-- Operator requires cluster-admin for CRD management
-- Create dedicated service accounts for pipelines
-- Limit namespace access for task execution
+**Secret handling**: Store credentials in Kubernetes Secrets, reference in PipelineRuns. Never hardcode secrets in pipeline YAML.
 
-**Network Policies:**
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: tekton-pipelines-controller
-  namespace: tekton-pipelines
-spec:
-  podSelector:
-    matchLabels:
-      app: tekton-pipelines-controller
-  policyTypes:
-    - Ingress
-    - Egress
-```
+### Monitoring
 
-**Pod Security:**
-- Enable pod security standards
-- Restrict privileged containers in pipelines
-- Use dedicated service accounts
+**Key metrics**:
+- PipelineRun success/failure rate
+- Average pipeline duration
+- Queue depth (PipelineRuns pending)
+- Webhook availability (for cloud events sink)
 
-### Monitoring and Observability
+**Logging**:
+- Aggregate Tekton controller logs (for debugging reconciliation issues)
+- Aggregate task pod logs (for developer debugging)
+- Alert on repeated controller errors
 
-**Metrics:**
-- Tekton components expose Prometheus metrics
-- Dashboard provides basic monitoring
-- Consider Grafana dashboards for production
+**Dashboard uptime**: Monitor dashboard availability and response time. It's a critical developer tool.
 
-**Logging:**
-- Pipeline logs available via TaskRun/PipelineRun
-- Operator logs in tekton-operator namespace
-- Consider centralized logging (EFK/Loki)
+### Capacity Planning
 
-**Alerting:**
-- Monitor operator health
-- Alert on failed pipelines
-- Track resource exhaustion
+**Node pool sizing**: If you have dedicated build nodes:
+- Start with 3 nodes minimum (n2-standard-16 or similar)
+- Configure autoscaling (1-10 nodes based on pipeline load)
+- Use regular instances (not spot) if build latency matters
+
+**PVC cleanup**: Tekton can accumulate workspace PVCs. Use TektonPruner or a cron job to clean up old PipelineRun artifacts.
+
+**Event sink capacity**: Ensure your webhook receiver can handle event bursts. During high pipeline activity, Tekton emits hundreds of events per minute.
 
 ## Common Pitfalls
 
-### 1. Resource Exhaustion
+**1. Missing cloud events sink**: Pipelines run, but platform doesn't know when they complete. Always configure the sink if you integrate Tekton with external systems.
 
-**Problem:** Pipeline pods consuming excessive resources.
+**2. Dashboard without auth**: Exposing dashboard publicly without authentication is a security risk. Even read-only mode reveals pipeline details.
 
-**Solution:**
-- Set resource limits on Tasks
-- Configure LimitRanges in namespaces
-- Use ResourceQuotas
+**3. No resource limits**: Runaway builds can starve cluster resources. Always set default CPU/memory limits for step containers.
 
-### 2. PipelineRun Accumulation
+**4. Ignoring controller logs**: Tekton controller errors manifest as PipelineRuns stuck in pending. Monitor controller logs for early warning signs.
 
-**Problem:** Old PipelineRuns consuming etcd storage.
+**5. Manual ConfigMap edits with Operator**: If you edit ConfigMaps directly while using the Operator, the operator will overwrite your changes. Use TektonConfig or `options` instead.
 
-**Solution:**
-- Configure pruner in TektonConfig
-- Set TTL on completed runs
-- Implement cleanup jobs
+## The Paradigm Shift
 
-### 3. Webhook Timeouts
+Traditional CI/CD systems (Jenkins, GitLab CI) are monolithic: you install the system, and it comes with a UI, event hooks, log storage, everything. Tekton takes the opposite approach: it's a **building block**. You get pipeline execution (the engine) and must integrate the peripherals yourself.
 
-**Problem:** Webhooks timing out during high load.
+This feels like extra work initially. But it's actually **freedom**. Want logs in Elasticsearch? Configure it. Want events in Kafka? Route them there. Want a custom dashboard? Build one using Tekton's API. Tekton doesn't lock you into a vendor's choices—it gives you a standards-based engine and lets you compose the rest.
 
-**Solution:**
-- Scale webhook pods
-- Increase timeout values
-- Use queueing mechanisms
+The Tekton Operator makes this composition **declarative**. Instead of a bash script that installs Tekton, creates ConfigMaps, deploys dashboard, sets up ingress, you have a TektonConfig CR that describes the desired state. GitOps tools (ArgoCD, Flux) can manage it. Your platform can generate it. It's infrastructure as code, not imperative installation.
 
-### 4. Upgrade Failures
+For production CI/CD platforms like Planton Cloud, this matters. We don't want a one-size-fits-all CI system. We want pipeline execution that integrates with our webhook architecture, our NATS-based log streaming, our Istio ingress. Tekton + Operator gives us that integration surface while handling the undifferentiated heavy lifting of component lifecycle management.
 
-**Problem:** Component upgrades failing.
+## What's Next
 
-**Solution:**
-- Use operator for managed upgrades
-- Test upgrades in staging
-- Check operator logs for issues
+This document covered the deployment landscape. For deeper guides:
 
-## Conclusion
+- **[Tekton Configuration Guide](./tekton-configuration.md)** - Comprehensive ConfigMap reference and TektonConfig field mapping
+- **[Dashboard Security Guide](./dashboard-security.md)** - OAuth2 Proxy setup, RBAC, and authentication patterns
+- **[Log Collection with Vector](./vector-integration.md)** - Complete Vector configuration for Tekton + NATS streaming
+- **[Cloud Events Architecture](./cloud-events.md)** - Event payload structure, webhook receiver patterns, retry behavior
 
-The Tekton Operator provides the most balanced approach for deploying Tekton on Kubernetes:
+These guides are placeholders—to be written as needed based on user questions and production learnings.
 
-1. **Simplicity**: Single deployment for all components
-2. **Flexibility**: Component selection and configuration
-3. **Reliability**: Automated health management
-4. **Maintainability**: Unified upgrade path
+---
 
-Project Planton's KubernetesTektonOperator resource exposes the essential 80% of configuration while allowing advanced users to extend via native Tekton CRDs.
+**This document is grounded in**: Official Tekton documentation, Red Hat OpenShift Pipelines guides, production deployments at Planton Cloud (5 months running), and research into Vector/Fluent Bit integration patterns.
 
-### Recommended Deployment Strategy
-
-1. Deploy KubernetesTektonOperator with required components
-2. Verify operator and component health
-3. Apply custom TektonConfig if needed
-4. Create pipelines and triggers as needed
-5. Monitor and iterate on resource allocation
-
-### References
-
-- [Tekton Documentation](https://tekton.dev/docs/)
-- [Tekton Operator GitHub](https://github.com/tektoncd/operator)
-- [Tekton Pipelines GitHub](https://github.com/tektoncd/pipeline)
-- [Tekton Triggers GitHub](https://github.com/tektoncd/triggers)
-- [Continuous Delivery Foundation](https://cd.foundation/)
+**Status**: Living document, updated as Tekton and the KubernetesTektonOperator component evolve.

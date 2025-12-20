@@ -51,10 +51,11 @@ KubernetesTektonOperatorStackInput (proto)
     │              tektonOperator()                        │
     │                                                      │
     │  1. Install Tekton Operator manifests               │
-    │     └─▶ yaml.NewConfigFile()                        │
+    │     └─▶ yamlv2.NewConfigFile()                      │
+    │         (uses yaml/v2 for CRD ordering)             │
     │                                                      │
     │  2. Create TektonConfig CRD                         │
-    │     └─▶ yaml.NewConfigGroup()                       │
+    │     └─▶ yamlv2.NewConfigGroup()                     │
     │         • profile: all/basic/lite                   │
     │         • targetNamespace: tekton-pipelines         │
     └─────────────────────────────────────────────────────┘
@@ -90,15 +91,18 @@ dashboard: false
 
 ## Key Design Decisions
 
-### 1. YAML Manifests vs Helm
+### 1. YAML Manifests via yaml/v2
 
-**Decision**: Use official YAML manifests instead of Helm charts.
+**Decision**: Use official YAML manifests with Pulumi's `yaml/v2` module.
 
 **Rationale**:
 - Tekton Operator is primarily distributed via YAML manifests
 - No official Helm chart from Tekton project
 - Manifests are stable and well-tested
 - Simpler dependency management
+- **yaml/v2** provides better CRD ordering and await behavior, ensuring
+  CRDs are registered before TektonConfig is created (prevents 
+  "no matches for kind TektonConfig" errors)
 
 ### 2. Operator-Managed Components
 
@@ -158,9 +162,9 @@ module.Resources()           │
    │                         │
    ├─▶ tektonOperator() ─────┬─▶ Error: "deploy tekton operator"
    │       │                 │
-   │       ├─▶ NewConfigFile()──▶ Error: "install tekton operator manifests"
+   │       ├─▶ yamlv2.NewConfigFile()──▶ Error: "install tekton operator manifests"
    │       │                 │
-   │       └─▶ NewConfigGroup()─▶ Error: "create tekton config"
+   │       └─▶ yamlv2.NewConfigGroup()─▶ Error: "create tekton config"
    │                         │
    └─▶ Success               │
 ```
@@ -219,3 +223,4 @@ Components Namespace:
 - [Tekton Operator Design](https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md)
 - [TektonConfig CRD](https://tekton.dev/docs/operator/)
 - [Pulumi Kubernetes YAML](https://www.pulumi.com/registry/packages/kubernetes/api-docs/yaml/configfile/)
+- [Pulumi Kubernetes YAML v2](https://www.pulumi.com/blog/kubernetes-yaml-v2/) - Better CRD ordering and await behavior

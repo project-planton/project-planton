@@ -143,6 +143,7 @@ go_library(
         "//apis/org/project_planton/provider/kubernetes/kubernetessolr/v1:kubernetessolr",
         "//apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1:kubernetessolroperator",
         "//apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1:kubernetesstrimzikafkaoperator",
+        "//apis/org/project_planton/provider/kubernetes/kubernetestekton/v1:kubernetestekton",
         "//apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1:kubernetestektonoperator",
         "//apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1:kubernetestemporal",
         "//apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1:kuberneteszalandopostgresoperator",

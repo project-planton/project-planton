@@ -9,6 +9,23 @@ This document provides practical examples for deploying the Tekton Operator usin
 
 ---
 
+## ⚠️ Important: Fixed Namespace Architecture
+
+**Unlike other Kubernetes components in Project Planton, the Tekton Operator uses fixed namespaces** that are managed by the operator itself:
+
+| Component | Namespace | Managed By |
+|-----------|-----------|------------|
+| Tekton Operator | `tekton-operator` | Operator Release |
+| Tekton Pipelines | `tekton-pipelines` | TektonConfig |
+| Tekton Triggers | `tekton-pipelines` | TektonConfig |
+| Tekton Dashboard | `tekton-pipelines` | TektonConfig |
+
+**These namespaces are automatically created and managed by the Tekton Operator and cannot be customized.**
+
+See: https://tekton.dev/docs/operator/tektonconfig/
+
+---
+
 ## 1. Full Installation (All Components)
 
 Deploy Tekton Operator with all components enabled for a complete CI/CD platform.
@@ -20,7 +37,7 @@ metadata:
   name: tekton-operator
 spec:
   target_cluster:
-    kubernetes_credential_id: "my-k8s-cluster"
+    cluster_name: "my-k8s-cluster"
   container:
     resources:
       requests:
@@ -37,7 +54,8 @@ spec:
 ```
 
 **What this does:**
-- Installs Tekton Operator to manage Tekton components
+- Installs Tekton Operator in `tekton-operator` namespace
+- Deploys Tekton components in `tekton-pipelines` namespace
 - Enables Tekton Pipelines for CI/CD pipeline execution
 - Enables Tekton Triggers for event-driven pipeline execution
 - Enables Tekton Dashboard for web-based UI
@@ -58,7 +76,7 @@ metadata:
   name: tekton-operator-pinned
 spec:
   target_cluster:
-    kubernetes_credential_id: "my-k8s-cluster"
+    cluster_name: "my-k8s-cluster"
   container:
     resources:
       requests:
@@ -99,7 +117,7 @@ metadata:
   name: tekton-operator-minimal
 spec:
   target_cluster:
-    kubernetes_credential_id: "my-k8s-cluster"
+    cluster_name: "my-k8s-cluster"
   container:
     resources:
       requests:
@@ -138,7 +156,7 @@ metadata:
   name: tekton-operator-headless
 spec:
   target_cluster:
-    kubernetes_credential_id: "production-cluster"
+    cluster_name: "production-cluster"
   container:
     resources:
       requests:
@@ -179,7 +197,7 @@ metadata:
     team: platform
 spec:
   target_cluster:
-    kubernetes_credential_id: "production-cluster"
+    cluster_name: "production-cluster"
   container:
     resources:
       requests:
@@ -214,7 +232,7 @@ metadata:
   name: tekton-operator-dev
 spec:
   target_cluster:
-    kubernetes_credential_id: "dev-cluster"
+    cluster_name: "dev-cluster"
   container:
     resources:
       requests:
@@ -241,9 +259,11 @@ spec:
 
 ---
 
-## 7. Multi-Environment Deployment Pattern
+## 7. Multi-Cluster Deployment Pattern
 
-### Production
+> **Note:** Each cluster can only have one Tekton Operator installation since it uses fixed namespaces. For multi-environment setups, deploy to separate clusters.
+
+### Production Cluster
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -254,7 +274,7 @@ metadata:
     environment: production
 spec:
   target_cluster:
-    kubernetes_credential_id: "prod-cluster"
+    cluster_name: "prod-cluster"
   container:
     resources:
       requests:
@@ -269,7 +289,7 @@ spec:
     dashboard: true
 ```
 
-### Staging
+### Staging Cluster
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -280,7 +300,7 @@ metadata:
     environment: staging
 spec:
   target_cluster:
-    kubernetes_credential_id: "staging-cluster"
+    cluster_name: "staging-cluster"
   container:
     resources:
       requests:
@@ -295,7 +315,7 @@ spec:
     dashboard: true
 ```
 
-### Development
+### Development Cluster
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -306,7 +326,7 @@ metadata:
     environment: development
 spec:
   target_cluster:
-    kubernetes_credential_id: "dev-cluster"
+    cluster_name: "dev-cluster"
   container:
     resources:
       requests:

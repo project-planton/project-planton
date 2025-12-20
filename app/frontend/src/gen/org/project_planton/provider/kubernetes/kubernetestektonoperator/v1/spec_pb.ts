@@ -24,6 +24,14 @@ export const file_org_project_planton_provider_kubernetes_kubernetestektonoperat
  * Tekton Operator manages the lifecycle of Tekton components including Pipelines, Triggers, and Dashboard.
  * This message specifies the parameters needed to install and configure the Tekton Operator.
  *
+ * IMPORTANT: Namespace Behavior
+ * Unlike other Kubernetes components in Project Planton, the Tekton Operator uses fixed namespaces
+ * that are managed by the operator itself:
+ * - The Tekton Operator is installed in the 'tekton-operator' namespace
+ * - Tekton components (Pipelines, Triggers, Dashboard) are installed in the 'tekton-pipelines' namespace
+ * These namespaces are automatically created and managed by the Tekton Operator and cannot be customized.
+ * See: https://tekton.dev/docs/operator/tektonconfig/
+ *
  * @generated from message org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec
  */
 export type KubernetesTektonOperatorSpec = Message<"org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec"> & {

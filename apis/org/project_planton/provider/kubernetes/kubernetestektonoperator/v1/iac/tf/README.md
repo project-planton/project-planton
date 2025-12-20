@@ -6,6 +6,19 @@ This directory contains the Terraform implementation for deploying the Tekton Op
 
 The Terraform module installs the Tekton Operator using official release manifests. The operator manages the lifecycle of Tekton components (Pipelines, Triggers, Dashboard) via the TektonConfig CRD.
 
+## ⚠️ Important: Fixed Namespace Architecture
+
+**The Tekton Operator uses fixed namespaces** that are managed by the operator itself:
+
+| Component | Namespace |
+|-----------|-----------|
+| Tekton Operator | `tekton-operator` |
+| Tekton Pipelines | `tekton-pipelines` |
+| Tekton Triggers | `tekton-pipelines` |
+| Tekton Dashboard | `tekton-pipelines` |
+
+**These namespaces are automatically created by the operator and cannot be customized.**
+
 ## Module Structure
 
 ```

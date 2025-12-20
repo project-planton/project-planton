@@ -5,6 +5,12 @@
 #  - Deriving resource_id and labels
 #  - Tekton operator configuration
 #  - Component selection logic
+#
+# IMPORTANT: Namespace Behavior
+# Tekton Operator manages its own namespaces:
+# - 'tekton-operator' for the operator itself
+# - 'tekton-pipelines' for Tekton components
+# These are fixed and cannot be customized.
 ##############################################
 
 locals {
@@ -36,7 +42,7 @@ locals {
   # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # Tekton operator configuration
+  # Tekton Operator uses fixed namespaces (managed by the operator)
   operator_namespace   = "tekton-operator"
   components_namespace = "tekton-pipelines"
   tekton_config_name   = "config"

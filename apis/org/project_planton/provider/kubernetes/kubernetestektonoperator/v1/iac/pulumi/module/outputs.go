@@ -7,4 +7,6 @@ const (
 	OpTriggersControllerService   = "triggers_controller_service"
 	OpDashboardService            = "dashboard_service"
 	OpDashboardPortForwardCommand = "dashboard_port_forward_command"
+	OpCloudEventsSinkURL          = "cloud_events_sink_url"
+	OpDashboardExternalHostname   = "dashboard_external_hostname"
 )

@@ -93,13 +93,15 @@ kubectl get pods -n tekton-pipelines
 
 ### Tekton Operator Installation
 
-Deploys the Tekton Operator from official release manifests:
+Deploys the Tekton Operator from official release manifests using `yaml/v2`:
 
 ```go
-yaml.NewConfigFile(ctx, "tekton-operator", &yaml.ConfigFileArgs{
-    File: vars.OperatorReleaseURL,
+yamlv2.NewConfigFile(ctx, "tekton-operator", &yamlv2.ConfigFileArgs{
+    File: pulumi.String(locals.OperatorReleaseURL),
 }, pulumi.Provider(k8sProvider))
 ```
+
+> **Note**: We use `yaml/v2` instead of the older `yaml` package because v2 provides better CRD ordering and await behavior. This prevents the "no matches for kind TektonConfig" error that can occur when the TektonConfig CRD hasn't been registered yet.
 
 ### TektonConfig Configuration
 
@@ -138,12 +140,15 @@ var vars = struct {
 }{
     OperatorNamespace:        "tekton-operator",
     ComponentsNamespace:      "tekton-pipelines",
-    OperatorReleaseURLFormat: "https://storage.googleapis.com/tekton-releases/operator/previous/%s/release.yaml",
+    // Using infra.tekton.dev as per current Tekton operator documentation
+    OperatorReleaseURLFormat: "https://infra.tekton.dev/tekton-releases/operator/previous/%s/release.yaml",
     TektonConfigName:         "config",
 }
 ```
 
 The operator version is read from the spec input (`spec.operator_version`) and defaults to `v0.78.0` via proto field options.
+
+> **Note**: The release URL uses `infra.tekton.dev` as per the current [Tekton Operator installation docs](https://tekton.dev/docs/operator/install/).
 
 ## Stack Outputs
 
@@ -223,8 +228,21 @@ kubectl port-forward svc/tekton-dashboard -n tekton-pipelines 9097:9097
 
 Then access: http://localhost:9097
 
+### CRD Registration Timing Issues
+
+**Symptom**: Error "no matches for kind TektonConfig in version operator.tekton.dev/v1alpha1"
+
+**Solution**: This is fixed by using `yaml/v2` which handles CRD registration timing properly. If you still encounter this, check that the operator manifests were applied successfully:
+
+```bash
+kubectl get crds | grep tekton
+kubectl get tektonconfigs
+```
+
 ## References
 
 - [Pulumi Kubernetes Provider](https://www.pulumi.com/registry/packages/kubernetes/)
+- [Pulumi Kubernetes YAML v2](https://www.pulumi.com/blog/kubernetes-yaml-v2/) - Better CRD ordering
 - [Tekton Documentation](https://tekton.dev/docs/)
 - [Tekton Operator GitHub](https://github.com/tektoncd/operator)
+- [Tekton Operator Installation](https://tekton.dev/docs/operator/install/)
