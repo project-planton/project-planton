@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	kubernetestektonoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
@@ -22,6 +23,18 @@ type Locals struct {
 	EnablePipelines bool
 	EnableTriggers  bool
 	EnableDashboard bool
+
+	// CloudEvents configuration
+	CloudEventsSinkURL string
+
+	// Dashboard ingress configuration
+	IngressEnabled        bool
+	IngressHostname       string
+	CertSecretName        string
+	GatewayName           string
+	HttpRedirectRouteName string
+	HttpsRouteName        string
+	ClusterIssuerName     string
 }
 
 func initializeLocals(ctx *pulumi.Context, in *kubernetestektonoperatorv1.KubernetesTektonOperatorStackInput) *Locals {
@@ -77,6 +90,35 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetestektonoperatorv1.Kubern
 		ctx.Export(OpDashboardService, pulumi.String("tekton-dashboard"))
 		ctx.Export(OpDashboardPortForwardCommand, pulumi.String(
 			fmt.Sprintf("kubectl port-forward svc/tekton-dashboard -n %s 9097:9097", l.ComponentsNamespace)))
+	}
+
+	// CloudEvents configuration
+	if in.Target.Spec.CloudEventsSinkUrl != "" {
+		l.CloudEventsSinkURL = in.Target.Spec.CloudEventsSinkUrl
+		ctx.Export(OpCloudEventsSinkURL, pulumi.String(l.CloudEventsSinkURL))
+	}
+
+	// Dashboard ingress configuration
+	if in.Target.Spec.DashboardIngress != nil &&
+		in.Target.Spec.DashboardIngress.Enabled &&
+		in.Target.Spec.DashboardIngress.Hostname != "" {
+
+		l.IngressEnabled = true
+		l.IngressHostname = in.Target.Spec.DashboardIngress.Hostname
+		ctx.Export(OpDashboardExternalHostname, pulumi.String(l.IngressHostname))
+
+		// Extract domain from hostname for ClusterIssuer name
+		// e.g., "tekton-dashboard.example.com" -> "example.com"
+		hostnameParts := strings.Split(l.IngressHostname, ".")
+		if len(hostnameParts) > 1 {
+			l.ClusterIssuerName = strings.Join(hostnameParts[1:], ".")
+		}
+
+		// Computed resource names
+		l.CertSecretName = fmt.Sprintf("%s-dashboard-cert", in.Target.Metadata.Name)
+		l.GatewayName = fmt.Sprintf("%s-dashboard-external", in.Target.Metadata.Name)
+		l.HttpRedirectRouteName = fmt.Sprintf("%s-dashboard-http-redirect", in.Target.Metadata.Name)
+		l.HttpsRouteName = fmt.Sprintf("%s-dashboard-https", in.Target.Metadata.Name)
 	}
 
 	return &l

@@ -47,8 +47,15 @@ type KubernetesTektonOperatorSpec struct {
 	// https://github.com/tektoncd/operator/releases
 	// https://operatorhub.io/operator/tektoncd-operator
 	OperatorVersion string `protobuf:"bytes,4,opt,name=operator_version,json=operatorVersion,proto3" json:"operator_version,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Dashboard ingress configuration for exposing the dashboard via Gateway API.
+	// When enabled, creates Certificate, Gateway, and HTTPRoute resources.
+	DashboardIngress *KubernetesTektonOperatorDashboardIngress `protobuf:"bytes,5,opt,name=dashboard_ingress,json=dashboardIngress,proto3" json:"dashboard_ingress,omitempty"`
+	// CloudEvents sink URL for pipeline notifications.
+	// When configured, Tekton sends CloudEvents for TaskRun and PipelineRun lifecycle events.
+	// Example: "http://my-receiver.my-namespace.svc.cluster.local/tekton/events"
+	CloudEventsSinkUrl string `protobuf:"bytes,6,opt,name=cloud_events_sink_url,json=cloudEventsSinkUrl,proto3" json:"cloud_events_sink_url,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *KubernetesTektonOperatorSpec) Reset() {
@@ -105,6 +112,20 @@ func (x *KubernetesTektonOperatorSpec) GetComponents() *KubernetesTektonOperator
 func (x *KubernetesTektonOperatorSpec) GetOperatorVersion() string {
 	if x != nil {
 		return x.OperatorVersion
+	}
+	return ""
+}
+
+func (x *KubernetesTektonOperatorSpec) GetDashboardIngress() *KubernetesTektonOperatorDashboardIngress {
+	if x != nil {
+		return x.DashboardIngress
+	}
+	return nil
+}
+
+func (x *KubernetesTektonOperatorSpec) GetCloudEventsSinkUrl() string {
+	if x != nil {
+		return x.CloudEventsSinkUrl
 	}
 	return ""
 }
@@ -223,18 +244,79 @@ func (x *KubernetesTektonOperatorComponents) GetDashboard() bool {
 	return false
 }
 
+// KubernetesTektonOperatorDashboardIngress configures ingress for the Tekton Dashboard.
+// When enabled, exposes the dashboard via Kubernetes Gateway API with TLS termination.
+type KubernetesTektonOperatorDashboardIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Enable dashboard ingress.
+	// When true, creates Certificate, Gateway, and HTTPRoute resources.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Hostname for the dashboard ingress.
+	// Example: "tekton-dashboard.example.com"
+	// The ClusterIssuer name is derived from the domain portion of the hostname.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesTektonOperatorDashboardIngress) Reset() {
+	*x = KubernetesTektonOperatorDashboardIngress{}
+	mi := &file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesTektonOperatorDashboardIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesTektonOperatorDashboardIngress) ProtoMessage() {}
+
+func (x *KubernetesTektonOperatorDashboardIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesTektonOperatorDashboardIngress.ProtoReflect.Descriptor instead.
+func (*KubernetesTektonOperatorDashboardIngress) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *KubernetesTektonOperatorDashboardIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *KubernetesTektonOperatorDashboardIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kubernetestektonoperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.kubernetestektonoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xe6\x03\n" +
+	"Norg/project_planton/provider/kubernetes/kubernetestektonoperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.kubernetestektonoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xb6\x05\n" +
 	"\x1cKubernetesTektonOperatorSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\x90\x01\n" +
 	"\tcontainer\x18\x02 \x01(\v2j.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\x8f\x01\n" +
 	"\n" +
 	"components\x18\x03 \x01(\v2g.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorComponentsB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"components\x126\n" +
-	"\x10operator_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av0.78.0R\x0foperatorVersion\"\xa7\x01\n" +
+	"\x10operator_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av0.78.0R\x0foperatorVersion\x12\x9a\x01\n" +
+	"\x11dashboard_ingress\x18\x05 \x01(\v2m.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorDashboardIngressR\x10dashboardIngress\x121\n" +
+	"\x15cloud_events_sink_url\x18\x06 \x01(\tR\x12cloudEventsSinkUrl\"\xa7\x01\n" +
 	"%KubernetesTektonOperatorSpecContainer\x12~\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB#\xba\xfb\xa4\x02\x1e\n" +
 	"\r\n" +
@@ -244,7 +326,10 @@ const file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_s
 	"\tpipelines\x18\x01 \x01(\bR\tpipelines\x12\x1a\n" +
 	"\btriggers\x18\x02 \x01(\bR\btriggers\x12\x1c\n" +
 	"\tdashboard\x18\x03 \x01(\bR\tdashboard:\xa6\x01\xbaH\xa2\x01\x1a\x9f\x01\n" +
-	"\x17components.at_least_one\x12Qat least one Tekton component (pipelines, triggers, or dashboard) must be enabled\x1a1this.pipelines || this.triggers || this.dashboardB\x94\x04\n" +
+	"\x17components.at_least_one\x12Qat least one Tekton component (pipelines, triggers, or dashboard) must be enabled\x1a1this.pipelines || this.triggers || this.dashboard\"`\n" +
+	"(KubernetesTektonOperatorDashboardIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostnameB\x94\x04\n" +
 	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\tSpecProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
 
 var (
@@ -259,24 +344,26 @@ func file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_sp
 	return file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_goTypes = []any{
-	(*KubernetesTektonOperatorSpec)(nil),          // 0: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec
-	(*KubernetesTektonOperatorSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainer
-	(*KubernetesTektonOperatorComponents)(nil),    // 2: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorComponents
-	(*kubernetes.KubernetesClusterSelector)(nil),  // 3: org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	(*kubernetes.ContainerResources)(nil),         // 4: org.project_planton.provider.kubernetes.ContainerResources
+	(*KubernetesTektonOperatorSpec)(nil),             // 0: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec
+	(*KubernetesTektonOperatorSpecContainer)(nil),    // 1: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainer
+	(*KubernetesTektonOperatorComponents)(nil),       // 2: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorComponents
+	(*KubernetesTektonOperatorDashboardIngress)(nil), // 3: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorDashboardIngress
+	(*kubernetes.KubernetesClusterSelector)(nil),     // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	(*kubernetes.ContainerResources)(nil),            // 5: org.project_planton.provider.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_depIdxs = []int32{
-	3, // 0: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	4, // 0: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	1, // 1: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainer
 	2, // 2: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec.components:type_name -> org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorComponents
-	4, // 3: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // 3: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpec.dashboard_ingress:type_name -> org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorDashboardIngress
+	5, // 4: org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() {
@@ -292,7 +379,7 @@ func file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_sp
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -128,6 +128,7 @@ import (
 	kubernetessolrv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1"
 	kubernetessolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1"
 	kubernetesstrimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1"
+	kubernetestektonv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestekton/v1"
 	kubernetestektonoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1"
 	kubernetestemporalv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
 	kuberneteszalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
@@ -293,6 +294,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesSolr:                    &kubernetessolrv1.KubernetesSolr{},
 	cloudresourcekind.CloudResourceKind_KubernetesSolrOperator:            &kubernetessolroperatorv1.KubernetesSolrOperator{},
 	cloudresourcekind.CloudResourceKind_KubernetesStrimziKafkaOperator:    &kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKafkaOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesTekton:                  &kubernetestektonv1.KubernetesTekton{},
 	cloudresourcekind.CloudResourceKind_KubernetesTektonOperator:          &kubernetestektonoperatorv1.KubernetesTektonOperator{},
 	cloudresourcekind.CloudResourceKind_KubernetesTemporal:                &kubernetestemporalv1.KubernetesTemporal{},
 	cloudresourcekind.CloudResourceKind_KubernetesZalandoPostgresOperator: &kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperator{},

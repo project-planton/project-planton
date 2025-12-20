@@ -33,6 +33,15 @@ message KubernetesTektonOperatorSpec {
   // https://github.com/tektoncd/operator/releases
   // https://operatorhub.io/operator/tektoncd-operator
   string operator_version = 4 [(org.project_planton.shared.options.default) = "v0.78.0"];
+
+  // Dashboard ingress configuration for exposing the dashboard via Gateway API.
+  // When enabled, creates Certificate, Gateway, and HTTPRoute resources.
+  KubernetesTektonOperatorDashboardIngress dashboard_ingress = 5;
+
+  // CloudEvents sink URL for pipeline notifications.
+  // When configured, Tekton sends CloudEvents for TaskRun and PipelineRun lifecycle events.
+  // Example: "http://my-receiver.my-namespace.svc.cluster.local/tekton/events"
+  string cloud_events_sink_url = 6;
 }
 
 // KubernetesTektonOperatorSpecContainer specifies the container configuration for the Tekton Operator.
@@ -71,4 +80,17 @@ message KubernetesTektonOperatorComponents {
     expression: "this.pipelines || this.triggers || this.dashboard"
     message: "at least one Tekton component (pipelines, triggers, or dashboard) must be enabled"
   };
+}
+
+// KubernetesTektonOperatorDashboardIngress configures ingress for the Tekton Dashboard.
+// When enabled, exposes the dashboard via Kubernetes Gateway API with TLS termination.
+message KubernetesTektonOperatorDashboardIngress {
+  // Enable dashboard ingress.
+  // When true, creates Certificate, Gateway, and HTTPRoute resources.
+  bool enabled = 1;
+
+  // Hostname for the dashboard ingress.
+  // Example: "tekton-dashboard.example.com"
+  // The ClusterIssuer name is derived from the domain portion of the hostname.
+  string hostname = 2;
 }

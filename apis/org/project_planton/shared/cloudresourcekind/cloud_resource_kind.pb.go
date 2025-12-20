@@ -171,6 +171,7 @@ const (
 	CloudResourceKind_KubernetesNamespace               CloudResourceKind = 836
 	CloudResourceKind_KubernetesGatewayApiCrds          CloudResourceKind = 837
 	CloudResourceKind_KubernetesTektonOperator          CloudResourceKind = 838
+	CloudResourceKind_KubernetesTekton                  CloudResourceKind = 839
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -303,6 +304,7 @@ var (
 		836:  "KubernetesNamespace",
 		837:  "KubernetesGatewayApiCrds",
 		838:  "KubernetesTektonOperator",
+		839:  "KubernetesTekton",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
 		1202: "DigitalOceanContainerRegistry",
@@ -429,6 +431,7 @@ var (
 		"KubernetesNamespace":                  836,
 		"KubernetesGatewayApiCrds":             837,
 		"KubernetesTektonOperator":             838,
+		"KubernetesTekton":                     839,
 		"DigitalOceanAppPlatformService":       1200,
 		"DigitalOceanBucket":                   1201,
 		"DigitalOceanContainerRegistry":        1202,
@@ -605,7 +608,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xd9(\n" +
+	"\x02v1\x10\x01*\x83)\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -708,7 +711,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x10KubernetesHarbor\x10\xc3\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8shrbr\x12)\n" +
 	"\x13KubernetesNamespace\x10\xc4\x06\x1a\x0f\xa2\xf7\x04\v\b\x13\x10\x01\"\x05k8sns\x122\n" +
 	"\x18KubernetesGatewayApiCrds\x10\xc5\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sgwcrds\x122\n" +
-	"\x18KubernetesTektonOperator\x10\xc6\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8stktnop\x124\n" +
+	"\x18KubernetesTektonOperator\x10\xc6\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8stktnop\x12(\n" +
+	"\x10KubernetesTekton\x10\xc7\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8stktn\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05dobkt\x122\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x0e\xa2\xf7\x04\n" +
