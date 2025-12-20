@@ -15,7 +15,7 @@ func tektonOperator(ctx *pulumi.Context, locals *Locals,
 	// 1. Install Tekton Operator from release manifests
 	// --------------------------------------------------------------------
 	operatorManifests, err := yaml.NewConfigFile(ctx, "tekton-operator", &yaml.ConfigFileArgs{
-		File: vars.OperatorReleaseURL,
+		File: locals.OperatorReleaseURL,
 	}, pulumi.Provider(k8sProvider))
 	if err != nil {
 		return errors.Wrap(err, "install tekton operator manifests")
@@ -48,6 +48,8 @@ func tektonOperator(ctx *pulumi.Context, locals *Locals,
 // buildTektonConfigYAML constructs the TektonConfig YAML based on component settings.
 func buildTektonConfigYAML(locals *Locals, profile string) string {
 	// TektonConfig CRD that tells the operator which components to install
+	// Note: Do not set fields that the operator manages automatically (e.g., pipeline.enable-api-fields)
+	// to avoid Server-Side Apply field conflicts
 	return `apiVersion: operator.tekton.dev/v1alpha1
 kind: TektonConfig
 metadata:
@@ -55,7 +57,5 @@ metadata:
 spec:
   profile: ` + profile + `
   targetNamespace: ` + locals.ComponentsNamespace + `
-  pipeline:
-    enable-api-fields: stable
 `
 }

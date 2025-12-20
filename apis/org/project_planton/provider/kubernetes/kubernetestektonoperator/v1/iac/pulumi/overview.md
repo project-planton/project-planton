@@ -170,17 +170,18 @@ module.Resources()           │
 ```
 Current State                  Upgrade Steps
 ─────────────                  ─────────────
-v0.67.0                        1. Update vars.OperatorReleaseURL (or use tagged version)
-                               2. Run: pulumi up
+v0.77.0                        1. Update spec.operator_version in manifest
+                                  operator_version: "v0.78.0"
+                               2. Run: planton apply -f manifest.yaml
                                        │
                                        ▼
-                               Pulumi detects changes to ConfigFile
+                               Pulumi detects changes to release URL
                                        │
                                        ▼
                                Applies new operator manifests
                                        │
                                        ▼
-v0.68.0                        Operator reconciles TektonConfig
+v0.78.0                        Operator reconciles TektonConfig
                                and upgrades components
 ```
 

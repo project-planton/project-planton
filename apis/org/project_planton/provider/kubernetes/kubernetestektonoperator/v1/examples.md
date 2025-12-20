@@ -33,6 +33,7 @@ spec:
     pipelines: true
     triggers: true
     dashboard: true
+  operator_version: "v0.78.0"  # Specify the operator version (default: v0.78.0)
 ```
 
 **What this does:**
@@ -46,7 +47,48 @@ spec:
 
 ---
 
-## 2. Minimal Installation (Pipelines Only)
+## 2. Specific Operator Version
+
+Deploy a specific version of the Tekton Operator for compatibility or testing.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTektonOperator
+metadata:
+  name: tekton-operator-pinned
+spec:
+  target_cluster:
+    kubernetes_credential_id: "my-k8s-cluster"
+  container:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+  components:
+    pipelines: true
+    triggers: true
+    dashboard: false
+  operator_version: "v0.75.0"  # Pin to specific version
+```
+
+**What this does:**
+- Installs Tekton Operator version v0.75.0
+- Useful for testing new versions before production rollout
+- Ensures consistency across environments
+
+**When to use:**
+- Testing compatibility with specific Tekton versions
+- Environments requiring version pinning for compliance
+- Gradual rollout of new operator versions
+
+**Available versions:** https://github.com/tektoncd/operator/releases
+
+---
+
+## 3. Minimal Installation (Pipelines Only, Default Version)
 
 Deploy only Tekton Pipelines for basic CI/CD functionality.
 
@@ -85,7 +127,7 @@ spec:
 
 ---
 
-## 3. Pipelines with Triggers (No Dashboard)
+## 4. Pipelines with Triggers (No Dashboard)
 
 Enable event-driven pipeline execution without the dashboard.
 
@@ -123,7 +165,7 @@ spec:
 
 ---
 
-## 4. Production Configuration
+## 5. Production Configuration
 
 High-resource configuration for production workloads.
 
@@ -161,7 +203,7 @@ spec:
 
 ---
 
-## 5. Development Environment
+## 6. Development Environment
 
 Minimal resources for local development with kind or minikube.
 
@@ -199,7 +241,7 @@ spec:
 
 ---
 
-## 6. Multi-Environment Deployment Pattern
+## 7. Multi-Environment Deployment Pattern
 
 ### Production
 

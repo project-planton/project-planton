@@ -6,6 +6,7 @@ import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
+import "org/project_planton/shared/options/options.proto";
 
 // KubernetesTektonOperatorSpec defines the configuration for deploying the Tekton Operator on a Kubernetes cluster.
 // Tekton Operator manages the lifecycle of Tekton components including Pipelines, Triggers, and Dashboard.
@@ -19,6 +20,11 @@ message KubernetesTektonOperatorSpec {
 
   // Configuration for which Tekton components to install.
   KubernetesTektonOperatorComponents components = 3 [(buf.validate.field).required = true];
+
+  // The version of the Tekton Operator to deploy.
+  // https://github.com/tektoncd/operator/releases
+  // https://operatorhub.io/operator/tektoncd-operator
+  string operator_version = 4 [(org.project_planton.shared.options.default) = "v0.78.0"];
 }
 
 // KubernetesTektonOperatorSpecContainer specifies the container configuration for the Tekton Operator.

@@ -54,6 +54,7 @@ spec = {
     triggers  = true
     dashboard = true
   }
+  operator_version = "v0.78.0"  # Optional, defaults to v0.78.0
 }
 ```
 
@@ -75,16 +76,17 @@ kubectl get pods -n tekton-pipelines
 
 ## Input Variables
 
-| Variable | Description | Type | Required |
-|----------|-------------|------|----------|
-| `metadata.name` | Resource name | string | Yes |
-| `metadata.id` | Resource ID | string | No |
-| `metadata.org` | Organization | string | No |
-| `metadata.env` | Environment | string | No |
-| `spec.container.resources` | Container resource allocation | object | Yes |
-| `spec.components.pipelines` | Enable Tekton Pipelines | bool | Yes |
-| `spec.components.triggers` | Enable Tekton Triggers | bool | Yes |
-| `spec.components.dashboard` | Enable Tekton Dashboard | bool | Yes |
+| Variable | Description | Type | Required | Default |
+|----------|-------------|------|----------|---------|
+| `metadata.name` | Resource name | string | Yes | - |
+| `metadata.id` | Resource ID | string | No | - |
+| `metadata.org` | Organization | string | No | - |
+| `metadata.env` | Environment | string | No | - |
+| `spec.container.resources` | Container resource allocation | object | Yes | - |
+| `spec.components.pipelines` | Enable Tekton Pipelines | bool | Yes | - |
+| `spec.components.triggers` | Enable Tekton Triggers | bool | Yes | - |
+| `spec.components.dashboard` | Enable Tekton Dashboard | bool | Yes | - |
+| `spec.operator_version` | Tekton Operator version | string | No | v0.78.0 |
 
 ## Outputs
 

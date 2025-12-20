@@ -41,8 +41,9 @@ locals {
   components_namespace = "tekton-pipelines"
   tekton_config_name   = "config"
 
-  # Operator release URL
-  operator_release_url = "https://storage.googleapis.com/tekton-releases/operator/latest/release.yaml"
+  # Operator release URL (uses version from spec)
+  # https://github.com/tektoncd/operator/releases
+  operator_release_url = "https://storage.googleapis.com/tekton-releases/operator/previous/${var.spec.operator_version}/release.yaml"
 
   # Determine profile based on enabled components
   tekton_profile = (

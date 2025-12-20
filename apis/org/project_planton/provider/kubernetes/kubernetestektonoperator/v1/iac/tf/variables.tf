@@ -52,5 +52,11 @@ variable "spec" {
       # Enable Tekton Dashboard component.
       dashboard = bool
     })
+
+    # The version of the Tekton Operator to deploy.
+    # Default value (v0.78.0) is set in spec.proto via options.default
+    # https://github.com/tektoncd/operator/releases
+    # https://operatorhub.io/operator/tektoncd-operator
+    operator_version = optional(string)
   })
 }

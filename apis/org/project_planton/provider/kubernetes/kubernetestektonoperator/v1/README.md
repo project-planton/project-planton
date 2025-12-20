@@ -63,10 +63,11 @@ kubernetes-tekton-operator
     │   └── resources: ContainerResources
     │       ├── limits: {cpu, memory}
     │       └── requests: {cpu, memory}
-    └── components: KubernetesTektonOperatorComponents
-        ├── pipelines: bool
-        ├── triggers: bool
-        └── dashboard: bool
+    ├── components: KubernetesTektonOperatorComponents
+    │   ├── pipelines: bool
+    │   ├── triggers: bool
+    │   └── dashboard: bool
+    └── operator_version: string (default: "v0.78.0")
 ```
 
 ### Deployment Model
@@ -221,11 +222,22 @@ For detailed information, see:
 - **Pulumi Module**: [iac/pulumi/README.md](iac/pulumi/README.md) - Pulumi-specific details
 - **Terraform Module**: [iac/tf/README.md](iac/tf/README.md) - Terraform-specific details
 
+### Operator Version
+
+You can specify the Tekton Operator version to deploy:
+
+```yaml
+spec:
+  operator_version: "v0.78.0"  # Default version
+```
+
+Available versions: https://github.com/tektoncd/operator/releases
+
 ## Version Information
 
-- **Tekton Operator**: Latest stable release
+- **Tekton Operator**: v0.78.0 (default, configurable via `operator_version`)
 - **Namespace**: tekton-operator (operator), tekton-pipelines (components)
-- **Supported Kubernetes**: 1.24+
+- **Supported Kubernetes**: 1.28+
 
 ## Support
 

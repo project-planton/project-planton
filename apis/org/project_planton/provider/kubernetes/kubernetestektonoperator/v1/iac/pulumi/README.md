@@ -112,10 +112,10 @@ metadata:
   name: config
 spec:
   profile: all  # or: basic, lite
-  targetNamespace: tekton-pipelines
-  pipeline:
-    enable-api-fields: stable`
+  targetNamespace: tekton-pipelines`
 ```
+
+> **Note**: Do not set fields that the operator manages automatically (e.g., `pipeline.enable-api-fields`) to avoid Server-Side Apply field conflicts.
 
 ### Component Profiles
 
@@ -131,19 +131,19 @@ Tekton Operator configuration constants:
 
 ```go
 var vars = struct {
-    OperatorNamespace    string
-    ComponentsNamespace  string
-    OperatorReleaseURL   string
-    OperatorVersion      string
-    TektonConfigName     string
+    OperatorNamespace        string
+    ComponentsNamespace      string
+    OperatorReleaseURLFormat string
+    TektonConfigName         string
 }{
-    OperatorNamespace:    "tekton-operator",
-    ComponentsNamespace:  "tekton-pipelines",
-    OperatorReleaseURL:   "https://storage.googleapis.com/tekton-releases/operator/latest/release.yaml",
-    OperatorVersion:      "latest",
-    TektonConfigName:     "config",
+    OperatorNamespace:        "tekton-operator",
+    ComponentsNamespace:      "tekton-pipelines",
+    OperatorReleaseURLFormat: "https://storage.googleapis.com/tekton-releases/operator/previous/%s/release.yaml",
+    TektonConfigName:         "config",
 }
 ```
+
+The operator version is read from the spec input (`spec.operator_version`) and defaults to `v0.78.0` via proto field options.
 
 ## Stack Outputs
 

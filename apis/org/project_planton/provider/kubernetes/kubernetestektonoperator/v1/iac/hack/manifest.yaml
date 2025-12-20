@@ -20,3 +20,4 @@ spec:
     pipelines: true
     triggers: true
     dashboard: true
+  # operator_version: "v0.78.0"  # Optional, defaults to v0.78.0

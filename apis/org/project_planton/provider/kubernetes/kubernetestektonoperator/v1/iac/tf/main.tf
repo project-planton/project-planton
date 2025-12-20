@@ -62,6 +62,8 @@ resource "kubectl_manifest" "tekton_operator" {
 #  - lite: Pipelines only
 ##############################################
 resource "kubectl_manifest" "tekton_config" {
+  # Note: Do not set fields that the operator manages automatically (e.g., pipeline.enable-api-fields)
+  # to avoid Server-Side Apply field conflicts
   yaml_body = <<-YAML
     apiVersion: operator.tekton.dev/v1alpha1
     kind: TektonConfig
@@ -70,8 +72,6 @@ resource "kubectl_manifest" "tekton_config" {
     spec:
       profile: ${local.tekton_profile}
       targetNamespace: ${local.components_namespace}
-      pipeline:
-        enable-api-fields: stable
   YAML
 
   depends_on = [kubectl_manifest.tekton_operator]

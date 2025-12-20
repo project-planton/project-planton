@@ -16,6 +16,7 @@ type Locals struct {
 	OperatorNamespace        string
 	ComponentsNamespace      string
 	TektonConfigName         string
+	OperatorReleaseURL       string
 
 	// Component enablement
 	EnablePipelines bool
@@ -47,6 +48,9 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetestektonoperatorv1.Kubern
 	l.OperatorNamespace = vars.OperatorNamespace
 	l.ComponentsNamespace = vars.ComponentsNamespace
 	l.TektonConfigName = vars.TektonConfigName
+
+	// Compute operator release URL from version (default comes from proto options)
+	l.OperatorReleaseURL = fmt.Sprintf(vars.OperatorReleaseURLFormat, in.Target.Spec.OperatorVersion)
 
 	// Get component enablement from spec
 	if comp := in.Target.Spec.Components; comp != nil {

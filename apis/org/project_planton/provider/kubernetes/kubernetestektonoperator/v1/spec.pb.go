@@ -9,6 +9,7 @@ package kubernetestektonoperatorv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -33,9 +34,13 @@ type KubernetesTektonOperatorSpec struct {
 	// The container specifications for the Tekton Operator deployment.
 	Container *KubernetesTektonOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	// Configuration for which Tekton components to install.
-	Components    *KubernetesTektonOperatorComponents `protobuf:"bytes,3,opt,name=components,proto3" json:"components,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Components *KubernetesTektonOperatorComponents `protobuf:"bytes,3,opt,name=components,proto3" json:"components,omitempty"`
+	// The version of the Tekton Operator to deploy.
+	// https://github.com/tektoncd/operator/releases
+	// https://operatorhub.io/operator/tektoncd-operator
+	OperatorVersion string `protobuf:"bytes,4,opt,name=operator_version,json=operatorVersion,proto3" json:"operator_version,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *KubernetesTektonOperatorSpec) Reset() {
@@ -87,6 +92,13 @@ func (x *KubernetesTektonOperatorSpec) GetComponents() *KubernetesTektonOperator
 		return x.Components
 	}
 	return nil
+}
+
+func (x *KubernetesTektonOperatorSpec) GetOperatorVersion() string {
+	if x != nil {
+		return x.OperatorVersion
+	}
+	return ""
 }
 
 // KubernetesTektonOperatorSpecContainer specifies the container configuration for the Tekton Operator.
@@ -207,13 +219,14 @@ var File_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spe
 
 const file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/kubernetestektonoperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.kubernetestektonoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\"\xae\x03\n" +
+	"Norg/project_planton/provider/kubernetes/kubernetestektonoperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.kubernetestektonoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xe6\x03\n" +
 	"\x1cKubernetesTektonOperatorSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12\x90\x01\n" +
 	"\tcontainer\x18\x02 \x01(\v2j.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12\x8f\x01\n" +
 	"\n" +
 	"components\x18\x03 \x01(\v2g.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorComponentsB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"components\"\xa7\x01\n" +
+	"components\x126\n" +
+	"\x10operator_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av0.78.0R\x0foperatorVersion\"\xa7\x01\n" +
 	"%KubernetesTektonOperatorSpecContainer\x12~\n" +
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB#\xba\xfb\xa4\x02\x1e\n" +
 	"\r\n" +
