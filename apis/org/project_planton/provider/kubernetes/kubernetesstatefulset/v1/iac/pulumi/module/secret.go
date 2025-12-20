@@ -1,0 +1,46 @@
+package module
+
+import (
+	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
+	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
+	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
+	dataMap := make(map[string]string)
+
+	// Add all secrets to data map
+	if locals.KubernetesStatefulSet.Spec.Container.App.Env != nil {
+		var secrets = locals.KubernetesStatefulSet.Spec.Container.App.Env.Secrets
+		if secrets != nil && len(secrets) > 0 {
+			sortedSecretKeys := sortstringmap.SortMap(secrets)
+
+			for _, sortedSecretKey := range sortedSecretKeys {
+				dataMap[sortedSecretKey] = secrets[sortedSecretKey]
+			}
+		}
+	}
+
+	// Create a standard kubernetes secret with computed name to avoid conflicts
+	secretArgs := &kubernetescorev1.SecretArgs{
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String(locals.EnvSecretName),
+			Namespace: pulumi.String(locals.Namespace),
+			Labels:    pulumi.ToStringMap(locals.Labels),
+		},
+		Type:       pulumi.String("Opaque"),
+		StringData: pulumi.ToStringMap(dataMap),
+	}
+
+	_, err := kubernetescorev1.NewSecret(ctx,
+		locals.EnvSecretName,
+		secretArgs,
+		pulumi.Provider(kubernetesProvider))
+	if err != nil {
+		return errors.Wrap(err, "failed to create secret resource")
+	}
+
+	return nil
+}

@@ -97,6 +97,7 @@ import (
 	kubernetescertmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1"
 	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
 	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
+	kubernetesdaemonsetv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1"
 	kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1"
 	kuberneteselasticoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1"
 	kuberneteselasticsearchv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1"
@@ -127,6 +128,7 @@ import (
 	kubernetessignozv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1"
 	kubernetessolrv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1"
 	kubernetessolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1"
+	kubernetesstatefulsetv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1"
 	kubernetesstrimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1"
 	kubernetestektonv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestekton/v1"
 	kubernetestektonoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1"
@@ -263,6 +265,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesCertManager:             &kubernetescertmanagerv1.KubernetesCertManager{},
 	cloudresourcekind.CloudResourceKind_KubernetesClickHouse:              &kubernetesclickhousev1.KubernetesClickHouse{},
 	cloudresourcekind.CloudResourceKind_KubernetesCronJob:                 &kubernetescronjobv1.KubernetesCronJob{},
+	cloudresourcekind.CloudResourceKind_KubernetesDaemonSet:               &kubernetesdaemonsetv1.KubernetesDaemonSet{},
 	cloudresourcekind.CloudResourceKind_KubernetesDeployment:              &kubernetesdeploymentv1.KubernetesDeployment{},
 	cloudresourcekind.CloudResourceKind_KubernetesElasticOperator:         &kuberneteselasticoperatorv1.KubernetesElasticOperator{},
 	cloudresourcekind.CloudResourceKind_KubernetesElasticsearch:           &kuberneteselasticsearchv1.KubernetesElasticsearch{},
@@ -293,6 +296,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesSignoz:                  &kubernetessignozv1.KubernetesSignoz{},
 	cloudresourcekind.CloudResourceKind_KubernetesSolr:                    &kubernetessolrv1.KubernetesSolr{},
 	cloudresourcekind.CloudResourceKind_KubernetesSolrOperator:            &kubernetessolroperatorv1.KubernetesSolrOperator{},
+	cloudresourcekind.CloudResourceKind_KubernetesStatefulSet:             &kubernetesstatefulsetv1.KubernetesStatefulSet{},
 	cloudresourcekind.CloudResourceKind_KubernetesStrimziKafkaOperator:    &kubernetesstrimzikafkaoperatorv1.KubernetesStrimziKafkaOperator{},
 	cloudresourcekind.CloudResourceKind_KubernetesTekton:                  &kubernetestektonv1.KubernetesTekton{},
 	cloudresourcekind.CloudResourceKind_KubernetesTektonOperator:          &kubernetestektonoperatorv1.KubernetesTektonOperator{},
