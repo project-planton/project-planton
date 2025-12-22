@@ -9,6 +9,8 @@ import type { FieldOptions } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
 import type { ContainerResources } from "../../kubernetes_pb";
 import { file_org_project_planton_provider_kubernetes_kubernetes } from "../../kubernetes_pb";
+import type { KubernetesSensitiveValue } from "../../kubernetes_secret_pb";
+import { file_org_project_planton_provider_kubernetes_kubernetes_secret } from "../../kubernetes_secret_pb";
 import type { KubernetesClusterSelector } from "../../target_cluster_pb";
 import { file_org_project_planton_provider_kubernetes_target_cluster } from "../../target_cluster_pb";
 import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
@@ -19,7 +21,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetesopenfga/v1/spec.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkdvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc29wZW5mZ2EvdjEvc3BlYy5wcm90bxI8b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNvcGVuZmdhLnYxIukEChVLdWJlcm5ldGVzT3BlbkZnYVNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEpIBCgljb250YWluZXIYBCABKAsyWC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc29wZW5mZ2EudjEuS3ViZXJuZXRlc09wZW5GZ2FDb250YWluZXJCJcqjgwIgCAESHAoMCgUxMDAwbRIDMUdpEgwKAzUwbRIFMTAwTWkSZwoHaW5ncmVzcxgFIAEoCzJWLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzb3BlbmZnYS52MS5LdWJlcm5ldGVzT3BlbkZnYUluZ3Jlc3MScwoJZGF0YXN0b3JlGAYgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNvcGVuZmdhLnYxLkt1YmVybmV0ZXNPcGVuRmdhRGF0YVN0b3JlQga6SAPIAQEifgoaS3ViZXJuZXRlc09wZW5GZ2FDb250YWluZXISEAoIcmVwbGljYXMYASABKAUSTgoJcmVzb3VyY2VzGAIgASgLMjsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lclJlc291cmNlcyLAAQoaS3ViZXJuZXRlc09wZW5GZ2FEYXRhU3RvcmUSjAEKBmVuZ2luZRgBIAEoCUJ8ukh5ugFzChVzcGVjLmRhdGFzdG9yZS5lbmdpbmUSO1RoZSBkYXRhc3RvcmUgZW5naW5lIG11c3QgYmUgb25lIG9mICJwb3N0Z3JlcyIgYW5kICJteXNxbCIuGh10aGlzIGluIFsicG9zdGdyZXMiLCAibXlzcWwiXcgBARITCgN1cmkYAiABKAlCBrpIA8gBASK8AQoYS3ViZXJuZXRlc09wZW5GZ2FJbmdyZXNzEg8KB2VuYWJsZWQYASABKAgSEAoIaG9zdG5hbWUYAiABKAk6fbpIehp4Ch5zcGVjLmluZ3Jlc3MuaG9zdG5hbWUucmVxdWlyZWQSLGhvc3RuYW1lIGlzIHJlcXVpcmVkIHdoZW4gaW5ncmVzcyBpcyBlbmFibGVkGighdGhpcy5lbmFibGVkIHx8IHNpemUodGhpcy5ob3N0bmFtZSkgPiAwOqYBChFkZWZhdWx0X2NvbnRhaW5lchIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYubQgIAEoCzJYLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzb3BlbmZnYS52MS5LdWJlcm5ldGVzT3BlbkZnYUNvbnRhaW5lclIQZGVmYXVsdENvbnRhaW5lckLjAwpAY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzb3BlbmZnYS52MUIJU3BlY1Byb3RvUAFagAFnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc29wZW5mZ2EvdjE7a3ViZXJuZXRlc29wZW5mZ2F2MaICBU9QUEtLqgI7T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkt1YmVybmV0ZXMuS3ViZXJuZXRlc29wZW5mZ2EuVjHKAjtPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzb3BlbmZnYVxWMeICR09yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNvcGVuZmdhXFYxXEdQQk1ldGFkYXRh6gJAT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6Okt1YmVybmV0ZXM6Okt1YmVybmV0ZXNvcGVuZmdhOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_descriptor, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
+  fileDesc("CkdvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc29wZW5mZ2EvdjEvc3BlYy5wcm90bxI8b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNvcGVuZmdhLnYxIukEChVLdWJlcm5ldGVzT3BlbkZnYVNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEpIBCgljb250YWluZXIYBCABKAsyWC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc29wZW5mZ2EudjEuS3ViZXJuZXRlc09wZW5GZ2FDb250YWluZXJCJcqjgwIgCAESHAoMCgUxMDAwbRIDMUdpEgwKAzUwbRIFMTAwTWkSZwoHaW5ncmVzcxgFIAEoCzJWLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzb3BlbmZnYS52MS5LdWJlcm5ldGVzT3BlbkZnYUluZ3Jlc3MScwoJZGF0YXN0b3JlGAYgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNvcGVuZmdhLnYxLkt1YmVybmV0ZXNPcGVuRmdhRGF0YVN0b3JlQga6SAPIAQEifgoaS3ViZXJuZXRlc09wZW5GZ2FDb250YWluZXISEAoIcmVwbGljYXMYASABKAUSTgoJcmVzb3VyY2VzGAIgASgLMjsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lclJlc291cmNlcyKOAwoaS3ViZXJuZXRlc09wZW5GZ2FEYXRhU3RvcmUSjAEKBmVuZ2luZRgBIAEoCUJ8ukh5ugFzChVzcGVjLmRhdGFzdG9yZS5lbmdpbmUSO1RoZSBkYXRhc3RvcmUgZW5naW5lIG11c3QgYmUgb25lIG9mICJwb3N0Z3JlcyIgYW5kICJteXNxbCIuGh10aGlzIGluIFsicG9zdGdyZXMiLCAibXlzcWwiXcgBARIUCgRob3N0GAIgASgJQga6SAPIAQESHgoEcG9ydBgDIAEoBUILukgIGgYY//8DIABIAIgBARIYCghkYXRhYmFzZRgEIAEoCUIGukgDyAEBEhgKCHVzZXJuYW1lGAUgASgJQga6SAPIAQESWwoIcGFzc3dvcmQYBiABKAsyQS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc1NlbnNpdGl2ZVZhbHVlQga6SAPIAQESEQoJaXNfc2VjdXJlGAcgASgIQgcKBV9wb3J0IrwBChhLdWJlcm5ldGVzT3BlbkZnYUluZ3Jlc3MSDwoHZW5hYmxlZBgBIAEoCBIQCghob3N0bmFtZRgCIAEoCTp9ukh6GngKHnNwZWMuaW5ncmVzcy5ob3N0bmFtZS5yZXF1aXJlZBIsaG9zdG5hbWUgaXMgcmVxdWlyZWQgd2hlbiBpbmdyZXNzIGlzIGVuYWJsZWQaKCF0aGlzLmVuYWJsZWQgfHwgc2l6ZSh0aGlzLmhvc3RuYW1lKSA+IDA6pgEKEWRlZmF1bHRfY29udGFpbmVyEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi5tCAgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNvcGVuZmdhLnYxLkt1YmVybmV0ZXNPcGVuRmdhQ29udGFpbmVyUhBkZWZhdWx0Q29udGFpbmVyQuMDCkBjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNvcGVuZmdhLnYxQglTcGVjUHJvdG9QAVqAAWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIva3ViZXJuZXRlcy9rdWJlcm5ldGVzb3BlbmZnYS92MTtrdWJlcm5ldGVzb3BlbmZnYXYxogIFT1BQS0uqAjtPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzb3BlbmZnYS5WMcoCO09yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNvcGVuZmdhXFYx4gJHT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc29wZW5mZ2FcVjFcR1BCTWV0YWRhdGHqAkBPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc29wZW5mZ2E6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_descriptor, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_kubernetes_secret, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * *
@@ -119,7 +121,9 @@ export const KubernetesOpenFgaContainerSchema: GenMessage<KubernetesOpenFgaConta
 /**
  * *
  * **KubernetesOpenFgaDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
- * It specifies the type of database engine to use and the URI for connecting to the database.
+ * It specifies the type of database engine to use and connection details for connecting to the database.
+ * The URI is constructed from these fields in the deployment modules, enabling secure password handling
+ * via Kubernetes Secrets.
  *
  * @generated from message org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaDataStore
  */
@@ -135,14 +139,68 @@ export type KubernetesOpenFgaDataStore = Message<"org.project_planton.provider.k
 
   /**
    * *
-   * Specifies the URI to connect to the selected data store engine.
-   * The URI format should be appropriate for the specified engine:
-   * - For MySQL: `mysql://user:password@host:port/database`
-   * - For PostgreSQL: `postgres://user:password@host:port/database`
+   * The hostname or endpoint of the database server.
    *
-   * @generated from field: string uri = 2;
+   * @generated from field: string host = 2;
    */
-  uri: string;
+  host: string;
+
+  /**
+   * *
+   * The port number of the database server.
+   * Defaults to 5432 for PostgreSQL and 3306 for MySQL.
+   *
+   * @generated from field: optional int32 port = 3;
+   */
+  port?: number;
+
+  /**
+   * *
+   * The name of the database to connect to.
+   *
+   * @generated from field: string database = 4;
+   */
+  database: string;
+
+  /**
+   * *
+   * The username for authenticating to the database.
+   *
+   * @generated from field: string username = 5;
+   */
+  username: string;
+
+  /**
+   * *
+   * The password for authenticating to the database.
+   * Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+   *
+   * Using a secret reference is recommended for production deployments:
+   * ```yaml
+   * password:
+   *   secretRef:
+   *     name: openfga-db-credentials
+   *     key: password
+   * ```
+   *
+   * For development/testing, a plain string value can be used:
+   * ```yaml
+   * password:
+   *   stringValue: my-password
+   * ```
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.KubernetesSensitiveValue password = 6;
+   */
+  password?: KubernetesSensitiveValue;
+
+  /**
+   * *
+   * Whether to use SSL/TLS connection to the database.
+   * When enabled, adds sslmode=require (for PostgreSQL) or tls=true (for MySQL) to the connection string.
+   *
+   * @generated from field: bool is_secure = 7;
+   */
+  isSecure: boolean;
 };
 
 /**

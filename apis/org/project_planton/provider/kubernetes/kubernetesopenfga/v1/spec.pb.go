@@ -184,7 +184,9 @@ func (x *KubernetesOpenFgaContainer) GetResources() *kubernetes.ContainerResourc
 
 // *
 // **KubernetesOpenFgaDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
-// It specifies the type of database engine to use and the URI for connecting to the database.
+// It specifies the type of database engine to use and connection details for connecting to the database.
+// The URI is constructed from these fields in the deployment modules, enabling secure password handling
+// via Kubernetes Secrets.
 type KubernetesOpenFgaDataStore struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// *
@@ -192,11 +194,44 @@ type KubernetesOpenFgaDataStore struct {
 	// Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.
 	Engine string `protobuf:"bytes,1,opt,name=engine,proto3" json:"engine,omitempty"`
 	// *
-	// Specifies the URI to connect to the selected data store engine.
-	// The URI format should be appropriate for the specified engine:
-	// - For MySQL: `mysql://user:password@host:port/database`
-	// - For PostgreSQL: `postgres://user:password@host:port/database`
-	Uri           string `protobuf:"bytes,2,opt,name=uri,proto3" json:"uri,omitempty"`
+	// The hostname or endpoint of the database server.
+	Host string `protobuf:"bytes,2,opt,name=host,proto3" json:"host,omitempty"`
+	// *
+	// The port number of the database server.
+	// Defaults to 5432 for PostgreSQL and 3306 for MySQL.
+	Port *int32 `protobuf:"varint,3,opt,name=port,proto3,oneof" json:"port,omitempty"`
+	// *
+	// The name of the database to connect to.
+	Database string `protobuf:"bytes,4,opt,name=database,proto3" json:"database,omitempty"`
+	// *
+	// The username for authenticating to the database.
+	Username string `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`
+	// *
+	// The password for authenticating to the database.
+	// Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+	//
+	// Using a secret reference is recommended for production deployments:
+	// ```yaml
+	// password:
+	//
+	//	secretRef:
+	//	  name: openfga-db-credentials
+	//	  key: password
+	//
+	// ```
+	//
+	// For development/testing, a plain string value can be used:
+	// ```yaml
+	// password:
+	//
+	//	stringValue: my-password
+	//
+	// ```
+	Password *kubernetes.KubernetesSensitiveValue `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
+	// *
+	// Whether to use SSL/TLS connection to the database.
+	// When enabled, adds sslmode=require (for PostgreSQL) or tls=true (for MySQL) to the connection string.
+	IsSecure      bool `protobuf:"varint,7,opt,name=is_secure,json=isSecure,proto3" json:"is_secure,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -238,11 +273,46 @@ func (x *KubernetesOpenFgaDataStore) GetEngine() string {
 	return ""
 }
 
-func (x *KubernetesOpenFgaDataStore) GetUri() string {
+func (x *KubernetesOpenFgaDataStore) GetHost() string {
 	if x != nil {
-		return x.Uri
+		return x.Host
 	}
 	return ""
+}
+
+func (x *KubernetesOpenFgaDataStore) GetPort() int32 {
+	if x != nil && x.Port != nil {
+		return *x.Port
+	}
+	return 0
+}
+
+func (x *KubernetesOpenFgaDataStore) GetDatabase() string {
+	if x != nil {
+		return x.Database
+	}
+	return ""
+}
+
+func (x *KubernetesOpenFgaDataStore) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *KubernetesOpenFgaDataStore) GetPassword() *kubernetes.KubernetesSensitiveValue {
+	if x != nil {
+		return x.Password
+	}
+	return nil
+}
+
+func (x *KubernetesOpenFgaDataStore) GetIsSecure() bool {
+	if x != nil {
+		return x.IsSecure
+	}
+	return false
 }
 
 // *
@@ -323,7 +393,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/kubernetesopenfga/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesopenfga.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb3\x05\n" +
+	"Gorg/project_planton/provider/kubernetes/kubernetesopenfga/v1/spec.proto\x12<org.project_planton.provider.kubernetes.kubernetesopenfga.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a?org/project_planton/provider/kubernetes/kubernetes_secret.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb3\x05\n" +
 	"\x15KubernetesOpenFgaSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -336,11 +406,17 @@ const file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_pro
 	"\tdatastore\x18\x06 \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaDataStoreB\x06\xbaH\x03\xc8\x01\x01R\tdatastore\"\x93\x01\n" +
 	"\x1aKubernetesOpenFgaContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12Y\n" +
-	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\"\xcd\x01\n" +
+	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresources\"\xca\x03\n" +
 	"\x1aKubernetesOpenFgaDataStore\x12\x94\x01\n" +
 	"\x06engine\x18\x01 \x01(\tB|\xbaHy\xba\x01s\n" +
-	"\x15spec.datastore.engine\x12;The datastore engine must be one of \"postgres\" and \"mysql\".\x1a\x1dthis in [\"postgres\", \"mysql\"]\xc8\x01\x01R\x06engine\x12\x18\n" +
-	"\x03uri\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03uri\"\xcf\x01\n" +
+	"\x15spec.datastore.engine\x12;The datastore engine must be one of \"postgres\" and \"mysql\".\x1a\x1dthis in [\"postgres\", \"mysql\"]\xc8\x01\x01R\x06engine\x12\x1a\n" +
+	"\x04host\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04host\x12$\n" +
+	"\x04port\x18\x03 \x01(\x05B\v\xbaH\b\x1a\x06\x18\xff\xff\x03 \x00H\x00R\x04port\x88\x01\x01\x12\"\n" +
+	"\bdatabase\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12\"\n" +
+	"\busername\x18\x05 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\busername\x12e\n" +
+	"\bpassword\x18\x06 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueB\x06\xbaH\x03\xc8\x01\x01R\bpassword\x12\x1b\n" +
+	"\tis_secure\x18\a \x01(\bR\bisSecureB\a\n" +
+	"\x05_port\"\xcf\x01\n" +
 	"\x18KubernetesOpenFgaIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
@@ -369,7 +445,8 @@ var file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto
 	(*kubernetes.KubernetesClusterSelector)(nil), // 4: org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	(*v1.StringValueOrRef)(nil),                  // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	(*kubernetes.ContainerResources)(nil),        // 6: org.project_planton.provider.kubernetes.ContainerResources
-	(*descriptorpb.FieldOptions)(nil),            // 7: google.protobuf.FieldOptions
+	(*kubernetes.KubernetesSensitiveValue)(nil),  // 7: org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	(*descriptorpb.FieldOptions)(nil),            // 8: google.protobuf.FieldOptions
 }
 var file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto_depIdxs = []int32{
 	4, // 0: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
@@ -378,13 +455,14 @@ var file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto
 	3, // 3: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaIngress
 	2, // 4: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaSpec.datastore:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaDataStore
 	6, // 5: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaContainer.resources:type_name -> org.project_planton.provider.kubernetes.ContainerResources
-	7, // 6: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 7: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaContainer
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	7, // [7:8] is the sub-list for extension type_name
-	6, // [6:7] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	7, // 6: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaDataStore.password:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	8, // 7: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 8: org.project_planton.provider.kubernetes.kubernetesopenfga.v1.default_container:type_name -> org.project_planton.provider.kubernetes.kubernetesopenfga.v1.KubernetesOpenFgaContainer
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	8, // [8:9] is the sub-list for extension type_name
+	7, // [7:8] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto_init() }
@@ -392,6 +470,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_prot
 	if File_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto != nil {
 		return
 	}
+	file_org_project_planton_provider_kubernetes_kubernetesopenfga_v1_spec_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

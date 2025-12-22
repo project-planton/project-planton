@@ -1,5 +1,5 @@
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: test-open-fga-server
 spec:
@@ -17,4 +17,9 @@ spec:
     hostname: test-open-fga-server.example.com
   datastore:
     engine: postgres
-    uri: postgres://postgres:somepassword@database-hostname:5432/some-database-name?sslmode=disable
+    host: database-hostname
+    port: 5432
+    database: some-database-name
+    username: postgres
+    password:
+      stringValue: somepassword

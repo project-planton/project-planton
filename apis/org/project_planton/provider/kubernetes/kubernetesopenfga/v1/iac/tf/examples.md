@@ -2,7 +2,7 @@
 
 This document provides Terraform usage examples for deploying OpenFGA (Fine-Grained Authorization) on Kubernetes.
 
-## Example 1: Basic OpenFGA Deployment with PostgreSQL
+## Example 1: Basic OpenFGA Deployment with PostgreSQL (Plain String Password)
 
 ```hcl
 module "openfga_basic" {
@@ -35,8 +35,14 @@ module "openfga_basic" {
     }
 
     datastore = {
-      engine = "postgres"
-      uri    = "postgres://user:password@db-host:5432/openfga"
+      engine   = "postgres"
+      host     = "db-host"
+      port     = 5432
+      database = "openfga"
+      username = "user"
+      password = {
+        string_value = "password"
+      }
     }
 
     ingress = {
@@ -47,99 +53,9 @@ module "openfga_basic" {
 }
 ```
 
-## Example 2: OpenFGA with Ingress Enabled
+## Example 2: OpenFGA with Kubernetes Secret Reference (Production Recommended)
 
-```hcl
-module "openfga_with_ingress" {
-  source = "./path/to/kubernetesopenfga/v1/iac/tf"
-
-  metadata = {
-    name = "ingress-openfga"
-    org  = "my-organization"
-    env  = "development"
-  }
-
-  spec = {
-    target_cluster = {
-      name = "my-gke-cluster"
-    }
-    namespace = "ingress-openfga"
-    create_namespace = true
-
-    container = {
-      replicas = 2
-
-      resources = {
-        requests = {
-          cpu    = "50m"
-          memory = "256Mi"
-        }
-        limits = {
-          cpu    = "1000m"
-          memory = "1Gi"
-        }
-      }
-    }
-
-    datastore = {
-      engine = "postgres"
-      uri    = "postgres://user:password@db-host:5432/openfga"
-    }
-
-    ingress = {
-      enabled  = true
-      hostname = "openfga.example.com"
-    }
-  }
-}
-```
-
-## Example 3: OpenFGA with MySQL Datastore
-
-```hcl
-module "openfga_mysql" {
-  source = "./path/to/kubernetesopenfga/v1/iac/tf"
-
-  metadata = {
-    name = "mysql-openfga"
-  }
-
-  spec = {
-    target_cluster = {
-      name = "my-gke-cluster"
-    }
-    namespace = "mysql-openfga"
-    create_namespace = true
-
-    container = {
-      replicas = 1
-
-      resources = {
-        requests = {
-          cpu    = "50m"
-          memory = "256Mi"
-        }
-        limits = {
-          cpu    = "500m"
-          memory = "512Mi"
-        }
-      }
-    }
-
-    datastore = {
-      engine = "mysql"
-      uri    = "mysql://user:password@mysql-db:3306/openfga"
-    }
-
-    ingress = {
-      enabled  = false
-      hostname = ""
-    }
-  }
-}
-```
-
-## Example 4: High Availability Production Deployment
+Using a Kubernetes Secret reference is the recommended approach for production deployments.
 
 ```hcl
 module "openfga_production" {
@@ -179,19 +95,23 @@ module "openfga_production" {
     }
 
     datastore = {
-      engine = "postgres"
-      uri    = "postgres://openfga:securepassword@ha-db-host:5432/openfga?sslmode=require"
+      engine   = "postgres"
+      host     = "ha-db-host.us-east-1.rds.amazonaws.com"
+      port     = 5432
+      database = "openfga"
+      username = "openfga"
+      password = {
+        secret_ref = {
+          name = "openfga-prod-db-creds"
+          key  = "password"
+        }
+      }
+      is_secure = true
     }
 
     ingress = {
       enabled  = true
       hostname = "openfga.prod.example.com"
-    }
-
-    helm_values = {
-      "autoscaling.enabled" = "true"
-      "autoscaling.minReplicas" = "3"
-      "autoscaling.maxReplicas" = "10"
     }
   }
 }
@@ -215,6 +135,110 @@ output "openfga_external_hostname" {
 
 output "openfga_port_forward_command" {
   value = module.openfga_production.port_forward_command
+}
+```
+
+## Example 3: OpenFGA with Ingress Enabled
+
+```hcl
+module "openfga_with_ingress" {
+  source = "./path/to/kubernetesopenfga/v1/iac/tf"
+
+  metadata = {
+    name = "ingress-openfga"
+    org  = "my-organization"
+    env  = "development"
+  }
+
+  spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "ingress-openfga"
+    create_namespace = true
+
+    container = {
+      replicas = 2
+
+      resources = {
+        requests = {
+          cpu    = "50m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "1000m"
+          memory = "1Gi"
+        }
+      }
+    }
+
+    datastore = {
+      engine   = "postgres"
+      host     = "db-host"
+      port     = 5432
+      database = "openfga"
+      username = "user"
+      password = {
+        string_value = "password"
+      }
+    }
+
+    ingress = {
+      enabled  = true
+      hostname = "openfga.example.com"
+    }
+  }
+}
+```
+
+## Example 4: OpenFGA with MySQL Datastore
+
+```hcl
+module "openfga_mysql" {
+  source = "./path/to/kubernetesopenfga/v1/iac/tf"
+
+  metadata = {
+    name = "mysql-openfga"
+  }
+
+  spec = {
+    target_cluster = {
+      name = "my-gke-cluster"
+    }
+    namespace = "mysql-openfga"
+    create_namespace = true
+
+    container = {
+      replicas = 1
+
+      resources = {
+        requests = {
+          cpu    = "50m"
+          memory = "256Mi"
+        }
+        limits = {
+          cpu    = "500m"
+          memory = "512Mi"
+        }
+      }
+    }
+
+    datastore = {
+      engine   = "mysql"
+      host     = "mysql-db"
+      port     = 3306
+      database = "openfga"
+      username = "user"
+      password = {
+        string_value = "password"
+      }
+    }
+
+    ingress = {
+      enabled  = false
+      hostname = ""
+    }
+  }
 }
 ```
 
@@ -252,8 +276,14 @@ module "openfga_dev" {
     }
 
     datastore = {
-      engine = "postgres"
-      uri    = "postgres://postgres:devpassword@postgres.dev.svc.cluster.local:5432/openfga?sslmode=disable"
+      engine   = "postgres"
+      host     = "postgres.dev.svc.cluster.local"
+      port     = 5432
+      database = "openfga"
+      username = "postgres"
+      password = {
+        string_value = "devpassword"
+      }
     }
 
     ingress = {
@@ -264,60 +294,7 @@ module "openfga_dev" {
 }
 ```
 
-## Example 6: Staging with Custom Helm Values
-
-```hcl
-module "openfga_staging" {
-  source = "./path/to/kubernetesopenfga/v1/iac/tf"
-
-  metadata = {
-    name = "staging-openfga"
-    env  = "staging"
-  }
-
-  spec = {
-    target_cluster = {
-      name = "my-gke-cluster"
-    }
-    namespace = "staging-openfga"
-    create_namespace = true
-
-    container = {
-      replicas = 3
-
-      resources = {
-        requests = {
-          cpu    = "200m"
-          memory = "512Mi"
-        }
-        limits = {
-          cpu    = "2000m"
-          memory = "2Gi"
-        }
-      }
-    }
-
-    datastore = {
-      engine = "postgres"
-      uri    = "postgres://openfga:stagingpass@postgres.staging.svc.cluster.local:5432/openfga"
-    }
-
-    ingress = {
-      enabled  = true
-      hostname = "openfga.staging.example.com"
-    }
-
-    helm_values = {
-      "playground.enabled" = "true"
-      "log.level" = "info"
-      "metrics.enabled" = "true"
-    }
-  }
-}
-
-```
-
-## Example 7: Using Pre-existing Namespace
+## Example 6: Using Pre-existing Namespace
 
 ```hcl
 module "openfga_shared_namespace" {
@@ -350,8 +327,13 @@ module "openfga_shared_namespace" {
     }
 
     datastore = {
-      engine = "postgres"
-      uri    = "postgres://user:password@db-host:5432/openfga"
+      engine   = "postgres"
+      host     = "db-host"
+      database = "openfga"
+      username = "user"
+      password = {
+        string_value = "password"
+      }
     }
 
     ingress = {
@@ -361,6 +343,36 @@ module "openfga_shared_namespace" {
   }
 }
 ```
+
+## Password Configuration Options
+
+The `password` field in the datastore configuration supports two modes:
+
+### Plain String Value (Development/Testing)
+
+For development and testing environments, you can provide the password directly:
+
+```hcl
+password = {
+  string_value = "my-password"
+}
+```
+
+### Kubernetes Secret Reference (Production)
+
+For production deployments, reference an existing Kubernetes Secret:
+
+```hcl
+password = {
+  secret_ref = {
+    name      = "openfga-db-credentials"  # Name of the Kubernetes Secret
+    key       = "password"                # Key within the Secret containing the password
+    namespace = ""                        # Optional: defaults to deployment namespace
+  }
+}
+```
+
+**Note:** The Kubernetes Secret must exist before deploying OpenFGA when using `secret_ref`.
 
 ## Output Values
 
@@ -412,36 +424,49 @@ Once deployed, the following OpenFGA endpoints are available:
 
 ## Datastore Configuration
 
-### PostgreSQL Connection String Format
+### PostgreSQL Configuration
 
-```
-postgres://username:password@hostname:port/database?options
+```hcl
+datastore = {
+  engine   = "postgres"
+  host     = "hostname"
+  port     = 5432           # Default for PostgreSQL
+  database = "database"
+  username = "username"
+  password = { ... }
+  is_secure = true          # Adds sslmode=require
+}
 ```
 
-**Common options:**
-- `sslmode=require` - Enforce SSL connection (recommended for production)
-- `sslmode=disable` - Disable SSL (development only)
+### MySQL Configuration
 
-### MySQL Connection String Format
+```hcl
+datastore = {
+  engine   = "mysql"
+  host     = "hostname"
+  port     = 3306           # Default for MySQL
+  database = "database"
+  username = "username"
+  password = { ... }
+  is_secure = true          # Adds tls=true
+}
+```
 
-```
-mysql://username:password@hostname:port/database
-```
+**Note:** MySQL connections automatically include `parseTime=true` for proper time handling.
 
 ## Best Practices
 
 1. **Production Deployments:**
    - Use at least 3 replicas for high availability
    - Enable ingress with TLS
-   - Use SSL for database connections
+   - Use SSL for database connections (`is_secure = true`)
+   - Use Kubernetes Secret references for passwords
    - Set appropriate resource limits based on load testing
-   - Enable autoscaling via Helm values
 
 2. **Security:**
-   - Use secrets management for database credentials (do not hardcode passwords)
+   - Always use `secret_ref` for passwords in production (do not hardcode passwords)
    - Enable SSL/TLS for both ingress and database connections
    - Use network policies to restrict traffic
-   - Consider using a secrets operator for sensitive data
 
 3. **Performance:**
    - Monitor resource usage and adjust CPU/memory accordingly
@@ -452,6 +477,7 @@ mysql://username:password@hostname:port/database
    - Single replica is sufficient
    - Ingress can be disabled (use port-forwarding)
    - Minimal resources are acceptable
+   - Plain string passwords are acceptable for local development
 
 ## Notes
 
@@ -460,4 +486,3 @@ mysql://username:password@hostname:port/database
 - For production, ensure the database is highly available
 - OpenFGA is stateless; all state is stored in the configured datastore
 - The Helm chart configures OpenFGA with security best practices by default
-

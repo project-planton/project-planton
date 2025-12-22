@@ -55,18 +55,116 @@ var _ = ginkgo.Describe("KubernetesOpenFga Custom Validation Tests", func() {
 					Hostname: "test-openfga.example.com",
 				},
 				Datastore: &KubernetesOpenFgaDataStore{
-					Engine: "postgres",
-					Uri:    "postgres://user:pass@localhost:5432/testdb",
+					Engine:   "postgres",
+					Host:     "localhost",
+					Database: "testdb",
+					Username: "user",
+					Password: &kubernetes.KubernetesSensitiveValue{
+						Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+							StringValue: "pass",
+						},
+					},
 				},
 			},
 		}
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("openfga_kubernetes", func() {
+		ginkgo.Context("with plain string password", func() {
 			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with secret reference password", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.Datastore.Password = &kubernetes.KubernetesSensitiveValue{
+					Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+						SecretRef: &kubernetes.KubernetesSecretKeyRef{
+							Name: "openfga-db-credentials",
+							Key:  "password",
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with custom port and SSL enabled", func() {
+			ginkgo.It("should not return a validation error", func() {
+				port := int32(5433)
+				input.Spec.Datastore.Port = &port
+				input.Spec.Datastore.IsSecure = true
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with mysql engine", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.Datastore.Engine = "mysql"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("When invalid input is passed", func() {
+		ginkgo.Context("with invalid engine", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Datastore.Engine = "invalid"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with missing host", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Datastore.Host = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with missing database", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Datastore.Database = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with missing username", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Datastore.Username = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with missing password", func() {
+			ginkgo.It("should return a validation error", func() {
+				input.Spec.Datastore.Password = nil
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with invalid port", func() {
+			ginkgo.It("should return a validation error for port 0", func() {
+				port := int32(0)
+				input.Spec.Datastore.Port = &port
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+
+			ginkgo.It("should return a validation error for port > 65535", func() {
+				port := int32(65536)
+				input.Spec.Datastore.Port = &port
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 	})
