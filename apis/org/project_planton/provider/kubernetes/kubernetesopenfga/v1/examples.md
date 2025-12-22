@@ -1,6 +1,6 @@
-# Multiple Examples for `OpenFgaKubernetes` API-Resource
+# Multiple Examples for `KubernetesOpenFga` API-Resource
 
-## Example with Minimal Configuration
+## Example with Minimal Configuration (Plain String Password)
 
 ### Create using CLI
 
@@ -14,15 +14,15 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: basic-openfga
 spec:
-  target_cluster:
-    cluster_name: my-gke-cluster
+  targetCluster:
+    clusterName: my-gke-cluster
   namespace:
     value: basic-openfga
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 1
     resources:
@@ -34,7 +34,62 @@ spec:
         memory: 512Mi
   datastore:
     engine: postgres
-    uri: postgres://user:password@db-host:5432/openfga
+    host: db-host
+    port: 5432
+    database: openfga
+    username: user
+    password:
+      stringValue: my-password
+```
+
+---
+
+## Example with Kubernetes Secret Reference (Production Recommended)
+
+### Create using CLI
+
+Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
+
+```shell
+planton apply -f <yaml-path>
+```
+
+### YAML Configuration
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesOpenFga
+metadata:
+  name: openfga-prod
+spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: openfga-prod
+  createNamespace: true
+  container:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+  ingress:
+    enabled: true
+    hostname: openfga.example.com
+  datastore:
+    engine: postgres
+    host: prod-db-host.example.com
+    port: 5432
+    database: openfga
+    username: openfga_user
+    password:
+      secretRef:
+        name: openfga-db-credentials
+        key: password
+    isSecure: true
 ```
 
 ---
@@ -53,15 +108,15 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-service
 spec:
-  target_cluster:
-    cluster_name: my-gke-cluster
+  targetCluster:
+    clusterName: my-gke-cluster
   namespace:
     value: open-fga-service
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 3
     resources:
@@ -76,7 +131,11 @@ spec:
     hostname: openfga.example.com
   datastore:
     engine: postgres
-    uri: postgres://user:password@db-host:5432/openfga
+    host: db-host
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```
 
 ---
@@ -95,15 +154,15 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-mysql
 spec:
-  target_cluster:
-    cluster_name: my-gke-cluster
+  targetCluster:
+    clusterName: my-gke-cluster
   namespace:
     value: open-fga-mysql
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 2
     resources:
@@ -115,7 +174,12 @@ spec:
         memory: 512Mi
   datastore:
     engine: mysql
-    uri: mysql://user:password@mysql-db:3306/openfga
+    host: mysql-db
+    port: 3306
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```
 
 ---
@@ -134,15 +198,15 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-high-availability
 spec:
-  target_cluster:
-    cluster_name: my-gke-cluster
+  targetCluster:
+    clusterName: my-gke-cluster
   namespace:
     value: open-fga-high-availability
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 5
     resources:
@@ -157,7 +221,14 @@ spec:
     hostname: openfga-ha.example.com
   datastore:
     engine: postgres
-    uri: postgres://user:securepassword@ha-db-host:5432/openfga
+    host: ha-db-host
+    database: openfga
+    username: user
+    password:
+      secretRef:
+        name: openfga-ha-credentials
+        key: password
+    isSecure: true
 ```
 
 ---
@@ -176,15 +247,15 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-production
 spec:
-  target_cluster:
-    cluster_name: my-gke-cluster
+  targetCluster:
+    clusterName: my-gke-cluster
   namespace:
     value: open-fga-production
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 3
     resources:
@@ -199,7 +270,15 @@ spec:
     hostname: openfga-prod.company.com
   datastore:
     engine: postgres
-    uri: postgres://openfga_user:securepassword@prod-db-host:5432/openfga_prod?sslmode=require
+    host: prod-db-host
+    port: 5432
+    database: openfga_prod
+    username: openfga_user
+    password:
+      secretRef:
+        name: openfga-prod-credentials
+        key: password
+    isSecure: true
 ```
 
 ---
@@ -218,15 +297,15 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: openfga-shared-namespace
 spec:
-  target_cluster:
-    cluster_name: my-gke-cluster
+  targetCluster:
+    clusterName: my-gke-cluster
   namespace:
     value: shared-services
-  create_namespace: false  # Namespace already exists and is managed externally
+  createNamespace: false  # Namespace already exists and is managed externally
   container:
     replicas: 2
     resources:
@@ -238,5 +317,9 @@ spec:
         memory: 1Gi
   datastore:
     engine: postgres
-    uri: postgres://user:password@db-host:5432/openfga
+    host: db-host
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```

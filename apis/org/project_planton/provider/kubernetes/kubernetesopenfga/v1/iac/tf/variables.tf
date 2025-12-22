@@ -72,11 +72,32 @@ variable "spec" {
       # Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.
       engine = string
 
-      # Specifies the URI to connect to the selected data store engine.
-      # The URI format should be appropriate for the specified engine:
-      # - For MySQL: `mysql://user:password@host:port/database`
-      # - For PostgreSQL: `postgres://user:password@host:port/database`
-      uri = string
+      # The hostname or endpoint of the database server.
+      host = string
+
+      # The port number of the database server.
+      # Defaults to 5432 for PostgreSQL and 3306 for MySQL.
+      port = optional(number)
+
+      # The name of the database to connect to.
+      database = string
+
+      # The username for authenticating to the database.
+      username = string
+
+      # The password for authenticating to the database.
+      # Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+      password = object({
+        string_value = optional(string)
+        secret_ref = optional(object({
+          namespace = optional(string)
+          name = string
+          key = string
+        }))
+      })
+
+      # Whether to use SSL/TLS connection to the database.
+      is_secure = optional(bool, false)
     })
   })
 }

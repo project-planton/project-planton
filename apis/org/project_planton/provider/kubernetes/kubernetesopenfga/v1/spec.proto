@@ -5,6 +5,7 @@ package org.project_planton.provider.kubernetes.kubernetesopenfga.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes_secret.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
@@ -74,7 +75,9 @@ message KubernetesOpenFgaContainer {
 
 /**
  * **KubernetesOpenFgaDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
- * It specifies the type of database engine to use and the URI for connecting to the database.
+ * It specifies the type of database engine to use and connection details for connecting to the database.
+ * The URI is constructed from these fields in the deployment modules, enabling secure password handling
+ * via Kubernetes Secrets.
  */
 message KubernetesOpenFgaDataStore {
   /**
@@ -91,12 +94,54 @@ message KubernetesOpenFgaDataStore {
   ];
 
   /**
-   * Specifies the URI to connect to the selected data store engine.
-   * The URI format should be appropriate for the specified engine:
-   * - For MySQL: `mysql://user:password@host:port/database`
-   * - For PostgreSQL: `postgres://user:password@host:port/database`
+   * The hostname or endpoint of the database server.
    */
-  string uri = 2 [(buf.validate.field).required = true];
+  string host = 2 [(buf.validate.field).required = true];
+
+  /**
+   * The port number of the database server.
+   * Defaults to 5432 for PostgreSQL and 3306 for MySQL.
+   */
+  optional int32 port = 3 [
+    (buf.validate.field).int32.gt = 0,
+    (buf.validate.field).int32.lte = 65535
+  ];
+
+  /**
+   * The name of the database to connect to.
+   */
+  string database = 4 [(buf.validate.field).required = true];
+
+  /**
+   * The username for authenticating to the database.
+   */
+  string username = 5 [(buf.validate.field).required = true];
+
+  /**
+   * The password for authenticating to the database.
+   * Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+   *
+   * Using a secret reference is recommended for production deployments:
+   * ```yaml
+   * password:
+   *   secretRef:
+   *     name: openfga-db-credentials
+   *     key: password
+   * ```
+   *
+   * For development/testing, a plain string value can be used:
+   * ```yaml
+   * password:
+   *   stringValue: my-password
+   * ```
+   */
+  org.project_planton.provider.kubernetes.KubernetesSensitiveValue password = 6 [(buf.validate.field).required = true];
+
+  /**
+   * Whether to use SSL/TLS connection to the database.
+   * When enabled, adds sslmode=require (for PostgreSQL) or tls=true (for MySQL) to the connection string.
+   */
+  bool is_secure = 7;
 }
 
 /**

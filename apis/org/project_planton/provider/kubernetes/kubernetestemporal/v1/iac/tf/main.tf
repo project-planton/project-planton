@@ -8,9 +8,10 @@ resource "kubernetes_namespace_v1" "temporal_namespace" {
   }
 }
 
-# Create secret for external database password (only when external database is configured)
+# Create secret for external database password (only when external database is configured with string_value)
+# When using secret_ref, the user's existing secret is used directly
 resource "kubernetes_secret_v1" "db_password" {
-  count = local.has_external_database ? 1 : 0
+  count = local.has_external_database && !local.use_existing_db_secret && local.external_db_password_string != "" ? 1 : 0
 
   metadata {
     name      = local.database_secret_name
@@ -19,7 +20,7 @@ resource "kubernetes_secret_v1" "db_password" {
   }
 
   data = {
-    (local.database_secret_key) = local.external_db_password
+    (local.database_secret_key) = local.external_db_password_string
   }
 
   type = "Opaque"
@@ -123,7 +124,15 @@ resource "helm_release" "temporal" {
     for_each = local.has_external_database ? [1] : []
     content {
       name  = "server.config.persistence.default.sql.existingSecret"
-      value = local.database_secret_name
+      value = local.db_secret_name
+    }
+  }
+
+  dynamic "set" {
+    for_each = local.has_external_database ? [1] : []
+    content {
+      name  = "server.config.persistence.default.sql.existingSecretKey"
+      value = local.db_secret_key
     }
   }
 
@@ -196,7 +205,15 @@ resource "helm_release" "temporal" {
     for_each = local.has_external_database ? [1] : []
     content {
       name  = "server.config.persistence.visibility.sql.existingSecret"
-      value = local.database_secret_name
+      value = local.db_secret_name
+    }
+  }
+
+  dynamic "set" {
+    for_each = local.has_external_database ? [1] : []
+    content {
+      name  = "server.config.persistence.visibility.sql.existingSecretKey"
+      value = local.db_secret_key
     }
   }
 
@@ -418,11 +435,29 @@ resource "helm_release" "temporal" {
     }
   }
 
+  # Elasticsearch password - use string value when secret_ref is not provided
   dynamic "set" {
-    for_each = local.has_external_elasticsearch && local.external_es_password != "" ? [1] : []
+    for_each = local.has_external_elasticsearch && !local.use_existing_es_secret && local.external_es_password_string != "" ? [1] : []
     content {
       name  = "elasticsearch.password"
-      value = local.external_es_password
+      value = local.external_es_password_string
+    }
+  }
+
+  # Elasticsearch password - use existing secret when secret_ref is provided
+  dynamic "set" {
+    for_each = local.has_external_elasticsearch && local.use_existing_es_secret ? [1] : []
+    content {
+      name  = "elasticsearch.existingSecret"
+      value = local.external_es_password_secret_ref.name
+    }
+  }
+
+  dynamic "set" {
+    for_each = local.has_external_elasticsearch && local.use_existing_es_secret ? [1] : []
+    content {
+      name  = "elasticsearch.existingSecretKey"
+      value = local.external_es_password_secret_ref.key
     }
   }
 

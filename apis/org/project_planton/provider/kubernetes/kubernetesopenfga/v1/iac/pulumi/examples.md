@@ -1,12 +1,14 @@
-Here are a few example configurations for the `OpenFgaKubernetes` API resource based on the similar format provided. Since the specification in your case has specific fields like `container`, `datastore`, and `ingress`, I have created examples that demonstrate different configurations for deploying an OpenFGA service on Kubernetes.
+# Pulumi Examples for KubernetesOpenFga
+
+This document provides example configurations for deploying OpenFGA (Fine-Grained Authorization) on Kubernetes using the Pulumi module.
 
 ---
 
-# Example with Ingress Enabled
+## Example with Ingress Enabled and Plain String Password
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-service
 spec:
@@ -14,7 +16,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: open-fga-service
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 3
     resources:
@@ -29,16 +31,63 @@ spec:
     hostname: openfga.mycluster.example.com
   datastore:
     engine: postgres
-    uri: postgres://user:password@db-host:5432/openfga
+    host: db-host
+    port: 5432
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```
 
 ---
 
-# Example with Ingress Disabled and MySQL Datastore
+## Example with Kubernetes Secret Reference (Production Recommended)
+
+Using a Kubernetes Secret reference is the recommended approach for production deployments as it avoids storing sensitive credentials in plain text.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
+metadata:
+  name: open-fga-prod
+spec:
+  targetCluster:
+    clusterName: my-gke-cluster
+  namespace:
+    value: open-fga-prod
+  createNamespace: true
+  container:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+  ingress:
+    enabled: true
+    hostname: openfga-prod.example.com
+  datastore:
+    engine: postgres
+    host: prod-db-host.example.com
+    port: 5432
+    database: openfga
+    username: openfga_user
+    password:
+      secretRef:
+        name: openfga-db-credentials
+        key: password
+    isSecure: true
+```
+
+---
+
+## Example with Ingress Disabled and MySQL Datastore
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-service
 spec:
@@ -46,7 +95,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: open-fga-service
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 2
     resources:
@@ -60,16 +109,21 @@ spec:
     enabled: false
   datastore:
     engine: mysql
-    uri: mysql://user:password@mysql-db:3306/openfga
+    host: mysql-db
+    port: 3306
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```
 
 ---
 
-# Example with Minimum Required Fields
+## Example with Minimum Required Fields
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: basic-openfga
 spec:
@@ -77,7 +131,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: basic-openfga
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 1
     resources:
@@ -89,16 +143,20 @@ spec:
         memory: 512Mi
   datastore:
     engine: postgres
-    uri: postgres://user:password@db-host:5432/openfga
+    host: db-host
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```
 
 ---
 
-# Example with High Availability Configuration
+## Example with High Availability Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: open-fga-high-availability
 spec:
@@ -106,7 +164,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: open-fga-high-availability
-  create_namespace: true
+  createNamespace: true
   container:
     replicas: 5
     resources:
@@ -121,16 +179,23 @@ spec:
     hostname: open-fga-ha.example.com
   datastore:
     engine: postgres
-    uri: postgres://user:securepassword@ha-db-host:5432/openfga
+    host: ha-db-host
+    database: openfga
+    username: user
+    password:
+      secretRef:
+        name: openfga-ha-credentials
+        key: password
+    isSecure: true
 ```
 
 ---
 
-# Example with Pre-existing Namespace
+## Example with Pre-existing Namespace
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenFgaKubernetes
+kind: KubernetesOpenFga
 metadata:
   name: openfga-shared-namespace
 spec:
@@ -138,7 +203,7 @@ spec:
     clusterName: my-gke-cluster
   namespace:
     value: shared-services
-  create_namespace: false  # Namespace is managed externally
+  createNamespace: false  # Namespace is managed externally
   container:
     replicas: 2
     resources:
@@ -150,5 +215,38 @@ spec:
         memory: 1Gi
   datastore:
     engine: postgres
-    uri: postgres://user:password@db-host:5432/openfga
+    host: db-host
+    database: openfga
+    username: user
+    password:
+      stringValue: password
 ```
+
+---
+
+## Password Configuration Options
+
+The `password` field in the datastore configuration supports two modes:
+
+### Plain String Value (Development/Testing)
+
+For development and testing environments, you can provide the password directly:
+
+```yaml
+password:
+  stringValue: my-password
+```
+
+### Kubernetes Secret Reference (Production)
+
+For production deployments, reference an existing Kubernetes Secret:
+
+```yaml
+password:
+  secretRef:
+    name: openfga-db-credentials  # Name of the Kubernetes Secret
+    key: password                  # Key within the Secret containing the password
+    namespace: ""                  # Optional: defaults to deployment namespace
+```
+
+**Note:** The Kubernetes Secret must exist before deploying OpenFGA when using `secretRef`.

@@ -13,6 +13,27 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// Helper function to create a string password value
+func stringPassword(value string) *kubernetes.KubernetesSensitiveValue {
+	return &kubernetes.KubernetesSensitiveValue{
+		Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+			StringValue: value,
+		},
+	}
+}
+
+// Helper function to create a secret ref password value
+func secretRefPassword(name, key string) *kubernetes.KubernetesSensitiveValue {
+	return &kubernetes.KubernetesSensitiveValue{
+		Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+			SecretRef: &kubernetes.KubernetesSecretKeyRef{
+				Name: name,
+				Key:  key,
+			},
+		},
+	}
+}
+
 func TestKubernetesTemporal(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
 	ginkgo.RunSpecs(t, "KubernetesTemporal Suite")
@@ -62,7 +83,7 @@ var _ = ginkgo.Describe("KubernetesTemporal Custom Validation Tests", func() {
 						Host:     "cassandra.example.com",
 						Port:     9042,
 						Username: "temporal_user",
-						Password: "secret",
+						Password: stringPassword("secret"),
 					},
 					DatabaseName:           proto.String("temporal"),
 					VisibilityName:         proto.String("temporal_visibility"),
@@ -72,7 +93,7 @@ var _ = ginkgo.Describe("KubernetesTemporal Custom Validation Tests", func() {
 					Host:     "es.example.com",
 					Port:     9200,
 					User:     "es_user",
-					Password: "es_password",
+					Password: stringPassword("es_password"),
 				}
 			})
 
@@ -90,7 +111,7 @@ var _ = ginkgo.Describe("KubernetesTemporal Custom Validation Tests", func() {
 						Host:     "postgres.example.com",
 						Port:     5432,
 						Username: "pg_user",
-						Password: "pg_password",
+						Password: stringPassword("pg_password"),
 					},
 					DatabaseName:           proto.String("temporal_pg"),
 					VisibilityName:         proto.String("temporal_visibility_pg"),
@@ -112,7 +133,7 @@ var _ = ginkgo.Describe("KubernetesTemporal Custom Validation Tests", func() {
 						Host:     "mysql.example.com",
 						Port:     3306,
 						Username: "mysql_user",
-						Password: "mysql_password",
+						Password: stringPassword("mysql_password"),
 					},
 					DatabaseName:   proto.String("temporal_mysql"),
 					VisibilityName: proto.String("temporal_visibility_mysql"),
@@ -135,11 +156,60 @@ var _ = ginkgo.Describe("KubernetesTemporal Custom Validation Tests", func() {
 					Host:     "postgres.example.com",
 					Port:     5432,
 					Username: "pg_user",
-					Password: "pg_password",
+					Password: stringPassword("pg_password"),
 				},
 				DatabaseName:   proto.String("temporal_pg"),
 				VisibilityName: proto.String("temporal_visibility_pg"),
 			}
+		})
+	})
+
+	ginkgo.Describe("Password Secret Reference Tests", func() {
+		ginkgo.BeforeEach(func() {
+			// Set up a valid base configuration
+			input.Spec.Database = &KubernetesTemporalDatabaseConfig{
+				Backend:        KubernetesTemporalDatabaseBackend_postgresql,
+				DatabaseName:   proto.String("temporal"),
+				VisibilityName: proto.String("temporal_visibility"),
+			}
+		})
+
+		ginkgo.Context("with database password using secret reference", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.Database.ExternalDatabase = &KubernetesTemporalExternalDatabase{
+					Host:     "postgres.example.com",
+					Port:     5432,
+					Username: "pg_user",
+					Password: secretRefPassword("db-credentials", "password"),
+				}
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with elasticsearch password using secret reference", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.Database.ExternalDatabase = &KubernetesTemporalExternalDatabase{
+					Host:     "postgres.example.com",
+					Port:     5432,
+					Username: "pg_user",
+					Password: stringPassword("pg_password"),
+				}
+				input.Spec.ExternalElasticsearch = &KubernetesTemporalExternalElasticsearch{
+					Host:     "es.example.com",
+					Port:     9200,
+					User:     "es_user",
+					Password: secretRefPassword("es-credentials", "password"),
+				}
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
 		})
 	})
 })
