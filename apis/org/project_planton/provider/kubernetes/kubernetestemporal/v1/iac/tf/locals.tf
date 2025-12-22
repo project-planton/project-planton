@@ -81,17 +81,30 @@ locals {
   external_db_host     = try(var.spec.database.external_database.host, "")
   external_db_port     = try(var.spec.database.external_database.port, 0)
   external_db_username = try(var.spec.database.external_database.username, "")
-  external_db_password = try(var.spec.database.external_database.password, "")
+
+  # Password handling - check if using secret_ref or string_value
+  external_db_password_secret_ref = try(var.spec.database.external_database.password.secret_ref, null)
+  external_db_password_string     = try(var.spec.database.external_database.password.string_value, "")
+
+  # Determine which secret to use for database password
+  # If secret_ref is provided, use the existing secret; otherwise, use the secret we create
+  use_existing_db_secret = local.external_db_password_secret_ref != null
+  db_secret_name         = local.use_existing_db_secret ? local.external_db_password_secret_ref.name : local.database_secret_name
+  db_secret_key          = local.use_existing_db_secret ? local.external_db_password_secret_ref.key : local.database_secret_key
 
   # Monitoring stack configuration
   has_external_elasticsearch = var.spec.external_elasticsearch != null
   enable_monitoring_stack    = var.spec.enable_monitoring_stack || local.has_external_elasticsearch
 
   # External Elasticsearch details
-  external_es_host     = try(var.spec.external_elasticsearch.host, "")
-  external_es_port     = try(var.spec.external_elasticsearch.port, 0)
-  external_es_user     = try(var.spec.external_elasticsearch.user, "")
-  external_es_password = try(var.spec.external_elasticsearch.password, "")
+  external_es_host = try(var.spec.external_elasticsearch.host, "")
+  external_es_port = try(var.spec.external_elasticsearch.port, 0)
+  external_es_user = try(var.spec.external_elasticsearch.user, "")
+
+  # Elasticsearch password handling - check if using secret_ref or string_value
+  external_es_password_secret_ref = try(var.spec.external_elasticsearch.password.secret_ref, null)
+  external_es_password_string     = try(var.spec.external_elasticsearch.password.string_value, "")
+  use_existing_es_secret          = local.external_es_password_secret_ref != null
 
   # Helm chart configuration
   helm_chart_name       = "temporal"

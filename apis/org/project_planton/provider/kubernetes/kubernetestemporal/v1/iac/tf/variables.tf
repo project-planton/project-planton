@@ -37,7 +37,23 @@ variable "spec" {
         username = string
 
         # Password for database
-        password = string
+        # Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+        # Using a secret reference is recommended for production deployments.
+        # Example with string value: { string_value = "my-password" }
+        # Example with secret ref: { secret_ref = { name = "db-credentials", key = "password" } }
+        password = object({
+          # Plain text password value (not recommended for production)
+          string_value = optional(string)
+          # Reference to an existing Kubernetes Secret
+          secret_ref = optional(object({
+            # The namespace of the Kubernetes Secret (optional - defaults to deployment namespace)
+            namespace = optional(string)
+            # The name of the Kubernetes Secret
+            name = string
+            # The key within the Kubernetes Secret that contains the password
+            key = string
+          }))
+        })
       }))
 
       # Primary database or keyspace name (default: "temporal")
@@ -101,7 +117,22 @@ variable "spec" {
       user = optional(string, "")
 
       # Optional password, if the external cluster requires auth
-      password = optional(string, "")
+      # Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+      # Example with string value: { string_value = "my-password" }
+      # Example with secret ref: { secret_ref = { name = "es-credentials", key = "password" } }
+      password = optional(object({
+        # Plain text password value (not recommended for production)
+        string_value = optional(string)
+        # Reference to an existing Kubernetes Secret
+        secret_ref = optional(object({
+          # The namespace of the Kubernetes Secret (optional - defaults to deployment namespace)
+          namespace = optional(string)
+          # The name of the Kubernetes Secret
+          name = string
+          # The key within the Kubernetes Secret that contains the password
+          key = string
+        }))
+      }))
     }))
 
     # Version of the Temporal Helm chart to deploy (e.g., "0.62.0")

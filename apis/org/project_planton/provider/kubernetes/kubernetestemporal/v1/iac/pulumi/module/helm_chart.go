@@ -47,29 +47,41 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			"enableHostVerification": pulumi.Bool(false),
 		}
 
+		// Determine which secret to use for database password
+		// If secretRef is provided, use the existing secret; otherwise, use the secret we created
+		dbSecretName := locals.DatabasePasswordSecretName
+		dbSecretKey := vars.DatabasePasswordSecretKey
+		if ext.Password != nil && ext.Password.GetSecretRef() != nil {
+			secretRef := ext.Password.GetSecretRef()
+			dbSecretName = secretRef.Name
+			dbSecretKey = secretRef.Key
+		}
+
 		defaultSql := pulumi.Map{
 			"driver": pulumi.String("sql"),
 			"sql": pulumi.Map{
-				"driver":         pulumi.String(subDriver),
-				"host":           pulumi.String(ext.Host),
-				"port":           pulumi.Int(ext.Port),
-				"database":       pulumi.String(defaultDB),
-				"user":           pulumi.String(user),
-				"existingSecret": pulumi.String(locals.DatabasePasswordSecretName),
-				"tls":            tls,
+				"driver":            pulumi.String(subDriver),
+				"host":              pulumi.String(ext.Host),
+				"port":              pulumi.Int(ext.Port),
+				"database":          pulumi.String(defaultDB),
+				"user":              pulumi.String(user),
+				"existingSecret":    pulumi.String(dbSecretName),
+				"existingSecretKey": pulumi.String(dbSecretKey),
+				"tls":               tls,
 			},
 		}
 
 		visibilitySql := pulumi.Map{
 			"driver": pulumi.String("sql"),
 			"sql": pulumi.Map{
-				"driver":         pulumi.String(subDriver),
-				"host":           pulumi.String(ext.Host),
-				"port":           pulumi.Int(ext.Port),
-				"database":       pulumi.String(visibilityDB),
-				"user":           pulumi.String(user),
-				"existingSecret": pulumi.String(locals.DatabasePasswordSecretName),
-				"tls":            tls,
+				"driver":            pulumi.String(subDriver),
+				"host":              pulumi.String(ext.Host),
+				"port":              pulumi.Int(ext.Port),
+				"database":          pulumi.String(visibilityDB),
+				"user":              pulumi.String(user),
+				"existingSecret":    pulumi.String(dbSecretName),
+				"existingSecretKey": pulumi.String(dbSecretKey),
+				"tls":               tls,
 			},
 		}
 
@@ -144,14 +156,28 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	// -------------------------------------------------------- elasticsearch
 	es := locals.KubernetesTemporal.Spec.ExternalElasticsearch
 	if es != nil && es.Host != "" {
-		values["elasticsearch"] = pulumi.Map{
+		esValues := pulumi.Map{
 			"enabled":  pulumi.Bool(false),
 			"host":     pulumi.String(es.Host),
 			"port":     pulumi.Int(es.Port),
 			"scheme":   pulumi.String("http"),
 			"username": pulumi.String(es.User),
-			"password": pulumi.String(es.Password),
 		}
+
+		// Handle password - either as plain string or from existing secret
+		if es.Password != nil {
+			if es.Password.GetSecretRef() != nil {
+				// Use existing Kubernetes secret for password
+				secretRef := es.Password.GetSecretRef()
+				esValues["existingSecret"] = pulumi.String(secretRef.Name)
+				esValues["existingSecretKey"] = pulumi.String(secretRef.Key)
+			} else if es.Password.GetStringValue() != "" {
+				// Use plain string password
+				esValues["password"] = pulumi.String(es.Password.GetStringValue())
+			}
+		}
+
+		values["elasticsearch"] = esValues
 	} else if !locals.KubernetesTemporal.Spec.EnableEmbeddedElasticsearch {
 		values["elasticsearch"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	}

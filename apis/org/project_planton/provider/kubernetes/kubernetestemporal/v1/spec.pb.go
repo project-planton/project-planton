@@ -315,8 +315,28 @@ type KubernetesTemporalExternalDatabase struct {
 	Port int32 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
 	// username for database
 	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	// password for database
-	Password      string `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	// *
+	// The password for authenticating to the database.
+	// Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+	//
+	// Using a secret reference is recommended for production deployments:
+	// ```yaml
+	// password:
+	//
+	//	secretRef:
+	//	  name: db-credentials
+	//	  key: password
+	//
+	// ```
+	//
+	// For development/testing, a plain string value can be used:
+	// ```yaml
+	// password:
+	//
+	//	stringValue: my-password
+	//
+	// ```
+	Password      *kubernetes.KubernetesSensitiveValue `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -372,11 +392,11 @@ func (x *KubernetesTemporalExternalDatabase) GetUsername() string {
 	return ""
 }
 
-func (x *KubernetesTemporalExternalDatabase) GetPassword() string {
+func (x *KubernetesTemporalExternalDatabase) GetPassword() *kubernetes.KubernetesSensitiveValue {
 	if x != nil {
 		return x.Password
 	}
-	return ""
+	return nil
 }
 
 // describes an external elasticsearch cluster that temporal can use
@@ -389,8 +409,28 @@ type KubernetesTemporalExternalElasticsearch struct {
 	Port int32 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
 	// optional username, if the external cluster requires auth
 	User string `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
-	// optional password, if the external cluster requires auth
-	Password      string `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	// *
+	// Optional password for authenticating to the external Elasticsearch cluster.
+	// Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+	//
+	// Using a secret reference is recommended for production deployments:
+	// ```yaml
+	// password:
+	//
+	//	secretRef:
+	//	  name: es-credentials
+	//	  key: password
+	//
+	// ```
+	//
+	// For development/testing, a plain string value can be used:
+	// ```yaml
+	// password:
+	//
+	//	stringValue: my-password
+	//
+	// ```
+	Password      *kubernetes.KubernetesSensitiveValue `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -446,11 +486,11 @@ func (x *KubernetesTemporalExternalElasticsearch) GetUser() string {
 	return ""
 }
 
-func (x *KubernetesTemporalExternalElasticsearch) GetPassword() string {
+func (x *KubernetesTemporalExternalElasticsearch) GetPassword() *kubernetes.KubernetesSensitiveValue {
 	if x != nil {
 		return x.Password
 	}
-	return ""
+	return nil
 }
 
 // ingress configuration for temporal deployment with separate frontend and web ui endpoints
@@ -634,7 +674,7 @@ var File_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_prot
 
 const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/kubernetes/kubernetestemporal/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetestemporal.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xca\a\n" +
+	"Horg/project_planton/provider/kubernetes/kubernetestemporal/v1/spec.proto\x12=org.project_planton.provider.kubernetes.kubernetestemporal.v1\x1a\x1bbuf/validate/validate.proto\x1a?org/project_planton/provider/kubernetes/kubernetes_secret.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xca\a\n" +
 	"\x16KubernetesTemporalSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -656,17 +696,17 @@ const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_pr
 	"\x0fvisibility_name\x18\a \x01(\tB\x17\x8a\xa6\x1d\x13temporal_visibilityH\x01R\x0evisibilityName\x88\x01\x01\x129\n" +
 	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetupB\x10\n" +
 	"\x0e_database_nameB\x12\n" +
-	"\x10_visibility_name\"\x84\x01\n" +
+	"\x10_visibility_name\"\xc7\x01\n" +
 	"\"KubernetesTemporalExternalDatabase\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
 	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x1a\n" +
-	"\busername\x18\x03 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x04 \x01(\tR\bpassword\"\x81\x01\n" +
+	"\busername\x18\x03 \x01(\tR\busername\x12]\n" +
+	"\bpassword\x18\x04 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueR\bpassword\"\xc4\x01\n" +
 	"'KubernetesTemporalExternalElasticsearch\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
 	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x12\n" +
-	"\x04user\x18\x03 \x01(\tR\x04user\x12\x1a\n" +
-	"\bpassword\x18\x04 \x01(\tR\bpassword\"\xa0\x02\n" +
+	"\x04user\x18\x03 \x01(\tR\x04user\x12]\n" +
+	"\bpassword\x18\x04 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueR\bpassword\"\xa0\x02\n" +
 	"\x19KubernetesTemporalIngress\x12\x84\x01\n" +
 	"\bfrontend\x18\x01 \x01(\v2h.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalFrontendIngressEndpointR\bfrontend\x12|\n" +
 	"\x06web_ui\x18\x02 \x01(\v2e.org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpointR\x05webUi\"\xbb\x02\n" +
@@ -712,22 +752,25 @@ var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_prot
 	(*KubernetesTemporalWebUiIngressEndpoint)(nil),    // 7: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpoint
 	(*kubernetes.KubernetesClusterSelector)(nil),      // 8: org.project_planton.provider.kubernetes.KubernetesClusterSelector
 	(*v1.StringValueOrRef)(nil),                       // 9: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(*kubernetes.KubernetesSensitiveValue)(nil),       // 10: org.project_planton.provider.kubernetes.KubernetesSensitiveValue
 }
 var file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_depIdxs = []int32{
-	8, // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
-	9, // 1: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 2: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig
-	5, // 3: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress
-	4, // 4: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.external_elasticsearch:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearch
-	0, // 5: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.backend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseBackend
-	3, // 6: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalDatabase
-	6, // 7: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.frontend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalFrontendIngressEndpoint
-	7, // 8: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.web_ui:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpoint
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	8,  // 0: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
+	9,  // 1: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.namespace:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2,  // 2: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig
+	5,  // 3: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.ingress:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress
+	4,  // 4: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalSpec.external_elasticsearch:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearch
+	0,  // 5: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.backend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseBackend
+	3,  // 6: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDatabaseConfig.external_database:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalDatabase
+	10, // 7: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalDatabase.password:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	10, // 8: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalExternalElasticsearch.password:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	6,  // 9: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.frontend:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalFrontendIngressEndpoint
+	7,  // 10: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalIngress.web_ui:type_name -> org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalWebUiIngressEndpoint
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_init() }

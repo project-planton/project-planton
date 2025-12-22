@@ -40,15 +40,53 @@ spec:
 
 ---
 
-## Example 2: Deployment with External PostgreSQL Database
+## Example 2: Deployment with External PostgreSQL Database (Using String Value)
 
-Deploy Temporal using an external PostgreSQL database for production-grade scalability and reliability.
+Deploy Temporal using an external PostgreSQL database for development/testing with a plain text password.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: KubernetesTemporal
 metadata:
-  name: temporal-postgres
+  name: temporal-postgres-dev
+spec:
+  target_cluster:
+    cluster_name: dev-gke-cluster
+  namespace:
+    value: temporal-dev
+  create_namespace: true
+  database:
+    backend: postgresql
+    external_database:
+      host: postgres-db.example.com
+      port: 5432
+      username: temporaluser
+      password:
+        stringValue: securepassword
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend-dev.example.com
+    web_ui:
+      enabled: true
+      hostname: temporal-ui-dev.example.com
+```
+
+**Use Case:**
+
+- Suitable for development and testing environments where plain text passwords are acceptable.
+
+---
+
+## Example 2b: Deployment with External PostgreSQL Database (Using Secret Reference - Recommended)
+
+Deploy Temporal using an external PostgreSQL database for production with a password stored in a Kubernetes Secret.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-postgres-prod
 spec:
   target_cluster:
     cluster_name: prod-gke-cluster
@@ -61,7 +99,10 @@ spec:
       host: postgres-db.example.com
       port: 5432
       username: temporaluser
-      password: securepassword
+      password:
+        secretRef:
+          name: temporal-db-credentials
+          key: password
   ingress:
     frontend:
       enabled: true
@@ -73,7 +114,9 @@ spec:
 
 **Use Case:**
 
-- Suited for production environments requiring robust database management, backup strategies, and operational isolation.
+- Recommended for production environments where credentials should be stored securely in Kubernetes Secrets.
+- Enables GitOps workflows where manifests can be safely committed to version control.
+- Simplifies password rotation by only updating the Kubernetes Secret.
 
 ---
 
@@ -99,7 +142,8 @@ spec:
     host: elasticsearch.example.com
     port: 9200
     user: elasticuser
-    password: elasticpassword
+    password:
+      stringValue: elasticpassword
   ingress:
     frontend:
       enabled: true
@@ -113,6 +157,55 @@ spec:
 
 - Recommended for scenarios demanding advanced search and visibility capabilities for workflows, typically in
   monitoring-intensive production deployments.
+
+---
+
+## Example 3b: External Elasticsearch with Secret Reference
+
+Deploy Temporal with external Elasticsearch using credentials stored in Kubernetes Secrets.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-elasticsearch-prod
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-observability
+  create_namespace: true
+  database:
+    backend: postgresql
+    external_database:
+      host: postgres-db.example.com
+      port: 5432
+      username: temporaluser
+      password:
+        secretRef:
+          name: temporal-db-credentials
+          key: password
+  external_elasticsearch:
+    host: elasticsearch.example.com
+    port: 9200
+    user: elasticuser
+    password:
+      secretRef:
+        name: es-credentials
+        key: password
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend-prod.example.com
+    web_ui:
+      enabled: true
+      hostname: temporal-ui-prod.example.com
+```
+
+**Use Case:**
+
+- Production deployments with both external database and Elasticsearch using secure credential management.
+- All sensitive values are stored in Kubernetes Secrets, enabling safe GitOps workflows.
 
 ---
 

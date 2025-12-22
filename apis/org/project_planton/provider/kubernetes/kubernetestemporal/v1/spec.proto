@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.kubernetestemporal.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/provider/kubernetes/kubernetes_secret.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
@@ -90,8 +91,25 @@ message KubernetesTemporalExternalDatabase {
   // username for database
   string username = 3;
 
-  // password for database
-  string password = 4;
+  /**
+   * The password for authenticating to the database.
+   * Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+   *
+   * Using a secret reference is recommended for production deployments:
+   * ```yaml
+   * password:
+   *   secretRef:
+   *     name: db-credentials
+   *     key: password
+   * ```
+   *
+   * For development/testing, a plain string value can be used:
+   * ```yaml
+   * password:
+   *   stringValue: my-password
+   * ```
+   */
+  org.project_planton.provider.kubernetes.KubernetesSensitiveValue password = 4;
 }
 
 // describes an external elasticsearch cluster that temporal can use
@@ -106,8 +124,25 @@ message KubernetesTemporalExternalElasticsearch {
   // optional username, if the external cluster requires auth
   string user = 3;
 
-  // optional password, if the external cluster requires auth
-  string password = 4;
+  /**
+   * Optional password for authenticating to the external Elasticsearch cluster.
+   * Can be provided either as a plain string value or as a reference to an existing Kubernetes Secret.
+   *
+   * Using a secret reference is recommended for production deployments:
+   * ```yaml
+   * password:
+   *   secretRef:
+   *     name: es-credentials
+   *     key: password
+   * ```
+   *
+   * For development/testing, a plain string value can be used:
+   * ```yaml
+   * password:
+   *   stringValue: my-password
+   * ```
+   */
+  org.project_planton.provider.kubernetes.KubernetesSensitiveValue password = 4;
 }
 
 // ingress configuration for temporal deployment with separate frontend and web ui endpoints
