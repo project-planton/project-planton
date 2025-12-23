@@ -130,6 +130,17 @@ message KubernetesPostgresSpec {
   // When specified, these settings override the operator-level backup configuration
   // If not specified, the database inherits operator-level backup settings
   KubernetesPostgresBackupConfig backup_config = 6;
+
+  // Map of database names to their owner roles.
+  // Key: database name (e.g., "app_database", "analytics_db")
+  // Value: owner role name (e.g., "app_user", "analytics_role")
+  // The operator will create these databases during cluster initialization.
+  // If not specified, only the default "postgres" database will be available.
+  // Example:
+  //   databases:
+  //     app_database: app_user
+  //     analytics_db: analytics_role
+  map<string, string> databases = 7;
 }
 
 /**

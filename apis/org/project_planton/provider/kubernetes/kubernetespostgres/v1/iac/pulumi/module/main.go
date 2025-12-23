@@ -59,6 +59,12 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 		allEnvVars = backupEnvVars
 	}
 
+	// Convert databases map if specified
+	var databasesMap pulumi.StringMapInput
+	if len(locals.KubernetesPostgres.Spec.Databases) > 0 {
+		databasesMap = pulumi.ToStringMap(locals.KubernetesPostgres.Spec.Databases)
+	}
+
 	//create zalando postgresql resource
 	postgresqlArgs := &zalandov1.PostgresqlArgs{
 		Metadata: metav1.ObjectMetaArgs{
@@ -98,6 +104,8 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 			Standby: standbyBlock,
 			// Merge backup and restore environment variables
 			Env: allEnvVars,
+			// Databases to create with their owner roles
+			Databases: databasesMap,
 		},
 	}
 
