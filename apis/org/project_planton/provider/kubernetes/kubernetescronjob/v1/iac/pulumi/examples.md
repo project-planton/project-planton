@@ -88,9 +88,9 @@ spec:
 
 ## 3. Using Secret Environment Variables
 
-Sensitive data should be stored in secrets rather than environment variables. This example shows how to map secrets into
-the CronJob container. The secrets themselves are managed elsewhere (e.g., with Planton Cloud or a custom Kubernetes
-Secret):
+Sensitive data should be stored in secrets rather than environment variables. This example shows two approaches for providing secrets to the CronJob container.
+
+### Option 1: Direct String Value (Development/Testing)
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -109,7 +109,8 @@ spec:
     tag: stable
   env:
     secrets:
-      DB_PASSWORD: $ref::secrets-group::postgres-prod::password
+      DB_PASSWORD:
+        stringValue: my-secret-password
     variables:
       DB_HOST: db-server.prod.svc.cluster.local
       DB_NAME: myappdb
@@ -122,7 +123,43 @@ spec:
       memory: "128Mi"
 ```
 
-- **env.secrets**: `DB_PASSWORD` is pulled from your secret manager.
+### Option 2: Kubernetes Secret Reference (Production)
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: db-maintenance
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: my-namespace
+  create_namespace: true
+  schedule: "0 3 * * *"
+  image:
+    repo: org/maintenance-tool
+    tag: stable
+  env:
+    secrets:
+      DB_PASSWORD:
+        secretRef:
+          name: postgres-credentials   # Name of existing K8s Secret
+          key: password                # Key within the Secret
+    variables:
+      DB_HOST: db-server.prod.svc.cluster.local
+      DB_NAME: myappdb
+  resources:
+    limits:
+      cpu: "1"
+      memory: "512Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+```
+
+- **env.secrets.stringValue**: Direct string value for development/testing scenarios.
+- **env.secrets.secretRef**: Reference to an existing Kubernetes Secret (recommended for production).
 - **env.variables**: Non-sensitive parameters like `DB_HOST` and `DB_NAME` remain in `variables`.
 
 ---

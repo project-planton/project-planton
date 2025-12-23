@@ -61,9 +61,10 @@ spec:
       memory: 2Gi
 ```
 
-# Example w/ Environment Secrets  
+# Example w/ Environment Secrets (Direct String Value)
 
-The below example assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:ai.planton.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
+Provide secrets as direct string values (suitable for development/testing):
+
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: CronJobKubernetes
@@ -78,13 +79,89 @@ spec:
   schedule: "0 0 * * *"
   env:
     secrets:
-      # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-      # value after dot 'database-password' is one of the secrets list in 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-      DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
+      DATABASE_PASSWORD:
+        stringValue: my-secret-password
     variables:
       DATABASE_NAME: todo
   image:
     repo: nginx
+    tag: latest
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+```
+
+# Example w/ Environment Secrets (Kubernetes Secret Reference)
+
+Reference existing Kubernetes Secrets for production deployments:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: todo-list-api
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: cronjobs
+  create_namespace: true
+  schedule: "0 0 * * *"
+  env:
+    secrets:
+      DATABASE_PASSWORD:
+        secretRef:
+          name: my-app-secrets       # Name of existing K8s Secret
+          key: db-password           # Key within the Secret
+    variables:
+      DATABASE_NAME: todo
+  image:
+    repo: nginx
+    tag: latest
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+```
+
+# Example w/ Mixed Secret Types
+
+Use both direct values and secret references together:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: todo-list-api
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: cronjobs
+  create_namespace: true
+  schedule: "0 0 * * *"
+  env:
+    secrets:
+      # Dev secret - direct value
+      DEBUG_TOKEN:
+        stringValue: debug-only-token
+      # Production secret - external reference
+      DATABASE_PASSWORD:
+        secretRef:
+          name: postgres-credentials
+          key: password
+    variables:
+      DATABASE_NAME: todo
+  image:
+    repo: nginx
+    tag: latest
   resources:
     requests:
       cpu: 100m
@@ -138,7 +215,8 @@ spec:
       DB_HOST: postgres.database.svc
       DB_NAME: myapp
     secrets:
-      DB_USER: admin
+      DB_USER:
+        stringValue: admin
   resources:
     requests:
       cpu: 100m

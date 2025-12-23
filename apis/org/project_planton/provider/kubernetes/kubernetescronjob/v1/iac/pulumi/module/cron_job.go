@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/pkg/errors"
 	batchv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/batch/v1"
@@ -48,17 +49,40 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 		}
 
 		if target.Spec.Env.Secrets != nil {
-			sortedSecretKeys := sortstringmap.SortMap(target.Spec.Env.Secrets)
+			// Sort keys for deterministic output
+			sortedSecretKeys := make([]string, 0, len(target.Spec.Env.Secrets))
+			for k := range target.Spec.Env.Secrets {
+				sortedSecretKeys = append(sortedSecretKeys, k)
+			}
+			sort.Strings(sortedSecretKeys)
+
 			for _, secretKey := range sortedSecretKeys {
-				envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
-					Name: pulumi.String(secretKey),
-					ValueFrom: &corev1.EnvVarSourceArgs{
-						SecretKeyRef: &corev1.SecretKeySelectorArgs{
-							Name: pulumi.String(locals.EnvSecretsSecretName),
-							Key:  pulumi.String(secretKey),
+				secretValue := target.Spec.Env.Secrets[secretKey]
+
+				if secretValue.GetSecretRef() != nil {
+					// Use external Kubernetes Secret reference
+					secretRef := secretValue.GetSecretRef()
+					envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
+						Name: pulumi.String(secretKey),
+						ValueFrom: &corev1.EnvVarSourceArgs{
+							SecretKeyRef: &corev1.SecretKeySelectorArgs{
+								Name: pulumi.String(secretRef.Name),
+								Key:  pulumi.String(secretRef.Key),
+							},
 						},
-					},
-				}))
+					}))
+				} else if secretValue.GetStringValue() != "" {
+					// Use the internally created secret for direct string values
+					envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
+						Name: pulumi.String(secretKey),
+						ValueFrom: &corev1.EnvVarSourceArgs{
+							SecretKeyRef: &corev1.SecretKeySelectorArgs{
+								Name: pulumi.String(locals.EnvSecretsSecretName),
+								Key:  pulumi.String(secretKey),
+							},
+						},
+					}))
+				}
 			}
 		}
 	}

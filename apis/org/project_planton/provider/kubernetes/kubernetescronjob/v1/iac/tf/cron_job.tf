@@ -105,15 +105,37 @@ resource "kubernetes_cron_job" "this" {
                 }
               }
 
-              # Add env variables from secrets (stored in the env-secrets secret)
+              # Add env variables from secrets with direct string values
               dynamic "env" {
-                for_each = try(var.spec.env.secrets, {})
+                for_each = {
+                  for k, v in try(var.spec.env.secrets, {}) :
+                  k => v
+                  if try(v.string_value, null) != null && v.string_value != ""
+                }
                 content {
                   name = env.key
                   value_from {
                     secret_key_ref {
                       name = local.env_secrets_secret_name
                       key  = env.key
+                    }
+                  }
+                }
+              }
+
+              # Add env variables from external Kubernetes Secret references
+              dynamic "env" {
+                for_each = {
+                  for k, v in try(var.spec.env.secrets, {}) :
+                  k => v
+                  if try(v.secret_ref, null) != null
+                }
+                content {
+                  name = env.key
+                  value_from {
+                    secret_key_ref {
+                      name = env.value.secret_ref.name
+                      key  = env.value.secret_ref.key
                     }
                   }
                 }
