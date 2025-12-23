@@ -88,6 +88,23 @@ message KubernetesPostgresBackupConfig {
   optional KubernetesPostgresRestoreConfig restore = 6;
 }
 
+// PostgreSQL user/role definition
+message KubernetesPostgresUser {
+  // Username/role name (e.g., "app_user", "openfga")
+  // This name can be referenced as a database owner in the databases field
+  string name = 1 [(buf.validate.field).required = true];
+
+  // User permission flags. Common values:
+  // - "createdb": Can create databases
+  // - "superuser": Superuser privileges (use with caution)
+  // - "createrole": Can create other roles
+  // - "inherit": Inherits privileges of roles it is a member of
+  // - "login": Can log in (default for users)
+  // - "replication": Can initiate streaming replication
+  // Empty array means standard user with login privileges only.
+  repeated string flags = 2;
+}
+
 /**
  * **KubernetesPostgresSpec** defines the configuration for deploying PostgreSQL on a Kubernetes cluster.
  * This message specifies the parameters needed to create and manage a PostgreSQL deployment within a Kubernetes environment.
@@ -136,11 +153,17 @@ message KubernetesPostgresSpec {
   // Value: owner role name (e.g., "app_user", "analytics_role")
   // The operator will create these databases during cluster initialization.
   // If not specified, only the default "postgres" database will be available.
+  // Note: Owner roles must be declared in the 'users' field before being referenced here.
   // Example:
   //   databases:
   //     app_database: app_user
   //     analytics_db: analytics_role
   map<string, string> databases = 7;
+
+  // List of PostgreSQL users/roles to create.
+  // Users must be declared here before being used as database owners in the 'databases' field.
+  // The operator creates these users during cluster initialization.
+  repeated KubernetesPostgresUser users = 8;
 }
 
 /**
