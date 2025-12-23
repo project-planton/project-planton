@@ -209,7 +209,7 @@ module "logging_agent" {
           secrets = {
             # Direct string value (for development/testing)
             API_KEY = {
-              string_value = "my-dev-api-key"
+              value = "my-dev-api-key"
             }
           }
         }
@@ -368,7 +368,7 @@ module "custom_collector" {
           secrets = {
             # Dev/test secrets can use direct values
             DEBUG_TOKEN = {
-              string_value = "debug-only-token"
+              value = "debug-only-token"
             }
             # Production secrets should reference external K8s Secrets
             DATABASE_PASSWORD = {

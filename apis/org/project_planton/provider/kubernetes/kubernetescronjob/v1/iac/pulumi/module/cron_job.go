@@ -71,7 +71,7 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 							},
 						},
 					}))
-				} else if secretValue.GetStringValue() != "" {
+				} else if secretValue.GetValue() != "" {
 					// Use the internally created secret for direct string values
 					envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
 						Name: pulumi.String(secretKey),

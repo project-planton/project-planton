@@ -126,7 +126,7 @@ spec:
           DB_HOST: "db.prod.svc.cluster.local"
         secrets:
           DB_PASSWORD:
-            stringValue: "my-secret-password"
+            value: "my-secret-password"
       resources:
         requests:
           cpu: "100m"

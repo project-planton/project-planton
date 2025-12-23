@@ -60,8 +60,8 @@ var _ = ginkgo.Describe("KubernetesOpenFga Custom Validation Tests", func() {
 					Database: "testdb",
 					Username: "user",
 					Password: &kubernetes.KubernetesSensitiveValue{
-						Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-							StringValue: "pass",
+						SensitiveValue: &kubernetes.KubernetesSensitiveValue_Value{
+							Value: "pass",
 						},
 					},
 				},
@@ -80,7 +80,7 @@ var _ = ginkgo.Describe("KubernetesOpenFga Custom Validation Tests", func() {
 		ginkgo.Context("with secret reference password", func() {
 			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Datastore.Password = &kubernetes.KubernetesSensitiveValue{
-					Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+					SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 						SecretRef: &kubernetes.KubernetesSecretKeyRef{
 							Name: "openfga-db-credentials",
 							Key:  "password",

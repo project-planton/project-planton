@@ -198,10 +198,10 @@ module "db_microservice" {
           # Secrets with direct string values
           secrets = {
             DB_PASSWORD = {
-              string_value = var.db_password
+              value = var.db_password
             }
             API_KEY = {
-              string_value = var.api_key
+              value = var.api_key
             }
           }
         }
@@ -236,7 +236,7 @@ variable "api_key" {
 ```
 
 **Key Points:**
-- `string_value` for direct secret values
+- `value` for direct secret values
 - Secrets stored in a Kubernetes Secret resource created by the module
 - Use Terraform variables with `sensitive = true` to protect values
 
@@ -1017,7 +1017,7 @@ module "microservice" {
         env = {
           secrets = {
             DB_PASSWORD = {
-              string_value = var.db_password
+              value = var.db_password
             }
           }
         }
@@ -1064,7 +1064,7 @@ module "microservice" {
           secrets = {
             # Dev secret - direct value
             DEBUG_TOKEN = {
-              string_value = "debug-only"
+              value = "debug-only"
             }
             # Production secret - external reference
             DB_PASSWORD = {

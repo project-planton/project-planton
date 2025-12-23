@@ -26,8 +26,8 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 			for _, secretKey := range sortedKeys {
 				secretValue := secrets[secretKey]
 				// Only add secrets that are direct string values
-				if secretValue.GetStringValue() != "" {
-					dataMap[secretKey] = secretValue.GetStringValue()
+				if secretValue.GetValue() != "" {
+					dataMap[secretKey] = secretValue.GetValue()
 				}
 			}
 		}

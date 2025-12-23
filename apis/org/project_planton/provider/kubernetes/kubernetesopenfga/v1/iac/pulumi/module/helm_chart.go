@@ -78,12 +78,12 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 					},
 				},
 			}
-		} else if ds.Password.GetStringValue() != "" {
+		} else if ds.Password.GetValue() != "" {
 			// Use plain string password - construct full URI
 			datastoreUri := fmt.Sprintf("%s://%s:%s@%s:%d/%s%s",
 				ds.Engine,
 				ds.Username,
-				ds.Password.GetStringValue(),
+				ds.Password.GetValue(),
 				ds.Host,
 				port,
 				ds.Database,

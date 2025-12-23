@@ -230,8 +230,8 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-								StringValue: "my-password",
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_Value{
+								Value: "my-password",
 							},
 						},
 					},
@@ -246,7 +246,7 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "my-app-secrets",
 									Key:  "db-password",
@@ -265,12 +265,12 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DEBUG_TOKEN": {
-							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-								StringValue: "debug-only-token",
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_Value{
+								Value: "debug-only-token",
 							},
 						},
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "postgres-credentials",
 									Key:  "password",
@@ -289,7 +289,7 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "",
 									Key:  "password",
@@ -306,7 +306,7 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "my-secrets",
 									Key:  "",

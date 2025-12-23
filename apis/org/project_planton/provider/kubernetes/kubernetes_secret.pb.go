@@ -102,13 +102,13 @@ func (x *KubernetesSecretKeyRef) GetKey() string {
 // sensitive values in plain text within configuration files or version control.
 type KubernetesSensitiveValue struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Value:
+	// Types that are valid to be assigned to SensitiveValue:
 	//
-	//	*KubernetesSensitiveValue_StringValue
+	//	*KubernetesSensitiveValue_Value
 	//	*KubernetesSensitiveValue_SecretRef
-	Value         isKubernetesSensitiveValue_Value `protobuf_oneof:"value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	SensitiveValue isKubernetesSensitiveValue_SensitiveValue `protobuf_oneof:"sensitive_value"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *KubernetesSensitiveValue) Reset() {
@@ -141,17 +141,17 @@ func (*KubernetesSensitiveValue) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetes_secret_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KubernetesSensitiveValue) GetValue() isKubernetesSensitiveValue_Value {
+func (x *KubernetesSensitiveValue) GetSensitiveValue() isKubernetesSensitiveValue_SensitiveValue {
 	if x != nil {
-		return x.Value
+		return x.SensitiveValue
 	}
 	return nil
 }
 
-func (x *KubernetesSensitiveValue) GetStringValue() string {
+func (x *KubernetesSensitiveValue) GetValue() string {
 	if x != nil {
-		if x, ok := x.Value.(*KubernetesSensitiveValue_StringValue); ok {
-			return x.StringValue
+		if x, ok := x.SensitiveValue.(*KubernetesSensitiveValue_Value); ok {
+			return x.Value
 		}
 	}
 	return ""
@@ -159,23 +159,23 @@ func (x *KubernetesSensitiveValue) GetStringValue() string {
 
 func (x *KubernetesSensitiveValue) GetSecretRef() *KubernetesSecretKeyRef {
 	if x != nil {
-		if x, ok := x.Value.(*KubernetesSensitiveValue_SecretRef); ok {
+		if x, ok := x.SensitiveValue.(*KubernetesSensitiveValue_SecretRef); ok {
 			return x.SecretRef
 		}
 	}
 	return nil
 }
 
-type isKubernetesSensitiveValue_Value interface {
-	isKubernetesSensitiveValue_Value()
+type isKubernetesSensitiveValue_SensitiveValue interface {
+	isKubernetesSensitiveValue_SensitiveValue()
 }
 
-type KubernetesSensitiveValue_StringValue struct {
+type KubernetesSensitiveValue_Value struct {
 	// *
 	// A literal string value.
 	// Warning: Using plain text for sensitive values is not recommended for production.
 	// Consider using secret_ref instead.
-	StringValue string `protobuf:"bytes,1,opt,name=string_value,json=stringValue,proto3,oneof"`
+	Value string `protobuf:"bytes,1,opt,name=value,proto3,oneof"`
 }
 
 type KubernetesSensitiveValue_SecretRef struct {
@@ -185,9 +185,9 @@ type KubernetesSensitiveValue_SecretRef struct {
 	SecretRef *KubernetesSecretKeyRef `protobuf:"bytes,2,opt,name=secret_ref,json=secretRef,proto3,oneof"`
 }
 
-func (*KubernetesSensitiveValue_StringValue) isKubernetesSensitiveValue_Value() {}
+func (*KubernetesSensitiveValue_Value) isKubernetesSensitiveValue_SensitiveValue() {}
 
-func (*KubernetesSensitiveValue_SecretRef) isKubernetesSensitiveValue_Value() {}
+func (*KubernetesSensitiveValue_SecretRef) isKubernetesSensitiveValue_SensitiveValue() {}
 
 var File_org_project_planton_provider_kubernetes_kubernetes_secret_proto protoreflect.FileDescriptor
 
@@ -197,12 +197,12 @@ const file_org_project_planton_provider_kubernetes_kubernetes_secret_proto_rawDe
 	"\x16KubernetesSecretKeyRef\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x18\n" +
-	"\x03key\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03key\"\xaa\x01\n" +
-	"\x18KubernetesSensitiveValue\x12#\n" +
-	"\fstring_value\x18\x01 \x01(\tH\x00R\vstringValue\x12`\n" +
+	"\x03key\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03key\"\xa7\x01\n" +
+	"\x18KubernetesSensitiveValue\x12\x16\n" +
+	"\x05value\x18\x01 \x01(\tH\x00R\x05value\x12`\n" +
 	"\n" +
-	"secret_ref\x18\x02 \x01(\v2?.org.project_planton.provider.kubernetes.KubernetesSecretKeyRefH\x00R\tsecretRefB\a\n" +
-	"\x05valueB\xd9\x02\n" +
+	"secret_ref\x18\x02 \x01(\v2?.org.project_planton.provider.kubernetes.KubernetesSecretKeyRefH\x00R\tsecretRefB\x11\n" +
+	"\x0fsensitive_valueB\xd9\x02\n" +
 	"+com.org.project_planton.provider.kubernetesB\x15KubernetesSecretProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
@@ -237,7 +237,7 @@ func file_org_project_planton_provider_kubernetes_kubernetes_secret_proto_init()
 		return
 	}
 	file_org_project_planton_provider_kubernetes_kubernetes_secret_proto_msgTypes[1].OneofWrappers = []any{
-		(*KubernetesSensitiveValue_StringValue)(nil),
+		(*KubernetesSensitiveValue_Value)(nil),
 		(*KubernetesSensitiveValue_SecretRef)(nil),
 	}
 	type x struct{}

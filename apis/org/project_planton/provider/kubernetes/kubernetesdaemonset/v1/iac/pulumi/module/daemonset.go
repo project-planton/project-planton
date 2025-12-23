@@ -85,7 +85,7 @@ func daemonSet(ctx *pulumi.Context, locals *Locals, serviceAccountName string, k
 							},
 						},
 					}))
-				} else if secretValue.GetStringValue() != "" {
+				} else if secretValue.GetValue() != "" {
 					// Use the internally created secret for direct string values
 					envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
 						Name: pulumi.String(secretKey),

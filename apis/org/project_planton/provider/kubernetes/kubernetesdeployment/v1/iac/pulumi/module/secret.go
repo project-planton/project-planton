@@ -29,8 +29,8 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 				secretValue := secrets[secretKey]
 				// Only add secrets that are direct string values
 				// Secrets with secretRef are handled directly in the deployment
-				if secretValue.GetStringValue() != "" {
-					dataMap[secretKey] = secretValue.GetStringValue()
+				if secretValue.GetValue() != "" {
+					dataMap[secretKey] = secretValue.GetValue()
 				}
 			}
 		}

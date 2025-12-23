@@ -111,7 +111,7 @@ This module supports two ways to provide secrets:
 env = {
   secrets = {
     DEBUG_TOKEN = {
-      string_value = "my-debug-token"
+      value = "my-debug-token"
     }
   }
 }

@@ -78,9 +78,9 @@ spec:
           PGDATA: /var/lib/postgresql/data/pgdata
         secrets:
           POSTGRES_PASSWORD:
-            stringValue: supersecretpassword
+            value: supersecretpassword
           POSTGRES_USER:
-            stringValue: admin
+            value: admin
       volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
@@ -180,7 +180,7 @@ spec:
         secrets:
           # Dev secret - direct value (for development/testing)
           DEBUG_TOKEN:
-            stringValue: debug-only-token
+            value: debug-only-token
           # Production secrets - external references (for production)
           POSTGRES_PASSWORD:
             secretRef:

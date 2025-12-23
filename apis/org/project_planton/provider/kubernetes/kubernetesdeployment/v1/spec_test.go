@@ -144,8 +144,8 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-								StringValue: "my-password",
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_Value{
+								Value: "my-password",
 							},
 						},
 					},
@@ -160,7 +160,7 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "my-app-secrets",
 									Key:  "db-password",
@@ -182,12 +182,12 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 					},
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-								StringValue: "my-password",
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_Value{
+								Value: "my-password",
 							},
 						},
 						"API_KEY": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "external-secrets",
 									Key:  "api-key",
@@ -206,7 +206,7 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "",
 									Key:  "db-password",
@@ -223,7 +223,7 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
-							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+							SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "my-secrets",
 									Key:  "",

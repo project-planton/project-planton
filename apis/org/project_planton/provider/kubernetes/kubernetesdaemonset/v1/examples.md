@@ -249,7 +249,7 @@ spec:
         secrets:
           # Direct string value (for development/testing)
           API_KEY:
-            string_value: my-dev-api-key
+            value: my-dev-api-key
       volume_mounts:
         - name: varlog
           mount_path: /var/log
@@ -348,7 +348,7 @@ spec:
         secrets:
           # Dev/test secrets can use direct values
           DEBUG_TOKEN:
-            string_value: debug-only-token
+            value: debug-only-token
           # Production secrets should reference external K8s Secrets
           DATABASE_PASSWORD:
             secret_ref:

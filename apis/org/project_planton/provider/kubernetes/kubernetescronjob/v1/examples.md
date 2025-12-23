@@ -80,7 +80,7 @@ spec:
   env:
     secrets:
       DATABASE_PASSWORD:
-        stringValue: my-secret-password
+        value: my-secret-password
     variables:
       DATABASE_NAME: todo
   image:
@@ -151,7 +151,7 @@ spec:
     secrets:
       # Dev secret - direct value
       DEBUG_TOKEN:
-        stringValue: debug-only-token
+        value: debug-only-token
       # Production secret - external reference
       DATABASE_PASSWORD:
         secretRef:
@@ -216,7 +216,7 @@ spec:
       DB_NAME: myapp
     secrets:
       DB_USER:
-        stringValue: admin
+        value: admin
   resources:
     requests:
       cpu: 100m

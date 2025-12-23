@@ -54,7 +54,7 @@ variable "spec" {
     env = optional(object({
       variables = optional(map(string))
       secrets = optional(map(object({
-        string_value = optional(string)
+        value = optional(string)
         secret_ref = optional(object({
           namespace = optional(string)
           name      = string

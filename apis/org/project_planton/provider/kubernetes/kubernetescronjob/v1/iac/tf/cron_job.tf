@@ -110,7 +110,7 @@ resource "kubernetes_cron_job" "this" {
                 for_each = {
                   for k, v in try(var.spec.env.secrets, {}) :
                   k => v
-                  if try(v.string_value, null) != null && v.string_value != ""
+                  if try(v.value, null) != null && v.value != ""
                 }
                 content {
                   name = env.key

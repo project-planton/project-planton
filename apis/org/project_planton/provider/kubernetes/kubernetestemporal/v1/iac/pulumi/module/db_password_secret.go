@@ -33,8 +33,8 @@ func dbPasswordSecret(ctx *pulumi.Context, locals *Locals,
 		return nil
 	}
 
-	// Only create a secret when using string_value
-	stringValue := ext.Password.GetStringValue()
+	// Only create a secret when using value
+	stringValue := ext.Password.GetValue()
 	if stringValue == "" {
 		return nil
 	}

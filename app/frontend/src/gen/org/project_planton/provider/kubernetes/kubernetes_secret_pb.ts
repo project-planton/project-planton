@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetes_secret.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetes_secret: GenFile = /*@__PURE__*/
-  fileDesc("Cj9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc19zZWNyZXQucHJvdG8SJ29yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcyJWChZLdWJlcm5ldGVzU2VjcmV0S2V5UmVmEhEKCW5hbWVzcGFjZRgBIAEoCRIUCgRuYW1lGAIgASgJQga6SAPIAQESEwoDa2V5GAMgASgJQga6SAPIAQEikgEKGEt1YmVybmV0ZXNTZW5zaXRpdmVWYWx1ZRIWCgxzdHJpbmdfdmFsdWUYASABKAlIABJVCgpzZWNyZXRfcmVmGAIgASgLMj8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkt1YmVybmV0ZXNTZWNyZXRLZXlSZWZIAEIHCgV2YWx1ZULZAgorY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlc0IVS3ViZXJuZXRlc1NlY3JldFByb3RvUAFaV2dpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIva3ViZXJuZXRlc6ICBE9QUEuqAiZPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlc8oCJk9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVz4gIyT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcR1BCTWV0YWRhdGHqAilPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlc2IGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("Cj9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc19zZWNyZXQucHJvdG8SJ29yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcyJWChZLdWJlcm5ldGVzU2VjcmV0S2V5UmVmEhEKCW5hbWVzcGFjZRgBIAEoCRIUCgRuYW1lGAIgASgJQga6SAPIAQESEwoDa2V5GAMgASgJQga6SAPIAQEilQEKGEt1YmVybmV0ZXNTZW5zaXRpdmVWYWx1ZRIPCgV2YWx1ZRgBIAEoCUgAElUKCnNlY3JldF9yZWYYAiABKAsyPy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc1NlY3JldEtleVJlZkgAQhEKD3NlbnNpdGl2ZV92YWx1ZULZAgorY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlc0IVS3ViZXJuZXRlc1NlY3JldFByb3RvUAFaV2dpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIva3ViZXJuZXRlc6ICBE9QUEuqAiZPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlc8oCJk9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVz4gIyT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcR1BCTWV0YWRhdGHqAilPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlc2IGcHJvdG8z", [file_buf_validate_validate]);
 
 /**
  * *
@@ -68,19 +68,19 @@ export const KubernetesSecretKeyRefSchema: GenMessage<KubernetesSecretKeyRef> = 
  */
 export type KubernetesSensitiveValue = Message<"org.project_planton.provider.kubernetes.KubernetesSensitiveValue"> & {
   /**
-   * @generated from oneof org.project_planton.provider.kubernetes.KubernetesSensitiveValue.value
+   * @generated from oneof org.project_planton.provider.kubernetes.KubernetesSensitiveValue.sensitive_value
    */
-  value: {
+  sensitiveValue: {
     /**
      * *
      * A literal string value.
      * Warning: Using plain text for sensitive values is not recommended for production.
      * Consider using secret_ref instead.
      *
-     * @generated from field: string string_value = 1;
+     * @generated from field: string value = 1;
      */
     value: string;
-    case: "stringValue";
+    case: "value";
   } | {
     /**
      * *

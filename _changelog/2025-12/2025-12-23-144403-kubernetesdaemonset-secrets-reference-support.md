@@ -48,7 +48,7 @@ spec:
       env:
         secrets:
           DATABASE_PASSWORD:
-            string_value: my-secret-password
+            value: my-secret-password
 ```
 
 **Option 2: Kubernetes Secret Reference (Production)**
@@ -96,8 +96,8 @@ Updated to only create the internal Kubernetes Secret when there are direct stri
 for _, secretKey := range sortedKeys {
     secretValue := secrets[secretKey]
     // Only add secrets that are direct string values
-    if secretValue.GetStringValue() != "" {
-        dataMap[secretKey] = secretValue.GetStringValue()
+    if secretValue.GetValue() != "" {
+        dataMap[secretKey] = secretValue.GetValue()
     }
 }
 
@@ -126,7 +126,7 @@ if secretValue.GetSecretRef() != nil {
             },
         },
     }))
-} else if secretValue.GetStringValue() != "" {
+} else if secretValue.GetValue() != "" {
     // Use the internally created secret for direct string values
     envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
         Name: pulumi.String(secretKey),

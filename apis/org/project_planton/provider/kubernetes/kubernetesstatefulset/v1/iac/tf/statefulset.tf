@@ -89,7 +89,7 @@ resource "kubernetes_stateful_set" "this" {
             for_each = {
               for k, v in try(var.spec.container.app.env.secrets, {}) :
               k => v
-              if try(v.string_value, null) != null && v.string_value != ""
+              if try(v.value, null) != null && v.value != ""
             }
             content {
               name = env.key

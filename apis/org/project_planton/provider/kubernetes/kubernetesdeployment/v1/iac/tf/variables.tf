@@ -81,11 +81,11 @@ variable "spec" {
           # A map of environment variable names to their values.
           variables = optional(map(string))
           # A map of secret environment variable names to their values.
-          # Each secret can be provided either as a literal string value (string_value)
+          # Each secret can be provided either as a literal string value (value)
           # or as a reference to an existing Kubernetes Secret (secret_ref).
           secrets = optional(map(object({
             # A literal string value for the secret (for development/testing).
-            string_value = optional(string)
+            value = optional(string)
             # A reference to a key within a Kubernetes Secret (recommended for production).
             secret_ref = optional(object({
               # The namespace of the Kubernetes Secret (optional, defaults to deployment namespace).

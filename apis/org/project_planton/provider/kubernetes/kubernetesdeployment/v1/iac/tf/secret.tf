@@ -9,8 +9,8 @@ locals {
   # Filter secrets to only include those with direct string values (not secret refs)
   string_value_secrets = {
     for k, v in try(var.spec.container.app.env.secrets, {}) :
-    k => v.string_value
-    if try(v.string_value, null) != null && v.string_value != ""
+    k => v.value
+    if try(v.value, null) != null && v.value != ""
   }
 }
 

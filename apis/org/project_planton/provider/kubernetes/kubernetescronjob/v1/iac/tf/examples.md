@@ -150,10 +150,10 @@ module "db_maintenance_cronjob" {
     env = {
       secrets = {
         DB_PASSWORD = {
-          string_value = "password-from-secret-manager"
+          value = "password-from-secret-manager"
         }
         API_KEY = {
-          string_value = "api-key-from-secret-manager"
+          value = "api-key-from-secret-manager"
         }
       }
       
@@ -244,7 +244,7 @@ module "db_maintenance_cronjob" {
 ```
 
 **Key Points:**
-- **env.secrets.string_value**: Direct string value for development/testing scenarios
+- **env.secrets.value**: Direct string value for development/testing scenarios
 - **env.secrets.secret_ref**: Reference to an existing Kubernetes Secret (recommended for production)
 - **env.variables**: Non-sensitive configuration values
 - The module only creates a secret when there are direct string values to store
@@ -537,7 +537,7 @@ module "backup_cronjob" {
       }
       secrets = {
         DB_USER = {
-          string_value = "admin"
+          value = "admin"
         }
       }
     }

@@ -171,9 +171,9 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 				secretRef := es.Password.GetSecretRef()
 				esValues["existingSecret"] = pulumi.String(secretRef.Name)
 				esValues["existingSecretKey"] = pulumi.String(secretRef.Key)
-			} else if es.Password.GetStringValue() != "" {
+			} else if es.Password.GetValue() != "" {
 				// Use plain string password
-				esValues["password"] = pulumi.String(es.Password.GetStringValue())
+				esValues["password"] = pulumi.String(es.Password.GetValue())
 			}
 		}
 

@@ -44,7 +44,7 @@ spec:
   env:
     secrets:
       DATABASE_PASSWORD:
-        stringValue: my-secret-password
+        value: my-secret-password
 ```
 
 **Option 2: Kubernetes Secret Reference (Production)**
@@ -66,7 +66,7 @@ spec:
     secrets:
       # Dev secret - direct value
       DEBUG_TOKEN:
-        stringValue: debug-only-token
+        value: debug-only-token
       # Production secret - external reference
       DATABASE_PASSWORD:
         secretRef:
@@ -119,7 +119,7 @@ message KubernetesCronjobContainerAppEnv {
 ```protobuf
 message KubernetesSensitiveValue {
   oneof value {
-    string string_value = 1;
+    string value = 1;
     KubernetesSecretKeyRef secret_ref = 2;
   }
 }
@@ -138,7 +138,7 @@ message KubernetesSecretKeyRef {
 **File**: `apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1/iac/pulumi/module/secret.go`
 
 **Key Logic**:
-- Only add secrets with `GetStringValue() != ""` to the Kubernetes Secret
+- Only add secrets with `GetValue() != ""` to the Kubernetes Secret
 - Skip secrets that have `GetSecretRef() != nil` (they reference external secrets)
 - Only create the Kubernetes Secret resource if there are string values to store
 
@@ -174,8 +174,8 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 		for _, secretKey := range sortedKeys {
 			secretValue := secrets[secretKey]
 			// Only add secrets that are direct string values
-			if secretValue.GetStringValue() != "" {
-				dataMap[secretKey] = secretValue.GetStringValue()
+			if secretValue.GetValue() != "" {
+				dataMap[secretKey] = secretValue.GetValue()
 			}
 		}
 	}
@@ -210,7 +210,7 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 - Added `"sort"` to imports
 - Removed old `sortstringmap.SortMap` usage - now using standard `sort.Strings`
 - Added early return if `len(dataMap) == 0` to skip secret creation when not needed
-- Filter logic: `if secretValue.GetStringValue() != ""`
+- Filter logic: `if secretValue.GetValue() != ""`
 
 #### 2b. cron_job.go (or equivalent workload file) - Handle Both Types
 
@@ -218,7 +218,7 @@ func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Provi
 
 **Key Logic**:
 - For secrets with `GetSecretRef() != nil`: Reference the external Secret directly
-- For secrets with `GetStringValue() != ""`: Reference the internally created secret (`locals.EnvSecretsSecretName`)
+- For secrets with `GetValue() != ""`: Reference the internally created secret (`locals.EnvSecretsSecretName`)
 
 **Add import**:
 ```go
@@ -274,7 +274,7 @@ if target.Spec.Env.Secrets != nil {
 					},
 				},
 			}))
-		} else if secretValue.GetStringValue() != "" {
+		} else if secretValue.GetValue() != "" {
 			// Use the internally created secret for direct string values
 			envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
 				Name: pulumi.String(secretKey),
@@ -309,7 +309,7 @@ env = object({
 env = optional(object({
   variables = optional(map(string))
   secrets = optional(map(object({
-    string_value = optional(string)
+    value = optional(string)
     secret_ref = optional(object({
       namespace = optional(string)
       name      = string
@@ -333,16 +333,16 @@ env = optional(object({
 
 locals {
   # Filter secrets to only include those with direct string values
-  string_value_secrets = {
+  value_secrets = {
     for k, v in try(var.spec.env.secrets, {}) :
-    k => v.string_value
-    if try(v.string_value, null) != null && v.string_value != ""
+    k => v.value
+    if try(v.value, null) != null && v.value != ""
   }
 }
 
 resource "kubernetes_secret" "this" {
   # Only create if there are direct string values
-  count = length(local.string_value_secrets) > 0 ? 1 : 0
+  count = length(local.value_secrets) > 0 ? 1 : 0
 
   metadata {
     # Computed name to avoid conflicts when multiple instances share a namespace
@@ -355,14 +355,14 @@ resource "kubernetes_secret" "this" {
 
   # `data` automatically converts each map value into a string,
   # then Kubernetes encodes it as base64 in the final secret.
-  data = local.string_value_secrets
+  data = local.value_secrets
 }
 ```
 
 **Key Pattern**:
 ```hcl
 # Filter expression for string values only
-if try(v.string_value, null) != null && v.string_value != ""
+if try(v.value, null) != null && v.value != ""
 ```
 
 #### 3c. cron_job.tf (or equivalent) - Handle Both Types
@@ -395,7 +395,7 @@ dynamic "env" {
   for_each = {
     for k, v in try(var.spec.env.secrets, {}) :
     k => v
-    if try(v.string_value, null) != null && v.string_value != ""
+    if try(v.value, null) != null && v.value != ""
   }
   content {
     name = env.key
@@ -430,7 +430,7 @@ dynamic "env" {
 **Key Patterns**:
 ```hcl
 # String values filter
-if try(v.string_value, null) != null && v.string_value != ""
+if try(v.value, null) != null && v.value != ""
 
 # Secret refs filter
 if try(v.secret_ref, null) != null
@@ -459,8 +459,8 @@ Env: &KubernetesCronjobContainerAppEnv{
 	},
 	Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 		"SECRET_NAME": {
-			Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-				StringValue: "secret_value",
+			Value: &kubernetes.KubernetesSensitiveValue_Value{
+				Value: "secret_value",
 			},
 		},
 	},
@@ -475,8 +475,8 @@ ginkgo.Describe("Environment secrets validation", func() {
 			input.Spec.Env = &KubernetesCronjobContainerAppEnv{
 				Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 					"DATABASE_PASSWORD": {
-						Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-							StringValue: "my-password",
+						Value: &kubernetes.KubernetesSensitiveValue_Value{
+							Value: "my-password",
 						},
 					},
 				},
@@ -510,8 +510,8 @@ ginkgo.Describe("Environment secrets validation", func() {
 			input.Spec.Env = &KubernetesCronjobContainerAppEnv{
 				Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 					"DEBUG_TOKEN": {
-						Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-							StringValue: "debug-only-token",
+						Value: &kubernetes.KubernetesSensitiveValue_Value{
+							Value: "debug-only-token",
 						},
 					},
 					"DATABASE_PASSWORD": {
@@ -579,7 +579,7 @@ Update all example files to show both options:
 ```yaml
 # Direct string value
 DATABASE_PASSWORD:
-  stringValue: my-secret-password
+  value: my-secret-password
 
 # Kubernetes Secret reference
 DATABASE_PASSWORD:
@@ -593,7 +593,7 @@ DATABASE_PASSWORD:
 secrets = {
   # Direct string value
   DB_PASSWORD = {
-    string_value = "password-from-secret-manager"
+    value = "password-from-secret-manager"
   }
   # Secret reference
   API_KEY = {
@@ -660,7 +660,7 @@ When this pattern is adopted, the Planton Cloud web console (`planton-cloud` rep
 
 ### Form Components
 
-1. **Create Form**: Add UI for selecting between `stringValue` and `secretRef`
+1. **Create Form**: Add UI for selecting between `value` and `secretRef`
 2. **Edit Modal**: Support editing both value types
 3. **Validation**: Client-side validation for secret ref name/key requirements
 
@@ -682,14 +682,14 @@ If Kubernetes Secret Reference:
 
 After `make update-deps` in web console:
 - `KubernetesSensitiveValue` type will be available
-- Forms should handle `string_value` vs `secret_ref` oneof
+- Forms should handle `value` vs `secret_ref` oneof
 
 ## Benefits
 
 - **Improved security**: Production deployments can use Kubernetes Secrets instead of plaintext passwords
 - **GitOps friendly**: Manifests can be safely committed to version control without exposing credentials
 - **Easier rotation**: Password changes only require updating the Kubernetes Secret, not the manifest
-- **Follows proto patterns**: Uses `oneof` pattern consistent with existing `StringValueOrRef` in the codebase
+- **Follows proto patterns**: Uses `oneof` pattern consistent with existing `ValueOrRef` in the codebase
 - **Reusable type**: `KubernetesSensitiveValue` is shared across components
 - **Backward compatible API structure**: Both Pulumi and Terraform modules handle both value types seamlessly
 
@@ -711,7 +711,7 @@ After `make update-deps` in web console:
 - **Prior art**: `KubernetesSignoz` password secret reference support (2025-12-19)
 - **Prior art**: `KubernetesTemporal` password secret reference support (2025-12-22)
 - **Shared type**: Uses `KubernetesSecretKeyRef` and `KubernetesSensitiveValue` from `kubernetes_secret.proto`
-- **Pattern reference**: Similar to `StringValueOrRef` in `apis/org/project_planton/shared/foreignkey/v1/foreign_key.proto`
+- **Pattern reference**: Similar to `ValueOrRef` in `apis/org/project_planton/shared/foreignkey/v1/foreign_key.proto`
 
 ## Scope Clarification
 
@@ -737,20 +737,20 @@ This iteration **only** supports secret refs for `spec.env.secrets`.
 import "org/project_planton/provider/kubernetes/kubernetes_secret.proto";
 ```
 
-### Go GetSecretRef/GetStringValue
+### Go GetSecretRef/GetValue
 ```go
 if secretValue.GetSecretRef() != nil {
     secretRef := secretValue.GetSecretRef()
     // Use secretRef.Name, secretRef.Key
-} else if secretValue.GetStringValue() != "" {
-    // Use secretValue.GetStringValue()
+} else if secretValue.GetValue() != "" {
+    // Use secretValue.GetValue()
 }
 ```
 
 ### Terraform Filter Expression
 ```hcl
 # String values only
-if try(v.string_value, null) != null && v.string_value != ""
+if try(v.value, null) != null && v.value != ""
 
 # Secret refs only
 if try(v.secret_ref, null) != null
@@ -760,8 +760,8 @@ if try(v.secret_ref, null) != null
 ```go
 // String value
 &kubernetes.KubernetesSensitiveValue{
-    Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-        StringValue: "my-password",
+    Value: &kubernetes.KubernetesSensitiveValue_Value{
+        Value: "my-password",
     },
 }
 
@@ -780,7 +780,7 @@ if try(v.secret_ref, null) != null
 ```yaml
 # String value
 secretName:
-  stringValue: "literal-value"
+  value: "literal-value"
 
 # Secret reference  
 secretName:
@@ -794,7 +794,7 @@ secretName:
 ```hcl
 secrets = {
   SECRET_NAME = {
-    string_value = "literal-value"
+    value = "literal-value"
   }
   OTHER_SECRET = {
     secret_ref = {

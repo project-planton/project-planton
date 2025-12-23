@@ -110,7 +110,7 @@ spec:
   env:
     secrets:
       DB_PASSWORD:
-        stringValue: my-secret-password
+        value: my-secret-password
     variables:
       DB_HOST: db-server.prod.svc.cluster.local
       DB_NAME: myappdb
@@ -158,7 +158,7 @@ spec:
       memory: "128Mi"
 ```
 
-- **env.secrets.stringValue**: Direct string value for development/testing scenarios.
+- **env.secrets.value**: Direct string value for development/testing scenarios.
 - **env.secrets.secretRef**: Reference to an existing Kubernetes Secret (recommended for production).
 - **env.variables**: Non-sensitive parameters like `DB_HOST` and `DB_NAME` remain in `variables`.
 
