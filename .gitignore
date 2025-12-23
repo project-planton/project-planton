@@ -39,4 +39,5 @@ backend/server
 web-app/src/gen/
 
 *.sh
+!app/entrypoint-unified.sh
 **/*.env
