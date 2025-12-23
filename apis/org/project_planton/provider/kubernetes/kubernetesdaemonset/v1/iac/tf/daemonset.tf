@@ -3,7 +3,7 @@
 #
 # Creates the Kubernetes DaemonSet with:
 #  - Main application container
-#  - Optional sidecar containersw
+#  - Optional sidecar containers
 #  - Security context for privileged operations
 #  - Environment variables from direct values and secrets
 #  - Environment secrets from both string values and external secret refs
