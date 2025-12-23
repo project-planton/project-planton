@@ -1,16 +1,20 @@
 services:
-  backend:
-    image: ${BACKEND_IMAGE:-satishlleftbin/project-planton-backend:latest}
-    container_name: project-planton-backend
+  # Unified container with MongoDB, Backend, and Frontend
+  planton:
+    image: ${PLANTON_IMAGE:-ghcr.io/project-planton/project-planton:latest}
+    container_name: project-planton
     restart: unless-stopped
     ports:
-      - '50051:50051'
+      - '3000:3000'    # Frontend
+      - '50051:50051'  # Backend gRPC
     networks:
       - project-planton-network
     environment:
       - HOME=/home/appuser
-      - MONGODB_URI=${MONGODB_URI:-mongodb://host.docker.internal:27017/project_planton}
+      # MongoDB configuration (runs internally in the container)
+      - MONGODB_URI=${MONGODB_URI:-mongodb://localhost:27017/project_planton}
       - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
+      # Backend configuration
       - SERVER_PORT=50051
       # Pulumi configuration
       - PULUMI_HOME=/home/appuser/.pulumi
@@ -18,6 +22,12 @@ services:
       - PULUMI_CONFIG_PASSPHRASE=${PULUMI_CONFIG_PASSPHRASE:-project-planton-default-passphrase}
       - PULUMI_SKIP_UPDATE_CHECK=true
       - PULUMI_AUTOMATION_API_SKIP_VERSION_CHECK=true
+      # Frontend configuration
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=http://localhost:50051
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
       # Optional: Use Pulumi Cloud instead of local backend
       # - PULUMI_ACCESS_TOKEN=${PULUMI_ACCESS_TOKEN}
       # - PULUMI_BACKEND_URL=${PULUMI_BACKEND_URL:-https://api.pulumi.com}
@@ -26,33 +36,15 @@ services:
       - pulumi-state:/home/appuser/.pulumi
       # Persist Go build cache to avoid "no space left on device" errors
       - go-cache:/home/appuser/go
+      # Persist MongoDB data
+      - mongodb-data:/data/db
     healthcheck:
-      # Check if server process is running (requires procps package)
-      test: ['CMD', 'pgrep', '-f', 'server']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  frontend:
-    image: ${FRONTEND_IMAGE:-satishlleftbin/project-planton-frontend:latest}
-    container_name: project-planton-frontend
-    restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://localhost:50051
-    ports:
-      - '3000:3000'
-    depends_on:
-      - backend
-    networks:
-      - project-planton-network
-    healthcheck:
+      # Check if frontend is responding
       test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3000']
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 60s
 
 networks:
   project-planton-network:
@@ -62,4 +54,6 @@ volumes:
   pulumi-state:
     driver: local
   go-cache:
+    driver: local
+  mongodb-data:
     driver: local
