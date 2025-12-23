@@ -217,3 +217,149 @@ spec:
     - operator: Exists
 ```
 
+## With Environment Secrets
+
+Deploy with secrets using direct string values (for development):
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesDaemonSet
+metadata:
+  name: logging-agent
+spec:
+  namespace:
+    value: logging
+  create_namespace: true
+  container:
+    app:
+      image:
+        repo: fluent/fluent-bit
+        tag: 2.2.0
+      resources:
+        limits:
+          cpu: 200m
+          memory: 256Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      env:
+        variables:
+          LOG_LEVEL: info
+          OUTPUT_HOST: elasticsearch.logging.svc.cluster.local
+        secrets:
+          # Direct string value (for development/testing)
+          API_KEY:
+            string_value: my-dev-api-key
+      volume_mounts:
+        - name: varlog
+          mount_path: /var/log
+          host_path:
+            path: /var/log
+          read_only: true
+  tolerations:
+    - operator: Exists
+```
+
+## With Kubernetes Secret References (Production)
+
+Deploy with secrets referencing existing Kubernetes Secrets (recommended for production):
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesDaemonSet
+metadata:
+  name: datadog-agent
+spec:
+  namespace:
+    value: monitoring
+  create_namespace: true
+  container:
+    app:
+      image:
+        repo: gcr.io/datadoghq/agent
+        tag: 7.50.0
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      env:
+        variables:
+          DD_SITE: datadoghq.com
+          DD_LOGS_ENABLED: "true"
+          DD_APM_ENABLED: "true"
+        secrets:
+          # Reference existing Kubernetes Secret (production)
+          DD_API_KEY:
+            secret_ref:
+              name: datadog-credentials
+              key: api-key
+          DD_APP_KEY:
+            secret_ref:
+              name: datadog-credentials
+              key: app-key
+      volume_mounts:
+        - name: dockersock
+          mount_path: /var/run/docker.sock
+          host_path:
+            path: /var/run/docker.sock
+        - name: procdir
+          mount_path: /host/proc
+          host_path:
+            path: /proc
+          read_only: true
+      security_context:
+        privileged: true
+  tolerations:
+    - operator: Exists
+```
+
+## With Mixed Secret Types
+
+Deploy with both direct string values and Kubernetes Secret references:
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesDaemonSet
+metadata:
+  name: custom-collector
+spec:
+  namespace:
+    value: observability
+  create_namespace: true
+  container:
+    app:
+      image:
+        repo: myregistry/custom-collector
+        tag: v1.0.0
+      resources:
+        limits:
+          cpu: 300m
+          memory: 384Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      env:
+        variables:
+          COLLECTOR_MODE: agent
+          CLUSTER_NAME: production
+        secrets:
+          # Dev/test secrets can use direct values
+          DEBUG_TOKEN:
+            string_value: debug-only-token
+          # Production secrets should reference external K8s Secrets
+          DATABASE_PASSWORD:
+            secret_ref:
+              name: collector-secrets
+              key: db-password
+          CLOUD_API_KEY:
+            secret_ref:
+              name: cloud-credentials
+              key: api-key
+              namespace: shared-secrets  # Cross-namespace reference
+  tolerations:
+    - operator: Exists
+```
+

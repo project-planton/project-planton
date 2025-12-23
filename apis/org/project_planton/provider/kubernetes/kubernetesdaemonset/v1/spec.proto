@@ -4,6 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetesdaemonset.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes_secret.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/probe.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
@@ -199,9 +200,13 @@ message KubernetesDaemonSetContainerAppEnv {
   map<string, string> variables = 1;
 
   /**
-   * A map of secret names to their values.
+   * A map of secret environment variable names to their values.
+   * Each secret can be provided either as a literal string value or as a reference
+   * to an existing Kubernetes Secret.
+   *
+   * Using secret references is recommended for production deployments.
    */
-  map<string, string> secrets = 2;
+  map<string, org.project_planton.provider.kubernetes.KubernetesSensitiveValue> secrets = 2;
 }
 
 /**
