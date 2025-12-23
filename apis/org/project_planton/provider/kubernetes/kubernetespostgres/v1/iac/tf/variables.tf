@@ -73,6 +73,16 @@ variable "spec" {
     # Value: owner role name (e.g., "app_user", "analytics_role")
     # The operator will create these databases during cluster initialization.
     # If not specified, only the default "postgres" database will be available.
+    # Note: Owner roles must be declared in the 'users' field.
     databases = optional(map(string), {})
+
+    # List of PostgreSQL users/roles to create.
+    # Users must be declared here before being used as database owners.
+    # Each user has a name and optional flags (e.g., ["createdb"], ["superuser"]).
+    # Empty flags array means standard user with login privileges only.
+    users = optional(list(object({
+      name  = string
+      flags = optional(list(string), [])
+    })), [])
   })
 }

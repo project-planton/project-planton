@@ -65,6 +65,16 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 		databasesMap = pulumi.ToStringMap(locals.KubernetesPostgres.Spec.Databases)
 	}
 
+	// Convert users list to map[string][]string for Zalando operator
+	var usersMap pulumi.StringArrayMapInput
+	if len(locals.KubernetesPostgres.Spec.Users) > 0 {
+		usersMapData := make(map[string][]string)
+		for _, user := range locals.KubernetesPostgres.Spec.Users {
+			usersMapData[user.Name] = user.Flags
+		}
+		usersMap = pulumi.ToStringArrayMap(usersMapData)
+	}
+
 	//create zalando postgresql resource
 	postgresqlArgs := &zalandov1.PostgresqlArgs{
 		Metadata: metav1.ObjectMetaArgs{
@@ -106,6 +116,8 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetespostgresv1.KubernetesP
 			Env: allEnvVars,
 			// Databases to create with their owner roles
 			Databases: databasesMap,
+			// Users/roles to create (must be declared before being used as database owners)
+			Users: usersMap,
 		},
 	}
 

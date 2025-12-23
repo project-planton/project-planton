@@ -39,7 +39,7 @@ spec:
 
 ---
 
-## Example: PostgreSQL with Multiple Databases
+## Example: PostgreSQL with Users and Databases
 
 ### Create using CLI
 
@@ -75,15 +75,39 @@ spec:
         memory: "1Gi"
     diskSize: "20Gi"
   
-  # Create multiple databases with their owner roles
-  # The operator will create these databases during cluster initialization
+  # Step 1: Declare users/roles first
+  # Users must be declared before being used as database owners
+  users:
+    - name: app_user
+      flags: []              # Standard user with login privileges
+    - name: analytics_role
+      flags:
+        - createdb           # Can create additional databases
+    - name: reporting_user
+      flags: []
+  
+  # Step 2: Create databases with their owner roles
+  # Owner roles must be declared in the 'users' field above
   databases:
     app_database: app_user
     analytics_db: analytics_role
     reporting: reporting_user
 ```
 
-**Note**: The Zalando operator will automatically create the specified databases and owner roles during cluster initialization. Each database will be owned by its corresponding role.
+**Important**: The Zalando operator requires users to be declared before they can be used as database owners. If you reference a user that doesn't exist, the operator will skip creating that database with a log message like: `skipping creation of the "app_database" database, user "app_user" does not exist`.
+
+### Common User Flags
+
+| Flag | Description |
+|------|-------------|
+| `createdb` | User can create new databases |
+| `superuser` | Full superuser privileges (use with caution) |
+| `createrole` | User can create other roles |
+| `inherit` | Inherits privileges of roles it belongs to |
+| `login` | Can log in (default for users) |
+| `replication` | Can initiate streaming replication |
+
+An empty `flags` array (`[]`) creates a standard user with login privileges only, which is the recommended default for application users.
 
 ---
 

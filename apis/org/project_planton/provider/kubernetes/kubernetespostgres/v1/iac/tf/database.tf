@@ -53,6 +53,11 @@ resource "kubernetes_manifest" "database" {
       # Conditionally add databases if specified
       length(var.spec.databases) > 0 ? {
         databases = var.spec.databases
+      } : {},
+      # Conditionally add users if specified
+      # Convert list of users to map[string][]string format expected by Zalando operator
+      length(var.spec.users) > 0 ? {
+        users = { for user in var.spec.users : user.name => user.flags }
       } : {}
     )
   }

@@ -50,16 +50,33 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 
 - **Ingress Spec**: Manage and control external access to the PostgreSQL instance by configuring ingress with a custom hostname. When enabled, creates a LoadBalancer service with external-dns annotations for automatic DNS configuration. Users specify the exact hostname (e.g., `postgres.example.com`) instead of auto-constructed patterns, providing full control over the ingress endpoint.
 
-### Database Configuration
+### User Configuration
 
-- **Multiple Databases**: Specify databases to create during cluster initialization via the `databases` field. This is a map where keys are database names and values are owner role names. The Zalando operator automatically creates both the databases and their owner roles.
+- **Declarative User Management**: Define PostgreSQL users/roles via the `users` field. Each user has a `name` and optional `flags` for permissions.
+- **User Flags**: Common flags include `createdb`, `superuser`, `createrole`, `inherit`, `login`, and `replication`. Empty flags (`[]`) creates a standard user with login privileges.
 - **Example Configuration**:
   ```yaml
+  users:
+    - name: app_user
+      flags: []           # Standard user
+    - name: analytics
+      flags:
+        - createdb        # Can create databases
+  ```
+- **Required for Database Owners**: Users must be declared before being referenced as database owners.
+
+### Database Configuration
+
+- **Multiple Databases**: Specify databases to create during cluster initialization via the `databases` field. This is a map where keys are database names and values are owner role names.
+- **Owner Role Requirement**: Owner roles must be declared in the `users` field before being referenced as database owners. The operator will skip database creation if the owner doesn't exist.
+- **Example Configuration**:
+  ```yaml
+  users:
+    - name: app_user
+      flags: []
   databases:
     app_database: app_user
-    analytics_db: analytics_role
   ```
-- **Automatic Role Creation**: Owner roles are created automatically with appropriate permissions for their databases.
 - **Default Behavior**: If no databases are specified, only the default `postgres` database is available.
 
 ### Backup Configuration
