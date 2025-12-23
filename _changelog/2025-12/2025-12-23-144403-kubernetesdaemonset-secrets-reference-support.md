@@ -2,11 +2,11 @@
 
 **Date**: December 23, 2025
 **Type**: Enhancement
-**Components**: API Definitions, Kubernetes Provider, Pulumi IaC Module
+**Components**: API Definitions, Kubernetes Provider, Pulumi IaC Module, Terraform IaC Module
 
 ## Summary
 
-Added support for environment secrets in `KubernetesDaemonset` to be provided either as direct string values or as references to existing Kubernetes Secrets. This enables secure credential management in production deployments by leveraging Kubernetes-native secret storage instead of storing passwords in plaintext within configuration files.
+Added support for environment secrets in `KubernetesDaemonset` to be provided either as direct string values or as references to existing Kubernetes Secrets. This enables secure credential management in production deployments by leveraging Kubernetes-native secret storage instead of storing passwords in plaintext within configuration files. Also created a complete Terraform module for `KubernetesDaemonset` to achieve feature parity with the Pulumi implementation.
 
 ## Problem Statement / Motivation
 
@@ -154,6 +154,8 @@ Added 5 new test cases:
 
 ## Files Changed
 
+### Proto & Pulumi
+
 | File | Change |
 |------|--------|
 | `kubernetesdaemonset/v1/spec.proto` | Added import and changed `secrets` from `map<string, string>` to `map<string, KubernetesSensitiveValue>` |
@@ -161,6 +163,22 @@ Added 5 new test cases:
 | `kubernetesdaemonset/v1/iac/pulumi/module/daemonset.go` | Handle both secret types in env var creation |
 | `kubernetesdaemonset/v1/spec_test.go` | Added 5 new test cases |
 | `kubernetesdaemonset/v1/examples.md` | Added 3 new examples showing all secret options |
+
+### Terraform Module (New)
+
+| File | Description |
+|------|-------------|
+| `kubernetesdaemonset/v1/iac/tf/provider.tf` | Terraform provider configuration |
+| `kubernetesdaemonset/v1/iac/tf/variables.tf` | Input variable definitions with secrets support |
+| `kubernetesdaemonset/v1/iac/tf/locals.tf` | Local variables and computed values |
+| `kubernetesdaemonset/v1/iac/tf/main.tf` | Namespace creation |
+| `kubernetesdaemonset/v1/iac/tf/secret.tf` | Secret creation (string values only) |
+| `kubernetesdaemonset/v1/iac/tf/daemonset.tf` | DaemonSet resource with both secret types |
+| `kubernetesdaemonset/v1/iac/tf/service_account.tf` | ServiceAccount and RBAC resources |
+| `kubernetesdaemonset/v1/iac/tf/configmap.tf` | ConfigMap resources |
+| `kubernetesdaemonset/v1/iac/tf/outputs.tf` | Module outputs |
+| `kubernetesdaemonset/v1/iac/tf/README.md` | Module documentation |
+| `kubernetesdaemonset/v1/iac/tf/examples.md` | Terraform examples |
 
 ## Benefits
 
@@ -189,9 +207,21 @@ Added 5 new test cases:
 - **Shared type**: Uses `KubernetesSecretKeyRef` and `KubernetesSensitiveValue` from `kubernetes_secret.proto`
 - **Follow-up**: Same pattern should be applied to `KubernetesCronjob` and `KubernetesStatefulset`
 
+## Terraform Module Highlights
+
+The new Terraform module includes:
+
+- **DaemonSet resource** with full configuration support
+- **Secret management** with both string values and external secret refs
+- **Volume mounts**: HostPath, ConfigMap, Secret, EmptyDir, PVC
+- **Security context**: Privileged mode, capabilities, run-as settings
+- **RBAC**: ClusterRole/Role and bindings
+- **Tolerations**: Schedule on tainted nodes
+- **Update strategies**: RollingUpdate and OnDelete
+
 ---
 
 **Status**: ✅ Production Ready
-**Timeline**: ~30 minutes implementation
-**Test Results**: All tests passing
+**Timeline**: ~1.5 hours implementation (Pulumi + Terraform)
+**Test Results**: All tests passing, Terraform validate successful
 
