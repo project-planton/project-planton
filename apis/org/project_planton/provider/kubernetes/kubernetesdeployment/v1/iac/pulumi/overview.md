@@ -1,7 +1,7 @@
 # Overview
 
-The **MicroserviceKubernetes** API resource streamlines and standardizes how developers deploy microservices onto
-Kubernetes clusters. This Pulumi module interprets a `MicroserviceKubernetesStackInput`, which includes core details
+The **KubernetesDeployment** API resource streamlines and standardizes how developers deploy microservices onto
+Kubernetes clusters. This Pulumi module interprets a `KubernetesDeploymentStackInput`, which includes core details
 like Kubernetes credentials, Docker credentials, and the microservice configuration. From this input, the module
 automatically creates and manages:
 
@@ -40,6 +40,6 @@ environment variables, and ingress preferences – while the module handles the 
    Combine `availability.minReplicas` and optional horizontal pod autoscaling to dynamically scale your microservices
    based on CPU or memory utilization thresholds.
 
-Overall, **MicroserviceKubernetes** helps you focus on application code and business logic. By delegating the Kubernetes
+Overall, **KubernetesDeployment** helps you focus on application code and business logic. By delegating the Kubernetes
 resource orchestration to this module, you gain a cleaner, more consistent deployment experience across development,
 staging, and production environments.

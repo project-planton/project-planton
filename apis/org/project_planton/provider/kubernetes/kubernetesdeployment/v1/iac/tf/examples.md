@@ -1,8 +1,8 @@
 # Kubernetes Deployment - Terraform Examples
 
-This document provides comprehensive examples for deploying microservices to Kubernetes using the **MicroserviceKubernetes** Terraform module. Each example demonstrates different configuration patterns including environment variables, secrets, scaling, ingress, and more.
+This document provides comprehensive examples for deploying microservices to Kubernetes using the **KubernetesDeployment** Terraform module. Each example demonstrates different configuration patterns including environment variables, secrets, scaling, ingress, and more.
 
-> **Note:** These examples show how to use the Terraform module directly. The module expects variables to match the protobuf specification defined in the MicroserviceKubernetes API.
+> **Note:** These examples show how to use the Terraform module directly. The module expects variables to match the protobuf specification defined in the KubernetesDeployment API.
 
 ---
 
@@ -1540,7 +1540,7 @@ This Terraform module provides a comprehensive, production-ready solution for de
 - **Observability**: Structured configuration for monitoring integration
 
 For more information, see:
-- [MicroserviceKubernetes API Documentation](../../README.md)
+- [KubernetesDeployment API Documentation](../../README.md)
 - [Research Documentation](../../docs/README.md) for production best practices
 - [Pulumi Examples](../pulumi/examples.md) for alternative IaC patterns
 
