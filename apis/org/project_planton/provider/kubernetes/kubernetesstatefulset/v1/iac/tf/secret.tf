@@ -1,6 +1,15 @@
-# Create a secret for environment secrets if any are defined
+locals {
+  # Filter secrets to only include those with direct string values
+  string_value_secrets = {
+    for k, v in try(var.spec.container.app.env.secrets, {}) :
+    k => v.value
+    if try(v.value, null) != null && v.value != ""
+  }
+}
+
+# Create a secret for environment secrets if any direct string values are defined
 resource "kubernetes_secret" "env_secrets" {
-  count = length(try(var.spec.container.app.env.secrets, {})) > 0 ? 1 : 0
+  count = length(local.string_value_secrets) > 0 ? 1 : 0
 
   metadata {
     name      = local.env_secret_name
@@ -10,7 +19,7 @@ resource "kubernetes_secret" "env_secrets" {
 
   type = "Opaque"
 
-  data = try(var.spec.container.app.env.secrets, {})
+  data = local.string_value_secrets
 
   depends_on = [
     kubernetes_namespace.this

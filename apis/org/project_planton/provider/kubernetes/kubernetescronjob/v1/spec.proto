@@ -4,6 +4,7 @@ package org.project_planton.provider.kubernetes.kubernetescronjob.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/provider/kubernetes/kubernetes.proto";
+import "org/project_planton/provider/kubernetes/kubernetes_secret.proto";
 import "org/project_planton/provider/kubernetes/options.proto";
 import "org/project_planton/provider/kubernetes/target_cluster.proto";
 import "org/project_planton/provider/kubernetes/volume_mount.proto";
@@ -184,6 +185,12 @@ message KubernetesCronJobContainerAppEnv {
   // A map of environment variable names to their values.
   map<string, string> variables = 1;
 
-  // A map of secret names to their values.
-  map<string, string> secrets = 2;
+  /**
+   * A map of secret environment variable names to their values.
+   * Each secret can be provided either as a literal string value or as a reference
+   * to an existing Kubernetes Secret.
+   *
+   * Using secret references is recommended for production deployments.
+   */
+  map<string, org.project_planton.provider.kubernetes.KubernetesSensitiveValue> secrets = 2;
 }

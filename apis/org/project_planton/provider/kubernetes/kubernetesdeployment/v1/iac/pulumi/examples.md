@@ -1,6 +1,6 @@
-# MicroserviceKubernetes - Example Configurations
+# KubernetesDeployment - Example Configurations
 
-This document provides a series of examples demonstrating various configurations of the **MicroserviceKubernetes** API
+This document provides a series of examples demonstrating various configurations of the **KubernetesDeployment** API
 resource. Each example shows a typical use case, with corresponding YAML that can be applied via
 `planton apply -f <filename>`.
 
@@ -12,7 +12,7 @@ A simple example deploying a containerized application with default settings for
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: minimal-example
 spec:
@@ -57,7 +57,7 @@ like feature flags, hostnames, or numeric parameters.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: env-example
 spec:
@@ -106,7 +106,7 @@ to store these values securely. This approach is suitable for development and te
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: db-credentials-example
 spec:
@@ -126,7 +126,7 @@ spec:
           DB_HOST: "db.prod.svc.cluster.local"
         secrets:
           DB_PASSWORD:
-            stringValue: "my-secret-password"
+            value: "my-secret-password"
       resources:
         requests:
           cpu: "100m"
@@ -158,7 +158,7 @@ This is the recommended approach to avoid storing sensitive values in configurat
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: db-credentials-example
 spec:
@@ -217,7 +217,7 @@ logging, caching, or proxy sidecars.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: sidecar-example
 spec:
@@ -280,7 +280,7 @@ microservice.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: ingress-example
   labels:
@@ -329,7 +329,7 @@ Define a minimum number of replicas and enable optional autoscaling to handle in
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: hpa-example
 spec:
@@ -384,7 +384,7 @@ setting `create_namespace: false`. This is useful when:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: existing-ns-example
 spec:
@@ -426,7 +426,7 @@ spec:
 
 ## Conclusion
 
-These examples illustrate the breadth of **MicroserviceKubernetes** features, from basic single-container deployments to
+These examples illustrate the breadth of **KubernetesDeployment** features, from basic single-container deployments to
 advanced sidecars, secrets management, and ingress configuration. By consolidating Kubernetes manifests behind a concise
 API resource definition, you can maintain consistency, reduce error-prone manual config, and accelerate delivery cycles.
 
@@ -438,5 +438,5 @@ API resource definition, you can maintain consistency, reduce error-prone manual
      >    ```
 > 3. Verify the logs and resources in Kubernetes to ensure your deployment is functioning as expected.
 
-For additional details, see the [MicroserviceKubernetes API documentation](#) (placeholder link), or reach out to our
+For additional details, see the [KubernetesDeployment API documentation](#) (placeholder link), or reach out to our
 support team.

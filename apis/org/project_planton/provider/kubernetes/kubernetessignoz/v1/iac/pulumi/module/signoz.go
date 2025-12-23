@@ -85,9 +85,9 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 						secretRef := ext.Password.GetSecretRef()
 						externalClickhouseValues["existingSecret"] = pulumi.String(secretRef.Name)
 						externalClickhouseValues["existingSecretPasswordKey"] = pulumi.String(secretRef.Key)
-					} else if ext.Password.GetStringValue() != "" {
+					} else if ext.Password.GetValue() != "" {
 						// Use plain string password
-						externalClickhouseValues["password"] = pulumi.String(ext.Password.GetStringValue())
+						externalClickhouseValues["password"] = pulumi.String(ext.Password.GetValue())
 					}
 				}
 

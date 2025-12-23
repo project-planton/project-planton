@@ -1,8 +1,8 @@
 # Kubernetes Deployment - Terraform Examples
 
-This document provides comprehensive examples for deploying microservices to Kubernetes using the **MicroserviceKubernetes** Terraform module. Each example demonstrates different configuration patterns including environment variables, secrets, scaling, ingress, and more.
+This document provides comprehensive examples for deploying microservices to Kubernetes using the **KubernetesDeployment** Terraform module. Each example demonstrates different configuration patterns including environment variables, secrets, scaling, ingress, and more.
 
-> **Note:** These examples show how to use the Terraform module directly. The module expects variables to match the protobuf specification defined in the MicroserviceKubernetes API.
+> **Note:** These examples show how to use the Terraform module directly. The module expects variables to match the protobuf specification defined in the KubernetesDeployment API.
 
 ---
 
@@ -198,10 +198,10 @@ module "db_microservice" {
           # Secrets with direct string values
           secrets = {
             DB_PASSWORD = {
-              string_value = var.db_password
+              value = var.db_password
             }
             API_KEY = {
-              string_value = var.api_key
+              value = var.api_key
             }
           }
         }
@@ -236,7 +236,7 @@ variable "api_key" {
 ```
 
 **Key Points:**
-- `string_value` for direct secret values
+- `value` for direct secret values
 - Secrets stored in a Kubernetes Secret resource created by the module
 - Use Terraform variables with `sensitive = true` to protect values
 
@@ -1017,7 +1017,7 @@ module "microservice" {
         env = {
           secrets = {
             DB_PASSWORD = {
-              string_value = var.db_password
+              value = var.db_password
             }
           }
         }
@@ -1064,7 +1064,7 @@ module "microservice" {
           secrets = {
             # Dev secret - direct value
             DEBUG_TOKEN = {
-              string_value = "debug-only"
+              value = "debug-only"
             }
             # Production secret - external reference
             DB_PASSWORD = {
@@ -1540,7 +1540,7 @@ This Terraform module provides a comprehensive, production-ready solution for de
 - **Observability**: Structured configuration for monitoring integration
 
 For more information, see:
-- [MicroserviceKubernetes API Documentation](../../README.md)
+- [KubernetesDeployment API Documentation](../../README.md)
 - [Research Documentation](../../docs/README.md) for production best practices
 - [Pulumi Examples](../pulumi/examples.md) for alternative IaC patterns
 

@@ -6,7 +6,7 @@ For years, the conventional wisdom about deploying microservices to Kubernetes h
 
 The uncomfortable reality is that a basic Kubernetes Deployment with just an image and replica count is an **anti-pattern for production**. Without health probes, the orchestrator routes traffic to dead pods. Without resource limits, you're assigned to the BestEffort QoS class, meaning your service is the first to be evicted when the node runs out of memory. Without a Pod Disruption Budget, a routine node drain can terminate all your replicas simultaneously, causing an outage.
 
-This document explores the maturity spectrum of Kubernetes microservice deployments—from these dangerous anti-patterns to production-ready configurations that deliver genuine zero-downtime reliability. More importantly, it explains **why** Project Planton's MicroserviceKubernetes API is designed the way it is: to make the **secure, resilient path the easiest path**, by encoding battle-tested production practices into sensible defaults.
+This document explores the maturity spectrum of Kubernetes microservice deployments—from these dangerous anti-patterns to production-ready configurations that deliver genuine zero-downtime reliability. More importantly, it explains **why** Project Planton's KubernetesDeployment API is designed the way it is: to make the **secure, resilient path the easiest path**, by encoding battle-tested production practices into sensible defaults.
 
 ## The Deployment Maturity Spectrum
 
@@ -157,7 +157,7 @@ Most engineers understand the importance of these patterns, but implementing the
 
 **The Solution: Opinionated IaC APIs**
 
-Project Planton's MicroserviceKubernetes API solves this by providing environment profiles that encode production best practices into defaults:
+Project Planton's KubernetesDeployment API solves this by providing environment profiles that encode production best practices into defaults:
 
 **Development Profile**: Fast iteration, minimal overhead
 - 1 replica
@@ -257,7 +257,7 @@ GitOps treats Git as the single source of truth for declarative infrastructure. 
 **Both are production-ready.** ArgoCD's UI is invaluable for organizations prioritizing observability. Flux's CRD-driven model is ideal for teams who prefer declarative, `kubectl`-native workflows.
 
 **Project Planton Integration:**
-MicroserviceKubernetes generates standard Kubernetes manifests that work seamlessly with both tools:
+KubernetesDeployment generates standard Kubernetes manifests that work seamlessly with both tools:
 1. Developer defines service in a Protobuf API
 2. CI pipeline runs Project Planton to generate Kubernetes YAML
 3. YAML is committed to a Git repository
@@ -383,7 +383,7 @@ Generate standard Ingress resources that work with **any** controller. The clust
 4. cert-manager automatically requests, validates, and renews certificates
 
 **Project Planton Simplification:**
-Setting `ingress.tls: true` in your MicroserviceKubernetes spec automatically generates the TLS block and cert-manager annotations, eliminating manual configuration.
+Setting `ingress.tls: true` in your KubernetesDeployment spec automatically generates the TLS block and cert-manager annotations, eliminating manual configuration.
 
 ### Service Mesh: When Is It Worth the Complexity?
 
@@ -599,7 +599,7 @@ Just as APIs should focus on the 20% of configuration that 80% of users need, de
 
 ## Project Planton's Production-Ready Defaults
 
-MicroserviceKubernetes is designed around the principle that **the secure, resilient path should be the easiest path**.
+KubernetesDeployment is designed around the principle that **the secure, resilient path should be the easiest path**.
 
 ### Environment Profiles
 
@@ -662,7 +662,7 @@ The gap between "runs in Kubernetes" and "runs reliably in production" is enormo
 
 Manually configuring this for every microservice is error-prone and toil-heavy. Copy-pasting manifests leads to configuration drift. Helm templates become fragile mazes of nested conditionals.
 
-Project Planton's MicroserviceKubernetes API solves this by encoding production best practices into **environment-aware defaults**. Developers declare their intent at a high level; the platform generates complete, battle-tested Kubernetes manifests.
+Project Planton's KubernetesDeployment API solves this by encoding production best practices into **environment-aware defaults**. Developers declare their intent at a high level; the platform generates complete, battle-tested Kubernetes manifests.
 
 This is not about hiding Kubernetes. It's about **hiding complexity while preserving power**. Advanced users can override any default. But for the 80% use case—deploying a stateless HTTP microservice with production-grade reliability—the secure, resilient path is now also the **easiest** path.
 

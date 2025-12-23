@@ -1,29 +1,46 @@
-# 1) Create a ServiceAccount
-resource "kubernetes_service_account" "this" {
-  metadata {
-    name      = local.resource_id
-    namespace = local.namespace
-  }
-}
+##############################################
+# daemonset.tf
+#
+# Creates the Kubernetes DaemonSet with:
+#  - Main application container
+#  - Optional sidecar containers
+#  - Security context for privileged operations
+#  - Environment variables from direct values and secrets
+#  - Environment secrets from both string values and external secret refs
+#  - Volume mounts (HostPath, ConfigMap, Secret, EmptyDir, PVC)
+#  - Tolerations for scheduling on tainted nodes
+#  - Node selector for targeting specific nodes
+#  - Update strategy (RollingUpdate or OnDelete)
+##############################################
 
-# 3) Create the Deployment
-resource "kubernetes_deployment" "this" {
+resource "kubernetes_daemon_set_v1" "this" {
   metadata {
     name      = var.metadata.name
     namespace = local.namespace
     labels    = local.final_labels
-    annotations = {
-      # Example annotation (remove or modify as needed)
-      "example.annotation" = "true"
-    }
   }
 
   spec {
-    # If not provided, default to 1 replica
-    replicas = try(var.spec.availability.min_replicas, 1)
-
     selector {
-      match_labels = local.final_labels
+      match_labels = local.selector_labels
+    }
+
+    # Min ready seconds
+    min_ready_seconds = var.spec.min_ready_seconds
+
+    # Update strategy
+    dynamic "strategy" {
+      for_each = var.spec.update_strategy != null ? [var.spec.update_strategy] : []
+      content {
+        type = strategy.value.type
+        dynamic "rolling_update" {
+          for_each = strategy.value.type == "RollingUpdate" && strategy.value.rolling_update != null ? [strategy.value.rolling_update] : []
+          content {
+            max_unavailable = try(rolling_update.value.max_unavailable, null)
+            max_surge       = try(rolling_update.value.max_surge, null)
+          }
+        }
+      }
     }
 
     template {
@@ -32,11 +49,35 @@ resource "kubernetes_deployment" "this" {
       }
 
       spec {
-        service_account_name             = kubernetes_service_account.this.metadata[0].name
-        termination_grace_period_seconds = 60
+        # ServiceAccount
+        service_account_name = var.spec.create_service_account ? kubernetes_service_account.this[0].metadata[0].name : try(var.spec.service_account_name, null)
 
+        # Node selector
+        node_selector = var.spec.node_selector
+
+        # Tolerations
+        dynamic "toleration" {
+          for_each = var.spec.tolerations
+          content {
+            key                = try(toleration.value.key, null)
+            operator           = try(toleration.value.operator, null)
+            value              = try(toleration.value.value, null)
+            effect             = try(toleration.value.effect, null)
+            toleration_seconds = try(toleration.value.toleration_seconds, null)
+          }
+        }
+
+        # Image pull secrets
+        dynamic "image_pull_secrets" {
+          for_each = var.spec.container.app.image.pull_secret_name != null ? [1] : []
+          content {
+            name = var.spec.container.app.image.pull_secret_name
+          }
+        }
+
+        # Main container
         container {
-          name  = "microservice"
+          name  = "daemonset-container"
           image = "${var.spec.container.app.image.repo}:${var.spec.container.app.image.tag}"
 
           # Container ports
@@ -45,10 +86,12 @@ resource "kubernetes_deployment" "this" {
             content {
               name           = port.value.name
               container_port = port.value.container_port
+              protocol       = port.value.network_protocol
+              host_port      = try(port.value.host_port, null)
             }
           }
 
-          # Add built-in environment variables
+          # Built-in environment variables
           env {
             name = "HOSTNAME"
             value_from {
@@ -68,7 +111,16 @@ resource "kubernetes_deployment" "this" {
             }
           }
 
-          # Add env variables from var.spec.container.app.env.variables
+          env {
+            name = "K8S_NODE_NAME"
+            value_from {
+              field_ref {
+                field_path = "spec.nodeName"
+              }
+            }
+          }
+
+          # Environment variables from spec
           dynamic "env" {
             for_each = try(var.spec.container.app.env.variables, {})
             content {
@@ -77,7 +129,7 @@ resource "kubernetes_deployment" "this" {
             }
           }
 
-          # Add env variables from secrets with direct string values (using computed secret name)
+          # Environment secrets with direct string values (using internal secret)
           dynamic "env" {
             for_each = {
               for k, v in try(var.spec.container.app.env.secrets, {}) :
@@ -95,7 +147,7 @@ resource "kubernetes_deployment" "this" {
             }
           }
 
-          # Add env variables from external Kubernetes Secret references
+          # Environment secrets from external Kubernetes Secret references
           dynamic "env" {
             for_each = {
               for k, v in try(var.spec.container.app.env.secrets, {}) :
@@ -116,16 +168,16 @@ resource "kubernetes_deployment" "this" {
           # Resource requests/limits
           resources {
             limits = {
-              cpu = try(var.spec.container.app.resources.limits.cpu, null)
+              cpu    = try(var.spec.container.app.resources.limits.cpu, null)
               memory = try(var.spec.container.app.resources.limits.memory, null)
             }
             requests = {
-              cpu = try(var.spec.container.app.resources.requests.cpu, null)
+              cpu    = try(var.spec.container.app.resources.requests.cpu, null)
               memory = try(var.spec.container.app.resources.requests.memory, null)
             }
           }
 
-          # Volume mounts for the container
+          # Volume mounts
           dynamic "volume_mount" {
             for_each = try(var.spec.container.app.volume_mounts, [])
             content {
@@ -136,17 +188,65 @@ resource "kubernetes_deployment" "this" {
             }
           }
 
-          # Command override (if specified)
+          # Command override
           command = length(try(var.spec.container.app.command, [])) > 0 ? var.spec.container.app.command : null
 
-          # Args override (if specified)
+          # Args override
           args = length(try(var.spec.container.app.args, [])) > 0 ? var.spec.container.app.args : null
 
-          # Lifecycle pre-stop hook (sleep 60 seconds)
-          lifecycle {
-            pre_stop {
-              exec {
-                command = ["/bin/sleep", "60"]
+          # Security context
+          dynamic "security_context" {
+            for_each = var.spec.container.app.security_context != null ? [var.spec.container.app.security_context] : []
+            content {
+              privileged               = try(security_context.value.privileged, false)
+              run_as_user              = try(security_context.value.run_as_user, null)
+              run_as_group             = try(security_context.value.run_as_group, null)
+              run_as_non_root          = try(security_context.value.run_as_non_root, null)
+              read_only_root_filesystem = try(security_context.value.read_only_root_filesystem, false)
+
+              dynamic "capabilities" {
+                for_each = security_context.value.capabilities != null ? [security_context.value.capabilities] : []
+                content {
+                  add  = try(capabilities.value.add, [])
+                  drop = try(capabilities.value.drop, [])
+                }
+              }
+            }
+          }
+        }
+
+        # Sidecar containers
+        dynamic "container" {
+          for_each = try(var.spec.container.sidecars, [])
+          content {
+            name  = container.value.name
+            image = container.value.image
+
+            dynamic "port" {
+              for_each = try(container.value.ports, [])
+              content {
+                name           = port.value.name
+                container_port = port.value.container_port
+                protocol       = port.value.protocol
+              }
+            }
+
+            resources {
+              limits = {
+                cpu    = try(container.value.resources.limits.cpu, null)
+                memory = try(container.value.resources.limits.memory, null)
+              }
+              requests = {
+                cpu    = try(container.value.resources.requests.cpu, null)
+                memory = try(container.value.resources.requests.memory, null)
+              }
+            }
+
+            dynamic "env" {
+              for_each = try(container.value.env, [])
+              content {
+                name  = env.value.name
+                value = env.value.value
               }
             }
           }
@@ -190,7 +290,7 @@ resource "kubernetes_deployment" "this" {
           }
         }
 
-        # HostPath volumes
+        # HostPath volumes (common for DaemonSets)
         dynamic "volume" {
           for_each = [for vm in try(var.spec.container.app.volume_mounts, []) : vm if vm.host_path != null]
           content {
@@ -231,6 +331,8 @@ resource "kubernetes_deployment" "this" {
 
   depends_on = [
     kubernetes_namespace.this,
-    kubernetes_config_map.this
+    kubernetes_config_map.this,
+    kubernetes_secret.this
   ]
 }
+

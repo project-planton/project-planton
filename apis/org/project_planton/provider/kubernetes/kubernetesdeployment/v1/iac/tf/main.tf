@@ -1,7 +1,7 @@
 ##############################################
 # main.tf
 #
-# Main orchestration file for MicroserviceKubernetes
+# Main orchestration file for KubernetesDeployment
 # deployment using Terraform.
 #
 # This module creates a production-ready Kubernetes

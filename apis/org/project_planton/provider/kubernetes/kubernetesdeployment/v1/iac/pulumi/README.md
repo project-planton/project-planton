@@ -35,7 +35,7 @@
 
 See [example](example.md) for usage details and step-by-step examples. In general:
 
-1. Define a YAML resource describing your microservice using the **MicroserviceKubernetes** API.
+1. Define a YAML resource describing your microservice using the **KubernetesDeployment** API.
 2. Run:
    ```bash
    planton pulumi up --stack-input <your-microservice-file.yaml>
@@ -60,7 +60,7 @@ to apply the resource on your cluster.
 ## Module Structure
 
 1. **Initialization**  
-   Reads your `MicroserviceKubernetesStackInput` (containing cluster creds, Docker config, resource definitions), sets
+   Reads your `KubernetesDeploymentStackInput` (containing cluster creds, Docker config, resource definitions), sets
    up local variables, and merges labels.
 
 2. **Provider Setup**  

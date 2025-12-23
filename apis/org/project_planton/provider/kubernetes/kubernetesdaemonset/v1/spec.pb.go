@@ -422,8 +422,12 @@ type KubernetesDaemonSetContainerAppEnv struct {
 	// A map of environment variable names to their values.
 	Variables map[string]string `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
-	// A map of secret names to their values.
-	Secrets       map[string]string `protobuf:"bytes,2,rep,name=secrets,proto3" json:"secrets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// A map of secret environment variable names to their values.
+	// Each secret can be provided either as a literal string value or as a reference
+	// to an existing Kubernetes Secret.
+	//
+	// Using secret references is recommended for production deployments.
+	Secrets       map[string]*kubernetes.KubernetesSensitiveValue `protobuf:"bytes,2,rep,name=secrets,proto3" json:"secrets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -465,7 +469,7 @@ func (x *KubernetesDaemonSetContainerAppEnv) GetVariables() map[string]string {
 	return nil
 }
 
-func (x *KubernetesDaemonSetContainerAppEnv) GetSecrets() map[string]string {
+func (x *KubernetesDaemonSetContainerAppEnv) GetSecrets() map[string]*kubernetes.KubernetesSensitiveValue {
 	if x != nil {
 		return x.Secrets
 	}
@@ -1057,7 +1061,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_pro
 
 const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iorg/project_planton/provider/kubernetes/kubernetesdaemonset/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesdaemonset.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xd3\n" +
+	"Iorg/project_planton/provider/kubernetes/kubernetesdaemonset/v1/spec.proto\x12>org.project_planton.provider.kubernetes.kubernetesdaemonset.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a?org/project_planton/provider/kubernetes/kubernetes_secret.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xd3\n" +
 	"\n" +
 	"\x17KubernetesDaemonSetSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
@@ -1100,16 +1104,16 @@ const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_p
 	"\acommand\x18\t \x03(\tR\acommand\x12\x12\n" +
 	"\x04args\x18\n" +
 	" \x03(\tR\x04args\x12\x8d\x01\n" +
-	"\x10security_context\x18\v \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetSecurityContextR\x0fsecurityContext\"\xbc\x03\n" +
+	"\x10security_context\x18\v \x01(\v2b.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetSecurityContextR\x0fsecurityContext\"\xff\x03\n" +
 	"\"KubernetesDaemonSetContainerAppEnv\x12\x8f\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2q.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetContainerAppEnv.VariablesEntryR\tvariables\x12\x89\x01\n" +
 	"\asecrets\x18\x02 \x03(\v2o.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
 	"\x0eVariablesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a}\n" +
 	"\fSecretsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb9\x04\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12W\n" +
+	"\x05value\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueR\x05value:\x028\x01\"\xb9\x04\n" +
 	"#KubernetesDaemonSetContainerAppPort\x12\x82\x02\n" +
 	"\x04name\x18\x01 \x01(\tB\xed\x01\xbaH\xe9\x01\xba\x01\xe2\x01\n" +
 	"\x1dspec.container.app.ports.name\x12\x92\x01Name for ports must only contain lowercase alphanumeric characters and hyphens. Port names must also start and end with an alphanumeric character.\x1a,this.matches('^[a-z0-9][a-z0-9-]*[a-z0-9]$')\xc8\x01\x01R\x04name\x12-\n" +
@@ -1193,6 +1197,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_pro
 	(*kubernetes.ContainerResources)(nil),        // 20: org.project_planton.provider.kubernetes.ContainerResources
 	(*kubernetes.VolumeMount)(nil),               // 21: org.project_planton.provider.kubernetes.VolumeMount
 	(*kubernetes.Probe)(nil),                     // 22: org.project_planton.provider.kubernetes.Probe
+	(*kubernetes.KubernetesSensitiveValue)(nil),  // 23: org.project_planton.provider.kubernetes.KubernetesSensitiveValue
 }
 var file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_proto_depIdxs = []int32{
 	16, // 0: org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
@@ -1220,11 +1225,12 @@ var file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_pro
 	9,  // 22: org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetSecurityContext.capabilities:type_name -> org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetCapabilities
 	11, // 23: org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbac.cluster_rules:type_name -> org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule
 	11, // 24: org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbac.namespace_rules:type_name -> org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetRbacRule
-	25, // [25:25] is the sub-list for method output_type
-	25, // [25:25] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	23, // 25: org.project_planton.provider.kubernetes.kubernetesdaemonset.v1.KubernetesDaemonSetContainerAppEnv.SecretsEntry.value:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	26, // [26:26] is the sub-list for method output_type
+	26, // [26:26] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_proto_init() }

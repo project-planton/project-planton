@@ -1,5 +1,5 @@
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: test-microservice-on-kubernetes
 spec:

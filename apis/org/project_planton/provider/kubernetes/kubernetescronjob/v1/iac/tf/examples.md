@@ -117,7 +117,9 @@ module "weekly_report_cronjob" {
 
 ## 3. Using Secret Environment Variables
 
-Sensitive data should be stored in secrets. This example shows how to reference secrets in environment variables.
+Sensitive data should be stored in secrets. This example shows two approaches for providing secrets.
+
+### Option 1: Direct String Value (Development/Testing)
 
 ```hcl
 module "db_maintenance_cronjob" {
@@ -146,13 +148,80 @@ module "db_maintenance_cronjob" {
     }
     
     env = {
-      # Sensitive data from secrets
       secrets = {
-        DB_PASSWORD = "password-from-secret-manager"
-        API_KEY     = "api-key-from-secret-manager"
+        DB_PASSWORD = {
+          value = "password-from-secret-manager"
+        }
+        API_KEY = {
+          value = "api-key-from-secret-manager"
+        }
       }
       
-      # Non-sensitive configuration
+      variables = {
+        DB_HOST = "db-server.prod.svc.cluster.local"
+        DB_NAME = "myappdb"
+        DB_PORT = "5432"
+      }
+    }
+    
+    resources = {
+      limits = {
+        cpu    = "1"
+        memory = "512Mi"
+      }
+      requests = {
+        cpu    = "100m"
+        memory = "128Mi"
+      }
+    }
+  }
+}
+```
+
+### Option 2: Kubernetes Secret Reference (Production)
+
+```hcl
+module "db_maintenance_cronjob" {
+  source = "./path/to/kubernetes-cronjob-module"
+
+  metadata = {
+    name = "db-maintenance"
+    id   = "db-maintenance-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    
+    namespace        = "my-namespace"
+    create_namespace = true
+    
+    schedule = "0 3 * * *"  # Daily at 3:00 AM
+    
+    image = {
+      repo = "my-org/maintenance-tool"
+      tag  = "stable"
+    }
+    
+    env = {
+      secrets = {
+        DB_PASSWORD = {
+          secret_ref = {
+            name = "postgres-credentials"  # Name of existing K8s Secret
+            key  = "password"              # Key within the Secret
+          }
+        }
+        API_KEY = {
+          secret_ref = {
+            name = "api-credentials"
+            key  = "key"
+          }
+        }
+      }
+      
       variables = {
         DB_HOST = "db-server.prod.svc.cluster.local"
         DB_NAME = "myappdb"
@@ -175,9 +244,10 @@ module "db_maintenance_cronjob" {
 ```
 
 **Key Points:**
-- **env.secrets**: Sensitive values that will be stored in Kubernetes secrets
+- **env.secrets.value**: Direct string value for development/testing scenarios
+- **env.secrets.secret_ref**: Reference to an existing Kubernetes Secret (recommended for production)
 - **env.variables**: Non-sensitive configuration values
-- The module automatically creates a secret named "main" with the secret values
+- The module only creates a secret when there are direct string values to store
 
 ---
 
@@ -466,7 +536,9 @@ module "backup_cronjob" {
         DB_NAME = "myapp"
       }
       secrets = {
-        DB_USER = "admin"
+        DB_USER = {
+          value = "admin"
+        }
       }
     }
     

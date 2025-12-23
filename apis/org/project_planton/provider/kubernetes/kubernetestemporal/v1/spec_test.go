@@ -16,8 +16,8 @@ import (
 // Helper function to create a string password value
 func stringPassword(value string) *kubernetes.KubernetesSensitiveValue {
 	return &kubernetes.KubernetesSensitiveValue{
-		Value: &kubernetes.KubernetesSensitiveValue_StringValue{
-			StringValue: value,
+		SensitiveValue: &kubernetes.KubernetesSensitiveValue_Value{
+			Value: value,
 		},
 	}
 }
@@ -25,7 +25,7 @@ func stringPassword(value string) *kubernetes.KubernetesSensitiveValue {
 // Helper function to create a secret ref password value
 func secretRefPassword(name, key string) *kubernetes.KubernetesSensitiveValue {
 	return &kubernetes.KubernetesSensitiveValue{
-		Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+		SensitiveValue: &kubernetes.KubernetesSensitiveValue_SecretRef{
 			SecretRef: &kubernetes.KubernetesSecretKeyRef{
 				Name: name,
 				Key:  key,

@@ -90,7 +90,7 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 							},
 						},
 					}))
-				} else if secretValue.GetStringValue() != "" {
+				} else if secretValue.GetValue() != "" {
 					// Use the internally created secret (env-secrets) for direct string values
 					envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
 						Name: pulumi.String(secretKey),

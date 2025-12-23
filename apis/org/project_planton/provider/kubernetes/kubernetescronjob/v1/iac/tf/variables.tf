@@ -51,10 +51,17 @@ variable "spec" {
         memory = string
       })
     })
-    env = object({
+    env = optional(object({
       variables = optional(map(string))
-      secrets   = optional(map(string))
-    })
+      secrets = optional(map(object({
+        value = optional(string)
+        secret_ref = optional(object({
+          namespace = optional(string)
+          name      = string
+          key       = string
+        }))
+      })))
+    }))
     command = optional(list(string))
     args    = optional(list(string))
 

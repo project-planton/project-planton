@@ -10,7 +10,7 @@ planton apply -f <yaml-path>
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: todo-list-api
 spec:
@@ -40,7 +40,7 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: todo-list-api
 spec:
@@ -90,9 +90,9 @@ spec:
           DATABASE_NAME: todo
         secrets:
           DATABASE_PASSWORD:
-            stringValue: my-secret-password
+            value: my-secret-password
           API_KEY:
-            stringValue: abc123
+            value: abc123
       image:
         repo: nginx
         tag: latest
@@ -185,7 +185,7 @@ spec:
         secrets:
           # Direct value - suitable for non-critical secrets in dev
           DEBUG_TOKEN:
-            stringValue: debug-only-token
+            value: debug-only-token
           # External secret reference - recommended for production credentials
           DATABASE_PASSWORD:
             secretRef:
