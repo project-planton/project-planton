@@ -137,4 +137,104 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 			})
 		})
 	})
+
+	ginkgo.Describe("Environment secrets validation", func() {
+		ginkgo.Context("When secrets have direct string values", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
+						"DATABASE_PASSWORD": {
+							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+								StringValue: "my-password",
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When secrets have Kubernetes Secret references", func() {
+			ginkgo.It("should pass validation with valid secret ref", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
+						"DATABASE_PASSWORD": {
+							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+								SecretRef: &kubernetes.KubernetesSecretKeyRef{
+									Name: "my-app-secrets",
+									Key:  "db-password",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When secrets have mixed types", func() {
+			ginkgo.It("should pass validation with both string values and secret refs", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Variables: map[string]string{
+						"DATABASE_NAME": "mydb",
+					},
+					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
+						"DATABASE_PASSWORD": {
+							Value: &kubernetes.KubernetesSensitiveValue_StringValue{
+								StringValue: "my-password",
+							},
+						},
+						"API_KEY": {
+							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+								SecretRef: &kubernetes.KubernetesSecretKeyRef{
+									Name: "external-secrets",
+									Key:  "api-key",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When secret ref is missing required fields", func() {
+			ginkgo.It("should fail validation when name is missing", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
+						"DATABASE_PASSWORD": {
+							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+								SecretRef: &kubernetes.KubernetesSecretKeyRef{
+									Name: "",
+									Key:  "db-password",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+
+			ginkgo.It("should fail validation when key is missing", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
+						"DATABASE_PASSWORD": {
+							Value: &kubernetes.KubernetesSensitiveValue_SecretRef{
+								SecretRef: &kubernetes.KubernetesSecretKeyRef{
+									Name: "my-secrets",
+									Key:  "",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
 })

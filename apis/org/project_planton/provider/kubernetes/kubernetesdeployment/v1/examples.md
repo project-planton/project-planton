@@ -69,25 +69,137 @@ spec:
           memory: 2Gi
 ```
 
-# Example w/ Environment Secrets  
+# Example w/ Environment Secrets (Direct String Values)
 
-The below example assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:ai.planton.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
+This example shows how to provide secrets as direct string values. A Kubernetes Secret is automatically
+created to store these values securely. This approach is suitable for development and testing.
+
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: KubernetesDeployment
 metadata:
   name: todo-list-api
 spec:
+  namespace:
+    value: my-namespace
   version: main
   container:
     app:
       env:
-        secrets:
-          # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-          # value after dot 'database-password' is one of the secrets list in 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-          DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
         variables:
           DATABASE_NAME: todo
+        secrets:
+          DATABASE_PASSWORD:
+            stringValue: my-secret-password
+          API_KEY:
+            stringValue: abc123
+      image:
+        repo: nginx
+        tag: latest
+      ports:
+        - appProtocol: http
+          containerPort: 8080
+          isIngressPort: true
+          name: rest-api
+          networkProtocol: TCP
+          servicePort: 80
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+```
+
+# Example w/ Environment Secrets (Kubernetes Secret References)
+
+This example shows how to reference existing Kubernetes Secrets. This is the recommended approach for
+production deployments as it avoids storing sensitive values in configuration files.
+
+**Prerequisites:** The referenced Kubernetes Secrets must exist in the cluster before deploying.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesDeployment
+metadata:
+  name: todo-list-api
+spec:
+  namespace:
+    value: my-namespace
+  version: main
+  container:
+    app:
+      env:
+        variables:
+          DATABASE_NAME: todo
+        secrets:
+          DATABASE_PASSWORD:
+            secretRef:
+              name: my-app-secrets
+              key: db-password
+          API_KEY:
+            secretRef:
+              name: external-api-credentials
+              key: api-key
+      image:
+        repo: nginx
+        tag: latest
+      ports:
+        - appProtocol: http
+          containerPort: 8080
+          isIngressPort: true
+          name: rest-api
+          networkProtocol: TCP
+          servicePort: 80
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+```
+
+# Example w/ Mixed Secret Types
+
+This example demonstrates using both direct string values and Kubernetes Secret references together.
+You can mix and match based on your needs - use direct values for development secrets and references
+for production credentials.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesDeployment
+metadata:
+  name: todo-list-api
+spec:
+  namespace:
+    value: my-namespace
+  version: main
+  container:
+    app:
+      env:
+        variables:
+          DATABASE_NAME: todo
+          LOG_LEVEL: info
+        secrets:
+          # Direct value - suitable for non-critical secrets in dev
+          DEBUG_TOKEN:
+            stringValue: debug-only-token
+          # External secret reference - recommended for production credentials
+          DATABASE_PASSWORD:
+            secretRef:
+              name: postgres-credentials
+              key: password
+          # Another external reference
+          AWS_ACCESS_KEY_ID:
+            secretRef:
+              name: aws-credentials
+              key: access-key-id
+          AWS_SECRET_ACCESS_KEY:
+            secretRef:
+              name: aws-credentials
+              key: secret-access-key
       image:
         repo: nginx
         tag: latest

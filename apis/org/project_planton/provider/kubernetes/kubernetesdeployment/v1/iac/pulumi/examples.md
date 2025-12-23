@@ -99,10 +99,10 @@ spec:
 
 ---
 
-## 3. Using Secrets for Sensitive Data
+## 3. Using Secrets for Sensitive Data (Direct String Values)
 
-Secrets are injected via a Kubernetes Secret named `"main"`. The reference syntax (`$ref::...`) is just an example
-placeholder – your actual solution might differ, e.g., referencing secret keys from a Cloud Secret Manager.
+Secrets can be provided as direct string values. A Kubernetes Secret is automatically created
+to store these values securely. This approach is suitable for development and testing.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -125,7 +125,8 @@ spec:
         variables:
           DB_HOST: "db.prod.svc.cluster.local"
         secrets:
-          DB_PASSWORD: $ref::secrets-group::postgres-prod::password
+          DB_PASSWORD:
+            stringValue: "my-secret-password"
       resources:
         requests:
           cpu: "100m"
@@ -144,9 +145,68 @@ spec:
 
 **Key points**:
 
-- `DB_PASSWORD` is stored in Kubernetes as a secret.
+- `DB_PASSWORD` is stored in a Kubernetes Secret created by the module.
 - This keeps sensitive data out of version control and your container images.
 - `isIngressPort: true` on port 9090, potentially enabling external access if `ingress.is_enabled` is set.
+
+---
+
+## 3b. Using Secrets for Sensitive Data (Kubernetes Secret References)
+
+For production deployments, reference existing Kubernetes Secrets instead of providing values directly.
+This is the recommended approach to avoid storing sensitive values in configuration files.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: MicroserviceKubernetes
+metadata:
+  name: db-credentials-example
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "db-credentials-example"
+  create_namespace: true
+  version: main
+  container:
+    app:
+      image:
+        repo: org/database-connector
+        tag: stable
+      env:
+        variables:
+          DB_HOST: "db.prod.svc.cluster.local"
+        secrets:
+          DB_PASSWORD:
+            secretRef:
+              name: postgres-credentials
+              key: password
+          API_KEY:
+            secretRef:
+              name: external-api-secrets
+              key: api-key
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "200Mi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+      ports:
+        - name: http
+          containerPort: 9090
+          networkProtocol: TCP
+          appProtocol: http
+          servicePort: 80
+          isIngressPort: true
+```
+
+**Key points**:
+
+- `secretRef` references an existing Kubernetes Secret by name and key.
+- The referenced Secret must exist in the cluster before deployment.
+- Avoids storing sensitive values in YAML manifests or version control.
+- Recommended for production environments.
 
 ---
 

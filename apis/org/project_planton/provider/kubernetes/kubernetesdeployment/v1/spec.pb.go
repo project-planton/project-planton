@@ -444,8 +444,36 @@ type KubernetesDeploymentContainerAppEnv struct {
 	// A map of environment variable names to their values.
 	Variables map[string]string `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
-	// A map of secret names to their values.
-	Secrets       map[string]string `protobuf:"bytes,2,rep,name=secrets,proto3" json:"secrets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// A map of secret environment variable names to their values.
+	// Each secret can be provided either as a literal string value or as a reference to an existing Kubernetes Secret.
+	//
+	// Using secret references is recommended for production deployments to avoid storing
+	// sensitive values in plain text within configuration files or version control.
+	//
+	// **Option 1: Direct string value (for development/testing)**
+	// ```yaml
+	// secrets:
+	//
+	//	DATABASE_PASSWORD:
+	//	  stringValue: my-password
+	//
+	// ```
+	//
+	// **Option 2: Kubernetes Secret reference (recommended for production)**
+	// ```yaml
+	// secrets:
+	//
+	//	DATABASE_PASSWORD:
+	//	  secretRef:
+	//	    name: my-app-secrets
+	//	    key: db-password
+	//
+	// ```
+	//
+	// When using string values, a Kubernetes Secret is automatically created and the environment
+	// variable references that secret. When using secret references, the environment variable
+	// directly references the specified external Kubernetes Secret.
+	Secrets       map[string]*kubernetes.KubernetesSensitiveValue `protobuf:"bytes,2,rep,name=secrets,proto3" json:"secrets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -487,7 +515,7 @@ func (x *KubernetesDeploymentContainerAppEnv) GetVariables() map[string]string {
 	return nil
 }
 
-func (x *KubernetesDeploymentContainerAppEnv) GetSecrets() map[string]string {
+func (x *KubernetesDeploymentContainerAppEnv) GetSecrets() map[string]*kubernetes.KubernetesSensitiveValue {
 	if x != nil {
 		return x.Secrets
 	}
@@ -904,7 +932,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 
 const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe3\b\n" +
+	"Jorg/project_planton/provider/kubernetes/kubernetesdeployment/v1/spec.proto\x12?org.project_planton.provider.kubernetes.kubernetesdeployment.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a?org/project_planton/provider/kubernetes/kubernetes_secret.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a3org/project_planton/provider/kubernetes/probe.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/provider/kubernetes/volume_mount.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe3\b\n" +
 	"\x18KubernetesDeploymentSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -943,16 +971,16 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_
 	"\rvolume_mounts\x18\b \x03(\v24.org.project_planton.provider.kubernetes.VolumeMountR\fvolumeMounts\x12\x18\n" +
 	"\acommand\x18\t \x03(\tR\acommand\x12\x12\n" +
 	"\x04args\x18\n" +
-	" \x03(\tR\x04args\"\xc1\x03\n" +
+	" \x03(\tR\x04args\"\x84\x04\n" +
 	"#KubernetesDeploymentContainerAppEnv\x12\x91\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2s.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.VariablesEntryR\tvariables\x12\x8b\x01\n" +
 	"\asecrets\x18\x02 \x03(\v2q.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
 	"\x0eVariablesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a}\n" +
 	"\fSecretsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xe9\x05\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12W\n" +
+	"\x05value\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueR\x05value:\x028\x01\"\xe9\x05\n" +
 	"$KubernetesDeploymentContainerAppPort\x12\xd0\x02\n" +
 	"\x04name\x18\x01 \x01(\tB\xbb\x02\xbaH\xb7\x02\xba\x01\xb0\x02\n" +
 	"\x1dspec.container.app.ports.name\x12\xe0\x01Name for ports must only contain lowercase alphanumeric characters and hyphens. Port names must also start and end with an alphanumeric character. For example, '123-abc' and 'web' are valid, but '123_abc' and '-web' are not.\x1a,this.matches('^[a-z0-9][a-z0-9-]*[a-z0-9]$')\xc8\x01\x01R\x04name\x12-\n" +
@@ -1015,6 +1043,7 @@ var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 	(*kubernetes.ContainerResources)(nil),        // 17: org.project_planton.provider.kubernetes.ContainerResources
 	(*kubernetes.Probe)(nil),                     // 18: org.project_planton.provider.kubernetes.Probe
 	(*kubernetes.VolumeMount)(nil),               // 19: org.project_planton.provider.kubernetes.VolumeMount
+	(*kubernetes.KubernetesSensitiveValue)(nil),  // 20: org.project_planton.provider.kubernetes.KubernetesSensitiveValue
 }
 var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_depIdxs = []int32{
 	13, // 0: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentSpec.target_cluster:type_name -> org.project_planton.provider.kubernetes.KubernetesClusterSelector
@@ -1038,11 +1067,12 @@ var file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_pr
 	7,  // 18: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.horizontal_pod_autoscaling:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailabilityHpa
 	8,  // 19: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.deployment_strategy:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentDeploymentStrategy
 	9,  // 20: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentPodDisruptionBudget
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	20, // 21: org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentContainerAppEnv.SecretsEntry.value:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_init() }

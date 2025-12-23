@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/pkg/errors"
 	kubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
@@ -66,18 +67,41 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		}
 
 		if locals.KubernetesDeployment.Spec.Container.App.Env.Secrets != nil {
-			sortedEnvironmentSecretKeys := sortstringmap.SortMap(locals.KubernetesDeployment.Spec.Container.App.Env.Secrets)
+			// Sort keys for deterministic output
+			sortedSecretKeys := make([]string, 0, len(locals.KubernetesDeployment.Spec.Container.App.Env.Secrets))
+			for k := range locals.KubernetesDeployment.Spec.Container.App.Env.Secrets {
+				sortedSecretKeys = append(sortedSecretKeys, k)
+			}
+			sort.Strings(sortedSecretKeys)
 
-			for _, environmentSecretKey := range sortedEnvironmentSecretKeys {
-				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
-					Name: pulumi.String(environmentSecretKey),
-					ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
-						SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
-							Name: pulumi.String(locals.EnvSecretName),
-							Key:  pulumi.String(environmentSecretKey),
+			for _, secretKey := range sortedSecretKeys {
+				secretValue := locals.KubernetesDeployment.Spec.Container.App.Env.Secrets[secretKey]
+
+				// Determine which secret to reference based on the value type
+				if secretValue.GetSecretRef() != nil {
+					// Use external Kubernetes Secret reference
+					secretRef := secretValue.GetSecretRef()
+					envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+						Name: pulumi.String(secretKey),
+						ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
+							SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
+								Name: pulumi.String(secretRef.Name),
+								Key:  pulumi.String(secretRef.Key),
+							},
 						},
-					},
-				}))
+					}))
+				} else if secretValue.GetStringValue() != "" {
+					// Use the internally created secret (env-secrets) for direct string values
+					envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+						Name: pulumi.String(secretKey),
+						ValueFrom: &kubernetescorev1.EnvVarSourceArgs{
+							SecretKeyRef: &kubernetescorev1.SecretKeySelectorArgs{
+								Name: pulumi.String(locals.EnvSecretName),
+								Key:  pulumi.String(secretKey),
+							},
+						},
+					}))
+				}
 			}
 		}
 	}

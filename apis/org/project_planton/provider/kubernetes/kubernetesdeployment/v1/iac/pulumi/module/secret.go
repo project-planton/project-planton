@@ -2,29 +2,46 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"sort"
 )
 
+// secret creates a Kubernetes Secret for environment secrets that are provided as direct string values.
+// Secrets that reference external Kubernetes Secrets (via secretRef) are not included here;
+// they are handled directly in the deployment as environment variable references.
 func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	dataMap := make(map[string]string)
 
-	//add all secrets to data map
+	// Add all secrets that have direct string values to the data map
 	if locals.KubernetesDeployment.Spec.Container.App.Env != nil {
-		var secrets = locals.KubernetesDeployment.Spec.Container.App.Env.Secrets
+		secrets := locals.KubernetesDeployment.Spec.Container.App.Env.Secrets
 		if secrets != nil && len(secrets) > 0 {
-			// gather all provided secrets into a simple map
-			sortedSecretKeys := sortstringmap.SortMap(secrets)
+			// Sort keys for deterministic output
+			sortedKeys := make([]string, 0, len(secrets))
+			for k := range secrets {
+				sortedKeys = append(sortedKeys, k)
+			}
+			sort.Strings(sortedKeys)
 
-			for _, sortedSecretKey := range sortedSecretKeys {
-				dataMap[sortedSecretKey] = secrets[sortedSecretKey]
+			for _, secretKey := range sortedKeys {
+				secretValue := secrets[secretKey]
+				// Only add secrets that are direct string values
+				// Secrets with secretRef are handled directly in the deployment
+				if secretValue.GetStringValue() != "" {
+					dataMap[secretKey] = secretValue.GetStringValue()
+				}
 			}
 		}
 	}
 
-	// create a standard kubernetes secret with computed name to avoid conflicts
+	// Only create the secret if there are direct string values to store
+	if len(dataMap) == 0 {
+		return nil
+	}
+
+	// Create a standard kubernetes secret with computed name to avoid conflicts
 	secretArgs := &kubernetescorev1.SecretArgs{
 		Metadata: &metav1.ObjectMetaArgs{
 			Name:      pulumi.String(locals.EnvSecretName),

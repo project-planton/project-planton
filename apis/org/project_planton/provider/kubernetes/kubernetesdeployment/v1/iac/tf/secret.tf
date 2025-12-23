@@ -1,12 +1,22 @@
 ##############################################
-# Create a Kubernetes Secret instead of ExternalSecret
-# Uses computed name to avoid conflicts when multiple deployments share a namespace
+# Create a Kubernetes Secret for environment secrets that are provided as direct string values.
+# Secrets that reference external Kubernetes Secrets (via secret_ref) are not included here;
+# they are handled directly in the deployment as environment variable references.
+# Uses computed name to avoid conflicts when multiple deployments share a namespace.
 ##############################################
+
+locals {
+  # Filter secrets to only include those with direct string values (not secret refs)
+  string_value_secrets = {
+    for k, v in try(var.spec.container.app.env.secrets, {}) :
+    k => v.string_value
+    if try(v.string_value, null) != null && v.string_value != ""
+  }
+}
+
 resource "kubernetes_secret" "this" {
-  count = (
-  can(var.spec.container.app.env.secrets)
-  && length(var.spec.container.app.env.secrets) > 0
-  ) ? 1 : 0
+  # Only create the secret if there are direct string values to store
+  count = length(local.string_value_secrets) > 0 ? 1 : 0
 
   metadata {
     name      = local.env_secret_name
@@ -16,6 +26,6 @@ resource "kubernetes_secret" "this" {
 
   type = "Opaque"
 
-  # Populate the secret with key-value pairs.
-  data = { for k, v in try(var.spec.container.app.env.secrets, {}) : k => base64encode(v) }
+  # Populate the secret with key-value pairs (only string values, not secret refs)
+  data = { for k, v in local.string_value_secrets : k => base64encode(v) }
 }

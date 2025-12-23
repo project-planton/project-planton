@@ -147,9 +147,10 @@ module "env_microservice" {
 
 ---
 
-## 3. Using Secrets for Sensitive Data
+## 3. Using Secrets for Sensitive Data (Direct String Values)
 
-Store sensitive data in Kubernetes secrets.
+Store sensitive data directly. A Kubernetes Secret is automatically created.
+This approach is suitable for development and testing.
 
 ```hcl
 module "db_microservice" {
@@ -194,10 +195,14 @@ module "db_microservice" {
             DB_PORT = "5432"
           }
           
-          # Secrets are stored in Kubernetes Secret named by spec.version
+          # Secrets with direct string values
           secrets = {
-            DB_PASSWORD = var.db_password
-            API_KEY     = var.api_key
+            DB_PASSWORD = {
+              string_value = var.db_password
+            }
+            API_KEY = {
+              string_value = var.api_key
+            }
           }
         }
         
@@ -231,9 +236,98 @@ variable "api_key" {
 ```
 
 **Key Points:**
-- `env.secrets` for sensitive data
-- Secrets stored in Kubernetes Secret resource
-- Secret name is determined by `spec.version`
+- `string_value` for direct secret values
+- Secrets stored in a Kubernetes Secret resource created by the module
+- Use Terraform variables with `sensitive = true` to protect values
+
+---
+
+## 3b. Using Secrets with Kubernetes Secret References
+
+Reference existing Kubernetes Secrets for production deployments.
+This is the recommended approach to avoid storing sensitive values in configuration files.
+
+```hcl
+module "db_microservice_secret_ref" {
+  source = "./path/to/microservice-kubernetes-module"
+
+  metadata = {
+    name = "db-credentials-example"
+    id   = "db-app-prod"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    target_cluster = {
+      cluster_name = "my-gke-cluster"
+    }
+    namespace = "db-credentials-example"
+    create_namespace = true
+    version = "main"
+    
+    container = {
+      app = {
+        image = {
+          repo = "my-org/database-connector"
+          tag  = "stable"
+        }
+        
+        ports = [
+          {
+            name             = "http"
+            container_port   = 9090
+            network_protocol = "TCP"
+            app_protocol     = "http"
+            service_port     = 80
+            is_ingress_port  = true
+          }
+        ]
+        
+        env = {
+          variables = {
+            DB_HOST = "db.prod.svc.cluster.local"
+            DB_PORT = "5432"
+          }
+          
+          # Reference existing Kubernetes Secrets
+          secrets = {
+            DB_PASSWORD = {
+              secret_ref = {
+                name = "postgres-credentials"
+                key  = "password"
+              }
+            }
+            API_KEY = {
+              secret_ref = {
+                name = "external-api-secrets"
+                key  = "api-key"
+              }
+            }
+          }
+        }
+        
+        resources = {
+          requests = {
+            cpu    = "100m"
+            memory = "200Mi"
+          }
+          limits = {
+            cpu    = "500m"
+            memory = "1Gi"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Key Points:**
+- `secret_ref` references an existing Kubernetes Secret by name and key
+- The referenced Secret must exist in the cluster before deployment
+- Avoids storing sensitive values in Terraform state or configuration
+- Recommended for production environments
 
 ---
 
@@ -565,7 +659,12 @@ module "production_microservice" {
             LOG_FORMAT  = "json"
           }
           secrets = {
-            DATABASE_URL = var.database_url
+            DATABASE_URL = {
+              secret_ref = {
+                name = "database-credentials"
+                key  = "connection-string"
+              }
+            }
           }
         }
         
@@ -646,11 +745,8 @@ module "production_microservice" {
   }
 }
 
-variable "database_url" {
-  description = "Production database connection string"
-  type        = string
-  sensitive   = true
-}
+# Note: DATABASE_URL references an existing Kubernetes Secret "database-credentials"
+# which must be created separately (e.g., via ExternalSecrets, Vault, or manually)
 ```
 
 **Key Points:**
@@ -905,16 +1001,13 @@ spec = {
 
 ### 5. Secret Management
 
-Never commit secrets to version control:
+Never commit secrets to version control. Use one of these approaches:
+
+**Option 1: Direct values with environment variables (dev/test)**
 
 ```hcl
 # Use environment variables
 export TF_VAR_db_password="secret-value"
-
-# Or use secret management tools
-data "aws_secretsmanager_secret_version" "db_password" {
-  secret_id = "prod/db/password"
-}
 
 module "microservice" {
   # ...
@@ -923,7 +1016,63 @@ module "microservice" {
       app = {
         env = {
           secrets = {
-            DB_PASSWORD = data.aws_secretsmanager_secret_version.db_password.secret_string
+            DB_PASSWORD = {
+              string_value = var.db_password
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Option 2: Kubernetes Secret references (production - recommended)**
+
+```hcl
+# Reference existing Kubernetes Secrets
+module "microservice" {
+  # ...
+  spec = {
+    container = {
+      app = {
+        env = {
+          secrets = {
+            DB_PASSWORD = {
+              secret_ref = {
+                name = "postgres-credentials"
+                key  = "password"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Option 3: Mixed approach**
+
+```hcl
+module "microservice" {
+  # ...
+  spec = {
+    container = {
+      app = {
+        env = {
+          secrets = {
+            # Dev secret - direct value
+            DEBUG_TOKEN = {
+              string_value = "debug-only"
+            }
+            # Production secret - external reference
+            DB_PASSWORD = {
+              secret_ref = {
+                name = "postgres-credentials"
+                key  = "password"
+              }
+            }
           }
         }
       }
