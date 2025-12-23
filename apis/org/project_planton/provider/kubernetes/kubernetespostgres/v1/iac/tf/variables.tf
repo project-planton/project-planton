@@ -67,5 +67,12 @@ variable "spec" {
       # The full hostname for external access.
       hostname = string
     })
+
+    # Map of database names to their owner roles.
+    # Key: database name (e.g., "app_database", "analytics_db")
+    # Value: owner role name (e.g., "app_user", "analytics_role")
+    # The operator will create these databases during cluster initialization.
+    # If not specified, only the default "postgres" database will be available.
+    databases = optional(map(string), {})
   })
 }

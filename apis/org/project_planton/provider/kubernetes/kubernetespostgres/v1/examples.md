@@ -39,6 +39,54 @@ spec:
 
 ---
 
+## Example: PostgreSQL with Multiple Databases
+
+### Create using CLI
+
+Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
+
+```shell
+project-planton apply -f <yaml-path>
+```
+
+### YAML Configuration
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: PostgresKubernetes
+metadata:
+  name: multi-db-server
+  org: my-org
+  env: dev
+spec:
+  target_cluster:
+    cluster_name: "my-gke-cluster"
+  namespace:
+    value: "multi-db-server"
+  create_namespace: true
+  container:
+    replicas: 1
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+    diskSize: "20Gi"
+  
+  # Create multiple databases with their owner roles
+  # The operator will create these databases during cluster initialization
+  databases:
+    app_database: app_user
+    analytics_db: analytics_role
+    reporting: reporting_user
+```
+
+**Note**: The Zalando operator will automatically create the specified databases and owner roles during cluster initialization. Each database will be owned by its corresponding role.
+
+---
+
 ## Example: PostgreSQL with Ingress
 
 ### Create using CLI

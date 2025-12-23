@@ -50,6 +50,18 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 
 - **Ingress Spec**: Manage and control external access to the PostgreSQL instance by configuring ingress with a custom hostname. When enabled, creates a LoadBalancer service with external-dns annotations for automatic DNS configuration. Users specify the exact hostname (e.g., `postgres.example.com`) instead of auto-constructed patterns, providing full control over the ingress endpoint.
 
+### Database Configuration
+
+- **Multiple Databases**: Specify databases to create during cluster initialization via the `databases` field. This is a map where keys are database names and values are owner role names. The Zalando operator automatically creates both the databases and their owner roles.
+- **Example Configuration**:
+  ```yaml
+  databases:
+    app_database: app_user
+    analytics_db: analytics_role
+  ```
+- **Automatic Role Creation**: Owner roles are created automatically with appropriate permissions for their databases.
+- **Default Behavior**: If no databases are specified, only the default `postgres` database is available.
+
 ### Backup Configuration
 
 - **Automatic Backups to R2/S3**: Configure automated continuous backups to Cloudflare R2 or any S3-compatible storage using WAL-G. Set custom backup schedules and S3 prefixes per database.

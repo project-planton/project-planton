@@ -9,45 +9,51 @@ resource "kubernetes_manifest" "database" {
       namespace = local.namespace_name
       labels    = local.final_labels
     }
-    spec = {
-      # Number of PostgreSQL instances (replicas)
-      numberOfInstances = var.spec.container.replicas
+    spec = merge(
+      {
+        # Number of PostgreSQL instances (replicas)
+        numberOfInstances = var.spec.container.replicas
 
-      # Patroni configuration (empty object to satisfy CRD schema)
-      patroni = {}
+        # Patroni configuration (empty object to satisfy CRD schema)
+        patroni = {}
 
-      # Pod annotations
-      podAnnotations = {
-        "postgres-cluster-id" = local.resource_id
-      }
-
-      # PostgreSQL settings
-      postgresql = {
-        version    = "14"
-        parameters = {
-          "max_connections" = "200"
+        # Pod annotations
+        podAnnotations = {
+          "postgres-cluster-id" = local.resource_id
         }
-      }
 
-      # Resource allocations
-      resources = {
-        limits = {
-          cpu    = var.spec.container.resources.limits.cpu
-          memory = var.spec.container.resources.limits.memory
+        # PostgreSQL settings
+        postgresql = {
+          version    = "14"
+          parameters = {
+            "max_connections" = "200"
+          }
         }
-        requests = {
-          cpu    = var.spec.container.resources.requests.cpu
-          memory = var.spec.container.resources.requests.memory
+
+        # Resource allocations
+        resources = {
+          limits = {
+            cpu    = var.spec.container.resources.limits.cpu
+            memory = var.spec.container.resources.limits.memory
+          }
+          requests = {
+            cpu    = var.spec.container.resources.requests.cpu
+            memory = var.spec.container.resources.requests.memory
+          }
         }
-      }
 
-      # Team ID is required by the Zalando operator
-      teamId = "db"
+        # Team ID is required by the Zalando operator
+        teamId = "db"
 
-      # Persistent volume configuration
-      volume = {
-        size = var.spec.container.disk_size
-      }
-    }
+        # Persistent volume configuration
+        volume = {
+          size = var.spec.container.disk_size
+        }
+      },
+      # Conditionally add databases if specified
+      length(var.spec.databases) > 0 ? {
+        databases = var.spec.databases
+      } : {}
+    )
   }
 }
