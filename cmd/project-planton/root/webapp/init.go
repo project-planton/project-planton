@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	DockerImageName   = "satishlleftbin/project-planton"
+	DockerImageName   = "ghcr.io/project-planton/project-planton"
 	DockerImageTag    = "latest"
 	ContainerName     = "project-planton-webapp"
 	MongoDBVolume     = "project-planton-mongodb-data"

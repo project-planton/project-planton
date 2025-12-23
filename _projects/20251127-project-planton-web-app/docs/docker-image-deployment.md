@@ -1,37 +1,47 @@
 # Docker Image Deployment Guide
 
-**Last Updated:** December 12, 2025
-**Purpose:** Build and deploy the unified Project Planton Docker image to Docker Hub
+**Last Updated:** December 23, 2025
+**Purpose:** Build and deploy the unified Project Planton Docker image to GitHub Container Registry (GHCR)
 
 ---
 
 ## Overview
 
-This guide covers building the unified Docker image (MongoDB + Backend + Frontend) and publishing it to Docker Hub so users can install it via the CLI with `planton webapp init`.
+This guide covers building the unified Docker image (MongoDB + Backend + Frontend) and publishing it to GitHub Container Registry (GHCR) so users can install it via the CLI with `planton webapp init`.
 
-**Docker Hub Repository:** `satishlleftbin/project-planton`
+**GHCR Repository:** `ghcr.io/project-planton/project-planton`
 **Image Tag Strategy:** `latest` for stable releases, versioned tags for specific releases
+**Access:** Publicly accessible - no authentication required for pulling images
 
 ---
 
-## Prerequisites
+## Automated Builds via GitHub Actions
 
-### 1. Docker Hub Account
+The project uses GitHub Actions to automatically build and push Docker images to GHCR. Images are built with multi-architecture support (AMD64 + ARM64).
 
-**Create an account:**
-```bash
-# Sign up at https://hub.docker.com if you don't have an account
-```
+### Triggering a Build (Testing Phase)
 
-**Login to Docker Hub:**
-```bash
-docker login
+1. **Navigate to GitHub Actions** in your repository: `https://github.com/project-planton/project-planton/actions`
+2. **Select "Build and Push Docker Image to GHCR"** workflow
+3. **Click "Run workflow"** button (top right)
+4. **Optionally specify a version tag** (e.g., `test-v1`, `v0.9.0-rc1`) or leave empty for `latest` only
+5. **Click "Run workflow"** to start the build
 
-# Enter your Docker Hub username and password
-# Output: Login Succeeded
-```
+The workflow will:
+- Build for both `linux/amd64` and `linux/arm64` architectures
+- Push to `ghcr.io/project-planton/project-planton:latest`
+- Also push to the specified version tag if provided
+- Make the images publicly accessible (no credentials needed to pull)
 
-### 2. Docker Engine
+### Future: Tag-Based Releases
+
+Once testing is complete, the workflow will be updated to trigger automatically on git tags:
+- Push a tag: `git tag v1.0.0 && git push origin v1.0.0`
+- GitHub Actions automatically builds and publishes the image
+
+## Prerequisites for Manual Builds
+
+### 1. Docker Engine
 
 **Verify Docker is running:**
 ```bash
@@ -56,7 +66,9 @@ df -h
 
 ---
 
-## Building the Unified Docker Image
+## Manual Building (Optional)
+
+> **Note:** Manual builds are not required as GitHub Actions handles automated builds. This section is for reference only.
 
 ### Step 1: Navigate to Project Root
 
@@ -66,11 +78,11 @@ cd /Volumes/Others/Work/crafts/leftbin/planton/project-planton
 
 ### Step 2: Build the Image
 
-**Build for current architecture (x86_64):**
+**Build for current architecture:**
 
 ```bash
 # Build the unified image
-docker build -f app/Dockerfile.unified -t satishlleftbin/project-planton:latest .
+docker build -f app/Dockerfile.unified -t ghcr.io/project-planton/project-planton:latest .
 
 # This will take 5-10 minutes depending on your machine
 # You'll see output from all three build stages:
@@ -147,9 +159,23 @@ docker rm test-planton
 
 ---
 
-## Pushing to Docker Hub
+## Pushing to GHCR (Manual - Not Recommended)
 
-### Step 1: Tag the Image (Optional - for versioning)
+> **Note:** GitHub Actions handles this automatically. Manual pushes are not recommended.
+
+If you need to manually push:
+
+### Step 1: Authenticate with GHCR
+
+```bash
+# Create a GitHub Personal Access Token with write:packages scope
+# Visit: https://github.com/settings/tokens
+
+# Login to GHCR
+echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+```
+
+### Step 2: Tag and Push
 
 **Tag with version number:**
 ```bash
@@ -157,93 +183,68 @@ docker rm test-planton
 VERSION="1.0.0"
 
 # Tag with version
-docker tag satishlleftbin/project-planton:latest satishlleftbin/project-planton:${VERSION}
-
-# Tag with major version
-docker tag satishlleftbin/project-planton:latest satishlleftbin/project-planton:v1
+docker tag ghcr.io/project-planton/project-planton:latest ghcr.io/project-planton/project-planton:${VERSION}
 
 # Verify tags
-docker images satishlleftbin/project-planton
+docker images ghcr.io/project-planton/project-planton
 ```
 
-### Step 2: Push to Docker Hub
-
-**Push the latest tag:**
+**Push the tags:**
 ```bash
-docker push satishlleftbin/project-planton:latest
-
-# Output:
-# The push refers to repository [docker.io/satishlleftbin/project-planton]
-# abc123def456: Pushed
-# ...
-# latest: digest: sha256:xyz789... size: 4567
-```
-
-**Push versioned tags (if created):**
-```bash
-docker push satishlleftbin/project-planton:${VERSION}
-docker push satishlleftbin/project-planton:v1
+docker push ghcr.io/project-planton/project-planton:latest
+docker push ghcr.io/project-planton/project-planton:${VERSION}
 ```
 
 **Expected push time:** 5-10 minutes (depending on internet speed for ~500MB)
 
-### Step 3: Verify on Docker Hub
+### Step 3: Verify on GitHub Container Registry
 
-**Check the repository:**
-1. Visit https://hub.docker.com/r/satishlleftbin/project-planton
-2. Verify the `latest` tag is present
-3. Check the size (~520MB)
-4. Verify the last push timestamp
+**Check the package:**
+1. Visit https://github.com/orgs/project-planton/packages/container/package/project-planton
+2. Or check your repository's Packages tab
+3. Verify the `latest` tag is present
+4. Check the size (~520MB)
+5. Verify the last push timestamp
 
-**Or use CLI:**
+**Pull and test:**
 ```bash
-# Pull to verify (on a different machine or after removing local image)
-docker pull satishlleftbin/project-planton:latest
+# Pull to verify (no authentication required for public images)
+docker pull ghcr.io/project-planton/project-planton:latest
+
+# Test the image
+docker run -d -p 3000:3000 -p 50051:50051 ghcr.io/project-planton/project-planton:latest
 ```
 
 ---
 
-## Building Multi-Architecture Images (Optional)
+## Multi-Architecture Support
 
-For supporting both Intel (x86_64) and Apple Silicon (ARM64) machines:
-
-### Setup Buildx
-
-```bash
-# Create a new builder
-docker buildx create --name multiarch --use
-
-# Inspect the builder
-docker buildx inspect --bootstrap
-```
-
-### Build and Push Multi-Arch
-
-```bash
-# Build for both amd64 and arm64
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  -f app/Dockerfile.unified \
-  -t satishlleftbin/project-planton:latest \
-  --push \
-  .
-
-# This will:
-# - Build for both architectures
-# - Create a multi-arch manifest
-# - Push directly to Docker Hub
-```
-
-**Build time:** 15-20 minutes (building twice - once for each architecture)
+GitHub Actions automatically builds for multiple architectures:
+- `linux/amd64` - Intel/AMD processors
+- `linux/arm64` - Apple Silicon, ARM servers
 
 **Verification:**
 ```bash
-# Check manifest
-docker manifest inspect satishlleftbin/project-planton:latest
+# Check manifest (no authentication required)
+docker manifest inspect ghcr.io/project-planton/project-planton:latest
 
 # Should show both platforms:
 # - linux/amd64
 # - linux/arm64
+```
+
+**Manual multi-arch build** (if needed):
+```bash
+# Create a new builder
+docker buildx create --name multiarch --use
+
+# Build for both amd64 and arm64
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -f app/Dockerfile.unified \
+  -t ghcr.io/project-planton/project-planton:latest \
+  --push \
+  .
 ```
 
 ---
@@ -257,119 +258,73 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 **Example tags:**
 ```bash
 # Latest stable (always updated)
-satishlleftbin/project-planton:latest
+ghcr.io/project-planton/project-planton:latest
 
 # Specific version
-satishlleftbin/project-planton:1.0.0
-satishlleftbin/project-planton:1.0.1
-satishlleftbin/project-planton:1.1.0
+ghcr.io/project-planton/project-planton:v1.0.0
+ghcr.io/project-planton/project-planton:v1.0.1
+ghcr.io/project-planton/project-planton:v1.1.0
 
-# Major version (updated for minor/patch)
-satishlleftbin/project-planton:v1
-
-# Development/preview
-satishlleftbin/project-planton:dev
-satishlleftbin/project-planton:preview
+# Development/preview (testing phase)
+ghcr.io/project-planton/project-planton:test-v1
+ghcr.io/project-planton/project-planton:v0.9.0-rc1
 ```
 
-### Tagging Workflow
+### Tagging Workflow (Automated)
 
-**For a new release:**
+**Testing Phase (Current):**
+1. Go to GitHub Actions
+2. Run "Build and Push Docker Image to GHCR" workflow
+3. Specify version tag (e.g., `test-v1`)
+4. Workflow builds and pushes automatically
 
+**Production Phase (Future):**
 ```bash
-VERSION="1.0.1"
+# Create and push a tag
+VERSION="v1.0.1"
+git tag ${VERSION}
+git push origin ${VERSION}
 
-# Build
-docker build -f app/Dockerfile.unified -t satishlleftbin/project-planton:latest .
-
-# Tag with version
-docker tag satishlleftbin/project-planton:latest satishlleftbin/project-planton:${VERSION}
-docker tag satishlleftbin/project-planton:latest satishlleftbin/project-planton:v1
-
-# Push all tags
-docker push satishlleftbin/project-planton:latest
-docker push satishlleftbin/project-planton:${VERSION}
-docker push satishlleftbin/project-planton:v1
+# GitHub Actions automatically:
+# - Builds multi-arch image
+# - Pushes as ghcr.io/project-planton/project-planton:v1.0.1
+# - Updates ghcr.io/project-planton/project-planton:latest
 ```
 
 ### CLI Configuration
 
-The CLI currently pulls from `latest`:
+The CLI is configured to pull from GHCR:
 
 ```go
 // cmd/project-planton/root/webapp/init.go
 const (
-    DockerImageName  = "satishlleftbin/project-planton"
+    DockerImageName  = "ghcr.io/project-planton/project-planton"
     DockerImageTag   = "latest"
 )
 ```
 
-**To allow version selection in future:**
-```go
-// Add flag to init command
-var imageTag string
-
-func init() {
-    InitCmd.Flags().StringVar(&imageTag, "version", "latest", "Docker image version to install")
-}
-```
-
 ---
 
-## Automated CI/CD (Future)
+## GitHub Actions Workflow
 
-### GitHub Actions Workflow
+The project includes a GitHub Actions workflow at `.github/workflows/docker-build-push.yml`.
 
-Create `.github/workflows/docker-build.yml`:
+**Current Configuration (Testing Phase):**
+- Trigger: Manual `workflow_dispatch`
+- Input: Optional version tag
+- Builds: Multi-architecture (amd64 + arm64)
+- Pushes to: `ghcr.io/project-planton/project-planton`
+- Authentication: Uses built-in `GITHUB_TOKEN`
 
-```yaml
-name: Build and Push Docker Image
+**Future Configuration (Production):**
+Will be updated to trigger automatically on git tags matching `v*` pattern.
 
-on:
-  push:
-    branches: [main]
-    tags: ['v*']
-  pull_request:
-    branches: [main]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: satishlleftbin/project-planton
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./app/Dockerfile.unified
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-```
+**Key Features:**
+- No secrets configuration needed (uses `GITHUB_TOKEN`)
+- Automatic multi-arch builds
+- Build cache using GitHub Actions cache
+- Public package visibility
+- Build summary with pull commands
 
 ---
 
@@ -407,23 +362,24 @@ docker build -f app/Dockerfile.unified --progress=plain -t test-image .
 
 **Issue: "denied: requested access to the resource is denied"**
 
-```bash
-# Re-login to Docker Hub
-docker logout
-docker login
+For automated builds, this should not occur as GitHub Actions uses `GITHUB_TOKEN`.
 
-# Verify credentials
-docker login --username satishlleftbin
+For manual pushes:
+```bash
+# Re-authenticate with GHCR
+docker logout ghcr.io
+echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
 ```
 
 **Issue: "connection timeout"**
 
 ```bash
 # Check internet connection
-ping hub.docker.com
+ping ghcr.io
 
-# Try again with retry
-docker push satishlleftbin/project-planton:latest
+# For GitHub Actions, check workflow logs
+# For manual push, try again:
+docker push ghcr.io/project-planton/project-planton:latest
 ```
 
 ### Image Too Large
@@ -459,14 +415,14 @@ node_modules
 **Simulate fresh install:**
 ```bash
 # Remove local images
-docker rmi satishlleftbin/project-planton:latest
+docker rmi ghcr.io/project-planton/project-planton:latest
 
-# Test CLI installation flow
+# Test CLI installation flow (no authentication required)
 planton webapp init
 planton webapp start
 
-# Verify it pulled from Docker Hub
-docker images | grep satishlleftbin
+# Verify it pulled from GHCR
+docker images | grep ghcr.io
 
 # Test the web app
 open http://localhost:3000
@@ -476,95 +432,90 @@ open http://localhost:3000
 
 **Intel Mac / Linux:**
 ```bash
-docker pull satishlleftbin/project-planton:latest
-# Should pull linux/amd64 variant
+docker pull ghcr.io/project-planton/project-planton:latest
+# Should pull linux/amd64 variant automatically
 ```
 
 **Apple Silicon Mac:**
 ```bash
-docker pull satishlleftbin/project-planton:latest
-# Should pull linux/arm64 variant (if multi-arch built)
+docker pull ghcr.io/project-planton/project-planton:latest
+# Should pull linux/arm64 variant automatically
 ```
 
 ---
 
 ## Quick Reference
 
-### Full Build and Push Workflow
+### Automated Build Workflow (Recommended)
 
 ```bash
-# 1. Navigate to project
-cd /Volumes/Others/Work/crafts/leftbin/planton/project-planton
+# 1. Navigate to GitHub Actions
+# https://github.com/project-planton/project-planton/actions
 
-# 2. Login to Docker Hub
-docker login
+# 2. Select "Build and Push Docker Image to GHCR" workflow
 
-# 3. Build the image
-docker build -f app/Dockerfile.unified -t satishlleftbin/project-planton:latest .
+# 3. Click "Run workflow"
 
-# 4. Test locally
-docker run -d --name test-planton -p 3000:3000 -p 50051:50051 satishlleftbin/project-planton:latest
+# 4. Optionally specify version tag (e.g., test-v1, v0.9.0-rc1)
+
+# 5. Click "Run workflow" to start
+
+# 6. Wait for build to complete (~15-20 minutes)
+
+# 7. Test the image
+docker pull ghcr.io/project-planton/project-planton:latest
+docker run -d --name test-planton -p 3000:3000 -p 50051:50051 ghcr.io/project-planton/project-planton:latest
 sleep 60
 curl http://localhost:3000
 docker stop test-planton && docker rm test-planton
 
-# 5. Tag with version (optional)
-VERSION="1.0.0"
-docker tag satishlleftbin/project-planton:latest satishlleftbin/project-planton:${VERSION}
-
-# 6. Push to Docker Hub
-docker push satishlleftbin/project-planton:latest
-docker push satishlleftbin/project-planton:${VERSION}
-
-# 7. Verify on Docker Hub
-open https://hub.docker.com/r/satishlleftbin/project-planton
-
-# 8. Test pull
-docker rmi satishlleftbin/project-planton:latest
-docker pull satishlleftbin/project-planton:latest
+# 8. Verify on GitHub Packages
+# Check your repository's Packages tab
 ```
 
-### Multi-Architecture Build (One Command)
+### Manual Local Build (Not Recommended)
 
 ```bash
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  -f app/Dockerfile.unified \
-  -t satishlleftbin/project-planton:latest \
-  --push \
-  .
+# Build locally for testing
+docker build -f app/Dockerfile.unified -t ghcr.io/project-planton/project-planton:test .
+
+# Test locally
+docker run -d --name test-planton -p 3000:3000 -p 50051:50051 ghcr.io/project-planton/project-planton:test
 ```
 
 ---
 
 ## Next Steps
 
-After pushing the image to Docker Hub:
+After building and pushing images to GHCR:
 
 1. ✅ **Test the CLI installation flow** on a clean machine
-2. ✅ **Document the version** in release notes
-3. ✅ **Update changelog** with Docker image information
-4. ✅ **Announce the release** to users
-5. ✅ **Monitor Docker Hub** download statistics
+2. ✅ **Verify multi-arch support** on both Intel and ARM machines
+3. ✅ **Document the version** in release notes
+4. ✅ **Update changelog** with image information
+5. ✅ **Monitor GitHub Packages** for download statistics
+6. ✅ **Transition to tag-based releases** after testing phase
 
 ---
 
 ## Support
 
-**Docker Hub Repository:** https://hub.docker.com/r/satishlleftbin/project-planton
-**Docker Hub Username:** `satishlleftbin`
-**Image Name:** `project-planton`
+**GHCR Repository:** `ghcr.io/project-planton/project-planton`
+**Package URL:** https://github.com/project-planton/project-planton/pkgs/container/project-planton
 **Default Tag:** `latest`
+**Access:** Public (no authentication required)
 
 For issues:
-- Check Docker Hub repository page
+- Check GitHub Packages page for your repository
+- Review GitHub Actions workflow logs
 - Verify image digest matches
-- Test pull on different machines
-- Check Docker Hub build logs (if using automated builds)
+- Test pull on different machines and architectures
+- Check workflow run history for build logs
 
 ---
 
-**Last Build:** To be documented after first successful push
-**Current Version:** To be tagged based on release schedule
-**Multi-Arch Support:** TBD (requires buildx setup)
+**Registry:** GitHub Container Registry (GHCR)
+**Build Method:** Automated via GitHub Actions
+**Multi-Arch Support:** Yes (linux/amd64, linux/arm64)
+**Public Access:** Yes (no credentials required for pulling)
 

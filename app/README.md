@@ -25,7 +25,7 @@ app/
 - **Use case:** End users
 - **Setup:** Single Docker container with MongoDB, backend, and frontend
 - **Managed by:** CLI (`planton webapp init/start/stop`)
-- **Image:** `satishlleftbin/project-planton:latest`
+- **Image:** `ghcr.io/project-planton/project-planton:latest`
 
 #### 2. Development (Separate Services)
 - **Use case:** Contributors and developers
@@ -419,25 +419,30 @@ docker-compose down
 
 ### Building Production Image
 
+Images are automatically built and published to GitHub Container Registry (GHCR) via GitHub Actions.
+
+**Automated build (recommended):**
+1. Navigate to GitHub Actions
+2. Run "Build and Push Docker Image to GHCR" workflow
+3. Specify version tag (optional)
+
+**Manual build (if needed):**
 ```bash
-# Build
-docker build -f app/Dockerfile.unified -t satishlleftbin/project-planton:v1.0.0 .
+# Build locally
+docker build -f app/Dockerfile.unified -t ghcr.io/project-planton/project-planton:v1.0.0 .
 
 # Tag as latest
-docker tag satishlleftbin/project-planton:v1.0.0 satishlleftbin/project-planton:latest
-
-# Push to registry
-docker push satishlleftbin/project-planton:v1.0.0
-docker push satishlleftbin/project-planton:latest
+docker tag ghcr.io/project-planton/project-planton:v1.0.0 ghcr.io/project-planton/project-planton:latest
 ```
 
 ### Release Process
 
-1. Update version in `VERSION` file
-2. Build and tag Docker image
-3. Push to Docker Hub
-4. Update Homebrew formula (if CLI needs update)
-5. Create GitHub release with changelog
+1. Update version in project
+2. Push git tag: `git tag v1.0.0 && git push origin v1.0.0` (future: automatic builds)
+3. Or manually trigger GitHub Actions workflow (current: testing phase)
+4. GitHub Actions builds multi-arch image and pushes to GHCR
+5. Update Homebrew formula (if CLI needs update)
+6. Create GitHub release with changelog
 
 ---
 
