@@ -44,7 +44,7 @@ spec:
         - ReadWriteOnce
 ```
 
-# Example with Environment Variables and Secrets
+# Example with Environment Variables and Secrets (Direct String Values)
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -77,8 +77,119 @@ spec:
           POSTGRES_DB: myapp
           PGDATA: /var/lib/postgresql/data/pgdata
         secrets:
-          POSTGRES_PASSWORD: supersecretpassword
-          POSTGRES_USER: admin
+          POSTGRES_PASSWORD:
+            stringValue: supersecretpassword
+          POSTGRES_USER:
+            stringValue: admin
+      volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - name: data
+      size: 20Gi
+      storageClass: ssd
+      accessModes:
+        - ReadWriteOnce
+```
+
+# Example with Kubernetes Secret References (Production)
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesStatefulSet
+metadata:
+  name: postgres-db
+spec:
+  namespace: database
+  createNamespace: true
+  container:
+    app:
+      image:
+        repo: postgres
+        tag: "15"
+      ports:
+        - appProtocol: tcp
+          containerPort: 5432
+          name: postgres
+          networkProtocol: TCP
+          servicePort: 5432
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      env:
+        variables:
+          POSTGRES_DB: myapp
+          PGDATA: /var/lib/postgresql/data/pgdata
+        secrets:
+          # Reference existing Kubernetes Secret for production credentials
+          POSTGRES_PASSWORD:
+            secretRef:
+              name: postgres-credentials  # Name of existing K8s Secret
+              key: password               # Key within the Secret
+          POSTGRES_USER:
+            secretRef:
+              name: postgres-credentials
+              key: username
+      volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - name: data
+      size: 20Gi
+      storageClass: ssd
+      accessModes:
+        - ReadWriteOnce
+```
+
+# Example with Mixed Secret Types
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesStatefulSet
+metadata:
+  name: postgres-db
+spec:
+  namespace: database
+  createNamespace: true
+  container:
+    app:
+      image:
+        repo: postgres
+        tag: "15"
+      ports:
+        - appProtocol: tcp
+          containerPort: 5432
+          name: postgres
+          networkProtocol: TCP
+          servicePort: 5432
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      env:
+        variables:
+          POSTGRES_DB: myapp
+          PGDATA: /var/lib/postgresql/data/pgdata
+        secrets:
+          # Dev secret - direct value (for development/testing)
+          DEBUG_TOKEN:
+            stringValue: debug-only-token
+          # Production secrets - external references (for production)
+          POSTGRES_PASSWORD:
+            secretRef:
+              name: postgres-credentials
+              key: password
+          POSTGRES_USER:
+            secretRef:
+              name: postgres-credentials
+              key: username
       volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data

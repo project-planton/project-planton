@@ -1,8 +1,9 @@
 package module
 
 import (
+	"sort"
+
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -11,16 +12,30 @@ import (
 func secret(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
 	dataMap := make(map[string]string)
 
-	// Add all secrets to data map
+	// Add only secrets with direct string values to data map
 	if locals.KubernetesStatefulSet.Spec.Container.App.Env != nil {
-		var secrets = locals.KubernetesStatefulSet.Spec.Container.App.Env.Secrets
+		secrets := locals.KubernetesStatefulSet.Spec.Container.App.Env.Secrets
 		if secrets != nil && len(secrets) > 0 {
-			sortedSecretKeys := sortstringmap.SortMap(secrets)
+			// Sort keys for deterministic output
+			sortedKeys := make([]string, 0, len(secrets))
+			for k := range secrets {
+				sortedKeys = append(sortedKeys, k)
+			}
+			sort.Strings(sortedKeys)
 
-			for _, sortedSecretKey := range sortedSecretKeys {
-				dataMap[sortedSecretKey] = secrets[sortedSecretKey]
+			for _, secretKey := range sortedKeys {
+				secretValue := secrets[secretKey]
+				// Only add secrets that are direct string values
+				if secretValue.GetStringValue() != "" {
+					dataMap[secretKey] = secretValue.GetStringValue()
+				}
 			}
 		}
+	}
+
+	// Only create the secret if there are direct string values to store
+	if len(dataMap) == 0 {
+		return nil
 	}
 
 	// Create a standard kubernetes secret with computed name to avoid conflicts

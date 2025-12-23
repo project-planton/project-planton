@@ -46,7 +46,14 @@ variable "spec" {
         # The environment variables and secrets for the container
         env = optional(object({
           variables = optional(map(string))
-          secrets   = optional(map(string))
+          secrets = optional(map(object({
+            string_value = optional(string)
+            secret_ref = optional(object({
+              namespace = optional(string)
+              name      = string
+              key       = string
+            }))
+          })))
         }))
 
         # A list of ports to be configured for the container
