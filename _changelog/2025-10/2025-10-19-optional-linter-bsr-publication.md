@@ -669,7 +669,7 @@ plugins:
 
 ```bash
 $ which optional-linter
-/Users/swarup/gopa/bin/optional-linter
+~/gopa/bin/optional-linter
 
 $ optional-linter --protocol
 1

@@ -175,7 +175,7 @@ OUTPUT
 - Highlight key insights captured
 
 EXAMPLE STRUCTURE
-See `/Users/swarup/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1/docs/README.md` for a gold-standard example.
+See `~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1/docs/README.md` for a gold-standard example.
 
 NOTES
 - This is the most substantial documentation piece

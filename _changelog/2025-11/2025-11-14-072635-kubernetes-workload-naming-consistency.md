@@ -975,7 +975,7 @@ KubernetesPostgresSpec spec = 2;
 ### Proto Generation
 
 ```bash
-cd /Users/swarup/scm/github.com/project-planton/project-planton
+cd ~/scm/github.com/project-planton/project-planton
 make protos
 ```
 

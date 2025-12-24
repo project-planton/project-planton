@@ -776,12 +776,12 @@ Potential follow-up work (not blocking production use):
 
 ```bash
 # Verify proto compilation
-cd /Users/swarup/scm/github.com/project-planton/project-planton/apis
+cd ~/scm/github.com/project-planton/project-planton/apis
 buf lint --path project/planton/provider/kubernetes/workload/harborkubernetes/v1/
 buf generate --path project/planton/provider/kubernetes/workload/harborkubernetes/v1/
 
 # Verify Go builds
-cd /Users/swarup/scm/github.com/project-planton/project-planton
+cd ~/scm/github.com/project-planton/project-planton
 ./bazelw build //apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1:harborkubernetes
 ./bazelw build //apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module:module
 

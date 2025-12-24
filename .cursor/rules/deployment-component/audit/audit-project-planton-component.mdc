@@ -33,7 +33,7 @@ User: @audit-project-planton-component <ComponentName>
    - With spaces: `Mongodb Atlas` → normalize to `MongodbAtlas`
 
 2. **Lookup in cloud_resource_kind.proto**:
-   - Read `/Users/swarup/scm/github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto`
+   - Read `~/scm/github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto`
    - Search for enum entry matching the component name
    - Extract metadata: provider, id_prefix, version, kubernetes_meta (if applicable)
 
