@@ -75,20 +75,23 @@ type CloudflareWorkerSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Cloudflare account ID in which to create the worker.
 	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// The name of the Cloudflare Worker.
+	// This is the worker name that will be visible in the Cloudflare dashboard.
+	WorkerName string `protobuf:"bytes,2,opt,name=worker_name,json=workerName,proto3" json:"worker_name,omitempty"`
 	// Worker script configuration
-	Script *CloudflareWorkerScript `protobuf:"bytes,2,opt,name=script,proto3" json:"script,omitempty"`
+	Script *CloudflareWorkerScript `protobuf:"bytes,3,opt,name=script,proto3" json:"script,omitempty"`
 	// (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
-	KvBindings []*v1.ValueFromRef `protobuf:"bytes,3,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
+	KvBindings []*v1.ValueFromRef `protobuf:"bytes,4,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
 	// (Optional) DNS configuration for attaching the Worker to a custom domain.
-	Dns *CloudflareWorkerDns `protobuf:"bytes,4,opt,name=dns,proto3" json:"dns,omitempty"`
+	Dns *CloudflareWorkerDns `protobuf:"bytes,5,opt,name=dns,proto3" json:"dns,omitempty"`
 	// (Optional) Compatibility date for the Worker script (YYYY-MM-DD). If unset, defaults to today's date.
-	CompatibilityDate string `protobuf:"bytes,5,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
+	CompatibilityDate string `protobuf:"bytes,6,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
 	// (Optional) Billing/usage model for the Worker. Defaults to BUNDLED if unspecified.
-	UsageModel CloudflareWorkerSpec_CloudflareWorkerUsageModel `protobuf:"varint,6,opt,name=usage_model,json=usageModel,proto3,enum=org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec_CloudflareWorkerUsageModel" json:"usage_model,omitempty"`
+	UsageModel CloudflareWorkerSpec_CloudflareWorkerUsageModel `protobuf:"varint,7,opt,name=usage_model,json=usageModel,proto3,enum=org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec_CloudflareWorkerUsageModel" json:"usage_model,omitempty"`
 	// Environment configuration supporting variables and secrets.
 	// Variables become plain-text bindings in the Worker.
 	// Secrets are uploaded via Cloudflare Workers Secrets API (encrypted at rest).
-	Env           *CloudflareWorkerEnv `protobuf:"bytes,7,opt,name=env,proto3" json:"env,omitempty"`
+	Env           *CloudflareWorkerEnv `protobuf:"bytes,8,opt,name=env,proto3" json:"env,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -126,6 +129,13 @@ func (*CloudflareWorkerSpec) Descriptor() ([]byte, []int) {
 func (x *CloudflareWorkerSpec) GetAccountId() string {
 	if x != nil {
 		return x.AccountId
+	}
+	return ""
+}
+
+func (x *CloudflareWorkerSpec) GetWorkerName() string {
+	if x != nil {
+		return x.WorkerName
 	}
 	return ""
 }
@@ -236,8 +246,7 @@ func (x *CloudflareWorkerEnv) GetSecrets() map[string]string {
 // Cloudflare worker script configuration
 type CloudflareWorkerScript struct {
 	state         protoimpl.MessageState                `protogen:"open.v1"`
-	Name          string                                `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Bundle        *CloudflareWorkerScriptBundleR2Object `protobuf:"bytes,2,opt,name=bundle,proto3" json:"bundle,omitempty"`
+	Bundle        *CloudflareWorkerScriptBundleR2Object `protobuf:"bytes,1,opt,name=bundle,proto3" json:"bundle,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -270,13 +279,6 @@ func (x *CloudflareWorkerScript) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CloudflareWorkerScript.ProtoReflect.Descriptor instead.
 func (*CloudflareWorkerScript) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CloudflareWorkerScript) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
 }
 
 func (x *CloudflareWorkerScript) GetBundle() *CloudflareWorkerScriptBundleR2Object {
@@ -417,18 +419,20 @@ var File_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto 
 
 const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x12;org.project_planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xad\x06\n" +
+	"Forg/project_planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x12;org.project_planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xdc\x06\n" +
 	"\x14CloudflareWorkerSpec\x12=\n" +
 	"\n" +
-	"account_id\x18\x01 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12s\n" +
-	"\x06script\x18\x02 \x01(\v2S.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptB\x06\xbaH\x03\xc8\x01\x01R\x06script\x12}\n" +
-	"\vkv_bindings\x18\x03 \x03(\v26.org.project_planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
+	"account_id\x18\x01 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12-\n" +
+	"\vworker_name\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18?R\n" +
+	"workerName\x12s\n" +
+	"\x06script\x18\x03 \x01(\v2S.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptB\x06\xbaH\x03\xc8\x01\x01R\x06script\x12}\n" +
+	"\vkv_bindings\x18\x04 \x03(\v26.org.project_planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
 	"kvBindings\x12b\n" +
-	"\x03dns\x18\x04 \x01(\v2P.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDnsR\x03dns\x12R\n" +
-	"\x12compatibility_date\x18\x05 \x01(\tB#\xbaH r\x1e2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$R\x11compatibilityDate\x12\x8d\x01\n" +
-	"\vusage_model\x18\x06 \x01(\x0e2l.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModelR\n" +
+	"\x03dns\x18\x05 \x01(\v2P.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDnsR\x03dns\x12R\n" +
+	"\x12compatibility_date\x18\x06 \x01(\tB#\xbaH r\x1e2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$R\x11compatibilityDate\x12\x8d\x01\n" +
+	"\vusage_model\x18\a \x01(\x0e2l.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModelR\n" +
 	"usageModel\x12b\n" +
-	"\x03env\x18\a \x01(\v2P.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnvR\x03env\"6\n" +
+	"\x03env\x18\b \x01(\v2P.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnvR\x03env\"6\n" +
 	"\x1aCloudflareWorkerUsageModel\x12\v\n" +
 	"\aBUNDLED\x10\x00\x12\v\n" +
 	"\aUNBOUND\x10\x01\"\x87\x03\n" +
@@ -440,10 +444,9 @@ const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_prot
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
 	"\fSecretsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb9\x01\n" +
-	"\x16CloudflareWorkerScript\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12\x81\x01\n" +
-	"\x06bundle\x18\x02 \x01(\v2a.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2ObjectB\x06\xbaH\x03\xc8\x01\x01R\x06bundle\"b\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9c\x01\n" +
+	"\x16CloudflareWorkerScript\x12\x81\x01\n" +
+	"\x06bundle\x18\x01 \x01(\v2a.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2ObjectB\x06\xbaH\x03\xc8\x01\x01R\x06bundle\"b\n" +
 	"$CloudflareWorkerScriptBundleR2Object\x12\x1e\n" +
 	"\x06bucket\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06bucket\x12\x1a\n" +
 	"\x04path\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04path\"\x9b\x01\n" +

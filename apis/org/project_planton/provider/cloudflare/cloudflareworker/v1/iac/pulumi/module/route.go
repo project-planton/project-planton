@@ -47,7 +47,7 @@ func route(
 	routeArgs := &cloudfl.WorkersRouteArgs{
 		ZoneId:  zoneId,
 		Pattern: pulumi.String(routePattern),
-		Script:  pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
+		Script:  pulumi.String(locals.CloudflareWorker.Spec.WorkerName),
 	}
 
 	// Create the route, ensuring it depends on both DNS record and worker script

@@ -28,9 +28,9 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-worker",
 					},
 					Spec: &CloudflareWorkerSpec{
-						AccountId: "00000000000000000000000000000000",
+						AccountId:  "00000000000000000000000000000000",
+						WorkerName: "test-worker-script",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker-script",
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script.js",
@@ -51,9 +51,9 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-worker-env",
 					},
 					Spec: &CloudflareWorkerSpec{
-						AccountId: "00000000000000000000000000000000",
+						AccountId:  "00000000000000000000000000000000",
+						WorkerName: "test-worker-with-env",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker-with-env",
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script-with-env.js",
@@ -83,9 +83,9 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-worker-route",
 					},
 					Spec: &CloudflareWorkerSpec{
-						AccountId: "00000000000000000000000000000000",
+						AccountId:  "00000000000000000000000000000000",
+						WorkerName: "test-worker-with-route",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker-with-route",
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script-with-route.js",
@@ -117,8 +117,8 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-no-account",
 					},
 					Spec: &CloudflareWorkerSpec{
+						WorkerName: "test-worker",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker",
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script.js",
@@ -139,9 +139,9 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-short-account",
 					},
 					Spec: &CloudflareWorkerSpec{
-						AccountId: "123",
+						AccountId:  "123",
+						WorkerName: "test-worker",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker",
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script.js",
@@ -162,9 +162,34 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-invalid-hex",
 					},
 					Spec: &CloudflareWorkerSpec{
-						AccountId: "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+						AccountId:  "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+						WorkerName: "test-worker",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script.js",
+							},
+						},
+						CompatibilityDate: "2024-01-01",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("worker_name validation", func() {
+
+			ginkgo.It("should return error if worker_name is missing", func() {
+				input := &CloudflareWorker{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareWorker",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-no-worker-name",
+					},
+					Spec: &CloudflareWorkerSpec{
+						AccountId: "00000000000000000000000000000000",
+						Script: &CloudflareWorkerScript{
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script.js",
@@ -189,6 +214,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 					},
 					Spec: &CloudflareWorkerSpec{
 						AccountId:         "00000000000000000000000000000000",
+						WorkerName:        "test-worker",
 						CompatibilityDate: "2024-01-01",
 					},
 				}
@@ -207,9 +233,9 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-invalid-date",
 					},
 					Spec: &CloudflareWorkerSpec{
-						AccountId: "00000000000000000000000000000000",
+						AccountId:  "00000000000000000000000000000000",
+						WorkerName: "test-worker",
 						Script: &CloudflareWorkerScript{
-							Name: "test-worker",
 							Bundle: &CloudflareWorkerScriptBundleR2Object{
 								Bucket: "test-bucket",
 								Path:   "test/script.js",

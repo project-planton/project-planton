@@ -8,7 +8,7 @@ locals {
   }, try(var.metadata.labels, {}))
 
   # Worker script configuration
-  script_name = var.spec.script.name
+  script_name = var.spec.worker_name
   
   # R2 bundle configuration
   r2_bucket = var.spec.script.bundle.bucket
