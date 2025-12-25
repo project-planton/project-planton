@@ -59,7 +59,7 @@ func createWorkerScript(
 	// Content is only for service worker syntax (with addEventListener)
 	scriptArgs := &cloudfl.WorkersScriptArgs{
 		AccountId:          pulumi.String(locals.CloudflareWorker.Spec.AccountId),
-		ScriptName:         pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
+		ScriptName:         pulumi.String(locals.CloudflareWorker.Spec.WorkerName),
 		MainModule:         pulumi.String("index.js"), // Indicates this is a module worker
 		Content:            scriptContent,             // The actual module code
 		Bindings:           bindings,

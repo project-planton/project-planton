@@ -31,9 +31,9 @@ metadata:
   name: hello-worker
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # Replace with your account ID
+  workerName: hello-worker
   
   script:
-    name: hello-worker
     bundle:
       bucket: my-workers-bucket
       path: builds/hello-worker-v1.0.0.js
@@ -77,9 +77,9 @@ metadata:
   name: api-worker
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  workerName: api-production
   
   script:
-    name: api-production
     bundle:
       bucket: workers-prod
       path: api/v1.0.0.js
@@ -133,9 +133,9 @@ metadata:
   name: api-gateway
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  workerName: api-gateway-prod
   
   script:
-    name: api-gateway-prod
     bundle:
       bucket: workers-prod
       path: gateway/v2.1.0.js
@@ -225,9 +225,9 @@ metadata:
   name: github-webhook
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  workerName: github-webhook-handler
   
   script:
-    name: github-webhook-handler
     bundle:
       bucket: workers-prod
       path: webhooks/github-v1.0.0.js
@@ -295,9 +295,9 @@ metadata:
   name: auth-middleware
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  workerName: auth-middleware
   
   script:
-    name: auth-middleware
     bundle:
       bucket: workers-prod
       path: auth/middleware-v1.0.0.js
@@ -367,9 +367,9 @@ metadata:
   name: api-staging
 spec:
   accountId: "staging-account-32-hex-chars"
+  workerName: api-staging
   
   script:
-    name: api-staging
     bundle:
       bucket: workers-staging
       path: api/v2.1.0.js
@@ -395,9 +395,9 @@ metadata:
   name: api-prod
 spec:
   accountId: "prod-account-32-hex-chars"
+  workerName: api-prod
   
   script:
-    name: api-prod
     bundle:
       bucket: workers-prod
       path: api/v2.1.0.js  # Same bundle, different config
@@ -432,9 +432,9 @@ metadata:
   name: config-demo
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  workerName: config-demo-worker
   
   script:
-    name: config-demo-worker
     bundle:
       bucket: workers-prod
       path: demos/config-v1.0.0.js
@@ -502,9 +502,9 @@ metadata:
   name: ab-test-worker
 spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  workerName: ab-test-router
   
   script:
-    name: ab-test-router
     bundle:
       bucket: workers-prod
       path: experiments/ab-test-v1.0.0.js

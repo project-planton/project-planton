@@ -17,9 +17,11 @@ variable "spec" {
     # Cloudflare account ID (32 hex characters)
     account_id = string
 
-    # Worker script configuration
+    # Worker name (1-63 characters)
+    worker_name = string
+
+    # Worker script bundle configuration
     script = object({
-      name = string
       bundle = object({
         bucket = string  # R2 bucket name
         path   = string  # Path to bundle in R2

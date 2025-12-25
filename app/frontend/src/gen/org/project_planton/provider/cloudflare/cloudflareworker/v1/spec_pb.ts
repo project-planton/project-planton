@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/cloudflare/cloudflareworker/v1/spec.proto.
  */
 export const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkZvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZXdvcmtlci92MS9zcGVjLnByb3RvEjtvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXdvcmtlci52MSLlBQoUQ2xvdWRmbGFyZVdvcmtlclNwZWMSMgoKYWNjb3VudF9pZBgBIAEoCUIeukgbyAEBchYyEV5bMC05YS1mQS1GXXszMn0kmAEgEmsKBnNjcmlwdBgCIAEoCzJTLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJld29ya2VyLnYxLkNsb3VkZmxhcmVXb3JrZXJTY3JpcHRCBrpIA8gBARJxCgtrdl9iaW5kaW5ncxgDIAMoCzI2Lm9yZy5wcm9qZWN0X3BsYW50b24uc2hhcmVkLmZvcmVpZ25rZXkudjEuVmFsdWVGcm9tUmVmQiSI1GGJDpLUYRtzdGF0dXMub3V0cHV0cy5uYW1lc3BhY2VfaWQSXQoDZG5zGAQgASgLMlAub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjEuQ2xvdWRmbGFyZVdvcmtlckRucxI/ChJjb21wYXRpYmlsaXR5X2RhdGUYBSABKAlCI7pIIHIeMhxeWzAtOV17NH0tWzAtOV17Mn0tWzAtOV17Mn0kEoEBCgt1c2FnZV9tb2RlbBgGIAEoDjJsLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJld29ya2VyLnYxLkNsb3VkZmxhcmVXb3JrZXJTcGVjLkNsb3VkZmxhcmVXb3JrZXJVc2FnZU1vZGVsEl0KA2VudhgHIAEoCzJQLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJld29ya2VyLnYxLkNsb3VkZmxhcmVXb3JrZXJFbnYiNgoaQ2xvdWRmbGFyZVdvcmtlclVzYWdlTW9kZWwSCwoHQlVORExFRBAAEgsKB1VOQk9VTkQQASLbAgoTQ2xvdWRmbGFyZVdvcmtlckVudhJyCgl2YXJpYWJsZXMYASADKAsyXy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXdvcmtlci52MS5DbG91ZGZsYXJlV29ya2VyRW52LlZhcmlhYmxlc0VudHJ5Em4KB3NlY3JldHMYAiADKAsyXS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXdvcmtlci52MS5DbG91ZGZsYXJlV29ya2VyRW52LlNlY3JldHNFbnRyeRowCg5WYXJpYWJsZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGi4KDFNlY3JldHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIqoBChZDbG91ZGZsYXJlV29ya2VyU2NyaXB0EhUKBG5hbWUYASABKAlCB7pIBHICEAESeQoGYnVuZGxlGAIgASgLMmEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjEuQ2xvdWRmbGFyZVdvcmtlclNjcmlwdEJ1bmRsZVIyT2JqZWN0Qga6SAPIAQEiVAokQ2xvdWRmbGFyZVdvcmtlclNjcmlwdEJ1bmRsZVIyT2JqZWN0EhYKBmJ1Y2tldBgBIAEoCUIGukgDyAEBEhQKBHBhdGgYAiABKAlCBrpIA8gBASJyChNDbG91ZGZsYXJlV29ya2VyRG5zEg8KB2VuYWJsZWQYASABKAgSGAoHem9uZV9pZBgCIAEoCUIHukgEcgIQARIZCghob3N0bmFtZRgDIAEoCUIHukgEcgIQARIVCg1yb3V0ZV9wYXR0ZXJuGAQgASgJQtsDCj9jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjFCCVNwZWNQcm90b1ABWn5naXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZXdvcmtlci92MTtjbG91ZGZsYXJld29ya2VydjGiAgVPUFBDQ6oCOk9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5DbG91ZGZsYXJlLkNsb3VkZmxhcmV3b3JrZXIuVjHKAjpPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcQ2xvdWRmbGFyZVxDbG91ZGZsYXJld29ya2VyXFYx4gJGT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXENsb3VkZmxhcmVcQ2xvdWRmbGFyZXdvcmtlclxWMVxHUEJNZXRhZGF0YeoCP09yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpDbG91ZGZsYXJlOjpDbG91ZGZsYXJld29ya2VyOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
+  fileDesc("CkZvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZXdvcmtlci92MS9zcGVjLnByb3RvEjtvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXdvcmtlci52MSKIBgoUQ2xvdWRmbGFyZVdvcmtlclNwZWMSMgoKYWNjb3VudF9pZBgBIAEoCUIeukgbyAEBchYyEV5bMC05YS1mQS1GXXszMn0kmAEgEiEKC3dvcmtlcl9uYW1lGAIgASgJQgy6SAnIAQFyBBABGD8SawoGc2NyaXB0GAMgASgLMlMub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjEuQ2xvdWRmbGFyZVdvcmtlclNjcmlwdEIGukgDyAEBEnEKC2t2X2JpbmRpbmdzGAQgAygLMjYub3JnLnByb2plY3RfcGxhbnRvbi5zaGFyZWQuZm9yZWlnbmtleS52MS5WYWx1ZUZyb21SZWZCJIjUYYkOktRhG3N0YXR1cy5vdXRwdXRzLm5hbWVzcGFjZV9pZBJdCgNkbnMYBSABKAsyUC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXdvcmtlci52MS5DbG91ZGZsYXJlV29ya2VyRG5zEj8KEmNvbXBhdGliaWxpdHlfZGF0ZRgGIAEoCUIjukggch4yHF5bMC05XXs0fS1bMC05XXsyfS1bMC05XXsyfSQSgQEKC3VzYWdlX21vZGVsGAcgASgOMmwub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjEuQ2xvdWRmbGFyZVdvcmtlclNwZWMuQ2xvdWRmbGFyZVdvcmtlclVzYWdlTW9kZWwSXQoDZW52GAggASgLMlAub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjEuQ2xvdWRmbGFyZVdvcmtlckVudiI2ChpDbG91ZGZsYXJlV29ya2VyVXNhZ2VNb2RlbBILCgdCVU5ETEVEEAASCwoHVU5CT1VORBABItsCChNDbG91ZGZsYXJlV29ya2VyRW52EnIKCXZhcmlhYmxlcxgBIAMoCzJfLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJld29ya2VyLnYxLkNsb3VkZmxhcmVXb3JrZXJFbnYuVmFyaWFibGVzRW50cnkSbgoHc2VjcmV0cxgCIAMoCzJdLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJld29ya2VyLnYxLkNsb3VkZmxhcmVXb3JrZXJFbnYuU2VjcmV0c0VudHJ5GjAKDlZhcmlhYmxlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaLgoMU2VjcmV0c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEikwEKFkNsb3VkZmxhcmVXb3JrZXJTY3JpcHQSeQoGYnVuZGxlGAEgASgLMmEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjEuQ2xvdWRmbGFyZVdvcmtlclNjcmlwdEJ1bmRsZVIyT2JqZWN0Qga6SAPIAQEiVAokQ2xvdWRmbGFyZVdvcmtlclNjcmlwdEJ1bmRsZVIyT2JqZWN0EhYKBmJ1Y2tldBgBIAEoCUIGukgDyAEBEhQKBHBhdGgYAiABKAlCBrpIA8gBASJyChNDbG91ZGZsYXJlV29ya2VyRG5zEg8KB2VuYWJsZWQYASABKAgSGAoHem9uZV9pZBgCIAEoCUIHukgEcgIQARIZCghob3N0bmFtZRgDIAEoCUIHukgEcgIQARIVCg1yb3V0ZV9wYXR0ZXJuGAQgASgJQtsDCj9jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmV3b3JrZXIudjFCCVNwZWNQcm90b1ABWn5naXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZXdvcmtlci92MTtjbG91ZGZsYXJld29ya2VydjGiAgVPUFBDQ6oCOk9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5DbG91ZGZsYXJlLkNsb3VkZmxhcmV3b3JrZXIuVjHKAjpPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcQ2xvdWRmbGFyZVxDbG91ZGZsYXJld29ya2VyXFYx4gJGT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXENsb3VkZmxhcmVcQ2xvdWRmbGFyZXdvcmtlclxWMVxHUEJNZXRhZGF0YeoCP09yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpDbG91ZGZsYXJlOjpDbG91ZGZsYXJld29ya2VyOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * CloudflareWorkerSpec defines user-provided configuration for deploying a Cloudflare Worker.
@@ -29,37 +29,45 @@ export type CloudflareWorkerSpec = Message<"org.project_planton.provider.cloudfl
   accountId: string;
 
   /**
+   * The name of the Cloudflare Worker.
+   * This is the worker name that will be visible in the Cloudflare dashboard.
+   *
+   * @generated from field: string worker_name = 2;
+   */
+  workerName: string;
+
+  /**
    * Worker script configuration
    *
-   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScript script = 2;
+   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScript script = 3;
    */
   script?: CloudflareWorkerScript;
 
   /**
    * (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
    *
-   * @generated from field: repeated org.project_planton.shared.foreignkey.v1.ValueFromRef kv_bindings = 3;
+   * @generated from field: repeated org.project_planton.shared.foreignkey.v1.ValueFromRef kv_bindings = 4;
    */
   kvBindings: ValueFromRef[];
 
   /**
    * (Optional) DNS configuration for attaching the Worker to a custom domain.
    *
-   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDns dns = 4;
+   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDns dns = 5;
    */
   dns?: CloudflareWorkerDns;
 
   /**
    * (Optional) Compatibility date for the Worker script (YYYY-MM-DD). If unset, defaults to today's date.
    *
-   * @generated from field: string compatibility_date = 5;
+   * @generated from field: string compatibility_date = 6;
    */
   compatibilityDate: string;
 
   /**
    * (Optional) Billing/usage model for the Worker. Defaults to BUNDLED if unspecified.
    *
-   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModel usage_model = 6;
+   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModel usage_model = 7;
    */
   usageModel: CloudflareWorkerSpec_CloudflareWorkerUsageModel;
 
@@ -68,7 +76,7 @@ export type CloudflareWorkerSpec = Message<"org.project_planton.provider.cloudfl
    * Variables become plain-text bindings in the Worker.
    * Secrets are uploaded via Cloudflare Workers Secrets API (encrypted at rest).
    *
-   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv env = 7;
+   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv env = 8;
    */
   env?: CloudflareWorkerEnv;
 };
@@ -144,12 +152,7 @@ export const CloudflareWorkerEnvSchema: GenMessage<CloudflareWorkerEnv> = /*@__P
  */
 export type CloudflareWorkerScript = Message<"org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScript"> & {
   /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  /**
-   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2Object bundle = 2;
+   * @generated from field: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2Object bundle = 1;
    */
   bundle?: CloudflareWorkerScriptBundleR2Object;
 };
