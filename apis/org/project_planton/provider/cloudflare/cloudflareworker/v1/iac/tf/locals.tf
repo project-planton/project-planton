@@ -11,8 +11,8 @@ locals {
   script_name = var.spec.worker_name
   
   # R2 bundle configuration
-  r2_bucket = var.spec.script.bundle.bucket
-  r2_path   = var.spec.script.bundle.path
+  r2_bucket = var.spec.script_bundle.bucket
+  r2_path   = var.spec.script_bundle.path
 
   # KV bindings
   kv_bindings = try(var.spec.kv_bindings, [])

@@ -33,10 +33,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # Replace with your account ID
   workerName: hello-worker
   
-  script:
-    bundle:
-      bucket: my-workers-bucket
-      path: builds/hello-worker-v1.0.0.js
+  scriptBundle:
+    bucket: my-workers-bucket
+    path: builds/hello-worker-v1.0.0.js
   
   # No DNS configuration - Worker accessible at hello-worker.<account>.workers.dev
   compatibilityDate: "2025-01-15"
@@ -79,10 +78,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   workerName: api-production
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: api/v1.0.0.js
+  scriptBundle:
+    bucket: workers-prod
+    path: api/v1.0.0.js
   
   dns:
     enabled: true
@@ -135,10 +133,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   workerName: api-gateway-prod
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: gateway/v2.1.0.js
+  scriptBundle:
+    bucket: workers-prod
+    path: gateway/v2.1.0.js
   
   # Bind KV namespaces
   kvBindings:
@@ -227,10 +224,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   workerName: github-webhook-handler
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: webhooks/github-v1.0.0.js
+  scriptBundle:
+    bucket: workers-prod
+    path: webhooks/github-v1.0.0.js
   
   dns:
     enabled: true
@@ -297,10 +293,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   workerName: auth-middleware
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: auth/middleware-v1.0.0.js
+  scriptBundle:
+    bucket: workers-prod
+    path: auth/middleware-v1.0.0.js
   
   dns:
     enabled: true
@@ -369,10 +364,9 @@ spec:
   accountId: "staging-account-32-hex-chars"
   workerName: api-staging
   
-  script:
-    bundle:
-      bucket: workers-staging
-      path: api/v2.1.0.js
+  scriptBundle:
+    bucket: workers-staging
+    path: api/v2.1.0.js
   
   dns:
     enabled: true
@@ -397,10 +391,9 @@ spec:
   accountId: "prod-account-32-hex-chars"
   workerName: api-prod
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: api/v2.1.0.js  # Same bundle, different config
+  scriptBundle:
+    bucket: workers-prod
+    path: api/v2.1.0.js  # Same bundle, different config
   
   dns:
     enabled: true
@@ -434,10 +427,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   workerName: config-demo-worker
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: demos/config-v1.0.0.js
+  scriptBundle:
+    bucket: workers-prod
+    path: demos/config-v1.0.0.js
   
   env:
     variables:
@@ -504,10 +496,9 @@ spec:
   accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
   workerName: ab-test-router
   
-  script:
-    bundle:
-      bucket: workers-prod
-      path: experiments/ab-test-v1.0.0.js
+  scriptBundle:
+    bucket: workers-prod
+    path: experiments/ab-test-v1.0.0.js
   
   kvBindings:
     - name: AB_TEST_KV
@@ -595,10 +586,9 @@ aws s3 cp dist/worker.js \
 Use the R2 path in your CloudflareWorker manifest:
 
 ```yaml
-script:
-  bundle:
-    bucket: my-workers-bucket
-    path: builds/worker-v1.0.0.js
+scriptBundle:
+  bucket: my-workers-bucket
+  path: builds/worker-v1.0.0.js
 ```
 
 ---

@@ -22,8 +22,9 @@ message CloudflareWorkerSpec {
     (buf.validate.field).string.max_len = 63
   ];
 
-  // Worker script configuration
-  CloudflareWorkerScript script = 3 [(buf.validate.field).required = true];
+  // Worker script bundle configuration.
+  // Specifies the R2 bucket and path where the pre-built Worker script bundle is stored.
+  CloudflareWorkerScriptBundle script_bundle = 3 [(buf.validate.field).required = true];
 
   // (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
   repeated org.project_planton.shared.foreignkey.v1.ValueFromRef kv_bindings = 4 [
@@ -67,13 +68,12 @@ message CloudflareWorkerEnv {
   map<string, string> secrets = 2;
 }
 
-// Cloudflare worker script configuration
-message CloudflareWorkerScript {
-  CloudflareWorkerScriptBundleR2Object bundle = 1 [(buf.validate.field).required = true];
-}
-
-message CloudflareWorkerScriptBundleR2Object {
+// CloudflareWorkerScriptBundle defines the R2 object reference for the pre-built Worker script bundle.
+message CloudflareWorkerScriptBundle {
+  // The R2 bucket name where the script bundle is stored.
   string bucket = 1 [(buf.validate.field).required = true];
+
+  // The path to the script bundle within the R2 bucket.
   string path = 2 [(buf.validate.field).required = true];
 }
 

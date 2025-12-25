@@ -20,12 +20,10 @@ variable "spec" {
     # Worker name (1-63 characters)
     worker_name = string
 
-    # Worker script bundle configuration
-    script = object({
-      bundle = object({
-        bucket = string  # R2 bucket name
-        path   = string  # Path to bundle in R2
-      })
+    # Worker script bundle configuration (R2 object reference)
+    script_bundle = object({
+      bucket = string  # R2 bucket name
+      path   = string  # Path to bundle in R2
     })
 
     # Optional KV namespace bindings
