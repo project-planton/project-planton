@@ -34,12 +34,16 @@ func createPasswordSecret(
 }
 
 // generateRandomPassword creates a secure random password using Pulumi's random provider
-// Password contains a mix of uppercase, lowercase, numbers, and safe special characters
+// Password contains a mix of uppercase, lowercase, numbers, and URL-safe special characters
 func generateRandomPassword(
 	ctx *pulumi.Context,
 ) (*random.RandomPassword, error) {
 	// Generate random password with complexity requirements
-	// Use only safe special characters to avoid encoding problems in connection strings
+	// IMPORTANT: Only use URL-safe special characters to avoid encoding issues.
+	// Characters like +, =, /, &, ?, # cause problems when passwords are used in
+	// connection strings like: tcp://host:port/?password=XXX
+	// The + character is particularly problematic as it's decoded as a space.
+	// See: https://github.com/Altinity/clickhouse-operator/issues/1883
 	createdRandomString, err := random.NewRandomPassword(ctx,
 		"root-password",
 		&random.RandomPasswordArgs{
@@ -52,8 +56,9 @@ func generateRandomPassword(
 			MinNumeric: pulumi.Int(3),
 			MinUpper:   pulumi.Int(3),
 			MinLower:   pulumi.Int(3),
-			// Safe special characters that work in connection strings and URLs
-			OverrideSpecial: pulumi.String("-_+="),
+			// URL-safe special characters only: hyphen and underscore
+			// DO NOT add +, =, /, &, ?, # - these break URL-encoded connection strings
+			OverrideSpecial: pulumi.String("-_"),
 		})
 
 	if err != nil {

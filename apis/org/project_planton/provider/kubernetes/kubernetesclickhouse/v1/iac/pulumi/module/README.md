@@ -139,7 +139,7 @@ buildCoordinationConfig()
 
 **Responsibilities**:
 - Generate 20-character random passwords with complexity requirements
-- Use safe special characters (-_+=) to avoid connection string encoding issues
+- Use **URL-safe special characters only** (`-_`) to avoid connection string encoding issues
 - Create Kubernetes Secret with StringData (auto base64 encoding)
 - Parent relationship with namespace for lifecycle management
 
@@ -147,6 +147,12 @@ buildCoordinationConfig()
 - Minimum 2 special, 3 numeric, 3 uppercase, 3 lowercase characters
 - Password never appears in manifests or version control
 - SHA256 hashed by ClickHouse when used
+
+**URL-Safe Password Requirement**:
+Characters like `+`, `=`, `/`, `&`, `?`, `#` cause problems when passwords are used in
+URL-encoded connection strings like `tcp://host:port/?password=XXX`. The `+` character
+is particularly problematic as it's decoded as a space. Only hyphen (`-`) and underscore
+(`_`) are used as special characters. See: https://github.com/Altinity/clickhouse-operator/issues/1883
 
 ### ingress.go
 **Purpose**: External LoadBalancer service for ingress access

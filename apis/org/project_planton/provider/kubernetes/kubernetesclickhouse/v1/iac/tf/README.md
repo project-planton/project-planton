@@ -12,7 +12,7 @@ This Terraform module deploys production-grade ClickHouse clusters on Kubernetes
 - **Persistence**: Configurable persistent volumes for data storage with flexible sizing
 - **Clustering**: Optional sharding and replication for distributed deployments
 - **ZooKeeper Integration**: Auto-managed ZooKeeper for cluster coordination, or configure external ZooKeeper
-- **Security**: Auto-generated passwords stored in Kubernetes Secrets
+- **Security**: Auto-generated URL-safe passwords stored in Kubernetes Secrets
 - **Ingress**: Optional LoadBalancer service with custom hostname for external access
 - **Version Control**: Pin specific ClickHouse versions for stability
 - **Production-Ready**: Leverages official ClickHouse images from clickhouse.com
@@ -130,10 +130,20 @@ module "clickhouse_cluster" {
 | kubernetes | ~> 2.35 |
 | random | ~> 3.5 |
 
+## Password Security
+
+The module generates a 20-character random password using **URL-safe special characters only** (`-` and `_`).
+
+**Why URL-safe characters matter:**
+
+Characters like `+`, `=`, `/`, `&`, `?`, `#` cause problems when passwords are used in URL-encoded connection strings like `tcp://host:port/?password=XXX`. The `+` character is particularly problematic as it's decoded as a space by URL parsers.
+
+See: https://github.com/Altinity/clickhouse-operator/issues/1883
+
 ## Resources Created
 
 - `kubernetes_namespace_v1.clickhouse_namespace` - Dedicated namespace
-- `random_password.clickhouse_password` - Auto-generated password
+- `random_password.clickhouse_password` - Auto-generated URL-safe password
 - `kubernetes_secret_v1.clickhouse_password` - Password secret
 - `kubernetes_manifest.clickhouse_installation` - ClickHouseInstallation CRD
 - `kubernetes_service_v1.ingress_external_lb` - LoadBalancer (if ingress enabled)
