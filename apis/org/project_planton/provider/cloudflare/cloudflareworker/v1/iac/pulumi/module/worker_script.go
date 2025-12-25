@@ -18,8 +18,7 @@ func createWorkerScript(
 ) (*cloudfl.WorkersScript, error) {
 
 	// Fetch script content from R2 bundle
-	script := locals.CloudflareWorker.Spec.Script
-	bundle := script.Bundle
+	bundle := locals.CloudflareWorker.Spec.ScriptBundle
 
 	// Use GetObject instead of deprecated LookupBucketObject
 	scriptObject := s3.GetObjectOutput(ctx, s3.GetObjectOutputArgs{

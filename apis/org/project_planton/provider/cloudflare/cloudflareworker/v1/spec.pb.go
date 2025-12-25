@@ -78,8 +78,9 @@ type CloudflareWorkerSpec struct {
 	// The name of the Cloudflare Worker.
 	// This is the worker name that will be visible in the Cloudflare dashboard.
 	WorkerName string `protobuf:"bytes,2,opt,name=worker_name,json=workerName,proto3" json:"worker_name,omitempty"`
-	// Worker script configuration
-	Script *CloudflareWorkerScript `protobuf:"bytes,3,opt,name=script,proto3" json:"script,omitempty"`
+	// Worker script bundle configuration.
+	// Specifies the R2 bucket and path where the pre-built Worker script bundle is stored.
+	ScriptBundle *CloudflareWorkerScriptBundle `protobuf:"bytes,3,opt,name=script_bundle,json=scriptBundle,proto3" json:"script_bundle,omitempty"`
 	// (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
 	KvBindings []*v1.ValueFromRef `protobuf:"bytes,4,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
 	// (Optional) DNS configuration for attaching the Worker to a custom domain.
@@ -140,9 +141,9 @@ func (x *CloudflareWorkerSpec) GetWorkerName() string {
 	return ""
 }
 
-func (x *CloudflareWorkerSpec) GetScript() *CloudflareWorkerScript {
+func (x *CloudflareWorkerSpec) GetScriptBundle() *CloudflareWorkerScriptBundle {
 	if x != nil {
-		return x.Script
+		return x.ScriptBundle
 	}
 	return nil
 }
@@ -243,28 +244,31 @@ func (x *CloudflareWorkerEnv) GetSecrets() map[string]string {
 	return nil
 }
 
-// Cloudflare worker script configuration
-type CloudflareWorkerScript struct {
-	state         protoimpl.MessageState                `protogen:"open.v1"`
-	Bundle        *CloudflareWorkerScriptBundleR2Object `protobuf:"bytes,1,opt,name=bundle,proto3" json:"bundle,omitempty"`
+// CloudflareWorkerScriptBundle defines the R2 object reference for the pre-built Worker script bundle.
+type CloudflareWorkerScriptBundle struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The R2 bucket name where the script bundle is stored.
+	Bucket string `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	// The path to the script bundle within the R2 bucket.
+	Path          string `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloudflareWorkerScript) Reset() {
-	*x = CloudflareWorkerScript{}
+func (x *CloudflareWorkerScriptBundle) Reset() {
+	*x = CloudflareWorkerScriptBundle{}
 	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareWorkerScript) String() string {
+func (x *CloudflareWorkerScriptBundle) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareWorkerScript) ProtoMessage() {}
+func (*CloudflareWorkerScriptBundle) ProtoMessage() {}
 
-func (x *CloudflareWorkerScript) ProtoReflect() protoreflect.Message {
+func (x *CloudflareWorkerScriptBundle) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -276,64 +280,19 @@ func (x *CloudflareWorkerScript) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareWorkerScript.ProtoReflect.Descriptor instead.
-func (*CloudflareWorkerScript) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareWorkerScriptBundle.ProtoReflect.Descriptor instead.
+func (*CloudflareWorkerScriptBundle) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CloudflareWorkerScript) GetBundle() *CloudflareWorkerScriptBundleR2Object {
-	if x != nil {
-		return x.Bundle
-	}
-	return nil
-}
-
-type CloudflareWorkerScriptBundleR2Object struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Bucket        string                 `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
-	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CloudflareWorkerScriptBundleR2Object) Reset() {
-	*x = CloudflareWorkerScriptBundleR2Object{}
-	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CloudflareWorkerScriptBundleR2Object) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CloudflareWorkerScriptBundleR2Object) ProtoMessage() {}
-
-func (x *CloudflareWorkerScriptBundleR2Object) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CloudflareWorkerScriptBundleR2Object.ProtoReflect.Descriptor instead.
-func (*CloudflareWorkerScriptBundleR2Object) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *CloudflareWorkerScriptBundleR2Object) GetBucket() string {
+func (x *CloudflareWorkerScriptBundle) GetBucket() string {
 	if x != nil {
 		return x.Bucket
 	}
 	return ""
 }
 
-func (x *CloudflareWorkerScriptBundleR2Object) GetPath() string {
+func (x *CloudflareWorkerScriptBundle) GetPath() string {
 	if x != nil {
 		return x.Path
 	}
@@ -359,7 +318,7 @@ type CloudflareWorkerDns struct {
 
 func (x *CloudflareWorkerDns) Reset() {
 	*x = CloudflareWorkerDns{}
-	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -371,7 +330,7 @@ func (x *CloudflareWorkerDns) String() string {
 func (*CloudflareWorkerDns) ProtoMessage() {}
 
 func (x *CloudflareWorkerDns) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[4]
+	mi := &file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -384,7 +343,7 @@ func (x *CloudflareWorkerDns) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloudflareWorkerDns.ProtoReflect.Descriptor instead.
 func (*CloudflareWorkerDns) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{4}
+	return file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CloudflareWorkerDns) GetEnabled() bool {
@@ -419,13 +378,13 @@ var File_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto 
 
 const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x12;org.project_planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xdc\x06\n" +
+	"Forg/project_planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x12;org.project_planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xf0\x06\n" +
 	"\x14CloudflareWorkerSpec\x12=\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12-\n" +
 	"\vworker_name\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18?R\n" +
-	"workerName\x12s\n" +
-	"\x06script\x18\x03 \x01(\v2S.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptB\x06\xbaH\x03\xc8\x01\x01R\x06script\x12}\n" +
+	"workerName\x12\x86\x01\n" +
+	"\rscript_bundle\x18\x03 \x01(\v2Y.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleB\x06\xbaH\x03\xc8\x01\x01R\fscriptBundle\x12}\n" +
 	"\vkv_bindings\x18\x04 \x03(\v26.org.project_planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
 	"kvBindings\x12b\n" +
 	"\x03dns\x18\x05 \x01(\v2P.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDnsR\x03dns\x12R\n" +
@@ -444,10 +403,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_prot
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
 	"\fSecretsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9c\x01\n" +
-	"\x16CloudflareWorkerScript\x12\x81\x01\n" +
-	"\x06bundle\x18\x01 \x01(\v2a.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2ObjectB\x06\xbaH\x03\xc8\x01\x01R\x06bundle\"b\n" +
-	"$CloudflareWorkerScriptBundleR2Object\x12\x1e\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"Z\n" +
+	"\x1cCloudflareWorkerScriptBundle\x12\x1e\n" +
 	"\x06bucket\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06bucket\x12\x1a\n" +
 	"\x04path\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04path\"\x9b\x01\n" +
 	"\x13CloudflareWorkerDns\x12\x18\n" +
@@ -470,32 +427,30 @@ func file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto
 }
 
 var file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_goTypes = []any{
 	(CloudflareWorkerSpec_CloudflareWorkerUsageModel)(0), // 0: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModel
 	(*CloudflareWorkerSpec)(nil),                         // 1: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec
 	(*CloudflareWorkerEnv)(nil),                          // 2: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv
-	(*CloudflareWorkerScript)(nil),                       // 3: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScript
-	(*CloudflareWorkerScriptBundleR2Object)(nil),         // 4: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2Object
-	(*CloudflareWorkerDns)(nil),                          // 5: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDns
-	nil,                                                  // 6: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.VariablesEntry
-	nil,                                                  // 7: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.SecretsEntry
-	(*v1.ValueFromRef)(nil),                              // 8: org.project_planton.shared.foreignkey.v1.ValueFromRef
+	(*CloudflareWorkerScriptBundle)(nil),                 // 3: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundle
+	(*CloudflareWorkerDns)(nil),                          // 4: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDns
+	nil,                                                  // 5: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.VariablesEntry
+	nil,                                                  // 6: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.SecretsEntry
+	(*v1.ValueFromRef)(nil),                              // 7: org.project_planton.shared.foreignkey.v1.ValueFromRef
 }
 var file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_depIdxs = []int32{
-	3, // 0: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.script:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScript
-	8, // 1: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.kv_bindings:type_name -> org.project_planton.shared.foreignkey.v1.ValueFromRef
-	5, // 2: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.dns:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDns
+	3, // 0: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.script_bundle:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundle
+	7, // 1: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.kv_bindings:type_name -> org.project_planton.shared.foreignkey.v1.ValueFromRef
+	4, // 2: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.dns:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerDns
 	0, // 3: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.usage_model:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModel
 	2, // 4: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.env:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv
-	6, // 5: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.variables:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.VariablesEntry
-	7, // 6: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.secrets:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.SecretsEntry
-	4, // 7: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScript.bundle:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptBundleR2Object
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	5, // 5: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.variables:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.VariablesEntry
+	6, // 6: org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.secrets:type_name -> org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerEnv.SecretsEntry
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_init() }
@@ -509,7 +464,7 @@ func file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
