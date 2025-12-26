@@ -112,21 +112,57 @@ locals {
   helm_chart_version    = var.spec.version
 
   # Computed resource names to avoid conflicts when multiple instances share a namespace
-  # Format: {metadata.name}-{purpose}
   database_secret_name = "${var.metadata.name}-db-password"
   database_secret_key  = "password"
 
-  # Certificate secret names derived from hostname (flattened: dots replaced with dashes)
-  # This ensures unique, DNS-compliant names that match the hostname they secure
+  # Gateway API resource names derived from hostname (flattened: dots replaced with dashes)
+  # Since these resources are created in istio-ingress namespace, using full domain names
+  # makes them easily identifiable (e.g., "temporal-app-prod-main-ui-planton-live-external")
+
+  # Frontend HTTP ingress resources
+  frontend_http_flattened = replace(local.frontend_http_hostname, ".", "-")
   frontend_http_cert_secret_name = (
     local.frontend_http_hostname != ""
-    ? replace(local.frontend_http_hostname, ".", "-")
+    ? local.frontend_http_flattened
     : "${var.metadata.name}-frontend-http-cert"
   )
+  frontend_http_gateway_name = (
+    local.frontend_http_hostname != ""
+    ? "${local.frontend_http_flattened}-external"
+    : "${var.metadata.name}-frontend-http-external"
+  )
+  frontend_http_redirect_route_name = (
+    local.frontend_http_hostname != ""
+    ? "${local.frontend_http_flattened}-redirect"
+    : "${var.metadata.name}-frontend-http-redirect"
+  )
+  frontend_https_route_name = (
+    local.frontend_http_hostname != ""
+    ? "${local.frontend_http_flattened}-https"
+    : "${var.metadata.name}-frontend-https"
+  )
+
+  # Web UI ingress resources
+  ui_flattened = replace(local.web_ui_hostname, ".", "-")
   ui_cert_secret_name = (
     local.web_ui_hostname != ""
-    ? replace(local.web_ui_hostname, ".", "-")
+    ? local.ui_flattened
     : "${var.metadata.name}-ui-cert"
+  )
+  ui_gateway_name = (
+    local.web_ui_hostname != ""
+    ? "${local.ui_flattened}-external"
+    : "${var.metadata.name}-ui-external"
+  )
+  ui_http_redirect_route_name = (
+    local.web_ui_hostname != ""
+    ? "${local.ui_flattened}-redirect"
+    : "${var.metadata.name}-ui-http-redirect"
+  )
+  ui_https_route_name = (
+    local.web_ui_hostname != ""
+    ? "${local.ui_flattened}-https"
+    : "${var.metadata.name}-ui-https"
   )
 
   # Dynamic configuration
