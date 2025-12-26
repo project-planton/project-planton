@@ -470,6 +470,216 @@ resource "helm_release" "temporal" {
     }
   }
 
+  # ---------------------------------------------------------------- Dynamic Configuration
+  # History size limit (error threshold)
+  dynamic "set" {
+    for_each = local.history_size_limit_error != null ? [1] : []
+    content {
+      name  = "server.config.dynamicConfigValues.limit\\.historySize\\.error[0].value"
+      value = local.history_size_limit_error
+    }
+  }
+
+  # History count limit (error threshold)
+  dynamic "set" {
+    for_each = local.history_count_limit_error != null ? [1] : []
+    content {
+      name  = "server.config.dynamicConfigValues.limit\\.historyCount\\.error[0].value"
+      value = local.history_count_limit_error
+    }
+  }
+
+  # History size limit (warning threshold)
+  dynamic "set" {
+    for_each = local.history_size_limit_warn != null ? [1] : []
+    content {
+      name  = "server.config.dynamicConfigValues.limit\\.historySize\\.warn[0].value"
+      value = local.history_size_limit_warn
+    }
+  }
+
+  # History count limit (warning threshold)
+  dynamic "set" {
+    for_each = local.history_count_limit_warn != null ? [1] : []
+    content {
+      name  = "server.config.dynamicConfigValues.limit\\.historyCount\\.warn[0].value"
+      value = local.history_count_limit_warn
+    }
+  }
+
+  # ---------------------------------------------------------------- History Shards
+  dynamic "set" {
+    for_each = local.num_history_shards != null ? [1] : []
+    content {
+      name  = "server.numHistoryShards"
+      value = local.num_history_shards
+    }
+  }
+
+  # ---------------------------------------------------------------- Service Configuration - Frontend
+  dynamic "set" {
+    for_each = local.frontend_replicas != null ? [1] : []
+    content {
+      name  = "server.frontend.replicaCount"
+      value = local.frontend_replicas
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.frontend_resources_limits.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.frontend.resources.limits.cpu"
+      value = local.frontend_resources_limits.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.frontend_resources_limits.memory, null) != null ? [1] : []
+    content {
+      name  = "server.frontend.resources.limits.memory"
+      value = local.frontend_resources_limits.memory
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.frontend_resources_requests.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.frontend.resources.requests.cpu"
+      value = local.frontend_resources_requests.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.frontend_resources_requests.memory, null) != null ? [1] : []
+    content {
+      name  = "server.frontend.resources.requests.memory"
+      value = local.frontend_resources_requests.memory
+    }
+  }
+
+  # ---------------------------------------------------------------- Service Configuration - History
+  dynamic "set" {
+    for_each = local.history_replicas != null ? [1] : []
+    content {
+      name  = "server.history.replicaCount"
+      value = local.history_replicas
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.history_resources_limits.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.history.resources.limits.cpu"
+      value = local.history_resources_limits.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.history_resources_limits.memory, null) != null ? [1] : []
+    content {
+      name  = "server.history.resources.limits.memory"
+      value = local.history_resources_limits.memory
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.history_resources_requests.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.history.resources.requests.cpu"
+      value = local.history_resources_requests.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.history_resources_requests.memory, null) != null ? [1] : []
+    content {
+      name  = "server.history.resources.requests.memory"
+      value = local.history_resources_requests.memory
+    }
+  }
+
+  # ---------------------------------------------------------------- Service Configuration - Matching
+  dynamic "set" {
+    for_each = local.matching_replicas != null ? [1] : []
+    content {
+      name  = "server.matching.replicaCount"
+      value = local.matching_replicas
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.matching_resources_limits.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.matching.resources.limits.cpu"
+      value = local.matching_resources_limits.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.matching_resources_limits.memory, null) != null ? [1] : []
+    content {
+      name  = "server.matching.resources.limits.memory"
+      value = local.matching_resources_limits.memory
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.matching_resources_requests.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.matching.resources.requests.cpu"
+      value = local.matching_resources_requests.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.matching_resources_requests.memory, null) != null ? [1] : []
+    content {
+      name  = "server.matching.resources.requests.memory"
+      value = local.matching_resources_requests.memory
+    }
+  }
+
+  # ---------------------------------------------------------------- Service Configuration - Worker
+  dynamic "set" {
+    for_each = local.worker_replicas != null ? [1] : []
+    content {
+      name  = "server.worker.replicaCount"
+      value = local.worker_replicas
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.worker_resources_limits.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.worker.resources.limits.cpu"
+      value = local.worker_resources_limits.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.worker_resources_limits.memory, null) != null ? [1] : []
+    content {
+      name  = "server.worker.resources.limits.memory"
+      value = local.worker_resources_limits.memory
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.worker_resources_requests.cpu, null) != null ? [1] : []
+    content {
+      name  = "server.worker.resources.requests.cpu"
+      value = local.worker_resources_requests.cpu
+    }
+  }
+
+  dynamic "set" {
+    for_each = try(local.worker_resources_requests.memory, null) != null ? [1] : []
+    content {
+      name  = "server.worker.resources.requests.memory"
+      value = local.worker_resources_requests.memory
+    }
+  }
+
   depends_on = [
     kubernetes_secret_v1.db_password
   ]

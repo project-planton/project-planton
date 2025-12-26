@@ -115,5 +115,39 @@ locals {
   # Format: {metadata.name}-{purpose}
   database_secret_name = "${var.metadata.name}-db-password"
   database_secret_key  = "password"
+
+  # Dynamic configuration
+  has_dynamic_config            = var.spec.dynamic_config != null
+  history_size_limit_error      = try(var.spec.dynamic_config.history_size_limit_error, null)
+  history_count_limit_error     = try(var.spec.dynamic_config.history_count_limit_error, null)
+  history_size_limit_warn       = try(var.spec.dynamic_config.history_size_limit_warn, null)
+  history_count_limit_warn      = try(var.spec.dynamic_config.history_count_limit_warn, null)
+
+  # History shards configuration
+  num_history_shards = var.spec.num_history_shards
+
+  # Service configuration - Frontend
+  has_frontend_config         = try(var.spec.services.frontend, null) != null
+  frontend_replicas           = try(var.spec.services.frontend.replicas, null)
+  frontend_resources_limits   = try(var.spec.services.frontend.resources.limits, null)
+  frontend_resources_requests = try(var.spec.services.frontend.resources.requests, null)
+
+  # Service configuration - History
+  has_history_config         = try(var.spec.services.history, null) != null
+  history_replicas           = try(var.spec.services.history.replicas, null)
+  history_resources_limits   = try(var.spec.services.history.resources.limits, null)
+  history_resources_requests = try(var.spec.services.history.resources.requests, null)
+
+  # Service configuration - Matching
+  has_matching_config         = try(var.spec.services.matching, null) != null
+  matching_replicas           = try(var.spec.services.matching.replicas, null)
+  matching_resources_limits   = try(var.spec.services.matching.resources.limits, null)
+  matching_resources_requests = try(var.spec.services.matching.resources.requests, null)
+
+  # Service configuration - Worker
+  has_worker_config         = try(var.spec.services.worker, null) != null
+  worker_replicas           = try(var.spec.services.worker.replicas, null)
+  worker_resources_limits   = try(var.spec.services.worker.resources.limits, null)
+  worker_resources_requests = try(var.spec.services.worker.resources.requests, null)
 }
 
