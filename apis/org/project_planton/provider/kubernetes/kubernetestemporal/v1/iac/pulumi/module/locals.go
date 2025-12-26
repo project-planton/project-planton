@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	kubernetestemporalv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
@@ -129,14 +130,32 @@ func initializeLocals(ctx *pulumi.Context,
 	// Format: {metadata.name}-{purpose}
 	locals.DatabasePasswordSecretName = fmt.Sprintf("%s-db-password", target.Metadata.Name)
 	locals.FrontendGrpcLbServiceName = fmt.Sprintf("%s-frontend-grpc-lb", target.Metadata.Name)
-	locals.FrontendHttpCertSecretName = fmt.Sprintf("%s-frontend-http-cert", target.Metadata.Name)
 	locals.FrontendHttpGatewayName = fmt.Sprintf("%s-frontend-http-external", target.Metadata.Name)
 	locals.FrontendHttpRedirectRouteName = fmt.Sprintf("%s-frontend-http-redirect", target.Metadata.Name)
 	locals.FrontendHttpsRouteName = fmt.Sprintf("%s-frontend-https", target.Metadata.Name)
-	locals.UiCertSecretName = fmt.Sprintf("%s-ui-cert", target.Metadata.Name)
 	locals.UiGatewayName = fmt.Sprintf("%s-ui-external", target.Metadata.Name)
 	locals.UiHttpRedirectRouteName = fmt.Sprintf("%s-ui-http-redirect", target.Metadata.Name)
 	locals.UiHttpsRouteName = fmt.Sprintf("%s-ui-https", target.Metadata.Name)
 
+	// Certificate secret names derived from hostname (flattened: dots replaced with dashes)
+	// This ensures unique, DNS-compliant names that match the hostname they secure
+	if locals.IngressFrontendHttpHostname != "" {
+		locals.FrontendHttpCertSecretName = flattenHostname(locals.IngressFrontendHttpHostname)
+	} else {
+		locals.FrontendHttpCertSecretName = fmt.Sprintf("%s-frontend-http-cert", target.Metadata.Name)
+	}
+
+	if locals.IngressUIHostname != "" {
+		locals.UiCertSecretName = flattenHostname(locals.IngressUIHostname)
+	} else {
+		locals.UiCertSecretName = fmt.Sprintf("%s-ui-cert", target.Metadata.Name)
+	}
+
 	return locals
+}
+
+// flattenHostname converts a hostname to a valid Kubernetes resource name
+// by replacing dots with dashes (e.g., "temporal-ui.planton.live" -> "temporal-ui-planton-live")
+func flattenHostname(hostname string) string {
+	return strings.ReplaceAll(hostname, ".", "-")
 }

@@ -116,6 +116,19 @@ locals {
   database_secret_name = "${var.metadata.name}-db-password"
   database_secret_key  = "password"
 
+  # Certificate secret names derived from hostname (flattened: dots replaced with dashes)
+  # This ensures unique, DNS-compliant names that match the hostname they secure
+  frontend_http_cert_secret_name = (
+    local.frontend_http_hostname != ""
+    ? replace(local.frontend_http_hostname, ".", "-")
+    : "${var.metadata.name}-frontend-http-cert"
+  )
+  ui_cert_secret_name = (
+    local.web_ui_hostname != ""
+    ? replace(local.web_ui_hostname, ".", "-")
+    : "${var.metadata.name}-ui-cert"
+  )
+
   # Dynamic configuration
   has_dynamic_config            = var.spec.dynamic_config != null
   history_size_limit_error      = try(var.spec.dynamic_config.history_size_limit_error, null)
