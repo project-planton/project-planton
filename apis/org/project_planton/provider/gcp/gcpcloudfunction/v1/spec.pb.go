@@ -8,6 +8,7 @@ package gcpcloudfunctionv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -236,7 +237,10 @@ func (GcpCloudFunctionRetryPolicy) EnumDescriptor() ([]byte, []int) {
 type GcpCloudFunctionSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// GCP project ID where the Cloud Function will be created.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Supports either a literal value or a reference to another resource's output.
+	// Example literal: {value: "my-gcp-project-123"}
+	// Example reference: {value_from: {kind: GcpProject, name: "main-project", field_path: "status.outputs.project_id"}}
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Region where the function is deployed, for example "us-central1" or "europe-west1".
 	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	// Name of the Cloud Function. If not specified, defaults to metadata.name.
@@ -283,11 +287,11 @@ func (*GcpCloudFunctionSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpCloudFunctionSpec) GetProjectId() string {
+func (x *GcpCloudFunctionSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpCloudFunctionSpec) GetRegion() string {
@@ -913,10 +917,10 @@ var File_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto protore
 
 const file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?org/project_planton/provider/gcp/gcpcloudfunction/v1/spec.proto\x124org.project_planton.provider.gcp.gcpcloudfunction.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xce\x04\n" +
-	"\x14GcpCloudFunctionSpec\x12G\n" +
+	"?org/project_planton/provider/gcp/gcpcloudfunction/v1/spec.proto\x124org.project_planton.provider.gcp.gcpcloudfunction.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x8b\x05\n" +
+	"\x14GcpCloudFunctionSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
 	"\x06region\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x14^[a-z]+-[a-z]+[0-9]$R\x06region\x12R\n" +
 	"\rfunction_name\x18\x03 \x01(\tB-\xbaH*\xd8\x01\x01r%\x18?2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\ffunctionName\x12|\n" +
 	"\fbuild_config\x18\x04 \x01(\v2Q.org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfigB\x06\xbaH\x03\xc8\x01\x01R\vbuildConfig\x12z\n" +
@@ -1028,27 +1032,29 @@ var file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_goTypes
 	nil,                                   // 12: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.BuildEnvironmentVariablesEntry
 	nil,                                   // 13: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.EnvironmentVariablesEntry
 	nil,                                   // 14: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.SecretEnvironmentVariablesEntry
+	(*v1.StringValueOrRef)(nil),           // 15: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_depIdxs = []int32{
-	5,  // 0: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.build_config:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig
-	7,  // 1: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.service_config:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig
-	9,  // 2: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.trigger:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTrigger
-	6,  // 3: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.source:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSource
-	12, // 4: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.build_environment_variables:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.BuildEnvironmentVariablesEntry
-	13, // 5: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.environment_variables:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.EnvironmentVariablesEntry
-	14, // 6: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.secret_environment_variables:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.SecretEnvironmentVariablesEntry
-	2,  // 7: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.vpc_connector_egress_settings:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionVpcEgressSetting
-	1,  // 8: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.ingress_settings:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionIngressSetting
-	8,  // 9: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.scaling:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionScalingConfig
-	0,  // 10: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTrigger.trigger_type:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTriggerType
-	10, // 11: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTrigger.event_trigger:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventTrigger
-	11, // 12: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventTrigger.event_filters:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventFilter
-	3,  // 13: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventTrigger.retry_policy:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionRetryPolicy
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	15, // 0: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	5,  // 1: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.build_config:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig
+	7,  // 2: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.service_config:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig
+	9,  // 3: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSpec.trigger:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTrigger
+	6,  // 4: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.source:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionSource
+	12, // 5: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.build_environment_variables:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionBuildConfig.BuildEnvironmentVariablesEntry
+	13, // 6: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.environment_variables:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.EnvironmentVariablesEntry
+	14, // 7: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.secret_environment_variables:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.SecretEnvironmentVariablesEntry
+	2,  // 8: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.vpc_connector_egress_settings:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionVpcEgressSetting
+	1,  // 9: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.ingress_settings:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionIngressSetting
+	8,  // 10: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionServiceConfig.scaling:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionScalingConfig
+	0,  // 11: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTrigger.trigger_type:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTriggerType
+	10, // 12: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionTrigger.event_trigger:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventTrigger
+	11, // 13: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventTrigger.event_filters:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventFilter
+	3,  // 14: org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionEventTrigger.retry_policy:type_name -> org.project_planton.provider.gcp.gcpcloudfunction.v1.GcpCloudFunctionRetryPolicy
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_init() }

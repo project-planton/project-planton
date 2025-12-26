@@ -20,7 +20,32 @@ kind: GcpCloudFunction
 metadata:
   name: hello-http-dev
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
+  region: us-central1
+  buildConfig:
+    runtime: python311
+    entryPoint: hello_http
+    source:
+      bucket: my-code-bucket
+      object: functions/hello-http-v1.0.0.zip
+```
+
+## HTTP Function with Project Reference (ValueFrom)
+
+This example demonstrates using a reference to a GcpProject resource instead of a hardcoded project ID. This enables cross-resource dependencies where the project ID is dynamically resolved from another resource's outputs.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudFunction
+metadata:
+  name: hello-http-with-ref
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
   region: us-central1
   buildConfig:
     runtime: python311
@@ -40,7 +65,8 @@ kind: GcpCloudFunction
 metadata:
   name: api-gateway-dev
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   buildConfig:
     runtime: nodejs20
@@ -74,7 +100,8 @@ metadata:
   env: prod
   org: my-org
 spec:
-  projectId: my-gcp-project-prod
+  projectId:
+    value: my-gcp-project-prod
   region: us-east1
   buildConfig:
     runtime: nodejs22
@@ -114,7 +141,8 @@ kind: GcpCloudFunction
 metadata:
   name: internal-api
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   buildConfig:
     runtime: python312
@@ -141,7 +169,8 @@ kind: GcpCloudFunction
 metadata:
   name: pubsub-worker
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   buildConfig:
     runtime: go122
@@ -178,7 +207,8 @@ kind: GcpCloudFunction
 metadata:
   name: image-processor
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   buildConfig:
     runtime: python311
@@ -209,6 +239,7 @@ spec:
 
 ## Notes
 
+- **Project ID**: Supports both literal values (`projectId: {value: "my-project"}`) and references to other resources (`projectId: {valueFrom: {kind: GcpProject, name: "main-project", fieldPath: "status.outputs.project_id"}}`)
 - **Runtimes**: Use current, non-deprecated runtimes (python311+, nodejs20+, go121+, etc.)
 - **Source Code**: Must be uploaded to a GCS bucket as a ZIP file
 - **Service Account**: Always use a dedicated service account with least-privilege permissions for production

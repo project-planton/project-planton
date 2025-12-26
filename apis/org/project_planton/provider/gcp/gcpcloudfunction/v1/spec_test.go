@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestGcpCloudFunctionSpec(t *testing.T) {
@@ -26,8 +27,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python311",
 							EntryPoint: "hello_http",
@@ -52,8 +55,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "api-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-east1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-east1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "nodejs20",
 							EntryPoint: "handleRequest",
@@ -94,8 +99,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "pubsub-worker",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "go122",
 							EntryPoint: "ProcessMessage",
@@ -128,8 +135,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "vpc-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python312",
 							EntryPoint: "main",
@@ -178,8 +187,8 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 			})
 		})
 
-		ginkgo.Context("invalid project_id format", func() {
-			ginkgo.It("should return a validation error", func() {
+		ginkgo.Context("valid project_id using value_from reference", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
@@ -187,8 +196,15 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "INVALID_PROJECT", // Invalid: uppercase not allowed
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name:      "main-project",
+									FieldPath: "status.outputs.project_id",
+								},
+							},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python311",
 							EntryPoint: "main",
@@ -200,7 +216,7 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
@@ -213,8 +229,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python27", // Invalid: deprecated runtime
 							EntryPoint: "main",
@@ -239,8 +257,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -257,8 +277,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python311",
 							EntryPoint: "main",
@@ -286,8 +308,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python311",
 							EntryPoint: "main",
@@ -318,8 +342,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python311",
 							EntryPoint: "main",
@@ -348,8 +374,10 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 						Name: "test-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						BuildConfig: &GcpCloudFunctionBuildConfig{
 							Runtime:    "python311",
 							EntryPoint: "main",
