@@ -471,11 +471,14 @@ resource "helm_release" "temporal" {
   }
 
   # ---------------------------------------------------------------- Dynamic Configuration
+  # Note: The Temporal Helm chart expects server.dynamicConfig (not server.config.dynamicConfigValues)
+  # See: https://github.com/temporalio/helm-charts/blob/main/charts/temporal/templates/server-dynamicconfigmap.yaml
+
   # History size limit (error threshold)
   dynamic "set" {
     for_each = local.history_size_limit_error != null ? [1] : []
     content {
-      name  = "server.config.dynamicConfigValues.limit\\.historySize\\.error[0].value"
+      name  = "server.dynamicConfig.limit\\.historySize\\.error[0].value"
       value = local.history_size_limit_error
     }
   }
@@ -484,7 +487,7 @@ resource "helm_release" "temporal" {
   dynamic "set" {
     for_each = local.history_count_limit_error != null ? [1] : []
     content {
-      name  = "server.config.dynamicConfigValues.limit\\.historyCount\\.error[0].value"
+      name  = "server.dynamicConfig.limit\\.historyCount\\.error[0].value"
       value = local.history_count_limit_error
     }
   }
@@ -493,7 +496,7 @@ resource "helm_release" "temporal" {
   dynamic "set" {
     for_each = local.history_size_limit_warn != null ? [1] : []
     content {
-      name  = "server.config.dynamicConfigValues.limit\\.historySize\\.warn[0].value"
+      name  = "server.dynamicConfig.limit\\.historySize\\.warn[0].value"
       value = local.history_size_limit_warn
     }
   }
@@ -502,7 +505,7 @@ resource "helm_release" "temporal" {
   dynamic "set" {
     for_each = local.history_count_limit_warn != null ? [1] : []
     content {
-      name  = "server.config.dynamicConfigValues.limit\\.historyCount\\.warn[0].value"
+      name  = "server.dynamicConfig.limit\\.historyCount\\.warn[0].value"
       value = local.history_count_limit_warn
     }
   }
