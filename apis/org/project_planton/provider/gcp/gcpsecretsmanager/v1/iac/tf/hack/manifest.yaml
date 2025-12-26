@@ -3,7 +3,8 @@ kind: GcpSecretsManager
 metadata:
   name: test-gcp-secret-manager
 spec:
-  projectId: gke-mumbai-20240816-cte
+  projectId:
+    value: gke-mumbai-20240816-cte
   secretNames:
     - secret-1
     - secret-2

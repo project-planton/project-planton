@@ -40,7 +40,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSecretsMa
 		//create the secret resource
 		createdSecret, err := secretmanager.NewSecret(ctx, secretName, &secretmanager.SecretArgs{
 			Labels:   pulumi.ToStringMap(locals.GcpLabels),
-			Project:  pulumi.String(locals.GcpSecretsManager.Spec.ProjectId),
+			Project:  pulumi.String(locals.GcpSecretsManager.Spec.ProjectId.GetValue()),
 			SecretId: pulumi.String(secretId),
 			Replication: secretmanager.SecretReplicationArgs{
 				Auto: secretmanager.SecretReplicationAutoArgs{},

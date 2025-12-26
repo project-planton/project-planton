@@ -16,8 +16,19 @@ variable "spec" {
   description = "spec"
   type = object({
 
-    # Required.** The ID of the GCP project where the secrets will be created.
-    project_id = string
+    # The GCP project ID where the secrets will be created.
+    # Can be provided as a literal value or as a reference to another resource's output.
+    # Example (literal): {value = "my-gcp-project-123456"}
+    # Example (reference): {value_from = {kind = "GcpProject", name = "main-project"}}
+    project_id = object({
+      value      = optional(string)
+      value_from = optional(object({
+        kind       = optional(string)
+        env        = optional(string)
+        name       = string
+        field_path = optional(string)
+      }))
+    })
 
     # A list of secret names to create in Google Cloud Secrets Manager.
     # Each name represents a unique secret that can store sensitive data securely.

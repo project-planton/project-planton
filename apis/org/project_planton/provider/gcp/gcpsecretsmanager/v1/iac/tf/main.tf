@@ -1,7 +1,8 @@
 resource "google_secret_manager_secret" "secrets" {
   for_each = { for secret in local.secrets : secret.name => secret }
 
-  project   = var.spec.project_id
+  # Support both literal value and reference (reference resolution handled externally)
+  project   = var.spec.project_id.value
   secret_id = each.value.secret_id
   labels    = local.final_labels
 
