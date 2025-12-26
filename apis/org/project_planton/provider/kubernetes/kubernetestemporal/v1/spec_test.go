@@ -212,4 +212,226 @@ var _ = ginkgo.Describe("KubernetesTemporal Custom Validation Tests", func() {
 			})
 		})
 	})
+
+	ginkgo.Describe("Dynamic Configuration Tests", func() {
+		ginkgo.BeforeEach(func() {
+			// Set up a valid base configuration with database
+			input.Spec.Database = &KubernetesTemporalDatabaseConfig{
+				Backend: KubernetesTemporalDatabaseBackend_postgresql,
+				ExternalDatabase: &KubernetesTemporalExternalDatabase{
+					Host:     "postgres.example.com",
+					Port:     5432,
+					Username: "pg_user",
+					Password: stringPassword("pg_password"),
+				},
+				DatabaseName:   proto.String("temporal"),
+				VisibilityName: proto.String("temporal_visibility"),
+			}
+		})
+
+		ginkgo.Context("with valid dynamic config values", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.DynamicConfig = &KubernetesTemporalDynamicConfig{
+					HistorySizeLimitError:  proto.Int64(104857600), // 100 MB
+					HistoryCountLimitError: proto.Int64(102400),    // 100K events
+					HistorySizeLimitWarn:   proto.Int64(52428800),  // 50 MB
+					HistoryCountLimitWarn:  proto.Int64(51200),     // 50K events
+				}
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with history_size_limit_error below minimum", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.DynamicConfig = &KubernetesTemporalDynamicConfig{
+					HistorySizeLimitError: proto.Int64(100), // Below 1 MB minimum
+				}
+			})
+
+			ginkgo.It("should return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with history_count_limit_error below minimum", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.DynamicConfig = &KubernetesTemporalDynamicConfig{
+					HistoryCountLimitError: proto.Int64(100), // Below 1000 minimum
+				}
+			})
+
+			ginkgo.It("should return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("History Shards Configuration Tests", func() {
+		ginkgo.BeforeEach(func() {
+			// Set up a valid base configuration with database
+			input.Spec.Database = &KubernetesTemporalDatabaseConfig{
+				Backend: KubernetesTemporalDatabaseBackend_postgresql,
+				ExternalDatabase: &KubernetesTemporalExternalDatabase{
+					Host:     "postgres.example.com",
+					Port:     5432,
+					Username: "pg_user",
+					Password: stringPassword("pg_password"),
+				},
+				DatabaseName:   proto.String("temporal"),
+				VisibilityName: proto.String("temporal_visibility"),
+			}
+		})
+
+		ginkgo.Context("with valid num_history_shards", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.NumHistoryShards = proto.Int32(512)
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with num_history_shards at minimum (1)", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.NumHistoryShards = proto.Int32(1)
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with num_history_shards at maximum (16384)", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.NumHistoryShards = proto.Int32(16384)
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with num_history_shards below minimum", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.NumHistoryShards = proto.Int32(0)
+			})
+
+			ginkgo.It("should return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with num_history_shards above maximum", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.NumHistoryShards = proto.Int32(20000)
+			})
+
+			ginkgo.It("should return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Services Configuration Tests", func() {
+		ginkgo.BeforeEach(func() {
+			// Set up a valid base configuration with database
+			input.Spec.Database = &KubernetesTemporalDatabaseConfig{
+				Backend: KubernetesTemporalDatabaseBackend_postgresql,
+				ExternalDatabase: &KubernetesTemporalExternalDatabase{
+					Host:     "postgres.example.com",
+					Port:     5432,
+					Username: "pg_user",
+					Password: stringPassword("pg_password"),
+				},
+				DatabaseName:   proto.String("temporal"),
+				VisibilityName: proto.String("temporal_visibility"),
+			}
+		})
+
+		ginkgo.Context("with valid services configuration", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.Services = &KubernetesTemporalServices{
+					Frontend: &KubernetesTemporalServiceConfig{
+						Replicas: proto.Int32(2),
+						Resources: &kubernetes.ContainerResources{
+							Limits: &kubernetes.CpuMemory{
+								Cpu:    "1000m",
+								Memory: "2Gi",
+							},
+							Requests: &kubernetes.CpuMemory{
+								Cpu:    "200m",
+								Memory: "512Mi",
+							},
+						},
+					},
+					History: &KubernetesTemporalServiceConfig{
+						Replicas: proto.Int32(3),
+						Resources: &kubernetes.ContainerResources{
+							Limits: &kubernetes.CpuMemory{
+								Cpu:    "2000m",
+								Memory: "4Gi",
+							},
+							Requests: &kubernetes.CpuMemory{
+								Cpu:    "500m",
+								Memory: "1Gi",
+							},
+						},
+					},
+					Matching: &KubernetesTemporalServiceConfig{
+						Replicas: proto.Int32(2),
+					},
+					Worker: &KubernetesTemporalServiceConfig{
+						Replicas: proto.Int32(1),
+					},
+				}
+			})
+
+			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with service replicas below minimum", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.Services = &KubernetesTemporalServices{
+					Frontend: &KubernetesTemporalServiceConfig{
+						Replicas: proto.Int32(0), // Below 1 minimum
+					},
+				}
+			})
+
+			ginkgo.It("should return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with service replicas above maximum", func() {
+			ginkgo.BeforeEach(func() {
+				input.Spec.Services = &KubernetesTemporalServices{
+					History: &KubernetesTemporalServiceConfig{
+						Replicas: proto.Int32(150), // Above 100 maximum
+					},
+				}
+			})
+
+			ginkgo.It("should return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
 })

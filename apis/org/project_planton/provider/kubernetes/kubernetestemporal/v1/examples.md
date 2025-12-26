@@ -327,3 +327,285 @@ spec:
 **Note:** If `create_namespace` is omitted, it defaults to `true` for backward compatibility. The module will create
 the namespace with appropriate labels and metadata.
 
+---
+
+## Advanced Configuration
+
+### Example 8: Configuring Workflow History Limits
+
+Configure dynamic runtime settings to increase workflow history limits for complex workflows with many activities or
+large payloads.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-high-limits
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-prod
+  create_namespace: true
+  database:
+    backend: postgresql
+    external_database:
+      host: postgres-db.example.com
+      port: 5432
+      username: temporaluser
+      password:
+        secretRef:
+          name: temporal-db-credentials
+          key: password
+  # Increase history limits for complex workflows
+  dynamic_config:
+    # 100 MB (default is 50 MB)
+    history_size_limit_error: 104857600
+    # 100K events (default is ~51K)
+    history_count_limit_error: 102400
+    # Warning at 50 MB
+    history_size_limit_warn: 52428800
+    # Warning at 50K events
+    history_count_limit_warn: 51200
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend.example.com
+```
+
+**Use Case:**
+
+- Workflows that orchestrate many activities or child workflows and exceed default history limits
+- Long-running workflows that accumulate many events over time
+- Workflows with large payloads that increase history size
+
+**Note:** Consider using the `ContinueAsNew` pattern as an alternative to increasing limits indefinitely.
+
+---
+
+### Example 9: Configuring History Shards for Scalability
+
+Set the number of history shards at deployment time. This is an **immutable** setting that determines cluster
+parallelism and cannot be changed after initial deployment.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-high-scale
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-prod
+  create_namespace: true
+  database:
+    backend: cassandra
+  # Higher shard count for better parallelism and throughput
+  # WARNING: This cannot be changed after deployment!
+  num_history_shards: 1024
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend.example.com
+    web_ui:
+      enabled: true
+      hostname: temporal-ui.example.com
+```
+
+**Use Case:**
+
+- High-throughput production environments expecting significant workflow volume
+- Deployments where horizontal scalability is a priority
+- Large-scale enterprise deployments
+
+**Warning:** Choose this value carefully. The default (512) is safe for most production workloads. Higher values (1024,
+2048) enable more parallelism but require more resources. This setting cannot be changed after initial deployment.
+
+---
+
+### Example 10: Per-Service Resource Configuration
+
+Configure replicas and resources for each Temporal service independently. This allows fine-tuning based on workload
+characteristics.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-tuned
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-prod
+  create_namespace: true
+  database:
+    backend: postgresql
+    external_database:
+      host: postgres-db.example.com
+      port: 5432
+      username: temporaluser
+      password:
+        secretRef:
+          name: temporal-db-credentials
+          key: password
+  services:
+    # Frontend: API gateway - moderate resources, 2 replicas for HA
+    frontend:
+      replicas: 2
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+    # History: Most resource-intensive - higher resources, 3 replicas
+    history:
+      replicas: 3
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+    # Matching: Task dispatch - moderate resources
+    matching:
+      replicas: 2
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+    # Worker: Internal workflows - lighter resources
+    worker:
+      replicas: 1
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend.example.com
+    web_ui:
+      enabled: true
+      hostname: temporal-ui.example.com
+```
+
+**Use Case:**
+
+- Production deployments requiring fine-tuned resource allocation
+- Environments with specific resource quotas or constraints
+- Optimizing costs by right-sizing each service based on actual usage
+
+**Note:** The history service is typically the most resource-intensive as it manages workflow state. Allocate more
+resources to history for high-throughput deployments.
+
+---
+
+### Example 11: Complete Production Configuration
+
+A comprehensive production deployment combining all advanced features.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-production
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-prod
+  create_namespace: true
+  database:
+    backend: postgresql
+    external_database:
+      host: postgres-rds.example.com
+      port: 5432
+      username: temporal_prod
+      password:
+        secretRef:
+          name: temporal-db-credentials
+          key: password
+    database_name: temporal_prod
+    visibility_name: temporal_visibility_prod
+  external_elasticsearch:
+    host: elasticsearch.example.com
+    port: 9200
+    user: temporal
+    password:
+      secretRef:
+        name: es-credentials
+        key: password
+  # Scalability: 1024 shards for high throughput
+  num_history_shards: 1024
+  # Relaxed history limits for complex workflows
+  dynamic_config:
+    history_size_limit_error: 104857600   # 100 MB
+    history_count_limit_error: 102400     # 100K events
+    history_size_limit_warn: 52428800     # 50 MB
+    history_count_limit_warn: 51200       # 50K events
+  # Production-grade service configuration
+  services:
+    frontend:
+      replicas: 3
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+    history:
+      replicas: 5
+      resources:
+        limits:
+          cpu: "4000m"
+          memory: "8Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+    matching:
+      replicas: 3
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+    worker:
+      replicas: 2
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+  enable_monitoring_stack: true
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-grpc.example.com
+      http_hostname: temporal-http.example.com
+    web_ui:
+      enabled: true
+      hostname: temporal-ui.example.com
+```
+
+**Use Case:**
+
+- Enterprise production deployments requiring high availability and throughput
+- Mission-critical workflow orchestration systems
+- Deployments expecting significant scale and needing fine-grained control
+

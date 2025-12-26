@@ -2,10 +2,44 @@ package module
 
 import (
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
 	kubernetestemporalv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
+
+// buildResourcesMap converts ContainerResources proto to a pulumi.Map for Helm values
+func buildResourcesMap(resources *kubernetes.ContainerResources) pulumi.Map {
+	result := pulumi.Map{}
+
+	if resources.Limits != nil {
+		limits := pulumi.Map{}
+		if resources.Limits.Cpu != "" {
+			limits["cpu"] = pulumi.String(resources.Limits.Cpu)
+		}
+		if resources.Limits.Memory != "" {
+			limits["memory"] = pulumi.String(resources.Limits.Memory)
+		}
+		if len(limits) > 0 {
+			result["limits"] = limits
+		}
+	}
+
+	if resources.Requests != nil {
+		requests := pulumi.Map{}
+		if resources.Requests.Cpu != "" {
+			requests["cpu"] = pulumi.String(resources.Requests.Cpu)
+		}
+		if resources.Requests.Memory != "" {
+			requests["memory"] = pulumi.String(resources.Requests.Memory)
+		}
+		if len(requests) > 0 {
+			result["requests"] = requests
+		}
+	}
+
+	return result
+}
 
 func helmChart(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource) error {
@@ -187,6 +221,140 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	chartVersion := vars.HelmChartVersion
 	if locals.KubernetesTemporal.Spec.Version != "" {
 		chartVersion = locals.KubernetesTemporal.Spec.Version
+	}
+
+	// ----------------------------------------------- dynamic configuration
+	// Configure runtime behavior settings like history limits
+	dynamicConfig := locals.KubernetesTemporal.Spec.DynamicConfig
+	if dynamicConfig != nil {
+		dynamicConfigValues := pulumi.Map{}
+
+		if dynamicConfig.HistorySizeLimitError != nil {
+			dynamicConfigValues["limit.historySize.error"] = pulumi.Array{
+				pulumi.Map{"value": pulumi.Int(*dynamicConfig.HistorySizeLimitError)},
+			}
+		}
+
+		if dynamicConfig.HistoryCountLimitError != nil {
+			dynamicConfigValues["limit.historyCount.error"] = pulumi.Array{
+				pulumi.Map{"value": pulumi.Int(*dynamicConfig.HistoryCountLimitError)},
+			}
+		}
+
+		if dynamicConfig.HistorySizeLimitWarn != nil {
+			dynamicConfigValues["limit.historySize.warn"] = pulumi.Array{
+				pulumi.Map{"value": pulumi.Int(*dynamicConfig.HistorySizeLimitWarn)},
+			}
+		}
+
+		if dynamicConfig.HistoryCountLimitWarn != nil {
+			dynamicConfigValues["limit.historyCount.warn"] = pulumi.Array{
+				pulumi.Map{"value": pulumi.Int(*dynamicConfig.HistoryCountLimitWarn)},
+			}
+		}
+
+		// Only add dynamic config if there are values to set
+		if len(dynamicConfigValues) > 0 {
+			// Ensure server.config exists
+			if _, ok := values["server"]; !ok {
+				values["server"] = pulumi.Map{
+					"config": pulumi.Map{
+						"dynamicConfigValues": dynamicConfigValues,
+					},
+				}
+			} else {
+				serverMap := values["server"].(pulumi.Map)
+				if _, ok := serverMap["config"]; !ok {
+					serverMap["config"] = pulumi.Map{
+						"dynamicConfigValues": dynamicConfigValues,
+					}
+				} else {
+					configMap := serverMap["config"].(pulumi.Map)
+					configMap["dynamicConfigValues"] = dynamicConfigValues
+				}
+			}
+		}
+	}
+
+	// -------------------------------------------------- num history shards
+	// Configure the number of history shards (immutable after initial deployment)
+	if locals.KubernetesTemporal.Spec.NumHistoryShards != nil {
+		numShards := *locals.KubernetesTemporal.Spec.NumHistoryShards
+		if _, ok := values["server"]; !ok {
+			values["server"] = pulumi.Map{
+				"numHistoryShards": pulumi.Int(numShards),
+			}
+		} else {
+			serverMap := values["server"].(pulumi.Map)
+			serverMap["numHistoryShards"] = pulumi.Int(numShards)
+		}
+	}
+
+	// ----------------------------------------- service-level configuration
+	// Configure replicas and resources for each Temporal service
+	services := locals.KubernetesTemporal.Spec.Services
+	if services != nil {
+		// Ensure server map exists
+		if _, ok := values["server"]; !ok {
+			values["server"] = pulumi.Map{}
+		}
+		serverMap := values["server"].(pulumi.Map)
+
+		// Frontend service configuration
+		if services.Frontend != nil {
+			frontendConfig := pulumi.Map{}
+			if services.Frontend.Replicas != nil {
+				frontendConfig["replicaCount"] = pulumi.Int(*services.Frontend.Replicas)
+			}
+			if services.Frontend.Resources != nil {
+				frontendConfig["resources"] = buildResourcesMap(services.Frontend.Resources)
+			}
+			if len(frontendConfig) > 0 {
+				serverMap["frontend"] = frontendConfig
+			}
+		}
+
+		// History service configuration
+		if services.History != nil {
+			historyConfig := pulumi.Map{}
+			if services.History.Replicas != nil {
+				historyConfig["replicaCount"] = pulumi.Int(*services.History.Replicas)
+			}
+			if services.History.Resources != nil {
+				historyConfig["resources"] = buildResourcesMap(services.History.Resources)
+			}
+			if len(historyConfig) > 0 {
+				serverMap["history"] = historyConfig
+			}
+		}
+
+		// Matching service configuration
+		if services.Matching != nil {
+			matchingConfig := pulumi.Map{}
+			if services.Matching.Replicas != nil {
+				matchingConfig["replicaCount"] = pulumi.Int(*services.Matching.Replicas)
+			}
+			if services.Matching.Resources != nil {
+				matchingConfig["resources"] = buildResourcesMap(services.Matching.Resources)
+			}
+			if len(matchingConfig) > 0 {
+				serverMap["matching"] = matchingConfig
+			}
+		}
+
+		// Worker service configuration
+		if services.Worker != nil {
+			workerConfig := pulumi.Map{}
+			if services.Worker.Replicas != nil {
+				workerConfig["replicaCount"] = pulumi.Int(*services.Worker.Replicas)
+			}
+			if services.Worker.Resources != nil {
+				workerConfig["resources"] = buildResourcesMap(services.Worker.Resources)
+			}
+			if len(workerConfig) > 0 {
+				serverMap["worker"] = workerConfig
+			}
+		}
 	}
 
 	// ------------------------------------------------------- install chart

@@ -138,6 +138,103 @@ variable "spec" {
     # Version of the Temporal Helm chart to deploy (e.g., "0.62.0")
     # If not specified, the default version will be used
     version = optional(string, "0.62.0")
+
+    # Dynamic configuration values for Temporal server runtime behavior
+    # These settings control workflow execution limits without requiring server restart
+    dynamic_config = optional(object({
+      # Maximum size in bytes for workflow execution history
+      # Default: 52428800 (50 MB). Increase for workflows with large payloads.
+      history_size_limit_error = optional(number)
+
+      # Maximum number of events in workflow execution history
+      # Default: 51200 events. Increase for workflows with many activities/signals.
+      history_count_limit_error = optional(number)
+
+      # Warning threshold for history size in bytes
+      # Default: 10485760 (10 MB)
+      history_size_limit_warn = optional(number)
+
+      # Warning threshold for history event count
+      # Default: 10240 events
+      history_count_limit_warn = optional(number)
+    }))
+
+    # Number of history shards for the Temporal cluster
+    # This is an IMMUTABLE setting that must be decided at cluster creation time.
+    # Higher values enable better parallelism. Default: 512
+    # WARNING: Cannot be changed after initial deployment without data migration.
+    num_history_shards = optional(number)
+
+    # Per-service replica and resource configuration for Temporal services
+    services = optional(object({
+      # Frontend service configuration (API gateway for gRPC/HTTP requests)
+      frontend = optional(object({
+        # Number of replicas
+        replicas = optional(number)
+        # Container resources (CPU and memory)
+        resources = optional(object({
+          limits = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+          requests = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+        }))
+      }))
+
+      # History service configuration (manages workflow state, most resource-intensive)
+      history = optional(object({
+        # Number of replicas
+        replicas = optional(number)
+        # Container resources (CPU and memory)
+        resources = optional(object({
+          limits = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+          requests = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+        }))
+      }))
+
+      # Matching service configuration (task queue management and dispatch)
+      matching = optional(object({
+        # Number of replicas
+        replicas = optional(number)
+        # Container resources (CPU and memory)
+        resources = optional(object({
+          limits = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+          requests = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+        }))
+      }))
+
+      # Worker service configuration (internal Temporal system workflows)
+      worker = optional(object({
+        # Number of replicas
+        replicas = optional(number)
+        # Container resources (CPU and memory)
+        resources = optional(object({
+          limits = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+          requests = optional(object({
+            cpu    = optional(string)
+            memory = optional(string)
+          }))
+        }))
+      }))
+    }))
   })
 }
 

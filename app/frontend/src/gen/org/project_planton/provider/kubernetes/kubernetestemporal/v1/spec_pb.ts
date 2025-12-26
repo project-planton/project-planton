@@ -5,6 +5,8 @@
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { ContainerResources } from "../../kubernetes_pb";
+import { file_org_project_planton_provider_kubernetes_kubernetes } from "../../kubernetes_pb";
 import type { KubernetesSensitiveValue } from "../../kubernetes_secret_pb";
 import { file_org_project_planton_provider_kubernetes_kubernetes_secret } from "../../kubernetes_secret_pb";
 import type { KubernetesClusterSelector } from "../../target_cluster_pb";
@@ -18,7 +20,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetestemporal/v1/spec.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkhvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc3RlbXBvcmFsL3YxL3NwZWMucHJvdG8SPW9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEilgYKFkt1YmVybmV0ZXNUZW1wb3JhbFNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEnkKCGRhdGFiYXNlGAQgASgLMl8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxEYXRhYmFzZUNvbmZpZ0IGukgDyAEBEhYKDmRpc2FibGVfd2ViX3VpGAUgASgIEiUKHWVuYWJsZV9lbWJlZGRlZF9lbGFzdGljc2VhcmNoGAYgASgIEh8KF2VuYWJsZV9tb25pdG9yaW5nX3N0YWNrGAcgASgIEiYKEmNhc3NhbmRyYV9yZXBsaWNhcxgIIAEoBUIFiqYdATFIAIgBARJpCgdpbmdyZXNzGAkgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxJbmdyZXNzEoYBChZleHRlcm5hbF9lbGFzdGljc2VhcmNoGAogASgLMmYub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxFeHRlcm5hbEVsYXN0aWNzZWFyY2gSDwoHdmVyc2lvbhgLIAEoCUIVChNfY2Fzc2FuZHJhX3JlcGxpY2FzIsUDCiBLdWJlcm5ldGVzVGVtcG9yYWxEYXRhYmFzZUNvbmZpZxJ5CgdiYWNrZW5kGAEgASgOMmAub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxEYXRhYmFzZUJhY2tlbmRCBrpIA8gBARJ8ChFleHRlcm5hbF9kYXRhYmFzZRgCIAEoCzJhLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEuS3ViZXJuZXRlc1RlbXBvcmFsRXh0ZXJuYWxEYXRhYmFzZRIoCg1kYXRhYmFzZV9uYW1lGAYgASgJQgyKph0IdGVtcG9yYWxIAIgBARI1Cg92aXNpYmlsaXR5X25hbWUYByABKAlCF4qmHRN0ZW1wb3JhbF92aXNpYmlsaXR5SAGIAQESIQoZZGlzYWJsZV9hdXRvX3NjaGVtYV9zZXR1cBgIIAEoCEIQCg5fZGF0YWJhc2VfbmFtZUISChBfdmlzaWJpbGl0eV9uYW1lIqcBCiJLdWJlcm5ldGVzVGVtcG9yYWxFeHRlcm5hbERhdGFiYXNlEgwKBGhvc3QYASABKAkSDAoEcG9ydBgCIAEoBRIQCgh1c2VybmFtZRgDIAEoCRJTCghwYXNzd29yZBgEIAEoCzJBLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5LdWJlcm5ldGVzU2Vuc2l0aXZlVmFsdWUiqAEKJ0t1YmVybmV0ZXNUZW1wb3JhbEV4dGVybmFsRWxhc3RpY3NlYXJjaBIMCgRob3N0GAEgASgJEgwKBHBvcnQYAiABKAUSDAoEdXNlchgDIAEoCRJTCghwYXNzd29yZBgEIAEoCzJBLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5LdWJlcm5ldGVzU2Vuc2l0aXZlVmFsdWUijgIKGUt1YmVybmV0ZXNUZW1wb3JhbEluZ3Jlc3MSegoIZnJvbnRlbmQYASABKAsyaC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc3RlbXBvcmFsLnYxLkt1YmVybmV0ZXNUZW1wb3JhbEZyb250ZW5kSW5ncmVzc0VuZHBvaW50EnUKBndlYl91aRgCIAEoCzJlLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEuS3ViZXJuZXRlc1RlbXBvcmFsV2ViVWlJbmdyZXNzRW5kcG9pbnQilgIKKUt1YmVybmV0ZXNUZW1wb3JhbEZyb250ZW5kSW5ncmVzc0VuZHBvaW50Eg8KB2VuYWJsZWQYASABKAgSFQoNZ3JwY19ob3N0bmFtZRgCIAEoCRIVCg1odHRwX2hvc3RuYW1lGAMgASgJOqkBukilARqiAQosc3BlYy5pbmdyZXNzLmZyb250ZW5kLmdycGNfaG9zdG5hbWUucmVxdWlyZWQSQ2Zyb250ZW5kLmdycGNfaG9zdG5hbWUgaXMgcmVxdWlyZWQgd2hlbiBmcm9udGVuZCBpbmdyZXNzIGlzIGVuYWJsZWQaLSF0aGlzLmVuYWJsZWQgfHwgc2l6ZSh0aGlzLmdycGNfaG9zdG5hbWUpID4gMCLiAQomS3ViZXJuZXRlc1RlbXBvcmFsV2ViVWlJbmdyZXNzRW5kcG9pbnQSDwoHZW5hYmxlZBgBIAEoCBIQCghob3N0bmFtZRgCIAEoCTqUAbpIkAEajQEKJXNwZWMuaW5ncmVzcy53ZWJfdWkuaG9zdG5hbWUucmVxdWlyZWQSOndlYl91aS5ob3N0bmFtZSBpcyByZXF1aXJlZCB3aGVuIHdlYiB1aSBpbmdyZXNzIGlzIGVuYWJsZWQaKCF0aGlzLmVuYWJsZWQgfHwgc2l6ZSh0aGlzLmhvc3RuYW1lKSA+IDAqgwEKIUt1YmVybmV0ZXNUZW1wb3JhbERhdGFiYXNlQmFja2VuZBI0CjBrdWJlcm5ldGVzX3RlbXBvcmFsX2RhdGFiYXNlX2JhY2tlbmRfdW5zcGVjaWZpZWQQABINCgljYXNzYW5kcmEQARIOCgpwb3N0Z3Jlc3FsEAISCQoFbXlzcWwQA0LqAwpBY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjFCCVNwZWNQcm90b1ABWoIBZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXN0ZW1wb3JhbC92MTtrdWJlcm5ldGVzdGVtcG9yYWx2MaICBU9QUEtLqgI8T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkt1YmVybmV0ZXMuS3ViZXJuZXRlc3RlbXBvcmFsLlYxygI8T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc3RlbXBvcmFsXFYx4gJIT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc3RlbXBvcmFsXFYxXEdQQk1ldGFkYXRh6gJBT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6Okt1YmVybmV0ZXM6Okt1YmVybmV0ZXN0ZW1wb3JhbDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_kubernetes_secret, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
+  fileDesc("CkhvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc3RlbXBvcmFsL3YxL3NwZWMucHJvdG8SPW9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEiwAgKFkt1YmVybmV0ZXNUZW1wb3JhbFNwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEnkKCGRhdGFiYXNlGAQgASgLMl8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxEYXRhYmFzZUNvbmZpZ0IGukgDyAEBEhYKDmRpc2FibGVfd2ViX3VpGAUgASgIEiUKHWVuYWJsZV9lbWJlZGRlZF9lbGFzdGljc2VhcmNoGAYgASgIEh8KF2VuYWJsZV9tb25pdG9yaW5nX3N0YWNrGAcgASgIEiYKEmNhc3NhbmRyYV9yZXBsaWNhcxgIIAEoBUIFiqYdATFIAIgBARJpCgdpbmdyZXNzGAkgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxJbmdyZXNzEoYBChZleHRlcm5hbF9lbGFzdGljc2VhcmNoGAogASgLMmYub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxFeHRlcm5hbEVsYXN0aWNzZWFyY2gSDwoHdmVyc2lvbhgLIAEoCRJ2Cg5keW5hbWljX2NvbmZpZxgMIAEoCzJeLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEuS3ViZXJuZXRlc1RlbXBvcmFsRHluYW1pY0NvbmZpZxIsChJudW1faGlzdG9yeV9zaGFyZHMYDSABKAVCC7pICBoGGICAASgBSAGIAQESawoIc2VydmljZXMYDiABKAsyWS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc3RlbXBvcmFsLnYxLkt1YmVybmV0ZXNUZW1wb3JhbFNlcnZpY2VzQhUKE19jYXNzYW5kcmFfcmVwbGljYXNCFQoTX251bV9oaXN0b3J5X3NoYXJkcyLFAwogS3ViZXJuZXRlc1RlbXBvcmFsRGF0YWJhc2VDb25maWcSeQoHYmFja2VuZBgBIAEoDjJgLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEuS3ViZXJuZXRlc1RlbXBvcmFsRGF0YWJhc2VCYWNrZW5kQga6SAPIAQESfAoRZXh0ZXJuYWxfZGF0YWJhc2UYAiABKAsyYS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc3RlbXBvcmFsLnYxLkt1YmVybmV0ZXNUZW1wb3JhbEV4dGVybmFsRGF0YWJhc2USKAoNZGF0YWJhc2VfbmFtZRgGIAEoCUIMiqYdCHRlbXBvcmFsSACIAQESNQoPdmlzaWJpbGl0eV9uYW1lGAcgASgJQheKph0TdGVtcG9yYWxfdmlzaWJpbGl0eUgBiAEBEiEKGWRpc2FibGVfYXV0b19zY2hlbWFfc2V0dXAYCCABKAhCEAoOX2RhdGFiYXNlX25hbWVCEgoQX3Zpc2liaWxpdHlfbmFtZSKnAQoiS3ViZXJuZXRlc1RlbXBvcmFsRXh0ZXJuYWxEYXRhYmFzZRIMCgRob3N0GAEgASgJEgwKBHBvcnQYAiABKAUSEAoIdXNlcm5hbWUYAyABKAkSUwoIcGFzc3dvcmQYBCABKAsyQS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc1NlbnNpdGl2ZVZhbHVlIqgBCidLdWJlcm5ldGVzVGVtcG9yYWxFeHRlcm5hbEVsYXN0aWNzZWFyY2gSDAoEaG9zdBgBIAEoCRIMCgRwb3J0GAIgASgFEgwKBHVzZXIYAyABKAkSUwoIcGFzc3dvcmQYBCABKAsyQS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc1NlbnNpdGl2ZVZhbHVlIo4CChlLdWJlcm5ldGVzVGVtcG9yYWxJbmdyZXNzEnoKCGZyb250ZW5kGAEgASgLMmgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxGcm9udGVuZEluZ3Jlc3NFbmRwb2ludBJ1CgZ3ZWJfdWkYAiABKAsyZS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc3RlbXBvcmFsLnYxLkt1YmVybmV0ZXNUZW1wb3JhbFdlYlVpSW5ncmVzc0VuZHBvaW50IpYCCilLdWJlcm5ldGVzVGVtcG9yYWxGcm9udGVuZEluZ3Jlc3NFbmRwb2ludBIPCgdlbmFibGVkGAEgASgIEhUKDWdycGNfaG9zdG5hbWUYAiABKAkSFQoNaHR0cF9ob3N0bmFtZRgDIAEoCTqpAbpIpQEaogEKLHNwZWMuaW5ncmVzcy5mcm9udGVuZC5ncnBjX2hvc3RuYW1lLnJlcXVpcmVkEkNmcm9udGVuZC5ncnBjX2hvc3RuYW1lIGlzIHJlcXVpcmVkIHdoZW4gZnJvbnRlbmQgaW5ncmVzcyBpcyBlbmFibGVkGi0hdGhpcy5lbmFibGVkIHx8IHNpemUodGhpcy5ncnBjX2hvc3RuYW1lKSA+IDAi4gEKJkt1YmVybmV0ZXNUZW1wb3JhbFdlYlVpSW5ncmVzc0VuZHBvaW50Eg8KB2VuYWJsZWQYASABKAgSEAoIaG9zdG5hbWUYAiABKAk6lAG6SJABGo0BCiVzcGVjLmluZ3Jlc3Mud2ViX3VpLmhvc3RuYW1lLnJlcXVpcmVkEjp3ZWJfdWkuaG9zdG5hbWUgaXMgcmVxdWlyZWQgd2hlbiB3ZWIgdWkgaW5ncmVzcyBpcyBlbmFibGVkGighdGhpcy5lbmFibGVkIHx8IHNpemUodGhpcy5ob3N0bmFtZSkgPiAwItsCCh9LdWJlcm5ldGVzVGVtcG9yYWxEeW5hbWljQ29uZmlnEjAKGGhpc3Rvcnlfc2l6ZV9saW1pdF9lcnJvchgBIAEoA0IJukgGIgQogIBASACIAQESMAoZaGlzdG9yeV9jb3VudF9saW1pdF9lcnJvchgCIAEoA0IIukgFIgMo6AdIAYgBARIvChdoaXN0b3J5X3NpemVfbGltaXRfd2FybhgDIAEoA0IJukgGIgQogIAgSAKIAQESLwoYaGlzdG9yeV9jb3VudF9saW1pdF93YXJuGAQgASgDQgi6SAUiAyj0A0gDiAEBQhsKGV9oaXN0b3J5X3NpemVfbGltaXRfZXJyb3JCHAoaX2hpc3RvcnlfY291bnRfbGltaXRfZXJyb3JCGgoYX2hpc3Rvcnlfc2l6ZV9saW1pdF93YXJuQhsKGV9oaXN0b3J5X2NvdW50X2xpbWl0X3dhcm4ioAEKH0t1YmVybmV0ZXNUZW1wb3JhbFNlcnZpY2VDb25maWcSIAoIcmVwbGljYXMYASABKAVCCbpIBhoEGGQoAUgAiAEBEk4KCXJlc291cmNlcxgCIAEoCzI7Lm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5Db250YWluZXJSZXNvdXJjZXNCCwoJX3JlcGxpY2FzIuEDChpLdWJlcm5ldGVzVGVtcG9yYWxTZXJ2aWNlcxJwCghmcm9udGVuZBgBIAEoCzJeLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEuS3ViZXJuZXRlc1RlbXBvcmFsU2VydmljZUNvbmZpZxJvCgdoaXN0b3J5GAIgASgLMl4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxTZXJ2aWNlQ29uZmlnEnAKCG1hdGNoaW5nGAMgASgLMl4ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MS5LdWJlcm5ldGVzVGVtcG9yYWxTZXJ2aWNlQ29uZmlnEm4KBndvcmtlchgEIAEoCzJeLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzdGVtcG9yYWwudjEuS3ViZXJuZXRlc1RlbXBvcmFsU2VydmljZUNvbmZpZyqDAQohS3ViZXJuZXRlc1RlbXBvcmFsRGF0YWJhc2VCYWNrZW5kEjQKMGt1YmVybmV0ZXNfdGVtcG9yYWxfZGF0YWJhc2VfYmFja2VuZF91bnNwZWNpZmllZBAAEg0KCWNhc3NhbmRyYRABEg4KCnBvc3RncmVzcWwQAhIJCgVteXNxbBADQuoDCkFjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXN0ZW1wb3JhbC52MUIJU3BlY1Byb3RvUAFaggFnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc3RlbXBvcmFsL3YxO2t1YmVybmV0ZXN0ZW1wb3JhbHYxogIFT1BQS0uqAjxPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzdGVtcG9yYWwuVjHKAjxPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzdGVtcG9yYWxcVjHiAkhPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzdGVtcG9yYWxcVjFcR1BCTWV0YWRhdGHqAkFPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc3RlbXBvcmFsOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_kubernetes_secret, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
 
 /**
  * temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
@@ -108,6 +110,34 @@ export type KubernetesTemporalSpec = Message<"org.project_planton.provider.kuber
    * @generated from field: string version = 11;
    */
   version: string;
+
+  /**
+   * Dynamic configuration values for Temporal server runtime behavior.
+   * These settings control workflow execution limits and can be adjusted without server restart.
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDynamicConfig dynamic_config = 12;
+   */
+  dynamicConfig?: KubernetesTemporalDynamicConfig;
+
+  /**
+   * *
+   * Number of history shards for the Temporal cluster.
+   * This is an IMMUTABLE setting that must be decided at cluster creation time.
+   * Higher values enable better parallelism and throughput but require more resources.
+   * Default: 512 (safe for most production workloads).
+   * WARNING: Cannot be changed after initial deployment without data migration.
+   *
+   * @generated from field: optional int32 num_history_shards = 13;
+   */
+  numHistoryShards?: number;
+
+  /**
+   * Per-service replica and resource configuration for Temporal services.
+   * Allows fine-tuning resources for frontend, history, matching, and worker services.
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServices services = 14;
+   */
+  services?: KubernetesTemporalServices;
 };
 
 /**
@@ -376,6 +406,194 @@ export type KubernetesTemporalWebUiIngressEndpoint = Message<"org.project_planto
  */
 export const KubernetesTemporalWebUiIngressEndpointSchema: GenMessage<KubernetesTemporalWebUiIngressEndpoint> = /*@__PURE__*/
   messageDesc(file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec, 6);
+
+/**
+ * *
+ * Dynamic configuration values for Temporal server runtime behavior.
+ * These settings control workflow execution limits without requiring server restart.
+ * When not specified, Temporal uses its default values.
+ *
+ * Common use case: Increase history limits for workflows that require more events or larger payloads.
+ *
+ * Example:
+ * ```yaml
+ * dynamic_config:
+ *   history_size_limit_error: 104857600  # 100 MB
+ *   history_count_limit_error: 102400    # 100K events
+ * ```
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDynamicConfig
+ */
+export type KubernetesTemporalDynamicConfig = Message<"org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDynamicConfig"> & {
+  /**
+   * *
+   * Maximum size in bytes for workflow execution history.
+   * When a workflow exceeds this limit, Temporal terminates it with reason "Workflow history size exceeds limit."
+   * Default: 52428800 (50 MB). Increase for workflows with large payloads.
+   *
+   * @generated from field: optional int64 history_size_limit_error = 1;
+   */
+  historySizeLimitError?: bigint;
+
+  /**
+   * *
+   * Maximum number of events in workflow execution history.
+   * When a workflow exceeds this limit, Temporal terminates it with reason "Workflow history size exceeds limit."
+   * Default: 51200 events. Increase for workflows with many activities/signals.
+   * Consider using ContinueAsNew pattern as an alternative.
+   *
+   * @generated from field: optional int64 history_count_limit_error = 2;
+   */
+  historyCountLimitError?: bigint;
+
+  /**
+   * *
+   * Warning threshold for history size in bytes.
+   * Temporal logs warnings when workflows approach this limit.
+   * Default: 10485760 (10 MB, ~20% of error limit).
+   *
+   * @generated from field: optional int64 history_size_limit_warn = 3;
+   */
+  historySizeLimitWarn?: bigint;
+
+  /**
+   * *
+   * Warning threshold for history event count.
+   * Temporal logs warnings when workflows approach this limit.
+   * Default: 10240 (~20% of error limit).
+   *
+   * @generated from field: optional int64 history_count_limit_warn = 4;
+   */
+  historyCountLimitWarn?: bigint;
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalDynamicConfig.
+ * Use `create(KubernetesTemporalDynamicConfigSchema)` to create a new message.
+ */
+export const KubernetesTemporalDynamicConfigSchema: GenMessage<KubernetesTemporalDynamicConfig> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec, 7);
+
+/**
+ * *
+ * Per-service replica and resource configuration for a Temporal service.
+ * Allows configuring replicas and CPU/memory resources independently for each service.
+ *
+ * Example:
+ * ```yaml
+ * replicas: 3
+ * resources:
+ *   limits:
+ *     cpu: "2000m"
+ *     memory: "4Gi"
+ *   requests:
+ *     cpu: "500m"
+ *     memory: "1Gi"
+ * ```
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig
+ */
+export type KubernetesTemporalServiceConfig = Message<"org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig"> & {
+  /**
+   * *
+   * Number of replicas for this service.
+   * Higher replica counts provide better availability and throughput.
+   * Default: 1 for development, recommend 3+ for production.
+   *
+   * @generated from field: optional int32 replicas = 1;
+   */
+  replicas?: number;
+
+  /**
+   * *
+   * Container resources (CPU and memory) for this service.
+   * Resource requirements vary by service type:
+   * - history: Most resource-intensive, handles workflow state
+   * - matching: Task dispatch, moderate resources
+   * - frontend: API gateway, moderate resources
+   * - worker: Internal workflows, light resources
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.ContainerResources resources = 2;
+   */
+  resources?: ContainerResources;
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig.
+ * Use `create(KubernetesTemporalServiceConfigSchema)` to create a new message.
+ */
+export const KubernetesTemporalServiceConfigSchema: GenMessage<KubernetesTemporalServiceConfig> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec, 8);
+
+/**
+ * *
+ * Service-level configuration for all Temporal services.
+ * Allows fine-tuning replica counts and resources for each Temporal service independently.
+ *
+ * Temporal consists of four core services:
+ * - **frontend**: API gateway for client requests (gRPC/HTTP)
+ * - **history**: Manages workflow state and execution (most resource-intensive)
+ * - **matching**: Task queue management and worker dispatch
+ * - **worker**: Runs internal Temporal system workflows
+ *
+ * Example:
+ * ```yaml
+ * services:
+ *   frontend:
+ *     replicas: 2
+ *     resources:
+ *       requests:
+ *         cpu: "200m"
+ *         memory: "512Mi"
+ *   history:
+ *     replicas: 3
+ *     resources:
+ *       requests:
+ *         cpu: "500m"
+ *         memory: "1Gi"
+ *       limits:
+ *         cpu: "2000m"
+ *         memory: "4Gi"
+ * ```
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServices
+ */
+export type KubernetesTemporalServices = Message<"org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServices"> & {
+  /**
+   * Frontend service configuration (API gateway for gRPC/HTTP requests)
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig frontend = 1;
+   */
+  frontend?: KubernetesTemporalServiceConfig;
+
+  /**
+   * History service configuration (manages workflow state, most resource-intensive)
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig history = 2;
+   */
+  history?: KubernetesTemporalServiceConfig;
+
+  /**
+   * Matching service configuration (task queue management and dispatch)
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig matching = 3;
+   */
+  matching?: KubernetesTemporalServiceConfig;
+
+  /**
+   * Worker service configuration (internal Temporal system workflows)
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServiceConfig worker = 4;
+   */
+  worker?: KubernetesTemporalServiceConfig;
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetestemporal.v1.KubernetesTemporalServices.
+ * Use `create(KubernetesTemporalServicesSchema)` to create a new message.
+ */
+export const KubernetesTemporalServicesSchema: GenMessage<KubernetesTemporalServices> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec, 9);
 
 /**
  * temporal kubernetes database backend enumerates the supported databases.
