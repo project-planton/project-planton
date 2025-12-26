@@ -2,7 +2,7 @@
 
 Here are examples demonstrating how to use the `GcpCloudSql` API resource with the Pulumi module for deploying MySQL and PostgreSQL databases on Google Cloud SQL.
 
-## Example 1: Basic MySQL Instance
+## Example 1: Basic MySQL Instance (Literal Value)
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -10,7 +10,8 @@ kind: GcpCloudSql
 metadata:
   name: mysql-basic
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -24,7 +25,28 @@ Deploy with:
 project-planton pulumi up --manifest mysql-basic.yaml --stack myorg/platform/dev
 ```
 
-## Example 2: PostgreSQL with Private IP
+## Example 2: Basic MySQL Instance (Value From Reference)
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: mysql-basic
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  region: us-central1
+  database_engine: MYSQL
+  database_version: MYSQL_8_0
+  tier: db-n1-standard-1
+  storage_gb: 10
+  root_password: SecurePassword123!
+```
+
+## Example 3: PostgreSQL with Private IP (Literal Values)
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -32,19 +54,49 @@ kind: GcpCloudSql
 metadata:
   name: postgres-private
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
   tier: db-n1-standard-2
   storage_gb: 20
   network:
-    vpc_id: projects/my-gcp-project/global/networks/my-vpc
+    vpc_id:
+      value: projects/my-gcp-project/global/networks/my-vpc
     private_ip_enabled: true
   root_password: SecurePassword123!
 ```
 
-## Example 3: MySQL with High Availability
+## Example 4: PostgreSQL with Private IP (Value From References)
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: postgres-private
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  region: us-central1
+  database_engine: POSTGRESQL
+  database_version: POSTGRES_15
+  tier: db-n1-standard-2
+  storage_gb: 20
+  network:
+    vpc_id:
+      valueFrom:
+        kind: GcpVpc
+        name: main-vpc
+        fieldPath: status.outputs.network_id
+    private_ip_enabled: true
+  root_password: SecurePassword123!
+```
+
+## Example 5: MySQL with High Availability
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -52,7 +104,8 @@ kind: GcpCloudSql
 metadata:
   name: mysql-ha
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -68,7 +121,7 @@ spec:
   root_password: SecurePassword123!
 ```
 
-## Example 4: PostgreSQL Production Setup
+## Example 6: PostgreSQL Production Setup (Value From References)
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -76,14 +129,22 @@ kind: GcpCloudSql
 metadata:
   name: postgres-production
 spec:
-  projectId: my-gcp-project
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: prod-project
+      fieldPath: status.outputs.project_id
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
   tier: db-n1-highmem-4
   storage_gb: 100
   network:
-    vpc_id: projects/my-gcp-project/global/networks/production-vpc
+    vpc_id:
+      valueFrom:
+        kind: GcpVpc
+        name: production-vpc
+        fieldPath: status.outputs.network_id
     private_ip_enabled: true
   high_availability:
     enabled: true
@@ -98,7 +159,7 @@ spec:
   root_password: ProductionSecurePassword123!
 ```
 
-## Example 5: MySQL with Public IP and Authorized Networks
+## Example 7: MySQL with Public IP and Authorized Networks
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -106,7 +167,8 @@ kind: GcpCloudSql
 metadata:
   name: mysql-public
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -119,7 +181,7 @@ spec:
   root_password: SecurePassword123!
 ```
 
-## Example 6: PostgreSQL with Custom Database Flags
+## Example 8: PostgreSQL with Custom Database Flags
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -127,7 +189,8 @@ kind: GcpCloudSql
 metadata:
   name: postgres-custom
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -174,4 +237,25 @@ project-planton pulumi destroy --manifest gcpcloudsql.yaml --stack myorg/platfor
 - **Database Flags**: Refer to MySQL or PostgreSQL documentation for available configuration flags.
 - **Storage**: Minimum 10GB, maximum 65,536GB (65TB). SSD storage is used by default.
 - **Backup Retention**: Longer retention periods increase storage costs but provide more recovery options.
+
+## StringValueOrRef Fields
+
+The `projectId` and `network.vpc_id` fields support both literal values and references:
+
+### Using Literal Values
+```yaml
+projectId:
+  value: my-gcp-project
+```
+
+### Using Value From References
+```yaml
+projectId:
+  valueFrom:
+    kind: GcpProject
+    name: my-project
+    fieldPath: status.outputs.project_id
+```
+
+This enables dynamic infrastructure composition where Cloud SQL instances can automatically reference project IDs and VPC networks from other deployed resources.
 

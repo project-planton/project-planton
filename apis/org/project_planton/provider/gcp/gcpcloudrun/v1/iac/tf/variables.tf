@@ -15,7 +15,10 @@ variable "spec" {
   description = "GCP Cloud Run service specification"
   type = object({
     # Required: GCP project ID where the Cloud Run service will be created
-    project_id = string
+    # Can be a direct value or a reference to a GcpProject resource
+    project_id = object({
+      value = string
+    })
 
     # Required: GCP region where the service is deployed (e.g., "us-central1")
     region = string
@@ -71,9 +74,15 @@ variable "spec" {
 
     # Optional: VPC access configuration for private resource access
     vpc_access = optional(object({
-      network = optional(string) # VPC network name
-      subnet  = optional(string) # VPC subnet name
-      egress  = optional(string) # "ALL_TRAFFIC" or "PRIVATE_RANGES_ONLY"
+      # VPC network name - can be a direct value or a reference to a GcpVpc resource
+      network = optional(object({
+        value = string
+      }))
+      # VPC subnet name - can be a direct value or a reference to a GcpSubnetwork resource
+      subnet = optional(object({
+        value = string
+      }))
+      egress = optional(string) # "ALL_TRAFFIC" or "PRIVATE_RANGES_ONLY"
     }))
 
     # Optional: Execution environment (default "EXECUTION_ENVIRONMENT_GEN2")

@@ -6,6 +6,7 @@ import (
 	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestGcpCloudSqlSpec(t *testing.T) {
@@ -15,10 +16,17 @@ func TestGcpCloudSqlSpec(t *testing.T) {
 
 var _ = Describe("GcpCloudSqlSpec validations", func() {
 
+	// Helper function to create a StringValueOrRef with a literal value
+	strVal := func(v string) *foreignkeyv1.StringValueOrRef {
+		return &foreignkeyv1.StringValueOrRef{
+			LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: v},
+		}
+	}
+
 	// Helper function to create a minimal valid spec
 	makeValidSpec := func() *GcpCloudSqlSpec {
 		return &GcpCloudSqlSpec{
-			ProjectId:       "my-gcp-project",
+			ProjectId:       strVal("my-gcp-project"),
 			Region:          "us-central1",
 			DatabaseEngine:  GcpCloudSqlDatabaseEngine_MYSQL,
 			DatabaseVersion: "MYSQL_8_0",
@@ -36,7 +44,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 
 		It("rejects spec with missing project_id", func() {
 			spec := makeValidSpec()
-			spec.ProjectId = ""
+			spec.ProjectId = nil
 			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
@@ -77,40 +85,42 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		})
 	})
 
-	Context("Project ID validation", func() {
-		It("accepts valid project ID format", func() {
+	Context("Project ID validation (StringValueOrRef)", func() {
+		It("accepts project_id with literal value", func() {
 			spec := makeValidSpec()
-			spec.ProjectId = "my-project-123"
+			spec.ProjectId = strVal("my-project-123")
 			err := protovalidate.Validate(spec)
 			Expect(err).To(BeNil())
 		})
 
-		It("rejects project ID starting with number", func() {
+		It("accepts project_id with value_from reference", func() {
 			spec := makeValidSpec()
-			spec.ProjectId = "123-project"
+			spec.ProjectId = &foreignkeyv1.StringValueOrRef{
+				LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+					ValueFrom: &foreignkeyv1.ValueFromRef{
+						Name:      "my-gcp-project",
+						FieldPath: "status.outputs.project_id",
+					},
+				},
+			}
+			err := protovalidate.Validate(spec)
+			Expect(err).To(BeNil())
+		})
+
+		It("rejects empty project_id (nil)", func() {
+			spec := makeValidSpec()
+			spec.ProjectId = nil
 			err := protovalidate.Validate(spec)
 			Expect(err).NotTo(BeNil())
 		})
 
-		It("rejects project ID ending with hyphen", func() {
+		It("accepts project_id with empty value (validation happens at resolution)", func() {
 			spec := makeValidSpec()
-			spec.ProjectId = "my-project-"
+			spec.ProjectId = strVal("")
 			err := protovalidate.Validate(spec)
-			Expect(err).NotTo(BeNil())
-		})
-
-		It("rejects project ID that is too short", func() {
-			spec := makeValidSpec()
-			spec.ProjectId = "proj"
-			err := protovalidate.Validate(spec)
-			Expect(err).NotTo(BeNil())
-		})
-
-		It("rejects project ID with uppercase letters", func() {
-			spec := makeValidSpec()
-			spec.ProjectId = "My-Project"
-			err := protovalidate.Validate(spec)
-			Expect(err).NotTo(BeNil())
+			// Note: Empty value is allowed at proto validation level
+			// Actual validation happens during value resolution
+			Expect(err).To(BeNil())
 		})
 	})
 
@@ -251,10 +261,27 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 	})
 
 	Context("Network configuration - CEL validation", func() {
-		It("accepts private IP with VPC ID", func() {
+		It("accepts private IP with VPC ID (literal value)", func() {
 			spec := makeValidSpec()
 			spec.Network = &GcpCloudSqlNetwork{
-				VpcId:            "projects/my-project/global/networks/my-vpc",
+				VpcId:            strVal("projects/my-project/global/networks/my-vpc"),
+				PrivateIpEnabled: true,
+			}
+			err := protovalidate.Validate(spec)
+			Expect(err).To(BeNil())
+		})
+
+		It("accepts private IP with VPC ID (value_from reference)", func() {
+			spec := makeValidSpec()
+			spec.Network = &GcpCloudSqlNetwork{
+				VpcId: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+						ValueFrom: &foreignkeyv1.ValueFromRef{
+							Name:      "my-vpc",
+							FieldPath: "status.outputs.network_id",
+						},
+					},
+				},
 				PrivateIpEnabled: true,
 			}
 			err := protovalidate.Validate(spec)
@@ -264,7 +291,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("rejects private IP without VPC ID (CEL rule)", func() {
 			spec := makeValidSpec()
 			spec.Network = &GcpCloudSqlNetwork{
-				VpcId:            "",
+				VpcId:            nil,
 				PrivateIpEnabled: true,
 			}
 			err := protovalidate.Validate(spec)
@@ -283,7 +310,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 		It("accepts Smart Hybrid pattern (private + public IP)", func() {
 			spec := makeValidSpec()
 			spec.Network = &GcpCloudSqlNetwork{
-				VpcId:              "projects/my-project/global/networks/my-vpc",
+				VpcId:              strVal("projects/my-project/global/networks/my-vpc"),
 				PrivateIpEnabled:   true,
 				Ipv4Enabled:        true,
 				AuthorizedNetworks: []string{},
@@ -642,9 +669,9 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 	})
 
 	Context("Production-grade configuration example", func() {
-		It("accepts a complete production spec with all options", func() {
+		It("accepts a complete production spec with all options (literal values)", func() {
 			spec := &GcpCloudSqlSpec{
-				ProjectId:            "prod-database-project",
+				ProjectId:            strVal("prod-database-project"),
 				Region:               "us-central1",
 				DatabaseEngine:       GcpCloudSqlDatabaseEngine_POSTGRESQL,
 				DatabaseVersion:      "POSTGRES_15",
@@ -660,7 +687,7 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 					UpdateTrack: "stable",
 				},
 				Network: &GcpCloudSqlNetwork{
-					VpcId:              "projects/prod-project/global/networks/prod-vpc",
+					VpcId:              strVal("projects/prod-project/global/networks/prod-vpc"),
 					PrivateIpEnabled:   true,
 					Ipv4Enabled:        true,
 					AuthorizedNetworks: []string{},
@@ -678,6 +705,52 @@ var _ = Describe("GcpCloudSqlSpec validations", func() {
 				DatabaseFlags: map[string]string{
 					"log_min_duration_statement": "1000",
 					"log_statement":              "ddl",
+				},
+				RootPassword: "SuperSecurePassword123!",
+			}
+			err := protovalidate.Validate(spec)
+			Expect(err).To(BeNil())
+		})
+
+		It("accepts a complete production spec with value_from references", func() {
+			spec := &GcpCloudSqlSpec{
+				ProjectId: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+						ValueFrom: &foreignkeyv1.ValueFromRef{
+							Name:      "prod-project",
+							FieldPath: "status.outputs.project_id",
+						},
+					},
+				},
+				Region:               "us-central1",
+				DatabaseEngine:       GcpCloudSqlDatabaseEngine_POSTGRESQL,
+				DatabaseVersion:      "POSTGRES_15",
+				Tier:                 "db-n1-standard-4",
+				StorageGb:            100,
+				DiskAutoresize:       true,
+				Edition:              GcpCloudSqlEdition_ENTERPRISE,
+				DeletionProtection:   true,
+				QueryInsightsEnabled: true,
+				Network: &GcpCloudSqlNetwork{
+					VpcId: &foreignkeyv1.StringValueOrRef{
+						LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+							ValueFrom: &foreignkeyv1.ValueFromRef{
+								Name:      "prod-vpc",
+								FieldPath: "status.outputs.network_id",
+							},
+						},
+					},
+					PrivateIpEnabled: true,
+				},
+				HighAvailability: &GcpCloudSqlHighAvailability{
+					Enabled: true,
+					Zone:    "us-central1-b",
+				},
+				Backup: &GcpCloudSqlBackup{
+					Enabled:                    true,
+					StartTime:                  "03:00",
+					RetentionDays:              30,
+					PointInTimeRecoveryEnabled: true,
 				},
 				RootPassword: "SuperSecurePassword123!",
 			}

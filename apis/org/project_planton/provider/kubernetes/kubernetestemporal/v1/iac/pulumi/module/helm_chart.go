@@ -225,6 +225,8 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 
 	// ----------------------------------------------- dynamic configuration
 	// Configure runtime behavior settings like history limits
+	// Note: The Temporal Helm chart expects server.dynamicConfig (not server.config.dynamicConfigValues)
+	// See: https://github.com/temporalio/helm-charts/blob/main/charts/temporal/templates/server-dynamicconfigmap.yaml
 	dynamicConfig := locals.KubernetesTemporal.Spec.DynamicConfig
 	if dynamicConfig != nil {
 		dynamicConfigValues := pulumi.Map{}
@@ -254,24 +256,15 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		}
 
 		// Only add dynamic config if there are values to set
+		// Chart expects server.dynamicConfig, NOT server.config.dynamicConfigValues
 		if len(dynamicConfigValues) > 0 {
-			// Ensure server.config exists
 			if _, ok := values["server"]; !ok {
 				values["server"] = pulumi.Map{
-					"config": pulumi.Map{
-						"dynamicConfigValues": dynamicConfigValues,
-					},
+					"dynamicConfig": dynamicConfigValues,
 				}
 			} else {
 				serverMap := values["server"].(pulumi.Map)
-				if _, ok := serverMap["config"]; !ok {
-					serverMap["config"] = pulumi.Map{
-						"dynamicConfigValues": dynamicConfigValues,
-					}
-				} else {
-					configMap := serverMap["config"].(pulumi.Map)
-					configMap["dynamicConfigValues"] = dynamicConfigValues
-				}
+				serverMap["dynamicConfig"] = dynamicConfigValues
 			}
 		}
 	}

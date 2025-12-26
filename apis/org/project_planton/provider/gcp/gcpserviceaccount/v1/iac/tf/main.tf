@@ -2,7 +2,7 @@
 resource "google_service_account" "main" {
   account_id   = var.spec.service_account_id
   display_name = var.metadata.name
-  project      = var.spec.project_id
+  project      = var.spec.project_id.value
   description  = "Service account managed by ProjectPlanton for ${var.metadata.name}"
 }
 
@@ -21,7 +21,7 @@ resource "google_service_account_key" "main" {
 resource "google_project_iam_member" "project_roles" {
   for_each = toset(local.project_iam_roles)
 
-  project = var.spec.project_id
+  project = var.spec.project_id.value
   role    = each.value
   member  = "serviceAccount:${local.service_account_email}"
 

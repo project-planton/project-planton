@@ -16,7 +16,16 @@ variable "spec" {
   type = object({
 
     # GCP project ID where the Cloud SQL instance will be created.
-    project_id = string
+    # Supports StringValueOrRef: either { value = "..." } or { value_from = { kind = "...", name = "...", field_path = "..." } }
+    project_id = object({
+      value      = optional(string)
+      value_from = optional(object({
+        kind       = optional(string)
+        env        = optional(string)
+        name       = string
+        field_path = optional(string)
+      }))
+    })
 
     # Region where the instance is deployed, for example "us-central1".
     region = string
@@ -36,7 +45,16 @@ variable "spec" {
     # Network configuration for the Cloud SQL instance.
     network = optional(object({
       # VPC network ID for private IP connectivity.
-      vpc_id = optional(string)
+      # Supports StringValueOrRef: either { value = "..." } or { value_from = { kind = "...", name = "...", field_path = "..." } }
+      vpc_id = optional(object({
+        value      = optional(string)
+        value_from = optional(object({
+          kind       = optional(string)
+          env        = optional(string)
+          name       = string
+          field_path = optional(string)
+        }))
+      }))
 
       # Whether to enable private IP for the instance.
       private_ip_enabled = optional(bool, false)

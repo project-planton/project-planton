@@ -24,7 +24,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 		Labels:                   pulumi.ToStringMap(locals.GcpLabels),
 		Location:                 pulumi.String(locals.GcpGcsBucket.Spec.Location),
 		Name:                     pulumi.String(locals.GcpGcsBucket.Spec.BucketName),
-		Project:                  pulumi.String(locals.GcpGcsBucket.Spec.GcpProjectId),
+		Project:                  pulumi.String(locals.GcpGcsBucket.Spec.GcpProjectId.GetValue()),
 		UniformBucketLevelAccess: pulumi.Bool(locals.GcpGcsBucket.Spec.UniformBucketLevelAccessEnabled),
 	}
 

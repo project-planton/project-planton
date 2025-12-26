@@ -22,7 +22,9 @@ module "analytics_sa" {
 
   spec = {
     service_account_id = "analytics-sa"
-    project_id         = "my-project-123"
+    project_id = {
+      value = "my-project-123"
+    }
   }
 }
 
@@ -34,7 +36,7 @@ output "analytics_sa_email" {
 ### Explanation
 
 - **service_account_id**: The unique identifier for the service account (6-30 characters)
-- **project_id**: The GCP project where the service account will be created
+- **project_id.value**: The GCP project where the service account will be created (using literal value)
 - **create_key**: Not specified, defaults to `false` (no key generated)
 - **Output**: The service account email can be used for IAM bindings or workload attachments
 
@@ -56,8 +58,10 @@ module "logging_writer_sa" {
 
   spec = {
     service_account_id = "logging-writer"
-    project_id         = "my-app-prod-1234"
-    create_key         = true
+    project_id = {
+      value = "my-app-prod-1234"
+    }
+    create_key = true
 
     project_iam_roles = [
       "roles/logging.logWriter",
@@ -78,6 +82,7 @@ output "logging_writer_key" {
 
 ### Explanation
 
+- **project_id.value**: Literal project ID value
 - **create_key**: Set to `true` to generate a JSON private key
 - **project_iam_roles**: List of IAM roles to grant at the project level
 - **Outputs**:
@@ -108,9 +113,11 @@ module "org_auditor_sa" {
 
   spec = {
     service_account_id = "org-auditor"
-    project_id         = "shared-infra-5678"
-    org_id             = "123456789012"
-    create_key         = false
+    project_id = {
+      value = "shared-infra-5678"
+    }
+    org_id     = "123456789012"
+    create_key = false
 
     project_iam_roles = [
       "roles/viewer"
@@ -129,6 +136,7 @@ output "org_auditor_email" {
 
 ### Explanation
 
+- **project_id.value**: Literal project ID value
 - **org_id**: The organization ID (required when using `org_iam_roles`)
 - **project_iam_roles**: Roles granted at the project level
 - **org_iam_roles**: Roles granted at the organization level
@@ -163,8 +171,8 @@ module "ci_cd_sa" {
     env  = "production"
 
     labels = {
-      "team"    = "platform"
-      "purpose" = "ci-cd"
+      "team"        = "platform"
+      "purpose"     = "ci-cd"
       "cost-center" = "engineering-ops"
     }
 
@@ -178,8 +186,10 @@ module "ci_cd_sa" {
 
   spec = {
     service_account_id = "ci-cd-automation"
-    project_id         = "platform-prod-5678"
-    create_key         = true
+    project_id = {
+      value = "platform-prod-5678"
+    }
+    create_key = true
 
     project_iam_roles = [
       "roles/storage.admin",
@@ -253,8 +263,10 @@ module "app_service_account" {
 
   spec = {
     service_account_id = "app-service-${terraform.workspace}"
-    project_id         = local.current_env.project_id
-    create_key         = terraform.workspace != "prod" # No keys in production
+    project_id = {
+      value = local.current_env.project_id
+    }
+    create_key = terraform.workspace != "prod" # No keys in production
 
     project_iam_roles = local.current_env.roles
   }
@@ -282,15 +294,19 @@ output "service_account_email" {
 # ✅ Recommended: Use Workload Identity instead of keys
 spec = {
   service_account_id = "my-app-sa"
-  project_id         = var.project_id
-  create_key         = false  # No key generated
+  project_id = {
+    value = var.project_id
+  }
+  create_key = false  # No key generated
 }
 
 # ❌ Avoid: Creating keys unless absolutely necessary
 spec = {
   service_account_id = "my-app-sa"
-  project_id         = var.project_id
-  create_key         = true  # Only if legacy systems require it
+  project_id = {
+    value = var.project_id
+  }
+  create_key = true  # Only if legacy systems require it
 }
 ```
 
@@ -348,6 +364,9 @@ metadata = {
 
 spec = {
   service_account_id = "logging-aggregator-prod"
+  project_id = {
+    value = var.project_id
+  }
   # ...
 }
 ```
@@ -390,6 +409,9 @@ terraform apply
 
 ```hcl
 spec = {
+  project_id = {
+    value = "my-project-123"
+  }
   org_id = "123456789012"  # Required
   org_iam_roles = [
     "roles/resourcemanager.organizationViewer"
@@ -410,4 +432,3 @@ roles documentation](https://cloud.google.com/iam/docs/understanding-roles) for 
 - [GCP IAM Roles](https://cloud.google.com/iam/docs/understanding-roles)
 - [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation)
 - [Service Account Best Practices](https://cloud.google.com/iam/docs/best-practices-service-accounts)
-

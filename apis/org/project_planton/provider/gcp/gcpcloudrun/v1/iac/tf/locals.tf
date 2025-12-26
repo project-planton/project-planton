@@ -64,5 +64,10 @@ locals {
   dns_managed_zone = var.spec.dns != null ? var.spec.dns.managed_zone : ""
 
   # VPC access configuration
-  has_vpc_access = var.spec.vpc_access != null && (var.spec.vpc_access.network != null || var.spec.vpc_access.subnet != null)
+  has_vpc_access = var.spec.vpc_access != null && (
+    (var.spec.vpc_access.network != null && var.spec.vpc_access.network.value != null && var.spec.vpc_access.network.value != "") ||
+    (var.spec.vpc_access.subnet != null && var.spec.vpc_access.subnet.value != null && var.spec.vpc_access.subnet.value != "")
+  )
+  vpc_network = var.spec.vpc_access != null && var.spec.vpc_access.network != null ? var.spec.vpc_access.network.value : null
+  vpc_subnet  = var.spec.vpc_access != null && var.spec.vpc_access.subnet != null ? var.spec.vpc_access.subnet.value : null
 }

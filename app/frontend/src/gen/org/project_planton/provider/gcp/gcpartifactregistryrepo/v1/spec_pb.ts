@@ -5,13 +5,15 @@
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file org/project_planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkZvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwby92MS9zcGVjLnByb3RvEjtvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwby52MSLoAQobR2NwQXJ0aWZhY3RSZWdpc3RyeVJlcG9TcGVjEncKC3JlcG9fZm9ybWF0GAEgASgOMloub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwYXJ0aWZhY3RyZWdpc3RyeXJlcG8udjEuR2NwQXJ0aWZhY3RSZWdpc3RyeVJlcG9Gb3JtYXRCBrpIA8gBARIaCgpwcm9qZWN0X2lkGAIgASgJQga6SAPIAQESFgoGcmVnaW9uGAMgASgJQga6SAPIAQESHAoUZW5hYmxlX3B1YmxpY19hY2Nlc3MYBCABKAgqqgEKHUdjcEFydGlmYWN0UmVnaXN0cnlSZXBvRm9ybWF0EjEKLWdjcF9hcnRpZmFjdF9yZWdpc3RyeV9yZXBvX2Zvcm1hdF91bnNwZWNpZmllZBAAEgoKBkRPQ0tFUhABEgsKB0dFTkVSSUMQAhIGCgJHTxADEgwKCEtVQkVGTE9XEAQSCQoFTUFWRU4QBRIHCgNOUE0QBhIKCgZQWVRIT04QBxIHCgNZVU0QCELjAwo/Y29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGFydGlmYWN0cmVnaXN0cnlyZXBvLnYxQglTcGVjUHJvdG9QAVqFAWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvZ2NwL2djcGFydGlmYWN0cmVnaXN0cnlyZXBvL3YxO2djcGFydGlmYWN0cmVnaXN0cnlyZXBvdjGiAgVPUFBHR6oCOk9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5HY3AuR2NwYXJ0aWZhY3RyZWdpc3RyeXJlcG8uVjHKAjpPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcGFydGlmYWN0cmVnaXN0cnlyZXBvXFYx4gJGT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwb1xWMVxHUEJNZXRhZGF0YeoCP09yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpHY3A6OkdjcGFydGlmYWN0cmVnaXN0cnlyZXBvOjpWMWIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("CkZvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwby92MS9zcGVjLnByb3RvEjtvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwby52MSLGAgobR2NwQXJ0aWZhY3RSZWdpc3RyeVJlcG9TcGVjEncKC3JlcG9fZm9ybWF0GAEgASgOMloub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwYXJ0aWZhY3RyZWdpc3RyeXJlcG8udjEuR2NwQXJ0aWZhY3RSZWdpc3RyeVJlcG9Gb3JtYXRCBrpIA8gBARJ4Cgpwcm9qZWN0X2lkGAIgASgLMjoub3JnLnByb2plY3RfcGxhbnRvbi5zaGFyZWQuZm9yZWlnbmtleS52MS5TdHJpbmdWYWx1ZU9yUmVmQii6SAPIAQGI1GHhBJLUYRlzdGF0dXMub3V0cHV0cy5wcm9qZWN0X2lkEhYKBnJlZ2lvbhgDIAEoCUIGukgDyAEBEhwKFGVuYWJsZV9wdWJsaWNfYWNjZXNzGAQgASgIKqoBCh1HY3BBcnRpZmFjdFJlZ2lzdHJ5UmVwb0Zvcm1hdBIxCi1nY3BfYXJ0aWZhY3RfcmVnaXN0cnlfcmVwb19mb3JtYXRfdW5zcGVjaWZpZWQQABIKCgZET0NLRVIQARILCgdHRU5FUklDEAISBgoCR08QAxIMCghLVUJFRkxPVxAEEgkKBU1BVkVOEAUSBwoDTlBNEAYSCgoGUFlUSE9OEAcSBwoDWVVNEAhC4wMKP2NvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwby52MUIJU3BlY1Byb3RvUAFahQFnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwby92MTtnY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwb3YxogIFT1BQR0eqAjpPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcGFydGlmYWN0cmVnaXN0cnlyZXBvLlYxygI6T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwb1xWMeICRk9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2NwYXJ0aWZhY3RyZWdpc3RyeXJlcG9cVjFcR1BCTWV0YWRhdGHqAj9Pcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3BhcnRpZmFjdHJlZ2lzdHJ5cmVwbzo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * **GcpArtifactRegistrySpec** defines the configuration for deploying a Google Cloud Artifact Registry.
@@ -32,10 +34,13 @@ export type GcpArtifactRegistryRepoSpec = Message<"org.project_planton.provider.
 
   /**
    * The ID of the GCP project where the Artifact Registry resources will be created.
+   * Can be provided as a literal string value or as a reference to another resource's output.
+   * Example literal: {value: "my-gcp-project-123"}
+   * Example reference: {value_from: {kind: GcpProject, name: "main-project"}}
    *
-   * @generated from field: string project_id = 2;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 2;
    */
-  projectId: string;
+  projectId?: StringValueOrRef;
 
   /**
    * The GCP region where the Artifact Registry will be created (e.g., "us-west2").

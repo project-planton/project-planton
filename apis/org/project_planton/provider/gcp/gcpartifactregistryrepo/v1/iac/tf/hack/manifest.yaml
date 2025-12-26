@@ -3,6 +3,8 @@ kind: GcpArtifactRegistryRepo
 metadata:
   name: pp-test-gcpart
 spec:
-  format: DOCKER
-  projectId: pc-artifact-registry
+  repoFormat: DOCKER
+  projectId:
+    value: pc-artifact-registry
   region: asia-south1
+  enablePublicAccess: false

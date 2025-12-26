@@ -1,6 +1,6 @@
-# GcpServiceAccount Examples
+# GcpServiceAccount Pulumi Examples
 
-Below are several YAML examples demonstrating how to create and configure Google Cloud projects using ProjectPlanton's
+Below are several YAML examples demonstrating how to create and configure Google Cloud service accounts using ProjectPlanton's
 `GcpServiceAccount` resource. After creating a manifest, you can apply it with Pulumi or Terraform via the ProjectPlanton CLI,
 just like any other resource in the ProjectPlanton ecosystem.
 
@@ -14,101 +14,134 @@ project-planton terraform apply --manifest <yaml-path> --stack <stack-name>
 
 ---
 
-## Basic Example (Organization as Parent)
+## Example 1: Minimal Service Account (No Key)
 
-This example creates a Google Cloud project under an organization ID, links a billing account, and enables one API. Note
-that you must specify exactly one of `orgId` or `folderId`.
+This example creates a service account with just the required fields. No IAM roles or key generation.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
 kind: GcpServiceAccount
 metadata:
-  name: my-basic-gcp-service-account
+  name: minimal-service-account
 spec:
-  projectId: my-basic-12345
-  name: My Basic Project
-  orgId: "987654321012"
-  billingAccountId: "0123AB-4567CD-89EFGH"
-  enabledApis:
-    - "compute.googleapis.com"
+  serviceAccountId: minimal-sa
+  projectId:
+    value: my-gcp-project-123
 ```
 
 ---
 
-## Example with Folder as Parent
+## Example 2: Service Account with Project-Level Roles and Key
 
-Instead of an organization, this project will be placed under a folder.
+Creates a service account with IAM roles and generates a JSON key for authentication.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
 kind: GcpServiceAccount
 metadata:
-  name: my-folder-gcp-service-account
+  name: logging-writer-sa
 spec:
-  projectId: my-folder-proj-9876
-  name: Folder Parent Project
-  folderId: "345678901234"
-  billingAccountId: "0123AB-4567CD-89EFGH"
-  enabledApis:
-    - "storage.googleapis.com"
+  serviceAccountId: logging-writer
+  projectId:
+    value: my-app-prod-1234
+  createKey: true
+  projectIamRoles:
+    - roles/logging.logWriter
+    - roles/monitoring.metricWriter
 ```
 
 ---
 
-## Example with Multiple APIs, Custom Labels, and Default Network Disabled
+## Example 3: Service Account with Organization-Level Roles
 
-This project enables multiple Google Cloud APIs, adds metadata labels, and removes the default VPC network immediately
-after creation.
+Creates a service account with both project and organization-level IAM roles. Useful for cross-project operations.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
 kind: GcpServiceAccount
 metadata:
-  name: multi-api-and-labels
+  name: org-auditor-sa
 spec:
-  projectId: multi-api-labels-1234
-  name: Multi API Labels Project
+  serviceAccountId: org-auditor
+  projectId:
+    value: shared-infra-5678
   orgId: "123456789012"
-  billingAccountId: "0123AB-4567CD-89EFGH"
-  labels:
-    env: "dev"
-    costCenter: "finops"
-  disableDefaultNetwork: true
-  enabledApis:
-    - "compute.googleapis.com"
-    - "iam.googleapis.com"
-    - "cloudkms.googleapis.com"
+  createKey: false
+  projectIamRoles:
+    - roles/viewer
+  orgIamRoles:
+    - roles/resourcemanager.organizationViewer
 ```
 
 ---
 
-## Example Granting Owner Role to a Specific Member
+## Example 4: Service Account with Foreign Key Reference
 
-This project grants the Owner role to a specified user during creation (for automation or administrative tasks).
+Reference a `GcpProject` resource instead of hardcoding the project ID. This ensures proper dependency ordering.
+
+### Project Resource (defined separately)
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpProject
+metadata:
+  name: myapp-project
+spec:
+  projectId: myapp-prod-123
+  billingAccountId: 012345-ABCDEF-678910
+  folderId: "123456789012"
+```
+
+### Service Account Resource (referencing the project)
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
 kind: GcpServiceAccount
 metadata:
-  name: gcp-service-account-with-owner
+  name: myapp-service-account
 spec:
-  projectId: with-owner-123
-  name: ProjectWithOwner
-  orgId: "123456789012"
-  ownerMember: "user:devops@example.com"
-  enabledApis:
-    - "compute.googleapis.com"
+  serviceAccountId: myapp-worker
+  projectId:
+    ref:
+      kind: GcpProject
+      name: myapp-project
+  projectIamRoles:
+    - roles/logging.logWriter
+    - roles/storage.objectViewer
 ```
 
 ---
 
-After deploying any of these manifests, you can confirm the newly created project in your GCP account:
+## Example 5: Service Account for GKE Workload Identity
+
+Creates a service account intended for GKE Workload Identity. No key is created—pods authenticate via Workload Identity Federation.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpServiceAccount
+metadata:
+  name: gke-workload-sa
+  org: platform-team
+  env: production
+spec:
+  serviceAccountId: gke-workload
+  projectId:
+    value: gke-prod-project
+  createKey: false
+  projectIamRoles:
+    - roles/logging.logWriter
+    - roles/monitoring.metricWriter
+    - roles/cloudtrace.agent
+    - roles/secretmanager.secretAccessor
+```
+
+---
+
+After deploying any of these manifests, you can confirm the newly created service account in your GCP account:
 
 ```shell
-gcloud projects list
-gcloud projects describe <your-project-id>
+gcloud iam service-accounts list --project=<your-project-id>
+gcloud iam service-accounts describe <sa-email> --project=<your-project-id>
 ```
 
-You should see the project with the specified parent organization or folder, optional billing account, labels, and
-enabled APIs. From there, you can continue configuring additional resources in your GCP environment or integrate your
-new project with other components in the ProjectPlanton ecosystem.
+You should see the service account with the specified roles and configuration. From there, you can attach it to GCP resources (Cloud Run, GKE, Compute Engine) or use it with Workload Identity Federation for external systems.

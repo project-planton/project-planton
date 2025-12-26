@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.gcp.gcpcloudsql.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
 // GcpCloudSqlSpec defines the configuration for deploying a Google Cloud SQL instance.
@@ -12,9 +13,11 @@ import "org/project_planton/shared/options/options.proto";
 // without the overhead of maintaining the underlying infrastructure.
 message GcpCloudSqlSpec {
   // GCP project ID where the Cloud SQL instance will be created.
-  string project_id = 1 [
+  // Can be a literal value or a reference to a GcpProject resource.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"}
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
   ];
 
   // Region where the instance is deployed, for example "us-central1".
@@ -119,7 +122,11 @@ enum GcpCloudSqlEdition {
 // GcpCloudSqlNetwork defines network configuration for the Cloud SQL instance.
 message GcpCloudSqlNetwork {
   // VPC network ID for private IP connectivity.
-  string vpc_id = 1;
+  // Can be a literal value or a reference to a GcpVpc resource.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef vpc_id = 1 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpVpc,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.network_id"
+  ];
 
   // Whether to enable private IP for the instance.
   // Recommended for secure in-VPC access.
@@ -145,7 +152,7 @@ message GcpCloudSqlNetwork {
   option (buf.validate.message).cel = {
     id: "network.private_ip_requires_vpc"
     message: "vpc_id must be set when private_ip_enabled is true"
-    expression: "!this.private_ip_enabled || size(this.vpc_id) > 0"
+    expression: "!this.private_ip_enabled || (has(this.vpc_id) && (has(this.vpc_id.value) || has(this.vpc_id.value_from)))"
   };
 }
 

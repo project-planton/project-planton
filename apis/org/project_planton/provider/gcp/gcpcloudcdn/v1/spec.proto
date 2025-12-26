@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.gcp.gcpcloudcdn.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // **GcpCloudCdnSpec** defines the configuration for deploying a Google Cloud CDN (Content Delivery Network).
 // This message specifies the necessary parameters to create and manage a Cloud CDN within a
@@ -13,10 +14,13 @@ import "buf/validate/validate.proto";
 // are top-level fields, while advanced configuration (cache keys, signed URLs) are nested for clarity.
 message GcpCloudCdnSpec {
   // The ID of the GCP project where the Cloud CDN resources will be created.
+  // This field supports cross-resource references using ValueFrom to dynamically
+  // retrieve the project ID from a GcpProject resource.
   // Required field.
-  string gcp_project_id = 1 [
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef gcp_project_id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
   ];
 
   // Backend configuration defines the origin server that Cloud CDN will cache content from.

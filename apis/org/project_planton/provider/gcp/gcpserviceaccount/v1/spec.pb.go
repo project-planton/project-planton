@@ -8,6 +8,7 @@ package gcpserviceaccountv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -33,8 +34,9 @@ type GcpServiceAccountSpec struct {
 	// Required: must comply with GCP naming rules (lowercase letters, digits, etc.).
 	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
 	// project_id specifies the GCP project in which the service account is created.
+	// Can be a literal value or a reference to a GcpProject resource.
 	// If omitted, the provider default project is used. Typically recommended to set explicitly.
-	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// org_id, if set, manages org-level IAM roles for the service account.
 	// If the user wants to assign an organization role, they must provide org_id
 	// (an integer string like "123456789012", or a numeric value stored as string).
@@ -92,11 +94,11 @@ func (x *GcpServiceAccountSpec) GetServiceAccountId() string {
 	return ""
 }
 
-func (x *GcpServiceAccountSpec) GetProjectId() string {
+func (x *GcpServiceAccountSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpServiceAccountSpec) GetOrgId() string {
@@ -131,11 +133,11 @@ var File_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto protor
 
 const file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"@org/project_planton/provider/gcp/gcpserviceaccount/v1/spec.proto\x125org.project_planton.provider.gcp.gcpserviceaccount.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\x97\x02\n" +
+	"@org/project_planton/provider/gcp/gcpserviceaccount/v1/spec.proto\x125org.project_planton.provider.gcp.gcpserviceaccount.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xf7\x02\n" +
 	"\x15GcpServiceAccountSpec\x12:\n" +
-	"\x12service_account_id\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x06\x18\x1eR\x10serviceAccountId\x12\x1d\n" +
+	"\x12service_account_id\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x06\x18\x1eR\x10serviceAccountId\x12}\n" +
 	"\n" +
-	"project_id\x18\x02 \x01(\tR\tprojectId\x12\x15\n" +
+	"project_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\"\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x15\n" +
 	"\x06org_id\x18\x03 \x01(\tR\x05orgId\x12-\n" +
 	"\n" +
 	"create_key\x18\x04 \x01(\bB\t\x8a\xa6\x1d\x05falseH\x00R\tcreateKey\x88\x01\x01\x12*\n" +
@@ -159,13 +161,15 @@ func file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_rawDe
 var file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_goTypes = []any{
 	(*GcpServiceAccountSpec)(nil), // 0: org.project_planton.provider.gcp.gcpserviceaccount.v1.GcpServiceAccountSpec
+	(*v1.StringValueOrRef)(nil),   // 1: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: org.project_planton.provider.gcp.gcpserviceaccount.v1.GcpServiceAccountSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_init() }

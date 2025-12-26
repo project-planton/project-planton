@@ -7,6 +7,8 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestGcpSecretsManagerSpec(t *testing.T) {
@@ -19,7 +21,7 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 	ginkgo.Describe("When valid input is passed", func() {
 		ginkgo.Context("gcp_secrets_manager", func() {
 
-			ginkgo.It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields with literal value", func() {
 				input := &GcpSecretsManager{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpSecretsManager",
@@ -27,7 +29,11 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Name: "test-secrets-manager",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "test-project-123",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -44,7 +50,11 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Env:  "production",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "my-gcp-project",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "my-gcp-project",
+							},
+						},
 						SecretNames: []string{
 							"database-password",
 							"api-key",
@@ -65,7 +75,11 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Name: "empty-secrets",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId:   "test-project-456",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "test-project-456",
+							},
+						},
 						SecretNames: []string{},
 					},
 				}
@@ -83,10 +97,41 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Org:  "engineering",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "prod-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "prod-project-123",
+							},
+						},
 						SecretNames: []string{
 							"stripe-secret-key",
 							"sendgrid-api-key",
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return a validation error with value_from reference", func() {
+				input := &GcpSecretsManager{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpSecretsManager",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "ref-secrets",
+						Env:  "prod",
+					},
+					Spec: &GcpSecretsManagerSpec{
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Kind: cloudresourcekind.CloudResourceKind_GcpProject,
+									Name: "main-project",
+								},
+							},
+						},
+						SecretNames: []string{
+							"api-key",
+							"database-password",
 						},
 					},
 				}
@@ -107,7 +152,7 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Name: "test-secrets-manager",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "",
+						ProjectId: nil,
 						SecretNames: []string{
 							"api-key",
 						},
@@ -118,7 +163,9 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 				gomega.Expect(err.Error()).To(gomega.ContainSubstring("project_id"))
 			})
 
-			ginkgo.It("should return a validation error when project_id is empty string", func() {
+			// Note: An empty StringValueOrRef passes proto validation (it's not nil).
+			// Runtime validation should check that either value or value_from is set.
+			ginkgo.It("should pass proto validation with empty StringValueOrRef (runtime validation handles oneof)", func() {
 				input := &GcpSecretsManager{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpSecretsManager",
@@ -126,12 +173,13 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Name: "test-secrets-manager",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "",
+						ProjectId: &foreignkeyv1.StringValueOrRef{},
 					},
 				}
+				// Proto validation passes because the field is not nil
+				// Runtime/IAC code should validate that GetValue() returns non-empty
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
-				gomega.Expect(err.Error()).To(gomega.ContainSubstring("project_id"))
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
 			ginkgo.It("should return a validation error when spec is nil", func() {
@@ -154,7 +202,11 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 					Kind:       "GcpSecretsManager",
 					Metadata:   nil,
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "test-project-123",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -170,7 +222,11 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Name: "test-secrets-manager",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "test-project-123",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -186,7 +242,11 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 						Name: "test-secrets-manager",
 					},
 					Spec: &GcpSecretsManagerSpec{
-						ProjectId: "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "test-project-123",
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)

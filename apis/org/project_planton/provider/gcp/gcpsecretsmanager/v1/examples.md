@@ -10,9 +10,9 @@ Create a YAML file using one of the examples shown below. After the YAML is crea
 planton apply -f <yaml-path>
 ```
 
-## Example 1: Basic Secret Creation
+## Example 1: Basic Secret Creation with Literal Project ID
 
-This example demonstrates creating a simple set of secrets in a GCP project. The secrets will be created with automatic replication across multiple regions for high availability.
+This example demonstrates creating a simple set of secrets in a GCP project using a literal project ID value. The secrets will be created with automatic replication across multiple regions for high availability.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -20,7 +20,8 @@ kind: GcpSecretsManager
 metadata:
   name: app-secrets
 spec:
-  projectId: my-gcp-project-123456
+  projectId:
+    value: my-gcp-project-123456
   secretNames:
     - api-key
     - database-password
@@ -42,7 +43,34 @@ echo -n "actual-api-key-value" | gcloud secrets versions add api-key \
   --data-file=-
 ```
 
-## Example 2: Environment-Specific Secrets
+## Example 2: Using Project Reference (Cross-Resource Dependency)
+
+This example demonstrates using a reference to another resource's output instead of a literal project ID. This is useful when you want to create secrets in a project that is managed by another `GcpProject` resource, enabling cross-resource dependencies.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpSecretsManager
+metadata:
+  name: app-secrets-with-ref
+  env: prod
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  secretNames:
+    - api-key
+    - database-password
+    - oauth-client-secret
+```
+
+**What this creates:**
+- Same as Example 1, but the project ID is dynamically resolved from the `GcpProject` resource named `main-project`
+- The `fieldPath` specifies which output field to use (`status.outputs.project_id`)
+- This pattern enables declarative infrastructure composition where secrets are automatically created in the correct project
+
+## Example 3: Environment-Specific Secrets
 
 This example shows how to create environment-specific secrets by using the `env` metadata field. The environment name will be prepended to each secret name.
 
@@ -53,7 +81,8 @@ metadata:
   name: prod-app-secrets
   env: prod
 spec:
-  projectId: my-gcp-project-123456
+  projectId:
+    value: my-gcp-project-123456
   secretNames:
     - database-url
     - redis-password
@@ -66,7 +95,7 @@ spec:
 - Allows separation between production and non-production secrets
 - Prevents accidental access to production secrets from other environments
 
-## Example 3: Multi-Service Application Secrets
+## Example 4: Multi-Service Application Secrets
 
 This example demonstrates organizing secrets for a complex application with multiple services.
 
@@ -78,7 +107,8 @@ metadata:
   org: acme-corp
   env: production
 spec:
-  projectId: acme-ecommerce-prod
+  projectId:
+    value: acme-ecommerce-prod
   secretNames:
     # Database credentials
     - postgres-admin-password
@@ -102,7 +132,7 @@ spec:
 - Clear metadata (org, env) for tracking and access control
 - Comprehensive coverage of different secret types
 
-## Example 4: Development Environment Secrets
+## Example 5: Development Environment Secrets
 
 This example creates a minimal set of secrets for a development environment.
 
@@ -113,7 +143,8 @@ metadata:
   name: dev-secrets
   env: dev
 spec:
-  projectId: my-project-dev
+  projectId:
+    value: my-project-dev
   secretNames:
     - dev-database-password
     - dev-api-key
@@ -125,7 +156,7 @@ spec:
 - Secret values can be less complex for development
 - Consider using the same secret structure as production for consistency
 
-## Example 5: Microservices Secrets with Service Account Access
+## Example 6: Microservices Secrets with Service Account Access
 
 This example shows creating secrets for a microservices architecture where different services need access to different secrets.
 
@@ -136,7 +167,8 @@ metadata:
   name: microservices-secrets
   env: staging
 spec:
-  projectId: microservices-staging-project
+  projectId:
+    value: microservices-staging-project
   secretNames:
     # Auth service secrets
     - auth-service-jwt-key
@@ -168,7 +200,7 @@ gcloud secrets add-iam-policy-binding staging-payment-service-stripe-key \
   --role="roles/secretmanager.secretAccessor"
 ```
 
-## Example 6: Secrets for CI/CD Pipeline
+## Example 7: Secrets for CI/CD Pipeline
 
 This example creates secrets specifically for CI/CD pipelines and deployment automation.
 
@@ -178,7 +210,8 @@ kind: GcpSecretsManager
 metadata:
   name: cicd-secrets
 spec:
-  projectId: my-devops-project
+  projectId:
+    value: my-devops-project
   secretNames:
     # Container registry credentials
     - docker-registry-token
@@ -208,7 +241,7 @@ availableSecrets:
       env: "DOCKER_TOKEN"
 ```
 
-## Example 7: Integration with Kubernetes via External Secrets Operator
+## Example 8: Integration with Kubernetes via External Secrets Operator
 
 This example shows secrets that will be synced to a Kubernetes cluster using External Secrets Operator (ESO).
 
@@ -219,7 +252,8 @@ metadata:
   name: k8s-app-secrets
   env: prod
 spec:
-  projectId: my-gke-project
+  projectId:
+    value: my-gke-project
   secretNames:
     # Application secrets to be synced to K8s
     - app-database-url

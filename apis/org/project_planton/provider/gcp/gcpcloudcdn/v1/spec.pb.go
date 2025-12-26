@@ -8,6 +8,7 @@ package gcpcloudcdnv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -145,8 +146,10 @@ func (BackendProtocol) EnumDescriptor() ([]byte, []int) {
 type GcpCloudCdnSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The ID of the GCP project where the Cloud CDN resources will be created.
+	// This field supports cross-resource references using ValueFrom to dynamically
+	// retrieve the project ID from a GcpProject resource.
 	// Required field.
-	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
+	GcpProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 	// Backend configuration defines the origin server that Cloud CDN will cache content from.
 	// This can be a GCS bucket, Compute Engine service, Cloud Run, or external origin.
 	// Required field.
@@ -213,11 +216,11 @@ func (*GcpCloudCdnSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpCloudCdnSpec) GetGcpProjectId() string {
+func (x *GcpCloudCdnSpec) GetGcpProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.GcpProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpCloudCdnSpec) GetBackend() *GcpCloudCdnBackend {
@@ -1462,9 +1465,9 @@ var File_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto protoreflect
 
 const file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudcdn/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudcdn.v1\x1a\x1bbuf/validate/validate.proto\"\xb8\a\n" +
-	"\x0fGcpCloudCdnSpec\x12N\n" +
-	"\x0egcp_project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\fgcpProjectId\x12e\n" +
+	":org/project_planton/provider/gcp/gcpcloudcdn/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudcdn.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xf5\a\n" +
+	"\x0fGcpCloudCdnSpec\x12\x8a\x01\n" +
+	"\x0egcp_project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\fgcpProjectId\x12e\n" +
 	"\abackend\x18\x02 \x01(\v2C.org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackendB\x06\xbaH\x03\xc8\x01\x01R\abackend\x12h\n" +
 	"\n" +
 	"cache_mode\x18\x03 \x01(\x0e2:.org.project_planton.provider.gcp.gcpcloudcdn.v1.CacheModeB\b\xbaH\x05\x82\x01\x02\x10\x01H\x00R\tcacheMode\x88\x01\x01\x12A\n" +
@@ -1625,32 +1628,34 @@ var file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_goTypes = []
 	(*GoogleManagedCertificateConfig)(nil), // 16: org.project_planton.provider.gcp.gcpcloudcdn.v1.GoogleManagedCertificateConfig
 	(*SelfManagedCertificateConfig)(nil),   // 17: org.project_planton.provider.gcp.gcpcloudcdn.v1.SelfManagedCertificateConfig
 	(*CloudArmorConfig)(nil),               // 18: org.project_planton.provider.gcp.gcpcloudcdn.v1.CloudArmorConfig
+	(*v1.StringValueOrRef)(nil),            // 19: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_depIdxs = []int32{
-	3,  // 0: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.backend:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend
-	0,  // 1: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.cache_mode:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CacheMode
-	9,  // 2: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.advanced_config:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig
-	14, // 3: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.frontend_config:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnFrontendConfig
-	4,  // 4: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.gcs_bucket:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcsBackendConfig
-	5,  // 5: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.compute_service:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.ComputeBackendConfig
-	6,  // 6: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.cloud_run_service:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CloudRunBackendConfig
-	7,  // 7: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.external_origin:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.ExternalBackendConfig
-	8,  // 8: org.project_planton.provider.gcp.gcpcloudcdn.v1.ComputeBackendConfig.health_check:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.HealthCheckConfig
-	1,  // 9: org.project_planton.provider.gcp.gcpcloudcdn.v1.ComputeBackendConfig.protocol:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.BackendProtocol
-	1,  // 10: org.project_planton.provider.gcp.gcpcloudcdn.v1.ExternalBackendConfig.protocol:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.BackendProtocol
-	10, // 11: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig.cache_key_policy:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CacheKeyPolicy
-	11, // 12: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig.signed_url_config:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SignedUrlConfig
-	13, // 13: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig.negative_caching_policies:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.NegativeCachingPolicy
-	12, // 14: org.project_planton.provider.gcp.gcpcloudcdn.v1.SignedUrlConfig.keys:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SignedUrlKey
-	15, // 15: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnFrontendConfig.ssl_certificate:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SslCertificateConfig
-	18, // 16: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnFrontendConfig.cloud_armor:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CloudArmorConfig
-	16, // 17: org.project_planton.provider.gcp.gcpcloudcdn.v1.SslCertificateConfig.google_managed:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GoogleManagedCertificateConfig
-	17, // 18: org.project_planton.provider.gcp.gcpcloudcdn.v1.SslCertificateConfig.self_managed:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SelfManagedCertificateConfig
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	19, // 0: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.gcp_project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	3,  // 1: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.backend:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend
+	0,  // 2: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.cache_mode:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CacheMode
+	9,  // 3: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.advanced_config:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig
+	14, // 4: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnSpec.frontend_config:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnFrontendConfig
+	4,  // 5: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.gcs_bucket:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GcsBackendConfig
+	5,  // 6: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.compute_service:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.ComputeBackendConfig
+	6,  // 7: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.cloud_run_service:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CloudRunBackendConfig
+	7,  // 8: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnBackend.external_origin:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.ExternalBackendConfig
+	8,  // 9: org.project_planton.provider.gcp.gcpcloudcdn.v1.ComputeBackendConfig.health_check:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.HealthCheckConfig
+	1,  // 10: org.project_planton.provider.gcp.gcpcloudcdn.v1.ComputeBackendConfig.protocol:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.BackendProtocol
+	1,  // 11: org.project_planton.provider.gcp.gcpcloudcdn.v1.ExternalBackendConfig.protocol:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.BackendProtocol
+	10, // 12: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig.cache_key_policy:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CacheKeyPolicy
+	11, // 13: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig.signed_url_config:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SignedUrlConfig
+	13, // 14: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnAdvancedConfig.negative_caching_policies:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.NegativeCachingPolicy
+	12, // 15: org.project_planton.provider.gcp.gcpcloudcdn.v1.SignedUrlConfig.keys:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SignedUrlKey
+	15, // 16: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnFrontendConfig.ssl_certificate:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SslCertificateConfig
+	18, // 17: org.project_planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnFrontendConfig.cloud_armor:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.CloudArmorConfig
+	16, // 18: org.project_planton.provider.gcp.gcpcloudcdn.v1.SslCertificateConfig.google_managed:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.GoogleManagedCertificateConfig
+	17, // 19: org.project_planton.provider.gcp.gcpcloudcdn.v1.SslCertificateConfig.self_managed:type_name -> org.project_planton.provider.gcp.gcpcloudcdn.v1.SelfManagedCertificateConfig
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_init() }

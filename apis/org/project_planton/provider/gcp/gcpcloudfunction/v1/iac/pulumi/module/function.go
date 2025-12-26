@@ -89,7 +89,7 @@ func createCloudFunction(
 			for key, secretName := range sc.SecretEnvironmentVariables {
 				secretEnvVars = append(secretEnvVars, &cloudfunctionsv2.FunctionServiceConfigSecretEnvironmentVariableArgs{
 					Key:       pulumi.String(key),
-					ProjectId: pulumi.String(spec.ProjectId),
+					ProjectId: pulumi.String(spec.ProjectId.GetValue()),
 					Secret:    pulumi.String(secretName),
 					Version:   pulumi.String("latest"),
 				})
@@ -149,7 +149,7 @@ func createCloudFunction(
 	// Prepare function args
 	functionArgs := &cloudfunctionsv2.FunctionArgs{
 		Name:          pulumi.String(locals.FunctionName),
-		Project:       pulumi.String(spec.ProjectId),
+		Project:       pulumi.String(spec.ProjectId.GetValue()),
 		Location:      pulumi.String(spec.Region),
 		BuildConfig:   buildConfig,
 		ServiceConfig: serviceConfig,
@@ -227,7 +227,7 @@ func createCloudFunction(
 			ctx,
 			fmt.Sprintf("%s-public-invoker", locals.FunctionName),
 			&cloudrunv2.ServiceIamMemberArgs{
-				Project:  pulumi.String(spec.ProjectId),
+				Project:  pulumi.String(spec.ProjectId.GetValue()),
 				Location: pulumi.String(spec.Region),
 				Name:     function.Name,
 				Role:     pulumi.String("roles/run.invoker"),

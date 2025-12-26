@@ -8,6 +8,7 @@ package gcpsecretsmanagerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,8 +29,11 @@ const (
 // enabling secure storage and access control for sensitive information like API keys, passwords, and certificates.
 type GcpSecretsManagerSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The ID of the GCP project where the secrets will be created.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The GCP project ID where the secrets will be created.
+	// Can be provided as a literal value or as a reference to another resource's output.
+	// Example (literal): {value: "my-gcp-project-123456"}
+	// Example (reference): {value_from: {kind: GcpProject, name: "main-project"}}
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// A list of secret names to create in Google Cloud Secrets Manager.
 	// Each name represents a unique secret that can store sensitive data securely.
 	SecretNames   []string `protobuf:"bytes,2,rep,name=secret_names,json=secretNames,proto3" json:"secret_names,omitempty"`
@@ -67,11 +71,11 @@ func (*GcpSecretsManagerSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpSecretsManagerSpec) GetProjectId() string {
+func (x *GcpSecretsManagerSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpSecretsManagerSpec) GetSecretNames() []string {
@@ -85,10 +89,10 @@ var File_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto protor
 
 const file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"@org/project_planton/provider/gcp/gcpsecretsmanager/v1/spec.proto\x125org.project_planton.provider.gcp.gcpsecretsmanager.v1\x1a\x1bbuf/validate/validate.proto\"a\n" +
-	"\x15GcpSecretsManagerSpec\x12%\n" +
+	"@org/project_planton/provider/gcp/gcpsecretsmanager/v1/spec.proto\x125org.project_planton.provider.gcp.gcpsecretsmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc0\x01\n" +
+	"\x15GcpSecretsManagerSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tprojectId\x12!\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12!\n" +
 	"\fsecret_names\x18\x02 \x03(\tR\vsecretNamesB\xb8\x03\n" +
 	"9com.org.project_planton.provider.gcp.gcpsecretsmanager.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1;gcpsecretsmanagerv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpsecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpsecretsmanager::V1b\x06proto3"
 
@@ -107,13 +111,15 @@ func file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_rawDe
 var file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_goTypes = []any{
 	(*GcpSecretsManagerSpec)(nil), // 0: org.project_planton.provider.gcp.gcpsecretsmanager.v1.GcpSecretsManagerSpec
+	(*v1.StringValueOrRef)(nil),   // 1: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: org.project_planton.provider.gcp.gcpsecretsmanager.v1.GcpSecretsManagerSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_init() }

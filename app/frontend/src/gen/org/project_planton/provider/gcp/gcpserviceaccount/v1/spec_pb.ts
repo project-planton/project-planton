@@ -5,6 +5,8 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import { file_org_project_planton_shared_options_options } from "../../../../shared/options/options_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/gcp/gcpserviceaccount/v1/spec.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkBvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BzZXJ2aWNlYWNjb3VudC92MS9zcGVjLnByb3RvEjVvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BzZXJ2aWNlYWNjb3VudC52MSLKAQoVR2NwU2VydmljZUFjY291bnRTcGVjEigKEnNlcnZpY2VfYWNjb3VudF9pZBgBIAEoCUIMukgJyAEBcgQQBhgeEhIKCnByb2plY3RfaWQYAiABKAkSDgoGb3JnX2lkGAMgASgJEiIKCmNyZWF0ZV9rZXkYBCABKAhCCYqmHQVmYWxzZUgAiAEBEhkKEXByb2plY3RfaWFtX3JvbGVzGAUgAygJEhUKDW9yZ19pYW1fcm9sZXMYBiADKAlCDQoLX2NyZWF0ZV9rZXlCuAMKOWNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BzZXJ2aWNlYWNjb3VudC52MUIJU3BlY1Byb3RvUAFaeWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvZ2NwL2djcHNlcnZpY2VhY2NvdW50L3YxO2djcHNlcnZpY2VhY2NvdW50djGiAgVPUFBHR6oCNE9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5HY3AuR2Nwc2VydmljZWFjY291bnQuVjHKAjRPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcHNlcnZpY2VhY2NvdW50XFYx4gJAT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BzZXJ2aWNlYWNjb3VudFxWMVxHUEJNZXRhZGF0YeoCOU9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpHY3A6OkdjcHNlcnZpY2VhY2NvdW50OjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_shared_options_options]);
+  fileDesc("CkBvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BzZXJ2aWNlYWNjb3VudC92MS9zcGVjLnByb3RvEjVvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BzZXJ2aWNlYWNjb3VudC52MSKqAgoVR2NwU2VydmljZUFjY291bnRTcGVjEigKEnNlcnZpY2VfYWNjb3VudF9pZBgBIAEoCUIMukgJyAEBcgQQBhgeEnIKCnByb2plY3RfaWQYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCIojUYeEEktRhGXN0YXR1cy5vdXRwdXRzLnByb2plY3RfaWQSDgoGb3JnX2lkGAMgASgJEiIKCmNyZWF0ZV9rZXkYBCABKAhCCYqmHQVmYWxzZUgAiAEBEhkKEXByb2plY3RfaWFtX3JvbGVzGAUgAygJEhUKDW9yZ19pYW1fcm9sZXMYBiADKAlCDQoLX2NyZWF0ZV9rZXlCuAMKOWNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BzZXJ2aWNlYWNjb3VudC52MUIJU3BlY1Byb3RvUAFaeWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvZ2NwL2djcHNlcnZpY2VhY2NvdW50L3YxO2djcHNlcnZpY2VhY2NvdW50djGiAgVPUFBHR6oCNE9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5HY3AuR2Nwc2VydmljZWFjY291bnQuVjHKAjRPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcHNlcnZpY2VhY2NvdW50XFYx4gJAT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BzZXJ2aWNlYWNjb3VudFxWMVxHUEJNZXRhZGF0YeoCOU9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpHY3A6OkdjcHNlcnZpY2VhY2NvdW50OjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
 
 /**
  * GcpServiceAccountSpec defines the minimal config needed to create
@@ -33,11 +35,12 @@ export type GcpServiceAccountSpec = Message<"org.project_planton.provider.gcp.gc
 
   /**
    * project_id specifies the GCP project in which the service account is created.
+   * Can be a literal value or a reference to a GcpProject resource.
    * If omitted, the provider default project is used. Typically recommended to set explicitly.
    *
-   * @generated from field: string project_id = 2;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 2;
    */
-  projectId: string;
+  projectId?: StringValueOrRef;
 
   /**
    * org_id, if set, manages org-level IAM roles for the service account.

@@ -2,6 +2,27 @@
 
 This document provides comprehensive examples for deploying Google Cloud CDN using Project Planton. These examples demonstrate the 80/20 configuration principle, covering common use cases with simple configurations and advanced scenarios with detailed tuning.
 
+## Project ID Configuration
+
+The `gcpProjectId` field supports two configuration patterns:
+
+### Literal Value (Direct)
+```yaml
+gcpProjectId:
+  value: my-project-123456
+```
+
+### ValueFrom Reference (Cross-Resource)
+```yaml
+gcpProjectId:
+  valueFrom:
+    kind: GcpProject
+    name: main-project
+    fieldPath: status.outputs.project_id
+```
+
+This enables dynamic cross-resource references, allowing you to automatically use the project ID from a managed GcpProject resource.
+
 ## Table of Contents
 
 1. [Basic Static Website CDN (GCS Backend)](#1-basic-static-website-cdn-gcs-backend)
@@ -14,6 +35,7 @@ This document provides comprehensive examples for deploying Google Cloud CDN usi
 8. [External Origin (Hybrid/Multi-Cloud)](#8-external-origin-hybridmulti-cloud)
 9. [Production CDN with Cloud Armor](#9-production-cdn-with-cloud-armor)
 10. [Advanced Configuration with Negative Caching](#10-advanced-configuration-with-negative-caching)
+11. [Cross-Resource Reference Example](#11-cross-resource-reference-example)
 
 ---
 
@@ -29,7 +51,8 @@ kind: GcpCloudCdn
 metadata:
   name: my-static-site-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     gcsBucket:
       bucketName: my-static-website-bucket
@@ -56,7 +79,8 @@ kind: GcpCloudCdn
 metadata:
   name: production-website-cdn
 spec:
-  gcpProjectId: my-company-prod
+  gcpProjectId:
+    value: my-company-prod
   backend:
     gcsBucket:
       bucketName: www-mycompany-com-bucket
@@ -96,7 +120,8 @@ kind: GcpCloudCdn
 metadata:
   name: api-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     gcsBucket:
       bucketName: api-static-responses-bucket
@@ -126,7 +151,8 @@ kind: GcpCloudCdn
 metadata:
   name: optimized-cache-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     gcsBucket:
       bucketName: webapp-assets-bucket
@@ -175,7 +201,8 @@ kind: GcpCloudCdn
 metadata:
   name: private-content-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     gcsBucket:
       bucketName: premium-videos-bucket
@@ -229,7 +256,8 @@ kind: GcpCloudCdn
 metadata:
   name: cloud-run-api-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     cloudRunService:
       serviceName: my-api-service
@@ -283,7 +311,8 @@ kind: GcpCloudCdn
 metadata:
   name: webapp-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     computeService:
       instanceGroupName: webapp-mig-us-central1
@@ -338,7 +367,8 @@ kind: GcpCloudCdn
 metadata:
   name: hybrid-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     externalOrigin:
       hostname: assets.mycompany.com  # Could be AWS S3, on-prem, etc.
@@ -382,7 +412,8 @@ kind: GcpCloudCdn
 metadata:
   name: production-secure-cdn
 spec:
-  gcpProjectId: my-company-prod
+  gcpProjectId:
+    value: my-company-prod
   backend:
     gcsBucket:
       bucketName: ecommerce-static-assets
@@ -445,7 +476,8 @@ kind: GcpCloudCdn
 metadata:
   name: advanced-api-cdn
 spec:
-  gcpProjectId: my-project-123456
+  gcpProjectId:
+    value: my-project-123456
   backend:
     cloudRunService:
       serviceName: advanced-api
@@ -629,6 +661,53 @@ HTML references the versioned files:
 **Symptoms:** 404/500 errors hitting origin repeatedly
 
 **Fix:** Enable `enable_negative_caching` and configure `negative_caching_policies`
+
+---
+
+## 11. Cross-Resource Reference Example
+
+Use `valueFrom` to dynamically reference a GcpProject resource for the project ID.
+
+**Use case:** Multi-environment deployments where the project ID comes from a managed GcpProject resource
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudCdn
+metadata:
+  name: cross-ref-cdn
+  org: my-org
+  env:
+    id: production
+spec:
+  # Reference the project ID from a GcpProject resource
+  gcpProjectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  backend:
+    gcsBucket:
+      bucketName: my-static-assets-bucket
+      enableUniformAccess: true
+  cacheMode: CACHE_ALL_STATIC
+  defaultTtlSeconds: 3600
+  maxTtlSeconds: 86400
+  enableNegativeCaching: true
+  frontendConfig:
+    customDomains:
+      - cdn.example.com
+    sslCertificate:
+      googleManaged:
+        domains:
+          - cdn.example.com
+    enableHttpsRedirect: true
+```
+
+**Benefits of Cross-Resource References:**
+- **Dynamic Configuration**: Project ID is automatically resolved at deployment time
+- **Environment Consistency**: Ensures CDN is deployed in the correct project without manual configuration
+- **Dependency Management**: Creates implicit dependency between resources
+- **Reduced Errors**: Eliminates typos and misconfigurations from hard-coded project IDs
 
 ---
 

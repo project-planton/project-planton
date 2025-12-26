@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.gcp.gcpcloudrun.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
 /*
@@ -13,9 +14,11 @@ import "org/project_planton/shared/options/options.proto";
  */
 message GcpCloudRunSpec {
   // GCP project ID where the Cloud Run service will be created.
-  string project_id = 1 [
+  // Can be a direct value or a reference to a GcpProject resource.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"}
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
   ];
 
   // Region where the service is deployed, for example "us-central1".
@@ -233,16 +236,20 @@ enum GcpCloudRunExecutionEnvironment {
  * GcpCloudRunVpcAccess configures Direct VPC Egress for accessing private resources.
  */
 message GcpCloudRunVpcAccess {
-  // VPC network name for Direct VPC Egress
-  string network = 1 [
+  // VPC network name for Direct VPC Egress.
+  // Can be a direct value or a reference to a GcpVpc resource.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef network = 1 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).string = {min_len: 1}
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpVpc,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.network_name"
   ];
 
-  // VPC subnet name for Direct VPC Egress
-  string subnet = 2 [
+  // VPC subnet name for Direct VPC Egress.
+  // Can be a direct value or a reference to a GcpSubnetwork resource.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef subnet = 2 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).string = {min_len: 1}
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpSubnetwork,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.subnetwork_name"
   ];
 
   // Egress setting: "ALL_TRAFFIC" or "PRIVATE_RANGES_ONLY"

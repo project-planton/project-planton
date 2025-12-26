@@ -62,7 +62,10 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for the DNS zone"
   type = object({
-    project_id           = string
+    # project_id uses StringValueOrRef pattern
+    project_id = object({
+      value = string
+    })
     iam_service_accounts = optional(list(string), [])
     records = optional(list(object({
       record_type = string
@@ -103,7 +106,10 @@ metadata = {
 }
 
 spec = {
-  project_id = "my-gcp-project"
+  # project_id uses StringValueOrRef pattern - wrap literal values in {value: "..."}
+  project_id = {
+    value = "my-gcp-project"
+  }
   
   iam_service_accounts = [
     "cert-manager@my-gcp-project.iam.gserviceaccount.com",
@@ -166,7 +172,9 @@ metadata = {
 }
 
 spec = {
-  project_id = "my-gcp-project"
+  project_id = {
+    value = "my-gcp-project"
+  }
 }
 ```
 
@@ -200,7 +208,9 @@ metadata = {
 }
 
 spec = {
-  project_id = "mycompany-production"
+  project_id = {
+    value = "mycompany-production"
+  }
   
   iam_service_accounts = [
     "cert-manager@mycompany-production.iam.gserviceaccount.com",
@@ -331,7 +341,10 @@ variable "metadata" {
 variable "spec" {
   description = "DNS zone specification"
   type = object({
-    project_id           = string
+    # project_id uses StringValueOrRef pattern
+    project_id = object({
+      value = string
+    })
     iam_service_accounts = optional(list(string), [])
     records = optional(list(object({
       record_type = string
@@ -407,7 +420,9 @@ metadata = {
 }
 
 spec = {
-  project_id = "mycompany-dev"
+  project_id = {
+    value = "mycompany-dev"
+  }
   
   iam_service_accounts = [
     "cert-manager@mycompany-dev.iam.gserviceaccount.com"
@@ -438,7 +453,9 @@ metadata = {
 }
 
 spec = {
-  project_id = "mycompany-staging"
+  project_id = {
+    value = "mycompany-staging"
+  }
   
   iam_service_accounts = [
     "cert-manager@mycompany-staging.iam.gserviceaccount.com",
@@ -471,7 +488,9 @@ metadata = {
 }
 
 spec = {
-  project_id = "mycompany-production"
+  project_id = {
+    value = "mycompany-production"
+  }
   
   iam_service_accounts = [
     "cert-manager@mycompany-production.iam.gserviceaccount.com",
@@ -557,7 +576,9 @@ module "dns_zone" {
   }
 
   spec = {
-    project_id = var.gcp_project_id
+    project_id = {
+      value = var.gcp_project_id
+    }
     
     iam_service_accounts = [
       google_service_account.cert_manager.email,
@@ -658,7 +679,9 @@ module "dns_zone" {
   }
 
   spec = {
-    project_id = var.gcp_project_id
+    project_id = {
+      value = var.gcp_project_id
+    }
     records    = local.all_records
   }
 }
@@ -715,7 +738,9 @@ module "dns_zone" {
   }
 
   spec = {
-    project_id = "mycompany-production"
+    project_id = {
+      value = "mycompany-production"
+    }
     records = [
       {
         record_type = "A"

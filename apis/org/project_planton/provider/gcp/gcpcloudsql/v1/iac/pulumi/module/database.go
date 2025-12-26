@@ -39,7 +39,7 @@ func databaseInstance(
 
 		if spec.Network.PrivateIpEnabled {
 			ipConfig.Ipv4Enabled = pulumi.Bool(false)
-			ipConfig.PrivateNetwork = pulumi.String(spec.Network.VpcId)
+			ipConfig.PrivateNetwork = pulumi.String(spec.Network.VpcId.GetValue())
 		} else {
 			ipConfig.Ipv4Enabled = pulumi.Bool(true)
 		}
@@ -95,7 +95,7 @@ func databaseInstance(
 		locals.GcpCloudSql.Metadata.Name,
 		&sql.DatabaseInstanceArgs{
 			Name:               pulumi.String(locals.GcpCloudSql.Metadata.Name),
-			Project:            pulumi.String(spec.ProjectId),
+			Project:            pulumi.String(spec.ProjectId.GetValue()),
 			Region:             pulumi.String(spec.Region),
 			DatabaseVersion:    pulumi.String(databaseVersion),
 			Settings:           settings,
@@ -109,7 +109,7 @@ func databaseInstance(
 	}
 
 	// If private IP is enabled, we may need to create a service networking connection
-	if spec.Network != nil && spec.Network.PrivateIpEnabled && spec.Network.VpcId != "" {
+	if spec.Network != nil && spec.Network.PrivateIpEnabled && spec.Network.VpcId.GetValue() != "" {
 		// Note: This assumes the VPC peering connection already exists
 		// In production, you might want to create the peering connection here
 		// using google_service_networking_connection resource

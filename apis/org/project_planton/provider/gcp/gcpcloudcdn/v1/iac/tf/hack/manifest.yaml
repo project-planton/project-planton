@@ -6,7 +6,8 @@ metadata:
     environment: test
     team: platform
 spec:
-  gcp_project_id: my-test-project-123456
+  gcp_project_id:
+    value: my-test-project-123456
   backend:
     gcs_bucket:
       bucket_name: my-static-website-bucket

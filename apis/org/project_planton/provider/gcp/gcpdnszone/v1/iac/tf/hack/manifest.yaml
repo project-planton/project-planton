@@ -3,7 +3,8 @@ kind: GcpDnsZone
 metadata:
   name: test.project-planton.org
 spec:
-  projectId: planton-cloud-dns
+  projectId:
+    value: planton-cloud-dns
   records:
     - recordType: A
       name: test-a.test.project-planton.org.

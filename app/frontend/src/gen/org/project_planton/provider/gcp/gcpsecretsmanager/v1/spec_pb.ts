@@ -5,13 +5,15 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file org/project_planton/provider/gcp/gcpsecretsmanager/v1/spec.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkBvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BzZWNyZXRzbWFuYWdlci92MS9zcGVjLnByb3RvEjVvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BzZWNyZXRzbWFuYWdlci52MSJJChVHY3BTZWNyZXRzTWFuYWdlclNwZWMSGgoKcHJvamVjdF9pZBgBIAEoCUIGukgDyAEBEhQKDHNlY3JldF9uYW1lcxgCIAMoCUK4Awo5Y29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcHNlY3JldHNtYW5hZ2VyLnYxQglTcGVjUHJvdG9QAVp5Z2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9nY3AvZ2Nwc2VjcmV0c21hbmFnZXIvdjE7Z2Nwc2VjcmV0c21hbmFnZXJ2MaICBU9QUEdHqgI0T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkdjcC5HY3BzZWNyZXRzbWFuYWdlci5WMcoCNE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2Nwc2VjcmV0c21hbmFnZXJcVjHiAkBPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcHNlY3JldHNtYW5hZ2VyXFYxXEdQQk1ldGFkYXRh6gI5T3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6OkdjcDo6R2Nwc2VjcmV0c21hbmFnZXI6OlYxYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("CkBvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BzZWNyZXRzbWFuYWdlci92MS9zcGVjLnByb3RvEjVvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3BzZWNyZXRzbWFuYWdlci52MSKnAQoVR2NwU2VjcmV0c01hbmFnZXJTcGVjEngKCnByb2plY3RfaWQYASABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCKLpIA8gBAYjUYeEEktRhGXN0YXR1cy5vdXRwdXRzLnByb2plY3RfaWQSFAoMc2VjcmV0X25hbWVzGAIgAygJQrgDCjljb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2Nwc2VjcmV0c21hbmFnZXIudjFCCVNwZWNQcm90b1ABWnlnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BzZWNyZXRzbWFuYWdlci92MTtnY3BzZWNyZXRzbWFuYWdlcnYxogIFT1BQR0eqAjRPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcHNlY3JldHNtYW5hZ2VyLlYxygI0T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BzZWNyZXRzbWFuYWdlclxWMeICQE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2Nwc2VjcmV0c21hbmFnZXJcVjFcR1BCTWV0YWRhdGHqAjlPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3BzZWNyZXRzbWFuYWdlcjo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * **GcpSecretsManagerSpec** defines the configuration for managing secrets using Google Cloud Secrets Manager.
@@ -23,11 +25,14 @@ export const file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec: Ge
  */
 export type GcpSecretsManagerSpec = Message<"org.project_planton.provider.gcp.gcpsecretsmanager.v1.GcpSecretsManagerSpec"> & {
   /**
-   * The ID of the GCP project where the secrets will be created.
+   * The GCP project ID where the secrets will be created.
+   * Can be provided as a literal value or as a reference to another resource's output.
+   * Example (literal): {value: "my-gcp-project-123456"}
+   * Example (reference): {value_from: {kind: GcpProject, name: "main-project"}}
    *
-   * @generated from field: string project_id = 1;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1;
    */
-  projectId: string;
+  projectId?: StringValueOrRef;
 
   /**
    * A list of secret names to create in Google Cloud Secrets Manager.

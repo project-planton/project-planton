@@ -20,8 +20,11 @@ variable "spec" {
     service_account_id = string
 
     # The GCP project ID in which the service account will be created.
+    # Can be a literal value or a reference to a GcpProject resource.
     # If omitted, the provider default project is used.
-    project_id = string
+    project_id = object({
+      value = string
+    })
 
     # Organization ID for organization-level IAM bindings.
     # Required if org_iam_roles is specified.

@@ -18,7 +18,19 @@ variable "spec" {
     repo_format = string
 
     # Required.** The ID of the GCP project where the Artifact Registry resources will be created.
-    project_id = string
+    # Accepts either a literal value or a reference to another resource's output.
+    # For literal: { value = "my-project-id" }
+    # For reference: { value_from = { kind = "GcpProject", name = "my-project" } }
+    # Note: Reference resolution is not yet implemented, only literal values are supported.
+    project_id = object({
+      value      = optional(string)
+      value_from = optional(object({
+        kind       = optional(string)
+        env        = optional(string)
+        name       = optional(string)
+        field_path = optional(string)
+      }))
+    })
 
     # Required.** The GCP region where the Artifact Registry will be created (e.g., "us-west2").
     # Selecting a region close to your Kubernetes clusters can reduce service startup time

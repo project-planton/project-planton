@@ -74,8 +74,10 @@ kind: GcpGcsBucket
 metadata:
   name: my-app-storage-prod
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcp_project_id:
+    value: my-gcp-project-123
   location: us-east1
+  bucket_name: my-app-storage-prod
   uniform_bucket_level_access_enabled: true
   versioning_enabled: true
   storage_class: STANDARD
@@ -91,6 +93,24 @@ spec:
   gcp_labels:
     environment: production
     team: platform
+```
+
+**Using valueFrom for Cross-Resource Reference:**
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: my-app-storage-prod
+spec:
+  gcp_project_id:
+    value_from:
+      kind: GcpProject
+      name: main-project
+      field_path: status.outputs.project_id
+  location: us-east1
+  bucket_name: my-app-storage-prod
+  uniform_bucket_level_access_enabled: true
 ```
 
 ### Step 2: Initialize Pulumi Stack
@@ -231,8 +251,10 @@ kind: GcpGcsBucket
 metadata:
   name: test-bucket-minimal
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcp_project_id:
+    value: my-gcp-project-123
   location: us-east1
+  bucket_name: test-bucket-minimal
   uniform_bucket_level_access_enabled: true
 EOF
 
@@ -307,8 +329,10 @@ kind: GcpGcsBucket
 metadata:
   name: ${BUCKET_NAME}
 spec:
-  gcp_project_id: my-gcp-project-123
+  gcp_project_id:
+    value: my-gcp-project-123
   location: us-east1
+  bucket_name: ${BUCKET_NAME}
   uniform_bucket_level_access_enabled: true
 EOF
 
@@ -342,8 +366,10 @@ kind: GcpGcsBucket
 metadata:
   name: app-storage-dev
 spec:
-  gcp_project_id: my-dev-project
+  gcp_project_id:
+    value: my-dev-project
   location: us-east1
+  bucket_name: app-storage-dev
   uniform_bucket_level_access_enabled: true
   storage_class: STANDARD
   lifecycle_rules:
@@ -361,8 +387,10 @@ kind: GcpGcsBucket
 metadata:
   name: app-storage-prod
 spec:
-  gcp_project_id: my-prod-project
+  gcp_project_id:
+    value: my-prod-project
   location: us-east1
+  bucket_name: app-storage-prod
   uniform_bucket_level_access_enabled: true
   storage_class: STANDARD
   versioning_enabled: true
@@ -489,8 +517,10 @@ kind: GcpGcsBucket
 metadata:
   name: ${BUCKET_NAME}
 spec:
-  gcp_project_id: ${PROJECT_ID}
+  gcp_project_id:
+    value: ${PROJECT_ID}
   location: us-east1
+  bucket_name: ${BUCKET_NAME}
   uniform_bucket_level_access_enabled: true
   gcp_labels:
     environment: ${ENVIRONMENT}

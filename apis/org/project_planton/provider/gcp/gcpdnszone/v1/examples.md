@@ -11,6 +11,7 @@ This document provides comprehensive examples for the `GcpDnsZone` API resource,
 5. [Comprehensive Production Zone](#comprehensive-production-zone)
 6. [Wildcard Domain Configuration](#wildcard-domain-configuration)
 7. [Subdomain Delegation](#subdomain-delegation)
+8. [Using Foreign Key References](#using-foreign-key-references)
 
 ---
 
@@ -24,7 +25,8 @@ kind: GcpDnsZone
 metadata:
   name: example.com
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
 ```
 
 **Use Case**: Quick setup for a domain where DNS records will be managed dynamically by tools like external-dns or manually through the GCP console.
@@ -46,7 +48,8 @@ kind: GcpDnsZone
 metadata:
   name: mycompany.com
 spec:
-  projectId: production-gcp-project
+  projectId:
+    value: production-gcp-project
   records:
     - recordType: A
       name: mycompany.com.
@@ -87,7 +90,8 @@ kind: GcpDnsZone
 metadata:
   name: example.com
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   records:
     # A record for root domain
     - recordType: A
@@ -174,7 +178,8 @@ kind: GcpDnsZone
 metadata:
   name: production.example.com
 spec:
-  projectId: prod-gcp-project
+  projectId:
+    value: prod-gcp-project
   
   # Grant DNS management permissions to Kubernetes workload identities
   iamServiceAccounts:
@@ -223,7 +228,8 @@ kind: GcpDnsZone
 metadata:
   name: company.io
 spec:
-  projectId: production-infrastructure
+  projectId:
+    value: production-infrastructure
   
   # Service accounts for automation tools
   iamServiceAccounts:
@@ -386,7 +392,8 @@ kind: GcpDnsZone
 metadata:
   name: saas-platform.io
 spec:
-  projectId: saas-production
+  projectId:
+    value: saas-production
   
   iamServiceAccounts:
     - cert-manager@saas-production.iam.gserviceaccount.com
@@ -450,7 +457,8 @@ kind: GcpDnsZone
 metadata:
   name: company.net
 spec:
-  projectId: infrastructure-project
+  projectId:
+    value: infrastructure-project
   
   records:
     # Root domain A record
@@ -639,6 +647,101 @@ The following advanced Cloud DNS features are **intentionally omitted** from thi
 
 ---
 
+## Using Foreign Key References
+
+Instead of hardcoding the GCP project ID, you can reference another Project Planton resource (like a `GcpProject`) using the `valueFrom` pattern. This enables clean dependency management and ensures the DNS zone is created only after the referenced project exists.
+
+### GcpProject Resource
+
+First, define the GCP project that will host the DNS zone:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpProject
+metadata:
+  name: dns-project
+spec:
+  projectId: my-dns-project-123
+  billingAccountId: 012345-ABCDEF-678910
+  folderId: "123456789012"
+```
+
+### DNS Zone with Project Reference
+
+Then, reference the project in your DNS zone configuration:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpDnsZone
+metadata:
+  name: example.com
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: dns-project
+      fieldPath: status.outputs.project_id
+  records:
+    - recordType: A
+      name: example.com.
+      values:
+        - 104.198.14.52
+      ttlSeconds: 300
+```
+
+### How Foreign Key References Work
+
+1. Project Planton creates the `GcpProject` resource first
+2. Once the project exists, it extracts `status.outputs.project_id`
+3. The `GcpDnsZone` resource uses that project ID automatically
+4. This ensures proper dependency ordering (DNS zone created after project)
+
+### When to Use Foreign Key References
+
+**Use references when:**
+- You're managing both the project and DNS zone via Project Planton
+- You want explicit dependency ordering in your infrastructure code
+- You're building reusable templates that reference other resources
+- You want to avoid hardcoding project IDs across multiple manifests
+
+**Use direct values when:**
+- The project already exists and is managed outside Project Planton
+- You need to deploy the DNS zone independently without dependency tracking
+- You're working with a simple, single-environment setup
+
+### Combined Example with Multiple References
+
+This example shows a production DNS zone that references a GcpProject for its project ID and grants permissions to service accounts:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpDnsZone
+metadata:
+  name: production.mycompany.io
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: production-infra
+      fieldPath: status.outputs.project_id
+  iamServiceAccounts:
+    - cert-manager@production-infra-123.iam.gserviceaccount.com
+    - external-dns@production-infra-123.iam.gserviceaccount.com
+  records:
+    - recordType: A
+      name: production.mycompany.io.
+      values:
+        - 35.201.85.123
+      ttlSeconds: 300
+    - recordType: TXT
+      name: production.mycompany.io.
+      values:
+        - "v=spf1 include:_spf.google.com ~all"
+      ttlSeconds: 3600
+```
+
+---
+
 ## Summary
 
 These examples demonstrate the full range of configurations supported by the `GcpDnsZone` API resource:
@@ -648,5 +751,6 @@ These examples demonstrate the full range of configurations supported by the `Gc
 - **Comprehensive**: Complete DNS setup including email, verification, and service discovery
 - **Wildcard**: Multi-tenant SaaS platforms with dynamic subdomains
 - **Delegation**: Large organizations with decentralized DNS management
+- **Foreign Key References**: Dynamic project ID resolution from other resources
 
 All configurations follow the "split state" pattern, ensuring harmony between IaC-managed static records and dynamically-managed application records.

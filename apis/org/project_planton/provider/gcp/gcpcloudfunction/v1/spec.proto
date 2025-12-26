@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.gcp.gcpcloudfunction.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
 // **GcpCloudFunctionSpec** defines the configuration for deploying a Google Cloud Function (Gen 2).
@@ -11,9 +12,13 @@ import "org/project_planton/shared/options/options.proto";
 // it exposes the essential configuration that 80% of production deployments need.
 message GcpCloudFunctionSpec {
   // GCP project ID where the Cloud Function will be created.
-  string project_id = 1 [
+  // Supports either a literal value or a reference to another resource's output.
+  // Example literal: {value: "my-gcp-project-123"}
+  // Example reference: {value_from: {kind: GcpProject, name: "main-project", field_path: "status.outputs.project_id"}}
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"}
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
   ];
 
   // Region where the function is deployed, for example "us-central1" or "europe-west1".

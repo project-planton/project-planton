@@ -8,6 +8,7 @@ package gcpcloudrunv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -140,7 +141,8 @@ func (GcpCloudRunExecutionEnvironment) EnumDescriptor() ([]byte, []int) {
 type GcpCloudRunSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// GCP project ID where the Cloud Run service will be created.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Can be a direct value or a reference to a GcpProject resource.
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Region where the service is deployed, for example "us-central1".
 	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	// Name of the Cloud Run service to create on GCP.
@@ -203,11 +205,11 @@ func (*GcpCloudRunSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpCloudRunSpec) GetProjectId() string {
+func (x *GcpCloudRunSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpCloudRunSpec) GetRegion() string {
@@ -619,10 +621,12 @@ func (x *GcpCloudRunDns) GetManagedZone() string {
 // GcpCloudRunVpcAccess configures Direct VPC Egress for accessing private resources.
 type GcpCloudRunVpcAccess struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// VPC network name for Direct VPC Egress
-	Network string `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
-	// VPC subnet name for Direct VPC Egress
-	Subnet string `protobuf:"bytes,2,opt,name=subnet,proto3" json:"subnet,omitempty"`
+	// VPC network name for Direct VPC Egress.
+	// Can be a direct value or a reference to a GcpVpc resource.
+	Network *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
+	// VPC subnet name for Direct VPC Egress.
+	// Can be a direct value or a reference to a GcpSubnetwork resource.
+	Subnet *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=subnet,proto3" json:"subnet,omitempty"`
 	// Egress setting: "ALL_TRAFFIC" or "PRIVATE_RANGES_ONLY"
 	// If "ALL_TRAFFIC", all egress goes through VPC
 	// If "PRIVATE_RANGES_ONLY", only private IP traffic uses VPC
@@ -661,18 +665,18 @@ func (*GcpCloudRunVpcAccess) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GcpCloudRunVpcAccess) GetNetwork() string {
+func (x *GcpCloudRunVpcAccess) GetNetwork() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Network
 	}
-	return ""
+	return nil
 }
 
-func (x *GcpCloudRunVpcAccess) GetSubnet() string {
+func (x *GcpCloudRunVpcAccess) GetSubnet() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Subnet
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpCloudRunVpcAccess) GetEgress() string {
@@ -686,10 +690,10 @@ var File_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto protoreflect
 
 const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\x96\t\n" +
-	"\x0fGcpCloudRunSpec\x12G\n" +
+	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd3\t\n" +
+	"\x0fGcpCloudRunSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
 	"\x06region\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x14^[a-z]+-[a-z]+[0-9]$R\x06region\x12N\n" +
 	"\fservice_name\x18\a \x01(\tB+\xbaH(\xd8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12x\n" +
 	"\x0fservice_account\x18\b \x01(\tBO\xbaHL\xd8\x01\x01rG2E^[a-z0-9]([-a-z0-9]*[a-z0-9])?@[a-z0-9-]+\\.iam\\.gserviceaccount\\.com$R\x0eserviceAccount\x12k\n" +
@@ -734,12 +738,10 @@ const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = 
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12p\n" +
 	"\thostnames\x18\x02 \x03(\tBR\xbaHO\xd8\x01\x01\x92\x01I\x18\x01\"ErC2A^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$R\thostnames\x12!\n" +
 	"\fmanaged_zone\x18\x03 \x01(\tR\vmanagedZone:\xad\x01\xbaH\xa9\x01\x1a\xa6\x01\n" +
-	"\x1bdns.enabled-requires-fields\x12?hostnames and managed_zone must be set when dns.enabled is true\x1aF!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')\"\xa6\x01\n" +
-	"\x14GcpCloudRunVpcAccess\x12$\n" +
-	"\anetwork\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xd8\x01\x01r\x02\x10\x01R\anetwork\x12\"\n" +
-	"\x06subnet\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xd8\x01\x01r\x02\x10\x01R\x06subnet\x12D\n" +
+	"\x1bdns.enabled-requires-fields\x12?hostnames and managed_zone must be set when dns.enabled is true\x1aF!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')\"\xe3\x02\n" +
+	"\x14GcpCloudRunVpcAccess\x12\x80\x01\n" +
+	"\anetwork\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB*\xbaH\x03\xd8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a\x1bstatus.outputs.network_nameR\anetwork\x12\x81\x01\n" +
+	"\x06subnet\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB-\xbaH\x03\xd8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x1estatus.outputs.subnetwork_nameR\x06subnet\x12D\n" +
 	"\x06egress\x18\x03 \x01(\tB,\xbaH)\xd8\x01\x01r$R\x00R\vALL_TRAFFICR\x13PRIVATE_RANGES_ONLYR\x06egress*\x9d\x01\n" +
 	"\x12GcpCloudRunIngress\x12\x1f\n" +
 	"\x1bINGRESS_TRAFFIC_UNSPECIFIED\x10\x00\x12\x17\n" +
@@ -778,23 +780,27 @@ var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_goTypes = []
 	(*GcpCloudRunVpcAccess)(nil),         // 8: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess
 	nil,                                  // 9: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
 	nil,                                  // 10: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
+	(*v1.StringValueOrRef)(nil),          // 11: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_depIdxs = []int32{
-	3,  // 0: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.container:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer
-	0,  // 1: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.ingress:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunIngress
-	8,  // 2: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.vpc_access:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess
-	1,  // 3: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.execution_environment:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironment
-	7,  // 4: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.dns:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDns
-	5,  // 5: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.image:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImage
-	6,  // 6: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.env:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv
-	4,  // 7: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.replicas:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerReplicas
-	9,  // 8: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.variables:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
-	10, // 9: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.secrets:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	11, // 0: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	3,  // 1: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.container:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer
+	0,  // 2: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.ingress:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunIngress
+	8,  // 3: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.vpc_access:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess
+	1,  // 4: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.execution_environment:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunExecutionEnvironment
+	7,  // 5: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec.dns:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunDns
+	5,  // 6: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.image:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerImage
+	6,  // 7: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.env:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv
+	4,  // 8: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainer.replicas:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerReplicas
+	9,  // 9: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.variables:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.VariablesEntry
+	10, // 10: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.secrets:type_name -> org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerEnv.SecretsEntry
+	11, // 11: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess.network:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	11, // 12: org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunVpcAccess.subnet:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_init() }

@@ -2,7 +2,7 @@
 
 # Cloud Run v2 Service
 resource "google_cloud_run_v2_service" "main" {
-  project  = var.spec.project_id
+  project  = var.spec.project_id.value
   location = var.spec.region
   name     = local.service_name
 
@@ -38,10 +38,10 @@ resource "google_cloud_run_v2_service" "main" {
       for_each = local.has_vpc_access ? [1] : []
       content {
         dynamic "network_interfaces" {
-          for_each = var.spec.vpc_access.network != null ? [1] : []
+          for_each = local.vpc_network != null && local.vpc_network != "" ? [1] : []
           content {
-            network    = var.spec.vpc_access.network
-            subnetwork = var.spec.vpc_access.subnet
+            network    = local.vpc_network
+            subnetwork = local.vpc_subnet
           }
         }
         egress = var.spec.vpc_access.egress != null ? var.spec.vpc_access.egress : null
@@ -115,7 +115,7 @@ resource "google_cloud_run_domain_mapping" "main" {
   name     = local.dns_hostnames[0]
 
   metadata {
-    namespace = var.spec.project_id
+    namespace = var.spec.project_id.value
     labels    = local.labels
   }
 

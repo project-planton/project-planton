@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.gcp.gcpartifactregistryrepo.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 //enumeration for supported formats - https://cloud.google.com/artifact-registry/docs/supported-formats
 //note: naming the values using uppercase letters to match the naming convention of the supported formats
@@ -28,7 +29,14 @@ message GcpArtifactRegistryRepoSpec {
   GcpArtifactRegistryRepoFormat repo_format = 1 [(buf.validate.field).required = true];
 
   // The ID of the GCP project where the Artifact Registry resources will be created.
-  string project_id = 2 [(buf.validate.field).required = true];
+  // Can be provided as a literal string value or as a reference to another resource's output.
+  // Example literal: {value: "my-gcp-project-123"}
+  // Example reference: {value_from: {kind: GcpProject, name: "main-project"}}
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
+  ];
 
   // The GCP region where the Artifact Registry will be created (e.g., "us-west2").
   // Selecting a region close to your Kubernetes clusters can reduce service startup time
