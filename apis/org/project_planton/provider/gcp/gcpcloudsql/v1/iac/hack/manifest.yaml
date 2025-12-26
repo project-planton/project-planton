@@ -3,7 +3,8 @@ kind: GcpCloudSql
 metadata:
   name: test-mysql-db
 spec:
-  projectId: project-planton-testing
+  projectId:
+    value: project-planton-testing
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -11,7 +12,8 @@ spec:
   storage_gb: 10
   root_password: TestPassword123!
 #  network:
-#    vpc_id: projects/project-planton-testing/global/networks/my-vpc
+#    vpc_id:
+#      value: projects/project-planton-testing/global/networks/my-vpc
 #    private_ip_enabled: true
 #    authorized_networks:
 #      - 203.0.113.0/24

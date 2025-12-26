@@ -3,7 +3,7 @@
 ###############################################################################
 resource "google_sql_database_instance" "instance" {
   name             = var.metadata.name
-  project          = var.spec.project_id
+  project          = local.project_id
   region           = var.spec.region
   database_version = var.spec.database_version
 
@@ -17,7 +17,7 @@ resource "google_sql_database_instance" "instance" {
     # IP configuration
     ip_configuration {
       ipv4_enabled    = !local.private_ip_enabled
-      private_network = local.private_ip_enabled ? var.spec.network.vpc_id : null
+      private_network = local.private_ip_enabled ? local.vpc_id : null
 
       # Authorized networks for public IP access
       dynamic "authorized_networks" {

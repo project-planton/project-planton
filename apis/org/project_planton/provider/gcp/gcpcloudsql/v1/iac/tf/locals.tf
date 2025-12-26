@@ -6,6 +6,22 @@ locals {
     : var.metadata.name
   )
 
+  # Extract project_id from StringValueOrRef
+  # Note: value_from resolution is not yet implemented - only literal values are supported
+  project_id = (
+    var.spec.project_id != null
+    ? coalesce(var.spec.project_id.value, "")
+    : ""
+  )
+
+  # Extract vpc_id from StringValueOrRef
+  # Note: value_from resolution is not yet implemented - only literal values are supported
+  vpc_id = (
+    var.spec.network != null && var.spec.network.vpc_id != null
+    ? coalesce(var.spec.network.vpc_id.value, "")
+    : ""
+  )
+
   # Base GCP labels
   base_gcp_labels = {
     "resource"      = "true"

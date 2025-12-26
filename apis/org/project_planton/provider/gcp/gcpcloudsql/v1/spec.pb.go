@@ -8,6 +8,7 @@ package gcpcloudsqlv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -138,7 +139,8 @@ func (GcpCloudSqlEdition) EnumDescriptor() ([]byte, []int) {
 type GcpCloudSqlSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// GCP project ID where the Cloud SQL instance will be created.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Can be a literal value or a reference to a GcpProject resource.
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Region where the instance is deployed, for example "us-central1".
 	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	// Database engine type (MYSQL or POSTGRESQL).
@@ -206,11 +208,11 @@ func (*GcpCloudSqlSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpCloudSqlSpec) GetProjectId() string {
+func (x *GcpCloudSqlSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpCloudSqlSpec) GetRegion() string {
@@ -322,7 +324,8 @@ func (x *GcpCloudSqlSpec) GetRootPassword() string {
 type GcpCloudSqlNetwork struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// VPC network ID for private IP connectivity.
-	VpcId string `protobuf:"bytes,1,opt,name=vpc_id,json=vpcId,proto3" json:"vpc_id,omitempty"`
+	// Can be a literal value or a reference to a GcpVpc resource.
+	VpcId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=vpc_id,json=vpcId,proto3" json:"vpc_id,omitempty"`
 	// Whether to enable private IP for the instance.
 	// Recommended for secure in-VPC access.
 	PrivateIpEnabled bool `protobuf:"varint,2,opt,name=private_ip_enabled,json=privateIpEnabled,proto3" json:"private_ip_enabled,omitempty"`
@@ -367,11 +370,11 @@ func (*GcpCloudSqlNetwork) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GcpCloudSqlNetwork) GetVpcId() string {
+func (x *GcpCloudSqlNetwork) GetVpcId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.VpcId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpCloudSqlNetwork) GetPrivateIpEnabled() bool {
@@ -594,11 +597,10 @@ var File_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto protoreflect
 
 const file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudsql/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudsql.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xda\n" +
+	":org/project_planton/provider/gcp/gcpcloudsql/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudsql.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x97\v\n" +
+	"\x0fGcpCloudSqlSpec\x12\x83\x01\n" +
 	"\n" +
-	"\x0fGcpCloudSqlSpec\x12G\n" +
-	"\n" +
-	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
 	"\x06region\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x14^[a-z]+-[a-z]+[0-9]$R\x06region\x12\x82\x01\n" +
 	"\x0fdatabase_engine\x18\x03 \x01(\x0e2J.org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlDatabaseEngineB\r\xbaH\n" +
 	"\xc8\x01\x01\x82\x01\x04\x10\x01 \x00R\x0edatabaseEngine\x125\n" +
@@ -624,13 +626,13 @@ const file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc = 
 	"\xbaH\a\xd8\x01\x01r\x02\x10\bR\frootPassword\x1a@\n" +
 	"\x12DatabaseFlagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xfa\x02\n" +
-	"\x12GcpCloudSqlNetwork\x12\x15\n" +
-	"\x06vpc_id\x18\x01 \x01(\tR\x05vpcId\x12,\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x92\x04\n" +
+	"\x12GcpCloudSqlNetwork\x12u\n" +
+	"\x06vpc_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\"\x88\xd4a\xe2\x04\x92\xd4a\x19status.outputs.network_idR\x05vpcId\x12,\n" +
 	"\x12private_ip_enabled\x18\x02 \x01(\bR\x10privateIpEnabled\x12!\n" +
 	"\fipv4_enabled\x18\x03 \x01(\bR\vipv4Enabled\x12j\n" +
-	"\x13authorized_networks\x18\x04 \x03(\tB9\xbaH6\xd8\x01\x01\x92\x010\x18\x01\",r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$R\x12authorizedNetworks:\x8f\x01\xbaH\x8b\x01\x1a\x88\x01\n" +
-	"\x1fnetwork.private_ip_requires_vpc\x122vpc_id must be set when private_ip_enabled is true\x1a1!this.private_ip_enabled || size(this.vpc_id) > 0\"\xd8\x01\n" +
+	"\x13authorized_networks\x18\x04 \x03(\tB9\xbaH6\xd8\x01\x01\x92\x010\x18\x01\",r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$R\x12authorizedNetworks:\xc7\x01\xbaH\xc3\x01\x1a\xc0\x01\n" +
+	"\x1fnetwork.private_ip_requires_vpc\x122vpc_id must be set when private_ip_enabled is true\x1ai!this.private_ip_enabled || (has(this.vpc_id) && (has(this.vpc_id.value) || has(this.vpc_id.value_from)))\"\xd8\x01\n" +
 	"\x1bGcpCloudSqlHighAvailability\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
 	"\x04zone\x18\x02 \x01(\tR\x04zone:\x8a\x01\xbaH\x86\x01\x1a\x83\x01\n" +
@@ -683,20 +685,23 @@ var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_goTypes = []
 	(*GcpCloudSqlBackup)(nil),            // 5: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
 	(*GcpCloudSqlMaintenanceWindow)(nil), // 6: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlMaintenanceWindow
 	nil,                                  // 7: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
+	(*v1.StringValueOrRef)(nil),          // 8: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_depIdxs = []int32{
-	0, // 0: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_engine:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlDatabaseEngine
-	1, // 1: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.edition:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlEdition
-	6, // 2: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.maintenance_window:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlMaintenanceWindow
-	3, // 3: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.network:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork
-	4, // 4: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.high_availability:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailability
-	5, // 5: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.backup:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
-	7, // 6: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_flags:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	8, // 0: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 1: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_engine:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlDatabaseEngine
+	1, // 2: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.edition:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlEdition
+	6, // 3: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.maintenance_window:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlMaintenanceWindow
+	3, // 4: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.network:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork
+	4, // 5: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.high_availability:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlHighAvailability
+	5, // 6: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.backup:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlBackup
+	7, // 7: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.database_flags:type_name -> org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec.DatabaseFlagsEntry
+	8, // 8: org.project_planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlNetwork.vpc_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_init() }

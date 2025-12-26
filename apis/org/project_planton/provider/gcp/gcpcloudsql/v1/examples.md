@@ -16,9 +16,9 @@ Or using Terraform:
 project-planton tofu apply --manifest <yaml-path> --auto-approve
 ```
 
-## Basic MySQL Example
+## Basic MySQL Example (Literal Value)
 
-This example demonstrates how to create a basic MySQL 8.0 Cloud SQL instance with minimal configuration.
+This example demonstrates how to create a basic MySQL 8.0 Cloud SQL instance with a hardcoded project ID.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -26,7 +26,31 @@ kind: GcpCloudSql
 metadata:
   name: mysql-db
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
+  region: us-central1
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
+  tier: db-n1-standard-1
+  storageGb: 10
+  rootPassword: MySecurePassword123!
+```
+
+## Basic MySQL Example (Value From Reference)
+
+This example demonstrates referencing a GcpProject resource for the project ID.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: mysql-db
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: my-project
+      fieldPath: status.outputs.project_id
   region: us-central1
   databaseEngine: MYSQL
   databaseVersion: MYSQL_8_0
@@ -45,7 +69,8 @@ kind: GcpCloudSql
 metadata:
   name: postgres-db
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: POSTGRESQL
   databaseVersion: POSTGRES_15
@@ -54,9 +79,9 @@ spec:
   rootPassword: MySecurePassword123!
 ```
 
-## MySQL with Private IP and VPC
+## MySQL with Private IP and VPC (Literal Values)
 
-This example creates a MySQL instance with private IP connectivity through a VPC network.
+This example creates a MySQL instance with private IP connectivity through a VPC network using literal values.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -64,14 +89,46 @@ kind: GcpCloudSql
 metadata:
   name: mysql-private
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: MYSQL
   databaseVersion: MYSQL_8_0
   tier: db-n1-standard-1
   storageGb: 10
   network:
-    vpcId: projects/my-gcp-project/global/networks/my-vpc
+    vpcId:
+      value: projects/my-gcp-project/global/networks/my-vpc
+    privateIpEnabled: true
+  rootPassword: MySecurePassword123!
+```
+
+## MySQL with Private IP and VPC (Value From References)
+
+This example creates a MySQL instance with private IP connectivity by referencing existing GcpProject and GcpVpc resources.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: mysql-private
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  region: us-central1
+  databaseEngine: MYSQL
+  databaseVersion: MYSQL_8_0
+  tier: db-n1-standard-1
+  storageGb: 10
+  network:
+    vpcId:
+      valueFrom:
+        kind: GcpVpc
+        name: main-vpc
+        fieldPath: status.outputs.network_id
     privateIpEnabled: true
   rootPassword: MySecurePassword123!
 ```
@@ -86,7 +143,8 @@ kind: GcpCloudSql
 metadata:
   name: postgres-public
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: POSTGRESQL
   databaseVersion: POSTGRES_15
@@ -109,7 +167,8 @@ kind: GcpCloudSql
 metadata:
   name: mysql-ha
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: MYSQL
   databaseVersion: MYSQL_8_0
@@ -131,7 +190,8 @@ kind: GcpCloudSql
 metadata:
   name: postgres-backup
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: POSTGRESQL
   databaseVersion: POSTGRES_15
@@ -144,9 +204,9 @@ spec:
   rootPassword: MySecurePassword123!
 ```
 
-## Production-Grade PostgreSQL Instance
+## Production-Grade PostgreSQL Instance (Literal Values)
 
-This comprehensive example creates a production-ready PostgreSQL instance with high availability, private networking, automated backups, and custom database flags.
+This comprehensive example creates a production-ready PostgreSQL instance with high availability, private networking, automated backups, and custom database flags using literal values.
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -154,14 +214,57 @@ kind: GcpCloudSql
 metadata:
   name: postgres-production
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: POSTGRESQL
   databaseVersion: POSTGRES_15
   tier: db-n1-highmem-4
   storageGb: 100
   network:
-    vpcId: projects/my-gcp-project/global/networks/production-vpc
+    vpcId:
+      value: projects/my-gcp-project/global/networks/production-vpc
+    privateIpEnabled: true
+  highAvailability:
+    enabled: true
+    zone: us-central1-c
+  backup:
+    enabled: true
+    startTime: "02:00"
+    retentionDays: 30
+  databaseFlags:
+    maxConnections: "200"
+    sharedBuffers: "262144"
+    effectiveCacheSize: "786432"
+  rootPassword: ProductionSecurePassword123!
+```
+
+## Production-Grade PostgreSQL Instance (Value From References)
+
+This comprehensive example creates a production-ready PostgreSQL instance by referencing existing GcpProject and GcpVpc resources.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: postgres-production
+spec:
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: prod-project
+      fieldPath: status.outputs.project_id
+  region: us-central1
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
+  tier: db-n1-highmem-4
+  storageGb: 100
+  network:
+    vpcId:
+      valueFrom:
+        kind: GcpVpc
+        name: production-vpc
+        fieldPath: status.outputs.network_id
     privateIpEnabled: true
   highAvailability:
     enabled: true
@@ -187,7 +290,8 @@ kind: GcpCloudSql
 metadata:
   name: mysql-custom
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: MYSQL
   databaseVersion: MYSQL_8_0
@@ -210,14 +314,16 @@ kind: GcpCloudSql
 metadata:
   name: postgres-large-storage
 spec:
-  projectId: my-gcp-project
+  projectId:
+    value: my-gcp-project
   region: us-central1
   databaseEngine: POSTGRESQL
   databaseVersion: POSTGRES_15
   tier: db-n1-highmem-8
   storageGb: 1000
   network:
-    vpcId: projects/my-gcp-project/global/networks/data-vpc
+    vpcId:
+      value: projects/my-gcp-project/global/networks/data-vpc
     privateIpEnabled: true
   backup:
     enabled: true
@@ -236,7 +342,8 @@ kind: GcpCloudSql
 metadata:
   name: mysql-dev
 spec:
-  projectId: my-dev-project
+  projectId:
+    value: my-dev-project
   region: us-central1
   databaseEngine: MYSQL
   databaseVersion: MYSQL_8_0
@@ -254,4 +361,42 @@ spec:
 - **Database Flags**: Refer to MySQL or PostgreSQL documentation for available flags and their values.
 - **Instance Tiers**: Choose appropriate tier based on CPU and memory requirements of your workload.
 - **Storage**: Start with minimum required and enable automatic storage increase in production.
+
+## StringValueOrRef Fields
+
+The following fields support both literal values and references to other resources:
+
+### projectId
+Use a literal value or reference a GcpProject resource:
+```yaml
+# Literal value
+projectId:
+  value: my-gcp-project
+
+# Reference to GcpProject
+projectId:
+  valueFrom:
+    kind: GcpProject
+    name: my-project
+    fieldPath: status.outputs.project_id
+```
+
+### network.vpcId
+Use a literal value or reference a GcpVpc resource:
+```yaml
+# Literal value
+network:
+  vpcId:
+    value: projects/my-project/global/networks/my-vpc
+  privateIpEnabled: true
+
+# Reference to GcpVpc
+network:
+  vpcId:
+    valueFrom:
+      kind: GcpVpc
+      name: my-vpc
+      fieldPath: status.outputs.network_id
+  privateIpEnabled: true
+```
 

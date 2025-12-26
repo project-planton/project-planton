@@ -2,6 +2,14 @@
 
 This document provides practical examples for deploying Google Cloud SQL instances using the Terraform module.
 
+## StringValueOrRef Fields
+
+The `project_id` and `network.vpc_id` fields now support the `StringValueOrRef` type, which allows either:
+- **Literal values**: `{ value = "my-value" }`
+- **References to other resources**: `{ value_from = { kind = "GcpProject", name = "my-project", field_path = "status.outputs.project_id" } }`
+
+> **Note**: Currently, only literal values are supported. Reference resolution (`value_from`) will be implemented in a future release.
+
 ## Example 1: Basic MySQL Instance
 
 Create a basic MySQL 8.0 instance for development:
@@ -15,7 +23,7 @@ module "mysql_dev" {
   }
 
   spec = {
-    project_id       = "my-dev-project"
+    project_id       = { value = "my-dev-project" }
     region           = "us-central1"
     database_engine  = "MYSQL"
     database_version = "MYSQL_8_0"
@@ -45,7 +53,7 @@ module "postgres_private" {
   }
 
   spec = {
-    project_id       = "acme-prod"
+    project_id       = { value = "acme-prod" }
     region           = "us-central1"
     database_engine  = "POSTGRESQL"
     database_version = "POSTGRES_15"
@@ -53,7 +61,7 @@ module "postgres_private" {
     storage_gb       = 20
 
     network = {
-      vpc_id             = "projects/acme-prod/global/networks/app-vpc"
+      vpc_id             = { value = "projects/acme-prod/global/networks/app-vpc" }
       private_ip_enabled = true
     }
 
@@ -82,7 +90,7 @@ module "mysql_ha" {
   }
 
   spec = {
-    project_id       = "acme-prod"
+    project_id       = { value = "acme-prod" }
     region           = "us-east1"
     database_engine  = "MYSQL"
     database_version = "MYSQL_8_0"
@@ -124,7 +132,7 @@ module "postgres_public" {
   }
 
   spec = {
-    project_id       = "analytics-project"
+    project_id       = { value = "analytics-project" }
     region           = "europe-west1"
     database_engine  = "POSTGRESQL"
     database_version = "POSTGRES_15"
@@ -184,7 +192,7 @@ module "postgres_instances" {
   }
 
   spec = {
-    project_id       = "my-project"
+    project_id       = { value = "my-project" }
     region           = "us-central1"
     database_engine  = "POSTGRESQL"
     database_version = "POSTGRES_15"
@@ -220,7 +228,7 @@ module "postgres_analytics" {
   }
 
   spec = {
-    project_id       = "analytics-project"
+    project_id       = { value = "analytics-project" }
     region           = "us-central1"
     database_engine  = "POSTGRESQL"
     database_version = "POSTGRES_15"
@@ -241,7 +249,7 @@ module "postgres_analytics" {
     }
 
     network = {
-      vpc_id             = "projects/analytics-project/global/networks/analytics-vpc"
+      vpc_id             = { value = "projects/analytics-project/global/networks/analytics-vpc" }
       private_ip_enabled = true
     }
 
@@ -269,7 +277,7 @@ metadata = {
 }
 
 spec = {
-  project_id       = "my-gcp-project"
+  project_id       = { value = "my-gcp-project" }
   region           = "us-central1"
   database_engine  = "MYSQL"
   database_version = "MYSQL_8_0"
@@ -277,7 +285,7 @@ spec = {
   storage_gb       = 50
 
   network = {
-    vpc_id             = "projects/my-gcp-project/global/networks/prod-vpc"
+    vpc_id             = { value = "projects/my-gcp-project/global/networks/prod-vpc" }
     private_ip_enabled = true
   }
 
