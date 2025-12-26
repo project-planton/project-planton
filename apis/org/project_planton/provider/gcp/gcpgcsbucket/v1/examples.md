@@ -7,6 +7,8 @@ This document provides practical examples of GCS bucket configurations using the
 - [Basic Examples](#basic-examples)
   - [Minimal Private Bucket](#minimal-private-bucket)
   - [Regional Bucket with Labels](#regional-bucket-with-labels)
+- [Cross-Resource Reference Examples](#cross-resource-reference-examples)
+  - [Using valueFrom for Project Reference](#using-valuefrom-for-project-reference)
 - [Access Control Examples](#access-control-examples)
   - [Public Read Bucket](#public-read-bucket)
   - [Service Account Access](#service-account-access)
@@ -37,8 +39,10 @@ kind: GcpGcsBucket
 metadata:
   name: my-app-data-prod
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: my-app-data-prod
   uniformBucketLevelAccessEnabled: true
 ```
 
@@ -47,6 +51,7 @@ spec:
 - UBLA enabled for simplified IAM-only access control
 - Defaults to STANDARD storage class
 - No public access (private by default)
+- Uses literal value for `gcpProjectId`
 
 ---
 
@@ -60,8 +65,10 @@ kind: GcpGcsBucket
 metadata:
   name: gke-workload-storage
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-central1
+  bucketName: gke-workload-storage
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   gcpLabels:
@@ -79,6 +86,65 @@ spec:
 
 ---
 
+## Cross-Resource Reference Examples
+
+### Using valueFrom for Project Reference
+
+Reference a GcpProject resource instead of hardcoding the project ID. This enables dynamic dependencies between resources.
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: app-storage-prod
+spec:
+  gcpProjectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  location: us-east1
+  bucketName: app-storage-prod
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+  versioningEnabled: true
+```
+
+**Key Points:**
+- `gcpProjectId` references another `GcpProject` resource named "main-project"
+- The `fieldPath` specifies which output field to use
+- Enables infrastructure composition and dependency management
+- Ideal for multi-resource deployments where project is provisioned separately
+
+### With Environment Context
+
+When referencing resources in a specific environment:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: data-lake-staging
+spec:
+  gcpProjectId:
+    valueFrom:
+      kind: GcpProject
+      env: staging
+      name: data-platform-project
+      fieldPath: status.outputs.project_id
+  location: us-central1
+  bucketName: data-lake-staging
+  uniformBucketLevelAccessEnabled: true
+  storageClass: STANDARD
+```
+
+**Key Points:**
+- The `env` field specifies the environment context for the reference
+- Useful in multi-environment deployments
+- Ensures correct project resolution across environments
+
+---
+
 ## Access Control Examples
 
 ### Public Read Bucket
@@ -91,8 +157,10 @@ kind: GcpGcsBucket
 metadata:
   name: public-open-dataset
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: US  # Multi-region for global access
+  bucketName: public-open-dataset
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   iamBindings:
@@ -123,8 +191,10 @@ kind: GcpGcsBucket
 metadata:
   name: app-backend-storage
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: app-backend-storage
   uniformBucketLevelAccessEnabled: true
   versioningEnabled: true
   iamBindings:
@@ -156,8 +226,10 @@ kind: GcpGcsBucket
 metadata:
   name: sensitive-project-data
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: sensitive-project-data
   uniformBucketLevelAccessEnabled: true
   iamBindings:
     # Grant access only during business hours
@@ -196,8 +268,10 @@ kind: GcpGcsBucket
 metadata:
   name: critical-app-data
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: critical-app-data
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   versioningEnabled: true
@@ -235,8 +309,10 @@ kind: GcpGcsBucket
 metadata:
   name: financial-records-archive
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: financial-records-archive
   uniformBucketLevelAccessEnabled: true
   storageClass: ARCHIVE
   versioningEnabled: true
@@ -283,8 +359,10 @@ kind: GcpGcsBucket
 metadata:
   name: dev-ephemeral-storage
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: dev-ephemeral-storage
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   versioningEnabled: true
@@ -324,8 +402,10 @@ kind: GcpGcsBucket
 metadata:
   name: tiered-backup-storage
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: tiered-backup-storage
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD  # Initial storage class for new objects
   versioningEnabled: true
@@ -384,8 +464,10 @@ kind: GcpGcsBucket
 metadata:
   name: static-website-dev
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: US  # Multi-region for better availability
+  bucketName: static-website-dev
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   website:
@@ -420,8 +502,10 @@ kind: GcpGcsBucket
 metadata:
   name: user-upload-storage
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: user-upload-storage
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   corsRules:
@@ -464,8 +548,10 @@ kind: GcpGcsBucket
 metadata:
   name: highly-sensitive-data
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: us-east1
+  bucketName: highly-sensitive-data
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   versioningEnabled: true
@@ -502,8 +588,10 @@ kind: GcpGcsBucket
 metadata:
   name: global-cdn-content
 spec:
-  gcpProjectId: my-gcp-project-123
+  gcpProjectId:
+    value: my-gcp-project-123
   location: US  # Multi-region (auto-replication across US regions)
+  bucketName: global-cdn-content
   uniformBucketLevelAccessEnabled: true
   storageClass: STANDARD
   versioningEnabled: true

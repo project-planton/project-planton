@@ -29,7 +29,13 @@ locals {
 
   # Direct spec values
   repo_format = var.spec.repo_format
-  project_id = var.spec.project_id
-  region     = var.spec.region
+  region      = var.spec.region
   enable_public_access = try(var.spec.enable_public_access, false)
+
+  # Extract project_id from StringValueOrRef (value_from reference resolution not yet implemented)
+  # If value is set, use it; otherwise, value_from references will result in empty string (not implemented)
+  project_id = coalesce(
+    try(var.spec.project_id.value, null),
+    ""
+  )
 }

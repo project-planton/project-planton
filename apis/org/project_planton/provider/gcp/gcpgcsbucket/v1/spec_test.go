@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestGcpGcsBucketSpec(t *testing.T) {
@@ -27,7 +28,9 @@ var _ = ginkgo.Describe("GcpGcsBucketSpec Custom Validation Tests", func() {
 						Name: "test-gcs-bucket",
 					},
 					Spec: &GcpGcsBucketSpec{
-						GcpProjectId:                    "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Location:                        "us-central1",
 						BucketName:                      "test-bucket-123",
 						UniformBucketLevelAccessEnabled: true,
@@ -35,6 +38,73 @@ var _ = ginkgo.Describe("GcpGcsBucketSpec Custom Validation Tests", func() {
 				}
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return a validation error with valueFrom reference", func() {
+				input := &GcpGcsBucket{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpGcsBucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-gcs-bucket-ref",
+					},
+					Spec: &GcpGcsBucketSpec{
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name:      "main-project",
+									FieldPath: "status.outputs.project_id",
+								},
+							},
+						},
+						Location:                        "us-east1",
+						BucketName:                      "test-bucket-with-ref",
+						UniformBucketLevelAccessEnabled: true,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("When invalid input is passed", func() {
+		ginkgo.Context("gcp_gcs_bucket", func() {
+
+			ginkgo.It("should return a validation error when gcp_project_id is missing", func() {
+				input := &GcpGcsBucket{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpGcsBucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-gcs-bucket",
+					},
+					Spec: &GcpGcsBucketSpec{
+						Location:                        "us-central1",
+						BucketName:                      "test-bucket-123",
+						UniformBucketLevelAccessEnabled: true,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+
+			ginkgo.It("should return a validation error when bucket_name has invalid format", func() {
+				input := &GcpGcsBucket{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpGcsBucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-gcs-bucket",
+					},
+					Spec: &GcpGcsBucketSpec{
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Location:                        "us-central1",
+						BucketName:                      "INVALID-BUCKET-NAME", // uppercase not allowed
+						UniformBucketLevelAccessEnabled: true,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 	})

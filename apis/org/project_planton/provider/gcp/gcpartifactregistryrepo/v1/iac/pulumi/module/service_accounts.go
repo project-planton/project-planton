@@ -27,6 +27,10 @@ func createServiceAccounts(
 ) (*ServiceAccounts, error) {
 	gcpArtifactRegistryRepo := locals.GcpArtifactRegistryRepo
 
+	// Get project ID from StringValueOrRef (currently only supports literal value)
+	// TODO: Implement reference resolution in a shared library
+	projectId := gcpArtifactRegistryRepo.Spec.ProjectId.GetValue()
+
 	// Generate a random 6-character suffix for service account uniqueness
 	suffix, err := random.NewRandomString(
 		ctx,
@@ -50,7 +54,7 @@ func createServiceAccounts(
 		ctx,
 		fmt.Sprintf("%s-reader", gcpArtifactRegistryRepo.Metadata.Name),
 		&serviceaccount.AccountArgs{
-			Project:     pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Project:     pulumi.String(projectId),
 			AccountId:   readerAccountId,
 			DisplayName: readerAccountId,
 		},
@@ -80,7 +84,7 @@ func createServiceAccounts(
 		ctx,
 		fmt.Sprintf("%s-writer", gcpArtifactRegistryRepo.Metadata.Name),
 		&serviceaccount.AccountArgs{
-			Project:     pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Project:     pulumi.String(projectId),
 			AccountId:   writerAccountId,
 			DisplayName: writerAccountId,
 		},

@@ -21,7 +21,8 @@ metadata:
   name: acme-docker-prod
 spec:
   repoFormat: DOCKER
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ```
@@ -75,7 +76,8 @@ metadata:
   name: opensource-project-public
 spec:
   repoFormat: DOCKER
-  projectId: opensource-gcp-project
+  projectId:
+    value: opensource-gcp-project
   region: us-west2
   enablePublicAccess: true
 ```
@@ -113,7 +115,8 @@ metadata:
   name: acme-python-packages
 spec:
   repoFormat: PYTHON
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: us-east1
   enablePublicAccess: false
 ```
@@ -161,7 +164,8 @@ metadata:
   name: acme-maven-libs
 spec:
   repoFormat: MAVEN
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ```
@@ -216,7 +220,8 @@ metadata:
   name: acme-npm-packages
 spec:
   repoFormat: NPM
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: europe-west1
   enablePublicAccess: false
 ```
@@ -262,7 +267,8 @@ metadata:
   name: acme-go-modules
 spec:
   repoFormat: GO
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: us-west2
   enablePublicAccess: false
 ```
@@ -302,7 +308,8 @@ metadata:
   name: app-docker-us
 spec:
   repoFormat: DOCKER
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ---
@@ -312,7 +319,8 @@ metadata:
   name: app-docker-eu
 spec:
   repoFormat: DOCKER
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: europe-west1
   enablePublicAccess: false
 ---
@@ -322,7 +330,8 @@ metadata:
   name: app-docker-asia
 spec:
   repoFormat: DOCKER
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: asia-southeast1
   enablePublicAccess: false
 ```
@@ -351,7 +360,8 @@ metadata:
   name: acme-generic-artifacts
 spec:
   repoFormat: GENERIC
-  projectId: acme-gcp-project-123
+  projectId:
+    value: acme-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ```

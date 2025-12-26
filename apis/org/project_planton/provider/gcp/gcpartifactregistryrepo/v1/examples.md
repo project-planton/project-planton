@@ -2,9 +2,9 @@
 
 This document provides practical examples for deploying GCP Artifact Registry repositories using the Project Planton CLI.
 
-## Example 1: Private Docker Registry
+## Example 1: Private Docker Registry (Literal Value)
 
-Create a private Docker registry for container images:
+Create a private Docker registry using a literal project ID:
 
 ```yaml
 apiVersion: gcp.project-planton.org/v1
@@ -13,7 +13,8 @@ metadata:
   name: company-docker-private
 spec:
   repoFormat: DOCKER
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ```
@@ -24,7 +25,35 @@ Deploy:
 project-planton pulumi up --manifest docker-registry.yaml
 ```
 
-## Example 2: Public Docker Registry (for Open Source)
+## Example 2: Private Docker Registry (Reference to GcpProject)
+
+Create a private Docker registry referencing a GcpProject resource:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpArtifactRegistryRepo
+metadata:
+  name: company-docker-private
+spec:
+  repoFormat: DOCKER
+  projectId:
+    valueFrom:
+      kind: GcpProject
+      name: main-project
+      fieldPath: status.outputs.project_id
+  region: us-central1
+  enablePublicAccess: false
+```
+
+> **Note:** Reference resolution (`valueFrom`) is not yet fully implemented. Currently, only literal `value` is supported. References will be resolved in a future version.
+
+Deploy:
+
+```bash
+project-planton pulumi up --manifest docker-registry.yaml
+```
+
+## Example 3: Public Docker Registry (for Open Source)
 
 Create a publicly accessible Docker registry for open source projects:
 
@@ -35,7 +64,8 @@ metadata:
   name: opensource-docker-public
 spec:
   repoFormat: DOCKER
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-west2
   enablePublicAccess: true
 ```
@@ -46,7 +76,7 @@ Deploy:
 project-planton pulumi up --manifest opensource-registry.yaml
 ```
 
-## Example 3: Python Package Repository
+## Example 4: Python Package Repository
 
 Create a private repository for Python packages (PyPI):
 
@@ -57,7 +87,8 @@ metadata:
   name: company-python-packages
 spec:
   repoFormat: PYTHON
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-east1
   enablePublicAccess: false
 ```
@@ -68,7 +99,7 @@ Deploy:
 project-planton pulumi up --manifest python-repo.yaml
 ```
 
-## Example 4: Maven Repository
+## Example 5: Maven Repository
 
 Create a private repository for Maven artifacts (Java/JVM):
 
@@ -79,7 +110,8 @@ metadata:
   name: company-maven-artifacts
 spec:
   repoFormat: MAVEN
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ```
@@ -90,7 +122,7 @@ Deploy:
 project-planton pulumi up --manifest maven-repo.yaml
 ```
 
-## Example 5: NPM Package Repository
+## Example 6: NPM Package Repository
 
 Create a private repository for NPM packages:
 
@@ -101,7 +133,8 @@ metadata:
   name: company-npm-packages
 spec:
   repoFormat: NPM
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: europe-west1
   enablePublicAccess: false
 ```
@@ -112,7 +145,7 @@ Deploy:
 project-planton pulumi up --manifest npm-repo.yaml
 ```
 
-## Example 6: Go Module Repository
+## Example 7: Go Module Repository
 
 Create a private repository for Go modules:
 
@@ -123,7 +156,8 @@ metadata:
   name: company-go-modules
 spec:
   repoFormat: GO
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-west2
   enablePublicAccess: false
 ```
@@ -146,7 +180,8 @@ metadata:
   name: app-docker-us-central
 spec:
   repoFormat: DOCKER
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-central1
   enablePublicAccess: false
 ---
@@ -157,7 +192,8 @@ metadata:
   name: app-docker-europe-west
 spec:
   repoFormat: DOCKER
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: europe-west1
   enablePublicAccess: false
 ```
@@ -179,7 +215,8 @@ metadata:
   name: gke-colocated-registry
 spec:
   repoFormat: DOCKER
-  projectId: my-gcp-project-123
+  projectId:
+    value: my-gcp-project-123
   region: us-west2  # Same region as GKE cluster
   enablePublicAccess: false
 ```

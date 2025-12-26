@@ -8,6 +8,7 @@ package gcpartifactregistryrepov1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -101,7 +102,10 @@ type GcpArtifactRegistryRepoSpec struct {
 	// The format of the repository in the Artifact Registry.
 	RepoFormat GcpArtifactRegistryRepoFormat `protobuf:"varint,1,opt,name=repo_format,json=repoFormat,proto3,enum=org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoFormat" json:"repo_format,omitempty"`
 	// The ID of the GCP project where the Artifact Registry resources will be created.
-	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Can be provided as a literal string value or as a reference to another resource's output.
+	// Example literal: {value: "my-gcp-project-123"}
+	// Example reference: {value_from: {kind: GcpProject, name: "main-project"}}
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The GCP region where the Artifact Registry will be created (e.g., "us-west2").
 	// Selecting a region close to your Kubernetes clusters can reduce service startup time
 	// by enabling faster downloads of container images.
@@ -150,11 +154,11 @@ func (x *GcpArtifactRegistryRepoSpec) GetRepoFormat() GcpArtifactRegistryRepoFor
 	return GcpArtifactRegistryRepoFormat_gcp_artifact_registry_repo_format_unspecified
 }
 
-func (x *GcpArtifactRegistryRepoSpec) GetProjectId() string {
+func (x *GcpArtifactRegistryRepoSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpArtifactRegistryRepoSpec) GetRegion() string {
@@ -175,12 +179,12 @@ var File_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto 
 
 const file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto\x12;org.project_planton.provider.gcp.gcpartifactregistryrepo.v1\x1a\x1bbuf/validate/validate.proto\"\x9c\x02\n" +
+	"Forg/project_planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto\x12;org.project_planton.provider.gcp.gcpartifactregistryrepo.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xfb\x02\n" +
 	"\x1bGcpArtifactRegistryRepoSpec\x12\x83\x01\n" +
 	"\vrepo_format\x18\x01 \x01(\x0e2Z.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoFormatB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"repoFormat\x12%\n" +
+	"repoFormat\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tprojectId\x12\x1e\n" +
+	"project_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x1e\n" +
 	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x120\n" +
 	"\x14enable_public_access\x18\x04 \x01(\bR\x12enablePublicAccess*\xaa\x01\n" +
 	"\x1dGcpArtifactRegistryRepoFormat\x121\n" +
@@ -214,14 +218,16 @@ var file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto_
 var file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto_goTypes = []any{
 	(GcpArtifactRegistryRepoFormat)(0),  // 0: org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoFormat
 	(*GcpArtifactRegistryRepoSpec)(nil), // 1: org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoSpec
+	(*v1.StringValueOrRef)(nil),         // 2: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto_depIdxs = []int32{
 	0, // 0: org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoSpec.repo_format:type_name -> org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoFormat
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto_init() }

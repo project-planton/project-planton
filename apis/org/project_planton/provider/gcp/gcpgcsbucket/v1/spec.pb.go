@@ -8,6 +8,7 @@ package gcpgcsbucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -96,8 +97,9 @@ func (GcpGcsStorageClass) EnumDescriptor() ([]byte, []int) {
 type GcpGcsBucketSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The ID of the GCP project where the storage bucket will be created.
+	// Can be a literal value or a reference to another resource (e.g., GcpProject).
 	// Required field.
-	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
+	GcpProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 	// The location for the bucket. Can be a region (e.g., "us-east1"), dual-region (e.g., "NAM4"),
 	// or multi-region (e.g., "US", "EU", "ASIA").
 	// This field is immutable after bucket creation.
@@ -197,11 +199,11 @@ func (*GcpGcsBucketSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpGcsBucketSpec) GetGcpProjectId() string {
+func (x *GcpGcsBucketSpec) GetGcpProjectId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.GcpProjectId
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpGcsBucketSpec) GetLocation() string {
@@ -858,9 +860,9 @@ var File_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto protoreflec
 
 const file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";org/project_planton/provider/gcp/gcpgcsbucket/v1/spec.proto\x120org.project_planton.provider.gcp.gcpgcsbucket.v1\x1a\x1bbuf/validate/validate.proto\"\x88\f\n" +
-	"\x10GcpGcsBucketSpec\x12N\n" +
-	"\x0egcp_project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\fgcpProjectId\x12\"\n" +
+	";org/project_planton/provider/gcp/gcpgcsbucket/v1/spec.proto\x120org.project_planton.provider.gcp.gcpgcsbucket.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xc5\f\n" +
+	"\x10GcpGcsBucketSpec\x12\x8a\x01\n" +
+	"\x0egcp_project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\fgcpProjectId\x12\"\n" +
 	"\blocation\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\blocation\x12L\n" +
 	"#uniform_bucket_level_access_enabled\x18\x03 \x01(\bR\x1funiformBucketLevelAccessEnabled\x12x\n" +
 	"\rstorage_class\x18\x04 \x01(\x0e2D.org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClassB\b\xbaH\x05\x82\x01\x02\x10\x01H\x00R\fstorageClass\x88\x01\x01\x12-\n" +
@@ -963,26 +965,28 @@ var file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_goTypes = [
 	(*GcpGcsRetentionPolicy)(nil),    // 9: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsRetentionPolicy
 	(*GcpGcsLogging)(nil),            // 10: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLogging
 	nil,                              // 11: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.GcpLabelsEntry
+	(*v1.StringValueOrRef)(nil),      // 12: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_depIdxs = []int32{
-	0,  // 0: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.storage_class:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClass
-	2,  // 1: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.lifecycle_rules:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleRule
-	5,  // 2: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.iam_bindings:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsIamBinding
-	6,  // 3: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.encryption:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsEncryption
-	7,  // 4: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.cors_rules:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsCorsRule
-	8,  // 5: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.website:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsWebsite
-	9,  // 6: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.retention_policy:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsRetentionPolicy
-	10, // 7: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.logging:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLogging
-	11, // 8: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.gcp_labels:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.GcpLabelsEntry
-	3,  // 9: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleRule.action:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleAction
-	4,  // 10: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleRule.condition:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleCondition
-	0,  // 11: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleAction.storage_class:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClass
-	0,  // 12: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleCondition.matches_storage_class:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClass
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	12, // 0: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.gcp_project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	0,  // 1: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.storage_class:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClass
+	2,  // 2: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.lifecycle_rules:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleRule
+	5,  // 3: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.iam_bindings:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsIamBinding
+	6,  // 4: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.encryption:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsEncryption
+	7,  // 5: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.cors_rules:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsCorsRule
+	8,  // 6: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.website:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsWebsite
+	9,  // 7: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.retention_policy:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsRetentionPolicy
+	10, // 8: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.logging:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLogging
+	11, // 9: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.gcp_labels:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec.GcpLabelsEntry
+	3,  // 10: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleRule.action:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleAction
+	4,  // 11: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleRule.condition:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleCondition
+	0,  // 12: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleAction.storage_class:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClass
+	0,  // 13: org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsLifecycleCondition.matches_storage_class:type_name -> org.project_planton.provider.gcp.gcpgcsbucket.v1.GcpGcsStorageClass
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_init() }

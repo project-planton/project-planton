@@ -24,12 +24,15 @@ func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInpu
 	//replace dots with hyphens to create valid managed-zone name
 	managedZoneName := strings.ReplaceAll(locals.GcpDnsZone.Metadata.Name, ".", "-")
 
+	// Resolve project_id from StringValueOrRef (only literal value is currently supported)
+	projectId := locals.GcpDnsZone.Spec.ProjectId.GetValue()
+
 	//create managed-zone
 	createdManagedZone, err := dns.NewManagedZone(ctx,
 		managedZoneName,
 		&dns.ManagedZoneArgs{
 			Name:        pulumi.String(managedZoneName),
-			Project:     pulumi.String(locals.GcpDnsZone.Spec.ProjectId),
+			Project:     pulumi.String(projectId),
 			Description: pulumi.String(fmt.Sprintf("managed-zone for %s", locals.GcpDnsZone.Metadata.Name)),
 			//dns-name should have a dot at the end
 			DnsName:    pulumi.Sprintf("%s.", locals.GcpDnsZone.Metadata.Name),

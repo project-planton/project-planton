@@ -18,11 +18,15 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider, 
 	//todo: might be better to add a random suffix to the repo name to avoid conflicts
 	repoName := gcpArtifactRegistryRepo.Metadata.Name
 
+	// Get project ID from StringValueOrRef (currently only supports literal value)
+	// TODO: Implement reference resolution in a shared library
+	projectId := gcpArtifactRegistryRepo.Spec.ProjectId.GetValue()
+
 	//create repository
 	createdRepo, err := artifactregistry.NewRepository(ctx,
 		repoName,
 		&artifactregistry.RepositoryArgs{
-			Project:      pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Project:      pulumi.String(projectId),
 			Location:     pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
 			RepositoryId: pulumi.String(gcpArtifactRegistryRepo.Metadata.Name),
 			Format:       pulumi.String(gcpArtifactRegistryRepo.Spec.RepoFormat.String()),
@@ -37,7 +41,7 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider, 
 		_, err = artifactregistry.NewRepositoryIamMember(ctx,
 			fmt.Sprintf("%s-public-reader", repoName),
 			&artifactregistry.RepositoryIamMemberArgs{
-				Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+				Project:    pulumi.String(projectId),
 				Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
 				Repository: createdRepo.RepositoryId,
 				Role:       pulumi.String("roles/artifactregistry.reader"),
@@ -53,7 +57,7 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider, 
 		_, err = artifactregistry.NewRepositoryIamMember(ctx,
 			fmt.Sprintf("%s-reader-sa", repoName),
 			&artifactregistry.RepositoryIamMemberArgs{
-				Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+				Project:    pulumi.String(projectId),
 				Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
 				Repository: createdRepo.RepositoryId,
 				Role:       pulumi.String("roles/artifactregistry.reader"),
@@ -68,7 +72,7 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider, 
 	_, err = artifactregistry.NewRepositoryIamMember(ctx,
 		fmt.Sprintf("%s-writer-sa", repoName),
 		&artifactregistry.RepositoryIamMemberArgs{
-			Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Project:    pulumi.String(projectId),
 			Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
 			Repository: createdRepo.RepositoryId,
 			Role:       pulumi.String("roles/artifactregistry.writer"),
@@ -82,7 +86,7 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider, 
 	_, err = artifactregistry.NewRepositoryIamMember(ctx,
 		fmt.Sprintf("%s-admin-sa", repoName),
 		&artifactregistry.RepositoryIamMemberArgs{
-			Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
+			Project:    pulumi.String(projectId),
 			Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
 			Repository: createdRepo.RepositoryId,
 			Role:       pulumi.String("roles/artifactregistry.repoAdmin"),

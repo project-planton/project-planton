@@ -17,7 +17,10 @@ variable "spec" {
   type = object({
 
     # The ID of the GCP project where the Managed Zone is created.
-    project_id = string
+    # Supports StringValueOrRef pattern - use {value: "project-id"} for literal values.
+    project_id = object({
+      value = string
+    })
 
     # An optional list of GCP service accounts that are granted permissions to manage DNS records in the Managed Zone.
     # These accounts are typically workload identities, such as those used by cert-manager,

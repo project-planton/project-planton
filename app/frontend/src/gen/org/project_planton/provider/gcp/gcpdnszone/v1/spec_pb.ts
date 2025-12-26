@@ -5,6 +5,8 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { DnsRecordType } from "../../../../shared/networking/enums/dnsrecordtype/dns_record_type_pb";
 import { file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_type } from "../../../../shared/networking/enums/dnsrecordtype/dns_record_type_pb";
 import { file_org_project_planton_shared_options_options } from "../../../../shared/options/options_pb";
@@ -14,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/gcp/gcpdnszone/v1/spec.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpdnszone_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CjlvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BkbnN6b25lL3YxL3NwZWMucHJvdG8SLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGRuc3pvbmUudjEimQEKDkdjcERuc1pvbmVTcGVjEhoKCnByb2plY3RfaWQYASABKAlCBrpIA8gBARIcChRpYW1fc2VydmljZV9hY2NvdW50cxgCIAMoCRJNCgdyZWNvcmRzGAMgAygLMjwub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwZG5zem9uZS52MS5HY3BEbnNSZWNvcmQigQMKDEdjcERuc1JlY29yZBJlCgtyZWNvcmRfdHlwZRgBIAEoDjJILm9yZy5wcm9qZWN0X3BsYW50b24uc2hhcmVkLm5ldHdvcmtpbmcuZW51bXMuZG5zcmVjb3JkdHlwZS5EbnNSZWNvcmRUeXBlQga6SAPIAQESvQEKBG5hbWUYAiABKAlCrgG6SKoBugGjAQoEbmFtZRIoTmFtZSBzaG91bGQgYmUgYW55IHZhbGlkIEROUyBEb21haW4gTmFtZRpxdGhpcy5tYXRjaGVzKCdeKD86WypdWy5dKT8oPzpbX2EtejAtOV0oPzpbX2EtejAtOS1dezAsNjF9W2EtejAtOV0pP1suXSkrKD86W2Etel0oPzpbYS16MC05LV17MCw2MX1bYS16MC05XSk/KT8kJynIAQESGAoGdmFsdWVzGAMgAygJQgi6SAWSAQIIARIgCgt0dGxfc2Vjb25kcxgEIAEoBUIGiqYdAjYwSACIAQFCDgoMX3R0bF9zZWNvbmRzQocDCjJjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwZG5zem9uZS52MUIJU3BlY1Byb3RvUAFaa2dpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvZ2NwL2djcGRuc3pvbmUvdjE7Z2NwZG5zem9uZXYxogIFT1BQR0eqAi1PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcGRuc3pvbmUuVjHKAi1PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcGRuc3pvbmVcVjHiAjlPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcGRuc3pvbmVcVjFcR1BCTWV0YWRhdGHqAjJPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3BkbnN6b25lOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_type, file_org_project_planton_shared_options_options]);
+  fileDesc("CjlvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BkbnN6b25lL3YxL3NwZWMucHJvdG8SLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGRuc3pvbmUudjEi9wEKDkdjcERuc1pvbmVTcGVjEngKCnByb2plY3RfaWQYASABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCKLpIA8gBAYjUYeEEktRhGXN0YXR1cy5vdXRwdXRzLnByb2plY3RfaWQSHAoUaWFtX3NlcnZpY2VfYWNjb3VudHMYAiADKAkSTQoHcmVjb3JkcxgDIAMoCzI8Lm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGRuc3pvbmUudjEuR2NwRG5zUmVjb3JkIoEDCgxHY3BEbnNSZWNvcmQSZQoLcmVjb3JkX3R5cGUYASABKA4ySC5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5uZXR3b3JraW5nLmVudW1zLmRuc3JlY29yZHR5cGUuRG5zUmVjb3JkVHlwZUIGukgDyAEBEr0BCgRuYW1lGAIgASgJQq4BukiqAboBowEKBG5hbWUSKE5hbWUgc2hvdWxkIGJlIGFueSB2YWxpZCBETlMgRG9tYWluIE5hbWUacXRoaXMubWF0Y2hlcygnXig/OlsqXVsuXSk/KD86W19hLXowLTldKD86W19hLXowLTktXXswLDYxfVthLXowLTldKT9bLl0pKyg/OlthLXpdKD86W2EtejAtOS1dezAsNjF9W2EtejAtOV0pPyk/JCcpyAEBEhgKBnZhbHVlcxgDIAMoCUIIukgFkgECCAESIAoLdHRsX3NlY29uZHMYBCABKAVCBoqmHQI2MEgAiAEBQg4KDF90dGxfc2Vjb25kc0KHAwoyY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGRuc3pvbmUudjFCCVNwZWNQcm90b1ABWmtnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3BkbnN6b25lL3YxO2djcGRuc3pvbmV2MaICBU9QUEdHqgItT3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkdjcC5HY3BkbnN6b25lLlYxygItT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BkbnN6b25lXFYx4gI5T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3BkbnN6b25lXFYxXEdQQk1ldGFkYXRh6gIyT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6OkdjcDo6R2NwZG5zem9uZTo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_type, file_org_project_planton_shared_options_options]);
 
 /**
  * **GcpDnsZoneSpec** defines the configuration for creating a Google Cloud DNS Managed Zone.
@@ -26,10 +28,12 @@ export const file_org_project_planton_provider_gcp_gcpdnszone_v1_spec: GenFile =
 export type GcpDnsZoneSpec = Message<"org.project_planton.provider.gcp.gcpdnszone.v1.GcpDnsZoneSpec"> & {
   /**
    * The ID of the GCP project where the Managed Zone is created.
+   * This can be a direct value or a reference to another resource's output.
+   * Example: "my-gcp-project-123" or a reference to a GcpProject resource.
    *
-   * @generated from field: string project_id = 1;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1;
    */
-  projectId: string;
+  projectId?: StringValueOrRef;
 
   /**
    * An optional list of GCP service accounts that are granted permissions to manage DNS records in the Managed Zone.
