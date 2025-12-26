@@ -27,8 +27,11 @@ module "minimal_cloudrun" {
   }
 
   spec = {
-    project_id = "my-gcp-project-123"
-    region     = "us-central1"
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "my-gcp-project-123"
+    }
+    region = "us-central1"
 
     container = {
       image = {
@@ -74,9 +77,12 @@ module "api_service" {
   }
 
   spec = {
-    project_id     = "acme-prod-123"
-    region         = "us-west1"
-    service_name   = "acme-api"
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "acme-prod-123"
+    }
+    region          = "us-west1"
+    service_name    = "acme-api"
     service_account = "api-sa@acme-prod-123.iam.gserviceaccount.com"
 
     container = {
@@ -153,8 +159,11 @@ module "critical_service" {
   }
 
   spec = {
-    project_id     = "finance-prod-123"
-    region         = "us-central1"
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "finance-prod-123"
+    }
+    region          = "us-central1"
     service_account = "payment-sa@finance-prod-123.iam.gserviceaccount.com"
 
     container = {
@@ -223,8 +232,11 @@ module "custom_domain_service" {
   }
 
   spec = {
-    project_id = "my-project-123"
-    region     = "us-east1"
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "my-project-123"
+    }
+    region = "us-east1"
 
     container = {
       image = {
@@ -281,8 +293,11 @@ module "internal_service" {
   }
 
   spec = {
-    project_id = "my-project-123"
-    region     = "us-central1"
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "my-project-123"
+    }
+    region = "us-central1"
 
     container = {
       image = {
@@ -305,15 +320,19 @@ module "internal_service" {
       }
     }
 
-    # VPC access configuration for private resources
+    # VPC access configuration using StringValueOrRef format
     vpc_access = {
-      network = "projects/my-project-123/global/networks/private-vpc"
-      subnet  = "projects/my-project-123/regions/us-central1/subnetworks/cloudrun-subnet"
-      egress  = "PRIVATE_RANGES_ONLY"
+      network = {
+        value = "projects/my-project-123/global/networks/private-vpc"
+      }
+      subnet = {
+        value = "projects/my-project-123/regions/us-central1/subnetworks/cloudrun-subnet"
+      }
+      egress = "PRIVATE_RANGES_ONLY"
     }
 
     # Internal traffic only
-    ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+    ingress               = "INGRESS_TRAFFIC_INTERNAL_ONLY"
     allow_unauthenticated = false
 
     max_concurrency = 100
@@ -360,8 +379,11 @@ module "high_traffic_service" {
   }
 
   spec = {
-    project_id     = "media-prod-123"
-    region         = "us-west2"
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "media-prod-123"
+    }
+    region          = "us-west2"
     service_account = "transcoder-sa@media-prod-123.iam.gserviceaccount.com"
 
     container = {
@@ -443,8 +465,11 @@ module "global_api" {
   }
 
   spec = {
-    project_id = "global-prod-123"
-    region     = each.value
+    # Project ID using StringValueOrRef format
+    project_id = {
+      value = "global-prod-123"
+    }
+    region = each.value
 
     container = {
       image = {

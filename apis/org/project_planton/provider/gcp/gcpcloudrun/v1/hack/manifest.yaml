@@ -4,7 +4,9 @@ metadata:
   name: nginx
 spec:
   # ——— core GCP context ———
-  projectId: planton-cloud-testing
+  # projectId using StringValueOrRef format (can use value or valueFrom)
+  projectId:
+    value: planton-cloud-testing
   region: us-central1            # pick the closest GCP region
   # serviceName: custom-service-name  # optional: customize Cloud Run service name
 
@@ -18,7 +20,7 @@ spec:
     memory: 512                  # MiB, same as ECS
     replicas:
       min: 0                     # keep warm instances (0 → scale-to-zero allowed)
-      max: 1                     # match ECS “replicas: 1”
+      max: 1                     # match ECS "replicas: 1"
     env:
       variables:
         DB_HOST: abce            # plain env
@@ -29,6 +31,14 @@ spec:
   # ——— traffic / scaling ———
   maxConcurrency: 80             # default; adjust if needed
   allowUnauthenticated: true     # mimics public ALB listener
+
+  # ——— optional VPC access (using StringValueOrRef format) ———
+  # vpcAccess:
+  #   network:
+  #     value: projects/my-project/global/networks/my-vpc
+  #   subnet:
+  #     value: projects/my-project/regions/us-central1/subnetworks/my-subnet
+  #   egress: PRIVATE_RANGES_ONLY
 
   # ——— optional custom domain ———
   dns:

@@ -48,7 +48,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 	// Create global IP address for load balancer
 	globalIp, err := compute.NewGlobalAddress(ctx, locals.GlobalAddressName, &compute.GlobalAddressArgs{
 		Name:    pulumi.String(locals.GlobalAddressName),
-		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 	}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create global IP address")
@@ -57,7 +57,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 	// Create URL map (routing configuration)
 	urlMap, err := compute.NewURLMap(ctx, locals.UrlMapName, &compute.URLMapArgs{
 		Name:           pulumi.String(locals.UrlMapName),
-		Project:        pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:        pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		DefaultService: backendId,
 	}, pulumi.Provider(gcpProvider))
 	if err != nil {
@@ -77,7 +77,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 
 		httpsProxy, err = compute.NewTargetHttpsProxy(ctx, locals.HttpsProxyName, &compute.TargetHttpsProxyArgs{
 			Name:            pulumi.String(locals.HttpsProxyName),
-			Project:         pulumi.String(stackInput.Target.Spec.GcpProjectId),
+			Project:         pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 			UrlMap:          urlMap.ID(),
 			SslCertificates: pulumi.StringArray{sslCert.ID()},
 		}, pulumi.Provider(gcpProvider))
@@ -88,7 +88,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 		// Create HTTPS forwarding rule
 		_, err = compute.NewGlobalForwardingRule(ctx, locals.HttpsProxyName+"-rule", &compute.GlobalForwardingRuleArgs{
 			Name:      pulumi.String(locals.HttpsProxyName + "-rule"),
-			Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId),
+			Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 			Target:    httpsProxy.ID(),
 			PortRange: pulumi.String("443"),
 			IpAddress: globalIp.Address,
@@ -107,7 +107,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 		// No frontend config - create basic HTTP forwarding rule
 		httpProxy, err := compute.NewTargetHttpProxy(ctx, locals.HttpProxyName, &compute.TargetHttpProxyArgs{
 			Name:    pulumi.String(locals.HttpProxyName),
-			Project: pulumi.String(stackInput.Target.Spec.GcpProjectId),
+			Project: pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 			UrlMap:  urlMap.ID(),
 		}, pulumi.Provider(gcpProvider))
 		if err != nil {
@@ -116,7 +116,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 
 		_, err = compute.NewGlobalForwardingRule(ctx, locals.HttpProxyName+"-rule", &compute.GlobalForwardingRuleArgs{
 			Name:      pulumi.String(locals.HttpProxyName + "-rule"),
-			Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId),
+			Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 			Target:    httpProxy.ID(),
 			PortRange: pulumi.String("80"),
 			IpAddress: globalIp.Address,
@@ -180,7 +180,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackIn
 	monitoringUrl := pulumi.Sprintf(
 		"https://console.cloud.google.com/net-services/loadbalancing/details/http/%s?project=%s",
 		urlMap.Name,
-		stackInput.Target.Spec.GcpProjectId,
+		stackInput.Target.Spec.GcpProjectId.GetValue(),
 	)
 	ctx.Export("monitoring_dashboard_url", monitoringUrl)
 
@@ -231,7 +231,7 @@ func createGcsBackendBucket(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCl
 	// Create Backend Bucket with CDN
 	backendBucket, err := compute.NewBackendBucket(ctx, locals.BackendBucketName, &compute.BackendBucketArgs{
 		Name:       pulumi.String(locals.BackendBucketName),
-		Project:    pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:    pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		BucketName: pulumi.String(gcsBucket.BucketName),
 		EnableCdn:  pulumi.Bool(true),
 		CdnPolicy:  cdnPolicy,
@@ -277,7 +277,7 @@ func createComputeBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.
 	// Create Backend Service
 	backendServiceArgs := &compute.BackendServiceArgs{
 		Name:      pulumi.String(locals.BackendServiceName),
-		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		Protocol:  pulumi.String(protocol),
 		PortName:  pulumi.String("http"),
 		EnableCdn: pulumi.Bool(true),
@@ -310,7 +310,7 @@ func createCloudRunBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1
 	// Create Serverless Network Endpoint Group for Cloud Run
 	neg, err := compute.NewRegionNetworkEndpointGroup(ctx, locals.BackendServiceName+"-neg", &compute.RegionNetworkEndpointGroupArgs{
 		Name:                pulumi.String(locals.BackendServiceName + "-neg"),
-		Project:             pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:             pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		Region:              pulumi.String(cloudRunConfig.Region),
 		NetworkEndpointType: pulumi.String("SERVERLESS"),
 		CloudRun: &compute.RegionNetworkEndpointGroupCloudRunArgs{
@@ -328,7 +328,7 @@ func createCloudRunBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1
 	// Create Backend Service with Cloud Run NEG
 	backendService, err := compute.NewBackendService(ctx, locals.BackendServiceName, &compute.BackendServiceArgs{
 		Name:      pulumi.String(locals.BackendServiceName),
-		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		Protocol:  pulumi.String("HTTPS"),
 		EnableCdn: pulumi.Bool(true),
 		CdnPolicy: cdnPolicy,
@@ -369,7 +369,7 @@ func createExternalBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1
 	// Create Internet Network Endpoint Group
 	neg, err := compute.NewNetworkEndpointGroup(ctx, locals.BackendServiceName+"-neg", &compute.NetworkEndpointGroupArgs{
 		Name:                pulumi.String(locals.BackendServiceName + "-neg"),
-		Project:             pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:             pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		NetworkEndpointType: pulumi.String("INTERNET_FQDN_PORT"),
 		DefaultPort:         pulumi.Int(port),
 	}, pulumi.Provider(gcpProvider))
@@ -388,7 +388,7 @@ func createExternalBackendService(ctx *pulumi.Context, stackInput *gcpcloudcdnv1
 	// Create Backend Service with Internet NEG
 	backendService, err := compute.NewBackendService(ctx, locals.BackendServiceName, &compute.BackendServiceArgs{
 		Name:      pulumi.String(locals.BackendServiceName),
-		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		Protocol:  pulumi.String(protocol),
 		EnableCdn: pulumi.Bool(true),
 		CdnPolicy: cdnPolicy,
@@ -510,7 +510,7 @@ func createHealthCheck(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCd
 
 	healthCheckArgs := &compute.HealthCheckArgs{
 		Name:            pulumi.String(locals.HealthCheckName),
-		Project:         pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:         pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		HttpHealthCheck: httpHealthCheck,
 	}
 
@@ -549,7 +549,7 @@ func createSslCertificate(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpClou
 
 		return compute.NewManagedSslCertificate(ctx, locals.SslCertName, &compute.ManagedSslCertificateArgs{
 			Name:    pulumi.String(locals.SslCertName),
-			Project: pulumi.String(stackInput.Target.Spec.GcpProjectId),
+			Project: pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 			Managed: &compute.ManagedSslCertificateManagedArgs{
 				Domains: pulumi.ToStringArray(domains),
 			},
@@ -567,7 +567,7 @@ func createHttpRedirect(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudC
 	// Create redirect URL map
 	redirectUrlMap, err := compute.NewURLMap(ctx, locals.UrlMapName+"-redirect", &compute.URLMapArgs{
 		Name:    pulumi.String(locals.UrlMapName + "-redirect"),
-		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		DefaultUrlRedirect: &compute.URLMapDefaultUrlRedirectArgs{
 			HttpsRedirect:        pulumi.Bool(true),
 			RedirectResponseCode: pulumi.String("MOVED_PERMANENTLY_DEFAULT"),
@@ -581,7 +581,7 @@ func createHttpRedirect(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudC
 	// Create HTTP proxy for redirect
 	httpProxy, err := compute.NewTargetHttpProxy(ctx, locals.HttpProxyName+"-redirect", &compute.TargetHttpProxyArgs{
 		Name:    pulumi.String(locals.HttpProxyName + "-redirect"),
-		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project: pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		UrlMap:  redirectUrlMap.ID(),
 	}, pulumi.Provider(gcpProvider))
 
@@ -592,7 +592,7 @@ func createHttpRedirect(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudC
 	// Create HTTP forwarding rule for redirect
 	_, err = compute.NewGlobalForwardingRule(ctx, locals.HttpProxyName+"-redirect-rule", &compute.GlobalForwardingRuleArgs{
 		Name:      pulumi.String(locals.HttpProxyName + "-redirect-rule"),
-		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId),
+		Project:   pulumi.String(stackInput.Target.Spec.GcpProjectId.GetValue()),
 		Target:    httpProxy.ID(),
 		PortRange: pulumi.String("80"),
 		IpAddress: globalIp.Address,

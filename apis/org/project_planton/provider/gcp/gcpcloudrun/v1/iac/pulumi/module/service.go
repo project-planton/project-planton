@@ -62,26 +62,29 @@ func service(
 
 	// VPC access configuration
 	var vpcAccess *cloudrunv2.ServiceTemplateVpcAccessArgs
-	if locals.GcpCloudRun.Spec.VpcAccess != nil &&
-		(locals.GcpCloudRun.Spec.VpcAccess.Network != "" || locals.GcpCloudRun.Spec.VpcAccess.Subnet != "") {
-		vpcAccess = &cloudrunv2.ServiceTemplateVpcAccessArgs{}
-		if locals.GcpCloudRun.Spec.VpcAccess.Network != "" {
-			vpcAccess.NetworkInterfaces = cloudrunv2.ServiceTemplateVpcAccessNetworkInterfaceArray{
-				&cloudrunv2.ServiceTemplateVpcAccessNetworkInterfaceArgs{
-					Network:    pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Network),
-					Subnetwork: pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Subnet),
-				},
+	if locals.GcpCloudRun.Spec.VpcAccess != nil {
+		networkValue := locals.GcpCloudRun.Spec.VpcAccess.Network.GetValue()
+		subnetValue := locals.GcpCloudRun.Spec.VpcAccess.Subnet.GetValue()
+		if networkValue != "" || subnetValue != "" {
+			vpcAccess = &cloudrunv2.ServiceTemplateVpcAccessArgs{}
+			if networkValue != "" {
+				vpcAccess.NetworkInterfaces = cloudrunv2.ServiceTemplateVpcAccessNetworkInterfaceArray{
+					&cloudrunv2.ServiceTemplateVpcAccessNetworkInterfaceArgs{
+						Network:    pulumi.String(networkValue),
+						Subnetwork: pulumi.String(subnetValue),
+					},
+				}
 			}
-		}
-		if locals.GcpCloudRun.Spec.VpcAccess.Egress != "" {
-			vpcAccess.Egress = pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Egress)
+			if locals.GcpCloudRun.Spec.VpcAccess.Egress != "" {
+				vpcAccess.Egress = pulumi.String(locals.GcpCloudRun.Spec.VpcAccess.Egress)
+			}
 		}
 	}
 
 	createdService, err := cloudrunv2.NewService(ctx,
 		locals.GcpCloudRun.Metadata.Name,
 		&cloudrunv2.ServiceArgs{
-			Project:  pulumi.String(locals.GcpCloudRun.Spec.ProjectId),
+			Project:  pulumi.String(locals.GcpCloudRun.Spec.ProjectId.GetValue()),
 			Location: pulumi.String(locals.GcpCloudRun.Spec.Region),
 
 			Name: pulumi.String(serviceName),

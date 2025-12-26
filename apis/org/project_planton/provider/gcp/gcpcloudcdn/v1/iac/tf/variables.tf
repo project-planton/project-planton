@@ -19,8 +19,10 @@ variable "metadata" {
 variable "spec" {
   description = "GCP Cloud CDN specification"
   type = object({
-    # Required: GCP Project ID
-    gcp_project_id = string
+    # Required: GCP Project ID (supports valueFrom references)
+    gcp_project_id = object({
+      value = string
+    })
     
     # Required: Backend configuration
     backend = object({
@@ -143,8 +145,8 @@ variable "spec" {
   }
   
   validation {
-    condition     = length(regexall("^[a-z][a-z0-9-]{4,28}[a-z0-9]$", var.spec.gcp_project_id)) > 0
-    error_message = "The gcp_project_id must be a valid GCP project ID (lowercase, 6-30 characters, start with letter)."
+    condition     = length(regexall("^[a-z][a-z0-9-]{4,28}[a-z0-9]$", var.spec.gcp_project_id.value)) > 0
+    error_message = "The gcp_project_id.value must be a valid GCP project ID (lowercase, 6-30 characters, start with letter)."
   }
   
   validation {

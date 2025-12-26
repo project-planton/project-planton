@@ -6,6 +6,7 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 )
 
@@ -26,7 +27,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cloud-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -48,7 +51,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cloud-cdn-full",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -78,7 +83,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "cloud-run-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_CloudRunService{
 								CloudRunService: &CloudRunBackendConfig{
@@ -103,7 +110,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "compute-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_ComputeService{
 								ComputeService: &ComputeBackendConfig{
@@ -125,7 +134,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "compute-cdn-healthcheck",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_ComputeService{
 								ComputeService: &ComputeBackendConfig{
@@ -159,7 +170,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "external-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_ExternalOrigin{
 								ExternalOrigin: &ExternalBackendConfig{
@@ -185,7 +198,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "advanced-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -215,7 +230,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "negative-caching-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -245,7 +262,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "signed-url-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -280,7 +299,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "ssl-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -338,7 +359,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -353,7 +376,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -369,7 +394,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 		})
 
 		ginkgo.Context("Invalid Field Values", func() {
-			ginkgo.It("should return validation error for invalid gcp_project_id pattern", func() {
+			// Note: Pattern validation for gcp_project_id is no longer enforced at proto level
+			// since it uses StringValueOrRef. Validation is handled at the IaC layer.
+			ginkgo.It("should accept any value in StringValueOrRef for gcp_project_id", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudCdn",
@@ -377,7 +404,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "Invalid_Project_ID", // Uppercase and underscores not allowed
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "any-valid-string"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -388,7 +417,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
 			ginkgo.It("should return validation error for invalid bucket name pattern", func() {
@@ -399,7 +428,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -421,7 +452,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{
@@ -444,7 +477,9 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Validation Tests", func() {
 						Name: "test-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{
-						GcpProjectId: "test-project-123",
+						GcpProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Backend: &GcpCloudCdnBackend{
 							BackendType: &GcpCloudCdnBackend_GcsBucket{
 								GcsBucket: &GcsBackendConfig{

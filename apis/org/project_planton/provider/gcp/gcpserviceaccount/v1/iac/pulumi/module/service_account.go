@@ -24,7 +24,7 @@ func serviceAccount(
 		&serviceaccount.AccountArgs{
 			AccountId:   pulumi.String(locals.GcpServiceAccount.Spec.ServiceAccountId),
 			DisplayName: pulumi.String(locals.GcpServiceAccount.Metadata.Name),
-			Project:     pulumi.String(locals.GcpServiceAccount.Spec.ProjectId),
+			Project:     pulumi.String(locals.GcpServiceAccount.Spec.ProjectId.GetValue()),
 		},
 		pulumi.Provider(gcpProvider),
 	)

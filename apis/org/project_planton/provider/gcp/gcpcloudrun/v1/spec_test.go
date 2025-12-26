@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestGcpCloudRunSpec(t *testing.T) {
@@ -27,8 +28,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -57,7 +60,9 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run-full",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId:      "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Region:         "us-central1",
 						ServiceName:    "custom-service-name",
 						ServiceAccount: "sa-name@test-project-123.iam.gserviceaccount.com",
@@ -88,9 +93,13 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Ingress:              GcpCloudRunIngress_INGRESS_TRAFFIC_ALL,
 						AllowUnauthenticated: true,
 						VpcAccess: &GcpCloudRunVpcAccess{
-							Network: "projects/test-project-123/global/networks/default",
-							Subnet:  "projects/test-project-123/regions/us-central1/subnetworks/default",
-							Egress:  "ALL_TRAFFIC",
+							Network: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/default"},
+							},
+							Subnet: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/regions/us-central1/subnetworks/default"},
+							},
+							Egress: "ALL_TRAFFIC",
 						},
 						ExecutionEnvironment: GcpCloudRunExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN2,
 						Dns: &GcpCloudRunDns{
@@ -136,7 +145,7 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 
-			ginkgo.It("should return validation error for invalid project_id pattern", func() {
+			ginkgo.It("should not return validation error for project_id with valueRef", func() {
 				input := &GcpCloudRun{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudRun",
@@ -144,13 +153,20 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "Invalid_Project_123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-gcp-project",
+								},
+							},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
 								Tag:  "1.0.0",
 							},
+							Port:   8080,
 							Cpu:    1,
 							Memory: 512,
 							Replicas: &GcpCloudRunContainerReplicas{
@@ -161,35 +177,7 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
-			})
-
-			ginkgo.It("should return validation error for project_id that is too short", func() {
-				input := &GcpCloudRun{
-					ApiVersion: "gcp.project-planton.org/v1",
-					Kind:       "GcpCloudRun",
-					Metadata: &shared.CloudResourceMetadata{
-						Name: "test-cloud-run",
-					},
-					Spec: &GcpCloudRunSpec{
-						ProjectId: "abc",
-						Region:    "us-central1",
-						Container: &GcpCloudRunContainer{
-							Image: &GcpCloudRunContainerImage{
-								Repo: "us-docker.pkg.dev/prj/registry/app",
-								Tag:  "1.0.0",
-							},
-							Cpu:    1,
-							Memory: 512,
-							Replicas: &GcpCloudRunContainerReplicas{
-								Min: 0,
-								Max: 10,
-							},
-						},
-					},
-				}
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
@@ -203,7 +191,9 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -230,8 +220,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "invalid-region",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "invalid-region",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -261,7 +253,9 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId:   "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Region:      "us-central1",
 						ServiceName: "Invalid_Service_Name",
 						Container: &GcpCloudRunContainer{
@@ -290,7 +284,9 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId:   "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Region:      "us-central1",
 						ServiceName: "this-is-a-very-long-service-name-that-exceeds-the-maximum-allowed-length-of-63-characters",
 						Container: &GcpCloudRunContainer{
@@ -322,7 +318,9 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId:      "test-project-123",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
 						Region:         "us-central1",
 						ServiceAccount: "invalid-service-account-email",
 						Container: &GcpCloudRunContainer{
@@ -354,8 +352,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -370,8 +370,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Tag: "1.0.0",
@@ -397,8 +399,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -424,8 +428,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -452,8 +458,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -480,8 +488,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -508,8 +518,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -537,8 +549,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -564,8 +578,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -593,8 +609,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -625,8 +643,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -654,8 +674,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -686,8 +708,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -701,9 +725,13 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 							},
 						},
 						VpcAccess: &GcpCloudRunVpcAccess{
-							Network: "projects/test-project-123/global/networks/default",
-							Subnet:  "projects/test-project-123/regions/us-central1/subnetworks/default",
-							Egress:  "INVALID_EGRESS_VALUE",
+							Network: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/default"},
+							},
+							Subnet: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/regions/us-central1/subnetworks/default"},
+							},
+							Egress: "INVALID_EGRESS_VALUE",
 						},
 					},
 				}
@@ -722,8 +750,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -754,8 +784,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
@@ -786,8 +818,10 @@ var _ = ginkgo.Describe("GcpCloudRunSpec Custom Validation Tests", func() {
 						Name: "test-cloud-run",
 					},
 					Spec: &GcpCloudRunSpec{
-						ProjectId: "test-project-123",
-						Region:    "us-central1",
+						ProjectId: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-project-123"},
+						},
+						Region: "us-central1",
 						Container: &GcpCloudRunContainer{
 							Image: &GcpCloudRunContainerImage{
 								Repo: "us-docker.pkg.dev/prj/registry/app",
