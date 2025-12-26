@@ -16,8 +16,8 @@ const inter = Inter({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Default to localhost:50051 if API_ENDPOINT is not set
-  const connectHost = process.env.API_ENDPOINT || 'http://localhost:50051';
+  // Default to localhost:50051 if NEXT_PUBLIC_API_URL is not set
+  const connectHost = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:50051';
 
   // Get cookies for SSR
   const allCookies = getAllCookiesParsed();
