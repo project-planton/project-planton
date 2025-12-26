@@ -47,7 +47,53 @@ This directory contains automation rules used by Cursor to scaffold and validate
 - Only the first step (001) requires the provider/kind context, e.g.: `@001-spec-proto Add AWS CloudFront`.
 - After that, the Mega Rule passes context across steps.
 
+## Issue Management Rules
+
+This directory also contains rules for structured issue tracking and management:
+
+### Creating Issues
+- **@create-project-planton-issue** — Create a structured issue file in `_issues/` directory
+  - Captures bugs, features, and improvements from conversations
+  - Intelligent area detection (deployment-component, cli, pkg, forge, etc.)
+  - Supports image analysis and embedding
+  - File naming: `YYYY-MM-DD-HHMMSS.{area}.{type}.{slug}.md`
+
+### GitHub Issue Creation
+- **@generate-project-planton-issue-info** — Generate issue title and description (ask-only)
+  - Produces two code blocks: title and markdown body
+  - Deployment-component-aware labeling
+  - Comprehensive templates for bugs, features, and tasks
+  
+- **@create-project-planton-github-issue** — Create GitHub issue via gh CLI
+  - Uses `@generate-project-planton-issue-info` for content
+  - Auto-infers labels from context
+  - Non-interactive, deterministic creation
+
+### Closing Issues
+- **@close-project-planton-issue** — Move resolved issues to `_issues/closed/`
+  - Adds closing timestamp to filename
+  - Optionally adds resolution context with changelog links
+  - Relocates associated images
+  - Two modes: with resolution context (recent fix) or simple close
+
+### Issue Workflow Example
+```
+# During development, discover a bug
+User: "The Postgres component validation is broken. @create-project-planton-issue"
+→ Creates: _issues/2025-12-26-143022.deployment-component.bug.postgres-spec-validation.md
+
+# After fixing and creating changelog
+User: "@close-project-planton-issue postgres-spec-validation"
+→ Moves to: _issues/closed/2025-12-26-143022...2025-12-28-073049.md
+→ Adds resolution section with changelog link
+
+# To create GitHub issue from investigation
+User: "@create-project-planton-github-issue"
+→ Generates comprehensive issue with labels, creates via gh CLI
+```
+
 ## Tips
 - Start a new chat when you switch to a different resource to keep context clean.
 - If a step fails (lint/build/test), the rule will auto-refine up to 3 times. Provide the minimal additional hint if asked.
 - For e2e rules, local CLI must align with current protos. The rules already call `make local` before running CLI operations.
+- Issue management rules require explicit invocation - they won't create/close issues automatically.
