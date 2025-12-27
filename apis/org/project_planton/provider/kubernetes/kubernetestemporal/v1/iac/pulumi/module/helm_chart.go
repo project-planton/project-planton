@@ -255,6 +255,20 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			}
 		}
 
+		// Blob size limits - controls individual payload sizes (markers, signals, activity I/O)
+		// This is different from history limits which control total workflow history size
+		if dynamicConfig.BlobSizeLimitError != nil {
+			dynamicConfigValues["limit.blobSize.error"] = pulumi.Array{
+				pulumi.Map{"value": pulumi.Int(*dynamicConfig.BlobSizeLimitError)},
+			}
+		}
+
+		if dynamicConfig.BlobSizeLimitWarn != nil {
+			dynamicConfigValues["limit.blobSize.warn"] = pulumi.Array{
+				pulumi.Map{"value": pulumi.Int(*dynamicConfig.BlobSizeLimitWarn)},
+			}
+		}
+
 		// Only add dynamic config if there are values to set
 		// Chart expects server.dynamicConfig, NOT server.config.dynamicConfigValues
 		if len(dynamicConfigValues) > 0 {

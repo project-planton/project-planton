@@ -709,14 +709,18 @@ func (x *KubernetesTemporalWebUiIngressEndpoint) GetHostname() string {
 // These settings control workflow execution limits without requiring server restart.
 // When not specified, Temporal uses its default values.
 //
-// Common use case: Increase history limits for workflows that require more events or larger payloads.
+// Two types of limits:
+// - **History limits**: Control total workflow history size and event count
+// - **Blob limits**: Control individual payload sizes (markers, signals, activity I/O)
 //
 // Example:
 // ```yaml
 // dynamic_config:
 //
-//	history_size_limit_error: 104857600  # 100 MB
+//	history_size_limit_error: 104857600  # 100 MB total history
 //	history_count_limit_error: 102400    # 100K events
+//	blob_size_limit_error: 10485760      # 10 MB per payload (for large IaC diffs)
+//	blob_size_limit_warn: 5242880        # 5 MB warning threshold
 //
 // ```
 type KubernetesTemporalDynamicConfig struct {
@@ -742,8 +746,21 @@ type KubernetesTemporalDynamicConfig struct {
 	// Temporal logs warnings when workflows approach this limit.
 	// Default: 10240 (~20% of error limit).
 	HistoryCountLimitWarn *int64 `protobuf:"varint,4,opt,name=history_count_limit_warn,json=historyCountLimitWarn,proto3,oneof" json:"history_count_limit_warn,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// *
+	// Maximum size in bytes for a single blob/payload (marker details, signal data, activity I/O).
+	// When a payload exceeds this limit, Temporal rejects it with "exceeds size limit" error.
+	// This is different from history_size_limit which controls total workflow history size.
+	// Default: 2097152 (2 MB). Increase for workflows that send large payloads like IaC diffs.
+	//
+	// Example: Set to 10485760 (10 MB) to support large Pulumi diffs.
+	BlobSizeLimitError *int64 `protobuf:"varint,5,opt,name=blob_size_limit_error,json=blobSizeLimitError,proto3,oneof" json:"blob_size_limit_error,omitempty"`
+	// *
+	// Warning threshold for blob/payload size in bytes.
+	// Temporal logs warnings when payloads approach this limit.
+	// Default: 524288 (512 KB, ~25% of error limit).
+	BlobSizeLimitWarn *int64 `protobuf:"varint,6,opt,name=blob_size_limit_warn,json=blobSizeLimitWarn,proto3,oneof" json:"blob_size_limit_warn,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *KubernetesTemporalDynamicConfig) Reset() {
@@ -800,6 +817,20 @@ func (x *KubernetesTemporalDynamicConfig) GetHistorySizeLimitWarn() int64 {
 func (x *KubernetesTemporalDynamicConfig) GetHistoryCountLimitWarn() int64 {
 	if x != nil && x.HistoryCountLimitWarn != nil {
 		return *x.HistoryCountLimitWarn
+	}
+	return 0
+}
+
+func (x *KubernetesTemporalDynamicConfig) GetBlobSizeLimitError() int64 {
+	if x != nil && x.BlobSizeLimitError != nil {
+		return *x.BlobSizeLimitError
+	}
+	return 0
+}
+
+func (x *KubernetesTemporalDynamicConfig) GetBlobSizeLimitWarn() int64 {
+	if x != nil && x.BlobSizeLimitWarn != nil {
+		return *x.BlobSizeLimitWarn
 	}
 	return 0
 }
@@ -1040,16 +1071,20 @@ const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_pr
 	"&KubernetesTemporalWebUiIngressEndpoint\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:\x94\x01\xbaH\x90\x01\x1a\x8d\x01\n" +
-	"%spec.ingress.web_ui.hostname.required\x12:web_ui.hostname is required when web ui ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xb7\x03\n" +
+	"%spec.ingress.web_ui.hostname.required\x12:web_ui.hostname is required when web ui ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xee\x04\n" +
 	"\x1fKubernetesTemporalDynamicConfig\x12G\n" +
 	"\x18history_size_limit_error\x18\x01 \x01(\x03B\t\xbaH\x06\"\x04(\x80\x80@H\x00R\x15historySizeLimitError\x88\x01\x01\x12H\n" +
 	"\x19history_count_limit_error\x18\x02 \x01(\x03B\b\xbaH\x05\"\x03(\xe8\aH\x01R\x16historyCountLimitError\x88\x01\x01\x12E\n" +
 	"\x17history_size_limit_warn\x18\x03 \x01(\x03B\t\xbaH\x06\"\x04(\x80\x80 H\x02R\x14historySizeLimitWarn\x88\x01\x01\x12F\n" +
-	"\x18history_count_limit_warn\x18\x04 \x01(\x03B\b\xbaH\x05\"\x03(\xf4\x03H\x03R\x15historyCountLimitWarn\x88\x01\x01B\x1b\n" +
+	"\x18history_count_limit_warn\x18\x04 \x01(\x03B\b\xbaH\x05\"\x03(\xf4\x03H\x03R\x15historyCountLimitWarn\x88\x01\x01\x12A\n" +
+	"\x15blob_size_limit_error\x18\x05 \x01(\x03B\t\xbaH\x06\"\x04(\x80\x80@H\x04R\x12blobSizeLimitError\x88\x01\x01\x12?\n" +
+	"\x14blob_size_limit_warn\x18\x06 \x01(\x03B\t\xbaH\x06\"\x04(\x80\x80\x10H\x05R\x11blobSizeLimitWarn\x88\x01\x01B\x1b\n" +
 	"\x19_history_size_limit_errorB\x1c\n" +
 	"\x1a_history_count_limit_errorB\x1a\n" +
 	"\x18_history_size_limit_warnB\x1b\n" +
-	"\x19_history_count_limit_warn\"\xb5\x01\n" +
+	"\x19_history_count_limit_warnB\x18\n" +
+	"\x16_blob_size_limit_errorB\x17\n" +
+	"\x15_blob_size_limit_warn\"\xb5\x01\n" +
 	"\x1fKubernetesTemporalServiceConfig\x12*\n" +
 	"\breplicas\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01H\x00R\breplicas\x88\x01\x01\x12Y\n" +
 	"\tresources\x18\x02 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\tresourcesB\v\n" +

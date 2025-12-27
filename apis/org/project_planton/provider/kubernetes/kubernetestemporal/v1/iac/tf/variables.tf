@@ -142,6 +142,8 @@ variable "spec" {
     # Dynamic configuration values for Temporal server runtime behavior
     # These settings control workflow execution limits without requiring server restart
     dynamic_config = optional(object({
+      # History limits - control total workflow history size
+
       # Maximum size in bytes for workflow execution history
       # Default: 52428800 (50 MB). Increase for workflows with large payloads.
       history_size_limit_error = optional(number)
@@ -157,6 +159,17 @@ variable "spec" {
       # Warning threshold for history event count
       # Default: 10240 events
       history_count_limit_warn = optional(number)
+
+      # Blob size limits - control individual payload sizes (markers, signals, activity I/O)
+      # This is different from history limits which control total workflow history size
+
+      # Maximum size in bytes for a single blob/payload (marker details, signal data, activity I/O)
+      # Default: 2097152 (2 MB). Increase for workflows that send large payloads like IaC diffs.
+      blob_size_limit_error = optional(number)
+
+      # Warning threshold for blob/payload size in bytes
+      # Default: 524288 (512 KB)
+      blob_size_limit_warn = optional(number)
     }))
 
     # Number of history shards for the Temporal cluster
