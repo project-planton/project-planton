@@ -50,7 +50,7 @@ locals {
   ksa_name     = local.release_name
 
   # ExternalDNS and Helm chart versions with defaults
-  external_dns_version = try(var.spec.kubernetes_external_dns_version, "v0.19.0")
+  external_dns_version = try(var.spec.external_dns_version, "v0.19.0")
   helm_chart_version   = try(var.spec.helm_chart_version, "1.19.0")
 
   # Helm repository and chart

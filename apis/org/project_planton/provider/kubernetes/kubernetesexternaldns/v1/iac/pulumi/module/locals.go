@@ -139,8 +139,8 @@ func getHelmChartVersion(spec *kubernetesexternaldnsv1.KubernetesExternalDnsSpec
 
 // getExternalDnsVersion returns the ExternalDNS version from spec, with default if not specified
 func getExternalDnsVersion(spec *kubernetesexternaldnsv1.KubernetesExternalDnsSpec) string {
-	if spec.KubernetesExternalDnsVersion != nil && *spec.KubernetesExternalDnsVersion != "" {
-		return *spec.KubernetesExternalDnsVersion
+	if spec.ExternalDnsVersion != nil && *spec.ExternalDnsVersion != "" {
+		return *spec.ExternalDnsVersion
 	}
 	return "v0.19.0" // default
 }

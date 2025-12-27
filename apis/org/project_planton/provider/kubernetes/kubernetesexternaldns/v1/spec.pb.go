@@ -35,7 +35,7 @@ type KubernetesExternalDnsSpec struct {
 	// flag to indicate if the namespace should be created
 	CreateNamespace bool `protobuf:"varint,3,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// ExternalDNS version such as "v0.19.0". Used to set the image tag.
-	KubernetesExternalDnsVersion *string `protobuf:"bytes,4,opt,name=kubernetes_external_dns_version,json=kubernetesExternalDnsVersion,proto3,oneof" json:"kubernetes_external_dns_version,omitempty"`
+	ExternalDnsVersion *string `protobuf:"bytes,4,opt,name=external_dns_version,json=externalDnsVersion,proto3,oneof" json:"external_dns_version,omitempty"`
 	// Helm chart version to deploy. If not specified, uses the default version.
 	HelmChartVersion *string `protobuf:"bytes,5,opt,name=helm_chart_version,json=helmChartVersion,proto3,oneof" json:"helm_chart_version,omitempty"`
 	// provider-specific glue. Only one may be set.
@@ -102,9 +102,9 @@ func (x *KubernetesExternalDnsSpec) GetCreateNamespace() bool {
 	return false
 }
 
-func (x *KubernetesExternalDnsSpec) GetKubernetesExternalDnsVersion() string {
-	if x != nil && x.KubernetesExternalDnsVersion != nil {
-		return *x.KubernetesExternalDnsVersion
+func (x *KubernetesExternalDnsSpec) GetExternalDnsVersion() string {
+	if x != nil && x.ExternalDnsVersion != nil {
+		return *x.ExternalDnsVersion
 	}
 	return ""
 }
@@ -421,12 +421,12 @@ var File_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/kubernetesexternaldns/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesexternaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xfd\a\n" +
+	"Korg/project_planton/provider/kubernetes/kubernetesexternaldns/v1/spec.proto\x12@org.project_planton.provider.kubernetes.kubernetesexternaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xdd\a\n" +
 	"\x19KubernetesExternalDnsSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
-	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12W\n" +
-	"\x1fkubernetes_external_dns_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av0.19.0H\x01R\x1ckubernetesExternalDnsVersion\x88\x01\x01\x12=\n" +
+	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12B\n" +
+	"\x14external_dns_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av0.19.0H\x01R\x12externalDnsVersion\x88\x01\x01\x12=\n" +
 	"\x12helm_chart_version\x18\x05 \x01(\tB\n" +
 	"\x8a\xa6\x1d\x061.19.0H\x02R\x10helmChartVersion\x88\x01\x01\x12u\n" +
 	"\x03gke\x18\xc8\x01 \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsGkeConfigH\x00R\x03gke\x12u\n" +
@@ -435,8 +435,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec
 	"\n" +
 	"cloudflare\x18\xcb\x01 \x01(\v2g.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1.KubernetesExternalDnsCloudflareConfigH\x00R\n" +
 	"cloudflareB\x11\n" +
-	"\x0fprovider_configB\"\n" +
-	" _kubernetes_external_dns_versionB\x15\n" +
+	"\x0fprovider_configB\x17\n" +
+	"\x15_external_dns_versionB\x15\n" +
 	"\x13_helm_chart_version\"\xaa\x02\n" +
 	"\x1eKubernetesExternalDnsGkeConfig\x12\x83\x01\n" +
 	"\n" +

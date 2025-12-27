@@ -23,7 +23,7 @@ message KubernetesExternalDnsSpec {
   bool create_namespace = 3;
 
   // ExternalDNS version such as "v0.19.0". Used to set the image tag.
-  optional string kubernetes_external_dns_version = 4 [(org.project_planton.shared.options.default) = "v0.19.0"];
+  optional string external_dns_version = 4 [(org.project_planton.shared.options.default) = "v0.19.0"];
 
   // Helm chart version to deploy. If not specified, uses the default version.
   optional string helm_chart_version = 5 [(org.project_planton.shared.options.default) = "1.19.0"];
