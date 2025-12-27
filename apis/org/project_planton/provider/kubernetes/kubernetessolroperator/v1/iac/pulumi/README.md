@@ -379,8 +379,9 @@ With **background deletion**:
 
 | Resource | Why Background Deletion |
 |----------|------------------------|
-| Namespace | Prevents blocking on child resource finalizers |
-| CRDs (via ConfigFile transformation) | Allows deletion even if CRs exist in other namespaces |
+| Namespace | Prevents blocking on child resource finalizers; operator stops running, allowing CRs to be garbage collected |
+
+**Note on CRDs:** CRDs use default deletion behavior. Once the namespace (and operator) are deleted via background propagation, the operator stops reconciling, allowing CustomResources to be garbage collected. This unblocks CRD deletion naturally.
 
 ### Testing Destroy Operations
 

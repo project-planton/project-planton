@@ -64,42 +64,19 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 	// instances share a namespace.
 	// --------------------------------------------------------------------
 	//
-	// CRITICAL: Background Deletion Propagation Policy for CRDs
+	// Note on CRD Deletion:
+	// CRDs are cluster-scoped and have built-in protection preventing deletion while
+	// CustomResources of that type exist. During `pulumi destroy`, CRDs will wait
+	// until all CRs are removed. The namespace background deletion policy (above)
+	// ensures the operator stops running quickly, which allows CRs to be garbage
+	// collected, unblocking CRD deletion.
 	//
-	// The transformation below injects `pulumi.com/deletionPropagationPolicy: background`
-	// into all CRD resources loaded from the remote manifest.
-	//
-	// Problem: CustomResourceDefinitions (CRDs) have a built-in protection mechanism where
-	// they cannot be deleted while CustomResources (CRs) of that type still exist. During
-	// `pulumi destroy` with foreground deletion, this can cause timeouts if:
-	//   1. CRs exist in other namespaces that Pulumi isn't managing
-	//   2. The operator's reconciliation loop recreates CRs during deletion
-	//   3. Finalizers on CRs prevent timely cleanup
-	//
-	// Solution: Using "background" propagation allows the CRD deletion to proceed immediately,
-	// with Kubernetes handling orphaned CRs asynchronously. This is safe for operator teardown
-	// scenarios where the operator itself is being removed.
-	//
-	// Reference: https://www.pulumi.com/registry/packages/kubernetes/installation-configuration/
+	// We intentionally avoid using ConfigFile transformations here because they
+	// cause Pulumi to recompute diffs on every operation, leading to massive
+	// (180MB+) diff sizes due to the embedded OpenAPI schemas in the CRDs.
 	crds, err := pulumiyaml.NewConfigFile(ctx, locals.CrdsResourceName,
 		&pulumiyaml.ConfigFileArgs{
 			File: locals.CrdManifestURL,
-			Transformations: []pulumiyaml.Transformation{
-				// Inject background deletion policy annotation into all resources
-				func(state map[string]interface{}, opts ...pulumi.ResourceOption) {
-					metadata, ok := state["metadata"].(map[string]interface{})
-					if !ok {
-						metadata = make(map[string]interface{})
-						state["metadata"] = metadata
-					}
-					annotations, ok := metadata["annotations"].(map[string]interface{})
-					if !ok {
-						annotations = make(map[string]interface{})
-						metadata["annotations"] = annotations
-					}
-					annotations["pulumi.com/deletionPropagationPolicy"] = "background"
-				},
-			},
 		},
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {
