@@ -16,6 +16,29 @@ func solrCloud(ctx *pulumi.Context, locals *Locals,
 				Name:      pulumi.String(locals.KubernetesSolr.Metadata.Name),
 				Namespace: pulumi.String(locals.Namespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
+				// CRITICAL: Background Deletion Propagation Policy
+				//
+				// This annotation is required to prevent a 10-minute timeout during `pulumi destroy`.
+				//
+				// Problem: By default, Pulumi uses "Foreground" cascading deletion, which keeps the
+				// SolrCloud CR alive (with a foregroundDeletion finalizer) while waiting for all child
+				// resources to be deleted first. However, the Solr Operator's reconciliation loop
+				// continues to run and recreates any child resources (StatefulSets, Services, ConfigMaps)
+				// that the Kubernetes Garbage Collector deletes. This creates an infinite loop where:
+				//   1. GC deletes child resources
+				//   2. Operator recreates them (because the SolrCloud CR still exists)
+				//   3. GC deletes them again
+				//   4. Repeat until timeout
+				//
+				// Solution: Using "background" propagation policy causes Pulumi to delete the SolrCloud
+				// CR immediately. Once the CR is gone, the Solr Operator stops reconciling, and the
+				// Kubernetes Garbage Collector can clean up all child resources (ZookeeperCluster,
+				// StatefulSets, Services, PVCs, etc.) asynchronously without interference.
+				//
+				// Reference: https://www.pulumi.com/registry/packages/kubernetes/installation-configuration/
+				Annotations: pulumi.StringMap{
+					"pulumi.com/deletionPropagationPolicy": pulumi.String("background"),
+				},
 			},
 			Spec: v1beta1.SolrCloudSpecArgs{
 				Replicas: pulumi.Int(locals.KubernetesSolr.Spec.SolrContainer.Replicas),
