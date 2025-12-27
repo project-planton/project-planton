@@ -216,13 +216,17 @@ message KubernetesTemporalWebUiIngressEndpoint {
  * These settings control workflow execution limits without requiring server restart.
  * When not specified, Temporal uses its default values.
  *
- * Common use case: Increase history limits for workflows that require more events or larger payloads.
+ * Two types of limits:
+ * - **History limits**: Control total workflow history size and event count
+ * - **Blob limits**: Control individual payload sizes (markers, signals, activity I/O)
  *
  * Example:
  * ```yaml
  * dynamic_config:
- *   history_size_limit_error: 104857600  # 100 MB
+ *   history_size_limit_error: 104857600  # 100 MB total history
  *   history_count_limit_error: 102400    # 100K events
+ *   blob_size_limit_error: 10485760      # 10 MB per payload (for large IaC diffs)
+ *   blob_size_limit_warn: 5242880        # 5 MB warning threshold
  * ```
  */
 message KubernetesTemporalDynamicConfig {
@@ -254,6 +258,23 @@ message KubernetesTemporalDynamicConfig {
    * Default: 10240 (~20% of error limit).
    */
   optional int64 history_count_limit_warn = 4 [(buf.validate.field).int64 = {gte: 500} /* Minimum 500 events */];
+
+  /**
+   * Maximum size in bytes for a single blob/payload (marker details, signal data, activity I/O).
+   * When a payload exceeds this limit, Temporal rejects it with "exceeds size limit" error.
+   * This is different from history_size_limit which controls total workflow history size.
+   * Default: 2097152 (2 MB). Increase for workflows that send large payloads like IaC diffs.
+   *
+   * Example: Set to 10485760 (10 MB) to support large Pulumi diffs.
+   */
+  optional int64 blob_size_limit_error = 5 [(buf.validate.field).int64 = {gte: 1048576} /* Minimum 1 MB */];
+
+  /**
+   * Warning threshold for blob/payload size in bytes.
+   * Temporal logs warnings when payloads approach this limit.
+   * Default: 524288 (512 KB, ~25% of error limit).
+   */
+  optional int64 blob_size_limit_warn = 6 [(buf.validate.field).int64 = {gte: 262144} /* Minimum 256 KB */];
 }
 
 /**

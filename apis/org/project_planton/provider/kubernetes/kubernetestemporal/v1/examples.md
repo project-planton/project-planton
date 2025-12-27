@@ -383,6 +383,55 @@ spec:
 
 ---
 
+### Example 8b: Configuring Blob Size Limits for Large Payloads
+
+Configure blob size limits to allow larger individual payloads in markers, signals, and activity inputs/outputs.
+This is different from history limits which control total workflow history size.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesTemporal
+metadata:
+  name: temporal-large-payloads
+spec:
+  target_cluster:
+    cluster_name: prod-gke-cluster
+  namespace:
+    value: temporal-prod
+  create_namespace: true
+  database:
+    backend: postgresql
+    external_database:
+      host: postgres-db.example.com
+      port: 5432
+      username: temporaluser
+      password:
+        secretRef:
+          name: temporal-db-credentials
+          key: password
+  dynamic_config:
+    # Blob size limits - for individual payloads (markers, signals, activity I/O)
+    # 10 MB (default is 2 MB) - useful for workflows sending large IaC diffs
+    blob_size_limit_error: 10485760
+    # Warning at 5 MB
+    blob_size_limit_warn: 5242880
+  ingress:
+    frontend:
+      enabled: true
+      grpc_hostname: temporal-frontend.example.com
+```
+
+**Use Case:**
+
+- IaC runners that send large Pulumi/Terraform diffs as workflow signals or markers
+- Workflows that process large documents or data payloads
+- Systems where side effects need to store substantial return values
+
+**Note:** If you hit `RecordMarkerCommandAttributes.Details exceeds size limit` errors, increase `blob_size_limit_error`.
+This is different from history size limits - blob limits control individual payload sizes, not total history.
+
+---
+
 ### Example 9: Configuring History Shards for Scalability
 
 Set the number of history shards at deployment time. This is an **immutable** setting that determines cluster
@@ -548,12 +597,16 @@ spec:
         key: password
   # Scalability: 1024 shards for high throughput
   num_history_shards: 1024
-  # Relaxed history limits for complex workflows
+  # Relaxed history and blob size limits for complex workflows
   dynamic_config:
+    # History limits - for total workflow history
     history_size_limit_error: 104857600   # 100 MB
     history_count_limit_error: 102400     # 100K events
     history_size_limit_warn: 52428800     # 50 MB
     history_count_limit_warn: 51200       # 50K events
+    # Blob size limits - for individual payloads (markers, signals, activity I/O)
+    blob_size_limit_error: 10485760       # 10 MB (for large IaC diffs)
+    blob_size_limit_warn: 5242880         # 5 MB warning
   # Production-grade service configuration
   services:
     frontend:
