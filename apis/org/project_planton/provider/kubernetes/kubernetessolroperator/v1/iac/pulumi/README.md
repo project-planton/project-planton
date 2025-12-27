@@ -339,6 +339,69 @@ jobs:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 ```
 
+## Deletion Behavior
+
+### Background Deletion Propagation
+
+This module uses **background deletion propagation** for both the namespace and CRD resources. This is configured via the `pulumi.com/deletionPropagationPolicy: "background"` annotation and is critical for reliable `pulumi destroy` operations.
+
+### Why This Matters
+
+The Solr Operator module creates several interdependent resources:
+1. **Namespace** - Contains the operator deployment and all its resources
+2. **CRDs** - CustomResourceDefinitions for SolrCloud, SolrBackup, SolrPrometheusExporter
+3. **Helm Release** - The operator deployment itself
+
+During deletion with the default "foreground" propagation policy, several race conditions can occur:
+
+**Namespace Deletion Issue:**
+1. Pulumi issues DELETE with `propagationPolicy: Foreground`
+2. Kubernetes adds `foregroundDeletion` finalizer to namespace
+3. Kubernetes waits for all resources inside to be deleted
+4. If child resources have their own finalizers (e.g., operator-managed CRs), deletion stalls
+5. 10-minute timeout occurs
+
+**CRD Deletion Issue:**
+1. CRDs cannot be deleted while CustomResources of that type exist
+2. If SolrCloud instances exist in other namespaces (not managed by this stack), CRD deletion blocks
+3. The operator may recreate CRs during the deletion window, causing a loop
+
+### Solution
+
+With **background deletion**:
+
+1. Pulumi issues DELETE with `propagationPolicy: Background`
+2. Namespace and CRDs are removed from the API server immediately
+3. Kubernetes garbage collector cleans up child resources asynchronously
+4. Destroy completes in seconds instead of timing out
+
+### Resources with Background Deletion
+
+| Resource | Why Background Deletion |
+|----------|------------------------|
+| Namespace | Prevents blocking on child resource finalizers |
+| CRDs (via ConfigFile transformation) | Allows deletion even if CRs exist in other namespaces |
+
+### Testing Destroy Operations
+
+When testing this module, always verify the full lifecycle:
+
+```bash
+# Create
+planton pulumi up --stack-input solr-operator.yaml
+
+# Destroy (should complete in < 1 minute, not 10 minutes)
+planton pulumi destroy --stack-input solr-operator.yaml
+
+# Recreate (should succeed without conflicts)
+planton pulumi up --stack-input solr-operator.yaml
+```
+
+If destroy operations timeout, check for:
+- SolrCloud resources in other namespaces using this operator's CRDs
+- Finalizers on resources that prevent cleanup
+- Operator logs for repeated reconciliation activity
+
 ## Additional Resources
 
 - **Architecture Overview**: [overview.md](overview.md)

@@ -32,6 +32,24 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 				Metadata: &metav1.ObjectMetaArgs{
 					Name:   pulumi.String(locals.Namespace),
 					Labels: pulumi.ToStringMap(locals.Labels),
+					// CRITICAL: Background Deletion Propagation Policy
+					//
+					// This annotation prevents namespace deletion from timing out during `pulumi destroy`.
+					//
+					// Problem: By default, Pulumi uses "Foreground" cascading deletion for namespaces.
+					// Kubernetes adds a `foregroundDeletion` finalizer and waits for all resources inside
+					// the namespace to be deleted before removing the namespace itself. However, if the
+					// Helm release or CRDs are being deleted concurrently, there can be race conditions
+					// where finalizers on child resources (like operator-managed CRs) prevent timely cleanup.
+					//
+					// Solution: Using "background" propagation policy causes Kubernetes to delete the
+					// namespace object immediately. The namespace controller then asynchronously cleans up
+					// all resources within the namespace. This avoids blocking on child resource finalizers.
+					//
+					// Reference: https://www.pulumi.com/registry/packages/kubernetes/installation-configuration/
+					Annotations: pulumi.StringMap{
+						"pulumi.com/deletionPropagationPolicy": pulumi.String("background"),
+					},
 				},
 			},
 			pulumi.Provider(kubernetesProvider))
@@ -45,9 +63,43 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetessolroperatorv1.Kuberne
 	// Uses computed CrdsResourceName to avoid conflicts when multiple
 	// instances share a namespace.
 	// --------------------------------------------------------------------
+	//
+	// CRITICAL: Background Deletion Propagation Policy for CRDs
+	//
+	// The transformation below injects `pulumi.com/deletionPropagationPolicy: background`
+	// into all CRD resources loaded from the remote manifest.
+	//
+	// Problem: CustomResourceDefinitions (CRDs) have a built-in protection mechanism where
+	// they cannot be deleted while CustomResources (CRs) of that type still exist. During
+	// `pulumi destroy` with foreground deletion, this can cause timeouts if:
+	//   1. CRs exist in other namespaces that Pulumi isn't managing
+	//   2. The operator's reconciliation loop recreates CRs during deletion
+	//   3. Finalizers on CRs prevent timely cleanup
+	//
+	// Solution: Using "background" propagation allows the CRD deletion to proceed immediately,
+	// with Kubernetes handling orphaned CRs asynchronously. This is safe for operator teardown
+	// scenarios where the operator itself is being removed.
+	//
+	// Reference: https://www.pulumi.com/registry/packages/kubernetes/installation-configuration/
 	crds, err := pulumiyaml.NewConfigFile(ctx, locals.CrdsResourceName,
 		&pulumiyaml.ConfigFileArgs{
 			File: locals.CrdManifestURL,
+			Transformations: []pulumiyaml.Transformation{
+				// Inject background deletion policy annotation into all resources
+				func(state map[string]interface{}, opts ...pulumi.ResourceOption) {
+					metadata, ok := state["metadata"].(map[string]interface{})
+					if !ok {
+						metadata = make(map[string]interface{})
+						state["metadata"] = metadata
+					}
+					annotations, ok := metadata["annotations"].(map[string]interface{})
+					if !ok {
+						annotations = make(map[string]interface{})
+						metadata["annotations"] = annotations
+					}
+					annotations["pulumi.com/deletionPropagationPolicy"] = "background"
+				},
+			},
 		},
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {
