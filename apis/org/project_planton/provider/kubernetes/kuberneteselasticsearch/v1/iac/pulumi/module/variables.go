@@ -8,7 +8,7 @@ var vars = struct {
 	ElasticsearchPort                          int
 	KibanaPort                                 int
 }{
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 	GatewayIngressClassName:                    "istio",
 	IstioIngressNamespace:                      "istio-ingress",
 	ElasticsearchVersion:                       "8.15.0",

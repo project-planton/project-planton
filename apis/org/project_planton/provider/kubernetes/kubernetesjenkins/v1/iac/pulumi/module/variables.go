@@ -11,7 +11,7 @@ var vars = struct {
 	JenkinsAdminUsername                       string
 	JenkinsDockerImageTag                      string
 }{
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 	GatewayIngressClassName:                    "istio",
 	HelmChartName:                              "jenkins",
 	HelmChartRepoUrl:                           "https://charts.jenkins.io",

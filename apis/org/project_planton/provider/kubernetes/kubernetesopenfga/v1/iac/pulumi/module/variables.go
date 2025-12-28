@@ -8,7 +8,7 @@ var vars = struct {
 	HelmChartVersion                           string
 	IstioIngressNamespace                      string
 }{
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 	GatewayIngressClassName:                    "istio",
 	HelmChartName:                              "openfga",
 	HelmChartRepoUrl:                           "https://openfga.github.io/helm-charts",

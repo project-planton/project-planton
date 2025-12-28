@@ -33,5 +33,5 @@ var vars = struct {
 	// Gateway API settings for Istio ingress
 	IstioIngressNamespace:                      "istio-ingress",
 	GatewayIngressClassName:                    "istio",
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 }

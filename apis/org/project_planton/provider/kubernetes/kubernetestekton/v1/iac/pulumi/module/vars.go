@@ -31,5 +31,5 @@ var vars = struct {
 	DashboardServicePort:                       9097,
 	IstioIngressNamespace:                      "istio-ingress",
 	GatewayIngressClassName:                    "istio",
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 }

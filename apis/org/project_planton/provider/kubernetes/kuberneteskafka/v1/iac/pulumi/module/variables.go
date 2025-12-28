@@ -59,7 +59,7 @@ var vars = struct {
 	SaslJaasConfigKeyInSecret:         "sasl.jaas.config",
 	SaslPasswordKeyInSecret:           "password",
 
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 	GatewayIngressClassName:                    "istio",
 	IstioIngressNamespace:                      "istio-ingress",
 

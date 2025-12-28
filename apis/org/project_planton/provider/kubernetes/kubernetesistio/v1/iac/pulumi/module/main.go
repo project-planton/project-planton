@@ -147,7 +147,7 @@ func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackIn
 			RepositoryOpts:  repo,
 			Values: pulumi.Map{
 				"service": pulumi.Map{
-					"type": pulumi.String("ClusterIP"),
+					"type": pulumi.String("LoadBalancer"),
 				},
 			},
 		},

@@ -19,7 +19,7 @@ var vars = struct {
 	SignozFrontendPort: 3301,
 	OtelGrpcPort:       4317,
 	OtelHttpPort:       4318,
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 	GatewayIngressClassName:                    "istio",
 	IstioIngressNamespace:                      "istio-ingress",
 }

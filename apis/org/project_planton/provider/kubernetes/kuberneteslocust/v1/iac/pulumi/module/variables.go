@@ -5,7 +5,7 @@ var vars = struct {
 	GatewayIngressClassName                    string
 	IstioIngressNamespace                      string
 }{
-	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
+	GatewayExternalLoadBalancerServiceHostname: "istio-ingress-gateway.istio-ingress.svc.cluster.local",
 	GatewayIngressClassName:                    "istio",
 	IstioIngressNamespace:                      "istio-ingress",
 }
