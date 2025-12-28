@@ -84,5 +84,37 @@ locals {
     !local.is_external_database &&
     try(var.spec.database.managed_database.zookeeper.is_enabled, false)
   )
+
+  # Ingress resource names (computed to avoid conflicts when multiple instances share a namespace)
+  # SigNoz UI ingress resources
+  signoz_certificate_name        = "${var.metadata.name}-signoz-cert"
+  signoz_gateway_name            = "${var.metadata.name}-signoz-external-gateway"
+  signoz_https_route_name        = "${var.metadata.name}-signoz-https-route"
+  signoz_http_redirect_route_name = "${var.metadata.name}-signoz-http-redirect"
+
+  # OTel Collector ingress resources
+  otel_certificate_name        = "${var.metadata.name}-otel-http-cert"
+  otel_gateway_name            = "${var.metadata.name}-otel-http-external-gateway"
+  otel_https_route_name        = "${var.metadata.name}-otel-https-route"
+  otel_http_redirect_route_name = "${var.metadata.name}-otel-http-redirect"
+
+  # ClusterIssuer name extracted from hostname
+  signoz_cert_cluster_issuer_name = (
+    local.signoz_ingress_external_hostname != null
+    ? join(".", slice(split(".", local.signoz_ingress_external_hostname), 1, length(split(".", local.signoz_ingress_external_hostname))))
+    : ""
+  )
+  otel_cert_cluster_issuer_name = (
+    local.otel_collector_external_http_hostname != null
+    ? join(".", slice(split(".", local.otel_collector_external_http_hostname), 1, length(split(".", local.otel_collector_external_http_hostname))))
+    : ""
+  )
+
+  # Istio ingress namespace and gateway service hostname
+  istio_ingress_namespace                   = "istio-ingress"
+  gateway_external_loadbalancer_service_hostname = "istio-ingress-gateway.istio-ingress.svc.cluster.local"
+
+  # SigNoz frontend port (for routing)
+  signoz_frontend_port = 3301
 }
 

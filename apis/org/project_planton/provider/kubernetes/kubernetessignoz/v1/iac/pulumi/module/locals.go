@@ -30,12 +30,14 @@ type Locals struct {
 
 	// Computed resource names to avoid conflicts when multiple instances share a namespace
 	// Format: {metadata.name}-{purpose}
-	SignozCertificateName string
-	SignozGatewayName     string
-	SignozHTTPRouteName   string
-	OtelCertificateName   string
-	OtelGatewayName       string
-	OtelHTTPRouteName     string
+	SignozCertificateName       string
+	SignozGatewayName           string
+	SignozHTTPRouteName         string
+	SignozHttpRedirectRouteName string
+	OtelCertificateName         string
+	OtelGatewayName             string
+	OtelHTTPRouteName           string
+	OtelHttpRedirectRouteName   string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessignozv1.KubernetesSignozStackInput) *Locals {
@@ -111,9 +113,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetessignozv1.Kubern
 	locals.SignozCertificateName = fmt.Sprintf("%s-signoz-cert", target.Metadata.Name)
 	locals.SignozGatewayName = fmt.Sprintf("%s-signoz-external-gateway", target.Metadata.Name)
 	locals.SignozHTTPRouteName = fmt.Sprintf("%s-signoz-https-route", target.Metadata.Name)
+	locals.SignozHttpRedirectRouteName = fmt.Sprintf("%s-signoz-http-redirect", target.Metadata.Name)
 	locals.OtelCertificateName = fmt.Sprintf("%s-otel-http-cert", target.Metadata.Name)
 	locals.OtelGatewayName = fmt.Sprintf("%s-otel-http-external-gateway", target.Metadata.Name)
 	locals.OtelHTTPRouteName = fmt.Sprintf("%s-otel-https-route", target.Metadata.Name)
+	locals.OtelHttpRedirectRouteName = fmt.Sprintf("%s-otel-http-redirect", target.Metadata.Name)
 
 	// Ingress configuration for SigNoz UI
 	if target.Spec.Ingress != nil &&

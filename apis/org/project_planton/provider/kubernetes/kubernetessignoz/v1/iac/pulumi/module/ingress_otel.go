@@ -87,11 +87,61 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals,
 							},
 						},
 					},
+					// HTTP listener for HTTP-to-HTTPS redirect
+					&gatewayv1.GatewaySpecListenersArgs{
+						Name:     pulumi.String("http-otel-http"),
+						Hostname: pulumi.String(locals.OtelCollectorExternalHttpHostname),
+						Port:     pulumi.Int(80),
+						Protocol: pulumi.String("HTTP"),
+						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
+							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
+								From: pulumi.String("All"),
+							},
+						},
+					},
 				},
 			},
 		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{addedOtelCertificate}))
 	if err != nil {
 		return errors.Wrap(err, "error creating OTEL Collector HTTP gateway")
+	}
+
+	// HTTPRoute for HTTP-to-HTTPS redirect
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
+	_, err = gatewayv1.NewHTTPRoute(ctx,
+		locals.OtelHttpRedirectRouteName,
+		&gatewayv1.HTTPRouteArgs{
+			Metadata: metav1.ObjectMetaArgs{
+				Name:      pulumi.String(locals.OtelHttpRedirectRouteName),
+				Namespace: pulumi.String(locals.Namespace),
+				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
+			},
+			Spec: gatewayv1.HTTPRouteSpecArgs{
+				Hostnames: pulumi.StringArray{pulumi.String(locals.OtelCollectorExternalHttpHostname)},
+				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
+					gatewayv1.HTTPRouteSpecParentRefsArgs{
+						Name:        pulumi.String(locals.OtelGatewayName),
+						Namespace:   createdOtelGateway.Metadata.Namespace(),
+						SectionName: pulumi.String("http-otel-http"),
+					},
+				},
+				Rules: gatewayv1.HTTPRouteSpecRulesArray{
+					gatewayv1.HTTPRouteSpecRulesArgs{
+						Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
+							gatewayv1.HTTPRouteSpecRulesFiltersArgs{
+								RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
+									Scheme:     pulumi.String("https"),
+									StatusCode: pulumi.Int(301),
+								},
+								Type: pulumi.String("RequestRedirect"),
+							},
+						},
+					},
+				},
+			},
+		}, pulumi.Provider(kubernetesProvider))
+	if err != nil {
+		return errors.Wrap(err, "error creating HTTP redirect route for OTEL Collector")
 	}
 
 	// HTTPRoute for HTTP endpoint (routes to OTEL Collector HTTP port 4318)

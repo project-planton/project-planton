@@ -83,11 +83,61 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals,
 							},
 						},
 					},
+					// HTTP listener for HTTP-to-HTTPS redirect
+					&gatewayv1.GatewaySpecListenersArgs{
+						Name:     pulumi.String("http-external"),
+						Hostname: pulumi.String(locals.IngressExternalHostname),
+						Port:     pulumi.Int(80),
+						Protocol: pulumi.String("HTTP"),
+						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
+							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
+								From: pulumi.String("All"),
+							},
+						},
+					},
 				},
 			},
 		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{addedCertificate}))
 	if err != nil {
 		return errors.Wrap(err, "error creating gateway")
+	}
+
+	// Create HTTPRoute for HTTP-to-HTTPS redirect
+	// Uses computed name to avoid conflicts when multiple instances share a namespace
+	_, err = gatewayv1.NewHTTPRoute(ctx,
+		locals.SignozHttpRedirectRouteName,
+		&gatewayv1.HTTPRouteArgs{
+			Metadata: metav1.ObjectMetaArgs{
+				Name:      pulumi.String(locals.SignozHttpRedirectRouteName),
+				Namespace: pulumi.String(locals.Namespace),
+				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
+			},
+			Spec: gatewayv1.HTTPRouteSpecArgs{
+				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
+				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
+					gatewayv1.HTTPRouteSpecParentRefsArgs{
+						Name:        pulumi.String(locals.SignozGatewayName),
+						Namespace:   createdGateway.Metadata.Namespace(),
+						SectionName: pulumi.String("http-external"),
+					},
+				},
+				Rules: gatewayv1.HTTPRouteSpecRulesArray{
+					gatewayv1.HTTPRouteSpecRulesArgs{
+						Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
+							gatewayv1.HTTPRouteSpecRulesFiltersArgs{
+								RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
+									Scheme:     pulumi.String("https"),
+									StatusCode: pulumi.Int(301),
+								},
+								Type: pulumi.String("RequestRedirect"),
+							},
+						},
+					},
+				},
+			},
+		}, pulumi.Provider(kubernetesProvider))
+	if err != nil {
+		return errors.Wrap(err, "error creating HTTP redirect route for SigNoz UI")
 	}
 
 	// Create HTTPRoute for HTTPS traffic to SigNoz frontend service
