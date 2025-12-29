@@ -1,10 +1,12 @@
-version?=dev
 name=project-planton
-gcs_bucket=project-planton-downloads
 name_local=project-planton
 pkg=github.com/project-planton/project-planton
 build_dir=build
+version?=$(shell python3 tools/ci/release/next_version.py patch 2>/dev/null || echo "dev")
 LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
+
+# bump: major, minor, or patch (default)
+bump ?= patch
 BAZEL?=./bazelw
 
 # If BUILDBUDDY_API_KEY is set, enable the :bb config and inject only the header.
@@ -155,28 +157,20 @@ show-todo:
 release-buf:
 	pushd apis;buf push;buf push --label ${version};popd
 
-.PHONY: release-github
-release-github:
-	git tag ${version}
-	git push origin ${version}
-	@if ! command -v gh >/dev/null 2>&1; then \
-		echo "GitHub CLI (gh) not found. Install from https://cli.github.com/"; \
-		exit 1; \
-	fi
-	@if ! gh auth status >/dev/null 2>&1; then \
-		echo "GitHub CLI is not authenticated. Run: gh auth login"; \
-		exit 1; \
-	fi
-	@assets=""; \
-	for f in ${build_dir}/${name}-darwin-amd64 ${build_dir}/${name}-darwin-arm64 ${build_dir}/${name}-linux apis/internal/generated/docs/docs.json; do \
-		if [ -f "$$f" ]; then assets="$$assets $$f"; fi; \
-	done; \
-	echo "Creating GitHub release ${version} with assets: $$assets"; \
-#	gh release create "${version}" --title "${version}" --generate-notes $$assets
-	gh release create "${version}" --title "${version}" --generate-notes
+.PHONY: next-version
+next-version:  ## show what the next version would be
+	@python3 tools/ci/release/next_version.py $(bump)
+
+.PHONY: snapshot
+snapshot: deps  ## build a local snapshot using GoReleaser
+	goreleaser release --snapshot --clean --skip=publish
 
 .PHONY: release
-release: protos build-cli test release-github release-buf
+release: test  ## auto-bump version, tag & push (bump=major|minor|patch, default: patch)
+	@version=$$(python3 tools/ci/release/next_version.py $(bump)); \
+	echo "Releasing: $$version ($(bump) bump)"; \
+	git tag -a $$version -m "$$version"; \
+	git push origin $$version
 
 .PHONY: run-docs
 run-docs:
