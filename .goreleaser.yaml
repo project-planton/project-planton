@@ -1,0 +1,76 @@
+version: 2
+
+project_name: project-planton
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: project-planton
+    main: .
+    binary: project-planton
+    ldflags:
+      - -s -w -X github.com/project-planton/project-planton/internal/cli/version.Version={{.Version}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: default
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+
+release:
+  github:
+    owner: project-planton
+    name: project-planton
+
+homebrew_casks:
+  - name: project-planton
+    repository:
+      owner: project-planton
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    homepage: https://github.com/project-planton/project-planton
+    description: "Project Planton CLI - Infrastructure as Code made simple"
+    binaries:
+      - project-planton
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/project-planton"]
+          end
+    caveats: |
+      Installation Complete!
+
+      Project Planton CLI helps you manage infrastructure deployments.
+
+      Quick Start
+
+      1. Initialize a new project:
+         project-planton init
+
+      2. Check the version:
+         project-planton version
+
+      3. Get help:
+         project-planton --help
+
+      Documentation: https://github.com/project-planton/project-planton
+
