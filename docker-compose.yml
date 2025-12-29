@@ -25,6 +25,7 @@ services:
       # Frontend configuration
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
+      - API_URL=${API_URL:-${NEXT_PUBLIC_API_URL:-http://localhost:50051}}
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:50051}
       - PORT=3000
       - HOSTNAME=0.0.0.0
