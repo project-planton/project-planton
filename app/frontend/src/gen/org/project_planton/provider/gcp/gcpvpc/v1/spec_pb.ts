@@ -14,7 +14,41 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/gcp/gcpvpc/v1/spec.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpvpc_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CjVvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3B2cGMvdjEvc3BlYy5wcm90bxIqb3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxIuMCCgpHY3BWcGNTcGVjEngKCnByb2plY3RfaWQYASABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCKLpIA8gBAYjUYeEEktRhGXN0YXR1cy5vdXRwdXRzLnByb2plY3RfaWQSHwoXYXV0b19jcmVhdGVfc3VibmV0d29ya3MYAiABKAgSZgoMcm91dGluZ19tb2RlGAMgASgOMj0ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxLkdjcFZwY1JvdXRpbmdNb2RlQgyKph0IUkVHSU9OQUxIAIgBARJBCgxuZXR3b3JrX25hbWUYBCABKAlCK7pIKMgBAXIjMiFeW2Etel0oW2EtejAtOS1dezAsNjF9W2EtejAtOV0pPyRCDwoNX3JvdXRpbmdfbW9kZSotChFHY3BWcGNSb3V0aW5nTW9kZRIMCghSRUdJT05BTBAAEgoKBkdMT0JBTBABQusCCi5jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxQglTcGVjUHJvdG9QAVpjZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9nY3AvZ2NwdnBjL3YxO2djcHZwY3YxogIFT1BQR0eqAilPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcHZwYy5WMcoCKU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2NwdnBjXFYx4gI1T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3B2cGNcVjFcR1BCTWV0YWRhdGHqAi5Pcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3B2cGM6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
+  fileDesc("CjVvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3B2cGMvdjEvc3BlYy5wcm90bxIqb3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxImIKG0djcFZwY1ByaXZhdGVTZXJ2aWNlc0FjY2VzcxIPCgdlbmFibGVkGAEgASgIEjIKFmlwX3JhbmdlX3ByZWZpeF9sZW5ndGgYAiABKAVCErpICdgBARoEGBgoCIqmHQIxNiLNAwoKR2NwVnBjU3BlYxJ4Cgpwcm9qZWN0X2lkGAEgASgLMjoub3JnLnByb2plY3RfcGxhbnRvbi5zaGFyZWQuZm9yZWlnbmtleS52MS5TdHJpbmdWYWx1ZU9yUmVmQii6SAPIAQGI1GHhBJLUYRlzdGF0dXMub3V0cHV0cy5wcm9qZWN0X2lkEh8KF2F1dG9fY3JlYXRlX3N1Ym5ldHdvcmtzGAIgASgIEmYKDHJvdXRpbmdfbW9kZRgDIAEoDjI9Lm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcHZwYy52MS5HY3BWcGNSb3V0aW5nTW9kZUIMiqYdCFJFR0lPTkFMSACIAQESQQoMbmV0d29ya19uYW1lGAQgASgJQiu6SCjIAQFyIzIhXlthLXpdKFthLXowLTktXXswLDYxfVthLXowLTldKT8kEmgKF3ByaXZhdGVfc2VydmljZXNfYWNjZXNzGAUgASgLMkcub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxLkdjcFZwY1ByaXZhdGVTZXJ2aWNlc0FjY2Vzc0IPCg1fcm91dGluZ19tb2RlKi0KEUdjcFZwY1JvdXRpbmdNb2RlEgwKCFJFR0lPTkFMEAASCgoGR0xPQkFMEAFC6wIKLmNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3B2cGMudjFCCVNwZWNQcm90b1ABWmNnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3B2cGMvdjE7Z2NwdnBjdjGiAgVPUFBHR6oCKU9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5HY3AuR2NwdnBjLlYxygIpT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3B2cGNcVjHiAjVPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcHZwY1xWMVxHUEJNZXRhZGF0YeoCLk9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpHY3A6OkdjcHZwYzo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
+
+/**
+ * Private Services Access configuration for Google managed services (Cloud SQL, Memorystore, etc.).
+ * This creates VPC peering with Google's service network, enabling private IP connectivity.
+ * PREREQUISITE: servicenetworking.googleapis.com must be enabled on the project via GcpProject.
+ *
+ * @generated from message org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccess
+ */
+export type GcpVpcPrivateServicesAccess = Message<"org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccess"> & {
+  /**
+   * Enable Private Services Access (VPC peering with Google's service network).
+   * When enabled, Google managed services can be assigned private IPs from this VPC.
+   *
+   * @generated from field: bool enabled = 1;
+   */
+  enabled: boolean;
+
+  /**
+   * IP range prefix length for private services allocation.
+   * Determines how many IPs are reserved for Google managed services.
+   * Default: 16 (/16 = 65,536 IPs). Valid range: 8-24.
+   * Use smaller prefix (more IPs) if running many managed service instances.
+   *
+   * @generated from field: int32 ip_range_prefix_length = 2;
+   */
+  ipRangePrefixLength: number;
+};
+
+/**
+ * Describes the message org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccess.
+ * Use `create(GcpVpcPrivateServicesAccessSchema)` to create a new message.
+ */
+export const GcpVpcPrivateServicesAccessSchema: GenMessage<GcpVpcPrivateServicesAccess> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_gcp_gcpvpc_v1_spec, 0);
 
 /**
  * GcpVpcSpec defines the essential configuration for a Google Cloud VPC (Virtual Private Cloud).
@@ -56,6 +90,15 @@ export type GcpVpcSpec = Message<"org.project_planton.provider.gcp.gcpvpc.v1.Gcp
    * @generated from field: string network_name = 4;
    */
   networkName: string;
+
+  /**
+   * Private Services Access configuration for connecting to Google managed services
+   * (Cloud SQL, Memorystore, Filestore, etc.) via private IP.
+   * PREREQUISITE: Enable servicenetworking.googleapis.com via GcpProject before using this.
+   *
+   * @generated from field: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccess private_services_access = 5;
+   */
+  privateServicesAccess?: GcpVpcPrivateServicesAccess;
 };
 
 /**
@@ -63,7 +106,7 @@ export type GcpVpcSpec = Message<"org.project_planton.provider.gcp.gcpvpc.v1.Gcp
  * Use `create(GcpVpcSpecSchema)` to create a new message.
  */
 export const GcpVpcSpecSchema: GenMessage<GcpVpcSpec> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_gcp_gcpvpc_v1_spec, 0);
+  messageDesc(file_org_project_planton_provider_gcp_gcpvpc_v1_spec, 1);
 
 /**
  * Allowed values for VPC dynamic routing mode.

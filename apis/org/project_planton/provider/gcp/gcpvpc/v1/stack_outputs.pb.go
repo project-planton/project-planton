@@ -26,8 +26,14 @@ type GcpVpcStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Full self-link URL of the created network (useful for connecting subnets or other resources to this VPC).
 	NetworkSelfLink string `protobuf:"bytes,1,opt,name=network_self_link,json=networkSelfLink,proto3" json:"network_self_link,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Name of the allocated IP range for private services (only set if private_services_access is enabled).
+	// This range is used by Google managed services (Cloud SQL, Memorystore, etc.) for private IP assignment.
+	PrivateServicesIpRangeName string `protobuf:"bytes,2,opt,name=private_services_ip_range_name,json=privateServicesIpRangeName,proto3" json:"private_services_ip_range_name,omitempty"`
+	// CIDR of the allocated IP range for private services (only set if private_services_access is enabled).
+	// Example: "10.100.0.0/16"
+	PrivateServicesIpRangeCidr string `protobuf:"bytes,3,opt,name=private_services_ip_range_cidr,json=privateServicesIpRangeCidr,proto3" json:"private_services_ip_range_cidr,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *GcpVpcStackOutputs) Reset() {
@@ -67,13 +73,29 @@ func (x *GcpVpcStackOutputs) GetNetworkSelfLink() string {
 	return ""
 }
 
+func (x *GcpVpcStackOutputs) GetPrivateServicesIpRangeName() string {
+	if x != nil {
+		return x.PrivateServicesIpRangeName
+	}
+	return ""
+}
+
+func (x *GcpVpcStackOutputs) GetPrivateServicesIpRangeCidr() string {
+	if x != nil {
+		return x.PrivateServicesIpRangeCidr
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_gcp_gcpvpc_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpvpc_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	">org/project_planton/provider/gcp/gcpvpc/v1/stack_outputs.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\"@\n" +
+	">org/project_planton/provider/gcp/gcpvpc/v1/stack_outputs.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\"\xc8\x01\n" +
 	"\x12GcpVpcStackOutputs\x12*\n" +
-	"\x11network_self_link\x18\x01 \x01(\tR\x0fnetworkSelfLinkB\xf3\x02\n" +
+	"\x11network_self_link\x18\x01 \x01(\tR\x0fnetworkSelfLink\x12B\n" +
+	"\x1eprivate_services_ip_range_name\x18\x02 \x01(\tR\x1aprivateServicesIpRangeName\x12B\n" +
+	"\x1eprivate_services_ip_range_cidr\x18\x03 \x01(\tR\x1aprivateServicesIpRangeCidrB\xf3\x02\n" +
 	".com.org.project_planton.provider.gcp.gcpvpc.v1B\x11StackOutputsProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
 
 var (

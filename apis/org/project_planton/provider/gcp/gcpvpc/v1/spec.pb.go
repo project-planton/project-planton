@@ -71,6 +71,67 @@ func (GcpVpcRoutingMode) EnumDescriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+// Private Services Access configuration for Google managed services (Cloud SQL, Memorystore, etc.).
+// This creates VPC peering with Google's service network, enabling private IP connectivity.
+// PREREQUISITE: servicenetworking.googleapis.com must be enabled on the project via GcpProject.
+type GcpVpcPrivateServicesAccess struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Enable Private Services Access (VPC peering with Google's service network).
+	// When enabled, Google managed services can be assigned private IPs from this VPC.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// IP range prefix length for private services allocation.
+	// Determines how many IPs are reserved for Google managed services.
+	// Default: 16 (/16 = 65,536 IPs). Valid range: 8-24.
+	// Use smaller prefix (more IPs) if running many managed service instances.
+	IpRangePrefixLength int32 `protobuf:"varint,2,opt,name=ip_range_prefix_length,json=ipRangePrefixLength,proto3" json:"ip_range_prefix_length,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *GcpVpcPrivateServicesAccess) Reset() {
+	*x = GcpVpcPrivateServicesAccess{}
+	mi := &file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GcpVpcPrivateServicesAccess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GcpVpcPrivateServicesAccess) ProtoMessage() {}
+
+func (x *GcpVpcPrivateServicesAccess) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GcpVpcPrivateServicesAccess.ProtoReflect.Descriptor instead.
+func (*GcpVpcPrivateServicesAccess) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GcpVpcPrivateServicesAccess) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *GcpVpcPrivateServicesAccess) GetIpRangePrefixLength() int32 {
+	if x != nil {
+		return x.IpRangePrefixLength
+	}
+	return 0
+}
+
 // GcpVpcSpec defines the essential configuration for a Google Cloud VPC (Virtual Private Cloud).
 type GcpVpcSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -88,14 +149,18 @@ type GcpVpcSpec struct {
 	// Must be 1-63 characters, lowercase letters, numbers, or hyphens.
 	// Must start with a lowercase letter and end with a lowercase letter or number.
 	// Example: "my-vpc-network", "prod-network"
-	NetworkName   string `protobuf:"bytes,4,opt,name=network_name,json=networkName,proto3" json:"network_name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	NetworkName string `protobuf:"bytes,4,opt,name=network_name,json=networkName,proto3" json:"network_name,omitempty"`
+	// Private Services Access configuration for connecting to Google managed services
+	// (Cloud SQL, Memorystore, Filestore, etc.) via private IP.
+	// PREREQUISITE: Enable servicenetworking.googleapis.com via GcpProject before using this.
+	PrivateServicesAccess *GcpVpcPrivateServicesAccess `protobuf:"bytes,5,opt,name=private_services_access,json=privateServicesAccess,proto3" json:"private_services_access,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *GcpVpcSpec) Reset() {
 	*x = GcpVpcSpec{}
-	mi := &file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -107,7 +172,7 @@ func (x *GcpVpcSpec) String() string {
 func (*GcpVpcSpec) ProtoMessage() {}
 
 func (x *GcpVpcSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -120,7 +185,7 @@ func (x *GcpVpcSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpVpcSpec.ProtoReflect.Descriptor instead.
 func (*GcpVpcSpec) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GcpVpcSpec) GetProjectId() *v1.StringValueOrRef {
@@ -151,18 +216,29 @@ func (x *GcpVpcSpec) GetNetworkName() string {
 	return ""
 }
 
+func (x *GcpVpcSpec) GetPrivateServicesAccess() *GcpVpcPrivateServicesAccess {
+	if x != nil {
+		return x.PrivateServicesAccess
+	}
+	return nil
+}
+
 var File_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5org/project_planton/provider/gcp/gcpvpc/v1/spec.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa0\x03\n" +
+	"5org/project_planton/provider/gcp/gcpvpc/v1/spec.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\x80\x01\n" +
+	"\x1bGcpVpcPrivateServicesAccess\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12G\n" +
+	"\x16ip_range_prefix_length\x18\x02 \x01(\x05B\x12\xbaH\t\xd8\x01\x01\x1a\x04\x18\x18(\b\x8a\xa6\x1d\x0216R\x13ipRangePrefixLength\"\xa1\x04\n" +
 	"\n" +
 	"GcpVpcSpec\x12\x83\x01\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
 	"\x17auto_create_subnetworks\x18\x02 \x01(\bR\x15autoCreateSubnetworks\x12s\n" +
 	"\frouting_mode\x18\x03 \x01(\x0e2=.org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingModeB\f\x8a\xa6\x1d\bREGIONALH\x00R\vroutingMode\x88\x01\x01\x12N\n" +
-	"\fnetwork_name\x18\x04 \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\vnetworkNameB\x0f\n" +
+	"\fnetwork_name\x18\x04 \x01(\tB+\xbaH(\xc8\x01\x01r#2!^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$R\vnetworkName\x12\x7f\n" +
+	"\x17private_services_access\x18\x05 \x01(\v2G.org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccessR\x15privateServicesAccessB\x0f\n" +
 	"\r_routing_mode*-\n" +
 	"\x11GcpVpcRoutingMode\x12\f\n" +
 	"\bREGIONAL\x10\x00\x12\n" +
@@ -183,20 +259,22 @@ func file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDescGZIP() []
 }
 
 var file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_goTypes = []any{
-	(GcpVpcRoutingMode)(0),      // 0: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingMode
-	(*GcpVpcSpec)(nil),          // 1: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcSpec
-	(*v1.StringValueOrRef)(nil), // 2: org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	(GcpVpcRoutingMode)(0),              // 0: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingMode
+	(*GcpVpcPrivateServicesAccess)(nil), // 1: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccess
+	(*GcpVpcSpec)(nil),                  // 2: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcSpec
+	(*v1.StringValueOrRef)(nil),         // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 0: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	0, // 1: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcSpec.routing_mode:type_name -> org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingMode
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 2: org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcSpec.private_services_access:type_name -> org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcPrivateServicesAccess
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_init() }
@@ -204,14 +282,14 @@ func file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_init() {
 	if File_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
+	file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

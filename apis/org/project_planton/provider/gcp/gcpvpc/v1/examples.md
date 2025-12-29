@@ -9,6 +9,7 @@ This document provides comprehensive examples for deploying GCP VPCs using Proje
 - [Example 3: Multi-Environment Setup with Consistent Naming](#example-3-multi-environment-setup-with-consistent-naming)
 - [Example 4: Shared VPC Host Network](#example-4-shared-vpc-host-network)
 - [Example 5: VPC with Foreign Key Reference](#example-5-vpc-with-foreign-key-reference)
+- [Example 6: VPC with Private Services Access](#example-6-vpc-with-private-services-access)
 
 ---
 
@@ -322,6 +323,117 @@ spec:
 **Use direct values when:**
 - The project already exists and is managed outside Project Planton
 - You need to deploy the VPC independently without dependency tracking
+
+---
+
+## Example 6: VPC with Private Services Access
+
+### Use Case
+
+A VPC configured for private connectivity to Google managed services (Cloud SQL, Memorystore, Filestore, etc.). This enables private IP addresses for managed databases and caches without exposing them to the public internet.
+
+### Architecture
+
+- **Private Services Access**: VPC peering with Google's service network
+- **IP allocation**: Reserved IP range for Google managed services
+- **Secure by default**: Managed services accessible only from within the VPC
+
+### Prerequisites
+
+The `servicenetworking.googleapis.com` API must be enabled on the GCP project. This is handled at the project level (not VPC level) to avoid issues when multiple VPCs share the same project:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpProject
+metadata:
+  name: my-prod-project
+spec:
+  projectId: my-prod-project-123
+  billingAccountId: 012345-ABCDEF-678910
+  enabledApis:
+    - compute.googleapis.com
+    - servicenetworking.googleapis.com  # Required for Private Services Access
+```
+
+### Manifest
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpVpc
+metadata:
+  name: prod-vpc
+  id: gcpvpc-prod-001
+  org: platform-team
+  env: production
+spec:
+  projectId:
+    ref:
+      kind: GcpProject
+      name: my-prod-project
+  networkName: prod-vpc
+  autoCreateSubnetworks: false
+  privateServicesAccess:
+    enabled: true
+    ipRangePrefixLength: 16  # /16 = 65,536 IPs for managed services
+```
+
+### What Gets Created
+
+- VPC network in custom mode
+- IP range allocated for Google managed services (e.g., `10.100.0.0/16`)
+- VPC peering with Google's service network (`servicenetworking.googleapis.com`)
+
+### IP Range Prefix Length
+
+The `ipRangePrefixLength` determines how many IPs are reserved for Google managed services:
+
+| Prefix | IPs Available | Use Case |
+|--------|---------------|----------|
+| `/24` | 256 | Tiny - just a few instances |
+| `/20` | 4,096 | Small - dozens of instances |
+| `/16` | 65,536 | **Recommended** - hundreds of instances |
+| `/8` | 16.7M | Enterprise - massive scale |
+
+**Default**: `/16` (65,536 IPs) - sufficient for most use cases.
+
+### Next Steps: Deploy Cloud SQL with Private IP
+
+After deploying the VPC with Private Services Access, Cloud SQL can use private IP:
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: prod-postgres
+  env: production
+spec:
+  projectId:
+    ref:
+      kind: GcpProject
+      name: my-prod-project
+  databaseEngine: POSTGRESQL
+  databaseVersion: POSTGRES_15
+  tier: db-custom-2-4096
+  storageGb: 100
+  region: us-central1
+  network:
+    privateIpEnabled: true
+    vpcId:
+      ref:
+        kind: GcpVpc
+        name: prod-vpc  # References the VPC with Private Services Access
+```
+
+### Why Private Services Access at VPC Level?
+
+**API enablement belongs at the GcpProject level**, not VPC level, because:
+- If VPC A and VPC B both enable `servicenetworking.googleapis.com`
+- When VPC A is destroyed, the API might be disabled
+- This would break VPC B and all dependent resources
+
+The VPC module:
+- **Assumes** `servicenetworking.googleapis.com` is already enabled
+- **Only creates** the IP allocation and VPC peering connection
 
 ---
 
