@@ -29,5 +29,25 @@ variable "spec" {
 
     # Enable object versioning (Note: R2 does not support versioning)
     versioning_enabled = optional(bool, false)
+
+    # Custom domain configuration for the bucket
+    custom_domain = optional(object({
+      # Whether to enable custom domain access for the bucket
+      enabled = bool
+
+      # The Cloudflare Zone ID (literal value or reference)
+      zone_id = object({
+        value      = optional(string)
+        value_from = optional(object({
+          kind       = optional(string)
+          env        = optional(string)
+          name       = string
+          field_path = optional(string)
+        }))
+      })
+
+      # The full domain name to use for accessing the bucket
+      domain = string
+    }))
   })
 }

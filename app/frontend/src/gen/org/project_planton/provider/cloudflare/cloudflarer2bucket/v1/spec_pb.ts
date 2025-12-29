@@ -5,13 +5,15 @@
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file org/project_planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto.
  */
 export const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkhvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZXIyYnVja2V0L3YxL3NwZWMucHJvdG8SPW9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJlcjJidWNrZXQudjEisgIKFkNsb3VkZmxhcmVSMkJ1Y2tldFNwZWMSQgoLYnVja2V0X25hbWUYASABKAlCLbpIKsgBAXIlEAMYPzIfXlthLXowLTldKFstYS16MC05XSpbYS16MC05XSk/JBIyCgphY2NvdW50X2lkGAIgASgJQh66SBvIAQFyFjIRXlswLTlhLWZBLUZdezMyfSSYASASbQoIbG9jYXRpb24YAyABKA4yUy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXIyYnVja2V0LnYxLkNsb3VkZmxhcmVSMkxvY2F0aW9uQga6SAPIAQESFQoNcHVibGljX2FjY2VzcxgEIAEoCBIaChJ2ZXJzaW9uaW5nX2VuYWJsZWQYBSABKAgqeAoUQ2xvdWRmbGFyZVIyTG9jYXRpb24SJgoiQ0xPVURGTEFSRV9SMl9MT0NBVElPTl9VTlNQRUNJRklFRBAAEggKBFdOQU0QARIICgRFTkFNEAISCAoEV0VVUhADEggKBEVFVVIQBBIICgRBUEFDEAUSBgoCT0MQBkLqAwpBY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJlcjJidWNrZXQudjFCCVNwZWNQcm90b1ABWoIBZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9jbG91ZGZsYXJlL2Nsb3VkZmxhcmVyMmJ1Y2tldC92MTtjbG91ZGZsYXJlcjJidWNrZXR2MaICBU9QUENDqgI8T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkNsb3VkZmxhcmUuQ2xvdWRmbGFyZXIyYnVja2V0LlYxygI8T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXENsb3VkZmxhcmVcQ2xvdWRmbGFyZXIyYnVja2V0XFYx4gJIT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXENsb3VkZmxhcmVcQ2xvdWRmbGFyZXIyYnVja2V0XFYxXEdQQk1ldGFkYXRh6gJBT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6OkNsb3VkZmxhcmU6OkNsb3VkZmxhcmVyMmJ1Y2tldDo6VjFiBnByb3RvMw", [file_buf_validate_validate]);
+  fileDesc("CkhvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZXIyYnVja2V0L3YxL3NwZWMucHJvdG8SPW9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJlcjJidWNrZXQudjEirgMKFkNsb3VkZmxhcmVSMkJ1Y2tldFNwZWMSQgoLYnVja2V0X25hbWUYASABKAlCLbpIKsgBAXIlEAMYPzIfXlthLXowLTldKFstYS16MC05XSpbYS16MC05XSk/JBIyCgphY2NvdW50X2lkGAIgASgJQh66SBvIAQFyFjIRXlswLTlhLWZBLUZdezMyfSSYASASbQoIbG9jYXRpb24YAyABKA4yUy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXIyYnVja2V0LnYxLkNsb3VkZmxhcmVSMkxvY2F0aW9uQga6SAPIAQESFQoNcHVibGljX2FjY2VzcxgEIAEoCBIaChJ2ZXJzaW9uaW5nX2VuYWJsZWQYBSABKAgSegoNY3VzdG9tX2RvbWFpbhgGIAEoCzJjLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJlcjJidWNrZXQudjEuQ2xvdWRmbGFyZVIyQnVja2V0Q3VzdG9tRG9tYWluQ29uZmlnIrYDCiRDbG91ZGZsYXJlUjJCdWNrZXRDdXN0b21Eb21haW5Db25maWcSDwoHZW5hYmxlZBgBIAEoCBJsCgd6b25lX2lkGAIgASgLMjoub3JnLnByb2plY3RfcGxhbnRvbi5zaGFyZWQuZm9yZWlnbmtleS52MS5TdHJpbmdWYWx1ZU9yUmVmQh+I1GGIDpLUYRZzdGF0dXMub3V0cHV0cy56b25lX2lkEhgKBmRvbWFpbhgDIAEoCUIIukgFcgMY/QE69AG6SPABGncKHmN1c3RvbV9kb21haW5fem9uZV9pZF9yZXF1aXJlZBIxem9uZV9pZCBpcyByZXF1aXJlZCB3aGVuIGN1c3RvbSBkb21haW4gaXMgZW5hYmxlZBoiIXRoaXMuZW5hYmxlZCB8fCBoYXModGhpcy56b25lX2lkKRp1Ch1jdXN0b21fZG9tYWluX2RvbWFpbl9yZXF1aXJlZBIwZG9tYWluIGlzIHJlcXVpcmVkIHdoZW4gY3VzdG9tIGRvbWFpbiBpcyBlbmFibGVkGiIhdGhpcy5lbmFibGVkIHx8IHRoaXMuZG9tYWluICE9ICcnKloKFENsb3VkZmxhcmVSMkxvY2F0aW9uEggKBGF1dG8QABIICgRXTkFNEAESCAoERU5BTRACEggKBFdFVVIQAxIICgRFRVVSEAQSCAoEQVBBQxAFEgYKAk9DEAZC6gMKQWNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZXIyYnVja2V0LnYxQglTcGVjUHJvdG9QAVqCAWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvY2xvdWRmbGFyZS9jbG91ZGZsYXJlcjJidWNrZXQvdjE7Y2xvdWRmbGFyZXIyYnVja2V0djGiAgVPUFBDQ6oCPE9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5DbG91ZGZsYXJlLkNsb3VkZmxhcmVyMmJ1Y2tldC5WMcoCPE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxDbG91ZGZsYXJlXENsb3VkZmxhcmVyMmJ1Y2tldFxWMeICSE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxDbG91ZGZsYXJlXENsb3VkZmxhcmVyMmJ1Y2tldFxWMVxHUEJNZXRhZGF0YeoCQU9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpDbG91ZGZsYXJlOjpDbG91ZGZsYXJlcjJidWNrZXQ6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * CloudflareR2BucketSpec defines the user configuration for a Cloudflare R2 bucket.
@@ -53,6 +55,13 @@ export type CloudflareR2BucketSpec = Message<"org.project_planton.provider.cloud
    * @generated from field: bool versioning_enabled = 5;
    */
   versioningEnabled: boolean;
+
+  /**
+   * custom domain configuration for the bucket
+   *
+   * @generated from field: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig custom_domain = 6;
+   */
+  customDomain?: CloudflareR2BucketCustomDomainConfig;
 };
 
 /**
@@ -63,6 +72,46 @@ export const CloudflareR2BucketSpecSchema: GenMessage<CloudflareR2BucketSpec> = 
   messageDesc(file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec, 0);
 
 /**
+ * CloudflareR2BucketCustomDomainConfig configures a custom domain for accessing the R2 bucket.
+ * When enabled, the bucket will be accessible via the specified domain.
+ *
+ * @generated from message org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig
+ */
+export type CloudflareR2BucketCustomDomainConfig = Message<"org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig"> & {
+  /**
+   * Whether to enable custom domain access for the bucket.
+   *
+   * @generated from field: bool enabled = 1;
+   */
+  enabled: boolean;
+
+  /**
+   * The Cloudflare Zone ID where the custom domain will be configured.
+   * Can be a literal value or referenced from a CloudflareDnsZone resource.
+   * Required when enabled is true.
+   *
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef zone_id = 2;
+   */
+  zoneId?: StringValueOrRef;
+
+  /**
+   * The full domain name to use for accessing the bucket (e.g., "media.example.com").
+   * Must be within the zone specified by zone_id.
+   * Required when enabled is true.
+   *
+   * @generated from field: string domain = 3;
+   */
+  domain: string;
+};
+
+/**
+ * Describes the message org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig.
+ * Use `create(CloudflareR2BucketCustomDomainConfigSchema)` to create a new message.
+ */
+export const CloudflareR2BucketCustomDomainConfigSchema: GenMessage<CloudflareR2BucketCustomDomainConfig> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec, 1);
+
+/**
  * Supported Cloudflare R2 bucket regions (location hints).
  * These values must match Cloudflare's expected location strings exactly.
  *
@@ -70,9 +119,11 @@ export const CloudflareR2BucketSpecSchema: GenMessage<CloudflareR2BucketSpec> = 
  */
 export enum CloudflareR2Location {
   /**
-   * @generated from enum value: CLOUDFLARE_R2_LOCATION_UNSPECIFIED = 0;
+   * Auto (Cloudflare chooses optimal region)
+   *
+   * @generated from enum value: auto = 0;
    */
-  CLOUDFLARE_R2_LOCATION_UNSPECIFIED = 0,
+  auto = 0,
 
   /**
    * Western North America (US West)

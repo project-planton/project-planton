@@ -13,3 +13,13 @@ resource "cloudflare_r2_bucket" "main" {
 # Note: R2 does not support object versioning
 # The versioning_enabled field is ignored
 
+# Custom domain for the R2 bucket
+# Created only when custom_domain.enabled is true
+resource "cloudflare_r2_custom_domain" "main" {
+  count = local.custom_domain_enabled ? 1 : 0
+
+  account_id  = local.account_id
+  bucket_name = cloudflare_r2_bucket.main.name
+  zone_id     = local.custom_domain_zone_id
+  hostname    = local.custom_domain_name
+}

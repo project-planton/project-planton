@@ -1,8 +1,6 @@
 package module
 
 import (
-	cloudflarer2bucketv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1"
-
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -15,25 +13,9 @@ func bucket(
 	cloudflareProvider *cloudflare.Provider,
 ) (*cloudflare.R2Bucket, error) {
 
-	// 1. Translate the enum into Cloudflare's location string.
-	// Cloudflare expects UPPERCASE location values.
-	var bucketLocation string
-	switch locals.CloudflareR2Bucket.Spec.Location {
-	case cloudflarer2bucketv1.CloudflareR2Location_WNAM:
-		bucketLocation = "WNAM"
-	case cloudflarer2bucketv1.CloudflareR2Location_ENAM:
-		bucketLocation = "ENAM"
-	case cloudflarer2bucketv1.CloudflareR2Location_WEUR:
-		bucketLocation = "WEUR"
-	case cloudflarer2bucketv1.CloudflareR2Location_EEUR:
-		bucketLocation = "EEUR"
-	case cloudflarer2bucketv1.CloudflareR2Location_APAC:
-		bucketLocation = "APAC"
-	case cloudflarer2bucketv1.CloudflareR2Location_OC:
-		bucketLocation = "OC"
-	default:
-		bucketLocation = "auto"
-	}
+	// 1. Get the location string directly from the enum.
+	// The enum values (auto, WNAM, ENAM, etc.) match Cloudflare's expected strings.
+	bucketLocation := locals.CloudflareR2Bucket.Spec.Location.String()
 
 	// 2. Create the bucket.
 	createdBucket, err := cloudflare.NewR2Bucket(
@@ -63,7 +45,27 @@ func bucket(
 		ctx.Log.Warn("Cloudflare R2 does not support object versioning – field will be ignored.", nil)
 	}
 
-	// 6. Export stack outputs.
+	// 6. Handle custom domain configuration.
+	if locals.CloudflareR2Bucket.Spec.CustomDomain != nil && locals.CloudflareR2Bucket.Spec.CustomDomain.Enabled {
+		customDomain := locals.CloudflareR2Bucket.Spec.CustomDomain
+		zoneId := customDomain.ZoneId.GetValue()
+
+		_, err := cloudflare.NewR2CustomDomain(ctx, "custom-domain", &cloudflare.R2CustomDomainArgs{
+			AccountId:  pulumi.String(locals.CloudflareR2Bucket.Spec.AccountId),
+			BucketName: createdBucket.Name,
+			ZoneId:     pulumi.String(zoneId),
+			Domain:     pulumi.String(customDomain.Domain),
+			Enabled:    pulumi.Bool(true),
+		}, pulumi.Provider(cloudflareProvider), pulumi.DependsOn([]pulumi.Resource{createdBucket}))
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to create Cloudflare R2 custom domain")
+		}
+
+		// Export custom domain URL
+		ctx.Export(OpCustomDomainUrl, pulumi.Sprintf("https://%s", customDomain.Domain))
+	}
+
+	// 7. Export stack outputs.
 	ctx.Export(OpBucketName, createdBucket.Name)
 
 	return createdBucket, nil

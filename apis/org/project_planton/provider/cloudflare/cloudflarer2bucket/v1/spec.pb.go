@@ -8,6 +8,7 @@ package cloudflarer2bucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,19 +28,19 @@ const (
 type CloudflareR2Location int32
 
 const (
-	CloudflareR2Location_CLOUDFLARE_R2_LOCATION_UNSPECIFIED CloudflareR2Location = 0
-	CloudflareR2Location_WNAM                               CloudflareR2Location = 1 // Western North America (US West)
-	CloudflareR2Location_ENAM                               CloudflareR2Location = 2 // Eastern North America (US East)
-	CloudflareR2Location_WEUR                               CloudflareR2Location = 3 // Western Europe
-	CloudflareR2Location_EEUR                               CloudflareR2Location = 4 // Eastern Europe
-	CloudflareR2Location_APAC                               CloudflareR2Location = 5 // Asia-Pacific
-	CloudflareR2Location_OC                                 CloudflareR2Location = 6 // Oceania
+	CloudflareR2Location_auto CloudflareR2Location = 0 // Auto (Cloudflare chooses optimal region)
+	CloudflareR2Location_WNAM CloudflareR2Location = 1 // Western North America (US West)
+	CloudflareR2Location_ENAM CloudflareR2Location = 2 // Eastern North America (US East)
+	CloudflareR2Location_WEUR CloudflareR2Location = 3 // Western Europe
+	CloudflareR2Location_EEUR CloudflareR2Location = 4 // Eastern Europe
+	CloudflareR2Location_APAC CloudflareR2Location = 5 // Asia-Pacific
+	CloudflareR2Location_OC   CloudflareR2Location = 6 // Oceania
 )
 
 // Enum value maps for CloudflareR2Location.
 var (
 	CloudflareR2Location_name = map[int32]string{
-		0: "CLOUDFLARE_R2_LOCATION_UNSPECIFIED",
+		0: "auto",
 		1: "WNAM",
 		2: "ENAM",
 		3: "WEUR",
@@ -48,13 +49,13 @@ var (
 		6: "OC",
 	}
 	CloudflareR2Location_value = map[string]int32{
-		"CLOUDFLARE_R2_LOCATION_UNSPECIFIED": 0,
-		"WNAM":                               1,
-		"ENAM":                               2,
-		"WEUR":                               3,
-		"EEUR":                               4,
-		"APAC":                               5,
-		"OC":                                 6,
+		"auto": 0,
+		"WNAM": 1,
+		"ENAM": 2,
+		"WEUR": 3,
+		"EEUR": 4,
+		"APAC": 5,
+		"OC":   6,
 	}
 )
 
@@ -98,8 +99,10 @@ type CloudflareR2BucketSpec struct {
 	PublicAccess bool `protobuf:"varint,4,opt,name=public_access,json=publicAccess,proto3" json:"public_access,omitempty"`
 	// enable object versioning for the bucket (default: false)
 	VersioningEnabled bool `protobuf:"varint,5,opt,name=versioning_enabled,json=versioningEnabled,proto3" json:"versioning_enabled,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// custom domain configuration for the bucket
+	CustomDomain  *CloudflareR2BucketCustomDomainConfig `protobuf:"bytes,6,opt,name=custom_domain,json=customDomain,proto3" json:"custom_domain,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CloudflareR2BucketSpec) Reset() {
@@ -150,7 +153,7 @@ func (x *CloudflareR2BucketSpec) GetLocation() CloudflareR2Location {
 	if x != nil {
 		return x.Location
 	}
-	return CloudflareR2Location_CLOUDFLARE_R2_LOCATION_UNSPECIFIED
+	return CloudflareR2Location_auto
 }
 
 func (x *CloudflareR2BucketSpec) GetPublicAccess() bool {
@@ -167,11 +170,87 @@ func (x *CloudflareR2BucketSpec) GetVersioningEnabled() bool {
 	return false
 }
 
+func (x *CloudflareR2BucketSpec) GetCustomDomain() *CloudflareR2BucketCustomDomainConfig {
+	if x != nil {
+		return x.CustomDomain
+	}
+	return nil
+}
+
+// CloudflareR2BucketCustomDomainConfig configures a custom domain for accessing the R2 bucket.
+// When enabled, the bucket will be accessible via the specified domain.
+type CloudflareR2BucketCustomDomainConfig struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether to enable custom domain access for the bucket.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The Cloudflare Zone ID where the custom domain will be configured.
+	// Can be a literal value or referenced from a CloudflareDnsZone resource.
+	// Required when enabled is true.
+	ZoneId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// The full domain name to use for accessing the bucket (e.g., "media.example.com").
+	// Must be within the zone specified by zone_id.
+	// Required when enabled is true.
+	Domain        string `protobuf:"bytes,3,opt,name=domain,proto3" json:"domain,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CloudflareR2BucketCustomDomainConfig) Reset() {
+	*x = CloudflareR2BucketCustomDomainConfig{}
+	mi := &file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudflareR2BucketCustomDomainConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudflareR2BucketCustomDomainConfig) ProtoMessage() {}
+
+func (x *CloudflareR2BucketCustomDomainConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudflareR2BucketCustomDomainConfig.ProtoReflect.Descriptor instead.
+func (*CloudflareR2BucketCustomDomainConfig) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CloudflareR2BucketCustomDomainConfig) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *CloudflareR2BucketCustomDomainConfig) GetZoneId() *v1.StringValueOrRef {
+	if x != nil {
+		return x.ZoneId
+	}
+	return nil
+}
+
+func (x *CloudflareR2BucketCustomDomainConfig) GetDomain() string {
+	if x != nil {
+		return x.Domain
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x12=org.project_planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\"\xf4\x02\n" +
+	"Horg/project_planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x12=org.project_planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xff\x03\n" +
 	"\x16CloudflareR2BucketSpec\x12N\n" +
 	"\vbucket_name\x18\x01 \x01(\tB-\xbaH*\xc8\x01\x01r%\x10\x03\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\n" +
 	"bucketName\x12=\n" +
@@ -179,9 +258,16 @@ const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_pr
 	"account_id\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12w\n" +
 	"\blocation\x18\x03 \x01(\x0e2S.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2LocationB\x06\xbaH\x03\xc8\x01\x01R\blocation\x12#\n" +
 	"\rpublic_access\x18\x04 \x01(\bR\fpublicAccess\x12-\n" +
-	"\x12versioning_enabled\x18\x05 \x01(\bR\x11versioningEnabled*x\n" +
-	"\x14CloudflareR2Location\x12&\n" +
-	"\"CLOUDFLARE_R2_LOCATION_UNSPECIFIED\x10\x00\x12\b\n" +
+	"\x12versioning_enabled\x18\x05 \x01(\bR\x11versioningEnabled\x12\x88\x01\n" +
+	"\rcustom_domain\x18\x06 \x01(\v2c.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfigR\fcustomDomain\"\xcf\x03\n" +
+	"$CloudflareR2BucketCustomDomainConfig\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12t\n" +
+	"\azone_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\x88\x0e\x92\xd4a\x16status.outputs.zone_idR\x06zoneId\x12 \n" +
+	"\x06domain\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\xfd\x01R\x06domain:\xf4\x01\xbaH\xf0\x01\x1aw\n" +
+	"\x1ecustom_domain_zone_id_required\x121zone_id is required when custom domain is enabled\x1a\"!this.enabled || has(this.zone_id)\x1au\n" +
+	"\x1dcustom_domain_domain_required\x120domain is required when custom domain is enabled\x1a\"!this.enabled || this.domain != ''*Z\n" +
+	"\x14CloudflareR2Location\x12\b\n" +
+	"\x04auto\x10\x00\x12\b\n" +
 	"\x04WNAM\x10\x01\x12\b\n" +
 	"\x04ENAM\x10\x02\x12\b\n" +
 	"\x04WEUR\x10\x03\x12\b\n" +
@@ -203,18 +289,22 @@ func file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_pro
 }
 
 var file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_goTypes = []any{
-	(CloudflareR2Location)(0),      // 0: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Location
-	(*CloudflareR2BucketSpec)(nil), // 1: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec
+	(CloudflareR2Location)(0),                    // 0: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Location
+	(*CloudflareR2BucketSpec)(nil),               // 1: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec
+	(*CloudflareR2BucketCustomDomainConfig)(nil), // 2: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig
+	(*v1.StringValueOrRef)(nil),                  // 3: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_depIdxs = []int32{
 	0, // 0: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec.location:type_name -> org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Location
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec.custom_domain:type_name -> org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig
+	3, // 2: org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketCustomDomainConfig.zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_init() }
@@ -228,7 +318,7 @@ func file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_pro
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -3,11 +3,12 @@ syntax = "proto3";
 package org.project_planton.provider.cloudflare.cloudflarer2bucket.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // Supported Cloudflare R2 bucket regions (location hints).
 // These values must match Cloudflare's expected location strings exactly.
 enum CloudflareR2Location {
-  CLOUDFLARE_R2_LOCATION_UNSPECIFIED = 0;
+  auto = 0; // Auto (Cloudflare chooses optimal region)
   WNAM = 1; // Western North America (US West)
   ENAM = 2; // Eastern North America (US East)
   WEUR = 3; // Western Europe
@@ -41,4 +42,41 @@ message CloudflareR2BucketSpec {
 
   // enable object versioning for the bucket (default: false)
   bool versioning_enabled = 5;
+
+  // custom domain configuration for the bucket
+  CloudflareR2BucketCustomDomainConfig custom_domain = 6;
+}
+
+// CloudflareR2BucketCustomDomainConfig configures a custom domain for accessing the R2 bucket.
+// When enabled, the bucket will be accessible via the specified domain.
+message CloudflareR2BucketCustomDomainConfig {
+  // CEL validation: zone_id is required when enabled is true
+  option (buf.validate.message).cel = {
+    id: "custom_domain_zone_id_required"
+    message: "zone_id is required when custom domain is enabled"
+    expression: "!this.enabled || has(this.zone_id)"
+  };
+
+  // CEL validation: domain is required when enabled is true
+  option (buf.validate.message).cel = {
+    id: "custom_domain_domain_required"
+    message: "domain is required when custom domain is enabled"
+    expression: "!this.enabled || this.domain != ''"
+  };
+
+  // Whether to enable custom domain access for the bucket.
+  bool enabled = 1;
+
+  // The Cloudflare Zone ID where the custom domain will be configured.
+  // Can be a literal value or referenced from a CloudflareDnsZone resource.
+  // Required when enabled is true.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef zone_id = 2 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = CloudflareDnsZone,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.zone_id"
+  ];
+
+  // The full domain name to use for accessing the bucket (e.g., "media.example.com").
+  // Must be within the zone specified by zone_id.
+  // Required when enabled is true.
+  string domain = 3 [(buf.validate.field).string.max_len = 253];
 }
