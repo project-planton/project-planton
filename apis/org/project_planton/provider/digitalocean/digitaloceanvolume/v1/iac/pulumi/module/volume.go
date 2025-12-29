@@ -33,12 +33,10 @@ func volume(
 		volumeArgs.Tags = pulumi.ToStringArray(locals.DigitalOceanVolume.Spec.Tags)
 	}
 
-	// Filesystem type mapping (omit when NONE).
-	switch locals.DigitalOceanVolume.Spec.FilesystemType {
-	case 1: // EXT4
-		volumeArgs.FilesystemType = pulumi.StringPtr("ext4")
-	case 2: // XFS
-		volumeArgs.FilesystemType = pulumi.StringPtr("xfs")
+	// Filesystem type (omit when unformatted).
+	fsType := locals.DigitalOceanVolume.Spec.FilesystemType.String()
+	if fsType != "unformatted" {
+		volumeArgs.FilesystemType = pulumi.StringPtr(fsType)
 	}
 
 	// 2. Create the Volume.

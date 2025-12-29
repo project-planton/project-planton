@@ -24,25 +24,26 @@ const (
 )
 
 // Supported filesystem types for formatting a DigitalOcean volume.
+// Values match DigitalOcean API expected strings.
 type DigitalOceanVolumeFilesystemType int32
 
 const (
-	DigitalOceanVolumeFilesystemType_NONE DigitalOceanVolumeFilesystemType = 0 // Do not format the volume (leave unformatted).
-	DigitalOceanVolumeFilesystemType_EXT4 DigitalOceanVolumeFilesystemType = 1 // Format the volume with an ext4 filesystem.
-	DigitalOceanVolumeFilesystemType_XFS  DigitalOceanVolumeFilesystemType = 2 // Format the volume with an XFS filesystem.
+	DigitalOceanVolumeFilesystemType_unformatted DigitalOceanVolumeFilesystemType = 0 // Do not format the volume (leave unformatted).
+	DigitalOceanVolumeFilesystemType_ext4        DigitalOceanVolumeFilesystemType = 1 // Format the volume with an ext4 filesystem.
+	DigitalOceanVolumeFilesystemType_xfs         DigitalOceanVolumeFilesystemType = 2 // Format the volume with an XFS filesystem.
 )
 
 // Enum value maps for DigitalOceanVolumeFilesystemType.
 var (
 	DigitalOceanVolumeFilesystemType_name = map[int32]string{
-		0: "NONE",
-		1: "EXT4",
-		2: "XFS",
+		0: "unformatted",
+		1: "ext4",
+		2: "xfs",
 	}
 	DigitalOceanVolumeFilesystemType_value = map[string]int32{
-		"NONE": 0,
-		"EXT4": 1,
-		"XFS":  2,
+		"unformatted": 0,
+		"ext4":        1,
+		"xfs":         2,
 	}
 )
 
@@ -165,7 +166,7 @@ func (x *DigitalOceanVolumeSpec) GetFilesystemType() DigitalOceanVolumeFilesyste
 	if x != nil {
 		return x.FilesystemType
 	}
-	return DigitalOceanVolumeFilesystemType_NONE
+	return DigitalOceanVolumeFilesystemType_unformatted
 }
 
 func (x *DigitalOceanVolumeSpec) GetSnapshotId() string {
@@ -197,11 +198,11 @@ const file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_spec_
 	"\x0ffilesystem_type\x18\x05 \x01(\x0e2a.org.project_planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeFilesystemTypeR\x0efilesystemType\x12\x1f\n" +
 	"\vsnapshot_id\x18\x06 \x01(\tR\n" +
 	"snapshotId\x125\n" +
-	"\x04tags\x18\a \x03(\tB!\xbaH\x1e\x92\x01\x1b\x18\x01\"\x17r\x15\x18@2\x11^[A-Za-z0-9:_-]+$R\x04tags*?\n" +
-	" DigitalOceanVolumeFilesystemType\x12\b\n" +
-	"\x04NONE\x10\x00\x12\b\n" +
-	"\x04EXT4\x10\x01\x12\a\n" +
-	"\x03XFS\x10\x02B\xf6\x03\n" +
+	"\x04tags\x18\a \x03(\tB!\xbaH\x1e\x92\x01\x1b\x18\x01\"\x17r\x15\x18@2\x11^[A-Za-z0-9:_-]+$R\x04tags*F\n" +
+	" DigitalOceanVolumeFilesystemType\x12\x0f\n" +
+	"\vunformatted\x10\x00\x12\b\n" +
+	"\x04ext4\x10\x01\x12\a\n" +
+	"\x03xfs\x10\x02B\xf6\x03\n" +
 	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
 
 var (

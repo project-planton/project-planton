@@ -59,13 +59,10 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 		vpnPort = int(*locals.AwsClientVpn.Spec.VpnPort)
 	}
 
-	// Transport protocol
-	proto := "tcp"
-	switch locals.AwsClientVpn.Spec.TransportProtocol {
-	case awsclientvpnv1.AwsClientVpnTransportProtocol_udp:
-		proto = "udp"
-	case awsclientvpnv1.AwsClientVpnTransportProtocol_tcp:
-		proto = "tcp"
+	// Transport protocol - get directly from enum (values match AWS API strings)
+	proto := "tcp" // default to tcp
+	if locals.AwsClientVpn.Spec.TransportProtocol != 0 {
+		proto = locals.AwsClientVpn.Spec.TransportProtocol.String()
 	}
 
 	var securityGroupIds pulumi.StringArray

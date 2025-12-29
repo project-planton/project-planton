@@ -52,8 +52,9 @@ message DigitalOceanVolumeSpec {
 }
 
 // Supported filesystem types for formatting a DigitalOcean volume.
+// Values match DigitalOcean API expected strings.
 enum DigitalOceanVolumeFilesystemType {
-  NONE = 0; // Do not format the volume (leave unformatted).
-  EXT4 = 1; // Format the volume with an ext4 filesystem.
-  XFS = 2; // Format the volume with an XFS filesystem.
+  unformatted = 0; // Do not format the volume (leave unformatted).
+  ext4 = 1; // Format the volume with an ext4 filesystem.
+  xfs = 2; // Format the volume with an XFS filesystem.
 }

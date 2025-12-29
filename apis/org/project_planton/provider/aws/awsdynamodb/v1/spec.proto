@@ -7,42 +7,47 @@ import "buf/validate/validate.proto";
 // AwsDynamodbSpec captures common fields for an AWS DynamoDB table.
 message AwsDynamodbSpec {
   // Billing mode for the table.
+  // Values match AWS API expected strings.
   enum BillingMode {
     BILLING_MODE_UNSPECIFIED = 0;
-    BILLING_MODE_PROVISIONED = 1; // Specify RCUs/WCUs
-    BILLING_MODE_PAY_PER_REQUEST = 2; // On-demand
+    PROVISIONED = 1; // Specify RCUs/WCUs
+    PAY_PER_REQUEST = 2; // On-demand
   }
 
   // Attribute data types supported by DynamoDB keys and indexes.
+  // Values match AWS API expected strings.
   enum AttributeType {
     ATTRIBUTE_TYPE_UNSPECIFIED = 0;
-    ATTRIBUTE_TYPE_S = 1; // String
-    ATTRIBUTE_TYPE_N = 2; // Number
-    ATTRIBUTE_TYPE_B = 3; // Binary
+    S = 1; // String
+    N = 2; // Number
+    B = 3; // Binary
   }
 
   // Stream view type for DynamoDB Streams.
+  // Values match AWS API expected strings.
   enum StreamViewType {
     STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-    STREAM_VIEW_TYPE_KEYS_ONLY = 1;
-    STREAM_VIEW_TYPE_NEW_IMAGE = 2;
-    STREAM_VIEW_TYPE_OLD_IMAGE = 3;
-    STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES = 4;
+    KEYS_ONLY = 1;
+    NEW_IMAGE = 2;
+    OLD_IMAGE = 3;
+    NEW_AND_OLD_IMAGES = 4;
   }
 
   // Projection type for indexes.
+  // Values match AWS API expected strings.
   enum ProjectionType {
     PROJECTION_TYPE_UNSPECIFIED = 0;
-    PROJECTION_TYPE_ALL = 1;
-    PROJECTION_TYPE_KEYS_ONLY = 2;
-    PROJECTION_TYPE_INCLUDE = 3; // Include selected non-key attributes
+    ALL = 1;
+    KEYS_ONLY_PROJECTION = 2; // Note: Can't reuse KEYS_ONLY from StreamViewType
+    INCLUDE = 3; // Include selected non-key attributes
   }
 
   // Table storage class.
+  // Values match AWS API expected strings.
   enum TableClass {
     TABLE_CLASS_UNSPECIFIED = 0;
-    TABLE_CLASS_STANDARD = 1;
-    TABLE_CLASS_STANDARD_INFREQUENT_ACCESS = 2;
+    STANDARD = 1;
+    STANDARD_INFREQUENT_ACCESS = 2;
   }
 
   // Defines an attribute name and type.
@@ -54,10 +59,11 @@ message AwsDynamodbSpec {
   // Element of the key schema.
   message KeySchemaElement {
     string attribute_name = 1 [(buf.validate.field).string.min_len = 1]; // Must reference an attribute defined in attribute_definitions
+    // Values match AWS API expected strings.
     enum KeyType {
       KEY_TYPE_UNSPECIFIED = 0;
-      KEY_TYPE_HASH = 1; // Partition key
-      KEY_TYPE_RANGE = 2; // Sort key
+      HASH = 1; // Partition key
+      RANGE = 2; // Sort key
     }
     KeyType key_type = 2 [(buf.validate.field).enum.defined_only = true];
   }

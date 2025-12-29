@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/spec.proto.
  */
 export const file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkxvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZWxvYWRiYWxhbmNlci92MS9zcGVjLnByb3RvEkFvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MSLuBAoaQ2xvdWRmbGFyZUxvYWRCYWxhbmNlclNwZWMSGAoIaG9zdG5hbWUYASABKAlCBrpIA8gBARJyCgd6b25lX2lkGAIgASgLMjoub3JnLnByb2plY3RfcGxhbnRvbi5zaGFyZWQuZm9yZWlnbmtleS52MS5TdHJpbmdWYWx1ZU9yUmVmQiW6SAPIAQGI1GGIDpLUYRZzdGF0dXMub3V0cHV0cy56b25lX2lkEn0KB29yaWdpbnMYAyADKAsyXy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MS5DbG91ZGZsYXJlTG9hZEJhbGFuY2VyT3JpZ2luQgu6SAjIAQGSAQIIARIZCgdwcm94aWVkGAQgASgIQgiSph0EdHJ1ZRIgChFoZWFsdGhfcHJvYmVfcGF0aBgFIAEoCUIFkqYdAS8SggEKEHNlc3Npb25fYWZmaW5pdHkYBiABKA4yaC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MS5DbG91ZGZsYXJlTG9hZEJhbGFuY2VyU2Vzc2lvbkFmZmluaXR5EoABCg9zdGVlcmluZ19wb2xpY3kYByABKA4yZy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MS5DbG91ZGZsYXJlTG9hZEJhbGFuY2VyU3RlZXJpbmdQb2xpY3kiZAocQ2xvdWRmbGFyZUxvYWRCYWxhbmNlck9yaWdpbhIUCgRuYW1lGAEgASgJQga6SAPIAQESFwoHYWRkcmVzcxgCIAEoCUIGukgDyAEBEhUKBndlaWdodBgDIAEoBUIFkqYdATEqXwolQ2xvdWRmbGFyZUxvYWRCYWxhbmNlclNlc3Npb25BZmZpbml0eRIZChVTRVNTSU9OX0FGRklOSVRZX05PTkUQABIbChdTRVNTSU9OX0FGRklOSVRZX0NPT0tJRRABKl8KJENsb3VkZmxhcmVMb2FkQmFsYW5jZXJTdGVlcmluZ1BvbGljeRIQCgxTVEVFUklOR19PRkYQABIQCgxTVEVFUklOR19HRU8QARITCg9TVEVFUklOR19SQU5ET00QAkKGBApFY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2xvdWRmbGFyZS5jbG91ZGZsYXJlbG9hZGJhbGFuY2VyLnYxQglTcGVjUHJvdG9QAVqKAWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvY2xvdWRmbGFyZS9jbG91ZGZsYXJlbG9hZGJhbGFuY2VyL3YxO2Nsb3VkZmxhcmVsb2FkYmFsYW5jZXJ2MaICBU9QUENDqgJAT3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkNsb3VkZmxhcmUuQ2xvdWRmbGFyZWxvYWRiYWxhbmNlci5WMcoCQE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxDbG91ZGZsYXJlXENsb3VkZmxhcmVsb2FkYmFsYW5jZXJcVjHiAkxPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcQ2xvdWRmbGFyZVxDbG91ZGZsYXJlbG9hZGJhbGFuY2VyXFYxXEdQQk1ldGFkYXRh6gJFT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6OkNsb3VkZmxhcmU6OkNsb3VkZmxhcmVsb2FkYmFsYW5jZXI6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
+  fileDesc("CkxvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Nsb3VkZmxhcmUvY2xvdWRmbGFyZWxvYWRiYWxhbmNlci92MS9zcGVjLnByb3RvEkFvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MSLuBAoaQ2xvdWRmbGFyZUxvYWRCYWxhbmNlclNwZWMSGAoIaG9zdG5hbWUYASABKAlCBrpIA8gBARJyCgd6b25lX2lkGAIgASgLMjoub3JnLnByb2plY3RfcGxhbnRvbi5zaGFyZWQuZm9yZWlnbmtleS52MS5TdHJpbmdWYWx1ZU9yUmVmQiW6SAPIAQGI1GGIDpLUYRZzdGF0dXMub3V0cHV0cy56b25lX2lkEn0KB29yaWdpbnMYAyADKAsyXy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MS5DbG91ZGZsYXJlTG9hZEJhbGFuY2VyT3JpZ2luQgu6SAjIAQGSAQIIARIZCgdwcm94aWVkGAQgASgIQgiSph0EdHJ1ZRIgChFoZWFsdGhfcHJvYmVfcGF0aBgFIAEoCUIFkqYdAS8SggEKEHNlc3Npb25fYWZmaW5pdHkYBiABKA4yaC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MS5DbG91ZGZsYXJlTG9hZEJhbGFuY2VyU2Vzc2lvbkFmZmluaXR5EoABCg9zdGVlcmluZ19wb2xpY3kYByABKA4yZy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNsb3VkZmxhcmUuY2xvdWRmbGFyZWxvYWRiYWxhbmNlci52MS5DbG91ZGZsYXJlTG9hZEJhbGFuY2VyU3RlZXJpbmdQb2xpY3kiZAocQ2xvdWRmbGFyZUxvYWRCYWxhbmNlck9yaWdpbhIUCgRuYW1lGAEgASgJQga6SAPIAQESFwoHYWRkcmVzcxgCIAEoCUIGukgDyAEBEhUKBndlaWdodBgDIAEoBUIFkqYdATEqPQolQ2xvdWRmbGFyZUxvYWRCYWxhbmNlclNlc3Npb25BZmZpbml0eRIICgRub25lEAASCgoGY29va2llEAEqRAokQ2xvdWRmbGFyZUxvYWRCYWxhbmNlclN0ZWVyaW5nUG9saWN5EgcKA29mZhAAEgcKA2dlbxABEgoKBnJhbmRvbRACQoYECkVjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jbG91ZGZsYXJlLmNsb3VkZmxhcmVsb2FkYmFsYW5jZXIudjFCCVNwZWNQcm90b1ABWooBZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9jbG91ZGZsYXJlL2Nsb3VkZmxhcmVsb2FkYmFsYW5jZXIvdjE7Y2xvdWRmbGFyZWxvYWRiYWxhbmNlcnYxogIFT1BQQ0OqAkBPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuQ2xvdWRmbGFyZS5DbG91ZGZsYXJlbG9hZGJhbGFuY2VyLlYxygJAT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXENsb3VkZmxhcmVcQ2xvdWRmbGFyZWxvYWRiYWxhbmNlclxWMeICTE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxDbG91ZGZsYXJlXENsb3VkZmxhcmVsb2FkYmFsYW5jZXJcVjFcR1BCTWV0YWRhdGHqAkVPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6Q2xvdWRmbGFyZTo6Q2xvdWRmbGFyZWxvYWRiYWxhbmNlcjo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
 
 /**
  * CloudflareLoadBalancerSpec captures the essential fields to create a Cloudflare Load Balancer.
@@ -114,19 +114,24 @@ export const CloudflareLoadBalancerOriginSchema: GenMessage<CloudflareLoadBalanc
 
 /**
  * Supported session affinity options for Cloudflare load balancers.
+ * Values match Cloudflare API expected strings.
  *
  * @generated from enum org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSessionAffinity
  */
 export enum CloudflareLoadBalancerSessionAffinity {
   /**
-   * @generated from enum value: SESSION_AFFINITY_NONE = 0;
+   * No session affinity
+   *
+   * @generated from enum value: none = 0;
    */
-  SESSION_AFFINITY_NONE = 0,
+  none = 0,
 
   /**
-   * @generated from enum value: SESSION_AFFINITY_COOKIE = 1;
+   * Cookie-based session affinity
+   *
+   * @generated from enum value: cookie = 1;
    */
-  SESSION_AFFINITY_COOKIE = 1,
+  cookie = 1,
 }
 
 /**
@@ -137,24 +142,31 @@ export const CloudflareLoadBalancerSessionAffinitySchema: GenEnum<CloudflareLoad
 
 /**
  * Supported traffic steering policies for Cloudflare load balancers.
+ * Values match Cloudflare API expected strings.
  *
  * @generated from enum org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSteeringPolicy
  */
 export enum CloudflareLoadBalancerSteeringPolicy {
   /**
-   * @generated from enum value: STEERING_OFF = 0;
+   * Static/failover (default)
+   *
+   * @generated from enum value: off = 0;
    */
-  STEERING_OFF = 0,
+  off = 0,
 
   /**
-   * @generated from enum value: STEERING_GEO = 1;
+   * Geo-routing
+   *
+   * @generated from enum value: geo = 1;
    */
-  STEERING_GEO = 1,
+  geo = 1,
 
   /**
-   * @generated from enum value: STEERING_RANDOM = 2;
+   * Weighted random distribution
+   *
+   * @generated from enum value: random = 2;
    */
-  STEERING_RANDOM = 2,
+  random = 2,
 }
 
 /**

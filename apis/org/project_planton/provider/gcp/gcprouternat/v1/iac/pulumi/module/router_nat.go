@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	gcprouternatv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -94,25 +93,20 @@ func routerNat(
 	}
 
 	// ---------------------------------------------------------------------
-	// Logging configuration
+	// Logging configuration - get directly from enum (values match GCP API strings)
 	// ---------------------------------------------------------------------
 
 	var logConfig *compute.RouterNatLogConfigArgs
 	if locals.GcpRouterNat.Spec.LogFilter != nil {
-		switch *locals.GcpRouterNat.Spec.LogFilter {
-		case gcprouternatv1.GcpRouterNatLogFilter_ERRORS_ONLY:
-			logConfig = &compute.RouterNatLogConfigArgs{
-				Enable: pulumi.Bool(true),
-				Filter: pulumi.String("ERRORS_ONLY"),
-			}
-		case gcprouternatv1.GcpRouterNatLogFilter_ALL:
-			logConfig = &compute.RouterNatLogConfigArgs{
-				Enable: pulumi.Bool(true),
-				Filter: pulumi.String("ALL"),
-			}
-		case gcprouternatv1.GcpRouterNatLogFilter_DISABLED:
+		logFilter := locals.GcpRouterNat.Spec.LogFilter.String()
+		if logFilter == "DISABLED" {
 			logConfig = &compute.RouterNatLogConfigArgs{
 				Enable: pulumi.Bool(false),
+			}
+		} else {
+			logConfig = &compute.RouterNatLogConfigArgs{
+				Enable: pulumi.Bool(true),
+				Filter: pulumi.String(logFilter),
 			}
 		}
 	} else {

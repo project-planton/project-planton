@@ -18,12 +18,12 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 
 	ginkgo.BeforeEach(func() {
 		spec = &AwsDynamodbSpec{
-			BillingMode: AwsDynamodbSpec_BILLING_MODE_PAY_PER_REQUEST,
+			BillingMode: AwsDynamodbSpec_PAY_PER_REQUEST,
 			AttributeDefinitions: []*AwsDynamodbSpec_AttributeDefinition{
-				{Name: "pk", Type: AwsDynamodbSpec_ATTRIBUTE_TYPE_S},
+				{Name: "pk", Type: AwsDynamodbSpec_S},
 			},
 			KeySchema: []*AwsDynamodbSpec_KeySchemaElement{
-				{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH},
+				{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_HASH},
 			},
 		}
 	})
@@ -34,7 +34,7 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 	})
 
 	ginkgo.It("accepts a valid PROVISIONED table with throughput", func() {
-		spec.BillingMode = AwsDynamodbSpec_BILLING_MODE_PROVISIONED
+		spec.BillingMode = AwsDynamodbSpec_PROVISIONED
 		spec.ProvisionedThroughput = &AwsDynamodbSpec_ProvisionedThroughput{ReadCapacityUnits: 5, WriteCapacityUnits: 5}
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).To(gomega.BeNil())
@@ -48,14 +48,14 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 	})
 
 	ginkgo.It("fails when key_schema is empty", func() {
-		spec.AttributeDefinitions = []*AwsDynamodbSpec_AttributeDefinition{{Name: "pk", Type: AwsDynamodbSpec_ATTRIBUTE_TYPE_S}}
+		spec.AttributeDefinitions = []*AwsDynamodbSpec_AttributeDefinition{{Name: "pk", Type: AwsDynamodbSpec_S}}
 		spec.KeySchema = []*AwsDynamodbSpec_KeySchemaElement{}
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
 	ginkgo.It("fails when attribute name is empty", func() {
-		spec.AttributeDefinitions = []*AwsDynamodbSpec_AttributeDefinition{{Name: "", Type: AwsDynamodbSpec_ATTRIBUTE_TYPE_S}}
+		spec.AttributeDefinitions = []*AwsDynamodbSpec_AttributeDefinition{{Name: "", Type: AwsDynamodbSpec_S}}
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
@@ -75,14 +75,14 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 
 	// CEL: PROVISIONED requires throughput > 0
 	ginkgo.It("fails when PROVISIONED without throughput", func() {
-		spec.BillingMode = AwsDynamodbSpec_BILLING_MODE_PROVISIONED
+		spec.BillingMode = AwsDynamodbSpec_PROVISIONED
 		spec.ProvisionedThroughput = nil
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
 	ginkgo.It("fails when PAY_PER_REQUEST has throughput set > 0", func() {
-		spec.BillingMode = AwsDynamodbSpec_BILLING_MODE_PAY_PER_REQUEST
+		spec.BillingMode = AwsDynamodbSpec_PAY_PER_REQUEST
 		spec.ProvisionedThroughput = &AwsDynamodbSpec_ProvisionedThroughput{ReadCapacityUnits: 1, WriteCapacityUnits: 1}
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
@@ -91,8 +91,8 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 	// CEL: key schema shape
 	ginkgo.It("fails when key_schema has two HASH keys", func() {
 		spec.KeySchema = []*AwsDynamodbSpec_KeySchemaElement{
-			{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH},
-			{AttributeName: "sk", KeyType: AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH},
+			{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_HASH},
+			{AttributeName: "sk", KeyType: AwsDynamodbSpec_KeySchemaElement_HASH},
 		}
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
@@ -102,8 +102,8 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 	ginkgo.It("fails when projection type is INCLUDE without attributes", func() {
 		gsi := &AwsDynamodbSpec_GlobalSecondaryIndex{
 			Name:       "gsi1",
-			KeySchema:  []*AwsDynamodbSpec_KeySchemaElement{{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH}},
-			Projection: &AwsDynamodbSpec_Projection{Type: AwsDynamodbSpec_PROJECTION_TYPE_INCLUDE, NonKeyAttributes: []string{}},
+			KeySchema:  []*AwsDynamodbSpec_KeySchemaElement{{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_HASH}},
+			Projection: &AwsDynamodbSpec_Projection{Type: AwsDynamodbSpec_INCLUDE, NonKeyAttributes: []string{}},
 		}
 		spec.GlobalSecondaryIndexes = []*AwsDynamodbSpec_GlobalSecondaryIndex{gsi}
 		err := protovalidate.Validate(spec)
@@ -120,7 +120,7 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 
 	ginkgo.It("fails when stream_enabled is false but view type is set", func() {
 		spec.StreamEnabled = false
-		spec.StreamViewType = AwsDynamodbSpec_STREAM_VIEW_TYPE_KEYS_ONLY
+		spec.StreamViewType = AwsDynamodbSpec_KEYS_ONLY
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
@@ -140,12 +140,12 @@ var _ = ginkgo.Describe("AwsDynamodbSpec validations", func() {
 
 	// GSI throughput rule matches billing mode
 	ginkgo.It("fails when PROVISIONED table has GSI without throughput", func() {
-		spec.BillingMode = AwsDynamodbSpec_BILLING_MODE_PROVISIONED
+		spec.BillingMode = AwsDynamodbSpec_PROVISIONED
 		spec.ProvisionedThroughput = &AwsDynamodbSpec_ProvisionedThroughput{ReadCapacityUnits: 5, WriteCapacityUnits: 5}
 		gsi := &AwsDynamodbSpec_GlobalSecondaryIndex{
 			Name:                  "gsi1",
-			KeySchema:             []*AwsDynamodbSpec_KeySchemaElement{{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH}},
-			Projection:            &AwsDynamodbSpec_Projection{Type: AwsDynamodbSpec_PROJECTION_TYPE_KEYS_ONLY},
+			KeySchema:             []*AwsDynamodbSpec_KeySchemaElement{{AttributeName: "pk", KeyType: AwsDynamodbSpec_KeySchemaElement_HASH}},
+			Projection:            &AwsDynamodbSpec_Projection{Type: AwsDynamodbSpec_KEYS_ONLY_PROJECTION},
 			ProvisionedThroughput: nil,
 		}
 		spec.GlobalSecondaryIndexes = []*AwsDynamodbSpec_GlobalSecondaryIndex{gsi}

@@ -9,7 +9,7 @@ locals {
 
   # Location enum to string mapping
   location_map = {
-    0 = "auto"         # CLOUDFLARE_R2_LOCATION_UNSPECIFIED
+    0 = "auto"         # auto (Cloudflare chooses optimal region)
     1 = "WNAM"         # Western North America
     2 = "ENAM"         # Eastern North America
     3 = "WEUR"         # Western Europe
@@ -27,5 +27,10 @@ locals {
   # Public access and versioning flags
   public_access       = coalesce(try(var.spec.public_access, null), false)
   versioning_enabled  = coalesce(try(var.spec.versioning_enabled, null), false)
+
+  # Custom domain configuration
+  custom_domain_enabled = try(var.spec.custom_domain.enabled, false)
+  custom_domain_zone_id = try(var.spec.custom_domain.zone_id.value, "")
+  custom_domain_name    = try(var.spec.custom_domain.domain, "")
 }
 

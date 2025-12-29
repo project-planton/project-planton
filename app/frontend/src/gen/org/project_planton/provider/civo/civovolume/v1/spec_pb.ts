@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/civo/civovolume/v1/spec.proto.
  */
 export const file_org_project_planton_provider_civo_civovolume_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CjpvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Npdm8vY2l2b3ZvbHVtZS92MS9zcGVjLnByb3RvEi9vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNpdm8uY2l2b3ZvbHVtZS52MSLjAgoOQ2l2b1ZvbHVtZVNwZWMSPwoLdm9sdW1lX25hbWUYASABKAlCKrpIJ8gBAXIiEAEYQDIcXlthLXpdKFthLXowLTktXSpbYS16MC05XSk/JBJFCgZyZWdpb24YAiABKA4yLS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNpdm8uQ2l2b1JlZ2lvbkIGukgDyAEBEh8KCHNpemVfZ2liGAMgASgNQg26SArIAQEqBRiAfSgBEmIKD2ZpbGVzeXN0ZW1fdHlwZRgEIAEoDjJJLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2l2by5jaXZvdm9sdW1lLnYxLkNpdm9Wb2x1bWVGaWxlc3lzdGVtVHlwZRITCgtzbmFwc2hvdF9pZBgFIAEoCRIvCgR0YWdzGAYgAygJQiG6SB6SARsYASIXchUYQDIRXltBLVphLXowLTk6Xy1dKyQqNwoYQ2l2b1ZvbHVtZUZpbGVzeXN0ZW1UeXBlEggKBE5PTkUQABIICgRFWFQ0EAESBwoDWEZTEAJCjQMKM2NvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNpdm8uY2l2b3ZvbHVtZS52MUIJU3BlY1Byb3RvUAFabGdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvY2l2by9jaXZvdm9sdW1lL3YxO2Npdm92b2x1bWV2MaICBU9QUENDqgIuT3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkNpdm8uQ2l2b3ZvbHVtZS5WMcoCLk9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxDaXZvXENpdm92b2x1bWVcVjHiAjpPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcQ2l2b1xDaXZvdm9sdW1lXFYxXEdQQk1ldGFkYXRh6gIzT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6OkNpdm86OkNpdm92b2x1bWU6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_org_project_planton_provider_civo_region]);
+  fileDesc("CjpvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Npdm8vY2l2b3ZvbHVtZS92MS9zcGVjLnByb3RvEi9vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNpdm8uY2l2b3ZvbHVtZS52MSLjAgoOQ2l2b1ZvbHVtZVNwZWMSPwoLdm9sdW1lX25hbWUYASABKAlCKrpIJ8gBAXIiEAEYQDIcXlthLXpdKFthLXowLTktXSpbYS16MC05XSk/JBJFCgZyZWdpb24YAiABKA4yLS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmNpdm8uQ2l2b1JlZ2lvbkIGukgDyAEBEh8KCHNpemVfZ2liGAMgASgNQg26SArIAQEqBRiAfSgBEmIKD2ZpbGVzeXN0ZW1fdHlwZRgEIAEoDjJJLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuY2l2by5jaXZvdm9sdW1lLnYxLkNpdm9Wb2x1bWVGaWxlc3lzdGVtVHlwZRITCgtzbmFwc2hvdF9pZBgFIAEoCRIvCgR0YWdzGAYgAygJQiG6SB6SARsYASIXchUYQDIRXltBLVphLXowLTk6Xy1dKyQqPgoYQ2l2b1ZvbHVtZUZpbGVzeXN0ZW1UeXBlEg8KC3VuZm9ybWF0dGVkEAASCAoEZXh0NBABEgcKA3hmcxACQo0DCjNjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5jaXZvLmNpdm92b2x1bWUudjFCCVNwZWNQcm90b1ABWmxnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2Npdm8vY2l2b3ZvbHVtZS92MTtjaXZvdm9sdW1ldjGiAgVPUFBDQ6oCLk9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5DaXZvLkNpdm92b2x1bWUuVjHKAi5PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcQ2l2b1xDaXZvdm9sdW1lXFYx4gI6T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXENpdm9cQ2l2b3ZvbHVtZVxWMVxHUEJNZXRhZGF0YeoCM09yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpDaXZvOjpDaXZvdm9sdW1lOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_provider_civo_region]);
 
 /**
  * CivoVolumeSpec defines the specification required to create a Civo block storage volume.
@@ -81,6 +81,7 @@ export const CivoVolumeSpecSchema: GenMessage<CivoVolumeSpec> = /*@__PURE__*/
 
 /**
  * Supported filesystem types for formatting a Civo volume.
+ * Values match provider expected strings.
  *
  * @generated from enum org.project_planton.provider.civo.civovolume.v1.CivoVolumeFilesystemType
  */
@@ -88,23 +89,23 @@ export enum CivoVolumeFilesystemType {
   /**
    * Do not format the volume (leave unformatted).
    *
-   * @generated from enum value: NONE = 0;
+   * @generated from enum value: unformatted = 0;
    */
-  NONE = 0,
+  unformatted = 0,
 
   /**
    * Format the volume with an ext4 filesystem.
    *
-   * @generated from enum value: EXT4 = 1;
+   * @generated from enum value: ext4 = 1;
    */
-  EXT4 = 1,
+  ext4 = 1,
 
   /**
    * Format the volume with an XFS filesystem.
    *
-   * @generated from enum value: XFS = 2;
+   * @generated from enum value: xfs = 2;
    */
-  XFS = 2,
+  xfs = 2,
 }
 
 /**

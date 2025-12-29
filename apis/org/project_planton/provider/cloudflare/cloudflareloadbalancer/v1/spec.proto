@@ -49,14 +49,16 @@ message CloudflareLoadBalancerOrigin {
 }
 
 // Supported session affinity options for Cloudflare load balancers.
+// Values match Cloudflare API expected strings.
 enum CloudflareLoadBalancerSessionAffinity {
-  SESSION_AFFINITY_NONE = 0;
-  SESSION_AFFINITY_COOKIE = 1;
+  none = 0; // No session affinity
+  cookie = 1; // Cookie-based session affinity
 }
 
 // Supported traffic steering policies for Cloudflare load balancers.
+// Values match Cloudflare API expected strings.
 enum CloudflareLoadBalancerSteeringPolicy {
-  STEERING_OFF = 0;
-  STEERING_GEO = 1;
-  STEERING_RANDOM = 2;
+  off = 0; // Static/failover (default)
+  geo = 1; // Geo-routing
+  random = 2; // Weighted random distribution
 }

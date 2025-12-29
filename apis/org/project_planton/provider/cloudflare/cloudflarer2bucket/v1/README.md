@@ -85,6 +85,13 @@ This creates an R2 bucket in Western Europe with private access (authentication 
   - **Important**: R2 does not currently support object versioning
   - This field is present for future compatibility but will be ignored
 
+- **`custom_domain`** (object): Custom domain configuration for the bucket
+  - **`enabled`** (bool): Whether to enable custom domain access
+  - **`zone_id`** (StringValueOrRef): Cloudflare Zone ID where the domain exists
+    - Can be a literal value: `zone_id: { value: "..." }`
+    - Or reference a CloudflareDnsZone: `zone_id: { valueFrom: { name: "my-dns-zone" } }`
+  - **`domain`** (string): Full domain name (e.g., "media.example.com")
+
 ## Common Patterns
 
 ### Private Bucket for Application Data
@@ -224,17 +231,42 @@ https://<bucket-name>.<account-id>.r2.dev/<object-key>
 
 ### Custom Domains (Production)
 
-For production, use a custom domain:
+For production, configure a custom domain directly in your manifest:
 
-1. **Add custom domain** in Cloudflare Dashboard → R2 → Bucket Settings
-2. **Configure DNS**: CNAME record pointing to R2
-3. **Enable Cloudflare CDN**: Cache at edge, protect with WAF
+```yaml
+apiVersion: cloudflare.project-planton.org/v1
+kind: CloudflareR2Bucket
+metadata:
+  name: media-bucket
+spec:
+  bucket_name: media-assets
+  account_id: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  location: WEUR
+  custom_domain:
+    enabled: true
+    zone_id:
+      value: "f1e2d3c4b5a6978899aabbccddeeff00"  # Your Cloudflare Zone ID
+    domain: "media.example.com"
+```
+
+Or reference a `CloudflareDnsZone` resource:
+
+```yaml
+spec:
+  custom_domain:
+    enabled: true
+    zone_id:
+      valueFrom:
+        name: my-dns-zone  # References CloudflareDnsZone named "my-dns-zone"
+    domain: "media.example.com"
+```
 
 **Benefits**:
 - No rate limits
 - Full CDN caching
 - Your branding
 - HTTPS with your certificate
+- Automated via IaC (no manual dashboard configuration)
 
 ## Cost Model
 

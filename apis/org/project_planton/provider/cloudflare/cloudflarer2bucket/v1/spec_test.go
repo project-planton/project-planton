@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestCloudflareR2BucketSpec(t *testing.T) {
@@ -66,6 +67,52 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 						AccountId:         "00000000000000000000000000000000",
 						Location:          CloudflareR2Location_APAC,
 						VersioningEnabled: true,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return a validation error with custom domain enabled and valid config", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-r2-bucket-custom-domain",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-custom-domain-bucket",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+						CustomDomain: &CloudflareR2BucketCustomDomainConfig{
+							Enabled: true,
+							ZoneId: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+									Value: "00000000000000000000000000000000",
+								},
+							},
+							Domain: "media.example.com",
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return a validation error with custom domain disabled and no zone_id/domain", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-r2-bucket-custom-domain-disabled",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-disabled-custom-domain",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+						CustomDomain: &CloudflareR2BucketCustomDomainConfig{
+							Enabled: false,
+						},
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -174,6 +221,81 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 						BucketName: "Test_Bucket",
 						AccountId:  "00000000000000000000000000000000",
 						Location:   CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("custom_domain validation", func() {
+
+			ginkgo.It("should return error if custom domain enabled but zone_id is missing", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-custom-domain-no-zone",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-bucket",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+						CustomDomain: &CloudflareR2BucketCustomDomainConfig{
+							Enabled: true,
+							Domain:  "media.example.com",
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if custom domain enabled but domain is missing", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-custom-domain-no-domain",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-bucket",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+						CustomDomain: &CloudflareR2BucketCustomDomainConfig{
+							Enabled: true,
+							ZoneId: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+									Value: "00000000000000000000000000000000",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if custom domain enabled but domain is empty string", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-custom-domain-empty-domain",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-bucket",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+						CustomDomain: &CloudflareR2BucketCustomDomainConfig{
+							Enabled: true,
+							ZoneId: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+									Value: "00000000000000000000000000000000",
+								},
+							},
+							Domain: "",
+						},
 					},
 				}
 				err := protovalidate.Validate(input)

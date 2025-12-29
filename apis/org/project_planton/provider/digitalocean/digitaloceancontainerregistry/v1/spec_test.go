@@ -29,7 +29,7 @@ var _ = ginkgo.Describe("DigitalOceanContainerRegistrySpec Custom Validation Tes
 					},
 					Spec: &DigitalOceanContainerRegistrySpec{
 						Name:             "test-registry",
-						SubscriptionTier: DigitalOceanContainerRegistryTier_STARTER,
+						SubscriptionTier: DigitalOceanContainerRegistryTier_starter,
 						Region:           digitalocean.DigitalOceanRegion_nyc3,
 					},
 				}

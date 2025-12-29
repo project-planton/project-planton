@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/digitalocean/digitaloceanvolume/v1/spec.proto.
  */
 export const file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkpvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2RpZ2l0YWxvY2Vhbi9kaWdpdGFsb2NlYW52b2x1bWUvdjEvc3BlYy5wcm90bxI/b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uZGlnaXRhbG9jZWFudm9sdW1lLnYxIrEDChZEaWdpdGFsT2NlYW5Wb2x1bWVTcGVjEj8KC3ZvbHVtZV9uYW1lGAEgASgJQiq6SCfIAQFyIhABGEAyHF5bYS16XShbYS16MC05LV0qW2EtejAtOV0pPyQSHAoLZGVzY3JpcHRpb24YAiABKAlCB7pIBHICGGQSVQoGcmVnaW9uGAMgASgOMj0ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uRGlnaXRhbE9jZWFuUmVnaW9uQga6SAPIAQESHwoIc2l6ZV9naWIYBCABKA1CDbpICsgBASoFGIB9KAESegoPZmlsZXN5c3RlbV90eXBlGAUgASgOMmEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uZGlnaXRhbG9jZWFudm9sdW1lLnYxLkRpZ2l0YWxPY2VhblZvbHVtZUZpbGVzeXN0ZW1UeXBlEhMKC3NuYXBzaG90X2lkGAYgASgJEi8KBHRhZ3MYByADKAlCIbpIHpIBGxgBIhdyFRhAMhFeW0EtWmEtejAtOTpfLV0rJCo/CiBEaWdpdGFsT2NlYW5Wb2x1bWVGaWxlc3lzdGVtVHlwZRIICgROT05FEAASCAoERVhUNBABEgcKA1hGUxACQvYDCkNjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uZGlnaXRhbG9jZWFudm9sdW1lLnYxQglTcGVjUHJvdG9QAVqEAWdpdGh1Yi5jb20vcHJvamVjdC1wbGFudG9uL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvZGlnaXRhbG9jZWFuL2RpZ2l0YWxvY2VhbnZvbHVtZS92MTtkaWdpdGFsb2NlYW52b2x1bWV2MaICBU9QUEREqgI+T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkRpZ2l0YWxvY2Vhbi5EaWdpdGFsb2NlYW52b2x1bWUuVjHKAj5PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcRGlnaXRhbG9jZWFuXERpZ2l0YWxvY2VhbnZvbHVtZVxWMeICSk9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxEaWdpdGFsb2NlYW5cRGlnaXRhbG9jZWFudm9sdW1lXFYxXEdQQk1ldGFkYXRh6gJDT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6OkRpZ2l0YWxvY2Vhbjo6RGlnaXRhbG9jZWFudm9sdW1lOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_org_project_planton_provider_digitalocean_region]);
+  fileDesc("CkpvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2RpZ2l0YWxvY2Vhbi9kaWdpdGFsb2NlYW52b2x1bWUvdjEvc3BlYy5wcm90bxI/b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uZGlnaXRhbG9jZWFudm9sdW1lLnYxIrEDChZEaWdpdGFsT2NlYW5Wb2x1bWVTcGVjEj8KC3ZvbHVtZV9uYW1lGAEgASgJQiq6SCfIAQFyIhABGEAyHF5bYS16XShbYS16MC05LV0qW2EtejAtOV0pPyQSHAoLZGVzY3JpcHRpb24YAiABKAlCB7pIBHICGGQSVQoGcmVnaW9uGAMgASgOMj0ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uRGlnaXRhbE9jZWFuUmVnaW9uQga6SAPIAQESHwoIc2l6ZV9naWIYBCABKA1CDbpICsgBASoFGIB9KAESegoPZmlsZXN5c3RlbV90eXBlGAUgASgOMmEub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5kaWdpdGFsb2NlYW4uZGlnaXRhbG9jZWFudm9sdW1lLnYxLkRpZ2l0YWxPY2VhblZvbHVtZUZpbGVzeXN0ZW1UeXBlEhMKC3NuYXBzaG90X2lkGAYgASgJEi8KBHRhZ3MYByADKAlCIbpIHpIBGxgBIhdyFRhAMhFeW0EtWmEtejAtOTpfLV0rJCpGCiBEaWdpdGFsT2NlYW5Wb2x1bWVGaWxlc3lzdGVtVHlwZRIPCgt1bmZvcm1hdHRlZBAAEggKBGV4dDQQARIHCgN4ZnMQAkL2AwpDY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZGlnaXRhbG9jZWFuLmRpZ2l0YWxvY2VhbnZvbHVtZS52MUIJU3BlY1Byb3RvUAFahAFnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2RpZ2l0YWxvY2Vhbi9kaWdpdGFsb2NlYW52b2x1bWUvdjE7ZGlnaXRhbG9jZWFudm9sdW1ldjGiAgVPUFBERKoCPk9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5EaWdpdGFsb2NlYW4uRGlnaXRhbG9jZWFudm9sdW1lLlYxygI+T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXERpZ2l0YWxvY2VhblxEaWdpdGFsb2NlYW52b2x1bWVcVjHiAkpPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcRGlnaXRhbG9jZWFuXERpZ2l0YWxvY2VhbnZvbHVtZVxWMVxHUEJNZXRhZGF0YeoCQ09yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpEaWdpdGFsb2NlYW46OkRpZ2l0YWxvY2VhbnZvbHVtZTo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_provider_digitalocean_region]);
 
 /**
  * DigitalOceanVolumeSpec defines the specification required to create a DigitalOcean block storage volume.
@@ -89,6 +89,7 @@ export const DigitalOceanVolumeSpecSchema: GenMessage<DigitalOceanVolumeSpec> = 
 
 /**
  * Supported filesystem types for formatting a DigitalOcean volume.
+ * Values match DigitalOcean API expected strings.
  *
  * @generated from enum org.project_planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeFilesystemType
  */
@@ -96,23 +97,23 @@ export enum DigitalOceanVolumeFilesystemType {
   /**
    * Do not format the volume (leave unformatted).
    *
-   * @generated from enum value: NONE = 0;
+   * @generated from enum value: unformatted = 0;
    */
-  NONE = 0,
+  unformatted = 0,
 
   /**
    * Format the volume with an ext4 filesystem.
    *
-   * @generated from enum value: EXT4 = 1;
+   * @generated from enum value: ext4 = 1;
    */
-  EXT4 = 1,
+  ext4 = 1,
 
   /**
    * Format the volume with an XFS filesystem.
    *
-   * @generated from enum value: XFS = 2;
+   * @generated from enum value: xfs = 2;
    */
-  XFS = 2,
+  xfs = 2,
 }
 
 /**

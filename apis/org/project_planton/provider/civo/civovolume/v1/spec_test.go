@@ -82,7 +82,7 @@ var _ = ginkgo.Describe("CivoVolumeSpec Custom Validation Tests", func() {
 						VolumeName:     "ext4-volume",
 						Region:         civo.CivoRegion_lon1,
 						SizeGib:        50,
-						FilesystemType: CivoVolumeFilesystemType_EXT4,
+						FilesystemType: CivoVolumeFilesystemType_ext4,
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -100,7 +100,7 @@ var _ = ginkgo.Describe("CivoVolumeSpec Custom Validation Tests", func() {
 						VolumeName:     "xfs-volume",
 						Region:         civo.CivoRegion_fra1,
 						SizeGib:        100,
-						FilesystemType: CivoVolumeFilesystemType_XFS,
+						FilesystemType: CivoVolumeFilesystemType_xfs,
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -154,7 +154,7 @@ var _ = ginkgo.Describe("CivoVolumeSpec Custom Validation Tests", func() {
 						VolumeName:     "prod-db-data",
 						Region:         civo.CivoRegion_fra1,
 						SizeGib:        1000,
-						FilesystemType: CivoVolumeFilesystemType_XFS,
+						FilesystemType: CivoVolumeFilesystemType_xfs,
 						SnapshotId:     "snapshot-67890",
 						Tags:           []string{"env:prod", "backup:daily", "retention:90-days"},
 					},

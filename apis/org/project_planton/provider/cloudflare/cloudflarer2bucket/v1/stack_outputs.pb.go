@@ -27,9 +27,11 @@ type CloudflareR2BucketStackOutputs struct {
 	// The name of the bucket (same as spec.bucket_name)
 	BucketName string `protobuf:"bytes,1,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
 	// The accessible bucket URL (e.g., R2 public endpoint or base S3 API URL)
-	BucketUrl     string `protobuf:"bytes,2,opt,name=bucket_url,json=bucketUrl,proto3" json:"bucket_url,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	BucketUrl string `protobuf:"bytes,2,opt,name=bucket_url,json=bucketUrl,proto3" json:"bucket_url,omitempty"`
+	// The custom domain URL if configured (e.g., https://media.example.com)
+	CustomDomainUrl string `protobuf:"bytes,3,opt,name=custom_domain_url,json=customDomainUrl,proto3" json:"custom_domain_url,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *CloudflareR2BucketStackOutputs) Reset() {
@@ -76,16 +78,24 @@ func (x *CloudflareR2BucketStackOutputs) GetBucketUrl() string {
 	return ""
 }
 
+func (x *CloudflareR2BucketStackOutputs) GetCustomDomainUrl() string {
+	if x != nil {
+		return x.CustomDomainUrl
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x12=org.project_planton.provider.cloudflare.cloudflarer2bucket.v1\"`\n" +
+	"Qorg/project_planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x12=org.project_planton.provider.cloudflare.cloudflarer2bucket.v1\"\x8c\x01\n" +
 	"\x1eCloudflareR2BucketStackOutputs\x12\x1f\n" +
 	"\vbucket_name\x18\x01 \x01(\tR\n" +
 	"bucketName\x12\x1d\n" +
 	"\n" +
-	"bucket_url\x18\x02 \x01(\tR\tbucketUrlB\xf2\x03\n" +
+	"bucket_url\x18\x02 \x01(\tR\tbucketUrl\x12*\n" +
+	"\x11custom_domain_url\x18\x03 \x01(\tR\x0fcustomDomainUrlB\xf2\x03\n" +
 	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (

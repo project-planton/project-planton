@@ -9,4 +9,7 @@ message CloudflareR2BucketStackOutputs {
 
   // The accessible bucket URL (e.g., R2 public endpoint or base S3 API URL)
   string bucket_url = 2;
+
+  // The custom domain URL if configured (e.g., https://media.example.com)
+  string custom_domain_url = 3;
 }

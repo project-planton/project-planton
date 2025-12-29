@@ -30,9 +30,10 @@ message DigitalOceanContainerRegistrySpec {
 }
 
 // Supported subscription tiers for a DigitalOcean Container Registry.
+// Values match DigitalOcean API expected tier slugs.
 enum DigitalOceanContainerRegistryTier {
   digitalocean_container_registry_tier_unspecified = 0;
-  STARTER = 1; // Free tier, limited storage.
-  BASIC = 2; // Paid tier, moderate storage.
-  PROFESSIONAL = 3; // Paid tier, highest storage, production ready.
+  starter = 1; // Free tier, limited storage.
+  basic = 2; // Paid tier, moderate storage.
+  professional = 3; // Paid tier, highest storage, production ready.
 }

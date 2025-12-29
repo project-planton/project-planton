@@ -2,7 +2,6 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	civodatabasev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1"
 	"github.com/pulumi/pulumi-civo/sdk/v2/go/civo"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -14,16 +13,11 @@ func database(
 	civoProvider *civo.Provider,
 ) (*civo.Database, error) {
 
-	// 1. Translate proto enum → engine slug accepted by Civo.
-	var engineSlug string
-	switch locals.CivoDatabase.Spec.Engine {
-	case civodatabasev1.CivoDatabaseEngine_mysql:
-		engineSlug = "mysql"
-	case civodatabasev1.CivoDatabaseEngine_postgres:
-		engineSlug = "postgres"
-	default:
-		return nil, errors.Errorf("unsupported database engine: %v", locals.CivoDatabase.Spec.Engine)
+	// 1. Get engine slug directly from enum (values match Civo API strings).
+	if locals.CivoDatabase.Spec.Engine == 0 {
+		return nil, errors.Errorf("database engine is required")
 	}
+	engineSlug := locals.CivoDatabase.Spec.Engine.String()
 
 	// 2. Build resource arguments from proto fields.
 	databaseArgs := &civo.DatabaseArgs{

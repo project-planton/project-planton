@@ -6,18 +6,18 @@ This document explains the architectural decisions, resource model, and design r
 
 ## Resource Model
 
-The Cloudflare R2 Bucket is one of the simplest cloud storage resources:
+The Cloudflare R2 Bucket module provisions the bucket and optionally a custom domain:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    Cloudflare Account                        │
 │                                                               │
-│  ┌─────────────────────────┐                                │
-│  │ R2 Bucket               │                                │
-│  │ - Name: string          │                                │
-│  │ - Location: enum        │                                │
-│  │ - Public: bool          │                                │
-│  └─────────────────────────┘                                │
+│  ┌─────────────────────────┐    ┌─────────────────────────┐ │
+│  │ R2 Bucket               │    │ R2 Custom Domain        │ │
+│  │ - Name: string          │───▶│ - Hostname: string      │ │
+│  │ - Location: enum        │    │ - ZoneId: string        │ │
+│  │ - Public: bool          │    │ (optional)              │ │
+│  └─────────────────────────┘    └─────────────────────────┘ │
 │                                                               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -29,6 +29,7 @@ R2 buckets are intentionally minimal compared to AWS S3:
 - **No bucket policies** (use R2 API tokens instead)
 - **No lifecycle rules via API** (coming in future)
 - **No website hosting** (use Cloudflare Pages)
+- **Custom domains** (now supported via IaC for production access)
 
 This simplicity is by design—R2 focuses on the 80% use case: store and serve objects efficiently, without egress fees.
 
@@ -87,7 +88,19 @@ func bucket(ctx *pulumi.Context, locals *Locals, provider *cloudflare.Provider) 
         ctx.Log.Warn("R2 does not support versioning - field ignored", nil)
     }
 
-    // Step 4: Export outputs
+    // Step 4: Create custom domain (if enabled)
+    if spec.CustomDomain != nil && spec.CustomDomain.Enabled {
+        cloudflare.NewR2CustomDomain(ctx, "custom-domain", &cloudflare.R2CustomDomainArgs{
+            AccountId:  pulumi.String(spec.AccountId),
+            BucketName: bucket.Name,
+            ZoneId:     pulumi.String(spec.CustomDomain.ZoneId.GetValue()),
+            Domain:     pulumi.String(spec.CustomDomain.Domain),
+            Enabled:    pulumi.Bool(true),
+        })
+        ctx.Export(OpCustomDomainUrl, pulumi.Sprintf("https://%s", spec.CustomDomain.Domain))
+    }
+
+    // Step 5: Export outputs
     ctx.Export(OpBucketName, bucket.Name)
 }
 ```
@@ -256,17 +269,21 @@ error: failed to create R2 bucket: API Error:
 
 ## Outputs
 
-The module exports one output:
+The module exports the following outputs:
 
 | Output | Type | Description |
 |--------|------|-------------|
 | `bucket_name` | string | The name of the created R2 bucket |
+| `custom_domain_url` | string | The custom domain URL (only if custom domain is enabled) |
 
 Access outputs:
 
 ```bash
 # Get bucket name
 BUCKET_NAME=$(pulumi stack output bucket_name)
+
+# Get custom domain URL (if configured)
+CUSTOM_DOMAIN_URL=$(pulumi stack output custom_domain_url)
 
 # Use in other Pulumi stacks via StackReference
 bucket_name = pulumi.StackReference("org/stack-name").get_output("bucket_name")

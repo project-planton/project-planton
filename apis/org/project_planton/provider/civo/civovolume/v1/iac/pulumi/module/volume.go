@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	civovolumev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovolume/v1"
 	civo "github.com/pulumi/pulumi-civo/sdk/v2/go/civo"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -27,14 +26,8 @@ func volume(
 	// Note: The Civo Volume API supports filesystem formatting, but the Pulumi/Terraform provider
 	// doesn't currently expose this parameter. Users must format the volume manually after creation
 	// or use cloud-init/configuration management to automate formatting.
-	if locals.CivoVolume.Spec.FilesystemType != civovolumev1.CivoVolumeFilesystemType_NONE {
-		filesystemName := "unformatted"
-		switch locals.CivoVolume.Spec.FilesystemType {
-		case civovolumev1.CivoVolumeFilesystemType_EXT4:
-			filesystemName = "ext4"
-		case civovolumev1.CivoVolumeFilesystemType_XFS:
-			filesystemName = "xfs"
-		}
+	filesystemName := locals.CivoVolume.Spec.FilesystemType.String()
+	if filesystemName != "unformatted" {
 		ctx.Log.Info(fmt.Sprintf(
 			"Filesystem type '%s' requested for volume '%s'. "+
 				"Note: The Civo provider doesn't expose filesystem formatting. "+

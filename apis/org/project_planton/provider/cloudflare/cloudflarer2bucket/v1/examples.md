@@ -12,6 +12,8 @@ Complete, working examples for common Cloudflare R2 Bucket patterns using Projec
 - [Example 6: Media Storage Bucket](#example-6-media-storage-bucket)
 - [Example 7: User Uploads Bucket](#example-7-user-uploads-bucket)
 - [Example 8: Backup and Archive](#example-8-backup-and-archive)
+- [Example 9: Custom Domain with Literal Zone ID](#example-9-custom-domain-with-literal-zone-id)
+- [Example 10: Custom Domain with Zone Reference](#example-10-custom-domain-with-zone-reference)
 
 ---
 
@@ -528,6 +530,97 @@ curl https://myapp-bucket-name.<account-id>.r2.dev/test.txt
 1. Use custom domain for production (no rate limits)
 2. Configure custom domain in Cloudflare Dashboard
 3. Enable Cloudflare CDN caching
+
+---
+
+## Example 9: Custom Domain with Literal Zone ID
+
+**Use Case**: Production bucket accessible via a custom domain, with zone ID provided directly.
+
+**Features**:
+- Custom domain for production access (no rate limits)
+- Full CDN caching via Cloudflare
+- Professional branding with your domain
+
+```yaml
+apiVersion: cloudflare.project-planton.org/v1
+kind: CloudflareR2Bucket
+metadata:
+  name: media-bucket
+spec:
+  bucketName: media-assets
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  location: WEUR
+  customDomain:
+    enabled: true
+    zoneId:
+      value: "f1e2d3c4b5a6978899aabbccddeeff00"  # Your Cloudflare Zone ID
+    domain: "media.example.com"
+```
+
+**Expected Behavior**:
+- Bucket accessible at `https://media.example.com`
+- Full Cloudflare CDN caching enabled
+- No rate limits (unlike r2.dev URLs)
+
+**Access Pattern**:
+```html
+<!-- Direct access from HTML -->
+<img src="https://media.example.com/images/logo.png">
+
+<!-- Or via JavaScript -->
+<script src="https://media.example.com/js/app.js"></script>
+```
+
+---
+
+## Example 10: Custom Domain with Zone Reference
+
+**Use Case**: Production bucket with custom domain, referencing zone from a CloudflareDnsZone resource.
+
+**Features**:
+- Custom domain configuration via resource reference
+- Zone ID automatically resolved from CloudflareDnsZone outputs
+- Infrastructure dependencies managed automatically
+
+```yaml
+---
+# First, define the DNS zone
+apiVersion: cloudflare.project-planton.org/v1
+kind: CloudflareDnsZone
+metadata:
+  name: example-zone
+spec:
+  zoneName: example.com
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+
+---
+# Then, reference it in the R2 bucket
+apiVersion: cloudflare.project-planton.org/v1
+kind: CloudflareR2Bucket
+metadata:
+  name: cdn-bucket
+spec:
+  bucketName: cdn-assets
+  accountId: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  location: WEUR
+  customDomain:
+    enabled: true
+    zoneId:
+      valueFrom:
+        name: example-zone  # References the CloudflareDnsZone above
+    domain: "cdn.example.com"
+```
+
+**Expected Behavior**:
+- Zone ID automatically resolved from `example-zone` resource outputs
+- Bucket accessible at `https://cdn.example.com`
+- Deployment order managed automatically (zone created before bucket)
+
+**Benefits**:
+- No hardcoded zone IDs
+- Single source of truth for zone configuration
+- Automatic dependency management
 
 ---
 
