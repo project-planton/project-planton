@@ -28,7 +28,7 @@ var _ = ginkgo.Describe("DigitalOceanDatabaseClusterSpec validations", func() {
 	makeValidPostgresSpec := func() *DigitalOceanDatabaseClusterSpec {
 		return &DigitalOceanDatabaseClusterSpec{
 			ClusterName:              "test-postgres",
-			Engine:                   DigitalOceanDatabaseEngine_postgres,
+			Engine:                   DigitalOceanDatabaseEngine_pg,
 			EngineVersion:            "16",
 			Region:                   digitalocean.DigitalOceanRegion_nyc3,
 			SizeSlug:                 "db-s-1vcpu-1gb",
@@ -236,7 +236,7 @@ var _ = ginkgo.Describe("DigitalOceanDatabaseClusterSpec validations", func() {
 	ginkgo.Context("Engine-specific configurations", func() {
 		ginkgo.It("accepts PostgreSQL with version 14", func() {
 			spec := makeValidPostgresSpec()
-			spec.Engine = DigitalOceanDatabaseEngine_postgres
+			spec.Engine = DigitalOceanDatabaseEngine_pg
 			spec.EngineVersion = "14"
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
@@ -271,7 +271,7 @@ var _ = ginkgo.Describe("DigitalOceanDatabaseClusterSpec validations", func() {
 		ginkgo.It("accepts production HA PostgreSQL with VPC", func() {
 			spec := &DigitalOceanDatabaseClusterSpec{
 				ClusterName:              "prod-postgres",
-				Engine:                   DigitalOceanDatabaseEngine_postgres,
+				Engine:                   DigitalOceanDatabaseEngine_pg,
 				EngineVersion:            "16",
 				Region:                   digitalocean.DigitalOceanRegion_nyc3,
 				SizeSlug:                 "db-s-4vcpu-8gb",

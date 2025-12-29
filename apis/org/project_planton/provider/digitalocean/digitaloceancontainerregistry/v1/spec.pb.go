@@ -24,28 +24,29 @@ const (
 )
 
 // Supported subscription tiers for a DigitalOcean Container Registry.
+// Values match DigitalOcean API expected tier slugs.
 type DigitalOceanContainerRegistryTier int32
 
 const (
 	DigitalOceanContainerRegistryTier_digitalocean_container_registry_tier_unspecified DigitalOceanContainerRegistryTier = 0
-	DigitalOceanContainerRegistryTier_STARTER                                          DigitalOceanContainerRegistryTier = 1 // Free tier, limited storage.
-	DigitalOceanContainerRegistryTier_BASIC                                            DigitalOceanContainerRegistryTier = 2 // Paid tier, moderate storage.
-	DigitalOceanContainerRegistryTier_PROFESSIONAL                                     DigitalOceanContainerRegistryTier = 3 // Paid tier, highest storage, production ready.
+	DigitalOceanContainerRegistryTier_starter                                          DigitalOceanContainerRegistryTier = 1 // Free tier, limited storage.
+	DigitalOceanContainerRegistryTier_basic                                            DigitalOceanContainerRegistryTier = 2 // Paid tier, moderate storage.
+	DigitalOceanContainerRegistryTier_professional                                     DigitalOceanContainerRegistryTier = 3 // Paid tier, highest storage, production ready.
 )
 
 // Enum value maps for DigitalOceanContainerRegistryTier.
 var (
 	DigitalOceanContainerRegistryTier_name = map[int32]string{
 		0: "digitalocean_container_registry_tier_unspecified",
-		1: "STARTER",
-		2: "BASIC",
-		3: "PROFESSIONAL",
+		1: "starter",
+		2: "basic",
+		3: "professional",
 	}
 	DigitalOceanContainerRegistryTier_value = map[string]int32{
 		"digitalocean_container_registry_tier_unspecified": 0,
-		"STARTER":      1,
-		"BASIC":        2,
-		"PROFESSIONAL": 3,
+		"starter":      1,
+		"basic":        2,
+		"professional": 3,
 	}
 )
 
@@ -165,9 +166,9 @@ const file_org_project_planton_provider_digitalocean_digitaloceancontainerregist
 	"\x1agarbage_collection_enabled\x18\x04 \x01(\bR\x18garbageCollectionEnabled*\x83\x01\n" +
 	"!DigitalOceanContainerRegistryTier\x124\n" +
 	"0digitalocean_container_registry_tier_unspecified\x10\x00\x12\v\n" +
-	"\aSTARTER\x10\x01\x12\t\n" +
-	"\x05BASIC\x10\x02\x12\x10\n" +
-	"\fPROFESSIONAL\x10\x03B\xc3\x04\n" +
+	"\astarter\x10\x01\x12\t\n" +
+	"\x05basic\x10\x02\x12\x10\n" +
+	"\fprofessional\x10\x03B\xc3\x04\n" +
 	"Ncom.org.project_planton.provider.digitalocean.digitaloceancontainerregistry.v1B\tSpecProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1;digitaloceancontainerregistryv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancontainerregistry.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancontainerregistry::V1b\x06proto3"
 
 var (

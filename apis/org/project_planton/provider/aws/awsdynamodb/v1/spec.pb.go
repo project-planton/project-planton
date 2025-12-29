@@ -23,25 +23,26 @@ const (
 )
 
 // Billing mode for the table.
+// Values match AWS API expected strings.
 type AwsDynamodbSpec_BillingMode int32
 
 const (
-	AwsDynamodbSpec_BILLING_MODE_UNSPECIFIED     AwsDynamodbSpec_BillingMode = 0
-	AwsDynamodbSpec_BILLING_MODE_PROVISIONED     AwsDynamodbSpec_BillingMode = 1 // Specify RCUs/WCUs
-	AwsDynamodbSpec_BILLING_MODE_PAY_PER_REQUEST AwsDynamodbSpec_BillingMode = 2 // On-demand
+	AwsDynamodbSpec_BILLING_MODE_UNSPECIFIED AwsDynamodbSpec_BillingMode = 0
+	AwsDynamodbSpec_PROVISIONED              AwsDynamodbSpec_BillingMode = 1 // Specify RCUs/WCUs
+	AwsDynamodbSpec_PAY_PER_REQUEST          AwsDynamodbSpec_BillingMode = 2 // On-demand
 )
 
 // Enum value maps for AwsDynamodbSpec_BillingMode.
 var (
 	AwsDynamodbSpec_BillingMode_name = map[int32]string{
 		0: "BILLING_MODE_UNSPECIFIED",
-		1: "BILLING_MODE_PROVISIONED",
-		2: "BILLING_MODE_PAY_PER_REQUEST",
+		1: "PROVISIONED",
+		2: "PAY_PER_REQUEST",
 	}
 	AwsDynamodbSpec_BillingMode_value = map[string]int32{
-		"BILLING_MODE_UNSPECIFIED":     0,
-		"BILLING_MODE_PROVISIONED":     1,
-		"BILLING_MODE_PAY_PER_REQUEST": 2,
+		"BILLING_MODE_UNSPECIFIED": 0,
+		"PROVISIONED":              1,
+		"PAY_PER_REQUEST":          2,
 	}
 )
 
@@ -73,28 +74,29 @@ func (AwsDynamodbSpec_BillingMode) EnumDescriptor() ([]byte, []int) {
 }
 
 // Attribute data types supported by DynamoDB keys and indexes.
+// Values match AWS API expected strings.
 type AwsDynamodbSpec_AttributeType int32
 
 const (
 	AwsDynamodbSpec_ATTRIBUTE_TYPE_UNSPECIFIED AwsDynamodbSpec_AttributeType = 0
-	AwsDynamodbSpec_ATTRIBUTE_TYPE_S           AwsDynamodbSpec_AttributeType = 1 // String
-	AwsDynamodbSpec_ATTRIBUTE_TYPE_N           AwsDynamodbSpec_AttributeType = 2 // Number
-	AwsDynamodbSpec_ATTRIBUTE_TYPE_B           AwsDynamodbSpec_AttributeType = 3 // Binary
+	AwsDynamodbSpec_S                          AwsDynamodbSpec_AttributeType = 1 // String
+	AwsDynamodbSpec_N                          AwsDynamodbSpec_AttributeType = 2 // Number
+	AwsDynamodbSpec_B                          AwsDynamodbSpec_AttributeType = 3 // Binary
 )
 
 // Enum value maps for AwsDynamodbSpec_AttributeType.
 var (
 	AwsDynamodbSpec_AttributeType_name = map[int32]string{
 		0: "ATTRIBUTE_TYPE_UNSPECIFIED",
-		1: "ATTRIBUTE_TYPE_S",
-		2: "ATTRIBUTE_TYPE_N",
-		3: "ATTRIBUTE_TYPE_B",
+		1: "S",
+		2: "N",
+		3: "B",
 	}
 	AwsDynamodbSpec_AttributeType_value = map[string]int32{
 		"ATTRIBUTE_TYPE_UNSPECIFIED": 0,
-		"ATTRIBUTE_TYPE_S":           1,
-		"ATTRIBUTE_TYPE_N":           2,
-		"ATTRIBUTE_TYPE_B":           3,
+		"S":                          1,
+		"N":                          2,
+		"B":                          3,
 	}
 )
 
@@ -126,31 +128,32 @@ func (AwsDynamodbSpec_AttributeType) EnumDescriptor() ([]byte, []int) {
 }
 
 // Stream view type for DynamoDB Streams.
+// Values match AWS API expected strings.
 type AwsDynamodbSpec_StreamViewType int32
 
 const (
-	AwsDynamodbSpec_STREAM_VIEW_TYPE_UNSPECIFIED        AwsDynamodbSpec_StreamViewType = 0
-	AwsDynamodbSpec_STREAM_VIEW_TYPE_KEYS_ONLY          AwsDynamodbSpec_StreamViewType = 1
-	AwsDynamodbSpec_STREAM_VIEW_TYPE_NEW_IMAGE          AwsDynamodbSpec_StreamViewType = 2
-	AwsDynamodbSpec_STREAM_VIEW_TYPE_OLD_IMAGE          AwsDynamodbSpec_StreamViewType = 3
-	AwsDynamodbSpec_STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES AwsDynamodbSpec_StreamViewType = 4
+	AwsDynamodbSpec_STREAM_VIEW_TYPE_UNSPECIFIED AwsDynamodbSpec_StreamViewType = 0
+	AwsDynamodbSpec_KEYS_ONLY                    AwsDynamodbSpec_StreamViewType = 1
+	AwsDynamodbSpec_NEW_IMAGE                    AwsDynamodbSpec_StreamViewType = 2
+	AwsDynamodbSpec_OLD_IMAGE                    AwsDynamodbSpec_StreamViewType = 3
+	AwsDynamodbSpec_NEW_AND_OLD_IMAGES           AwsDynamodbSpec_StreamViewType = 4
 )
 
 // Enum value maps for AwsDynamodbSpec_StreamViewType.
 var (
 	AwsDynamodbSpec_StreamViewType_name = map[int32]string{
 		0: "STREAM_VIEW_TYPE_UNSPECIFIED",
-		1: "STREAM_VIEW_TYPE_KEYS_ONLY",
-		2: "STREAM_VIEW_TYPE_NEW_IMAGE",
-		3: "STREAM_VIEW_TYPE_OLD_IMAGE",
-		4: "STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES",
+		1: "KEYS_ONLY",
+		2: "NEW_IMAGE",
+		3: "OLD_IMAGE",
+		4: "NEW_AND_OLD_IMAGES",
 	}
 	AwsDynamodbSpec_StreamViewType_value = map[string]int32{
-		"STREAM_VIEW_TYPE_UNSPECIFIED":        0,
-		"STREAM_VIEW_TYPE_KEYS_ONLY":          1,
-		"STREAM_VIEW_TYPE_NEW_IMAGE":          2,
-		"STREAM_VIEW_TYPE_OLD_IMAGE":          3,
-		"STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES": 4,
+		"STREAM_VIEW_TYPE_UNSPECIFIED": 0,
+		"KEYS_ONLY":                    1,
+		"NEW_IMAGE":                    2,
+		"OLD_IMAGE":                    3,
+		"NEW_AND_OLD_IMAGES":           4,
 	}
 )
 
@@ -182,28 +185,29 @@ func (AwsDynamodbSpec_StreamViewType) EnumDescriptor() ([]byte, []int) {
 }
 
 // Projection type for indexes.
+// Values match AWS API expected strings.
 type AwsDynamodbSpec_ProjectionType int32
 
 const (
 	AwsDynamodbSpec_PROJECTION_TYPE_UNSPECIFIED AwsDynamodbSpec_ProjectionType = 0
-	AwsDynamodbSpec_PROJECTION_TYPE_ALL         AwsDynamodbSpec_ProjectionType = 1
-	AwsDynamodbSpec_PROJECTION_TYPE_KEYS_ONLY   AwsDynamodbSpec_ProjectionType = 2
-	AwsDynamodbSpec_PROJECTION_TYPE_INCLUDE     AwsDynamodbSpec_ProjectionType = 3 // Include selected non-key attributes
+	AwsDynamodbSpec_ALL                         AwsDynamodbSpec_ProjectionType = 1
+	AwsDynamodbSpec_KEYS_ONLY_PROJECTION        AwsDynamodbSpec_ProjectionType = 2 // Note: Can't reuse KEYS_ONLY from StreamViewType
+	AwsDynamodbSpec_INCLUDE                     AwsDynamodbSpec_ProjectionType = 3 // Include selected non-key attributes
 )
 
 // Enum value maps for AwsDynamodbSpec_ProjectionType.
 var (
 	AwsDynamodbSpec_ProjectionType_name = map[int32]string{
 		0: "PROJECTION_TYPE_UNSPECIFIED",
-		1: "PROJECTION_TYPE_ALL",
-		2: "PROJECTION_TYPE_KEYS_ONLY",
-		3: "PROJECTION_TYPE_INCLUDE",
+		1: "ALL",
+		2: "KEYS_ONLY_PROJECTION",
+		3: "INCLUDE",
 	}
 	AwsDynamodbSpec_ProjectionType_value = map[string]int32{
 		"PROJECTION_TYPE_UNSPECIFIED": 0,
-		"PROJECTION_TYPE_ALL":         1,
-		"PROJECTION_TYPE_KEYS_ONLY":   2,
-		"PROJECTION_TYPE_INCLUDE":     3,
+		"ALL":                         1,
+		"KEYS_ONLY_PROJECTION":        2,
+		"INCLUDE":                     3,
 	}
 )
 
@@ -235,25 +239,26 @@ func (AwsDynamodbSpec_ProjectionType) EnumDescriptor() ([]byte, []int) {
 }
 
 // Table storage class.
+// Values match AWS API expected strings.
 type AwsDynamodbSpec_TableClass int32
 
 const (
-	AwsDynamodbSpec_TABLE_CLASS_UNSPECIFIED                AwsDynamodbSpec_TableClass = 0
-	AwsDynamodbSpec_TABLE_CLASS_STANDARD                   AwsDynamodbSpec_TableClass = 1
-	AwsDynamodbSpec_TABLE_CLASS_STANDARD_INFREQUENT_ACCESS AwsDynamodbSpec_TableClass = 2
+	AwsDynamodbSpec_TABLE_CLASS_UNSPECIFIED    AwsDynamodbSpec_TableClass = 0
+	AwsDynamodbSpec_STANDARD                   AwsDynamodbSpec_TableClass = 1
+	AwsDynamodbSpec_STANDARD_INFREQUENT_ACCESS AwsDynamodbSpec_TableClass = 2
 )
 
 // Enum value maps for AwsDynamodbSpec_TableClass.
 var (
 	AwsDynamodbSpec_TableClass_name = map[int32]string{
 		0: "TABLE_CLASS_UNSPECIFIED",
-		1: "TABLE_CLASS_STANDARD",
-		2: "TABLE_CLASS_STANDARD_INFREQUENT_ACCESS",
+		1: "STANDARD",
+		2: "STANDARD_INFREQUENT_ACCESS",
 	}
 	AwsDynamodbSpec_TableClass_value = map[string]int32{
-		"TABLE_CLASS_UNSPECIFIED":                0,
-		"TABLE_CLASS_STANDARD":                   1,
-		"TABLE_CLASS_STANDARD_INFREQUENT_ACCESS": 2,
+		"TABLE_CLASS_UNSPECIFIED":    0,
+		"STANDARD":                   1,
+		"STANDARD_INFREQUENT_ACCESS": 2,
 	}
 )
 
@@ -284,25 +289,26 @@ func (AwsDynamodbSpec_TableClass) EnumDescriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 4}
 }
 
+// Values match AWS API expected strings.
 type AwsDynamodbSpec_KeySchemaElement_KeyType int32
 
 const (
 	AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_UNSPECIFIED AwsDynamodbSpec_KeySchemaElement_KeyType = 0
-	AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH        AwsDynamodbSpec_KeySchemaElement_KeyType = 1 // Partition key
-	AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_RANGE       AwsDynamodbSpec_KeySchemaElement_KeyType = 2 // Sort key
+	AwsDynamodbSpec_KeySchemaElement_HASH                 AwsDynamodbSpec_KeySchemaElement_KeyType = 1 // Partition key
+	AwsDynamodbSpec_KeySchemaElement_RANGE                AwsDynamodbSpec_KeySchemaElement_KeyType = 2 // Sort key
 )
 
 // Enum value maps for AwsDynamodbSpec_KeySchemaElement_KeyType.
 var (
 	AwsDynamodbSpec_KeySchemaElement_KeyType_name = map[int32]string{
 		0: "KEY_TYPE_UNSPECIFIED",
-		1: "KEY_TYPE_HASH",
-		2: "KEY_TYPE_RANGE",
+		1: "HASH",
+		2: "RANGE",
 	}
 	AwsDynamodbSpec_KeySchemaElement_KeyType_value = map[string]int32{
 		"KEY_TYPE_UNSPECIFIED": 0,
-		"KEY_TYPE_HASH":        1,
-		"KEY_TYPE_RANGE":       2,
+		"HASH":                 1,
+		"RANGE":                2,
 	}
 )
 
@@ -947,7 +953,7 @@ var File_org_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect
 
 const file_org_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/aws/awsdynamodb/v1/spec.proto\x12/org.project_planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xc52\n" +
+	":org/project_planton/provider/aws/awsdynamodb/v1/spec.proto\x12/org.project_planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xe90\n" +
 	"\x0fAwsDynamodbSpec\x12y\n" +
 	"\fbilling_mode\x18\x01 \x01(\x0e2L.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.BillingModeB\b\xbaH\x05\x82\x01\x02\x10\x01R\vbillingMode\x12\x8d\x01\n" +
 	"\x16provisioned_throughput\x18\x02 \x01(\v2V.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProvisionedThroughputR\x15provisionedThroughput\x12\x93\x01\n" +
@@ -968,14 +974,14 @@ const file_org_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = 
 	"\x1ccontributor_insights_enabled\x18\x0e \x01(\bR\x1acontributorInsightsEnabled\x1a\xa0\x01\n" +
 	"\x13AttributeDefinition\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12l\n" +
-	"\x04type\x18\x02 \x01(\x0e2N.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x04type\x1a\x8e\x02\n" +
+	"\x04type\x18\x02 \x01(\x0e2N.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x04type\x1a\xfc\x01\n" +
 	"\x10KeySchemaElement\x12.\n" +
 	"\x0eattribute_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\rattributeName\x12~\n" +
-	"\bkey_type\x18\x02 \x01(\x0e2Y.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement.KeyTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\akeyType\"J\n" +
+	"\bkey_type\x18\x02 \x01(\x0e2Y.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement.KeyTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\akeyType\"8\n" +
 	"\aKeyType\x12\x18\n" +
-	"\x14KEY_TYPE_UNSPECIFIED\x10\x00\x12\x11\n" +
-	"\rKEY_TYPE_HASH\x10\x01\x12\x12\n" +
-	"\x0eKEY_TYPE_RANGE\x10\x02\x1a\x91\x03\n" +
+	"\x14KEY_TYPE_UNSPECIFIED\x10\x00\x12\b\n" +
+	"\x04HASH\x10\x01\x12\t\n" +
+	"\x05RANGE\x10\x02\x1a\x91\x03\n" +
 	"\n" +
 	"Projection\x12m\n" +
 	"\x04type\x18\x01 \x01(\x0e2O.org.project_planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProjectionTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x04type\x126\n" +
@@ -1007,32 +1013,32 @@ const file_org_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = 
 	"\n" +
 	"TimeToLive\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
-	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"k\n" +
+	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"Q\n" +
 	"\vBillingMode\x12\x1c\n" +
-	"\x18BILLING_MODE_UNSPECIFIED\x10\x00\x12\x1c\n" +
-	"\x18BILLING_MODE_PROVISIONED\x10\x01\x12 \n" +
-	"\x1cBILLING_MODE_PAY_PER_REQUEST\x10\x02\"q\n" +
+	"\x18BILLING_MODE_UNSPECIFIED\x10\x00\x12\x0f\n" +
+	"\vPROVISIONED\x10\x01\x12\x13\n" +
+	"\x0fPAY_PER_REQUEST\x10\x02\"D\n" +
 	"\rAttributeType\x12\x1e\n" +
-	"\x1aATTRIBUTE_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
-	"\x10ATTRIBUTE_TYPE_S\x10\x01\x12\x14\n" +
-	"\x10ATTRIBUTE_TYPE_N\x10\x02\x12\x14\n" +
-	"\x10ATTRIBUTE_TYPE_B\x10\x03\"\xbb\x01\n" +
+	"\x1aATTRIBUTE_TYPE_UNSPECIFIED\x10\x00\x12\x05\n" +
+	"\x01S\x10\x01\x12\x05\n" +
+	"\x01N\x10\x02\x12\x05\n" +
+	"\x01B\x10\x03\"w\n" +
 	"\x0eStreamViewType\x12 \n" +
-	"\x1cSTREAM_VIEW_TYPE_UNSPECIFIED\x10\x00\x12\x1e\n" +
-	"\x1aSTREAM_VIEW_TYPE_KEYS_ONLY\x10\x01\x12\x1e\n" +
-	"\x1aSTREAM_VIEW_TYPE_NEW_IMAGE\x10\x02\x12\x1e\n" +
-	"\x1aSTREAM_VIEW_TYPE_OLD_IMAGE\x10\x03\x12'\n" +
-	"#STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES\x10\x04\"\x86\x01\n" +
+	"\x1cSTREAM_VIEW_TYPE_UNSPECIFIED\x10\x00\x12\r\n" +
+	"\tKEYS_ONLY\x10\x01\x12\r\n" +
+	"\tNEW_IMAGE\x10\x02\x12\r\n" +
+	"\tOLD_IMAGE\x10\x03\x12\x16\n" +
+	"\x12NEW_AND_OLD_IMAGES\x10\x04\"a\n" +
 	"\x0eProjectionType\x12\x1f\n" +
-	"\x1bPROJECTION_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
-	"\x13PROJECTION_TYPE_ALL\x10\x01\x12\x1d\n" +
-	"\x19PROJECTION_TYPE_KEYS_ONLY\x10\x02\x12\x1b\n" +
-	"\x17PROJECTION_TYPE_INCLUDE\x10\x03\"o\n" +
+	"\x1bPROJECTION_TYPE_UNSPECIFIED\x10\x00\x12\a\n" +
+	"\x03ALL\x10\x01\x12\x18\n" +
+	"\x14KEYS_ONLY_PROJECTION\x10\x02\x12\v\n" +
+	"\aINCLUDE\x10\x03\"W\n" +
 	"\n" +
 	"TableClass\x12\x1b\n" +
-	"\x17TABLE_CLASS_UNSPECIFIED\x10\x00\x12\x18\n" +
-	"\x14TABLE_CLASS_STANDARD\x10\x01\x12*\n" +
-	"&TABLE_CLASS_STANDARD_INFREQUENT_ACCESS\x10\x02:\xc8\x0e\xbaH\xc4\x0e\x1af\n" +
+	"\x17TABLE_CLASS_UNSPECIFIED\x10\x00\x12\f\n" +
+	"\bSTANDARD\x10\x01\x12\x1e\n" +
+	"\x1aSTANDARD_INFREQUENT_ACCESS\x10\x02:\xc8\x0e\xbaH\xc4\x0e\x1af\n" +
 	"\x10billing_mode_set\x12:billing_mode must be set to PROVISIONED or PAY_PER_REQUEST\x1a\x16this.billing_mode != 0\x1a\xa5\x02\n" +
 	"\x16table_key_schema_shape\x12ZTable key_schema must have exactly one HASH key and at most one RANGE key (max 2 elements)\x1a\xae\x01this.key_schema.filter(k, k.key_type == 1).size() == 1 && this.key_schema.filter(k, k.key_type == 2).size() <= 1 && this.key_schema.size() >= 1 && this.key_schema.size() <= 2\x1a\xf3\x03\n" +
 	"\x1fprovisioned_requires_throughput\x12\x89\x01When billing_mode is PROVISIONED, provisioned_throughput must be set with RCUs and WCUs > 0; for PAY_PER_REQUEST it must be unset or zero\x1a\xc3\x02this.billing_mode == 1 ? (has(this.provisioned_throughput) && this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0) : (!has(this.provisioned_throughput) || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0))\x1a\xce\x01\n" +

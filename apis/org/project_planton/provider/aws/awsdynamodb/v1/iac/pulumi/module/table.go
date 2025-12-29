@@ -1,7 +1,6 @@
 package module
 
 import (
-	awsdynamodbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsdynamodb/v1"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/dynamodb"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -12,38 +11,34 @@ type tableResult struct {
 }
 
 func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*tableResult, error) {
-	// Map billing mode
+	// Get billing mode directly from enum (values match AWS API strings)
+	billingModeStr := locals.Spec.BillingMode.String()
 	var billingMode pulumi.StringPtrInput
-	switch locals.Spec.BillingMode {
-	case awsdynamodbv1.AwsDynamodbSpec_BILLING_MODE_PROVISIONED:
-		billingMode = pulumi.StringPtr("PROVISIONED")
-	case awsdynamodbv1.AwsDynamodbSpec_BILLING_MODE_PAY_PER_REQUEST:
-		billingMode = pulumi.StringPtr("PAY_PER_REQUEST")
+	if billingModeStr != "BILLING_MODE_UNSPECIFIED" {
+		billingMode = pulumi.StringPtr(billingModeStr)
 	}
 
-	// Attributes
+	// Attributes - get type directly from enum
 	var attrDefs dynamodb.TableAttributeArray
 	for _, a := range locals.Spec.AttributeDefinitions {
-		attrType := pulumi.String("S")
-		if a.Type == awsdynamodbv1.AwsDynamodbSpec_ATTRIBUTE_TYPE_N {
-			attrType = pulumi.String("N")
-		}
-		if a.Type == awsdynamodbv1.AwsDynamodbSpec_ATTRIBUTE_TYPE_B {
-			attrType = pulumi.String("B")
+		attrType := a.Type.String()
+		if attrType == "ATTRIBUTE_TYPE_UNSPECIFIED" {
+			attrType = "S" // default to String
 		}
 		attrDefs = append(attrDefs, dynamodb.TableAttributeArgs{
 			Name: pulumi.String(a.Name),
-			Type: attrType,
+			Type: pulumi.String(attrType),
 		})
 	}
 
-	// Table keys
+	// Table keys - get key type directly from enum
 	var tableHashKey, tableRangeKey string
 	for _, k := range locals.Spec.KeySchema {
-		if k.KeyType == awsdynamodbv1.AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH {
+		keyType := k.KeyType.String()
+		if keyType == "HASH" {
 			tableHashKey = k.AttributeName
 		}
-		if k.KeyType == awsdynamodbv1.AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_RANGE {
+		if keyType == "RANGE" {
 			tableRangeKey = k.AttributeName
 		}
 	}
@@ -53,7 +48,7 @@ func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*
 	for _, l := range locals.Spec.LocalSecondaryIndexes {
 		var lsiRangeKey string
 		for _, lk := range l.KeySchema {
-			if lk.KeyType == awsdynamodbv1.AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_RANGE {
+			if lk.KeyType.String() == "RANGE" {
 				lsiRangeKey = lk.AttributeName
 			}
 		}
@@ -64,17 +59,18 @@ func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*
 		// Default projection ALL; override per spec
 		lsi.ProjectionType = pulumi.String("ALL")
 		if l.Projection != nil {
-			switch l.Projection.Type {
-			case awsdynamodbv1.AwsDynamodbSpec_PROJECTION_TYPE_KEYS_ONLY:
+			projType := l.Projection.Type.String()
+			switch projType {
+			case "KEYS_ONLY_PROJECTION":
 				lsi.ProjectionType = pulumi.String("KEYS_ONLY")
-			case awsdynamodbv1.AwsDynamodbSpec_PROJECTION_TYPE_INCLUDE:
+			case "INCLUDE":
 				lsi.ProjectionType = pulumi.String("INCLUDE")
 				var nonKeys pulumi.StringArray
 				for _, n := range l.Projection.NonKeyAttributes {
 					nonKeys = append(nonKeys, pulumi.String(n))
 				}
 				lsi.NonKeyAttributes = nonKeys
-			default:
+			case "ALL":
 				lsi.ProjectionType = pulumi.String("ALL")
 			}
 		}
@@ -86,10 +82,11 @@ func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*
 	for _, g := range locals.Spec.GlobalSecondaryIndexes {
 		var gsiHashKey, gsiRangeKey string
 		for _, gk := range g.KeySchema {
-			if gk.KeyType == awsdynamodbv1.AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_HASH {
+			keyType := gk.KeyType.String()
+			if keyType == "HASH" {
 				gsiHashKey = gk.AttributeName
 			}
-			if gk.KeyType == awsdynamodbv1.AwsDynamodbSpec_KeySchemaElement_KEY_TYPE_RANGE {
+			if keyType == "RANGE" {
 				gsiRangeKey = gk.AttributeName
 			}
 		}
@@ -103,21 +100,22 @@ func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*
 		// Default projection ALL; override per spec
 		gsi.ProjectionType = pulumi.String("ALL")
 		if g.Projection != nil {
-			switch g.Projection.Type {
-			case awsdynamodbv1.AwsDynamodbSpec_PROJECTION_TYPE_KEYS_ONLY:
+			projType := g.Projection.Type.String()
+			switch projType {
+			case "KEYS_ONLY_PROJECTION":
 				gsi.ProjectionType = pulumi.String("KEYS_ONLY")
-			case awsdynamodbv1.AwsDynamodbSpec_PROJECTION_TYPE_INCLUDE:
+			case "INCLUDE":
 				gsi.ProjectionType = pulumi.String("INCLUDE")
 				var nonKeys pulumi.StringArray
 				for _, n := range g.Projection.NonKeyAttributes {
 					nonKeys = append(nonKeys, pulumi.String(n))
 				}
 				gsi.NonKeyAttributes = nonKeys
-			default:
+			case "ALL":
 				gsi.ProjectionType = pulumi.String("ALL")
 			}
 		}
-		if g.ProvisionedThroughput != nil && locals.Spec.BillingMode == awsdynamodbv1.AwsDynamodbSpec_BILLING_MODE_PROVISIONED {
+		if g.ProvisionedThroughput != nil && locals.Spec.BillingMode.String() == "PROVISIONED" {
 			gsi.ReadCapacity = pulumi.IntPtr(int(g.ProvisionedThroughput.ReadCapacityUnits))
 			gsi.WriteCapacity = pulumi.IntPtr(int(g.ProvisionedThroughput.WriteCapacityUnits))
 		}
@@ -148,25 +146,20 @@ func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*
 	}
 
 	if locals.Spec.StreamEnabled {
-		switch locals.Spec.StreamViewType {
-		case awsdynamodbv1.AwsDynamodbSpec_STREAM_VIEW_TYPE_KEYS_ONLY:
-			args.StreamViewType = pulumi.StringPtr("KEYS_ONLY")
-		case awsdynamodbv1.AwsDynamodbSpec_STREAM_VIEW_TYPE_NEW_IMAGE:
-			args.StreamViewType = pulumi.StringPtr("NEW_IMAGE")
-		case awsdynamodbv1.AwsDynamodbSpec_STREAM_VIEW_TYPE_OLD_IMAGE:
-			args.StreamViewType = pulumi.StringPtr("OLD_IMAGE")
-		case awsdynamodbv1.AwsDynamodbSpec_STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES:
-			args.StreamViewType = pulumi.StringPtr("NEW_AND_OLD_IMAGES")
+		streamViewType := locals.Spec.StreamViewType.String()
+		if streamViewType != "STREAM_VIEW_TYPE_UNSPECIFIED" {
+			args.StreamViewType = pulumi.StringPtr(streamViewType)
 		}
 	}
 
-	if locals.Spec.TableClass == awsdynamodbv1.AwsDynamodbSpec_TABLE_CLASS_STANDARD_INFREQUENT_ACCESS {
-		args.TableClass = pulumi.StringPtr("STANDARD_INFREQUENT_ACCESS")
+	tableClass := locals.Spec.TableClass.String()
+	if tableClass != "TABLE_CLASS_UNSPECIFIED" && tableClass != "STANDARD" {
+		args.TableClass = pulumi.StringPtr(tableClass)
 	}
 	if locals.Spec.PointInTimeRecoveryEnabled {
 		args.PointInTimeRecovery = &dynamodb.TablePointInTimeRecoveryArgs{Enabled: pulumi.Bool(true)}
 	}
-	if locals.Spec.BillingMode == awsdynamodbv1.AwsDynamodbSpec_BILLING_MODE_PROVISIONED && locals.Spec.ProvisionedThroughput != nil {
+	if locals.Spec.BillingMode.String() == "PROVISIONED" && locals.Spec.ProvisionedThroughput != nil {
 		args.ReadCapacity = pulumi.IntPtr(int(locals.Spec.ProvisionedThroughput.ReadCapacityUnits))
 		args.WriteCapacity = pulumi.IntPtr(int(locals.Spec.ProvisionedThroughput.WriteCapacityUnits))
 	}

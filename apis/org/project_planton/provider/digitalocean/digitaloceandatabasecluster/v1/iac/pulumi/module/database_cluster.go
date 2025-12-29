@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	digitaloceandatabaseclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1"
 	"github.com/pulumi/pulumi-digitalocean/sdk/v4/go/digitalocean"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -16,18 +15,9 @@ func cluster(
 	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.DatabaseCluster, error) {
 
-	// 1. Translate proto enum to engine slug.
-	var engineSlug string
-	switch locals.DigitalOceanDatabaseCluster.Spec.Engine {
-	case digitaloceandatabaseclusterv1.DigitalOceanDatabaseEngine_postgres:
-		engineSlug = "pg"
-	case digitaloceandatabaseclusterv1.DigitalOceanDatabaseEngine_mysql:
-		engineSlug = "mysql"
-	case digitaloceandatabaseclusterv1.DigitalOceanDatabaseEngine_redis:
-		engineSlug = "redis"
-	case digitaloceandatabaseclusterv1.DigitalOceanDatabaseEngine_mongodb:
-		engineSlug = "mongodb"
-	default:
+	// 1. Get engine slug directly from enum (values match DigitalOcean API slugs).
+	engineSlug := locals.DigitalOceanDatabaseCluster.Spec.Engine.String()
+	if engineSlug == "digital_ocean_database_engine_unspecified" {
 		return nil, errors.Errorf("unsupported database engine: %v", locals.DigitalOceanDatabaseCluster.Spec.Engine)
 	}
 

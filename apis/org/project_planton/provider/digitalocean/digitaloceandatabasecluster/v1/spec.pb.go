@@ -25,31 +25,32 @@ const (
 )
 
 // Enumeration of supported database engines for DigitalOcean managed database clusters.
+// Values match DigitalOcean API expected engine slugs.
 type DigitalOceanDatabaseEngine int32
 
 const (
 	DigitalOceanDatabaseEngine_digital_ocean_database_engine_unspecified DigitalOceanDatabaseEngine = 0
-	DigitalOceanDatabaseEngine_postgres                                  DigitalOceanDatabaseEngine = 1
-	DigitalOceanDatabaseEngine_mysql                                     DigitalOceanDatabaseEngine = 2
-	DigitalOceanDatabaseEngine_redis                                     DigitalOceanDatabaseEngine = 3
-	DigitalOceanDatabaseEngine_mongodb                                   DigitalOceanDatabaseEngine = 4
+	DigitalOceanDatabaseEngine_pg                                        DigitalOceanDatabaseEngine = 1 // PostgreSQL (DigitalOcean uses "pg" slug)
+	DigitalOceanDatabaseEngine_mysql                                     DigitalOceanDatabaseEngine = 2 // MySQL
+	DigitalOceanDatabaseEngine_redis                                     DigitalOceanDatabaseEngine = 3 // Redis
+	DigitalOceanDatabaseEngine_mongodb                                   DigitalOceanDatabaseEngine = 4 // MongoDB
 )
 
 // Enum value maps for DigitalOceanDatabaseEngine.
 var (
 	DigitalOceanDatabaseEngine_name = map[int32]string{
 		0: "digital_ocean_database_engine_unspecified",
-		1: "postgres",
+		1: "pg",
 		2: "mysql",
 		3: "redis",
 		4: "mongodb",
 	}
 	DigitalOceanDatabaseEngine_value = map[string]int32{
 		"digital_ocean_database_engine_unspecified": 0,
-		"postgres": 1,
-		"mysql":    2,
-		"redis":    3,
-		"mongodb":  4,
+		"pg":      1,
+		"mysql":   2,
+		"redis":   3,
+		"mongodb": 4,
 	}
 )
 
@@ -226,10 +227,10 @@ const file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster
 	"\x03vpc\x18\a \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1e\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
 	"\vstorage_gib\x18\b \x01(\rR\n" +
 	"storageGib\x12<\n" +
-	"\x1aenable_public_connectivity\x18\t \x01(\bR\x18enablePublicConnectivity*|\n" +
+	"\x1aenable_public_connectivity\x18\t \x01(\bR\x18enablePublicConnectivity*v\n" +
 	"\x1aDigitalOceanDatabaseEngine\x12-\n" +
-	")digital_ocean_database_engine_unspecified\x10\x00\x12\f\n" +
-	"\bpostgres\x10\x01\x12\t\n" +
+	")digital_ocean_database_engine_unspecified\x10\x00\x12\x06\n" +
+	"\x02pg\x10\x01\x12\t\n" +
 	"\x05mysql\x10\x02\x12\t\n" +
 	"\x05redis\x10\x03\x12\v\n" +
 	"\amongodb\x10\x04B\xb5\x04\n" +

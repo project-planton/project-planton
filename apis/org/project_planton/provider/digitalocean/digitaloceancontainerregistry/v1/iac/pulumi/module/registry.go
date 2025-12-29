@@ -4,8 +4,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-digitalocean/sdk/v4/go/digitalocean"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-
-	digitaloceancontainerregistryv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1"
 )
 
 // registry provisions the DigitalOcean Container Registry and exports outputs.
@@ -15,17 +13,10 @@ func registry(
 	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.ContainerRegistry, error) {
 
-	// 1. Translate the subscription tier enum to the expected slug.
-	var tierSlug string
-	switch locals.DigitalOceanContainerRegistry.Spec.SubscriptionTier {
-	case digitaloceancontainerregistryv1.DigitalOceanContainerRegistryTier_STARTER:
-		tierSlug = "starter"
-	case digitaloceancontainerregistryv1.DigitalOceanContainerRegistryTier_BASIC:
-		tierSlug = "basic"
-	case digitaloceancontainerregistryv1.DigitalOceanContainerRegistryTier_PROFESSIONAL:
-		tierSlug = "professional"
-	default:
-		tierSlug = "starter"
+	// 1. Get subscription tier directly from enum (values match DigitalOcean API slugs).
+	tierSlug := locals.DigitalOceanContainerRegistry.Spec.SubscriptionTier.String()
+	if tierSlug == "digitalocean_container_registry_tier_unspecified" {
+		tierSlug = "starter" // default to starter tier
 	}
 
 	// 2. Build the resource arguments from proto fields.

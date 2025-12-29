@@ -25,22 +25,23 @@ const (
 )
 
 // Supported session affinity options for Cloudflare load balancers.
+// Values match Cloudflare API expected strings.
 type CloudflareLoadBalancerSessionAffinity int32
 
 const (
-	CloudflareLoadBalancerSessionAffinity_SESSION_AFFINITY_NONE   CloudflareLoadBalancerSessionAffinity = 0
-	CloudflareLoadBalancerSessionAffinity_SESSION_AFFINITY_COOKIE CloudflareLoadBalancerSessionAffinity = 1
+	CloudflareLoadBalancerSessionAffinity_none   CloudflareLoadBalancerSessionAffinity = 0 // No session affinity
+	CloudflareLoadBalancerSessionAffinity_cookie CloudflareLoadBalancerSessionAffinity = 1 // Cookie-based session affinity
 )
 
 // Enum value maps for CloudflareLoadBalancerSessionAffinity.
 var (
 	CloudflareLoadBalancerSessionAffinity_name = map[int32]string{
-		0: "SESSION_AFFINITY_NONE",
-		1: "SESSION_AFFINITY_COOKIE",
+		0: "none",
+		1: "cookie",
 	}
 	CloudflareLoadBalancerSessionAffinity_value = map[string]int32{
-		"SESSION_AFFINITY_NONE":   0,
-		"SESSION_AFFINITY_COOKIE": 1,
+		"none":   0,
+		"cookie": 1,
 	}
 )
 
@@ -72,25 +73,26 @@ func (CloudflareLoadBalancerSessionAffinity) EnumDescriptor() ([]byte, []int) {
 }
 
 // Supported traffic steering policies for Cloudflare load balancers.
+// Values match Cloudflare API expected strings.
 type CloudflareLoadBalancerSteeringPolicy int32
 
 const (
-	CloudflareLoadBalancerSteeringPolicy_STEERING_OFF    CloudflareLoadBalancerSteeringPolicy = 0
-	CloudflareLoadBalancerSteeringPolicy_STEERING_GEO    CloudflareLoadBalancerSteeringPolicy = 1
-	CloudflareLoadBalancerSteeringPolicy_STEERING_RANDOM CloudflareLoadBalancerSteeringPolicy = 2
+	CloudflareLoadBalancerSteeringPolicy_off    CloudflareLoadBalancerSteeringPolicy = 0 // Static/failover (default)
+	CloudflareLoadBalancerSteeringPolicy_geo    CloudflareLoadBalancerSteeringPolicy = 1 // Geo-routing
+	CloudflareLoadBalancerSteeringPolicy_random CloudflareLoadBalancerSteeringPolicy = 2 // Weighted random distribution
 )
 
 // Enum value maps for CloudflareLoadBalancerSteeringPolicy.
 var (
 	CloudflareLoadBalancerSteeringPolicy_name = map[int32]string{
-		0: "STEERING_OFF",
-		1: "STEERING_GEO",
-		2: "STEERING_RANDOM",
+		0: "off",
+		1: "geo",
+		2: "random",
 	}
 	CloudflareLoadBalancerSteeringPolicy_value = map[string]int32{
-		"STEERING_OFF":    0,
-		"STEERING_GEO":    1,
-		"STEERING_RANDOM": 2,
+		"off":    0,
+		"geo":    1,
+		"random": 2,
 	}
 )
 
@@ -210,14 +212,14 @@ func (x *CloudflareLoadBalancerSpec) GetSessionAffinity() CloudflareLoadBalancer
 	if x != nil {
 		return x.SessionAffinity
 	}
-	return CloudflareLoadBalancerSessionAffinity_SESSION_AFFINITY_NONE
+	return CloudflareLoadBalancerSessionAffinity_none
 }
 
 func (x *CloudflareLoadBalancerSpec) GetSteeringPolicy() CloudflareLoadBalancerSteeringPolicy {
 	if x != nil {
 		return x.SteeringPolicy
 	}
-	return CloudflareLoadBalancerSteeringPolicy_STEERING_OFF
+	return CloudflareLoadBalancerSteeringPolicy_off
 }
 
 // Definition of an origin server in the Cloudflare load balancer.
@@ -300,14 +302,16 @@ const file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spe
 	"\x1cCloudflareLoadBalancerOrigin\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12 \n" +
 	"\aaddress\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aaddress\x12\x1d\n" +
-	"\x06weight\x18\x03 \x01(\x05B\x05\x92\xa6\x1d\x011R\x06weight*_\n" +
-	"%CloudflareLoadBalancerSessionAffinity\x12\x19\n" +
-	"\x15SESSION_AFFINITY_NONE\x10\x00\x12\x1b\n" +
-	"\x17SESSION_AFFINITY_COOKIE\x10\x01*_\n" +
-	"$CloudflareLoadBalancerSteeringPolicy\x12\x10\n" +
-	"\fSTEERING_OFF\x10\x00\x12\x10\n" +
-	"\fSTEERING_GEO\x10\x01\x12\x13\n" +
-	"\x0fSTEERING_RANDOM\x10\x02B\x86\x04\n" +
+	"\x06weight\x18\x03 \x01(\x05B\x05\x92\xa6\x1d\x011R\x06weight*=\n" +
+	"%CloudflareLoadBalancerSessionAffinity\x12\b\n" +
+	"\x04none\x10\x00\x12\n" +
+	"\n" +
+	"\x06cookie\x10\x01*D\n" +
+	"$CloudflareLoadBalancerSteeringPolicy\x12\a\n" +
+	"\x03off\x10\x00\x12\a\n" +
+	"\x03geo\x10\x01\x12\n" +
+	"\n" +
+	"\x06random\x10\x02B\x86\x04\n" +
 	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
 
 var (

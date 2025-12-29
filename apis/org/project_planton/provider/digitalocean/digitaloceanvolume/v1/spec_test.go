@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 			VolumeName:     "test-volume",
 			Region:         digitalocean.DigitalOceanRegion_nyc3,
 			SizeGib:        10,
-			FilesystemType: DigitalOceanVolumeFilesystemType_NONE,
+			FilesystemType: DigitalOceanVolumeFilesystemType_unformatted,
 		}
 	}
 
@@ -34,7 +34,7 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 			Description:    "PostgreSQL data volume for production",
 			Region:         digitalocean.DigitalOceanRegion_sfo3,
 			SizeGib:        500,
-			FilesystemType: DigitalOceanVolumeFilesystemType_XFS,
+			FilesystemType: DigitalOceanVolumeFilesystemType_xfs,
 			Tags:           []string{"env:prod", "service:postgres", "tier:database"},
 		}
 	}
@@ -46,7 +46,7 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 			Description:    "Volume restored from snapshot",
 			Region:         digitalocean.DigitalOceanRegion_nyc3,
 			SizeGib:        100,
-			FilesystemType: DigitalOceanVolumeFilesystemType_EXT4,
+			FilesystemType: DigitalOceanVolumeFilesystemType_ext4,
 			SnapshotId:     "snapshot-abc123",
 		}
 	}
@@ -73,14 +73,14 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 
 		ginkgo.It("should accept ext4 filesystem type", func() {
 			spec := makeValidMinimalSpec()
-			spec.FilesystemType = DigitalOceanVolumeFilesystemType_EXT4
+			spec.FilesystemType = DigitalOceanVolumeFilesystemType_ext4
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})
 
 		ginkgo.It("should accept xfs filesystem type", func() {
 			spec := makeValidMinimalSpec()
-			spec.FilesystemType = DigitalOceanVolumeFilesystemType_XFS
+			spec.FilesystemType = DigitalOceanVolumeFilesystemType_xfs
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})
@@ -305,21 +305,21 @@ var _ = ginkgo.Describe("DigitalOceanVolumeSpec validations", func() {
 
 		ginkgo.It("should accept NONE filesystem type", func() {
 			spec := makeValidMinimalSpec()
-			spec.FilesystemType = DigitalOceanVolumeFilesystemType_NONE
+			spec.FilesystemType = DigitalOceanVolumeFilesystemType_unformatted
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})
 
 		ginkgo.It("should accept EXT4 filesystem type", func() {
 			spec := makeValidMinimalSpec()
-			spec.FilesystemType = DigitalOceanVolumeFilesystemType_EXT4
+			spec.FilesystemType = DigitalOceanVolumeFilesystemType_ext4
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})
 
 		ginkgo.It("should accept XFS filesystem type", func() {
 			spec := makeValidMinimalSpec()
-			spec.FilesystemType = DigitalOceanVolumeFilesystemType_XFS
+			spec.FilesystemType = DigitalOceanVolumeFilesystemType_xfs
 			err := protovalidate.Validate(spec)
 			gomega.Expect(err).To(gomega.BeNil())
 		})

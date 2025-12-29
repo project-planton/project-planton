@@ -60,25 +60,10 @@ func load_balancer(
 	// ---------------------------------------------------------------------
 	// 3. Load Balancer – wires everything together.
 	// ---------------------------------------------------------------------
-	// Map enum → string for steering policy.
-	var steering pulumi.StringPtrInput
-	switch locals.CloudflareLoadBalancer.Spec.SteeringPolicy {
-	case 1: // STEERING_GEO
-		steering = pulumi.StringPtr("geo")
-	case 2: // STEERING_RANDOM
-		steering = pulumi.StringPtr("random")
-	default:
-		steering = pulumi.StringPtr("off")
-	}
-
-	// Map enum → string for session affinity.
-	var affinity pulumi.StringPtrInput
-	switch locals.CloudflareLoadBalancer.Spec.SessionAffinity {
-	case 1: // SESSION_AFFINITY_COOKIE
-		affinity = pulumi.StringPtr("cookie")
-	default:
-		affinity = pulumi.StringPtr("none")
-	}
+	// Get steering policy and session affinity directly from enum strings.
+	// Enum values match Cloudflare API expected strings.
+	steering := pulumi.StringPtr(locals.CloudflareLoadBalancer.Spec.SteeringPolicy.String())
+	affinity := pulumi.StringPtr(locals.CloudflareLoadBalancer.Spec.SessionAffinity.String())
 
 	createdLoadBalancer, err := cloudflare.NewLoadBalancer(ctx, "load_balancer", &cloudflare.LoadBalancerArgs{
 		ZoneId:          pulumi.String(locals.CloudflareLoadBalancer.Spec.ZoneId.GetValue()),

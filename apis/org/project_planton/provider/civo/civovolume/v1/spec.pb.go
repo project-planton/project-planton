@@ -24,25 +24,26 @@ const (
 )
 
 // Supported filesystem types for formatting a Civo volume.
+// Values match provider expected strings.
 type CivoVolumeFilesystemType int32
 
 const (
-	CivoVolumeFilesystemType_NONE CivoVolumeFilesystemType = 0 // Do not format the volume (leave unformatted).
-	CivoVolumeFilesystemType_EXT4 CivoVolumeFilesystemType = 1 // Format the volume with an ext4 filesystem.
-	CivoVolumeFilesystemType_XFS  CivoVolumeFilesystemType = 2 // Format the volume with an XFS filesystem.
+	CivoVolumeFilesystemType_unformatted CivoVolumeFilesystemType = 0 // Do not format the volume (leave unformatted).
+	CivoVolumeFilesystemType_ext4        CivoVolumeFilesystemType = 1 // Format the volume with an ext4 filesystem.
+	CivoVolumeFilesystemType_xfs         CivoVolumeFilesystemType = 2 // Format the volume with an XFS filesystem.
 )
 
 // Enum value maps for CivoVolumeFilesystemType.
 var (
 	CivoVolumeFilesystemType_name = map[int32]string{
-		0: "NONE",
-		1: "EXT4",
-		2: "XFS",
+		0: "unformatted",
+		1: "ext4",
+		2: "xfs",
 	}
 	CivoVolumeFilesystemType_value = map[string]int32{
-		"NONE": 0,
-		"EXT4": 1,
-		"XFS":  2,
+		"unformatted": 0,
+		"ext4":        1,
+		"xfs":         2,
 	}
 )
 
@@ -155,7 +156,7 @@ func (x *CivoVolumeSpec) GetFilesystemType() CivoVolumeFilesystemType {
 	if x != nil {
 		return x.FilesystemType
 	}
-	return CivoVolumeFilesystemType_NONE
+	return CivoVolumeFilesystemType_unformatted
 }
 
 func (x *CivoVolumeSpec) GetSnapshotId() string {
@@ -186,11 +187,11 @@ const file_org_project_planton_provider_civo_civovolume_v1_spec_proto_rawDesc = 
 	"\x0ffilesystem_type\x18\x04 \x01(\x0e2I.org.project_planton.provider.civo.civovolume.v1.CivoVolumeFilesystemTypeR\x0efilesystemType\x12\x1f\n" +
 	"\vsnapshot_id\x18\x05 \x01(\tR\n" +
 	"snapshotId\x125\n" +
-	"\x04tags\x18\x06 \x03(\tB!\xbaH\x1e\x92\x01\x1b\x18\x01\"\x17r\x15\x18@2\x11^[A-Za-z0-9:_-]+$R\x04tags*7\n" +
-	"\x18CivoVolumeFilesystemType\x12\b\n" +
-	"\x04NONE\x10\x00\x12\b\n" +
-	"\x04EXT4\x10\x01\x12\a\n" +
-	"\x03XFS\x10\x02B\x8d\x03\n" +
+	"\x04tags\x18\x06 \x03(\tB!\xbaH\x1e\x92\x01\x1b\x18\x01\"\x17r\x15\x18@2\x11^[A-Za-z0-9:_-]+$R\x04tags*>\n" +
+	"\x18CivoVolumeFilesystemType\x12\x0f\n" +
+	"\vunformatted\x10\x00\x12\b\n" +
+	"\x04ext4\x10\x01\x12\a\n" +
+	"\x03xfs\x10\x02B\x8d\x03\n" +
 	"3com.org.project_planton.provider.civo.civovolume.v1B\tSpecProtoP\x01Zlgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
 
 var (

@@ -61,10 +61,11 @@ message DigitalOceanDatabaseClusterSpec {
 }
 
 // Enumeration of supported database engines for DigitalOcean managed database clusters.
+// Values match DigitalOcean API expected engine slugs.
 enum DigitalOceanDatabaseEngine {
   digital_ocean_database_engine_unspecified = 0;
-  postgres = 1;
-  mysql = 2;
-  redis = 3;
-  mongodb = 4;
+  pg = 1; // PostgreSQL (DigitalOcean uses "pg" slug)
+  mysql = 2; // MySQL
+  redis = 3; // Redis
+  mongodb = 4; // MongoDB
 }
