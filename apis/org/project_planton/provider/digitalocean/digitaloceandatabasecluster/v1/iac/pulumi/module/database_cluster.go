@@ -16,10 +16,10 @@ func cluster(
 ) (*digitalocean.DatabaseCluster, error) {
 
 	// 1. Get engine slug directly from enum (values match DigitalOcean API slugs).
-	engineSlug := locals.DigitalOceanDatabaseCluster.Spec.Engine.String()
-	if engineSlug == "digital_ocean_database_engine_unspecified" {
-		return nil, errors.Errorf("unsupported database engine: %v", locals.DigitalOceanDatabaseCluster.Spec.Engine)
+	if locals.DigitalOceanDatabaseCluster.Spec.Engine == 0 {
+		return nil, errors.Errorf("database engine is required")
 	}
+	engineSlug := locals.DigitalOceanDatabaseCluster.Spec.Engine.String()
 
 	// 2. Convert label map → slice of "key:value" tags.
 	var tagInputs pulumi.StringArray

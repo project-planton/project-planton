@@ -14,9 +14,9 @@ func registry(
 ) (*digitalocean.ContainerRegistry, error) {
 
 	// 1. Get subscription tier directly from enum (values match DigitalOcean API slugs).
-	tierSlug := locals.DigitalOceanContainerRegistry.Spec.SubscriptionTier.String()
-	if tierSlug == "digitalocean_container_registry_tier_unspecified" {
-		tierSlug = "starter" // default to starter tier
+	tierSlug := "starter" // default to starter tier
+	if locals.DigitalOceanContainerRegistry.Spec.SubscriptionTier != 0 {
+		tierSlug = locals.DigitalOceanContainerRegistry.Spec.SubscriptionTier.String()
 	}
 
 	// 2. Build the resource arguments from proto fields.

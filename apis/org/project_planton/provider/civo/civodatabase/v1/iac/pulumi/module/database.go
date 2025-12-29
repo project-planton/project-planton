@@ -14,10 +14,10 @@ func database(
 ) (*civo.Database, error) {
 
 	// 1. Get engine slug directly from enum (values match Civo API strings).
-	engineSlug := locals.CivoDatabase.Spec.Engine.String()
-	if engineSlug == "civo_database_engine_unspecified" {
-		return nil, errors.Errorf("unsupported database engine: %v", locals.CivoDatabase.Spec.Engine)
+	if locals.CivoDatabase.Spec.Engine == 0 {
+		return nil, errors.Errorf("database engine is required")
 	}
+	engineSlug := locals.CivoDatabase.Spec.Engine.String()
 
 	// 2. Build resource arguments from proto fields.
 	databaseArgs := &civo.DatabaseArgs{

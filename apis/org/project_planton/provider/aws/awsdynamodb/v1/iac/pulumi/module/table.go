@@ -12,18 +12,17 @@ type tableResult struct {
 
 func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*tableResult, error) {
 	// Get billing mode directly from enum (values match AWS API strings)
-	billingModeStr := locals.Spec.BillingMode.String()
 	var billingMode pulumi.StringPtrInput
-	if billingModeStr != "BILLING_MODE_UNSPECIFIED" {
-		billingMode = pulumi.StringPtr(billingModeStr)
+	if locals.Spec.BillingMode != 0 {
+		billingMode = pulumi.StringPtr(locals.Spec.BillingMode.String())
 	}
 
 	// Attributes - get type directly from enum
 	var attrDefs dynamodb.TableAttributeArray
 	for _, a := range locals.Spec.AttributeDefinitions {
-		attrType := a.Type.String()
-		if attrType == "ATTRIBUTE_TYPE_UNSPECIFIED" {
-			attrType = "S" // default to String
+		attrType := "S" // default to String
+		if a.Type != 0 {
+			attrType = a.Type.String()
 		}
 		attrDefs = append(attrDefs, dynamodb.TableAttributeArgs{
 			Name: pulumi.String(a.Name),
@@ -145,16 +144,12 @@ func createTable(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*
 		args.RangeKey = pulumi.StringPtr(tableRangeKey)
 	}
 
-	if locals.Spec.StreamEnabled {
-		streamViewType := locals.Spec.StreamViewType.String()
-		if streamViewType != "STREAM_VIEW_TYPE_UNSPECIFIED" {
-			args.StreamViewType = pulumi.StringPtr(streamViewType)
-		}
+	if locals.Spec.StreamEnabled && locals.Spec.StreamViewType != 0 {
+		args.StreamViewType = pulumi.StringPtr(locals.Spec.StreamViewType.String())
 	}
 
-	tableClass := locals.Spec.TableClass.String()
-	if tableClass != "TABLE_CLASS_UNSPECIFIED" && tableClass != "STANDARD" {
-		args.TableClass = pulumi.StringPtr(tableClass)
+	if locals.Spec.TableClass != 0 && locals.Spec.TableClass.String() != "STANDARD" {
+		args.TableClass = pulumi.StringPtr(locals.Spec.TableClass.String())
 	}
 	if locals.Spec.PointInTimeRecoveryEnabled {
 		args.PointInTimeRecovery = &dynamodb.TablePointInTimeRecoveryArgs{Enabled: pulumi.Bool(true)}
