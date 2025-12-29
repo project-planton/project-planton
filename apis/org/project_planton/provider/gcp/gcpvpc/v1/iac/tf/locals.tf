@@ -16,5 +16,9 @@ locals {
   
   # Default to REGIONAL if routing_mode not specified
   routing_mode = var.spec.routing_mode != null ? lookup(local.routing_mode_map, var.spec.routing_mode, "REGIONAL") : "REGIONAL"
+
+  # Private Services Access configuration
+  enable_private_services = try(var.spec.private_services_access.enabled, false)
+  private_services_prefix_length = try(var.spec.private_services_access.ip_range_prefix_length, 16)
 }
 

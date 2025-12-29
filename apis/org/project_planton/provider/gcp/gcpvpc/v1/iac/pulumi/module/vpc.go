@@ -1,11 +1,14 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	gcpvpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/projects"
+	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/servicenetworking"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -51,5 +54,59 @@ func vpc(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*compu
 	// 4. Export stack outputs.
 	ctx.Export(OpNetworkSelfLink, createdNetwork.SelfLink)
 
+	// 5. Configure Private Services Access if enabled.
+	// This creates VPC peering with Google's service network for managed services (Cloud SQL, Memorystore, etc.)
+	// PREREQUISITE: servicenetworking.googleapis.com must be enabled on the project via GcpProject.
+	if locals.GcpVpc.Spec.PrivateServicesAccess != nil && locals.GcpVpc.Spec.PrivateServicesAccess.Enabled {
+		if err := privateServicesAccess(ctx, locals, gcpProvider, createdNetwork); err != nil {
+			return nil, errors.Wrap(err, "failed to configure private services access")
+		}
+	}
+
 	return createdNetwork, nil
+}
+
+// privateServicesAccess creates the IP allocation and VPC peering with Google's service network.
+// This enables Google managed services (Cloud SQL, Memorystore, etc.) to use private IP addresses.
+func privateServicesAccess(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider, network *compute.Network) error {
+	spec := locals.GcpVpc.Spec
+	projectId := spec.ProjectId.GetValue()
+
+	// Determine prefix length (default to /16 if not specified)
+	prefixLength := 16
+	if spec.PrivateServicesAccess.IpRangePrefixLength > 0 {
+		prefixLength = int(spec.PrivateServicesAccess.IpRangePrefixLength)
+	}
+
+	// Allocate IP range for private services
+	privateIpAlloc, err := compute.NewGlobalAddress(ctx, "private-services-range",
+		&compute.GlobalAddressArgs{
+			Name:         pulumi.String(fmt.Sprintf("%s-private-svc", spec.NetworkName)),
+			Project:      pulumi.String(projectId),
+			Purpose:      pulumi.String("VPC_PEERING"),
+			AddressType:  pulumi.String("INTERNAL"),
+			PrefixLength: pulumi.Int(prefixLength),
+			Network:      network.ID(),
+		}, pulumi.Provider(gcpProvider))
+	if err != nil {
+		return errors.Wrap(err, "failed to allocate private services IP range")
+	}
+
+	// Create private service connection (VPC peering with Google's service network)
+	_, err = servicenetworking.NewConnection(ctx, "private-services-connection",
+		&servicenetworking.ConnectionArgs{
+			Network:               network.ID(),
+			Service:               pulumi.String("servicenetworking.googleapis.com"),
+			ReservedPeeringRanges: pulumi.StringArray{privateIpAlloc.Name},
+		}, pulumi.Provider(gcpProvider))
+	if err != nil {
+		return errors.Wrap(err, "failed to create private services connection")
+	}
+
+	// Export Private Services Access outputs
+	ctx.Export(OpPrivateServicesIpRangeName, privateIpAlloc.Name)
+	ctx.Export(OpPrivateServicesIpRangeCidr,
+		pulumi.Sprintf("%s/%d", privateIpAlloc.Address, prefixLength))
+
+	return nil
 }

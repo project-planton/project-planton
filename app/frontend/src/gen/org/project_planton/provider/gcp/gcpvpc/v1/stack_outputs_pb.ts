@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/gcp/gcpvpc/v1/stack_outputs.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpvpc_v1_stack_outputs: GenFile = /*@__PURE__*/
-  fileDesc("Cj5vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3B2cGMvdjEvc3RhY2tfb3V0cHV0cy5wcm90bxIqb3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxIi8KEkdjcFZwY1N0YWNrT3V0cHV0cxIZChFuZXR3b3JrX3NlbGZfbGluaxgBIAEoCULzAgouY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcHZwYy52MUIRU3RhY2tPdXRwdXRzUHJvdG9QAVpjZ2l0aHViLmNvbS9wcm9qZWN0LXBsYW50b24vcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9nY3AvZ2NwdnBjL3YxO2djcHZwY3YxogIFT1BQR0eqAilPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcHZwYy5WMcoCKU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2NwdnBjXFYx4gI1T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3B2cGNcVjFcR1BCTWV0YWRhdGHqAi5Pcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3B2cGM6OlYxYgZwcm90bzM");
+  fileDesc("Cj5vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3B2cGMvdjEvc3RhY2tfb3V0cHV0cy5wcm90bxIqb3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxIn8KEkdjcFZwY1N0YWNrT3V0cHV0cxIZChFuZXR3b3JrX3NlbGZfbGluaxgBIAEoCRImCh5wcml2YXRlX3NlcnZpY2VzX2lwX3JhbmdlX25hbWUYAiABKAkSJgoecHJpdmF0ZV9zZXJ2aWNlc19pcF9yYW5nZV9jaWRyGAMgASgJQvMCCi5jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5nY3AuZ2NwdnBjLnYxQhFTdGFja091dHB1dHNQcm90b1ABWmNnaXRodWIuY29tL3Byb2plY3QtcGxhbnRvbi9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3B2cGMvdjE7Z2NwdnBjdjGiAgVPUFBHR6oCKU9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5HY3AuR2NwdnBjLlYxygIpT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3B2cGNcVjHiAjVPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcR2NwXEdjcHZwY1xWMVxHUEJNZXRhZGF0YeoCLk9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpHY3A6OkdjcHZwYzo6VjFiBnByb3RvMw");
 
 /**
  * Outputs produced after provisioning a GCP VPC.
@@ -24,6 +24,22 @@ export type GcpVpcStackOutputs = Message<"org.project_planton.provider.gcp.gcpvp
    * @generated from field: string network_self_link = 1;
    */
   networkSelfLink: string;
+
+  /**
+   * Name of the allocated IP range for private services (only set if private_services_access is enabled).
+   * This range is used by Google managed services (Cloud SQL, Memorystore, etc.) for private IP assignment.
+   *
+   * @generated from field: string private_services_ip_range_name = 2;
+   */
+  privateServicesIpRangeName: string;
+
+  /**
+   * CIDR of the allocated IP range for private services (only set if private_services_access is enabled).
+   * Example: "10.100.0.0/16"
+   *
+   * @generated from field: string private_services_ip_range_cidr = 3;
+   */
+  privateServicesIpRangeCidr: string;
 };
 
 /**
