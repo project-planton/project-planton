@@ -1,13 +1,13 @@
 resource "kubernetes_service" "this" {
   metadata {
-    name      = var.spec.version
+    name      = local.kube_service_name
     namespace = local.namespace
     labels    = local.final_labels
   }
 
   spec {
     type     = "ClusterIP"
-    selector = local.final_labels
+    selector = local.selector_labels
 
     dynamic "port" {
       for_each = try(var.spec.container.app.ports, [])

@@ -217,7 +217,7 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 	})
 
 	createdDeployment, err := appsv1.NewDeployment(ctx,
-		locals.KubernetesDeployment.Spec.Version,
+		locals.KubernetesDeployment.Metadata.Name,
 		deploymentArgs,
 		pulumi.Provider(kubernetesProvider),
 		ignoreChangesOpt)

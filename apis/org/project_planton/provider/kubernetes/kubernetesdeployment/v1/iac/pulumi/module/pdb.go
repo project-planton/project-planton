@@ -1,6 +1,8 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	policyv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/policy/v1"
@@ -43,8 +45,10 @@ func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
 		Spec: pdbSpec,
 	}
 
+	// Use metadata.name prefix for Pulumi resource ID to avoid state conflicts
+	pdbResourceName := fmt.Sprintf("%s-pdb", locals.KubernetesDeployment.Metadata.Name)
 	_, err := policyv1.NewPodDisruptionBudget(ctx,
-		"pdb",
+		pdbResourceName,
 		pdbArgs,
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {

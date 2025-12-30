@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "this" {
     replicas = try(var.spec.availability.min_replicas, 1)
 
     selector {
-      match_labels = local.final_labels
+      match_labels = local.selector_labels
     }
 
     template {

@@ -16,12 +16,19 @@ locals {
     : var.metadata.name
   )
 
-  # Base labels
-  base_labels = {
+  # Selector labels use metadata.name to ensure each deployment's pods are uniquely identified.
+  # This prevents traffic routing conflicts when multiple deployments share a namespace.
+  selector_labels = {
+    "app"           = var.metadata.name
+    "resource_name" = var.metadata.name
+  }
+
+  # Base labels include selector labels plus metadata
+  base_labels = merge(local.selector_labels, {
     "resource"      = "true"
     "resource_id"   = local.resource_id
     "resource_kind" = "microservice_kubernetes"
-  }
+  })
 
   # Organization label only if var.metadata.org is non-empty
   org_label = (
@@ -53,8 +60,8 @@ locals {
   http_internal_redirect_route_name = "${var.metadata.name}-http-internal-redirect"
   https_internal_route_name         = "${var.metadata.name}-https-internal"
 
-  # The microservice version is used as the Service name (per the code logic).
-  kube_service_name = var.spec.version
+  # Use metadata.name for service name to avoid conflicts when multiple deployments share a namespace
+  kube_service_name = var.metadata.name
 
   # Internal DNS name for the service
   kube_service_fqdn = "${local.kube_service_name}.${local.namespace}.svc.cluster.local"
