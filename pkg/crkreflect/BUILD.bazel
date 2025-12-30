@@ -28,6 +28,7 @@ go_library(
         "//apis/org/project_planton/provider/_test/testcloudresourcethree/v1:testcloudresourcethree",
         "//apis/org/project_planton/provider/_test/testcloudresourcetwo/v1:testcloudresourcetwo",
         "//apis/org/project_planton/provider/atlas/mongodbatlas/v1:mongodbatlas",
+        "//apis/org/project_planton/provider/auth0/auth0connection/v1:auth0connection",
         "//apis/org/project_planton/provider/aws/awsalb/v1:awsalb",
         "//apis/org/project_planton/provider/aws/awscertmanagercert/v1:awscertmanagercert",
         "//apis/org/project_planton/provider/aws/awsclientvpn/v1:awsclientvpn",
