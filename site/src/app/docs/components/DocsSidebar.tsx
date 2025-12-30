@@ -72,6 +72,7 @@ const SidebarItem: FC<SidebarItemProps> = ({
         'aws': '/images/providers/aws.svg',
         'gcp': '/images/providers/gcp.svg',
         'azure': '/images/providers/azure.svg',
+        'auth0': '/images/providers/auth0.svg',
         'cloudflare': '/images/providers/cloudflare.svg',
         'civo': '/images/providers/civo.svg',
         'digitalocean': '/images/providers/digital-ocean.svg',
