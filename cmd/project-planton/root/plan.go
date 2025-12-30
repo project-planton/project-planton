@@ -70,13 +70,14 @@ func init() {
 	Plan.PersistentFlags().Bool(string(flag.Destroy), false, "Create a destroy plan instead of apply plan (Tofu/Terraform)")
 
 	// Provider credential flags
+	Plan.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
+	Plan.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
 	Plan.PersistentFlags().String(string(flag.AwsProviderConfig), "", "path of the aws-credential file")
 	Plan.PersistentFlags().String(string(flag.AzureProviderConfig), "", "path of the azure-credential file")
 	Plan.PersistentFlags().String(string(flag.CloudflareProviderConfig), "", "path of the cloudflare-credential file")
 	Plan.PersistentFlags().String(string(flag.ConfluentProviderConfig), "", "path of the confluent-credential file")
 	Plan.PersistentFlags().String(string(flag.GcpProviderConfig), "", "path of the gcp-credential file")
 	Plan.PersistentFlags().String(string(flag.KubernetesProviderConfig), "", "path of the yaml file containing the kubernetes cluster configuration")
-	Plan.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Plan.PersistentFlags().String(string(flag.SnowflakeProviderConfig), "", "path of the snowflake-credential file")
 }
 

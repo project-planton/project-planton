@@ -25,6 +25,7 @@ import (
 
 	"connectrpc.com/connect"
 	atlasv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas"
+	auth0v1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
 	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
 	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
 	cloudflarev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
@@ -494,6 +495,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 	var gcpConfig *gcpv1.GcpProviderConfig
 	var azureConfig *azurev1.AzureProviderConfig
 	var atlasConfig *atlasv1.AtlasProviderConfig
+	var auth0Config *auth0v1.Auth0ProviderConfig
 	var cloudflareConfig *cloudflarev1.CloudflareProviderConfig
 	var confluentConfig *confluentv1.ConfluentProviderConfig
 	var snowflakeConfig *snowflakev1.SnowflakeProviderConfig
@@ -510,6 +512,8 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 		azureConfig = cfg.Azure
 	case *credentialv1.CredentialProviderConfig_Atlas:
 		atlasConfig = cfg.Atlas
+	case *credentialv1.CredentialProviderConfig_Auth0:
+		auth0Config = cfg.Auth0
 	case *credentialv1.CredentialProviderConfig_Cloudflare:
 		cloudflareConfig = cfg.Cloudflare
 	case *credentialv1.CredentialProviderConfig_Confluent:
@@ -525,6 +529,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 		gcpConfig,
 		azureConfig,
 		atlasConfig,
+		auth0Config,
 		cloudflareConfig,
 		confluentConfig,
 		snowflakeConfig,

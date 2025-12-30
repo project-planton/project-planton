@@ -87,18 +87,19 @@ export default function Hero() {
 							<span className="ml-3 bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent">Deploy anywhere.</span>
 						</p>
 						
-					{/* Cloud Provider Icons */}
-					<div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 mt-8">
-						<Image src="/images/providers/aws.svg" alt="AWS" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/gcp.svg" alt="GCP" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/azure.svg" alt="Azure" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/kubernetes.svg" alt="Kubernetes" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/digital-ocean.svg" alt="DigitalOcean" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/civo.svg" alt="Civo" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/cloudflare.svg" alt="Cloudflare" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/confluent.svg" alt="Confluent" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-					</div>
+				{/* Cloud Provider Icons */}
+				<div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 mt-8">
+					<Image src="/images/providers/aws.svg" alt="AWS" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/gcp.svg" alt="GCP" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/azure.svg" alt="Azure" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/kubernetes.svg" alt="Kubernetes" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/digital-ocean.svg" alt="DigitalOcean" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/civo.svg" alt="Civo" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/cloudflare.svg" alt="Cloudflare" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/confluent.svg" alt="Confluent" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<Image src="/images/providers/auth0.svg" alt="Auth0" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+				</div>
 					</div>
 					</div>
 				</div>

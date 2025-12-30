@@ -7,13 +7,14 @@ import (
 )
 
 type StackInputProviderConfigOptions struct {
+	AtlasProviderConfig      string
+	Auth0ProviderConfig      string
 	AwsProviderConfig        string
 	AzureProviderConfig      string
 	CloudflareProviderConfig string
 	ConfluentProviderConfig  string
 	GcpProviderConfig        string
 	KubernetesProviderConfig string
-	AtlasProviderConfig      string
 	SnowflakeProviderConfig  string
 }
 
@@ -58,6 +59,12 @@ func WithKubernetesProviderConfig(kubernetesProviderConfig string) StackInputPro
 func WithAtlasProviderConfig(atlasProviderConfig string) StackInputProviderConfigOption {
 	return func(opts *StackInputProviderConfigOptions) {
 		opts.AtlasProviderConfig = atlasProviderConfig
+	}
+}
+
+func WithAuth0ProviderConfig(auth0ProviderConfig string) StackInputProviderConfigOption {
+	return func(opts *StackInputProviderConfigOptions) {
+		opts.Auth0ProviderConfig = auth0ProviderConfig
 	}
 }
 
@@ -124,6 +131,14 @@ func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputProviderConfigOp
 	}
 	if atlasProviderConfig != "" {
 		resp = append(resp, WithAtlasProviderConfig(atlasProviderConfig))
+	}
+
+	auth0ProviderConfig, err := commandFlagSet.GetString(string(flag.Auth0ProviderConfig))
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to read %s flag", flag.Auth0ProviderConfig)
+	}
+	if auth0ProviderConfig != "" {
+		resp = append(resp, WithAuth0ProviderConfig(auth0ProviderConfig))
 	}
 
 	snowflakeProviderConfig, err := commandFlagSet.GetString(string(flag.SnowflakeProviderConfig))
@@ -193,6 +208,14 @@ func BuildWithInputDir(inputDir string) ([]StackInputProviderConfigOption, error
 	}
 	if atlasProviderConfig != "" {
 		resp = append(resp, WithAtlasProviderConfig(atlasProviderConfig))
+	}
+
+	auth0ProviderConfig, err := LoadAuth0ProviderConfig(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up auth0-provider-config in %s", inputDir)
+	}
+	if auth0ProviderConfig != "" {
+		resp = append(resp, WithAuth0ProviderConfig(auth0ProviderConfig))
 	}
 
 	snowflakeProviderConfig, err := LoadSnowflakeProviderConfig(inputDir)

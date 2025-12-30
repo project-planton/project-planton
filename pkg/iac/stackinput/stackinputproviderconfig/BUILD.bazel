@@ -4,6 +4,7 @@ go_library(
     name = "stackinputproviderconfig",
     srcs = [
         "atlas_provider.go",
+        "auth0_provider.go",
         "aws_provider.go",
         "azure_provider.go",
         "cloudflare_provider.go",
@@ -18,6 +19,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/org/project_planton/provider/atlas",
+        "//apis/org/project_planton/provider/auth0",
         "//apis/org/project_planton/provider/aws",
         "//apis/org/project_planton/provider/azure",
         "//apis/org/project_planton/provider/cloudflare",

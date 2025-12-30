@@ -65,4 +65,8 @@ enum CloudResourceProvider {
     group: "snowflake.project-planton.org"
     display_name: "Snowflake"
   }];
+  auth0 = 21 [(provider_meta) = {
+    group: "auth0.project-planton.org"
+    display_name: "Auth0"
+  }];
 }

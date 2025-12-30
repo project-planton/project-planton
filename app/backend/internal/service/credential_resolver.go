@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	auth0v1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
 	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
 	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
 	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
@@ -97,6 +98,18 @@ func (r *CredentialResolver) ResolveProviderConfig(
 					ClientSecret:   azureCred.ClientSecret,
 					TenantId:       azureCred.TenantID,
 					SubscriptionId: azureCred.SubscriptionID,
+				},
+			},
+		}, nil
+
+	case "auth0":
+		auth0Cred := credInterface.(*models.Auth0Credential)
+		return &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Auth0{
+				Auth0: &auth0v1.Auth0ProviderConfig{
+					Domain:       auth0Cred.Domain,
+					ClientId:     auth0Cred.ClientID,
+					ClientSecret: auth0Cred.ClientSecret,
 				},
 			},
 		}, nil

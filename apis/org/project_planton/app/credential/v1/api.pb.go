@@ -8,6 +8,7 @@ package credentialv1
 
 import (
 	atlas "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas"
+	auth0 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
 	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
 	azure "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
 	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
@@ -40,6 +41,7 @@ const (
 	Credential_GCP                             Credential_CredentialProvider = 1
 	Credential_AWS                             Credential_CredentialProvider = 2
 	Credential_AZURE                           Credential_CredentialProvider = 3
+	Credential_AUTH0                           Credential_CredentialProvider = 4
 )
 
 // Enum value maps for Credential_CredentialProvider.
@@ -49,12 +51,14 @@ var (
 		1: "GCP",
 		2: "AWS",
 		3: "AZURE",
+		4: "AUTH0",
 	}
 	Credential_CredentialProvider_value = map[string]int32{
 		"CREDENTIAL_PROVIDER_UNSPECIFIED": 0,
 		"GCP":                             1,
 		"AWS":                             2,
 		"AZURE":                           3,
+		"AUTH0":                           4,
 	}
 )
 
@@ -191,6 +195,7 @@ type CredentialProviderConfig struct {
 	//	*CredentialProviderConfig_Gcp
 	//	*CredentialProviderConfig_Kubernetes
 	//	*CredentialProviderConfig_Snowflake
+	//	*CredentialProviderConfig_Auth0
 	Data          isCredentialProviderConfig_Data `protobuf_oneof:"data"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -323,6 +328,15 @@ func (x *CredentialProviderConfig) GetSnowflake() *snowflake.SnowflakeProviderCo
 	return nil
 }
 
+func (x *CredentialProviderConfig) GetAuth0() *auth0.Auth0ProviderConfig {
+	if x != nil {
+		if x, ok := x.Data.(*CredentialProviderConfig_Auth0); ok {
+			return x.Auth0
+		}
+	}
+	return nil
+}
+
 type isCredentialProviderConfig_Data interface {
 	isCredentialProviderConfig_Data()
 }
@@ -367,6 +381,10 @@ type CredentialProviderConfig_Snowflake struct {
 	Snowflake *snowflake.SnowflakeProviderConfig `protobuf:"bytes,10,opt,name=snowflake,proto3,oneof"`
 }
 
+type CredentialProviderConfig_Auth0 struct {
+	Auth0 *auth0.Auth0ProviderConfig `protobuf:"bytes,11,opt,name=auth0,proto3,oneof"`
+}
+
 func (*CredentialProviderConfig_Atlas) isCredentialProviderConfig_Data() {}
 
 func (*CredentialProviderConfig_Aws) isCredentialProviderConfig_Data() {}
@@ -387,11 +405,13 @@ func (*CredentialProviderConfig_Kubernetes) isCredentialProviderConfig_Data() {}
 
 func (*CredentialProviderConfig_Snowflake) isCredentialProviderConfig_Data() {}
 
+func (*CredentialProviderConfig_Auth0) isCredentialProviderConfig_Data() {}
+
 var File_org_project_planton_app_credential_v1_api_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_app_credential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"/org/project_planton/app/credential/v1/api.proto\x12!org.project_planton.credential.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a1org/project_planton/provider/atlas/provider.proto\x1a/org/project_planton/provider/aws/provider.proto\x1a1org/project_planton/provider/azure/provider.proto\x1a0org/project_planton/provider/civo/provider.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\x1a5org/project_planton/provider/confluent/provider.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\x1a/org/project_planton/provider/gcp/provider.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\x1a5org/project_planton/provider/snowflake/provider.proto\"\xc2\x03\n" +
+	"/org/project_planton/app/credential/v1/api.proto\x12!org.project_planton.credential.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a1org/project_planton/provider/atlas/provider.proto\x1a1org/project_planton/provider/auth0/provider.proto\x1a/org/project_planton/provider/aws/provider.proto\x1a1org/project_planton/provider/azure/provider.proto\x1a0org/project_planton/provider/civo/provider.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\x1a5org/project_planton/provider/confluent/provider.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\x1a/org/project_planton/provider/gcp/provider.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\x1a5org/project_planton/provider/snowflake/provider.proto\"\xcd\x03\n" +
 	"\n" +
 	"Credential\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
@@ -401,12 +421,13 @@ const file_org_project_planton_app_credential_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"V\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"a\n" +
 	"\x12CredentialProvider\x12#\n" +
 	"\x1fCREDENTIAL_PROVIDER_UNSPECIFIED\x10\x00\x12\a\n" +
 	"\x03GCP\x10\x01\x12\a\n" +
 	"\x03AWS\x10\x02\x12\t\n" +
-	"\x05AZURE\x10\x03\"\x9c\a\n" +
+	"\x05AZURE\x10\x03\x12\t\n" +
+	"\x05AUTH0\x10\x04\"\xed\a\n" +
 	"\x18CredentialProviderConfig\x12O\n" +
 	"\x05atlas\x18\x01 \x01(\v27.org.project_planton.provider.atlas.AtlasProviderConfigH\x00R\x05atlas\x12G\n" +
 	"\x03aws\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigH\x00R\x03aws\x12O\n" +
@@ -422,7 +443,8 @@ const file_org_project_planton_app_credential_v1_api_proto_rawDesc = "" +
 	"kubernetes\x18\t \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigH\x00R\n" +
 	"kubernetes\x12_\n" +
 	"\tsnowflake\x18\n" +
-	" \x01(\v2?.org.project_planton.provider.snowflake.SnowflakeProviderConfigH\x00R\tsnowflakeB\x06\n" +
+	" \x01(\v2?.org.project_planton.provider.snowflake.SnowflakeProviderConfigH\x00R\tsnowflake\x12O\n" +
+	"\x05auth0\x18\v \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigH\x00R\x05auth0B\x06\n" +
 	"\x04dataB\xb8\x02\n" +
 	"%com.org.project_planton.credential.v1B\bApiProtoP\x01Zbgithub.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
 
@@ -455,6 +477,7 @@ var file_org_project_planton_app_credential_v1_api_proto_goTypes = []any{
 	(*gcp.GcpProviderConfig)(nil),                   // 11: org.project_planton.provider.gcp.GcpProviderConfig
 	(*kubernetes.KubernetesProviderConfig)(nil),     // 12: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	(*snowflake.SnowflakeProviderConfig)(nil),       // 13: org.project_planton.provider.snowflake.SnowflakeProviderConfig
+	(*auth0.Auth0ProviderConfig)(nil),               // 14: org.project_planton.provider.auth0.Auth0ProviderConfig
 }
 var file_org_project_planton_app_credential_v1_api_proto_depIdxs = []int32{
 	0,  // 0: org.project_planton.credential.v1.Credential.provider:type_name -> org.project_planton.credential.v1.Credential.CredentialProvider
@@ -471,11 +494,12 @@ var file_org_project_planton_app_credential_v1_api_proto_depIdxs = []int32{
 	11, // 11: org.project_planton.credential.v1.CredentialProviderConfig.gcp:type_name -> org.project_planton.provider.gcp.GcpProviderConfig
 	12, // 12: org.project_planton.credential.v1.CredentialProviderConfig.kubernetes:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	13, // 13: org.project_planton.credential.v1.CredentialProviderConfig.snowflake:type_name -> org.project_planton.provider.snowflake.SnowflakeProviderConfig
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	14, // 14: org.project_planton.credential.v1.CredentialProviderConfig.auth0:type_name -> org.project_planton.provider.auth0.Auth0ProviderConfig
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_app_credential_v1_api_proto_init() }
@@ -494,6 +518,7 @@ func file_org_project_planton_app_credential_v1_api_proto_init() {
 		(*CredentialProviderConfig_Gcp)(nil),
 		(*CredentialProviderConfig_Kubernetes)(nil),
 		(*CredentialProviderConfig_Snowflake)(nil),
+		(*CredentialProviderConfig_Auth0)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

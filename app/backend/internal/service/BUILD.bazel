@@ -15,6 +15,7 @@ go_library(
         "//apis/org/project_planton/app/credential/v1:credential",
         "//apis/org/project_planton/app/stackupdate/v1:stackupdate",
         "//apis/org/project_planton/provider/atlas",
+        "//apis/org/project_planton/provider/auth0",
         "//apis/org/project_planton/provider/aws",
         "//apis/org/project_planton/provider/azure",
         "//apis/org/project_planton/provider/cloudflare",

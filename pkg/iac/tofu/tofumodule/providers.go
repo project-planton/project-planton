@@ -45,6 +45,11 @@ func GetProviderConfigEnvVars(stackInputYaml, fileCacheLoc string) ([]string, er
 		return nil, errors.Wrap(err, "failed to get MongoDB Atlas provider config")
 	}
 
+	providerConfigEnvVars, err = providerconfig.AddAuth0ProviderConfigEnvVars(stackInputContentMap, providerConfigEnvVars)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get Auth0 provider config")
+	}
+
 	providerConfigEnvVars, err = providerconfig.AddSnowflakeProviderConfigEnvVars(stackInputContentMap, providerConfigEnvVars)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get Snowflake provider config")

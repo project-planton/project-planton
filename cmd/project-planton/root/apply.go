@@ -64,13 +64,14 @@ func init() {
 	Apply.PersistentFlags().Bool(string(flag.AutoApprove), false, "Skip interactive approval of plan before applying (Tofu/Terraform)")
 
 	// Provider credential flags
+	Apply.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
+	Apply.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
 	Apply.PersistentFlags().String(string(flag.AwsProviderConfig), "", "path of the aws-credential file")
 	Apply.PersistentFlags().String(string(flag.AzureProviderConfig), "", "path of the azure-credential file")
 	Apply.PersistentFlags().String(string(flag.CloudflareProviderConfig), "", "path of the cloudflare-credential file")
 	Apply.PersistentFlags().String(string(flag.ConfluentProviderConfig), "", "path of the confluent-credential file")
 	Apply.PersistentFlags().String(string(flag.GcpProviderConfig), "", "path of the gcp-credential file")
 	Apply.PersistentFlags().String(string(flag.KubernetesProviderConfig), "", "path of the yaml file containing the kubernetes cluster configuration")
-	Apply.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Apply.PersistentFlags().String(string(flag.SnowflakeProviderConfig), "", "path of the snowflake-credential file")
 }
 

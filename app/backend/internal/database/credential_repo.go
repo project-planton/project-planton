@@ -247,6 +247,85 @@ func (r *CredentialRepository) UpdateAws(ctx context.Context, id string, name, a
 	return convertToAwsCredential(doc)
 }
 
+// CreateAuth0 creates a new Auth0 credential.
+func (r *CredentialRepository) CreateAuth0(ctx context.Context, name, domain, clientID, clientSecret string) (*models.Auth0Credential, error) {
+	// Check if a credential for this provider already exists
+	exists, err := r.ExistsByProvider(ctx, "auth0")
+	if err != nil {
+		return nil, fmt.Errorf("failed to check for existing Auth0 credential: %w", err)
+	}
+	if exists {
+		return nil, fmt.Errorf("credential for provider 'auth0' already exists")
+	}
+
+	now := time.Now()
+	credential := &models.Auth0Credential{
+		ID:           primitive.NewObjectID(),
+		Name:         name,
+		Domain:       domain,
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+	}
+
+	doc := bson.M{
+		"_id":           credential.ID,
+		"name":          credential.Name,
+		"provider":      "auth0",
+		"domain":        credential.Domain,
+		"client_id":     credential.ClientID,
+		"client_secret": credential.ClientSecret,
+		"created_at":    credential.CreatedAt,
+		"updated_at":    credential.UpdatedAt,
+	}
+
+	_, err = r.collection.InsertOne(ctx, doc)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Auth0 credential: %w", err)
+	}
+
+	return credential, nil
+}
+
+// UpdateAuth0 updates an existing Auth0 credential.
+func (r *CredentialRepository) UpdateAuth0(ctx context.Context, id string, name, domain, clientID, clientSecret string) (*models.Auth0Credential, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %w", err)
+	}
+
+	now := time.Now()
+	update := bson.M{
+		"$set": bson.M{
+			"name":          name,
+			"domain":        domain,
+			"client_id":     clientID,
+			"client_secret": clientSecret,
+			"updated_at":    now,
+		},
+	}
+
+	result := r.collection.FindOneAndUpdate(ctx, bson.M{"_id": objectID, "provider": "auth0"}, update)
+	if result.Err() == mongo.ErrNoDocuments {
+		return nil, fmt.Errorf("Auth0 credential with ID '%s' not found", id)
+	}
+	if result.Err() != nil {
+		return nil, fmt.Errorf("failed to update Auth0 credential: %w", result.Err())
+	}
+
+	// Fetch updated document
+	doc, err := r.FindByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if doc == nil {
+		return nil, fmt.Errorf("credential not found after update")
+	}
+
+	return convertToAuth0Credential(doc)
+}
+
 // UpdateAzure updates an existing Azure credential.
 func (r *CredentialRepository) UpdateAzure(ctx context.Context, id string, name, clientID, clientSecret, tenantID, subscriptionID string) (*models.AzureCredential, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
@@ -325,6 +404,8 @@ func (r *CredentialRepository) FindFirstByProvider(ctx context.Context, provider
 		return convertToAwsCredential(result)
 	case "azure":
 		return convertToAzureCredential(result)
+	case "auth0":
+		return convertToAuth0Credential(result)
 	default:
 		return nil, fmt.Errorf("unsupported provider: %s", provider)
 	}
@@ -464,5 +545,31 @@ func convertToAzureCredential(doc bson.M) (*models.AzureCredential, error) {
 		SubscriptionID: doc["subscription_id"].(string),
 		CreatedAt:      createdAt,
 		UpdatedAt:      updatedAt,
+	}, nil
+}
+
+func convertToAuth0Credential(doc bson.M) (*models.Auth0Credential, error) {
+	id, ok := doc["_id"].(primitive.ObjectID)
+	if !ok {
+		return nil, fmt.Errorf("invalid _id field")
+	}
+
+	// Convert primitive.DateTime to time.Time
+	var createdAt, updatedAt time.Time
+	if dt, ok := doc["created_at"].(primitive.DateTime); ok {
+		createdAt = dt.Time()
+	}
+	if dt, ok := doc["updated_at"].(primitive.DateTime); ok {
+		updatedAt = dt.Time()
+	}
+
+	return &models.Auth0Credential{
+		ID:           id,
+		Name:         doc["name"].(string),
+		Domain:       doc["domain"].(string),
+		ClientID:     doc["client_id"].(string),
+		ClientSecret: doc["client_secret"].(string),
+		CreatedAt:    createdAt,
+		UpdatedAt:    updatedAt,
 	}, nil
 }
