@@ -29,7 +29,7 @@ func service(ctx *pulumi.Context, locals *Locals,
 
 	serviceArgs := &kubernetescorev1.ServiceArgs{
 		Metadata: kubernetesmetav1.ObjectMetaArgs{
-			Name:      pulumi.String(locals.KubernetesDeployment.Spec.Version),
+			Name:      pulumi.String(locals.KubeServiceName),
 			Namespace: pulumi.String(locals.Namespace),
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		},
@@ -41,7 +41,7 @@ func service(ctx *pulumi.Context, locals *Locals,
 	}
 
 	_, err := kubernetescorev1.NewService(ctx,
-		locals.KubernetesDeployment.Spec.Version,
+		locals.KubeServiceName,
 		serviceArgs,
 		pulumi.Provider(kubernetesProvider),
 		pulumi.DependsOn([]pulumi.Resource{createdDeployment}))

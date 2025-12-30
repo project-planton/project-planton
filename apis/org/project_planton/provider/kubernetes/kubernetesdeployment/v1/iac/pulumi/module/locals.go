@@ -50,15 +50,16 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.Ku
 
 	target := stackInput.Target
 
-	// Static selector labels that never change
-	// Since there's always only one deployment per namespace, we use a constant label
+	// Selector labels use metadata.name to ensure each deployment's pods are uniquely identified.
+	// This prevents traffic routing conflicts when multiple deployments share a namespace.
 	locals.SelectorLabels = map[string]string{
-		"app": "microservice",
+		"app":                            target.Metadata.Name,
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
 	}
 
-	// Full labels include both selector labels and metadata labels
+	// Full labels include both selector labels and additional metadata labels
 	locals.Labels = map[string]string{
-		"app":                            "microservice", // Include selector label
+		"app":                            target.Metadata.Name, // Include selector label
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_KubernetesDeployment.String(),
@@ -112,7 +113,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.Ku
 		// Priority 3: If neither set, ImagePullSecretData remains nil (no image pull secret)
 	}
 
-	locals.KubeServiceName = target.Spec.Version
+	// Use metadata.name for service name to avoid conflicts when multiple deployments share a namespace
+	locals.KubeServiceName = target.Metadata.Name
 
 	//export kubernetes service name
 	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
