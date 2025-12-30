@@ -690,4 +690,11 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "cfzta"
   }];
+
+  // 2100–2299: Auth0 resources
+  Auth0Connection = 2100 [(kind_meta) = {
+    provider: auth0
+    version: v1
+    id_prefix: "a0conn"
+  }];
 }

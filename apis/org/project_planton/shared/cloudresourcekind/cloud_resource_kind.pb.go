@@ -210,6 +210,8 @@ const (
 	CloudResourceKind_CloudflareLoadBalancer               CloudResourceKind = 1804
 	CloudResourceKind_CloudflareD1Database                 CloudResourceKind = 1805
 	CloudResourceKind_CloudflareZeroTrustAccessApplication CloudResourceKind = 1806
+	// 2100–2299: Auth0 resources
+	CloudResourceKind_Auth0Connection CloudResourceKind = 2100
 )
 
 // Enum value maps for CloudResourceKind.
@@ -343,6 +345,7 @@ var (
 		1804: "CloudflareLoadBalancer",
 		1805: "CloudflareD1Database",
 		1806: "CloudflareZeroTrustAccessApplication",
+		2100: "Auth0Connection",
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                          0,
@@ -473,6 +476,7 @@ var (
 		"CloudflareLoadBalancer":               1804,
 		"CloudflareD1Database":                 1805,
 		"CloudflareZeroTrustAccessApplication": 1806,
+		"Auth0Connection":                      2100,
 	}
 )
 
@@ -617,7 +621,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\x8a*\n" +
+	"\x02v1\x10\x01*\xb2*\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -769,7 +773,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x16CloudflareLoadBalancer\x10\x8c\x0e\x1a\x0e\xa2\xf7\x04\n" +
 	"\b\x0f\x10\x01\"\x04cflb\x12+\n" +
 	"\x14CloudflareD1Database\x10\x8d\x0e\x1a\x10\xa2\xf7\x04\f\b\x0f\x10\x01\"\x06cfd1db\x12:\n" +
-	"$CloudflareZeroTrustAccessApplication\x10\x8e\x0e\x1a\x0f\xa2\xf7\x04\v\b\x0f\x10\x01\"\x05cfzta:\x84\x01\n" +
+	"$CloudflareZeroTrustAccessApplication\x10\x8e\x0e\x1a\x0f\xa2\xf7\x04\v\b\x0f\x10\x01\"\x05cfzta\x12&\n" +
+	"\x0fAuth0Connection\x10\xb4\x10\x1a\x10\xa2\xf7\x04\f\b\x15\x10\x01\"\x06a0conn:\x84\x01\n" +
 	"\tkind_meta\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\v2C.org.project_planton.shared.cloudresourcekind.CloudResourceKindMetaR\bkindMetaB\xf8\x02\n" +
 	"0com.org.project_planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01Z\\github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 

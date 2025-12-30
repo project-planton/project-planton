@@ -1,0 +1,7 @@
+# Auth0Connection Pulumi Module
+# This module creates and manages Auth0 connections for identity management.
+name: auth0-connection
+runtime:
+  name: go
+description: Pulumi module for Auth0Connection deployment component
+

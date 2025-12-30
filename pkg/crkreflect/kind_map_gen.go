@@ -13,6 +13,7 @@ import (
 	testcloudresourcethreev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1"
 	testcloudresourcetwov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcetwo/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1"
+	auth0connectionv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1"
 	awsalbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsalb/v1"
 	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1"
 	awsclientvpnv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsclientvpn/v1"
@@ -158,6 +159,10 @@ var ProviderTestMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 
 var ProviderAtlasMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_MongodbAtlas: &mongodbatlasv1.MongodbAtlas{},
+}
+
+var ProviderAuth0Map = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_Auth0Connection: &auth0connectionv1.Auth0Connection{},
 }
 
 var ProviderAwsMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
@@ -313,6 +318,7 @@ var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message
 var ToMessageMap = merge(
 	ProviderTestMap,
 	ProviderAtlasMap,
+	ProviderAuth0Map,
 	ProviderAwsMap,
 	ProviderAzureMap,
 	ProviderCivoMap,
