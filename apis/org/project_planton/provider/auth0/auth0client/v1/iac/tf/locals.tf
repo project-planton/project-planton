@@ -1,0 +1,94 @@
+# Local values for Auth0Client module
+# These values are computed from the input variables
+
+locals {
+  # Core client configuration
+  client_name      = var.metadata.name
+  application_type = var.spec.application_type
+  description      = coalesce(var.spec.description, "")
+  logo_uri         = var.spec.logo_uri
+
+  # URLs configuration
+  callbacks           = coalesce(var.spec.callbacks, [])
+  allowed_logout_urls = coalesce(var.spec.allowed_logout_urls, [])
+  web_origins         = coalesce(var.spec.web_origins, [])
+  allowed_origins     = coalesce(var.spec.allowed_origins, [])
+
+  # OAuth configuration
+  grant_types     = coalesce(var.spec.grant_types, [])
+  oidc_conformant = coalesce(var.spec.oidc_conformant, true)
+  is_first_party  = coalesce(var.spec.is_first_party, true)
+
+  # Cross-origin settings
+  cross_origin_authentication = coalesce(var.spec.cross_origin_authentication, false)
+  cross_origin_loc            = var.spec.cross_origin_loc
+
+  # SSO settings
+  sso          = coalesce(var.spec.sso, true)
+  sso_disabled = coalesce(var.spec.sso_disabled, false)
+
+  # Custom login page
+  custom_login_page    = var.spec.custom_login_page
+  custom_login_page_on = coalesce(var.spec.custom_login_page_on, false)
+  initiate_login_uri   = var.spec.initiate_login_uri
+
+  # Organization settings
+  organization_usage           = var.spec.organization_usage
+  organization_require_behavior = var.spec.organization_require_behavior
+
+  # Client metadata
+  client_metadata = coalesce(var.spec.client_metadata, {})
+  client_aliases  = coalesce(var.spec.client_aliases, [])
+
+  # Additional settings
+  is_token_endpoint_ip_header_trusted = coalesce(var.spec.is_token_endpoint_ip_header_trusted, false)
+  enabled_connections                 = coalesce(var.spec.enabled_connections, [])
+
+  # JWT configuration with defaults
+  jwt_configuration = var.spec.jwt_configuration != null ? {
+    lifetime_in_seconds = var.spec.jwt_configuration.lifetime_in_seconds
+    scopes              = coalesce(var.spec.jwt_configuration.scopes, {})
+    alg                 = var.spec.jwt_configuration.alg
+    secret_encoded      = coalesce(var.spec.jwt_configuration.secret_encoded, false)
+  } : null
+
+  # Refresh token configuration with defaults
+  refresh_token = var.spec.refresh_token != null ? {
+    rotation_type                = var.spec.refresh_token.rotation_type
+    expiration_type              = var.spec.refresh_token.expiration_type
+    token_lifetime               = var.spec.refresh_token.token_lifetime
+    idle_token_lifetime          = var.spec.refresh_token.idle_token_lifetime
+    infinite_token_lifetime      = coalesce(var.spec.refresh_token.infinite_token_lifetime, false)
+    infinite_idle_token_lifetime = coalesce(var.spec.refresh_token.infinite_idle_token_lifetime, false)
+    leeway                       = var.spec.refresh_token.leeway
+  } : null
+
+  # Native social login configuration
+  native_social_login = var.spec.native_social_login != null ? {
+    apple = var.spec.native_social_login.apple != null ? {
+      enabled = coalesce(var.spec.native_social_login.apple.enabled, false)
+    } : null
+    facebook = var.spec.native_social_login.facebook != null ? {
+      enabled = coalesce(var.spec.native_social_login.facebook.enabled, false)
+    } : null
+  } : null
+
+  # Mobile configuration
+  mobile = var.spec.mobile != null ? {
+    android = var.spec.mobile.android != null ? {
+      app_package_name         = var.spec.mobile.android.app_package_name
+      sha256_cert_fingerprints = coalesce(var.spec.mobile.android.sha256_cert_fingerprints, [])
+    } : null
+    ios = var.spec.mobile.ios != null ? {
+      team_id               = var.spec.mobile.ios.team_id
+      app_bundle_identifier = var.spec.mobile.ios.app_bundle_identifier
+    } : null
+  } : null
+
+  # OIDC backchannel logout
+  oidc_backchannel_logout = var.spec.oidc_backchannel_logout != null ? {
+    backchannel_logout_urls = coalesce(var.spec.oidc_backchannel_logout.backchannel_logout_urls, [])
+  } : null
+}
+
+

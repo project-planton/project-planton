@@ -13,6 +13,7 @@ import (
 	testcloudresourcethreev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1"
 	testcloudresourcetwov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcetwo/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1"
+	auth0clientv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1"
 	auth0connectionv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1"
 	awsalbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsalb/v1"
 	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1"
@@ -162,6 +163,7 @@ var ProviderAtlasMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 }
 
 var ProviderAuth0Map = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_Auth0Client:     &auth0clientv1.Auth0Client{},
 	cloudresourcekind.CloudResourceKind_Auth0Connection: &auth0connectionv1.Auth0Connection{},
 }
 
