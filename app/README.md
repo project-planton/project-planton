@@ -21,17 +21,18 @@ app/
 
 ### Deployment Modes
 
-#### 1. Production (Unified Container)
-- **Use case:** End users
+#### Production/Testing (Unified Container)
+- **Use case:** End users and integration testing
 - **Setup:** Single Docker container with MongoDB, backend, and frontend
-- **Managed by:** CLI (`planton webapp init/start/stop`)
+- **Managed by:** CLI (`planton webapp init/start/stop`) or `docker-compose up`
 - **Image:** `ghcr.io/project-planton/project-planton:latest`
+- **Benefits:** Simple deployment, consistent environment, all services pre-configured
 
-#### 2. Development (Separate Services)
-- **Use case:** Contributors and developers
-- **Setup:** Docker Compose with separate containers
-- **Flexibility:** Hot reload, easier debugging
-- **Command:** `docker-compose up`
+#### Development (Local Services)
+- **Use case:** Contributors and active development
+- **Setup:** Run MongoDB locally + backend via `go run` + frontend via `yarn dev`
+- **Benefits:** Hot reload, faster iteration, easier debugging, native tooling
+- **See:** [Development Setup](#development-setup) section below
 
 ---
 
@@ -241,21 +242,23 @@ yarn dev
 # 4. Access http://localhost:3000
 ```
 
-### Docker Compose Development
+### Docker Compose (Unified Container)
 
 ```bash
-# Start all services
+# Start unified container (MongoDB + Backend + Frontend)
 docker-compose up
 
-# Rebuild after changes
+# Rebuild after changes (or pull latest image)
 docker-compose up --build
 
-# View logs
-docker-compose logs -f backend
-docker-compose logs -f frontend
+# View logs (all services in one container)
+docker-compose logs -f planton
 
 # Stop all services
 docker-compose down
+
+# Clean up volumes (removes Pulumi state and MongoDB data)
+docker-compose down -v
 ```
 
 ---

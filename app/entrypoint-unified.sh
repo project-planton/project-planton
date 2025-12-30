@@ -27,6 +27,31 @@ chown -R appuser:root /app/frontend
 
 echo "✅ Setup complete"
 echo ""
+
+# Configure Pulumi backend (required for backend service)
+echo "🔧 Configuring Pulumi backend..."
+export PULUMI_HOME=/home/appuser/.pulumi
+export PULUMI_CONFIG_PASSPHRASE=${PULUMI_CONFIG_PASSPHRASE:-project-planton-default-passphrase}
+
+# Automatically choose backend based on environment variables
+if [ -n "$PULUMI_ACCESS_TOKEN" ]; then
+  # Use Pulumi Cloud if access token is provided
+  echo "🌐 Detected PULUMI_ACCESS_TOKEN - using Pulumi Cloud backend"
+  if [ -n "$PULUMI_BACKEND_URL" ]; then
+    echo "   Backend URL: $PULUMI_BACKEND_URL"
+  else
+    echo "   Backend URL: https://api.pulumi.com (default)"
+  fi
+  su - appuser -c "pulumi login --non-interactive"
+else
+  # Use local file-based backend by default
+  echo "📁 Using local file-based backend (no PULUMI_ACCESS_TOKEN found)"
+  echo "   State storage: /home/appuser/.pulumi/state"
+  su - appuser -c "pulumi login --local --non-interactive"
+fi
+
+echo "✅ Pulumi backend configured successfully"
+echo ""
 echo "Starting services:"
 echo "  - MongoDB (port 27017)"
 echo "  - Backend gRPC Server (port 50051)"

@@ -21,7 +21,8 @@ services:
       # - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
       # Uncomment to disable CORS if using reverse proxy (Caddy/nginx)
       # - ENABLE_CORS=false
-      # Pulumi configuration
+      # Pulumi configuration (uses local file-based backend by default)
+      # Backend is automatically configured by entrypoint.sh via 'pulumi login --local'
       - PULUMI_HOME=/home/appuser/.pulumi
       - PULUMI_STATE_DIR=/home/appuser/.pulumi/state
       - PULUMI_CONFIG_PASSPHRASE=${PULUMI_CONFIG_PASSPHRASE:-project-planton-default-passphrase}
