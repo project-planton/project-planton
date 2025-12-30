@@ -16,6 +16,11 @@ services:
       - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
       # Backend configuration
       - SERVER_PORT=50051
+      # CORS configuration (optional - defaults work for most users)
+      # Uncomment to customize allowed origins for cross-origin requests
+      # - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+      # Uncomment to disable CORS if using reverse proxy (Caddy/nginx)
+      # - ENABLE_CORS=false
       # Pulumi configuration
       - PULUMI_HOME=/home/appuser/.pulumi
       - PULUMI_STATE_DIR=/home/appuser/.pulumi/state

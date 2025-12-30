@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/project-planton/project-planton/app/backend/internal/database"
@@ -31,40 +32,73 @@ type Config struct {
 
 // corsMiddleware wraps an HTTP handler with CORS headers.
 // Supports Connect RPC and gRPC-Web protocols.
+//
+// CORS is enabled by default for direct Docker deployments.
+// If you're using a reverse proxy (Caddy/nginx) that handles CORS,
+// set ENABLE_CORS=false to avoid duplicate headers.
 func corsMiddleware(next http.Handler) http.Handler {
+	// Check if CORS should be disabled (when using reverse proxy)
+	enableCORS := os.Getenv("ENABLE_CORS")
+	if enableCORS == "false" {
+		logrus.Info("CORS middleware disabled (reverse proxy handles CORS)")
+		return next
+	}
+
+	logrus.Info("CORS middleware enabled (handling browser requests)")
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Set CORS headers
+		// Set CORS headers for allowed origins
 		origin := r.Header.Get("Origin")
 		if origin != "" {
-			// Allow requests from localhost:3000 (web app) and other common dev origins
-			allowedOrigins := []string{
-				"http://localhost:3000",
-				"http://127.0.0.1:3000",
-				"http://localhost:3001",
-				"http://127.0.0.1:3001",
+			// Check CORS_ALLOWED_ORIGINS env var for custom origins, or use defaults
+			allowedOriginsEnv := os.Getenv("CORS_ALLOWED_ORIGINS")
+			var allowedOrigins []string
+
+			if allowedOriginsEnv != "" {
+				// Parse comma-separated origins from env var
+				for _, origin := range splitAndTrim(allowedOriginsEnv, ",") {
+					allowedOrigins = append(allowedOrigins, origin)
+				}
+			} else {
+				// Default: Allow same-origin requests (common Docker setup)
+				// Users can customize via CORS_ALLOWED_ORIGINS env var
+				allowedOrigins = []string{
+					"http://localhost:3000",
+					"http://127.0.0.1:3000",
+					"http://localhost:3001",
+					"http://127.0.0.1:3001",
+				}
 			}
 
 			allowed := false
 			for _, allowedOrigin := range allowedOrigins {
-				if origin == allowedOrigin {
+				if origin == allowedOrigin || allowedOrigin == "*" {
 					allowed = true
 					break
 				}
 			}
 
 			if allowed {
-				w.Header().Set("Access-Control-Allow-Origin", origin)
+				// Set proper origin (or * if configured)
+				if origin != "" {
+					w.Header().Set("Access-Control-Allow-Origin", origin)
+				}
 				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 				// Connect RPC and gRPC-Web specific headers
 				w.Header().Set("Access-Control-Allow-Headers",
 					"Content-Type, Authorization, X-Requested-With, "+
+						"Connect-Protocol-Version, Connect-Timeout-Ms, "+
 						"grpc-timeout, keep-alive, "+
 						"x-accept-content-transfer-encoding, x-accept-response-streaming, "+
 						"x-grpc-web, x-user-agent")
 				w.Header().Set("Access-Control-Allow-Credentials", "true")
 				w.Header().Set("Access-Control-Max-Age", "3600")
+				// Expose both gRPC-Web and Connect RPC headers (required for Connect-RPC)
 				w.Header().Set("Access-Control-Expose-Headers",
-					"grpc-status, grpc-message, grpc-status-details-bin")
+					"Content-Encoding, Connect-Content-Encoding, "+
+						"Grpc-Encoding, Grpc-Accept-Encoding, "+
+						"Grpc-Status, Grpc-Message, Grpc-Status-Details-Bin, "+
+						"Connect-Protocol-Version, Connect-Accept-Encoding")
 			}
 		}
 
@@ -160,4 +194,46 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		return fmt.Errorf("failed to disconnect MongoDB: %w", err)
 	}
 	return nil
+}
+
+// splitAndTrim splits a string by delimiter and trims whitespace from each part.
+func splitAndTrim(s, delimiter string) []string {
+	parts := []string{}
+	for _, part := range split(s, delimiter) {
+		trimmed := trim(part)
+		if trimmed != "" {
+			parts = append(parts, trimmed)
+		}
+	}
+	return parts
+}
+
+// split is a helper to split strings (avoiding importing strings package)
+func split(s, sep string) []string {
+	var result []string
+	var current string
+	for i := 0; i < len(s); i++ {
+		if i+len(sep) <= len(s) && s[i:i+len(sep)] == sep {
+			result = append(result, current)
+			current = ""
+			i += len(sep) - 1
+		} else {
+			current += string(s[i])
+		}
+	}
+	result = append(result, current)
+	return result
+}
+
+// trim removes leading/trailing whitespace
+func trim(s string) string {
+	start := 0
+	end := len(s)
+	for start < end && (s[start] == ' ' || s[start] == '\t' || s[start] == '\n' || s[start] == '\r') {
+		start++
+	}
+	for end > start && (s[end-1] == ' ' || s[end-1] == '\t' || s[end-1] == '\n' || s[end-1] == '\r') {
+		end--
+	}
+	return s[start:end]
 }
