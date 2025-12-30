@@ -68,13 +68,14 @@ func init() {
 	Destroy.PersistentFlags().Bool(string(flag.AutoApprove), false, "Skip interactive approval before destroying (Tofu/Terraform)")
 
 	// Provider credential flags
+	Destroy.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
+	Destroy.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
 	Destroy.PersistentFlags().String(string(flag.AwsProviderConfig), "", "path of the aws-credential file")
 	Destroy.PersistentFlags().String(string(flag.AzureProviderConfig), "", "path of the azure-credential file")
 	Destroy.PersistentFlags().String(string(flag.CloudflareProviderConfig), "", "path of the cloudflare-credential file")
 	Destroy.PersistentFlags().String(string(flag.ConfluentProviderConfig), "", "path of the confluent-credential file")
 	Destroy.PersistentFlags().String(string(flag.GcpProviderConfig), "", "path of the gcp-credential file")
 	Destroy.PersistentFlags().String(string(flag.KubernetesProviderConfig), "", "path of the yaml file containing the kubernetes cluster configuration")
-	Destroy.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Destroy.PersistentFlags().String(string(flag.SnowflakeProviderConfig), "", "path of the snowflake-credential file")
 }
 

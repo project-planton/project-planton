@@ -28,5 +28,10 @@ export const providerConfig: Record<Credential_CredentialProvider, ProviderConfi
     description: 'Link your Azure Subscription to start deploying infrastructure',
     icon: ICON_NAMES.AZURE,
   },
+  [Credential_CredentialProvider.AUTH0]: {
+    label: 'Auth0',
+    description: 'Link your Auth0 tenant to manage identity resources',
+    icon: undefined,
+  },
 };
 

@@ -12,6 +12,7 @@ import (
 
 	"connectrpc.com/connect"
 	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
+	auth0v1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
 	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
 	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
 	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
@@ -55,6 +56,8 @@ func (s *CredentialService) Create(
 		return s.createAwsCredential(ctx, req.Msg.Name, req.Msg.ProviderConfig, now)
 	case credentialv1.Credential_AZURE:
 		return s.createAzureCredential(ctx, req.Msg.Name, req.Msg.ProviderConfig, now)
+	case credentialv1.Credential_AUTH0:
+		return s.createAuth0Credential(ctx, req.Msg.Name, req.Msg.ProviderConfig, now)
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported provider: %v", req.Msg.Provider))
 	}
@@ -246,6 +249,62 @@ func (s *CredentialService) createAzureCredential(
 	}), nil
 }
 
+// createAuth0Credential creates an Auth0 credential.
+func (s *CredentialService) createAuth0Credential(
+	ctx context.Context,
+	name string,
+	providerConfig *credentialv1.CredentialProviderConfig,
+	now time.Time,
+) (*connect.Response[credentialv1.CreateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
+	}
+	auth0Config, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Auth0)
+	if !ok || auth0Config == nil || auth0Config.Auth0 == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("auth0 provider_config is required"))
+	}
+	if auth0Config.Auth0.Domain == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("domain is required"))
+	}
+	if auth0Config.Auth0.ClientId == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_id is required"))
+	}
+	if auth0Config.Auth0.ClientSecret == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_secret is required"))
+	}
+
+	createdCredential, err := s.credentialRepo.CreateAuth0(ctx, name, auth0Config.Auth0.Domain, auth0Config.Auth0.ClientId, auth0Config.Auth0.ClientSecret)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create Auth0 credential: %w", err))
+	}
+
+	protoCredential := &credentialv1.Credential{
+		Id:       createdCredential.ID.Hex(),
+		Name:     createdCredential.Name,
+		Provider: credentialv1.Credential_AUTH0,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Auth0{
+				Auth0: &auth0v1.Auth0ProviderConfig{
+					Domain:       createdCredential.Domain,
+					ClientId:     createdCredential.ClientID,
+					ClientSecret: createdCredential.ClientSecret,
+				},
+			},
+		},
+	}
+
+	if !createdCredential.CreatedAt.IsZero() {
+		protoCredential.CreatedAt = timestamppb.New(createdCredential.CreatedAt)
+	}
+	if !createdCredential.UpdatedAt.IsZero() {
+		protoCredential.UpdatedAt = timestamppb.New(createdCredential.UpdatedAt)
+	}
+
+	return connect.NewResponse(&credentialv1.CreateCredentialResponse{
+		Credential: protoCredential,
+	}), nil
+}
+
 // List lists all credentials with optional provider filter.
 func (s *CredentialService) List(
 	ctx context.Context,
@@ -263,6 +322,8 @@ func (s *CredentialService) List(
 			provider = "aws"
 		case credentialv1.Credential_AZURE:
 			provider = "azure"
+		case credentialv1.Credential_AUTH0:
+			provider = "auth0"
 		}
 		if provider != "" {
 			providerFilter = &provider
@@ -292,6 +353,8 @@ func (s *CredentialService) List(
 			summary.Provider = credentialv1.Credential_AWS
 		case "azure":
 			summary.Provider = credentialv1.Credential_AZURE
+		case "auth0":
+			summary.Provider = credentialv1.Credential_AUTH0
 		}
 
 		// Add timestamps if present
@@ -424,6 +487,31 @@ func (s *CredentialService) Get(
 		if !azureCred.UpdatedAt.IsZero() {
 			protoCredential.UpdatedAt = timestamppb.New(azureCred.UpdatedAt)
 		}
+	case "auth0":
+		auth0Cred, err := convertBsonToAuth0Credential(doc)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to convert credential: %w", err))
+		}
+		protoCredential = &credentialv1.Credential{
+			Id:       auth0Cred.ID.Hex(),
+			Name:     auth0Cred.Name,
+			Provider: credentialv1.Credential_AUTH0,
+			ProviderConfig: &credentialv1.CredentialProviderConfig{
+				Data: &credentialv1.CredentialProviderConfig_Auth0{
+					Auth0: &auth0v1.Auth0ProviderConfig{
+						Domain:       auth0Cred.Domain,
+						ClientId:     auth0Cred.ClientID,
+						ClientSecret: auth0Cred.ClientSecret,
+					},
+				},
+			},
+		}
+		if !auth0Cred.CreatedAt.IsZero() {
+			protoCredential.CreatedAt = timestamppb.New(auth0Cred.CreatedAt)
+		}
+		if !auth0Cred.UpdatedAt.IsZero() {
+			protoCredential.UpdatedAt = timestamppb.New(auth0Cred.UpdatedAt)
+		}
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported provider: %s", providerStr))
 	}
@@ -456,6 +544,8 @@ func (s *CredentialService) Update(
 		return s.updateAwsCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.ProviderConfig)
 	case credentialv1.Credential_AZURE:
 		return s.updateAzureCredential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.ProviderConfig)
+	case credentialv1.Credential_AUTH0:
+		return s.updateAuth0Credential(ctx, req.Msg.Id, req.Msg.Name, req.Msg.ProviderConfig)
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unsupported provider: %v", req.Msg.Provider))
 	}
@@ -650,6 +740,64 @@ func (s *CredentialService) updateAzureCredential(
 	}), nil
 }
 
+// updateAuth0Credential updates an Auth0 credential.
+func (s *CredentialService) updateAuth0Credential(
+	ctx context.Context,
+	id, name string,
+	providerConfig *credentialv1.CredentialProviderConfig,
+) (*connect.Response[credentialv1.UpdateCredentialResponse], error) {
+	if providerConfig == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("provider_config is required"))
+	}
+	auth0Config, ok := providerConfig.Data.(*credentialv1.CredentialProviderConfig_Auth0)
+	if !ok || auth0Config == nil || auth0Config.Auth0 == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("auth0 provider_config is required"))
+	}
+	if auth0Config.Auth0.Domain == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("domain is required"))
+	}
+	if auth0Config.Auth0.ClientId == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_id is required"))
+	}
+	if auth0Config.Auth0.ClientSecret == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("client_secret is required"))
+	}
+
+	updatedCredential, err := s.credentialRepo.UpdateAuth0(ctx, id, name, auth0Config.Auth0.Domain, auth0Config.Auth0.ClientId, auth0Config.Auth0.ClientSecret)
+	if err != nil {
+		if err.Error() == fmt.Sprintf("Auth0 credential with ID '%s' not found", id) {
+			return nil, connect.NewError(connect.CodeNotFound, err)
+		}
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update Auth0 credential: %w", err))
+	}
+
+	protoCredential := &credentialv1.Credential{
+		Id:       updatedCredential.ID.Hex(),
+		Name:     updatedCredential.Name,
+		Provider: credentialv1.Credential_AUTH0,
+		ProviderConfig: &credentialv1.CredentialProviderConfig{
+			Data: &credentialv1.CredentialProviderConfig_Auth0{
+				Auth0: &auth0v1.Auth0ProviderConfig{
+					Domain:       updatedCredential.Domain,
+					ClientId:     updatedCredential.ClientID,
+					ClientSecret: updatedCredential.ClientSecret,
+				},
+			},
+		},
+	}
+
+	if !updatedCredential.CreatedAt.IsZero() {
+		protoCredential.CreatedAt = timestamppb.New(updatedCredential.CreatedAt)
+	}
+	if !updatedCredential.UpdatedAt.IsZero() {
+		protoCredential.UpdatedAt = timestamppb.New(updatedCredential.UpdatedAt)
+	}
+
+	return connect.NewResponse(&credentialv1.UpdateCredentialResponse{
+		Credential: protoCredential,
+	}), nil
+}
+
 // Delete deletes a credential by ID.
 func (s *CredentialService) Delete(
 	ctx context.Context,
@@ -765,5 +913,34 @@ func convertBsonToAzureCredential(doc bson.M) (*models.AzureCredential, error) {
 		SubscriptionID: doc["subscription_id"].(string),
 		CreatedAt:      createdAt,
 		UpdatedAt:      updatedAt,
+	}, nil
+}
+
+func convertBsonToAuth0Credential(doc bson.M) (*models.Auth0Credential, error) {
+	id, ok := doc["_id"].(primitive.ObjectID)
+	if !ok {
+		return nil, fmt.Errorf("invalid _id field")
+	}
+
+	var createdAt, updatedAt time.Time
+	if dt, ok := doc["created_at"].(primitive.DateTime); ok {
+		createdAt = dt.Time()
+	} else if t, ok := doc["created_at"].(time.Time); ok {
+		createdAt = t
+	}
+	if dt, ok := doc["updated_at"].(primitive.DateTime); ok {
+		updatedAt = dt.Time()
+	} else if t, ok := doc["updated_at"].(time.Time); ok {
+		updatedAt = t
+	}
+
+	return &models.Auth0Credential{
+		ID:           id,
+		Name:         doc["name"].(string),
+		Domain:       doc["domain"].(string),
+		ClientID:     doc["client_id"].(string),
+		ClientSecret: doc["client_secret"].(string),
+		CreatedAt:    createdAt,
+		UpdatedAt:    updatedAt,
 	}, nil
 }

@@ -14,6 +14,10 @@ func addProviderConfigs(stackInputContentMap map[string]interface{},
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add atlas-provider-config")
 	}
+	updatedStackInputContentMap, err = stackinputproviderconfig.AddAuth0ProviderConfig(updatedStackInputContentMap, providerConfigOptions)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to add auth0-provider-config")
+	}
 	updatedStackInputContentMap, err = stackinputproviderconfig.AddAwsProviderConfig(updatedStackInputContentMap, providerConfigOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add aws-provider-config")

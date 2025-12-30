@@ -13,6 +13,7 @@ import { SimpleInput } from '@/components/shared/simple-input';
 import { SimpleSelect } from '@/components/shared/simple-select';
 import {
   CredentialFormData,
+  Auth0CredentialForm,
   GcpCredentialForm,
   AwsCredentialForm,
   AzureCredentialForm,
@@ -24,6 +25,7 @@ import {
   CredentialProviderConfigSchema,
 } from '@/gen/org/project_planton/app/credential/v1/api_pb';
 import { CreateCredentialRequest } from '@/gen/org/project_planton/app/credential/v1/io_pb';
+import { Auth0ProviderConfig, Auth0ProviderConfigSchema } from '@/gen/org/project_planton/provider/auth0/provider_pb';
 import { GcpProviderConfig, GcpProviderConfigSchema } from '@/gen/org/project_planton/provider/gcp/provider_pb';
 import { AwsProviderConfig, AwsProviderConfigSchema } from '@/gen/org/project_planton/provider/aws/provider_pb';
 import { AzureProviderConfig, AzureProviderConfigSchema } from '@/gen/org/project_planton/provider/azure/provider_pb';
@@ -57,6 +59,7 @@ export function CredentialDrawer({
     defaultValues: {
       name: '',
       provider: Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
+      auth0: {},
       gcp: {},
       aws: {},
       azure: {},
@@ -90,11 +93,18 @@ export function CredentialDrawer({
       const formData: CredentialFormData = {
         name: selectedCredential.name,
         provider: selectedCredential.provider,
+        auth0: {},
         gcp: {},
         aws: {},
         azure: {},
       };
-      if (providerConfigData?.data?.case === 'gcp') {
+      if (providerConfigData?.data?.case === 'auth0') {
+        formData.auth0 = {
+          domain: providerConfigData.data.value.domain,
+          clientId: providerConfigData.data.value.clientId,
+          clientSecret: providerConfigData.data.value.clientSecret,
+        };
+      } else if (providerConfigData?.data?.case === 'gcp') {
         formData.gcp = {
           serviceAccountKeyBase64: providerConfigData.data.value.serviceAccountKeyBase64,
         };
@@ -119,6 +129,7 @@ export function CredentialDrawer({
       reset({
         name: '',
         provider: initialProvider || Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
+        auth0: {},
         gcp: {},
         aws: {},
         azure: {},
@@ -133,6 +144,18 @@ export function CredentialDrawer({
       let providerConfig: CreateCredentialRequest['providerConfig'];
 
       if (
+        formData.provider == Credential_CredentialProvider.AUTH0 &&
+        formData.auth0?.domain &&
+        formData.auth0?.clientId &&
+        formData.auth0?.clientSecret
+      ) {
+        providerConfig = create(CredentialProviderConfigSchema, {
+          data: {
+            case: 'auth0',
+            value: create(Auth0ProviderConfigSchema, formData.auth0 as Auth0ProviderConfig),
+          },
+        });
+      } else if (
         formData.provider == Credential_CredentialProvider.GCP &&
         formData.gcp?.serviceAccountKeyBase64
       ) {
@@ -190,6 +213,7 @@ export function CredentialDrawer({
     reset({
       name: '',
       provider: initialProvider || Credential_CredentialProvider.CREDENTIAL_PROVIDER_UNSPECIFIED,
+      auth0: {},
       gcp: {},
       aws: {},
       azure: {},
@@ -202,6 +226,7 @@ export function CredentialDrawer({
       if (isView || initialProvider) return;
       const newProvider = parseInt(e.target.value, 10) as Credential_CredentialProvider;
       setValue('provider', newProvider);
+      setValue('auth0', {});
       setValue('gcp', {});
       setValue('aws', {});
       setValue('azure', {});
@@ -241,6 +266,9 @@ export function CredentialDrawer({
                   registerOptions={{ required: true }}
                   disabled={isView}
                 />
+              )}
+              {formProvider == Credential_CredentialProvider.AUTH0 && (
+                <Auth0CredentialForm register={register} disabled={isView} />
               )}
               {formProvider == Credential_CredentialProvider.GCP && (
                 <GcpCredentialForm

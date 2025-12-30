@@ -7,6 +7,8 @@ import (
 type Flag string
 
 const (
+	AtlasProviderConfig      Flag = "atlas-provider-config"
+	Auth0ProviderConfig      Flag = "auth0-provider-config"
 	AutoApprove              Flag = "auto-approve"
 	AwsProviderConfig        Flag = "aws-provider-config"
 	AzureProviderConfig      Flag = "azure-provider-config"
@@ -23,7 +25,6 @@ const (
 	KustomizeDir             Flag = "kustomize-dir"
 	Manifest                 Flag = "manifest"
 	ModuleDir                Flag = "module-dir"
-	AtlasProviderConfig      Flag = "atlas-provider-config"
 	OutputFile               Flag = "output-file"
 	Overlay                  Flag = "overlay"
 	Set                      Flag = "set"

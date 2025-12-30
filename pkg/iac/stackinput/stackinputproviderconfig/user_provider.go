@@ -6,6 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 	atlasv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas"
+	auth0v1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
 	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
 	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
 	cloudflarev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
@@ -24,6 +25,7 @@ func BuildProviderConfigOptionsFromUserCredentials(
 	gcpConfig *gcpv1.GcpProviderConfig,
 	azureConfig *azurev1.AzureProviderConfig,
 	atlasConfig *atlasv1.AtlasProviderConfig,
+	auth0Config *auth0v1.Auth0ProviderConfig,
 	cloudflareConfig *cloudflarev1.CloudflareProviderConfig,
 	confluentConfig *confluentv1.ConfluentProviderConfig,
 	snowflakeConfig *snowflakev1.SnowflakeProviderConfig,
@@ -85,6 +87,20 @@ func BuildProviderConfigOptionsFromUserCredentials(
 			return opts, nil, errors.Wrap(err, "failed to create Atlas provider config")
 		}
 		opts.AtlasProviderConfig = file
+		cleanupFuncs = append(cleanupFuncs, cleanup)
+	}
+
+	// Auth0 Provider Config
+	if auth0Config != nil {
+		file, cleanup, err := createAuth0ProviderConfigFileFromProto(auth0Config)
+		if err != nil {
+			// Cleanup already created files
+			for _, fn := range cleanupFuncs {
+				fn()
+			}
+			return opts, nil, errors.Wrap(err, "failed to create Auth0 provider config")
+		}
+		opts.Auth0ProviderConfig = file
 		cleanupFuncs = append(cleanupFuncs, cleanup)
 	}
 
@@ -309,6 +325,45 @@ func createAtlasProviderConfigFileFromProto(atlasConfig *atlasv1.AtlasProviderCo
 		tmpFile.Close()
 		cleanup()
 		return "", nil, fmt.Errorf("failed to write Atlas credentials: %w", err)
+	}
+
+	if err := tmpFile.Close(); err != nil {
+		cleanup()
+		return "", nil, fmt.Errorf("failed to close temp file: %w", err)
+	}
+
+	return tmpFile.Name(), cleanup, nil
+}
+
+// createAuth0ProviderConfigFileFromProto creates an Auth0 provider config file from proto message
+func createAuth0ProviderConfigFileFromProto(auth0Config *auth0v1.Auth0ProviderConfig) (string, func(), error) {
+	tmpFile, err := os.CreateTemp("", "auth0-provider-config-*.yaml")
+	if err != nil {
+		return "", nil, fmt.Errorf("failed to create temp file: %w", err)
+	}
+
+	cleanup := func() {
+		os.Remove(tmpFile.Name())
+	}
+
+	// Build YAML content matching CLI credential file format
+	auth0CredMap := map[string]interface{}{
+		"domain":       auth0Config.Domain,
+		"clientId":     auth0Config.ClientId,
+		"clientSecret": auth0Config.ClientSecret,
+	}
+
+	yamlBytes, err := yaml.Marshal(auth0CredMap)
+	if err != nil {
+		tmpFile.Close()
+		cleanup()
+		return "", nil, fmt.Errorf("failed to marshal Auth0 credentials to YAML: %w", err)
+	}
+
+	if _, err := tmpFile.Write(yamlBytes); err != nil {
+		tmpFile.Close()
+		cleanup()
+		return "", nil, fmt.Errorf("failed to write Auth0 credentials: %w", err)
 	}
 
 	if err := tmpFile.Close(); err != nil {

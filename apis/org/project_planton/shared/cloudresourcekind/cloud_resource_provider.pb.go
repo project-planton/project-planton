@@ -38,6 +38,7 @@ const (
 	CloudResourceProvider_gcp                                 CloudResourceProvider = 18
 	CloudResourceProvider_kubernetes                          CloudResourceProvider = 19
 	CloudResourceProvider_snowflake                           CloudResourceProvider = 20
+	CloudResourceProvider_auth0                               CloudResourceProvider = 21
 )
 
 // Enum value maps for CloudResourceProvider.
@@ -55,6 +56,7 @@ var (
 		18: "gcp",
 		19: "kubernetes",
 		20: "snowflake",
+		21: "auth0",
 	}
 	CloudResourceProvider_value = map[string]int32{
 		"cloud_resource_provider_unspecified": 0,
@@ -69,6 +71,7 @@ var (
 		"gcp":                                 18,
 		"kubernetes":                          19,
 		"snowflake":                           20,
+		"auth0":                               21,
 	}
 )
 
@@ -178,7 +181,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_
 	"Jorg/project_planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12,org.project_planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\"T\n" +
 	"\x19CloudResourceProviderMeta\x12\x14\n" +
 	"\x05group\x18\x01 \x01(\tR\x05group\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xc6\x05\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xf9\x05\n" +
 	"\x15CloudResourceProvider\x12'\n" +
 	"#cloud_resource_provider_unspecified\x10\x00\x12@\n" +
 	"\x05_test\x10\x01\x1a5\xea\xcc'1\n" +
@@ -206,7 +209,9 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_
 	"\x1ekubernetes.project-planton.org\x12\n" +
 	"Kubernetes\x12=\n" +
 	"\tsnowflake\x10\x14\x1a.\xea\xcc'*\n" +
-	"\x1dsnowflake.project-planton.org\x12\tSnowflake:\x91\x01\n" +
+	"\x1dsnowflake.project-planton.org\x12\tSnowflake\x121\n" +
+	"\x05auth0\x10\x15\x1a&\xea\xcc'\"\n" +
+	"\x19auth0.project-planton.org\x12\x05Auth0:\x91\x01\n" +
 	"\rprovider_meta\x12!.google.protobuf.EnumValueOptions\x18\xcd\xf9\x04 \x01(\v2G.org.project_planton.shared.cloudresourcekind.CloudResourceProviderMetaR\fproviderMetaB\xfc\x02\n" +
 	"0com.org.project_planton.shared.cloudresourcekindB\x1aCloudResourceProviderProtoP\x01Z\\github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 

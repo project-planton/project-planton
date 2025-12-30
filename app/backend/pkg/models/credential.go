@@ -61,6 +61,17 @@ type AtlasCredential struct {
 	UpdatedAt  time.Time          `bson:"updated_at" json:"updated_at"`
 }
 
+// Auth0Credential represents Auth0 credentials.
+type Auth0Credential struct {
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Name         string             `bson:"name" json:"name"`
+	Domain       string             `bson:"domain" json:"domain"`
+	ClientID     string             `bson:"client_id" json:"client_id"`
+	ClientSecret string             `bson:"client_secret" json:"client_secret"`
+	CreatedAt    time.Time          `bson:"created_at" json:"created_at"`
+	UpdatedAt    time.Time          `bson:"updated_at" json:"updated_at"`
+}
+
 // CloudflareCredential represents Cloudflare credentials.
 type CloudflareCredential struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id"`
