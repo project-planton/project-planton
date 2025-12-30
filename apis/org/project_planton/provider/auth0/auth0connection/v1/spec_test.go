@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestAuth0Connection(t *testing.T) {
@@ -30,9 +31,9 @@ var _ = ginkgo.Describe("Auth0Connection Validation Tests", func() {
 					Spec: &Auth0ConnectionSpec{
 						Strategy:    "auth0",
 						DisplayName: "Email Sign Up",
-						EnabledClients: []string{
-							"client-id-1",
-							"client-id-2",
+						EnabledClients: []*foreignkeyv1.StringValueOrRef{
+							{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "client-id-1"}},
+							{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "client-id-2"}},
 						},
 						DatabaseOptions: &Auth0DatabaseOptions{
 							PasswordPolicy:         "good",
@@ -62,8 +63,8 @@ var _ = ginkgo.Describe("Auth0Connection Validation Tests", func() {
 					Spec: &Auth0ConnectionSpec{
 						Strategy:    "google-oauth2",
 						DisplayName: "Sign in with Google",
-						EnabledClients: []string{
-							"my-app-client-id",
+						EnabledClients: []*foreignkeyv1.StringValueOrRef{
+							{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "my-app-client-id"}},
 						},
 						SocialOptions: &Auth0SocialOptions{
 							ClientId:     "google-client-id.apps.googleusercontent.com",

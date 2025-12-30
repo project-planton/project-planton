@@ -8,6 +8,7 @@ package auth0connectionv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -67,8 +68,14 @@ type Auth0ConnectionSpec struct {
 	// enabled_clients is a list of Auth0 application client IDs that can use this connection.
 	// Only applications in this list will show this connection as a login option.
 	// If empty, no applications will be able to use this connection.
-	// You can find client IDs in the Auth0 dashboard under Applications.
-	EnabledClients []string `protobuf:"bytes,3,rep,name=enabled_clients,json=enabledClients,proto3" json:"enabled_clients,omitempty"`
+	//
+	// You can provide either:
+	// - Direct client ID: {value: "abc123clientID"}
+	// - Reference to Auth0Client component: {value_from: {kind: Auth0Client, name: "my-app"}}
+	//
+	// When using references, the client_id is automatically resolved from the
+	// Auth0Client's status.outputs.client_id field.
+	EnabledClients []*v1.StringValueOrRef `protobuf:"bytes,3,rep,name=enabled_clients,json=enabledClients,proto3" json:"enabled_clients,omitempty"`
 	// is_domain_connection indicates whether this connection can be used for identifier-first
 	// authentication flows. When true, Auth0 will attempt to discover the appropriate
 	// connection based on the user's email domain.
@@ -149,7 +156,7 @@ func (x *Auth0ConnectionSpec) GetDisplayName() string {
 	return ""
 }
 
-func (x *Auth0ConnectionSpec) GetEnabledClients() []string {
+func (x *Auth0ConnectionSpec) GetEnabledClients() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.EnabledClients
 	}
@@ -874,11 +881,11 @@ var File_org_project_planton_provider_auth0_auth0connection_v1_spec_proto protor
 
 const file_org_project_planton_provider_auth0_auth0connection_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"@org/project_planton/provider/auth0/auth0connection/v1/spec.proto\x125org.project_planton.provider.auth0.auth0connection.v1\x1a\x1bbuf/validate/validate.proto\"\xd5\b\n" +
+	"@org/project_planton/provider/auth0/auth0connection/v1/spec.proto\x125org.project_planton.provider.auth0.auth0connection.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb5\t\n" +
 	"\x13Auth0ConnectionSpec\x12\x96\x01\n" +
 	"\bstrategy\x18\x01 \x01(\tBz\xbaHw\xc8\x01\x01rrR\x05auth0R\rgoogle-oauth2R\bfacebookR\x06githubR\blinkedinR\atwitterR\x11microsoft-accountR\x05appleR\x05samlpR\x04oidcR\x04waadR\x02adR\x04adfsR\bstrategy\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12'\n" +
-	"\x0fenabled_clients\x18\x03 \x03(\tR\x0eenabledClients\x120\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x86\x01\n" +
+	"\x0fenabled_clients\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xb5\x10\x92\xd4a\x18status.outputs.client_idR\x0eenabledClients\x120\n" +
 	"\x14is_domain_connection\x18\x04 \x01(\bR\x12isDomainConnection\x12\x16\n" +
 	"\x06realms\x18\x05 \x03(\tR\x06realms\x12$\n" +
 	"\x0eshow_as_button\x18\x06 \x01(\bR\fshowAsButton\x12t\n" +
@@ -977,22 +984,24 @@ var file_org_project_planton_provider_auth0_auth0connection_v1_spec_proto_goType
 	nil,                          // 7: org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions.UpstreamParamsEntry
 	nil,                          // 8: org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions.AttributeMappingsEntry
 	nil,                          // 9: org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions.AttributeMappingsEntry
+	(*v1.StringValueOrRef)(nil),  // 10: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_auth0_auth0connection_v1_spec_proto_depIdxs = []int32{
-	6, // 0: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.metadata:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.MetadataEntry
-	1, // 1: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.database_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0DatabaseOptions
-	2, // 2: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.social_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions
-	3, // 3: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.saml_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions
-	4, // 4: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.oidc_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions
-	5, // 5: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.azure_ad_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0AzureAdOptions
-	7, // 6: org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions.upstream_params:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions.UpstreamParamsEntry
-	8, // 7: org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions.attribute_mappings:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions.AttributeMappingsEntry
-	9, // 8: org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions.attribute_mappings:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions.AttributeMappingsEntry
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	10, // 0: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.enabled_clients:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	6,  // 1: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.metadata:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.MetadataEntry
+	1,  // 2: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.database_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0DatabaseOptions
+	2,  // 3: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.social_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions
+	3,  // 4: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.saml_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions
+	4,  // 5: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.oidc_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions
+	5,  // 6: org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionSpec.azure_ad_options:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0AzureAdOptions
+	7,  // 7: org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions.upstream_params:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SocialOptions.UpstreamParamsEntry
+	8,  // 8: org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions.attribute_mappings:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0SamlOptions.AttributeMappingsEntry
+	9,  // 9: org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions.attribute_mappings:type_name -> org.project_planton.provider.auth0.auth0connection.v1.Auth0OidcOptions.AttributeMappingsEntry
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_auth0_auth0connection_v1_spec_proto_init() }

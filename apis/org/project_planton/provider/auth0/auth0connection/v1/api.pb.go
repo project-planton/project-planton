@@ -47,7 +47,7 @@ const (
 //	strategy: google-oauth2
 //	display_name: Sign in with Google
 //	enabled_clients:
-//	  - "abc123def456"
+//	  - value: "abc123def456"
 //	social_options:
 //	  client_id: "your-google-client-id.apps.googleusercontent.com"
 //	  client_secret: "your-google-client-secret"

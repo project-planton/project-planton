@@ -9,8 +9,10 @@ locals {
   is_domain_connection = coalesce(var.spec.is_domain_connection, false)
   show_as_button      = coalesce(var.spec.show_as_button, true)
 
-  # Enabled clients - default to empty list if not specified
-  enabled_clients = coalesce(var.spec.enabled_clients, [])
+  # Enabled clients - extract values from StringValueOrRef objects
+  enabled_clients = var.spec.enabled_clients != null ? [
+    for client in var.spec.enabled_clients : client.value
+  ] : []
 
   # Realms - default to empty list if not specified
   realms = coalesce(var.spec.realms, [])

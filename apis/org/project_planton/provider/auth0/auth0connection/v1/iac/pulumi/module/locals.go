@@ -61,8 +61,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *auth0connectionv1.Auth0Co
 	locals.IsDomainConnection = spec.IsDomainConnection
 	locals.ShowAsButton = spec.ShowAsButton
 
-	// Client and realm configuration
-	locals.EnabledClients = spec.EnabledClients
+	// Client and realm configuration - extract values from StringValueOrRef
+	for _, client := range spec.EnabledClients {
+		if client != nil && client.GetValue() != "" {
+			locals.EnabledClients = append(locals.EnabledClients, client.GetValue())
+		}
+	}
 	locals.Realms = spec.Realms
 	locals.Metadata = spec.Metadata
 
