@@ -19,7 +19,7 @@ spec:
   strategy: auth0
   display_name: Sign Up with Email
   enabled_clients:
-    - "your-app-client-id"
+    - value: "your-app-client-id"
 ```
 
 ### Production Database with Security
@@ -40,8 +40,8 @@ spec:
   strategy: auth0
   display_name: Create Account
   enabled_clients:
-    - "web-app-client-id"
-    - "mobile-app-client-id"
+    - value: "web-app-client-id"
+    - value: "mobile-app-client-id"
   database_options:
     password_policy: excellent
     requires_username: false
@@ -69,7 +69,7 @@ spec:
   display_name: Continue with Google
   show_as_button: true
   enabled_clients:
-    - "web-app-client-id"
+    - value: "web-app-client-id"
   social_options:
     client_id: "123456789-abcdef.apps.googleusercontent.com"
     client_secret: "GOCSPX-your-secret-here"
@@ -93,7 +93,7 @@ spec:
   display_name: Sign in with GitHub
   show_as_button: true
   enabled_clients:
-    - "developer-portal-client-id"
+    - value: "developer-portal-client-id"
   social_options:
     client_id: "Iv1.your-github-app-id"
     client_secret: "your-github-client-secret"
@@ -117,7 +117,7 @@ spec:
   display_name: Continue with Facebook
   show_as_button: true
   enabled_clients:
-    - "consumer-app-client-id"
+    - value: "consumer-app-client-id"
   social_options:
     client_id: "your-facebook-app-id"
     client_secret: "your-facebook-app-secret"
@@ -140,7 +140,7 @@ spec:
   display_name: Sign in with Microsoft
   show_as_button: true
   enabled_clients:
-    - "web-app-client-id"
+    - value: "web-app-client-id"
   social_options:
     client_id: "your-azure-app-id"
     client_secret: "your-azure-client-secret"
@@ -169,7 +169,7 @@ spec:
     - company.com
     - company.io
   enabled_clients:
-    - "internal-app-client-id"
+    - value: "internal-app-client-id"
   saml_options:
     sign_in_endpoint: "https://company.okta.com/app/app-id/sso/saml"
     signing_cert: |
@@ -202,7 +202,7 @@ spec:
   display_name: Login with Keycloak
   is_domain_connection: true
   enabled_clients:
-    - "internal-app-client-id"
+    - value: "internal-app-client-id"
   oidc_options:
     issuer: "https://keycloak.company.com/realms/main"
     client_id: "auth0-integration"
@@ -236,7 +236,7 @@ spec:
   realms:
     - contoso.com
   enabled_clients:
-    - "corporate-app-client-id"
+    - value: "corporate-app-client-id"
   azure_ad_options:
     client_id: "your-azure-app-id-guid"
     client_secret: "your-azure-client-secret"
@@ -261,7 +261,7 @@ spec:
   strategy: waad
   display_name: Sign in with Work Account
   enabled_clients:
-    - "saas-app-client-id"
+    - value: "saas-app-client-id"
   azure_ad_options:
     client_id: "your-multi-tenant-app-id"
     client_secret: "your-azure-client-secret"
@@ -269,6 +269,122 @@ spec:
     use_common_endpoint: true
     should_trust_email_verified: true
 ```
+
+## Using Foreign Key References
+
+Auth0Connection supports foreign key references to link with Auth0Client components managed by Project Planton. This enables declarative dependencies between connections and applications.
+
+### Reference Auth0Client by Name
+
+Instead of hardcoding client IDs, reference managed Auth0Client resources:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Connection
+metadata:
+  name: google-social
+  org: my-organization
+  env: production
+spec:
+  strategy: google-oauth2
+  display_name: Continue with Google
+  enabled_clients:
+    # Reference Auth0Client components - client_id resolved automatically
+    - value_from:
+        kind: Auth0Client
+        name: web-app
+    - value_from:
+        kind: Auth0Client
+        name: mobile-app
+  social_options:
+    client_id: "123456789.apps.googleusercontent.com"
+    client_secret: "GOCSPX-your-secret"
+    scopes:
+      - openid
+      - profile
+      - email
+```
+
+### Mix Direct Values and References
+
+You can combine direct client IDs with references:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Connection
+metadata:
+  name: enterprise-sso
+  org: my-organization
+  env: production
+spec:
+  strategy: samlp
+  display_name: Company SSO
+  is_domain_connection: true
+  enabled_clients:
+    # Managed Auth0Client
+    - value_from:
+        kind: Auth0Client
+        name: internal-portal
+    # External/legacy client ID
+    - value: "legacy-app-client-id-abc123"
+  saml_options:
+    sign_in_endpoint: "https://idp.company.com/sso"
+    signing_cert: |
+      -----BEGIN CERTIFICATE-----
+      MIICmTCCAYGgAwIBAgIJAKc...
+      -----END CERTIFICATE-----
+```
+
+### Complete Example: Auth0Client + Auth0Connection
+
+First, create the Auth0Client:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: my-web-app
+  org: my-organization
+  env: production
+spec:
+  application_type: spa
+  name: My Web Application
+  callbacks:
+    - "https://app.example.com/callback"
+  allowed_logout_urls:
+    - "https://app.example.com"
+  web_origins:
+    - "https://app.example.com"
+```
+
+Then, enable the connection for that client:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Connection
+metadata:
+  name: user-database
+  org: my-organization
+  env: production
+spec:
+  strategy: auth0
+  display_name: Sign Up with Email
+  enabled_clients:
+    - value_from:
+        kind: Auth0Client
+        name: my-web-app
+  database_options:
+    password_policy: good
+    brute_force_protection: true
+```
+
+**Benefits of Foreign Key References:**
+- No hardcoded client IDs
+- Automatic dependency resolution
+- Changes to Auth0Client automatically propagate
+- Clear infrastructure dependencies
+
+---
 
 ## Multi-Environment Configuration
 

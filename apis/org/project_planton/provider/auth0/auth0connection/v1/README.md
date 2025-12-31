@@ -23,6 +23,7 @@ Auth0Connection addresses the need to:
 - **Security Controls**: Built-in brute force protection and MFA support
 - **Enterprise Integration**: Full support for SAML, OIDC, and Azure AD federation
 - **Client Scoping**: Control which Auth0 applications can use each connection
+- **Foreign Key References**: Link to Auth0Client components by name instead of hardcoding IDs
 - **Domain Discovery**: Enable identifier-first authentication flows
 
 ## Example Usage
@@ -40,7 +41,10 @@ spec:
   strategy: auth0
   display_name: Email Sign Up
   enabled_clients:
-    - "abc123def456"
+    # Reference managed Auth0Client by name
+    - value_from:
+        kind: Auth0Client
+        name: my-web-app
   database_options:
     password_policy: good
     brute_force_protection: true
@@ -62,7 +66,8 @@ spec:
   strategy: google-oauth2
   display_name: Continue with Google
   enabled_clients:
-    - "my-web-app-client-id"
+    # Direct client ID
+    - value: "my-web-app-client-id"
   social_options:
     client_id: "your-google-client-id.apps.googleusercontent.com"
     client_secret: "your-google-client-secret"

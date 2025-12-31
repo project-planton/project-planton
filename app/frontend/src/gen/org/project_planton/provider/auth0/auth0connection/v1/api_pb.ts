@@ -41,7 +41,7 @@ export const file_org_project_planton_provider_auth0_auth0connection_v1_api: Gen
  *   strategy: google-oauth2
  *   display_name: Sign in with Google
  *   enabled_clients:
- *     - "abc123def456"
+ *     - value: "abc123def456"
  *   social_options:
  *     client_id: "your-google-client-id.apps.googleusercontent.com"
  *     client_secret: "your-google-client-secret"

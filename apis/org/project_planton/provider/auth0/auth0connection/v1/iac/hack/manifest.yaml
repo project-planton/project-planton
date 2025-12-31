@@ -15,8 +15,8 @@ spec:
   strategy: auth0
   display_name: Test Database Connection
   enabled_clients:
-    - "test-client-id-001"
-    - "test-client-id-002"
+    - value: "test-client-id-001"
+    - value: "test-client-id-002"
   show_as_button: true
   database_options:
     password_policy: good
