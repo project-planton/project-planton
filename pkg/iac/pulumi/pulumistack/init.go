@@ -18,7 +18,7 @@ import (
 // Init initializes a new Pulumi stack for the given manifest.
 // It extracts the stack FQDN from the manifest, prepares the module directory,
 // and runs `pulumi stack init` to create the stack in the backend.
-func Init(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string) error {
+func Init(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, noCleanup bool) error {
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
 	if err != nil {
 		return errors.Wrapf(err, "failed to override values in target manifest file")
@@ -44,10 +44,21 @@ func Init(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[st
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName)
+	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
+
+	// Setup cleanup to run after execution
+	if pathResult.ShouldCleanup {
+		defer func() {
+			if cleanupErr := pathResult.CleanupFunc(); cleanupErr != nil {
+				fmt.Printf("Warning: failed to cleanup workspace copy: %v\n", cleanupErr)
+			}
+		}()
+	}
+
+	pulumiModuleRepoPath := pathResult.ModulePath
 
 	pulumiProjectName, err := ExtractProjectName(finalStackFqdn)
 	if err != nil {

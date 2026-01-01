@@ -19,6 +19,7 @@ func init() {
 	rootCmd.DisableSuggestions = true
 	rootCmd.AddCommand(
 		root.Apply,
+		root.Checkout,
 		root.CloudResourceApplyCmd,
 		root.CloudResourceCreateCmd,
 		root.CloudResourceDeleteCmd,
@@ -35,6 +36,7 @@ func init() {
 		root.Init,
 		root.LoadManifest,
 		root.Plan,
+		root.Pull,
 		root.Pulumi,
 		root.Refresh,
 		root.StackUpdateStreamOutputCmd,

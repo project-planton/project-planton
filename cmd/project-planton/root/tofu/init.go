@@ -89,10 +89,23 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to extract kind name from manifest proto %v", err)
 	}
 
-	tofuModulePath, err := tofumodule.GetModulePath(moduleDir, kindName)
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+
+	pathResult, err := tofumodule.GetModulePath(moduleDir, kindName, noCleanup)
 	if err != nil {
 		log.Fatalf("failed to get tofu module directory %v", err)
 	}
+
+	// Setup cleanup to run after execution
+	if pathResult.ShouldCleanup {
+		defer func() {
+			if cleanupErr := pathResult.CleanupFunc(); cleanupErr != nil {
+				log.Warnf("failed to cleanup workspace copy: %v", cleanupErr)
+			}
+		}()
+	}
+
+	tofuModulePath := pathResult.ModulePath
 
 	// Gather credential options (currently unused, but left for future usage)
 	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}

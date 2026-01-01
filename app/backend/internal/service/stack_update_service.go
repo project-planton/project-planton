@@ -453,11 +453,21 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 
 	// Step 6: Get Pulumi module path (REQUIRED - fail if missing)
 	fmt.Printf("DEBUG: Getting Pulumi module path for kind=%s, stackFqdn=%s, moduleDir=%s\n", kindName, stackFqdn, moduleDir)
-	pulumiModulePath, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
+	pathResult, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName, false)
 	if err != nil {
 		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to get Pulumi module path: %w", err))
 	}
+	pulumiModulePath := pathResult.ModulePath
 	fmt.Printf("DEBUG: Pulumi module path resolved: %s\n", pulumiModulePath)
+
+	// Setup cleanup to run when function returns
+	if pathResult.ShouldCleanup {
+		defer func() {
+			if cleanupErr := pathResult.CleanupFunc(); cleanupErr != nil {
+				fmt.Printf("Warning: failed to cleanup workspace copy: %v\n", cleanupErr)
+			}
+		}()
+	}
 
 	// Step 7: Extract project name from stack FQDN
 	pulumiProjectName, err := pulumistack.ExtractProjectName(stackFqdn)

@@ -11,7 +11,7 @@ builds:
     main: .
     binary: project-planton
     ldflags:
-      - -s -w -X github.com/project-planton/project-planton/internal/cli/version.Version={{.Version}}
+      - -s -w -X github.com/project-planton/project-planton/internal/cli/version.Version={{.Tag}}
     env:
       - CGO_ENABLED=0
     goos:
