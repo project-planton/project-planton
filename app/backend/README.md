@@ -90,11 +90,34 @@ make build     # Build binary
 
 ### Run Locally
 
+**Quick Start (Recommended):**
+
 ```bash
+./start-local.sh
+```
+
+This script automatically configures Pulumi for local file-based storage (no passphrase) and starts the server.
+
+**Manual Start:**
+
+```bash
+# Configure Pulumi for local backend
+export PULUMI_CONFIG_PASSPHRASE=""
+pulumi login --local
+
+# Set environment variables
 export MONGODB_URI=mongodb://localhost:27017/project_planton
 export SERVER_PORT=50051
-./bin/server
+export PULUMI_SKIP_UPDATE_CHECK=true
+export PULUMI_AUTOMATION_API_SKIP_VERSION_CHECK=true
+
+# Run the server
+make dev
 ```
+
+**Prerequisites:**
+- MongoDB running locally on port 27017
+- Pulumi CLI installed
 
 ### Docker Build
 
@@ -108,6 +131,27 @@ docker build -f app/Dockerfile.unified -t project-planton:latest .
 **Note:** There is no separate backend-only Docker image. The unified container includes MongoDB, backend, and frontend together.
 
 ## Troubleshooting
+
+### PULUMI_CONFIG_PASSPHRASE Error
+
+**Error:**
+```
+error: getting stack configuration: get stack secrets manager: passphrase must be set with PULUMI_CONFIG_PASSPHRASE or PULUMI_CONFIG_PASSPHRASE_FILE environment variables
+```
+
+**Cause:** Pulumi requires a passphrase for encrypting secrets. This is required even for local development.
+
+**Solution:** Use the same passphrase as the Docker container and login to local backend:
+
+```bash
+export PULUMI_CONFIG_PASSPHRASE="project-planton-default-passphrase"
+pulumi login --local
+```
+
+Or use the provided helper script:
+```bash
+./start-local.sh
+```
 
 ### PULUMI_ACCESS_TOKEN Error
 

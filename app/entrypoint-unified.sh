@@ -42,12 +42,12 @@ if [ -n "$PULUMI_ACCESS_TOKEN" ]; then
   else
     echo "   Backend URL: https://api.pulumi.com (default)"
   fi
-  su - appuser -c "pulumi login --non-interactive"
+  su -s /bin/sh appuser -c "pulumi login --non-interactive"
 else
   # Use local file-based backend by default
   echo "📁 Using local file-based backend (no PULUMI_ACCESS_TOKEN found)"
   echo "   State storage: /home/appuser/.pulumi/state"
-  su - appuser -c "pulumi login --local --non-interactive"
+  su -s /bin/sh appuser -c "pulumi login --local --non-interactive"
 fi
 
 echo "✅ Pulumi backend configured successfully"

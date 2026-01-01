@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"math"
 	"strings"
 
 	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
@@ -16,16 +15,6 @@ import (
 	"github.com/project-planton/project-planton/app/backend/pkg/models"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 )
-
-// min returns the minimum of two integers
-func min(a, b int) int {
-	return int(math.Min(float64(a), float64(b)))
-}
-
-// max returns the maximum of two integers
-func max(a, b int) int {
-	return int(math.Max(float64(a), float64(b)))
-}
 
 // CredentialResolver resolves provider credentials from the database based on provider.
 type CredentialResolver struct {
