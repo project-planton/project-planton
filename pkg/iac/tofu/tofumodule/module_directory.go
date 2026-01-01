@@ -1,78 +1,107 @@
 package tofumodule
 
 import (
+	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/internal/cli/staging"
 	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
 )
 
-func GetModulePath(moduleDir, kindName string) (string, error) {
+// GetModulePathResult contains the module path and a cleanup function
+type GetModulePathResult struct {
+	ModulePath    string
+	RepoPath      string
+	CleanupFunc   func() error
+	ShouldCleanup bool
+}
+
+// GetModulePath returns the path to the Terraform/OpenTofu module directory.
+// If moduleDir is provided and is a valid Terraform module directory, it returns that.
+// Otherwise, it ensures the staging area is set up and copies it to the tofu workspace.
+// The returned GetModulePathResult includes a cleanup function that should be called after execution
+// unless noCleanup is true.
+func GetModulePath(moduleDir, kindName string, noCleanup bool) (*GetModulePathResult, error) {
 
 	// If the module directory is provided, check if it is a valid terraform module directory
 	if moduleDir != "" {
-		// If the module directory is not provided, clone the repository and get the terraform module path
 		isTerraformModuleDir, err := isTerraformModuleDirectory(moduleDir)
 		if err != nil {
-			return "", errors.Wrapf(err, "failed to check if %s is a valid terraform module directory", moduleDir)
+			return nil, errors.Wrapf(err, "failed to check if %s is a valid terraform module directory", moduleDir)
 		}
 
 		// If the module directory is a valid terraform module directory, return the module directory
 		if isTerraformModuleDir {
-			return moduleDir, nil
+			return &GetModulePathResult{
+				ModulePath:    moduleDir,
+				RepoPath:      moduleDir,
+				CleanupFunc:   func() error { return nil },
+				ShouldCleanup: false,
+			}, nil
 		}
 	}
 
-	// If the module directory is not a valid terraform module directory,
-	//clone the repository and get the terraform module path
+	// Get the tofu workspace directory
 	tofuModuleWorkspaceDir, err := getWorkspaceDir()
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get tofu module workspace directory")
+		return nil, errors.Wrapf(err, "failed to get tofu module workspace directory")
 	}
 
-	// Clone the repository to the workspace directory
-	gitRepoName, err := gitrepo.ExtractRepoName(gitrepo.CloneUrl)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to extract git repo name from %s", gitrepo.CloneUrl)
-	}
-
-	// Check if the cloned repository directory already exists
-	terraformModuleRepoPath := filepath.Join(tofuModuleWorkspaceDir, gitRepoName)
-
-	// If the cloned repository directory does not exist, clone the repository
-	if _, statErr := os.Stat(terraformModuleRepoPath); os.IsNotExist(statErr) {
-		gitCloneCommand := exec.Command("git", "clone", gitrepo.CloneUrl, terraformModuleRepoPath)
-		gitCloneCommand.Stdout = os.Stdout
-		gitCloneCommand.Stderr = os.Stderr
-		if err := gitCloneCommand.Run(); err != nil {
-			return "", errors.Wrapf(err, "failed to clone repository from %s to %s", gitrepo.CloneUrl, tofuModuleWorkspaceDir)
-		}
-	}
-
-	//checkout the project-planton version tag if it is not the default version
+	// Determine target version - use CLI version if set and not default
+	targetVersion := ""
 	if version.Version != "" && version.Version != version.DefaultVersion {
-		gitCheckoutCommand := exec.Command("git", "-C", terraformModuleRepoPath, "checkout", version.Version)
-		gitCheckoutCommand.Stdout = os.Stdout
-		gitCheckoutCommand.Stderr = os.Stderr
-		if err := gitCheckoutCommand.Run(); err != nil {
-			return "", errors.Wrapf(err, "failed to checkout tag %s in %s", version.Version, terraformModuleRepoPath)
-		}
+		targetVersion = version.Version
+	}
+
+	// Ensure staging is set up with the correct version
+	fmt.Printf("Ensuring staging area is ready...\n")
+	if err := staging.EnsureStaging(targetVersion); err != nil {
+		return nil, errors.Wrap(err, "failed to ensure staging area")
+	}
+
+	// Copy from staging to tofu workspace
+	fmt.Printf("Copying modules to workspace...\n")
+	terraformModuleRepoPath, err := staging.CopyToWorkspace(tofuModuleWorkspaceDir)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to copy staging to workspace")
 	}
 
 	terraformModulePath, err := getTerraformModulePath(terraformModuleRepoPath, kindName)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get terraform module path for %s", kindName)
+		// Clean up on error
+		_ = staging.CleanupWorkspaceCopy(terraformModuleRepoPath)
+		return nil, errors.Wrapf(err, "failed to get terraform module path for %s", kindName)
 	}
 
-	return terraformModulePath, nil
+	// Create cleanup function
+	cleanupFunc := func() error {
+		return staging.CleanupWorkspaceCopy(terraformModuleRepoPath)
+	}
+
+	return &GetModulePathResult{
+		ModulePath:    terraformModulePath,
+		RepoPath:      terraformModuleRepoPath,
+		CleanupFunc:   cleanupFunc,
+		ShouldCleanup: !noCleanup,
+	}, nil
+}
+
+// GetModulePathLegacy is the legacy function signature for backward compatibility.
+// It calls GetModulePath with noCleanup=false and returns just the module path.
+// Note: This does not perform cleanup - callers should migrate to GetModulePath for proper cleanup handling.
+func GetModulePathLegacy(moduleDir, kindName string) (string, error) {
+	result, err := GetModulePath(moduleDir, kindName, false)
+	if err != nil {
+		return "", err
+	}
+	return result.ModulePath, nil
 }
 
 // IsTerraformModuleDirectory checks if the given directory contains any files with .tf extension.

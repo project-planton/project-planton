@@ -58,10 +58,22 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	tofuModulePath, err := GetModulePath(inputModuleDir, kindName)
+	// Get module path using staging-based approach (with cleanup by default)
+	pathResult, err := GetModulePath(inputModuleDir, kindName, false)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get tofu module directory")
 	}
+
+	// Setup cleanup to run after execution
+	if pathResult.ShouldCleanup {
+		defer func() {
+			if cleanupErr := pathResult.CleanupFunc(); cleanupErr != nil {
+				fmt.Printf("Warning: failed to cleanup workspace copy: %v\n", cleanupErr)
+			}
+		}()
+	}
+
+	tofuModulePath := pathResult.ModulePath
 
 	// Gather credential options
 	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}

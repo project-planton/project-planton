@@ -80,9 +80,11 @@ func cancelHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintStep("Canceling stack operation...")
 
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+
 	cliprint.PrintHandoff("Pulumi")
 
-	err = pulumistack.Cancel(moduleDir, stackFqdn, targetManifestPath, valueOverrides)
+	err = pulumistack.Cancel(moduleDir, stackFqdn, targetManifestPath, valueOverrides, noCleanup)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

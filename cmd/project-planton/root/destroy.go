@@ -67,6 +67,9 @@ func init() {
 	// Tofu/Terraform-specific flags
 	Destroy.PersistentFlags().Bool(string(flag.AutoApprove), false, "Skip interactive approval before destroying (Tofu/Terraform)")
 
+	// Staging/cleanup flags
+	Destroy.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+
 	// Provider credential flags
 	Destroy.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Destroy.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
@@ -191,11 +194,12 @@ func destroyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 	flag.HandleFlagErr(err, flag.Stack)
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, providerConfigOptions...)
+		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

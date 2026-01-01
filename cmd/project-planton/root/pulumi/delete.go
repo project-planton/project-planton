@@ -91,9 +91,11 @@ func deleteHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintStep("Deleting Pulumi stack...")
 
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+
 	cliprint.PrintHandoff("Pulumi")
 
-	err = pulumistack.Remove(moduleDir, stackFqdn, targetManifestPath, valueOverrides, force)
+	err = pulumistack.Remove(moduleDir, stackFqdn, targetManifestPath, valueOverrides, force, noCleanup)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
