@@ -1,8 +1,6 @@
 package stackinput
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"google.golang.org/protobuf/encoding/protojson"
