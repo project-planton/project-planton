@@ -1,8 +1,6 @@
 package stackinput
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -51,9 +49,6 @@ func BuildStackInputYaml(manifestObject proto.Message,
 		return "", errors.Wrap(err, "failed to marshal final stack-input yaml")
 	}
 
-	// DEBUG: Log the final stack input YAML
-	fmt.Printf("DEBUG: Final stack-input YAML (%d bytes):\n%s\n", len(finalStackInputYaml), string(finalStackInputYaml))
-
 	return string(finalStackInputYaml), nil
 }
 
@@ -70,7 +65,7 @@ func forceDoubleQuotedStyleForBase64(node *yaml.Node) {
 				keyNode := node.Content[i]
 				valueNode := node.Content[i+1]
 
-				// If key is "serviceAccountKeyBase64", force double-quoted style on the value
+				// If key is "serviceAccountKeyBase64" (camelCase JSON name), force double-quoted style on the value
 				if keyNode.Value == "serviceAccountKeyBase64" && valueNode.Kind == yaml.ScalarNode {
 					valueNode.Style = yaml.DoubleQuotedStyle
 				}

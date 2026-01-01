@@ -112,6 +112,53 @@ build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle baze
 
 ${build_dir}/${name}: build-go
 
+# ── Docker (Unified Image) ─────────────────────────────────────────────────────
+DOCKER_IMAGE?=ghcr.io/project-planton/project-planton
+DOCKER_TAG?=latest
+DOCKERFILE_UNIFIED=app/Dockerfile.unified
+
+.PHONY: docker-build
+docker-build:
+	@echo "Building Docker image: $(DOCKER_IMAGE):$(DOCKER_TAG)"
+	docker build -f $(DOCKERFILE_UNIFIED) -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+
+.PHONY: docker-build-multiarch
+docker-build-multiarch:
+	@echo "Building multi-architecture Docker image: $(DOCKER_IMAGE):$(DOCKER_TAG)"
+	docker buildx build \
+		--platform linux/amd64,linux/arm64 \
+		-f $(DOCKERFILE_UNIFIED) \
+		-t $(DOCKER_IMAGE):$(DOCKER_TAG) \
+		--push \
+		.
+
+.PHONY: docker-run
+docker-run:
+	@echo "Running Docker container from $(DOCKER_IMAGE):$(DOCKER_TAG)"
+	docker run -d \
+		--name project-planton-webapp \
+		-p 3000:3000 \
+		-p 50051:50051 \
+		-v project-planton-mongodb:/data/db \
+		-v project-planton-pulumi:/home/appuser/.pulumi \
+		$(DOCKER_IMAGE):$(DOCKER_TAG)
+
+.PHONY: docker-stop
+docker-stop:
+	@echo "Stopping and removing container..."
+	docker stop project-planton-webapp || true
+	docker rm project-planton-webapp || true
+
+.PHONY: docker-logs
+docker-logs:
+	docker logs -f project-planton-webapp
+
+.PHONY: docker-shell
+docker-shell:
+	docker exec -it project-planton-webapp /bin/bash
+
+# ──────────────────────────────────────────────────────────────────────────────
+
 .PHONY: test
 test:
 	go test -race -v -count=1 -p $(PARALLEL) ./...

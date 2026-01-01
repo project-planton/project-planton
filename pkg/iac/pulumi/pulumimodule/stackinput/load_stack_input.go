@@ -39,6 +39,7 @@ func LoadStackInput(ctx *pulumi.Context, stackInput proto.Message) error {
 				return errors.Wrap(err, "failed to read input file")
 			}
 		}
+
 		jsonBytes, err = yaml.YAMLToJSON(stackInputYamlBytes)
 		if err != nil {
 			return errors.Wrap(err, "failed to load yaml to json")

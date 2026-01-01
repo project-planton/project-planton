@@ -16,7 +16,13 @@ services:
       - MONGODB_DATABASE=${MONGODB_DATABASE:-project_planton}
       # Backend configuration
       - SERVER_PORT=50051
-      # Pulumi configuration
+      # CORS configuration (optional - defaults work for most users)
+      # Uncomment to customize allowed origins for cross-origin requests
+      # - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+      # Uncomment to disable CORS if using reverse proxy (Caddy/nginx)
+      # - ENABLE_CORS=false
+      # Pulumi configuration (uses local file-based backend by default)
+      # Backend is automatically configured by entrypoint.sh via 'pulumi login --local'
       - PULUMI_HOME=/home/appuser/.pulumi
       - PULUMI_STATE_DIR=/home/appuser/.pulumi/state
       - PULUMI_CONFIG_PASSPHRASE=${PULUMI_CONFIG_PASSPHRASE:-project-planton-default-passphrase}
@@ -25,7 +31,8 @@ services:
       # Frontend configuration
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
-      - NEXT_PUBLIC_API_URL=http://localhost:50051
+      - API_URL=${API_URL:-${NEXT_PUBLIC_API_URL:-http://localhost:50051}}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:50051}
       - PORT=3000
       - HOSTNAME=0.0.0.0
       # Optional: Use Pulumi Cloud instead of local backend
