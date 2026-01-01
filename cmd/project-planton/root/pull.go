@@ -36,8 +36,6 @@ and bug fixes, especially before running apply/preview/destroy operations.`,
 }
 
 func pullHandler(cmd *cobra.Command, args []string) {
-	cliprint.PrintStep("Pulling latest changes from upstream...")
-
 	if err := staging.Pull(); err != nil {
 		cliprint.PrintError(fmt.Sprintf("Failed to pull: %v", err))
 		os.Exit(1)
@@ -51,7 +49,6 @@ func pullHandler(cmd *cobra.Command, args []string) {
 	}
 
 	if exists {
-		cliprint.PrintSuccess("Successfully pulled latest changes")
 		fmt.Printf("\nStaging area: %s\n", repoPath)
 		if version != "" {
 			fmt.Printf("Current version: %s\n", version)

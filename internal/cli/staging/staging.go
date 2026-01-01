@@ -237,6 +237,9 @@ func Pull() error {
 		return err
 	}
 
+	// Remember the current version to restore after pull
+	previousVersion, _ := GetCurrentStagingVersion()
+
 	cliprint.PrintStep("Fetching latest changes from upstream...")
 
 	// Fetch all remotes
@@ -246,23 +249,47 @@ func Pull() error {
 	if err := fetchCmd.Run(); err != nil {
 		return errors.Wrapf(err, "failed to fetch from upstream: %s", fetchStderr.String())
 	}
+	cliprint.PrintSuccess("Fetched all tags and branches")
 
-	// Pull changes
+	// Checkout main branch before pulling (handles detached HEAD state)
+	cliprint.PrintStep("Checking out main branch...")
+	checkoutCmd := exec.Command("git", "-C", repoPath, "checkout", "main")
+	var checkoutStderr bytes.Buffer
+	checkoutCmd.Stderr = &checkoutStderr
+	if err := checkoutCmd.Run(); err != nil {
+		return errors.Wrapf(err, "failed to checkout main branch: %s", checkoutStderr.String())
+	}
+
+	// Pull changes on main
+	cliprint.PrintStep("Pulling latest changes...")
 	pullCmd := exec.Command("git", "-C", repoPath, "pull")
 	var pullStderr bytes.Buffer
 	pullCmd.Stderr = &pullStderr
 	if err := pullCmd.Run(); err != nil {
 		return errors.Wrapf(err, "failed to pull from upstream: %s", pullStderr.String())
 	}
+	cliprint.PrintSuccess("Pulled latest changes from main")
 
-	// Update version file with current HEAD
-	headVersion, err := getCurrentHead(repoPath)
-	if err != nil {
-		return errors.Wrap(err, "failed to get current HEAD")
-	}
-
-	if err := WriteCurrentStagingVersion(headVersion); err != nil {
-		return errors.Wrap(err, "failed to update version file")
+	// If there was a previous version (not main), restore it
+	if previousVersion != "" && previousVersion != "main" {
+		cliprint.PrintStep(fmt.Sprintf("Restoring previous version: %s", previousVersion))
+		if err := checkoutVersion(repoPath, previousVersion); err != nil {
+			// If we can't restore, stay on main and update version file
+			cliprint.PrintInfo(fmt.Sprintf("Could not restore version '%s', staying on main", previousVersion))
+			if err := WriteCurrentStagingVersion("main"); err != nil {
+				return errors.Wrap(err, "failed to update version file")
+			}
+			return nil
+		}
+		cliprint.PrintSuccess(fmt.Sprintf("Restored to version: %s", previousVersion))
+		if err := WriteCurrentStagingVersion(previousVersion); err != nil {
+			return errors.Wrap(err, "failed to update version file")
+		}
+	} else {
+		// Update version file with main
+		if err := WriteCurrentStagingVersion("main"); err != nil {
+			return errors.Wrap(err, "failed to update version file")
+		}
 	}
 
 	return nil

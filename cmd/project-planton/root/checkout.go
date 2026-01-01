@@ -45,8 +45,6 @@ If the staging area does not exist, it will be automatically cloned first.`,
 func checkoutHandler(cmd *cobra.Command, args []string) {
 	version := args[0]
 
-	cliprint.PrintStep(fmt.Sprintf("Checking out version: %s", version))
-
 	if err := staging.Checkout(version); err != nil {
 		cliprint.PrintError(fmt.Sprintf("Failed to checkout: %v", err))
 		os.Exit(1)
@@ -59,7 +57,6 @@ func checkoutHandler(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	cliprint.PrintSuccess(fmt.Sprintf("Successfully checked out: %s", version))
 	fmt.Printf("\nStaging area: %s\n", repoPath)
 }
 
