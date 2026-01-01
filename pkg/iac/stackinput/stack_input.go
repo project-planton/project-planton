@@ -70,7 +70,7 @@ func forceDoubleQuotedStyleForBase64(node *yaml.Node) {
 				keyNode := node.Content[i]
 				valueNode := node.Content[i+1]
 
-				// If key is "serviceAccountKeyBase64", force double-quoted style on the value
+				// If key is "serviceAccountKeyBase64" (camelCase JSON name), force double-quoted style on the value
 				if keyNode.Value == "serviceAccountKeyBase64" && valueNode.Kind == yaml.ScalarNode {
 					valueNode.Style = yaml.DoubleQuotedStyle
 				}

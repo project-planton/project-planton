@@ -1,8 +1,10 @@
 package stackinputproviderconfig
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/pkg/errors"
 	atlasv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas"
@@ -16,6 +18,27 @@ import (
 	snowflakev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake"
 	"gopkg.in/yaml.v3"
 )
+
+// sanitizeGcpBase64Key decodes the base64-encoded JSON, trims trailing whitespace,
+// and re-encodes it. This fixes issues with JSON that has trailing newlines.
+func sanitizeGcpBase64Key(base64Key string) (string, error) {
+	// Decode the base64 string
+	decoded, err := base64.StdEncoding.DecodeString(base64Key)
+	if err != nil {
+		return "", fmt.Errorf("failed to decode base64: %w", err)
+	}
+
+	// Trim trailing whitespace (including newlines) from the JSON
+	trimmedJSON := strings.TrimSpace(string(decoded))
+
+	// Re-encode to base64
+	sanitized := base64.StdEncoding.EncodeToString([]byte(trimmedJSON))
+
+	fmt.Printf("DEBUG: Sanitized GCP base64 key: original=%d bytes, trimmed=%d bytes, sanitized=%d chars\n",
+		len(decoded), len(trimmedJSON), len(sanitized))
+
+	return sanitized, nil
+}
 
 // BuildProviderConfigOptionsFromUserCredentials converts user-provided credentials
 // from API request to temporary credential files, matching the CLI pattern.
@@ -231,12 +254,22 @@ func createGcpProviderConfigFileFromProto(gcpConfig *gcpv1.GcpProviderConfig) (s
 		os.Remove(tmpFile.Name())
 	}
 
+	// Sanitize the base64 string by decoding, trimming whitespace, and re-encoding
+	// This fixes issues with JSON that has trailing newlines
+	sanitizedBase64, err := sanitizeGcpBase64Key(gcpConfig.ServiceAccountKeyBase64)
+	if err != nil {
+		tmpFile.Close()
+		cleanup()
+		return "", nil, fmt.Errorf("failed to sanitize GCP service account key: %w", err)
+	}
+
 	// Build YAML content matching CLI credential file format
 	// Use custom encoder to prevent line folding for long base64 strings
 	encoder := yaml.NewEncoder(tmpFile)
 	encoder.SetIndent(2)
 
 	// Create a yaml.Node with DoubleQuotedStyle to prevent line folding
+	// Use camelCase JSON field name (protojson accepts both snake_case and camelCase)
 	node := &yaml.Node{
 		Kind: yaml.MappingNode,
 		Content: []*yaml.Node{
@@ -247,7 +280,7 @@ func createGcpProviderConfigFileFromProto(gcpConfig *gcpv1.GcpProviderConfig) (s
 			{
 				Kind:  yaml.ScalarNode,
 				Style: yaml.DoubleQuotedStyle, // Force double-quoted style to prevent folding
-				Value: gcpConfig.ServiceAccountKeyBase64,
+				Value: sanitizedBase64,
 			},
 		},
 	}

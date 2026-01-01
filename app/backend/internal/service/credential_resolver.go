@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"math"
 	"strings"
 
 	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
@@ -15,6 +16,16 @@ import (
 	"github.com/project-planton/project-planton/app/backend/pkg/models"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 )
+
+// min returns the minimum of two integers
+func min(a, b int) int {
+	return int(math.Min(float64(a), float64(b)))
+}
+
+// max returns the maximum of two integers
+func max(a, b int) int {
+	return int(math.Max(float64(a), float64(b)))
+}
 
 // CredentialResolver resolves provider credentials from the database based on provider.
 type CredentialResolver struct {
@@ -81,6 +92,19 @@ func (r *CredentialResolver) ResolveProviderConfig(
 
 	case "gcp":
 		gcpCred := credInterface.(*models.GcpCredential)
+		fmt.Printf("DEBUG: GCP Credential loaded from database\n")
+		fmt.Printf("DEBUG: ServiceAccountKeyBase64 length: %d characters\n", len(gcpCred.ServiceAccountKeyBase64))
+		fmt.Printf("DEBUG: ServiceAccountKeyBase64 first 100 chars: %s...\n", gcpCred.ServiceAccountKeyBase64[:min(100, len(gcpCred.ServiceAccountKeyBase64))])
+		fmt.Printf("DEBUG: ServiceAccountKeyBase64 last 100 chars: ...%s\n", gcpCred.ServiceAccountKeyBase64[max(0, len(gcpCred.ServiceAccountKeyBase64)-100):])
+
+		// Check for newlines or special characters
+		if strings.Contains(gcpCred.ServiceAccountKeyBase64, "\n") {
+			fmt.Printf("WARNING: ServiceAccountKeyBase64 contains newline characters!\n")
+		}
+		if strings.Contains(gcpCred.ServiceAccountKeyBase64, " ") {
+			fmt.Printf("WARNING: ServiceAccountKeyBase64 contains space characters!\n")
+		}
+
 		return &credentialv1.CredentialProviderConfig{
 			Data: &credentialv1.CredentialProviderConfig_Gcp{
 				Gcp: &gcpv1.GcpProviderConfig{
