@@ -1,6 +1,8 @@
 name: Build and Push Docker Image to GHCR
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       version:
@@ -34,6 +36,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Determine version tag
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+          elif [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION=""
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version: $VERSION"
+
       - name: Extract metadata (tags, labels)
         id: meta
         uses: docker/metadata-action@v5
@@ -41,7 +56,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
-            type=raw,value=${{ inputs.version }},enable=${{ inputs.version != '' }}
+            type=raw,value=${{ steps.version.outputs.version }},enable=${{ steps.version.outputs.version != '' }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -74,14 +89,21 @@ jobs:
 
       - name: Summary
         run: |
+          VERSION="${{ steps.version.outputs.version }}"
           echo "## Docker Image Published Successfully! 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "**Trigger:** Automated release build" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Trigger:** Manual workflow dispatch" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Registry:** GitHub Container Registry (GHCR)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Images published:**" >> $GITHUB_STEP_SUMMARY
           echo "- \`ghcr.io/${{ github.repository }}:latest\`" >> $GITHUB_STEP_SUMMARY
-          if [ -n "${{ inputs.version }}" ]; then
-            echo "- \`ghcr.io/${{ github.repository }}:${{ inputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          if [ -n "$VERSION" ]; then
+            echo "- \`ghcr.io/${{ github.repository }}:$VERSION\`" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Architectures:** linux/amd64" >> $GITHUB_STEP_SUMMARY
