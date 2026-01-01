@@ -25,12 +25,16 @@ This is useful when:
 - You're debugging and need to match the exact module version used previously
 
 The version argument can be:
+- "latest" - automatically resolves to the most recent release tag
 - A release tag (e.g., v0.2.273)
 - A branch name (e.g., main)
 - A commit SHA
 
 If the staging area does not exist, it will be automatically cloned first.`,
-	Example: `  # Checkout a specific release version
+	Example: `  # Checkout the latest release tag
+  project-planton checkout latest
+
+  # Checkout a specific release version
   project-planton checkout v0.2.273
 
   # Checkout the main branch for latest development

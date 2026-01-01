@@ -295,6 +295,32 @@ func Pull() error {
 	return nil
 }
 
+// getLatestTag fetches the latest tag from the repository
+func getLatestTag(repoPath string) (string, error) {
+	// First fetch all tags to ensure we have the latest
+	fetchCmd := exec.Command("git", "-C", repoPath, "fetch", "--tags")
+	var fetchStderr bytes.Buffer
+	fetchCmd.Stderr = &fetchStderr
+	if err := fetchCmd.Run(); err != nil {
+		return "", errors.Wrapf(err, "failed to fetch tags: %s", fetchStderr.String())
+	}
+
+	// Get the latest tag sorted by version (semver-aware)
+	// Using -v:refname sorts tags by version, and we take the last one
+	tagCmd := exec.Command("git", "-C", repoPath, "tag", "--sort=-v:refname")
+	tagOutput, err := tagCmd.Output()
+	if err != nil {
+		return "", errors.Wrap(err, "failed to list tags")
+	}
+
+	tags := strings.Split(strings.TrimSpace(string(tagOutput)), "\n")
+	if len(tags) == 0 || tags[0] == "" {
+		return "", errors.New("no tags found in repository")
+	}
+
+	return tags[0], nil
+}
+
 // Checkout checks out a specific version in the staging area
 func Checkout(version string) error {
 	exists, err := StagingExists()
@@ -312,6 +338,17 @@ func Checkout(version string) error {
 	repoPath, err := GetStagingRepoPath()
 	if err != nil {
 		return err
+	}
+
+	// Handle "latest" as a special case - resolve to the latest tag
+	if version == "latest" {
+		cliprint.PrintStep("Resolving latest tag from repository...")
+		latestTag, err := getLatestTag(repoPath)
+		if err != nil {
+			return errors.Wrap(err, "failed to resolve latest tag")
+		}
+		cliprint.PrintSuccess(fmt.Sprintf("Latest tag: %s", latestTag))
+		version = latestTag
 	}
 
 	cliprint.PrintStep(fmt.Sprintf("Checking out version: %s", version))
