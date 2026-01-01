@@ -8,6 +8,7 @@ import (
 	"os/exec"
 
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/internal/cli/cliprint"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
@@ -86,6 +87,10 @@ func Cancel(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[
 	pulumiCmd.Stderr = mwErr
 
 	fmt.Printf("\npulumi module directory: %s\n", pulumiModuleRepoPath)
+
+	// Print handoff message after all setup is complete
+	cliprint.PrintHandoff("Pulumi")
+
 	fmt.Printf("Canceling in-progress operations for stack: %s\n\n", finalStackFqdn)
 
 	if err := pulumiCmd.Run(); err != nil {

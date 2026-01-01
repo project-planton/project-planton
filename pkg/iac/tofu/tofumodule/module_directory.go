@@ -1,6 +1,7 @@
 package tofumodule
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -66,7 +67,13 @@ func GetModulePath(moduleDir, kindName, moduleVersion string, noCleanup bool) (*
 	if err := staging.EnsureStaging(targetVersion); err != nil {
 		return nil, errors.Wrap(err, "failed to ensure staging area")
 	}
-	cliprint.PrintSuccess("Staging area ready")
+	// Get and display current staging version
+	stagingVersion, _ := staging.GetCurrentStagingVersion()
+	if stagingVersion != "" {
+		cliprint.PrintSuccess(fmt.Sprintf("Staging area ready (modules version: %s)", stagingVersion))
+	} else {
+		cliprint.PrintSuccess("Staging area ready")
+	}
 
 	// Copy from staging to tofu workspace
 	cliprint.PrintStep("Copying modules to workspace...")

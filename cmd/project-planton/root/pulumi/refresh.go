@@ -89,8 +89,6 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
-	cliprint.PrintHandoff("Pulumi")
-
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
 		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
 	if err != nil {

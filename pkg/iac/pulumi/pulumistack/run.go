@@ -7,6 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/iac/pulumi"
+	"github.com/project-planton/project-planton/internal/cli/cliprint"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
@@ -119,7 +120,10 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	pulumiCmd.Stdout = os.Stdout
 	pulumiCmd.Stderr = os.Stderr
 
-	fmt.Printf("\npulumi module directory: %s \n", pulumiModuleRepoPath)
+	fmt.Printf("\npulumi module directory: %s\n", pulumiModuleRepoPath)
+
+	// Print handoff message after all setup is complete
+	cliprint.PrintHandoff("Pulumi")
 
 	if err := pulumiCmd.Run(); err != nil {
 		return errors.Wrapf(err, "failed to execute pulumi command %s", op)

@@ -202,8 +202,6 @@ func planWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, va
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
-	cliprint.PrintHandoff("Pulumi")
-
 	// For preview, we use update operation with isUpdatePreview=true and isAutoApprove=false
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
 		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
