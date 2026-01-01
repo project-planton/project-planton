@@ -86,11 +86,12 @@ func previewHandler(cmd *cobra.Command, args []string) {
 	cliprint.PrintSuccess("Execution prepared")
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, providerConfigOptions...)
+		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

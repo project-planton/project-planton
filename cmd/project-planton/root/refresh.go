@@ -62,6 +62,9 @@ func init() {
 	Refresh.PersistentFlags().String(string(flag.Stack), "", "pulumi stack fqdn in the format of <org>/<project>/<stack>")
 	Refresh.PersistentFlags().Bool(string(flag.Diff), false, "Show detailed resource diffs (Pulumi)")
 
+	// Staging/cleanup flags
+	Refresh.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+
 	// Provider credential flags
 	Refresh.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Refresh.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
@@ -186,11 +189,12 @@ func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 	flag.HandleFlagErr(err, flag.Stack)
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, providerConfigOptions...)
+		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

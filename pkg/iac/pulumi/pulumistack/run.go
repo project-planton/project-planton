@@ -16,7 +16,7 @@ import (
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
-	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool,
+	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool, noCleanup bool,
 	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
 	for _, opt := range providerConfigOptions {
@@ -48,10 +48,21 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName)
+	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
+
+	// Setup cleanup to run after execution
+	if pathResult.ShouldCleanup {
+		defer func() {
+			if cleanupErr := pathResult.CleanupFunc(); cleanupErr != nil {
+				fmt.Printf("Warning: failed to cleanup workspace copy: %v\n", cleanupErr)
+			}
+		}()
+	}
+
+	pulumiModuleRepoPath := pathResult.ModulePath
 
 	pulumiProjectName, err := ExtractProjectName(finalStackFqdn)
 	if err != nil {

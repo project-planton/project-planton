@@ -17,7 +17,7 @@ import (
 // Remove deletes a Pulumi stack and all its configuration/state from the backend.
 // This is a destructive operation that removes the stack metadata.
 // Note: This does NOT destroy cloud resources - run 'pulumi destroy' first if needed.
-func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, force bool) error {
+func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, force bool, noCleanup bool) error {
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
 	if err != nil {
 		return errors.Wrapf(err, "failed to override values in target manifest file")
@@ -43,10 +43,21 @@ func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName)
+	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
+
+	// Setup cleanup to run after execution
+	if pathResult.ShouldCleanup {
+		defer func() {
+			if cleanupErr := pathResult.CleanupFunc(); cleanupErr != nil {
+				fmt.Printf("Warning: failed to cleanup workspace copy: %v\n", cleanupErr)
+			}
+		}()
+	}
+
+	pulumiModuleRepoPath := pathResult.ModulePath
 
 	pulumiProjectName, err := ExtractProjectName(finalStackFqdn)
 	if err != nil {

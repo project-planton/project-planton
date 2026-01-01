@@ -1,67 +1,101 @@
 package pulumimodule
 
 import (
+	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/internal/cli/staging"
 	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
 )
 
-func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
+// GetPathResult contains the module path and a cleanup function
+type GetPathResult struct {
+	ModulePath     string
+	RepoPath       string
+	CleanupFunc    func() error
+	ShouldCleanup  bool
+}
+
+// GetPath returns the path to the Pulumi module directory.
+// If moduleDir is provided and is a valid Pulumi module directory, it returns that.
+// Otherwise, it ensures the staging area is set up and copies it to the stack workspace.
+// The returned GetPathResult includes a cleanup function that should be called after execution
+// unless noCleanup is true.
+func GetPath(moduleDir string, stackFqdn, kindName string, noCleanup bool) (*GetPathResult, error) {
 	isPulumiModuleDir, err := IsPulumiModuleDirectory(moduleDir)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to check if %s is a valid pulumi module directory", moduleDir)
+		return nil, errors.Wrapf(err, "failed to check if %s is a valid pulumi module directory", moduleDir)
 	}
 	if isPulumiModuleDir {
-		return moduleDir, nil
+		// User provided a valid module directory, use it directly
+		return &GetPathResult{
+			ModulePath:    moduleDir,
+			RepoPath:      moduleDir,
+			CleanupFunc:   func() error { return nil },
+			ShouldCleanup: false,
+		}, nil
 	}
 
 	stackWorkspaceDir, err := getWorkspaceDir(stackFqdn)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
+		return nil, errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
 	}
 
-	gitRepoName, err := gitrepo.ExtractRepoName(gitrepo.CloneUrl)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to extract git repo name from %s", gitrepo.CloneUrl)
-	}
-
-	// Check if the cloned repository directory already exists
-	pulumiModuleRepoPath := filepath.Join(stackWorkspaceDir, gitRepoName)
-
-	if _, statErr := os.Stat(pulumiModuleRepoPath); os.IsNotExist(statErr) {
-		gitCloneCommand := exec.Command("git", "clone", gitrepo.CloneUrl, pulumiModuleRepoPath)
-		gitCloneCommand.Stdout = os.Stdout
-		gitCloneCommand.Stderr = os.Stderr
-		if err := gitCloneCommand.Run(); err != nil {
-			return "", errors.Wrapf(err, "failed to clone repository from %s to %s", gitrepo.CloneUrl, stackWorkspaceDir)
-		}
-	}
-
-	//checkout the project-planton version tag if it is not the default version and not empty
+	// Determine target version - use CLI version if set and not default
+	targetVersion := ""
 	if version.Version != "" && version.Version != version.DefaultVersion {
-		gitCheckoutCommand := exec.Command("git", "-C", pulumiModuleRepoPath, "checkout", version.Version)
-		gitCheckoutCommand.Stdout = os.Stdout
-		gitCheckoutCommand.Stderr = os.Stderr
-		if err := gitCheckoutCommand.Run(); err != nil {
-			return "", errors.Wrapf(err, "failed to checkout tag %s in %s", version.Version, pulumiModuleRepoPath)
-		}
+		targetVersion = version.Version
+	}
+
+	// Ensure staging is set up with the correct version
+	fmt.Printf("Ensuring staging area is ready...\n")
+	if err := staging.EnsureStaging(targetVersion); err != nil {
+		return nil, errors.Wrap(err, "failed to ensure staging area")
+	}
+
+	// Copy from staging to stack workspace
+	fmt.Printf("Copying modules to stack workspace...\n")
+	pulumiModuleRepoPath, err := staging.CopyToWorkspace(stackWorkspaceDir)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to copy staging to workspace")
 	}
 
 	pulumiModulePath, err := getPulumiModulePath(pulumiModuleRepoPath, kindName)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get pulumi module path for %s", kindName)
+		// Clean up on error
+		_ = staging.CleanupWorkspaceCopy(pulumiModuleRepoPath)
+		return nil, errors.Wrapf(err, "failed to get pulumi module path for %s", kindName)
 	}
 
-	return pulumiModulePath, nil
+	// Create cleanup function
+	cleanupFunc := func() error {
+		return staging.CleanupWorkspaceCopy(pulumiModuleRepoPath)
+	}
+
+	return &GetPathResult{
+		ModulePath:    pulumiModulePath,
+		RepoPath:      pulumiModuleRepoPath,
+		CleanupFunc:   cleanupFunc,
+		ShouldCleanup: !noCleanup,
+	}, nil
+}
+
+// GetPathLegacy is the legacy function signature for backward compatibility.
+// It calls GetPath with noCleanup=false and returns just the module path.
+// Note: This does not perform cleanup - callers should migrate to GetPath for proper cleanup handling.
+func GetPathLegacy(moduleDir string, stackFqdn, kindName string) (string, error) {
+	result, err := GetPath(moduleDir, stackFqdn, kindName, false)
+	if err != nil {
+		return "", err
+	}
+	return result.ModulePath, nil
 }
 
 // IsPulumiModuleDirectory checks if the given directory contains a Pulumi.yaml file.

@@ -25,6 +25,7 @@ const (
 	KustomizeDir             Flag = "kustomize-dir"
 	Manifest                 Flag = "manifest"
 	ModuleDir                Flag = "module-dir"
+	NoCleanup                Flag = "no-cleanup"
 	OutputFile               Flag = "output-file"
 	Overlay                  Flag = "overlay"
 	Set                      Flag = "set"
