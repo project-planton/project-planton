@@ -92,19 +92,6 @@ func (r *CredentialResolver) ResolveProviderConfig(
 
 	case "gcp":
 		gcpCred := credInterface.(*models.GcpCredential)
-		fmt.Printf("DEBUG: GCP Credential loaded from database\n")
-		fmt.Printf("DEBUG: ServiceAccountKeyBase64 length: %d characters\n", len(gcpCred.ServiceAccountKeyBase64))
-		fmt.Printf("DEBUG: ServiceAccountKeyBase64 first 100 chars: %s...\n", gcpCred.ServiceAccountKeyBase64[:min(100, len(gcpCred.ServiceAccountKeyBase64))])
-		fmt.Printf("DEBUG: ServiceAccountKeyBase64 last 100 chars: ...%s\n", gcpCred.ServiceAccountKeyBase64[max(0, len(gcpCred.ServiceAccountKeyBase64)-100):])
-
-		// Check for newlines or special characters
-		if strings.Contains(gcpCred.ServiceAccountKeyBase64, "\n") {
-			fmt.Printf("WARNING: ServiceAccountKeyBase64 contains newline characters!\n")
-		}
-		if strings.Contains(gcpCred.ServiceAccountKeyBase64, " ") {
-			fmt.Printf("WARNING: ServiceAccountKeyBase64 contains space characters!\n")
-		}
-
 		return &credentialv1.CredentialProviderConfig{
 			Data: &credentialv1.CredentialProviderConfig_Gcp{
 				Gcp: &gcpv1.GcpProviderConfig{

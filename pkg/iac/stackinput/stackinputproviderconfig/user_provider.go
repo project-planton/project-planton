@@ -34,9 +34,6 @@ func sanitizeGcpBase64Key(base64Key string) (string, error) {
 	// Re-encode to base64
 	sanitized := base64.StdEncoding.EncodeToString([]byte(trimmedJSON))
 
-	fmt.Printf("DEBUG: Sanitized GCP base64 key: original=%d bytes, trimmed=%d bytes, sanitized=%d chars\n",
-		len(decoded), len(trimmedJSON), len(sanitized))
-
 	return sanitized, nil
 }
 
@@ -300,14 +297,6 @@ func createGcpProviderConfigFileFromProto(gcpConfig *gcpv1.GcpProviderConfig) (s
 	if err := tmpFile.Close(); err != nil {
 		cleanup()
 		return "", nil, fmt.Errorf("failed to close temp file: %w", err)
-	}
-
-	// DEBUG: Log the generated file content
-	content, err := os.ReadFile(tmpFile.Name())
-	if err == nil {
-		fmt.Printf("DEBUG: GCP provider config file created at: %s\n", tmpFile.Name())
-		fmt.Printf("DEBUG: GCP provider config content (%d bytes):\n%s\n", len(content), string(content))
-		fmt.Printf("DEBUG: ServiceAccountKeyBase64 length: %d characters\n", len(gcpConfig.ServiceAccountKeyBase64))
 	}
 
 	return tmpFile.Name(), cleanup, nil
