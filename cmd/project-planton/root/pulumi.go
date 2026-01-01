@@ -32,6 +32,12 @@ func init() {
 	Pulumi.PersistentFlags().Bool(string(flag.Force), false, "Force removal of stack even if resources exist (use with delete/rm command)")
 	Pulumi.PersistentFlags().Bool(string(flag.Diff), false, "Show detailed resource diffs")
 
+	// Staging/cleanup flags
+	Pulumi.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+	Pulumi.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
+
 	Pulumi.PersistentFlags().String(string(flag.AwsProviderConfig), "", "path of the aws-credential file")
 	Pulumi.PersistentFlags().String(string(flag.AzureProviderConfig), "", "path of the azure-credential file")
 	Pulumi.PersistentFlags().String(string(flag.CloudflareProviderConfig), "", "path of the cloudflare-credential file")

@@ -87,11 +87,12 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

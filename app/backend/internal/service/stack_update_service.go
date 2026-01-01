@@ -453,7 +453,8 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 
 	// Step 6: Get Pulumi module path (REQUIRED - fail if missing)
 	fmt.Printf("DEBUG: Getting Pulumi module path for kind=%s, stackFqdn=%s, moduleDir=%s\n", kindName, stackFqdn, moduleDir)
-	pathResult, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName, false)
+	// Backend does not support module version override - always use staging version
+	pathResult, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName, "", false)
 	if err != nil {
 		return s.updateStackUpdateWithError(ctx, stackUpdateID, fmt.Errorf("failed to get Pulumi module path: %w", err))
 	}

@@ -53,7 +53,7 @@ flowchart TD
 
 1. **One-time Clone**: Repository is cloned to `~/.project-planton/staging/project-planton` on first use
 2. **Fast Local Copy**: Subsequent executions copy from staging (fast disk I/O vs network)
-3. **Version Management**: New `pull` and `checkout` commands for staging control
+3. **Version Management**: New `pull`, `checkout`, and `modules-version` commands for staging control
 4. **Automatic Cleanup**: Workspace copies are cleaned up after execution by default
 5. **Optional Retention**: `--no-cleanup` flag preserves workspace copies for debugging
 
@@ -105,6 +105,20 @@ Switched to tag 'v0.2.273'
 Successfully checked out: v0.2.273
 
 Staging area: /Users/user/.project-planton/staging/project-planton
+```
+
+**`project-planton modules-version`** - Shows current staging version:
+
+```bash
+$ project-planton modules-version
+IaC Modules Staging Area
+========================
+Location: /Users/user/.project-planton/staging/project-planton
+Version:  v0.2.273
+
+Commands:
+  project-planton pull                  Update to latest from upstream
+  project-planton checkout <version>    Switch to a specific version
 ```
 
 ### Modified Module Path Resolution
@@ -162,7 +176,7 @@ project-planton apply -f manifest.yaml --no-cleanup
 
 | Category | Files |
 |----------|-------|
-| **New Files** | `internal/cli/staging/staging.go`, `cmd/project-planton/root/pull.go`, `cmd/project-planton/root/checkout.go` |
+| **New Files** | `internal/cli/staging/staging.go`, `cmd/project-planton/root/pull.go`, `cmd/project-planton/root/checkout.go`, `cmd/project-planton/root/modules_version.go` |
 | **Flag Definition** | `internal/cli/flag/flag.go` |
 | **Module Resolution** | `pkg/iac/pulumi/pulumimodule/module_directory.go`, `pkg/iac/tofu/tofumodule/module_directory.go` |
 | **Pulumi Stack Operations** | `pkg/iac/pulumi/pulumistack/run.go`, `init.go`, `cancel.go`, `remove.go` |

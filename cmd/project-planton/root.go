@@ -35,6 +35,7 @@ func init() {
 		root.Destroy,
 		root.Init,
 		root.LoadManifest,
+		root.ModulesVersion,
 		root.Plan,
 		root.Pull,
 		root.Pulumi,

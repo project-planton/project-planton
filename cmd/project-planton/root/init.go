@@ -70,6 +70,9 @@ func init() {
 
 	// Staging/cleanup flags
 	Init.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+	Init.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
 
 	// Provider credential flags
 	Init.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -193,10 +196,11 @@ func initWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, va
 	flag.HandleFlagErr(err, flag.Stack)
 
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	cliprint.PrintHandoff("Pulumi")
 
-	err = pulumistack.Init(moduleDir, stackFqdn, targetManifestPath, valueOverrides, noCleanup)
+	err = pulumistack.Init(moduleDir, stackFqdn, targetManifestPath, valueOverrides, moduleVersion, noCleanup)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
@@ -223,8 +227,9 @@ func initWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valu
 	}
 
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
-	pathResult, err := tofumodule.GetModulePath(moduleDir, kindName, noCleanup)
+	pathResult, err := tofumodule.GetModulePath(moduleDir, kindName, moduleVersion, noCleanup)
 	if err != nil {
 		cliprint.PrintError(fmt.Sprintf("Failed to get tofu module directory: %v", err))
 		os.Exit(1)

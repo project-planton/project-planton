@@ -65,6 +65,9 @@ func init() {
 
 	// Staging/cleanup flags
 	Apply.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+	Apply.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
 
 	// Provider credential flags
 	Apply.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -191,11 +194,12 @@ func applyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, v
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, false, true, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_update, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
@@ -209,12 +213,16 @@ func applyWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, val
 	isAutoApprove, err := cmd.Flags().GetBool(string(flag.AutoApprove))
 	flag.HandleFlagErr(err, flag.AutoApprove)
 
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+
 	cliprint.PrintHandoff("OpenTofu")
 
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_apply,
 		valueOverrides,
 		isAutoApprove,
 		false,
+		moduleVersion, noCleanup,
 		providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintTofuFailure()

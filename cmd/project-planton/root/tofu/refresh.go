@@ -21,6 +21,13 @@ var Refresh = &cobra.Command{
 	Run:   refreshHandler,
 }
 
+func init() {
+	Refresh.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
+	Refresh.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+}
+
 func refreshHandler(cmd *cobra.Command, args []string) {
 	moduleDir, err := cmd.Flags().GetString(string(flag.ModuleDir))
 	flag.HandleFlagErrAndValue(err, flag.ModuleDir, moduleDir)
@@ -82,9 +89,13 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintHandoff("OpenTofu")
 
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_refresh, valueOverrides,
 		true,
 		false,
+		moduleVersion, noCleanup,
 		providerConfigOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

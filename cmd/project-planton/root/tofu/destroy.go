@@ -23,6 +23,10 @@ var Destroy = &cobra.Command{
 
 func init() {
 	Destroy.PersistentFlags().Bool(string(flag.AutoApprove), false, "Skip interactive approval of plan before applying")
+	Destroy.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
+	Destroy.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
 }
 
 func destroyHandler(cmd *cobra.Command, args []string) {
@@ -89,9 +93,13 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintHandoff("OpenTofu")
 
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_destroy, valueOverrides,
 		isAutoApprove,
 		false,
+		moduleVersion, noCleanup,
 		providerConfigOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

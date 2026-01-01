@@ -1,13 +1,13 @@
 package pulumimodule
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/internal/cli/cliprint"
 	"github.com/project-planton/project-planton/internal/cli/staging"
 	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
@@ -26,9 +26,10 @@ type GetPathResult struct {
 // GetPath returns the path to the Pulumi module directory.
 // If moduleDir is provided and is a valid Pulumi module directory, it returns that.
 // Otherwise, it ensures the staging area is set up and copies it to the stack workspace.
+// If moduleVersion is provided, it checks out that version (tag, branch, or commit SHA) in the workspace copy.
 // The returned GetPathResult includes a cleanup function that should be called after execution
 // unless noCleanup is true.
-func GetPath(moduleDir string, stackFqdn, kindName string, noCleanup bool) (*GetPathResult, error) {
+func GetPath(moduleDir string, stackFqdn, kindName string, moduleVersion string, noCleanup bool) (*GetPathResult, error) {
 	isPulumiModuleDir, err := IsPulumiModuleDirectory(moduleDir)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to check if %s is a valid pulumi module directory", moduleDir)
@@ -55,16 +56,27 @@ func GetPath(moduleDir string, stackFqdn, kindName string, noCleanup bool) (*Get
 	}
 
 	// Ensure staging is set up with the correct version
-	fmt.Printf("Ensuring staging area is ready...\n")
+	cliprint.PrintStep("Ensuring staging area is ready...")
 	if err := staging.EnsureStaging(targetVersion); err != nil {
 		return nil, errors.Wrap(err, "failed to ensure staging area")
 	}
+	cliprint.PrintSuccess("Staging area ready")
 
 	// Copy from staging to stack workspace
-	fmt.Printf("Copying modules to stack workspace...\n")
+	cliprint.PrintStep("Copying modules to stack workspace...")
 	pulumiModuleRepoPath, err := staging.CopyToWorkspace(stackWorkspaceDir)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to copy staging to workspace")
+	}
+	cliprint.PrintSuccess("Modules copied to workspace")
+
+	// If moduleVersion is specified, checkout that version in the workspace copy
+	if moduleVersion != "" {
+		if err := staging.CheckoutVersionInWorkspace(pulumiModuleRepoPath, moduleVersion); err != nil {
+			// Clean up on error
+			_ = staging.CleanupWorkspaceCopy(pulumiModuleRepoPath)
+			return nil, errors.Wrapf(err, "failed to checkout module version %s", moduleVersion)
+		}
 	}
 
 	pulumiModulePath, err := getPulumiModulePath(pulumiModuleRepoPath, kindName)
@@ -88,10 +100,10 @@ func GetPath(moduleDir string, stackFqdn, kindName string, noCleanup bool) (*Get
 }
 
 // GetPathLegacy is the legacy function signature for backward compatibility.
-// It calls GetPath with noCleanup=false and returns just the module path.
+// It calls GetPath with noCleanup=false and no moduleVersion, returns just the module path.
 // Note: This does not perform cleanup - callers should migrate to GetPath for proper cleanup handling.
 func GetPathLegacy(moduleDir string, stackFqdn, kindName string) (string, error) {
-	result, err := GetPath(moduleDir, stackFqdn, kindName, false)
+	result, err := GetPath(moduleDir, stackFqdn, kindName, "", false)
 	if err != nil {
 		return "", err
 	}
