@@ -232,26 +232,49 @@ func createGcpProviderConfigFileFromProto(gcpConfig *gcpv1.GcpProviderConfig) (s
 	}
 
 	// Build YAML content matching CLI credential file format
-	gcpCredMap := map[string]interface{}{
-		"serviceAccountKeyBase64": gcpConfig.ServiceAccountKeyBase64,
+	// Use custom encoder to prevent line folding for long base64 strings
+	encoder := yaml.NewEncoder(tmpFile)
+	encoder.SetIndent(2)
+
+	// Create a yaml.Node with DoubleQuotedStyle to prevent line folding
+	node := &yaml.Node{
+		Kind: yaml.MappingNode,
+		Content: []*yaml.Node{
+			{
+				Kind:  yaml.ScalarNode,
+				Value: "serviceAccountKeyBase64",
+			},
+			{
+				Kind:  yaml.ScalarNode,
+				Style: yaml.DoubleQuotedStyle, // Force double-quoted style to prevent folding
+				Value: gcpConfig.ServiceAccountKeyBase64,
+			},
+		},
 	}
 
-	yamlBytes, err := yaml.Marshal(gcpCredMap)
-	if err != nil {
+	if err := encoder.Encode(node); err != nil {
 		tmpFile.Close()
 		cleanup()
-		return "", nil, fmt.Errorf("failed to marshal GCP credentials to YAML: %w", err)
+		return "", nil, fmt.Errorf("failed to encode GCP credentials to YAML: %w", err)
 	}
 
-	if _, err := tmpFile.Write(yamlBytes); err != nil {
+	if err := encoder.Close(); err != nil {
 		tmpFile.Close()
 		cleanup()
-		return "", nil, fmt.Errorf("failed to write GCP credentials: %w", err)
+		return "", nil, fmt.Errorf("failed to close YAML encoder: %w", err)
 	}
 
 	if err := tmpFile.Close(); err != nil {
 		cleanup()
 		return "", nil, fmt.Errorf("failed to close temp file: %w", err)
+	}
+
+	// DEBUG: Log the generated file content
+	content, err := os.ReadFile(tmpFile.Name())
+	if err == nil {
+		fmt.Printf("DEBUG: GCP provider config file created at: %s\n", tmpFile.Name())
+		fmt.Printf("DEBUG: GCP provider config content (%d bytes):\n%s\n", len(content), string(content))
+		fmt.Printf("DEBUG: ServiceAccountKeyBase64 length: %d characters\n", len(gcpConfig.ServiceAccountKeyBase64))
 	}
 
 	return tmpFile.Name(), cleanup, nil
