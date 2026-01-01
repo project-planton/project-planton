@@ -20,6 +20,7 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 	terraformOperation terraform.TerraformOperationType,
 	valueOverrides map[string]string,
 	isAutoApprove, isDestroyPlan bool,
+	moduleVersion string, noCleanup bool,
 	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
@@ -58,8 +59,8 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	// Get module path using staging-based approach (with cleanup by default)
-	pathResult, err := GetModulePath(inputModuleDir, kindName, false)
+	// Get module path using staging-based approach
+	pathResult, err := GetModulePath(inputModuleDir, kindName, moduleVersion, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get tofu module directory")
 	}

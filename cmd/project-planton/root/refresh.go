@@ -64,6 +64,9 @@ func init() {
 
 	// Staging/cleanup flags
 	Refresh.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+	Refresh.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
 
 	// Provider credential flags
 	Refresh.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -190,11 +193,12 @@ func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
@@ -205,12 +209,16 @@ func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 func refreshWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
 	providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+
 	cliprint.PrintHandoff("OpenTofu")
 
 	err := tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_refresh,
 		valueOverrides,
 		true,  // isAutoApprove - refresh doesn't need approval
 		false, // isDestroyPlan - not applicable for refresh
+		moduleVersion, noCleanup,
 		providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintTofuFailure()

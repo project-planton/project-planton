@@ -1,6 +1,7 @@
 package staging
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/internal/cli/cliprint"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
@@ -174,18 +176,18 @@ func cloneToStaging() error {
 		return err
 	}
 
-	fmt.Printf("Cloning ProjectPlanton repository to staging area...\n")
-	fmt.Printf("This is a one-time operation. Future executions will use local copy.\n\n")
+	cliprint.PrintStep("Cloning ProjectPlanton repository to staging area...")
+	cliprint.PrintInfo("This is a one-time operation. Future executions will use local copy.")
 
-	cmd := exec.Command("git", "clone", gitrepo.CloneUrl, repoPath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd := exec.Command("git", "clone", "--progress", gitrepo.CloneUrl, repoPath)
+	var cloneStderr bytes.Buffer
+	cmd.Stderr = &cloneStderr
 
 	if err := cmd.Run(); err != nil {
-		return errors.Wrapf(err, "failed to clone repository from %s", gitrepo.CloneUrl)
+		return errors.Wrapf(err, "failed to clone repository: %s", cloneStderr.String())
 	}
 
-	fmt.Printf("\nRepository cloned to: %s\n", repoPath)
+	cliprint.PrintSuccess(fmt.Sprintf("Repository cloned to: %s", repoPath))
 	return nil
 }
 
@@ -193,19 +195,23 @@ func cloneToStaging() error {
 func checkoutVersion(repoPath, version string) error {
 	// First fetch to ensure we have all tags and branches
 	fetchCmd := exec.Command("git", "-C", repoPath, "fetch", "--all", "--tags")
-	fetchCmd.Stdout = os.Stdout
-	fetchCmd.Stderr = os.Stderr
+	var fetchStderr bytes.Buffer
+	fetchCmd.Stderr = &fetchStderr
 	if err := fetchCmd.Run(); err != nil {
-		return errors.Wrap(err, "failed to fetch tags")
+		return errors.Wrapf(err, "failed to fetch tags: %s", fetchStderr.String())
 	}
 
 	// Checkout the version
 	checkoutCmd := exec.Command("git", "-C", repoPath, "checkout", version)
-	checkoutCmd.Stdout = os.Stdout
-	checkoutCmd.Stderr = os.Stderr
+	var checkoutStderr bytes.Buffer
+	checkoutCmd.Stderr = &checkoutStderr
 
 	if err := checkoutCmd.Run(); err != nil {
-		return errors.Wrapf(err, "failed to checkout %s", version)
+		errMsg := checkoutStderr.String()
+		if strings.Contains(errMsg, "did not match any") {
+			return errors.Errorf("version '%s' not found. Ensure the tag, branch, or commit SHA exists", version)
+		}
+		return errors.Wrapf(err, "failed to checkout %s: %s", version, errMsg)
 	}
 
 	return nil
@@ -231,22 +237,22 @@ func Pull() error {
 		return err
 	}
 
-	fmt.Printf("Fetching latest changes from upstream...\n\n")
+	cliprint.PrintStep("Fetching latest changes from upstream...")
 
 	// Fetch all remotes
 	fetchCmd := exec.Command("git", "-C", repoPath, "fetch", "--all", "--tags")
-	fetchCmd.Stdout = os.Stdout
-	fetchCmd.Stderr = os.Stderr
+	var fetchStderr bytes.Buffer
+	fetchCmd.Stderr = &fetchStderr
 	if err := fetchCmd.Run(); err != nil {
-		return errors.Wrap(err, "failed to fetch from upstream")
+		return errors.Wrapf(err, "failed to fetch from upstream: %s", fetchStderr.String())
 	}
 
 	// Pull changes
 	pullCmd := exec.Command("git", "-C", repoPath, "pull")
-	pullCmd.Stdout = os.Stdout
-	pullCmd.Stderr = os.Stderr
+	var pullStderr bytes.Buffer
+	pullCmd.Stderr = &pullStderr
 	if err := pullCmd.Run(); err != nil {
-		return errors.Wrap(err, "failed to pull from upstream")
+		return errors.Wrapf(err, "failed to pull from upstream: %s", pullStderr.String())
 	}
 
 	// Update version file with current HEAD
@@ -281,7 +287,7 @@ func Checkout(version string) error {
 		return err
 	}
 
-	fmt.Printf("Checking out version: %s\n\n", version)
+	cliprint.PrintStep(fmt.Sprintf("Checking out version: %s", version))
 
 	if err := checkoutVersion(repoPath, version); err != nil {
 		return err
@@ -291,7 +297,7 @@ func Checkout(version string) error {
 		return errors.Wrap(err, "failed to update version file")
 	}
 
-	fmt.Printf("\nSuccessfully checked out: %s\n", version)
+	cliprint.PrintSuccess(fmt.Sprintf("Checked out version: %s", version))
 	return nil
 }
 
@@ -351,6 +357,40 @@ func CopyToWorkspace(destDir string) (string, error) {
 	}
 
 	return destPath, nil
+}
+
+// CheckoutVersionInWorkspace checks out a specific version (tag, branch, or commit SHA)
+// in a workspace copy of the repository. This is used when --module-version is specified
+// to checkout a different version than what's in staging.
+func CheckoutVersionInWorkspace(workspacePath, version string) error {
+	if version == "" {
+		return nil
+	}
+
+	cliprint.PrintStep(fmt.Sprintf("Checking out module version: %s", version))
+
+	// Fetch all to ensure we have the version available (capture output)
+	fetchCmd := exec.Command("git", "-C", workspacePath, "fetch", "--all", "--tags")
+	var fetchStderr bytes.Buffer
+	fetchCmd.Stderr = &fetchStderr
+	if err := fetchCmd.Run(); err != nil {
+		return errors.Wrapf(err, "failed to fetch tags/branches: %s", fetchStderr.String())
+	}
+
+	// Checkout the version (capture output for error reporting)
+	checkoutCmd := exec.Command("git", "-C", workspacePath, "checkout", version)
+	var checkoutStderr bytes.Buffer
+	checkoutCmd.Stderr = &checkoutStderr
+	if err := checkoutCmd.Run(); err != nil {
+		errMsg := checkoutStderr.String()
+		if strings.Contains(errMsg, "did not match any") {
+			return errors.Errorf("version '%s' not found. It may be a tag, branch, or commit SHA that doesn't exist", version)
+		}
+		return errors.Wrapf(err, "failed to checkout version '%s': %s", version, errMsg)
+	}
+
+	cliprint.PrintSuccess(fmt.Sprintf("Module version '%s' checked out", version))
+	return nil
 }
 
 // CleanupWorkspaceCopy removes the copied repository from the workspace

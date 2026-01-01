@@ -16,7 +16,7 @@ import (
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
-	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool, noCleanup bool,
+	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool, moduleVersion string, noCleanup bool,
 	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
 	for _, opt := range providerConfigOptions {
@@ -48,7 +48,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, noCleanup)
+	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, moduleVersion, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}

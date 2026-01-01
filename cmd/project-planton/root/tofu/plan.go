@@ -25,6 +25,10 @@ func init() {
 	Plan.PersistentFlags().Bool(string(flag.Destroy), false, "Select the \"destroy\" planning mode, which "+
 		"creates a plan\n  to destroy all objects currently managed by this\n  OpenTofu configuration instead "+
 		"of the usual behavior.")
+	Plan.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
+	Plan.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
 }
 
 func planHandler(cmd *cobra.Command, args []string) {
@@ -91,6 +95,9 @@ func planHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintHandoff("OpenTofu")
 
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+
 	err = tofumodule.RunCommand(
 		moduleDir,
 		targetManifestPath,
@@ -98,6 +105,7 @@ func planHandler(cmd *cobra.Command, args []string) {
 		valueOverrides,
 		true,
 		isDestroyPlan,
+		moduleVersion, noCleanup,
 		providerConfigOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

@@ -46,6 +46,10 @@ func init() {
 			"Example:\n"+
 			"  --backend-type=s3 --backend-config=bucket=my-terraform-bucket --backend-config=key=state.tfstate")
 
+	Init.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
+
 }
 
 func initHandler(cmd *cobra.Command, args []string) {
@@ -90,8 +94,9 @@ func initHandler(cmd *cobra.Command, args []string) {
 	}
 
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
-	pathResult, err := tofumodule.GetModulePath(moduleDir, kindName, noCleanup)
+	pathResult, err := tofumodule.GetModulePath(moduleDir, kindName, moduleVersion, noCleanup)
 	if err != nil {
 		log.Fatalf("failed to get tofu module directory %v", err)
 	}

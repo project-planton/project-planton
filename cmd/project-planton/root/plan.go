@@ -71,6 +71,9 @@ func init() {
 
 	// Staging/cleanup flags
 	Plan.PersistentFlags().Bool(string(flag.NoCleanup), false, "Do not cleanup the workspace copy after execution (keeps cloned modules)")
+	Plan.PersistentFlags().String(string(flag.ModuleVersion), "",
+		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
+			"This allows using a different module version than what's in the staging area without affecting it.")
 
 	// Provider credential flags
 	Plan.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -197,12 +200,13 @@ func planWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, va
 
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	cliprint.PrintHandoff("Pulumi")
 
 	// For preview, we use update operation with isUpdatePreview=true and isAutoApprove=false
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
@@ -216,12 +220,16 @@ func planWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valu
 	isDestroyPlan, err := cmd.Flags().GetBool(string(flag.Destroy))
 	flag.HandleFlagErr(err, flag.Destroy)
 
+	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+
 	cliprint.PrintHandoff("OpenTofu")
 
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_plan,
 		valueOverrides,
 		true, // isAutoApprove for plan is always true (non-interactive)
 		isDestroyPlan,
+		moduleVersion, noCleanup,
 		providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintTofuFailure()

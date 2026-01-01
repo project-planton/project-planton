@@ -16,7 +16,7 @@ import (
 
 // Cancel cancels any in-progress operations on a Pulumi stack.
 // This is useful when a stack is locked due to a crashed or interrupted operation.
-func Cancel(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, noCleanup bool) error {
+func Cancel(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, moduleVersion string, noCleanup bool) error {
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
 	if err != nil {
 		return errors.Wrapf(err, "failed to override values in target manifest file")
@@ -42,7 +42,7 @@ func Cancel(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, noCleanup)
+	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, moduleVersion, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}

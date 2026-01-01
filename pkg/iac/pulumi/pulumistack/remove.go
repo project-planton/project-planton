@@ -17,7 +17,7 @@ import (
 // Remove deletes a Pulumi stack and all its configuration/state from the backend.
 // This is a destructive operation that removes the stack metadata.
 // Note: This does NOT destroy cloud resources - run 'pulumi destroy' first if needed.
-func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, force bool, noCleanup bool) error {
+func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[string]string, force bool, moduleVersion string, noCleanup bool) error {
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
 	if err != nil {
 		return errors.Wrapf(err, "failed to override values in target manifest file")
@@ -43,7 +43,7 @@ func Remove(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, noCleanup)
+	pathResult, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName, moduleVersion, noCleanup)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}

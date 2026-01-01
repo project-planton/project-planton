@@ -81,10 +81,11 @@ func initHandler(cmd *cobra.Command, args []string) {
 	cliprint.PrintStep("Initializing Pulumi stack...")
 
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
+	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	cliprint.PrintHandoff("Pulumi")
 
-	err = pulumistack.Init(moduleDir, stackFqdn, targetManifestPath, valueOverrides, noCleanup)
+	err = pulumistack.Init(moduleDir, stackFqdn, targetManifestPath, valueOverrides, moduleVersion, noCleanup)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
