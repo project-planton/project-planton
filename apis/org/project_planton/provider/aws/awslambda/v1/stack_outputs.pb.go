@@ -114,8 +114,8 @@ const file_org_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_raw
 	"\x0elog_group_name\x18\x03 \x01(\tR\flogGroupName\x12\x19\n" +
 	"\brole_arn\x18\x04 \x01(\tR\aroleArn\x12\x1d\n" +
 	"\n" +
-	"layer_arns\x18\x05 \x03(\tR\tlayerArnsB\x88\x03\n" +
-	"1com.org.project_planton.provider.aws.awslambda.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awslambda.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awslambda::V1b\x06proto3"
+	"layer_arns\x18\x05 \x03(\tR\tlayerArnsB\x82\x03\n" +
+	"1com.org.project_planton.provider.aws.awslambda.v1B\x11StackOutputsProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awslambda.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDescOnce sync.Once

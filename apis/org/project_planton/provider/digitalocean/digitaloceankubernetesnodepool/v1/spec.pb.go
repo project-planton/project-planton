@@ -8,7 +8,7 @@ package digitaloceankubernetesnodepoolv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -257,8 +257,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodep
 	"#DigitalOceanKubernetesNodePoolTaint\x12\x18\n" +
 	"\x03key\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value\x12\x1e\n" +
-	"\x06effect\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06effectB\xca\x04\n" +
-	"Ocom.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\tSpecProtoP\x01Z\x9c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
+	"\x06effect\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06effectB\xc4\x04\n" +
+	"Ocom.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\tSpecProtoP\x01Z\x96\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDescOnce sync.Once

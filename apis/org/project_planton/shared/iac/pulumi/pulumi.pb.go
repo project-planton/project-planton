@@ -155,8 +155,8 @@ const file_org_project_planton_shared_iac_pulumi_pulumi_proto_rawDesc = "" +
 	"\x04http\x10\x01\x12\x06\n" +
 	"\x02s3\x10\x02\x12\a\n" +
 	"\x03gcs\x10\x03\x12\v\n" +
-	"\aazurerm\x10\x04B\xc5\x02\n" +
-	")com.org.project_planton.shared.iac.pulumiB\vPulumiProtoP\x01ZUgithub.com/project-planton/project-planton/apis/org/project_planton/shared/iac/pulumi\xa2\x02\x05OPSIP\xaa\x02$Org.ProjectPlanton.Shared.Iac.Pulumi\xca\x02$Org\\ProjectPlanton\\Shared\\Iac\\Pulumi\xe2\x020Org\\ProjectPlanton\\Shared\\Iac\\Pulumi\\GPBMetadata\xea\x02(Org::ProjectPlanton::Shared::Iac::Pulumib\x06proto3"
+	"\aazurerm\x10\x04B\xbf\x02\n" +
+	")com.org.project_planton.shared.iac.pulumiB\vPulumiProtoP\x01ZOgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/iac/pulumi\xa2\x02\x05OPSIP\xaa\x02$Org.ProjectPlanton.Shared.Iac.Pulumi\xca\x02$Org\\ProjectPlanton\\Shared\\Iac\\Pulumi\xe2\x020Org\\ProjectPlanton\\Shared\\Iac\\Pulumi\\GPBMetadata\xea\x02(Org::ProjectPlanton::Shared::Iac::Pulumib\x06proto3"
 
 var (
 	file_org_project_planton_shared_iac_pulumi_pulumi_proto_rawDescOnce sync.Once

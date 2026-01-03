@@ -82,8 +82,8 @@ const file_org_project_planton_provider_aws_awssecretsmanager_v1_spec_proto_rawD
 	"@org/project_planton/provider/aws/awssecretsmanager/v1/spec.proto\x125org.project_planton.provider.aws.awssecretsmanager.v1\x1a\x1bbuf/validate/validate.proto\"L\n" +
 	"\x15AwsSecretsManagerSpec\x123\n" +
 	"\fsecret_names\x18\x01 \x03(\tB\x10\xbaH\r\x92\x01\n" +
-	"\b\x01\x18\x01\"\x04r\x02\x10\x01R\vsecretNamesB\xb8\x03\n" +
-	"9com.org.project_planton.provider.aws.awssecretsmanager.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Aws.Awssecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
+	"\b\x01\x18\x01\"\x04r\x02\x10\x01R\vsecretNamesB\xb2\x03\n" +
+	"9com.org.project_planton.provider.aws.awssecretsmanager.v1B\tSpecProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Aws.Awssecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awssecretsmanager_v1_spec_proto_rawDescOnce sync.Once

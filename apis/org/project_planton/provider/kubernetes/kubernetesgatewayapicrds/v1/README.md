@@ -149,4 +149,4 @@ Includes all standard CRDs plus experimental resources:
 
 ## Support
 
-For issues, questions, or contributions, see the main [Project Planton repository](https://github.com/project-planton/project-planton).
+For issues, questions, or contributions, see the main [Project Planton repository](https://github.com/plantonhq/project-planton).

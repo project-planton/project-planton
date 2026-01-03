@@ -5,9 +5,9 @@ import (
 	"sort"
 
 	"github.com/pkg/errors"
-	kubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
+	kubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetesdeploymentv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"

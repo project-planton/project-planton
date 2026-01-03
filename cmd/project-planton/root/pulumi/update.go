@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/iac/pulumi"
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/cli/flag"
-	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"
-	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/iac/pulumi"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/cli/flag"
+	climanifest "github.com/plantonhq/project-planton/internal/cli/manifest"
+	"github.com/plantonhq/project-planton/internal/manifest"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/spf13/cobra"
 )
 

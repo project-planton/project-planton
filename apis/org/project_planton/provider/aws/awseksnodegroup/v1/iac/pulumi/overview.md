@@ -241,7 +241,7 @@ The module depends on:
    - `github.com/pulumi/pulumi-aws/sdk/v7/go/aws/eks` - EKS resources
 
 2. **Project Planton**:
-   - `github.com/project-planton/project-planton/apis/.../awseksnodegroup/v1` - Protobuf types
+   - `github.com/plantonhq/project-planton/apis/.../awseksnodegroup/v1` - Protobuf types
 
 3. **Utilities**:
    - `github.com/pkg/errors` - Error wrapping
@@ -297,5 +297,5 @@ Potential improvements to consider:
 
 - [Pulumi AWS EKS NodeGroup](https://www.pulumi.com/registry/packages/aws/api-docs/eks/nodegroup/)
 - [AWS EKS Managed Node Groups](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html)
-- [ProjectPlanton Architecture](https://github.com/project-planton/project-planton/blob/main/architecture/deployment-component.md)
+- [ProjectPlanton Architecture](https://github.com/plantonhq/project-planton/blob/main/architecture/deployment-component.md)
 

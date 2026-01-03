@@ -8,8 +8,8 @@ package awsalbv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -285,8 +285,8 @@ const file_org_project_planton_provider_aws_awsalb_v1_spec_proto_rawDesc = "" +
 	"\thostnames\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\thostnames\"\xad\x01\n" +
 	"\tAwsAlbSsl\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x85\x01\n" +
-	"\x0fcertificate_arn\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x0ecertificateArnB\xeb\x02\n" +
-	".com.org.project_planton.provider.aws.awsalb.v1B\tSpecProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsalb.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsalb::V1b\x06proto3"
+	"\x0fcertificate_arn\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x0ecertificateArnB\xe5\x02\n" +
+	".com.org.project_planton.provider.aws.awsalb.v1B\tSpecProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsalb.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsalb::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsalb_v1_spec_proto_rawDescOnce sync.Once

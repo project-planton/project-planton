@@ -109,8 +109,8 @@ const file_org_project_planton_provider_confluent_confluentkafka_v1_stack_output
 	"\x02id\x18\x01 \x01(\tR\x02id\x12-\n" +
 	"\x12bootstrap_endpoint\x18\x02 \x01(\tR\x11bootstrapEndpoint\x12\x10\n" +
 	"\x03crn\x18\x03 \x01(\tR\x03crn\x12#\n" +
-	"\rrest_endpoint\x18\x04 \x01(\tR\frestEndpointB\xcf\x03\n" +
-	"<com.org.project_planton.provider.confluent.confluentkafka.v1B\x11StackOutputsProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Confluent.Confluentkafka.V1\xca\x027Org\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
+	"\rrest_endpoint\x18\x04 \x01(\tR\frestEndpointB\xc9\x03\n" +
+	"<com.org.project_planton.provider.confluent.confluentkafka.v1B\x11StackOutputsProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Confluent.Confluentkafka.V1\xca\x027Org\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_confluent_confluentkafka_v1_stack_outputs_proto_rawDescOnce sync.Once

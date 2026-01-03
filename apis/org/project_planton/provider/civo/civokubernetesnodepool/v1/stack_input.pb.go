@@ -7,7 +7,7 @@
 package civokubernetesnodepoolv1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civokubernetesnodepool_v1_stack_inp
 	"Morg/project_planton/provider/civo/civokubernetesnodepool/v1/stack_input.proto\x12;org.project_planton.provider.civo.civokubernetesnodepool.v1\x1aEorg/project_planton/provider/civo/civokubernetesnodepool/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xef\x01\n" +
 	" CivoKubernetesNodePoolStackInput\x12k\n" +
 	"\x06target\x18\x01 \x01(\v2S.org.project_planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xe8\x03\n" +
-	"?com.org.project_planton.provider.civo.civokubernetesnodepool.v1B\x0fStackInputProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetesnodepool/v1;civokubernetesnodepoolv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Civo.Civokubernetesnodepool.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Civo::Civokubernetesnodepool::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xe1\x03\n" +
+	"?com.org.project_planton.provider.civo.civokubernetesnodepool.v1B\x0fStackInputProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civokubernetesnodepool/v1;civokubernetesnodepoolv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Civo.Civokubernetesnodepool.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Civo::Civokubernetesnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_proto_rawDescOnce sync.Once

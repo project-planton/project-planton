@@ -270,7 +270,7 @@ message IngressSpec {
 After each component migration:
 
 ```bash
-cd ~/scm/github.com/project-planton/project-planton/apis
+cd ~/scm/github.com/plantonhq/project-planton/apis
 make build  # Regenerated all proto stubs
 
 cd apis/org/project_planton/provider/kubernetes/kubernetes{component}/v1/iac/pulumi/module

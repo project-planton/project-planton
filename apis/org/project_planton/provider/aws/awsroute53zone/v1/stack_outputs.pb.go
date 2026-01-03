@@ -103,8 +103,8 @@ const file_org_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_prot
 	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12\x1b\n" +
 	"\tzone_name\x18\x02 \x01(\tR\bzoneName\x12 \n" +
 	"\vnameservers\x18\x03 \x03(\tR\vnameservers\x12)\n" +
-	"\x10caller_reference\x18\x04 \x01(\tR\x0fcallerReferenceB\xab\x03\n" +
-	"6com.org.project_planton.provider.aws.awsroute53zone.v1B\x11StackOutputsProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsroute53zone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
+	"\x10caller_reference\x18\x04 \x01(\tR\x0fcallerReferenceB\xa5\x03\n" +
+	"6com.org.project_planton.provider.aws.awsroute53zone.v1B\x11StackOutputsProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsroute53zone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_proto_rawDescOnce sync.Once

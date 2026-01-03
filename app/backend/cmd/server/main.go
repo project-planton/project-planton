@@ -8,8 +8,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/project-planton/project-planton/app/backend/internal/database"
-	"github.com/project-planton/project-planton/app/backend/internal/server"
+	"github.com/plantonhq/project-planton/app/backend/internal/database"
+	"github.com/plantonhq/project-planton/app/backend/internal/server"
 	"github.com/sirupsen/logrus"
 )
 

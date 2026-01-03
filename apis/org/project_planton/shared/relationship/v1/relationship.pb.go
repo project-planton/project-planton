@@ -8,7 +8,7 @@ package relationshipv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	cloudresourcekind "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	cloudresourcekind "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/descriptorpb"
@@ -174,8 +174,8 @@ const file_org_project_planton_shared_relationship_v1_relationship_proto_rawDesc
 	"\aruns_on\x10\x02\x12\x0e\n" +
 	"\n" +
 	"managed_by\x10\x03\x12\b\n" +
-	"\x04uses\x10\x04B\xf7\x02\n" +
-	".com.org.project_planton.shared.relationship.v1B\x11RelationshipProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/shared/relationship/v1;relationshipv1\xa2\x02\x04OPSR\xaa\x02)Org.ProjectPlanton.Shared.Relationship.V1\xca\x02)Org\\ProjectPlanton\\Shared\\Relationship\\V1\xe2\x025Org\\ProjectPlanton\\Shared\\Relationship\\V1\\GPBMetadata\xea\x02-Org::ProjectPlanton::Shared::Relationship::V1b\x06proto3"
+	"\x04uses\x10\x04B\xf1\x02\n" +
+	".com.org.project_planton.shared.relationship.v1B\x11RelationshipProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/relationship/v1;relationshipv1\xa2\x02\x04OPSR\xaa\x02)Org.ProjectPlanton.Shared.Relationship.V1\xca\x02)Org\\ProjectPlanton\\Shared\\Relationship\\V1\xe2\x025Org\\ProjectPlanton\\Shared\\Relationship\\V1\\GPBMetadata\xea\x02-Org::ProjectPlanton::Shared::Relationship::V1b\x06proto3"
 
 var (
 	file_org_project_planton_shared_relationship_v1_relationship_proto_rawDescOnce sync.Once

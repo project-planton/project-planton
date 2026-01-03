@@ -137,9 +137,9 @@ package main
 
 import (
 	"github.com/pkg/errors"
-	ingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1/iac/pulumi/module"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
+	ingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1/iac/pulumi/module"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -279,14 +279,14 @@ Users must update the `kind` field in all IngressNginx manifest files.
 
 **Before**:
 ```go
-import ingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
+import ingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
 
 stackInput := &ingressnginxv1.IngressNginxKubernetesStackInput{}
 ```
 
 **After**:
 ```go
-import ingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
+import ingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
 
 stackInput := &ingressnginxv1.IngressNginxStackInput{}
 ```
@@ -422,7 +422,7 @@ The IngressNginx component supports cloud-specific configuration for GKE, EKS, a
 ### Import Path Resolution
 
 Go module resolution automatically handles the type name changes because:
-1. The import path (`github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1`) remains unchanged
+1. The import path (`github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1`) remains unchanged
 2. Only the exported type names within the package changed
 3. Proto generation updates all cross-references automatically
 4. Gazelle updates BUILD.bazel files to reflect new type names

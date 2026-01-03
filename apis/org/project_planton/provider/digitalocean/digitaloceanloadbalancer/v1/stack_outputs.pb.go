@@ -93,8 +93,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1
 	"$DigitalOceanLoadBalancerStackOutputs\x12(\n" +
 	"\x10load_balancer_id\x18\x01 \x01(\tR\x0eloadBalancerId\x12\x0e\n" +
 	"\x02ip\x18\x02 \x01(\tR\x02ip\x12\x19\n" +
-	"\bdns_name\x18\x03 \x01(\tR\adnsNameB\xa8\x04\n" +
-	"Icom.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1B\x11StackOutputsProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05OPPDD\xaa\x02DOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
+	"\bdns_name\x18\x03 \x01(\tR\adnsNameB\xa2\x04\n" +
+	"Icom.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05OPPDD\xaa\x02DOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack_outputs_proto_rawDescOnce sync.Once

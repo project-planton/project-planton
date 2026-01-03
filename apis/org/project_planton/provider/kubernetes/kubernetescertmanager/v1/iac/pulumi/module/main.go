@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	kubernetescertmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	kubernetescertmanagerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	apiextensionsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apiextensions"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"

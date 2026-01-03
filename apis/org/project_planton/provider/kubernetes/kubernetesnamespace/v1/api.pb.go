@@ -8,7 +8,7 @@ package kubernetesnamespacev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -177,8 +177,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_api_pr
 	"\x04spec\x18\x04 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
 	"\x06status\x18\x05 \x01(\v2Y.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceStatusR\x06status\"\x96\x01\n" +
 	"\x19KubernetesNamespaceStatus\x12y\n" +
-	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceStackOutputsR\aoutputsB\xf0\x03\n" +
-	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\bApiProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.kubernetesnamespace.v1.KubernetesNamespaceStackOutputsR\aoutputsB\xe9\x03\n" +
+	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\bApiProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_api_proto_rawDescOnce sync.Once

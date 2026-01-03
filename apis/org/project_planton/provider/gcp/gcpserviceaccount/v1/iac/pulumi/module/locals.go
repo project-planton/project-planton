@@ -1,7 +1,7 @@
 package module
 
 import (
-	gcpserviceaccountv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1"
+	gcpserviceaccountv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

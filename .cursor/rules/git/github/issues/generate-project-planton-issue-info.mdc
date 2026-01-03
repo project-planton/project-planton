@@ -91,7 +91,7 @@ Use this template:
 
 ## 📂 Affected Files
 <List files with clickable GitHub links using format:>
-- **File**: [`path/to/file.go`](https://github.com/project-planton/project-planton/blob/main/path/to/file.go#L10-L20)
+- **File**: [`path/to/file.go`](https://github.com/plantonhq/project-planton/blob/main/path/to/file.go#L10-L20)
   - **Lines**: 10-20
   - **Status**: ✅ Working / ❌ Broken / ⚠️ Issue Here
 
@@ -319,7 +319,7 @@ If context is insufficient to infer details, choose the best effort labels and s
 ### GitHub Link Format
 Always use this format for file references:
 ```markdown
-[`path/to/file.go#L10-L20`](https://github.com/project-planton/project-planton/blob/main/path/to/file.go#L10-L20)
+[`path/to/file.go#L10-L20`](https://github.com/plantonhq/project-planton/blob/main/path/to/file.go#L10-L20)
 ```
 
 ### Visual Enhancements

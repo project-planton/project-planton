@@ -7,7 +7,7 @@
 package kubernetesdeploymentv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -121,8 +121,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_stack
 	"\x1eKubernetesDeploymentStackInput\x12m\n" +
 	"\x06target\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetesdeployment.v1.KubernetesDeploymentR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x12,\n" +
-	"\x12docker_config_json\x18\x03 \x01(\tR\x10dockerConfigJsonB\xfe\x03\n" +
-	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
+	"\x12docker_config_json\x18\x03 \x01(\tR\x10dockerConfigJsonB\xf8\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\x0fStackInputProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_stack_input_proto_rawDescOnce sync.Once

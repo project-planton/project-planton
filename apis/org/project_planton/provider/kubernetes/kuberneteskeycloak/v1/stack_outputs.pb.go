@@ -132,8 +132,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_stack_o
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\xf2\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1;kuberneteskeycloakv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kuberneteskeycloak.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskeycloak\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskeycloak\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteskeycloak::V1b\x06proto3"
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\xeb\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kuberneteskeycloak.v1B\x11StackOutputsProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1;kuberneteskeycloakv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kuberneteskeycloak.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskeycloak\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskeycloak\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteskeycloak::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteskeycloak_v1_stack_outputs_proto_rawDescOnce sync.Once

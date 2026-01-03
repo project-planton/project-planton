@@ -7,7 +7,7 @@
 package gcpvpcv1
 
 import (
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
+	gcp "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_rawDesc 
 	"<org/project_planton/provider/gcp/gcpvpc/v1/stack_input.proto\x12*org.project_planton.provider.gcp.gcpvpc.v1\x1a4org/project_planton/provider/gcp/gcpvpc/v1/api.proto\x1a/org/project_planton/provider/gcp/provider.proto\"\xbc\x01\n" +
 	"\x10GcpVpcStackInput\x12J\n" +
 	"\x06target\x18\x01 \x01(\v22.org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xf1\x02\n" +
-	".com.org.project_planton.provider.gcp.gcpvpc.v1B\x0fStackInputProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xeb\x02\n" +
+	".com.org.project_planton.provider.gcp.gcpvpc.v1B\x0fStackInputProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_rawDescOnce sync.Once

@@ -7,7 +7,7 @@
 package confluentkafkav1
 
 import (
-	confluent "github.com/project-planton/project-planton/apis/org/project_planton/provider/confluent"
+	confluent "github.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_confluent_confluentkafka_v1_stack_input_
 	"Jorg/project_planton/provider/confluent/confluentkafka/v1/stack_input.proto\x128org.project_planton.provider.confluent.confluentkafka.v1\x1aBorg/project_planton/provider/confluent/confluentkafka/v1/api.proto\x1a5org/project_planton/provider/confluent/provider.proto\"\xe6\x01\n" +
 	"\x18ConfluentKafkaStackInput\x12`\n" +
 	"\x06target\x18\x01 \x01(\v2H.org.project_planton.provider.confluent.confluentkafka.v1.ConfluentKafkaR\x06target\x12h\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2?.org.project_planton.provider.confluent.ConfluentProviderConfigR\x0eproviderConfigB\xcd\x03\n" +
-	"<com.org.project_planton.provider.confluent.confluentkafka.v1B\x0fStackInputProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Confluent.Confluentkafka.V1\xca\x027Org\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2?.org.project_planton.provider.confluent.ConfluentProviderConfigR\x0eproviderConfigB\xc7\x03\n" +
+	"<com.org.project_planton.provider.confluent.confluentkafka.v1B\x0fStackInputProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Confluent.Confluentkafka.V1\xca\x027Org\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto_rawDescOnce sync.Once

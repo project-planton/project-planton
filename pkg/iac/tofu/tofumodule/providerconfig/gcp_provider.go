@@ -3,9 +3,9 @@ package providerconfig
 import (
 	"encoding/base64"
 	"github.com/pkg/errors"
-	gcpprovider "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	gcpprovider "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )
 
 func AddGcpProviderConfigEnvVars(stackInputContentMap map[string]interface{},

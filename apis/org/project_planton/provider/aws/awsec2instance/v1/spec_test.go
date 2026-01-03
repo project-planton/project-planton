@@ -6,7 +6,7 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	fk "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	fk "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	"google.golang.org/protobuf/proto"
 )
 

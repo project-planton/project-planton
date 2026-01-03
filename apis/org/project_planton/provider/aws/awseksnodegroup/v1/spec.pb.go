@@ -8,8 +8,8 @@ package awseksnodegroupv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -299,8 +299,8 @@ const file_org_project_planton_provider_aws_awseksnodegroup_v1_spec_proto_rawDes
 	"\fdesired_size\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\vdesiredSize*6\n" +
 	"\x1bAwsEksNodeGroupCapacityType\x12\r\n" +
 	"\ton_demand\x10\x00\x12\b\n" +
-	"\x04spot\x10\x01B\xaa\x03\n" +
-	"7com.org.project_planton.provider.aws.awseksnodegroup.v1B\tSpecProtoP\x01Zugithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Aws.Awseksnodegroup.V1\xca\x022Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
+	"\x04spot\x10\x01B\xa4\x03\n" +
+	"7com.org.project_planton.provider.aws.awseksnodegroup.v1B\tSpecProtoP\x01Zogithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Aws.Awseksnodegroup.V1\xca\x022Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awseksnodegroup_v1_spec_proto_rawDescOnce sync.Once

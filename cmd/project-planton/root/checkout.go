@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/cli/staging"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/cli/staging"
 	"github.com/spf13/cobra"
 )
 
@@ -63,4 +63,3 @@ func checkoutHandler(cmd *cobra.Command, args []string) {
 
 	fmt.Printf("\nStaging area: %s\n", repoPath)
 }
-

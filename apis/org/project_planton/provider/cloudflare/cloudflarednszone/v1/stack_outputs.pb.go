@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_ou
 	"Porg/project_planton/provider/cloudflare/cloudflarednszone/v1/stack_outputs.proto\x12<org.project_planton.provider.cloudflare.cloudflarednszone.v1\"Z\n" +
 	"\x1dCloudflareDnsZoneStackOutputs\x12\x17\n" +
 	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12 \n" +
-	"\vnameservers\x18\x02 \x03(\tR\vnameserversB\xeb\x03\n" +
-	"@com.org.project_planton.provider.cloudflare.cloudflarednszone.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1;cloudflarednszonev1\xa2\x02\x05OPPCC\xaa\x02;Org.ProjectPlanton.Provider.Cloudflare.Cloudflarednszone.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Cloudflare::Cloudflarednszone::V1b\x06proto3"
+	"\vnameservers\x18\x02 \x03(\tR\vnameserversB\xe4\x03\n" +
+	"@com.org.project_planton.provider.cloudflare.cloudflarednszone.v1B\x11StackOutputsProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1;cloudflarednszonev1\xa2\x02\x05OPPCC\xaa\x02;Org.ProjectPlanton.Provider.Cloudflare.Cloudflarednszone.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Cloudflare::Cloudflarednszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_outputs_proto_rawDescOnce sync.Once

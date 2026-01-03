@@ -136,8 +136,8 @@ const file_org_project_planton_provider_aws_awsec2instance_v1_stack_outputs_prot
 	"\x11availability_zone\x18\x04 \x01(\tR\x10availabilityZone\x120\n" +
 	"\x14instance_profile_arn\x18\x05 \x01(\tR\x12instanceProfileArn\x12&\n" +
 	"\x0fssh_private_key\x18\x06 \x01(\tR\rsshPrivateKey\x12$\n" +
-	"\x0essh_public_key\x18\a \x01(\tR\fsshPublicKeyB\xab\x03\n" +
-	"6com.org.project_planton.provider.aws.awsec2instance.v1B\x11StackOutputsProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsec2instance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsec2instance::V1b\x06proto3"
+	"\x0essh_public_key\x18\a \x01(\tR\fsshPublicKeyB\xa5\x03\n" +
+	"6com.org.project_planton.provider.aws.awsec2instance.v1B\x11StackOutputsProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsec2instance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsec2instance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsec2instance_v1_stack_outputs_proto_rawDescOnce sync.Once

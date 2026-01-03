@@ -272,8 +272,8 @@ const file_org_project_planton_provider_gcp_gcpcloudcdn_v1_stack_outputs_proto_r
 	"\x11external_hostname\x18\x10 \x01(\tR\x10externalHostname\x12%\n" +
 	"\x0ecustom_domains\x18\x11 \x03(\tR\rcustomDomains\x12(\n" +
 	"\x10health_check_url\x18\x12 \x01(\tR\x0ehealthCheckUrl\x128\n" +
-	"\x18monitoring_dashboard_url\x18\x13 \x01(\tR\x16monitoringDashboardUrlB\x96\x03\n" +
-	"3com.org.project_planton.provider.gcp.gcpcloudcdn.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudcdn/v1;gcpcloudcdnv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudcdn.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudcdn::V1b\x06proto3"
+	"\x18monitoring_dashboard_url\x18\x13 \x01(\tR\x16monitoringDashboardUrlB\x90\x03\n" +
+	"3com.org.project_planton.provider.gcp.gcpcloudcdn.v1B\x11StackOutputsProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudcdn/v1;gcpcloudcdnv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudcdn.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudcdn::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudcdn_v1_stack_outputs_proto_rawDescOnce sync.Once

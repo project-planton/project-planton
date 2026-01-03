@@ -8,7 +8,7 @@ package kubernetesgatewayapicrdsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -170,8 +170,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesgatewayapicrds_v1_a
 	"\x04spec\x18\x04 \x01(\v2a.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1.KubernetesGatewayApiCrdsSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12{\n" +
 	"\x06status\x18\x05 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1.KubernetesGatewayApiCrdsStatusR\x06status\"\xa6\x01\n" +
 	"\x1eKubernetesGatewayApiCrdsStatus\x12\x83\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1.KubernetesGatewayApiCrdsStackOutputsR\aoutputsB\x93\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1B\bApiProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1;kubernetesgatewayapicrdsv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesgatewayapicrds.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesgatewayapicrds::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1.KubernetesGatewayApiCrdsStackOutputsR\aoutputsB\x8d\x04\n" +
+	"Gcom.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1B\bApiProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1;kubernetesgatewayapicrdsv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesgatewayapicrds.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesgatewayapicrds::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesgatewayapicrds_v1_api_proto_rawDescOnce sync.Once

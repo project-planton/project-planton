@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetesgatewayapicrdsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	kubernetesgatewayapicrdsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	pulumiyaml "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/yaml"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

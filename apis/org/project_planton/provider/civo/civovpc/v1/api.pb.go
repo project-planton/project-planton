@@ -8,7 +8,7 @@ package civovpcv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_civo_civovpc_v1_api_proto_rawDesc = "" +
 	"\x04spec\x18\x04 \x01(\v29.org.project_planton.provider.civo.civovpc.v1.CivoVpcSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12S\n" +
 	"\x06status\x18\x05 \x01(\v2;.org.project_planton.provider.civo.civovpc.v1.CivoVpcStatusR\x06status\"l\n" +
 	"\rCivoVpcStatus\x12[\n" +
-	"\aoutputs\x18\x01 \x01(\v2A.org.project_planton.provider.civo.civovpc.v1.CivoVpcStackOutputsR\aoutputsB\xf7\x02\n" +
-	"0com.org.project_planton.provider.civo.civovpc.v1B\bApiProtoP\x01Zfgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2A.org.project_planton.provider.civo.civovpc.v1.CivoVpcStackOutputsR\aoutputsB\xf1\x02\n" +
+	"0com.org.project_planton.provider.civo.civovpc.v1B\bApiProtoP\x01Z`github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovpc_v1_api_proto_rawDescOnce sync.Once

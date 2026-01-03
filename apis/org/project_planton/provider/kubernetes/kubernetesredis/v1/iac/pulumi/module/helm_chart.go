@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

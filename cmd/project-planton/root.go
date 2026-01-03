@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/project-planton/project-planton/cmd/project-planton/root"
-	"github.com/project-planton/project-planton/cmd/project-planton/root/webapp"
+	"github.com/plantonhq/project-planton/cmd/project-planton/root"
+	"github.com/plantonhq/project-planton/cmd/project-planton/root/webapp"
 	"github.com/spf13/cobra"
 )
 

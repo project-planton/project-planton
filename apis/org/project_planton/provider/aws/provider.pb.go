@@ -140,8 +140,8 @@ const file_org_project_planton_provider_aws_provider_proto_rawDesc = "" +
 	"\x11secret_access_key\x18\x03 \x01(\tB\xaf\x02\xbaH\xab\x02\xba\x01\x9f\x02\n" +
 	"\x1aspec.aws.secret_access_key\x12\xdb\x01The provided AWS Secret Access Key is invalid. It must contain exactly 40 characters consisting of numbers, lowercase and uppercase letters, slashes (/), and plus signs (+). Please double-check your input and try again.\x1a#this.matches('^[0-9a-zA-Z/+]{40}$')\xc8\x01\x01r\x03\x98\x01(R\x0fsecretAccessKey\x12\x1e\n" +
 	"\x06region\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12#\n" +
-	"\rsession_token\x18\x05 \x01(\tR\fsessionTokenB\xa7\x02\n" +
-	"$com.org.project_planton.provider.awsB\rProviderProtoP\x01ZPgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws\xa2\x02\x04OPPA\xaa\x02\x1fOrg.ProjectPlanton.Provider.Aws\xca\x02\x1fOrg\\ProjectPlanton\\Provider\\Aws\xe2\x02+Org\\ProjectPlanton\\Provider\\Aws\\GPBMetadata\xea\x02\"Org::ProjectPlanton::Provider::Awsb\x06proto3"
+	"\rsession_token\x18\x05 \x01(\tR\fsessionTokenB\xa1\x02\n" +
+	"$com.org.project_planton.provider.awsB\rProviderProtoP\x01ZJgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws\xa2\x02\x04OPPA\xaa\x02\x1fOrg.ProjectPlanton.Provider.Aws\xca\x02\x1fOrg\\ProjectPlanton\\Provider\\Aws\xe2\x02+Org\\ProjectPlanton\\Provider\\Aws\\GPBMetadata\xea\x02\"Org::ProjectPlanton::Provider::Awsb\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_provider_proto_rawDescOnce sync.Once

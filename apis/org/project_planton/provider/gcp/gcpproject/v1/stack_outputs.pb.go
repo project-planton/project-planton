@@ -96,8 +96,8 @@ const file_org_project_planton_provider_gcp_gcpproject_v1_stack_outputs_proto_ra
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x02 \x01(\tR\tprojectId\x12%\n" +
-	"\x0eproject_number\x18\x03 \x01(\tR\rprojectNumberB\x8f\x03\n" +
-	"2com.org.project_planton.provider.gcp.gcpproject.v1B\x11StackOutputsProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpproject/v1;gcpprojectv1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpproject.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpproject::V1b\x06proto3"
+	"\x0eproject_number\x18\x03 \x01(\tR\rprojectNumberB\x89\x03\n" +
+	"2com.org.project_planton.provider.gcp.gcpproject.v1B\x11StackOutputsProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpproject/v1;gcpprojectv1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpproject.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpproject::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpproject_v1_stack_outputs_proto_rawDescOnce sync.Once

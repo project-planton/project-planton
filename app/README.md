@@ -25,7 +25,7 @@ app/
 - **Use case:** End users and integration testing
 - **Setup:** Single Docker container with MongoDB, backend, and frontend
 - **Managed by:** CLI (`planton webapp init/start/stop`) or `docker-compose up`
-- **Image:** `ghcr.io/project-planton/project-planton:latest`
+- **Image:** `ghcr.io/plantonhq/project-planton:latest`
 - **Benefits:** Simple deployment, consistent environment, all services pre-configured
 
 #### Development (Local Services)
@@ -432,10 +432,10 @@ Images are automatically built and published to GitHub Container Registry (GHCR)
 **Manual build (if needed):**
 ```bash
 # Build locally
-docker build -f app/Dockerfile.unified -t ghcr.io/project-planton/project-planton:v1.0.0 .
+docker build -f app/Dockerfile.unified -t ghcr.io/plantonhq/project-planton:v1.0.0 .
 
 # Tag as latest
-docker tag ghcr.io/project-planton/project-planton:v1.0.0 ghcr.io/project-planton/project-planton:latest
+docker tag ghcr.io/plantonhq/project-planton:v1.0.0 ghcr.io/plantonhq/project-planton:latest
 ```
 
 ### Release Process

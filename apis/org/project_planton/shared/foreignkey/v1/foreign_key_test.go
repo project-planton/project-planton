@@ -6,7 +6,7 @@ import (
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 
 	"buf.build/go/protovalidate"
 )

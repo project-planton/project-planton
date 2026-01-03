@@ -7,7 +7,7 @@
 package digitaloceanbucketv1
 
 import (
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanbucket_v1_stack
 	"Qorg/project_planton/provider/digitalocean/digitaloceanbucket/v1/stack_input.proto\x12?org.project_planton.provider.digitalocean.digitaloceanbucket.v1\x1aIorg/project_planton/provider/digitalocean/digitaloceanbucket/v1/api.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\"\xfb\x01\n" +
 	"\x1cDigitalOceanBucketStackInput\x12k\n" +
 	"\x06target\x18\x01 \x01(\v2S.org.project_planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketR\x06target\x12n\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xfc\x03\n" +
-	"Ccom.org.project_planton.provider.digitalocean.digitaloceanbucket.v1B\x0fStackInputProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xf5\x03\n" +
+	"Ccom.org.project_planton.provider.digitalocean.digitaloceanbucket.v1B\x0fStackInputProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanbucket_v1_stack_input_proto_rawDescOnce sync.Once

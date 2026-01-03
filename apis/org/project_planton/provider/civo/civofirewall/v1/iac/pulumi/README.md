@@ -524,7 +524,7 @@ Import the module in your Go code:
 ```go
 import (
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-    civofirewall "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civofirewall/v1/iac/pulumi/module"
+    civofirewall "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civofirewall/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -560,12 +560,12 @@ pulumi.Run(func(ctx *pulumi.Context) error {
 
 - [Pulumi Civo Provider](https://www.pulumi.com/registry/packages/civo/)
 - [Civo Firewall API Documentation](https://www.civo.com/api/firewalls)
-- [Project Planton Documentation](https://github.com/project-planton/project-planton)
+- [Project Planton Documentation](https://github.com/plantonhq/project-planton)
 - [Architecture Overview](overview.md)
 
 ## Support
 
-- Issues: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
+- Issues: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
 - Pulumi Community: [Pulumi Slack](https://slack.pulumi.com/)
 - Civo Support: support@civo.com
 

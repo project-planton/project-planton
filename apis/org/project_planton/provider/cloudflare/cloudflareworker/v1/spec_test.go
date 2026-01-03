@@ -7,7 +7,7 @@ import (
 	"github.com/onsi/gomega"
 
 	"buf.build/go/protovalidate"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 )
 
 func TestCloudflareWorkerSpec(t *testing.T) {

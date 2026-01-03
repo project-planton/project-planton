@@ -140,8 +140,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_stac
 	"\x14port_forward_command\x18\x04 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x05 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x06 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\a \x01(\tR\x10internalHostnameB\x87\x04\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
+	"\x11internal_hostname\x18\a \x01(\tR\x10internalHostnameB\x81\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_stack_outputs_proto_rawDescOnce sync.Once

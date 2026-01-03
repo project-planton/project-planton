@@ -420,10 +420,10 @@ Updated all import paths across the codebase to remove category subdirectories:
 **Example Go import change:**
 ```go
 // Before
-import kubernetespostgresv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1"
+import kubernetespostgresv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1"
 
 // After
-import kubernetespostgresv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1"
+import kubernetespostgresv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1"
 ```
 
 ### 6. Documentation Updates

@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"strings"
 
-	gcpcertmanagercertv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
+	gcpcertmanagercertv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

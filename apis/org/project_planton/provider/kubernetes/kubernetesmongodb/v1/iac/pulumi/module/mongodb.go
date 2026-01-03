@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	kubernetesmongodbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1"
-	psmdbv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/perconamongodb/kubernetes/psmdb/v1"
+	kubernetesmongodbv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1"
+	psmdbv1 "github.com/plantonhq/project-planton/pkg/kubernetes/kubernetestypes/perconamongodb/kubernetes/psmdb/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

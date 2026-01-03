@@ -7,7 +7,7 @@
 package cloudflareloadbalancerv1
 
 import (
-	cloudflare "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
+	cloudflare "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_sta
 	"Sorg/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/stack_input.proto\x12Aorg.project_planton.provider.cloudflare.cloudflareloadbalancer.v1\x1aKorg/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/api.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\"\x81\x02\n" +
 	" CloudflareLoadBalancerStackInput\x12q\n" +
 	"\x06target\x18\x01 \x01(\v2Y.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\x8c\x04\n" +
-	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\x0fStackInputProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\x86\x04\n" +
+	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\x0fStackInputProtoP\x01Z\x84\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_input_proto_rawDescOnce sync.Once

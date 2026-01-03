@@ -84,8 +84,8 @@ const file_org_project_planton_provider__test_provider_proto_rawDesc = "" +
 	"1org/project_planton/provider/_test/provider.proto\x12\"org.project_planton.provider._test\x1a\x1bbuf/validate/validate.proto\"\\\n" +
 	"\x12TestProviderConfig\x12\"\n" +
 	"\busername\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\busername\x12\"\n" +
-	"\bpassword\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpasswordB\xaf\x02\n" +
-	"&com.org.project_planton.provider._testB\rProviderProtoP\x01ZRgithub.com/project-planton/project-planton/apis/org/project_planton/provider/_test\xa2\x02\x04OPP_\xaa\x02 Org.ProjectPlanton.Provider.Test\xca\x02 Org\\ProjectPlanton\\Provider\\Test\xe2\x02,Org\\ProjectPlanton\\Provider\\Test\\GPBMetadata\xea\x02#Org::ProjectPlanton::Provider::Testb\x06proto3"
+	"\bpassword\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpasswordB\xa9\x02\n" +
+	"&com.org.project_planton.provider._testB\rProviderProtoP\x01ZLgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/_test\xa2\x02\x04OPP_\xaa\x02 Org.ProjectPlanton.Provider.Test\xca\x02 Org\\ProjectPlanton\\Provider\\Test\xe2\x02,Org\\ProjectPlanton\\Provider\\Test\\GPBMetadata\xea\x02#Org::ProjectPlanton::Provider::Testb\x06proto3"
 
 var (
 	file_org_project_planton_provider__test_provider_proto_rawDescOnce sync.Once

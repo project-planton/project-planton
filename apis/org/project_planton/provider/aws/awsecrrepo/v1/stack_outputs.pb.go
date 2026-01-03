@@ -104,8 +104,8 @@ const file_org_project_planton_provider_aws_awsecrrepo_v1_stack_outputs_proto_ra
 	"\x0erepository_url\x18\x02 \x01(\tR\rrepositoryUrl\x12%\n" +
 	"\x0erepository_arn\x18\x03 \x01(\tR\rrepositoryArn\x12\x1f\n" +
 	"\vregistry_id\x18\x04 \x01(\tR\n" +
-	"registryIdB\x8f\x03\n" +
-	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\x11StackOutputsProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
+	"registryIdB\x89\x03\n" +
+	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\x11StackOutputsProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsecrrepo_v1_stack_outputs_proto_rawDescOnce sync.Once

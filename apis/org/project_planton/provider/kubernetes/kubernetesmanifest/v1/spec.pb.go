@@ -8,8 +8,8 @@ package kubernetesmanifestv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -156,8 +156,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesmanifest_v1_spec_pr
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
 	"\x10create_namespace\x18\x03 \x01(\bR\x0fcreateNamespace\x12+\n" +
-	"\rmanifest_yaml\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fmanifestYamlB\xea\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kubernetesmanifest.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1;kubernetesmanifestv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetesmanifest.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmanifest\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmanifest\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesmanifest::V1b\x06proto3"
+	"\rmanifest_yaml\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fmanifestYamlB\xe3\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetesmanifest.v1B\tSpecProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1;kubernetesmanifestv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetesmanifest.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmanifest\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmanifest\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesmanifest::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesmanifest_v1_spec_proto_rawDescOnce sync.Once

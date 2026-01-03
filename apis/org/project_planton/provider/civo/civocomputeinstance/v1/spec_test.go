@@ -6,9 +6,9 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	foreignkey "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	foreignkey "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestCivoComputeInstanceSpec(t *testing.T) {

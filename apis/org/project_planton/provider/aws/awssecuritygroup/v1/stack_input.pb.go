@@ -7,7 +7,7 @@
 package awssecuritygroupv1
 
 import (
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_aws_awssecuritygroup_v1_stack_input_prot
 	"Forg/project_planton/provider/aws/awssecuritygroup/v1/stack_input.proto\x124org.project_planton.provider.aws.awssecuritygroup.v1\x1a>org/project_planton/provider/aws/awssecuritygroup/v1/api.proto\x1a/org/project_planton/provider/aws/provider.proto\"\xda\x01\n" +
 	"\x1aAwsSecurityGroupStackInput\x12^\n" +
 	"\x06target\x18\x01 \x01(\v2F.org.project_planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xb7\x03\n" +
-	"8com.org.project_planton.provider.aws.awssecuritygroup.v1B\x0fStackInputProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05OPPAA\xaa\x023Org.ProjectPlanton.Provider.Aws.Awssecuritygroup.V1\xca\x023Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xb1\x03\n" +
+	"8com.org.project_planton.provider.aws.awssecuritygroup.v1B\x0fStackInputProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05OPPAA\xaa\x023Org.ProjectPlanton.Provider.Aws.Awssecuritygroup.V1\xca\x023Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awssecuritygroup_v1_stack_input_proto_rawDescOnce sync.Once

@@ -8,9 +8,9 @@ package kubernetesexternalsecretsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -416,8 +416,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_
 	"\x16irsa_role_arn_override\x18\x02 \x01(\tR\x13irsaRoleArnOverride\"\x94\x01\n" +
 	"\"KubernetesExternalSecretsAksConfig\x121\n" +
 	"\x15key_vault_resource_id\x18\x01 \x01(\tR\x12keyVaultResourceId\x12;\n" +
-	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x9b\x04\n" +
-	"Hcom.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1B\tSpecProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kubernetesexternalsecrets.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternalsecrets::V1b\x06proto3"
+	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x95\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1B\tSpecProtoP\x01Z\x8a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kubernetesexternalsecrets.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternalsecrets::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_spec_proto_rawDescOnce sync.Once

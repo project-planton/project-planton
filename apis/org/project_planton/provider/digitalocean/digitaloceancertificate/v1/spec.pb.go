@@ -343,8 +343,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_
 	"\vunspecified\x10\x00\x12\x10\n" +
 	"\flets_encrypt\x10\x01\x12\n" +
 	"\n" +
-	"\x06custom\x10\x02B\x99\x04\n" +
-	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\tSpecProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
+	"\x06custom\x10\x02B\x93\x04\n" +
+	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\tSpecProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_spec_proto_rawDescOnce sync.Once

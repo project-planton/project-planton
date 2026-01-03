@@ -8,9 +8,9 @@ package civodnszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	dnsrecordtype "github.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -178,8 +178,8 @@ const file_org_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDesc =
 	"\x06values\x18\x02 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
 	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
 	"ttlSeconds\x12d\n" +
-	"\x04type\x18\x04 \x01(\x0e2H.org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\x94\x03\n" +
-	"4com.org.project_planton.provider.civo.civodnszone.v1B\tSpecProtoP\x01Zngithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05OPPCC\xaa\x02/Org.ProjectPlanton.Provider.Civo.Civodnszone.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Civo::Civodnszone::V1b\x06proto3"
+	"\x04type\x18\x04 \x01(\x0e2H.org.project_planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\x8e\x03\n" +
+	"4com.org.project_planton.provider.civo.civodnszone.v1B\tSpecProtoP\x01Zhgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05OPPCC\xaa\x02/Org.ProjectPlanton.Provider.Civo.Civodnszone.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Civo::Civodnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDescOnce sync.Once

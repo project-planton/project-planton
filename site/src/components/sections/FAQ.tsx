@@ -116,7 +116,7 @@ export default function FAQ() {
           <div className="bg-slate-900 rounded-lg px-6 py-3 font-mono text-sm border border-slate-700">
             <span className="text-slate-500">$</span> <span className="text-purple-400">brew install</span> <span className="text-white">project-planton/tap/project-planton</span>
           </div>
-          <Link href="https://github.com/project-planton/project-planton" target="_blank" rel="noopener noreferrer">
+          <Link href="https://github.com/plantonhq/project-planton" target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
               variant="outline"

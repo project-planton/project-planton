@@ -8,7 +8,7 @@ package kuberneteslocustv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto
 	"\x04spec\x18\x04 \x01(\v2Q.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12k\n" +
 	"\x06status\x18\x05 \x01(\v2S.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStatusR\x06status\"\x8d\x01\n" +
 	"\x16KubernetesLocustStatus\x12s\n" +
-	"\aoutputs\x18\x01 \x01(\v2Y.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStackOutputsR\aoutputsB\xda\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kuberneteslocust.v1B\bApiProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kuberneteslocust.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kuberneteslocust::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2Y.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustStackOutputsR\aoutputsB\xd4\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kuberneteslocust.v1B\bApiProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kuberneteslocust.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kuberneteslocust::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_api_proto_rawDescOnce sync.Once

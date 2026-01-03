@@ -6,7 +6,7 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 )
 
 func TestAzureDnsZoneSpec(t *testing.T) {

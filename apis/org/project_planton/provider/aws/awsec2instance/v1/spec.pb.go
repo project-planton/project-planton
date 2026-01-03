@@ -8,8 +8,8 @@ package awsec2instancev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -295,8 +295,8 @@ const file_org_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc
 	"\x1eAwsEc2InstanceConnectionMethod\x12\a\n" +
 	"\x03SSM\x10\x00\x12\v\n" +
 	"\aBASTION\x10\x01\x12\x14\n" +
-	"\x10INSTANCE_CONNECT\x10\x02B\xa3\x03\n" +
-	"6com.org.project_planton.provider.aws.awsec2instance.v1B\tSpecProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsec2instance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsec2instance::V1b\x06proto3"
+	"\x10INSTANCE_CONNECT\x10\x02B\x9d\x03\n" +
+	"6com.org.project_planton.provider.aws.awsec2instance.v1B\tSpecProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsec2instance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsec2instance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDescOnce sync.Once

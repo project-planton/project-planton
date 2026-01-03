@@ -300,7 +300,7 @@ pulumi stack output kubeconfig_b64 --show-secrets | base64 -d > ~/.kube/config
 Uses shared helper:
 
 ```go
-import "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider"
+import "github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider"
 
 civoProvider, err := pulumicivoprovider.Get(ctx, stackInput.ProviderConfig)
 ```

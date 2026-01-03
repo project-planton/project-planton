@@ -105,8 +105,8 @@ const file_org_project_planton_provider_civo_civoipaddress_v1_stack_outputs_prot
 	"\n" +
 	"ip_address\x18\x02 \x01(\tR\tipAddress\x120\n" +
 	"\x14attached_resource_id\x18\x03 \x01(\tR\x12attachedResourceId\x12,\n" +
-	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\xaa\x03\n" +
-	"6com.org.project_planton.provider.civo.civoipaddress.v1B\x11StackOutputsProtoP\x01Zrgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05OPPCC\xaa\x021Org.ProjectPlanton.Provider.Civo.Civoipaddress.V1\xca\x021Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Civo::Civoipaddress::V1b\x06proto3"
+	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\xa4\x03\n" +
+	"6com.org.project_planton.provider.civo.civoipaddress.v1B\x11StackOutputsProtoP\x01Zlgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05OPPCC\xaa\x021Org.ProjectPlanton.Provider.Civo.Civoipaddress.V1\xca\x021Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Civo::Civoipaddress::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civoipaddress_v1_stack_outputs_proto_rawDescOnce sync.Once

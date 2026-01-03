@@ -7,7 +7,7 @@
 package auth0connectionv1
 
 import (
-	auth0 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
+	auth0 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -94,8 +94,8 @@ const file_org_project_planton_provider_auth0_auth0connection_v1_stack_input_pro
 	"Gorg/project_planton/provider/auth0/auth0connection/v1/stack_input.proto\x125org.project_planton.provider.auth0.auth0connection.v1\x1a?org/project_planton/provider/auth0/auth0connection/v1/api.proto\x1a1org/project_planton/provider/auth0/provider.proto\"\xdd\x01\n" +
 	"\x19Auth0ConnectionStackInput\x12^\n" +
 	"\x06target\x18\x01 \x01(\v2F.org.project_planton.provider.auth0.auth0connection.v1.Auth0ConnectionR\x06target\x12`\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigR\x0eproviderConfigB\xbc\x03\n" +
-	"9com.org.project_planton.provider.auth0.auth0connection.v1B\x0fStackInputProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1;auth0connectionv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Auth0.Auth0connection.V1\xca\x024Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Auth0::Auth0connection::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigR\x0eproviderConfigB\xb6\x03\n" +
+	"9com.org.project_planton.provider.auth0.auth0connection.v1B\x0fStackInputProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1;auth0connectionv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Auth0.Auth0connection.V1\xca\x024Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Auth0::Auth0connection::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_auth0connection_v1_stack_input_proto_rawDescOnce sync.Once

@@ -28,9 +28,9 @@ const file_org_project_planton_app_cloudresource_v1_query_proto_rawDesc = "" +
 	"\x1cCloudResourceQueryController\x12\x91\x01\n" +
 	"\x04List\x12C.org.project_planton.app.cloudresource.v1.ListCloudResourcesRequest\x1aD.org.project_planton.app.cloudresource.v1.ListCloudResourcesResponse\x12\x8c\x01\n" +
 	"\x03Get\x12A.org.project_planton.app.cloudresource.v1.GetCloudResourceRequest\x1aB.org.project_planton.app.cloudresource.v1.GetCloudResourceResponse\x12\x94\x01\n" +
-	"\x05Count\x12D.org.project_planton.app.cloudresource.v1.CountCloudResourcesRequest\x1aE.org.project_planton.app.cloudresource.v1.CountCloudResourcesResponseB\xe5\x02\n" +
+	"\x05Count\x12D.org.project_planton.app.cloudresource.v1.CountCloudResourcesRequest\x1aE.org.project_planton.app.cloudresource.v1.CountCloudResourcesResponseB\xdf\x02\n" +
 	",com.org.project_planton.app.cloudresource.v1B\n" +
-	"QueryProtoP\x01Zhgithub.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
+	"QueryProtoP\x01Zbgithub.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
 
 var file_org_project_planton_app_cloudresource_v1_query_proto_goTypes = []any{
 	(*ListCloudResourcesRequest)(nil),   // 0: org.project_planton.app.cloudresource.v1.ListCloudResourcesRequest

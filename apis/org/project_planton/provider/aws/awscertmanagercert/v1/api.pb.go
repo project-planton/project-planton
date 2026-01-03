@@ -8,7 +8,7 @@ package awscertmanagercertv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_aws_awscertmanagercert_v1_api_proto_rawD
 	"\x04spec\x18\x04 \x01(\v2N.org.project_planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12h\n" +
 	"\x06status\x18\x05 \x01(\v2P.org.project_planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStatusR\x06status\"\x8c\x01\n" +
 	"\x18AwsCertManagerCertStatus\x12p\n" +
-	"\aoutputs\x18\x01 \x01(\v2V.org.project_planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackOutputsR\aoutputsB\xbe\x03\n" +
-	":com.org.project_planton.provider.aws.awscertmanagercert.v1B\bApiProtoP\x01Z{github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Aws.Awscertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2V.org.project_planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackOutputsR\aoutputsB\xb8\x03\n" +
+	":com.org.project_planton.provider.aws.awscertmanagercert.v1B\bApiProtoP\x01Zugithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Aws.Awscertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awscertmanagercert_v1_api_proto_rawDescOnce sync.Once

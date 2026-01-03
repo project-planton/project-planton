@@ -8,7 +8,7 @@ package awsroute53zonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
+	dnsrecordtype "github.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -926,8 +926,8 @@ const file_org_project_planton_provider_aws_awsroute53zone_v1_spec_proto_rawDesc
 	"\x1fRoute53GeolocationRoutingPolicy\x12\x1c\n" +
 	"\tcontinent\x18\x01 \x01(\tR\tcontinent\x12\x18\n" +
 	"\acountry\x18\x02 \x01(\tR\acountry\x12 \n" +
-	"\vsubdivision\x18\x03 \x01(\tR\vsubdivisionB\xa3\x03\n" +
-	"6com.org.project_planton.provider.aws.awsroute53zone.v1B\tSpecProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsroute53zone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
+	"\vsubdivision\x18\x03 \x01(\tR\vsubdivisionB\x9d\x03\n" +
+	"6com.org.project_planton.provider.aws.awsroute53zone.v1B\tSpecProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsroute53zone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsroute53zone_v1_spec_proto_rawDescOnce sync.Once

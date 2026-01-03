@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	kubernetesopenfgav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	kubernetesopenfgav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -7,7 +7,7 @@
 package kubernetesstatefulsetv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -121,8 +121,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_stac
 	"\x1fKubernetesStatefulSetStackInput\x12o\n" +
 	"\x06target\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x12,\n" +
-	"\x12docker_config_json\x18\x03 \x01(\tR\x10dockerConfigJsonB\x85\x04\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\x0fStackInputProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
+	"\x12docker_config_json\x18\x03 \x01(\tR\x10dockerConfigJsonB\xff\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_stack_input_proto_rawDescOnce sync.Once

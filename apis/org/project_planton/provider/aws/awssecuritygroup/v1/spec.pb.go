@@ -8,7 +8,7 @@ package awssecuritygroupv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -258,8 +258,8 @@ const file_org_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDe
 	"\x1edestination_security_group_ids\x18\a \x03(\tR\x1bdestinationSecurityGroupIds\x12%\n" +
 	"\x0eself_reference\x18\b \x01(\bR\rselfReference\x12\x8b\x01\n" +
 	"\vdescription\x18\t \x01(\tBi\xbaHf\xba\x01c\n" +
-	"\x1drule_description_length_check\x12/Rule description must not exceed 255 characters\x1a\x11size(this) <= 255R\vdescriptionB\xb1\x03\n" +
-	"8com.org.project_planton.provider.aws.awssecuritygroup.v1B\tSpecProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05OPPAA\xaa\x023Org.ProjectPlanton.Provider.Aws.Awssecuritygroup.V1\xca\x023Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
+	"\x1drule_description_length_check\x12/Rule description must not exceed 255 characters\x1a\x11size(this) <= 255R\vdescriptionB\xab\x03\n" +
+	"8com.org.project_planton.provider.aws.awssecuritygroup.v1B\tSpecProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05OPPAA\xaa\x023Org.ProjectPlanton.Provider.Aws.Awssecuritygroup.V1\xca\x023Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDescOnce sync.Once

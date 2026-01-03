@@ -41,7 +41,7 @@ standards.
 ## Installation
 
 1. **ProjectPlanton CLI**  
-   Make sure you have [ProjectPlanton CLI](https://github.com/project-planton/project-planton) installed and configured.
+   Make sure you have [ProjectPlanton CLI](https://github.com/plantonhq/project-planton) installed and configured.
    This CLI handles resource validation, manifest processing, and integration with Pulumi or Terraform.
 
 2. **AWS Credentials**  
@@ -162,6 +162,6 @@ ProjectPlanton repository.
 ## Further Reading
 
 - **[examples.md](./examples.md)**: Explore real-world usage scenarios for single-cluster and multi-capacity setups.
-- **[ProjectPlanton Guide](https://github.com/project-planton/project-planton/blob/main/docs/Guide.md)**: Learn about
+- **[ProjectPlanton Guide](https://github.com/plantonhq/project-planton/blob/main/docs/Guide.md)**: Learn about
   the multi-cloud workflow, referencing the CLI commands and ecosystem best practices.
 - **AWS Documentation**: [Amazon ECS](https://docs.aws.amazon.com/ecs) for in-depth ECS concepts.

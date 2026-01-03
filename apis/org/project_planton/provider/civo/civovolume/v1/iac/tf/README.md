@@ -269,6 +269,6 @@ terraform destroy
 ## Support
 
 For issues or questions:
-- **Project Planton**: [github.com/project-planton/project-planton/issues](https://github.com/project-planton/project-planton/issues)
+- **Project Planton**: [github.com/plantonhq/project-planton/issues](https://github.com/plantonhq/project-planton/issues)
 - **Civo Support**: [civo.com/support](https://www.civo.com/support)
 

@@ -6,8 +6,8 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	fk "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	fk "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestDigitalOceanDatabaseClusterSpec(t *testing.T) {

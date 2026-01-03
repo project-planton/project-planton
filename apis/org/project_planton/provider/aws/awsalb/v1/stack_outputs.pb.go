@@ -103,8 +103,8 @@ const file_org_project_planton_provider_aws_awsalb_v1_stack_outputs_proto_rawDes
 	"\x11load_balancer_arn\x18\x01 \x01(\tR\x0floadBalancerArn\x12,\n" +
 	"\x12load_balancer_name\x18\x02 \x01(\tR\x10loadBalancerName\x123\n" +
 	"\x16load_balancer_dns_name\x18\x03 \x01(\tR\x13loadBalancerDnsName\x12>\n" +
-	"\x1cload_balancer_hosted_zone_id\x18\x04 \x01(\tR\x18loadBalancerHostedZoneIdB\xf3\x02\n" +
-	".com.org.project_planton.provider.aws.awsalb.v1B\x11StackOutputsProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsalb.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsalb::V1b\x06proto3"
+	"\x1cload_balancer_hosted_zone_id\x18\x04 \x01(\tR\x18loadBalancerHostedZoneIdB\xed\x02\n" +
+	".com.org.project_planton.provider.aws.awsalb.v1B\x11StackOutputsProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsalb.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsalb::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsalb_v1_stack_outputs_proto_rawDescOnce sync.Once

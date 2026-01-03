@@ -8,7 +8,7 @@ package kubernetesnamespacev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1053,8 +1053,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_p
 	"\x05istio\x10\x01\x12\v\n" +
 	"\alinkerd\x10\x02\x12\n" +
 	"\n" +
-	"\x06consul\x10\x03B\xf1\x03\n" +
-	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
+	"\x06consul\x10\x03B\xea\x03\n" +
+	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\tSpecProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_spec_proto_rawDescOnce sync.Once

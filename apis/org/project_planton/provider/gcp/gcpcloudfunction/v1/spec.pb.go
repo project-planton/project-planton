@@ -8,8 +8,8 @@ package gcpcloudfunctionv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -999,8 +999,8 @@ const file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_rawDe
 	"\vALL_TRAFFIC\x10\x01*T\n" +
 	"\x1bGcpCloudFunctionRetryPolicy\x12\x1d\n" +
 	"\x19RETRY_POLICY_DO_NOT_RETRY\x10\x00\x12\x16\n" +
-	"\x12RETRY_POLICY_RETRY\x10\x01B\xb1\x03\n" +
-	"8com.org.project_planton.provider.gcp.gcpcloudfunction.v1B\tSpecProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1;gcpcloudfunctionv1\xa2\x02\x05OPPGG\xaa\x023Org.ProjectPlanton.Provider.Gcp.Gcpcloudfunction.V1\xca\x023Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Gcp::Gcpcloudfunction::V1b\x06proto3"
+	"\x12RETRY_POLICY_RETRY\x10\x01B\xab\x03\n" +
+	"8com.org.project_planton.provider.gcp.gcpcloudfunction.v1B\tSpecProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1;gcpcloudfunctionv1\xa2\x02\x05OPPGG\xaa\x023Org.ProjectPlanton.Provider.Gcp.Gcpcloudfunction.V1\xca\x023Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Gcp::Gcpcloudfunction::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudfunction_v1_spec_proto_rawDescOnce sync.Once

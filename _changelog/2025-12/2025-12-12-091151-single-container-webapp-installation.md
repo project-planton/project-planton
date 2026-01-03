@@ -458,8 +458,8 @@ Added webapp command group alongside existing infrastructure commands:
 
 ```go
 import (
-    "github.com/project-planton/project-planton/cmd/project-planton/root"
-    "github.com/project-planton/project-planton/cmd/project-planton/root/webapp"
+    "github.com/plantonhq/project-planton/cmd/project-planton/root"
+    "github.com/plantonhq/project-planton/cmd/project-planton/root/webapp"
 )
 
 func init() {

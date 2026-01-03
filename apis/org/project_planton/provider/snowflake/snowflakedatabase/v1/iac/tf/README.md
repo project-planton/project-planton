@@ -374,7 +374,7 @@ This module is part of Project Planton and follows the project's licensing terms
 
 ## Support
 
-For issues, questions, or contributions, please refer to the [main repository](https://github.com/project-planton/project-planton).
+For issues, questions, or contributions, please refer to the [main repository](https://github.com/plantonhq/project-planton).
 
 
 

@@ -8,7 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 )
 
 func TestAwsIamRole(t *testing.T) {

@@ -8,7 +8,7 @@ package awsvpcv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -155,8 +155,8 @@ const file_org_project_planton_provider_aws_awsvpc_v1_spec_proto_rawDesc = "" +
 	"subnetSize\x123\n" +
 	"\x16is_nat_gateway_enabled\x18\x05 \x01(\bR\x13isNatGatewayEnabled\x127\n" +
 	"\x18is_dns_hostnames_enabled\x18\x06 \x01(\bR\x15isDnsHostnamesEnabled\x123\n" +
-	"\x16is_dns_support_enabled\x18\a \x01(\bR\x13isDnsSupportEnabledB\xeb\x02\n" +
-	".com.org.project_planton.provider.aws.awsvpc.v1B\tSpecProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsvpc/v1;awsvpcv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsvpc::V1b\x06proto3"
+	"\x16is_dns_support_enabled\x18\a \x01(\bR\x13isDnsSupportEnabledB\xe5\x02\n" +
+	".com.org.project_planton.provider.aws.awsvpc.v1B\tSpecProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsvpc/v1;awsvpcv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsvpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsvpc_v1_spec_proto_rawDescOnce sync.Once

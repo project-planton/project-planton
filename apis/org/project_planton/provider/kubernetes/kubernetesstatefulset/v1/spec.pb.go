@@ -8,8 +8,8 @@ package kubernetesstatefulsetv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -878,8 +878,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec
 	"\x04size\x18\x03 \x01(\tB\x8f\x01\xbaH\x8b\x01\xba\x01\x84\x01\n" +
 	" spec.volume_claim_templates.size\x12<Size must be a valid Kubernetes quantity (e.g., 10Gi, 100Mi)\x1a\"this.matches('^[0-9]+[EPTGMK]i?$')\xc8\x01\x01R\x04size\x12\xa8\x02\n" +
 	"\faccess_modes\x18\x04 \x03(\tB\x84\x02\xbaH\x80\x02\xba\x01\xfc\x01\n" +
-	"(spec.volume_claim_templates.access_modes\x12cAccess modes must be one of \"ReadWriteOnce\", \"ReadOnlyMany\", \"ReadWriteMany\", or \"ReadWriteOncePod\"\x1aksize(this) == 0 || this.all(m, m in [\"ReadWriteOnce\", \"ReadOnlyMany\", \"ReadWriteMany\", \"ReadWriteOncePod\"])R\vaccessModesB\xff\x03\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
+	"(spec.volume_claim_templates.access_modes\x12cAccess modes must be one of \"ReadWriteOnce\", \"ReadOnlyMany\", \"ReadWriteMany\", or \"ReadWriteOncePod\"\x1aksize(this) == 0 || this.all(m, m in [\"ReadWriteOnce\", \"ReadOnlyMany\", \"ReadWriteMany\", \"ReadWriteOncePod\"])R\vaccessModesB\xf9\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\tSpecProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescOnce sync.Once

@@ -7,17 +7,17 @@
 package credentialv1
 
 import (
-	atlas "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas"
-	auth0 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
-	azure "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	cloudflare "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
-	confluent "github.com/project-planton/project-planton/apis/org/project_planton/provider/confluent"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	snowflake "github.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake"
+	atlas "github.com/plantonhq/project-planton/apis/org/project_planton/provider/atlas"
+	auth0 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
+	azure "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	cloudflare "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare"
+	confluent "github.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	gcp "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	snowflake "github.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -445,8 +445,8 @@ const file_org_project_planton_app_credential_v1_api_proto_rawDesc = "" +
 	"\tsnowflake\x18\n" +
 	" \x01(\v2?.org.project_planton.provider.snowflake.SnowflakeProviderConfigH\x00R\tsnowflake\x12O\n" +
 	"\x05auth0\x18\v \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigH\x00R\x05auth0B\x06\n" +
-	"\x04dataB\xb8\x02\n" +
-	"%com.org.project_planton.credential.v1B\bApiProtoP\x01Zbgithub.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
+	"\x04dataB\xb2\x02\n" +
+	"%com.org.project_planton.credential.v1B\bApiProtoP\x01Z\\github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
 
 var (
 	file_org_project_planton_app_credential_v1_api_proto_rawDescOnce sync.Once

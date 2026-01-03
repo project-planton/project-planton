@@ -8,7 +8,7 @@ package kubernetesstrimzikafkaoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperato
 	"\x04spec\x18\x04 \x01(\v2m.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x87\x01\n" +
 	"\x06status\x18\x05 \x01(\v2o.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStatusR\x06status\"\xb8\x01\n" +
 	"$KubernetesStrimziKafkaOperatorStatus\x12\x8f\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2u.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputsR\aoutputsB\xbd\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1B\bApiProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesstrimzikafkaoperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2u.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1.KubernetesStrimziKafkaOperatorStackOutputsR\aoutputsB\xb7\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1B\bApiProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesstrimzikafkaoperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_api_proto_rawDescOnce sync.Once

@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/pkg/errors"
-	civodatabasev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1/iac/pulumi/module"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
+	civodatabasev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1/iac/pulumi/module"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

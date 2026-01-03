@@ -8,8 +8,8 @@ package gcpvpcv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -243,8 +243,8 @@ const file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc = "" +
 	"\x11GcpVpcRoutingMode\x12\f\n" +
 	"\bREGIONAL\x10\x00\x12\n" +
 	"\n" +
-	"\x06GLOBAL\x10\x01B\xeb\x02\n" +
-	".com.org.project_planton.provider.gcp.gcpvpc.v1B\tSpecProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
+	"\x06GLOBAL\x10\x01B\xe5\x02\n" +
+	".com.org.project_planton.provider.gcp.gcpvpc.v1B\tSpecProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDescOnce sync.Once

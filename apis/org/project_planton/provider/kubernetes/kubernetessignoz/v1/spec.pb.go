@@ -8,9 +8,9 @@ package kubernetessignozv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -1030,8 +1030,8 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_prot
 	"\x18default_signoz_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x97\" \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerR\x16defaultSignozContainer:\xc0\x01\n" +
 	" default_otel_collector_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x97\" \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozContainerR\x1ddefaultOtelCollectorContainer:\xc3\x01\n" +
 	"\x1cdefault_clickhouse_container\x12\x1d.google.protobuf.FieldOptions\x18\x83\x97\" \x01(\v2`.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozClickhouseContainerR\x1adefaultClickhouseContainer:\xc0\x01\n" +
-	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\x84\x97\" \x01(\v2_.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainerR\x19defaultZookeeperContainerB\xdb\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kubernetessignoz.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetessignoz.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetessignoz::V1b\x06proto3"
+	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\x84\x97\" \x01(\v2_.org.project_planton.provider.kubernetes.kubernetessignoz.v1.KubernetesSignozZookeeperContainerR\x19defaultZookeeperContainerB\xd5\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetessignoz.v1B\tSpecProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetessignoz.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetessignoz::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_spec_proto_rawDescOnce sync.Once

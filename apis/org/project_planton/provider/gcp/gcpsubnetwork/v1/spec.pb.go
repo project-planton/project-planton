@@ -8,7 +8,7 @@ package gcpsubnetworkv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -205,8 +205,8 @@ const file_org_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDesc 
 	"\x1bGcpSubnetworkSecondaryRange\x12I\n" +
 	"\n" +
 	"range_name\x18\x01 \x01(\tB*\xbaH'\xc8\x01\x01r\"\x10\x01\x18?2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\trangeName\x12F\n" +
-	"\rip_cidr_range\x18\x02 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$R\vipCidrRangeB\x9c\x03\n" +
-	"5com.org.project_planton.provider.gcp.gcpsubnetwork.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsubnetwork/v1;gcpsubnetworkv1\xa2\x02\x05OPPGG\xaa\x020Org.ProjectPlanton.Provider.Gcp.Gcpsubnetwork.V1\xca\x020Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsubnetwork\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsubnetwork\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Gcp::Gcpsubnetwork::V1b\x06proto3"
+	"\rip_cidr_range\x18\x02 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$R\vipCidrRangeB\x96\x03\n" +
+	"5com.org.project_planton.provider.gcp.gcpsubnetwork.v1B\tSpecProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpsubnetwork/v1;gcpsubnetworkv1\xa2\x02\x05OPPGG\xaa\x020Org.ProjectPlanton.Provider.Gcp.Gcpsubnetwork.V1\xca\x020Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsubnetwork\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsubnetwork\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Gcp::Gcpsubnetwork::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDescOnce sync.Once

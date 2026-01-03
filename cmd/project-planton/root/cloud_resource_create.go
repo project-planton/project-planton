@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	cloudresourcev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1"
-	cloudresourcev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
+	cloudresourcev1 "github.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1"
+	cloudresourcev1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
 	"github.com/spf13/cobra"
 )
 

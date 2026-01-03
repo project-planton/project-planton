@@ -67,7 +67,7 @@ CORS_ALLOWED_ORIGINS=https://yourdomain.com docker compose up
 
 This is fixed in the latest version. Make sure you're using:
 ```bash
-docker pull ghcr.io/project-planton/project-planton:latest
+docker pull ghcr.io/plantonhq/project-planton:latest
 ```
 
 ### Duplicate CORS headers
@@ -84,6 +84,6 @@ For maintainers and advanced users, see [CORS Architecture](_cursor/cors-archite
 ## Need Help?
 
 - 📖 [Full Documentation](https://docs.project-planton.org)
-- 💬 [GitHub Discussions](https://github.com/project-planton/project-planton/discussions)
-- 🐛 [Report an Issue](https://github.com/project-planton/project-planton/issues)
+- 💬 [GitHub Discussions](https://github.com/plantonhq/project-planton/discussions)
+- 🐛 [Report an Issue](https://github.com/plantonhq/project-planton/issues)
 

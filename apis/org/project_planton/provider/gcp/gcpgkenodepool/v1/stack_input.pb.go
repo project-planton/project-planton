@@ -7,7 +7,7 @@
 package gcpgkenodepoolv1
 
 import (
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
+	gcp "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_
 	"Dorg/project_planton/provider/gcp/gcpgkenodepool/v1/stack_input.proto\x122org.project_planton.provider.gcp.gcpgkenodepool.v1\x1a<org/project_planton/provider/gcp/gcpgkenodepool/v1/api.proto\x1a/org/project_planton/provider/gcp/provider.proto\"\xd4\x01\n" +
 	"\x18GcpGkeNodePoolStackInput\x12Z\n" +
 	"\x06target\x18\x01 \x01(\v2B.org.project_planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xa9\x03\n" +
-	"6com.org.project_planton.provider.gcp.gcpgkenodepool.v1B\x0fStackInputProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05OPPGG\xaa\x021Org.ProjectPlanton.Provider.Gcp.Gcpgkenodepool.V1\xca\x021Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xa3\x03\n" +
+	"6com.org.project_planton.provider.gcp.gcpgkenodepool.v1B\x0fStackInputProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05OPPGG\xaa\x021Org.ProjectPlanton.Provider.Gcp.Gcpgkenodepool.V1\xca\x021Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_rawDescOnce sync.Once

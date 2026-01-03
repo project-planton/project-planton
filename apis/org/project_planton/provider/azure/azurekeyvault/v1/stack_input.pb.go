@@ -7,7 +7,7 @@
 package azurekeyvaultv1
 
 import (
-	azure "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	azure "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto
 	"Eorg/project_planton/provider/azure/azurekeyvault/v1/stack_input.proto\x123org.project_planton.provider.azure.azurekeyvault.v1\x1a=org/project_planton/provider/azure/azurekeyvault/v1/api.proto\x1a1org/project_planton/provider/azure/provider.proto\"\xd7\x01\n" +
 	"\x17AzureKeyVaultStackInput\x12Z\n" +
 	"\x06target\x18\x01 \x01(\v2B.org.project_planton.provider.azure.azurekeyvault.v1.AzureKeyVaultR\x06target\x12`\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xae\x03\n" +
-	"7com.org.project_planton.provider.azure.azurekeyvault.v1B\x0fStackInputProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Azure.Azurekeyvault.V1\xca\x022Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xa8\x03\n" +
+	"7com.org.project_planton.provider.azure.azurekeyvault.v1B\x0fStackInputProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Azure.Azurekeyvault.V1\xca\x022Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto_rawDescOnce sync.Once

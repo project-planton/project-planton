@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	cloudflarezerotrustaccessapplicationv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1"
+	cloudflarezerotrustaccessapplicationv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1"
 	"github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

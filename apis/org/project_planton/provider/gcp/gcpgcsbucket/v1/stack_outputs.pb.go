@@ -73,8 +73,8 @@ const file_org_project_planton_provider_gcp_gcpgcsbucket_v1_stack_outputs_proto_
 	"\n" +
 	"Dorg/project_planton/provider/gcp/gcpgcsbucket/v1/stack_outputs.proto\x120org.project_planton.provider.gcp.gcpgcsbucket.v1\"7\n" +
 	"\x18GcpGcsBucketStackOutputs\x12\x1b\n" +
-	"\tbucket_id\x18\x01 \x01(\tR\bbucketIdB\x9d\x03\n" +
-	"4com.org.project_planton.provider.gcp.gcpgcsbucket.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1;gcpgcsbucketv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcpgcsbucket.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcpgcsbucket::V1b\x06proto3"
+	"\tbucket_id\x18\x01 \x01(\tR\bbucketIdB\x97\x03\n" +
+	"4com.org.project_planton.provider.gcp.gcpgcsbucket.v1B\x11StackOutputsProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1;gcpgcsbucketv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcpgcsbucket.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcpgcsbucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgcsbucket_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	confluentkafkav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1"
+	confluentkafkav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1"
 	"github.com/pulumi/pulumi-confluentcloud/sdk/v2/go/confluentcloud"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

@@ -136,8 +136,8 @@ const file_org_project_planton_shared_options_options_proto_rawDesc = "" +
 	"\adefault\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xd4\x03 \x01(\tR\adefault:P\n" +
 	"\x13recommended_default\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xd4\x03 \x01(\tR\x12recommendedDefault:\x89\x01\n" +
 	"\x17recommended_default_map\x12\x1d.google.protobuf.FieldOptions\x18\xe3\xd4\x03 \x03(\v20.org.project_planton.shared.options.KeyValuePairR\x15recommendedDefaultMap:H\n" +
-	"\rdisplay_label\x12!.google.protobuf.EnumValueOptions\x18\x92\xd5\x03 \x01(\tR\fdisplayLabelB\xb2\x02\n" +
-	"&com.org.project_planton.shared.optionsB\fOptionsProtoP\x01ZRgithub.com/project-planton/project-planton/apis/org/project_planton/shared/options\xa2\x02\x04OPSO\xaa\x02!Org.ProjectPlanton.Shared.Options\xca\x02!Org\\ProjectPlanton\\Shared\\Options\xe2\x02-Org\\ProjectPlanton\\Shared\\Options\\GPBMetadata\xea\x02$Org::ProjectPlanton::Shared::Optionsb\x06proto3"
+	"\rdisplay_label\x12!.google.protobuf.EnumValueOptions\x18\x92\xd5\x03 \x01(\tR\fdisplayLabelB\xac\x02\n" +
+	"&com.org.project_planton.shared.optionsB\fOptionsProtoP\x01ZLgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/options\xa2\x02\x04OPSO\xaa\x02!Org.ProjectPlanton.Shared.Options\xca\x02!Org\\ProjectPlanton\\Shared\\Options\xe2\x02-Org\\ProjectPlanton\\Shared\\Options\\GPBMetadata\xea\x02$Org::ProjectPlanton::Shared::Optionsb\x06proto3"
 
 var (
 	file_org_project_planton_shared_options_options_proto_rawDescOnce sync.Once

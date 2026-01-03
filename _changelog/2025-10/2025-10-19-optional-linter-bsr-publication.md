@@ -54,7 +54,7 @@ buf/lint/planton/cmd/buf-plugin-planton/  →  buf/lint/planton/cmd/optional-lin
 **Module Path Updated**:
 ```go
 // buf/lint/planton/go.mod
-module github.com/project-planton/project-planton/buf/lint/optional-linter
+module github.com/plantonhq/project-planton/buf/lint/optional-linter
 ```
 
 **Import Path Updated**:
@@ -62,7 +62,7 @@ module github.com/project-planton/project-planton/buf/lint/optional-linter
 // cmd/optional-linter/main.go
 import (
     "buf.build/go/bufplugin/check"
-    "github.com/project-planton/project-planton/buf/lint/optional-linter/rules"
+    "github.com/plantonhq/project-planton/buf/lint/optional-linter/rules"
 )
 ```
 
@@ -80,7 +80,7 @@ Created `buf/lint/planton/buf.plugin.yaml`:
 version: v1
 name: buf.build/project-planton/optional-linter
 plugin_version: v0.1.0
-source_url: https://github.com/project-planton/project-planton
+source_url: https://github.com/plantonhq/project-planton
 description: "Validates that scalar proto fields with (org.project_planton.shared.options.default) are marked as optional"
 ```
 
@@ -332,7 +332,7 @@ buf/lint/planton/
 
 | File | Change | Reason |
 |------|--------|--------|
-| `buf/lint/planton/go.mod` | Module path: `github.com/project-planton/project-planton/buf/lint/optional-linter` | Reflect new plugin name |
+| `buf/lint/planton/go.mod` | Module path: `github.com/plantonhq/project-planton/buf/lint/optional-linter` | Reflect new plugin name |
 | `buf/lint/planton/cmd/optional-linter/main.go` | Import path updated | Use new module path |
 | `buf/lint/planton/README.md` | All references updated | Document new naming and workflows |
 | `apis/Makefile` | Simplified `build-lint-plugin` target | Delegate to plugin Makefile |
@@ -735,7 +735,7 @@ $ optional-linter --protocol
 ### External Resources
 
 - **Plugin Page**: https://buf.build/project-planton/optional-linter
-- **Source Code**: https://github.com/project-planton/project-planton/tree/main/buf/lint/planton
+- **Source Code**: https://github.com/plantonhq/project-planton/tree/main/buf/lint/planton
 - **Buf Plugin Docs**: https://buf.build/docs/bsr/remote-plugins/custom-plugins/
 - **WebAssembly Guide**: https://buf.build/docs/cli/buf-plugins/webassembly/
 

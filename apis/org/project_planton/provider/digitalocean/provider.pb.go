@@ -137,8 +137,8 @@ const file_org_project_planton_provider_digitalocean_provider_proto_rawDesc = ""
 	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiToken\x12l\n" +
 	"\x0edefault_region\x18\x02 \x01(\x0e2=.org.project_planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\rdefaultRegion\x12(\n" +
 	"\x10spaces_access_id\x18\x03 \x01(\tR\x0espacesAccessId\x12*\n" +
-	"\x11spaces_secret_key\x18\x04 \x01(\tR\x0fspacesSecretKeyB\xdd\x02\n" +
-	"-com.org.project_planton.provider.digitaloceanB\rProviderProtoP\x01ZYgithub.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean\xa2\x02\x04OPPD\xaa\x02(Org.ProjectPlanton.Provider.Digitalocean\xca\x02(Org\\ProjectPlanton\\Provider\\Digitalocean\xe2\x024Org\\ProjectPlanton\\Provider\\Digitalocean\\GPBMetadata\xea\x02+Org::ProjectPlanton::Provider::Digitaloceanb\x06proto3"
+	"\x11spaces_secret_key\x18\x04 \x01(\tR\x0fspacesSecretKeyB\xd7\x02\n" +
+	"-com.org.project_planton.provider.digitaloceanB\rProviderProtoP\x01ZSgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean\xa2\x02\x04OPPD\xaa\x02(Org.ProjectPlanton.Provider.Digitalocean\xca\x02(Org\\ProjectPlanton\\Provider\\Digitalocean\xe2\x024Org\\ProjectPlanton\\Provider\\Digitalocean\\GPBMetadata\xea\x02+Org::ProjectPlanton::Provider::Digitaloceanb\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_provider_proto_rawDescOnce sync.Once

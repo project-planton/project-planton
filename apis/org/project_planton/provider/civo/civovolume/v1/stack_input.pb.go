@@ -7,7 +7,7 @@
 package civovolumev1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civovolume_v1_stack_input_proto_raw
 	"Aorg/project_planton/provider/civo/civovolume/v1/stack_input.proto\x12/org.project_planton.provider.civo.civovolume.v1\x1a9org/project_planton/provider/civo/civovolume/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xcb\x01\n" +
 	"\x14CivoVolumeStackInput\x12S\n" +
 	"\x06target\x18\x01 \x01(\v2;.org.project_planton.provider.civo.civovolume.v1.CivoVolumeR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\x93\x03\n" +
-	"3com.org.project_planton.provider.civo.civovolume.v1B\x0fStackInputProtoP\x01Zlgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\x8d\x03\n" +
+	"3com.org.project_planton.provider.civo.civovolume.v1B\x0fStackInputProtoP\x01Zfgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovolume_v1_stack_input_proto_rawDescOnce sync.Once

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/project-planton/project-planton/internal/valuefrom"
+	"github.com/plantonhq/project-planton/internal/valuefrom"
 	"k8s.io/utils/pointer"
 
 	"github.com/pkg/errors"
@@ -18,7 +18,7 @@ import (
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/lb"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
-	awsecsservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecsservice/v1"
+	awsecsservicev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecsservice/v1"
 )
 
 // fallback when user doesn't supply alb.priority

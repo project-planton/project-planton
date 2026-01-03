@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	kubernetesstatefulsetv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
+	kubernetesstatefulsetv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kuberneteslabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

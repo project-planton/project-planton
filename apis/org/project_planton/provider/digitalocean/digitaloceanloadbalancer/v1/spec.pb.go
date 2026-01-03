@@ -8,9 +8,9 @@ package digitaloceanloadbalancerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -391,8 +391,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1
 	"/digitalocean_load_balancer_protocol_unspecified\x10\x00\x12\b\n" +
 	"\x04http\x10\x01\x12\t\n" +
 	"\x05https\x10\x02\x12\a\n" +
-	"\x03tcp\x10\x03B\xa0\x04\n" +
-	"Icom.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1B\tSpecProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05OPPDD\xaa\x02DOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
+	"\x03tcp\x10\x03B\x9a\x04\n" +
+	"Icom.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1B\tSpecProtoP\x01Z\x8a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05OPPDD\xaa\x02DOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_spec_proto_rawDescOnce sync.Once

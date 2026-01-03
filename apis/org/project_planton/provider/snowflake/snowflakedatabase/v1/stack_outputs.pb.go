@@ -131,8 +131,8 @@ const file_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_out
 	"\n" +
 	"created_on\x18\x04 \x01(\tR\tcreatedOn\x12!\n" +
 	"\fis_transient\x18\x05 \x01(\bR\visTransient\x12<\n" +
-	"\x1bdata_retention_time_in_days\x18\x06 \x01(\x05R\x17dataRetentionTimeInDaysB\xe4\x03\n" +
-	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
+	"\x1bdata_retention_time_in_days\x18\x06 \x01(\x05R\x17dataRetentionTimeInDaysB\xde\x03\n" +
+	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\x11StackOutputsProtoP\x01Zygithub.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_outputs_proto_rawDescOnce sync.Once

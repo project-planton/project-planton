@@ -73,8 +73,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_sta
 	"Uorg/project_planton/provider/digitalocean/digitaloceanfirewall/v1/stack_outputs.proto\x12Aorg.project_planton.provider.digitalocean.digitaloceanfirewall.v1\"C\n" +
 	" DigitalOceanFirewallStackOutputs\x12\x1f\n" +
 	"\vfirewall_id\x18\x01 \x01(\tR\n" +
-	"firewallIdB\x8c\x04\n" +
-	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfirewall.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
+	"firewallIdB\x86\x04\n" +
+	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfirewall.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_outputs_proto_rawDescOnce sync.Once

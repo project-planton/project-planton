@@ -8,9 +8,9 @@ package digitaloceankubernetesclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -302,8 +302,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceankubernetesclust
 	"\n" +
 	"auto_scale\x18\x03 \x01(\bR\tautoScale\x12\x1b\n" +
 	"\tmin_nodes\x18\x04 \x01(\rR\bminNodes\x12\x1b\n" +
-	"\tmax_nodes\x18\x05 \x01(\rR\bmaxNodesB\xc3\x04\n" +
-	"Ncom.org.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1B\tSpecProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
+	"\tmax_nodes\x18\x05 \x01(\rR\bmaxNodesB\xbd\x04\n" +
+	"Ncom.org.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1B\tSpecProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescOnce sync.Once

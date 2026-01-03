@@ -104,8 +104,8 @@ const file_org_project_planton_provider_civo_civokubernetescluster_v1_stack_outp
 	"cluster_id\x18\x01 \x01(\tR\tclusterId\x12%\n" +
 	"\x0ekubeconfig_b64\x18\x02 \x01(\tR\rkubeconfigB64\x12.\n" +
 	"\x13api_server_endpoint\x18\x03 \x01(\tR\x11apiServerEndpoint\x12,\n" +
-	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\xe3\x03\n" +
-	">com.org.project_planton.provider.civo.civokubernetescluster.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1;civokubernetesclusterv1\xa2\x02\x05OPPCC\xaa\x029Org.ProjectPlanton.Provider.Civo.Civokubernetescluster.V1\xca\x029Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Civo::Civokubernetescluster::V1b\x06proto3"
+	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\xdc\x03\n" +
+	">com.org.project_planton.provider.civo.civokubernetescluster.v1B\x11StackOutputsProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1;civokubernetesclusterv1\xa2\x02\x05OPPCC\xaa\x029Org.ProjectPlanton.Provider.Civo.Civokubernetescluster.V1\xca\x029Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Civo::Civokubernetescluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civokubernetescluster_v1_stack_outputs_proto_rawDescOnce sync.Once

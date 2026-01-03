@@ -103,8 +103,8 @@ const file_org_project_planton_provider_azure_azureakscluster_v1_stack_outputs_p
 	"\x13api_server_endpoint\x18\x01 \x01(\tR\x11apiServerEndpoint\x12.\n" +
 	"\x13cluster_resource_id\x18\x02 \x01(\tR\x11clusterResourceId\x12-\n" +
 	"\x12cluster_kubeconfig\x18\x03 \x01(\tR\x11clusterKubeconfig\x12A\n" +
-	"\x1dmanaged_identity_principal_id\x18\x04 \x01(\tR\x1amanagedIdentityPrincipalIdB\xbe\x03\n" +
-	"9com.org.project_planton.provider.azure.azureakscluster.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureakscluster/v1;azureaksclusterv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azureakscluster.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azureakscluster\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azureakscluster\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azureakscluster::V1b\x06proto3"
+	"\x1dmanaged_identity_principal_id\x18\x04 \x01(\tR\x1amanagedIdentityPrincipalIdB\xb8\x03\n" +
+	"9com.org.project_planton.provider.azure.azureakscluster.v1B\x11StackOutputsProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azureakscluster/v1;azureaksclusterv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azureakscluster.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azureakscluster\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azureakscluster\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azureakscluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azureakscluster_v1_stack_outputs_proto_rawDescOnce sync.Once

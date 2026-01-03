@@ -238,7 +238,7 @@ project-planton pulumi --help
 project-planton tofu apply --help
 ```
 
-**Found an issue?** [Open an issue](https://github.com/project-planton/project-planton/issues)
+**Found an issue?** [Open an issue](https://github.com/plantonhq/project-planton/issues)
 
-**Questions?** Check [GitHub Discussions](https://github.com/project-planton/project-planton/discussions)
+**Questions?** Check [GitHub Discussions](https://github.com/plantonhq/project-planton/discussions)
 

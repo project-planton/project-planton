@@ -94,8 +94,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceancontainerregist
 	"\rregistry_name\x18\x01 \x01(\tR\fregistryName\x12\x1d\n" +
 	"\n" +
 	"server_url\x18\x02 \x01(\tR\tserverUrl\x12\x16\n" +
-	"\x06region\x18\x03 \x01(\tR\x06regionB\xcb\x04\n" +
-	"Ncom.org.project_planton.provider.digitalocean.digitaloceancontainerregistry.v1B\x11StackOutputsProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1;digitaloceancontainerregistryv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancontainerregistry.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancontainerregistry::V1b\x06proto3"
+	"\x06region\x18\x03 \x01(\tR\x06regionB\xc5\x04\n" +
+	"Ncom.org.project_planton.provider.digitalocean.digitaloceancontainerregistry.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1;digitaloceancontainerregistryv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancontainerregistry.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancontainerregistry::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_stack_outputs_proto_rawDescOnce sync.Once

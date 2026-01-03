@@ -8,8 +8,8 @@ package kuberneteshelmreleasev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -146,8 +146,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec
 	"\x06values\x18\a \x03(\v2g.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1.KubernetesHelmReleaseSpec.ValuesEntryR\x06values\x1a9\n" +
 	"\vValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xff\x03\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kuberneteshelmrelease.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteshelmrelease::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xf9\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1B\tSpecProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kuberneteshelmrelease.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteshelmrelease::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_spec_proto_rawDescOnce sync.Once

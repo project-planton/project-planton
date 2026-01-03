@@ -7,7 +7,7 @@
 package digitalocean
 
 import (
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -114,8 +114,8 @@ const file_org_project_planton_provider_digitalocean_region_proto_rawDesc = "" +
 	"\x92\xa9\x1d\x06London\x12\x15\n" +
 	"\x04tor1\x10\x06\x1a\v\x92\xa9\x1d\aToronto\x12\x17\n" +
 	"\x04blr1\x10\a\x1a\r\x92\xa9\x1d\tBangalore\x12\x17\n" +
-	"\x04ams3\x10\b\x1a\r\x92\xa9\x1d\tAmsterdamB\xdb\x02\n" +
-	"-com.org.project_planton.provider.digitaloceanB\vRegionProtoP\x01ZYgithub.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean\xa2\x02\x04OPPD\xaa\x02(Org.ProjectPlanton.Provider.Digitalocean\xca\x02(Org\\ProjectPlanton\\Provider\\Digitalocean\xe2\x024Org\\ProjectPlanton\\Provider\\Digitalocean\\GPBMetadata\xea\x02+Org::ProjectPlanton::Provider::Digitaloceanb\x06proto3"
+	"\x04ams3\x10\b\x1a\r\x92\xa9\x1d\tAmsterdamB\xd5\x02\n" +
+	"-com.org.project_planton.provider.digitaloceanB\vRegionProtoP\x01ZSgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean\xa2\x02\x04OPPD\xaa\x02(Org.ProjectPlanton.Provider.Digitalocean\xca\x02(Org\\ProjectPlanton\\Provider\\Digitalocean\xe2\x024Org\\ProjectPlanton\\Provider\\Digitalocean\\GPBMetadata\xea\x02+Org::ProjectPlanton::Provider::Digitaloceanb\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_region_proto_rawDescOnce sync.Once

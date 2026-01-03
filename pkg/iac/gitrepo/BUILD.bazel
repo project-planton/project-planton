@@ -6,7 +6,7 @@ go_library(
         "extract_repo_name.go",
         "git_repo.go",
     ],
-    importpath = "github.com/project-planton/project-planton/pkg/iac/gitrepo",
+    importpath = "github.com/plantonhq/project-planton/pkg/iac/gitrepo",
     visibility = ["//visibility:public"],
     deps = ["@com_github_pkg_errors//:errors"],
 )

@@ -43,7 +43,7 @@ This Pulumi module provides automated deployment and management of Google Cloud 
 To integrate the GCP Cloud SQL Pulumi Module into your project, retrieve it from the GitHub repository. Ensure that you have both Pulumi and Go installed and properly configured.
 
 ```shell
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi
 ```
 

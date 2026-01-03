@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 
-	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 )
 
 // Locals holds all computed values for the ExternalDNS module

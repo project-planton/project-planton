@@ -83,8 +83,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_
 	"Xorg/project_planton/provider/digitalocean/digitaloceancertificate/v1/stack_outputs.proto\x12Dorg.project_planton.provider.digitalocean.digitaloceancertificate.v1\"s\n" +
 	"#DigitalOceanCertificateStackOutputs\x12%\n" +
 	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xa1\x04\n" +
-	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\x11StackOutputsProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
+	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\x9b\x04\n" +
+	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -184,8 +184,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_pro
 	"\x03PRO\x10\x01\x12\f\n" +
 	"\bBUSINESS\x10\x02\x12\x0e\n" +
 	"\n" +
-	"ENTERPRISE\x10\x03B\xe3\x03\n" +
-	"@com.org.project_planton.provider.cloudflare.cloudflarednszone.v1B\tSpecProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1;cloudflarednszonev1\xa2\x02\x05OPPCC\xaa\x02;Org.ProjectPlanton.Provider.Cloudflare.Cloudflarednszone.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Cloudflare::Cloudflarednszone::V1b\x06proto3"
+	"ENTERPRISE\x10\x03B\xdc\x03\n" +
+	"@com.org.project_planton.provider.cloudflare.cloudflarednszone.v1B\tSpecProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1;cloudflarednszonev1\xa2\x02\x05OPPCC\xaa\x02;Org.ProjectPlanton.Provider.Cloudflare.Cloudflarednszone.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Cloudflare::Cloudflarednszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_rawDescOnce sync.Once

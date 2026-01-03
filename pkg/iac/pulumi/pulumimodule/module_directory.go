@@ -7,21 +7,21 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/cli/staging"
-	"github.com/project-planton/project-planton/internal/cli/version"
-	"github.com/project-planton/project-planton/internal/cli/workspace"
-	"github.com/project-planton/project-planton/pkg/crkreflect"
-	"github.com/project-planton/project-planton/pkg/fileutil"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/cli/staging"
+	"github.com/plantonhq/project-planton/internal/cli/version"
+	"github.com/plantonhq/project-planton/internal/cli/workspace"
+	"github.com/plantonhq/project-planton/pkg/crkreflect"
+	"github.com/plantonhq/project-planton/pkg/fileutil"
 )
 
 // GetPathResult contains the module path and a cleanup function
 type GetPathResult struct {
-	ModulePath     string
-	RepoPath       string
-	CleanupFunc    func() error
-	ShouldCleanup  bool
+	ModulePath    string
+	RepoPath      string
+	CleanupFunc   func() error
+	ShouldCleanup bool
 }
 
 // GetPath returns the path to the Pulumi module directory.

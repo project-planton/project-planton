@@ -76,8 +76,8 @@ const file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_stack_outputs_p
 	"\rsecret_id_map\x18\x01 \x03(\v2e.org.project_planton.provider.gcp.gcpsecretsmanager.v1.GcpSecretsManagerStackOutputs.SecretIdMapEntryR\vsecretIdMap\x1a>\n" +
 	"\x10SecretIdMapEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xc0\x03\n" +
-	"9com.org.project_planton.provider.gcp.gcpsecretsmanager.v1B\x11StackOutputsProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1;gcpsecretsmanagerv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpsecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpsecretsmanager::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xba\x03\n" +
+	"9com.org.project_planton.provider.gcp.gcpsecretsmanager.v1B\x11StackOutputsProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1;gcpsecretsmanagerv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpsecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpsecretsmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -7,7 +7,7 @@
 package snowflakedatabasev1
 
 import (
-	snowflake "github.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake"
+	snowflake "github.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_inp
 	"Morg/project_planton/provider/snowflake/snowflakedatabase/v1/stack_input.proto\x12;org.project_planton.provider.snowflake.snowflakedatabase.v1\x1a5org/project_planton/provider/snowflake/provider.proto\x1aEorg/project_planton/provider/snowflake/snowflakedatabase/v1/api.proto\"\xef\x01\n" +
 	"\x1bSnowflakeDatabaseStackInput\x12f\n" +
 	"\x06target\x18\x01 \x01(\v2N.org.project_planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseR\x06target\x12h\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2?.org.project_planton.provider.snowflake.SnowflakeProviderConfigR\x0eproviderConfigB\xe2\x03\n" +
-	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\x0fStackInputProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2?.org.project_planton.provider.snowflake.SnowflakeProviderConfigR\x0eproviderConfigB\xdc\x03\n" +
+	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\x0fStackInputProtoP\x01Zygithub.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_proto_rawDescOnce sync.Once

@@ -101,8 +101,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_spec
 	"\xbaH\a\xc8\x01\x01r\x02\x18@R\rnamespaceName\x12(\n" +
 	"\vttl_seconds\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x02(\x00R\n" +
 	"ttlSeconds\x12*\n" +
-	"\vdescription\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\vdescriptionB\xff\x03\n" +
-	"Dcom.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1;cloudflarekvnamespacev1\xa2\x02\x05OPPCC\xaa\x02?Org.ProjectPlanton.Provider.Cloudflare.Cloudflarekvnamespace.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarekvnamespace::V1b\x06proto3"
+	"\vdescription\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\vdescriptionB\xf9\x03\n" +
+	"Dcom.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1B\tSpecProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1;cloudflarekvnamespacev1\xa2\x02\x05OPPCC\xaa\x02?Org.ProjectPlanton.Provider.Cloudflare.Cloudflarekvnamespace.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarekvnamespace::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_spec_proto_rawDescOnce sync.Once

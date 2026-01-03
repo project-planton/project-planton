@@ -28,8 +28,8 @@ const file_org_project_planton_app_credential_v1_command_proto_rawDesc = "" +
 	"\x1bCredentialCommandController\x12\x81\x01\n" +
 	"\x06Create\x12:.org.project_planton.credential.v1.CreateCredentialRequest\x1a;.org.project_planton.credential.v1.CreateCredentialResponse\x12\x81\x01\n" +
 	"\x06Update\x12:.org.project_planton.credential.v1.UpdateCredentialRequest\x1a;.org.project_planton.credential.v1.UpdateCredentialResponse\x12\x81\x01\n" +
-	"\x06Delete\x12:.org.project_planton.credential.v1.DeleteCredentialRequest\x1a;.org.project_planton.credential.v1.DeleteCredentialResponseB\xbc\x02\n" +
-	"%com.org.project_planton.credential.v1B\fCommandProtoP\x01Zbgithub.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
+	"\x06Delete\x12:.org.project_planton.credential.v1.DeleteCredentialRequest\x1a;.org.project_planton.credential.v1.DeleteCredentialResponseB\xb6\x02\n" +
+	"%com.org.project_planton.credential.v1B\fCommandProtoP\x01Z\\github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
 
 var file_org_project_planton_app_credential_v1_command_proto_goTypes = []any{
 	(*CreateCredentialRequest)(nil),  // 0: org.project_planton.credential.v1.CreateCredentialRequest

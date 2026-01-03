@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/cli/staging"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/cli/staging"
 	"github.com/spf13/cobra"
 )
 
@@ -61,4 +61,3 @@ func modulesVersionHandler(cmd *cobra.Command, args []string) {
 	fmt.Println("  project-planton pull                  Update to latest from upstream")
 	fmt.Println("  project-planton checkout <version>    Switch to a specific version")
 }
-

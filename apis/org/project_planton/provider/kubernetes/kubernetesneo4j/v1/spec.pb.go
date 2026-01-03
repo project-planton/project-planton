@@ -8,8 +8,8 @@ package kubernetesneo4jv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -345,8 +345,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
 	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa3\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\x82ֱ\x02 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainerR\x10defaultContainerB\xd4\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\x82ֱ\x02 \x01(\v2T.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jContainerR\x10defaultContainerB\xce\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\tSpecProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_spec_proto_rawDescOnce sync.Once

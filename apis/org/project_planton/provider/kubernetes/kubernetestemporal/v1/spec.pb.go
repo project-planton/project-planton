@@ -8,9 +8,9 @@ package kubernetestemporalv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1099,8 +1099,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_pr
 	"\tcassandra\x10\x01\x12\x0e\n" +
 	"\n" +
 	"postgresql\x10\x02\x12\t\n" +
-	"\x05mysql\x10\x03B\xea\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kubernetestemporal.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetestemporal.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestemporal::V1b\x06proto3"
+	"\x05mysql\x10\x03B\xe3\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetestemporal.v1B\tSpecProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetestemporal.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestemporal::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_spec_proto_rawDescOnce sync.Once

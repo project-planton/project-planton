@@ -8,7 +8,7 @@ package gcpcertmanagercertv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_gcp_gcpcertmanagercert_v1_api_proto_rawD
 	"\x04spec\x18\x04 \x01(\v2N.org.project_planton.provider.gcp.gcpcertmanagercert.v1.GcpCertManagerCertSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12h\n" +
 	"\x06status\x18\x05 \x01(\v2P.org.project_planton.provider.gcp.gcpcertmanagercert.v1.GcpCertManagerCertStatusR\x06status\"\x8c\x01\n" +
 	"\x18GcpCertManagerCertStatus\x12p\n" +
-	"\aoutputs\x18\x01 \x01(\v2V.org.project_planton.provider.gcp.gcpcertmanagercert.v1.GcpCertManagerCertStackOutputsR\aoutputsB\xbe\x03\n" +
-	":com.org.project_planton.provider.gcp.gcpcertmanagercert.v1B\bApiProtoP\x01Z{github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1;gcpcertmanagercertv1\xa2\x02\x05OPPGG\xaa\x025Org.ProjectPlanton.Provider.Gcp.Gcpcertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Gcp::Gcpcertmanagercert::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2V.org.project_planton.provider.gcp.gcpcertmanagercert.v1.GcpCertManagerCertStackOutputsR\aoutputsB\xb8\x03\n" +
+	":com.org.project_planton.provider.gcp.gcpcertmanagercert.v1B\bApiProtoP\x01Zugithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1;gcpcertmanagercertv1\xa2\x02\x05OPPGG\xaa\x025Org.ProjectPlanton.Provider.Gcp.Gcpcertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Gcp::Gcpcertmanagercert::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcertmanagercert_v1_api_proto_rawDescOnce sync.Once

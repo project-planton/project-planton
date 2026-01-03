@@ -84,7 +84,7 @@ message TemporalKubernetesSearchAttribute {
 **Command**:
 
 ```bash
-cd /Users/suresh/scm/github.com/project-planton/project-planton/apis
+cd /Users/suresh/scm/github.com/plantonhq/project-planton/apis
 make protos
 ```
 

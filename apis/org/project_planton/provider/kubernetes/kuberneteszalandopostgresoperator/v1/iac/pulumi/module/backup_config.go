@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	kuberneteszalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
+	kuberneteszalandopostgresoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"

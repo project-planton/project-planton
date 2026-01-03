@@ -114,8 +114,8 @@ const file_org_project_planton_provider_gcp_gcpcloudsql_v1_stack_outputs_proto_r
 	"\n" +
 	"private_ip\x18\x03 \x01(\tR\tprivateIp\x12\x1b\n" +
 	"\tpublic_ip\x18\x04 \x01(\tR\bpublicIp\x12\x1b\n" +
-	"\tself_link\x18\x05 \x01(\tR\bselfLinkB\x96\x03\n" +
-	"3com.org.project_planton.provider.gcp.gcpcloudsql.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudsql/v1;gcpcloudsqlv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudsql.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudsql\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudsql\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudsql::V1b\x06proto3"
+	"\tself_link\x18\x05 \x01(\tR\bselfLinkB\x90\x03\n" +
+	"3com.org.project_planton.provider.gcp.gcpcloudsql.v1B\x11StackOutputsProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudsql/v1;gcpcloudsqlv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudsql.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudsql\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudsql\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudsql::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudsql_v1_stack_outputs_proto_rawDescOnce sync.Once

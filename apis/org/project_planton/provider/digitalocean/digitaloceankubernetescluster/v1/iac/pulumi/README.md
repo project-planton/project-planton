@@ -626,7 +626,7 @@ kubectl logs -n kube-system -l app=cluster-autoscaler
 ## Support
 
 For issues or questions:
-- Project Planton: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
+- Project Planton: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
 - Pulumi Community: [Slack](https://slack.pulumi.com/)
 - DigitalOcean Support: [Support Portal](https://www.digitalocean.com/support)
 

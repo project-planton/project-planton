@@ -7,7 +7,7 @@
 package civodatabasev1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civodatabase_v1_stack_input_proto_r
 	"Corg/project_planton/provider/civo/civodatabase/v1/stack_input.proto\x121org.project_planton.provider.civo.civodatabase.v1\x1a;org/project_planton/provider/civo/civodatabase/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xd1\x01\n" +
 	"\x16CivoDatabaseStackInput\x12W\n" +
 	"\x06target\x18\x01 \x01(\v2?.org.project_planton.provider.civo.civodatabase.v1.CivoDatabaseR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xa1\x03\n" +
-	"5com.org.project_planton.provider.civo.civodatabase.v1B\x0fStackInputProtoP\x01Zpgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\x9b\x03\n" +
+	"5com.org.project_planton.provider.civo.civodatabase.v1B\x0fStackInputProtoP\x01Zjgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodatabase_v1_stack_input_proto_rawDescOnce sync.Once

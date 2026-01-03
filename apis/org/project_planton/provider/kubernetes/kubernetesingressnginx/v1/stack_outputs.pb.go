@@ -103,8 +103,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_sta
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12!\n" +
 	"\fservice_name\x18\x03 \x01(\tR\vserviceName\x12!\n" +
-	"\fservice_type\x18\x04 \x01(\tR\vserviceTypeB\x8e\x04\n" +
-	"Ecom.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetesingressnginx.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesingressnginx::V1b\x06proto3"
+	"\fservice_type\x18\x04 \x01(\tR\vserviceTypeB\x88\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetesingressnginx.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesingressnginx::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_stack_outputs_proto_rawDescOnce sync.Once

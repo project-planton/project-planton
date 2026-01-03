@@ -430,9 +430,9 @@ spec:
 
 ### Getting Help
 
-- **Project Planton Issues**: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
+- **Project Planton Issues**: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
 - **Civo Support**: [Civo Support Portal](https://www.civo.com/support)
-- **Community**: [Project Planton Discussions](https://github.com/project-planton/project-planton/discussions)
+- **Community**: [Project Planton Discussions](https://github.com/plantonhq/project-planton/discussions)
 
 ## Version History
 

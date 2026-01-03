@@ -10,7 +10,7 @@ import (
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 )
 
 func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) (*batchv1.CronJob, error) {

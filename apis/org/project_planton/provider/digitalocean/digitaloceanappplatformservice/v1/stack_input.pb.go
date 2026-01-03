@@ -7,7 +7,7 @@
 package digitaloceanappplatformservicev1
 
 import (
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanappplatformserv
 	"]org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/stack_input.proto\x12Korg.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1aUorg/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/api.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\"\xa0\x02\n" +
 	"(DigitalOceanAppPlatformServiceStackInput\x12\x83\x01\n" +
 	"\x06target\x18\x01 \x01(\v2k.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceR\x06target\x12n\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xd0\x04\n" +
-	"Ocom.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1B\x0fStackInputProtoP\x01Z\x9c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xca\x04\n" +
+	"Ocom.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1B\x0fStackInputProtoP\x01Z\x96\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_stack_input_proto_rawDescOnce sync.Once

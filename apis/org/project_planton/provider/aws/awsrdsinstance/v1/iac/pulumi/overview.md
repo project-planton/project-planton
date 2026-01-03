@@ -752,7 +752,7 @@ Implement connection pooling:
 - [AWS RDS Documentation](https://docs.aws.amazon.com/rds/)
 - [Pulumi AWS RDS Instance](https://www.pulumi.com/registry/packages/aws/api-docs/rds/instance/)
 - [RDS Best Practices](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_BestPractices.html)
-- [ProjectPlanton Architecture](https://github.com/project-planton/project-planton/blob/main/architecture/deployment-component.md)
+- [ProjectPlanton Architecture](https://github.com/plantonhq/project-planton/blob/main/architecture/deployment-component.md)
 
 ## Conclusion
 

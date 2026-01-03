@@ -1,6 +1,6 @@
 name=project-planton
 name_local=project-planton
-pkg=github.com/project-planton/project-planton
+pkg=github.com/plantonhq/project-planton
 build_dir=build
 version?=$(shell python3 tools/ci/release/next_version.py patch 2>/dev/null || echo "dev")
 LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
@@ -113,7 +113,7 @@ build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle baze
 ${build_dir}/${name}: build-go
 
 # ── Docker (Unified Image) ─────────────────────────────────────────────────────
-DOCKER_IMAGE?=ghcr.io/project-planton/project-planton
+DOCKER_IMAGE?=ghcr.io/plantonhq/project-planton
 DOCKER_TAG?=latest
 DOCKERFILE_UNIFIED=app/Dockerfile.unified
 

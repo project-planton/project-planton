@@ -962,9 +962,9 @@ project-planton
 ```go
 // Internal registry
 var moduleRegistry = map[string]string{
-  "PostgresKubernetes": "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/postgreskubernetes/v1/iac",
-  "MongodbAtlas": "github.com/project-planton/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1/iac",
-  "AwsRdsInstance": "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1/iac",
+  "PostgresKubernetes": "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/postgreskubernetes/v1/iac",
+  "MongodbAtlas": "github.com/plantonhq/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1/iac",
+  "AwsRdsInstance": "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1/iac",
   // ... 100+ components
 }
 ```
@@ -998,7 +998,7 @@ project-planton pulumi up \
 ```go
 import (
   "github.com/bufbuild/protovalidate-go"
-  pb "github.com/project-planton/project-planton/apis/..."
+  pb "github.com/plantonhq/project-planton/apis/..."
 )
 
 func validateManifest(manifestYaml string) error {
@@ -1207,7 +1207,7 @@ git push origin main
 
 ```bash
 # Fork
-git clone https://github.com/project-planton/project-planton
+git clone https://github.com/plantonhq/project-planton
 cd project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1/iac/pulumi
 # Edit main.go to add organizational defaults
 
@@ -1468,7 +1468,7 @@ brew install opentofu
 brew install make
 
 # Clone repository
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton
 ```
 

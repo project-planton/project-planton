@@ -8,7 +8,7 @@ package civodatabasev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_civo_civodatabase_v1_api_proto_rawDesc =
 	"\x04spec\x18\x04 \x01(\v2C.org.project_planton.provider.civo.civodatabase.v1.CivoDatabaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12]\n" +
 	"\x06status\x18\x05 \x01(\v2E.org.project_planton.provider.civo.civodatabase.v1.CivoDatabaseStatusR\x06status\"{\n" +
 	"\x12CivoDatabaseStatus\x12e\n" +
-	"\aoutputs\x18\x01 \x01(\v2K.org.project_planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputsR\aoutputsB\x9a\x03\n" +
-	"5com.org.project_planton.provider.civo.civodatabase.v1B\bApiProtoP\x01Zpgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2K.org.project_planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputsR\aoutputsB\x94\x03\n" +
+	"5com.org.project_planton.provider.civo.civodatabase.v1B\bApiProtoP\x01Zjgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodatabase_v1_api_proto_rawDescOnce sync.Once

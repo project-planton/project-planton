@@ -73,8 +73,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesperconamysqloperato
 	"\n" +
 	"]org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/stack_outputs.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1\"J\n" +
 	"*KubernetesPerconaMysqlOperatorStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xc6\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1B\x11StackOutputsProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1;kubernetesperconamysqloperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamysqloperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamysqloperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamysqloperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamysqloperator::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xc0\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamysqloperator.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1;kubernetesperconamysqloperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamysqloperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamysqloperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamysqloperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamysqloperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconamysqloperator_v1_stack_outputs_proto_rawDescOnce sync.Once

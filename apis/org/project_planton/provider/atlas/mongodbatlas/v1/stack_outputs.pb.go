@@ -111,8 +111,8 @@ const file_org_project_planton_provider_atlas_mongodbatlas_v1_stack_outputs_prot
 	"\x02id\x18\x01 \x01(\tR\x02id\x12-\n" +
 	"\x12bootstrap_endpoint\x18\x02 \x01(\tR\x11bootstrapEndpoint\x12\x10\n" +
 	"\x03crn\x18\x03 \x01(\tR\x03crn\x12#\n" +
-	"\rrest_endpoint\x18\x04 \x01(\tR\frestEndpointB\xa9\x03\n" +
-	"6com.org.project_planton.provider.atlas.mongodbatlas.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1;mongodbatlasv1\xa2\x02\x05OPPAM\xaa\x021Org.ProjectPlanton.Provider.Atlas.Mongodbatlas.V1\xca\x021Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Atlas::Mongodbatlas::V1b\x06proto3"
+	"\rrest_endpoint\x18\x04 \x01(\tR\frestEndpointB\xa3\x03\n" +
+	"6com.org.project_planton.provider.atlas.mongodbatlas.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1;mongodbatlasv1\xa2\x02\x05OPPAM\xaa\x021Org.ProjectPlanton.Provider.Atlas.Mongodbatlas.V1\xca\x021Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Atlas::Mongodbatlas::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_atlas_mongodbatlas_v1_stack_outputs_proto_rawDescOnce sync.Once

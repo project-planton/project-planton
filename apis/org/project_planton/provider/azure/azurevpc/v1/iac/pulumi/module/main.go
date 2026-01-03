@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	azurevpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1"
+	azurevpcv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/core"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/network"

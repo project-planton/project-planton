@@ -84,8 +84,8 @@ const file_org_project_planton_provider_azure_azurecontainerregistry_v1_stack_ou
 	"Porg/project_planton/provider/azure/azurecontainerregistry/v1/stack_outputs.proto\x12<org.project_planton.provider.azure.azurecontainerregistry.v1\"\x8a\x01\n" +
 	"\"AzureContainerRegistryStackOutputs\x122\n" +
 	"\x15registry_login_server\x18\x01 \x01(\tR\x13registryLoginServer\x120\n" +
-	"\x14registry_resource_id\x18\x02 \x01(\tR\x12registryResourceIdB\xf0\x03\n" +
-	"@com.org.project_planton.provider.azure.azurecontainerregistry.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05OPPAA\xaa\x02;Org.ProjectPlanton.Provider.Azure.Azurecontainerregistry.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
+	"\x14registry_resource_id\x18\x02 \x01(\tR\x12registryResourceIdB\xe9\x03\n" +
+	"@com.org.project_planton.provider.azure.azurecontainerregistry.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05OPPAA\xaa\x02;Org.ProjectPlanton.Provider.Azure.Azurecontainerregistry.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurecontainerregistry_v1_stack_outputs_proto_rawDescOnce sync.Once

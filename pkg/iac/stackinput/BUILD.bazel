@@ -6,7 +6,7 @@ go_library(
         "providers.go",
         "stack_input.go",
     ],
-    importpath = "github.com/project-planton/project-planton/pkg/iac/stackinput",
+    importpath = "github.com/plantonhq/project-planton/pkg/iac/stackinput",
     visibility = ["//visibility:public"],
     deps = [
         "//pkg/iac/stackinput/stackinputproviderconfig",

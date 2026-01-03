@@ -7,7 +7,7 @@
 package awskmskeyv1
 
 import (
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_aws_awskmskey_v1_stack_input_proto_rawDe
 	"?org/project_planton/provider/aws/awskmskey/v1/stack_input.proto\x12-org.project_planton.provider.aws.awskmskey.v1\x1a7org/project_planton/provider/aws/awskmskey/v1/api.proto\x1a/org/project_planton/provider/aws/provider.proto\"\xc5\x01\n" +
 	"\x13AwsKmsKeyStackInput\x12P\n" +
 	"\x06target\x18\x01 \x01(\v28.org.project_planton.provider.aws.awskmskey.v1.AwsKmsKeyR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x86\x03\n" +
-	"1com.org.project_planton.provider.aws.awskmskey.v1B\x0fStackInputProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awskmskey/v1;awskmskeyv1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awskmskey.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awskmskey::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x80\x03\n" +
+	"1com.org.project_planton.provider.aws.awskmskey.v1B\x0fStackInputProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awskmskey/v1;awskmskeyv1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awskmskey.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awskmskey::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awskmskey_v1_stack_input_proto_rawDescOnce sync.Once

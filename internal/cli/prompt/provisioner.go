@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/project-planton/project-planton/pkg/iac/provisioner"
+	"github.com/plantonhq/project-planton/pkg/iac/provisioner"
 )
 
 // PromptForProvisioner prompts the user to select a provisioner interactively

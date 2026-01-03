@@ -128,8 +128,8 @@ const file_org_project_planton_provider_azure_azurevpc_v1_spec_proto_rawDesc = "
 	"\x04tags\x18\x05 \x03(\v2F.org.project_planton.provider.azure.azurevpc.v1.AzureVpcSpec.TagsEntryR\x04tags\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x85\x03\n" +
-	"2com.org.project_planton.provider.azure.azurevpc.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1;azurevpcv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Azure.Azurevpc.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Azure::Azurevpc::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xff\x02\n" +
+	"2com.org.project_planton.provider.azure.azurevpc.v1B\tSpecProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1;azurevpcv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Azure.Azurevpc.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Azure::Azurevpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurevpc_v1_spec_proto_rawDescOnce sync.Once

@@ -8,8 +8,8 @@ package awsclientvpnv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -344,8 +344,8 @@ const file_org_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc =
 	"\x1dAwsClientVpnTransportProtocol\x121\n" +
 	"-aws_client_vpn_transport_protocol_unspecified\x10\x00\x12\a\n" +
 	"\x03udp\x10\x01\x12\a\n" +
-	"\x03tcp\x10\x02B\x95\x03\n" +
-	"4com.org.project_planton.provider.aws.awsclientvpn.v1B\tSpecProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsclientvpn/v1;awsclientvpnv1\xa2\x02\x05OPPAA\xaa\x02/Org.ProjectPlanton.Provider.Aws.Awsclientvpn.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Aws\\Awsclientvpn\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Aws\\Awsclientvpn\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Aws::Awsclientvpn::V1b\x06proto3"
+	"\x03tcp\x10\x02B\x8f\x03\n" +
+	"4com.org.project_planton.provider.aws.awsclientvpn.v1B\tSpecProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsclientvpn/v1;awsclientvpnv1\xa2\x02\x05OPPAA\xaa\x02/Org.ProjectPlanton.Provider.Aws.Awsclientvpn.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Aws\\Awsclientvpn\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Aws\\Awsclientvpn\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Aws::Awsclientvpn::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDescOnce sync.Once

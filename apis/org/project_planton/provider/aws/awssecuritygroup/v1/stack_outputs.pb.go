@@ -73,8 +73,8 @@ const file_org_project_planton_provider_aws_awssecuritygroup_v1_stack_outputs_pr
 	"\n" +
 	"Horg/project_planton/provider/aws/awssecuritygroup/v1/stack_outputs.proto\x124org.project_planton.provider.aws.awssecuritygroup.v1\"J\n" +
 	"\x1cAwsSecurityGroupStackOutputs\x12*\n" +
-	"\x11security_group_id\x18\x01 \x01(\tR\x0fsecurityGroupIdB\xb9\x03\n" +
-	"8com.org.project_planton.provider.aws.awssecuritygroup.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05OPPAA\xaa\x023Org.ProjectPlanton.Provider.Aws.Awssecuritygroup.V1\xca\x023Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
+	"\x11security_group_id\x18\x01 \x01(\tR\x0fsecurityGroupIdB\xb3\x03\n" +
+	"8com.org.project_planton.provider.aws.awssecuritygroup.v1B\x11StackOutputsProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05OPPAA\xaa\x023Org.ProjectPlanton.Provider.Aws.Awssecuritygroup.V1\xca\x023Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awssecuritygroup_v1_stack_outputs_proto_rawDescOnce sync.Once

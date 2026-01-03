@@ -8,7 +8,7 @@ package kuberneteselasticoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_
 	"\x04spec\x18\x04 \x01(\v2c.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12}\n" +
 	"\x06status\x18\x05 \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStatusR\x06status\"\xa9\x01\n" +
 	"\x1fKubernetesElasticOperatorStatus\x12\x85\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2k.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputsR\aoutputsB\x9a\x04\n" +
-	"Hcom.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1B\bApiProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticoperator.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticoperator::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2k.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1.KubernetesElasticOperatorStackOutputsR\aoutputsB\x94\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kuberneteselasticoperator.v1B\bApiProtoP\x01Z\x8a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1;kuberneteselasticoperatorv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticoperator.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticoperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticoperator_v1_api_proto_rawDescOnce sync.Once

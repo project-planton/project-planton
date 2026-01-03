@@ -2,7 +2,7 @@ package tofumodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule/providerconfig"
+	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofumodule/providerconfig"
 	"gopkg.in/yaml.v3"
 )
 

@@ -1,9 +1,9 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/pkg/crkreflect"
-	"github.com/project-planton/project-planton/pkg/iac/tofu/variablestf"
+	"github.com/plantonhq/project-planton/internal/cli/flag"
+	"github.com/plantonhq/project-planton/pkg/crkreflect"
+	"github.com/plantonhq/project-planton/pkg/iac/tofu/variablestf"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"

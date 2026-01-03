@@ -8,7 +8,7 @@ package cloudflarezerotrustaccessapplicationv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarezerotrustaccessappl
 	"\x04spec\x18\x04 \x01(\v2y.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x93\x01\n" +
 	"\x06status\x18\x05 \x01(\v2{.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatusR\x06status\"\xcb\x01\n" +
 	"*CloudflareZeroTrustAccessApplicationStatus\x12\x9c\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2\x81\x01.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputsR\aoutputsB\xe7\x04\n" +
-	"Scom.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\bApiProtoP\x01Z\xa6\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05OPPCC\xaa\x02NOrg.ProjectPlanton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02SOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2\x81\x01.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputsR\aoutputsB\xe1\x04\n" +
+	"Scom.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\bApiProtoP\x01Z\xa0\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05OPPCC\xaa\x02NOrg.ProjectPlanton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02SOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_api_proto_rawDescOnce sync.Once

@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/cli/flag"
-	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"
-	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/cli/flag"
+	climanifest "github.com/plantonhq/project-planton/internal/cli/manifest"
+	"github.com/plantonhq/project-planton/internal/manifest"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/spf13/cobra"
 )
 

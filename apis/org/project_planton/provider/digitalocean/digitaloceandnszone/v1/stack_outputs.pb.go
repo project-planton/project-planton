@@ -94,8 +94,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_stac
 	"\x1fDigitalOceanDnsZoneStackOutputs\x12\x1b\n" +
 	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
 	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\x85\x04\n" +
-	"Dcom.org.project_planton.provider.digitalocean.digitaloceandnszone.v1B\x11StackOutputsProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
+	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xff\x03\n" +
+	"Dcom.org.project_planton.provider.digitalocean.digitaloceandnszone.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_rawDescOnce sync.Once

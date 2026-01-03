@@ -83,8 +83,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanbucket_v1_stack
 	"Sorg/project_planton/provider/digitalocean/digitaloceanbucket/v1/stack_outputs.proto\x12?org.project_planton.provider.digitalocean.digitaloceanbucket.v1\"Y\n" +
 	"\x1eDigitalOceanBucketStackOutputs\x12\x1b\n" +
 	"\tbucket_id\x18\x01 \x01(\tR\bbucketId\x12\x1a\n" +
-	"\bendpoint\x18\x02 \x01(\tR\bendpointB\xfe\x03\n" +
-	"Ccom.org.project_planton.provider.digitalocean.digitaloceanbucket.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
+	"\bendpoint\x18\x02 \x01(\tR\bendpointB\xf7\x03\n" +
+	"Ccom.org.project_planton.provider.digitalocean.digitaloceanbucket.v1B\x11StackOutputsProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanbucket_v1_stack_outputs_proto_rawDescOnce sync.Once

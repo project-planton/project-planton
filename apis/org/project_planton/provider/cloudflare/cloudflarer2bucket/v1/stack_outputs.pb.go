@@ -95,8 +95,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_o
 	"bucketName\x12\x1d\n" +
 	"\n" +
 	"bucket_url\x18\x02 \x01(\tR\tbucketUrl\x12*\n" +
-	"\x11custom_domain_url\x18\x03 \x01(\tR\x0fcustomDomainUrlB\xf2\x03\n" +
-	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
+	"\x11custom_domain_url\x18\x03 \x01(\tR\x0fcustomDomainUrlB\xeb\x03\n" +
+	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\x11StackOutputsProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_outputs_proto_rawDescOnce sync.Once

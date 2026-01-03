@@ -2,8 +2,8 @@ package stackinput
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
-	"github.com/project-planton/project-planton/pkg/protobufyaml"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	"github.com/plantonhq/project-planton/pkg/protobufyaml"
 	"google.golang.org/protobuf/proto"
 	"gopkg.in/yaml.v3"
 )

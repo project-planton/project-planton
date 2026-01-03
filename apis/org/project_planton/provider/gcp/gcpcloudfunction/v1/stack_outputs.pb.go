@@ -137,8 +137,8 @@ const file_org_project_planton_provider_gcp_gcpcloudfunction_v1_stack_outputs_pr
 	"\x15service_account_email\x18\x03 \x01(\tR\x13serviceAccountEmail\x12\x14\n" +
 	"\x05state\x18\x04 \x01(\tR\x05state\x12/\n" +
 	"\x14cloud_run_service_id\x18\x05 \x01(\tR\x11cloudRunServiceId\x12.\n" +
-	"\x13eventarc_trigger_id\x18\x06 \x01(\tR\x11eventarcTriggerIdB\xb9\x03\n" +
-	"8com.org.project_planton.provider.gcp.gcpcloudfunction.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1;gcpcloudfunctionv1\xa2\x02\x05OPPGG\xaa\x023Org.ProjectPlanton.Provider.Gcp.Gcpcloudfunction.V1\xca\x023Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Gcp::Gcpcloudfunction::V1b\x06proto3"
+	"\x13eventarc_trigger_id\x18\x06 \x01(\tR\x11eventarcTriggerIdB\xb3\x03\n" +
+	"8com.org.project_planton.provider.gcp.gcpcloudfunction.v1B\x11StackOutputsProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1;gcpcloudfunctionv1\xa2\x02\x05OPPGG\xaa\x023Org.ProjectPlanton.Provider.Gcp.Gcpcloudfunction.V1\xca\x023Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudfunction\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Gcp::Gcpcloudfunction::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudfunction_v1_stack_outputs_proto_rawDescOnce sync.Once

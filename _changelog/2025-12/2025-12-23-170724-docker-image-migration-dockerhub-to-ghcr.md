@@ -36,7 +36,7 @@ Implemented a complete migration to GitHub Container Registry (GHCR) with automa
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    GitHub Repository                        │
-│                 project-planton/project-planton             │
+│                 plantonhq/project-planton             │
 └───────────────────┬─────────────────────────────────────────┘
                     │
                     │ 1. Manual Workflow Dispatch (Testing Phase)
@@ -52,7 +52,7 @@ Implemented a complete migration to GitHub Container Registry (GHCR) with automa
 │  │ 2. Set up Docker Buildx (multi-platform support)   │    │
 │  │ 3. Login to GHCR (using GITHUB_TOKEN)             │    │
 │  │ 4. Build for linux/amd64 + linux/arm64            │    │
-│  │ 5. Push to ghcr.io/project-planton/project-planton│    │
+│  │ 5. Push to ghcr.io/plantonhq/project-planton│    │
 │  │ 6. Set package visibility to public                │    │
 │  └────────────────────────────────────────────────────┘    │
 └───────────────────┬─────────────────────────────────────────┘
@@ -62,7 +62,7 @@ Implemented a complete migration to GitHub Container Registry (GHCR) with automa
                     ▼
 ┌─────────────────────────────────────────────────────────────┐
 │         GitHub Container Registry (GHCR)                    │
-│      ghcr.io/project-planton/project-planton               │
+│      ghcr.io/plantonhq/project-planton               │
 │                                                              │
 │  📦 Packages:                                               │
 │     - latest (always updated)                               │
@@ -87,7 +87,7 @@ Implemented a complete migration to GitHub Container Registry (GHCR) with automa
 │    planton webapp start                                     │
 │                                                              │
 │  Docker Commands:                                           │
-│    docker pull ghcr.io/project-planton/project-planton     │
+│    docker pull ghcr.io/plantonhq/project-planton     │
 │    docker-compose up                                        │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -184,7 +184,7 @@ services:
 ```yaml
 services:
   planton:
-    image: ${PLANTON_IMAGE:-ghcr.io/project-planton/project-planton:latest}
+    image: ${PLANTON_IMAGE:-ghcr.io/plantonhq/project-planton:latest}
     container_name: project-planton
     ports:
       - '3000:3000'    # Frontend
@@ -218,7 +218,7 @@ const (
 **After**:
 ```go
 const (
-    DockerImageName   = "ghcr.io/project-planton/project-planton"
+    DockerImageName   = "ghcr.io/plantonhq/project-planton"
     DockerImageTag    = "latest"
     // ... other constants
 )
@@ -239,7 +239,7 @@ $ planton webapp init
 ========================================
 
 📋 Step 3/5: Pulling Docker image...
-   Pulling ghcr.io/project-planton/project-planton:latest...
+   Pulling ghcr.io/plantonhq/project-planton:latest...
 ✅ Docker image pulled successfully
 ```
 
@@ -303,7 +303,7 @@ These scripts remain in place during the migration period but are no longer the 
    - Generally better performance than Docker Hub for GitHub-hosted projects
 
 4. **Clearer Source Association**
-   - `ghcr.io/project-planton/project-planton` clearly maps to GitHub repository
+   - `ghcr.io/plantonhq/project-planton` clearly maps to GitHub repository
    - Easy to find source code from image name
 
 ### For Developers/Maintainers
@@ -381,7 +381,7 @@ planton webapp init
 **For Docker Compose Users**:
 ```bash
 # Pull the new image
-docker pull ghcr.io/project-planton/project-planton:latest
+docker pull ghcr.io/plantonhq/project-planton:latest
 
 # Restart services
 docker-compose down
@@ -395,7 +395,7 @@ Replace any hardcoded references:
 docker pull satishlleftbin/project-planton:latest
 
 # New
-docker pull ghcr.io/project-planton/project-planton:latest
+docker pull ghcr.io/plantonhq/project-planton:latest
 ```
 
 ### Affected Components
@@ -433,7 +433,7 @@ docker pull ghcr.io/project-planton/project-planton:latest
 ### Triggering a Build (Testing Phase)
 
 **Via GitHub UI**:
-1. Go to: `https://github.com/project-planton/project-planton/actions`
+1. Go to: `https://github.com/plantonhq/project-planton/actions`
 2. Select "Build and Push Docker Image to GHCR"
 3. Click "Run workflow"
 4. Optional: Enter version like `test-v1` or `v0.9.0-rc1`
@@ -454,20 +454,20 @@ gh run watch
 **Direct Docker Pull**:
 ```bash
 # Pull latest (no authentication needed!)
-docker pull ghcr.io/project-planton/project-planton:latest
+docker pull ghcr.io/plantonhq/project-planton:latest
 
 # Pull specific version
-docker pull ghcr.io/project-planton/project-planton:v1.0.0
+docker pull ghcr.io/plantonhq/project-planton:v1.0.0
 
 # Verify architecture
-docker inspect ghcr.io/project-planton/project-planton:latest | grep Architecture
+docker inspect ghcr.io/plantonhq/project-planton:latest | grep Architecture
 ```
 
 **Via CLI**:
 ```bash
 # CLI handles the pull automatically
 planton webapp init
-# Pulls ghcr.io/project-planton/project-planton:latest
+# Pulls ghcr.io/plantonhq/project-planton:latest
 ```
 
 **Via Docker Compose**:
@@ -480,18 +480,18 @@ docker-compose up -d
 
 ```bash
 # Check manifest
-docker manifest inspect ghcr.io/project-planton/project-planton:latest
+docker manifest inspect ghcr.io/plantonhq/project-planton:latest
 
 # Output shows both architectures:
 # - linux/amd64
 # - linux/arm64
 
 # On Intel Mac/Linux
-docker pull ghcr.io/project-planton/project-planton:latest
+docker pull ghcr.io/plantonhq/project-planton:latest
 # Automatically pulls amd64 variant
 
 # On Apple Silicon Mac
-docker pull ghcr.io/project-planton/project-planton:latest
+docker pull ghcr.io/plantonhq/project-planton:latest
 # Automatically pulls arm64 variant
 ```
 
@@ -638,7 +638,7 @@ This allows both automatic releases and manual emergency builds.
 # Verify constant was updated
 grep DockerImageName cmd/project-planton/root/webapp/init.go
 
-# Should show: ghcr.io/project-planton/project-planton
+# Should show: ghcr.io/plantonhq/project-planton
 
 # Rebuild CLI
 make build-cli

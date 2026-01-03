@@ -8,9 +8,9 @@ package kubernetesnatsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -495,8 +495,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_
 	"\fbearer_token\x10\x01\x12\x0e\n" +
 	"\n" +
 	"basic_auth\x10\x02:\xb3\x01\n" +
-	"\x18default_server_container\x12\x1d.google.protobuf.FieldOptions\x18Ʌ  \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainerR\x16defaultServerContainerB\xcd\x03\n" +
-	"=com.org.project_planton.provider.kubernetes.kubernetesnats.v1B\tSpecProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1;kubernetesnatsv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnats.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetesnats::V1b\x06proto3"
+	"\x18default_server_container\x12\x1d.google.protobuf.FieldOptions\x18Ʌ  \x01(\v2X.org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsServerContainerR\x16defaultServerContainerB\xc7\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetesnats.v1B\tSpecProtoP\x01Ztgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1;kubernetesnatsv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnats.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetesnats::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_rawDescOnce sync.Once

@@ -7,7 +7,7 @@
 package kubernetesharborv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -269,8 +269,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_stack_out
 	"\x11database_username\x18\x0f \x01(\tR\x10databaseUsername\x12v\n" +
 	"\x18database_password_secret\x18\x10 \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x16databasePasswordSecret\x12%\n" +
 	"\x0eredis_endpoint\x18\x11 \x01(\tR\rredisEndpoint\x12p\n" +
-	"\x15redis_password_secret\x18\x12 \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x13redisPasswordSecretB\xe3\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kubernetesharbor.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1;kubernetesharborv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetesharbor.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetesharbor::V1b\x06proto3"
+	"\x15redis_password_secret\x18\x12 \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x13redisPasswordSecretB\xdd\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetesharbor.v1B\x11StackOutputsProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1;kubernetesharborv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetesharbor.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetesharbor::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_stack_outputs_proto_rawDescOnce sync.Once

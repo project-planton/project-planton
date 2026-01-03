@@ -8,9 +8,9 @@ package kubernetesexternaldnsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -452,8 +452,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec
 	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiToken\x12\x81\x01\n" +
 	"\vdns_zone_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\x88\x0e\x92\xd4a\x16status.outputs.zone_idR\tdnsZoneId\x12\x1d\n" +
 	"\n" +
-	"is_proxied\x18\x03 \x01(\bR\tisProxiedB\xff\x03\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1;kubernetesexternaldnsv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesexternaldns.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternaldns\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternaldns\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternaldns::V1b\x06proto3"
+	"is_proxied\x18\x03 \x01(\bR\tisProxiedB\xf9\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetesexternaldns.v1B\tSpecProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1;kubernetesexternaldnsv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesexternaldns.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternaldns\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternaldns\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternaldns::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesexternaldns_v1_spec_proto_rawDescOnce sync.Once

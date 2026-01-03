@@ -103,8 +103,8 @@ const file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stac
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12'\n" +
 	"\x0fsolver_identity\x18\x03 \x01(\tR\x0esolverIdentity\x124\n" +
-	"\x16cloudflare_secret_name\x18\x04 \x01(\tR\x14cloudflareSecretNameB\x87\x04\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kubernetescertmanager.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetescertmanager.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetescertmanager::V1b\x06proto3"
+	"\x16cloudflare_secret_name\x18\x04 \x01(\tR\x14cloudflareSecretNameB\x81\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetescertmanager.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1;kubernetescertmanagerv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetescertmanager.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescertmanager\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetescertmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescertmanager_v1_stack_outputs_proto_rawDescOnce sync.Once

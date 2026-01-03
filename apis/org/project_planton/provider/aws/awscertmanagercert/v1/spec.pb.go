@@ -8,8 +8,8 @@ package awscertmanagercertv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -120,8 +120,8 @@ const file_org_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_raw
 	"\x16alternate_domain_names\x18\x02 \x03(\tBG\xbaHD\x92\x01A\x18\x01\"=r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x14alternateDomainNames\x12\x96\x01\n" +
 	"\x16route53_hosted_zone_id\x18\x03 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xd4\x01\x92\xd4a\x16status.outputs.zone_idR\x13route53HostedZoneId\x12J\n" +
 	"\x11validation_method\x18\x04 \x01(\tB\x18\xbaH\x0er\fR\x03DNSR\x05EMAIL\x8a\xa6\x1d\x03DNSH\x00R\x10validationMethod\x88\x01\x01B\x14\n" +
-	"\x12_validation_methodB\xbf\x03\n" +
-	":com.org.project_planton.provider.aws.awscertmanagercert.v1B\tSpecProtoP\x01Z{github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Aws.Awscertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
+	"\x12_validation_methodB\xb9\x03\n" +
+	":com.org.project_planton.provider.aws.awscertmanagercert.v1B\tSpecProtoP\x01Zugithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Aws.Awscertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_rawDescOnce sync.Once

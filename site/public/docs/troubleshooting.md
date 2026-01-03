@@ -774,9 +774,9 @@ export TF_LOG=TRACE
 
 ### Community Support
 
-**GitHub Issues**: [project-planton/issues](https://github.com/project-planton/project-planton/issues)
+**GitHub Issues**: [project-planton/issues](https://github.com/plantonhq/project-planton/issues)
 
-**GitHub Discussions**: [project-planton/discussions](https://github.com/project-planton/project-planton/discussions)
+**GitHub Discussions**: [project-planton/discussions](https://github.com/plantonhq/project-planton/discussions)
 
 **When reporting issues**:
 - Include Project Planton version (`project-planton version`)
@@ -820,5 +820,5 @@ export TF_LOG=TRACE
 
 ---
 
-**Still stuck?** [Open an issue](https://github.com/project-planton/project-planton/issues) with details, and we'll help you out!
+**Still stuck?** [Open an issue](https://github.com/plantonhq/project-planton/issues) with details, and we'll help you out!
 

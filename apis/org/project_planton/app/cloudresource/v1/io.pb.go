@@ -7,7 +7,7 @@
 package cloudresourcev1
 
 import (
-	commons "github.com/project-planton/project-planton/apis/org/project_planton/app/commons"
+	commons "github.com/plantonhq/project-planton/apis/org/project_planton/app/commons"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -739,8 +739,8 @@ const file_org_project_planton_app_cloudresource_v1_io_proto_rawDesc = "" +
 	"\x1aCountCloudResourcesRequest\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\"3\n" +
 	"\x1bCountCloudResourcesResponse\x12\x14\n" +
-	"\x05count\x18\x01 \x01(\x03R\x05countB\xe2\x02\n" +
-	",com.org.project_planton.app.cloudresource.v1B\aIoProtoP\x01Zhgithub.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
+	"\x05count\x18\x01 \x01(\x03R\x05countB\xdc\x02\n" +
+	",com.org.project_planton.app.cloudresource.v1B\aIoProtoP\x01Zbgithub.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
 
 var (
 	file_org_project_planton_app_cloudresource_v1_io_proto_rawDescOnce sync.Once

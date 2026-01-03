@@ -8,8 +8,8 @@ package kuberneteslocustv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -409,8 +409,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_prot
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
 	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xb1\x01\n" +
 	"\x18default_master_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x9d  \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerR\x16defaultMasterContainer:\xb1\x01\n" +
-	"\x18default_worker_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x9d  \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerR\x16defaultWorkerContainerB\xdb\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kuberneteslocust.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kuberneteslocust.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kuberneteslocust::V1b\x06proto3"
+	"\x18default_worker_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x9d  \x01(\v2V.org.project_planton.provider.kubernetes.kuberneteslocust.v1.KubernetesLocustContainerR\x16defaultWorkerContainerB\xd5\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kuberneteslocust.v1B\tSpecProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1;kuberneteslocustv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kuberneteslocust.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteslocust\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kuberneteslocust::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteslocust_v1_spec_proto_rawDescOnce sync.Once

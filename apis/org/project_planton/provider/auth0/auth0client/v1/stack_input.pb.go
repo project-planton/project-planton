@@ -7,7 +7,7 @@
 package auth0clientv1
 
 import (
-	auth0 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
+	auth0 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -94,8 +94,8 @@ const file_org_project_planton_provider_auth0_auth0client_v1_stack_input_proto_r
 	"Corg/project_planton/provider/auth0/auth0client/v1/stack_input.proto\x121org.project_planton.provider.auth0.auth0client.v1\x1a;org/project_planton/provider/auth0/auth0client/v1/api.proto\x1a1org/project_planton/provider/auth0/provider.proto\"\xd1\x01\n" +
 	"\x15Auth0ClientStackInput\x12V\n" +
 	"\x06target\x18\x01 \x01(\v2>.org.project_planton.provider.auth0.auth0client.v1.Auth0ClientR\x06target\x12`\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigR\x0eproviderConfigB\xa0\x03\n" +
-	"5com.org.project_planton.provider.auth0.auth0client.v1B\x0fStackInputProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigR\x0eproviderConfigB\x9a\x03\n" +
+	"5com.org.project_planton.provider.auth0.auth0client.v1B\x0fStackInputProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_auth0client_v1_stack_input_proto_rawDescOnce sync.Once

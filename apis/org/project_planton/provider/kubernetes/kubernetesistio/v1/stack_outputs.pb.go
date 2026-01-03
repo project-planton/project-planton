@@ -121,8 +121,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outp
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xdc\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kubernetesistio.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesistio.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesistio::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xd6\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesistio.v1B\x11StackOutputsProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesistio.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesistio::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_outputs_proto_rawDescOnce sync.Once

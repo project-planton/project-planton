@@ -8,7 +8,7 @@ package gcpartifactregistryrepov1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -198,8 +198,8 @@ const file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_prot
 	"\x03NPM\x10\x06\x12\n" +
 	"\n" +
 	"\x06PYTHON\x10\a\x12\a\n" +
-	"\x03YUM\x10\bB\xe3\x03\n" +
-	"?com.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1;gcpartifactregistryrepov1\xa2\x02\x05OPPGG\xaa\x02:Org.ProjectPlanton.Provider.Gcp.Gcpartifactregistryrepo.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Gcp::Gcpartifactregistryrepo::V1b\x06proto3"
+	"\x03YUM\x10\bB\xdc\x03\n" +
+	"?com.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1B\tSpecProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1;gcpartifactregistryrepov1\xa2\x02\x05OPPGG\xaa\x02:Org.ProjectPlanton.Provider.Gcp.Gcpartifactregistryrepo.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Gcp::Gcpartifactregistryrepo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_spec_proto_rawDescOnce sync.Once

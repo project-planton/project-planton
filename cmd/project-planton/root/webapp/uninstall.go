@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/project-planton/project-planton/cmd/project-planton/root"
+	"github.com/plantonhq/project-planton/cmd/project-planton/root"
 	"github.com/spf13/cobra"
 )
 

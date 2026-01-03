@@ -3,8 +3,8 @@ package module
 import (
 	"strings"
 
-	azurednszonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	azurednszonev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

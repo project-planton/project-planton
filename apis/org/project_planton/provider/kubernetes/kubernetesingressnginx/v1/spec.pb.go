@@ -8,8 +8,8 @@ package kubernetesingressnginxv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -381,8 +381,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spe
 	"\x16irsa_role_arn_override\x18\x03 \x01(\tR\x13irsaRoleArnOverride\"\x84\x01\n" +
 	"\x1fKubernetesIngressNginxAksConfig\x12;\n" +
 	"\x1amanaged_identity_client_id\x18\x01 \x01(\tR\x17managedIdentityClientId\x12$\n" +
-	"\x0epublic_ip_name\x18\x02 \x01(\tR\fpublicIpNameB\x86\x04\n" +
-	"Ecom.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetesingressnginx.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesingressnginx::V1b\x06proto3"
+	"\x0epublic_ip_name\x18\x02 \x01(\tR\fpublicIpNameB\x80\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.kubernetesingressnginx.v1B\tSpecProtoP\x01Z\x84\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1;kubernetesingressnginxv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetesingressnginx.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesingressnginx\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesingressnginx::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesingressnginx_v1_spec_proto_rawDescOnce sync.Once

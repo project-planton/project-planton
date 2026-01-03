@@ -506,7 +506,7 @@ kubectl create rolebinding app-binding \
 
 ## Support
 
-- Issues & Feature Requests: [Project Planton GitHub](https://github.com/project-planton/project-planton/issues)
+- Issues & Feature Requests: [Project Planton GitHub](https://github.com/plantonhq/project-planton/issues)
 - Civo Support: [support@civo.com](mailto:support@civo.com)
 - Community: [Project Planton Discord](#)
 

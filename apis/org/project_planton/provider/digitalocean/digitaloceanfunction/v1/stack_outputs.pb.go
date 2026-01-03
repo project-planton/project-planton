@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanfunction_v1_sta
 	" DigitalOceanFunctionStackOutputs\x12\x1f\n" +
 	"\vfunction_id\x18\x01 \x01(\tR\n" +
 	"functionId\x12%\n" +
-	"\x0ehttps_endpoint\x18\x02 \x01(\tR\rhttpsEndpointB\x8c\x04\n" +
-	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfunction.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfunction/v1;digitaloceanfunctionv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfunction.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfunction::V1b\x06proto3"
+	"\x0ehttps_endpoint\x18\x02 \x01(\tR\rhttpsEndpointB\x86\x04\n" +
+	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfunction.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfunction/v1;digitaloceanfunctionv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfunction.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfunction::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanfunction_v1_stack_outputs_proto_rawDescOnce sync.Once

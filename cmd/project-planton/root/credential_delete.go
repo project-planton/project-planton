@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
-	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
+	credentialv1 "github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
 	"github.com/spf13/cobra"
 )
 

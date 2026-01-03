@@ -43,8 +43,8 @@ var File_org_project_planton_provider_kubernetes_options_proto protoreflect.File
 const file_org_project_planton_provider_kubernetes_options_proto_rawDesc = "" +
 	"\n" +
 	"5org/project_planton/provider/kubernetes/options.proto\x12'org.project_planton.provider.kubernetes\x1a google/protobuf/descriptor.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto:\x9c\x01\n" +
-	"\x1bdefault_container_resources\x12\x1d.google.protobuf.FieldOptions\x18\xb7\xcf$ \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\x19defaultContainerResourcesB\xd0\x02\n" +
-	"+com.org.project_planton.provider.kubernetesB\fOptionsProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
+	"\x1bdefault_container_resources\x12\x1d.google.protobuf.FieldOptions\x18\xb7\xcf$ \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesR\x19defaultContainerResourcesB\xca\x02\n" +
+	"+com.org.project_planton.provider.kubernetesB\fOptionsProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var file_org_project_planton_provider_kubernetes_options_proto_goTypes = []any{
 	(*descriptorpb.FieldOptions)(nil), // 0: google.protobuf.FieldOptions

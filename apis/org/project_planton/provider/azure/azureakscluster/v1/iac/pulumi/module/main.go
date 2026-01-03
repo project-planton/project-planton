@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	azureaksclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureakscluster/v1"
+	azureaksclusterv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azureakscluster/v1"
 	"github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3"
 	"github.com/pulumi/pulumi-azure-native-sdk/resources/v3"
 	azurenative "github.com/pulumi/pulumi-azure-native-sdk/v3"

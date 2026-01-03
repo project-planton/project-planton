@@ -8,8 +8,8 @@ package gcpserviceaccountv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -143,8 +143,8 @@ const file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_rawD
 	"create_key\x18\x04 \x01(\bB\t\x8a\xa6\x1d\x05falseH\x00R\tcreateKey\x88\x01\x01\x12*\n" +
 	"\x11project_iam_roles\x18\x05 \x03(\tR\x0fprojectIamRoles\x12\"\n" +
 	"\rorg_iam_roles\x18\x06 \x03(\tR\vorgIamRolesB\r\n" +
-	"\v_create_keyB\xb8\x03\n" +
-	"9com.org.project_planton.provider.gcp.gcpserviceaccount.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1;gcpserviceaccountv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpserviceaccount.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpserviceaccount\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpserviceaccount\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpserviceaccount::V1b\x06proto3"
+	"\v_create_keyB\xb2\x03\n" +
+	"9com.org.project_planton.provider.gcp.gcpserviceaccount.v1B\tSpecProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1;gcpserviceaccountv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpserviceaccount.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpserviceaccount\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpserviceaccount\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpserviceaccount::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_rawDescOnce sync.Once

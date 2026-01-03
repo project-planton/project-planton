@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 
-	kuberneteskeycloakv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1"
+	kuberneteskeycloakv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

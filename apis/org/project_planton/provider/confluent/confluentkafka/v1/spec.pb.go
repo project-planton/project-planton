@@ -270,8 +270,8 @@ const file_org_project_planton_provider_confluent_confluentkafka_v1_spec_proto_r
 	"\x1bConfluentKafkaNetworkConfig\x12)\n" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\tnetworkIdB\xc7\x03\n" +
-	"<com.org.project_planton.provider.confluent.confluentkafka.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Confluent.Confluentkafka.V1\xca\x027Org\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\tnetworkIdB\xc1\x03\n" +
+	"<com.org.project_planton.provider.confluent.confluentkafka.v1B\tSpecProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Confluent.Confluentkafka.V1\xca\x027Org\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_confluent_confluentkafka_v1_spec_proto_rawDescOnce sync.Once

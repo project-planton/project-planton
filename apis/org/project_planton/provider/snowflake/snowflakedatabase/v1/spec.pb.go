@@ -363,8 +363,8 @@ const file_org_project_planton_provider_snowflake_snowflakedatabase_v1_spec_prot
 	"\x1emanaged_initial_warehouse_size\x18\x01 \x01(\tR\x1bmanagedInitialWarehouseSize\x12L\n" +
 	"#minimum_trigger_interval_in_seconds\x18\x02 \x01(\x05R\x1fminimumTriggerIntervalInSeconds\x12\x1d\n" +
 	"\n" +
-	"timeout_ms\x18\x03 \x01(\x05R\ttimeoutMsB\xdc\x03\n" +
-	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\tSpecProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
+	"timeout_ms\x18\x03 \x01(\x05R\ttimeoutMsB\xd6\x03\n" +
+	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\tSpecProtoP\x01Zygithub.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_snowflake_snowflakedatabase_v1_spec_proto_rawDescOnce sync.Once

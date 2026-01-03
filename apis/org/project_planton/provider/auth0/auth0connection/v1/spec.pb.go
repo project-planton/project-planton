@@ -8,7 +8,7 @@ package auth0connectionv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -957,8 +957,8 @@ const file_org_project_planton_provider_auth0_auth0connection_v1_spec_proto_rawD
 	"\x13use_common_endpoint\x18\x05 \x01(\bR\x11useCommonEndpoint\x12<\n" +
 	"\x16max_groups_to_retrieve\x18\x06 \x01(\x05B\a\xbaH\x04\x1a\x02(\x00R\x13maxGroupsToRetrieve\x12=\n" +
 	"\x1bshould_trust_email_verified\x18\a \x01(\bR\x18shouldTrustEmailVerified\x12(\n" +
-	"\x10api_enable_users\x18\b \x01(\bR\x0eapiEnableUsersB\xb6\x03\n" +
-	"9com.org.project_planton.provider.auth0.auth0connection.v1B\tSpecProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1;auth0connectionv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Auth0.Auth0connection.V1\xca\x024Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Auth0::Auth0connection::V1b\x06proto3"
+	"\x10api_enable_users\x18\b \x01(\bR\x0eapiEnableUsersB\xb0\x03\n" +
+	"9com.org.project_planton.provider.auth0.auth0connection.v1B\tSpecProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1;auth0connectionv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Auth0.Auth0connection.V1\xca\x024Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Auth0::Auth0connection::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_auth0connection_v1_spec_proto_rawDescOnce sync.Once

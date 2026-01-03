@@ -380,8 +380,8 @@ const file_org_project_planton_provider_kubernetes_provider_proto_rawDesc = "" +
 	"\agcp_gke\x10\x01\x12\v\n" +
 	"\aaws_eks\x10\x02\x12\r\n" +
 	"\tazure_aks\x10\x03\x12\x16\n" +
-	"\x12digital_ocean_doks\x10\x04B\xd1\x02\n" +
-	"+com.org.project_planton.provider.kubernetesB\rProviderProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
+	"\x12digital_ocean_doks\x10\x04B\xcb\x02\n" +
+	"+com.org.project_planton.provider.kubernetesB\rProviderProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_provider_proto_rawDescOnce sync.Once

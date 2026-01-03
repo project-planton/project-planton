@@ -16,5 +16,5 @@ build: deps vet fmt
 
 .PHONY: update-deps
 update-deps:
-	go get github.com/project-planton/project-planton@latest
+	go get github.com/plantonhq/project-planton@latest
 	

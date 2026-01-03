@@ -145,8 +145,8 @@ func newLocals(stackInput *kubernetesaltinityoperatorv1.KubernetesAltinityOperat
 
 ```go
 import (
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 )
 
 spec = &KubernetesKeycloakSpec{

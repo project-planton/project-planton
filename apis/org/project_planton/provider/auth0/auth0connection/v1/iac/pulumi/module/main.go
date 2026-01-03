@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	auth0connectionv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1"
+	auth0connectionv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1"
 	"github.com/pulumi/pulumi-auth0/sdk/v3/go/auth0"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

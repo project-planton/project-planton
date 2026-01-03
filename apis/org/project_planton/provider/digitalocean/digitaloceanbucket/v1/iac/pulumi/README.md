@@ -28,7 +28,7 @@ This Pulumi module deploys DigitalOcean Spaces buckets (S3-compatible object sto
 This module is part of the Project Planton monorepo:
 
 ```bash
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1/iac/pulumi
 ```
 
@@ -60,8 +60,8 @@ Create a Pulumi program or use the manifest-based deployment:
 package main
 
 import (
-    digitaloceanbucketv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1/iac/pulumi/module"
+    digitaloceanbucketv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1/iac/pulumi/module"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -290,7 +290,7 @@ For comprehensive examples including multi-region setups, versioning, and produc
 
 ## Support
 
-- **Project Planton**: [github.com/project-planton/project-planton](https://github.com/project-planton/project-planton)
+- **Project Planton**: [github.com/plantonhq/project-planton](https://github.com/plantonhq/project-planton)
 - **Pulumi Docs**: [pulumi.com/docs](https://www.pulumi.com/docs/)
 - **DigitalOcean Support**: [digitalocean.com/support](https://www.digitalocean.com/support/)
 

@@ -321,7 +321,7 @@ For detailed information, see:
 
 For issues, questions, or contributions:
 
-- **GitHub**: [project-planton/project-planton](https://github.com/project-planton/project-planton)
+- **GitHub**: [plantonhq/project-planton](https://github.com/plantonhq/project-planton)
 - **Documentation**: [Project Planton Docs](https://project-planton.org)
 - **Elastic ECK Documentation**: [Elastic ECK Docs](https://www.elastic.co/guide/en/cloud-on-k8s/current/index.html)
 

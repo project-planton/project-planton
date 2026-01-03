@@ -6,8 +6,8 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 )
 
 func TestCivoBucketSpec(t *testing.T) {

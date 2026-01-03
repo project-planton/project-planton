@@ -659,7 +659,7 @@ Changes take effect immediately.
 - [AWS Aurora Documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/)
 - [Pulumi AWS RDS Cluster](https://www.pulumi.com/registry/packages/aws/api-docs/rds/cluster/)
 - [Aurora Serverless v2](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html)
-- [ProjectPlanton Architecture](https://github.com/project-planton/project-planton/blob/main/architecture/deployment-component.md)
+- [ProjectPlanton Architecture](https://github.com/plantonhq/project-planton/blob/main/architecture/deployment-component.md)
 
 ## Conclusion
 

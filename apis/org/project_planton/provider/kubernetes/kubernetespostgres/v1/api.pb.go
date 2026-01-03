@@ -8,7 +8,7 @@ package kubernetespostgresv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_api_pro
 	"\x04spec\x18\x04 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
 	"\x06status\x18\x05 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStatusR\x06status\"\x93\x01\n" +
 	"\x18KubernetesPostgresStatus\x12w\n" +
-	"\aoutputs\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputsR\aoutputsB\xe9\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\bApiProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresStackOutputsR\aoutputsB\xe2\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\bApiProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_api_proto_rawDescOnce sync.Once

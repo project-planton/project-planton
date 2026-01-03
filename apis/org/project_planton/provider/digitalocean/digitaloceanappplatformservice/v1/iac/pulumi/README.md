@@ -25,7 +25,7 @@ This Pulumi module deploys containerized applications and services on DigitalOce
 This module is part of the Project Planton monorepo. To use it:
 
 ```bash
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/iac/pulumi
 ```
 
@@ -37,8 +37,8 @@ cd project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanap
 package main
 
 import (
-    digitaloceanappplatformservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/iac/pulumi/module"
+    digitaloceanappplatformservicev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/iac/pulumi/module"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -234,7 +234,7 @@ For comprehensive examples including autoscaling, custom domains, and multi-envi
 
 ## Support
 
-- **Project Planton**: [github.com/project-planton/project-planton](https://github.com/project-planton/project-planton)
+- **Project Planton**: [github.com/plantonhq/project-planton](https://github.com/plantonhq/project-planton)
 - **Pulumi Docs**: [pulumi.com/docs](https://www.pulumi.com/docs/)
 - **DigitalOcean Support**: [digitalocean.com/support](https://www.digitalocean.com/support/)
 

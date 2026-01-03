@@ -56,7 +56,7 @@ spec:
     diskSize: 1Gi
 ```
 
-You can create similar manifests for [AWS VPC](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/aws/awsvpc/v1), [GKE Cluster](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1), and [many more](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider).
+You can create similar manifests for [AWS VPC](https://github.com/plantonhq/project-planton/tree/main/apis/project/planton/provider/aws/awsvpc/v1), [GKE Cluster](https://github.com/plantonhq/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/plantonhq/project-planton/tree/main/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1), and [many more](https://github.com/plantonhq/project-planton/tree/main/apis/project/planton/provider).
 
 ### 3. Deploy
 

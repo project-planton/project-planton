@@ -37,7 +37,7 @@ Extracts Terraform/OpenTofu backend configuration from a manifest's metadata lab
 
 ```go
 import (
-    "github.com/project-planton/project-planton/pkg/iac/tofu/backendconfig"
+    "github.com/plantonhq/project-planton/pkg/iac/tofu/backendconfig"
 )
 
 // Extract backend config from a manifest

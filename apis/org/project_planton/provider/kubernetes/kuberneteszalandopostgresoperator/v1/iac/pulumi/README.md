@@ -322,8 +322,8 @@ kubectl get configmap -n postgres-operator sh.helm.release.v1.postgres-operator.
 ```go
 // In a custom Pulumi program
 import (
-    kuberneteszalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/iac/pulumi/module"
+    kuberneteszalandopostgresoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/iac/pulumi/module"
 )
 
 stackInput := &kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperatorStackInput{

@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetesperconamongooperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	kubernetesperconamongooperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

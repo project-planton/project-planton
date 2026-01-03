@@ -1,7 +1,7 @@
 package module
 
 import (
-	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
+	kubernetesclickhousev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
 )
 
 // shouldCreateClickHouseKeeper determines if we should auto-create ClickHouseKeeperInstallation

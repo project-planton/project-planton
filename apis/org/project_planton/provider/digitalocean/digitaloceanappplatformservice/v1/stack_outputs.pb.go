@@ -94,8 +94,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanappplatformserv
 	"*DigitalOceanAppPlatformServiceStackOutputs\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12)\n" +
 	"\x10default_hostname\x18\x02 \x01(\tR\x0fdefaultHostname\x12\x19\n" +
-	"\blive_url\x18\x03 \x01(\tR\aliveUrlB\xd2\x04\n" +
-	"Ocom.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1B\x11StackOutputsProtoP\x01Z\x9c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
+	"\blive_url\x18\x03 \x01(\tR\aliveUrlB\xcc\x04\n" +
+	"Ocom.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1B\x11StackOutputsProtoP\x01Z\x96\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_stack_outputs_proto_rawDescOnce sync.Once

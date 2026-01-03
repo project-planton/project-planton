@@ -292,8 +292,8 @@ github.com/pkg/errors                         # Error wrapping
 ### Protobuf Dependencies
 
 ```
-github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovpc/v1
-github.com/project-planton/project-planton/apis/org/project_planton/provider/civo
+github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovpc/v1
+github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo
 ```
 
 ## Further Reading

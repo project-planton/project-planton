@@ -4,13 +4,13 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/valuefrom"
+	"github.com/plantonhq/project-planton/internal/valuefrom"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ec2"
 	"github.com/pulumi/pulumi-tls/sdk/v5/go/tls"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
-	awsec2instancev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1"
+	awsec2instancev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1"
 )
 
 // ec2Instance creates a single AWS EC2 instance in a private subnet.

@@ -157,7 +157,7 @@ Having issues? Check our **[Troubleshooting Guide](/docs/troubleshooting)** for 
 
 ## Resources
 
-- [GitHub Repository](https://github.com/project-planton/project-planton)
+- [GitHub Repository](https://github.com/plantonhq/project-planton)
 - [Buf Schema Registry](https://buf.build/project-planton/apis)
-- [Issue Tracker](https://github.com/project-planton/project-planton/issues)
+- [Issue Tracker](https://github.com/plantonhq/project-planton/issues)
 

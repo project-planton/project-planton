@@ -6,9 +6,9 @@ import (
 	"buf.build/go/protovalidate"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	civoprovider "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	civoprovider "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestCivoKubernetesClusterSpec(t *testing.T) {

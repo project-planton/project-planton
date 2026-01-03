@@ -65,7 +65,7 @@ Currently, these are exported as empty strings.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/project-planton/project-planton.git
+   git clone https://github.com/plantonhq/project-planton.git
    cd project-planton/apis/org/project_planton/provider/civo/civocertificate/v1/iac/pulumi/
    ```
 
@@ -271,8 +271,8 @@ ctx.Export(OpExpiryRfc3339, cert.Expiry)
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/project-planton/project-planton/discussions)
+- **Issues**: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/plantonhq/project-planton/discussions)
 - **Civo Support**: [support.civo.com](https://support.civo.com)
 
 ## Contributing

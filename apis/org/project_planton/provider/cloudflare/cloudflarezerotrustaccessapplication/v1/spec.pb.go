@@ -8,7 +8,7 @@ package cloudflarezerotrustaccessapplicationv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -200,8 +200,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarezerotrustaccessappl
 	"\x15allowed_google_groups\x18\b \x03(\tR\x13allowedGoogleGroups*5\n" +
 	"\x1dCloudflareZeroTrustPolicyType\x12\t\n" +
 	"\x05ALLOW\x10\x00\x12\t\n" +
-	"\x05BLOCK\x10\x01B\xe8\x04\n" +
-	"Scom.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\tSpecProtoP\x01Z\xa6\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05OPPCC\xaa\x02NOrg.ProjectPlanton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02SOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
+	"\x05BLOCK\x10\x01B\xe2\x04\n" +
+	"Scom.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\tSpecProtoP\x01Z\xa0\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05OPPCC\xaa\x02NOrg.ProjectPlanton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02SOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDescOnce sync.Once

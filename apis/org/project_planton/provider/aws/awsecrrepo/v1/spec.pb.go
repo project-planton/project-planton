@@ -8,7 +8,7 @@ package awsecrrepov1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -224,8 +224,8 @@ const file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDesc = "
 	"\x0fmax_image_count\x18\x02 \x01(\x05B\x13\xbaH\n" +
 	"\xd8\x01\x01\x1a\x05\x18\xe8\a(\x01\x8a\xa6\x1d\x0230H\x01R\rmaxImageCount\x88\x01\x01B\x1d\n" +
 	"\x1b_expire_untagged_after_daysB\x12\n" +
-	"\x10_max_image_countB\x87\x03\n" +
-	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
+	"\x10_max_image_countB\x81\x03\n" +
+	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\tSpecProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDescOnce sync.Once

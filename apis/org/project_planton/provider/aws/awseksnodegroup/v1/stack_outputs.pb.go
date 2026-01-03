@@ -106,8 +106,8 @@ const file_org_project_planton_provider_aws_awseksnodegroup_v1_stack_outputs_pro
 	"\x0enodegroup_name\x18\x01 \x01(\tR\rnodegroupName\x12\x19\n" +
 	"\basg_name\x18\x02 \x01(\tR\aasgName\x12-\n" +
 	"\x13remote_access_sg_id\x18\x03 \x01(\tR\x10remoteAccessSgId\x120\n" +
-	"\x14instance_profile_arn\x18\x04 \x01(\tR\x12instanceProfileArnB\xb2\x03\n" +
-	"7com.org.project_planton.provider.aws.awseksnodegroup.v1B\x11StackOutputsProtoP\x01Zugithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Aws.Awseksnodegroup.V1\xca\x022Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
+	"\x14instance_profile_arn\x18\x04 \x01(\tR\x12instanceProfileArnB\xac\x03\n" +
+	"7com.org.project_planton.provider.aws.awseksnodegroup.v1B\x11StackOutputsProtoP\x01Zogithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Aws.Awseksnodegroup.V1\xca\x022Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awseksnodegroup_v1_stack_outputs_proto_rawDescOnce sync.Once

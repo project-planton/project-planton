@@ -474,7 +474,7 @@ resource "google_container_node_pool" "node_pool" {
 ## Support
 
 For issues or questions:
-- **Project Planton Repository**: https://github.com/project-planton/project-planton
+- **Project Planton Repository**: https://github.com/plantonhq/project-planton
 - **Terraform GCP Provider Docs**: https://registry.terraform.io/providers/hashicorp/google/latest/docs
 - **GKE Node Pools Documentation**: https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools
 

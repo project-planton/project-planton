@@ -7,7 +7,7 @@
 package awssecretsmanagerv1
 
 import (
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_aws_awssecretsmanager_v1_stack_input_pro
 	"Gorg/project_planton/provider/aws/awssecretsmanager/v1/stack_input.proto\x125org.project_planton.provider.aws.awssecretsmanager.v1\x1a?org/project_planton/provider/aws/awssecretsmanager/v1/api.proto\x1a/org/project_planton/provider/aws/provider.proto\"\xdd\x01\n" +
 	"\x1bAwsSecretsManagerStackInput\x12`\n" +
 	"\x06target\x18\x01 \x01(\v2H.org.project_planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xbe\x03\n" +
-	"9com.org.project_planton.provider.aws.awssecretsmanager.v1B\x0fStackInputProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Aws.Awssecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xb8\x03\n" +
+	"9com.org.project_planton.provider.aws.awssecretsmanager.v1B\x0fStackInputProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Aws.Awssecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awssecretsmanager_v1_stack_input_proto_rawDescOnce sync.Once

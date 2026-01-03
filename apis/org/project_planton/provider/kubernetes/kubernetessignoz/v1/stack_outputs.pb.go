@@ -7,7 +7,7 @@
 package kubernetessignozv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -221,8 +221,8 @@ const file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_out
 	"%otel_collector_external_http_hostname\x18\v \x01(\tR!otelCollectorExternalHttpHostname\x12/\n" +
 	"\x13clickhouse_endpoint\x18\f \x01(\tR\x12clickhouseEndpoint\x12/\n" +
 	"\x13clickhouse_username\x18\r \x01(\tR\x12clickhouseUsername\x12z\n" +
-	"\x1aclickhouse_password_secret\x18\x0e \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x18clickhousePasswordSecretB\xe3\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kubernetessignoz.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetessignoz.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetessignoz::V1b\x06proto3"
+	"\x1aclickhouse_password_secret\x18\x0e \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x18clickhousePasswordSecretB\xdd\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetessignoz.v1B\x11StackOutputsProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1;kubernetessignozv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetessignoz.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessignoz\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetessignoz::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessignoz_v1_stack_outputs_proto_rawDescOnce sync.Once

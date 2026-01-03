@@ -103,8 +103,8 @@ const file_org_project_planton_provider_civo_civobucket_v1_stack_outputs_proto_r
 	"\tbucket_id\x18\x01 \x01(\tR\bbucketId\x12!\n" +
 	"\fendpoint_url\x18\x02 \x01(\tR\vendpointUrl\x121\n" +
 	"\x15access_key_secret_ref\x18\x03 \x01(\tR\x12accessKeySecretRef\x121\n" +
-	"\x15secret_key_secret_ref\x18\x04 \x01(\tR\x12secretKeySecretRefB\x95\x03\n" +
-	"3com.org.project_planton.provider.civo.civobucket.v1B\x11StackOutputsProtoP\x01Zlgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civobucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civobucket::V1b\x06proto3"
+	"\x15secret_key_secret_ref\x18\x04 \x01(\tR\x12secretKeySecretRefB\x8f\x03\n" +
+	"3com.org.project_planton.provider.civo.civobucket.v1B\x11StackOutputsProtoP\x01Zfgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civobucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civobucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civobucket_v1_stack_outputs_proto_rawDescOnce sync.Once

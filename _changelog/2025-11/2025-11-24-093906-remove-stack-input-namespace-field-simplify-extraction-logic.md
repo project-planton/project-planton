@@ -137,7 +137,7 @@ For components with additional fields (like `kubernetesdeployment` with `docker_
 Before (19 lines of namespace logic):
 ```go
 import (
-    "github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
+    "github.com/plantonhq/project-planton/pkg/kubernetes/kuberneteslabels"
 )
 
 // Start with the required namespace field from spec
@@ -171,7 +171,7 @@ locals.Namespace = target.Spec.Namespace.GetValue()
 Before (28 lines of priority logic):
 ```go
 import (
-    "github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
+    "github.com/plantonhq/project-planton/pkg/kubernetes/kuberneteslabels"
 )
 
 // Priority order:

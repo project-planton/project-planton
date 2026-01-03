@@ -7,7 +7,7 @@
 package civocomputeinstancev1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civocomputeinstance_v1_stack_input_
 	"Jorg/project_planton/provider/civo/civocomputeinstance/v1/stack_input.proto\x128org.project_planton.provider.civo.civocomputeinstance.v1\x1aBorg/project_planton/provider/civo/civocomputeinstance/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xe6\x01\n" +
 	"\x1dCivoComputeInstanceStackInput\x12e\n" +
 	"\x06target\x18\x01 \x01(\v2M.org.project_planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xd2\x03\n" +
-	"<com.org.project_planton.provider.civo.civocomputeinstance.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civocomputeinstance/v1;civocomputeinstancev1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Civo.Civocomputeinstance.V1\xca\x027Org\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Civo::Civocomputeinstance::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xcc\x03\n" +
+	"<com.org.project_planton.provider.civo.civocomputeinstance.v1B\x0fStackInputProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civocomputeinstance/v1;civocomputeinstancev1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Civo.Civocomputeinstance.V1\xca\x027Org\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Civo::Civocomputeinstance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civocomputeinstance_v1_stack_input_proto_rawDescOnce sync.Once

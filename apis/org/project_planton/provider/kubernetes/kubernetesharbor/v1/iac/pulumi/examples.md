@@ -56,7 +56,7 @@ Add the required dependencies to your `go.mod`:
 
 ```go
 require (
-    github.com/project-planton/project-planton v1.0.0
+    github.com/plantonhq/project-planton v1.0.0
     github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.0.0
     github.com/pulumi/pulumi/sdk/v3 v3.0.0
 )
@@ -70,10 +70,10 @@ This example deploys Harbor with self-managed PostgreSQL and Redis, suitable for
 package main
 
 import (
-    kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesharborv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -224,12 +224,12 @@ This example shows a production-ready high-availability deployment using externa
 package main
 
 import (
-    kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+    kubernetesharborv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
@@ -408,12 +408,12 @@ This example demonstrates deployment on Google Cloud Platform.
 package main
 
 import (
-    kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+    kubernetesharborv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
@@ -534,12 +534,12 @@ This example shows how to enable additional Harbor features like Trivy vulnerabi
 package main
 
 import (
-    kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+    kubernetesharborv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -636,12 +636,12 @@ This example shows using MinIO as an S3-compatible storage backend.
 package main
 
 import (
-    kubernetesharborv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+    kubernetesharborv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

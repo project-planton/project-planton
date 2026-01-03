@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 
-	gcpcloudfunctionv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1"
+	gcpcloudfunctionv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudfunction/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudfunctionsv2"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudrunv2"

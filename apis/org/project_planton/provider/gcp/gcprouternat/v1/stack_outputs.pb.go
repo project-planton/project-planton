@@ -93,8 +93,8 @@ const file_org_project_planton_provider_gcp_gcprouternat_v1_stack_outputs_proto_
 	"\x18GcpRouterNatStackOutputs\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12(\n" +
 	"\x10router_self_link\x18\x02 \x01(\tR\x0erouterSelfLink\x12(\n" +
-	"\x10nat_ip_addresses\x18\x03 \x03(\tR\x0enatIpAddressesB\x9d\x03\n" +
-	"4com.org.project_planton.provider.gcp.gcprouternat.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1;gcprouternatv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcprouternat.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcprouternat::V1b\x06proto3"
+	"\x10nat_ip_addresses\x18\x03 \x03(\tR\x0enatIpAddressesB\x97\x03\n" +
+	"4com.org.project_planton.provider.gcp.gcprouternat.v1B\x11StackOutputsProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1;gcprouternatv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcprouternat.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcprouternat::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcprouternat_v1_stack_outputs_proto_rawDescOnce sync.Once

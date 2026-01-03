@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kuberneteskafkav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	kuberneteskafkav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetesmetav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

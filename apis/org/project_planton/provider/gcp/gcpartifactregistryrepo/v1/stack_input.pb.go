@@ -7,7 +7,7 @@
 package gcpartifactregistryrepov1
 
 import (
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
+	gcp "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_stack_inp
 	"Morg/project_planton/provider/gcp/gcpartifactregistryrepo/v1/stack_input.proto\x12;org.project_planton.provider.gcp.gcpartifactregistryrepo.v1\x1aEorg/project_planton/provider/gcp/gcpartifactregistryrepo/v1/api.proto\x1a/org/project_planton/provider/gcp/provider.proto\"\xef\x01\n" +
 	"!GcpArtifactRegistryRepoStackInput\x12l\n" +
 	"\x06target\x18\x01 \x01(\v2T.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xe9\x03\n" +
-	"?com.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1B\x0fStackInputProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1;gcpartifactregistryrepov1\xa2\x02\x05OPPGG\xaa\x02:Org.ProjectPlanton.Provider.Gcp.Gcpartifactregistryrepo.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Gcp::Gcpartifactregistryrepo::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xe2\x03\n" +
+	"?com.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1B\x0fStackInputProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1;gcpartifactregistryrepov1\xa2\x02\x05OPPGG\xaa\x02:Org.ProjectPlanton.Provider.Gcp.Gcpartifactregistryrepo.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Gcp::Gcpartifactregistryrepo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_stack_input_proto_rawDescOnce sync.Once

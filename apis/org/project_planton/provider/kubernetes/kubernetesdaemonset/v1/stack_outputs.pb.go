@@ -113,8 +113,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_stack_
 	"\x0edaemonset_name\x18\x02 \x01(\tR\rdaemonsetName\x128\n" +
 	"\x18desired_number_scheduled\x18\x03 \x01(\x05R\x16desiredNumberScheduled\x128\n" +
 	"\x18current_number_scheduled\x18\x04 \x01(\x05R\x16currentNumberScheduled\x12!\n" +
-	"\fnumber_ready\x18\x05 \x01(\x05R\vnumberReadyB\xf9\x03\n" +
-	"Bcom.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1;kubernetesdaemonsetv1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdaemonset.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdaemonset::V1b\x06proto3"
+	"\fnumber_ready\x18\x05 \x01(\x05R\vnumberReadyB\xf2\x03\n" +
+	"Bcom.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1B\x11StackOutputsProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1;kubernetesdaemonsetv1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdaemonset.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdaemonset::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_stack_outputs_proto_rawDescOnce sync.Once

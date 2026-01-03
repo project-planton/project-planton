@@ -99,7 +99,7 @@ createdServiceAccount, err := serviceaccount.NewAccount(
 ```go
 // Added import
 import (
-    "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
+    "github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 )
 
 // Added provider setup

@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/fileutil"
+	"github.com/plantonhq/project-planton/pkg/fileutil"
 	"gopkg.in/yaml.v3"
 )
 

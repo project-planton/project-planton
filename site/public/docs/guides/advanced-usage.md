@@ -396,7 +396,7 @@ project-planton pulumi up \
 
 ```bash
 # 1. Clone or fork a module
-git clone https://github.com/project-planton/project-planton
+git clone https://github.com/plantonhq/project-planton
 cd apis/org/project_planton/provider/kubernetes/postgresqk8s/v1/iac/pulumi
 
 # 2. Make changes to module code

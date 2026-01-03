@@ -25,7 +25,7 @@ This Terraform module deploys DigitalOcean Spaces buckets (S3-compatible object 
 This module is part of the Project Planton monorepo:
 
 ```bash
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1/iac/tf
 ```
 
@@ -345,6 +345,6 @@ For comprehensive examples including multi-region setups, versioning, and produc
 
 ## Support
 
-- **Issues**: [github.com/project-planton/project-planton/issues](https://github.com/project-planton/project-planton/issues)
+- **Issues**: [github.com/plantonhq/project-planton/issues](https://github.com/plantonhq/project-planton/issues)
 - **DigitalOcean Support**: [digitalocean.com/support](https://www.digitalocean.com/support/)
 

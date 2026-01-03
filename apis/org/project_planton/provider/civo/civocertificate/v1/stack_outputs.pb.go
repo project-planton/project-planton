@@ -83,8 +83,8 @@ const file_org_project_planton_provider_civo_civocertificate_v1_stack_outputs_pr
 	"Horg/project_planton/provider/civo/civocertificate/v1/stack_outputs.proto\x124org.project_planton.provider.civo.civocertificate.v1\"k\n" +
 	"\x1bCivoCertificateStackOutputs\x12%\n" +
 	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xb8\x03\n" +
-	"8com.org.project_planton.provider.civo.civocertificate.v1B\x11StackOutputsProtoP\x01Zvgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
+	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xb2\x03\n" +
+	"8com.org.project_planton.provider.civo.civocertificate.v1B\x11StackOutputsProtoP\x01Zpgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civocertificate_v1_stack_outputs_proto_rawDescOnce sync.Once

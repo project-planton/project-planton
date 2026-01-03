@@ -23,8 +23,8 @@ This module is typically invoked through Project Planton's orchestration layer. 
 
 ```go
 import (
-    azurecontainerregistryv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1/iac/pulumi/module"
+    azurecontainerregistryv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1/iac/pulumi/module"
 )
 
 func main() {

@@ -190,6 +190,6 @@ kubectl describe pod <pending-pod>
 
 ## Support
 
-- Issues: [GitHub](https://github.com/project-planton/project-planton/issues)
+- Issues: [GitHub](https://github.com/plantonhq/project-planton/issues)
 - Civo: support@civo.com
 

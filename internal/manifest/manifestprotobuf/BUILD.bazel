@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "manifestprotobuf",
     srcs = ["field_setter.go"],
-    importpath = "github.com/project-planton/project-planton/internal/manifest/manifestprotobuf",
+    importpath = "github.com/plantonhq/project-planton/internal/manifest/manifestprotobuf",
     visibility = ["//:__subpackages__"],
     deps = [
         "@com_github_iancoleman_strcase//:strcase",

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	gcpcertmanagercertv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1"
+	gcpcertmanagercertv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/certificatemanager"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/compute"

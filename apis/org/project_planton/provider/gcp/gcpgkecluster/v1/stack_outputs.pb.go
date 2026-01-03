@@ -95,8 +95,8 @@ const file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto
 	"\x19GcpGkeClusterStackOutputs\x12\x1a\n" +
 	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x124\n" +
 	"\x16cluster_ca_certificate\x18\x02 \x01(\tR\x14clusterCaCertificate\x124\n" +
-	"\x16workload_identity_pool\x18\x03 \x01(\tR\x14workloadIdentityPoolB\xa4\x03\n" +
-	"5com.org.project_planton.provider.gcp.gcpgkecluster.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkecluster/v1;gcpgkeclusterv1\xa2\x02\x05OPPGG\xaa\x020Org.ProjectPlanton.Provider.Gcp.Gcpgkecluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Gcp::Gcpgkecluster::V1b\x06proto3"
+	"\x16workload_identity_pool\x18\x03 \x01(\tR\x14workloadIdentityPoolB\x9e\x03\n" +
+	"5com.org.project_planton.provider.gcp.gcpgkecluster.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkecluster/v1;gcpgkeclusterv1\xa2\x02\x05OPPGG\xaa\x020Org.ProjectPlanton.Provider.Gcp.Gcpgkecluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Gcp::Gcpgkecluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_rawDescOnce sync.Once

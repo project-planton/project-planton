@@ -8,8 +8,8 @@ package digitaloceanfunctionv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -366,8 +366,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanfunction_v1_spe
 	"\n" +
 	"\x06go_121\x10\a\x12\n" +
 	"\n" +
-	"\x06php_82\x10\bB\x84\x04\n" +
-	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfunction.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfunction/v1;digitaloceanfunctionv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfunction.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfunction::V1b\x06proto3"
+	"\x06php_82\x10\bB\xfe\x03\n" +
+	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfunction.v1B\tSpecProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfunction/v1;digitaloceanfunctionv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfunction.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfunction::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDescOnce sync.Once

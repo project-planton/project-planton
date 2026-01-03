@@ -168,7 +168,7 @@ brew install opentofu  # For Terraform deployments
 
 ## Get Help
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/project-planton/project-planton/issues)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/plantonhq/project-planton/issues)
 - **Documentation**: Browse the full [documentation](/)
 - **Examples**: Check the repository for example manifests
 

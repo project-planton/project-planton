@@ -34,7 +34,7 @@ export default function HomePage() {
                 >
                   Docs
                 </Link>
-              <GitHubStarBadge repo="project-planton/project-planton" />
+              <GitHubStarBadge repo="plantonhq/project-planton" />
             </div>
           </div>
         </div>

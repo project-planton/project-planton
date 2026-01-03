@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	civobucketv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civobucket/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider"
+	civobucketv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civobucket/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -623,9 +623,9 @@ const file_org_project_planton_provider_kubernetes_probe_proto_rawDesc = "" +
 	"\x04port\"&\n" +
 	"\n" +
 	"ExecAction\x12\x18\n" +
-	"\acommand\x18\x01 \x03(\tR\acommandB\xce\x02\n" +
+	"\acommand\x18\x01 \x03(\tR\acommandB\xc8\x02\n" +
 	"+com.org.project_planton.provider.kubernetesB\n" +
-	"ProbeProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
+	"ProbeProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_probe_proto_rawDescOnce sync.Once

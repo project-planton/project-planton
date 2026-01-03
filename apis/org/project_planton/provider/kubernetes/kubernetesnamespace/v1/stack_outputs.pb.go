@@ -189,8 +189,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_stack_
 	"\vlabels_json\x18\t \x01(\tR\n" +
 	"labelsJson\x12)\n" +
 	"\x10annotations_json\x18\n" +
-	" \x01(\tR\x0fannotationsJsonB\xf9\x03\n" +
-	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
+	" \x01(\tR\x0fannotationsJsonB\xf2\x03\n" +
+	"Bcom.org.project_planton.provider.kubernetes.kubernetesnamespace.v1B\x11StackOutputsProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1;kubernetesnamespacev1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnamespace.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnamespace\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesnamespace::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_stack_outputs_proto_rawDescOnce sync.Once

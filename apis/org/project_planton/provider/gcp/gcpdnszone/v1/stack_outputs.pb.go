@@ -93,8 +93,8 @@ const file_org_project_planton_provider_gcp_gcpdnszone_v1_stack_outputs_proto_ra
 	"\x16GcpDnsZoneStackOutputs\x12\x17\n" +
 	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12\x1b\n" +
 	"\tzone_name\x18\x02 \x01(\tR\bzoneName\x12 \n" +
-	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\x8f\x03\n" +
-	"2com.org.project_planton.provider.gcp.gcpdnszone.v1B\x11StackOutputsProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpdnszone.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
+	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\x89\x03\n" +
+	"2com.org.project_planton.provider.gcp.gcpdnszone.v1B\x11StackOutputsProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpdnszone.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpdnszone_v1_stack_outputs_proto_rawDescOnce sync.Once

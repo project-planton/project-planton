@@ -7,7 +7,7 @@
 package civocertificatev1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civocertificate_v1_stack_input_prot
 	"Forg/project_planton/provider/civo/civocertificate/v1/stack_input.proto\x124org.project_planton.provider.civo.civocertificate.v1\x1a>org/project_planton/provider/civo/civocertificate/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xda\x01\n" +
 	"\x19CivoCertificateStackInput\x12]\n" +
 	"\x06target\x18\x01 \x01(\v2E.org.project_planton.provider.civo.civocertificate.v1.CivoCertificateR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xb6\x03\n" +
-	"8com.org.project_planton.provider.civo.civocertificate.v1B\x0fStackInputProtoP\x01Zvgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xb0\x03\n" +
+	"8com.org.project_planton.provider.civo.civocertificate.v1B\x0fStackInputProtoP\x01Zpgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civocertificate_v1_stack_input_proto_rawDescOnce sync.Once

@@ -8,9 +8,9 @@ package kubernetessolroperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -173,8 +173,8 @@ const file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spe
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\x86\x04\n" +
-	"Ecom.org.project_planton.provider.kubernetes.kubernetessolroperator.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1;kubernetessolroperatorv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolroperator.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolroperator\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolroperator\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetessolroperator::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\x80\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.kubernetessolroperator.v1B\tSpecProtoP\x01Z\x84\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1;kubernetessolroperatorv1\xa2\x02\x05OPPKK\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolroperator.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolroperator\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolroperator\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Kubernetessolroperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessolroperator_v1_spec_proto_rawDescOnce sync.Once

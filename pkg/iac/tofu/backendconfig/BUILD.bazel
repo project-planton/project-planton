@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "backendconfig",
     srcs = ["backend_config.go"],
-    importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/backendconfig",
+    importpath = "github.com/plantonhq/project-planton/pkg/iac/tofu/backendconfig",
     visibility = ["//visibility:public"],
     deps = [
         "//pkg/iac/tofu/tofulabels",

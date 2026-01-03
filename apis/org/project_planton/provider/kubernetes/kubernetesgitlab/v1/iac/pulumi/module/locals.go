@@ -3,8 +3,8 @@ package module
 import (
 	"fmt"
 
-	kubernetesgitlabv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	kubernetesgitlabv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 )
 
 // Locals holds computed values for the GitLab deployment

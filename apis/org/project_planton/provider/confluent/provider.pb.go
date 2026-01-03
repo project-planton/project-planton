@@ -91,8 +91,8 @@ const file_org_project_planton_provider_confluent_provider_proto_rawDesc = "" +
 	"\x17ConfluentProviderConfig\x12\x1f\n" +
 	"\aapi_key\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06apiKey\x12%\n" +
 	"\n" +
-	"api_secret\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tapiSecretB\xcb\x02\n" +
-	"*com.org.project_planton.provider.confluentB\rProviderProtoP\x01ZVgithub.com/project-planton/project-planton/apis/org/project_planton/provider/confluent\xa2\x02\x04OPPC\xaa\x02%Org.ProjectPlanton.Provider.Confluent\xca\x02%Org\\ProjectPlanton\\Provider\\Confluent\xe2\x021Org\\ProjectPlanton\\Provider\\Confluent\\GPBMetadata\xea\x02(Org::ProjectPlanton::Provider::Confluentb\x06proto3"
+	"api_secret\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tapiSecretB\xc5\x02\n" +
+	"*com.org.project_planton.provider.confluentB\rProviderProtoP\x01ZPgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent\xa2\x02\x04OPPC\xaa\x02%Org.ProjectPlanton.Provider.Confluent\xca\x02%Org\\ProjectPlanton\\Provider\\Confluent\xe2\x021Org\\ProjectPlanton\\Provider\\Confluent\\GPBMetadata\xea\x02(Org::ProjectPlanton::Provider::Confluentb\x06proto3"
 
 var (
 	file_org_project_planton_provider_confluent_provider_proto_rawDescOnce sync.Once

@@ -175,8 +175,8 @@ const file_org_project_planton_provider_azure_azurecontainerregistry_v1_spec_pro
 	"\x19AzureContainerRegistrySku\x12\t\n" +
 	"\x05BASIC\x10\x00\x12\f\n" +
 	"\bSTANDARD\x10\x01\x12\v\n" +
-	"\aPREMIUM\x10\x02B\xe8\x03\n" +
-	"@com.org.project_planton.provider.azure.azurecontainerregistry.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05OPPAA\xaa\x02;Org.ProjectPlanton.Provider.Azure.Azurecontainerregistry.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
+	"\aPREMIUM\x10\x02B\xe1\x03\n" +
+	"@com.org.project_planton.provider.azure.azurecontainerregistry.v1B\tSpecProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05OPPAA\xaa\x02;Org.ProjectPlanton.Provider.Azure.Azurecontainerregistry.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurecontainerregistry_v1_spec_proto_rawDescOnce sync.Once

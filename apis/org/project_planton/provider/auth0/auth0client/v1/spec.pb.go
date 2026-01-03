@@ -988,8 +988,8 @@ const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc 
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x122\n" +
 	"\x15app_bundle_identifier\x18\x02 \x01(\tR\x13appBundleIdentifier\"T\n" +
 	"\x1aAuth0OidcBackchannelLogout\x126\n" +
-	"\x17backchannel_logout_urls\x18\x01 \x03(\tR\x15backchannelLogoutUrlsB\x9a\x03\n" +
-	"5com.org.project_planton.provider.auth0.auth0client.v1B\tSpecProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
+	"\x17backchannel_logout_urls\x18\x01 \x03(\tR\x15backchannelLogoutUrlsB\x94\x03\n" +
+	"5com.org.project_planton.provider.auth0.auth0client.v1B\tSpecProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDescOnce sync.Once

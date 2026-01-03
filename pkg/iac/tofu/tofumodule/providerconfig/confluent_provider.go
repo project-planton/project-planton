@@ -2,9 +2,9 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	confluent "github.com/project-planton/project-planton/apis/org/project_planton/provider/confluent"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	confluent "github.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )
 
 func AddConfluentProviderConfigEnvVars(stackInputContentMap map[string]interface{},

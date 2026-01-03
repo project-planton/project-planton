@@ -100,7 +100,7 @@ The module operates by accepting an AWS AWS EKS Cluster API resource definition 
 ### Point the `aws-eks-cluster-pulumi-module` to utilize the local changes this helps us to iterate locally.
 * Update the `go.mod` file in the `aws-eks-cluster-pulumi-module` directory to point to the local `project-planton` repository.
   ```go
-  replace github.com/project-planton/project-planton => ../project-planton
+  replace github.com/plantonhq/project-planton => ../project-planton
   ```
 * Run the following command to update the dependencies:
   ```bash

@@ -8,7 +8,7 @@ package digitaloceanvolumev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -202,8 +202,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_spec_
 	" DigitalOceanVolumeFilesystemType\x12\x0f\n" +
 	"\vunformatted\x10\x00\x12\b\n" +
 	"\x04ext4\x10\x01\x12\a\n" +
-	"\x03xfs\x10\x02B\xf6\x03\n" +
-	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
+	"\x03xfs\x10\x02B\xef\x03\n" +
+	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\tSpecProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_spec_proto_rawDescOnce sync.Once

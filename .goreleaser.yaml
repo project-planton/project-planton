@@ -11,7 +11,7 @@ builds:
     main: .
     binary: project-planton
     ldflags:
-      - -s -w -X github.com/project-planton/project-planton/internal/cli/version.Version={{.Tag}}
+      - -s -w -X github.com/plantonhq/project-planton/internal/cli/version.Version={{.Tag}}
     env:
       - CGO_ENABLED=0
     goos:
@@ -46,7 +46,7 @@ homebrew_casks:
       owner: project-planton
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    homepage: https://github.com/project-planton/project-planton
+    homepage: https://github.com/plantonhq/project-planton
     description: "Project Planton CLI - Infrastructure as Code made simple"
     binaries:
       - project-planton
@@ -72,5 +72,5 @@ homebrew_casks:
       3. Get help:
          project-planton --help
 
-      Documentation: https://github.com/project-planton/project-planton
+      Documentation: https://github.com/plantonhq/project-planton
 

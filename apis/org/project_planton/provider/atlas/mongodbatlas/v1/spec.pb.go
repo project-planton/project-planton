@@ -243,8 +243,8 @@ const file_org_project_planton_provider_atlas_mongodbatlas_v1_spec_proto_rawDesc
 	"\x16mongo_db_major_version\x18\b \x01(\tR\x13mongoDbMajorVersion\x12#\n" +
 	"\rprovider_name\x18\t \x01(\tR\fproviderName\x12=\n" +
 	"\x1bprovider_instance_size_name\x18\n" +
-	" \x01(\tR\x18providerInstanceSizeNameB\xa1\x03\n" +
-	"6com.org.project_planton.provider.atlas.mongodbatlas.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1;mongodbatlasv1\xa2\x02\x05OPPAM\xaa\x021Org.ProjectPlanton.Provider.Atlas.Mongodbatlas.V1\xca\x021Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Atlas::Mongodbatlas::V1b\x06proto3"
+	" \x01(\tR\x18providerInstanceSizeNameB\x9b\x03\n" +
+	"6com.org.project_planton.provider.atlas.mongodbatlas.v1B\tSpecProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1;mongodbatlasv1\xa2\x02\x05OPPAM\xaa\x021Org.ProjectPlanton.Provider.Atlas.Mongodbatlas.V1\xca\x021Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Atlas\\Mongodbatlas\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Atlas::Mongodbatlas::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_atlas_mongodbatlas_v1_spec_proto_rawDescOnce sync.Once

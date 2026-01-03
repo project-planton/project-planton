@@ -7,7 +7,7 @@
 package cloudflared1databasev1
 
 import (
-	cloudflare "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
+	cloudflare "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflared1database_v1_stack
 	"Qorg/project_planton/provider/cloudflare/cloudflared1database/v1/stack_input.proto\x12?org.project_planton.provider.cloudflare.cloudflared1database.v1\x1aIorg/project_planton/provider/cloudflare/cloudflared1database/v1/api.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\"\xfb\x01\n" +
 	"\x1eCloudflareD1DatabaseStackInput\x12m\n" +
 	"\x06target\x18\x01 \x01(\v2U.org.project_planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xfe\x03\n" +
-	"Ccom.org.project_planton.provider.cloudflare.cloudflared1database.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05OPPCC\xaa\x02>Org.ProjectPlanton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xf8\x03\n" +
+	"Ccom.org.project_planton.provider.cloudflare.cloudflared1database.v1B\x0fStackInputProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05OPPCC\xaa\x02>Org.ProjectPlanton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input_proto_rawDescOnce sync.Once

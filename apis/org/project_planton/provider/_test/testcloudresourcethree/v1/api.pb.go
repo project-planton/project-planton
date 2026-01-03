@@ -8,7 +8,7 @@ package testcloudresourcethreev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -159,8 +159,8 @@ const file_org_project_planton_provider__test_testcloudresourcethree_v1_api_prot
 	"\x04spec\x18\x04 \x01(\v2X.org.project_planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeSpecR\x04spec\x12r\n" +
 	"\x06status\x18\x05 \x01(\v2Z.org.project_planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStatusR\x06status\"\x9a\x01\n" +
 	"\x1cTestCloudResourceThreeStatus\x12z\n" +
-	"\aoutputs\x18\x01 \x01(\v2`.org.project_planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStackOutputsR\aoutputsB\xe3\x03\n" +
-	"@com.org.project_planton.provider._test.testcloudresourcethree.v1B\bApiProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1;testcloudresourcethreev1\xa2\x02\x05OPP_T\xaa\x02:Org.ProjectPlanton.Provider.Test.Testcloudresourcethree.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Test::Testcloudresourcethree::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2`.org.project_planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStackOutputsR\aoutputsB\xdc\x03\n" +
+	"@com.org.project_planton.provider._test.testcloudresourcethree.v1B\bApiProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1;testcloudresourcethreev1\xa2\x02\x05OPP_T\xaa\x02:Org.ProjectPlanton.Provider.Test.Testcloudresourcethree.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Test::Testcloudresourcethree::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider__test_testcloudresourcethree_v1_api_proto_rawDescOnce sync.Once

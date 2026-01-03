@@ -8,9 +8,9 @@ package digitaloceandnszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	dnsrecordtype "github.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -250,8 +250,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec
 	"\x06weight\x18\x06 \x01(\rB\x05\x92\xa6\x1d\x010R\x06weight\x12\x19\n" +
 	"\x04port\x18\a \x01(\rB\x05\x92\xa6\x1d\x010R\x04port\x12\x1b\n" +
 	"\x05flags\x18\b \x01(\rB\x05\x92\xa6\x1d\x010R\x05flags\x12\x10\n" +
-	"\x03tag\x18\t \x01(\tR\x03tagB\xfd\x03\n" +
-	"Dcom.org.project_planton.provider.digitalocean.digitaloceandnszone.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
+	"\x03tag\x18\t \x01(\tR\x03tagB\xf7\x03\n" +
+	"Dcom.org.project_planton.provider.digitalocean.digitaloceandnszone.v1B\tSpecProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_rawDescOnce sync.Once

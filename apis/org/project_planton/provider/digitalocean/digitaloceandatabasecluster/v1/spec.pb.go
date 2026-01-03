@@ -8,8 +8,8 @@ package digitaloceandatabaseclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -233,8 +233,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster
 	"\x02pg\x10\x01\x12\t\n" +
 	"\x05mysql\x10\x02\x12\t\n" +
 	"\x05redis\x10\x03\x12\v\n" +
-	"\amongodb\x10\x04B\xb5\x04\n" +
-	"Lcom.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1B\tSpecProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05OPPDD\xaa\x02GOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
+	"\amongodb\x10\x04B\xaf\x04\n" +
+	"Lcom.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1B\tSpecProtoP\x01Z\x90\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05OPPDD\xaa\x02GOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_spec_proto_rawDescOnce sync.Once

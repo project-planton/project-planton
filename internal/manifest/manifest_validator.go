@@ -69,7 +69,7 @@ func formatValidationError(err error) error {
 	msg.WriteString("   • Validate after fix:     " + cyan("project-planton validate-manifest --kustomize-dir _kustomize --overlay prod") + "\n")
 	msg.WriteString("\n")
 
-	msg.WriteString(bold("📚 Documentation: ") + cyan("https://github.com/project-planton/project-planton/tree/main/apis\n"))
+	msg.WriteString(bold("📚 Documentation: ") + cyan("https://github.com/plantonhq/project-planton/tree/main/apis\n"))
 	msg.WriteString("\n")
 
 	return errors.New(msg.String())

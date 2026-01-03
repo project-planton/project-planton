@@ -95,8 +95,8 @@ const file_org_project_planton_provider_civo_civovpc_v1_stack_outputs_proto_rawD
 	"network_id\x18\x01 \x01(\tR\tnetworkId\x12\x1d\n" +
 	"\n" +
 	"cidr_block\x18\x02 \x01(\tR\tcidrBlock\x12,\n" +
-	"\x12created_at_rfc3339\x18\x03 \x01(\tR\x10createdAtRfc3339B\x80\x03\n" +
-	"0com.org.project_planton.provider.civo.civovpc.v1B\x11StackOutputsProtoP\x01Zfgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
+	"\x12created_at_rfc3339\x18\x03 \x01(\tR\x10createdAtRfc3339B\xfa\x02\n" +
+	"0com.org.project_planton.provider.civo.civovpc.v1B\x11StackOutputsProtoP\x01Z`github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovpc_v1_stack_outputs_proto_rawDescOnce sync.Once

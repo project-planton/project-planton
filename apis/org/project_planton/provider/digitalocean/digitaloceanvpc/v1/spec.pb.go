@@ -8,8 +8,8 @@ package digitaloceanvpcv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -119,8 +119,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanvpc_v1_spec_pro
 	"\vdescription\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescription\x12]\n" +
 	"\x06region\x18\x02 \x01(\x0e2=.org.project_planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12S\n" +
 	"\rip_range_cidr\x18\x03 \x01(\tB/\xbaH,r*2(^([0-9]{1,3}\\.){3}[0-9]{1,3}/(16|20|24)$R\vipRangeCidr\x12<\n" +
-	"\x15is_default_for_region\x18\x04 \x01(\bB\t\x92\xa6\x1d\x05falseR\x12isDefaultForRegionB\xe0\x03\n" +
-	"@com.org.project_planton.provider.digitalocean.digitaloceanvpc.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvpc/v1;digitaloceanvpcv1\xa2\x02\x05OPPDD\xaa\x02;Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvpc.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvpc\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvpc\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Digitalocean::Digitaloceanvpc::V1b\x06proto3"
+	"\x15is_default_for_region\x18\x04 \x01(\bB\t\x92\xa6\x1d\x05falseR\x12isDefaultForRegionB\xda\x03\n" +
+	"@com.org.project_planton.provider.digitalocean.digitaloceanvpc.v1B\tSpecProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvpc/v1;digitaloceanvpcv1\xa2\x02\x05OPPDD\xaa\x02;Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvpc.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvpc\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvpc\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Digitalocean::Digitaloceanvpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanvpc_v1_spec_proto_rawDescOnce sync.Once

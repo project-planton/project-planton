@@ -8,8 +8,8 @@ package gcpgkenodepoolv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -391,8 +391,8 @@ const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc
 	"\x10_location_policy\"\x87\x01\n" +
 	"#GcpGkeClusterNodePoolNodeManagement\x120\n" +
 	"\x14disable_auto_upgrade\x18\x01 \x01(\bR\x12disableAutoUpgrade\x12.\n" +
-	"\x13disable_auto_repair\x18\x02 \x01(\bR\x11disableAutoRepairB\xa3\x03\n" +
-	"6com.org.project_planton.provider.gcp.gcpgkenodepool.v1B\tSpecProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05OPPGG\xaa\x021Org.ProjectPlanton.Provider.Gcp.Gcpgkenodepool.V1\xca\x021Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
+	"\x13disable_auto_repair\x18\x02 \x01(\bR\x11disableAutoRepairB\x9d\x03\n" +
+	"6com.org.project_planton.provider.gcp.gcpgkenodepool.v1B\tSpecProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05OPPGG\xaa\x021Org.ProjectPlanton.Provider.Gcp.Gcpgkenodepool.V1\xca\x021Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDescOnce sync.Once

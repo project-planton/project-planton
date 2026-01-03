@@ -3,8 +3,8 @@ package backendconfig
 import (
 	"fmt"
 
-	"github.com/project-planton/project-planton/pkg/iac/tofu/tofulabels"
-	"github.com/project-planton/project-planton/pkg/reflection/metadatareflect"
+	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofulabels"
+	"github.com/plantonhq/project-planton/pkg/reflection/metadatareflect"
 	"google.golang.org/protobuf/proto"
 )
 

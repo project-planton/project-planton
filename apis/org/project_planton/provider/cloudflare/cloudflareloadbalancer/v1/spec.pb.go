@@ -8,8 +8,8 @@ package cloudflareloadbalancerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -311,8 +311,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spe
 	"\x03off\x10\x00\x12\a\n" +
 	"\x03geo\x10\x01\x12\n" +
 	"\n" +
-	"\x06random\x10\x02B\x86\x04\n" +
-	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
+	"\x06random\x10\x02B\x80\x04\n" +
+	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\tSpecProtoP\x01Z\x84\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDescOnce sync.Once

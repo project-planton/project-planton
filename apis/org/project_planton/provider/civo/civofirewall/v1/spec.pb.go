@@ -8,7 +8,7 @@ package civofirewallv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -298,8 +298,8 @@ const file_org_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDesc 
 	"port_range\x18\x02 \x01(\tR\tportRange\x12\x14\n" +
 	"\x05cidrs\x18\x03 \x03(\tR\x05cidrs\x12\x16\n" +
 	"\x06action\x18\x04 \x01(\tR\x06action\x12\x14\n" +
-	"\x05label\x18\x05 \x01(\tR\x05labelB\x9b\x03\n" +
-	"5com.org.project_planton.provider.civo.civofirewall.v1B\tSpecProtoP\x01Zpgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civofirewall/v1;civofirewallv1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civofirewall.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civofirewall\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civofirewall\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civofirewall::V1b\x06proto3"
+	"\x05label\x18\x05 \x01(\tR\x05labelB\x95\x03\n" +
+	"5com.org.project_planton.provider.civo.civofirewall.v1B\tSpecProtoP\x01Zjgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civofirewall/v1;civofirewallv1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civofirewall.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civofirewall\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civofirewall\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civofirewall::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDescOnce sync.Once

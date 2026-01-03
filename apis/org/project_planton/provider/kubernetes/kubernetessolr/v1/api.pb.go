@@ -8,7 +8,7 @@ package kubernetessolrv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_r
 	"\x04spec\x18\x04 \x01(\v2M.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
 	"\x06status\x18\x05 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStatusR\x06status\"\x87\x01\n" +
 	"\x14KubernetesSolrStatus\x12o\n" +
-	"\aoutputs\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackOutputsR\aoutputsB\xcc\x03\n" +
-	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\bApiProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrStackOutputsR\aoutputsB\xc6\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\bApiProtoP\x01Ztgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessolr_v1_api_proto_rawDescOnce sync.Once

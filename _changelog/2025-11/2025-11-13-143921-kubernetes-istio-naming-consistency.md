@@ -164,14 +164,14 @@ message KubernetesIstioStackOutputs { ... }
 ```go
 // Before
 import (
-  istiokubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1"
+  istiokubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1"
 )
 
 stackInput := &istiokubernetesv1.IstioKubernetesStackInput{}
 
 // After
 import (
-  kubernetesistiov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1"
+  kubernetesistiov1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1"
 )
 
 stackInput := &kubernetesistiov1.KubernetesIstioStackInput{}
@@ -182,14 +182,14 @@ stackInput := &kubernetesistiov1.KubernetesIstioStackInput{}
 ```go
 // Before
 import (
-  istiokubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1"
+  istiokubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1"
 )
 
 func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackInput) error
 
 // After
 import (
-  kubernetesistiov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1"
+  kubernetesistiov1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1"
 )
 
 func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackInput) error
@@ -387,10 +387,10 @@ For users with existing manifests:
 2. **Update any hardcoded import paths** in custom code:
    ```bash
    # Old
-   github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1
+   github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1
    
    # New
-   github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1
+   github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1
    ```
 
 3. **No CLI changes required** - The `project-planton` CLI will work with the new kind name automatically after updating to the version with this change

@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	kubernetescronjobv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

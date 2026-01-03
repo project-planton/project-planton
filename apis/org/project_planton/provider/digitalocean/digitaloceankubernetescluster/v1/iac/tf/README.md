@@ -468,7 +468,7 @@ terraform destroy -auto-approve
 ## Support
 
 For issues or questions:
-- Project Planton: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
+- Project Planton: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
 - DigitalOcean Support: [Support Portal](https://www.digitalocean.com/support)
 
 ---

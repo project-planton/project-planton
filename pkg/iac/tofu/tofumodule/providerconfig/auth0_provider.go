@@ -2,9 +2,9 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	auth0provider "github.com/project-planton/project-planton/apis/org/project_planton/provider/auth0"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	auth0provider "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )
 
 func AddAuth0ProviderConfigEnvVars(stackInputContentMap map[string]interface{},

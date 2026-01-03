@@ -62,8 +62,8 @@ var File_org_project_planton_provider__test_testcloudresourcetwo_v1_stack_output
 const file_org_project_planton_provider__test_testcloudresourcetwo_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
 	"Norg/project_planton/provider/_test/testcloudresourcetwo/v1/stack_outputs.proto\x12:org.project_planton.provider._test.testcloudresourcetwo.v1\"\"\n" +
-	" TestCloudResourceTwoStackOutputsB\xde\x03\n" +
-	">com.org.project_planton.provider._test.testcloudresourcetwo.v1B\x11StackOutputsProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcetwo/v1;testcloudresourcetwov1\xa2\x02\x05OPP_T\xaa\x028Org.ProjectPlanton.Provider.Test.Testcloudresourcetwo.V1\xca\x028Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcetwo\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcetwo\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Test::Testcloudresourcetwo::V1b\x06proto3"
+	" TestCloudResourceTwoStackOutputsB\xd7\x03\n" +
+	">com.org.project_planton.provider._test.testcloudresourcetwo.v1B\x11StackOutputsProtoP\x01Z{github.com/plantonhq/project-planton/apis/org/project_planton/provider/_test/testcloudresourcetwo/v1;testcloudresourcetwov1\xa2\x02\x05OPP_T\xaa\x028Org.ProjectPlanton.Provider.Test.Testcloudresourcetwo.V1\xca\x028Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcetwo\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcetwo\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Test::Testcloudresourcetwo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider__test_testcloudresourcetwo_v1_stack_outputs_proto_rawDescOnce sync.Once

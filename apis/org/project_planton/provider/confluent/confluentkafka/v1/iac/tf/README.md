@@ -40,7 +40,7 @@ This module is part of the Project Planton monorepo. To use it:
 
 ```bash
 # Clone the repository
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton/apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf
 ```
 
@@ -320,7 +320,7 @@ Contributions are welcome! Please see the [project contribution guidelines](../.
 ## Support
 
 For support:
-- **Issues**: Open an issue on [GitHub](https://github.com/project-planton/project-planton/issues)
+- **Issues**: Open an issue on [GitHub](https://github.com/plantonhq/project-planton/issues)
 - **Email**: [support@planton.cloud](mailto:support@planton.cloud)
 - **Documentation**: [docs.confluent.io](https://docs.confluent.io/cloud/)
 
@@ -328,7 +328,7 @@ For support:
 
 - [Confluent Terraform Provider Documentation](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
 - [Confluent Cloud Documentation](https://docs.confluent.io/cloud/)
-- [Project Planton Documentation](https://github.com/project-planton/project-planton)
+- [Project Planton Documentation](https://github.com/plantonhq/project-planton)
 - [Terraform Best Practices](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html)
 
 ## License

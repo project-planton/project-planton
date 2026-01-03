@@ -7,7 +7,7 @@
 package kubernetestektonoperatorv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_s
 	"Uorg/project_planton/provider/kubernetes/kubernetestektonoperator/v1/stack_input.proto\x12Corg.project_planton.provider.kubernetes.kubernetestektonoperator.v1\x1aMorg/project_planton/provider/kubernetes/kubernetestektonoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x87\x02\n" +
 	"\"KubernetesTektonOperatorStackInput\x12u\n" +
 	"\x06target\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.kubernetestektonoperator.v1.KubernetesTektonOperatorR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x9a\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\x0fStackInputProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x94\x04\n" +
+	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\x0fStackInputProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_stack_input_proto_rawDescOnce sync.Once

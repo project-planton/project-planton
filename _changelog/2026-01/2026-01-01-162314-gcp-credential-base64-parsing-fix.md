@@ -75,7 +75,7 @@ Added support for testing Pulumi module changes without pushing to main:
 **File**: `pkg/iac/gitrepo/git_repo.go`
 
 ```go
-const CloneUrl = "https://github.com/project-planton/project-planton.git"
+const CloneUrl = "https://github.com/plantonhq/project-planton.git"
 
 // Branch to checkout after cloning (set to empty string to use default behavior)
 const Branch = "ghcr_installable"

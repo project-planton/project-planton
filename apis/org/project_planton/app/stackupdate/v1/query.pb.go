@@ -28,9 +28,9 @@ const file_org_project_planton_app_stackupdate_v1_query_proto_rawDesc = "" +
 	"\x1aStackUpdateQueryController\x12\x8f\x01\n" +
 	"\x0eGetStackUpdate\x12=.org.project_planton.app.stackupdate.v1.GetStackUpdateRequest\x1a>.org.project_planton.app.stackupdate.v1.GetStackUpdateResponse\x12\x95\x01\n" +
 	"\x10ListStackUpdates\x12?.org.project_planton.app.stackupdate.v1.ListStackUpdatesRequest\x1a@.org.project_planton.app.stackupdate.v1.ListStackUpdatesResponse\x12\xac\x01\n" +
-	"\x17StreamStackUpdateOutput\x12F.org.project_planton.app.stackupdate.v1.StreamStackUpdateOutputRequest\x1aG.org.project_planton.app.stackupdate.v1.StreamStackUpdateOutputResponse0\x01B\xd7\x02\n" +
+	"\x17StreamStackUpdateOutput\x12F.org.project_planton.app.stackupdate.v1.StreamStackUpdateOutputRequest\x1aG.org.project_planton.app.stackupdate.v1.StreamStackUpdateOutputResponse0\x01B\xd1\x02\n" +
 	"*com.org.project_planton.app.stackupdate.v1B\n" +
-	"QueryProtoP\x01Zdgithub.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
+	"QueryProtoP\x01Z^github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
 
 var file_org_project_planton_app_stackupdate_v1_query_proto_goTypes = []any{
 	(*GetStackUpdateRequest)(nil),           // 0: org.project_planton.app.stackupdate.v1.GetStackUpdateRequest

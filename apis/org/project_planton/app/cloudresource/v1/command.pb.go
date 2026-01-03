@@ -29,8 +29,8 @@ const file_org_project_planton_app_cloudresource_v1_command_proto_rawDesc = "" +
 	"\x06Create\x12D.org.project_planton.app.cloudresource.v1.CreateCloudResourceRequest\x1aE.org.project_planton.app.cloudresource.v1.CreateCloudResourceResponse\x12\x95\x01\n" +
 	"\x06Update\x12D.org.project_planton.app.cloudresource.v1.UpdateCloudResourceRequest\x1aE.org.project_planton.app.cloudresource.v1.UpdateCloudResourceResponse\x12\x95\x01\n" +
 	"\x06Delete\x12D.org.project_planton.app.cloudresource.v1.DeleteCloudResourceRequest\x1aE.org.project_planton.app.cloudresource.v1.DeleteCloudResourceResponse\x12\x92\x01\n" +
-	"\x05Apply\x12C.org.project_planton.app.cloudresource.v1.ApplyCloudResourceRequest\x1aD.org.project_planton.app.cloudresource.v1.ApplyCloudResourceResponseB\xe7\x02\n" +
-	",com.org.project_planton.app.cloudresource.v1B\fCommandProtoP\x01Zhgithub.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
+	"\x05Apply\x12C.org.project_planton.app.cloudresource.v1.ApplyCloudResourceRequest\x1aD.org.project_planton.app.cloudresource.v1.ApplyCloudResourceResponseB\xe1\x02\n" +
+	",com.org.project_planton.app.cloudresource.v1B\fCommandProtoP\x01Zbgithub.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
 
 var file_org_project_planton_app_cloudresource_v1_command_proto_goTypes = []any{
 	(*CreateCloudResourceRequest)(nil),  // 0: org.project_planton.app.cloudresource.v1.CreateCloudResourceRequest

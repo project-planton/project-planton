@@ -128,8 +128,8 @@ const file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_
 	"\x03SRV\x10\t\x12\a\n" +
 	"\x03TXT\x10\n" +
 	"\x12\a\n" +
-	"\x03CAA\x10\vB\xc6\x03\n" +
-	"=com.org.project_planton.shared.networking.enums.dnsrecordtypeB\x12DnsRecordTypeProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype\xa2\x02\x06OPSNED\xaa\x028Org.ProjectPlanton.Shared.Networking.Enums.Dnsrecordtype\xca\x028Org\\ProjectPlanton\\Shared\\Networking\\Enums\\Dnsrecordtype\xe2\x02DOrg\\ProjectPlanton\\Shared\\Networking\\Enums\\Dnsrecordtype\\GPBMetadata\xea\x02=Org::ProjectPlanton::Shared::Networking::Enums::Dnsrecordtypeb\x06proto3"
+	"\x03CAA\x10\vB\xc0\x03\n" +
+	"=com.org.project_planton.shared.networking.enums.dnsrecordtypeB\x12DnsRecordTypeProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype\xa2\x02\x06OPSNED\xaa\x028Org.ProjectPlanton.Shared.Networking.Enums.Dnsrecordtype\xca\x028Org\\ProjectPlanton\\Shared\\Networking\\Enums\\Dnsrecordtype\xe2\x02DOrg\\ProjectPlanton\\Shared\\Networking\\Enums\\Dnsrecordtype\\GPBMetadata\xea\x02=Org::ProjectPlanton::Shared::Networking::Enums::Dnsrecordtypeb\x06proto3"
 
 var (
 	file_org_project_planton_shared_networking_enums_dnsrecordtype_dns_record_type_proto_rawDescOnce sync.Once

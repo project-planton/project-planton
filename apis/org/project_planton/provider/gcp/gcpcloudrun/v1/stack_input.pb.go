@@ -7,7 +7,7 @@
 package gcpcloudrunv1
 
 import (
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
+	gcp "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_gcp_gcpcloudrun_v1_stack_input_proto_raw
 	"Aorg/project_planton/provider/gcp/gcpcloudrun/v1/stack_input.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a9org/project_planton/provider/gcp/gcpcloudrun/v1/api.proto\x1a/org/project_planton/provider/gcp/provider.proto\"\xcb\x01\n" +
 	"\x15GcpCloudRunStackInput\x12T\n" +
 	"\x06target\x18\x01 \x01(\v2<.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\x94\x03\n" +
-	"3com.org.project_planton.provider.gcp.gcpcloudrun.v1B\x0fStackInputProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudrun.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\x8e\x03\n" +
+	"3com.org.project_planton.provider.gcp.gcpcloudrun.v1B\x0fStackInputProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudrun.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudrun_v1_stack_input_proto_rawDescOnce sync.Once

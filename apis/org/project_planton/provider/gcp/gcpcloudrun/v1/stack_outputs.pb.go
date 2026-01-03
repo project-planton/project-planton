@@ -93,8 +93,8 @@ const file_org_project_planton_provider_gcp_gcpcloudrun_v1_stack_outputs_proto_r
 	"\x17GcpCloudRunStackOutputs\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\x12!\n" +
 	"\fservice_name\x18\x02 \x01(\tR\vserviceName\x12\x1a\n" +
-	"\brevision\x18\x03 \x01(\tR\brevisionB\x96\x03\n" +
-	"3com.org.project_planton.provider.gcp.gcpcloudrun.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudrun.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"
+	"\brevision\x18\x03 \x01(\tR\brevisionB\x90\x03\n" +
+	"3com.org.project_planton.provider.gcp.gcpcloudrun.v1B\x11StackOutputsProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudrun.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudrun_v1_stack_outputs_proto_rawDescOnce sync.Once

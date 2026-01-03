@@ -864,5 +864,5 @@ project-planton delete -f app.yaml
 
 ## Feedback
 
-Found an issue or have a suggestion? [Open an issue](https://github.com/project-planton/project-planton/issues) on GitHub.
+Found an issue or have a suggestion? [Open an issue](https://github.com/plantonhq/project-planton/issues) on GitHub.
 

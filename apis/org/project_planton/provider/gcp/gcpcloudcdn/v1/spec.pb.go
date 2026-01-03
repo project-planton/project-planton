@@ -8,7 +8,7 @@ package gcpcloudcdnv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1591,8 +1591,8 @@ const file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_rawDesc = 
 	"\x0fBackendProtocol\x12 \n" +
 	"\x1cBACKEND_PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HTTP\x10\x01\x12\t\n" +
-	"\x05HTTPS\x10\x02B\x8e\x03\n" +
-	"3com.org.project_planton.provider.gcp.gcpcloudcdn.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudcdn/v1;gcpcloudcdnv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudcdn.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudcdn::V1b\x06proto3"
+	"\x05HTTPS\x10\x02B\x88\x03\n" +
+	"3com.org.project_planton.provider.gcp.gcpcloudcdn.v1B\tSpecProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudcdn/v1;gcpcloudcdnv1\xa2\x02\x05OPPGG\xaa\x02.Org.ProjectPlanton.Provider.Gcp.Gcpcloudcdn.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcloudcdn\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Gcp::Gcpcloudcdn::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcloudcdn_v1_spec_proto_rawDescOnce sync.Once

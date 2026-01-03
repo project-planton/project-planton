@@ -96,8 +96,8 @@ const file_org_project_planton_provider_atlas_provider_proto_rawDesc = "" +
 	"\n" +
 	"public_key\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tpublicKey\x12'\n" +
 	"\vprivate_key\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"privateKeyB\xb3\x02\n" +
-	"&com.org.project_planton.provider.atlasB\rProviderProtoP\x01ZRgithub.com/project-planton/project-planton/apis/org/project_planton/provider/atlas\xa2\x02\x04OPPA\xaa\x02!Org.ProjectPlanton.Provider.Atlas\xca\x02!Org\\ProjectPlanton\\Provider\\Atlas\xe2\x02-Org\\ProjectPlanton\\Provider\\Atlas\\GPBMetadata\xea\x02$Org::ProjectPlanton::Provider::Atlasb\x06proto3"
+	"privateKeyB\xad\x02\n" +
+	"&com.org.project_planton.provider.atlasB\rProviderProtoP\x01ZLgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/atlas\xa2\x02\x04OPPA\xaa\x02!Org.ProjectPlanton.Provider.Atlas\xca\x02!Org\\ProjectPlanton\\Provider\\Atlas\xe2\x02-Org\\ProjectPlanton\\Provider\\Atlas\\GPBMetadata\xea\x02$Org::ProjectPlanton::Provider::Atlasb\x06proto3"
 
 var (
 	file_org_project_planton_provider_atlas_provider_proto_rawDescOnce sync.Once

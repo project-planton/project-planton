@@ -337,8 +337,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spe
 	"\x17destination_droplet_ids\x18\x04 \x03(\x03R\x15destinationDropletIds\x12)\n" +
 	"\x10destination_tags\x18\x05 \x03(\tR\x0fdestinationTags\x12<\n" +
 	"\x1adestination_kubernetes_ids\x18\x06 \x03(\tR\x18destinationKubernetesIds\x12C\n" +
-	"\x1edestination_load_balancer_uids\x18\a \x03(\tR\x1bdestinationLoadBalancerUidsB\x84\x04\n" +
-	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfirewall.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
+	"\x1edestination_load_balancer_uids\x18\a \x03(\tR\x1bdestinationLoadBalancerUidsB\xfe\x03\n" +
+	"Ecom.org.project_planton.provider.digitalocean.digitaloceanfirewall.v1B\tSpecProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05OPPDD\xaa\x02@Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDescOnce sync.Once

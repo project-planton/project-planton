@@ -79,8 +79,8 @@ const file_org_project_planton_shared_iac_proto_rawDesc = "" +
 	"\x1biac_provisioner_unspecified\x10\x00\x12\r\n" +
 	"\tterraform\x10\x01\x12\n" +
 	"\n" +
-	"\x06pulumi\x10\x02B\xfc\x01\n" +
-	"\x1ecom.org.project_planton.sharedB\bIacProtoP\x01ZJgithub.com/project-planton/project-planton/apis/org/project_planton/shared\xa2\x02\x03OPS\xaa\x02\x19Org.ProjectPlanton.Shared\xca\x02\x19Org\\ProjectPlanton\\Shared\xe2\x02%Org\\ProjectPlanton\\Shared\\GPBMetadata\xea\x02\x1bOrg::ProjectPlanton::Sharedb\x06proto3"
+	"\x06pulumi\x10\x02B\xf6\x01\n" +
+	"\x1ecom.org.project_planton.sharedB\bIacProtoP\x01ZDgithub.com/plantonhq/project-planton/apis/org/project_planton/shared\xa2\x02\x03OPS\xaa\x02\x19Org.ProjectPlanton.Shared\xca\x02\x19Org\\ProjectPlanton\\Shared\xe2\x02%Org\\ProjectPlanton\\Shared\\GPBMetadata\xea\x02\x1bOrg::ProjectPlanton::Sharedb\x06proto3"
 
 var (
 	file_org_project_planton_shared_iac_proto_rawDescOnce sync.Once

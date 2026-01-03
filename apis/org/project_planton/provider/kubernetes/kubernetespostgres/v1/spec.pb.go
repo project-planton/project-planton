@@ -8,8 +8,8 @@ package kubernetespostgresv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -660,8 +660,8 @@ const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_pr
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
 	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa8\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainerR\x10defaultContainerB\xea\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2Z.org.project_planton.provider.kubernetes.kubernetespostgres.v1.KubernetesPostgresContainerR\x10defaultContainerB\xe3\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\tSpecProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_spec_proto_rawDescOnce sync.Once

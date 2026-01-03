@@ -8,7 +8,7 @@ package kubernetesneo4jv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_
 	"\x04spec\x18\x04 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12i\n" +
 	"\x06status\x18\x05 \x01(\v2Q.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStatusR\x06status\"\x8a\x01\n" +
 	"\x15KubernetesNeo4jStatus\x12q\n" +
-	"\aoutputs\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackOutputsR\aoutputsB\xd3\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\bApiProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesneo4j.v1.KubernetesNeo4jStackOutputsR\aoutputsB\xcd\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesneo4j.v1B\bApiProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1;kubernetesneo4jv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesneo4j.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesneo4j\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesneo4j::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesneo4j_v1_api_proto_rawDescOnce sync.Once

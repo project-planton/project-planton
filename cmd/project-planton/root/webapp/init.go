@@ -7,12 +7,12 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/project-planton/project-planton/cmd/project-planton/root"
+	"github.com/plantonhq/project-planton/cmd/project-planton/root"
 	"github.com/spf13/cobra"
 )
 
 const (
-	DockerImageName   = "ghcr.io/project-planton/project-planton"
+	DockerImageName   = "ghcr.io/plantonhq/project-planton"
 	DockerImageTag    = "latest"
 	ContainerName     = "project-planton-webapp"
 	MongoDBVolume     = "project-planton-mongodb-data"

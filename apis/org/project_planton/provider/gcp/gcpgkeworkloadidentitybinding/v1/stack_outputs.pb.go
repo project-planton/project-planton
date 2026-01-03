@@ -85,8 +85,8 @@ const file_org_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_sta
 	"Uorg/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_outputs.proto\x12Aorg.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\"w\n" +
 	")GcpGkeWorkloadIdentityBindingStackOutputs\x12\x16\n" +
 	"\x06member\x18\x01 \x01(\tR\x06member\x122\n" +
-	"\x15service_account_email\x18\x02 \x01(\tR\x13serviceAccountEmailB\x95\x04\n" +
-	"Ecom.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1B\x11StackOutputsProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1;gcpgkeworkloadidentitybindingv1\xa2\x02\x05OPPGG\xaa\x02@Org.ProjectPlanton.Provider.Gcp.Gcpgkeworkloadidentitybinding.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Gcp::Gcpgkeworkloadidentitybinding::V1b\x06proto3"
+	"\x15service_account_email\x18\x02 \x01(\tR\x13serviceAccountEmailB\x8f\x04\n" +
+	"Ecom.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1B\x11StackOutputsProtoP\x01Z\x8b\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1;gcpgkeworkloadidentitybindingv1\xa2\x02\x05OPPGG\xaa\x02@Org.ProjectPlanton.Provider.Gcp.Gcpgkeworkloadidentitybinding.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Gcp::Gcpgkeworkloadidentitybinding::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_outputs_proto_rawDescOnce sync.Once

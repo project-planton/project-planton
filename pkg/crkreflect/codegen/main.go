@@ -26,10 +26,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/project-planton/project-planton/pkg/crkreflect"
+	"github.com/plantonhq/project-planton/pkg/crkreflect"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 // -----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ func run() error {
 
 		// all providers use flat structure
 		importPath := fmt.Sprintf(
-			"github.com/project-planton/project-planton/apis/org/project_planton/provider/%s/%s/v1",
+			"github.com/plantonhq/project-planton/apis/org/project_planton/provider/%s/%s/v1",
 			provSlug, lowerKind)
 
 		alias := uniqueAlias(importPath, importAlias, &imports, aliasByPath)
@@ -215,7 +215,7 @@ var tpl = template.Must(template.New("").Funcs(template.FuncMap{
 package crkreflect
 
 import (
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"google.golang.org/protobuf/proto"
 {{- range .Imports }}
 	{{ .Alias }} "{{ .Path }}"

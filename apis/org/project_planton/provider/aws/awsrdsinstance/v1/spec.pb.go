@@ -8,7 +8,7 @@ package awsrdsinstancev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -232,8 +232,8 @@ const file_org_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc
 	"\bmulti_az\x18\x0e \x01(\bR\amultiAz\x120\n" +
 	"\x14parameter_group_name\x18\x0f \x01(\tR\x12parameterGroupName\x12*\n" +
 	"\x11option_group_name\x18\x10 \x01(\tR\x0foptionGroupName:\x93\x01\xbaH\x8f\x01\x1a\x8c\x01\n" +
-	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1a?(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)B\xa3\x03\n" +
-	"6com.org.project_planton.provider.aws.awsrdsinstance.v1B\tSpecProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsrdsinstance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
+	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1a?(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)B\x9d\x03\n" +
+	"6com.org.project_planton.provider.aws.awsrdsinstance.v1B\tSpecProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsrdsinstance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDescOnce sync.Once

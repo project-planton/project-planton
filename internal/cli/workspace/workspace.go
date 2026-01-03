@@ -2,7 +2,7 @@ package workspace
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/fileutil"
+	"github.com/plantonhq/project-planton/pkg/fileutil"
 	"os"
 	"path/filepath"
 )

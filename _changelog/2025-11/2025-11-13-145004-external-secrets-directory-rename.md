@@ -79,10 +79,10 @@ package org.project_planton.provider.kubernetes.addon.externalsecrets.v1;
 
 ```go
 // Before
-externalsecretsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecretskubernetes/v1"
+externalsecretsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecretskubernetes/v1"
 
 // After
-externalsecretsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecrets/v1"
+externalsecretsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecrets/v1"
 ```
 
 ### Registry Entry

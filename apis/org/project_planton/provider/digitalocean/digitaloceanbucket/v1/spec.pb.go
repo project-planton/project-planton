@@ -8,7 +8,7 @@ package digitaloceanbucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanbucket_v1_spec_
 	"\x04tags\x18\x05 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags*?\n" +
 	"\x1fDigitalOceanBucketAccessControl\x12\v\n" +
 	"\aPRIVATE\x10\x00\x12\x0f\n" +
-	"\vPUBLIC_READ\x10\x01B\xf6\x03\n" +
-	"Ccom.org.project_planton.provider.digitalocean.digitaloceanbucket.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
+	"\vPUBLIC_READ\x10\x01B\xef\x03\n" +
+	"Ccom.org.project_planton.provider.digitalocean.digitaloceanbucket.v1B\tSpecProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanbucket_v1_spec_proto_rawDescOnce sync.Once

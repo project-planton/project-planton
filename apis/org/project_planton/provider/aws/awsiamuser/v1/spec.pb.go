@@ -113,8 +113,8 @@ const file_org_project_planton_provider_aws_awsiamuser_v1_spec_proto_rawDesc = "
 	"\x13disable_access_keys\x18\x04 \x01(\bR\x11disableAccessKeys\x1aZ\n" +
 	"\x13InlinePoliciesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12-\n" +
-	"\x05value\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x05value:\x028\x01B\x87\x03\n" +
-	"2com.org.project_planton.provider.aws.awsiamuser.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsiamuser/v1;awsiamuserv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamuser.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamuser::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x05value:\x028\x01B\x81\x03\n" +
+	"2com.org.project_planton.provider.aws.awsiamuser.v1B\tSpecProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsiamuser/v1;awsiamuserv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamuser.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamuser::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsiamuser_v1_spec_proto_rawDescOnce sync.Once

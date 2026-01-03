@@ -8,8 +8,8 @@ package kubernetesjenkinsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -200,8 +200,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_pro
 	"\x18KubernetesJenkinsIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
-	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0B\xe3\x03\n" +
-	"@com.org.project_planton.provider.kubernetes.kubernetesjenkins.v1B\tSpecProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1;kubernetesjenkinsv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesjenkins.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesjenkins::V1b\x06proto3"
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0B\xdc\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetesjenkins.v1B\tSpecProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1;kubernetesjenkinsv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesjenkins.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesjenkins::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_spec_proto_rawDescOnce sync.Once

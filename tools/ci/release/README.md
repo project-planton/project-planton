@@ -51,23 +51,23 @@ brew install --cask project-planton/tap/project-planton
 
 ### Install via Direct Download
 
-Download binaries from the [GitHub Releases](https://github.com/project-planton/project-planton/releases) page.
+Download binaries from the [GitHub Releases](https://github.com/plantonhq/project-planton/releases) page.
 
 ```bash
 # macOS (Apple Silicon)
-curl -Lo project-planton https://github.com/project-planton/project-planton/releases/latest/download/project-planton_VERSION_darwin_arm64.tar.gz
+curl -Lo project-planton https://github.com/plantonhq/project-planton/releases/latest/download/project-planton_VERSION_darwin_arm64.tar.gz
 tar -xzf project-planton_VERSION_darwin_arm64.tar.gz
 chmod +x project-planton
 sudo mv project-planton /usr/local/bin/
 
 # macOS (Intel)
-curl -Lo project-planton https://github.com/project-planton/project-planton/releases/latest/download/project-planton_VERSION_darwin_amd64.tar.gz
+curl -Lo project-planton https://github.com/plantonhq/project-planton/releases/latest/download/project-planton_VERSION_darwin_amd64.tar.gz
 tar -xzf project-planton_VERSION_darwin_amd64.tar.gz
 chmod +x project-planton
 sudo mv project-planton /usr/local/bin/
 
 # Linux (x86_64)
-curl -Lo project-planton https://github.com/project-planton/project-planton/releases/latest/download/project-planton_VERSION_linux_amd64.tar.gz
+curl -Lo project-planton https://github.com/plantonhq/project-planton/releases/latest/download/project-planton_VERSION_linux_amd64.tar.gz
 tar -xzf project-planton_VERSION_linux_amd64.tar.gz
 chmod +x project-planton
 sudo mv project-planton /usr/local/bin/
@@ -116,7 +116,7 @@ Note: `GITHUB_TOKEN` is automatically provided by GitHub Actions.
 ### Release workflow failed
 
 Check the GitHub Actions logs at:
-https://github.com/project-planton/project-planton/actions
+https://github.com/plantonhq/project-planton/actions
 
 Common issues:
 - Missing or expired `HOMEBREW_TAP_GITHUB_TOKEN` secret

@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/pkg/errors"
-	civodnszonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1/iac/pulumi/module"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
+	civodnszonev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1/iac/pulumi/module"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

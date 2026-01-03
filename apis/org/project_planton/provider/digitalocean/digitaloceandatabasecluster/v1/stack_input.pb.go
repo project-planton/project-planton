@@ -7,7 +7,7 @@
 package digitaloceandatabaseclusterv1
 
 import (
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster
 	"Zorg/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1/stack_input.proto\x12Horg.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1\x1aRorg/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1/api.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\"\x96\x02\n" +
 	"%DigitalOceanDatabaseClusterStackInput\x12}\n" +
 	"\x06target\x18\x01 \x01(\v2e.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterR\x06target\x12n\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xbb\x04\n" +
-	"Lcom.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1B\x0fStackInputProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05OPPDD\xaa\x02GOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xb5\x04\n" +
+	"Lcom.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1B\x0fStackInputProtoP\x01Z\x90\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05OPPDD\xaa\x02GOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_stack_input_proto_rawDescOnce sync.Once

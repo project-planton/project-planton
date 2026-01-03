@@ -7,7 +7,7 @@
 package civovpcv1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civovpc_v1_stack_input_proto_rawDes
 	">org/project_planton/provider/civo/civovpc/v1/stack_input.proto\x12,org.project_planton.provider.civo.civovpc.v1\x1a6org/project_planton/provider/civo/civovpc/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xc2\x01\n" +
 	"\x11CivoVpcStackInput\x12M\n" +
 	"\x06target\x18\x01 \x01(\v25.org.project_planton.provider.civo.civovpc.v1.CivoVpcR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xfe\x02\n" +
-	"0com.org.project_planton.provider.civo.civovpc.v1B\x0fStackInputProtoP\x01Zfgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xf8\x02\n" +
+	"0com.org.project_planton.provider.civo.civovpc.v1B\x0fStackInputProtoP\x01Z`github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovpc_v1_stack_input_proto_rawDescOnce sync.Once

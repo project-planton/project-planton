@@ -108,8 +108,8 @@ const file_org_project_planton_provider_gcp_gcpcertmanagercert_v1_stack_outputs_
 	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12)\n" +
 	"\x10certificate_name\x18\x02 \x01(\tR\x0fcertificateName\x126\n" +
 	"\x17certificate_domain_name\x18\x03 \x01(\tR\x15certificateDomainName\x12-\n" +
-	"\x12certificate_status\x18\x04 \x01(\tR\x11certificateStatusB\xc7\x03\n" +
-	":com.org.project_planton.provider.gcp.gcpcertmanagercert.v1B\x11StackOutputsProtoP\x01Z{github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1;gcpcertmanagercertv1\xa2\x02\x05OPPGG\xaa\x025Org.ProjectPlanton.Provider.Gcp.Gcpcertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Gcp::Gcpcertmanagercert::V1b\x06proto3"
+	"\x12certificate_status\x18\x04 \x01(\tR\x11certificateStatusB\xc1\x03\n" +
+	":com.org.project_planton.provider.gcp.gcpcertmanagercert.v1B\x11StackOutputsProtoP\x01Zugithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1;gcpcertmanagercertv1\xa2\x02\x05OPPGG\xaa\x025Org.ProjectPlanton.Provider.Gcp.Gcpcertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Gcp::Gcpcertmanagercert::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcertmanagercert_v1_stack_outputs_proto_rawDescOnce sync.Once

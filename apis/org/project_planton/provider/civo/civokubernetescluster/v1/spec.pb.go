@@ -8,9 +8,9 @@ package civokubernetesclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -229,8 +229,8 @@ const file_org_project_planton_provider_civo_civokubernetescluster_v1_spec_proto
 	"\x04size\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12)\n" +
 	"\n" +
 	"node_count\x18\x02 \x01(\rB\n" +
-	"\xbaH\a\xc8\x01\x01*\x02 \x00R\tnodeCountB\xdb\x03\n" +
-	">com.org.project_planton.provider.civo.civokubernetescluster.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1;civokubernetesclusterv1\xa2\x02\x05OPPCC\xaa\x029Org.ProjectPlanton.Provider.Civo.Civokubernetescluster.V1\xca\x029Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Civo::Civokubernetescluster::V1b\x06proto3"
+	"\xbaH\a\xc8\x01\x01*\x02 \x00R\tnodeCountB\xd4\x03\n" +
+	">com.org.project_planton.provider.civo.civokubernetescluster.v1B\tSpecProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1;civokubernetesclusterv1\xa2\x02\x05OPPCC\xaa\x029Org.ProjectPlanton.Provider.Civo.Civokubernetescluster.V1\xca\x029Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetescluster\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Civo::Civokubernetescluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civokubernetescluster_v1_spec_proto_rawDescOnce sync.Once

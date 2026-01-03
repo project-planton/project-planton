@@ -10,10 +10,10 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/cli/workspace"
-	"github.com/project-planton/project-planton/pkg/fileutil"
-	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/cli/workspace"
+	"github.com/plantonhq/project-planton/pkg/fileutil"
+	"github.com/plantonhq/project-planton/pkg/iac/gitrepo"
 )
 
 const (
@@ -554,4 +554,3 @@ func copyFile(src, dst string) error {
 	_, err = io.Copy(dstFile, srcFile)
 	return err
 }
-

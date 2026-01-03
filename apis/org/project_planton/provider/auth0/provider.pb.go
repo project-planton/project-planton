@@ -108,8 +108,8 @@ const file_org_project_planton_provider_auth0_provider_proto_rawDesc = "" +
 	"\x13Auth0ProviderConfig\x12\x1e\n" +
 	"\x06domain\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06domain\x12#\n" +
 	"\tclient_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bclientId\x12+\n" +
-	"\rclient_secret\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fclientSecretB\xb3\x02\n" +
-	"&com.org.project_planton.provider.auth0B\rProviderProtoP\x01ZRgithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0\xa2\x02\x04OPPA\xaa\x02!Org.ProjectPlanton.Provider.Auth0\xca\x02!Org\\ProjectPlanton\\Provider\\Auth0\xe2\x02-Org\\ProjectPlanton\\Provider\\Auth0\\GPBMetadata\xea\x02$Org::ProjectPlanton::Provider::Auth0b\x06proto3"
+	"\rclient_secret\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fclientSecretB\xad\x02\n" +
+	"&com.org.project_planton.provider.auth0B\rProviderProtoP\x01ZLgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0\xa2\x02\x04OPPA\xaa\x02!Org.ProjectPlanton.Provider.Auth0\xca\x02!Org\\ProjectPlanton\\Provider\\Auth0\xe2\x02-Org\\ProjectPlanton\\Provider\\Auth0\\GPBMetadata\xea\x02$Org::ProjectPlanton::Provider::Auth0b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_provider_proto_rawDescOnce sync.Once

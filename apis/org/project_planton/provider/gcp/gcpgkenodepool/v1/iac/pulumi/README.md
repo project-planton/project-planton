@@ -313,7 +313,7 @@ See **[overview.md](./overview.md)** for:
 ## Support
 
 For issues or questions:
-- **Project Planton Repository**: https://github.com/project-planton/project-planton
+- **Project Planton Repository**: https://github.com/plantonhq/project-planton
 - **Pulumi Documentation**: https://www.pulumi.com/docs/
 - **GKE Node Pools Documentation**: https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools
 

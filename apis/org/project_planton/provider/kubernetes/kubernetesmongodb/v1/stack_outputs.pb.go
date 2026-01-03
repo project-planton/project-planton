@@ -7,7 +7,7 @@
 package kubernetesmongodbv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -154,8 +154,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_ou
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
 	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12\x1a\n" +
 	"\busername\x18\a \x01(\tR\busername\x12e\n" +
-	"\x0fpassword_secret\x18\b \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xeb\x03\n" +
-	"@com.org.project_planton.provider.kubernetes.kubernetesmongodb.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1;kubernetesmongodbv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesmongodb.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmongodb\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmongodb\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesmongodb::V1b\x06proto3"
+	"\x0fpassword_secret\x18\b \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xe4\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetesmongodb.v1B\x11StackOutputsProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1;kubernetesmongodbv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesmongodb.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmongodb\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesmongodb\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesmongodb::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesmongodb_v1_stack_outputs_proto_rawDescOnce sync.Once

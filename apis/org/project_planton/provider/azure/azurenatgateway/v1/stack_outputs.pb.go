@@ -93,8 +93,8 @@ const file_org_project_planton_provider_azure_azurenatgateway_v1_stack_outputs_p
 	"\x1bAzureNatGatewayStackOutputs\x12$\n" +
 	"\x0enat_gateway_id\x18\x01 \x01(\tR\fnatGatewayId\x12.\n" +
 	"\x13public_ip_addresses\x18\x02 \x03(\tR\x11publicIpAddresses\x12-\n" +
-	"\x13public_ip_prefix_id\x18\x03 \x01(\tR\x10publicIpPrefixIdB\xbe\x03\n" +
-	"9com.org.project_planton.provider.azure.azurenatgateway.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azurenatgateway.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
+	"\x13public_ip_prefix_id\x18\x03 \x01(\tR\x10publicIpPrefixIdB\xb8\x03\n" +
+	"9com.org.project_planton.provider.azure.azurenatgateway.v1B\x11StackOutputsProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azurenatgateway.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurenatgateway_v1_stack_outputs_proto_rawDescOnce sync.Once

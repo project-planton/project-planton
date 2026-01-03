@@ -129,8 +129,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_s
 	"\x1cpipelines_controller_service\x18\x03 \x01(\tR\x1apipelinesControllerService\x12>\n" +
 	"\x1btriggers_controller_service\x18\x04 \x01(\tR\x19triggersControllerService\x12+\n" +
 	"\x11dashboard_service\x18\x05 \x01(\tR\x10dashboardService\x12C\n" +
-	"\x1edashboard_port_forward_command\x18\x06 \x01(\tR\x1bdashboardPortForwardCommandB\x9c\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\x11StackOutputsProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
+	"\x1edashboard_port_forward_command\x18\x06 \x01(\tR\x1bdashboardPortForwardCommandB\x96\x04\n" +
+	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_stack_outputs_proto_rawDescOnce sync.Once

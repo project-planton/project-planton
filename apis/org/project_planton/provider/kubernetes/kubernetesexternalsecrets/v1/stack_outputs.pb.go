@@ -121,8 +121,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xa3\x04\n" +
-	"Hcom.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1B\x11StackOutputsProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kubernetesexternalsecrets.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternalsecrets::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\x9d\x04\n" +
+	"Hcom.org.project_planton.provider.kubernetes.kubernetesexternalsecrets.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1;kubernetesexternalsecretsv1\xa2\x02\x05OPPKK\xaa\x02COrg.ProjectPlanton.Provider.Kubernetes.Kubernetesexternalsecrets.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesexternalsecrets\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesexternalsecrets::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesexternalsecrets_v1_stack_outputs_proto_rawDescOnce sync.Once

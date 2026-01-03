@@ -273,7 +273,7 @@ Reference the module from a remote source:
 
 ```hcl
 module "gcs_bucket" {
-  source = "git::https://github.com/project-planton/project-planton.git//apis/org/project_planton/provider/gcp/gcpgcsbucket/v1/iac/tf?ref=main"
+  source = "git::https://github.com/plantonhq/project-planton.git//apis/org/project_planton/provider/gcp/gcpgcsbucket/v1/iac/tf?ref=main"
 
   bucket_name    = "my-app-storage"
   gcp_project_id = "my-gcp-project-123"

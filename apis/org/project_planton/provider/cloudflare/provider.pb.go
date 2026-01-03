@@ -249,8 +249,8 @@ const file_org_project_planton_provider_cloudflare_provider_proto_rawDesc = "" +
 	"\x14CloudflareAuthScheme\x12&\n" +
 	"\"cloudflare_auth_scheme_unspecified\x10\x00\x12\r\n" +
 	"\tapi_token\x10\x01\x12\x12\n" +
-	"\x0elegacy_api_key\x10\x02B\xd1\x02\n" +
-	"+com.org.project_planton.provider.cloudflareB\rProviderProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare\xa2\x02\x04OPPC\xaa\x02&Org.ProjectPlanton.Provider.Cloudflare\xca\x02&Org\\ProjectPlanton\\Provider\\Cloudflare\xe2\x022Org\\ProjectPlanton\\Provider\\Cloudflare\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Cloudflareb\x06proto3"
+	"\x0elegacy_api_key\x10\x02B\xcb\x02\n" +
+	"+com.org.project_planton.provider.cloudflareB\rProviderProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare\xa2\x02\x04OPPC\xaa\x02&Org.ProjectPlanton.Provider.Cloudflare\xca\x02&Org\\ProjectPlanton\\Provider\\Cloudflare\xe2\x022Org\\ProjectPlanton\\Provider\\Cloudflare\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Cloudflareb\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_provider_proto_rawDescOnce sync.Once

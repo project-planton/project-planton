@@ -8,7 +8,7 @@ package awsiamrolev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -123,8 +123,8 @@ const file_org_project_planton_provider_aws_awsiamrole_v1_spec_proto_rawDesc = "
 	"\x0finline_policies\x18\x05 \x03(\v2R.org.project_planton.provider.aws.awsiamrole.v1.AwsIamRoleSpec.InlinePoliciesEntryR\x0einlinePolicies\x1aZ\n" +
 	"\x13InlinePoliciesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12-\n" +
-	"\x05value\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x05value:\x028\x01B\x87\x03\n" +
-	"2com.org.project_planton.provider.aws.awsiamrole.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsiamrole/v1;awsiamrolev1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamrole.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamrole::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x05value:\x028\x01B\x81\x03\n" +
+	"2com.org.project_planton.provider.aws.awsiamrole.v1B\tSpecProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsiamrole/v1;awsiamrolev1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamrole.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamrole::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsiamrole_v1_spec_proto_rawDescOnce sync.Once

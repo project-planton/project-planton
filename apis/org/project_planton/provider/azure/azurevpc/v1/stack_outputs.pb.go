@@ -83,8 +83,8 @@ const file_org_project_planton_provider_azure_azurevpc_v1_stack_outputs_proto_ra
 	"Borg/project_planton/provider/azure/azurevpc/v1/stack_outputs.proto\x12.org.project_planton.provider.azure.azurevpc.v1\"W\n" +
 	"\x14AzureVpcStackOutputs\x12\x17\n" +
 	"\avnet_id\x18\x01 \x01(\tR\x06vnetId\x12&\n" +
-	"\x0fnodes_subnet_id\x18\x02 \x01(\tR\rnodesSubnetIdB\x8d\x03\n" +
-	"2com.org.project_planton.provider.azure.azurevpc.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1;azurevpcv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Azure.Azurevpc.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Azure::Azurevpc::V1b\x06proto3"
+	"\x0fnodes_subnet_id\x18\x02 \x01(\tR\rnodesSubnetIdB\x87\x03\n" +
+	"2com.org.project_planton.provider.azure.azurevpc.v1B\x11StackOutputsProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurevpc/v1;azurevpcv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Azure.Azurevpc.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Azure\\Azurevpc\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Azure::Azurevpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurevpc_v1_stack_outputs_proto_rawDescOnce sync.Once

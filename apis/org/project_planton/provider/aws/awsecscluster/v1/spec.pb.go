@@ -8,7 +8,7 @@ package awsecsclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -425,8 +425,8 @@ const file_org_project_planton_provider_aws_awsecscluster_v1_spec_proto_rawDesc 
 	"\x1ecloud_watch_encryption_enabled\x18\x02 \x01(\bR\x1bcloudWatchEncryptionEnabled\x12$\n" +
 	"\x0es3_bucket_name\x18\x03 \x01(\tR\fs3BucketName\x12\"\n" +
 	"\rs3_key_prefix\x18\x04 \x01(\tR\vs3KeyPrefix\x122\n" +
-	"\x15s3_encryption_enabled\x18\x05 \x01(\bR\x13s3EncryptionEnabledB\x9c\x03\n" +
-	"5com.org.project_planton.provider.aws.awsecscluster.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecscluster/v1;awsecsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecscluster::V1b\x06proto3"
+	"\x15s3_encryption_enabled\x18\x05 \x01(\bR\x13s3EncryptionEnabledB\x96\x03\n" +
+	"5com.org.project_planton.provider.aws.awsecscluster.v1B\tSpecProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecscluster/v1;awsecsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecscluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsecscluster_v1_spec_proto_rawDescOnce sync.Once

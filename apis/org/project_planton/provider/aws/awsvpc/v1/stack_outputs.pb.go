@@ -261,8 +261,8 @@ const file_org_project_planton_provider_aws_awsvpc_v1_stack_outputs_proto_rawDes
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\n" +
 	"private_ip\x18\x02 \x01(\tR\tprivateIp\x12\x1b\n" +
-	"\tpublic_ip\x18\x03 \x01(\tR\bpublicIpB\xf3\x02\n" +
-	".com.org.project_planton.provider.aws.awsvpc.v1B\x11StackOutputsProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsvpc/v1;awsvpcv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsvpc::V1b\x06proto3"
+	"\tpublic_ip\x18\x03 \x01(\tR\bpublicIpB\xed\x02\n" +
+	".com.org.project_planton.provider.aws.awsvpc.v1B\x11StackOutputsProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsvpc/v1;awsvpcv1\xa2\x02\x05OPPAA\xaa\x02)Org.ProjectPlanton.Provider.Aws.Awsvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Aws\\Awsvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Aws::Awsvpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsvpc_v1_stack_outputs_proto_rawDescOnce sync.Once

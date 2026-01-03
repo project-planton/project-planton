@@ -184,10 +184,10 @@ Go packages and imports were automatically updated:
 
 ```go
 // Before
-import certmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/certmanager/v1"
+import certmanagerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/certmanager/v1"
 
 // After
-import kubernetescertmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1"
+import kubernetescertmanagerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1"
 ```
 
 ### Build Verification
@@ -204,9 +204,9 @@ make build
 # ✅ Success: darwin-arm64 and linux-amd64 binaries built
 
 # Build output showing new package imports
-github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1
-github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1
-github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1
+github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1
+github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1
+github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1
 # ... all 12 components successfully compiled
 ```
 

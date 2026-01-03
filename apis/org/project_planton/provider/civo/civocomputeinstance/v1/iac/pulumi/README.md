@@ -148,5 +148,5 @@ civo network list --region NYC1
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
+- **Issues**: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
 - **Civo Support**: [support.civo.com](https://support.civo.com)

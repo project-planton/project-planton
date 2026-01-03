@@ -8,8 +8,8 @@ package civodatabasev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -232,8 +232,8 @@ const file_org_project_planton_provider_civo_civodatabase_v1_spec_proto_rawDesc 
 	"\x12CivoDatabaseEngine\x12$\n" +
 	" civo_database_engine_unspecified\x10\x00\x12\t\n" +
 	"\x05mysql\x10\x01\x12\f\n" +
-	"\bpostgres\x10\x02B\x9b\x03\n" +
-	"5com.org.project_planton.provider.civo.civodatabase.v1B\tSpecProtoP\x01Zpgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
+	"\bpostgres\x10\x02B\x95\x03\n" +
+	"5com.org.project_planton.provider.civo.civodatabase.v1B\tSpecProtoP\x01Zjgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodatabase_v1_spec_proto_rawDescOnce sync.Once

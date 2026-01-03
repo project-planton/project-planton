@@ -115,8 +115,8 @@ const file_org_project_planton_provider_civo_civocomputeinstance_v1_stack_output
 	"publicIpv4\x12!\n" +
 	"\fprivate_ipv4\x18\x03 \x01(\tR\vprivateIpv4\x12\x16\n" +
 	"\x06status\x18\x04 \x01(\tR\x06status\x12,\n" +
-	"\x12created_at_rfc3339\x18\x05 \x01(\tR\x10createdAtRfc3339B\xd4\x03\n" +
-	"<com.org.project_planton.provider.civo.civocomputeinstance.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civocomputeinstance/v1;civocomputeinstancev1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Civo.Civocomputeinstance.V1\xca\x027Org\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Civo::Civocomputeinstance::V1b\x06proto3"
+	"\x12created_at_rfc3339\x18\x05 \x01(\tR\x10createdAtRfc3339B\xce\x03\n" +
+	"<com.org.project_planton.provider.civo.civocomputeinstance.v1B\x11StackOutputsProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civocomputeinstance/v1;civocomputeinstancev1\xa2\x02\x05OPPCC\xaa\x027Org.ProjectPlanton.Provider.Civo.Civocomputeinstance.V1\xca\x027Org\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\xe2\x02COrg\\ProjectPlanton\\Provider\\Civo\\Civocomputeinstance\\V1\\GPBMetadata\xea\x02<Org::ProjectPlanton::Provider::Civo::Civocomputeinstance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civocomputeinstance_v1_stack_outputs_proto_rawDescOnce sync.Once

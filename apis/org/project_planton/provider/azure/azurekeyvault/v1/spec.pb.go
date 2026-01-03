@@ -8,7 +8,7 @@ package azurekeyvaultv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -374,8 +374,8 @@ const file_org_project_planton_provider_azure_azurekeyvault_v1_spec_proto_rawDes
 	"\x1aAzureKeyVaultNetworkAction\x12\x16\n" +
 	"\x12ACTION_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05ALLOW\x10\x01\x12\b\n" +
-	"\x04DENY\x10\x02B\xa8\x03\n" +
-	"7com.org.project_planton.provider.azure.azurekeyvault.v1B\tSpecProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Azure.Azurekeyvault.V1\xca\x022Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
+	"\x04DENY\x10\x02B\xa2\x03\n" +
+	"7com.org.project_planton.provider.azure.azurekeyvault.v1B\tSpecProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Azure.Azurekeyvault.V1\xca\x022Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurekeyvault_v1_spec_proto_rawDescOnce sync.Once

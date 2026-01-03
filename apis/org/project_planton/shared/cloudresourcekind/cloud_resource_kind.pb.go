@@ -779,8 +779,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"$CloudflareZeroTrustAccessApplication\x10\x8e\x0e\x1a\x0f\xa2\xf7\x04\v\b\x0f\x10\x01\"\x05cfzta\x12&\n" +
 	"\x0fAuth0Connection\x10\xb4\x10\x1a\x10\xa2\xf7\x04\f\b\x15\x10\x01\"\x06a0conn\x12!\n" +
 	"\vAuth0Client\x10\xb5\x10\x1a\x0f\xa2\xf7\x04\v\b\x15\x10\x01\"\x05a0cli:\x84\x01\n" +
-	"\tkind_meta\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\v2C.org.project_planton.shared.cloudresourcekind.CloudResourceKindMetaR\bkindMetaB\xf8\x02\n" +
-	"0com.org.project_planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01Z\\github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
+	"\tkind_meta\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\v2C.org.project_planton.shared.cloudresourcekind.CloudResourceKindMetaR\bkindMetaB\xf2\x02\n" +
+	"0com.org.project_planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZVgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 
 var (
 	file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDescOnce sync.Once

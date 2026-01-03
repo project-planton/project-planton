@@ -7,7 +7,7 @@
 package kubernetesistiov1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_inpu
 	"Lorg/project_planton/provider/kubernetes/kubernetesistio/v1/stack_input.proto\x12:org.project_planton.provider.kubernetes.kubernetesistio.v1\x1aDorg/project_planton/provider/kubernetes/kubernetesistio/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xec\x01\n" +
 	"\x19KubernetesIstioStackInput\x12c\n" +
 	"\x06target\x18\x01 \x01(\v2K.org.project_planton.provider.kubernetes.kubernetesistio.v1.KubernetesIstioR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xda\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kubernetesistio.v1B\x0fStackInputProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesistio.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesistio::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xd4\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesistio.v1B\x0fStackInputProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesistio.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesistio\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesistio::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesistio_v1_stack_input_proto_rawDescOnce sync.Once

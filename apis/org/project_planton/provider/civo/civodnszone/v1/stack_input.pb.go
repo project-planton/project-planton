@@ -7,7 +7,7 @@
 package civodnszonev1
 
 import (
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_civo_civodnszone_v1_stack_input_proto_ra
 	"Borg/project_planton/provider/civo/civodnszone/v1/stack_input.proto\x120org.project_planton.provider.civo.civodnszone.v1\x1a:org/project_planton/provider/civo/civodnszone/v1/api.proto\x1a0org/project_planton/provider/civo/provider.proto\"\xce\x01\n" +
 	"\x15CivoDnsZoneStackInput\x12U\n" +
 	"\x06target\x18\x01 \x01(\v2=.org.project_planton.provider.civo.civodnszone.v1.CivoDnsZoneR\x06target\x12^\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\x9a\x03\n" +
-	"4com.org.project_planton.provider.civo.civodnszone.v1B\x0fStackInputProtoP\x01Zngithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05OPPCC\xaa\x02/Org.ProjectPlanton.Provider.Civo.Civodnszone.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Civo::Civodnszone::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v25.org.project_planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\x94\x03\n" +
+	"4com.org.project_planton.provider.civo.civodnszone.v1B\x0fStackInputProtoP\x01Zhgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05OPPCC\xaa\x02/Org.ProjectPlanton.Provider.Civo.Civodnszone.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Civo::Civodnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodnszone_v1_stack_input_proto_rawDescOnce sync.Once

@@ -7,7 +7,7 @@
 package awseksnodegroupv1
 
 import (
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto
 	"Eorg/project_planton/provider/aws/awseksnodegroup/v1/stack_input.proto\x123org.project_planton.provider.aws.awseksnodegroup.v1\x1a=org/project_planton/provider/aws/awseksnodegroup/v1/api.proto\x1a/org/project_planton/provider/aws/provider.proto\"\xd7\x01\n" +
 	"\x19AwsEksNodeGroupStackInput\x12\\\n" +
 	"\x06target\x18\x01 \x01(\v2D.org.project_planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xb0\x03\n" +
-	"7com.org.project_planton.provider.aws.awseksnodegroup.v1B\x0fStackInputProtoP\x01Zugithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Aws.Awseksnodegroup.V1\xca\x022Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xaa\x03\n" +
+	"7com.org.project_planton.provider.aws.awseksnodegroup.v1B\x0fStackInputProtoP\x01Zogithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Aws.Awseksnodegroup.V1\xca\x022Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto_rawDescOnce sync.Once

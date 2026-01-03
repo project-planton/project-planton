@@ -8,7 +8,7 @@ package kuberneteselasticsearchv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_ap
 	"\x04spec\x18\x04 \x01(\v2_.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
 	"\x06status\x18\x05 \x01(\v2a.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStatusR\x06status\"\xa3\x01\n" +
 	"\x1dKubernetesElasticsearchStatus\x12\x81\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackOutputsR\aoutputsB\x8c\x04\n" +
-	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\bApiProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchStackOutputsR\aoutputsB\x86\x04\n" +
+	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\bApiProtoP\x01Z\x86\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_api_proto_rawDescOnce sync.Once

@@ -8,8 +8,8 @@ package kubernetessolrv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -464,8 +464,8 @@ const file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
 	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xad\x01\n" +
 	"\x16default_solr_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfa  \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerR\x14defaultSolrContainer:\xb7\x01\n" +
-	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfa  \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerR\x19defaultZookeeperContainerB\xcd\x03\n" +
-	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\tSpecProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
+	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfa  \x01(\v2V.org.project_planton.provider.kubernetes.kubernetessolr.v1.KubernetesSolrSolrContainerR\x19defaultZookeeperContainerB\xc7\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetessolr.v1B\tSpecProtoP\x01Ztgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetessolr/v1;kubernetessolrv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetessolr.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetessolr\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetessolr::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetessolr_v1_spec_proto_rawDescOnce sync.Once

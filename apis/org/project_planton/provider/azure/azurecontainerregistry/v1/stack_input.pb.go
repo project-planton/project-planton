@@ -7,7 +7,7 @@
 package azurecontainerregistryv1
 
 import (
-	azure "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	azure "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_azure_azurecontainerregistry_v1_stack_in
 	"Norg/project_planton/provider/azure/azurecontainerregistry/v1/stack_input.proto\x12<org.project_planton.provider.azure.azurecontainerregistry.v1\x1aForg/project_planton/provider/azure/azurecontainerregistry/v1/api.proto\x1a1org/project_planton/provider/azure/provider.proto\"\xf2\x01\n" +
 	" AzureContainerRegistryStackInput\x12l\n" +
 	"\x06target\x18\x01 \x01(\v2T.org.project_planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryR\x06target\x12`\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xee\x03\n" +
-	"@com.org.project_planton.provider.azure.azurecontainerregistry.v1B\x0fStackInputProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05OPPAA\xaa\x02;Org.ProjectPlanton.Provider.Azure.Azurecontainerregistry.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xe7\x03\n" +
+	"@com.org.project_planton.provider.azure.azurecontainerregistry.v1B\x0fStackInputProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05OPPAA\xaa\x02;Org.ProjectPlanton.Provider.Azure.Azurecontainerregistry.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurecontainerregistry_v1_stack_input_proto_rawDescOnce sync.Once

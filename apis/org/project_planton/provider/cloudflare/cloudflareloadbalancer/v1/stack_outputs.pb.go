@@ -93,8 +93,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_sta
 	"\"CloudflareLoadBalancerStackOutputs\x12(\n" +
 	"\x10load_balancer_id\x18\x01 \x01(\tR\x0eloadBalancerId\x12@\n" +
 	"\x1dload_balancer_dns_record_name\x18\x02 \x01(\tR\x19loadBalancerDnsRecordName\x12;\n" +
-	"\x1aload_balancer_cname_target\x18\x03 \x01(\tR\x17loadBalancerCnameTargetB\x8e\x04\n" +
-	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
+	"\x1aload_balancer_cname_target\x18\x03 \x01(\tR\x17loadBalancerCnameTargetB\x88\x04\n" +
+	"Ecom.org.project_planton.provider.cloudflare.cloudflareloadbalancer.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05OPPCC\xaa\x02@Org.ProjectPlanton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_outputs_proto_rawDescOnce sync.Once

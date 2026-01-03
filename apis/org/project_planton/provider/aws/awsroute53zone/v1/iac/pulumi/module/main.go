@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	awsroute53zonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1"
+	awsroute53zonev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws/route53"
 	awsclassic "github.com/pulumi/pulumi-aws/sdk/v7/go/aws"

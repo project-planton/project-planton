@@ -8,7 +8,7 @@ package gcpsecretsmanagerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -93,8 +93,8 @@ const file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_rawD
 	"\x15GcpSecretsManagerSpec\x12\x83\x01\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12!\n" +
-	"\fsecret_names\x18\x02 \x03(\tR\vsecretNamesB\xb8\x03\n" +
-	"9com.org.project_planton.provider.gcp.gcpsecretsmanager.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1;gcpsecretsmanagerv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpsecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpsecretsmanager::V1b\x06proto3"
+	"\fsecret_names\x18\x02 \x03(\tR\vsecretNamesB\xb2\x03\n" +
+	"9com.org.project_planton.provider.gcp.gcpsecretsmanager.v1B\tSpecProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1;gcpsecretsmanagerv1\xa2\x02\x05OPPGG\xaa\x024Org.ProjectPlanton.Provider.Gcp.Gcpsecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpsecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Gcp::Gcpsecretsmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpsecretsmanager_v1_spec_proto_rawDescOnce sync.Once

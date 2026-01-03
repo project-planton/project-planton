@@ -62,7 +62,7 @@ project-planton webapp init
 **What it does:**
 1. Checks Docker availability and validates Docker Engine is running
 2. Verifies no existing installation to prevent conflicts
-3. Pulls Docker image (`ghcr.io/project-planton/project-planton:latest`)
+3. Pulls Docker image (`ghcr.io/plantonhq/project-planton:latest`)
 4. Creates data volumes (MongoDB, Pulumi state, Go cache)
 5. Creates container with port mappings (3000, 50051)
 6. Automatically configures CLI backend URL to `http://localhost:50051`
@@ -80,7 +80,7 @@ project-planton webapp init
 ✅ No existing installation found
 
 📋 Step 3/5: Pulling Docker image...
-   Pulling ghcr.io/project-planton/project-planton:latest...
+   Pulling ghcr.io/plantonhq/project-planton:latest...
 ✅ Docker image pulled successfully
 
 📋 Step 4/5: Creating Docker volumes and container...
@@ -230,7 +230,7 @@ project-planton webapp status
 Container Information:
   Name:       project-planton-webapp
   Status:     🟢 running
-  Image:      ghcr.io/project-planton/project-planton:latest
+  Image:      ghcr.io/plantonhq/project-planton:latest
 
 Service Status:
   MongoDB:     🟢 running (port 27017)
@@ -256,7 +256,7 @@ Data Volumes:
 Container Information:
   Name:       project-planton-webapp
   Status:     🔴 stopped
-  Image:      ghcr.io/project-planton/project-planton:latest
+  Image:      ghcr.io/plantonhq/project-planton:latest
 
 The web app is not running.
 
@@ -3065,4 +3065,4 @@ For additional help:
 - Check the main CLI help: `project-planton --help`
 - Command-specific help: `project-planton <command> --help`
 - Project documentation: [Project Planton Documentation](https://project-planton.org)
-- GitHub Issues: [Report Issues](https://github.com/project-planton/project-planton/issues)
+- GitHub Issues: [Report Issues](https://github.com/plantonhq/project-planton/issues)

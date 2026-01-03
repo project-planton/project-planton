@@ -8,7 +8,7 @@ package cloudflarer2bucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -273,8 +273,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_pr
 	"\x04WEUR\x10\x03\x12\b\n" +
 	"\x04EEUR\x10\x04\x12\b\n" +
 	"\x04APAC\x10\x05\x12\x06\n" +
-	"\x02OC\x10\x06B\xea\x03\n" +
-	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
+	"\x02OC\x10\x06B\xe3\x03\n" +
+	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\tSpecProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDescOnce sync.Once

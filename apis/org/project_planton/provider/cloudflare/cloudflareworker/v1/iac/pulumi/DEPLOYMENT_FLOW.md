@@ -180,7 +180,7 @@ export AWS_SECRET_ACCESS_KEY=<r2-secret-access-key>
 
 # 4. Deploy with Pulumi
 cd ops/organizations/planton-cloud/infra-hub/cloud-resources/app-prod/cloudflare
-export CLOUDFLARE_WORKER_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
+export CLOUDFLARE_WORKER_MODULE=~/scm/github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
 
 project-planton pulumi up --manifest worker.your-worker.yaml --module-dir ${CLOUDFLARE_WORKER_MODULE}
 ```

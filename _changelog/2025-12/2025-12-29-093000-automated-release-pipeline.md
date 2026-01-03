@@ -60,7 +60,7 @@ project_name: project-planton
 
 builds:
   - ldflags:
-      - -s -w -X github.com/project-planton/project-planton/internal/cli/version.Version={{.Version}}
+      - -s -w -X github.com/plantonhq/project-planton/internal/cli/version.Version={{.Version}}
     goos: [darwin, linux, windows]
     goarch: [amd64, arm64]
 

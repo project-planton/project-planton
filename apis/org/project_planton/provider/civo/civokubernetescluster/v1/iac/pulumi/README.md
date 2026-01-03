@@ -301,7 +301,7 @@ pulumi up       # Converge to desired state
 
 ## Support
 
-- Issues: [GitHub Issues](https://github.com/project-planton/project-planton/issues)
+- Issues: [GitHub Issues](https://github.com/plantonhq/project-planton/issues)
 - Pulumi Community: [Pulumi Slack](https://slack.pulumi.com/)
 - Civo Support: support@civo.com
 

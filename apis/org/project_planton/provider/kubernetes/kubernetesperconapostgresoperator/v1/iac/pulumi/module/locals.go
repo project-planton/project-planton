@@ -3,9 +3,9 @@ package module
 import (
 	"strconv"
 
-	kubernetesperconapostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	kubernetesperconapostgresoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	cloudflareloadbalancerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/cloudflare/pulumicloudflareprovider"
+	cloudflareloadbalancerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/cloudflare/pulumicloudflareprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

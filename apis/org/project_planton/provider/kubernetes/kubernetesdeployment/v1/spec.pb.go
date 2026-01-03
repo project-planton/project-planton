@@ -8,8 +8,8 @@ package kubernetesdeploymentv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1006,8 +1006,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_
 	"'KubernetesDeploymentPodDisruptionBudget\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12#\n" +
 	"\rmin_available\x18\x02 \x01(\tR\fminAvailable\x12'\n" +
-	"\x0fmax_unavailable\x18\x03 \x01(\tR\x0emaxUnavailableB\xf8\x03\n" +
-	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
+	"\x0fmax_unavailable\x18\x03 \x01(\tR\x0emaxUnavailableB\xf2\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\tSpecProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_spec_proto_rawDescOnce sync.Once

@@ -8,9 +8,9 @@ package kubernetesprometheusv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -270,8 +270,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_
 	"\x0350m\x12\x05100MiR\tresources\x12/\n" +
 	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))B\xf8\x03\n" +
-	"Ccom.org.project_planton.provider.kubernetes.kubernetesprometheus.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesprometheus.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesprometheus::V1b\x06proto3"
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))B\xf2\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesprometheus.v1B\tSpecProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1;kubernetesprometheusv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesprometheus.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesprometheus\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesprometheus::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesprometheus_v1_spec_proto_rawDescOnce sync.Once

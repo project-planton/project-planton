@@ -212,8 +212,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_
 	"\x1dsnowflake.project-planton.org\x12\tSnowflake\x121\n" +
 	"\x05auth0\x10\x15\x1a&\xea\xcc'\"\n" +
 	"\x19auth0.project-planton.org\x12\x05Auth0:\x91\x01\n" +
-	"\rprovider_meta\x12!.google.protobuf.EnumValueOptions\x18\xcd\xf9\x04 \x01(\v2G.org.project_planton.shared.cloudresourcekind.CloudResourceProviderMetaR\fproviderMetaB\xfc\x02\n" +
-	"0com.org.project_planton.shared.cloudresourcekindB\x1aCloudResourceProviderProtoP\x01Z\\github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
+	"\rprovider_meta\x12!.google.protobuf.EnumValueOptions\x18\xcd\xf9\x04 \x01(\v2G.org.project_planton.shared.cloudresourcekind.CloudResourceProviderMetaR\fproviderMetaB\xf6\x02\n" +
+	"0com.org.project_planton.shared.cloudresourcekindB\x1aCloudResourceProviderProtoP\x01ZVgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 
 var (
 	file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDescOnce sync.Once

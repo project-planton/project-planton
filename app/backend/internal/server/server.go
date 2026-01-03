@@ -7,13 +7,13 @@ import (
 	"os"
 	"time"
 
-	"github.com/project-planton/project-planton/app/backend/internal/database"
-	"github.com/project-planton/project-planton/app/backend/internal/service"
+	"github.com/plantonhq/project-planton/app/backend/internal/database"
+	"github.com/plantonhq/project-planton/app/backend/internal/service"
 	"github.com/sirupsen/logrus"
 
-	cloudresourcev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
-	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
-	stackupdatev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1/stackupdatev1connect"
+	cloudresourcev1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1/cloudresourcev1connect"
+	credentialv1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
+	stackupdatev1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1/stackupdatev1connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )

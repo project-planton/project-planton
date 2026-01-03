@@ -377,8 +377,8 @@ message KubernetesTemporalDatabaseConfig {
 package main
 
 import (
-	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module"
+	postgreskubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -392,8 +392,8 @@ func main() {
 package main
 
 import (
-	kubernetespostgresv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1/iac/pulumi/module"
+	kubernetespostgresv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -503,7 +503,7 @@ var _ = ginkgo.Describe("KubernetesPostgres Custom Validation Tests", func() {
 ```go
 // Before
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1"
+	rediskubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1"
 )
 
 msg := &rediskubernetesv1.RedisKubernetes{
@@ -517,7 +517,7 @@ msg := &rediskubernetesv1.RedisKubernetes{
 
 // After
 import (
-	kubernetesredisv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesredis/v1"
+	kubernetesredisv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesredis/v1"
 )
 
 msg := &kubernetesredisv1.KubernetesRedis{
@@ -535,7 +535,7 @@ msg := &kubernetesredisv1.KubernetesRedis{
 ```go
 // Before
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1"
+	rediskubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1"
 )
 
 msg := &rediskubernetesv1.RedisKubernetes{
@@ -545,7 +545,7 @@ msg := &rediskubernetesv1.RedisKubernetes{
 
 // After
 import (
-	kubernetesredisv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesredis/v1"
+	kubernetesredisv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesredis/v1"
 )
 
 msg := &kubernetesredisv1.KubernetesRedis{
@@ -899,7 +899,7 @@ sed -i 's/kind: KafkaKubernetes/kind: KubernetesKafka/g' kafka.yaml
 ```go
 // Before
 import (
-	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1"
+	postgreskubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1"
 )
 
 var db *postgreskubernetesv1.PostgresKubernetes
@@ -907,7 +907,7 @@ var spec *postgreskubernetesv1.PostgresKubernetesSpec
 
 // After
 import (
-	kubernetespostgresv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1"
+	kubernetespostgresv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetespostgres/v1"
 )
 
 var db *kubernetespostgresv1.KubernetesPostgres
@@ -975,7 +975,7 @@ KubernetesPostgresSpec spec = 2;
 ### Proto Generation
 
 ```bash
-cd ~/scm/github.com/project-planton/project-planton
+cd ~/scm/github.com/plantonhq/project-planton
 make protos
 ```
 

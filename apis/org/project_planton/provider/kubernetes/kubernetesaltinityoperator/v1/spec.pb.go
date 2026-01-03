@@ -8,8 +8,8 @@ package kubernetesaltinityoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -160,8 +160,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
-	"\x04100m\x12\x05256MiR\tresourcesB\xa2\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1B\tSpecProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x05OPPKK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesaltinityoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesaltinityoperator::V1b\x06proto3"
+	"\x04100m\x12\x05256MiR\tresourcesB\x9c\x04\n" +
+	"Icom.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1B\tSpecProtoP\x01Z\x8c\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x05OPPKK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesaltinityoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesaltinityoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_spec_proto_rawDescOnce sync.Once

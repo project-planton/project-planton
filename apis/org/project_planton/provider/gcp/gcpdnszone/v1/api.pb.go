@@ -8,7 +8,7 @@ package gcpdnszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -170,8 +170,8 @@ const file_org_project_planton_provider_gcp_gcpdnszone_v1_api_proto_rawDesc = ""
 	"\x04spec\x18\x04 \x01(\v2>.org.project_planton.provider.gcp.gcpdnszone.v1.GcpDnsZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12X\n" +
 	"\x06status\x18\x05 \x01(\v2@.org.project_planton.provider.gcp.gcpdnszone.v1.GcpDnsZoneStatusR\x06status\"t\n" +
 	"\x10GcpDnsZoneStatus\x12`\n" +
-	"\aoutputs\x18\x01 \x01(\v2F.org.project_planton.provider.gcp.gcpdnszone.v1.GcpDnsZoneStackOutputsR\aoutputsB\x86\x03\n" +
-	"2com.org.project_planton.provider.gcp.gcpdnszone.v1B\bApiProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpdnszone.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2F.org.project_planton.provider.gcp.gcpdnszone.v1.GcpDnsZoneStackOutputsR\aoutputsB\x80\x03\n" +
+	"2com.org.project_planton.provider.gcp.gcpdnszone.v1B\bApiProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpdnszone.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpdnszone_v1_api_proto_rawDescOnce sync.Once

@@ -8,8 +8,8 @@ package awsrdsclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -543,8 +543,8 @@ const file_org_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc 
 	"-AwsRdsClusterServerlessV2ScalingConfiguration\x121\n" +
 	"\fmin_capacity\x18\x01 \x01(\x01B\x0e\xbaH\v\x12\t!\x00\x00\x00\x00\x00\x00\x00\x00R\vminCapacity\x12!\n" +
 	"\fmax_capacity\x18\x02 \x01(\x01R\vmaxCapacity:\xa1\x01\xbaH\x9d\x01\x1a\x9a\x01\n" +
-	"\x1cserverless_v2_scaling_bounds\x126max_capacity must be >= min_capacity when both are set\x1aBthis.max_capacity == 0.0 || this.max_capacity >= this.min_capacityB\x9c\x03\n" +
-	"5com.org.project_planton.provider.aws.awsrdscluster.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdscluster/v1;awsrdsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsrdscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsrdscluster::V1b\x06proto3"
+	"\x1cserverless_v2_scaling_bounds\x126max_capacity must be >= min_capacity when both are set\x1aBthis.max_capacity == 0.0 || this.max_capacity >= this.min_capacityB\x96\x03\n" +
+	"5com.org.project_planton.provider.aws.awsrdscluster.v1B\tSpecProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsrdscluster/v1;awsrdsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsrdscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsrdscluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDescOnce sync.Once

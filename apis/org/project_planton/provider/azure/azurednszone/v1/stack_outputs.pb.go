@@ -94,8 +94,8 @@ const file_org_project_planton_provider_azure_azurednszone_v1_stack_outputs_prot
 	"\x18AzureDnsZoneStackOutputs\x12\x17\n" +
 	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12\x1b\n" +
 	"\tzone_name\x18\x02 \x01(\tR\bzoneName\x12 \n" +
-	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\xa9\x03\n" +
-	"6com.org.project_planton.provider.azure.azurednszone.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Azure.Azurednszone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Azure::Azurednszone::V1b\x06proto3"
+	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\xa3\x03\n" +
+	"6com.org.project_planton.provider.azure.azurednszone.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Azure.Azurednszone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Azure::Azurednszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurednszone_v1_stack_outputs_proto_rawDescOnce sync.Once

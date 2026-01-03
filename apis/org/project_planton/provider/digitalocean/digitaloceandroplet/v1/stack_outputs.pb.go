@@ -114,8 +114,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandroplet_v1_stac
 	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
 	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
 	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\x85\x04\n" +
-	"Dcom.org.project_planton.provider.digitalocean.digitaloceandroplet.v1B\x11StackOutputsProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandroplet/v1;digitaloceandropletv1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandroplet.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandroplet::V1b\x06proto3"
+	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\xff\x03\n" +
+	"Dcom.org.project_planton.provider.digitalocean.digitaloceandroplet.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandroplet/v1;digitaloceandropletv1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandroplet.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandroplet::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_outputs_proto_rawDescOnce sync.Once

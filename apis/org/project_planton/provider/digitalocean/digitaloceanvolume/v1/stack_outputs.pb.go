@@ -73,8 +73,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack
 	"\n" +
 	"Sorg/project_planton/provider/digitalocean/digitaloceanvolume/v1/stack_outputs.proto\x12?org.project_planton.provider.digitalocean.digitaloceanvolume.v1\"=\n" +
 	"\x1eDigitalOceanVolumeStackOutputs\x12\x1b\n" +
-	"\tvolume_id\x18\x01 \x01(\tR\bvolumeIdB\xfe\x03\n" +
-	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
+	"\tvolume_id\x18\x01 \x01(\tR\bvolumeIdB\xf7\x03\n" +
+	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\x11StackOutputsProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -73,8 +73,8 @@ const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_ou
 	"\n" +
 	"Porg/project_planton/provider/kubernetes/kubernetescronjob/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.kubernetescronjob.v1\"=\n" +
 	"\x1dKubernetesCronJobStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xeb\x03\n" +
-	"@com.org.project_planton.provider.kubernetes.kubernetescronjob.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetescronjob.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetescronjob::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xe4\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetescronjob.v1B\x11StackOutputsProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetescronjob.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetescronjob::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_outputs_proto_rawDescOnce sync.Once

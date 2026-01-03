@@ -7,7 +7,7 @@
 package kuberneteskafkav1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -146,8 +146,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outp
 	"\"bootstrap_server_internal_hostname\x18\x05 \x01(\tR\x1fbootstrapServerInternalHostname\x12?\n" +
 	"\x1cschema_registry_external_url\x18\x06 \x01(\tR\x19schemaRegistryExternalUrl\x12?\n" +
 	"\x1cschema_registry_internal_url\x18\a \x01(\tR\x19schemaRegistryInternalUrl\x121\n" +
-	"\x15kafka_ui_external_url\x18\b \x01(\tR\x12kafkaUiExternalUrlB\xdc\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kuberneteskafka.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1;kuberneteskafkav1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kuberneteskafka.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskafka\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskafka\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kuberneteskafka::V1b\x06proto3"
+	"\x15kafka_ui_external_url\x18\b \x01(\tR\x12kafkaUiExternalUrlB\xd6\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kuberneteskafka.v1B\x11StackOutputsProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1;kuberneteskafkav1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kuberneteskafka.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskafka\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteskafka\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kuberneteskafka::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteskafka_v1_stack_outputs_proto_rawDescOnce sync.Once

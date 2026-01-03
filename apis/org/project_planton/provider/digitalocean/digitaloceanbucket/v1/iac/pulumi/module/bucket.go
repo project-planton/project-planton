@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	digitaloceanbucketv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1"
+	digitaloceanbucketv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1"
 	"github.com/pulumi/pulumi-digitalocean/sdk/v4/go/digitalocean"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

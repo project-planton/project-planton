@@ -7,7 +7,7 @@
 package civo
 
 import (
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -107,8 +107,8 @@ const file_org_project_planton_provider_civo_region_proto_rawDesc = "" +
 	"\x04nyc1\x10\x04\x1a\f\x92\xa9\x1d\bNew York\x12\x15\n" +
 	"\x04phx1\x10\x05\x1a\v\x92\xa9\x1d\aPhoenix\x12\x14\n" +
 	"\x04mum1\x10\x06\x1a\n" +
-	"\x92\xa9\x1d\x06MumbaiB\xab\x02\n" +
-	"%com.org.project_planton.provider.civoB\vRegionProtoP\x01ZQgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo\xa2\x02\x04OPPC\xaa\x02 Org.ProjectPlanton.Provider.Civo\xca\x02 Org\\ProjectPlanton\\Provider\\Civo\xe2\x02,Org\\ProjectPlanton\\Provider\\Civo\\GPBMetadata\xea\x02#Org::ProjectPlanton::Provider::Civob\x06proto3"
+	"\x92\xa9\x1d\x06MumbaiB\xa5\x02\n" +
+	"%com.org.project_planton.provider.civoB\vRegionProtoP\x01ZKgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo\xa2\x02\x04OPPC\xaa\x02 Org.ProjectPlanton.Provider.Civo\xca\x02 Org\\ProjectPlanton\\Provider\\Civo\xe2\x02,Org\\ProjectPlanton\\Provider\\Civo\\GPBMetadata\xea\x02#Org::ProjectPlanton::Provider::Civob\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_region_proto_rawDescOnce sync.Once

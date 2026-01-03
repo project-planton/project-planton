@@ -190,8 +190,8 @@ const file_org_project_planton_provider_auth0_auth0connection_v1_stack_outputs_p
 	"\tentity_id\x18\b \x01(\tR\bentityId\x12,\n" +
 	"\x12enabled_client_ids\x18\t \x03(\tR\x10enabledClientIds\x12\x16\n" +
 	"\x06realms\x18\n" +
-	" \x03(\tR\x06realmsB\xbe\x03\n" +
-	"9com.org.project_planton.provider.auth0.auth0connection.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1;auth0connectionv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Auth0.Auth0connection.V1\xca\x024Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Auth0::Auth0connection::V1b\x06proto3"
+	" \x03(\tR\x06realmsB\xb8\x03\n" +
+	"9com.org.project_planton.provider.auth0.auth0connection.v1B\x11StackOutputsProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1;auth0connectionv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Auth0.Auth0connection.V1\xca\x024Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Auth0\\Auth0connection\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Auth0::Auth0connection::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_auth0connection_v1_stack_outputs_proto_rawDescOnce sync.Once

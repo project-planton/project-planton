@@ -23,7 +23,7 @@ Add dependencies to `go.mod`:
 
 ```go
 require (
-    github.com/project-planton/project-planton v1.0.0
+    github.com/plantonhq/project-planton v1.0.0
     github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.0.0
     github.com/pulumi/pulumi/sdk/v3 v3.0.0
 )
@@ -37,11 +37,11 @@ Deploy NGINX Ingress Controller with external load balancer on any Kubernetes cl
 package main
 
 import (
-    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -91,11 +91,11 @@ Deploy to a namespace created by your platform team.
 package main
 
 import (
-    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -145,11 +145,11 @@ Deploy on Google Kubernetes Engine with a reserved static IP address.
 package main
 
 import (
-    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -213,11 +213,11 @@ Deploy on Amazon EKS with Network Load Balancer and custom security groups.
 package main
 
 import (
-    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -282,10 +282,10 @@ Deploy on Azure Kubernetes Service with Workload Identity integration.
 package main
 
 import (
-    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

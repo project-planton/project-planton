@@ -121,8 +121,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperato
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xc6\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1B\x11StackOutputsProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesstrimzikafkaoperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xc0\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesstrimzikafkaoperator.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1;kubernetesstrimzikafkaoperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesstrimzikafkaoperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstrimzikafkaoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstrimzikafkaoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstrimzikafkaoperator_v1_stack_outputs_proto_rawDescOnce sync.Once

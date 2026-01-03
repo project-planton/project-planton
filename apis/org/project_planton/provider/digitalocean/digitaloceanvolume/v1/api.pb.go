@@ -8,7 +8,7 @@ package digitaloceanvolumev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_api_p
 	"\x04spec\x18\x04 \x01(\v2W.org.project_planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
 	"\x06status\x18\x05 \x01(\v2Y.org.project_planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStatusR\x06status\"\x95\x01\n" +
 	"\x18DigitalOceanVolumeStatus\x12y\n" +
-	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackOutputsR\aoutputsB\xf5\x03\n" +
-	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\bApiProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackOutputsR\aoutputsB\xee\x03\n" +
+	"Ccom.org.project_planton.provider.digitalocean.digitaloceanvolume.v1B\bApiProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05OPPDD\xaa\x02>Org.ProjectPlanton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanvolume_v1_api_proto_rawDescOnce sync.Once

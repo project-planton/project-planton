@@ -73,8 +73,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stac
 	"\n" +
 	"Torg/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1\"A\n" +
 	"!KubernetesHelmReleaseStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\x87\x04\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kuberneteshelmrelease.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteshelmrelease::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\x81\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kuberneteshelmrelease.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1;kuberneteshelmreleasev1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kuberneteshelmrelease.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteshelmrelease\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteshelmrelease::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteshelmrelease_v1_stack_outputs_proto_rawDescOnce sync.Once

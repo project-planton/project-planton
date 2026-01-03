@@ -124,8 +124,8 @@ const file_org_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto
 	"\x0foidc_issuer_url\x18\x04 \x01(\tR\roidcIssuerUrl\x12\x1f\n" +
 	"\vcluster_arn\x18\x05 \x01(\tR\n" +
 	"clusterArn\x12\x12\n" +
-	"\x04name\x18\x06 \x01(\tR\x04nameB\xa4\x03\n" +
-	"5com.org.project_planton.provider.aws.awsekscluster.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsekscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsekscluster::V1b\x06proto3"
+	"\x04name\x18\x06 \x01(\tR\x04nameB\x9e\x03\n" +
+	"5com.org.project_planton.provider.aws.awsekscluster.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsekscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsekscluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -124,8 +124,8 @@ const file_org_project_planton_provider_civo_civodatabase_v1_stack_outputs_proto
 	"\x04port\x18\x03 \x01(\rR\x04port\x12\x1a\n" +
 	"\busername\x18\x04 \x01(\tR\busername\x12.\n" +
 	"\x13password_secret_ref\x18\x05 \x01(\tR\x11passwordSecretRef\x12+\n" +
-	"\x11replica_endpoints\x18\x06 \x03(\tR\x10replicaEndpointsB\xa3\x03\n" +
-	"5com.org.project_planton.provider.civo.civodatabase.v1B\x11StackOutputsProtoP\x01Zpgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
+	"\x11replica_endpoints\x18\x06 \x03(\tR\x10replicaEndpointsB\x9d\x03\n" +
+	"5com.org.project_planton.provider.civo.civodatabase.v1B\x11StackOutputsProtoP\x01Zjgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05OPPCC\xaa\x020Org.ProjectPlanton.Provider.Civo.Civodatabase.V1\xca\x020Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Civo::Civodatabase::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodatabase_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -80,8 +80,8 @@ const file_org_project_planton_provider_aws_awssecretsmanager_v1_stack_outputs_p
 	"\x0esecret_arn_map\x18\x01 \x03(\v2f.org.project_planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackOutputs.SecretArnMapEntryR\fsecretArnMap\x1a?\n" +
 	"\x11SecretArnMapEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xc0\x03\n" +
-	"9com.org.project_planton.provider.aws.awssecretsmanager.v1B\x11StackOutputsProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Aws.Awssecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xba\x03\n" +
+	"9com.org.project_planton.provider.aws.awssecretsmanager.v1B\x11StackOutputsProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Aws.Awssecretsmanager.V1\xca\x024Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awssecretsmanager_v1_stack_outputs_proto_rawDescOnce sync.Once

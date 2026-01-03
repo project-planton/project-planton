@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	azurenatgatewayv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	azurenatgatewayv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"reflect"
 
-	gcpprovider "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
+	gcpprovider "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"

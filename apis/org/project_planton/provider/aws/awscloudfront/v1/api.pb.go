@@ -8,7 +8,7 @@ package awscloudfrontv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -161,8 +161,8 @@ const file_org_project_planton_provider_aws_awscloudfront_v1_api_proto_rawDesc =
 	"\x04spec\x18\x04 \x01(\v2D.org.project_planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12^\n" +
 	"\x06status\x18\x05 \x01(\v2F.org.project_planton.provider.aws.awscloudfront.v1.AwsCloudFrontStatusR\x06status\"}\n" +
 	"\x13AwsCloudFrontStatus\x12f\n" +
-	"\aoutputs\x18\x01 \x01(\v2L.org.project_planton.provider.aws.awscloudfront.v1.AwsCloudFrontStackOutputsR\aoutputsB\x9b\x03\n" +
-	"5com.org.project_planton.provider.aws.awscloudfront.v1B\bApiProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awscloudfront.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awscloudfront::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2L.org.project_planton.provider.aws.awscloudfront.v1.AwsCloudFrontStackOutputsR\aoutputsB\x95\x03\n" +
+	"5com.org.project_planton.provider.aws.awscloudfront.v1B\bApiProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awscloudfront.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awscloudfront::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awscloudfront_v1_api_proto_rawDescOnce sync.Once

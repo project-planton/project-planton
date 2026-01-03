@@ -8,7 +8,7 @@ package gcpprojectv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -258,8 +258,8 @@ const file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "
 	"#gcp_project_parent_type_unspecified\x10\x00\x12\x10\n" +
 	"\forganization\x10\x01\x12\n" +
 	"\n" +
-	"\x06folder\x10\x02B\x87\x03\n" +
-	"2com.org.project_planton.provider.gcp.gcpproject.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpproject/v1;gcpprojectv1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpproject.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpproject::V1b\x06proto3"
+	"\x06folder\x10\x02B\x81\x03\n" +
+	"2com.org.project_planton.provider.gcp.gcpproject.v1B\tSpecProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpproject/v1;gcpprojectv1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpproject.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpproject\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpproject::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescOnce sync.Once

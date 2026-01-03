@@ -155,8 +155,8 @@ const file_org_project_planton_provider_aws_awsecsservice_v1_stack_outputs_proto
 	"\x18cloudwatch_log_group_arn\x18\a \x01(\tR\x15cloudwatchLogGroupArn\x12\x1f\n" +
 	"\vservice_arn\x18\b \x01(\tR\n" +
 	"serviceArn\x12(\n" +
-	"\x10target_group_arn\x18\t \x01(\tR\x0etargetGroupArnB\xa4\x03\n" +
-	"5com.org.project_planton.provider.aws.awsecsservice.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecsservice/v1;awsecsservicev1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecsservice.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecsservice\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecsservice\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecsservice::V1b\x06proto3"
+	"\x10target_group_arn\x18\t \x01(\tR\x0etargetGroupArnB\x9e\x03\n" +
+	"5com.org.project_planton.provider.aws.awsecsservice.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecsservice/v1;awsecsservicev1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecsservice.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecsservice\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecsservice\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecsservice::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsecsservice_v1_stack_outputs_proto_rawDescOnce sync.Once

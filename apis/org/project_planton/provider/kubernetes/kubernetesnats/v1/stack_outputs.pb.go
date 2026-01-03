@@ -7,7 +7,7 @@
 package kubernetesnatsv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -135,8 +135,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_outpu
 	"\x11jet_stream_domain\x18\x05 \x01(\tR\x0fjetStreamDomain\x12)\n" +
 	"\x10metrics_endpoint\x18\x06 \x01(\tR\x0fmetricsEndpoint\x12[\n" +
 	"\n" +
-	"tls_secret\x18\a \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\ttlsSecretB\xd5\x03\n" +
-	"=com.org.project_planton.provider.kubernetes.kubernetesnats.v1B\x11StackOutputsProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1;kubernetesnatsv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnats.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetesnats::V1b\x06proto3"
+	"tls_secret\x18\a \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\ttlsSecretB\xcf\x03\n" +
+	"=com.org.project_planton.provider.kubernetes.kubernetesnats.v1B\x11StackOutputsProtoP\x01Ztgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1;kubernetesnatsv1\xa2\x02\x05OPPKK\xaa\x028Org.ProjectPlanton.Provider.Kubernetes.Kubernetesnats.V1\xca\x028Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesnats\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Kubernetes::Kubernetesnats::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesnats_v1_stack_outputs_proto_rawDescOnce sync.Once

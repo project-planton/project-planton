@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	gcpgcsbucketv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
+	gcpgcsbucketv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

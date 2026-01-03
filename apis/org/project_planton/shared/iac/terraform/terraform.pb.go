@@ -160,8 +160,8 @@ const file_org_project_planton_shared_iac_terraform_terraform_proto_rawDesc = ""
 	"\x05local\x10\x01\x12\x06\n" +
 	"\x02s3\x10\x02\x12\a\n" +
 	"\x03gcs\x10\x03\x12\v\n" +
-	"\aazurerm\x10\x04B\xda\x02\n" +
-	",com.org.project_planton.shared.iac.terraformB\x0eTerraformProtoP\x01ZXgithub.com/project-planton/project-planton/apis/org/project_planton/shared/iac/terraform\xa2\x02\x05OPSIT\xaa\x02'Org.ProjectPlanton.Shared.Iac.Terraform\xca\x02'Org\\ProjectPlanton\\Shared\\Iac\\Terraform\xe2\x023Org\\ProjectPlanton\\Shared\\Iac\\Terraform\\GPBMetadata\xea\x02+Org::ProjectPlanton::Shared::Iac::Terraformb\x06proto3"
+	"\aazurerm\x10\x04B\xd4\x02\n" +
+	",com.org.project_planton.shared.iac.terraformB\x0eTerraformProtoP\x01ZRgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/iac/terraform\xa2\x02\x05OPSIT\xaa\x02'Org.ProjectPlanton.Shared.Iac.Terraform\xca\x02'Org\\ProjectPlanton\\Shared\\Iac\\Terraform\xe2\x023Org\\ProjectPlanton\\Shared\\Iac\\Terraform\\GPBMetadata\xea\x02+Org::ProjectPlanton::Shared::Iac::Terraformb\x06proto3"
 
 var (
 	file_org_project_planton_shared_iac_terraform_terraform_proto_rawDescOnce sync.Once

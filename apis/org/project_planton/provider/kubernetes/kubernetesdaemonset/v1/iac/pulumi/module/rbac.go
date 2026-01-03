@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetesdaemonsetv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1"
+	kubernetesdaemonsetv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1"
 	kubernetesmetav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	kubernetesrbacv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/rbac/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

@@ -3,9 +3,9 @@ package root
 import (
 	"os"
 
-	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/kustomize/builder"
+	"github.com/plantonhq/project-planton/internal/cli/flag"
+	"github.com/plantonhq/project-planton/internal/manifest"
+	"github.com/plantonhq/project-planton/pkg/kustomize/builder"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

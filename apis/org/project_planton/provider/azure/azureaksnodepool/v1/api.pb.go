@@ -8,7 +8,7 @@ package azureaksnodepoolv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_azure_azureaksnodepool_v1_api_proto_rawD
 	"\x04spec\x18\x04 \x01(\v2L.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12f\n" +
 	"\x06status\x18\x05 \x01(\v2N.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatusR\x06status\"\x88\x01\n" +
 	"\x16AzureAksNodePoolStatus\x12n\n" +
-	"\aoutputs\x18\x01 \x01(\v2T.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputsR\aoutputsB\xbc\x03\n" +
-	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\bApiProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2T.org.project_planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputsR\aoutputsB\xb6\x03\n" +
+	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\bApiProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azureaksnodepool_v1_api_proto_rawDescOnce sync.Once

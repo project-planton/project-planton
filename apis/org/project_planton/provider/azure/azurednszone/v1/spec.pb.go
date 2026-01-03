@@ -8,8 +8,8 @@ package azurednszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	dnsrecordtype "github.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -185,8 +185,8 @@ const file_org_project_planton_provider_azure_azurednszone_v1_spec_proto_rawDesc
 	"\x06values\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x06values\x12,\n" +
 	"\vttl_seconds\x18\x04 \x01(\x05B\x06\x8a\xa6\x1d\x0260H\x00R\n" +
 	"ttlSeconds\x88\x01\x01B\x0e\n" +
-	"\f_ttl_secondsB\xa1\x03\n" +
-	"6com.org.project_planton.provider.azure.azurednszone.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Azure.Azurednszone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Azure::Azurednszone::V1b\x06proto3"
+	"\f_ttl_secondsB\x9b\x03\n" +
+	"6com.org.project_planton.provider.azure.azurednszone.v1B\tSpecProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Azure.Azurednszone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Azure::Azurednszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurednszone_v1_spec_proto_rawDescOnce sync.Once

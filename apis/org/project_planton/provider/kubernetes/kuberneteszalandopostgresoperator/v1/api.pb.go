@@ -8,7 +8,7 @@ package kuberneteszalandopostgresoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoper
 	"\x04spec\x18\x04 \x01(\v2s.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x8d\x01\n" +
 	"\x06status\x18\x05 \x01(\v2u.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorStatusR\x06status\"\xc1\x01\n" +
 	"'KubernetesZalandoPostgresOperatorStatus\x12\x95\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorStackOutputsR\aoutputsB\xd2\x04\n" +
-	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\bApiProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2{.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1.KubernetesZalandoPostgresOperatorStackOutputsR\aoutputsB\xcc\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\bApiProtoP\x01Z\x9a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_api_proto_rawDescOnce sync.Once

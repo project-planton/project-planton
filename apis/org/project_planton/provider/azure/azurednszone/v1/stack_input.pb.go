@@ -7,7 +7,7 @@
 package azurednszonev1
 
 import (
-	azure "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
+	azure "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_azure_azurednszone_v1_stack_input_proto_
 	"Dorg/project_planton/provider/azure/azurednszone/v1/stack_input.proto\x122org.project_planton.provider.azure.azurednszone.v1\x1a<org/project_planton/provider/azure/azurednszone/v1/api.proto\x1a1org/project_planton/provider/azure/provider.proto\"\xd4\x01\n" +
 	"\x16AzureDnsZoneStackInput\x12X\n" +
 	"\x06target\x18\x01 \x01(\v2@.org.project_planton.provider.azure.azurednszone.v1.AzureDnsZoneR\x06target\x12`\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xa7\x03\n" +
-	"6com.org.project_planton.provider.azure.azurednszone.v1B\x0fStackInputProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Azure.Azurednszone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Azure::Azurednszone::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xa1\x03\n" +
+	"6com.org.project_planton.provider.azure.azurednszone.v1B\x0fStackInputProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Azure.Azurednszone.V1\xca\x021Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Azure::Azurednszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurednszone_v1_stack_input_proto_rawDescOnce sync.Once

@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_stack_out
 	"\x1cCloudflareWorkerStackOutputs\x12\x1b\n" +
 	"\tscript_id\x18\x01 \x01(\tR\bscriptId\x12\x1d\n" +
 	"\n" +
-	"route_urls\x18\x02 \x03(\tR\trouteUrlsB\xe3\x03\n" +
-	"?com.org.project_planton.provider.cloudflare.cloudflareworker.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Cloudflare.Cloudflareworker.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
+	"route_urls\x18\x02 \x03(\tR\trouteUrlsB\xdd\x03\n" +
+	"?com.org.project_planton.provider.cloudflare.cloudflareworker.v1B\x11StackOutputsProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Cloudflare.Cloudflareworker.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflareworker_v1_stack_outputs_proto_rawDescOnce sync.Once

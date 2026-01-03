@@ -51,7 +51,7 @@ predictable, streamlined experience across dev, staging, and production environm
 ## Installation
 
 1. **ProjectPlanton CLI**  
-   Ensure you have [ProjectPlanton CLI](https://github.com/project-planton/project-planton) installed. This command-line
+   Ensure you have [ProjectPlanton CLI](https://github.com/plantonhq/project-planton) installed. This command-line
    tool handles manifest validation, provisioning, and integration with Pulumi or Terraform.
 
 2. **AWS Credentials**  
@@ -240,7 +240,7 @@ repository for the complete schema.
 ## Further Reading
 
 - **[examples.md](./examples.md)**: Step-by-step sample manifests for various ECS service scenarios.
-- **[ProjectPlanton Guide](https://github.com/project-planton/project-planton/blob/main/docs/Guide.md)**: Learn how to
+- **[ProjectPlanton Guide](https://github.com/plantonhq/project-planton/blob/main/docs/Guide.md)**: Learn how to
   leverage multi-cloud workflows, the CLI, and advanced usage patterns.
 - **AWS Documentation**: [Amazon ECS](https://docs.aws.amazon.com/ecs) for an in-depth look at ECS features and
   best practices.

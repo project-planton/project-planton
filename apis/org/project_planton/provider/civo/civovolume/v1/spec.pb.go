@@ -8,7 +8,7 @@ package civovolumev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -191,8 +191,8 @@ const file_org_project_planton_provider_civo_civovolume_v1_spec_proto_rawDesc = 
 	"\x18CivoVolumeFilesystemType\x12\x0f\n" +
 	"\vunformatted\x10\x00\x12\b\n" +
 	"\x04ext4\x10\x01\x12\a\n" +
-	"\x03xfs\x10\x02B\x8d\x03\n" +
-	"3com.org.project_planton.provider.civo.civovolume.v1B\tSpecProtoP\x01Zlgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
+	"\x03xfs\x10\x02B\x87\x03\n" +
+	"3com.org.project_planton.provider.civo.civovolume.v1B\tSpecProtoP\x01Zfgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovolume_v1_spec_proto_rawDescOnce sync.Once

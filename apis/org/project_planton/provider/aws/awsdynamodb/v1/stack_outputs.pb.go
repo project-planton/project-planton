@@ -115,8 +115,8 @@ const file_org_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_r
 	"\btable_id\x18\x03 \x01(\tR\atableId\x12\x1d\n" +
 	"\n" +
 	"stream_arn\x18\x04 \x01(\tR\tstreamArn\x12!\n" +
-	"\fstream_label\x18\x05 \x01(\tR\vstreamLabelB\x96\x03\n" +
-	"3com.org.project_planton.provider.aws.awsdynamodb.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awsdynamodb.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
+	"\fstream_label\x18\x05 \x01(\tR\vstreamLabelB\x90\x03\n" +
+	"3com.org.project_planton.provider.aws.awsdynamodb.v1B\x11StackOutputsProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awsdynamodb.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDescOnce sync.Once

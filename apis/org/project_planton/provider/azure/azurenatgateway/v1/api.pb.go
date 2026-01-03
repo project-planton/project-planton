@@ -8,7 +8,7 @@ package azurenatgatewayv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_azure_azurenatgateway_v1_api_proto_rawDe
 	"\x04spec\x18\x04 \x01(\v2J.org.project_planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12d\n" +
 	"\x06status\x18\x05 \x01(\v2L.org.project_planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatusR\x06status\"\x85\x01\n" +
 	"\x15AzureNatGatewayStatus\x12l\n" +
-	"\aoutputs\x18\x01 \x01(\v2R.org.project_planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputsR\aoutputsB\xb5\x03\n" +
-	"9com.org.project_planton.provider.azure.azurenatgateway.v1B\bApiProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azurenatgateway.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2R.org.project_planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputsR\aoutputsB\xaf\x03\n" +
+	"9com.org.project_planton.provider.azure.azurenatgateway.v1B\bApiProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azurenatgateway.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurenatgateway_v1_api_proto_rawDescOnce sync.Once

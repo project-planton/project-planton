@@ -8,7 +8,7 @@ package cloudflarekvnamespacev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_
 	"\x04spec\x18\x04 \x01(\v2[.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12u\n" +
 	"\x06status\x18\x05 \x01(\v2].org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatusR\x06status\"\x9c\x01\n" +
 	"\x1bCloudflareKvNamespaceStatus\x12}\n" +
-	"\aoutputs\x18\x01 \x01(\v2c.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputsR\aoutputsB\xfe\x03\n" +
-	"Dcom.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1B\bApiProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1;cloudflarekvnamespacev1\xa2\x02\x05OPPCC\xaa\x02?Org.ProjectPlanton.Provider.Cloudflare.Cloudflarekvnamespace.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarekvnamespace::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2c.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputsR\aoutputsB\xf8\x03\n" +
+	"Dcom.org.project_planton.provider.cloudflare.cloudflarekvnamespace.v1B\bApiProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1;cloudflarekvnamespacev1\xa2\x02\x05OPPCC\xaa\x02?Org.ProjectPlanton.Provider.Cloudflare.Cloudflarekvnamespace.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarekvnamespace::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_rawDescOnce sync.Once

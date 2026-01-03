@@ -112,8 +112,8 @@ const file_org_project_planton_provider_azure_provider_proto_rawDesc = "" +
 	"\tclient_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bclientId\x12+\n" +
 	"\rclient_secret\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fclientSecret\x12#\n" +
 	"\ttenant_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\btenantId\x12/\n" +
-	"\x0fsubscription_id\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0esubscriptionIdB\xb3\x02\n" +
-	"&com.org.project_planton.provider.azureB\rProviderProtoP\x01ZRgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure\xa2\x02\x04OPPA\xaa\x02!Org.ProjectPlanton.Provider.Azure\xca\x02!Org\\ProjectPlanton\\Provider\\Azure\xe2\x02-Org\\ProjectPlanton\\Provider\\Azure\\GPBMetadata\xea\x02$Org::ProjectPlanton::Provider::Azureb\x06proto3"
+	"\x0fsubscription_id\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0esubscriptionIdB\xad\x02\n" +
+	"&com.org.project_planton.provider.azureB\rProviderProtoP\x01ZLgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure\xa2\x02\x04OPPA\xaa\x02!Org.ProjectPlanton.Provider.Azure\xca\x02!Org\\ProjectPlanton\\Provider\\Azure\xe2\x02-Org\\ProjectPlanton\\Provider\\Azure\\GPBMetadata\xea\x02$Org::ProjectPlanton::Provider::Azureb\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_provider_proto_rawDescOnce sync.Once

@@ -254,8 +254,8 @@ const file_org_project_planton_provider_cloudflare_cloudflared1database_v1_spec_
 	"\x04apac\x10\x03\x12\x06\n" +
 	"\x02oc\x10\x04\x12\b\n" +
 	"\x04wnam\x10\x05\x12\b\n" +
-	"\x04enam\x10\x06B\xf8\x03\n" +
-	"Ccom.org.project_planton.provider.cloudflare.cloudflared1database.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05OPPCC\xaa\x02>Org.ProjectPlanton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
+	"\x04enam\x10\x06B\xf2\x03\n" +
+	"Ccom.org.project_planton.provider.cloudflare.cloudflared1database.v1B\tSpecProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05OPPCC\xaa\x02>Org.ProjectPlanton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDescOnce sync.Once

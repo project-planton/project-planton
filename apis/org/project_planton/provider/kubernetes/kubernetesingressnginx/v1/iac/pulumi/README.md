@@ -48,11 +48,11 @@ The module provides a simplified interface for deploying ingress controllers wit
 
 ```go
 import (
-    kubernetesingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
-    "github.com/project-planton/project-planton/apis/org/project_planton/shared"
-    foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+    kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi/module"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+    foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

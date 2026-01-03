@@ -8,7 +8,7 @@ package azurenatgatewayv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -113,8 +113,8 @@ const file_org_project_planton_provider_azure_azurenatgateway_v1_spec_proto_rawD
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x17\n" +
 	"\x15_idle_timeout_minutesB\x1a\n" +
-	"\x18_public_ip_prefix_lengthB\xb6\x03\n" +
-	"9com.org.project_planton.provider.azure.azurenatgateway.v1B\tSpecProtoP\x01Zwgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azurenatgateway.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
+	"\x18_public_ip_prefix_lengthB\xb0\x03\n" +
+	"9com.org.project_planton.provider.azure.azurenatgateway.v1B\tSpecProtoP\x01Zqgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05OPPAA\xaa\x024Org.ProjectPlanton.Provider.Azure.Azurenatgateway.V1\xca\x024Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02@Org\\ProjectPlanton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x029Org::ProjectPlanton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurenatgateway_v1_spec_proto_rawDescOnce sync.Once

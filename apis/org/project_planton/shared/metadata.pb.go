@@ -7,7 +7,7 @@
 package shared
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/relationship/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/relationship/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -171,8 +171,8 @@ const file_org_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x81\x02\n" +
-	"\x1ecom.org.project_planton.sharedB\rMetadataProtoP\x01ZJgithub.com/project-planton/project-planton/apis/org/project_planton/shared\xa2\x02\x03OPS\xaa\x02\x19Org.ProjectPlanton.Shared\xca\x02\x19Org\\ProjectPlanton\\Shared\xe2\x02%Org\\ProjectPlanton\\Shared\\GPBMetadata\xea\x02\x1bOrg::ProjectPlanton::Sharedb\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xfb\x01\n" +
+	"\x1ecom.org.project_planton.sharedB\rMetadataProtoP\x01ZDgithub.com/plantonhq/project-planton/apis/org/project_planton/shared\xa2\x02\x03OPS\xaa\x02\x19Org.ProjectPlanton.Shared\xca\x02\x19Org\\ProjectPlanton\\Shared\xe2\x02%Org\\ProjectPlanton\\Shared\\GPBMetadata\xea\x02\x1bOrg::ProjectPlanton::Sharedb\x06proto3"
 
 var (
 	file_org_project_planton_shared_metadata_proto_rawDescOnce sync.Once

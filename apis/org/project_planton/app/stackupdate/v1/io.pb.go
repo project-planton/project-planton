@@ -7,7 +7,7 @@
 package stackupdatev1
 
 import (
-	commons "github.com/project-planton/project-planton/apis/org/project_planton/app/commons"
+	commons "github.com/plantonhq/project-planton/apis/org/project_planton/app/commons"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -493,8 +493,8 @@ const file_org_project_planton_app_stackupdate_v1_io_proto_rawDesc = "" +
 	"\vstream_type\x18\x03 \x01(\tR\n" +
 	"streamType\x128\n" +
 	"\ttimestamp\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x16\n" +
-	"\x06status\x18\x05 \x01(\tR\x06statusB\xd4\x02\n" +
-	"*com.org.project_planton.app.stackupdate.v1B\aIoProtoP\x01Zdgithub.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
+	"\x06status\x18\x05 \x01(\tR\x06statusB\xce\x02\n" +
+	"*com.org.project_planton.app.stackupdate.v1B\aIoProtoP\x01Z^github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_app_stackupdate_v1_io_proto_rawDescOnce sync.Once

@@ -1,7 +1,7 @@
 package module
 
 import (
-	kubernetesgatewayapicrdsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1"
+	kubernetesgatewayapicrdsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

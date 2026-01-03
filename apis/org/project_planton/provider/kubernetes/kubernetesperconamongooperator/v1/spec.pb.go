@@ -8,8 +8,8 @@ package kubernetesperconamongooperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -160,8 +160,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesperconamongooperato
 	"\tresources\x18\x01 \x01(\v2;.org.project_planton.provider.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
-	"\x04100m\x12\x05256MiR\tresourcesB\xbe\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1B\tSpecProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1;kubernetesperconamongooperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamongooperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamongooperator::V1b\x06proto3"
+	"\x04100m\x12\x05256MiR\tresourcesB\xb8\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1B\tSpecProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1;kubernetesperconamongooperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamongooperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamongooperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_spec_proto_rawDescOnce sync.Once

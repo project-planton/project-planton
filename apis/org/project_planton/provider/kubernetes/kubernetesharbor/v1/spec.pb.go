@@ -8,9 +8,9 @@ package kubernetesharborv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -1825,8 +1825,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_prot
 	"!default_harbor_registry_container\x12\x1d.google.protobuf.FieldOptions\x18\x93\xe5\" \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerR\x1edefaultHarborRegistryContainer:\xc6\x01\n" +
 	"#default_harbor_jobservice_container\x12\x1d.google.protobuf.FieldOptions\x18\x94\xe5\" \x01(\v2V.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborContainerR defaultHarborJobserviceContainer:\xc3\x01\n" +
 	"\x1cdefault_postgresql_container\x12\x1d.google.protobuf.FieldOptions\x18\x95\xe5\" \x01(\v2`.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborPostgresqlContainerR\x1adefaultPostgresqlContainer:\xb4\x01\n" +
-	"\x17default_redis_container\x12\x1d.google.protobuf.FieldOptions\x18\x96\xe5\" \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainerR\x15defaultRedisContainerB\xdb\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kubernetesharbor.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1;kubernetesharborv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetesharbor.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetesharbor::V1b\x06proto3"
+	"\x17default_redis_container\x12\x1d.google.protobuf.FieldOptions\x18\x96\xe5\" \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesharbor.v1.KubernetesHarborRedisContainerR\x15defaultRedisContainerB\xd5\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetesharbor.v1B\tSpecProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1;kubernetesharborv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetesharbor.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesharbor\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetesharbor::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesharbor_v1_spec_proto_rawDescOnce sync.Once

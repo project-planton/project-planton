@@ -12,7 +12,7 @@ go_library(
         "uninstall.go",
         "webapp.go",
     ],
-    importpath = "github.com/project-planton/project-planton/cmd/project-planton/root/webapp",
+    importpath = "github.com/plantonhq/project-planton/cmd/project-planton/root/webapp",
     visibility = ["//visibility:public"],
     deps = [
         "//cmd/project-planton/root",

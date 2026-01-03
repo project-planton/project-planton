@@ -7,7 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	// Adjust import path to match your actual proto package path
-	awssecuritygroupv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1"
+	awssecuritygroupv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awssecuritygroup/v1"
 )
 
 // securityGroup creates an AWS EC2 Security Group within the specified VPC.

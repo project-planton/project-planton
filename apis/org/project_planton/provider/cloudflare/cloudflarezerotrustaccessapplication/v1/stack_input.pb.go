@@ -7,7 +7,7 @@
 package cloudflarezerotrustaccessapplicationv1
 
 import (
-	cloudflare "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
+	cloudflare "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarezerotrustaccessappl
 	"aorg/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_input.proto\x12Oorg.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1aYorg/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/api.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\"\xac\x02\n" +
 	".CloudflareZeroTrustAccessApplicationStackInput\x12\x8d\x01\n" +
 	"\x06target\x18\x01 \x01(\v2u.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xee\x04\n" +
-	"Scom.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\x0fStackInputProtoP\x01Z\xa6\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05OPPCC\xaa\x02NOrg.ProjectPlanton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02SOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xe8\x04\n" +
+	"Scom.org.project_planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\x0fStackInputProtoP\x01Z\xa0\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05OPPCC\xaa\x02NOrg.ProjectPlanton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02NOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02ZOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02SOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_stack_input_proto_rawDescOnce sync.Once

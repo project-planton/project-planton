@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	digitaloceanappplatformservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/digitalocean/pulumidigitaloceanprovider"
+	digitaloceanappplatformservicev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/digitalocean/pulumidigitaloceanprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	credentialv1 "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1"
-	credentialv1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
-	awsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
-	azurev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
-	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
+	credentialv1 "github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1"
+	credentialv1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1/credentialv1connect"
+	awsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
+	azurev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure"
+	gcpv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	"github.com/spf13/cobra"
 )
 

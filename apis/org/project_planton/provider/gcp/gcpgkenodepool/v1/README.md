@@ -163,7 +163,7 @@ Spot VMs offer up to 91% cost reduction but can be preempted (terminated) by Goo
 
 ## Support
 
-For issues, questions, or contributions, visit the [Project Planton repository](https://github.com/project-planton/project-planton).
+For issues, questions, or contributions, visit the [Project Planton repository](https://github.com/plantonhq/project-planton).
 
 ---
 

@@ -844,8 +844,8 @@ const file_org_project_planton_provider_aws_awss3bucket_v1_spec_proto_rawDesc = 
 	"!STORAGE_CLASS_INTELLIGENT_TIERING\x10\x04\x12+\n" +
 	"'STORAGE_CLASS_GLACIER_INSTANT_RETRIEVAL\x10\x05\x12,\n" +
 	"(STORAGE_CLASS_GLACIER_FLEXIBLE_RETRIEVAL\x10\x06\x12&\n" +
-	"\"STORAGE_CLASS_GLACIER_DEEP_ARCHIVE\x10\aB\x8e\x03\n" +
-	"3com.org.project_planton.provider.aws.awss3bucket.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
+	"\"STORAGE_CLASS_GLACIER_DEEP_ARCHIVE\x10\aB\x88\x03\n" +
+	"3com.org.project_planton.provider.aws.awss3bucket.v1B\tSpecProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awss3bucket_v1_spec_proto_rawDescOnce sync.Once

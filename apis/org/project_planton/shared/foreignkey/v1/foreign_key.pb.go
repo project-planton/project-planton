@@ -8,7 +8,7 @@ package foreignkeyv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	cloudresourcekind "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	cloudresourcekind "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -312,8 +312,8 @@ const file_org_project_planton_shared_foreignkey_v1_foreign_key_proto_rawDesc = 
 	"value_from\x18\x02 \x01(\v26.org.project_planton.shared.foreignkey.v1.ValueFromRefH\x00R\tvalueFromB\x10\n" +
 	"\x0eliteral_or_ref:\x83\x01\n" +
 	"\fdefault_kind\x12\x1d.google.protobuf.FieldOptions\x18\xc1\x9a\f \x01(\x0e2?.org.project_planton.shared.cloudresourcekind.CloudResourceKindR\vdefaultKind:V\n" +
-	"\x17default_kind_field_path\x12\x1d.google.protobuf.FieldOptions\x18\u009a\f \x01(\tR\x14defaultKindFieldPathB\xe7\x02\n" +
-	",com.org.project_planton.shared.foreignkey.v1B\x0fForeignKeyProtoP\x01Zegithub.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1;foreignkeyv1\xa2\x02\x04OPSF\xaa\x02'Org.ProjectPlanton.Shared.Foreignkey.V1\xca\x02'Org\\ProjectPlanton\\Shared\\Foreignkey\\V1\xe2\x023Org\\ProjectPlanton\\Shared\\Foreignkey\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::Shared::Foreignkey::V1b\x06proto3"
+	"\x17default_kind_field_path\x12\x1d.google.protobuf.FieldOptions\x18\u009a\f \x01(\tR\x14defaultKindFieldPathB\xe1\x02\n" +
+	",com.org.project_planton.shared.foreignkey.v1B\x0fForeignKeyProtoP\x01Z_github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1;foreignkeyv1\xa2\x02\x04OPSF\xaa\x02'Org.ProjectPlanton.Shared.Foreignkey.V1\xca\x02'Org\\ProjectPlanton\\Shared\\Foreignkey\\V1\xe2\x023Org\\ProjectPlanton\\Shared\\Foreignkey\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::Shared::Foreignkey::V1b\x06proto3"
 
 var (
 	file_org_project_planton_shared_foreignkey_v1_foreign_key_proto_rawDescOnce sync.Once

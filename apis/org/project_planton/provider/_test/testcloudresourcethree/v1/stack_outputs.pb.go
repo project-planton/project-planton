@@ -62,8 +62,8 @@ var File_org_project_planton_provider__test_testcloudresourcethree_v1_stack_outp
 const file_org_project_planton_provider__test_testcloudresourcethree_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
 	"Porg/project_planton/provider/_test/testcloudresourcethree/v1/stack_outputs.proto\x12<org.project_planton.provider._test.testcloudresourcethree.v1\"$\n" +
-	"\"TestCloudResourceThreeStackOutputsB\xec\x03\n" +
-	"@com.org.project_planton.provider._test.testcloudresourcethree.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1;testcloudresourcethreev1\xa2\x02\x05OPP_T\xaa\x02:Org.ProjectPlanton.Provider.Test.Testcloudresourcethree.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Test::Testcloudresourcethree::V1b\x06proto3"
+	"\"TestCloudResourceThreeStackOutputsB\xe5\x03\n" +
+	"@com.org.project_planton.provider._test.testcloudresourcethree.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1;testcloudresourcethreev1\xa2\x02\x05OPP_T\xaa\x02:Org.ProjectPlanton.Provider.Test.Testcloudresourcethree.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Test::Testcloudresourcethree::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider__test_testcloudresourcethree_v1_stack_outputs_proto_rawDescOnce sync.Once

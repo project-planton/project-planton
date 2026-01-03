@@ -408,6 +408,6 @@ Isolate teams with separate pools:
 ## Need Help?
 
 - Check [README.md](README.md#troubleshooting) for troubleshooting
-- Open issue on [GitHub](https://github.com/project-planton/project-planton/issues)
+- Open issue on [GitHub](https://github.com/plantonhq/project-planton/issues)
 - Contact Civo: support@civo.com
 

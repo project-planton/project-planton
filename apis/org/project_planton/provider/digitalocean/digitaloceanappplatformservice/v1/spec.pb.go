@@ -8,9 +8,9 @@ package digitaloceanappplatformservicev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -539,8 +539,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanappplatformserv
 	"\x0eprofessional_m\x10\b\x12\x12\n" +
 	"\x0eprofessional_l\x10\t\x12\x13\n" +
 	"\x0fprofessional_xl\x10\n" +
-	"B\xca\x04\n" +
-	"Ocom.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1B\tSpecProtoP\x01Z\x9c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
+	"B\xc4\x04\n" +
+	"Ocom.org.project_planton.provider.digitalocean.digitaloceanappplatformservice.v1B\tSpecProtoP\x01Z\x96\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDescOnce sync.Once

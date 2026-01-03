@@ -7,7 +7,7 @@
 package kubernetespostgresv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -150,8 +150,8 @@ const file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_o
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
 	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12e\n" +
 	"\x0fusername_secret\x18\b \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0eusernameSecret\x12e\n" +
-	"\x0fpassword_secret\x18\t \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xf2\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
+	"\x0fpassword_secret\x18\t \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xeb\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetespostgres.v1B\x11StackOutputsProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1;kubernetespostgresv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetespostgres.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetespostgres\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetespostgres::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetespostgres_v1_stack_outputs_proto_rawDescOnce sync.Once

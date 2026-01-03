@@ -8,8 +8,8 @@ package azureaksnodepoolv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -329,8 +329,8 @@ const file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_raw
 	"$azure_aks_node_pool_mode_unspecified\x10\x00\x12\n" +
 	"\n" +
 	"\x06SYSTEM\x10\x01\x12\b\n" +
-	"\x04USER\x10\x02B\xbd\x03\n" +
-	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
+	"\x04USER\x10\x02B\xb7\x03\n" +
+	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\tSpecProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDescOnce sync.Once

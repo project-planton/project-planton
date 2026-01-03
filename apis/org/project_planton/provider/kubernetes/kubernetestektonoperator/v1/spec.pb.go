@@ -8,8 +8,8 @@ package kubernetestektonoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -329,8 +329,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_s
 	"\x17components.at_least_one\x12Qat least one Tekton component (pipelines, triggers, or dashboard) must be enabled\x1a1this.pipelines || this.triggers || this.dashboard\"`\n" +
 	"(KubernetesTektonOperatorDashboardIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
-	"\bhostname\x18\x02 \x01(\tR\bhostnameB\x94\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\tSpecProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
+	"\bhostname\x18\x02 \x01(\tR\bhostnameB\x8e\x04\n" +
+	"Gcom.org.project_planton.provider.kubernetes.kubernetestektonoperator.v1B\tSpecProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1;kubernetestektonoperatorv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetestektonoperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestektonoperator\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestektonoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestektonoperator_v1_spec_proto_rawDescOnce sync.Once

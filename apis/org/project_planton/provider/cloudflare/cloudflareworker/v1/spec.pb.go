@@ -8,7 +8,7 @@ package cloudflareworkerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -411,8 +411,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_prot
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12 \n" +
 	"\azone_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06zoneId\x12#\n" +
 	"\bhostname\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bhostname\x12#\n" +
-	"\rroute_pattern\x18\x04 \x01(\tR\froutePatternB\xdb\x03\n" +
-	"?com.org.project_planton.provider.cloudflare.cloudflareworker.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Cloudflare.Cloudflareworker.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
+	"\rroute_pattern\x18\x04 \x01(\tR\froutePatternB\xd5\x03\n" +
+	"?com.org.project_planton.provider.cloudflare.cloudflareworker.v1B\tSpecProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Cloudflare.Cloudflareworker.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescOnce sync.Once

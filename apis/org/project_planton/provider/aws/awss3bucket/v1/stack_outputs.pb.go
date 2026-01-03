@@ -119,8 +119,8 @@ const file_org_project_planton_provider_aws_awss3bucket_v1_stack_outputs_proto_r
 	"bucket_arn\x18\x02 \x01(\tR\tbucketArn\x12\x16\n" +
 	"\x06region\x18\x03 \x01(\tR\x06region\x12=\n" +
 	"\x1bbucket_regional_domain_name\x18\x04 \x01(\tR\x18bucketRegionalDomainName\x12$\n" +
-	"\x0ehosted_zone_id\x18\x05 \x01(\tR\fhostedZoneIdB\x96\x03\n" +
-	"3com.org.project_planton.provider.aws.awss3bucket.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
+	"\x0ehosted_zone_id\x18\x05 \x01(\tR\fhostedZoneIdB\x90\x03\n" +
+	"3com.org.project_planton.provider.aws.awss3bucket.v1B\x11StackOutputsProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awss3bucket_v1_stack_outputs_proto_rawDescOnce sync.Once

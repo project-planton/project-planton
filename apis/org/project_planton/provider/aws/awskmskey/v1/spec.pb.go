@@ -8,7 +8,7 @@ package awskmskeyv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -179,8 +179,8 @@ const file_org_project_planton_provider_aws_awskmskey_v1_spec_proto_rawDesc = ""
 	"\tsymmetric\x10\x00\x12\f\n" +
 	"\brsa_2048\x10\x01\x12\f\n" +
 	"\brsa_4096\x10\x02\x12\x11\n" +
-	"\recc_nist_p256\x10\x03B\x80\x03\n" +
-	"1com.org.project_planton.provider.aws.awskmskey.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awskmskey/v1;awskmskeyv1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awskmskey.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awskmskey::V1b\x06proto3"
+	"\recc_nist_p256\x10\x03B\xfa\x02\n" +
+	"1com.org.project_planton.provider.aws.awskmskey.v1B\tSpecProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awskmskey/v1;awskmskeyv1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awskmskey.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awskmskey\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awskmskey::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awskmskey_v1_spec_proto_rawDescOnce sync.Once

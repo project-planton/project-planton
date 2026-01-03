@@ -343,8 +343,8 @@ const file_org_project_planton_provider_civo_civocertificate_v1_spec_proto_rawDe
 	"!civo_certificate_type_unspecified\x10\x00\x12\x0f\n" +
 	"\vletsEncrypt\x10\x01\x12\n" +
 	"\n" +
-	"\x06custom\x10\x02B\xb0\x03\n" +
-	"8com.org.project_planton.provider.civo.civocertificate.v1B\tSpecProtoP\x01Zvgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
+	"\x06custom\x10\x02B\xaa\x03\n" +
+	"8com.org.project_planton.provider.civo.civocertificate.v1B\tSpecProtoP\x01Zpgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05OPPCC\xaa\x023Org.ProjectPlanton.Provider.Civo.Civocertificate.V1\xca\x023Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02?Org\\ProjectPlanton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x028Org::ProjectPlanton::Provider::Civo::Civocertificate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civocertificate_v1_spec_proto_rawDescOnce sync.Once

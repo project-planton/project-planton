@@ -7,7 +7,7 @@
 package digitaloceancertificatev1
 
 import (
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_
 	"Vorg/project_planton/provider/digitalocean/digitaloceancertificate/v1/stack_input.proto\x12Dorg.project_planton.provider.digitalocean.digitaloceancertificate.v1\x1aNorg/project_planton/provider/digitalocean/digitaloceancertificate/v1/api.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\"\x8a\x02\n" +
 	"!DigitalOceanCertificateStackInput\x12u\n" +
 	"\x06target\x18\x01 \x01(\v2].org.project_planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateR\x06target\x12n\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\x9f\x04\n" +
-	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\x0fStackInputProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\x99\x04\n" +
+	"Hcom.org.project_planton.provider.digitalocean.digitaloceancertificate.v1B\x0fStackInputProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05OPPDD\xaa\x02COrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02COrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02OOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceancertificate_v1_stack_input_proto_rawDescOnce sync.Once

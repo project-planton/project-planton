@@ -65,7 +65,7 @@ internal/manifest/
 **Usage**:
 
 ```go
-import "github.com/project-planton/project-planton/internal/manifest"
+import "github.com/plantonhq/project-planton/internal/manifest"
 
 // Load manifest
 msg, err := manifest.LoadManifest("ops/resources/database.yaml")
@@ -420,7 +420,7 @@ All CLI commands (pulumi, tofu, validate, load-manifest) use this package:
 
 ```go
 // pulumi/up.go, tofu/apply.go, etc.
-import "github.com/project-planton/project-planton/internal/manifest"
+import "github.com/plantonhq/project-planton/internal/manifest"
 
 // Load manifest
 manifest, err := manifest.LoadManifest(manifestPath)

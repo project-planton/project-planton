@@ -1,8 +1,8 @@
 package module
 
 import (
-	civoprovider "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
-	civokubernetesclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1"
+	civoprovider "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
+	civokubernetesclusterv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civokubernetescluster/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

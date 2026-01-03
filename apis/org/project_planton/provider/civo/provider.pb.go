@@ -110,8 +110,8 @@ const file_org_project_planton_provider_civo_provider_proto_rawDesc = "" +
 	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiToken\x12\\\n" +
 	"\x0edefault_region\x18\x02 \x01(\x0e2-.org.project_planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\rdefaultRegion\x123\n" +
 	"\x16object_store_access_id\x18\x03 \x01(\tR\x13objectStoreAccessId\x125\n" +
-	"\x17object_store_secret_key\x18\x04 \x01(\tR\x14objectStoreSecretKeyB\xad\x02\n" +
-	"%com.org.project_planton.provider.civoB\rProviderProtoP\x01ZQgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo\xa2\x02\x04OPPC\xaa\x02 Org.ProjectPlanton.Provider.Civo\xca\x02 Org\\ProjectPlanton\\Provider\\Civo\xe2\x02,Org\\ProjectPlanton\\Provider\\Civo\\GPBMetadata\xea\x02#Org::ProjectPlanton::Provider::Civob\x06proto3"
+	"\x17object_store_secret_key\x18\x04 \x01(\tR\x14objectStoreSecretKeyB\xa7\x02\n" +
+	"%com.org.project_planton.provider.civoB\rProviderProtoP\x01ZKgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo\xa2\x02\x04OPPC\xaa\x02 Org.ProjectPlanton.Provider.Civo\xca\x02 Org\\ProjectPlanton\\Provider\\Civo\xe2\x02,Org\\ProjectPlanton\\Provider\\Civo\\GPBMetadata\xea\x02#Org::ProjectPlanton::Provider::Civob\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_provider_proto_rawDescOnce sync.Once

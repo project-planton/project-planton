@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strconv"
 
-	kubernetesneo4jv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1"
+	kubernetesneo4jv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 )
 
 // Locals struct mirrors the "locals" concept from Terraform,

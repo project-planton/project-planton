@@ -123,7 +123,7 @@ This logic was previously in the unused `app/backend/entrypoint.sh` but never ma
 #### 4. `docker-compose.yml`
 
 **No changes** - File was already correctly configured to use unified container
-- Already referenced `ghcr.io/project-planton/project-planton:latest` (unified image)
+- Already referenced `ghcr.io/plantonhq/project-planton:latest` (unified image)
 - Already had correct volume mounts and environment variables
 - This confirmed that the separate Dockerfiles were never used
 

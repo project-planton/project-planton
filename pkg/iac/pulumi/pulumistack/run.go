@@ -6,14 +6,14 @@ import (
 	"os/exec"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/iac/pulumi"
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/crkreflect"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/iac/pulumi"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/manifest"
+	"github.com/plantonhq/project-planton/pkg/crkreflect"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/backendconfig"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
+	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,

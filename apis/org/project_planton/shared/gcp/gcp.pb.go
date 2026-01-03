@@ -84,8 +84,8 @@ const file_org_project_planton_shared_gcp_gcp_proto_rawDesc = "" +
 	"\x14GoogleServiceAccount\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1d\n" +
 	"\n" +
-	"key_base64\x18\x02 \x01(\tR\tkeyBase64B\x96\x02\n" +
-	"\"com.org.project_planton.shared.gcpB\bGcpProtoP\x01ZNgithub.com/project-planton/project-planton/apis/org/project_planton/shared/gcp\xa2\x02\x04OPSG\xaa\x02\x1dOrg.ProjectPlanton.Shared.Gcp\xca\x02\x1dOrg\\ProjectPlanton\\Shared\\Gcp\xe2\x02)Org\\ProjectPlanton\\Shared\\Gcp\\GPBMetadata\xea\x02 Org::ProjectPlanton::Shared::Gcpb\x06proto3"
+	"key_base64\x18\x02 \x01(\tR\tkeyBase64B\x90\x02\n" +
+	"\"com.org.project_planton.shared.gcpB\bGcpProtoP\x01ZHgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/gcp\xa2\x02\x04OPSG\xaa\x02\x1dOrg.ProjectPlanton.Shared.Gcp\xca\x02\x1dOrg\\ProjectPlanton\\Shared\\Gcp\xe2\x02)Org\\ProjectPlanton\\Shared\\Gcp\\GPBMetadata\xea\x02 Org::ProjectPlanton::Shared::Gcpb\x06proto3"
 
 var (
 	file_org_project_planton_shared_gcp_gcp_proto_rawDescOnce sync.Once

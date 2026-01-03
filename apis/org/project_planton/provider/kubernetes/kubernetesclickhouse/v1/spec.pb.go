@@ -8,8 +8,8 @@ package kubernetesclickhousev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -995,8 +995,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_
 	"\fuse_external\x18\x01 \x01(\bR\vuseExternal\x12\x14\n" +
 	"\x05nodes\x18\x02 \x03(\tR\x05nodes:\xa5\x01\xbaH\xa1\x01\x1a\x9e\x01\n" +
 	"\"spec.zookeeper.nodes_when_external\x12KAt least one ZooKeeper node must be specified when using external ZooKeeper\x1a+!this.use_external || size(this.nodes) >= 1:\xac\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xd9\xd6\x1f \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainerR\x10defaultContainerB\xf8\x03\n" +
-	"Ccom.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1;kubernetesclickhousev1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesclickhouse.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesclickhouse\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesclickhouse\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesclickhouse::V1b\x06proto3"
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xd9\xd6\x1f \x01(\v2^.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1.KubernetesClickHouseContainerR\x10defaultContainerB\xf2\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesclickhouse.v1B\tSpecProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1;kubernetesclickhousev1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesclickhouse.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesclickhouse\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesclickhouse\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesclickhouse::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesclickhouse_v1_spec_proto_rawDescOnce sync.Once

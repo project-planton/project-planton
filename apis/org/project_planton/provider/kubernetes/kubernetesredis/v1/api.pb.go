@@ -8,7 +8,7 @@ package kubernetesredisv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesredis_v1_api_proto_
 	"\x04spec\x18\x04 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12i\n" +
 	"\x06status\x18\x05 \x01(\v2Q.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisStatusR\x06status\"\x8a\x01\n" +
 	"\x15KubernetesRedisStatus\x12q\n" +
-	"\aoutputs\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisStackOutputsR\aoutputsB\xd3\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kubernetesredis.v1B\bApiProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1;kubernetesredisv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesredis.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesredis::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.kubernetesredis.v1.KubernetesRedisStackOutputsR\aoutputsB\xcd\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesredis.v1B\bApiProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1;kubernetesredisv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesredis.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesredis::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesredis_v1_api_proto_rawDescOnce sync.Once

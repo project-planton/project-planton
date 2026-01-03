@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	kubernetestemporalv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetestemporalv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

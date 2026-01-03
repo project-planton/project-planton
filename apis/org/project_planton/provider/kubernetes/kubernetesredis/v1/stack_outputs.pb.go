@@ -7,7 +7,7 @@
 package kubernetesredisv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -153,8 +153,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesredis_v1_stack_outp
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
 	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12\x1a\n" +
 	"\busername\x18\a \x01(\tR\busername\x12e\n" +
-	"\x0fpassword_secret\x18\b \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xdc\x03\n" +
-	">com.org.project_planton.provider.kubernetes.kubernetesredis.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1;kubernetesredisv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesredis.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesredis::V1b\x06proto3"
+	"\x0fpassword_secret\x18\b \x01(\v2<.org.project_planton.provider.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\xd6\x03\n" +
+	">com.org.project_planton.provider.kubernetes.kubernetesredis.v1B\x11StackOutputsProtoP\x01Zvgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesredis/v1;kubernetesredisv1\xa2\x02\x05OPPKK\xaa\x029Org.ProjectPlanton.Provider.Kubernetes.Kubernetesredis.V1\xca\x029Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\xe2\x02EOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesredis\\V1\\GPBMetadata\xea\x02>Org::ProjectPlanton::Provider::Kubernetes::Kubernetesredis::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesredis_v1_stack_outputs_proto_rawDescOnce sync.Once

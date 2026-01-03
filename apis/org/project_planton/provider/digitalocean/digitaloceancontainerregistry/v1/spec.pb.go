@@ -8,7 +8,7 @@ package digitaloceancontainerregistryv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceancontainerregist
 	"0digitalocean_container_registry_tier_unspecified\x10\x00\x12\v\n" +
 	"\astarter\x10\x01\x12\t\n" +
 	"\x05basic\x10\x02\x12\x10\n" +
-	"\fprofessional\x10\x03B\xc3\x04\n" +
-	"Ncom.org.project_planton.provider.digitalocean.digitaloceancontainerregistry.v1B\tSpecProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1;digitaloceancontainerregistryv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancontainerregistry.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancontainerregistry::V1b\x06proto3"
+	"\fprofessional\x10\x03B\xbd\x04\n" +
+	"Ncom.org.project_planton.provider.digitalocean.digitaloceancontainerregistry.v1B\tSpecProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1;digitaloceancontainerregistryv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceancontainerregistry.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceancontainerregistry::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_spec_proto_rawDescOnce sync.Once

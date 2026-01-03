@@ -1,7 +1,7 @@
 package gcplabelkeys
 
 import (
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/labels/labelkeys"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/labels/labelkeys"
 )
 
 var (

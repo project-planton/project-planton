@@ -73,8 +73,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoper
 	"\n" +
 	"`org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/stack_outputs.proto\x12Lorg.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1\"M\n" +
 	"-KubernetesPerconaPostgresOperatorStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xdb\x04\n" +
-	"Pcom.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1B\x11StackOutputsProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconapostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconapostgresoperator::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xd5\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kubernetesperconapostgresoperator.v1B\x11StackOutputsProtoP\x01Z\x9a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1;kubernetesperconapostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconapostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconapostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconapostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconapostgresoperator_v1_stack_outputs_proto_rawDescOnce sync.Once

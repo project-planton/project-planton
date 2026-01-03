@@ -96,8 +96,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesgatewayapicrds_v1_s
 	"$KubernetesGatewayApiCrdsStackOutputs\x12+\n" +
 	"\x11installed_version\x18\x01 \x01(\tR\x10installedVersion\x12+\n" +
 	"\x11installed_channel\x18\x02 \x01(\tR\x10installedChannel\x12%\n" +
-	"\x0einstalled_crds\x18\x03 \x03(\tR\rinstalledCrdsB\x9c\x04\n" +
-	"Gcom.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1B\x11StackOutputsProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1;kubernetesgatewayapicrdsv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesgatewayapicrds.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesgatewayapicrds::V1b\x06proto3"
+	"\x0einstalled_crds\x18\x03 \x03(\tR\rinstalledCrdsB\x96\x04\n" +
+	"Gcom.org.project_planton.provider.kubernetes.kubernetesgatewayapicrds.v1B\x11StackOutputsProtoP\x01Z\x88\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1;kubernetesgatewayapicrdsv1\xa2\x02\x05OPPKK\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesgatewayapicrds.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesgatewayapicrds\\V1\\GPBMetadata\xea\x02GOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesgatewayapicrds::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesgatewayapicrds_v1_stack_outputs_proto_rawDescOnce sync.Once

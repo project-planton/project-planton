@@ -84,8 +84,8 @@ const file_org_project_planton_app_commons_page_info_proto_rawDesc = "" +
 	"/org/project_planton/app/commons/page_info.proto\x12\x1forg.project_planton.app.commons\"0\n" +
 	"\bPageInfo\x12\x10\n" +
 	"\x03num\x18\x01 \x01(\x05R\x03num\x12\x12\n" +
-	"\x04size\x18\x02 \x01(\x05R\x04sizeB\xa1\x02\n" +
-	"#com.org.project_planton.app.commonsB\rPageInfoProtoP\x01ZOgithub.com/project-planton/project-planton/apis/org/project_planton/app/commons\xa2\x02\x04OPAC\xaa\x02\x1eOrg.ProjectPlanton.App.Commons\xca\x02\x1eOrg\\ProjectPlanton\\App\\Commons\xe2\x02*Org\\ProjectPlanton\\App\\Commons\\GPBMetadata\xea\x02!Org::ProjectPlanton::App::Commonsb\x06proto3"
+	"\x04size\x18\x02 \x01(\x05R\x04sizeB\x9b\x02\n" +
+	"#com.org.project_planton.app.commonsB\rPageInfoProtoP\x01ZIgithub.com/plantonhq/project-planton/apis/org/project_planton/app/commons\xa2\x02\x04OPAC\xaa\x02\x1eOrg.ProjectPlanton.App.Commons\xca\x02\x1eOrg\\ProjectPlanton\\App\\Commons\xe2\x02*Org\\ProjectPlanton\\App\\Commons\\GPBMetadata\xea\x02!Org::ProjectPlanton::App::Commonsb\x06proto3"
 
 var (
 	file_org_project_planton_app_commons_page_info_proto_rawDescOnce sync.Once

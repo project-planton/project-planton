@@ -94,8 +94,8 @@ const file_org_project_planton_provider_azure_azureaksnodepool_v1_stack_outputs_
 	"\x1cAzureAksNodePoolStackOutputs\x12$\n" +
 	"\x0enode_pool_name\x18\x01 \x01(\tR\fnodePoolName\x123\n" +
 	"\x16agent_pool_resource_id\x18\x02 \x01(\tR\x13agentPoolResourceId\x12)\n" +
-	"\x11max_pods_per_node\x18\x03 \x01(\rR\x0emaxPodsPerNodeB\xc5\x03\n" +
-	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\x11StackOutputsProtoP\x01Zygithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
+	"\x11max_pods_per_node\x18\x03 \x01(\rR\x0emaxPodsPerNodeB\xbf\x03\n" +
+	":com.org.project_planton.provider.azure.azureaksnodepool.v1B\x11StackOutputsProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Azure.Azureaksnodepool.V1\xca\x025Org\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azureaksnodepool_v1_stack_outputs_proto_rawDescOnce sync.Once

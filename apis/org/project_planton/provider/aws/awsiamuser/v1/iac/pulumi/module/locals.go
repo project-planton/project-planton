@@ -3,10 +3,10 @@ package module
 import (
 	"strconv"
 
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 
-	awsiamuserv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsiamuser/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
+	awsiamuserv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsiamuser/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

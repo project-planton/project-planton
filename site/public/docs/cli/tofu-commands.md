@@ -1173,7 +1173,7 @@ If you're coming from Pulumi:
 
 ## Getting Help
 
-**Found a bug?** [Open an issue](https://github.com/project-planton/project-planton/issues)
+**Found a bug?** [Open an issue](https://github.com/plantonhq/project-planton/issues)
 
 **Need support?** Check existing issues or discussions
 

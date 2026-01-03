@@ -259,6 +259,6 @@ Available versions: https://github.com/tektoncd/operator/releases
 
 For issues, questions, or contributions:
 
-- **GitHub**: [project-planton/project-planton](https://github.com/project-planton/project-planton)
+- **GitHub**: [plantonhq/project-planton](https://github.com/plantonhq/project-planton)
 - **Tekton Documentation**: [Tekton Docs](https://tekton.dev/docs/)
 - **Tekton Operator**: [Tekton Operator GitHub](https://github.com/tektoncd/operator)

@@ -31,7 +31,7 @@ terraform {
 }
 
 module "dev_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "dev-kafka-cluster"
@@ -131,7 +131,7 @@ terraform {
 }
 
 module "prod_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "prod-orders-kafka"
@@ -219,7 +219,7 @@ terraform {
 # If creating new, see: https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/confluent_network
 
 module "enterprise_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "enterprise-secure-kafka"
@@ -316,7 +316,7 @@ terraform {
 }
 
 module "dedicated_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "dedicated-high-throughput"
@@ -426,7 +426,7 @@ terraform {
 
 # Development Cluster (Basic)
 module "dev_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "dev-kafka"
@@ -450,7 +450,7 @@ module "dev_kafka" {
 
 # Staging Cluster (Standard)
 module "staging_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "staging-kafka"
@@ -475,7 +475,7 @@ module "staging_kafka" {
 
 # Production Cluster (Dedicated with Private Networking)
 module "prod_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 
   metadata = {
     name = "prod-kafka"
@@ -673,7 +673,7 @@ Pin module versions in production:
 
 ```hcl
 module "prod_kafka" {
-  source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf?ref=v1.0.0"
+  source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf?ref=v1.0.0"
   # ... config ...
 }
 ```
@@ -691,7 +691,7 @@ module "prod_kafka" {
 source = "../../../../../../confluent/confluentkafka/v1/iac/tf"
 
 # For production (from Git)
-source = "github.com/project-planton/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
+source = "github.com/plantonhq/project-planton//apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/tf"
 ```
 
 ### Issue: Validation errors

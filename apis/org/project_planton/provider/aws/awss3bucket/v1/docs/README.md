@@ -366,5 +366,5 @@ For deeper dives into specific topics:
 
 ---
 
-**Questions or feedback?** Contribute to [Project Planton on GitHub](https://github.com/project-planton/project-planton) or reach out via the community channels.
+**Questions or feedback?** Contribute to [Project Planton on GitHub](https://github.com/plantonhq/project-planton) or reach out via the community channels.
 

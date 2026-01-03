@@ -24,7 +24,7 @@ This Terraform module deploys containerized applications on DigitalOcean App Pla
 This module is part of the Project Planton monorepo:
 
 ```bash
-git clone https://github.com/project-planton/project-planton.git
+git clone https://github.com/plantonhq/project-planton.git
 cd project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/iac/tf
 ```
 
@@ -330,10 +330,10 @@ For comprehensive examples including autoscaling, custom domains, and multi-envi
 
 - [Terraform DigitalOcean Provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs)
 - [DigitalOcean App Spec Reference](https://docs.digitalocean.com/products/app-platform/reference/app-spec/)
-- [Project Planton Documentation](https://github.com/project-planton/project-planton)
+- [Project Planton Documentation](https://github.com/plantonhq/project-planton)
 
 ## Support
 
-- **Issues**: [github.com/project-planton/project-planton/issues](https://github.com/project-planton/project-planton/issues)
+- **Issues**: [github.com/plantonhq/project-planton/issues](https://github.com/plantonhq/project-planton/issues)
 - **DigitalOcean Support**: [digitalocean.com/support](https://www.digitalocean.com/support/)
 

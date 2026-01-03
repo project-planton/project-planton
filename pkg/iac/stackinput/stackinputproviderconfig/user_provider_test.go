@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	gcpv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp"
+	gcpv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	"sigs.k8s.io/yaml"
 )
 
@@ -15,16 +15,16 @@ import (
 func TestCreateGcpProviderConfigFileFromProto(t *testing.T) {
 	// Create a realistic GCP service account key JSON
 	serviceAccountKey := map[string]interface{}{
-		"type":                    "service_account",
-		"project_id":              "project-planton-testing",
-		"private_key_id":          "abc123def456",
-		"private_key":             "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7VJTUt9Us8cKj\nMzEfYyjiWA4R4/M2bS1+fWIcPm15j9fKy4gZFGz5aEg6qPgH6cWFpGzT4F7MSpPO\n-----END PRIVATE KEY-----\n",
-		"client_email":            "test@project-planton-testing.iam.gserviceaccount.com",
-		"client_id":               "123456789",
-		"auth_uri":                "https://accounts.google.com/o/oauth2/auth",
-		"token_uri":               "https://oauth2.googleapis.com/token",
+		"type":                        "service_account",
+		"project_id":                  "project-planton-testing",
+		"private_key_id":              "abc123def456",
+		"private_key":                 "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7VJTUt9Us8cKj\nMzEfYyjiWA4R4/M2bS1+fWIcPm15j9fKy4gZFGz5aEg6qPgH6cWFpGzT4F7MSpPO\n-----END PRIVATE KEY-----\n",
+		"client_email":                "test@project-planton-testing.iam.gserviceaccount.com",
+		"client_id":                   "123456789",
+		"auth_uri":                    "https://accounts.google.com/o/oauth2/auth",
+		"token_uri":                   "https://oauth2.googleapis.com/token",
 		"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-		"client_x509_cert_url":    "https://www.googleapis.com/robot/v1/metadata/x509/test%40project-planton-testing.iam.gserviceaccount.com",
+		"client_x509_cert_url":        "https://www.googleapis.com/robot/v1/metadata/x509/test%40project-planton-testing.iam.gserviceaccount.com",
 	}
 
 	// Marshal to JSON and then base64 encode
@@ -107,16 +107,16 @@ func TestCreateGcpProviderConfigWithVeryLongKey(t *testing.T) {
 	longPrivateKey += "-----END PRIVATE KEY-----\n"
 
 	serviceAccountKey := map[string]interface{}{
-		"type":                    "service_account",
-		"project_id":              "project-planton-testing",
-		"private_key_id":          "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz",
-		"private_key":             longPrivateKey,
-		"client_email":            "test@project-planton-testing.iam.gserviceaccount.com",
-		"client_id":               "123456789012345678901",
-		"auth_uri":                "https://accounts.google.com/o/oauth2/auth",
-		"token_uri":               "https://oauth2.googleapis.com/token",
+		"type":                        "service_account",
+		"project_id":                  "project-planton-testing",
+		"private_key_id":              "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz",
+		"private_key":                 longPrivateKey,
+		"client_email":                "test@project-planton-testing.iam.gserviceaccount.com",
+		"client_id":                   "123456789012345678901",
+		"auth_uri":                    "https://accounts.google.com/o/oauth2/auth",
+		"token_uri":                   "https://oauth2.googleapis.com/token",
 		"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-		"client_x509_cert_url":    "https://www.googleapis.com/robot/v1/metadata/x509/test%40project-planton-testing.iam.gserviceaccount.com",
+		"client_x509_cert_url":        "https://www.googleapis.com/robot/v1/metadata/x509/test%40project-planton-testing.iam.gserviceaccount.com",
 	}
 
 	// Marshal to JSON and then base64 encode
@@ -172,4 +172,3 @@ func TestCreateGcpProviderConfigWithVeryLongKey(t *testing.T) {
 
 	t.Logf("Test passed! Successfully handled base64 key with %d characters", len(base64Key))
 }
-

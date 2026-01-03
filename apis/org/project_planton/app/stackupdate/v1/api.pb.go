@@ -127,8 +127,8 @@ const file_org_project_planton_app_stackupdate_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xd5\x02\n" +
-	"*com.org.project_planton.app.stackupdate.v1B\bApiProtoP\x01Zdgithub.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xcf\x02\n" +
+	"*com.org.project_planton.app.stackupdate.v1B\bApiProtoP\x01Z^github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
 
 var (
 	file_org_project_planton_app_stackupdate_v1_api_proto_rawDescOnce sync.Once

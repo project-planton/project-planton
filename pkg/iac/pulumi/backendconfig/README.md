@@ -38,7 +38,7 @@ Extracts Pulumi backend configuration from a manifest's metadata labels.
 
 ```go
 import (
-    "github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
+    "github.com/plantonhq/project-planton/pkg/iac/pulumi/backendconfig"
 )
 
 // Extract backend config from a manifest

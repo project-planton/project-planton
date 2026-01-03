@@ -3,9 +3,9 @@ package module
 import (
 	"strconv"
 
-	awsec2instancev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
+	awsec2instancev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

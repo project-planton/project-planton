@@ -1,7 +1,7 @@
 package module
 
 import (
-	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdscluster/v1"
+	awsrdsclusterv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsrdscluster/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

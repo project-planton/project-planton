@@ -8,7 +8,7 @@ package awsecrrepov1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_aws_awsecrrepo_v1_api_proto_rawDesc = ""
 	"\x04spec\x18\x04 \x01(\v2>.org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12X\n" +
 	"\x06status\x18\x05 \x01(\v2@.org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoStatusR\x06status\"t\n" +
 	"\x10AwsEcrRepoStatus\x12`\n" +
-	"\aoutputs\x18\x01 \x01(\v2F.org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoStackOutputsR\aoutputsB\x86\x03\n" +
-	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\bApiProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2F.org.project_planton.provider.aws.awsecrrepo.v1.AwsEcrRepoStackOutputsR\aoutputsB\x80\x03\n" +
+	"2com.org.project_planton.provider.aws.awsecrrepo.v1B\bApiProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecrrepo/v1;awsecrrepov1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsecrrepo.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsecrrepo\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsecrrepo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsecrrepo_v1_api_proto_rawDescOnce sync.Once

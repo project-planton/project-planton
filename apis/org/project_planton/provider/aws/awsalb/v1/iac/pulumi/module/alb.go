@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 
-	"github.com/project-planton/project-planton/internal/valuefrom"
+	"github.com/plantonhq/project-planton/internal/valuefrom"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"

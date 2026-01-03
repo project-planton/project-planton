@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	awsclientvpnv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsclientvpn/v1"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
+	awsclientvpnv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsclientvpn/v1"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ec2clientvpn"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

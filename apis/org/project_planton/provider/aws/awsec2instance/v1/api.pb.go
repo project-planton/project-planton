@@ -8,7 +8,7 @@ package awsec2instancev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDesc 
 	"\x04spec\x18\x04 \x01(\v2F.org.project_planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12`\n" +
 	"\x06status\x18\x05 \x01(\v2H.org.project_planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatusR\x06status\"\x80\x01\n" +
 	"\x14AwsEc2InstanceStatus\x12h\n" +
-	"\aoutputs\x18\x01 \x01(\v2N.org.project_planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputsR\aoutputsB\xa2\x03\n" +
-	"6com.org.project_planton.provider.aws.awsec2instance.v1B\bApiProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsec2instance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsec2instance::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2N.org.project_planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputsR\aoutputsB\x9c\x03\n" +
+	"6com.org.project_planton.provider.aws.awsec2instance.v1B\bApiProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsec2instance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsec2instance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDescOnce sync.Once

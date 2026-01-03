@@ -1,8 +1,8 @@
 package module
 
 import (
-	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
-	altinityv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/altinityoperator/kubernetes/clickhouse/v1"
+	kubernetesclickhousev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1"
+	altinityv1 "github.com/plantonhq/project-planton/pkg/kubernetes/kubernetestypes/altinityoperator/kubernetes/clickhouse/v1"
 )
 
 // buildCoordinationConfig generates the coordination (ZooKeeper/Keeper) configuration

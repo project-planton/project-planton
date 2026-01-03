@@ -187,7 +187,7 @@ message AltinityOperatorStackOutputs {
 **Before**:
 ```go
 import (
-  altinityoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
+  altinityoperatorkubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
 )
 
 stackInput := &altinityoperatorkubernetesv1.AltinityOperatorKubernetesStackInput{}
@@ -196,7 +196,7 @@ stackInput := &altinityoperatorkubernetesv1.AltinityOperatorKubernetesStackInput
 **After**:
 ```go
 import (
-  altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
+  altinityoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
 )
 
 stackInput := &altinityoperatorv1.AltinityOperatorStackInput{}
@@ -211,9 +211,9 @@ package main
 
 import (
   "github.com/pkg/errors"
-  altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
-  "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/iac/pulumi/module"
-  "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
+  altinityoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
+  "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/iac/pulumi/module"
+  "github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -234,7 +234,7 @@ func main() {
 package module
 
 import (
-  altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
+  altinityoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
   // ... other imports
 )
 
@@ -365,12 +365,12 @@ kind: AltinityOperator
 
 **Before**:
 ```go
-import altinityoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
+import altinityoperatorkubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
 ```
 
 **After**:
 ```go
-import altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
+import altinityoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
 ```
 
 #### 3. Proto Import Paths
@@ -454,8 +454,8 @@ project-planton pulumi up --manifest your-manifest.yaml
 ```go
 // Replace in all Go files
 import (
-  - altinityoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
-  + altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
+  - altinityoperatorkubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
+  + altinityoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
 )
 ```
 

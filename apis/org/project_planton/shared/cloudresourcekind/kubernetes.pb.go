@@ -24,8 +24,8 @@ var File_org_project_planton_shared_cloudresourcekind_kubernetes_proto protorefl
 
 const file_org_project_planton_shared_cloudresourcekind_kubernetes_proto_rawDesc = "" +
 	"\n" +
-	"=org/project_planton/shared/cloudresourcekind/kubernetes.proto\x12,org.project_planton.shared.cloudresourcekindB\xf1\x02\n" +
-	"0com.org.project_planton.shared.cloudresourcekindB\x0fKubernetesProtoP\x01Z\\github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
+	"=org/project_planton/shared/cloudresourcekind/kubernetes.proto\x12,org.project_planton.shared.cloudresourcekindB\xeb\x02\n" +
+	"0com.org.project_planton.shared.cloudresourcekindB\x0fKubernetesProtoP\x01ZVgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 
 var file_org_project_planton_shared_cloudresourcekind_kubernetes_proto_goTypes = []any{}
 var file_org_project_planton_shared_cloudresourcekind_kubernetes_proto_depIdxs = []int32{

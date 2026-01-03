@@ -302,7 +302,7 @@ spec:
 ```bash
 cd ops/organizations/planton-cloud/infra-hub/cloud-resources/app-prod/kubernetes/workload/app/dependencies/databases
 
-export POSTGRES_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi
+export POSTGRES_MODULE=~/scm/github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi
 
 # Preview changes
 project-planton pulumi preview --manifest postgres-api-resources.yaml --module-dir ${POSTGRES_MODULE}

@@ -375,7 +375,7 @@ if err != nil {
 The module uses a shared helper to set up the Civo Pulumi provider:
 
 ```go
-import "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider"
+import "github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider"
 
 civoProvider, err := pulumicivoprovider.Get(ctx, stackInput.ProviderConfig)
 ```

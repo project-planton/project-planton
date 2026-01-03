@@ -175,10 +175,10 @@ spec:
 **Import changes required**:
 ```go
 // Before
-import kubernetesmicroservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesmicroservice/v1"
+import kubernetesmicroservicev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesmicroservice/v1"
 
 // After
-import kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesdeployment/v1"
+import kubernetesdeploymentv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesdeployment/v1"
 ```
 
 ### For Future Development

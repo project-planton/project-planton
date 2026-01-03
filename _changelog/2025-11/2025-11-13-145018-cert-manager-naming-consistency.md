@@ -315,7 +315,7 @@ spec:
 
 **Proto Generation**:
 ```bash
-cd ~/scm/github.com/project-planton/project-planton
+cd ~/scm/github.com/plantonhq/project-planton
 make protos
 ```
 
@@ -426,7 +426,7 @@ spec:
 ```go
 // No change needed - package path remains the same
 import (
-  certmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1"
+  certmanagerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1"
 )
 ```
 
@@ -560,7 +560,7 @@ project-planton pulumi up --manifest cert-manager.yaml
 ```go
 // Replace in all Go files
 import (
-  certmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1"
+  certmanagerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1"
 )
 
 // Update type references

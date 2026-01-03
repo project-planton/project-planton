@@ -73,8 +73,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1
 	"\n" +
 	"Yorg/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/stack_outputs.proto\x12Eorg.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1\"F\n" +
 	"&KubernetesAltinityOperatorStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xaa\x04\n" +
-	"Icom.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1B\x11StackOutputsProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x05OPPKK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesaltinityoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesaltinityoperator::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xa4\x04\n" +
+	"Icom.org.project_planton.provider.kubernetes.kubernetesaltinityoperator.v1B\x11StackOutputsProtoP\x01Z\x8c\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1;kubernetesaltinityoperatorv1\xa2\x02\x05OPPKK\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesaltinityoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesaltinityoperator\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesaltinityoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesaltinityoperator_v1_stack_outputs_proto_rawDescOnce sync.Once

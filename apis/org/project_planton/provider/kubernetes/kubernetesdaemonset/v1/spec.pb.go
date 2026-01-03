@@ -8,8 +8,8 @@ package kubernetesdaemonsetv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1157,8 +1157,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_p
 	"api_groups\x18\x01 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\tapiGroups\x12&\n" +
 	"\tresources\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\tresources\x12\x1e\n" +
 	"\x05verbs\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x05verbs\x12%\n" +
-	"\x0eresource_names\x18\x04 \x03(\tR\rresourceNamesB\xf1\x03\n" +
-	"Bcom.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1;kubernetesdaemonsetv1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdaemonset.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdaemonset::V1b\x06proto3"
+	"\x0eresource_names\x18\x04 \x03(\tR\rresourceNamesB\xea\x03\n" +
+	"Bcom.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1B\tSpecProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1;kubernetesdaemonsetv1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdaemonset.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdaemonset::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_spec_proto_rawDescOnce sync.Once

@@ -132,8 +132,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_stack
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x80\x04\n" +
-	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\x11StackOutputsProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\xfa\x03\n" +
+	"Ccom.org.project_planton.provider.kubernetes.kubernetesdeployment.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1;kubernetesdeploymentv1\xa2\x02\x05OPPKK\xaa\x02>Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdeployment.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdeployment\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdeployment::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesdeployment_v1_stack_outputs_proto_rawDescOnce sync.Once

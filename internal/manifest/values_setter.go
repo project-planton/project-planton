@@ -6,7 +6,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/manifest/manifestprotobuf"
+	"github.com/plantonhq/project-planton/internal/manifest/manifestprotobuf"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
@@ -116,7 +116,7 @@ func formatOverrideError(err error) error {
 	msg.WriteString("   • See available fields:     " + cyan("project-planton load-manifest --help") + "\n")
 	msg.WriteString("\n")
 
-	msg.WriteString(bold("📚 Documentation: ") + cyan("https://github.com/project-planton/project-planton/tree/main/apis\n"))
+	msg.WriteString(bold("📚 Documentation: ") + cyan("https://github.com/plantonhq/project-planton/tree/main/apis\n"))
 	msg.WriteString("\n")
 
 	return errors.New(msg.String())

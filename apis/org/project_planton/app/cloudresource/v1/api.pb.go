@@ -126,8 +126,8 @@ const file_org_project_planton_app_cloudresource_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xe3\x02\n" +
-	",com.org.project_planton.app.cloudresource.v1B\bApiProtoP\x01Zhgithub.com/project-planton/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xdd\x02\n" +
+	",com.org.project_planton.app.cloudresource.v1B\bApiProtoP\x01Zbgithub.com/plantonhq/project-planton/apis/org/project_planton/app/cloudresource/v1;cloudresourcev1\xa2\x02\x04OPAC\xaa\x02'Org.ProjectPlanton.App.Cloudresource.V1\xca\x02'Org\\ProjectPlanton\\App\\Cloudresource\\V1\xe2\x023Org\\ProjectPlanton\\App\\Cloudresource\\V1\\GPBMetadata\xea\x02+Org::ProjectPlanton::App::Cloudresource::V1b\x06proto3"
 
 var (
 	file_org_project_planton_app_cloudresource_v1_api_proto_rawDescOnce sync.Once

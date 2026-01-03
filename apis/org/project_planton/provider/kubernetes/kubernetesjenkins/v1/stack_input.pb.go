@@ -7,7 +7,7 @@
 package kubernetesjenkinsv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_stack_in
 	"Norg/project_planton/provider/kubernetes/kubernetesjenkins/v1/stack_input.proto\x12<org.project_planton.provider.kubernetes.kubernetesjenkins.v1\x1aForg/project_planton/provider/kubernetes/kubernetesjenkins/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xf2\x01\n" +
 	"\x1bKubernetesJenkinsStackInput\x12g\n" +
 	"\x06target\x18\x01 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetesjenkins.v1.KubernetesJenkinsR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xe9\x03\n" +
-	"@com.org.project_planton.provider.kubernetes.kubernetesjenkins.v1B\x0fStackInputProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1;kubernetesjenkinsv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesjenkins.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesjenkins::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xe2\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetesjenkins.v1B\x0fStackInputProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1;kubernetesjenkinsv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesjenkins.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesjenkins\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesjenkins::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesjenkins_v1_stack_input_proto_rawDescOnce sync.Once

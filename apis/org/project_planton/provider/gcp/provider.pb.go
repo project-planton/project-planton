@@ -82,8 +82,8 @@ const file_org_project_planton_provider_gcp_provider_proto_rawDesc = "" +
 	"\n" +
 	"/org/project_planton/provider/gcp/provider.proto\x12 org.project_planton.provider.gcp\x1a\x1bbuf/validate/validate.proto\"X\n" +
 	"\x11GcpProviderConfig\x12C\n" +
-	"\x1aservice_account_key_base64\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x17serviceAccountKeyBase64B\xa7\x02\n" +
-	"$com.org.project_planton.provider.gcpB\rProviderProtoP\x01ZPgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp\xa2\x02\x04OPPG\xaa\x02\x1fOrg.ProjectPlanton.Provider.Gcp\xca\x02\x1fOrg\\ProjectPlanton\\Provider\\Gcp\xe2\x02+Org\\ProjectPlanton\\Provider\\Gcp\\GPBMetadata\xea\x02\"Org::ProjectPlanton::Provider::Gcpb\x06proto3"
+	"\x1aservice_account_key_base64\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x17serviceAccountKeyBase64B\xa1\x02\n" +
+	"$com.org.project_planton.provider.gcpB\rProviderProtoP\x01ZJgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp\xa2\x02\x04OPPG\xaa\x02\x1fOrg.ProjectPlanton.Provider.Gcp\xca\x02\x1fOrg\\ProjectPlanton\\Provider\\Gcp\xe2\x02+Org\\ProjectPlanton\\Provider\\Gcp\\GPBMetadata\xea\x02\"Org::ProjectPlanton::Provider::Gcpb\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_provider_proto_rawDescOnce sync.Once

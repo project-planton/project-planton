@@ -8,8 +8,8 @@ package gcprouternatv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -218,8 +218,8 @@ const file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDesc =
 	"\x15GcpRouterNatLogFilter\x12\f\n" +
 	"\bDISABLED\x10\x00\x12\x0f\n" +
 	"\vERRORS_ONLY\x10\x01\x12\a\n" +
-	"\x03ALL\x10\x02B\x95\x03\n" +
-	"4com.org.project_planton.provider.gcp.gcprouternat.v1B\tSpecProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1;gcprouternatv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcprouternat.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcprouternat::V1b\x06proto3"
+	"\x03ALL\x10\x02B\x8f\x03\n" +
+	"4com.org.project_planton.provider.gcp.gcprouternat.v1B\tSpecProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcprouternat/v1;gcprouternatv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcprouternat.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcprouternat\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcprouternat::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDescOnce sync.Once

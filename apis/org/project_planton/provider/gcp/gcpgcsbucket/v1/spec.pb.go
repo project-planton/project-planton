@@ -8,7 +8,7 @@ package gcpgcsbucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -935,8 +935,8 @@ const file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_rawDesc =
 	"\bSTANDARD\x10\x01\x12\f\n" +
 	"\bNEARLINE\x10\x02\x12\f\n" +
 	"\bCOLDLINE\x10\x03\x12\v\n" +
-	"\aARCHIVE\x10\x04B\x95\x03\n" +
-	"4com.org.project_planton.provider.gcp.gcpgcsbucket.v1B\tSpecProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1;gcpgcsbucketv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcpgcsbucket.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcpgcsbucket::V1b\x06proto3"
+	"\aARCHIVE\x10\x04B\x8f\x03\n" +
+	"4com.org.project_planton.provider.gcp.gcpgcsbucket.v1B\tSpecProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgcsbucket/v1;gcpgcsbucketv1\xa2\x02\x05OPPGG\xaa\x02/Org.ProjectPlanton.Provider.Gcp.Gcpgcsbucket.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgcsbucket\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Gcp::Gcpgcsbucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgcsbucket_v1_spec_proto_rawDescOnce sync.Once

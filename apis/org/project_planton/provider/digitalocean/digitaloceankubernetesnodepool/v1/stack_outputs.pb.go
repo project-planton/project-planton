@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodep
 	"*DigitalOceanKubernetesNodePoolStackOutputs\x12 \n" +
 	"\fnode_pool_id\x18\x01 \x01(\tR\n" +
 	"nodePoolId\x12\x19\n" +
-	"\bnode_ids\x18\x02 \x03(\tR\anodeIdsB\xd2\x04\n" +
-	"Ocom.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\x11StackOutputsProtoP\x01Z\x9c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
+	"\bnode_ids\x18\x02 \x03(\tR\anodeIdsB\xcc\x04\n" +
+	"Ocom.org.project_planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\x11StackOutputsProtoP\x01Z\x96\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05OPPDD\xaa\x02JOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto_rawDescOnce sync.Once

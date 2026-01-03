@@ -7,7 +7,7 @@
 package gcpartifactregistryrepov1
 
 import (
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/shared/gcp"
+	gcp "github.com/plantonhq/project-planton/apis/org/project_planton/shared/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -114,8 +114,8 @@ const file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_stack_out
 	"\x16writer_service_account\x18\x02 \x01(\v24.org.project_planton.shared.gcp.GoogleServiceAccountR\x14writerServiceAccount\x12\x1b\n" +
 	"\trepo_name\x18\x03 \x01(\tR\brepoName\x12\x1a\n" +
 	"\bhostname\x18\x04 \x01(\tR\bhostname\x12\x19\n" +
-	"\brepo_url\x18\x05 \x01(\tR\arepoUrlB\xeb\x03\n" +
-	"?com.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1;gcpartifactregistryrepov1\xa2\x02\x05OPPGG\xaa\x02:Org.ProjectPlanton.Provider.Gcp.Gcpartifactregistryrepo.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Gcp::Gcpartifactregistryrepo::V1b\x06proto3"
+	"\brepo_url\x18\x05 \x01(\tR\arepoUrlB\xe4\x03\n" +
+	"?com.org.project_planton.provider.gcp.gcpartifactregistryrepo.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1;gcpartifactregistryrepov1\xa2\x02\x05OPPGG\xaa\x02:Org.ProjectPlanton.Provider.Gcp.Gcpartifactregistryrepo.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpartifactregistryrepo\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Gcp::Gcpartifactregistryrepo::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpartifactregistryrepo_v1_stack_outputs_proto_rawDescOnce sync.Once

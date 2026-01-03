@@ -8,7 +8,7 @@ package kubernetesstatefulsetv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_api_
 	"\x04spec\x18\x04 \x01(\v2[.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12u\n" +
 	"\x06status\x18\x05 \x01(\v2].org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetStatusR\x06status\"\x9c\x01\n" +
 	"\x1bKubernetesStatefulSetStatus\x12}\n" +
-	"\aoutputs\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetStackOutputsR\aoutputsB\xfe\x03\n" +
-	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\bApiProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetStackOutputsR\aoutputsB\xf8\x03\n" +
+	"Dcom.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1B\bApiProtoP\x01Z\x82\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1;kubernetesstatefulsetv1\xa2\x02\x05OPPKK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Kubernetesstatefulset.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesstatefulset\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesstatefulset::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_api_proto_rawDescOnce sync.Once

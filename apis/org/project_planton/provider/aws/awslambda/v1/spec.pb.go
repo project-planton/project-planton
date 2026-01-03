@@ -8,7 +8,7 @@ package awslambdav1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -477,8 +477,8 @@ const file_org_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = ""
 	"\x0eCodeSourceType\x12 \n" +
 	"\x1cCODE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13CODE_SOURCE_TYPE_S3\x10\x01\x12\x1a\n" +
-	"\x16CODE_SOURCE_TYPE_IMAGE\x10\x02B\x80\x03\n" +
-	"1com.org.project_planton.provider.aws.awslambda.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awslambda.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awslambda::V1b\x06proto3"
+	"\x16CODE_SOURCE_TYPE_IMAGE\x10\x02B\xfa\x02\n" +
+	"1com.org.project_planton.provider.aws.awslambda.v1B\tSpecProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awslambda.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescOnce sync.Once

@@ -8,8 +8,8 @@ package kubernetestektonv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -315,8 +315,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestekton_v1_spec_prot
 	"#dashboard_ingress.hostname.required\x126hostname is required when dashboard ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xf5\x01\n" +
 	"\x1bKubernetesTektonCloudEvents\x12\x19\n" +
 	"\bsink_url\x18\x01 \x01(\tR\asinkUrl:\xba\x01\xbaH\xb6\x01\x1a\xb3\x01\n" +
-	"\x1ccloud_events.sink_url.format\x12*sink_url must be a valid HTTP or HTTPS URL\x1agsize(this.sink_url) == 0 || this.sink_url.startsWith('http://') || this.sink_url.startsWith('https://')B\xdb\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kubernetestekton.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestekton/v1;kubernetestektonv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetestekton.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetestekton::V1b\x06proto3"
+	"\x1ccloud_events.sink_url.format\x12*sink_url must be a valid HTTP or HTTPS URL\x1agsize(this.sink_url) == 0 || this.sink_url.startsWith('http://') || this.sink_url.startsWith('https://')B\xd5\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetestekton.v1B\tSpecProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestekton/v1;kubernetestektonv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetestekton.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetestekton::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestekton_v1_spec_proto_rawDescOnce sync.Once

@@ -258,8 +258,8 @@ const file_org_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDesc 
 	"\x0fPRICE_CLASS_200\x10\x02\x12\x13\n" +
 	"\x0fPRICE_CLASS_ALL\x10\x03:\x8a\x02\xbaH\x86\x02\x1a\x85\x01\n" +
 	"\x14aliases_require_cert\x125certificate_arn must be set when aliases are provided\x1a6this.aliases.size() == 0 || this.certificate_arn != \"\"\x1a|\n" +
-	"\x1aexactly_one_default_origin\x12,exactly one origin must be marked as default\x1a0this.origins.filter(o, o.is_default).size() == 1B\x9c\x03\n" +
-	"5com.org.project_planton.provider.aws.awscloudfront.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awscloudfront.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awscloudfront::V1b\x06proto3"
+	"\x1aexactly_one_default_origin\x12,exactly one origin must be marked as default\x1a0this.origins.filter(o, o.is_default).size() == 1B\x96\x03\n" +
+	"5com.org.project_planton.provider.aws.awscloudfront.v1B\tSpecProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awscloudfront.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awscloudfront::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescOnce sync.Once

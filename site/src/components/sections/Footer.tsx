@@ -8,7 +8,7 @@ export default function Footer() {
     { name: "Documentation", href: "/docs", external: false },
     { name: "Getting Started", href: "/docs/getting-started", external: false },
     { name: "Components", href: "/docs", external: false },
-    { name: "GitHub", href: "https://github.com/project-planton/project-planton", external: true },
+    { name: "GitHub", href: "https://github.com/plantonhq/project-planton", external: true },
   ];
 
   return (
@@ -58,7 +58,7 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-4">Community</h3>
             <div className="space-y-3">
               <a
-                href="https://github.com/project-planton/project-planton"
+                href="https://github.com/plantonhq/project-planton"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-slate-400 hover:text-white transition-colors"
@@ -69,7 +69,7 @@ export default function Footer() {
                 </div>
               </a>
               <a 
-                href="https://github.com/project-planton/project-planton/discussions"
+                href="https://github.com/plantonhq/project-planton/discussions"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-slate-400 hover:text-white transition-colors"
@@ -80,7 +80,7 @@ export default function Footer() {
                 </div>
               </a>
               <a 
-                href="https://github.com/project-planton/project-planton/issues"
+                href="https://github.com/plantonhq/project-planton/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-slate-400 hover:text-white transition-colors"

@@ -175,8 +175,8 @@ You can embed this module in a larger Pulumi program:
 
 ```go
 import (
-    gcpvpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1"
-    "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1/iac/pulumi/module"
+    gcpvpcv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1"
+    "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1/iac/pulumi/module"
 )
 
 func deployVpc(ctx *pulumi.Context, stackInput *gcpvpcv1.GcpVpcStackInput) error {

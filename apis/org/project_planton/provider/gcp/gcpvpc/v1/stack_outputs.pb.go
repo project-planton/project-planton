@@ -95,8 +95,8 @@ const file_org_project_planton_provider_gcp_gcpvpc_v1_stack_outputs_proto_rawDes
 	"\x12GcpVpcStackOutputs\x12*\n" +
 	"\x11network_self_link\x18\x01 \x01(\tR\x0fnetworkSelfLink\x12B\n" +
 	"\x1eprivate_services_ip_range_name\x18\x02 \x01(\tR\x1aprivateServicesIpRangeName\x12B\n" +
-	"\x1eprivate_services_ip_range_cidr\x18\x03 \x01(\tR\x1aprivateServicesIpRangeCidrB\xf3\x02\n" +
-	".com.org.project_planton.provider.gcp.gcpvpc.v1B\x11StackOutputsProtoP\x01Zcgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
+	"\x1eprivate_services_ip_range_cidr\x18\x03 \x01(\tR\x1aprivateServicesIpRangeCidrB\xed\x02\n" +
+	".com.org.project_planton.provider.gcp.gcpvpc.v1B\x11StackOutputsProtoP\x01Z]github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05OPPGG\xaa\x02)Org.ProjectPlanton.Provider.Gcp.Gcpvpc.V1\xca\x02)Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02.Org::ProjectPlanton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpvpc_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -124,8 +124,8 @@ const file_org_project_planton_provider_civo_civovpc_v1_spec_proto_rawDesc = "" 
 	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\"\n" +
 	"\rip_range_cidr\x18\x04 \x01(\tR\vipRangeCidr\x121\n" +
 	"\x15is_default_for_region\x18\x05 \x01(\bR\x12isDefaultForRegion\x12)\n" +
-	"\vdescription\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescriptionB\xf8\x02\n" +
-	"0com.org.project_planton.provider.civo.civovpc.v1B\tSpecProtoP\x01Zfgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
+	"\vdescription\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescriptionB\xf2\x02\n" +
+	"0com.org.project_planton.provider.civo.civovpc.v1B\tSpecProtoP\x01Z`github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05OPPCC\xaa\x02+Org.ProjectPlanton.Provider.Civo.Civovpc.V1\xca\x02+Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\xe2\x027Org\\ProjectPlanton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x020Org::ProjectPlanton::Provider::Civo::Civovpc::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescOnce sync.Once

@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	awslambdav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awslambda/v1"
-	"github.com/project-planton/project-planton/internal/valuefrom"
+	awslambdav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awslambda/v1"
+	"github.com/plantonhq/project-planton/internal/valuefrom"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/cloudwatch"
 	awslambda "github.com/pulumi/pulumi-aws/sdk/v7/go/aws/lambda"

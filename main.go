@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/project-planton/project-planton/cmd/project-planton"
-	clipanic "github.com/project-planton/project-planton/internal/cli/panic"
+	"github.com/plantonhq/project-planton/cmd/project-planton"
+	clipanic "github.com/plantonhq/project-planton/internal/cli/panic"
 )
 
 func main() {

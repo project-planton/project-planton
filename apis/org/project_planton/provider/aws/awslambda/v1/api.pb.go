@@ -8,7 +8,7 @@ package awslambdav1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -166,8 +166,8 @@ const file_org_project_planton_provider_aws_awslambda_v1_api_proto_rawDesc = "" 
 	"\x04spec\x18\x04 \x01(\v2<.org.project_planton.provider.aws.awslambda.v1.AwsLambdaSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12V\n" +
 	"\x06status\x18\x05 \x01(\v2>.org.project_planton.provider.aws.awslambda.v1.AwsLambdaStatusR\x06status\"q\n" +
 	"\x0fAwsLambdaStatus\x12^\n" +
-	"\aoutputs\x18\x01 \x01(\v2D.org.project_planton.provider.aws.awslambda.v1.AwsLambdaStackOutputsR\aoutputsB\xff\x02\n" +
-	"1com.org.project_planton.provider.aws.awslambda.v1B\bApiProtoP\x01Zigithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awslambda.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awslambda::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2D.org.project_planton.provider.aws.awslambda.v1.AwsLambdaStackOutputsR\aoutputsB\xf9\x02\n" +
+	"1com.org.project_planton.provider.aws.awslambda.v1B\bApiProtoP\x01Zcgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05OPPAA\xaa\x02,Org.ProjectPlanton.Provider.Aws.Awslambda.V1\xca\x02,Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\xe2\x028Org\\ProjectPlanton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x021Org::ProjectPlanton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awslambda_v1_api_proto_rawDescOnce sync.Once

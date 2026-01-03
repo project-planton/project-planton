@@ -73,8 +73,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesperconamongooperato
 	"\n" +
 	"]org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1/stack_outputs.proto\x12Iorg.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1\"J\n" +
 	"*KubernetesPerconaMongoOperatorStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xc6\x04\n" +
-	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1B\x11StackOutputsProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1;kubernetesperconamongooperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamongooperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamongooperator::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xc0\x04\n" +
+	"Mcom.org.project_planton.provider.kubernetes.kubernetesperconamongooperator.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1;kubernetesperconamongooperatorv1\xa2\x02\x05OPPKK\xaa\x02HOrg.ProjectPlanton.Provider.Kubernetes.Kubernetesperconamongooperator.V1\xca\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\xe2\x02TOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesperconamongooperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesperconamongooperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetesperconamongooperator_v1_stack_outputs_proto_rawDescOnce sync.Once

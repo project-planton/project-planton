@@ -356,7 +356,7 @@ mysql://username:password@dns-endpoint:3306/database_name
 
 ## Support
 
-For questions, issues, or feature requests related to Project Planton, visit the [Project Planton repository](https://github.com/project-planton/project-planton).
+For questions, issues, or feature requests related to Project Planton, visit the [Project Planton repository](https://github.com/plantonhq/project-planton).
 
 For Civo-specific questions, consult the [Civo documentation](https://www.civo.com/docs) or [Civo support](https://www.civo.com/support).
 

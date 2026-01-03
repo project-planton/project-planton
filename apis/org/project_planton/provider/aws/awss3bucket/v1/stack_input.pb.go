@@ -7,7 +7,7 @@
 package awss3bucketv1
 
 import (
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_aws_awss3bucket_v1_stack_input_proto_raw
 	"Aorg/project_planton/provider/aws/awss3bucket/v1/stack_input.proto\x12/org.project_planton.provider.aws.awss3bucket.v1\x1a9org/project_planton/provider/aws/awss3bucket/v1/api.proto\x1a/org/project_planton/provider/aws/provider.proto\"\xcb\x01\n" +
 	"\x15AwsS3BucketStackInput\x12T\n" +
 	"\x06target\x18\x01 \x01(\v2<.org.project_planton.provider.aws.awss3bucket.v1.AwsS3BucketR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x94\x03\n" +
-	"3com.org.project_planton.provider.aws.awss3bucket.v1B\x0fStackInputProtoP\x01Zmgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x8e\x03\n" +
+	"3com.org.project_planton.provider.aws.awss3bucket.v1B\x0fStackInputProtoP\x01Zggithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05OPPAA\xaa\x02.Org.ProjectPlanton.Provider.Aws.Awss3bucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awss3bucket_v1_stack_input_proto_rawDescOnce sync.Once

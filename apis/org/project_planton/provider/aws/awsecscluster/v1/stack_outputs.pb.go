@@ -94,8 +94,8 @@ const file_org_project_planton_provider_aws_awsecscluster_v1_stack_outputs_proto
 	"\fcluster_name\x18\x01 \x01(\tR\vclusterName\x12\x1f\n" +
 	"\vcluster_arn\x18\x02 \x01(\tR\n" +
 	"clusterArn\x12<\n" +
-	"\x1acluster_capacity_providers\x18\x03 \x03(\tR\x18clusterCapacityProvidersB\xa4\x03\n" +
-	"5com.org.project_planton.provider.aws.awsecscluster.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsecscluster/v1;awsecsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecscluster::V1b\x06proto3"
+	"\x1acluster_capacity_providers\x18\x03 \x03(\tR\x18clusterCapacityProvidersB\x9e\x03\n" +
+	"5com.org.project_planton.provider.aws.awsecscluster.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsecscluster/v1;awsecsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsecscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsecscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsecscluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsecscluster_v1_stack_outputs_proto_rawDescOnce sync.Once

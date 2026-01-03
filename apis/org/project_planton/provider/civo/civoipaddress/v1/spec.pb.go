@@ -8,7 +8,7 @@ package civoipaddressv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -88,8 +88,8 @@ const file_org_project_planton_provider_civo_civoipaddress_v1_spec_proto_rawDesc
 	"=org/project_planton/provider/civo/civoipaddress/v1/spec.proto\x122org.project_planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a.org/project_planton/provider/civo/region.proto\"\x8d\x01\n" +
 	"\x11CivoIpAddressSpec\x12)\n" +
 	"\vdescription\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescription\x12M\n" +
-	"\x06region\x18\x02 \x01(\x0e2-.org.project_planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06regionB\xa2\x03\n" +
-	"6com.org.project_planton.provider.civo.civoipaddress.v1B\tSpecProtoP\x01Zrgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05OPPCC\xaa\x021Org.ProjectPlanton.Provider.Civo.Civoipaddress.V1\xca\x021Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Civo::Civoipaddress::V1b\x06proto3"
+	"\x06region\x18\x02 \x01(\x0e2-.org.project_planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06regionB\x9c\x03\n" +
+	"6com.org.project_planton.provider.civo.civoipaddress.v1B\tSpecProtoP\x01Zlgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05OPPCC\xaa\x021Org.ProjectPlanton.Provider.Civo.Civoipaddress.V1\xca\x021Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Civo::Civoipaddress::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civoipaddress_v1_spec_proto_rawDescOnce sync.Once

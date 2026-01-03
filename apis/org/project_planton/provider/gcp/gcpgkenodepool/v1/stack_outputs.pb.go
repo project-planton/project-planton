@@ -113,8 +113,8 @@ const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_stack_outputs_prot
 	"\x13instance_group_urls\x18\x02 \x03(\tR\x11instanceGroupUrls\x12\x1b\n" +
 	"\tmin_nodes\x18\x03 \x01(\rR\bminNodes\x12\x1b\n" +
 	"\tmax_nodes\x18\x04 \x01(\rR\bmaxNodes\x12,\n" +
-	"\x12current_node_count\x18\x05 \x01(\rR\x10currentNodeCountB\xab\x03\n" +
-	"6com.org.project_planton.provider.gcp.gcpgkenodepool.v1B\x11StackOutputsProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05OPPGG\xaa\x021Org.ProjectPlanton.Provider.Gcp.Gcpgkenodepool.V1\xca\x021Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
+	"\x12current_node_count\x18\x05 \x01(\rR\x10currentNodeCountB\xa5\x03\n" +
+	"6com.org.project_planton.provider.gcp.gcpgkenodepool.v1B\x11StackOutputsProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05OPPGG\xaa\x021Org.ProjectPlanton.Provider.Gcp.Gcpgkenodepool.V1\xca\x021Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgkenodepool_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -7,7 +7,7 @@
 package awsiamuserv1
 
 import (
-	aws "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws"
+	aws "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_rawD
 	"@org/project_planton/provider/aws/awsiamuser/v1/stack_input.proto\x12.org.project_planton.provider.aws.awsiamuser.v1\x1a8org/project_planton/provider/aws/awsiamuser/v1/api.proto\x1a/org/project_planton/provider/aws/provider.proto\"\xc8\x01\n" +
 	"\x14AwsIamUserStackInput\x12R\n" +
 	"\x06target\x18\x01 \x01(\v2:.org.project_planton.provider.aws.awsiamuser.v1.AwsIamUserR\x06target\x12\\\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x8d\x03\n" +
-	"2com.org.project_planton.provider.aws.awsiamuser.v1B\x0fStackInputProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsiamuser/v1;awsiamuserv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamuser.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamuser::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v23.org.project_planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x87\x03\n" +
+	"2com.org.project_planton.provider.aws.awsiamuser.v1B\x0fStackInputProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsiamuser/v1;awsiamuserv1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamuser.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamuser\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamuser::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_rawDescOnce sync.Once

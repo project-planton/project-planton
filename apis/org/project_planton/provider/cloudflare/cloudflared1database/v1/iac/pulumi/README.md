@@ -198,7 +198,7 @@ To test the module end-to-end:
 
 - **Pulumi SDK**: `github.com/pulumi/pulumi/sdk/v3/go/pulumi`
 - **Cloudflare Provider**: `github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare`
-- **Project Planton Proto**: `github.com/project-planton/project-planton/apis/...`
+- **Project Planton Proto**: `github.com/plantonhq/project-planton/apis/...`
 - **Errors Package**: `github.com/pkg/errors`
 
 ## Cloudflare Provider Version

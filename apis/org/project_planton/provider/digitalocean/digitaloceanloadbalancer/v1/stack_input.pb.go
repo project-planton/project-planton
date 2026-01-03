@@ -7,7 +7,7 @@
 package digitaloceanloadbalancerv1
 
 import (
-	digitalocean "github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean"
+	digitalocean "github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1
 	"Worg/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_input.proto\x12Eorg.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1aOorg/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\x1a8org/project_planton/provider/digitalocean/provider.proto\"\x8d\x02\n" +
 	"\"DigitalOceanLoadBalancerStackInput\x12w\n" +
 	"\x06target\x18\x01 \x01(\v2_.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerR\x06target\x12n\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xa6\x04\n" +
-	"Icom.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1B\x0fStackInputProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05OPPDD\xaa\x02DOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2E.org.project_planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xa0\x04\n" +
+	"Icom.org.project_planton.provider.digitalocean.digitaloceanloadbalancer.v1B\x0fStackInputProtoP\x01Z\x8a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05OPPDD\xaa\x02DOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02IOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack_input_proto_rawDescOnce sync.Once

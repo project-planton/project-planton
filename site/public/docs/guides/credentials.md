@@ -791,7 +791,7 @@ KUBECONFIG  # Path to kubeconfig file
 
 **Security concern?** Contact your security team immediately if credentials may be compromised.
 
-**Need help?** [Open an issue](https://github.com/project-planton/project-planton/issues) with details (never include actual credentials in issues!).
+**Need help?** [Open an issue](https://github.com/plantonhq/project-planton/issues) with details (never include actual credentials in issues!).
 
 ---
 

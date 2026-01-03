@@ -710,6 +710,6 @@ Too many firewall rules can cause issues:
 ## Need Help?
 
 - Check the [Troubleshooting section](README.md#troubleshooting) in the main README
-- Open an issue on [GitHub](https://github.com/project-planton/project-planton/issues)
+- Open an issue on [GitHub](https://github.com/plantonhq/project-planton/issues)
 - Contact Civo support: support@civo.com
 

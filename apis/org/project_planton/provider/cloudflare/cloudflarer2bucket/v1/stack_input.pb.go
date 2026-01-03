@@ -7,7 +7,7 @@
 package cloudflarer2bucketv1
 
 import (
-	cloudflare "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
+	cloudflare "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_i
 	"Oorg/project_planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x12=org.project_planton.provider.cloudflare.cloudflarer2bucket.v1\x1aGorg/project_planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\"\xf5\x01\n" +
 	"\x1cCloudflareR2BucketStackInput\x12i\n" +
 	"\x06target\x18\x01 \x01(\v2Q.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xf0\x03\n" +
-	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xe9\x03\n" +
+	"Acom.org.project_planton.provider.cloudflare.cloudflarer2bucket.v1B\x0fStackInputProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05OPPCC\xaa\x02<Org.ProjectPlanton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_rawDescOnce sync.Once

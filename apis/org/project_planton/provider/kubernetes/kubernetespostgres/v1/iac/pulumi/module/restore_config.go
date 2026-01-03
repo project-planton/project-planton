@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	kubernetespostgresv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1"
-	zalandov1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/zalandooperator/kubernetes/acid/v1"
+	kubernetespostgresv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1"
+	zalandov1 "github.com/plantonhq/project-planton/pkg/kubernetes/kubernetestypes/zalandooperator/kubernetes/acid/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

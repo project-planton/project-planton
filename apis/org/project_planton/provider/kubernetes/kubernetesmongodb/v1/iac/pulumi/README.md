@@ -133,7 +133,7 @@ You can install this Pulumi module from GitHub by cloning the repository and run
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/project-planton/project-planton.git
+    git clone https://github.com/plantonhq/project-planton.git
     cd project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1/iac/pulumi
     ```
 

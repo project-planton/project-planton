@@ -143,7 +143,7 @@ All validation steps passed successfully:
 ```bash
 # Component tests
 go test ./apis/org/project_planton/provider/gcp/gcpgkenodepool/v1/
-# ok  	github.com/project-planton/project-planton/apis/org/.../gcpgkenodepool/v1	0.372s
+# ok  	github.com/plantonhq/project-planton/apis/org/.../gcpgkenodepool/v1	0.372s
 
 # Full build
 make build

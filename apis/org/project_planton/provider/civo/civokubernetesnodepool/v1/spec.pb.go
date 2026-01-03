@@ -8,7 +8,7 @@ package civokubernetesnodepoolv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -151,8 +151,8 @@ const file_org_project_planton_provider_civo_civokubernetesnodepool_v1_spec_prot
 	"auto_scale\x18\x05 \x01(\bR\tautoScale\x12\x1b\n" +
 	"\tmin_nodes\x18\x06 \x01(\rR\bminNodes\x12\x1b\n" +
 	"\tmax_nodes\x18\a \x01(\rR\bmaxNodes\x12\x12\n" +
-	"\x04tags\x18\b \x03(\tR\x04tagsB\xe2\x03\n" +
-	"?com.org.project_planton.provider.civo.civokubernetesnodepool.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civokubernetesnodepool/v1;civokubernetesnodepoolv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Civo.Civokubernetesnodepool.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Civo::Civokubernetesnodepool::V1b\x06proto3"
+	"\x04tags\x18\b \x03(\tR\x04tagsB\xdb\x03\n" +
+	"?com.org.project_planton.provider.civo.civokubernetesnodepool.v1B\tSpecProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civokubernetesnodepool/v1;civokubernetesnodepoolv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Civo.Civokubernetesnodepool.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Civo\\Civokubernetesnodepool\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Civo::Civokubernetesnodepool::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civokubernetesnodepool_v1_spec_proto_rawDescOnce sync.Once

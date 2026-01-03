@@ -7,7 +7,7 @@
 package kubernetescronjobv1
 
 import (
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -104,8 +104,8 @@ const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_in
 	"\x06target\x18\x01 \x01(\v2O.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespace\x12,\n" +
-	"\x12docker_config_json\x18\x04 \x01(\tR\x10dockerConfigJsonB\xe9\x03\n" +
-	"@com.org.project_planton.provider.kubernetes.kubernetescronjob.v1B\x0fStackInputProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetescronjob.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetescronjob::V1b\x06proto3"
+	"\x12docker_config_json\x18\x04 \x01(\tR\x10dockerConfigJsonB\xe2\x03\n" +
+	"@com.org.project_planton.provider.kubernetes.kubernetescronjob.v1B\x0fStackInputProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1;kubernetescronjobv1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetescronjob.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetescronjob\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetescronjob::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_stack_input_proto_rawDescOnce sync.Once

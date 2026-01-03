@@ -8,8 +8,8 @@ package kuberneteselasticsearchv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -486,8 +486,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_sp
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
 	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xcb\x01\n" +
 	"\x1adefault_elasticsearch_spec\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2l.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchElasticsearchSpecR\x18defaultElasticsearchSpec:\xb6\x01\n" +
-	"\x13default_kibana_spec\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecR\x11defaultKibanaSpecB\x8d\x04\n" +
-	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
+	"\x13default_kibana_spec\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2e.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1.KubernetesElasticsearchKibanaSpecR\x11defaultKibanaSpecB\x87\x04\n" +
+	"Fcom.org.project_planton.provider.kubernetes.kuberneteselasticsearch.v1B\tSpecProtoP\x01Z\x86\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1;kuberneteselasticsearchv1\xa2\x02\x05OPPKK\xaa\x02AOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteselasticsearch.V1\xca\x02AOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\xe2\x02MOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteselasticsearch\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Kuberneteselasticsearch::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteselasticsearch_v1_spec_proto_rawDescOnce sync.Once

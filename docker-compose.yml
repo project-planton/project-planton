@@ -1,7 +1,7 @@
 services:
   # Unified container with MongoDB, Backend, and Frontend
   planton:
-    image: ${PLANTON_IMAGE:-ghcr.io/project-planton/project-planton:latest}
+    image: ${PLANTON_IMAGE:-ghcr.io/plantonhq/project-planton:latest}
     container_name: project-planton
     restart: unless-stopped
     ports:

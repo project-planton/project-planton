@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1"
+	azurekeyvaultv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/keyvault"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

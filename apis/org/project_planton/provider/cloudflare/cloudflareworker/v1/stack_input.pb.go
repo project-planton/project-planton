@@ -7,7 +7,7 @@
 package cloudflareworkerv1
 
 import (
-	cloudflare "github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare"
+	cloudflare "github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_org_project_planton_provider_cloudflare_cloudflareworker_v1_stack_inp
 	"Morg/project_planton/provider/cloudflare/cloudflareworker/v1/stack_input.proto\x12;org.project_planton.provider.cloudflare.cloudflareworker.v1\x1aEorg/project_planton/provider/cloudflare/cloudflareworker/v1/api.proto\x1a6org/project_planton/provider/cloudflare/provider.proto\"\xef\x01\n" +
 	"\x1aCloudflareWorkerStackInput\x12e\n" +
 	"\x06target\x18\x01 \x01(\v2M.org.project_planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerR\x06target\x12j\n" +
-	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xe1\x03\n" +
-	"?com.org.project_planton.provider.cloudflare.cloudflareworker.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Cloudflare.Cloudflareworker.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
+	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xdb\x03\n" +
+	"?com.org.project_planton.provider.cloudflare.cloudflareworker.v1B\x0fStackInputProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05OPPCC\xaa\x02:Org.ProjectPlanton.Provider.Cloudflare.Cloudflareworker.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflareworker_v1_stack_input_proto_rawDescOnce sync.Once

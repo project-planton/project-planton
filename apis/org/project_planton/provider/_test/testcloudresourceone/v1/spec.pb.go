@@ -7,7 +7,7 @@
 package testcloudresourceonev1
 
 import (
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -231,8 +231,8 @@ const file_org_project_planton_provider__test_testcloudresourceone_v1_spec_proto
 	"\n" +
 	"nested_int\x18\x02 \x01(\x05B\x06\x8a\xa6\x1d\x0299H\x01R\tnestedInt\x88\x01\x01B\x10\n" +
 	"\x0e_nested_stringB\r\n" +
-	"\v_nested_intB\xd6\x03\n" +
-	">com.org.project_planton.provider._test.testcloudresourceone.v1B\tSpecProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourceone/v1;testcloudresourceonev1\xa2\x02\x05OPP_T\xaa\x028Org.ProjectPlanton.Provider.Test.Testcloudresourceone.V1\xca\x028Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourceone\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourceone\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Test::Testcloudresourceone::V1b\x06proto3"
+	"\v_nested_intB\xcf\x03\n" +
+	">com.org.project_planton.provider._test.testcloudresourceone.v1B\tSpecProtoP\x01Z{github.com/plantonhq/project-planton/apis/org/project_planton/provider/_test/testcloudresourceone/v1;testcloudresourceonev1\xa2\x02\x05OPP_T\xaa\x028Org.ProjectPlanton.Provider.Test.Testcloudresourceone.V1\xca\x028Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourceone\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourceone\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Test::Testcloudresourceone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider__test_testcloudresourceone_v1_spec_proto_rawDescOnce sync.Once

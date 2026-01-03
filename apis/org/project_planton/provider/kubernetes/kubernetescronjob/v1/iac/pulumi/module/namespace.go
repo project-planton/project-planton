@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
+	kubernetescronjobv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetesmeta "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

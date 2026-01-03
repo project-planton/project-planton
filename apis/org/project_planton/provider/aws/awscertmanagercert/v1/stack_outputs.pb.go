@@ -83,8 +83,8 @@ const file_org_project_planton_provider_aws_awscertmanagercert_v1_stack_outputs_
 	"Jorg/project_planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x126org.project_planton.provider.aws.awscertmanagercert.v1\"s\n" +
 	"\x1eAwsCertManagerCertStackOutputs\x12\x19\n" +
 	"\bcert_arn\x18\x01 \x01(\tR\acertArn\x126\n" +
-	"\x17certificate_domain_name\x18\x02 \x01(\tR\x15certificateDomainNameB\xc7\x03\n" +
-	":com.org.project_planton.provider.aws.awscertmanagercert.v1B\x11StackOutputsProtoP\x01Z{github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Aws.Awscertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
+	"\x17certificate_domain_name\x18\x02 \x01(\tR\x15certificateDomainNameB\xc1\x03\n" +
+	":com.org.project_planton.provider.aws.awscertmanagercert.v1B\x11StackOutputsProtoP\x01Zugithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Aws.Awscertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awscertmanagercert_v1_stack_outputs_proto_rawDescOnce sync.Once

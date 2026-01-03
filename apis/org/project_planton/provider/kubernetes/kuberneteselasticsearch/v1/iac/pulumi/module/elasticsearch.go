@@ -2,8 +2,8 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	elasticsearchv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/elasticsearch/v1"
-	kibanav1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/kibana/v1beta1"
+	elasticsearchv1 "github.com/plantonhq/project-planton/pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/elasticsearch/v1"
+	kibanav1 "github.com/plantonhq/project-planton/pkg/kubernetes/kubernetestypes/elasticsearch/kubernetes/kibana/v1beta1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

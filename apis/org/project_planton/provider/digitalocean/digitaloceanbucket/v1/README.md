@@ -236,7 +236,7 @@ See [iac/tf/README.md](./iac/tf/README.md) for Terraform-based deployment.
 
 ## Support
 
-- **Project Planton**: [github.com/project-planton/project-planton](https://github.com/project-planton/project-planton)
+- **Project Planton**: [github.com/plantonhq/project-planton](https://github.com/plantonhq/project-planton)
 - **DigitalOcean Spaces Docs**: [docs.digitalocean.com/products/spaces](https://docs.digitalocean.com/products/spaces/)
 - **S3 API Reference**: [docs.aws.amazon.com/s3/](https://docs.aws.amazon.com/s3/) (compatible subset)
 

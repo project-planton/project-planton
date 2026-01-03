@@ -94,8 +94,8 @@ const file_org_project_planton_provider_civo_civodnszone_v1_stack_outputs_proto_
 	"\x17CivoDnsZoneStackOutputs\x12\x1b\n" +
 	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
 	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\x9c\x03\n" +
-	"4com.org.project_planton.provider.civo.civodnszone.v1B\x11StackOutputsProtoP\x01Zngithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05OPPCC\xaa\x02/Org.ProjectPlanton.Provider.Civo.Civodnszone.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Civo::Civodnszone::V1b\x06proto3"
+	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\x96\x03\n" +
+	"4com.org.project_planton.provider.civo.civodnszone.v1B\x11StackOutputsProtoP\x01Zhgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05OPPCC\xaa\x02/Org.ProjectPlanton.Provider.Civo.Civodnszone.V1\xca\x02/Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\xe2\x02;Org\\ProjectPlanton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x024Org::ProjectPlanton::Provider::Civo::Civodnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civodnszone_v1_stack_outputs_proto_rawDescOnce sync.Once

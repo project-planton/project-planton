@@ -8,9 +8,9 @@ package gcpdnszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	dnsrecordtype "github.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -189,8 +189,8 @@ const file_org_project_planton_provider_gcp_gcpdnszone_v1_spec_proto_rawDesc = "
 	"\x06values\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x06values\x12,\n" +
 	"\vttl_seconds\x18\x04 \x01(\x05B\x06\x8a\xa6\x1d\x0260H\x00R\n" +
 	"ttlSeconds\x88\x01\x01B\x0e\n" +
-	"\f_ttl_secondsB\x87\x03\n" +
-	"2com.org.project_planton.provider.gcp.gcpdnszone.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpdnszone.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
+	"\f_ttl_secondsB\x81\x03\n" +
+	"2com.org.project_planton.provider.gcp.gcpdnszone.v1B\tSpecProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05OPPGG\xaa\x02-Org.ProjectPlanton.Provider.Gcp.Gcpdnszone.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpdnszone_v1_spec_proto_rawDescOnce sync.Once

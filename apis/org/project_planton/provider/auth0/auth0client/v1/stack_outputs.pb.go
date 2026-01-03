@@ -265,8 +265,8 @@ const file_org_project_planton_provider_auth0_auth0client_v1_stack_outputs_proto
 	"\asubject\x18\x03 \x01(\tR\asubject\x12\x1e\n" +
 	"\n" +
 	"thumbprint\x18\x04 \x01(\tR\n" +
-	"thumbprintB\xa2\x03\n" +
-	"5com.org.project_planton.provider.auth0.auth0client.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
+	"thumbprintB\x9c\x03\n" +
+	"5com.org.project_planton.provider.auth0.auth0client.v1B\x11StackOutputsProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_auth0_auth0client_v1_stack_outputs_proto_rawDescOnce sync.Once

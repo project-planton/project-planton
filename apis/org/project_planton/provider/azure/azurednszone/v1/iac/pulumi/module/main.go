@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	azurednszonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
+	azurednszonev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurednszone/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/networking/enums/dnsrecordtype"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure"
 	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/dns"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

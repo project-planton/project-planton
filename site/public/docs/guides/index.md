@@ -138,9 +138,9 @@ project-planton load-manifest -f resource.yaml
 
 ## Getting Help
 
-**Questions?** [GitHub Discussions](https://github.com/project-planton/project-planton/discussions)
+**Questions?** [GitHub Discussions](https://github.com/plantonhq/project-planton/discussions)
 
-**Found a bug?** [Open an issue](https://github.com/project-planton/project-planton/issues)
+**Found a bug?** [Open an issue](https://github.com/plantonhq/project-planton/issues)
 
 **Want to contribute?** Pull requests welcome!
 

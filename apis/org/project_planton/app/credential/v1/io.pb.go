@@ -651,8 +651,8 @@ const file_org_project_planton_app_credential_v1_io_proto_rawDesc = "" +
 	"\x17DeleteCredentialRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"4\n" +
 	"\x18DeleteCredentialResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessageB\xb7\x02\n" +
-	"%com.org.project_planton.credential.v1B\aIoProtoP\x01Zbgithub.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
+	"\amessage\x18\x01 \x01(\tR\amessageB\xb1\x02\n" +
+	"%com.org.project_planton.credential.v1B\aIoProtoP\x01Z\\github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
 
 var (
 	file_org_project_planton_app_credential_v1_io_proto_rawDescOnce sync.Once

@@ -1,7 +1,7 @@
 package module
 
 import (
-	awsroute53zonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1"
+	awsroute53zonev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsroute53zone/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

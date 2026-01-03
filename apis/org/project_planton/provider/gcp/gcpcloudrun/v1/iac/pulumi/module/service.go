@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1"
+	gcpcloudrunv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcloudrun/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp"            // provider
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/cloudrunv2" // Cloud Run v2
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

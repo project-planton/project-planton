@@ -3,8 +3,8 @@ package gcpcertmanagercertv1
 import (
 	"testing"
 
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

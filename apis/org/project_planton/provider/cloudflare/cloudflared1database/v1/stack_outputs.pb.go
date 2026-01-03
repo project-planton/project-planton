@@ -94,8 +94,8 @@ const file_org_project_planton_provider_cloudflare_cloudflared1database_v1_stack
 	"\vdatabase_id\x18\x01 \x01(\tR\n" +
 	"databaseId\x12#\n" +
 	"\rdatabase_name\x18\x02 \x01(\tR\fdatabaseName\x12+\n" +
-	"\x11connection_string\x18\x03 \x01(\tR\x10connectionStringB\x80\x04\n" +
-	"Ccom.org.project_planton.provider.cloudflare.cloudflared1database.v1B\x11StackOutputsProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05OPPCC\xaa\x02>Org.ProjectPlanton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
+	"\x11connection_string\x18\x03 \x01(\tR\x10connectionStringB\xfa\x03\n" +
+	"Ccom.org.project_planton.provider.cloudflare.cloudflared1database.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05OPPCC\xaa\x02>Org.ProjectPlanton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02>Org\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02JOrg\\ProjectPlanton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02COrg::ProjectPlanton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_cloudflare_cloudflared1database_v1_stack_outputs_proto_rawDescOnce sync.Once

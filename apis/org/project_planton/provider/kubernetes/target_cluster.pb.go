@@ -8,7 +8,7 @@ package kubernetes
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	cloudresourcekind "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	cloudresourcekind "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -88,8 +88,8 @@ const file_org_project_planton_provider_kubernetes_target_cluster_proto_rawDesc 
 	"<org/project_planton/provider/kubernetes/target_cluster.proto\x12'org.project_planton.provider.kubernetes\x1a\x1bbuf/validate/validate.proto\x1aForg/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xb9\x01\n" +
 	"\x19KubernetesClusterSelector\x12y\n" +
 	"\fcluster_kind\x18\x01 \x01(\x0e2?.org.project_planton.shared.cloudresourcekind.CloudResourceKindB\x15\xbaH\x12\x82\x01\x0f\x18\x90\x03\x18\xcf\x01\x18\xdf\x04\x18\xb8\t\x18\xe3\vR\vclusterKind\x12!\n" +
-	"\fcluster_name\x18\x02 \x01(\tR\vclusterNameB\xd6\x02\n" +
-	"+com.org.project_planton.provider.kubernetesB\x12TargetClusterProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
+	"\fcluster_name\x18\x02 \x01(\tR\vclusterNameB\xd0\x02\n" +
+	"+com.org.project_planton.provider.kubernetesB\x12TargetClusterProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_target_cluster_proto_rawDescOnce sync.Once

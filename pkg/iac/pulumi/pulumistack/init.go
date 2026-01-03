@@ -9,11 +9,11 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/cli/cliprint"
-	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/crkreflect"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
+	"github.com/plantonhq/project-planton/internal/cli/cliprint"
+	"github.com/plantonhq/project-planton/internal/manifest"
+	"github.com/plantonhq/project-planton/pkg/crkreflect"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/backendconfig"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule"
 )
 
 // Init initializes a new Pulumi stack for the given manifest.

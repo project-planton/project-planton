@@ -6,7 +6,7 @@ import (
 	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	foreignkeyv1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestGcpCloudSqlSpec(t *testing.T) {

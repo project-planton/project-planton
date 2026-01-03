@@ -202,8 +202,8 @@ const file_org_project_planton_provider_kubernetes_kubernetes_secret_proto_rawDe
 	"\x05value\x18\x01 \x01(\tH\x00R\x05value\x12`\n" +
 	"\n" +
 	"secret_ref\x18\x02 \x01(\v2?.org.project_planton.provider.kubernetes.KubernetesSecretKeyRefH\x00R\tsecretRefB\x11\n" +
-	"\x0fsensitive_valueB\xd9\x02\n" +
-	"+com.org.project_planton.provider.kubernetesB\x15KubernetesSecretProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
+	"\x0fsensitive_valueB\xd3\x02\n" +
+	"+com.org.project_planton.provider.kubernetesB\x15KubernetesSecretProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetes_secret_proto_rawDescOnce sync.Once

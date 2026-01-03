@@ -233,7 +233,7 @@ See [iac/tf/README.md](./iac/tf/README.md) for Terraform-based deployment instru
 For issues and questions:
 - **Project Planton Documentation**: [docs.planton.cloud](https://docs.planton.cloud)
 - **DigitalOcean App Platform Docs**: [docs.digitalocean.com/products/app-platform](https://docs.digitalocean.com/products/app-platform/)
-- **Project Planton GitHub**: [github.com/project-planton/project-planton](https://github.com/project-planton/project-planton)
+- **Project Planton GitHub**: [github.com/plantonhq/project-planton](https://github.com/plantonhq/project-planton)
 
 ## References
 

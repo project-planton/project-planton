@@ -138,8 +138,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestekton_v1_stack_out
 	"\x1bdashboard_internal_endpoint\x18\x04 \x01(\tR\x19dashboardInternalEndpoint\x12>\n" +
 	"\x1bdashboard_external_hostname\x18\x05 \x01(\tR\x19dashboardExternalHostname\x12C\n" +
 	"\x1eport_forward_dashboard_command\x18\x06 \x01(\tR\x1bportForwardDashboardCommand\x121\n" +
-	"\x15cloud_events_sink_url\x18\a \x01(\tR\x12cloudEventsSinkUrlB\xe3\x03\n" +
-	"?com.org.project_planton.provider.kubernetes.kubernetestekton.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestekton/v1;kubernetestektonv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetestekton.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetestekton::V1b\x06proto3"
+	"\x15cloud_events_sink_url\x18\a \x01(\tR\x12cloudEventsSinkUrlB\xdd\x03\n" +
+	"?com.org.project_planton.provider.kubernetes.kubernetestekton.v1B\x11StackOutputsProtoP\x01Zxgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestekton/v1;kubernetestektonv1\xa2\x02\x05OPPKK\xaa\x02:Org.ProjectPlanton.Provider.Kubernetes.Kubernetestekton.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestekton\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Kubernetes::Kubernetestekton::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestekton_v1_stack_outputs_proto_rawDescOnce sync.Once

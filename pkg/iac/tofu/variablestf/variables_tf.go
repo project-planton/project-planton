@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/apidocs"
-	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
+	"github.com/plantonhq/project-planton/internal/apidocs"
+	"github.com/plantonhq/project-planton/pkg/strings/caseconverter"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"

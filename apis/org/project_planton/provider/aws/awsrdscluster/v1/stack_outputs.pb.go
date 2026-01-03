@@ -163,8 +163,8 @@ const file_org_project_planton_provider_aws_awsrdscluster_v1_stack_outputs_proto
 	"\x10rds_subnet_group\x18\b \x01(\tR\x0erdsSubnetGroup\x12,\n" +
 	"\x12rds_security_group\x18\t \x01(\tR\x10rdsSecurityGroup\x12=\n" +
 	"\x1brds_cluster_parameter_group\x18\n" +
-	" \x01(\tR\x18rdsClusterParameterGroupB\xa4\x03\n" +
-	"5com.org.project_planton.provider.aws.awsrdscluster.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdscluster/v1;awsrdsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsrdscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsrdscluster::V1b\x06proto3"
+	" \x01(\tR\x18rdsClusterParameterGroupB\x9e\x03\n" +
+	"5com.org.project_planton.provider.aws.awsrdscluster.v1B\x11StackOutputsProtoP\x01Zkgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsrdscluster/v1;awsrdsclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsrdscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsrdscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsrdscluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsrdscluster_v1_stack_outputs_proto_rawDescOnce sync.Once

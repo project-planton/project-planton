@@ -364,7 +364,7 @@ Example change in locals.go:
 ```go
 // OLD
 import (
-    gcpgkeclustercorev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkeclustercore/v1"
+    gcpgkeclustercorev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkeclustercore/v1"
 )
 
 type Locals struct {
@@ -374,7 +374,7 @@ type Locals struct {
 
 // NEW
 import (
-    gcpgkeclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkecluster/v1"
+    gcpgkeclusterv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkecluster/v1"
 )
 
 type Locals struct {

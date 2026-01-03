@@ -2,7 +2,7 @@
 
 **Date**: September 16, 2025  
 **Type**: Feature  
-**PR**: [#240](https://github.com/project-planton/project-planton/pull/240)
+**PR**: [#240](https://github.com/plantonhq/project-planton/pull/240)
 
 ## Summary
 

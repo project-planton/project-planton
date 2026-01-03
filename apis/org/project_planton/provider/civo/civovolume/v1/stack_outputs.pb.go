@@ -94,8 +94,8 @@ const file_org_project_planton_provider_civo_civovolume_v1_stack_outputs_proto_r
 	"\tvolume_id\x18\x01 \x01(\tR\bvolumeId\x120\n" +
 	"\x14attached_instance_id\x18\x02 \x01(\tR\x12attachedInstanceId\x12\x1f\n" +
 	"\vdevice_path\x18\x03 \x01(\tR\n" +
-	"devicePathB\x95\x03\n" +
-	"3com.org.project_planton.provider.civo.civovolume.v1B\x11StackOutputsProtoP\x01Zlgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
+	"devicePathB\x8f\x03\n" +
+	"3com.org.project_planton.provider.civo.civovolume.v1B\x11StackOutputsProtoP\x01Zfgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civovolume.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civovolume::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civovolume_v1_stack_outputs_proto_rawDescOnce sync.Once

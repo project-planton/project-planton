@@ -168,7 +168,7 @@ git commit -m "<type>(<scope>): <subject>" \
 
 ## Important Notes
 
-- **Always run in project-planton workspace**: `~/scm/github.com/project-planton/project-planton`
+- **Always run in project-planton workspace**: `~/scm/github.com/plantonhq/project-planton`
 - **Don't commit without reviewing**: Show the proposed commit message to the user before executing if the changes are significant
 - **Stage selectively if needed**: If only some changes should be committed, stage specific files instead of `git add -A`
 - **Don't skip hooks**: Never use `--no-verify` unless explicitly requested

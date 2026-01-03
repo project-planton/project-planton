@@ -8,8 +8,8 @@ package kuberneteszalandopostgresoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	kubernetes "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -364,8 +364,8 @@ const file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoper
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x0ebackupSchedule\x12-\n" +
 	"\x13enable_wal_g_backup\x18\x04 \x01(\bR\x10enableWalGBackup\x12/\n" +
 	"\x14enable_wal_g_restore\x18\x05 \x01(\bR\x11enableWalGRestore\x12:\n" +
-	"\x1aenable_clone_wal_g_restore\x18\x06 \x01(\bR\x16enableCloneWalGRestoreB\xd3\x04\n" +
-	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\tSpecProtoP\x01Z\xa0\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
+	"\x1aenable_clone_wal_g_restore\x18\x06 \x01(\bR\x16enableCloneWalGRestoreB\xcd\x04\n" +
+	"Pcom.org.project_planton.provider.kubernetes.kuberneteszalandopostgresoperator.v1B\tSpecProtoP\x01Z\x9a\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1;kuberneteszalandopostgresoperatorv1\xa2\x02\x05OPPKK\xaa\x02KOrg.ProjectPlanton.Provider.Kubernetes.Kuberneteszalandopostgresoperator.V1\xca\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\xe2\x02WOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kuberneteszalandopostgresoperator\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Kuberneteszalandopostgresoperator::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kuberneteszalandopostgresoperator_v1_spec_proto_rawDescOnce sync.Once

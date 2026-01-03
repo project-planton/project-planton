@@ -10,8 +10,8 @@ import (
 	"syscall"
 
 	"connectrpc.com/connect"
-	stackupdatev1 "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1"
-	stackupdatev1connect "github.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1/stackupdatev1connect"
+	stackupdatev1 "github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1"
+	stackupdatev1connect "github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1/stackupdatev1connect"
 	"github.com/spf13/cobra"
 )
 

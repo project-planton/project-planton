@@ -83,8 +83,8 @@ const file_org_project_planton_provider_aws_awsiamrole_v1_stack_outputs_proto_ra
 	"Borg/project_planton/provider/aws/awsiamrole/v1/stack_outputs.proto\x12.org.project_planton.provider.aws.awsiamrole.v1\"P\n" +
 	"\x16AwsIamRoleStackOutputs\x12\x19\n" +
 	"\brole_arn\x18\x01 \x01(\tR\aroleArn\x12\x1b\n" +
-	"\trole_name\x18\x02 \x01(\tR\broleNameB\x8f\x03\n" +
-	"2com.org.project_planton.provider.aws.awsiamrole.v1B\x11StackOutputsProtoP\x01Zkgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsiamrole/v1;awsiamrolev1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamrole.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamrole::V1b\x06proto3"
+	"\trole_name\x18\x02 \x01(\tR\broleNameB\x89\x03\n" +
+	"2com.org.project_planton.provider.aws.awsiamrole.v1B\x11StackOutputsProtoP\x01Zegithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsiamrole/v1;awsiamrolev1\xa2\x02\x05OPPAA\xaa\x02-Org.ProjectPlanton.Provider.Aws.Awsiamrole.V1\xca\x02-Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\xe2\x029Org\\ProjectPlanton\\Provider\\Aws\\Awsiamrole\\V1\\GPBMetadata\xea\x022Org::ProjectPlanton::Provider::Aws::Awsiamrole::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsiamrole_v1_stack_outputs_proto_rawDescOnce sync.Once

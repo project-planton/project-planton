@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"strings"
 
-	gcpdnszonev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
+	gcpdnszonev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpdnszone/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

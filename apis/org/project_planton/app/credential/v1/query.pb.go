@@ -27,9 +27,9 @@ const file_org_project_planton_app_credential_v1_query_proto_rawDesc = "" +
 	"1org/project_planton/app/credential/v1/query.proto\x12!org.project_planton.credential.v1\x1a.org/project_planton/app/credential/v1/io.proto2\x94\x02\n" +
 	"\x19CredentialQueryController\x12}\n" +
 	"\x04List\x129.org.project_planton.credential.v1.ListCredentialsRequest\x1a:.org.project_planton.credential.v1.ListCredentialsResponse\x12x\n" +
-	"\x03Get\x127.org.project_planton.credential.v1.GetCredentialRequest\x1a8.org.project_planton.credential.v1.GetCredentialResponseB\xba\x02\n" +
+	"\x03Get\x127.org.project_planton.credential.v1.GetCredentialRequest\x1a8.org.project_planton.credential.v1.GetCredentialResponseB\xb4\x02\n" +
 	"%com.org.project_planton.credential.v1B\n" +
-	"QueryProtoP\x01Zbgithub.com/project-planton/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
+	"QueryProtoP\x01Z\\github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1;credentialv1\xa2\x02\x03OPC\xaa\x02 Org.ProjectPlanton.Credential.V1\xca\x02 Org\\ProjectPlanton\\Credential\\V1\xe2\x02,Org\\ProjectPlanton\\Credential\\V1\\GPBMetadata\xea\x02#Org::ProjectPlanton::Credential::V1b\x06proto3"
 
 var file_org_project_planton_app_credential_v1_query_proto_goTypes = []any{
 	(*ListCredentialsRequest)(nil),  // 0: org.project_planton.credential.v1.ListCredentialsRequest

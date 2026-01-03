@@ -115,8 +115,8 @@ const file_org_project_planton_provider_snowflake_provider_proto_rawDesc = "" +
 	"\aaccount\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aaccount\x12\x1e\n" +
 	"\x06region\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\"\n" +
 	"\busername\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\busername\x12\"\n" +
-	"\bpassword\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpasswordB\xcb\x02\n" +
-	"*com.org.project_planton.provider.snowflakeB\rProviderProtoP\x01ZVgithub.com/project-planton/project-planton/apis/org/project_planton/provider/snowflake\xa2\x02\x04OPPS\xaa\x02%Org.ProjectPlanton.Provider.Snowflake\xca\x02%Org\\ProjectPlanton\\Provider\\Snowflake\xe2\x021Org\\ProjectPlanton\\Provider\\Snowflake\\GPBMetadata\xea\x02(Org::ProjectPlanton::Provider::Snowflakeb\x06proto3"
+	"\bpassword\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpasswordB\xc5\x02\n" +
+	"*com.org.project_planton.provider.snowflakeB\rProviderProtoP\x01ZPgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake\xa2\x02\x04OPPS\xaa\x02%Org.ProjectPlanton.Provider.Snowflake\xca\x02%Org\\ProjectPlanton\\Provider\\Snowflake\xe2\x021Org\\ProjectPlanton\\Provider\\Snowflake\\GPBMetadata\xea\x02(Org::ProjectPlanton::Provider::Snowflakeb\x06proto3"
 
 var (
 	file_org_project_planton_provider_snowflake_provider_proto_rawDescOnce sync.Once

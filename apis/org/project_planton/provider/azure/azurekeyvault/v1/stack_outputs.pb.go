@@ -134,8 +134,8 @@ const file_org_project_planton_provider_azure_azurekeyvault_v1_stack_outputs_pro
 	"\x0eresource_group\x18\x06 \x01(\tR\rresourceGroup\x1a>\n" +
 	"\x10SecretIdMapEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xb0\x03\n" +
-	"7com.org.project_planton.provider.azure.azurekeyvault.v1B\x11StackOutputsProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Azure.Azurekeyvault.V1\xca\x022Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xaa\x03\n" +
+	"7com.org.project_planton.provider.azure.azurekeyvault.v1B\x11StackOutputsProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05OPPAA\xaa\x022Org.ProjectPlanton.Provider.Azure.Azurekeyvault.V1\xca\x022Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02>Org\\ProjectPlanton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x027Org::ProjectPlanton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_azure_azurekeyvault_v1_stack_outputs_proto_rawDescOnce sync.Once

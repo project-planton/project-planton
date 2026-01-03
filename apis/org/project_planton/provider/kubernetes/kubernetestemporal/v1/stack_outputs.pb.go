@@ -153,8 +153,8 @@ const file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_o
 	"\x11frontend_endpoint\x18\x06 \x01(\tR\x10frontendEndpoint\x12&\n" +
 	"\x0fweb_ui_endpoint\x18\a \x01(\tR\rwebUiEndpoint\x12<\n" +
 	"\x1aexternal_frontend_hostname\x18\b \x01(\tR\x18externalFrontendHostname\x120\n" +
-	"\x14external_ui_hostname\x18\t \x01(\tR\x12externalUiHostnameB\xf2\x03\n" +
-	"Acom.org.project_planton.provider.kubernetes.kubernetestemporal.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetestemporal.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestemporal::V1b\x06proto3"
+	"\x14external_ui_hostname\x18\t \x01(\tR\x12externalUiHostnameB\xeb\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.kubernetestemporal.v1B\x11StackOutputsProtoP\x01Z|github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1;kubernetestemporalv1\xa2\x02\x05OPPKK\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Kubernetestemporal.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetestemporal\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Kubernetestemporal::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetestemporal_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -72,8 +72,8 @@ const file_org_project_planton_provider__test_testcloudresourcethree_v1_spec_pro
 	"\n" +
 	"Gorg/project_planton/provider/_test/testcloudresourcethree/v1/spec.proto\x12<org.project_planton.provider._test.testcloudresourcethree.v1\">\n" +
 	"\x1aTestCloudResourceThreeSpec\x12 \n" +
-	"\vplaceholder\x18\x01 \x01(\tR\vplaceholderB\xe4\x03\n" +
-	"@com.org.project_planton.provider._test.testcloudresourcethree.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1;testcloudresourcethreev1\xa2\x02\x05OPP_T\xaa\x02:Org.ProjectPlanton.Provider.Test.Testcloudresourcethree.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Test::Testcloudresourcethree::V1b\x06proto3"
+	"\vplaceholder\x18\x01 \x01(\tR\vplaceholderB\xdd\x03\n" +
+	"@com.org.project_planton.provider._test.testcloudresourcethree.v1B\tSpecProtoP\x01Z\x7fgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/_test/testcloudresourcethree/v1;testcloudresourcethreev1\xa2\x02\x05OPP_T\xaa\x02:Org.ProjectPlanton.Provider.Test.Testcloudresourcethree.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Test\\Testcloudresourcethree\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Test::Testcloudresourcethree::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider__test_testcloudresourcethree_v1_spec_proto_rawDescOnce sync.Once

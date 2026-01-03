@@ -8,7 +8,7 @@ package gcpgkeworkloadidentitybindingv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api
 	"\x04spec\x18\x04 \x01(\v2d.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12~\n" +
 	"\x06status\x18\x05 \x01(\v2f.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStatusR\x06status\"\xae\x01\n" +
 	"#GcpGkeWorkloadIdentityBindingStatus\x12\x86\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2l.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackOutputsR\aoutputsB\x8c\x04\n" +
-	"Ecom.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1B\bApiProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1;gcpgkeworkloadidentitybindingv1\xa2\x02\x05OPPGG\xaa\x02@Org.ProjectPlanton.Provider.Gcp.Gcpgkeworkloadidentitybinding.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Gcp::Gcpgkeworkloadidentitybinding::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2l.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackOutputsR\aoutputsB\x86\x04\n" +
+	"Ecom.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1B\bApiProtoP\x01Z\x8b\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1;gcpgkeworkloadidentitybindingv1\xa2\x02\x05OPPGG\xaa\x02@Org.ProjectPlanton.Provider.Gcp.Gcpgkeworkloadidentitybinding.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Gcp::Gcpgkeworkloadidentitybinding::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto_rawDescOnce sync.Once

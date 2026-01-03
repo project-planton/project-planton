@@ -6,7 +6,7 @@ import (
 
 	"buf.build/go/protovalidate"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput/fieldsextractor"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/stackinput/fieldsextractor"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"

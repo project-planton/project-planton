@@ -11,11 +11,11 @@ package main
 
 import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
+	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	module "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -63,11 +63,11 @@ package main
 
 import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
+	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	module "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -113,11 +113,11 @@ package main
 
 import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
+	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	module "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -166,11 +166,11 @@ package main
 import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
-	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
+	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	module "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
 func main() {
@@ -230,11 +230,11 @@ package main
 
 import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	kubernetesexternaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
-	"github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	"github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes"
-	module "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
+	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	"github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	module "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi/module"
 )
 
 func main() {

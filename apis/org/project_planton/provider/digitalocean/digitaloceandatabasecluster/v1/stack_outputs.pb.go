@@ -124,8 +124,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster
 	"\x04host\x18\x03 \x01(\tR\x04host\x12\x12\n" +
 	"\x04port\x18\x04 \x01(\rR\x04port\x12#\n" +
 	"\rdatabase_user\x18\x05 \x01(\tR\fdatabaseUser\x12+\n" +
-	"\x11database_password\x18\x06 \x01(\tR\x10databasePasswordB\xbd\x04\n" +
-	"Lcom.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1B\x11StackOutputsProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05OPPDD\xaa\x02GOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
+	"\x11database_password\x18\x06 \x01(\tR\x10databasePasswordB\xb7\x04\n" +
+	"Lcom.org.project_planton.provider.digitalocean.digitaloceandatabasecluster.v1B\x11StackOutputsProtoP\x01Z\x90\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05OPPDD\xaa\x02GOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_stack_outputs_proto_rawDescOnce sync.Once

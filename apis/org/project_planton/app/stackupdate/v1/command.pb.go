@@ -26,8 +26,8 @@ const file_org_project_planton_app_stackupdate_v1_command_proto_rawDesc = "" +
 	"\n" +
 	"4org/project_planton/app/stackupdate/v1/command.proto\x12&org.project_planton.app.stackupdate.v1\x1a/org/project_planton/app/stackupdate/v1/io.proto2\xbf\x01\n" +
 	"\x1cStackUpdateCommandController\x12\x9e\x01\n" +
-	"\x13DeployCloudResource\x12B.org.project_planton.app.stackupdate.v1.DeployCloudResourceRequest\x1aC.org.project_planton.app.stackupdate.v1.DeployCloudResourceResponseB\xd9\x02\n" +
-	"*com.org.project_planton.app.stackupdate.v1B\fCommandProtoP\x01Zdgithub.com/project-planton/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
+	"\x13DeployCloudResource\x12B.org.project_planton.app.stackupdate.v1.DeployCloudResourceRequest\x1aC.org.project_planton.app.stackupdate.v1.DeployCloudResourceResponseB\xd3\x02\n" +
+	"*com.org.project_planton.app.stackupdate.v1B\fCommandProtoP\x01Z^github.com/plantonhq/project-planton/apis/org/project_planton/app/stackupdate/v1;stackupdatev1\xa2\x02\x04OPAS\xaa\x02%Org.ProjectPlanton.App.Stackupdate.V1\xca\x02%Org\\ProjectPlanton\\App\\Stackupdate\\V1\xe2\x021Org\\ProjectPlanton\\App\\Stackupdate\\V1\\GPBMetadata\xea\x02)Org::ProjectPlanton::App::Stackupdate::V1b\x06proto3"
 
 var file_org_project_planton_app_stackupdate_v1_command_proto_goTypes = []any{
 	(*DeployCloudResourceRequest)(nil),  // 0: org.project_planton.app.stackupdate.v1.DeployCloudResourceRequest

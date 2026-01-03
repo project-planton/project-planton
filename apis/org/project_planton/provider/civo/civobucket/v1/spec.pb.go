@@ -8,7 +8,7 @@ package civobucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	civo "github.com/project-planton/project-planton/apis/org/project_planton/provider/civo"
+	civo "github.com/plantonhq/project-planton/apis/org/project_planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -106,8 +106,8 @@ const file_org_project_planton_provider_civo_civobucket_v1_spec_proto_rawDesc = 
 	"bucketName\x12M\n" +
 	"\x06region\x18\x02 \x01(\x0e2-.org.project_planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12-\n" +
 	"\x12versioning_enabled\x18\x03 \x01(\bR\x11versioningEnabled\x12\x1c\n" +
-	"\x04tags\x18\x04 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tagsB\x8d\x03\n" +
-	"3com.org.project_planton.provider.civo.civobucket.v1B\tSpecProtoP\x01Zlgithub.com/project-planton/project-planton/apis/org/project_planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civobucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civobucket::V1b\x06proto3"
+	"\x04tags\x18\x04 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tagsB\x87\x03\n" +
+	"3com.org.project_planton.provider.civo.civobucket.v1B\tSpecProtoP\x01Zfgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05OPPCC\xaa\x02.Org.ProjectPlanton.Provider.Civo.Civobucket.V1\xca\x02.Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\xe2\x02:Org\\ProjectPlanton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x023Org::ProjectPlanton::Provider::Civo::Civobucket::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_civo_civobucket_v1_spec_proto_rawDescOnce sync.Once

@@ -8,7 +8,7 @@ package digitaloceandropletv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	shared "github.com/project-planton/project-planton/apis/org/project_planton/shared"
+	shared "github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -168,8 +168,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_
 	"\x04spec\x18\x04 \x01(\v2Y.org.project_planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12s\n" +
 	"\x06status\x18\x05 \x01(\v2[.org.project_planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStatusR\x06status\"\x98\x01\n" +
 	"\x19DigitalOceanDropletStatus\x12{\n" +
-	"\aoutputs\x18\x01 \x01(\v2a.org.project_planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackOutputsR\aoutputsB\xfc\x03\n" +
-	"Dcom.org.project_planton.provider.digitalocean.digitaloceandroplet.v1B\bApiProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandroplet/v1;digitaloceandropletv1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandroplet.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandroplet::V1b\x06proto3"
+	"\aoutputs\x18\x01 \x01(\v2a.org.project_planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackOutputsR\aoutputsB\xf6\x03\n" +
+	"Dcom.org.project_planton.provider.digitalocean.digitaloceandroplet.v1B\bApiProtoP\x01Z\x80\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceandroplet/v1;digitaloceandropletv1\xa2\x02\x05OPPDD\xaa\x02?Org.ProjectPlanton.Provider.Digitalocean.Digitaloceandroplet.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\\GPBMetadata\xea\x02DOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceandroplet::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_proto_rawDescOnce sync.Once

@@ -96,8 +96,8 @@ const file_org_project_planton_provider_digitalocean_digitaloceankubernetesclust
 	"\n" +
 	"kubeconfig\x18\x02 \x01(\tR\n" +
 	"kubeconfig\x12.\n" +
-	"\x13api_server_endpoint\x18\x03 \x01(\tR\x11apiServerEndpointB\xcb\x04\n" +
-	"Ncom.org.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1B\x11StackOutputsProtoP\x01Z\x9a\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
+	"\x13api_server_endpoint\x18\x03 \x01(\tR\x11apiServerEndpointB\xc5\x04\n" +
+	"Ncom.org.project_planton.provider.digitalocean.digitaloceankubernetescluster.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05OPPDD\xaa\x02IOrg.ProjectPlanton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02NOrg::ProjectPlanton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_stack_outputs_proto_rawDescOnce sync.Once

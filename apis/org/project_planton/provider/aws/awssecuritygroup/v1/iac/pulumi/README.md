@@ -38,7 +38,7 @@ definition, and Protobuf-driven validations.
 ## Installation
 
 1. **ProjectPlanton CLI**  
-   Install the [ProjectPlanton CLI](https://github.com/project-planton/project-planton) to manage manifests, validate
+   Install the [ProjectPlanton CLI](https://github.com/plantonhq/project-planton) to manage manifests, validate
    configurations, and orchestrate deployments with Pulumi or Terraform.
 
 2. **AWS Credentials**  
@@ -200,7 +200,7 @@ definitions in the ProjectPlanton repository.
 
 - **[examples.md](./examples.md)**: Multiple sample manifests showcasing common inbound/outbound rules, advanced usage,
   and minimal configurations.
-- **[ProjectPlanton Guide](https://github.com/project-planton/project-planton/blob/main/docs/Guide.md)**: Explore
+- **[ProjectPlanton Guide](https://github.com/plantonhq/project-planton/blob/main/docs/Guide.md)**: Explore
   multi-cloud workflows, advanced CLI usage, and best practices.
 - **AWS Documentation
   **: [Amazon EC2 Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html)

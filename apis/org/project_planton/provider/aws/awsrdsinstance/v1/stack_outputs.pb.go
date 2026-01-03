@@ -133,8 +133,8 @@ const file_org_project_planton_provider_aws_awsrdsinstance_v1_stack_outputs_prot
 	"\x11rds_instance_port\x18\x04 \x01(\x05R\x0frdsInstancePort\x12(\n" +
 	"\x10rds_subnet_group\x18\x05 \x01(\tR\x0erdsSubnetGroup\x12,\n" +
 	"\x12rds_security_group\x18\x06 \x01(\tR\x10rdsSecurityGroup\x12.\n" +
-	"\x13rds_parameter_group\x18\a \x01(\tR\x11rdsParameterGroupB\xab\x03\n" +
-	"6com.org.project_planton.provider.aws.awsrdsinstance.v1B\x11StackOutputsProtoP\x01Zsgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsrdsinstance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
+	"\x13rds_parameter_group\x18\a \x01(\tR\x11rdsParameterGroupB\xa5\x03\n" +
+	"6com.org.project_planton.provider.aws.awsrdsinstance.v1B\x11StackOutputsProtoP\x01Zmgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05OPPAA\xaa\x021Org.ProjectPlanton.Provider.Aws.Awsrdsinstance.V1\xca\x021Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02=Org\\ProjectPlanton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x026Org::ProjectPlanton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_aws_awsrdsinstance_v1_stack_outputs_proto_rawDescOnce sync.Once

@@ -490,8 +490,8 @@ const file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDesc = ""
 	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\";\n" +
 	"\x13KubernetesSecretKey\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03key\x18\x02 \x01(\tR\x03keyB\xd3\x02\n" +
-	"+com.org.project_planton.provider.kubernetesB\x0fKubernetesProtoP\x01ZWgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
+	"\x03key\x18\x02 \x01(\tR\x03keyB\xcd\x02\n" +
+	"+com.org.project_planton.provider.kubernetesB\x0fKubernetesProtoP\x01ZQgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes\xa2\x02\x04OPPK\xaa\x02&Org.ProjectPlanton.Provider.Kubernetes\xca\x02&Org\\ProjectPlanton\\Provider\\Kubernetes\xe2\x022Org\\ProjectPlanton\\Provider\\Kubernetes\\GPBMetadata\xea\x02)Org::ProjectPlanton::Provider::Kubernetesb\x06proto3"
 
 var (
 	file_org_project_planton_provider_kubernetes_kubernetes_proto_rawDescOnce sync.Once

@@ -8,8 +8,8 @@ package gcpcertmanagercertv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
+	_ "github.com/plantonhq/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -199,8 +199,8 @@ const file_org_project_planton_provider_gcp_gcpcertmanagercert_v1_spec_proto_raw
 	"\x12_validation_method*1\n" +
 	"\x0fCertificateType\x12\v\n" +
 	"\aMANAGED\x10\x00\x12\x11\n" +
-	"\rLOAD_BALANCER\x10\x01B\xbf\x03\n" +
-	":com.org.project_planton.provider.gcp.gcpcertmanagercert.v1B\tSpecProtoP\x01Z{github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1;gcpcertmanagercertv1\xa2\x02\x05OPPGG\xaa\x025Org.ProjectPlanton.Provider.Gcp.Gcpcertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Gcp::Gcpcertmanagercert::V1b\x06proto3"
+	"\rLOAD_BALANCER\x10\x01B\xb9\x03\n" +
+	":com.org.project_planton.provider.gcp.gcpcertmanagercert.v1B\tSpecProtoP\x01Zugithub.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1;gcpcertmanagercertv1\xa2\x02\x05OPPGG\xaa\x025Org.ProjectPlanton.Provider.Gcp.Gcpcertmanagercert.V1\xca\x025Org\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpcertmanagercert\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Gcp::Gcpcertmanagercert::V1b\x06proto3"
 
 var (
 	file_org_project_planton_provider_gcp_gcpcertmanagercert_v1_spec_proto_rawDescOnce sync.Once
