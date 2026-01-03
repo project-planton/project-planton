@@ -356,7 +356,7 @@ spec:
 brew update && brew upgrade project-planton
 
 # Or fresh install
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Verify version
 project-planton version

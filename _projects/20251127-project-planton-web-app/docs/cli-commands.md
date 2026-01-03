@@ -33,7 +33,7 @@ The Project Planton web app provides a unified web interface for managing cloud 
 
 ```bash
 # Install CLI
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Initialize web app (pulls Docker image, creates volumes, configures CLI)
 project-planton webapp init

@@ -16,7 +16,7 @@ export default function Quickstart() {
   };
 
   const steps = [
-    { id: "install", title: "1. Install", code: "brew install project-planton/tap/project-planton" },
+    { id: "install", title: "1. Install", code: "brew install plantonhq/tap/project-planton" },
     {
       id: "manifest",
       title: "2. Create manifest with provisioner label",

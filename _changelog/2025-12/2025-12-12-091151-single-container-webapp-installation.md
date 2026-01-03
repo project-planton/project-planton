@@ -512,7 +512,7 @@ EOF
 docker-compose up -d
 
 # Step 5: Install CLI
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Step 6: Configure CLI
 planton config set backend-url http://localhost:50051
@@ -525,7 +525,7 @@ open http://localhost:3000
 After:
 ```bash
 # Step 1: Install CLI
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Step 2: Initialize and start
 planton webapp init
@@ -758,7 +758,7 @@ Comprehensive checklist created in `testing-summary.md`:
 
 ```bash
 # Install CLI via Homebrew
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Verify installation
 planton version
@@ -951,7 +951,7 @@ If you previously used docker-compose:
 docker-compose down
 
 # Install new CLI (if not already installed)
-brew upgrade project-planton/tap/project-planton
+brew upgrade plantonhq/tap/project-planton
 
 # Initialize new setup
 planton webapp init

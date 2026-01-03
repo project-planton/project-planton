@@ -643,13 +643,13 @@ tofu version
 
 ```bash
 # Install via Homebrew
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Verify installation
 project-planton version
 
 # If Homebrew tap not added:
-brew tap project-planton/tap
+brew tap plantonhq/tap
 brew install project-planton
 ```
 

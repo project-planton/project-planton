@@ -151,7 +151,7 @@ func formatUnsupportedResourceError(kindName string) error {
 	msg.WriteString(yellow("2. If the kind is correct, update your CLI to the latest version:\n\n"))
 	msg.WriteString("   " + green("brew update && brew upgrade project-planton") + "\n\n")
 	msg.WriteString("   Or if you haven't installed via Homebrew:\n\n")
-	msg.WriteString("   " + green("brew install project-planton/tap/project-planton") + "\n\n")
+	msg.WriteString("   " + green("brew install plantonhq/tap/project-planton") + "\n\n")
 	msg.WriteString("   Then verify:\n\n")
 	msg.WriteString("   " + green("project-planton version") + "\n\n")
 

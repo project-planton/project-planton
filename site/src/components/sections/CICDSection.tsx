@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install ProjectPlanton CLI
-        run: brew install project-planton/tap/project-planton
+        run: brew install plantonhq/tap/project-planton
 
       - name: Install Pulumi & OpenTofu
         run: |

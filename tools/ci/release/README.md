@@ -46,7 +46,7 @@ When you run `make release`, here's what happens:
 ### Install via Homebrew (macOS)
 
 ```bash
-brew install --cask project-planton/tap/project-planton
+brew install --cask plantonhq/tap/project-planton
 ```
 
 ### Install via Direct Download

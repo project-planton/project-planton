@@ -229,7 +229,7 @@ Resource Kind: PerconaServerMysqlOperators
 
    Or if you haven't installed via Homebrew:
 
-   brew install project-planton/tap/project-planton
+   brew install plantonhq/tap/project-planton
 
    Then verify:
 

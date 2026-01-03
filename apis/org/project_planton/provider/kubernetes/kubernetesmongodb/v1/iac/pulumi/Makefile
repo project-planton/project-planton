@@ -22,4 +22,4 @@ test:
 update-deps:
 	go get github.com/plantonhq/project-planton@latest
 	
-	go get github.com/project-planton/kubernetes-crd-pulumi-types
+	go get github.com/plantonhq/kubernetes-crd-pulumi-types

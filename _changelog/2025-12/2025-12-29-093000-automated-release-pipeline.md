@@ -102,7 +102,7 @@ Created `tap_migrations.json` for seamless migration from Formula to Cask:
 
 ```json
 {
-  "project-planton": "project-planton/tap/project-planton"
+  "project-planton": "plantonhq/tap/project-planton"
 }
 ```
 
@@ -119,7 +119,7 @@ Created `tap_migrations.json` for seamless migration from Formula to Cask:
 
 - **Windows support**: CLI now available for Windows (amd64/arm64)
 - **No security warnings**: macOS Gatekeeper quarantine auto-removed
-- **Easy installation**: `brew install --cask project-planton/tap/project-planton`
+- **Easy installation**: `brew install --cask plantonhq/tap/project-planton`
 - **GitHub Releases**: Direct downloads without cloud authentication
 
 ### For CI/CD
@@ -135,7 +135,7 @@ Created `tap_migrations.json` for seamless migration from Formula to Cask:
 | Before | After |
 |--------|-------|
 | GCS downloads | GitHub Releases |
-| Formula (`brew install project-planton/tap/project-planton`) | Cask (`brew install --cask project-planton/tap/project-planton`) |
+| Formula (`brew install plantonhq/tap/project-planton`) | Cask (`brew install --cask plantonhq/tap/project-planton`) |
 | Manual version argument | Auto-calculated via Python script |
 | Darwin + Linux only | Darwin + Linux + Windows |
 | Gatekeeper warnings | No warnings (quarantine removed) |

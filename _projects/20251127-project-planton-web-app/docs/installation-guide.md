@@ -62,7 +62,7 @@ docker info
 Install the Project Planton CLI using Homebrew:
 
 ```bash
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 ```
 
 Verify the installation:

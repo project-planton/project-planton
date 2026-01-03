@@ -158,7 +158,7 @@ The default modules are intentionally designed to be **Terraform-like** even whe
 
 Installation:
 ```bash
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 ```
 
 **What the CLI does:**
@@ -384,7 +384,7 @@ YAML Manifest → Parse → Unmarshal to Proto → Validate Rules → Deploy or 
 
 **Implementation:**
 - **Language:** Go
-- **Binary Distribution:** Homebrew (`brew install project-planton/tap/project-planton`)
+- **Binary Distribution:** Homebrew (`brew install plantonhq/tap/project-planton`)
 - **Configuration:** Environment variables and flags
 - **Module Caching:** `~/.project-planton/modules/` (Git-based)
 
@@ -1299,7 +1299,7 @@ jobs:
       
       - name: Install Project Planton
         run: |
-          brew install project-planton/tap/project-planton
+          brew install plantonhq/tap/project-planton
       
       - name: Validate Manifests
         run: |
@@ -1580,7 +1580,7 @@ Project Planton is a multi-cloud deployment framework that provides **consistenc
 
 **Getting Started:**
 ```bash
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 project-planton version
 ```
 

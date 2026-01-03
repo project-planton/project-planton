@@ -87,7 +87,7 @@ The default modules are intentionally designed to be **Terraform-like** even whe
 Installation:
 
 ```bash
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 ```
 
 **What the CLI does:**

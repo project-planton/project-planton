@@ -23,7 +23,7 @@ Before you begin, ensure you have the following installed:
 Install the ProjectPlanton CLI using Homebrew:
 
 ```bash
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 ```
 
 Verify the installation:

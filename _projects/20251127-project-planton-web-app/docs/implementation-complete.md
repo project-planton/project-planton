@@ -186,7 +186,7 @@ Unified Container (supervisord)
 ### Installation
 ```bash
 # Step 1: Install CLI
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Step 2: Initialize web app
 planton webapp init

@@ -29,7 +29,7 @@ An open-source multi-cloud deployment framework that brings Kubernetes-style con
 ### 1. Install the CLI
 
 ```bash
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 ```
 
 ### 2. Create a YAML Manifest

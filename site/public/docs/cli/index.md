@@ -23,7 +23,7 @@ The Project Planton CLI is your gateway to deploying infrastructure across any c
 
 ```bash
 # Install via Homebrew
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # Verify installation
 project-planton version
@@ -167,7 +167,7 @@ Comprehensive guide to managing infrastructure with OpenTofu/Terraform.
 
 ```bash
 # 1. Install CLI
-brew install project-planton/tap/project-planton
+brew install plantonhq/tap/project-planton
 
 # 2. Install IaC engine
 brew install pulumi        # For Pulumi

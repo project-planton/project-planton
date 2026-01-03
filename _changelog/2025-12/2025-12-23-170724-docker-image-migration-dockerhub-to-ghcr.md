@@ -367,7 +367,7 @@ These scripts remain in place during the migration period but are no longer the 
 **For CLI Users**:
 ```bash
 # 1. Update CLI to latest version (or rebuild from source)
-brew upgrade project-planton/tap/project-planton
+brew upgrade plantonhq/tap/project-planton
 
 # 2. Uninstall old webapp (if exists)
 planton webapp uninstall
