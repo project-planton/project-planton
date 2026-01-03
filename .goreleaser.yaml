@@ -37,13 +37,13 @@ checksum:
 
 release:
   github:
-    owner: project-planton
+    owner: plantonhq
     name: project-planton
 
 homebrew_casks:
   - name: project-planton
     repository:
-      owner: project-planton
+      owner: plantonhq
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     homepage: https://github.com/plantonhq/project-planton
@@ -63,14 +63,10 @@ homebrew_casks:
 
       Quick Start
 
-      1. Initialize a new project:
-         project-planton init
-
-      2. Check the version:
+      1. Check the version:
          project-planton version
 
-      3. Get help:
+      2. Get help:
          project-planton --help
 
       Documentation: https://github.com/plantonhq/project-planton
-
