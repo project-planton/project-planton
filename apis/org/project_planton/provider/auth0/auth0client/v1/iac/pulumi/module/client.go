@@ -1,6 +1,8 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-auth0/sdk/v3/go/auth0"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -264,4 +266,52 @@ func createClient(ctx *pulumi.Context, locals *Locals, provider *auth0.Provider)
 	}
 
 	return client, nil
+}
+
+// createClientGrants creates Auth0 client grants to authorize API access
+func createClientGrants(ctx *pulumi.Context, locals *Locals, provider *auth0.Provider, client *auth0.Client) error {
+	if len(locals.ApiGrants) == 0 {
+		return nil
+	}
+
+	for i, grant := range locals.ApiGrants {
+		if grant == nil || grant.Audience == "" {
+			continue
+		}
+
+		// Build scopes array
+		scopesArray := pulumi.StringArray{}
+		for _, scope := range grant.Scopes {
+			scopesArray = append(scopesArray, pulumi.String(scope))
+		}
+
+		// Build client grant arguments
+		grantArgs := &auth0.ClientGrantArgs{
+			ClientId: client.ClientId,
+			Audience: pulumi.String(grant.Audience),
+			Scopes:   scopesArray,
+		}
+
+		// Add organization_usage if specified
+		if grant.OrganizationUsage != "" {
+			grantArgs.OrganizationUsage = pulumi.String(grant.OrganizationUsage)
+		}
+
+		// Add allow_any_organization if set
+		if grant.AllowAnyOrganization {
+			grantArgs.AllowAnyOrganization = pulumi.Bool(grant.AllowAnyOrganization)
+		}
+
+		// Create the client grant resource
+		grantName := fmt.Sprintf("%s-grant-%d", locals.ClientName, i)
+		_, err := auth0.NewClientGrant(ctx, grantName, grantArgs,
+			pulumi.Provider(provider),
+			pulumi.DependsOn([]pulumi.Resource{client}),
+		)
+		if err != nil {
+			return errors.Wrapf(err, "failed to create Auth0 client grant %s for audience %s", grantName, grant.Audience)
+		}
+	}
+
+	return nil
 }

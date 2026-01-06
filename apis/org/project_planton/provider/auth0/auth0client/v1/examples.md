@@ -269,6 +269,81 @@ spec:
     - client_credentials
 ```
 
+### M2M with Auth0 Management API Access
+
+For services that need to look up users, manage connections, or perform other Management API operations:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: user-manager
+  org: my-organization
+  env: production
+spec:
+  application_type: non_interactive
+  description: Auth0 Management API access for user lookups
+  grant_types:
+    - client_credentials
+  api_grants:
+    - audience: "https://my-tenant.us.auth0.com/api/v2/"
+      scopes:
+        - read:users
+        - read:user_idp_tokens
+```
+
+### M2M with Custom API Access
+
+For backend services that need to call your custom APIs:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: backend-service
+  org: my-organization
+  env: production
+spec:
+  application_type: non_interactive
+  description: Backend service-to-service authentication
+  grant_types:
+    - client_credentials
+  api_grants:
+    - audience: "https://api.example.com/"
+      scopes:
+        - read:resources
+        - write:resources
+```
+
+### M2M with Multiple API Access
+
+For services that need access to both Management API and custom APIs:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: platform-admin-service
+  org: my-organization
+  env: production
+spec:
+  application_type: non_interactive
+  description: Platform admin service with multi-API access
+  grant_types:
+    - client_credentials
+  api_grants:
+    - audience: "https://my-tenant.us.auth0.com/api/v2/"
+      scopes:
+        - read:users
+        - update:users
+        - delete:users
+    - audience: "https://api.example.com/"
+      scopes:
+        - admin:resources
+  jwt_configuration:
+    lifetime_in_seconds: 3600  # 1 hour
+```
+
 ### M2M with Custom Token Lifetime
 
 ```yaml
@@ -452,5 +527,9 @@ Ensure the Machine-to-Machine application has the following permissions:
 - `update:clients`
 - `delete:clients`
 - `read:client_keys`
+- `create:client_grants`
+- `read:client_grants`
+- `update:client_grants`
+- `delete:client_grants`
 
 

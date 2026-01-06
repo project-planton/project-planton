@@ -117,4 +117,22 @@ resource "auth0_client" "this" {
   # }
 }
 
+# Auth0 Client Grants - Authorize API access for this client
+# Each grant authorizes the client to call a specific API with specified scopes.
+# Essential for M2M applications that need to access APIs.
+resource "auth0_client_grant" "api_grants" {
+  for_each = {
+    for idx, grant in local.api_grants : idx => grant
+    if grant.audience != null && grant.audience != ""
+  }
+
+  client_id = auth0_client.this.id
+  audience  = each.value.audience
+  scopes    = coalesce(each.value.scopes, [])
+
+  # Organization settings (optional)
+  organization_usage    = each.value.organization_usage
+  allow_any_organization = coalesce(each.value.allow_any_organization, false)
+}
+
 

@@ -41,6 +41,11 @@ func Resources(ctx *pulumi.Context, stackInput *auth0clientv1.Auth0ClientStackIn
 		return errors.Wrap(err, "failed to create Auth0 client")
 	}
 
+	// Create client grants to authorize API access
+	if err := createClientGrants(ctx, locals, provider, createdClient); err != nil {
+		return errors.Wrap(err, "failed to create Auth0 client grants")
+	}
+
 	// Export stack outputs
 	return exportOutputs(ctx, createdClient, locals)
 }

@@ -166,8 +166,31 @@ type Auth0ClientSpec struct {
 	// If empty, all connections are available.
 	// Specify connection IDs or names to restrict access.
 	EnabledConnections []string `protobuf:"bytes,28,rep,name=enabled_connections,json=enabledConnections,proto3" json:"enabled_connections,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// api_grants configures which APIs this client is authorized to access.
+	// For M2M applications using client_credentials grant, at least one API grant is typically required.
+	// Each entry creates an auth0_client_grant resource linking this client to an API.
+	//
+	// Without api_grants, an M2M application can authenticate but cannot access any APIs.
+	// This is different from grant_types which only defines which OAuth flows are allowed.
+	//
+	// Example - Authorize for Auth0 Management API:
+	//
+	//	api_grants:
+	//	  - audience: "https://your-tenant.us.auth0.com/api/v2/"
+	//	    scopes:
+	//	      - read:users
+	//	      - read:user_idp_tokens
+	//
+	// Example - Authorize for custom API:
+	//
+	//	api_grants:
+	//	  - audience: "https://api.example.com/"
+	//	    scopes:
+	//	      - read:resources
+	//	      - write:resources
+	ApiGrants     []*Auth0ClientApiGrant `protobuf:"bytes,29,rep,name=api_grants,json=apiGrants,proto3" json:"api_grants,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Auth0ClientSpec) Reset() {
@@ -392,6 +415,13 @@ func (x *Auth0ClientSpec) GetOidcBackchannelLogout() *Auth0OidcBackchannelLogout
 func (x *Auth0ClientSpec) GetEnabledConnections() []string {
 	if x != nil {
 		return x.EnabledConnections
+	}
+	return nil
+}
+
+func (x *Auth0ClientSpec) GetApiGrants() []*Auth0ClientApiGrant {
+	if x != nil {
+		return x.ApiGrants
 	}
 	return nil
 }
@@ -917,11 +947,106 @@ func (x *Auth0OidcBackchannelLogout) GetBackchannelLogoutUrls() []string {
 	return nil
 }
 
+// Auth0ClientApiGrant configures API access for this client.
+// Each grant authorizes the client to call a specific API with specified scopes.
+// Maps to the auth0_client_grant Terraform resource and auth0.ClientGrant Pulumi resource.
+//
+// This is essential for Machine-to-Machine (M2M) applications that need to be
+// authorized to access APIs (including the Auth0 Management API).
+type Auth0ClientApiGrant struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// audience is the API identifier (Resource Server identifier) the client is authorized to access.
+	// For Auth0 Management API: "https://{tenant}.{region}.auth0.com/api/v2/"
+	// For custom APIs: the identifier you configured when creating the API in Auth0
+	// Example: "https://api.example.com/", "api.planton.live"
+	Audience string `protobuf:"bytes,1,opt,name=audience,proto3" json:"audience,omitempty"`
+	// scopes are the permissions granted for this API.
+	// For Management API, common scopes include:
+	//   - read:users, read:user_idp_tokens, create:users, update:users, delete:users
+	//   - read:clients, update:clients, delete:clients
+	//   - read:connections, update:connections
+	//
+	// For custom APIs: the scopes you defined when creating the API in Auth0.
+	// If empty, the client gets access to the API with no specific scopes
+	// (valid for APIs that don't use scope-based authorization).
+	Scopes []string `protobuf:"bytes,2,rep,name=scopes,proto3" json:"scopes,omitempty"`
+	// allow_any_organization determines if any organization can be used with this grant.
+	// If false (default), the grant must be explicitly assigned to desired organizations.
+	// Only relevant when using Auth0 Organizations feature.
+	AllowAnyOrganization bool `protobuf:"varint,3,opt,name=allow_any_organization,json=allowAnyOrganization,proto3" json:"allow_any_organization,omitempty"`
+	// organization_usage defines whether organizations can be used with client credentials
+	// exchanges for this grant.
+	// - "deny": Organizations cannot be used (default)
+	// - "allow": Organizations can be used optionally
+	// - "require": Organizations must be specified
+	OrganizationUsage string `protobuf:"bytes,4,opt,name=organization_usage,json=organizationUsage,proto3" json:"organization_usage,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *Auth0ClientApiGrant) Reset() {
+	*x = Auth0ClientApiGrant{}
+	mi := &file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Auth0ClientApiGrant) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Auth0ClientApiGrant) ProtoMessage() {}
+
+func (x *Auth0ClientApiGrant) ProtoReflect() protoreflect.Message {
+	mi := &file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Auth0ClientApiGrant.ProtoReflect.Descriptor instead.
+func (*Auth0ClientApiGrant) Descriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *Auth0ClientApiGrant) GetAudience() string {
+	if x != nil {
+		return x.Audience
+	}
+	return ""
+}
+
+func (x *Auth0ClientApiGrant) GetScopes() []string {
+	if x != nil {
+		return x.Scopes
+	}
+	return nil
+}
+
+func (x *Auth0ClientApiGrant) GetAllowAnyOrganization() bool {
+	if x != nil {
+		return x.AllowAnyOrganization
+	}
+	return false
+}
+
+func (x *Auth0ClientApiGrant) GetOrganizationUsage() string {
+	if x != nil {
+		return x.OrganizationUsage
+	}
+	return ""
+}
+
 var File_org_project_planton_provider_auth0_auth0client_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/auth0/auth0client/v1/spec.proto\x121org.project_planton.provider.auth0.auth0client.v1\x1a\x1bbuf/validate/validate.proto\"\xf5\x0e\n" +
+	"<org/project_planton/provider/auth0/auth0client/v1/spec.proto\x121org.project_planton.provider.auth0.auth0client.v1\x1a\x1bbuf/validate/validate.proto\"\xdc\x0f\n" +
 	"\x0fAuth0ClientSpec\x12^\n" +
 	"\x10application_type\x18\x01 \x01(\tB3\xbaH0\xc8\x01\x01r+R\x06nativeR\x03spaR\vregular_webR\x0fnon_interactiveR\x0fapplicationType\x12*\n" +
 	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x8c\x01R\vdescription\x12\x19\n" +
@@ -953,7 +1078,9 @@ const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc 
 	"\x0eclient_aliases\x18\x19 \x03(\tR\rclientAliases\x12K\n" +
 	"#is_token_endpoint_ip_header_trusted\x18\x1a \x01(\bR\x1eisTokenEndpointIpHeaderTrusted\x12\x85\x01\n" +
 	"\x17oidc_backchannel_logout\x18\x1b \x01(\v2M.org.project_planton.provider.auth0.auth0client.v1.Auth0OidcBackchannelLogoutR\x15oidcBackchannelLogout\x12/\n" +
-	"\x13enabled_connections\x18\x1c \x03(\tR\x12enabledConnections\x1aA\n" +
+	"\x13enabled_connections\x18\x1c \x03(\tR\x12enabledConnections\x12e\n" +
+	"\n" +
+	"api_grants\x18\x1d \x03(\v2F.org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrantR\tapiGrants\x1aA\n" +
 	"\x13ClientMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd5\x02\n" +
@@ -988,7 +1115,12 @@ const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc 
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x122\n" +
 	"\x15app_bundle_identifier\x18\x02 \x01(\tR\x13appBundleIdentifier\"T\n" +
 	"\x1aAuth0OidcBackchannelLogout\x126\n" +
-	"\x17backchannel_logout_urls\x18\x01 \x03(\tR\x15backchannelLogoutUrlsB\x94\x03\n" +
+	"\x17backchannel_logout_urls\x18\x01 \x03(\tR\x15backchannelLogoutUrls\"\xd5\x01\n" +
+	"\x13Auth0ClientApiGrant\x12\"\n" +
+	"\baudience\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\baudience\x12\x16\n" +
+	"\x06scopes\x18\x02 \x03(\tR\x06scopes\x124\n" +
+	"\x16allow_any_organization\x18\x03 \x01(\bR\x14allowAnyOrganization\x12L\n" +
+	"\x12organization_usage\x18\x04 \x01(\tB\x1d\xbaH\x1ar\x18R\x00R\x04denyR\x05allowR\arequireR\x11organizationUsageB\x94\x03\n" +
 	"5com.org.project_planton.provider.auth0.auth0client.v1B\tSpecProtoP\x01Zigithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1;auth0clientv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Auth0.Auth0client.V1\xca\x020Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Auth0\\Auth0client\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Auth0::Auth0client::V1b\x06proto3"
 
 var (
@@ -1003,7 +1135,7 @@ func file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDescGZ
 	return file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_goTypes = []any{
 	(*Auth0ClientSpec)(nil),                // 0: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec
 	(*Auth0JwtConfiguration)(nil),          // 1: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration
@@ -1014,26 +1146,28 @@ var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_goTypes = 
 	(*Auth0MobileAndroid)(nil),             // 6: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileAndroid
 	(*Auth0MobileIos)(nil),                 // 7: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileIos
 	(*Auth0OidcBackchannelLogout)(nil),     // 8: org.project_planton.provider.auth0.auth0client.v1.Auth0OidcBackchannelLogout
-	nil,                                    // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntry
-	nil,                                    // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
+	(*Auth0ClientApiGrant)(nil),            // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrant
+	nil,                                    // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntry
+	nil,                                    // 11: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
 }
 var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_depIdxs = []int32{
 	1,  // 0: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.jwt_configuration:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration
 	2,  // 1: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.refresh_token:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0RefreshTokenConfiguration
 	3,  // 2: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.native_social_login:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin
 	5,  // 3: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.mobile:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration
-	9,  // 4: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.client_metadata:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntry
+	10, // 4: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.client_metadata:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntry
 	8,  // 5: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.oidc_backchannel_logout:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0OidcBackchannelLogout
-	10, // 6: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.scopes:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
-	4,  // 7: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.apple:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
-	4,  // 8: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.facebook:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
-	6,  // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.android:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileAndroid
-	7,  // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.ios:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileIos
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	9,  // 6: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.api_grants:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrant
+	11, // 7: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.scopes:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
+	4,  // 8: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.apple:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
+	4,  // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.facebook:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
+	6,  // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.android:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileAndroid
+	7,  // 11: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.ios:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileIos
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_init() }
@@ -1047,7 +1181,7 @@ func file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

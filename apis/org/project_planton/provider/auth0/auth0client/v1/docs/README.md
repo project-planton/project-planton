@@ -129,6 +129,70 @@ Service -> Auth0 (credentials) -> Service (with token)
 
 **Not recommended** - Use only for legacy system migration.
 
+## API Grants (Client Grants)
+
+### Understanding Grant Types vs API Grants
+
+These are **different concepts** in Auth0:
+
+| Concept | What it does | Field in Auth0ClientSpec |
+|---------|--------------|--------------------------|
+| **`grant_types`** | Which OAuth flows the client can use (e.g., `authorization_code`, `client_credentials`) | `grant_types` |
+| **`api_grants`** | Which APIs the client is authorized to access and with what scopes | `api_grants` |
+
+**Example:** An M2M application needs:
+- `grant_types: ["client_credentials"]` — to use client credentials flow
+- An **api_grant** — to actually call an API with specific scopes
+
+Without the API grant, the M2M app exists but can't call any APIs.
+
+### Configuring API Grants
+
+Each API grant authorizes the client to call a specific API (Resource Server) with specified permissions:
+
+```yaml
+api_grants:
+  - audience: "https://api.example.com/"
+    scopes:
+      - read:resources
+      - write:resources
+```
+
+**For Auth0 Management API access:**
+
+```yaml
+api_grants:
+  - audience: "https://your-tenant.us.auth0.com/api/v2/"
+    scopes:
+      - read:users
+      - read:user_idp_tokens
+      - update:users
+```
+
+### Common Management API Scopes
+
+| Scope | Description |
+|-------|-------------|
+| `read:users` | Read user profiles |
+| `read:user_idp_tokens` | Read identity provider tokens |
+| `create:users` | Create new users |
+| `update:users` | Update user profiles |
+| `delete:users` | Delete users |
+| `read:clients` | Read client/application details |
+| `update:clients` | Update clients |
+| `read:connections` | Read connection configuration |
+
+### Organization Support in API Grants
+
+When using Auth0 Organizations with M2M applications:
+
+- `organization_usage: "deny"` - Organizations cannot be used (default)
+- `organization_usage: "allow"` - Organizations can be used optionally
+- `organization_usage: "require"` - Organizations must be specified
+
+- `allow_any_organization: true` - Any organization can use this grant
+- `allow_any_organization: false` - Must explicitly assign to organizations (default)
+
 ## Token Configuration
 
 ### JWT Configuration
@@ -213,17 +277,16 @@ Based on research, the following features cover 80% of use cases:
 6. Organization support
 7. Cross-origin authentication
 8. OIDC backchannel logout
+9. API grants (client grants for API access authorization)
 
 **Out of Scope (20% edge cases):**
 1. Custom database action scripts
 2. Addons (SAML, WS-Fed configuration)
-3. Client grants management
-4. Resource server (API) configuration
-5. Custom token storage
+3. Resource server (API) configuration
+4. Custom token storage
 
 **Rationale:**
 - Addons are better managed separately
-- Client grants are API-specific
 - Resource servers are a separate concept
 - Custom scripts require runtime
 

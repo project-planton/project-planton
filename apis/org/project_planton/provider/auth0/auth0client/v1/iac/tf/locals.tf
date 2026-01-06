@@ -89,6 +89,9 @@ locals {
   oidc_backchannel_logout = var.spec.oidc_backchannel_logout != null ? {
     backchannel_logout_urls = coalesce(var.spec.oidc_backchannel_logout.backchannel_logout_urls, [])
   } : null
+
+  # API grants for authorizing API access
+  api_grants = coalesce(var.spec.api_grants, [])
 }
 
 
