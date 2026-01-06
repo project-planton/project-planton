@@ -2,19 +2,19 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	auth0clientv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1"
+	auth0eventstreamv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0eventstream/v1"
 	"github.com/pulumi/pulumi-auth0/sdk/v3/go/auth0"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates an Auth0 Client (Application) with all configured parameters
-func Resources(ctx *pulumi.Context, stackInput *auth0clientv1.Auth0ClientStackInput) error {
+// Resources creates an Auth0 Event Stream with all configured parameters
+func Resources(ctx *pulumi.Context, stackInput *auth0eventstreamv1.Auth0EventStreamStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 
 	// Setup Auth0 provider with credentials from provider config
 	var provider *auth0.Provider
 	var err error
-	providerConfig := stackInput.ProviderConfig
+	providerConfig := stackInput.Auth0ProviderConfig
 
 	if providerConfig == nil {
 		// Use default provider (assumes credentials from environment variables)
@@ -35,17 +35,12 @@ func Resources(ctx *pulumi.Context, stackInput *auth0clientv1.Auth0ClientStackIn
 		}
 	}
 
-	// Create the Auth0 client
-	createdClient, err := createClient(ctx, locals, provider)
+	// Create the Auth0 event stream
+	createdEventStream, err := createEventStream(ctx, locals, provider)
 	if err != nil {
-		return errors.Wrap(err, "failed to create Auth0 client")
-	}
-
-	// Create client grants to authorize API access
-	if err := createClientGrants(ctx, locals, provider, createdClient); err != nil {
-		return errors.Wrap(err, "failed to create Auth0 client grants")
+		return errors.Wrap(err, "failed to create Auth0 event stream")
 	}
 
 	// Export stack outputs
-	return exportOutputs(ctx, createdClient, locals)
+	return exportOutputs(ctx, createdEventStream, locals)
 }

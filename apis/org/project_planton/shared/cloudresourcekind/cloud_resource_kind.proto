@@ -702,4 +702,9 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "a0cli"
   }];
+  Auth0EventStream = 2102 [(kind_meta) = {
+    provider: auth0
+    version: v1
+    id_prefix: "a0es"
+  }];
 }

@@ -15,6 +15,7 @@ import (
 	mongodbatlasv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/atlas/mongodbatlas/v1"
 	auth0clientv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0client/v1"
 	auth0connectionv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0connection/v1"
+	auth0eventstreamv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0eventstream/v1"
 	awsalbv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsalb/v1"
 	awscertmanagercertv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awscertmanagercert/v1"
 	awsclientvpnv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/aws/awsclientvpn/v1"
@@ -163,8 +164,9 @@ var ProviderAtlasMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 }
 
 var ProviderAuth0Map = map[cloudresourcekind.CloudResourceKind]proto.Message{
-	cloudresourcekind.CloudResourceKind_Auth0Client:     &auth0clientv1.Auth0Client{},
-	cloudresourcekind.CloudResourceKind_Auth0Connection: &auth0connectionv1.Auth0Connection{},
+	cloudresourcekind.CloudResourceKind_Auth0Client:      &auth0clientv1.Auth0Client{},
+	cloudresourcekind.CloudResourceKind_Auth0Connection:  &auth0connectionv1.Auth0Connection{},
+	cloudresourcekind.CloudResourceKind_Auth0EventStream: &auth0eventstreamv1.Auth0EventStream{},
 }
 
 var ProviderAwsMap = map[cloudresourcekind.CloudResourceKind]proto.Message{

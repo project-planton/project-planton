@@ -63,6 +63,9 @@ type Locals struct {
 	IsTokenEndpointIpHeaderTrusted bool
 	OidcBackchannelLogout          *auth0clientv1.Auth0OidcBackchannelLogout
 	EnabledConnections             []string
+
+	// API Grants for authorizing API access
+	ApiGrants []*auth0clientv1.Auth0ClientApiGrant
 }
 
 // initializeLocals creates and populates the Locals struct from stack input
@@ -129,6 +132,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *auth0clientv1.Auth0Client
 	locals.IsTokenEndpointIpHeaderTrusted = spec.IsTokenEndpointIpHeaderTrusted
 	locals.OidcBackchannelLogout = spec.OidcBackchannelLogout
 	locals.EnabledConnections = spec.EnabledConnections
+
+	// API Grants
+	locals.ApiGrants = spec.ApiGrants
 
 	return locals
 }

@@ -198,6 +198,28 @@ message Auth0ClientSpec {
   // If empty, all connections are available.
   // Specify connection IDs or names to restrict access.
   repeated string enabled_connections = 28;
+
+  // api_grants configures which APIs this client is authorized to access.
+  // For M2M applications using client_credentials grant, at least one API grant is typically required.
+  // Each entry creates an auth0_client_grant resource linking this client to an API.
+  //
+  // Without api_grants, an M2M application can authenticate but cannot access any APIs.
+  // This is different from grant_types which only defines which OAuth flows are allowed.
+  //
+  // Example - Authorize for Auth0 Management API:
+  //   api_grants:
+  //     - audience: "https://your-tenant.us.auth0.com/api/v2/"
+  //       scopes:
+  //         - read:users
+  //         - read:user_idp_tokens
+  //
+  // Example - Authorize for custom API:
+  //   api_grants:
+  //     - audience: "https://api.example.com/"
+  //       scopes:
+  //         - read:resources
+  //         - write:resources
+  repeated Auth0ClientApiGrant api_grants = 29;
 }
 
 // Auth0JwtConfiguration configures JWT token settings for the application.
@@ -343,4 +365,47 @@ message Auth0OidcBackchannelLogout {
   // backchannel_logout_urls are the URLs to receive logout tokens.
   // Auth0 will POST a logout token to these URLs on logout.
   repeated string backchannel_logout_urls = 1;
+}
+
+// Auth0ClientApiGrant configures API access for this client.
+// Each grant authorizes the client to call a specific API with specified scopes.
+// Maps to the auth0_client_grant Terraform resource and auth0.ClientGrant Pulumi resource.
+//
+// This is essential for Machine-to-Machine (M2M) applications that need to be
+// authorized to access APIs (including the Auth0 Management API).
+message Auth0ClientApiGrant {
+  // audience is the API identifier (Resource Server identifier) the client is authorized to access.
+  // For Auth0 Management API: "https://{tenant}.{region}.auth0.com/api/v2/"
+  // For custom APIs: the identifier you configured when creating the API in Auth0
+  // Example: "https://api.example.com/", "api.planton.live"
+  string audience = 1 [(buf.validate.field).required = true];
+
+  // scopes are the permissions granted for this API.
+  // For Management API, common scopes include:
+  //   - read:users, read:user_idp_tokens, create:users, update:users, delete:users
+  //   - read:clients, update:clients, delete:clients
+  //   - read:connections, update:connections
+  // For custom APIs: the scopes you defined when creating the API in Auth0.
+  // If empty, the client gets access to the API with no specific scopes
+  // (valid for APIs that don't use scope-based authorization).
+  repeated string scopes = 2;
+
+  // allow_any_organization determines if any organization can be used with this grant.
+  // If false (default), the grant must be explicitly assigned to desired organizations.
+  // Only relevant when using Auth0 Organizations feature.
+  bool allow_any_organization = 3;
+
+  // organization_usage defines whether organizations can be used with client credentials
+  // exchanges for this grant.
+  // - "deny": Organizations cannot be used (default)
+  // - "allow": Organizations can be used optionally
+  // - "require": Organizations must be specified
+  string organization_usage = 4 [(buf.validate.field).string = {
+    in: [
+      "",
+      "deny",
+      "allow",
+      "require"
+    ]
+  }];
 }

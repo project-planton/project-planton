@@ -158,6 +158,25 @@ variable "spec" {
 
     # enabled_connections limits which connections this app can use.
     enabled_connections = optional(list(string))
+
+    # api_grants configures which APIs this client is authorized to access.
+    # For M2M applications using client_credentials grant, at least one API grant is typically required.
+    # Each entry creates an auth0_client_grant resource linking this client to an API.
+    api_grants = optional(list(object({
+      # audience is the API identifier the client is authorized to access.
+      # Required. For Auth0 Management API: "https://{tenant}.{region}.auth0.com/api/v2/"
+      audience = string
+
+      # scopes are the permissions granted for this API.
+      scopes = optional(list(string))
+
+      # allow_any_organization determines if any organization can be used with this grant.
+      allow_any_organization = optional(bool, false)
+
+      # organization_usage defines whether organizations can be used with client credentials exchanges.
+      # One of: deny, allow, require
+      organization_usage = optional(string)
+    })))
   })
 }
 
