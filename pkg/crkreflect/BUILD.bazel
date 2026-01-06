@@ -30,6 +30,7 @@ go_library(
         "//apis/org/project_planton/provider/atlas/mongodbatlas/v1:mongodbatlas",
         "//apis/org/project_planton/provider/auth0/auth0client/v1:auth0client",
         "//apis/org/project_planton/provider/auth0/auth0connection/v1:auth0connection",
+        "//apis/org/project_planton/provider/auth0/auth0eventstream/v1:auth0eventstream",
         "//apis/org/project_planton/provider/aws/awsalb/v1:awsalb",
         "//apis/org/project_planton/provider/aws/awscertmanagercert/v1:awscertmanagercert",
         "//apis/org/project_planton/provider/aws/awsclientvpn/v1:awsclientvpn",
