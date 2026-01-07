@@ -1,6 +1,8 @@
-ProjectPlanton website (Next.js)
+# ProjectPlanton Website
 
-This is the migrated Next.js App Router project for the `site` Vite app.
+<!-- Auto-release test: Website change triggers v{semver}-website-{YYYYMMDD}.{N} tag format -->
+
+Next.js App Router project for the project-planton.org documentation website.
 
 Key packages:
 
