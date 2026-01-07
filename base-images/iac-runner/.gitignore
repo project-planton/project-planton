@@ -1,6 +1,2 @@
-# Local simulation artifacts
-.cache/
+# Local build artifacts
 merged-cache/
-Dockerfile.test
-simulation.log
-

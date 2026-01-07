@@ -132,49 +132,50 @@ const (
 	CloudResourceKind_GcpGkeWorkloadIdentityBinding CloudResourceKind = 615
 	CloudResourceKind_GcpCertManagerCert            CloudResourceKind = 616
 	// 800–999: Kubernetes resources
-	CloudResourceKind_KubernetesArgocd                  CloudResourceKind = 800
-	CloudResourceKind_KubernetesCronJob                 CloudResourceKind = 801
-	CloudResourceKind_KubernetesElasticsearch           CloudResourceKind = 802
-	CloudResourceKind_KubernetesGitlab                  CloudResourceKind = 803
-	CloudResourceKind_KubernetesGrafana                 CloudResourceKind = 804
-	CloudResourceKind_KubernetesHelmRelease             CloudResourceKind = 805
-	CloudResourceKind_KubernetesJenkins                 CloudResourceKind = 806
-	CloudResourceKind_KubernetesKafka                   CloudResourceKind = 807
-	CloudResourceKind_KubernetesKeycloak                CloudResourceKind = 808
-	CloudResourceKind_KubernetesLocust                  CloudResourceKind = 809
-	CloudResourceKind_KubernetesDeployment              CloudResourceKind = 810
-	CloudResourceKind_KubernetesMongodb                 CloudResourceKind = 811
-	CloudResourceKind_KubernetesNeo4j                   CloudResourceKind = 812
-	CloudResourceKind_KubernetesOpenFga                 CloudResourceKind = 813
-	CloudResourceKind_KubernetesPostgres                CloudResourceKind = 814
-	CloudResourceKind_KubernetesPrometheus              CloudResourceKind = 815
-	CloudResourceKind_KubernetesRedis                   CloudResourceKind = 816
-	CloudResourceKind_KubernetesSignoz                  CloudResourceKind = 817
-	CloudResourceKind_KubernetesSolr                    CloudResourceKind = 818
-	CloudResourceKind_KubernetesTemporal                CloudResourceKind = 819
-	CloudResourceKind_KubernetesNats                    CloudResourceKind = 820
-	CloudResourceKind_KubernetesCertManager             CloudResourceKind = 821
-	CloudResourceKind_KubernetesElasticOperator         CloudResourceKind = 822
-	CloudResourceKind_KubernetesExternalDns             CloudResourceKind = 823
-	CloudResourceKind_KubernetesIngressNginx            CloudResourceKind = 824
-	CloudResourceKind_KubernetesIstio                   CloudResourceKind = 825
-	CloudResourceKind_KubernetesStrimziKafkaOperator    CloudResourceKind = 826
-	CloudResourceKind_KubernetesZalandoPostgresOperator CloudResourceKind = 827
-	CloudResourceKind_KubernetesSolrOperator            CloudResourceKind = 828
-	CloudResourceKind_KubernetesExternalSecrets         CloudResourceKind = 829
-	CloudResourceKind_KubernetesClickHouse              CloudResourceKind = 830
-	CloudResourceKind_KubernetesAltinityOperator        CloudResourceKind = 831
-	CloudResourceKind_KubernetesPerconaPostgresOperator CloudResourceKind = 832
-	CloudResourceKind_KubernetesPerconaMongoOperator    CloudResourceKind = 833
-	CloudResourceKind_KubernetesPerconaMysqlOperator    CloudResourceKind = 834
-	CloudResourceKind_KubernetesHarbor                  CloudResourceKind = 835
-	CloudResourceKind_KubernetesNamespace               CloudResourceKind = 836
-	CloudResourceKind_KubernetesGatewayApiCrds          CloudResourceKind = 837
-	CloudResourceKind_KubernetesTektonOperator          CloudResourceKind = 838
-	CloudResourceKind_KubernetesTekton                  CloudResourceKind = 839
-	CloudResourceKind_KubernetesStatefulSet             CloudResourceKind = 840
-	CloudResourceKind_KubernetesDaemonSet               CloudResourceKind = 841
-	CloudResourceKind_KubernetesManifest                CloudResourceKind = 842
+	CloudResourceKind_KubernetesArgocd                      CloudResourceKind = 800
+	CloudResourceKind_KubernetesCronJob                     CloudResourceKind = 801
+	CloudResourceKind_KubernetesElasticsearch               CloudResourceKind = 802
+	CloudResourceKind_KubernetesGitlab                      CloudResourceKind = 803
+	CloudResourceKind_KubernetesGrafana                     CloudResourceKind = 804
+	CloudResourceKind_KubernetesHelmRelease                 CloudResourceKind = 805
+	CloudResourceKind_KubernetesJenkins                     CloudResourceKind = 806
+	CloudResourceKind_KubernetesKafka                       CloudResourceKind = 807
+	CloudResourceKind_KubernetesKeycloak                    CloudResourceKind = 808
+	CloudResourceKind_KubernetesLocust                      CloudResourceKind = 809
+	CloudResourceKind_KubernetesDeployment                  CloudResourceKind = 810
+	CloudResourceKind_KubernetesMongodb                     CloudResourceKind = 811
+	CloudResourceKind_KubernetesNeo4j                       CloudResourceKind = 812
+	CloudResourceKind_KubernetesOpenFga                     CloudResourceKind = 813
+	CloudResourceKind_KubernetesPostgres                    CloudResourceKind = 814
+	CloudResourceKind_KubernetesPrometheus                  CloudResourceKind = 815
+	CloudResourceKind_KubernetesRedis                       CloudResourceKind = 816
+	CloudResourceKind_KubernetesSignoz                      CloudResourceKind = 817
+	CloudResourceKind_KubernetesSolr                        CloudResourceKind = 818
+	CloudResourceKind_KubernetesTemporal                    CloudResourceKind = 819
+	CloudResourceKind_KubernetesNats                        CloudResourceKind = 820
+	CloudResourceKind_KubernetesCertManager                 CloudResourceKind = 821
+	CloudResourceKind_KubernetesElasticOperator             CloudResourceKind = 822
+	CloudResourceKind_KubernetesExternalDns                 CloudResourceKind = 823
+	CloudResourceKind_KubernetesIngressNginx                CloudResourceKind = 824
+	CloudResourceKind_KubernetesIstio                       CloudResourceKind = 825
+	CloudResourceKind_KubernetesStrimziKafkaOperator        CloudResourceKind = 826
+	CloudResourceKind_KubernetesZalandoPostgresOperator     CloudResourceKind = 827
+	CloudResourceKind_KubernetesSolrOperator                CloudResourceKind = 828
+	CloudResourceKind_KubernetesExternalSecrets             CloudResourceKind = 829
+	CloudResourceKind_KubernetesClickHouse                  CloudResourceKind = 830
+	CloudResourceKind_KubernetesAltinityOperator            CloudResourceKind = 831
+	CloudResourceKind_KubernetesPerconaPostgresOperator     CloudResourceKind = 832
+	CloudResourceKind_KubernetesPerconaMongoOperator        CloudResourceKind = 833
+	CloudResourceKind_KubernetesPerconaMysqlOperator        CloudResourceKind = 834
+	CloudResourceKind_KubernetesHarbor                      CloudResourceKind = 835
+	CloudResourceKind_KubernetesNamespace                   CloudResourceKind = 836
+	CloudResourceKind_KubernetesGatewayApiCrds              CloudResourceKind = 837
+	CloudResourceKind_KubernetesTektonOperator              CloudResourceKind = 838
+	CloudResourceKind_KubernetesTekton                      CloudResourceKind = 839
+	CloudResourceKind_KubernetesStatefulSet                 CloudResourceKind = 840
+	CloudResourceKind_KubernetesDaemonSet                   CloudResourceKind = 841
+	CloudResourceKind_KubernetesManifest                    CloudResourceKind = 842
+	CloudResourceKind_KubernetesGhaRunnerScaleSetController CloudResourceKind = 843
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -315,6 +316,7 @@ var (
 		840:  "KubernetesStatefulSet",
 		841:  "KubernetesDaemonSet",
 		842:  "KubernetesManifest",
+		843:  "KubernetesGhaRunnerScaleSetController",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
 		1202: "DigitalOceanContainerRegistry",
@@ -352,137 +354,138 @@ var (
 		2102: "Auth0EventStream",
 	}
 	CloudResourceKind_value = map[string]int32{
-		"unspecified":                          0,
-		"TestCloudResourceOne":                 1,
-		"TestCloudResourceTwo":                 2,
-		"TestCloudResourceThree":               3,
-		"ConfluentKafka":                       50,
-		"MongodbAtlas":                         51,
-		"SnowflakeDatabase":                    52,
-		"AwsAlb":                               200,
-		"AwsCertManagerCert":                   201,
-		"AwsCloudFront":                        202,
-		"AwsDynamodb":                          203,
-		"AwsEcrRepo":                           204,
-		"AwsEcsCluster":                        205,
-		"AwsEcsService":                        206,
-		"AwsEksCluster":                        207,
-		"AwsIamRole":                           208,
-		"AwsLambda":                            209,
-		"AwsRdsCluster":                        210,
-		"AwsRdsInstance":                       211,
-		"AwsRoute53Zone":                       212,
-		"AwsS3Bucket":                          213,
-		"AwsSecretsManager":                    214,
-		"AwsSecurityGroup":                     215,
-		"AwsVpc":                               216,
-		"AwsEksNodeGroup":                      217,
-		"AwsIamUser":                           218,
-		"AwsKmsKey":                            219,
-		"AwsEc2Instance":                       220,
-		"AwsClientVpn":                         221,
-		"AzureAksCluster":                      400,
-		"AzureAksNodePool":                     401,
-		"AzureContainerRegistry":               402,
-		"AzureDnsZone":                         403,
-		"AzureKeyVault":                        404,
-		"AzureVpc":                             405,
-		"AzureNatGateway":                      406,
-		"GcpArtifactRegistryRepo":              600,
-		"GcpCloudCdn":                          601,
-		"GcpCloudFunction":                     602,
-		"GcpCloudRun":                          603,
-		"GcpCloudSql":                          604,
-		"GcpDnsZone":                           605,
-		"GcpGcsBucket":                         606,
-		"GcpGkeCluster":                        607,
-		"GcpSecretsManager":                    608,
-		"GcpProject":                           609,
-		"GcpVpc":                               610,
-		"GcpSubnetwork":                        611,
-		"GcpRouterNat":                         612,
-		"GcpGkeNodePool":                       613,
-		"GcpServiceAccount":                    614,
-		"GcpGkeWorkloadIdentityBinding":        615,
-		"GcpCertManagerCert":                   616,
-		"KubernetesArgocd":                     800,
-		"KubernetesCronJob":                    801,
-		"KubernetesElasticsearch":              802,
-		"KubernetesGitlab":                     803,
-		"KubernetesGrafana":                    804,
-		"KubernetesHelmRelease":                805,
-		"KubernetesJenkins":                    806,
-		"KubernetesKafka":                      807,
-		"KubernetesKeycloak":                   808,
-		"KubernetesLocust":                     809,
-		"KubernetesDeployment":                 810,
-		"KubernetesMongodb":                    811,
-		"KubernetesNeo4j":                      812,
-		"KubernetesOpenFga":                    813,
-		"KubernetesPostgres":                   814,
-		"KubernetesPrometheus":                 815,
-		"KubernetesRedis":                      816,
-		"KubernetesSignoz":                     817,
-		"KubernetesSolr":                       818,
-		"KubernetesTemporal":                   819,
-		"KubernetesNats":                       820,
-		"KubernetesCertManager":                821,
-		"KubernetesElasticOperator":            822,
-		"KubernetesExternalDns":                823,
-		"KubernetesIngressNginx":               824,
-		"KubernetesIstio":                      825,
-		"KubernetesStrimziKafkaOperator":       826,
-		"KubernetesZalandoPostgresOperator":    827,
-		"KubernetesSolrOperator":               828,
-		"KubernetesExternalSecrets":            829,
-		"KubernetesClickHouse":                 830,
-		"KubernetesAltinityOperator":           831,
-		"KubernetesPerconaPostgresOperator":    832,
-		"KubernetesPerconaMongoOperator":       833,
-		"KubernetesPerconaMysqlOperator":       834,
-		"KubernetesHarbor":                     835,
-		"KubernetesNamespace":                  836,
-		"KubernetesGatewayApiCrds":             837,
-		"KubernetesTektonOperator":             838,
-		"KubernetesTekton":                     839,
-		"KubernetesStatefulSet":                840,
-		"KubernetesDaemonSet":                  841,
-		"KubernetesManifest":                   842,
-		"DigitalOceanAppPlatformService":       1200,
-		"DigitalOceanBucket":                   1201,
-		"DigitalOceanContainerRegistry":        1202,
-		"DigitalOceanDatabaseCluster":          1203,
-		"DigitalOceanDnsZone":                  1204,
-		"DigitalOceanDroplet":                  1205,
-		"DigitalOceanFirewall":                 1206,
-		"DigitalOceanFunction":                 1207,
-		"DigitalOceanKubernetesCluster":        1208,
-		"DigitalOceanKubernetesNodePool":       1209,
-		"DigitalOceanLoadBalancer":             1210,
-		"DigitalOceanVolume":                   1211,
-		"DigitalOceanVpc":                      1212,
-		"DigitalOceanCertificate":              1213,
-		"CivoBucket":                           1500,
-		"CivoCertificate":                      1501,
-		"CivoComputeInstance":                  1502,
-		"CivoDatabase":                         1503,
-		"CivoDnsZone":                          1504,
-		"CivoFirewall":                         1505,
-		"CivoIpAddress":                        1506,
-		"CivoKubernetesCluster":                1507,
-		"CivoKubernetesNodePool":               1508,
-		"CivoVolume":                           1509,
-		"CivoVpc":                              1510,
-		"CloudflareDnsZone":                    1800,
-		"CloudflareKvNamespace":                1801,
-		"CloudflareR2Bucket":                   1802,
-		"CloudflareWorker":                     1803,
-		"CloudflareLoadBalancer":               1804,
-		"CloudflareD1Database":                 1805,
-		"CloudflareZeroTrustAccessApplication": 1806,
-		"Auth0Connection":                      2100,
-		"Auth0Client":                          2101,
-		"Auth0EventStream":                     2102,
+		"unspecified":                           0,
+		"TestCloudResourceOne":                  1,
+		"TestCloudResourceTwo":                  2,
+		"TestCloudResourceThree":                3,
+		"ConfluentKafka":                        50,
+		"MongodbAtlas":                          51,
+		"SnowflakeDatabase":                     52,
+		"AwsAlb":                                200,
+		"AwsCertManagerCert":                    201,
+		"AwsCloudFront":                         202,
+		"AwsDynamodb":                           203,
+		"AwsEcrRepo":                            204,
+		"AwsEcsCluster":                         205,
+		"AwsEcsService":                         206,
+		"AwsEksCluster":                         207,
+		"AwsIamRole":                            208,
+		"AwsLambda":                             209,
+		"AwsRdsCluster":                         210,
+		"AwsRdsInstance":                        211,
+		"AwsRoute53Zone":                        212,
+		"AwsS3Bucket":                           213,
+		"AwsSecretsManager":                     214,
+		"AwsSecurityGroup":                      215,
+		"AwsVpc":                                216,
+		"AwsEksNodeGroup":                       217,
+		"AwsIamUser":                            218,
+		"AwsKmsKey":                             219,
+		"AwsEc2Instance":                        220,
+		"AwsClientVpn":                          221,
+		"AzureAksCluster":                       400,
+		"AzureAksNodePool":                      401,
+		"AzureContainerRegistry":                402,
+		"AzureDnsZone":                          403,
+		"AzureKeyVault":                         404,
+		"AzureVpc":                              405,
+		"AzureNatGateway":                       406,
+		"GcpArtifactRegistryRepo":               600,
+		"GcpCloudCdn":                           601,
+		"GcpCloudFunction":                      602,
+		"GcpCloudRun":                           603,
+		"GcpCloudSql":                           604,
+		"GcpDnsZone":                            605,
+		"GcpGcsBucket":                          606,
+		"GcpGkeCluster":                         607,
+		"GcpSecretsManager":                     608,
+		"GcpProject":                            609,
+		"GcpVpc":                                610,
+		"GcpSubnetwork":                         611,
+		"GcpRouterNat":                          612,
+		"GcpGkeNodePool":                        613,
+		"GcpServiceAccount":                     614,
+		"GcpGkeWorkloadIdentityBinding":         615,
+		"GcpCertManagerCert":                    616,
+		"KubernetesArgocd":                      800,
+		"KubernetesCronJob":                     801,
+		"KubernetesElasticsearch":               802,
+		"KubernetesGitlab":                      803,
+		"KubernetesGrafana":                     804,
+		"KubernetesHelmRelease":                 805,
+		"KubernetesJenkins":                     806,
+		"KubernetesKafka":                       807,
+		"KubernetesKeycloak":                    808,
+		"KubernetesLocust":                      809,
+		"KubernetesDeployment":                  810,
+		"KubernetesMongodb":                     811,
+		"KubernetesNeo4j":                       812,
+		"KubernetesOpenFga":                     813,
+		"KubernetesPostgres":                    814,
+		"KubernetesPrometheus":                  815,
+		"KubernetesRedis":                       816,
+		"KubernetesSignoz":                      817,
+		"KubernetesSolr":                        818,
+		"KubernetesTemporal":                    819,
+		"KubernetesNats":                        820,
+		"KubernetesCertManager":                 821,
+		"KubernetesElasticOperator":             822,
+		"KubernetesExternalDns":                 823,
+		"KubernetesIngressNginx":                824,
+		"KubernetesIstio":                       825,
+		"KubernetesStrimziKafkaOperator":        826,
+		"KubernetesZalandoPostgresOperator":     827,
+		"KubernetesSolrOperator":                828,
+		"KubernetesExternalSecrets":             829,
+		"KubernetesClickHouse":                  830,
+		"KubernetesAltinityOperator":            831,
+		"KubernetesPerconaPostgresOperator":     832,
+		"KubernetesPerconaMongoOperator":        833,
+		"KubernetesPerconaMysqlOperator":        834,
+		"KubernetesHarbor":                      835,
+		"KubernetesNamespace":                   836,
+		"KubernetesGatewayApiCrds":              837,
+		"KubernetesTektonOperator":              838,
+		"KubernetesTekton":                      839,
+		"KubernetesStatefulSet":                 840,
+		"KubernetesDaemonSet":                   841,
+		"KubernetesManifest":                    842,
+		"KubernetesGhaRunnerScaleSetController": 843,
+		"DigitalOceanAppPlatformService":        1200,
+		"DigitalOceanBucket":                    1201,
+		"DigitalOceanContainerRegistry":         1202,
+		"DigitalOceanDatabaseCluster":           1203,
+		"DigitalOceanDnsZone":                   1204,
+		"DigitalOceanDroplet":                   1205,
+		"DigitalOceanFirewall":                  1206,
+		"DigitalOceanFunction":                  1207,
+		"DigitalOceanKubernetesCluster":         1208,
+		"DigitalOceanKubernetesNodePool":        1209,
+		"DigitalOceanLoadBalancer":              1210,
+		"DigitalOceanVolume":                    1211,
+		"DigitalOceanVpc":                       1212,
+		"DigitalOceanCertificate":               1213,
+		"CivoBucket":                            1500,
+		"CivoCertificate":                       1501,
+		"CivoComputeInstance":                   1502,
+		"CivoDatabase":                          1503,
+		"CivoDnsZone":                           1504,
+		"CivoFirewall":                          1505,
+		"CivoIpAddress":                         1506,
+		"CivoKubernetesCluster":                 1507,
+		"CivoKubernetesNodePool":                1508,
+		"CivoVolume":                            1509,
+		"CivoVpc":                               1510,
+		"CloudflareDnsZone":                     1800,
+		"CloudflareKvNamespace":                 1801,
+		"CloudflareR2Bucket":                    1802,
+		"CloudflareWorker":                      1803,
+		"CloudflareLoadBalancer":                1804,
+		"CloudflareD1Database":                  1805,
+		"CloudflareZeroTrustAccessApplication":  1806,
+		"Auth0Connection":                       2100,
+		"Auth0Client":                           2101,
+		"Auth0EventStream":                      2102,
 	}
 )
 
@@ -627,7 +630,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xfc*\n" +
+	"\x02v1\x10\x01*\xbd+\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -734,7 +737,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x10KubernetesTekton\x10\xc7\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8stktn\x12.\n" +
 	"\x15KubernetesStatefulSet\x10\xc8\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\x06k8ssts(\x01\x12)\n" +
 	"\x13KubernetesDaemonSet\x10\xc9\x06\x1a\x0f\xa2\xf7\x04\v\b\x13\x10\x01\"\x05k8sds\x12*\n" +
-	"\x12KubernetesManifest\x10\xca\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8smfst\x124\n" +
+	"\x12KubernetesManifest\x10\xca\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8smfst\x12?\n" +
+	"%KubernetesGhaRunnerScaleSetController\x10\xcb\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sgharsc\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05dobkt\x122\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x0e\xa2\xf7\x04\n" +
