@@ -1,3 +1,5 @@
+// Package project_planton provides the root command for the Project Planton CLI.
+// Auto-release test: CLI change triggers v{semver}.{YYYYMMDD}.{N} tag format.
 package project_planton
 
 import (
