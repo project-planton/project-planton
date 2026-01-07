@@ -15,6 +15,11 @@ on:
     tags:
       - 'iac-runner-base-v*'
 
+# Only one build at a time - PVC is ReadWriteOnce
+concurrency:
+  group: iac-runner-base-image
+  cancel-in-progress: false
+
 permissions:
   contents: read
   packages: write
