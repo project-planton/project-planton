@@ -1,0 +1,78 @@
+# =============================================================================
+# Pulumi Modules - Azure Provider
+# =============================================================================
+# Builds pre-compiled binaries for all Azure Pulumi deployment components.
+#
+# Trigger: Push a version tag (v*)
+#   Example: git tag v0.0.100 && git push origin v0.0.100
+# =============================================================================
+
+name: pulumi-modules-azure
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: pulumi-modules-azure-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-azure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: azureakscluster
+            path: apis/org/project_planton/provider/azure/azureakscluster/v1/iac/pulumi
+          - component: azureaksnodepool
+            path: apis/org/project_planton/provider/azure/azureaksnodepool/v1/iac/pulumi
+          - component: azurecontainerregistry
+            path: apis/org/project_planton/provider/azure/azurecontainerregistry/v1/iac/pulumi
+          - component: azurednszone
+            path: apis/org/project_planton/provider/azure/azurednszone/v1/iac/pulumi
+          - component: azurekeyvault
+            path: apis/org/project_planton/provider/azure/azurekeyvault/v1/iac/pulumi
+          - component: azurenatgateway
+            path: apis/org/project_planton/provider/azure/azurenatgateway/v1/iac/pulumi
+          - component: azurevpc
+            path: apis/org/project_planton/provider/azure/azurevpc/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/azure
+          
+          echo "Building: azure/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/azure/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/azure/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-azure-${{ matrix.component }}
+          path: binaries/
+          retention-days: 7
+          if-no-files-found: error

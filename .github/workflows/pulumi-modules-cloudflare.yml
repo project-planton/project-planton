@@ -1,0 +1,78 @@
+# =============================================================================
+# Pulumi Modules - Cloudflare Provider
+# =============================================================================
+# Builds pre-compiled binaries for all Cloudflare Pulumi deployment components.
+#
+# Trigger: Push a version tag (v*)
+#   Example: git tag v0.0.100 && git push origin v0.0.100
+# =============================================================================
+
+name: pulumi-modules-cloudflare
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: pulumi-modules-cloudflare-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-cloudflare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: cloudflared1database
+            path: apis/org/project_planton/provider/cloudflare/cloudflared1database/v1/iac/pulumi
+          - component: cloudflarednszone
+            path: apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1/iac/pulumi
+          - component: cloudflarekvnamespace
+            path: apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1/iac/pulumi
+          - component: cloudflareloadbalancer
+            path: apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/iac/pulumi
+          - component: cloudflarer2bucket
+            path: apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1/iac/pulumi
+          - component: cloudflareworker
+            path: apis/org/project_planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
+          - component: cloudflarezerotrustaccessapplication
+            path: apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/cloudflare
+          
+          echo "Building: cloudflare/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/cloudflare/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/cloudflare/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-cloudflare-${{ matrix.component }}
+          path: binaries/
+          retention-days: 7
+          if-no-files-found: error

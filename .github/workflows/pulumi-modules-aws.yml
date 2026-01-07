@@ -1,0 +1,108 @@
+# =============================================================================
+# Pulumi Modules - AWS Provider
+# =============================================================================
+# Builds pre-compiled binaries for all AWS Pulumi deployment components.
+#
+# Trigger: Push a version tag (v*)
+#   Example: git tag v0.0.100 && git push origin v0.0.100
+# =============================================================================
+
+name: pulumi-modules-aws
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: pulumi-modules-aws-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-aws:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: awsalb
+            path: apis/org/project_planton/provider/aws/awsalb/v1/iac/pulumi
+          - component: awscertmanagercert
+            path: apis/org/project_planton/provider/aws/awscertmanagercert/v1/iac/pulumi
+          - component: awsclientvpn
+            path: apis/org/project_planton/provider/aws/awsclientvpn/v1/iac/pulumi
+          - component: awscloudfront
+            path: apis/org/project_planton/provider/aws/awscloudfront/v1/iac/pulumi
+          - component: awsdynamodb
+            path: apis/org/project_planton/provider/aws/awsdynamodb/v1/iac/pulumi
+          - component: awsec2instance
+            path: apis/org/project_planton/provider/aws/awsec2instance/v1/iac/pulumi
+          - component: awsecrrepo
+            path: apis/org/project_planton/provider/aws/awsecrrepo/v1/iac/pulumi
+          - component: awsecscluster
+            path: apis/org/project_planton/provider/aws/awsecscluster/v1/iac/pulumi
+          - component: awsecsservice
+            path: apis/org/project_planton/provider/aws/awsecsservice/v1/iac/pulumi
+          - component: awsekscluster
+            path: apis/org/project_planton/provider/aws/awsekscluster/v1/iac/pulumi
+          - component: awseksnodegroup
+            path: apis/org/project_planton/provider/aws/awseksnodegroup/v1/iac/pulumi
+          - component: awsiamrole
+            path: apis/org/project_planton/provider/aws/awsiamrole/v1/iac/pulumi
+          - component: awsiamuser
+            path: apis/org/project_planton/provider/aws/awsiamuser/v1/iac/pulumi
+          - component: awskmskey
+            path: apis/org/project_planton/provider/aws/awskmskey/v1/iac/pulumi
+          - component: awslambda
+            path: apis/org/project_planton/provider/aws/awslambda/v1/iac/pulumi
+          - component: awsrdscluster
+            path: apis/org/project_planton/provider/aws/awsrdscluster/v1/iac/pulumi
+          - component: awsrdsinstance
+            path: apis/org/project_planton/provider/aws/awsrdsinstance/v1/iac/pulumi
+          - component: awsroute53zone
+            path: apis/org/project_planton/provider/aws/awsroute53zone/v1/iac/pulumi
+          - component: awss3bucket
+            path: apis/org/project_planton/provider/aws/awss3bucket/v1/iac/pulumi
+          - component: awssecretsmanager
+            path: apis/org/project_planton/provider/aws/awssecretsmanager/v1/iac/pulumi
+          - component: awssecuritygroup
+            path: apis/org/project_planton/provider/aws/awssecuritygroup/v1/iac/pulumi
+          - component: awsvpc
+            path: apis/org/project_planton/provider/aws/awsvpc/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/aws
+          
+          echo "Building: aws/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/aws/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/aws/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-aws-${{ matrix.component }}
+          path: binaries/
+          retention-days: 7
+          if-no-files-found: error

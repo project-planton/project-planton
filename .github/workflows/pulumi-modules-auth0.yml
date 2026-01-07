@@ -1,0 +1,71 @@
+# =============================================================================
+# Pulumi Modules - Auth0 Provider
+# =============================================================================
+# Builds pre-compiled binaries for all Auth0 Pulumi deployment components.
+#
+# Trigger: Push a version tag (v*)
+#   Example: git tag v0.0.100 && git push origin v0.0.100
+# =============================================================================
+
+name: pulumi-modules-auth0
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: pulumi-modules-auth0-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-auth0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: auth0client
+            path: apis/org/project_planton/provider/auth0/auth0client/v1/iac/pulumi
+          - component: auth0connection
+            path: apis/org/project_planton/provider/auth0/auth0connection/v1/iac/pulumi
+          - component: auth0eventstream
+            path: apis/org/project_planton/provider/auth0/auth0eventstream/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/auth0
+          
+          echo "Building: auth0/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/auth0/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/auth0/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-auth0-${{ matrix.component }}
+          path: binaries/
+          retention-days: 7
+          if-no-files-found: error
+
