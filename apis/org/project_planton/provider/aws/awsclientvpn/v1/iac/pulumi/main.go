@@ -1,3 +1,5 @@
+// Package main provides the Pulumi program entrypoint for AWS Client VPN deployment.
+// Binary releases are gzip-compressed to reduce download size.
 package main
 
 import (

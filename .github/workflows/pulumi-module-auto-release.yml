@@ -4,7 +4,7 @@
 # Automatically detects changes in Pulumi module code, determines the next
 # date-based version, and creates a GitHub release with pre-built binaries.
 #
-# Version format: pulumi-module-{component}-{YYYYMMDD}.{N}
+# Version format: pulumi-{component}-{YYYYMMDD}.{N}
 #   - {component}: e.g., awsecsservice, gcpgkecluster
 #   - {YYYYMMDD}: Date of the release
 #   - {N}: Sequential number for same-day releases (0, 1, 2, ...)
@@ -123,7 +123,7 @@ jobs:
             fi
             
             # Find the next version for this component
-            TAG_PREFIX="pulumi-module-${COMPONENT}-${TODAY}"
+            TAG_PREFIX="pulumi-${COMPONENT}-${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             
             if [ -z "$LATEST_TAG" ]; then
@@ -134,7 +134,7 @@ jobs:
             fi
             
             NEXT_VERSION="${TODAY}.${NEXT_SEQ}"
-            NEXT_TAG="pulumi-module-${COMPONENT}-${NEXT_VERSION}"
+            NEXT_TAG="pulumi-${COMPONENT}-${NEXT_VERSION}"
             
             echo "  ${PROVIDER}/${COMPONENT} -> ${NEXT_TAG}"
             
@@ -188,7 +188,7 @@ jobs:
 
       - name: Build and compress binary
         run: |
-          BINARY_NAME="pulumi-module-${{ matrix.component }}"
+          BINARY_NAME="pulumi-${{ matrix.component }}"
           
           echo "=== Building ${BINARY_NAME} ==="
           echo "Provider: ${{ matrix.provider }}"
@@ -237,7 +237,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BINARY_NAME="pulumi-module-${{ matrix.component }}"
+          BINARY_NAME="pulumi-${{ matrix.component }}"
           ARTIFACT_NAME="${BINARY_NAME}.gz"
           
           ORIG_SIZE=$(ls -lh ${BINARY_NAME} | awk '{print $5}')

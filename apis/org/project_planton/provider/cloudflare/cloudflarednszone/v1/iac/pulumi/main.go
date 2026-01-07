@@ -1,3 +1,5 @@
+// Package main provides the Pulumi program entrypoint for Cloudflare DNS Zone deployment.
+// Binary releases are gzip-compressed to reduce download size.
 package main
 
 import (
