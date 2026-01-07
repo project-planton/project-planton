@@ -1,3 +1,5 @@
+// Package main provides the Pulumi program entrypoint for AWS ECS Service deployment.
+// This module creates and manages ECS services with associated resources.
 package main
 
 import (
