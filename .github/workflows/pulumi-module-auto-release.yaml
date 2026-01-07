@@ -4,10 +4,13 @@
 # Automatically detects changes in Pulumi module code, determines the next
 # date-based version, and creates a GitHub release with pre-built binaries.
 #
-# Version format: pulumi-{component}-{YYYYMMDD}.{N}
+# Version format: pulumi-{component}-{semver}-{YYYYMMDD}.{N}
 #   - {component}: e.g., awsecsservice, gcpgkecluster
+#   - {semver}: Latest semantic version tag (e.g., v0.1.0)
 #   - {YYYYMMDD}: Date of the release
 #   - {N}: Sequential number for same-day releases (0, 1, 2, ...)
+#
+# Example: pulumi-awsecsservice-v0.1.0-20260107.1
 #
 # Trigger: Push to main branch with changes in provider directories
 # =============================================================================
@@ -59,6 +62,15 @@ jobs:
         id: set-matrix
         run: |
           TODAY=$(date +%Y%m%d)
+          
+          # Get the latest semantic version tag (v*)
+          LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | head -1)
+          if [ -z "$LATEST_SEMVER" ]; then
+            LATEST_SEMVER="v0.0.0"
+            echo "No semantic version tags found, using default: ${LATEST_SEMVER}"
+          else
+            echo "Latest semantic version: ${LATEST_SEMVER}"
+          fi
           
           # Handle manual dispatch
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -119,7 +131,8 @@ jobs:
             fi
             
             # Find the next version for this component
-            TAG_PREFIX="pulumi-${COMPONENT}-${TODAY}"
+            # Tag format: pulumi-{component}-{semver}-{YYYYMMDD}.{N}
+            TAG_PREFIX="pulumi-${COMPONENT}-${LATEST_SEMVER}-${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             
             if [ -z "$LATEST_TAG" ]; then
@@ -129,7 +142,7 @@ jobs:
               NEXT_SEQ=$((CURRENT_SEQ + 1))
             fi
             
-            NEXT_VERSION="${TODAY}.${NEXT_SEQ}"
+            NEXT_VERSION="${LATEST_SEMVER}-${TODAY}.${NEXT_SEQ}"
             NEXT_TAG="pulumi-${COMPONENT}-${NEXT_VERSION}"
             
             echo "  ${PROVIDER}/${COMPONENT} -> ${NEXT_TAG}"
@@ -140,7 +153,7 @@ jobs:
               MATRIX_ITEMS="${MATRIX_ITEMS},"
             fi
             
-            MATRIX_ITEMS="${MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"version\":\"${NEXT_VERSION}\",\"tag\":\"${NEXT_TAG}\"}"
+            MATRIX_ITEMS="${MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"version\":\"${NEXT_VERSION}\",\"tag\":\"${NEXT_TAG}\",\"semver\":\"${LATEST_SEMVER}\"}"
           done
           
           MATRIX_ITEMS="${MATRIX_ITEMS}]"
@@ -243,7 +256,8 @@ jobs:
           
           **Component:** ${{ matrix.component }}
           **Provider:** ${{ matrix.provider }}
-          **Version:** ${{ matrix.version }}
+          **Base Version:** ${{ matrix.semver }}
+          **Patch Version:** ${{ matrix.version }}
           **Commit:** ${{ github.sha }}
           
           ### Usage
