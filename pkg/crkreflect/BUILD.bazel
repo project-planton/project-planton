@@ -122,6 +122,7 @@ go_library(
         "//apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1:kubernetesexternaldns",
         "//apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1:kubernetesexternalsecrets",
         "//apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1:kubernetesgatewayapicrds",
+        "//apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1:kubernetesgharunnerscaleset",
         "//apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscalesetcontroller/v1:kubernetesgharunnerscalesetcontroller",
         "//apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1:kubernetesgitlab",
         "//apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1:kubernetesgrafana",

@@ -107,6 +107,7 @@ import (
 	kubernetesexternaldnsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1"
 	kubernetesexternalsecretsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1"
 	kubernetesgatewayapicrdsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1"
+	kubernetesgharunnerscalesetv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1"
 	kubernetesgharunnerscalesetcontrollerv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscalesetcontroller/v1"
 	kubernetesgitlabv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1"
 	kubernetesgrafanav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1"
@@ -283,6 +284,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesExternalDns:                 &kubernetesexternaldnsv1.KubernetesExternalDns{},
 	cloudresourcekind.CloudResourceKind_KubernetesExternalSecrets:             &kubernetesexternalsecretsv1.KubernetesExternalSecrets{},
 	cloudresourcekind.CloudResourceKind_KubernetesGatewayApiCrds:              &kubernetesgatewayapicrdsv1.KubernetesGatewayApiCrds{},
+	cloudresourcekind.CloudResourceKind_KubernetesGhaRunnerScaleSet:           &kubernetesgharunnerscalesetv1.KubernetesGhaRunnerScaleSet{},
 	cloudresourcekind.CloudResourceKind_KubernetesGhaRunnerScaleSetController: &kubernetesgharunnerscalesetcontrollerv1.KubernetesGhaRunnerScaleSetController{},
 	cloudresourcekind.CloudResourceKind_KubernetesGitlab:                      &kubernetesgitlabv1.KubernetesGitlab{},
 	cloudresourcekind.CloudResourceKind_KubernetesGrafana:                     &kubernetesgrafanav1.KubernetesGrafana{},

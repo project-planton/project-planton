@@ -176,6 +176,7 @@ const (
 	CloudResourceKind_KubernetesDaemonSet                   CloudResourceKind = 841
 	CloudResourceKind_KubernetesManifest                    CloudResourceKind = 842
 	CloudResourceKind_KubernetesGhaRunnerScaleSetController CloudResourceKind = 843
+	CloudResourceKind_KubernetesGhaRunnerScaleSet           CloudResourceKind = 844
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -317,6 +318,7 @@ var (
 		841:  "KubernetesDaemonSet",
 		842:  "KubernetesManifest",
 		843:  "KubernetesGhaRunnerScaleSetController",
+		844:  "KubernetesGhaRunnerScaleSet",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
 		1202: "DigitalOceanContainerRegistry",
@@ -451,6 +453,7 @@ var (
 		"KubernetesDaemonSet":                   841,
 		"KubernetesManifest":                    842,
 		"KubernetesGhaRunnerScaleSetController": 843,
+		"KubernetesGhaRunnerScaleSet":           844,
 		"DigitalOceanAppPlatformService":        1200,
 		"DigitalOceanBucket":                    1201,
 		"DigitalOceanContainerRegistry":         1202,
@@ -630,7 +633,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xbd+\n" +
+	"\x02v1\x10\x01*\xf4+\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -738,7 +741,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x15KubernetesStatefulSet\x10\xc8\x06\x1a\x12\xa2\xf7\x04\x0e\b\x13\x10\x01\"\x06k8ssts(\x01\x12)\n" +
 	"\x13KubernetesDaemonSet\x10\xc9\x06\x1a\x0f\xa2\xf7\x04\v\b\x13\x10\x01\"\x05k8sds\x12*\n" +
 	"\x12KubernetesManifest\x10\xca\x06\x1a\x11\xa2\xf7\x04\r\b\x13\x10\x01\"\ak8smfst\x12?\n" +
-	"%KubernetesGhaRunnerScaleSetController\x10\xcb\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sgharsc\x124\n" +
+	"%KubernetesGhaRunnerScaleSetController\x10\xcb\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sgharsc\x125\n" +
+	"\x1bKubernetesGhaRunnerScaleSet\x10\xcc\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\tk8sgharss\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05dobkt\x122\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x0e\xa2\xf7\x04\n" +
