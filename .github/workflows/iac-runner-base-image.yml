@@ -34,7 +34,7 @@ jobs:
   build-and-push:
     # Self-hosted runner with persistent Go cache via PVC
     runs-on: project-planton-iac-runner-base-image-builder
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
 
@@ -46,72 +46,98 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          # Tag format: iac-runner-base-v1.0.0 -> v1.0.0
           VERSION="${GITHUB_REF#refs/tags/iac-runner-base-}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
-      - name: Show existing cache sizes
+      - name: Initialize cache directories
         run: |
+          mkdir -p $GOMODCACHE $GOCACHE
           echo "=== Existing Cache Sizes (from PVC) ==="
           du -sh $GOMODCACHE 2>/dev/null || echo "GOMODCACHE: empty"
           du -sh $GOCACHE 2>/dev/null || echo "GOCACHE: empty"
 
-      - name: Build all provider modules in parallel
+      # Build providers in alphabetical order - one step per provider
+      - name: Build atlas modules
         run: |
-          set -e
-          
-          # Ensure cache directories exist
-          mkdir -p $GOMODCACHE $GOCACHE
-          
-          # List of providers to build
-          PROVIDERS="aws gcp azure kubernetes cloudflare digitalocean atlas confluent snowflake auth0 civo"
-          
-          # Function to build a single provider
-          build_provider() {
-            local provider=$1
-            local log_file="/tmp/build-${provider}.log"
-            
-            echo "[${provider}] Starting build..."
-            
-            MODULE_COUNT=0
-            FAILED_COUNT=0
-            
-            # Find and build all modules for this provider
-            while IFS= read -r dir; do
-              if [[ -n "$dir" ]]; then
-                MODULE_COUNT=$((MODULE_COUNT + 1))
-                echo "[${provider}] Building: $dir" >> "$log_file"
-                if (cd "$dir" && go build -v . >> "$log_file" 2>&1); then
-                  echo "[${provider}]   ✓ Success" >> "$log_file"
-                else
-                  echo "[${provider}]   ✗ Failed" >> "$log_file"
-                  FAILED_COUNT=$((FAILED_COUNT + 1))
-                fi
-              fi
-            done < <(find apis -type d -path "*/provider/${provider}/*/iac/pulumi" -not -path "*/module" 2>/dev/null)
-            
-            echo "[${provider}] Complete: $MODULE_COUNT modules, $FAILED_COUNT failed"
-            echo "[${provider}] Complete: $MODULE_COUNT modules, $FAILED_COUNT failed" >> "$log_file"
-          }
-          
-          export -f build_provider
-          export GOMODCACHE GOCACHE
-          
-          # Run providers in parallel (2 concurrent to avoid resource contention)
-          echo "=== Building all providers in parallel ==="
-          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P2 -I{} bash -c 'build_provider "$@"' _ {}
-          
-          echo ""
-          echo "=== Build Summary ==="
-          for provider in $PROVIDERS; do
-            if [[ -f "/tmp/build-${provider}.log" ]]; then
-              tail -1 "/tmp/build-${provider}.log"
-            fi
+          for dir in $(find apis -type d -path "*/provider/atlas/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
           done
-          
-          echo ""
-          echo "=== Cache Sizes ==="
+
+      - name: Build auth0 modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/auth0/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build aws modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/aws/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build azure modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/azure/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build civo modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/civo/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build cloudflare modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/cloudflare/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build confluent modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/confluent/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build digitalocean modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/digitalocean/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build gcp modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/gcp/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build kubernetes modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/kubernetes/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Build snowflake modules
+        run: |
+          for dir in $(find apis -type d -path "*/provider/snowflake/*/iac/pulumi" -not -path "*/module" 2>/dev/null); do
+            echo "Building: $dir"
+            (cd "$dir" && go build -v .) || echo "Failed: $dir"
+          done
+
+      - name: Show final cache sizes
+        run: |
+          echo "=== Final Cache Sizes ==="
           du -sh $GOMODCACHE
           du -sh $GOCACHE
 
@@ -161,5 +187,3 @@ jobs:
           echo "**Cache sizes:**" >> $GITHUB_STEP_SUMMARY
           echo "- GOMODCACHE: $(du -sh merged-cache/go-mod | cut -f1)" >> $GITHUB_STEP_SUMMARY
           echo "- GOCACHE: $(du -sh merged-cache/go-build | cut -f1)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Note:** Subsequent builds will be faster due to persistent PVC cache." >> $GITHUB_STEP_SUMMARY
