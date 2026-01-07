@@ -155,11 +155,12 @@ Every changelog should include:
 
 ### [Key Features/Components]
 
-[Visual diagrams, component descriptions as needed]
+[Visual diagrams using Mermaid, component descriptions as needed]
 
 ## Implementation Details
 
 [Technical specifics - code changes, new patterns, key decisions]
+[Include Mermaid diagrams to visualize architecture, workflows, or data flows]
 
 ## Benefits
 
@@ -178,6 +179,8 @@ Every changelog should include:
 **Status**: ✅ [Production Ready | In Progress | Experimental]
 **Timeline**: [Duration if relevant]
 ```
+
+**Note**: Include Mermaid diagrams throughout the changelog wherever they make information easier to consume. See "Mermaid Diagrams" section below for guidance.
 
 ### Optional Sections (Include When Valuable)
 
@@ -202,6 +205,7 @@ Add these sections only when they provide meaningful value:
 - ✅ **Start with context**: Why did this work happen?
 - ✅ **Focus on value**: What problem does this solve for CLI users?
 - ✅ **Use concrete examples**: Show before/after CLI commands, YAML manifests, outputs
+- ✅ **Include Mermaid diagrams**: Visualize workflows, architecture, and interactions for better readability
 - ✅ **Include numbers**: Metrics, timelines, file counts (when meaningful)
 - ✅ **Explain decisions**: Why this approach vs alternatives?
 - ✅ **Write for future you**: Capture the thinking, not just the what
@@ -216,6 +220,154 @@ Add these sections only when they provide meaningful value:
 - ❌ **Skip the "why"**: Context is critical for future understanding
 - ❌ **Ignore trade-offs**: Document decisions and their rationale
 - ❌ **Use jargon without context**: Define terms that may be unclear
+
+## Mermaid Diagrams: Make It Visual
+
+**⚠️ CRITICAL**: Include Mermaid diagrams wherever appropriate. Diagrams dramatically improve readability and make changelogs far more consumable for future readers.
+
+### When to Use Mermaid Diagrams
+
+Use Mermaid diagrams to visualize:
+- **Workflows and processes** - Show CLI flows, deployment steps, execution sequences
+- **Before/after architecture** - Illustrate system changes side by side
+- **Component relationships** - Show how modules, providers, or services interact
+- **Sequence diagrams** - Demonstrate interactions between CLI, Pulumi, and cloud providers
+- **State transitions** - Depict resource lifecycle or status changes
+- **Data flows** - Trace how manifests, configurations, or data move through the system
+
+### Common Diagram Types for Changelogs
+
+#### Flowcharts - For CLI flows and processes
+```mermaid
+flowchart TB
+    A[CLI Command] --> B{Parse Manifest}
+    B -->|Valid| C[Execute Pulumi]
+    B -->|Invalid| D[Error]
+    C --> E[Deploy Resources]
+    E --> F[Generate Outputs]
+```
+
+#### Sequence Diagrams - For component interactions
+```mermaid
+sequenceDiagram
+    participant User
+    participant CLI
+    participant Pulumi
+    participant Provider
+    User->>CLI: Run command
+    CLI->>Pulumi: Initialize stack
+    Pulumi->>Provider: Deploy resources
+    Provider-->>Pulumi: Success
+    Pulumi-->>CLI: Stack outputs
+    CLI-->>User: Display results
+```
+
+#### State Diagrams - For resource lifecycle
+```mermaid
+stateDiagram-v2
+    [*] --> Pending
+    Pending --> Provisioning
+    Provisioning --> Running
+    Running --> Updating
+    Updating --> Running
+    Running --> Deleting
+    Deleting --> [*]
+```
+
+#### Git Graphs - For workflow changes
+```mermaid
+gitGraph
+    commit id: "Before: Manual steps"
+    branch feature
+    checkout feature
+    commit id: "Add automation"
+    commit id: "Add validation"
+    checkout main
+    merge feature
+    commit id: "After: Automated workflow"
+```
+
+### Examples of Effective Diagram Usage
+
+**Before/After Comparisons:**
+```markdown
+## Previous Workflow
+
+```mermaid
+flowchart LR
+    A[User] --> B[Manual Config]
+    B --> C[Run Pulumi]
+    C --> D[Fix Errors]
+    D --> C
+```
+
+## New Workflow
+
+```mermaid
+flowchart LR
+    A[User] --> B[CLI Validates]
+    B --> C[Auto-run Pulumi]
+    C --> D[Success]
+```
+```
+
+**Architecture Changes:**
+```markdown
+## Architecture Evolution
+
+### Before
+```mermaid
+graph TB
+    CLI --> Pulumi
+    Pulumi --> AWS
+    Pulumi --> GCP
+```
+
+### After
+```mermaid
+graph TB
+    CLI --> Framework[Provider Framework]
+    Framework --> Pulumi
+    Pulumi --> AWS
+    Pulumi --> GCP
+    Pulumi --> Azure
+```
+```
+
+### Best Practices for Mermaid in Changelogs
+
+- ✅ **Include diagrams early** - In "Solution" or "Implementation" sections
+- ✅ **Use before/after pairs** - Show the impact of changes visually
+- ✅ **Keep diagrams focused** - One concept per diagram
+- ✅ **Add brief text context** - Explain what the diagram shows
+- ✅ **Use consistent styling** - Similar colors/shapes for similar elements
+- ✅ **Label clearly** - Descriptive node names, not abbreviations
+- ✅ **Show decision points** - Highlight conditional logic and branching
+
+### When Diagrams Add Maximum Value
+
+**High-value scenarios:**
+- Architectural refactorings showing old vs new structure
+- CLI workflow improvements with decision trees
+- Provider integration patterns and interactions
+- Multi-step deployment processes
+- Error handling and retry logic flows
+- Resource lifecycle and state transitions
+
+**Lower-value scenarios (use sparingly):**
+- Simple linear flows without decisions
+- Trivial bug fixes with no workflow impact
+- Single-file changes with no system interaction
+
+### Size and Complexity
+
+Match diagram complexity to change scope:
+
+- **Small changes**: 1 simple flowchart or sequence diagram
+- **Medium changes**: 2-3 diagrams showing key interactions or before/after
+- **Large changes**: Multiple diagrams covering architecture, workflows, and data flows
+
+**Remember**: A well-placed Mermaid diagram can replace paragraphs of explanation and make your changelog memorable and scannable.
 
 ## Tone and Style
 
@@ -238,6 +390,7 @@ Before finalizing a changelog:
 - [ ] Benefits are concrete and measurable
 - [ ] Code examples (if any) are actual code, not pseudocode
 - [ ] CLI commands and outputs are copy-pasteable
+- [ ] **Mermaid diagrams included where they add clarity** (workflows, architecture, interactions)
 - [ ] Related work connects this to other changes
 - [ ] Length is proportional to scope and impact
 - [ ] No sensitive information (credentials, private URLs, etc.)

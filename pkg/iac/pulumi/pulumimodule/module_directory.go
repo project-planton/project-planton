@@ -11,22 +11,25 @@ import (
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
 	"github.com/plantonhq/project-planton/internal/cli/staging"
 	"github.com/plantonhq/project-planton/internal/cli/version"
-	"github.com/plantonhq/project-planton/internal/cli/workspace"
 	"github.com/plantonhq/project-planton/pkg/crkreflect"
 	"github.com/plantonhq/project-planton/pkg/fileutil"
+	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumibinary"
 )
 
 // GetPathResult contains the module path and a cleanup function
 type GetPathResult struct {
 	ModulePath    string
 	RepoPath      string
+	BinaryPath    string // Path to the pre-built binary (if using binary mode)
 	CleanupFunc   func() error
 	ShouldCleanup bool
+	UseBinary     bool // Indicates if binary mode is being used
 }
 
 // GetPath returns the path to the Pulumi module directory.
 // If moduleDir is provided and is a valid Pulumi module directory, it returns that.
-// Otherwise, it ensures the staging area is set up and copies it to the stack workspace.
+// Otherwise, it tries to use pre-built binaries (faster, no compilation needed).
+// If binary download fails, it falls back to the staging approach (clone + compile).
 // If moduleVersion is provided, it checks out that version (tag, branch, or commit SHA) in the workspace copy.
 // The returned GetPathResult includes a cleanup function that should be called after execution
 // unless noCleanup is true.
@@ -42,18 +45,77 @@ func GetPath(moduleDir string, stackFqdn, kindName string, moduleVersion string,
 			RepoPath:      moduleDir,
 			CleanupFunc:   func() error { return nil },
 			ShouldCleanup: false,
+			UseBinary:     false,
 		}, nil
 	}
 
+	// Determine target version for binary download:
+	// 1. If moduleVersion is specified, use that (e.g., "v0.3.9" or "v0.3.1-pulumi-awsecsservice-20260107.01")
+	// 2. Otherwise, use CLI version if set and not default
+	cliVersion := ""
+	if version.Version != "" && version.Version != version.DefaultVersion {
+		cliVersion = version.Version
+	}
+
+	// Determine which version to use for binary download
+	binaryVersion := moduleVersion
+	if binaryVersion == "" {
+		binaryVersion = cliVersion
+	}
+
+	// Try binary approach first (if we have a version)
+	// Binary approach is faster and doesn't require Go toolchain
+	if binaryVersion != "" {
+		result, err := tryBinaryApproach(stackFqdn, kindName, binaryVersion, noCleanup)
+		if err == nil {
+			return result, nil
+		}
+		// Log warning and fall through to legacy approach
+		cliprint.PrintInfo(fmt.Sprintf("Binary download not available, falling back to source: %v", err))
+	}
+
+	// Fall back to staging/clone approach
+	return getPathFromStaging(stackFqdn, kindName, cliVersion, moduleVersion, noCleanup)
+}
+
+// tryBinaryApproach attempts to use pre-built binary for execution.
+// releaseVersion can be:
+// - CLI version like "v0.3.2" (downloads from main project-planton release)
+// - Module version like "v0.3.1-pulumi-awsecsservice-20260107.01" (downloads from component-specific release)
+// Returns an error if binary is not available or download fails.
+func tryBinaryApproach(stackFqdn, kindName, releaseVersion string, noCleanup bool) (*GetPathResult, error) {
+	cliprint.PrintStep(fmt.Sprintf("Checking for pre-built binary (version: %s)...", releaseVersion))
+
+	// Ensure binary is downloaded and cached
+	binaryPath, err := pulumibinary.EnsureBinary(kindName, releaseVersion)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to ensure binary")
+	}
+
+	// Setup workspace with Pulumi.yaml pointing to the binary
+	cliprint.PrintStep("Setting up binary workspace...")
+	workspaceResult, err := pulumibinary.SetupBinaryWorkspace(binaryPath, stackFqdn, kindName)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to setup binary workspace")
+	}
+
+	cliprint.PrintSuccess("Binary workspace ready (no compilation needed)")
+
+	return &GetPathResult{
+		ModulePath:    workspaceResult.WorkspacePath,
+		BinaryPath:    workspaceResult.BinaryPath,
+		CleanupFunc:   workspaceResult.CleanupFunc,
+		ShouldCleanup: !noCleanup && workspaceResult.ShouldCleanup,
+		UseBinary:     true,
+	}, nil
+}
+
+// getPathFromStaging uses the legacy staging/clone approach to get the module path.
+// This is the fallback when binary approach is not available.
+func getPathFromStaging(stackFqdn, kindName, targetVersion, moduleVersion string, noCleanup bool) (*GetPathResult, error) {
 	stackWorkspaceDir, err := getWorkspaceDir(stackFqdn)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
-	}
-
-	// Determine target version - use CLI version if set and not default
-	targetVersion := ""
-	if version.Version != "" && version.Version != version.DefaultVersion {
-		targetVersion = version.Version
 	}
 
 	// Ensure staging is set up with the correct version
@@ -103,6 +165,7 @@ func GetPath(moduleDir string, stackFqdn, kindName string, moduleVersion string,
 		RepoPath:      pulumiModuleRepoPath,
 		CleanupFunc:   cleanupFunc,
 		ShouldCleanup: !noCleanup,
+		UseBinary:     false,
 	}, nil
 }
 
@@ -154,13 +217,14 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 }
 
 // getWorkspaceDir returns the path of the workspace directory to be used while initializing stack using automation api.
+// For source mode (staging/clone), workspaces are under: ~/.project-planton/pulumi/staging-workspaces/{stack-fqdn}
 func getWorkspaceDir(stackFqdn string) (string, error) {
-	cliWorkspaceDir, err := workspace.GetWorkspaceDir()
+	pulumiBaseDir, err := pulumibinary.GetPulumiBaseDir()
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
+		return "", errors.Wrapf(err, "failed to get Pulumi base directory")
 	}
-	//base directory will always be ${HOME}/.project-planton/pulumi
-	stackWorkspaceDir := filepath.Join(cliWorkspaceDir, "pulumi", stackFqdn)
+	// Use "staging-workspaces" to differentiate from binary "workspaces"
+	stackWorkspaceDir := filepath.Join(pulumiBaseDir, "staging-workspaces", stackFqdn)
 	if !fileutil.IsDirExists(stackWorkspaceDir) {
 		if err := os.MkdirAll(stackWorkspaceDir, os.ModePerm); err != nil {
 			return "", errors.Wrapf(err, "failed to ensure %s dir", stackWorkspaceDir)

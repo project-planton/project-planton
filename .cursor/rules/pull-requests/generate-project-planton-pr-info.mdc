@@ -27,6 +27,7 @@ Usage: In Ask mode, invoke explicitly as `@pr-info`.
      - "Risks": Known risks or rollback plan
      - "Checklist": Markdown checkboxes for docs, tests, backward compatibility
      - Optionally include issue links like `Closes #123` when known
+   - **Include Mermaid diagrams wherever appropriate** to make the information easier to consume (see Mermaid guidance below)
 
 ## Title format (exactly)
 
@@ -114,6 +115,62 @@ Determine the `<scope-path>` from the changed files. Use the most impacted area 
 - Commit messages, branch name, or linked issues if available
 
 If context is insufficient to infer details, choose the best effort scope from filenames and touched areas. Do not ask questions; still produce both blocks.
+
+## Mermaid Diagrams: Enhance Readability
+
+**⚠️ IMPORTANT**: Include Mermaid diagrams wherever they add clarity. Diagrams make PR descriptions far more consumable for reviewers.
+
+Use Mermaid diagrams to visualize:
+- **Workflows and processes** - Show step-by-step flows with decision points
+- **Before/after architecture** - Illustrate system changes side by side
+- **Sequence diagrams** - Demonstrate interactions between components
+- **State transitions** - Depict lifecycle or status changes
+- **Data flows** - Trace how data moves through the system
+- **Component relationships** - Show how modules/services connect
+
+**Common diagram types for PRs:**
+
+### Flowcharts - For process changes
+```mermaid
+flowchart TB
+    A[Start] --> B{Validation}
+    B -->|Pass| C[Deploy]
+    B -->|Fail| D[Error]
+```
+
+### Sequence Diagrams - For interaction changes
+```mermaid
+sequenceDiagram
+    participant CLI
+    participant Pulumi
+    participant Cloud
+    CLI->>Pulumi: Execute
+    Pulumi->>Cloud: Deploy
+    Cloud-->>Pulumi: Success
+    Pulumi-->>CLI: Complete
+```
+
+### State Diagrams - For status/lifecycle changes
+```mermaid
+stateDiagram-v2
+    [*] --> Pending
+    Pending --> Running
+    Running --> Completed
+    Running --> Failed
+```
+
+**When to include diagrams:**
+- ✅ Architecture or component relationship changes
+- ✅ Workflow modifications (CLI flows, deployment processes)
+- ✅ Multi-step processes with conditional logic
+- ✅ Breaking changes requiring migration paths
+- ✅ Complex interactions between services/modules
+
+**Keep diagrams:**
+- Focused on one concept per diagram
+- Clear with descriptive labels
+- Consistent in styling
+- Accompanied by brief text explanation
 
 ## Output blocks (exactly two, nothing else)
 
