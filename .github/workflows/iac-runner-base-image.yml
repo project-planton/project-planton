@@ -2,8 +2,8 @@
 # IaC Runner Base Image Build Workflow
 # =============================================================================
 # Builds the iac-runner-base image with pre-warmed Go caches for all Pulumi
-# modules. Uses a matrix strategy to build provider caches in parallel,
-# then merges them into a single Docker image.
+# modules. Uses parallel shell builds within a single job to avoid artifact
+# transfer overhead.
 #
 # Trigger: Push a tag matching 'iac-runner-base-v*'
 #   Example: git tag iac-runner-base-v1.0.0 && git push origin iac-runner-base-v1.0.0
@@ -24,26 +24,10 @@ env:
   IMAGE_REPO: ghcr.io/plantonhq/project-planton/base-images/iac-runner
 
 jobs:
-  # ===========================================================================
-  # Phase 1: Build provider caches in parallel
-  # ===========================================================================
-  build-provider-cache:
-    strategy:
-      fail-fast: false
-      matrix:
-        provider:
-          - aws
-          - gcp
-          - azure
-          - kubernetes
-          - cloudflare
-          - digitalocean
-          - atlas       # MongoDB Atlas
-          - confluent   # Confluent Cloud
-          - snowflake
-          - auth0
-          - civo
-    runs-on: ubuntu-latest
+  build-and-push:
+    # Use 16-core runner for parallel builds (free for public repos)
+    runs-on: ubuntu-latest-16-cores
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -51,66 +35,6 @@ jobs:
         with:
           go-version: '1.25'
           cache: false  # We manage our own cache
-
-      - name: Create cache directories
-        run: |
-          mkdir -p ${{ runner.temp }}/go-mod
-          mkdir -p ${{ runner.temp }}/go-build
-
-      - name: Build ${{ matrix.provider }} modules
-        env:
-          GOMODCACHE: ${{ runner.temp }}/go-mod
-          GOCACHE: ${{ runner.temp }}/go-build
-        run: |
-          echo "=== Building ${{ matrix.provider }} modules ==="
-          
-          MODULE_COUNT=0
-          FAILED_COUNT=0
-          
-          # Find all pulumi modules for this provider
-          while IFS= read -r dir; do
-            if [[ -n "$dir" ]]; then
-              MODULE_COUNT=$((MODULE_COUNT + 1))
-              echo "[$MODULE_COUNT] Building: $dir"
-              if (cd "$dir" && go build -v . 2>&1 | tail -3); then
-                echo "  ✓ Success"
-              else
-                echo "  ✗ Failed"
-                FAILED_COUNT=$((FAILED_COUNT + 1))
-              fi
-            fi
-          done < <(find apis -type d -path "*/provider/${{ matrix.provider }}/*/iac/pulumi" -not -path "*/module" 2>/dev/null)
-          
-          echo ""
-          echo "=== ${{ matrix.provider }} Summary ==="
-          echo "Total: $MODULE_COUNT, Failed: $FAILED_COUNT"
-          
-          # Report cache sizes
-          echo "GOMODCACHE: $(du -sh ${{ runner.temp }}/go-mod | cut -f1)"
-          echo "GOCACHE: $(du -sh ${{ runner.temp }}/go-build | cut -f1)"
-
-      - name: Upload go-mod cache
-        uses: actions/upload-artifact@v4
-        with:
-          name: go-mod-${{ matrix.provider }}
-          path: ${{ runner.temp }}/go-mod
-          retention-days: 1
-
-      - name: Upload go-build cache
-        uses: actions/upload-artifact@v4
-        with:
-          name: go-build-${{ matrix.provider }}
-          path: ${{ runner.temp }}/go-build
-          retention-days: 1
-
-  # ===========================================================================
-  # Phase 2: Merge caches and build Docker image
-  # ===========================================================================
-  build-and-push-image:
-    needs: build-provider-cache
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
       - name: Extract version from tag
         id: version
@@ -120,58 +44,78 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
-      - name: Create merged cache directory
-        run: mkdir -p merged-cache/go-mod merged-cache/go-build
-
-      - name: Download all go-mod artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: go-mod-*
-          path: artifacts/go-mod
-          merge-multiple: false
-
-      - name: Download all go-build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: go-build-*
-          path: artifacts/go-build
-          merge-multiple: false
-
-      - name: Merge go-mod caches
+      - name: Create cache directories
         run: |
-          echo "=== Merging go-mod caches ==="
-          for provider_dir in artifacts/go-mod/go-mod-*; do
-            if [[ -d "$provider_dir" ]]; then
-              provider=$(basename "$provider_dir" | sed 's/go-mod-//')
-              echo "Merging $provider..."
-              cp -rn "$provider_dir/"* merged-cache/go-mod/ 2>/dev/null || true
+          mkdir -p ${{ runner.temp }}/go-mod
+          mkdir -p ${{ runner.temp }}/go-build
+          echo "GOMODCACHE=${{ runner.temp }}/go-mod" >> $GITHUB_ENV
+          echo "GOCACHE=${{ runner.temp }}/go-build" >> $GITHUB_ENV
+
+      - name: Build all provider modules in parallel
+        run: |
+          set -e
+          
+          # List of providers to build
+          PROVIDERS="aws gcp azure kubernetes cloudflare digitalocean atlas confluent snowflake auth0 civo"
+          
+          # Function to build a single provider
+          build_provider() {
+            local provider=$1
+            local log_file="${{ runner.temp }}/build-${provider}.log"
+            
+            echo "[${provider}] Starting build..."
+            
+            MODULE_COUNT=0
+            FAILED_COUNT=0
+            
+            # Find and build all modules for this provider
+            while IFS= read -r dir; do
+              if [[ -n "$dir" ]]; then
+                MODULE_COUNT=$((MODULE_COUNT + 1))
+                echo "[${provider}] Building: $dir" >> "$log_file"
+                if (cd "$dir" && go build -v . >> "$log_file" 2>&1); then
+                  echo "[${provider}]   ✓ Success" >> "$log_file"
+                else
+                  echo "[${provider}]   ✗ Failed" >> "$log_file"
+                  FAILED_COUNT=$((FAILED_COUNT + 1))
+                fi
+              fi
+            done < <(find apis -type d -path "*/provider/${provider}/*/iac/pulumi" -not -path "*/module" 2>/dev/null)
+            
+            echo "[${provider}] Complete: $MODULE_COUNT modules, $FAILED_COUNT failed"
+            echo "[${provider}] Complete: $MODULE_COUNT modules, $FAILED_COUNT failed" >> "$log_file"
+          }
+          
+          export -f build_provider
+          export GOMODCACHE GOCACHE
+          
+          # Run all providers in parallel (up to 16 concurrent jobs)
+          echo "=== Building all providers in parallel ==="
+          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P16 -I{} bash -c 'build_provider "$@"' _ {}
+          
+          echo ""
+          echo "=== Build Summary ==="
+          for provider in $PROVIDERS; do
+            if [[ -f "${{ runner.temp }}/build-${provider}.log" ]]; then
+              tail -1 "${{ runner.temp }}/build-${provider}.log"
             fi
           done
-          echo "Merged GOMODCACHE: $(du -sh merged-cache/go-mod | cut -f1)"
+          
+          echo ""
+          echo "=== Cache Sizes ==="
+          du -sh ${{ runner.temp }}/go-mod
+          du -sh ${{ runner.temp }}/go-build
 
-      - name: Merge go-build caches
+      - name: Prepare merged cache for Docker
         run: |
-          echo "=== Merging go-build caches ==="
-          for provider_dir in artifacts/go-build/go-build-*; do
-            if [[ -d "$provider_dir" ]]; then
-              provider=$(basename "$provider_dir" | sed 's/go-build-//')
-              echo "Merging $provider..."
-              cp -rn "$provider_dir/"* merged-cache/go-build/ 2>/dev/null || true
-            fi
-          done
-          echo "Merged GOCACHE: $(du -sh merged-cache/go-build | cut -f1)"
-
-      - name: Display merged cache summary
-        run: |
+          mkdir -p merged-cache
+          mv ${{ runner.temp }}/go-mod merged-cache/go-mod
+          mv ${{ runner.temp }}/go-build merged-cache/go-build
+          
           echo "=== Merged Cache Summary ==="
-          echo "GOMODCACHE: $(du -sh merged-cache/go-mod | cut -f1)"
-          echo "GOCACHE: $(du -sh merged-cache/go-build | cut -f1)"
-          echo "Total: $(du -sh merged-cache | cut -f1)"
-          echo ""
-          echo "GOMODCACHE contents:"
-          ls -la merged-cache/go-mod/ | head -20
-          echo ""
-          echo "GOCACHE directory count: $(ls merged-cache/go-build/ | wc -l)"
+          du -sh merged-cache/go-mod
+          du -sh merged-cache/go-build
+          du -sh merged-cache
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -195,11 +139,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Clean up artifacts
-        if: always()
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: |
-            go-mod-*
-            go-build-*
-
+      - name: Summary
+        run: |
+          echo "## IaC Runner Base Image Published! 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Images:**" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.IMAGE_REPO }}:${{ steps.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.IMAGE_REPO }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Cache sizes:**" >> $GITHUB_STEP_SUMMARY
+          echo "- GOMODCACHE: $(du -sh merged-cache/go-mod | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          echo "- GOCACHE: $(du -sh merged-cache/go-build | cut -f1)" >> $GITHUB_STEP_SUMMARY
