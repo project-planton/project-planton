@@ -1,0 +1,93 @@
+# =============================================================================
+# Pulumi Modules - DigitalOcean Provider
+# =============================================================================
+# Builds pre-compiled binaries for all DigitalOcean Pulumi deployment components.
+#
+# Trigger: Push a version tag (v*)
+#   Example: git tag v0.0.100 && git push origin v0.0.100
+# =============================================================================
+
+name: pulumi-modules-digitalocean
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: pulumi-modules-digitalocean-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-digitalocean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: digitaloceanappplatformservice
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/iac/pulumi
+          - component: digitaloceanbucket
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1/iac/pulumi
+          - component: digitaloceancertificate
+            path: apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1/iac/pulumi
+          - component: digitaloceancontainerregistry
+            path: apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1/iac/pulumi
+          - component: digitaloceandatabasecluster
+            path: apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1/iac/pulumi
+          - component: digitaloceandnszone
+            path: apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1/iac/pulumi
+          - component: digitaloceandroplet
+            path: apis/org/project_planton/provider/digitalocean/digitaloceandroplet/v1/iac/pulumi
+          - component: digitaloceanfirewall
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanfirewall/v1/iac/pulumi
+          - component: digitaloceanfunction
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanfunction/v1/iac/pulumi
+          - component: digitaloceankubernetescluster
+            path: apis/org/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1/iac/pulumi
+          - component: digitaloceankubernetesnodepool
+            path: apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/iac/pulumi
+          - component: digitaloceanloadbalancer
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1/iac/pulumi
+          - component: digitaloceanvolume
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1/iac/pulumi
+          - component: digitaloceanvpc
+            path: apis/org/project_planton/provider/digitalocean/digitaloceanvpc/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/digitalocean
+          
+          echo "Building: digitalocean/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/digitalocean/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/digitalocean/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-digitalocean-${{ matrix.component }}
+          path: binaries/
+          retention-days: 7
+          if-no-files-found: error
+

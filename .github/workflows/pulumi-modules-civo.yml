@@ -1,0 +1,87 @@
+# =============================================================================
+# Pulumi Modules - Civo Provider
+# =============================================================================
+# Builds pre-compiled binaries for all Civo Pulumi deployment components.
+#
+# Trigger: Push a version tag (v*)
+#   Example: git tag v0.0.100 && git push origin v0.0.100
+# =============================================================================
+
+name: pulumi-modules-civo
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: pulumi-modules-civo-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-civo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: civobucket
+            path: apis/org/project_planton/provider/civo/civobucket/v1/iac/pulumi
+          - component: civocertificate
+            path: apis/org/project_planton/provider/civo/civocertificate/v1/iac/pulumi
+          - component: civocomputeinstance
+            path: apis/org/project_planton/provider/civo/civocomputeinstance/v1/iac/pulumi
+          - component: civodatabase
+            path: apis/org/project_planton/provider/civo/civodatabase/v1/iac/pulumi
+          - component: civodnszone
+            path: apis/org/project_planton/provider/civo/civodnszone/v1/iac/pulumi
+          - component: civofirewall
+            path: apis/org/project_planton/provider/civo/civofirewall/v1/iac/pulumi
+          - component: civoipaddress
+            path: apis/org/project_planton/provider/civo/civoipaddress/v1/iac/pulumi
+          - component: civokubernetescluster
+            path: apis/org/project_planton/provider/civo/civokubernetescluster/v1/iac/pulumi
+          - component: civokubernetesnodepool
+            path: apis/org/project_planton/provider/civo/civokubernetesnodepool/v1/iac/pulumi
+          - component: civovolume
+            path: apis/org/project_planton/provider/civo/civovolume/v1/iac/pulumi
+          - component: civovpc
+            path: apis/org/project_planton/provider/civo/civovpc/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/civo
+          
+          echo "Building: civo/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/civo/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/civo/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-civo-${{ matrix.component }}
+          path: binaries/
+          retention-days: 7
+          if-no-files-found: error
+
