@@ -1,5 +1,7 @@
 # Project Planton Web App
 
+<!-- Auto-release test: App change triggers v{semver}-app-{YYYYMMDD}.{N} tag format -->
+
 Web interface for managing cloud resources and deployments with Project Planton.
 
 ---
