@@ -186,7 +186,7 @@ jobs:
           go-version: '1.25'
           cache: true
 
-      - name: Build binary
+      - name: Build and compress binary
         run: |
           BINARY_NAME="pulumi-module-${{ matrix.component }}"
           
@@ -207,6 +207,17 @@ jobs:
           echo "=== Binary built successfully ==="
           ls -lh "${BINARY_NAME}"
           file "${BINARY_NAME}"
+          
+          echo ""
+          echo "=== Compressing binary with gzip ==="
+          gzip -9 -k "${BINARY_NAME}"
+          ls -lh "${BINARY_NAME}.gz"
+          
+          # Calculate compression ratio
+          ORIG_SIZE=$(stat -c%s "${BINARY_NAME}")
+          COMP_SIZE=$(stat -c%s "${BINARY_NAME}.gz")
+          RATIO=$(echo "scale=1; 100 - ($COMP_SIZE * 100 / $ORIG_SIZE)" | bc)
+          echo "Compression: ${ORIG_SIZE} bytes -> ${COMP_SIZE} bytes (${RATIO}% reduction)"
 
       - name: Create tag
         run: |
@@ -227,6 +238,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BINARY_NAME="pulumi-module-${{ matrix.component }}"
+          ARTIFACT_NAME="${BINARY_NAME}.gz"
+          
+          ORIG_SIZE=$(ls -lh ${BINARY_NAME} | awk '{print $5}')
+          COMP_SIZE=$(ls -lh ${ARTIFACT_NAME} | awk '{print $5}')
+          
           RELEASE_NOTES="## Pulumi Module Release
           
           **Component:** ${{ matrix.component }}
@@ -236,10 +252,11 @@ jobs:
           
           ### Usage
           
-          Download and execute this binary directly:
+          Download and extract the binary:
           
           \`\`\`bash
-          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ matrix.tag }}/${BINARY_NAME}
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ matrix.tag }}/${ARTIFACT_NAME}
+          gunzip ${ARTIFACT_NAME}
           chmod +x ${BINARY_NAME}
           ./${BINARY_NAME}
           \`\`\`
@@ -247,23 +264,25 @@ jobs:
           ### Binary Info
           
           - **Platform:** linux/amd64
-          - **Size:** $(ls -lh ${BINARY_NAME} | awk '{print $5}')
+          - **Compressed Size:** ${COMP_SIZE}
+          - **Uncompressed Size:** ${ORIG_SIZE}
           "
           
           # Check if release already exists
           if gh release view "${{ matrix.tag }}" >/dev/null 2>&1; then
             echo "Release ${{ matrix.tag }} already exists, updating..."
-            gh release upload "${{ matrix.tag }}" "${BINARY_NAME}" --clobber
+            gh release upload "${{ matrix.tag }}" "${ARTIFACT_NAME}" --clobber
           else
             echo "Creating release ${{ matrix.tag }}..."
             gh release create "${{ matrix.tag }}" \
               --title "${{ matrix.tag }}" \
               --notes "${RELEASE_NOTES}" \
-              "${BINARY_NAME}"
+              "${ARTIFACT_NAME}"
           fi
           
           echo ""
           echo "=== Release created successfully ==="
+          echo "Artifact: ${ARTIFACT_NAME} (${COMP_SIZE})"
           echo "https://github.com/${{ github.repository }}/releases/tag/${{ matrix.tag }}"
 
   # ===========================================================================
