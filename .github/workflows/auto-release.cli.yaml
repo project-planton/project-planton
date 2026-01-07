@@ -1,0 +1,89 @@
+# =============================================================================
+# CLI Auto-Release (Reusable Workflow)
+# =============================================================================
+# Builds and releases the project-planton CLI using GoReleaser for auto-releases.
+# Updates Homebrew tap so users can get the latest CLI via `brew upgrade`.
+#
+# Tag Format: v{semver}.{YYYYMMDD}.{N} (e.g., v0.3.1.20260107.1)
+# Uses dots for Homebrew version comparison compatibility.
+#
+# Called by: .github/workflows/auto-release.yaml
+# =============================================================================
+
+name: auto-release.cli
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: 'The tag to create and release (e.g., v0.3.1.20260107.1)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          TAG="${{ inputs.tag }}"
+          echo "Creating tag: ${TAG}"
+
+          # Check if tag already exists
+          if git rev-parse "${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists, skipping tag creation..."
+          else
+            git tag -a "${TAG}" -m "Auto-release CLI ${TAG}"
+            git push origin "${TAG}"
+            echo "Created and pushed tag: ${TAG}"
+          fi
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+          GORELEASER_CURRENT_TAG: ${{ inputs.tag }}
+
+      - name: Summary
+        run: |
+          TAG="${{ inputs.tag }}"
+          echo "## CLI Auto-Release Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** \`${TAG}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- CLI binaries (darwin/linux/windows, amd64/arm64)" >> $GITHUB_STEP_SUMMARY
+          echo "- Homebrew cask updated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Install/Upgrade" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "brew upgrade project-planton" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/${TAG})" >> $GITHUB_STEP_SUMMARY
+

@@ -1,27 +1,28 @@
 # =============================================================================
-# Pulumi Module Auto-Release Workflow
+# Pulumi Modules Auto-Release (Reusable Workflow)
 # =============================================================================
-# Automatically detects changes in Pulumi module code, determines the next
-# date-based version, and creates a GitHub release with pre-built binaries.
+# Builds pre-compiled binaries for Pulumi deployment components and creates
+# GitHub releases with gzipped artifacts.
 #
-# Version format: pulumi-{component}-{semver}-{YYYYMMDD}.{N}
-#   - {component}: e.g., awsecsservice, gcpgkecluster
-#   - {semver}: Latest semantic version tag (e.g., v0.1.0)
-#   - {YYYYMMDD}: Date of the release
-#   - {N}: Sequential number for same-day releases (0, 1, 2, ...)
+# Tag Format: v{semver}-pulumi-{component}-{YYYYMMDD}.{N}
+# Example: v0.3.1-pulumi-awsecsservice-20260107.1
 #
-# Example: pulumi-awsecsservice-v0.1.0-20260107.1
+# Can be called from:
+#   1. The auto-release.yaml orchestrator (with matrix input)
+#   2. Directly via workflow_dispatch (for manual releases)
 #
-# Trigger: Push to main branch with changes in provider directories
+# Called by: .github/workflows/auto-release.yaml
 # =============================================================================
 
-name: pulumi-module-auto-release
+name: auto-release.pulumi-modules
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apis/org/project_planton/provider/**/iac/pulumi/**'
+  workflow_call:
+    inputs:
+      matrix:
+        description: 'JSON matrix of components to release'
+        required: true
+        type: string
 
   workflow_dispatch:
     inputs:
@@ -45,9 +46,10 @@ permissions:
 
 jobs:
   # ===========================================================================
-  # Detect changed components
+  # Detect components (only for workflow_dispatch)
   # ===========================================================================
   detect-changes:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -58,107 +60,86 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect changed Pulumi modules
+      - name: Detect Pulumi modules
         id: set-matrix
         run: |
           TODAY=$(date +%Y%m%d)
-          
-          # Get the latest semantic version tag (v*)
-          LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | head -1)
+
+          # Get the latest semantic version tag (v*.*.* only)
+          LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
           if [ -z "$LATEST_SEMVER" ]; then
             LATEST_SEMVER="v0.0.0"
             echo "No semantic version tags found, using default: ${LATEST_SEMVER}"
           else
             echo "Latest semantic version: ${LATEST_SEMVER}"
           fi
-          
-          # Handle manual dispatch
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ "${{ inputs.force_all }}" = "true" ]; then
-              echo "Manual dispatch: releasing all components"
-              PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/iac/pulumi" | sort)
-            elif [ -n "${{ inputs.component }}" ]; then
-              echo "Manual dispatch: releasing specific component ${{ inputs.component }}"
-              PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/${{ inputs.component }}/*/iac/pulumi" | head -1)
-            elif [ -n "${{ inputs.provider }}" ]; then
-              echo "Manual dispatch: releasing all ${{ inputs.provider }} components"
-              PULUMI_DIRS=$(find apis/org/project_planton/provider/${{ inputs.provider }} -type d -name "pulumi" -path "*/iac/pulumi" | sort)
-            else
-              echo "No components specified for manual dispatch"
-              echo "has_changes=false" >> $GITHUB_OUTPUT
-              echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
-              exit 0
-            fi
+
+          # Handle manual dispatch options
+          if [ "${{ inputs.force_all }}" = "true" ]; then
+            echo "Manual dispatch: releasing all components"
+            PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/iac/pulumi" | sort)
+          elif [ -n "${{ inputs.component }}" ]; then
+            echo "Manual dispatch: releasing specific component ${{ inputs.component }}"
+            PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/${{ inputs.component }}/*/iac/pulumi" | head -1)
+          elif [ -n "${{ inputs.provider }}" ]; then
+            echo "Manual dispatch: releasing all ${{ inputs.provider }} components"
+            PULUMI_DIRS=$(find apis/org/project_planton/provider/${{ inputs.provider }} -type d -name "pulumi" -path "*/iac/pulumi" | sort)
           else
-            # Automatic: detect changed files
-            echo "Detecting changes between ${{ github.event.before }} and ${{ github.sha }}"
-            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || git diff --name-only HEAD~1 HEAD)
-            
-            echo "Changed files:"
-            echo "$CHANGED_FILES"
-            
-            # Extract Pulumi directories from changed files
-            PULUMI_DIRS=$(echo "$CHANGED_FILES" | \
-              grep -E '^apis/org/project_planton/provider/[^/]+/[^/]+/v[0-9]+/iac/pulumi/' | \
-              sed 's|\(apis/org/project_planton/provider/[^/]*/[^/]*/v[0-9]*/iac/pulumi\)/.*|\1|' | \
-              sort -u)
-          fi
-          
-          echo ""
-          echo "Pulumi directories to release:"
-          echo "$PULUMI_DIRS"
-          
-          if [ -z "$PULUMI_DIRS" ]; then
-            echo "No Pulumi module changes detected"
+            echo "No components specified for manual dispatch"
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
+          echo ""
+          echo "Pulumi directories to release:"
+          echo "$PULUMI_DIRS"
+
+          if [ -z "$PULUMI_DIRS" ]; then
+            echo "No Pulumi module directories found"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           # Build matrix JSON
           MATRIX_ITEMS="["
           FIRST=true
-          
+
           for dir in $PULUMI_DIRS; do
-            # Extract provider and component from path
-            # Pattern: apis/org/project_planton/provider/{provider}/{component}/v1/iac/pulumi
             PROVIDER=$(echo "$dir" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
             COMPONENT=$(echo "$dir" | sed 's|apis/org/project_planton/provider/[^/]*/\([^/]*\)/.*|\1|')
-            
+
             # Skip test providers
             if [ "$PROVIDER" = "_test" ]; then
               continue
             fi
-            
-            # Find the next version for this component
-            # Tag format: pulumi-{component}-{semver}-{YYYYMMDD}.{N}
-            TAG_PREFIX="pulumi-${COMPONENT}-${LATEST_SEMVER}-${TODAY}"
+
+            # Tag format: v{semver}-pulumi-{component}-{YYYYMMDD}.{N}
+            TAG_PREFIX="${LATEST_SEMVER}-pulumi-${COMPONENT}-${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-            
+
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0
             else
               CURRENT_SEQ=$(echo "$LATEST_TAG" | sed "s/${TAG_PREFIX}\.//")
               NEXT_SEQ=$((CURRENT_SEQ + 1))
             fi
-            
-            NEXT_VERSION="${LATEST_SEMVER}-${TODAY}.${NEXT_SEQ}"
-            NEXT_TAG="pulumi-${COMPONENT}-${NEXT_VERSION}"
-            
+
+            NEXT_TAG="${TAG_PREFIX}.${NEXT_SEQ}"
             echo "  ${PROVIDER}/${COMPONENT} -> ${NEXT_TAG}"
-            
+
             if [ "$FIRST" = true ]; then
               FIRST=false
             else
               MATRIX_ITEMS="${MATRIX_ITEMS},"
             fi
-            
-            MATRIX_ITEMS="${MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"version\":\"${NEXT_VERSION}\",\"tag\":\"${NEXT_TAG}\",\"semver\":\"${LATEST_SEMVER}\"}"
+
+            MATRIX_ITEMS="${MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"tag\":\"${NEXT_TAG}\"}"
           done
-          
+
           MATRIX_ITEMS="${MATRIX_ITEMS}]"
-          
-          # Check if we have any items
+
           if [ "$MATRIX_ITEMS" = "[]" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
@@ -166,16 +147,170 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "matrix={\"include\":${MATRIX_ITEMS}}" >> $GITHUB_OUTPUT
           fi
-          
+
           echo ""
           echo "Matrix: {\"include\":${MATRIX_ITEMS}}"
 
   # ===========================================================================
-  # Build and release each changed component
+  # Build and release (from orchestrator via workflow_call)
   # ===========================================================================
-  build-and-release:
+  build-from-orchestrator:
+    if: github.event_name == 'workflow_call'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJson(inputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build and compress binary
+        run: |
+          BINARY_NAME="pulumi-${{ matrix.component }}"
+
+          echo "========================================"
+          echo "BUILDING: ${BINARY_NAME}"
+          echo "========================================"
+          echo "Provider: ${{ matrix.provider }}"
+          echo "Component: ${{ matrix.component }}"
+          echo "Path: ${{ matrix.path }}"
+          echo "Tag: ${{ matrix.tag }}"
+          echo "========================================"
+
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w -X main.Version=${{ matrix.tag }}" \
+            -o "${BINARY_NAME}" \
+            "./${{ matrix.path }}"
+
+          echo ""
+          echo "Binary built successfully:"
+          ls -lh "${BINARY_NAME}"
+          file "${BINARY_NAME}"
+
+          echo ""
+          echo "Compressing with gzip..."
+          gzip -9 -k "${BINARY_NAME}"
+          ls -lh "${BINARY_NAME}.gz"
+
+          ORIG_SIZE=$(stat -c%s "${BINARY_NAME}")
+          COMP_SIZE=$(stat -c%s "${BINARY_NAME}.gz")
+          RATIO=$(echo "scale=1; 100 - ($COMP_SIZE * 100 / $ORIG_SIZE)" | bc)
+          echo "Compression: ${ORIG_SIZE} bytes -> ${COMP_SIZE} bytes (${RATIO}% reduction)"
+
+      - name: Create tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          TAG="${{ matrix.tag }}"
+          if git rev-parse "${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists, skipping..."
+          else
+            git tag -a "${TAG}" -m "Auto-release Pulumi module ${{ matrix.component }} - ${TAG}"
+            git push origin "${TAG}"
+            echo "Created and pushed tag: ${TAG}"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BINARY_NAME="pulumi-${{ matrix.component }}"
+          ARTIFACT_NAME="${BINARY_NAME}.gz"
+          TAG="${{ matrix.tag }}"
+          COMPONENT="${{ matrix.component }}"
+          PROVIDER="${{ matrix.provider }}"
+
+          ORIG_SIZE=$(ls -lh ${BINARY_NAME} | awk '{print $5}')
+          COMP_SIZE=$(ls -lh ${ARTIFACT_NAME} | awk '{print $5}')
+
+          cat > release-notes.md << EOF
+          ## Pulumi Module Auto-Release
+
+          This is an auto-release of the **${COMPONENT}** Pulumi deployment component binary.
+
+          ---
+
+          ## Module Info
+
+          - **Component:** ${COMPONENT}
+          - **Provider:** ${PROVIDER}
+          - **Tag:** \`${TAG}\`
+          - **Commit:** ${{ github.sha }}
+          - **Platform:** linux/amd64
+          - **Compressed Size:** ${COMP_SIZE}
+          - **Uncompressed Size:** ${ORIG_SIZE}
+
+          ---
+
+          ## Download and Extract
+
+          Download the pre-built binary and extract it:
+
+          \`\`\`bash
+          # Download the compressed binary
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${TAG}/${ARTIFACT_NAME}
+
+          # Extract the binary
+          gunzip ${ARTIFACT_NAME}
+
+          # Make it executable
+          chmod +x ${BINARY_NAME}
+
+          # Verify it works
+          ./${BINARY_NAME} --help
+          \`\`\`
+
+          ---
+
+          ## Usage with IaC Runner
+
+          This binary is designed to be used with the Project Planton IaC Runner. The runner automatically downloads and executes these binaries for infrastructure deployments.
+
+          ---
+
+          ## Source Code
+
+          The source code for this module is located at:
+
+          \`apis/org/project_planton/provider/${PROVIDER}/${COMPONENT}/v1/iac/pulumi/\`
+          EOF
+
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists, updating..."
+            gh release upload "${TAG}" "${ARTIFACT_NAME}" --clobber
+          else
+            echo "Creating release ${TAG}..."
+            gh release create "${TAG}" \
+              --title "Pulumi Module: ${COMPONENT} ${TAG}" \
+              --notes-file release-notes.md \
+              "${ARTIFACT_NAME}"
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "RELEASE COMPLETE: ${COMPONENT}"
+          echo "========================================"
+          echo "Artifact: ${ARTIFACT_NAME} (${COMP_SIZE})"
+          echo "https://github.com/${{ github.repository }}/releases/tag/${TAG}"
+
+  # ===========================================================================
+  # Build and release (from workflow_dispatch)
+  # ===========================================================================
+  build-from-dispatch:
     needs: detect-changes
-    if: needs.detect-changes.outputs.has_changes == 'true'
+    if: github.event_name == 'workflow_dispatch' && needs.detect-changes.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -198,31 +333,31 @@ jobs:
       - name: Build and compress binary
         run: |
           BINARY_NAME="pulumi-${{ matrix.component }}"
-          
-          echo "=== Building ${BINARY_NAME} ==="
+
+          echo "========================================"
+          echo "BUILDING: ${BINARY_NAME}"
+          echo "========================================"
           echo "Provider: ${{ matrix.provider }}"
           echo "Component: ${{ matrix.component }}"
           echo "Path: ${{ matrix.path }}"
-          echo "Version: ${{ matrix.version }}"
           echo "Tag: ${{ matrix.tag }}"
-          echo ""
-          
+          echo "========================================"
+
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
-            -ldflags="-s -w -X main.Version=${{ matrix.version }}" \
+            -ldflags="-s -w -X main.Version=${{ matrix.tag }}" \
             -o "${BINARY_NAME}" \
             "./${{ matrix.path }}"
-          
+
           echo ""
-          echo "=== Binary built successfully ==="
+          echo "Binary built successfully:"
           ls -lh "${BINARY_NAME}"
           file "${BINARY_NAME}"
-          
+
           echo ""
-          echo "=== Compressing binary with gzip ==="
+          echo "Compressing with gzip..."
           gzip -9 -k "${BINARY_NAME}"
           ls -lh "${BINARY_NAME}.gz"
-          
-          # Calculate compression ratio
+
           ORIG_SIZE=$(stat -c%s "${BINARY_NAME}")
           COMP_SIZE=$(stat -c%s "${BINARY_NAME}.gz")
           RATIO=$(echo "scale=1; 100 - ($COMP_SIZE * 100 / $ORIG_SIZE)" | bc)
@@ -232,14 +367,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Check if tag already exists
-          if git rev-parse "${{ matrix.tag }}" >/dev/null 2>&1; then
-            echo "Tag ${{ matrix.tag }} already exists, skipping..."
+
+          TAG="${{ matrix.tag }}"
+          if git rev-parse "${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists, skipping..."
           else
-            git tag -a "${{ matrix.tag }}" -m "Release ${{ matrix.component }} version ${{ matrix.version }}"
-            git push origin "${{ matrix.tag }}"
-            echo "Created and pushed tag: ${{ matrix.tag }}"
+            git tag -a "${TAG}" -m "Auto-release Pulumi module ${{ matrix.component }} - ${TAG}"
+            git push origin "${TAG}"
+            echo "Created and pushed tag: ${TAG}"
           fi
 
       - name: Create GitHub Release
@@ -248,79 +383,98 @@ jobs:
         run: |
           BINARY_NAME="pulumi-${{ matrix.component }}"
           ARTIFACT_NAME="${BINARY_NAME}.gz"
-          
+          TAG="${{ matrix.tag }}"
+          COMPONENT="${{ matrix.component }}"
+          PROVIDER="${{ matrix.provider }}"
+
           ORIG_SIZE=$(ls -lh ${BINARY_NAME} | awk '{print $5}')
           COMP_SIZE=$(ls -lh ${ARTIFACT_NAME} | awk '{print $5}')
-          
-          RELEASE_NOTES="## Pulumi Module Release
-          
-          **Component:** ${{ matrix.component }}
-          **Provider:** ${{ matrix.provider }}
-          **Base Version:** ${{ matrix.semver }}
-          **Patch Version:** ${{ matrix.version }}
-          **Commit:** ${{ github.sha }}
-          
-          ### Usage
-          
-          Download and extract the binary:
-          
-          \`\`\`bash
-          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ matrix.tag }}/${ARTIFACT_NAME}
-          gunzip ${ARTIFACT_NAME}
-          chmod +x ${BINARY_NAME}
-          ./${BINARY_NAME}
-          \`\`\`
-          
-          ### Binary Info
-          
+
+          cat > release-notes.md << EOF
+          ## Pulumi Module Auto-Release
+
+          This is an auto-release of the **${COMPONENT}** Pulumi deployment component binary.
+
+          ---
+
+          ## Module Info
+
+          - **Component:** ${COMPONENT}
+          - **Provider:** ${PROVIDER}
+          - **Tag:** \`${TAG}\`
+          - **Commit:** ${{ github.sha }}
           - **Platform:** linux/amd64
           - **Compressed Size:** ${COMP_SIZE}
           - **Uncompressed Size:** ${ORIG_SIZE}
-          "
-          
-          # Check if release already exists
-          if gh release view "${{ matrix.tag }}" >/dev/null 2>&1; then
-            echo "Release ${{ matrix.tag }} already exists, updating..."
-            gh release upload "${{ matrix.tag }}" "${ARTIFACT_NAME}" --clobber
+
+          ---
+
+          ## Download and Extract
+
+          Download the pre-built binary and extract it:
+
+          \`\`\`bash
+          # Download the compressed binary
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${TAG}/${ARTIFACT_NAME}
+
+          # Extract the binary
+          gunzip ${ARTIFACT_NAME}
+
+          # Make it executable
+          chmod +x ${BINARY_NAME}
+
+          # Verify it works
+          ./${BINARY_NAME} --help
+          \`\`\`
+
+          ---
+
+          ## Usage with IaC Runner
+
+          This binary is designed to be used with the Project Planton IaC Runner. The runner automatically downloads and executes these binaries for infrastructure deployments.
+
+          ---
+
+          ## Source Code
+
+          The source code for this module is located at:
+
+          \`apis/org/project_planton/provider/${PROVIDER}/${COMPONENT}/v1/iac/pulumi/\`
+          EOF
+
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists, updating..."
+            gh release upload "${TAG}" "${ARTIFACT_NAME}" --clobber
           else
-            echo "Creating release ${{ matrix.tag }}..."
-            gh release create "${{ matrix.tag }}" \
-              --title "${{ matrix.tag }}" \
-              --notes "${RELEASE_NOTES}" \
+            echo "Creating release ${TAG}..."
+            gh release create "${TAG}" \
+              --title "Pulumi Module: ${COMPONENT} ${TAG}" \
+              --notes-file release-notes.md \
               "${ARTIFACT_NAME}"
           fi
-          
+
           echo ""
-          echo "=== Release created successfully ==="
+          echo "========================================"
+          echo "RELEASE COMPLETE: ${COMPONENT}"
+          echo "========================================"
           echo "Artifact: ${ARTIFACT_NAME} (${COMP_SIZE})"
-          echo "https://github.com/${{ github.repository }}/releases/tag/${{ matrix.tag }}"
+          echo "https://github.com/${{ github.repository }}/releases/tag/${TAG}"
 
   # ===========================================================================
   # Summary
   # ===========================================================================
   summary:
-    needs: [detect-changes, build-and-release]
-    if: always() && needs.detect-changes.outputs.has_changes == 'true'
+    needs: [build-from-orchestrator, build-from-dispatch]
+    if: always() && (needs.build-from-orchestrator.result == 'success' || needs.build-from-dispatch.result == 'success')
     runs-on: ubuntu-latest
     steps:
       - name: Generate summary
         run: |
-          echo "## Pulumi Module Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Pulumi Module Auto-Release Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Released Components" >> $GITHUB_STEP_SUMMARY
+          echo "Released Pulumi module binaries have been uploaded to GitHub Releases." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Provider | Component | Version | Tag |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|-----------|---------|-----|" >> $GITHUB_STEP_SUMMARY
-          
-          # Parse matrix and output rows
-          MATRIX='${{ needs.detect-changes.outputs.matrix }}'
-          echo "$MATRIX" | jq -r '.include[] | "| \(.provider) | \(.component) | \(.version) | `\(.tag)` |"' >> $GITHUB_STEP_SUMMARY
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Download Links" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "$MATRIX" | jq -r '.include[] | "- [\(.component)](${{ github.server_url }}/${{ github.repository }}/releases/tag/\(.tag))"' >> $GITHUB_STEP_SUMMARY
-
+          echo "See individual job logs for details on each component." >> $GITHUB_STEP_SUMMARY
