@@ -2,18 +2,17 @@
 # Pulumi Runner Binary Build Workflow
 # =============================================================================
 # Builds pre-compiled binaries for all Pulumi deployment components and packages
-# them into a single Docker image. Uses native GitHub runners with Go caching.
+# them into a single Docker image. Uses one job per provider with parallel
+# builds within each job.
 #
 # Trigger: Push a tag matching 'v*' (aligned with release workflow)
 #   Example: git tag v0.0.100 && git push origin v0.0.100
 #
 # Architecture:
-#   1. Matrix job builds one binary per component (130 parallel jobs)
-#   2. Each job uploads its binary as an artifact
-#   3. Final job downloads all binaries and builds Docker image
-#
-# Adding new components:
-#   Add an entry to the matrix.include section with provider, component, and path
+#   1. Matrix job builds all components for each provider (11 parallel jobs)
+#   2. Within each job, components are built in parallel (controlled concurrency)
+#   3. Each job uploads its binaries as a single artifact
+#   4. Final job downloads all provider artifacts and builds Docker image
 # =============================================================================
 
 name: pulumi-runner
@@ -39,448 +38,42 @@ permissions:
 
 env:
   IMAGE_REPO: ghcr.io/plantonhq/project-planton/base-images/pulumi-runner
+  # Concurrency for parallel builds within each provider job
+  BUILD_CONCURRENCY: 2
 
 jobs:
   # ===========================================================================
-  # Build one binary per deployment component (130 parallel jobs)
+  # Build all binaries for each provider (11 parallel jobs)
   # ===========================================================================
-  build-binary:
+  build-provider:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
         include:
-          # ===================================================================
-          # ATLAS (1 component)
-          # ===================================================================
           - provider: atlas
-            component: mongodbatlas
-            path: apis/org/project_planton/provider/atlas/mongodbatlas/v1/iac/pulumi
-
-          # ===================================================================
-          # AUTH0 (3 components)
-          # ===================================================================
+            components: 1
           - provider: auth0
-            component: auth0client
-            path: apis/org/project_planton/provider/auth0/auth0client/v1/iac/pulumi
-          - provider: auth0
-            component: auth0connection
-            path: apis/org/project_planton/provider/auth0/auth0connection/v1/iac/pulumi
-          - provider: auth0
-            component: auth0eventstream
-            path: apis/org/project_planton/provider/auth0/auth0eventstream/v1/iac/pulumi
-
-          # ===================================================================
-          # AWS (22 components)
-          # ===================================================================
+            components: 3
           - provider: aws
-            component: awsalb
-            path: apis/org/project_planton/provider/aws/awsalb/v1/iac/pulumi
-          - provider: aws
-            component: awscertmanagercert
-            path: apis/org/project_planton/provider/aws/awscertmanagercert/v1/iac/pulumi
-          - provider: aws
-            component: awsclientvpn
-            path: apis/org/project_planton/provider/aws/awsclientvpn/v1/iac/pulumi
-          - provider: aws
-            component: awscloudfront
-            path: apis/org/project_planton/provider/aws/awscloudfront/v1/iac/pulumi
-          - provider: aws
-            component: awsdynamodb
-            path: apis/org/project_planton/provider/aws/awsdynamodb/v1/iac/pulumi
-          - provider: aws
-            component: awsec2instance
-            path: apis/org/project_planton/provider/aws/awsec2instance/v1/iac/pulumi
-          - provider: aws
-            component: awsecrrepo
-            path: apis/org/project_planton/provider/aws/awsecrrepo/v1/iac/pulumi
-          - provider: aws
-            component: awsecscluster
-            path: apis/org/project_planton/provider/aws/awsecscluster/v1/iac/pulumi
-          - provider: aws
-            component: awsecsservice
-            path: apis/org/project_planton/provider/aws/awsecsservice/v1/iac/pulumi
-          - provider: aws
-            component: awsekscluster
-            path: apis/org/project_planton/provider/aws/awsekscluster/v1/iac/pulumi
-          - provider: aws
-            component: awseksnodegroup
-            path: apis/org/project_planton/provider/aws/awseksnodegroup/v1/iac/pulumi
-          - provider: aws
-            component: awsiamrole
-            path: apis/org/project_planton/provider/aws/awsiamrole/v1/iac/pulumi
-          - provider: aws
-            component: awsiamuser
-            path: apis/org/project_planton/provider/aws/awsiamuser/v1/iac/pulumi
-          - provider: aws
-            component: awskmskey
-            path: apis/org/project_planton/provider/aws/awskmskey/v1/iac/pulumi
-          - provider: aws
-            component: awslambda
-            path: apis/org/project_planton/provider/aws/awslambda/v1/iac/pulumi
-          - provider: aws
-            component: awsrdscluster
-            path: apis/org/project_planton/provider/aws/awsrdscluster/v1/iac/pulumi
-          - provider: aws
-            component: awsrdsinstance
-            path: apis/org/project_planton/provider/aws/awsrdsinstance/v1/iac/pulumi
-          - provider: aws
-            component: awsroute53zone
-            path: apis/org/project_planton/provider/aws/awsroute53zone/v1/iac/pulumi
-          - provider: aws
-            component: awss3bucket
-            path: apis/org/project_planton/provider/aws/awss3bucket/v1/iac/pulumi
-          - provider: aws
-            component: awssecretsmanager
-            path: apis/org/project_planton/provider/aws/awssecretsmanager/v1/iac/pulumi
-          - provider: aws
-            component: awssecuritygroup
-            path: apis/org/project_planton/provider/aws/awssecuritygroup/v1/iac/pulumi
-          - provider: aws
-            component: awsvpc
-            path: apis/org/project_planton/provider/aws/awsvpc/v1/iac/pulumi
-
-          # ===================================================================
-          # AZURE (7 components)
-          # ===================================================================
+            components: 22
           - provider: azure
-            component: azureakscluster
-            path: apis/org/project_planton/provider/azure/azureakscluster/v1/iac/pulumi
-          - provider: azure
-            component: azureaksnodepool
-            path: apis/org/project_planton/provider/azure/azureaksnodepool/v1/iac/pulumi
-          - provider: azure
-            component: azurecontainerregistry
-            path: apis/org/project_planton/provider/azure/azurecontainerregistry/v1/iac/pulumi
-          - provider: azure
-            component: azurednszone
-            path: apis/org/project_planton/provider/azure/azurednszone/v1/iac/pulumi
-          - provider: azure
-            component: azurekeyvault
-            path: apis/org/project_planton/provider/azure/azurekeyvault/v1/iac/pulumi
-          - provider: azure
-            component: azurenatgateway
-            path: apis/org/project_planton/provider/azure/azurenatgateway/v1/iac/pulumi
-          - provider: azure
-            component: azurevpc
-            path: apis/org/project_planton/provider/azure/azurevpc/v1/iac/pulumi
-
-          # ===================================================================
-          # CIVO (11 components)
-          # ===================================================================
+            components: 7
           - provider: civo
-            component: civobucket
-            path: apis/org/project_planton/provider/civo/civobucket/v1/iac/pulumi
-          - provider: civo
-            component: civocertificate
-            path: apis/org/project_planton/provider/civo/civocertificate/v1/iac/pulumi
-          - provider: civo
-            component: civocomputeinstance
-            path: apis/org/project_planton/provider/civo/civocomputeinstance/v1/iac/pulumi
-          - provider: civo
-            component: civodatabase
-            path: apis/org/project_planton/provider/civo/civodatabase/v1/iac/pulumi
-          - provider: civo
-            component: civodnszone
-            path: apis/org/project_planton/provider/civo/civodnszone/v1/iac/pulumi
-          - provider: civo
-            component: civofirewall
-            path: apis/org/project_planton/provider/civo/civofirewall/v1/iac/pulumi
-          - provider: civo
-            component: civoipaddress
-            path: apis/org/project_planton/provider/civo/civoipaddress/v1/iac/pulumi
-          - provider: civo
-            component: civokubernetescluster
-            path: apis/org/project_planton/provider/civo/civokubernetescluster/v1/iac/pulumi
-          - provider: civo
-            component: civokubernetesnodepool
-            path: apis/org/project_planton/provider/civo/civokubernetesnodepool/v1/iac/pulumi
-          - provider: civo
-            component: civovolume
-            path: apis/org/project_planton/provider/civo/civovolume/v1/iac/pulumi
-          - provider: civo
-            component: civovpc
-            path: apis/org/project_planton/provider/civo/civovpc/v1/iac/pulumi
-
-          # ===================================================================
-          # CLOUDFLARE (7 components)
-          # ===================================================================
+            components: 11
           - provider: cloudflare
-            component: cloudflared1database
-            path: apis/org/project_planton/provider/cloudflare/cloudflared1database/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarednszone
-            path: apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarekvnamespace
-            path: apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflareloadbalancer
-            path: apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarer2bucket
-            path: apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflareworker
-            path: apis/org/project_planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarezerotrustaccessapplication
-            path: apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/iac/pulumi
-
-          # ===================================================================
-          # CONFLUENT (1 component)
-          # ===================================================================
+            components: 7
           - provider: confluent
-            component: confluentkafka
-            path: apis/org/project_planton/provider/confluent/confluentkafka/v1/iac/pulumi
-
-          # ===================================================================
-          # DIGITALOCEAN (14 components)
-          # ===================================================================
+            components: 1
           - provider: digitalocean
-            component: digitaloceanappplatformservice
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanappplatformservice/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceanbucket
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanbucket/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceancertificate
-            path: apis/org/project_planton/provider/digitalocean/digitaloceancertificate/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceancontainerregistry
-            path: apis/org/project_planton/provider/digitalocean/digitaloceancontainerregistry/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceandatabasecluster
-            path: apis/org/project_planton/provider/digitalocean/digitaloceandatabasecluster/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceandnszone
-            path: apis/org/project_planton/provider/digitalocean/digitaloceandnszone/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceandroplet
-            path: apis/org/project_planton/provider/digitalocean/digitaloceandroplet/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceanfirewall
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanfirewall/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceanfunction
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanfunction/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceankubernetescluster
-            path: apis/org/project_planton/provider/digitalocean/digitaloceankubernetescluster/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceankubernetesnodepool
-            path: apis/org/project_planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceanloadbalancer
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanloadbalancer/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceanvolume
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanvolume/v1/iac/pulumi
-          - provider: digitalocean
-            component: digitaloceanvpc
-            path: apis/org/project_planton/provider/digitalocean/digitaloceanvpc/v1/iac/pulumi
-
-          # ===================================================================
-          # GCP (17 components)
-          # ===================================================================
+            components: 14
           - provider: gcp
-            component: gcpartifactregistryrepo
-            path: apis/org/project_planton/provider/gcp/gcpartifactregistryrepo/v1/iac/pulumi
-          - provider: gcp
-            component: gcpcertmanagercert
-            path: apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1/iac/pulumi
-          - provider: gcp
-            component: gcpcloudcdn
-            path: apis/org/project_planton/provider/gcp/gcpcloudcdn/v1/iac/pulumi
-          - provider: gcp
-            component: gcpcloudfunction
-            path: apis/org/project_planton/provider/gcp/gcpcloudfunction/v1/iac/pulumi
-          - provider: gcp
-            component: gcpcloudrun
-            path: apis/org/project_planton/provider/gcp/gcpcloudrun/v1/iac/pulumi
-          - provider: gcp
-            component: gcpcloudsql
-            path: apis/org/project_planton/provider/gcp/gcpcloudsql/v1/iac/pulumi
-          - provider: gcp
-            component: gcpdnszone
-            path: apis/org/project_planton/provider/gcp/gcpdnszone/v1/iac/pulumi
-          - provider: gcp
-            component: gcpgcsbucket
-            path: apis/org/project_planton/provider/gcp/gcpgcsbucket/v1/iac/pulumi
-          - provider: gcp
-            component: gcpgkecluster
-            path: apis/org/project_planton/provider/gcp/gcpgkecluster/v1/iac/pulumi
-          - provider: gcp
-            component: gcpgkenodepool
-            path: apis/org/project_planton/provider/gcp/gcpgkenodepool/v1/iac/pulumi
-          - provider: gcp
-            component: gcpgkeworkloadidentitybinding
-            path: apis/org/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/iac/pulumi
-          - provider: gcp
-            component: gcpproject
-            path: apis/org/project_planton/provider/gcp/gcpproject/v1/iac/pulumi
-          - provider: gcp
-            component: gcprouternat
-            path: apis/org/project_planton/provider/gcp/gcprouternat/v1/iac/pulumi
-          - provider: gcp
-            component: gcpsecretsmanager
-            path: apis/org/project_planton/provider/gcp/gcpsecretsmanager/v1/iac/pulumi
-          - provider: gcp
-            component: gcpserviceaccount
-            path: apis/org/project_planton/provider/gcp/gcpserviceaccount/v1/iac/pulumi
-          - provider: gcp
-            component: gcpsubnetwork
-            path: apis/org/project_planton/provider/gcp/gcpsubnetwork/v1/iac/pulumi
-          - provider: gcp
-            component: gcpvpc
-            path: apis/org/project_planton/provider/gcp/gcpvpc/v1/iac/pulumi
-
-          # ===================================================================
-          # KUBERNETES (45 components)
-          # ===================================================================
+            components: 17
           - provider: kubernetes
-            component: kubernetesaltinityoperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesargocd
-            path: apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetescertmanager
-            path: apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesclickhouse
-            path: apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetescronjob
-            path: apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesdaemonset
-            path: apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesdeployment
-            path: apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteselasticoperator
-            path: apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteselasticsearch
-            path: apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesexternaldns
-            path: apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesexternalsecrets
-            path: apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgatewayapicrds
-            path: apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgharunnerscaleset
-            path: apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgharunnerscalesetcontroller
-            path: apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscalesetcontroller/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgitlab
-            path: apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgrafana
-            path: apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesharbor
-            path: apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteshelmrelease
-            path: apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesingressnginx
-            path: apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesistio
-            path: apis/org/project_planton/provider/kubernetes/kubernetesistio/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesjenkins
-            path: apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteskafka
-            path: apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteskeycloak
-            path: apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteslocust
-            path: apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesmanifest
-            path: apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesmongodb
-            path: apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesnamespace
-            path: apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesnats
-            path: apis/org/project_planton/provider/kubernetes/kubernetesnats/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesneo4j
-            path: apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesopenfga
-            path: apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesperconamongooperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesperconamysqloperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesperconapostgresoperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetespostgres
-            path: apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesprometheus
-            path: apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesredis
-            path: apis/org/project_planton/provider/kubernetes/kubernetesredis/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetessignoz
-            path: apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetessolr
-            path: apis/org/project_planton/provider/kubernetes/kubernetessolr/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetessolroperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesstatefulset
-            path: apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesstrimzikafkaoperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetestekton
-            path: apis/org/project_planton/provider/kubernetes/kubernetestekton/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetestektonoperator
-            path: apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetestemporal
-            path: apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteszalandopostgresoperator
-            path: apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/iac/pulumi
-
-          # ===================================================================
-          # SNOWFLAKE (1 component)
-          # ===================================================================
+            components: 45
           - provider: snowflake
-            component: snowflakedatabase
-            path: apis/org/project_planton/provider/snowflake/snowflakedatabase/v1/iac/pulumi
+            components: 1
 
     steps:
       - name: Checkout
@@ -490,28 +83,74 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.25'
-          cache: true  # Native GitHub Go caching
+          cache: true
 
-      - name: Build binary
+      - name: Build all ${{ matrix.provider }} binaries (concurrency=${{ env.BUILD_CONCURRENCY }})
         run: |
-          mkdir -p binaries/${{ matrix.provider }}
+          PROVIDER="${{ matrix.provider }}"
+          CONCURRENCY="${{ env.BUILD_CONCURRENCY }}"
           
-          echo "Building: ${{ matrix.provider }}/${{ matrix.component }}"
-          echo "Path: ${{ matrix.path }}"
+          echo "=== Building all ${PROVIDER} components ==="
+          echo "Expected components: ${{ matrix.components }}"
+          echo "Build concurrency: ${CONCURRENCY}"
+          echo ""
           
-          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
-            -ldflags="-s -w" \
-            -o binaries/${{ matrix.provider }}/${{ matrix.component }} \
-            ./${{ matrix.path }}
+          # Create output directory
+          mkdir -p binaries/${PROVIDER}
           
-          echo "=== Binary Info ==="
-          ls -lh binaries/${{ matrix.provider }}/${{ matrix.component }}
-          file binaries/${{ matrix.provider }}/${{ matrix.component }}
+          # Find all pulumi directories for this provider
+          PULUMI_DIRS=$(find apis -type d -path "*/provider/${PROVIDER}/*/iac/pulumi" -not -path "*/module" | sort)
+          
+          # Count components
+          COMPONENT_COUNT=$(echo "$PULUMI_DIRS" | wc -l)
+          echo "Found ${COMPONENT_COUNT} components to build"
+          echo ""
+          
+          # Build function
+          build_component() {
+            local dir="$1"
+            local provider="$2"
+            
+            # Extract component name from path
+            # Path: apis/org/project_planton/provider/{provider}/{component}/v1/iac/pulumi
+            local component=$(echo "$dir" | sed 's|.*/provider/[^/]*/\([^/]*\)/.*|\1|')
+            
+            echo "[START] ${provider}/${component}"
+            
+            CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+              -ldflags="-s -w" \
+              -o "binaries/${provider}/${component}" \
+              "./${dir}" 2>&1
+            
+            local status=$?
+            if [ $status -eq 0 ]; then
+              local size=$(ls -lh "binaries/${provider}/${component}" | awk '{print $5}')
+              echo "[DONE]  ${provider}/${component} (${size})"
+            else
+              echo "[FAIL]  ${provider}/${component}"
+            fi
+            
+            return $status
+          }
+          
+          export -f build_component
+          
+          # Build all components in parallel with controlled concurrency
+          echo "$PULUMI_DIRS" | xargs -P ${CONCURRENCY} -I {} bash -c 'build_component "$@"' _ {} "${PROVIDER}"
+          
+          echo ""
+          echo "=== Build Summary ==="
+          echo "Provider: ${PROVIDER}"
+          echo "Binaries built: $(find binaries/${PROVIDER} -type f | wc -l)"
+          echo "Total size: $(du -sh binaries/${PROVIDER} | cut -f1)"
+          echo ""
+          echo "=== Binaries ==="
+          ls -lh binaries/${PROVIDER}/
 
-      - name: Upload binary artifact
+      - name: Upload provider binaries
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.provider }}-${{ matrix.component }}
+          name: binaries-${{ matrix.provider }}
           path: binaries/
           retention-days: 1
           if-no-files-found: error
@@ -520,7 +159,7 @@ jobs:
   # Combine all binaries and build Docker image
   # ===========================================================================
   build-image:
-    needs: build-binary
+    needs: build-provider
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -546,11 +185,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download all binary artifacts
+      - name: Download all provider artifacts
         uses: actions/download-artifact@v4
         with:
           path: downloaded-artifacts/
-          pattern: binary-*
+          pattern: binaries-*
           merge-multiple: true
 
       - name: Organize binaries
@@ -558,8 +197,6 @@ jobs:
           mkdir -p binaries
           
           # Move binaries from downloaded structure to final structure
-          # Downloaded structure: downloaded-artifacts/{provider}/{component}
-          # Final structure: binaries/{provider}/{component}
           if [ -d "downloaded-artifacts" ]; then
             cp -r downloaded-artifacts/* binaries/ 2>/dev/null || true
           fi
@@ -638,4 +275,3 @@ jobs:
               echo "- $(basename "$provider"): $count" >> $GITHUB_STEP_SUMMARY
             fi
           done
-
