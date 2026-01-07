@@ -1,134 +1,94 @@
 # IaC Runner Base Image
 
-A Docker base image for running Pulumi and OpenTofu/Terraform Go programs with fully pre-warmed Go caches. This dramatically reduces cold start times by pre-building ALL Pulumi modules from project-planton.
+Base Docker image for running Pulumi and OpenTofu/Terraform programs with pre-warmed Go caches.
 
-## Features
+## Overview
 
-- **Complete cache coverage**: Every Pulumi module is pre-compiled
-- **Instant rebuilds**: ~0.5s rebuild time for any cached module
-- **Fast first builds**: 15-40s for modules (vs 2-5 min without cache)
-- **IaC tools included**: Pulumi CLI, OpenTofu CLI, and Go runtime
+This image dramatically reduces cold start times for Go-based Pulumi programs by including pre-compiled provider SDKs. The caches are built using self-hosted GitHub Actions runners with persistent storage.
 
-## How It Works
+## Contents
 
-The image is built using a GitHub Actions matrix strategy:
-
-1. **Parallel builds**: Each cloud provider's modules are built in parallel
-2. **Cache merging**: GOMODCACHE and GOCACHE from all providers are merged
-3. **Docker image**: The merged caches are copied into a minimal base image
-
-```mermaid
-flowchart LR
-    subgraph "GitHub Actions (parallel)"
-        A[AWS job] --> M[Merge caches]
-        B[GCP job] --> M
-        C[Azure job] --> M
-        D[K8s job] --> M
-        E[...others] --> M
-    end
-    
-    M --> I[Build Docker image]
-    I --> P[Push to GHCR]
-```
-
-This approach is much faster than building all modules sequentially in Docker (~10 min vs ~60 min).
+| Component | Version | Purpose |
+|-----------|---------|---------|
+| Go | 1.25.0 | Go runtime |
+| Pulumi | v3.202.0 | Pulumi CLI |
+| OpenTofu | 1.9.1 | Terraform alternative |
+| GOMODCACHE | Pre-warmed | Downloaded Go modules |
+| GOCACHE | Pre-warmed | Compiled Go packages |
 
 ## Usage
 
-Use this as your base image:
-
 ```dockerfile
 FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:latest
-
-# Your application build steps
-COPY . /app
-WORKDIR /app
-RUN go build -o /usr/local/bin/myapp .
-
-CMD ["/usr/local/bin/myapp"]
 ```
 
-## Releasing a New Version
+Or with a specific version:
 
-Create and push a tag:
+```dockerfile
+FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:v1.0.0
+```
+
+## How It Works
+
+```mermaid
+flowchart LR
+    subgraph Runner ["Self-Hosted Runner"]
+        PVC[(PVC Cache)]
+        Build[Build Modules]
+    end
+    
+    subgraph Workflow ["GitHub Actions"]
+        Tag[Push Tag] --> Build
+        Build --> PVC
+        PVC --> Docker[Build Image]
+    end
+    
+    subgraph Registry ["GHCR"]
+        Image[iac-runner:version]
+    end
+    
+    Docker --> Image
+```
+
+1. **Tag pushed** → Triggers workflow
+2. **Self-hosted runner** → Builds all Pulumi modules in parallel
+3. **PVC cache** → Persists GOMODCACHE and GOCACHE across runs
+4. **Docker build** → Copies caches into image
+5. **GHCR** → Image published with pre-warmed caches
+
+## Building a New Version
+
+Push a tag to trigger the workflow:
 
 ```bash
 git tag iac-runner-base-v1.0.0
 git push origin iac-runner-base-v1.0.0
 ```
 
-This triggers `.github/workflows/iac-runner-base-image.yml` which:
-1. Builds caches for each provider in parallel (matrix jobs)
-2. Merges all caches
-3. Builds and pushes the Docker image
+The workflow will:
+- Run on the `project-planton-iac-runner-base-image-builder` self-hosted runner
+- Build all Pulumi modules (incrementally, using cached results)
+- Package caches into Docker image
+- Push to GHCR
 
-## Providers Included
+## Cache Architecture
 
-| Provider | Description |
-|----------|-------------|
-| aws | AWS resources (EC2, EKS, Lambda, S3, etc.) |
-| gcp | GCP resources (GKE, Cloud Run, GCS, etc.) |
-| azure | Azure resources (AKS, Key Vault, etc.) |
-| kubernetes | Kubernetes resources and Helm |
-| cloudflare | Cloudflare workers, R2, DNS |
-| digitalocean | DigitalOcean droplets, K8s |
-| atlas | MongoDB Atlas clusters |
-| confluent | Confluent Cloud (Kafka) |
-| snowflake | Snowflake warehouses |
-| auth0 | Auth0 tenants |
-| civo | Civo K8s clusters |
+| Cache | Path | Purpose |
+|-------|------|---------|
+| GOMODCACHE | `/var/cache/go-mod` | Downloaded module source code |
+| GOCACHE | `/var/cache/go-build` | Compiled `.a` files |
 
-## Local Testing
-
-Simulate the matrix build locally:
-
-```bash
-cd base-images/iac-runner
-./simulate-matrix-build.sh
-```
-
-This builds caches for a subset of providers and creates a test Docker image.
-
-## Image Size
-
-The pre-warmed caches result in a larger image (~8-10GB):
-
-| Component | Size |
-|-----------|------|
-| Base OS + tools | ~300MB |
-| GOMODCACHE | ~1-2GB |
-| GOCACHE | ~5-7GB |
-| **Total** | **~8-10GB** |
-
-**Why the larger image is worth it:**
-- Image is pulled once per node and cached
-- Every Pulumi module has guaranteed cache hits
-- Stateless pods - no need for persistent volumes
-- Predictable, consistent performance
-
-## Environment Variables
-
-| Variable | Value | Purpose |
-|----------|-------|---------|
-| `GOMODCACHE` | `/var/cache/go-mod` | Pre-warmed module cache |
-| `GOCACHE` | `/var/cache/go-build` | Pre-warmed build cache |
+The caches are persisted on a Kubernetes PVC, so subsequent builds only recompile changed modules.
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `Dockerfile` | Standalone build (clones repo, builds all modules) |
-| `Dockerfile.merged` | Used by GitHub Actions (copies pre-built caches) |
-| `simulate-matrix-build.sh` | Local testing script |
+| `Dockerfile` | Image definition with cache COPY |
+| `Makefile` | Local cleanup commands |
+| `.gitignore` | Ignore local cache artifacts |
 
-## Versioning
+## Related
 
-This base image uses independent versioning with the `iac-runner-base-` prefix:
-
-- `ghcr.io/plantonhq/project-planton/base-images/iac-runner:v1.0.0`
-- `ghcr.io/plantonhq/project-planton/base-images/iac-runner:latest`
-
-Bump the version when:
-- Adding new cloud providers
-- Updating Pulumi SDK versions
-- Updating Go version
+- **Workflow**: `.github/workflows/iac-runner-base-image.yml`
+- **Self-hosted runner setup**: `planton/tools/ci/github-runners/`

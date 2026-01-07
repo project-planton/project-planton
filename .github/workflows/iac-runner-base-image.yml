@@ -2,8 +2,7 @@
 # IaC Runner Base Image Build Workflow
 # =============================================================================
 # Builds the iac-runner-base image with pre-warmed Go caches for all Pulumi
-# modules. Uses parallel shell builds within a single job to avoid artifact
-# transfer overhead.
+# modules. Uses self-hosted runners with persistent volume for cache storage.
 #
 # Trigger: Push a tag matching 'iac-runner-base-v*'
 #   Example: git tag iac-runner-base-v1.0.0 && git push origin iac-runner-base-v1.0.0
@@ -22,19 +21,22 @@ permissions:
 
 env:
   IMAGE_REPO: ghcr.io/plantonhq/project-planton/base-images/iac-runner
+  # Go caches are mounted from PVC at /var/cache/go
+  GOMODCACHE: /var/cache/go/mod
+  GOCACHE: /var/cache/go/build
 
 jobs:
   build-and-push:
-    # Use default runner (2 cores)
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Self-hosted runner with persistent Go cache via PVC
+    runs-on: project-planton-iac-runner-base-image-builder
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25'
-          cache: false  # We manage our own cache
+          cache: false  # We use persistent PVC cache
 
       - name: Extract version from tag
         id: version
@@ -44,16 +46,18 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
-      - name: Create cache directories
+      - name: Show existing cache sizes
         run: |
-          mkdir -p ${{ runner.temp }}/go-mod
-          mkdir -p ${{ runner.temp }}/go-build
-          echo "GOMODCACHE=${{ runner.temp }}/go-mod" >> $GITHUB_ENV
-          echo "GOCACHE=${{ runner.temp }}/go-build" >> $GITHUB_ENV
+          echo "=== Existing Cache Sizes (from PVC) ==="
+          du -sh $GOMODCACHE 2>/dev/null || echo "GOMODCACHE: empty"
+          du -sh $GOCACHE 2>/dev/null || echo "GOCACHE: empty"
 
       - name: Build all provider modules in parallel
         run: |
           set -e
+          
+          # Ensure cache directories exist
+          mkdir -p $GOMODCACHE $GOCACHE
           
           # List of providers to build
           PROVIDERS="aws gcp azure kubernetes cloudflare digitalocean atlas confluent snowflake auth0 civo"
@@ -61,7 +65,7 @@ jobs:
           # Function to build a single provider
           build_provider() {
             local provider=$1
-            local log_file="${{ runner.temp }}/build-${provider}.log"
+            local log_file="/tmp/build-${provider}.log"
             
             echo "[${provider}] Starting build..."
             
@@ -89,30 +93,30 @@ jobs:
           export -f build_provider
           export GOMODCACHE GOCACHE
           
-          # Run all providers in parallel (up to 2 concurrent jobs on default runner)
+          # Run all providers in parallel (11 concurrent jobs)
           echo "=== Building all providers in parallel ==="
-          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P2 -I{} bash -c 'build_provider "$@"' _ {}
+          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P11 -I{} bash -c 'build_provider "$@"' _ {}
           
           echo ""
           echo "=== Build Summary ==="
           for provider in $PROVIDERS; do
-            if [[ -f "${{ runner.temp }}/build-${provider}.log" ]]; then
-              tail -1 "${{ runner.temp }}/build-${provider}.log"
+            if [[ -f "/tmp/build-${provider}.log" ]]; then
+              tail -1 "/tmp/build-${provider}.log"
             fi
           done
           
           echo ""
           echo "=== Cache Sizes ==="
-          du -sh ${{ runner.temp }}/go-mod
-          du -sh ${{ runner.temp }}/go-build
+          du -sh $GOMODCACHE
+          du -sh $GOCACHE
 
-      - name: Prepare merged cache for Docker
+      - name: Prepare cache for Docker build
         run: |
           mkdir -p merged-cache
-          mv ${{ runner.temp }}/go-mod merged-cache/go-mod
-          mv ${{ runner.temp }}/go-build merged-cache/go-build
+          cp -r $GOMODCACHE merged-cache/go-mod
+          cp -r $GOCACHE merged-cache/go-build
           
-          echo "=== Merged Cache Summary ==="
+          echo "=== Cache Summary for Docker ==="
           du -sh merged-cache/go-mod
           du -sh merged-cache/go-build
           du -sh merged-cache
@@ -131,7 +135,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: base-images/iac-runner/Dockerfile.merged
+          file: base-images/iac-runner/Dockerfile
           push: true
           tags: |
             ${{ env.IMAGE_REPO }}:${{ steps.version.outputs.version }}
@@ -152,3 +156,5 @@ jobs:
           echo "**Cache sizes:**" >> $GITHUB_STEP_SUMMARY
           echo "- GOMODCACHE: $(du -sh merged-cache/go-mod | cut -f1)" >> $GITHUB_STEP_SUMMARY
           echo "- GOCACHE: $(du -sh merged-cache/go-build | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** Subsequent builds will be faster due to persistent PVC cache." >> $GITHUB_STEP_SUMMARY

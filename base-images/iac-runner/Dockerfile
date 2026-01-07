@@ -2,17 +2,16 @@
 # IaC Runner Base Image
 # =============================================================================
 # A base image for running Pulumi and OpenTofu/Terraform programs with
-# pre-warmed Go caches. This dramatically reduces cold start times for
-# Go-based Pulumi programs by pre-downloading and pre-compiling provider SDKs.
+# pre-warmed Go caches. Built by GitHub Actions using self-hosted runners
+# with persistent cache storage.
 #
-# Features:
-# - Go runtime with pre-warmed GOMODCACHE and GOCACHE
-# - Pulumi CLI
-# - OpenTofu CLI
-# - Kubernetes credential exec plugins for GCP, AWS, and Azure
+# The Go caches are built in parallel on the runner and copied into this image,
+# dramatically reducing cold start times for Go-based Pulumi programs.
 #
 # Usage:
 #   FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:<version>
+#
+# Build: Triggered by .github/workflows/iac-runner-base-image.yml
 # =============================================================================
 
 FROM debian:bullseye
@@ -63,52 +62,25 @@ RUN wget -q "https://get.pulumi.com/releases/sdk/pulumi-${PULUMI_VERSION}-linux-
     rm "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz"
 
 # =============================================================================
-# GO CACHE PRE-WARMING
+# PRE-BUILT GO CACHES
 # =============================================================================
-# Pre-populate GOMODCACHE and GOCACHE by building ALL Pulumi modules from
-# project-planton. This guarantees complete cache coverage for every
-# deployment component.
+# These caches were built in parallel on a self-hosted GitHub Actions runner
+# with persistent PVC storage. This approach provides:
+# - Incremental builds (only new/changed modules are compiled)
+# - Persistent cache across workflow runs
+# - Parallel compilation of all provider modules
 
 # Create cache directories
 RUN mkdir -p ${GOMODCACHE} ${GOCACHE}
 
-# Clone project-planton (shallow clone to minimize transfer)
-ARG PROJECT_PLANTON_REF=main
-RUN cd /tmp && \
-    git clone --depth 1 --branch ${PROJECT_PLANTON_REF} \
-        https://github.com/plantonhq/project-planton.git
-
-# Build ALL Pulumi modules to warm caches
-# This iterates through every module directory and runs go build
-# The build output is captured to show progress
-RUN cd /tmp/project-planton && \
-    echo "=== Building all Pulumi modules to warm Go caches ===" && \
-    MODULE_COUNT=0 && \
-    FAILED_COUNT=0 && \
-    for dir in $(find . -type d -path '*/iac/pulumi' -not -path '*/module'); do \
-        MODULE_COUNT=$((MODULE_COUNT + 1)); \
-        echo "[$MODULE_COUNT] Building: $dir"; \
-        cd /tmp/project-planton && cd "$dir" && \
-        if go build -v . 2>&1 | tail -3; then \
-            echo "  ✓ Success"; \
-        else \
-            echo "  ✗ Failed (continuing...)"; \
-            FAILED_COUNT=$((FAILED_COUNT + 1)); \
-        fi; \
-    done && \
-    echo "" && \
-    echo "=== Build Summary ===" && \
-    echo "Total modules: $MODULE_COUNT" && \
-    echo "Failed: $FAILED_COUNT" && \
-    echo "Success: $((MODULE_COUNT - FAILED_COUNT))"
-
-# Clean up source code (keep only caches)
-RUN rm -rf /tmp/project-planton
+# Copy pre-built caches from GitHub Actions workflow
+COPY merged-cache/go-mod ${GOMODCACHE}
+COPY merged-cache/go-build ${GOCACHE}
 
 # Verify caches and display sizes
 RUN echo "=== Go Cache Sizes ===" && \
     du -sh ${GOMODCACHE} && \
     du -sh ${GOCACHE} && \
     echo "" && \
-    echo "IaC Runner base image ready with fully pre-warmed caches"
+    echo "IaC Runner base image ready with pre-warmed caches"
 
