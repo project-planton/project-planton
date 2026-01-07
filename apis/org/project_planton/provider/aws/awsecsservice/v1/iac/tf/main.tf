@@ -1,3 +1,6 @@
+# AWS ECS Service Terraform Module
+# Auto-release test: Single Terraform module change triggers v{semver}-terraform-awsecsservice-{YYYYMMDD}.{N}
+
 # CloudWatch Log Group for ECS service logging
 resource "aws_cloudwatch_log_group" "this" {
   count             = local.logging_enabled ? 1 : 0
