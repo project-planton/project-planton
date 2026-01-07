@@ -25,8 +25,8 @@ env:
 
 jobs:
   build-and-push:
-    # Use 4-core runner for parallel builds (free for public repos)
-    runs-on: ubuntu-latest-4-cores
+    # Use default runner (2 cores)
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -89,9 +89,9 @@ jobs:
           export -f build_provider
           export GOMODCACHE GOCACHE
           
-          # Run all providers in parallel (up to 4 concurrent jobs)
+          # Run all providers in parallel (up to 2 concurrent jobs on default runner)
           echo "=== Building all providers in parallel ==="
-          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P4 -I{} bash -c 'build_provider "$@"' _ {}
+          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P2 -I{} bash -c 'build_provider "$@"' _ {}
           
           echo ""
           echo "=== Build Summary ==="
