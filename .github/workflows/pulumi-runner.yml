@@ -6,7 +6,7 @@
 #
 # Hybrid approach:
 #   - Per-provider parallel builds for most providers (9 jobs)
-#   - Per-component individual jobs for kubernetes and cloudflare (52 jobs)
+#   - Per-component individual jobs for kubernetes (45 jobs) and cloudflare (7 jobs)
 #
 # Trigger: Push a tag matching 'v*' (aligned with release workflow)
 #   Example: git tag v0.0.100 && git push origin v0.0.100
@@ -125,178 +125,159 @@ jobs:
           if-no-files-found: error
 
   # ===========================================================================
-  # Build kubernetes and cloudflare components individually (52 jobs)
-  # These providers have issues with parallel builds in a single job
+  # Build Cloudflare components individually (7 jobs)
   # ===========================================================================
-  build-component:
+  build-cloudflare:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         include:
-          # =====================================================================
-          # CLOUDFLARE (7 components)
-          # =====================================================================
-          - provider: cloudflare
-            component: cloudflared1database
+          - component: cloudflared1database
             path: apis/org/project_planton/provider/cloudflare/cloudflared1database/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarednszone
+          - component: cloudflarednszone
             path: apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarekvnamespace
+          - component: cloudflarekvnamespace
             path: apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflareloadbalancer
+          - component: cloudflareloadbalancer
             path: apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarer2bucket
+          - component: cloudflarer2bucket
             path: apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflareworker
+          - component: cloudflareworker
             path: apis/org/project_planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
-          - provider: cloudflare
-            component: cloudflarezerotrustaccessapplication
+          - component: cloudflarezerotrustaccessapplication
             path: apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/iac/pulumi
 
-          # =====================================================================
-          # KUBERNETES (45 components)
-          # =====================================================================
-          - provider: kubernetes
-            component: kubernetesaltinityoperator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/cloudflare
+          
+          echo "Building: cloudflare/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/cloudflare/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/cloudflare/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-cloudflare-${{ matrix.component }}
+          path: binaries/
+          retention-days: 1
+          if-no-files-found: error
+
+  # ===========================================================================
+  # Build Kubernetes components individually (45 jobs)
+  # ===========================================================================
+  build-kubernetes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: kubernetesaltinityoperator
             path: apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesargocd
+          - component: kubernetesargocd
             path: apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetescertmanager
+          - component: kubernetescertmanager
             path: apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesclickhouse
+          - component: kubernetesclickhouse
             path: apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetescronjob
+          - component: kubernetescronjob
             path: apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesdaemonset
+          - component: kubernetesdaemonset
             path: apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesdeployment
+          - component: kubernetesdeployment
             path: apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteselasticoperator
+          - component: kuberneteselasticoperator
             path: apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteselasticsearch
+          - component: kuberneteselasticsearch
             path: apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesexternaldns
+          - component: kubernetesexternaldns
             path: apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesexternalsecrets
+          - component: kubernetesexternalsecrets
             path: apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgatewayapicrds
+          - component: kubernetesgatewayapicrds
             path: apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgharunnerscaleset
+          - component: kubernetesgharunnerscaleset
             path: apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgharunnerscalesetcontroller
+          - component: kubernetesgharunnerscalesetcontroller
             path: apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscalesetcontroller/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgitlab
+          - component: kubernetesgitlab
             path: apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesgrafana
+          - component: kubernetesgrafana
             path: apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesharbor
+          - component: kubernetesharbor
             path: apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteshelmrelease
+          - component: kuberneteshelmrelease
             path: apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesingressnginx
+          - component: kubernetesingressnginx
             path: apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesistio
+          - component: kubernetesistio
             path: apis/org/project_planton/provider/kubernetes/kubernetesistio/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesjenkins
+          - component: kubernetesjenkins
             path: apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteskafka
+          - component: kuberneteskafka
             path: apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteskeycloak
+          - component: kuberneteskeycloak
             path: apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteslocust
+          - component: kuberneteslocust
             path: apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesmanifest
+          - component: kubernetesmanifest
             path: apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesmongodb
+          - component: kubernetesmongodb
             path: apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesnamespace
+          - component: kubernetesnamespace
             path: apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesnats
+          - component: kubernetesnats
             path: apis/org/project_planton/provider/kubernetes/kubernetesnats/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesneo4j
+          - component: kubernetesneo4j
             path: apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesopenfga
+          - component: kubernetesopenfga
             path: apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesperconamongooperator
+          - component: kubernetesperconamongooperator
             path: apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesperconamysqloperator
+          - component: kubernetesperconamysqloperator
             path: apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesperconapostgresoperator
+          - component: kubernetesperconapostgresoperator
             path: apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetespostgres
+          - component: kubernetespostgres
             path: apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesprometheus
+          - component: kubernetesprometheus
             path: apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesredis
+          - component: kubernetesredis
             path: apis/org/project_planton/provider/kubernetes/kubernetesredis/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetessignoz
+          - component: kubernetessignoz
             path: apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetessolr
+          - component: kubernetessolr
             path: apis/org/project_planton/provider/kubernetes/kubernetessolr/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetessolroperator
+          - component: kubernetessolroperator
             path: apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesstatefulset
+          - component: kubernetesstatefulset
             path: apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetesstrimzikafkaoperator
+          - component: kubernetesstrimzikafkaoperator
             path: apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetestekton
+          - component: kubernetestekton
             path: apis/org/project_planton/provider/kubernetes/kubernetestekton/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetestektonoperator
+          - component: kubernetestektonoperator
             path: apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1/iac/pulumi
-          - provider: kubernetes
-            component: kubernetestemporal
+          - component: kubernetestemporal
             path: apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1/iac/pulumi
-          - provider: kubernetes
-            component: kuberneteszalandopostgresoperator
+          - component: kuberneteszalandopostgresoperator
             path: apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/iac/pulumi
 
     steps:
@@ -311,20 +292,20 @@ jobs:
 
       - name: Build binary
         run: |
-          mkdir -p binaries/${{ matrix.provider }}
+          mkdir -p binaries/kubernetes
           
-          echo "Building: ${{ matrix.provider }}/${{ matrix.component }}"
+          echo "Building: kubernetes/${{ matrix.component }}"
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
             -ldflags="-s -w" \
-            -o binaries/${{ matrix.provider }}/${{ matrix.component }} \
+            -o binaries/kubernetes/${{ matrix.component }} \
             ./${{ matrix.path }}
           
-          ls -lh binaries/${{ matrix.provider }}/${{ matrix.component }}
+          ls -lh binaries/kubernetes/${{ matrix.component }}
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.provider }}-${{ matrix.component }}
+          name: binary-kubernetes-${{ matrix.component }}
           path: binaries/
           retention-days: 1
           if-no-files-found: error
@@ -333,7 +314,7 @@ jobs:
   # Combine all binaries and build Docker image
   # ===========================================================================
   build-image:
-    needs: [build-provider, build-component]
+    needs: [build-provider, build-cloudflare, build-kubernetes]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
