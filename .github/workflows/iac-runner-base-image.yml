@@ -93,9 +93,9 @@ jobs:
           export -f build_provider
           export GOMODCACHE GOCACHE
           
-          # Run all providers in parallel (11 concurrent jobs)
+          # Run providers in parallel (2 concurrent to avoid resource contention)
           echo "=== Building all providers in parallel ==="
-          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P11 -I{} bash -c 'build_provider "$@"' _ {}
+          echo "$PROVIDERS" | tr ' ' '\n' | xargs -P2 -I{} bash -c 'build_provider "$@"' _ {}
           
           echo ""
           echo "=== Build Summary ==="
