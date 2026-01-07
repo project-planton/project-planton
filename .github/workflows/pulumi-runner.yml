@@ -2,17 +2,14 @@
 # Pulumi Runner Binary Build Workflow
 # =============================================================================
 # Builds pre-compiled binaries for all Pulumi deployment components and packages
-# them into a single Docker image. Uses one job per provider with parallel
-# builds within each job.
+# them into a single Docker image.
+#
+# Hybrid approach:
+#   - Per-provider parallel builds for most providers (9 jobs)
+#   - Per-component individual jobs for kubernetes and cloudflare (52 jobs)
 #
 # Trigger: Push a tag matching 'v*' (aligned with release workflow)
 #   Example: git tag v0.0.100 && git push origin v0.0.100
-#
-# Architecture:
-#   1. Matrix job builds all components for each provider (11 parallel jobs)
-#   2. Within each job, components are built in parallel (controlled concurrency)
-#   3. Each job uploads its binaries as a single artifact
-#   4. Final job downloads all provider artifacts and builds Docker image
 # =============================================================================
 
 name: pulumi-runner
@@ -38,12 +35,12 @@ permissions:
 
 env:
   IMAGE_REPO: ghcr.io/plantonhq/project-planton/base-images/pulumi-runner
-  # Concurrency for parallel builds within each provider job
   BUILD_CONCURRENCY: 2
 
 jobs:
   # ===========================================================================
-  # Build all binaries for each provider (11 parallel jobs)
+  # Build providers with parallel builds within each job (9 providers)
+  # Excludes: kubernetes, cloudflare (handled separately)
   # ===========================================================================
   build-provider:
     runs-on: ubuntu-latest
@@ -62,16 +59,12 @@ jobs:
             components: 7
           - provider: civo
             components: 11
-          - provider: cloudflare
-            components: 7
           - provider: confluent
             components: 1
           - provider: digitalocean
             components: 14
           - provider: gcp
             components: 17
-          - provider: kubernetes
-            components: 45
           - provider: snowflake
             components: 1
 
@@ -85,66 +78,42 @@ jobs:
           go-version: '1.25'
           cache: true
 
-      - name: Build all ${{ matrix.provider }} binaries (concurrency=${{ env.BUILD_CONCURRENCY }})
+      - name: Build all ${{ matrix.provider }} binaries
         run: |
           PROVIDER="${{ matrix.provider }}"
           CONCURRENCY="${{ env.BUILD_CONCURRENCY }}"
           
           echo "=== Building all ${PROVIDER} components ==="
-          echo "Expected components: ${{ matrix.components }}"
-          echo "Build concurrency: ${CONCURRENCY}"
-          echo ""
-          
-          # Create output directory
           mkdir -p binaries/${PROVIDER}
           
-          # Find all pulumi directories for this provider
           PULUMI_DIRS=$(find apis -type d -path "*/provider/${PROVIDER}/*/iac/pulumi" -not -path "*/module" | sort)
-          
-          # Count components
           COMPONENT_COUNT=$(echo "$PULUMI_DIRS" | wc -l)
-          echo "Found ${COMPONENT_COUNT} components to build"
-          echo ""
+          echo "Found ${COMPONENT_COUNT} components, concurrency: ${CONCURRENCY}"
           
-          # Build function
           build_component() {
             local dir="$1"
             local provider="$2"
-            
-            # Extract component name from path
-            # Path: apis/org/project_planton/provider/{provider}/{component}/v1/iac/pulumi
             local component=$(echo "$dir" | sed 's|.*/provider/[^/]*/\([^/]*\)/.*|\1|')
             
             echo "[START] ${provider}/${component}"
-            
             CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
               -ldflags="-s -w" \
               -o "binaries/${provider}/${component}" \
               "./${dir}" 2>&1
             
-            local status=$?
-            if [ $status -eq 0 ]; then
-              local size=$(ls -lh "binaries/${provider}/${component}" | awk '{print $5}')
-              echo "[DONE]  ${provider}/${component} (${size})"
+            if [ $? -eq 0 ]; then
+              echo "[DONE]  ${provider}/${component}"
             else
               echo "[FAIL]  ${provider}/${component}"
+              return 1
             fi
-            
-            return $status
           }
           
           export -f build_component
-          
-          # Build all components in parallel with controlled concurrency
           echo "$PULUMI_DIRS" | xargs -P ${CONCURRENCY} -I {} bash -c 'build_component "$@"' _ {} "${PROVIDER}"
           
           echo ""
-          echo "=== Build Summary ==="
-          echo "Provider: ${PROVIDER}"
-          echo "Binaries built: $(find binaries/${PROVIDER} -type f | wc -l)"
-          echo "Total size: $(du -sh binaries/${PROVIDER} | cut -f1)"
-          echo ""
-          echo "=== Binaries ==="
+          echo "=== Summary: $(find binaries/${PROVIDER} -type f | wc -l) binaries built ==="
           ls -lh binaries/${PROVIDER}/
 
       - name: Upload provider binaries
@@ -156,10 +125,215 @@ jobs:
           if-no-files-found: error
 
   # ===========================================================================
+  # Build kubernetes and cloudflare components individually (52 jobs)
+  # These providers have issues with parallel builds in a single job
+  # ===========================================================================
+  build-component:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # =====================================================================
+          # CLOUDFLARE (7 components)
+          # =====================================================================
+          - provider: cloudflare
+            component: cloudflared1database
+            path: apis/org/project_planton/provider/cloudflare/cloudflared1database/v1/iac/pulumi
+          - provider: cloudflare
+            component: cloudflarednszone
+            path: apis/org/project_planton/provider/cloudflare/cloudflarednszone/v1/iac/pulumi
+          - provider: cloudflare
+            component: cloudflarekvnamespace
+            path: apis/org/project_planton/provider/cloudflare/cloudflarekvnamespace/v1/iac/pulumi
+          - provider: cloudflare
+            component: cloudflareloadbalancer
+            path: apis/org/project_planton/provider/cloudflare/cloudflareloadbalancer/v1/iac/pulumi
+          - provider: cloudflare
+            component: cloudflarer2bucket
+            path: apis/org/project_planton/provider/cloudflare/cloudflarer2bucket/v1/iac/pulumi
+          - provider: cloudflare
+            component: cloudflareworker
+            path: apis/org/project_planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
+          - provider: cloudflare
+            component: cloudflarezerotrustaccessapplication
+            path: apis/org/project_planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/iac/pulumi
+
+          # =====================================================================
+          # KUBERNETES (45 components)
+          # =====================================================================
+          - provider: kubernetes
+            component: kubernetesaltinityoperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetesaltinityoperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesargocd
+            path: apis/org/project_planton/provider/kubernetes/kubernetesargocd/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetescertmanager
+            path: apis/org/project_planton/provider/kubernetes/kubernetescertmanager/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesclickhouse
+            path: apis/org/project_planton/provider/kubernetes/kubernetesclickhouse/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetescronjob
+            path: apis/org/project_planton/provider/kubernetes/kubernetescronjob/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesdaemonset
+            path: apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesdeployment
+            path: apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteselasticoperator
+            path: apis/org/project_planton/provider/kubernetes/kuberneteselasticoperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteselasticsearch
+            path: apis/org/project_planton/provider/kubernetes/kuberneteselasticsearch/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesexternaldns
+            path: apis/org/project_planton/provider/kubernetes/kubernetesexternaldns/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesexternalsecrets
+            path: apis/org/project_planton/provider/kubernetes/kubernetesexternalsecrets/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesgatewayapicrds
+            path: apis/org/project_planton/provider/kubernetes/kubernetesgatewayapicrds/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesgharunnerscaleset
+            path: apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesgharunnerscalesetcontroller
+            path: apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscalesetcontroller/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesgitlab
+            path: apis/org/project_planton/provider/kubernetes/kubernetesgitlab/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesgrafana
+            path: apis/org/project_planton/provider/kubernetes/kubernetesgrafana/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesharbor
+            path: apis/org/project_planton/provider/kubernetes/kubernetesharbor/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteshelmrelease
+            path: apis/org/project_planton/provider/kubernetes/kuberneteshelmrelease/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesingressnginx
+            path: apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesistio
+            path: apis/org/project_planton/provider/kubernetes/kubernetesistio/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesjenkins
+            path: apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteskafka
+            path: apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteskeycloak
+            path: apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteslocust
+            path: apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesmanifest
+            path: apis/org/project_planton/provider/kubernetes/kubernetesmanifest/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesmongodb
+            path: apis/org/project_planton/provider/kubernetes/kubernetesmongodb/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesnamespace
+            path: apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesnats
+            path: apis/org/project_planton/provider/kubernetes/kubernetesnats/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesneo4j
+            path: apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesopenfga
+            path: apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesperconamongooperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesperconamysqloperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesperconapostgresoperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetesperconapostgresoperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetespostgres
+            path: apis/org/project_planton/provider/kubernetes/kubernetespostgres/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesprometheus
+            path: apis/org/project_planton/provider/kubernetes/kubernetesprometheus/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesredis
+            path: apis/org/project_planton/provider/kubernetes/kubernetesredis/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetessignoz
+            path: apis/org/project_planton/provider/kubernetes/kubernetessignoz/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetessolr
+            path: apis/org/project_planton/provider/kubernetes/kubernetessolr/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetessolroperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetessolroperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesstatefulset
+            path: apis/org/project_planton/provider/kubernetes/kubernetesstatefulset/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetesstrimzikafkaoperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetesstrimzikafkaoperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetestekton
+            path: apis/org/project_planton/provider/kubernetes/kubernetestekton/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetestektonoperator
+            path: apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1/iac/pulumi
+          - provider: kubernetes
+            component: kubernetestemporal
+            path: apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1/iac/pulumi
+          - provider: kubernetes
+            component: kuberneteszalandopostgresoperator
+            path: apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1/iac/pulumi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build binary
+        run: |
+          mkdir -p binaries/${{ matrix.provider }}
+          
+          echo "Building: ${{ matrix.provider }}/${{ matrix.component }}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -ldflags="-s -w" \
+            -o binaries/${{ matrix.provider }}/${{ matrix.component }} \
+            ./${{ matrix.path }}
+          
+          ls -lh binaries/${{ matrix.provider }}/${{ matrix.component }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.provider }}-${{ matrix.component }}
+          path: binaries/
+          retention-days: 1
+          if-no-files-found: error
+
+  # ===========================================================================
   # Combine all binaries and build Docker image
   # ===========================================================================
   build-image:
-    needs: build-provider
+    needs: [build-provider, build-component]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -168,14 +342,11 @@ jobs:
           echo "=== Disk space before cleanup ==="
           df -h
           
-          # Remove large pre-installed software to free up space
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /opt/ghc
           sudo rm -rf /usr/local/share/boost
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/hostedtoolcache/CodeQL
-          
-          # Clean apt cache
           sudo apt-get clean
           
           echo ""
@@ -185,18 +356,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download all provider artifacts
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: downloaded-artifacts/
-          pattern: binaries-*
           merge-multiple: true
 
       - name: Organize binaries
         run: |
           mkdir -p binaries
           
-          # Move binaries from downloaded structure to final structure
           if [ -d "downloaded-artifacts" ]; then
             cp -r downloaded-artifacts/* binaries/ 2>/dev/null || true
           fi
@@ -213,9 +382,6 @@ jobs:
           done
           echo ""
           echo "Total size: $(du -sh binaries 2>/dev/null | cut -f1)"
-          echo ""
-          echo "=== All Binaries ==="
-          find binaries -type f -executable 2>/dev/null | sort
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -236,7 +402,6 @@ jobs:
             VERSION="${{ inputs.version }}"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Building version: $VERSION"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -259,16 +424,13 @@ jobs:
           echo "## Pulumi Runner Image Published!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** $VERSION" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Images:**" >> $GITHUB_STEP_SUMMARY
           echo "- \`${{ env.IMAGE_REPO }}:$VERSION\`" >> $GITHUB_STEP_SUMMARY
           echo "- \`${{ env.IMAGE_REPO }}:latest\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Binary Stats:**" >> $GITHUB_STEP_SUMMARY
-          echo "- Total binaries: $BINARY_COUNT" >> $GITHUB_STEP_SUMMARY
-          echo "- Total size: $TOTAL_SIZE" >> $GITHUB_STEP_SUMMARY
+          echo "**Binary Stats:** $BINARY_COUNT binaries, $TOTAL_SIZE total" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Per-Provider Counts:**" >> $GITHUB_STEP_SUMMARY
+          echo "**Per-Provider:**" >> $GITHUB_STEP_SUMMARY
           for provider in binaries/*/; do
             if [ -d "$provider" ]; then
               count=$(find "$provider" -type f -executable 2>/dev/null | wc -l)
