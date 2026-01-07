@@ -36,10 +36,6 @@ on:
         type: boolean
         default: false
 
-concurrency:
-  group: pulumi-module-release-${{ github.ref }}
-  cancel-in-progress: false
-
 permissions:
   contents: write
   packages: write

@@ -16,10 +16,6 @@ on:
 
   workflow_dispatch:
 
-concurrency:
-  group: pulumi-modules-snowflake-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: read
   packages: write

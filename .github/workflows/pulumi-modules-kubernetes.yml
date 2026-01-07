@@ -17,10 +17,6 @@ on:
 
   workflow_dispatch:
 
-concurrency:
-  group: pulumi-modules-kubernetes-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: read
   packages: write

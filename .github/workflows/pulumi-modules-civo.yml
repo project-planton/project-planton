@@ -16,10 +16,6 @@ on:
 
   workflow_dispatch:
 
-concurrency:
-  group: pulumi-modules-civo-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: read
   packages: write
