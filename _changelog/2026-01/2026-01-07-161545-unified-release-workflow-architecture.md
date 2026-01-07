@@ -27,21 +27,21 @@ After implementing the auto-release workflow, we identified several architectura
 
 Renamed and prefixed all workflows for clarity:
 
-| Old Name | New Name |
-|----------|----------|
-| `release.yml` | `release.yaml` |
-| `pulumi-module-auto-release.yml` | `pulumi-module-auto-release.yaml` |
-| `pulumi-modules-aws.yml` | `release.pulumi-modules-aws.yaml` |
-| `pulumi-modules-gcp.yml` | `release.pulumi-modules-gcp.yaml` |
-| `pulumi-modules-kubernetes.yml` | `release.pulumi-modules-kubernetes.yaml` |
-| `pulumi-modules-azure.yml` | `release.pulumi-modules-azure.yaml` |
-| `pulumi-modules-cloudflare.yml` | `release.pulumi-modules-cloudflare.yaml` |
-| `pulumi-modules-atlas.yml` | `release.pulumi-modules-atlas.yaml` |
-| `pulumi-modules-auth0.yml` | `release.pulumi-modules-auth0.yaml` |
-| `pulumi-modules-civo.yml` | `release.pulumi-modules-civo.yaml` |
-| `pulumi-modules-confluent.yml` | `release.pulumi-modules-confluent.yaml` |
+| Old Name                          | New Name                                   |
+| --------------------------------- | ------------------------------------------ |
+| `release.yml`                     | `release.yaml`                             |
+| `pulumi-module-auto-release.yml`  | `pulumi-module-auto-release.yaml`          |
+| `pulumi-modules-aws.yml`          | `release.pulumi-modules-aws.yaml`          |
+| `pulumi-modules-gcp.yml`          | `release.pulumi-modules-gcp.yaml`          |
+| `pulumi-modules-kubernetes.yml`   | `release.pulumi-modules-kubernetes.yaml`   |
+| `pulumi-modules-azure.yml`        | `release.pulumi-modules-azure.yaml`        |
+| `pulumi-modules-cloudflare.yml`   | `release.pulumi-modules-cloudflare.yaml`   |
+| `pulumi-modules-atlas.yml`        | `release.pulumi-modules-atlas.yaml`        |
+| `pulumi-modules-auth0.yml`        | `release.pulumi-modules-auth0.yaml`        |
+| `pulumi-modules-civo.yml`         | `release.pulumi-modules-civo.yaml`         |
+| `pulumi-modules-confluent.yml`    | `release.pulumi-modules-confluent.yaml`    |
 | `pulumi-modules-digitalocean.yml` | `release.pulumi-modules-digitalocean.yaml` |
-| `pulumi-modules-snowflake.yml` | `release.pulumi-modules-snowflake.yaml` |
+| `pulumi-modules-snowflake.yml`    | `release.pulumi-modules-snowflake.yaml`    |
 
 ### 2. Provider Workflows Upload to GitHub Release
 
@@ -63,7 +63,7 @@ Changed from temporary workflow artifacts to permanent release assets:
   run: |
     TAG="${GITHUB_REF#refs/tags/}"
     BINARY_NAME="pulumi-${{ matrix.component }}"
-    
+
     # Wait for GoReleaser to create the release
     for i in {1..30}; do
       if gh release view "${TAG}" >/dev/null 2>&1; then
@@ -71,7 +71,7 @@ Changed from temporary workflow artifacts to permanent release assets:
       fi
       sleep 10
     done
-    
+
     # Upload gzipped binary to the release
     gh release upload "${TAG}" "${BINARY_NAME}.gz" --clobber
 ```
@@ -80,12 +80,13 @@ Changed from temporary workflow artifacts to permanent release assets:
 
 Updated tag format to include base semantic version:
 
-| Before | After |
-|--------|-------|
+| Before                            | After                                    |
+| --------------------------------- | ---------------------------------------- |
 | `pulumi-awsecsservice-20260107.0` | `pulumi-awsecsservice-v0.1.0-20260107.0` |
 | `pulumi-gcpgkecluster-20260107.1` | `pulumi-gcpgkecluster-v0.1.0-20260107.1` |
 
 The workflow now:
+
 1. Detects the latest `v*` tag (e.g., `v0.1.0`)
 2. Includes it in the component release tag
 3. Falls back to `v0.0.0` if no semantic version exists
@@ -129,14 +130,14 @@ flowchart TB
     A --> D[release.pulumi-modules-gcp.yaml]
     A --> E[release.pulumi-modules-kubernetes.yaml]
     A --> F[...11 provider workflows]
-    
+
     C --> G[Wait for release to exist]
     D --> G
     E --> G
     F --> G
-    
+
     G --> H[Upload all gzipped binaries<br/>to same release]
-    
+
     B --> H
 ```
 
@@ -184,11 +185,11 @@ flowchart TB
 
 ### Unified Release Experience
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| Release contents | CLI binaries only | CLI + 139 Pulumi modules |
-| Provider artifacts | Temporary (7 days) | Permanent |
-| Module discoverability | Scattered releases | Single release page |
+| Aspect                 | Before             | After                    |
+| ---------------------- | ------------------ | ------------------------ |
+| Release contents       | CLI binaries only  | CLI + 139 Pulumi modules |
+| Provider artifacts     | Temporary (7 days) | Permanent                |
+| Module discoverability | Scattered releases | Single release page      |
 
 ### Clear Version Lineage
 
@@ -210,17 +211,20 @@ The new tag format `pulumi-{component}-{semver}-{date}.{seq}` provides:
 ### On Semantic Version Releases (`v*` tags)
 
 When you run:
+
 ```bash
 git tag v0.1.0 && git push origin v0.1.0
 ```
 
 The release will contain:
+
 - CLI binaries (via GoReleaser)
 - ~139 Pulumi module binaries (gzipped, via provider workflows)
 
 ### On Individual Module Changes
 
 When you push changes to a Pulumi module on main, the auto-release creates:
+
 - Tag: `pulumi-{component}-v0.1.0-{YYYYMMDD}.{N}`
 - Release: Individual release with that specific binary
 
@@ -249,6 +253,7 @@ chmod +x pulumi-awsecsservice
 ### For IaC Runner
 
 The IaC runner can now:
+
 1. Download from semantic version releases (all binaries in one release)
 2. Download from auto-releases (individual component releases)
 3. Parse component version to determine base semantic version
@@ -262,5 +267,3 @@ The IaC runner can now:
 
 **Status**: ✅ Production Ready
 **Timeline**: ~1 hour implementation
-
-

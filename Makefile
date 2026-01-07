@@ -7,6 +7,14 @@ LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
 
 # bump: major, minor, or patch (default)
 bump ?= patch
+
+# Detect if version was explicitly provided on command line
+ifeq ($(origin version),command line)
+VERSION_EXPLICIT := true
+else
+VERSION_EXPLICIT := false
+endif
+
 BAZEL?=./bazelw
 
 # If BUILDBUDDY_API_KEY is set, enable the :bb config and inject only the header.
@@ -213,11 +221,16 @@ snapshot: deps  ## build a local snapshot using GoReleaser
 	goreleaser release --snapshot --clean --skip=publish
 
 .PHONY: release
-release: test  ## auto-bump version, tag & push (bump=major|minor|patch, default: patch)
-	@version=$$(python3 tools/ci/release/next_version.py $(bump)); \
-	echo "Releasing: $$version ($(bump) bump)"; \
-	git tag -a $$version -m "$$version"; \
-	git push origin $$version
+release: test  ## auto-bump version, tag & push (bump=major|minor|patch, default: patch). Override with version=vX.Y.Z
+	@if [ "$(VERSION_EXPLICIT)" = "true" ]; then \
+		rel_version="$(version)"; \
+		echo "Releasing: $$rel_version (explicit version)"; \
+	else \
+		rel_version=$$(python3 tools/ci/release/next_version.py $(bump)); \
+		echo "Releasing: $$rel_version ($(bump) bump)"; \
+	fi; \
+	git tag -a $$rel_version -m "$$rel_version"; \
+	git push origin $$rel_version
 
 .PHONY: run-docs
 run-docs:
