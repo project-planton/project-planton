@@ -1,19 +1,20 @@
 # =============================================================================
-# IaC Runner - Pulumi Variant (Per-Provider)
+# Pulumi Runner - Pre-Built Binaries Variant
 # =============================================================================
-# A base image for running Go-based Pulumi programs with pre-warmed Go caches
-# for a specific cloud provider. Built by GitHub Actions using self-hosted
-# runners with persistent cache storage.
-#
-# The Go caches are built on the runner for a single provider and copied into
-# this image, dramatically reducing cold start times for that provider's SDK.
+# A base image for running Pulumi programs with pre-built binaries for all
+# platform deployment components. Includes Go toolchain for organization
+# (custom) modules that require compilation.
 #
 # Usage:
-#   FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:pulumi-aws-v0.0.1
-#   FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:pulumi-gcp-v0.0.1
-#   etc.
+#   FROM ghcr.io/plantonhq/project-planton/base-images/pulumi-runner:v0.0.100
 #
-# Build: Triggered by .github/workflows/iac-runner-pulumi.yml
+# Build: Triggered by .github/workflows/pulumi-runner.yml
+#
+# Binary Structure:
+#   /opt/planton/pulumi-binaries/{provider}/{component}
+#   e.g., /opt/planton/pulumi-binaries/aws/awsekscluster
+#         /opt/planton/pulumi-binaries/gcp/gcpgkecluster
+#         /opt/planton/pulumi-binaries/kubernetes/kubernetesargocd
 # =============================================================================
 
 FROM debian:bullseye
@@ -25,11 +26,12 @@ ARG GOLANG_VERSION=1.25.0
 ENV DEBIAN_FRONTEND=noninteractive \
     PATH="/usr/local/go/bin:/root/go/bin:${PATH}" \
     GOMODCACHE=/var/cache/go-mod \
-    GOCACHE=/var/cache/go-build
+    GOCACHE=/var/cache/go-build \
+    PLANTON_BINARIES_DIR=/opt/planton/pulumi-binaries
 
 # OCI labels
 LABEL org.opencontainers.image.source="https://github.com/plantonhq/project-planton"
-LABEL org.opencontainers.image.description="IaC Runner Pulumi variant with pre-warmed Go caches"
+LABEL org.opencontainers.image.description="Pulumi Runner with pre-built binaries for all deployment components"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 EXPOSE 8080
@@ -44,37 +46,52 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # ---- Go -------------------------------------------------------------------
+# Required for organization (custom) modules that need compilation
 RUN wget -q "https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz" -O go.tar.gz && \
     tar -xf go.tar.gz -C /usr/local && \
-    rm go.tar.gz
+    rm go.tar.gz && \
+    mkdir -p ${GOMODCACHE} ${GOCACHE}
 
 # ---- Pulumi ---------------------------------------------------------------
 RUN wget -q "https://get.pulumi.com/releases/sdk/pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
     tar -xf "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz" && \
     mv pulumi/* /usr/local/bin/ && \
-    rm "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz"
+    rm -rf pulumi "pulumi-${PULUMI_VERSION}-linux-x64.tar.gz"
 
 # =============================================================================
-# PRE-BUILT GO CACHES (Provider-Specific)
+# PRE-BUILT DEPLOYMENT COMPONENT BINARIES
 # =============================================================================
-# These caches were built on a self-hosted GitHub Actions runner with
-# persistent PVC storage for a single cloud provider. This approach provides:
-# - Smaller image size (only one provider's dependencies)
-# - Faster pulls (2-3GB vs 15GB)
-# - Incremental builds across workflow runs
+# These binaries are compiled during the GitHub Actions workflow from the
+# source code of each deployment component. This eliminates:
+#   - Go module download time at runtime
+#   - Go compilation time at runtime
+#   - Need for pre-warmed Go caches
+#
+# The IaC Runner checks for a binary at ${PLANTON_BINARIES_DIR}/{provider}/{component}
+# before falling back to Git-based source execution.
 
-# Create cache directories
-RUN mkdir -p ${GOMODCACHE} ${GOCACHE}
+# Create binaries directory
+RUN mkdir -p ${PLANTON_BINARIES_DIR}
 
-# Copy pre-built caches from GitHub Actions workflow
-# These are populated by the workflow before docker build
-COPY merged-cache/go-mod ${GOMODCACHE}
-COPY merged-cache/go-build ${GOCACHE}
+# Copy pre-built binaries from GitHub Actions workflow
+# Structure: binaries/{provider}/{component}
+COPY binaries/ ${PLANTON_BINARIES_DIR}/
 
-# Verify caches and display sizes
-RUN echo "=== Go Cache Sizes ===" && \
-    du -sh ${GOMODCACHE} && \
-    du -sh ${GOCACHE} && \
+# Verify binaries and display summary
+RUN echo "=== Pre-Built Pulumi Binaries ===" && \
+    echo "Total binaries: $(find ${PLANTON_BINARIES_DIR} -type f -executable 2>/dev/null | wc -l)" && \
     echo "" && \
-    echo "IaC Runner Pulumi variant ready with pre-warmed caches"
-
+    echo "Per-provider counts:" && \
+    for provider in ${PLANTON_BINARIES_DIR}/*/; do \
+        if [ -d "$provider" ]; then \
+            count=$(find "$provider" -type f -executable 2>/dev/null | wc -l); \
+            echo "  $(basename "$provider"): $count"; \
+        fi; \
+    done && \
+    echo "" && \
+    echo "Total size: $(du -sh ${PLANTON_BINARIES_DIR} 2>/dev/null | cut -f1)" && \
+    echo "" && \
+    echo "Go version: $(go version)" && \
+    echo "Pulumi version: $(pulumi version)" && \
+    echo "" && \
+    echo "Pulumi Runner ready with pre-built binaries"
