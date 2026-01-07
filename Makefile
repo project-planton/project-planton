@@ -239,3 +239,8 @@ build-site:
 .PHONY: preview-site
 preview-site:
 	$(MAKE) -C site preview-site
+
+# ── Base Images ───────────────────────────────────────────────────────────────
+.PHONY: build-iac-runner-base-image
+build-iac-runner-base-image:
+	$(MAKE) -C base-images/iac-runner build-image
