@@ -37,29 +37,29 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 10
       matrix:
         include:
-          - provider: aws
-            max_parallel: 2
-          - provider: gcp
-            max_parallel: 1
-          - provider: kubernetes
-            max_parallel: 2
-          - provider: azure
-            max_parallel: 2
-          - provider: cloudflare
-            max_parallel: 1
-          - provider: civo
-            max_parallel: 2
-          - provider: digitalocean
-            max_parallel: 2
           - provider: atlas
             max_parallel: 2
           - provider: auth0
             max_parallel: 2
+          - provider: aws
+            max_parallel: 2
+          - provider: azure
+            max_parallel: 2
+          - provider: civo
+            max_parallel: 2
+          - provider: cloudflare
+            max_parallel: 1
           - provider: confluent
             max_parallel: 2
+          - provider: digitalocean
+            max_parallel: 2
+          - provider: gcp
+            max_parallel: 2
+          - provider: kubernetes
+            max_parallel: 1
           - provider: snowflake
             max_parallel: 2
 

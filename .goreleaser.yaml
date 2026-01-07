@@ -39,6 +39,203 @@ release:
   github:
     owner: plantonhq
     name: project-planton
+  header: |
+    ## Project Planton {{ .Tag }}
+
+    This release includes the CLI, Docker images, website deployment, and pre-built Pulumi module binaries.
+
+  footer: |
+    ---
+
+    ## CLI Installation
+
+    ### macOS (Homebrew)
+
+    ```bash
+    brew tap plantonhq/tap
+    brew install project-planton
+    ```
+
+    To upgrade:
+
+    ```bash
+    brew upgrade project-planton
+    ```
+
+    ### macOS (Manual)
+
+    ```bash
+    # Apple Silicon (M1/M2/M3)
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_darwin_arm64.tar.gz
+    tar -xzf project-planton_{{ .Version }}_darwin_arm64.tar.gz
+    chmod +x project-planton
+    sudo mv project-planton /usr/local/bin/
+
+    # Intel
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_darwin_amd64.tar.gz
+    tar -xzf project-planton_{{ .Version }}_darwin_amd64.tar.gz
+    chmod +x project-planton
+    sudo mv project-planton /usr/local/bin/
+    ```
+
+    ### Linux
+
+    ```bash
+    # x86_64
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_linux_amd64.tar.gz
+    tar -xzf project-planton_{{ .Version }}_linux_amd64.tar.gz
+    chmod +x project-planton
+    sudo mv project-planton /usr/local/bin/
+
+    # ARM64
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_linux_arm64.tar.gz
+    tar -xzf project-planton_{{ .Version }}_linux_arm64.tar.gz
+    chmod +x project-planton
+    sudo mv project-planton /usr/local/bin/
+    ```
+
+    ### Windows
+
+    ```powershell
+    # Download the ZIP file
+    Invoke-WebRequest -Uri "https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_windows_amd64.zip" -OutFile "project-planton.zip"
+
+    # Extract
+    Expand-Archive -Path "project-planton.zip" -DestinationPath "."
+
+    # Add to PATH or move to a directory in PATH
+    Move-Item -Path "project-planton.exe" -Destination "C:\Windows\System32\"
+    ```
+
+    ---
+
+    ## Docker Images
+
+    Docker images are published to GitHub Container Registry.
+
+    ```bash
+    # Pull the image
+    docker pull ghcr.io/plantonhq/project-planton:{{ .Tag }}
+
+    # Or use the latest tag
+    docker pull ghcr.io/plantonhq/project-planton:latest
+    ```
+
+    ---
+
+    ## Website
+
+    The updated documentation website is available at:
+
+    **https://project-planton.org**
+
+    ---
+
+    ## Pulumi Module Binaries
+
+    Pre-built Pulumi module binaries are attached to this release. Each binary is gzip-compressed.
+
+    ### Download and Extract
+
+    ```bash
+    # Example: Download the AWS ECS Service module
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/pulumi-awsecsservice.gz
+
+    # Extract
+    gunzip pulumi-awsecsservice.gz
+
+    # Make executable
+    chmod +x pulumi-awsecsservice
+
+    # Run
+    ./pulumi-awsecsservice
+    ```
+
+    ### Available Modules
+
+    All `pulumi-*.gz` files attached to this release are pre-built deployment component binaries for the IaC Runner.
+
+    ---
+
+    ## Terraform Modules
+
+    Terraform modules are available for all deployment components across all providers. Unlike Pulumi modules (which are pre-built binaries), Terraform modules are HCL files that you reference directly from this repository.
+
+    ### Available Providers
+
+    Terraform modules are available for: AWS, GCP, Azure, Kubernetes, DigitalOcean, Civo, Cloudflare, and more.
+
+    ### Module Path Pattern
+
+    All Terraform modules follow this path pattern:
+
+    ```
+    apis/org/project_planton/provider/{provider}/{component}/v1/iac/tf/
+    ```
+
+    ### Option 1: Clone and Checkout
+
+    Clone the repository and checkout this release tag:
+
+    ```bash
+    # Clone the repository
+    git clone https://github.com/plantonhq/project-planton.git
+    cd project-planton
+
+    # Checkout this release
+    git checkout {{ .Tag }}
+
+    # Navigate to a Terraform module
+    # Example: AWS ECS Service
+    cd apis/org/project_planton/provider/aws/awsecsservice/v1/iac/tf
+
+    # Example: GCP GKE Cluster
+    cd apis/org/project_planton/provider/gcp/gcpgkecluster/v1/iac/tf
+
+    # Example: Kubernetes Deployment
+    cd apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1/iac/tf
+
+    # Initialize and apply
+    terraform init
+    terraform plan
+    terraform apply
+    ```
+
+    ### Option 2: Git Source Reference
+
+    Reference modules directly in your Terraform configuration:
+
+    ```hcl
+    # AWS ECS Service
+    module "awsecsservice" {
+      source = "git::https://github.com/plantonhq/project-planton.git//apis/org/project_planton/provider/aws/awsecsservice/v1/iac/tf?ref={{ .Tag }}"
+    }
+
+    # GCP GKE Cluster
+    module "gcpgkecluster" {
+      source = "git::https://github.com/plantonhq/project-planton.git//apis/org/project_planton/provider/gcp/gcpgkecluster/v1/iac/tf?ref={{ .Tag }}"
+    }
+
+    # Azure AKS Cluster
+    module "azureakscluster" {
+      source = "git::https://github.com/plantonhq/project-planton.git//apis/org/project_planton/provider/azure/azureakscluster/v1/iac/tf?ref={{ .Tag }}"
+    }
+    ```
+
+    ---
+
+    **Full Changelog**: https://github.com/plantonhq/project-planton/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - Merge pull request
+      - Merge branch
 
 homebrew_casks:
   - name: project-planton

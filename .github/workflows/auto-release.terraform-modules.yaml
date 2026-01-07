@@ -1,0 +1,197 @@
+# =============================================================================
+# Terraform Modules Auto-Release (Reusable Workflow)
+# =============================================================================
+# Creates git tags for Terraform module changes. Unlike Pulumi modules, no
+# binary is built - users reference Terraform modules via git source.
+#
+# Tag Format: v{semver}-terraform-{component}-{YYYYMMDD}.{N}
+# Example: v0.3.1-terraform-awsecsservice-20260107.1
+#
+# Usage in Terraform:
+#   module "ecs" {
+#     source = "git::https://github.com/plantonhq/project-planton.git//apis/.../iac/tf?ref=v0.3.1-terraform-awsecsservice-20260107.1"
+#   }
+#
+# Called by: .github/workflows/auto-release.yaml
+# =============================================================================
+
+name: auto-release.terraform-modules
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        description: 'JSON matrix of components to release'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJson(inputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          TAG="${{ matrix.tag }}"
+          COMPONENT="${{ matrix.component }}"
+          PROVIDER="${{ matrix.provider }}"
+          PATH="${{ matrix.path }}"
+
+          echo "========================================"
+          echo "TERRAFORM MODULE RELEASE"
+          echo "========================================"
+          echo "Provider: ${PROVIDER}"
+          echo "Component: ${COMPONENT}"
+          echo "Path: ${PATH}"
+          echo "Tag: ${TAG}"
+          echo "========================================"
+
+          # Check if tag already exists
+          if git rev-parse "${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists, skipping..."
+          else
+            git tag -a "${TAG}" -m "Auto-release Terraform module ${COMPONENT} - ${TAG}"
+            git push origin "${TAG}"
+            echo "Created and pushed tag: ${TAG}"
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "TAG CREATED"
+          echo "========================================"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ matrix.tag }}"
+          COMPONENT="${{ matrix.component }}"
+          PROVIDER="${{ matrix.provider }}"
+          MODULE_PATH="${{ matrix.path }}"
+
+          cat > release-notes.md << 'EOF'
+          ## Terraform Module Auto-Release
+
+          This is an auto-release of the **COMPONENT_PLACEHOLDER** Terraform module.
+
+          ---
+
+          ## Module Info
+
+          - **Component:** COMPONENT_PLACEHOLDER
+          - **Provider:** PROVIDER_PLACEHOLDER
+          - **Tag:** `TAG_PLACEHOLDER`
+          - **Commit:** COMMIT_PLACEHOLDER
+
+          ---
+
+          ## Option 1: Reference via Git Source (Recommended)
+
+          Add this module directly to your Terraform configuration:
+
+          ```hcl
+          module "COMPONENT_PLACEHOLDER" {
+            source = "git::https://github.com/plantonhq/project-planton.git//PATH_PLACEHOLDER?ref=TAG_PLACEHOLDER"
+
+            # Add your variables here
+          }
+          ```
+
+          ---
+
+          ## Option 2: Clone and Checkout
+
+          Clone the repository and checkout this specific tag:
+
+          ```bash
+          # Clone the repository
+          git clone https://github.com/plantonhq/project-planton.git
+          cd project-planton
+
+          # Checkout this release tag
+          git checkout TAG_PLACEHOLDER
+
+          # Navigate to the Terraform module
+          cd PATH_PLACEHOLDER
+
+          # Initialize and apply
+          terraform init
+          terraform plan
+          terraform apply
+          ```
+
+          ---
+
+          ## Documentation
+
+          For detailed configuration options, see the module's README at:
+
+          `PATH_PLACEHOLDER/README.md`
+          EOF
+
+          # Replace placeholders
+          sed -i "s|TAG_PLACEHOLDER|${TAG}|g" release-notes.md
+          sed -i "s|COMPONENT_PLACEHOLDER|${COMPONENT}|g" release-notes.md
+          sed -i "s|PROVIDER_PLACEHOLDER|${PROVIDER}|g" release-notes.md
+          sed -i "s|PATH_PLACEHOLDER|${MODULE_PATH}|g" release-notes.md
+          sed -i "s|COMMIT_PLACEHOLDER|${{ github.sha }}|g" release-notes.md
+
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists"
+          else
+            echo "Creating release ${TAG}..."
+            gh release create "${TAG}" \
+              --title "Terraform Module: ${COMPONENT} ${TAG}" \
+              --notes-file release-notes.md
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "RELEASE COMPLETE: ${COMPONENT}"
+          echo "========================================"
+          echo "https://github.com/${{ github.repository }}/releases/tag/${TAG}"
+
+  summary:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Terraform Module Auto-Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Released Modules" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Provider | Component | Tag |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-----------|-----|" >> $GITHUB_STEP_SUMMARY
+
+          MATRIX='${{ inputs.matrix }}'
+          echo "$MATRIX" | jq -r '.include[] | "| \(.provider) | \(.component) | `\(.tag)` |"' >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Usage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reference modules via git source:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`hcl" >> $GITHUB_STEP_SUMMARY
+          echo "module \"example\" {" >> $GITHUB_STEP_SUMMARY
+          echo "  source = \"git::https://github.com/${{ github.repository }}.git//{path}?ref={tag}\"" >> $GITHUB_STEP_SUMMARY
+          echo "}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
