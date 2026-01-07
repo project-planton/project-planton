@@ -524,6 +524,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Free disk space
+        run: |
+          echo "=== Disk space before cleanup ==="
+          df -h
+          
+          # Remove large pre-installed software to free up space
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          
+          # Clean apt cache
+          sudo apt-get clean
+          
+          echo ""
+          echo "=== Disk space after cleanup ==="
+          df -h
+
       - name: Checkout
         uses: actions/checkout@v4
 
