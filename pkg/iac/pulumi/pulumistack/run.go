@@ -75,6 +75,8 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrap(err, "failed to build stack input yaml")
 	}
 
+	// Update project name in Pulumi.yaml
+	// For binary mode, we regenerate the Pulumi.yaml with the correct project name
 	if err := UpdateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName); err != nil {
 		return errors.Wrapf(err, "failed to update project name in %s/Pulumi.yaml", pulumiModuleRepoPath)
 	}
@@ -120,7 +122,15 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	pulumiCmd.Stdout = os.Stdout
 	pulumiCmd.Stderr = os.Stderr
 
-	fmt.Printf("\npulumi module directory: %s\n", pulumiModuleRepoPath)
+	// Print execution mode and directory info
+	fmt.Println()
+	if pathResult.UseBinary {
+		fmt.Printf("execution mode: binary (no compilation)\n")
+		fmt.Printf("binary path: %s\n", pathResult.BinaryPath)
+	} else {
+		fmt.Printf("execution mode: source (compilation required)\n")
+	}
+	fmt.Printf("workspace directory: %s\n", pulumiModuleRepoPath)
 
 	// Print handoff message after all setup is complete
 	cliprint.PrintHandoff("Pulumi")

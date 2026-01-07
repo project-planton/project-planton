@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pulumibinary",
+    srcs = [
+        "binary.go",
+        "workspace.go",
+    ],
+    importpath = "github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumibinary",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//internal/cli/cliprint",
+        "//internal/cli/version",
+        "//internal/cli/workspace",
+        "//pkg/fileutil",
+        "@com_github_pkg_errors//:errors",
+    ],
+)
