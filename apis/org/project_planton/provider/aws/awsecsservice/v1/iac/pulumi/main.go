@@ -1,6 +1,7 @@
 // Package main provides the Pulumi program entrypoint for AWS ECS Service deployment.
 // This module creates and manages ECS services with associated resources.
 // Binary releases are gzip-compressed to reduce download size (~75% smaller).
+// Auto-release test: Single Pulumi module change triggers v{semver}-pulumi-awsecsservice-{YYYYMMDD}.{N}
 package main
 
 import (
