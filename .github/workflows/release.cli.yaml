@@ -12,8 +12,6 @@ name: release.cli
 on:
   workflow_call:
     secrets:
-      GITHUB_TOKEN:
-        required: true
       HOMEBREW_TAP_GITHUB_TOKEN:
         required: true
 

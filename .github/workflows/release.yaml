@@ -33,7 +33,6 @@ jobs:
   cli:
     uses: ./.github/workflows/release.cli.yaml
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
 
   # ============================================================================
@@ -41,16 +40,12 @@ jobs:
   # ============================================================================
   app:
     uses: ./.github/workflows/release.app.yaml
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ============================================================================
   # Website Release - Runs in parallel
   # ============================================================================
   website:
     uses: ./.github/workflows/release.website.yaml
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ============================================================================
   # Pulumi Modules - All providers (runs after CLI creates release)
@@ -58,6 +53,4 @@ jobs:
   pulumi-modules:
     needs: cli
     uses: ./.github/workflows/release.pulumi-modules.yaml
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
