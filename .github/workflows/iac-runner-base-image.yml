@@ -21,9 +21,9 @@ permissions:
 
 env:
   IMAGE_REPO: ghcr.io/plantonhq/project-planton/base-images/iac-runner
-  # Go caches are mounted from PVC at /var/cache/go
-  GOMODCACHE: /var/cache/go/mod
-  GOCACHE: /var/cache/go/build
+  # Go caches are mounted from PVC under runner's home directory
+  GOMODCACHE: /home/runner/.cache/go/mod
+  GOCACHE: /home/runner/.cache/go/build
 
 jobs:
   build-and-push:
