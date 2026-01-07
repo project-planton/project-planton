@@ -1,3 +1,5 @@
+// Package main provides the Pulumi program entrypoint for AWS EKS Node Group deployment.
+// Auto-release test: Multi-provider Pulumi change (AWS component).
 package main
 
 import (

@@ -1,5 +1,6 @@
 // Package main provides the Pulumi program entrypoint for GCP Cloud CDN deployment.
 // Binary releases are gzip-compressed to reduce download size.
+// Auto-release test: Multi-provider Pulumi change (GCP component).
 package main
 
 import (
