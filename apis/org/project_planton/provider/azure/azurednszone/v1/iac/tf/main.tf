@@ -1,3 +1,6 @@
+# Azure DNS Zone Terraform Module
+# Auto-release test: Multi-provider Terraform change (Azure component).
+
 # Create the Azure DNS Zone
 # This is a public DNS zone that will be authoritative for the specified domain
 resource "azurerm_dns_zone" "dns_zone" {

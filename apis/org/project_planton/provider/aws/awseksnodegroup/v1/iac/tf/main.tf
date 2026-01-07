@@ -1,3 +1,6 @@
+# AWS EKS Node Group Terraform Module
+# Auto-release test: Multi-provider Terraform change (AWS component).
+
 resource "aws_eks_node_group" "this" {
   cluster_name    = local.cluster_name
   node_role_arn   = local.node_role_arn
