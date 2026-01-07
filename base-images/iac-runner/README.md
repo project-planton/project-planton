@@ -1,94 +1,131 @@
-# IaC Runner Base Image
+# IaC Runner Base Images
 
-Base Docker image for running Pulumi and OpenTofu/Terraform programs with pre-warmed Go caches.
+Base Docker images for running infrastructure-as-code programs. Two variants are available:
 
-## Overview
+- **Terraform variant** - Lightweight image with OpenTofu only
+- **Pulumi variants** - Per-provider images with pre-warmed Go caches
 
-This image dramatically reduces cold start times for Go-based Pulumi programs by including pre-compiled provider SDKs. The caches are built using self-hosted GitHub Actions runners with persistent storage.
+## Image Repository
 
-## Contents
+All variants use a single repository with descriptive tags:
 
-| Component | Version | Purpose |
-|-----------|---------|---------|
-| Go | 1.25.0 | Go runtime |
-| Pulumi | v3.202.0 | Pulumi CLI |
-| OpenTofu | 1.9.1 | Terraform alternative |
-| GOMODCACHE | Pre-warmed | Downloaded Go modules |
-| GOCACHE | Pre-warmed | Compiled Go packages |
-
-## Usage
-
-```dockerfile
-FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:latest
+```
+ghcr.io/plantonhq/project-planton/base-images/iac-runner
 ```
 
-Or with a specific version:
+## Variants
+
+### Terraform Variant
+
+Lightweight image for running OpenTofu/Terraform programs. No Go or Pulumi.
+
+| Tag | Contents | Size |
+|-----|----------|------|
+| `terraform-v0.0.1` | OpenTofu 1.9.1 | ~500MB |
 
 ```dockerfile
-FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:v1.0.0
+FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:terraform-v0.0.1
 ```
+
+### Pulumi Variants (Per-Provider)
+
+Per-provider images with pre-warmed Go caches for fast cold starts.
+
+| Tag | Provider | Contents |
+|-----|----------|----------|
+| `pulumi-aws-v0.0.1` | AWS | Go 1.25 + Pulumi + AWS SDK cache |
+| `pulumi-gcp-v0.0.1` | GCP | Go 1.25 + Pulumi + GCP SDK cache |
+| `pulumi-azure-v0.0.1` | Azure | Go 1.25 + Pulumi + Azure SDK cache |
+| `pulumi-kubernetes-v0.0.1` | Kubernetes | Go 1.25 + Pulumi + K8s SDK cache |
+| `pulumi-cloudflare-v0.0.1` | Cloudflare | Go 1.25 + Pulumi + Cloudflare SDK cache |
+| `pulumi-digitalocean-v0.0.1` | DigitalOcean | Go 1.25 + Pulumi + DO SDK cache |
+| `pulumi-atlas-v0.0.1` | MongoDB Atlas | Go 1.25 + Pulumi + Atlas SDK cache |
+| `pulumi-auth0-v0.0.1` | Auth0 | Go 1.25 + Pulumi + Auth0 SDK cache |
+| `pulumi-civo-v0.0.1` | Civo | Go 1.25 + Pulumi + Civo SDK cache |
+| `pulumi-confluent-v0.0.1` | Confluent | Go 1.25 + Pulumi + Confluent SDK cache |
+| `pulumi-snowflake-v0.0.1` | Snowflake | Go 1.25 + Pulumi + Snowflake SDK cache |
+
+```dockerfile
+FROM ghcr.io/plantonhq/project-planton/base-images/iac-runner:pulumi-aws-v0.0.1
+```
+
+## Why Per-Provider Images?
+
+A combined image with all providers is ~15GB. Per-provider images are 1-3GB each:
+
+- Faster image pulls
+- Smaller disk footprint
+- Only the dependencies you need
 
 ## How It Works
 
 ```mermaid
 flowchart LR
-    subgraph Runner ["Self-Hosted Runner"]
-        PVC[(PVC Cache)]
-        Build[Build Modules]
+    subgraph Terraform [Terraform Variant]
+        TFTag["iac-runner-terraform-v*"] --> TFBuild[ubuntu-latest]
+        TFBuild --> TFImage["iac-runner:terraform-v0.0.1"]
     end
     
-    subgraph Workflow ["GitHub Actions"]
-        Tag[Push Tag] --> Build
-        Build --> PVC
-        PVC --> Docker[Build Image]
+    subgraph Pulumi [Pulumi Variants]
+        PulumiTag["iac-runner-pulumi-aws-v*"] --> SelfHosted[Self-Hosted Runner]
+        SelfHosted --> PVC[(PVC Cache)]
+        PVC --> PulumiImage["iac-runner:pulumi-aws-v0.0.1"]
     end
-    
-    subgraph Registry ["GHCR"]
-        Image[iac-runner:version]
-    end
-    
-    Docker --> Image
 ```
 
-1. **Tag pushed** → Triggers workflow
-2. **Self-hosted runner** → Builds all Pulumi modules in parallel
-3. **PVC cache** → Persists GOMODCACHE and GOCACHE across runs
-4. **Docker build** → Copies caches into image
-5. **GHCR** → Image published with pre-warmed caches
+**Terraform**: Simple build on GitHub-hosted runners. No caching needed.
 
-## Building a New Version
+**Pulumi**: Uses self-hosted runners with persistent PVC storage. Caches are built incrementally and copied into the Docker image.
 
-Push a tag to trigger the workflow:
+## Building New Versions
+
+### Terraform
 
 ```bash
-git tag iac-runner-base-v1.0.0
-git push origin iac-runner-base-v1.0.0
+git tag iac-runner-terraform-v0.0.1
+git push origin iac-runner-terraform-v0.0.1
 ```
 
-The workflow will:
-- Run on the `project-planton-iac-runner-base-image-builder` self-hosted runner
-- Build all Pulumi modules (incrementally, using cached results)
-- Package caches into Docker image
-- Push to GHCR
+### Pulumi (Per-Provider)
 
-## Cache Architecture
+```bash
+# Build AWS variant
+git tag iac-runner-pulumi-aws-v0.0.1
+git push origin iac-runner-pulumi-aws-v0.0.1
+
+# Build GCP variant
+git tag iac-runner-pulumi-gcp-v0.0.1
+git push origin iac-runner-pulumi-gcp-v0.0.1
+
+# Build Kubernetes variant
+git tag iac-runner-pulumi-kubernetes-v0.0.1
+git push origin iac-runner-pulumi-kubernetes-v0.0.1
+```
+
+## Directory Structure
+
+```
+base-images/iac-runner/
+├── terraform/
+│   └── Dockerfile          # OpenTofu only
+├── pulumi/
+│   └── Dockerfile          # Go + Pulumi + cache COPY
+├── Makefile
+└── README.md
+```
+
+## Cache Architecture (Pulumi Variants)
 
 | Cache | Path | Purpose |
 |-------|------|---------|
 | GOMODCACHE | `/var/cache/go-mod` | Downloaded module source code |
 | GOCACHE | `/var/cache/go-build` | Compiled `.a` files |
 
-The caches are persisted on a Kubernetes PVC, so subsequent builds only recompile changed modules.
-
-## Files
-
-| File | Purpose |
-|------|---------|
-| `Dockerfile` | Image definition with cache COPY |
-| `Makefile` | Local cleanup commands |
-| `.gitignore` | Ignore local cache artifacts |
+Caches are persisted on a Kubernetes PVC, so subsequent builds only recompile changed modules.
 
 ## Related
 
-- **Workflow**: `.github/workflows/iac-runner-base-image.yml`
+- **Workflows**:
+  - `.github/workflows/iac-runner-terraform.yml`
+  - `.github/workflows/iac-runner-pulumi.yml`
 - **Self-hosted runner setup**: `planton/tools/ci/github-runners/`
