@@ -1,0 +1,7 @@
+name: kubernetesgharunnerscaleset
+description: Deploys a GitHub Actions Runner Scale Set on Kubernetes
+runtime:
+  name: go
+  options:
+    binary: ./main
+
