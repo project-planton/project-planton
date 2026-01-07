@@ -24,17 +24,16 @@ The previous release workflow architecture had several issues:
 
 ### 1. Reusable Workflow Architecture
 
-Created a `release/` subfolder with modular, reusable workflows:
+Created modular, reusable workflows with prefix-based naming (GitHub Actions requires reusable workflows to be directly under `.github/workflows/`):
 
 ```
 .github/workflows/
 ├── release.yaml                      # Orchestrator (single entry point)
-├── pulumi-module-auto-release.yaml   # Auto-release on push to main
-└── release/
-    ├── cli.yaml                      # GoReleaser for CLI
-    ├── app.yaml                      # Docker image build
-    ├── website.yaml                  # GitHub Pages deployment
-    └── pulumi-modules.yaml           # All providers (dynamic discovery)
+├── release.cli.yaml                  # GoReleaser for CLI
+├── release.app.yaml                  # Docker image build
+├── release.website.yaml              # GitHub Pages deployment
+├── release.pulumi-modules.yaml       # All providers (dynamic discovery)
+└── auto-release.pulumi-modules.yaml  # Auto-release on push to main
 ```
 
 ### 2. Single Orchestrator with Native Dependencies
@@ -44,17 +43,17 @@ The `release.yaml` orchestrator uses `workflow_call` to invoke reusable workflow
 ```yaml
 jobs:
   cli:
-    uses: ./.github/workflows/release/cli.yaml
+    uses: ./.github/workflows/release.cli.yaml
 
   app:
-    uses: ./.github/workflows/release/app.yaml
+    uses: ./.github/workflows/release.app.yaml
 
   website:
-    uses: ./.github/workflows/release/website.yaml
+    uses: ./.github/workflows/release.website.yaml
 
   pulumi-modules:
     needs: cli  # Native dependency - no polling needed
-    uses: ./.github/workflows/release/pulumi-modules.yaml
+    uses: ./.github/workflows/release.pulumi-modules.yaml
 ```
 
 ### 3. Dynamic Component Discovery
