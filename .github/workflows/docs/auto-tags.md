@@ -17,15 +17,21 @@ flowchart LR
     C -->|Site files| F[Create Website tag]
     C -->|Pulumi modules| G[Create Pulumi tags]
     C -->|Terraform modules| H[Create Terraform tags]
-    D & E & F & G & H --> I[trigger-releases job]
-    I --> J[auto-release.yaml]
-    J --> K[Build & Publish]
+    D --> I[auto-release.cli]
+    E --> J[auto-release.app]
+    F --> K[auto-release.website]
+    G --> L[auto-release.pulumi-modules]
+    H --> M[auto-release.terraform-modules]
 ```
 
-Two workflows work together:
+The `auto-tag.yaml` workflow triggers component-specific release workflows directly:
 
-1. **`auto-tag.yaml`** - Detects changes, creates tags, triggers releases
-2. **`auto-release.yaml`** - Receives tag, builds and publishes artifacts
+- **`auto-tag.yaml`** - Detects changes, creates tags, triggers component releases
+- **`auto-release.cli.yaml`** - Builds CLI with GoReleaser
+- **`auto-release.app.yaml`** - Builds Docker image
+- **`auto-release.website.yaml`** - Deploys to GitHub Pages
+- **`auto-release.pulumi-modules.yaml`** - Builds Pulumi binaries
+- **`auto-release.terraform-modules.yaml`** - Creates Terraform zips
 
 ## Tag format
 
@@ -120,32 +126,23 @@ flowchart TB
 - `contents: write` - Create and push tags
 - `actions: write` - Trigger auto-release workflow
 
-### auto-release.yaml
+### Component release workflows
 
-**Triggers:**
+Each component has its own release workflow triggered directly by `auto-tag.yaml`:
 
-- `workflow_dispatch` with `tag` input (called by auto-tag)
-
-**Jobs:**
-
-```mermaid
-flowchart TB
-    A[parse-tag] --> B{Component type?}
-    B -->|cli| C[auto-release.cli.yaml]
-    B -->|app| D[auto-release.app.yaml]
-    B -->|website| E[auto-release.website.yaml]
-    B -->|pulumi| F[auto-release.pulumi-modules.yaml]
-    B -->|terraform| G[auto-release.terraform-modules.yaml]
-    C & D & E & F & G --> H[summary]
-```
-
-The `parse-tag` job extracts the component type from the tag pattern and routes to the appropriate reusable workflow.
+| Workflow                              | Trigger Inputs                         |
+| ------------------------------------- | -------------------------------------- |
+| `auto-release.cli.yaml`               | `tag`                                  |
+| `auto-release.app.yaml`               | `tag`                                  |
+| `auto-release.website.yaml`           | `tag`                                  |
+| `auto-release.pulumi-modules.yaml`    | `tag`, `component`, `provider`, `path` |
+| `auto-release.terraform-modules.yaml` | `tag`, `component`, `provider`, `path` |
 
 ## Why workflow_dispatch instead of tag push?
 
-GitHub's `GITHUB_TOKEN` has a security feature: events triggered by it don't create new workflow runs. This prevents infinite loops but means tag pushes from `auto-tag` won't trigger `auto-release`.
+GitHub's `GITHUB_TOKEN` has a security feature: events triggered by it don't create new workflow runs. This prevents infinite loops but means tag pushes from `auto-tag` won't trigger release workflows.
 
-We solve this by having `auto-tag` explicitly call `auto-release` via `workflow_dispatch`. This provides:
+We solve this by having `auto-tag` explicitly call each component's release workflow via `workflow_dispatch`. This provides:
 
 - **Explicit control** - Clear which tags trigger which releases
 - **No external tokens** - Uses built-in `GITHUB_TOKEN`
@@ -172,10 +169,18 @@ Available flags:
 
 ### Re-run a failed release
 
-If a release fails, run `auto-release` manually with the tag:
+If a release fails, run the specific component workflow manually:
 
-```
-gh workflow run auto-release.yaml -f tag=v0.3.5-cli.20260108.0
+```bash
+# CLI
+gh workflow run auto-release.cli.yaml -f tag=v0.3.5-cli.20260108.0
+
+# Pulumi module
+gh workflow run auto-release.pulumi-modules.yaml \
+  -f tag=v0.3.5-pulumi.awsecsservice.20260108.0 \
+  -f component=awsecsservice \
+  -f provider=aws \
+  -f path=apis/org/project_planton/provider/aws/awsecsservice/v1/iac/pulumi
 ```
 
 ## Release artifacts by component
@@ -216,8 +221,7 @@ GoReleaser requires strict semver. The hyphen format (`v0.3.5-cli.20260108.0`) i
 
 ## Related files
 
-- [`auto-tag.yaml`](../auto-tag.yaml) - Tag creation workflow
-- [`auto-release.yaml`](../auto-release.yaml) - Release orchestrator
+- [`auto-tag.yaml`](../auto-tag.yaml) - Tag creation and release triggering
 - [`auto-release.cli.yaml`](../auto-release.cli.yaml) - CLI build with GoReleaser
 - [`auto-release.app.yaml`](../auto-release.app.yaml) - Docker image build
 - [`auto-release.website.yaml`](../auto-release.website.yaml) - Website deployment

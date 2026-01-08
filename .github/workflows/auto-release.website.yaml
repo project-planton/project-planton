@@ -1,23 +1,23 @@
 # =============================================================================
-# Website Auto-Release (Reusable Workflow)
+# Website Auto-Release
 # =============================================================================
 # Builds and deploys project-planton.org to GitHub Pages for auto-releases.
 # The tag serves as an audit trail for deployments.
 #
-# Tag Format (semver build metadata): v{semver}+website.{YYYYMMDD}.{N}
-# Example: v0.3.1+website.20260107.1
+# Tag Format: v{semver}-website.{YYYYMMDD}.{N}
+# Example: v0.3.5-website.20260108.0
 #
-# Called by: .github/workflows/auto-release.yaml
-# Note: Tag is created by auto-tag.yaml, this workflow only builds and deploys
+# Triggered by: auto-tag.yaml via workflow_dispatch
 # =============================================================================
 
 name: auto-release.website
+run-name: "Website Release: ${{ inputs.tag }}"
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       tag:
-        description: 'The tag to release (e.g., v0.3.1+website.20260107.1)'
+        description: 'The tag to release (e.g., v0.3.5-website.20260108.0)'
         required: true
         type: string
 

@@ -1,11 +1,11 @@
 # =============================================================================
-# Terraform Modules Auto-Release (Reusable Workflow)
+# Terraform Modules Auto-Release
 # =============================================================================
 # Creates GitHub releases for Terraform module changes with zipped module
 # contents attached as artifacts.
 #
-# Tag Format (semver build metadata): v{semver}+terraform.{component}.{YYYYMMDD}.{N}
-# Example: v0.3.1+terraform.awsecsservice.20260107.1
+# Tag Format: v{semver}-terraform.{component}.{YYYYMMDD}.{N}
+# Example: v0.3.5-terraform.awsecsservice.20260108.0
 #
 # Artifacts:
 #   - terraform-{component}.zip - zipped contents of the module's tf/ folder
@@ -14,17 +14,29 @@
 #   1. Download zip from release (recommended - fastest)
 #   2. Reference via git source (legacy)
 #
-# Called by: .github/workflows/auto-release.yaml
-# Note: Tags are created by auto-tag.yaml, this workflow creates releases and uploads zips
+# Triggered by: auto-tag.yaml via workflow_dispatch (one call per component)
 # =============================================================================
 
 name: auto-release.terraform-modules
+run-name: "Terraform: ${{ inputs.component }} (${{ inputs.tag }})"
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      matrix:
-        description: 'JSON matrix of components to release'
+      tag:
+        description: 'Tag to release (e.g., v0.3.5-terraform.awsecsservice.20260108.0)'
+        required: true
+        type: string
+      component:
+        description: 'Component name (e.g., awsecsservice)'
+        required: true
+        type: string
+      provider:
+        description: 'Provider name (e.g., aws, gcp, kubernetes)'
+        required: true
+        type: string
+      path:
+        description: 'Path to the Terraform module (e.g., apis/org/project_planton/provider/aws/awsecsservice/v1/iac/tf)'
         required: true
         type: string
 
@@ -34,19 +46,14 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 10
-      matrix: ${{ fromJson(inputs.matrix) }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Zip Terraform module
         run: |
-          COMPONENT="${{ matrix.component }}"
-          MODULE_PATH="${{ matrix.path }}"
+          COMPONENT="${{ inputs.component }}"
+          MODULE_PATH="${{ inputs.path }}"
           ARTIFACT_NAME="terraform-${COMPONENT}.zip"
           
           echo "========================================"
@@ -64,10 +71,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ matrix.tag }}"
-          COMPONENT="${{ matrix.component }}"
-          PROVIDER="${{ matrix.provider }}"
-          MODULE_PATH="${{ matrix.path }}"
+          TAG="${{ inputs.tag }}"
+          COMPONENT="${{ inputs.component }}"
+          PROVIDER="${{ inputs.provider }}"
+          MODULE_PATH="${{ inputs.path }}"
           ARTIFACT_NAME="terraform-${COMPONENT}.zip"
 
           cat > release-notes.md << 'EOF'
@@ -155,8 +162,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ matrix.tag }}"
-          COMPONENT="${{ matrix.component }}"
+          TAG="${{ inputs.tag }}"
+          COMPONENT="${{ inputs.component }}"
           ARTIFACT_NAME="terraform-${COMPONENT}.zip"
           
           gh release upload "${TAG}" "${ARTIFACT_NAME}" --clobber
@@ -168,39 +175,30 @@ jobs:
           echo "========================================"
           echo "https://github.com/${{ github.repository }}/releases/tag/${TAG}"
 
-  summary:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
       - name: Generate summary
         run: |
-          echo "## Terraform Module Auto-Release Summary" >> $GITHUB_STEP_SUMMARY
+          TAG="${{ inputs.tag }}"
+          COMPONENT="${{ inputs.component }}"
+          PROVIDER="${{ inputs.provider }}"
+          MODULE_PATH="${{ inputs.path }}"
+          
+          echo "## Terraform Module Auto-Release Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Component:** ${COMPONENT}" >> $GITHUB_STEP_SUMMARY
+          echo "**Provider:** ${PROVIDER}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** \`${TAG}\`" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Released Modules" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifact" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Provider | Component | Tag | Artifact |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|-----------|-----|----------|" >> $GITHUB_STEP_SUMMARY
-
-          MATRIX='${{ inputs.matrix }}'
-          echo "$MATRIX" | jq -r '.include[] | "| \(.provider) | \(.component) | `\(.tag)` | `terraform-\(.component).zip` |"' >> $GITHUB_STEP_SUMMARY
-
+          echo "- \`terraform-${COMPONENT}.zip\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Usage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Option 1: Download zip (recommended)**" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Download zip:**" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "curl -LO https://github.com/${{ github.repository }}/releases/download/{tag}/terraform-{component}.zip" >> $GITHUB_STEP_SUMMARY
-          echo "unzip terraform-{component}.zip -d {component}" >> $GITHUB_STEP_SUMMARY
+          echo "curl -LO https://github.com/${{ github.repository }}/releases/download/${TAG}/terraform-${COMPONENT}.zip" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Option 2: Reference via git source**" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`hcl" >> $GITHUB_STEP_SUMMARY
-          echo "module \"example\" {" >> $GITHUB_STEP_SUMMARY
-          echo "  source = \"git::https://github.com/${{ github.repository }}.git//{path}?ref={tag}\"" >> $GITHUB_STEP_SUMMARY
-          echo "}" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/${TAG})" >> $GITHUB_STEP_SUMMARY
 

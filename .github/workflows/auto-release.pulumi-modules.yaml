@@ -1,11 +1,11 @@
 # =============================================================================
-# Pulumi Modules Auto-Release (Reusable Workflow)
+# Pulumi Modules Auto-Release
 # =============================================================================
 # Builds pre-compiled binaries for Pulumi deployment components and creates
 # GitHub releases with gzipped artifacts.
 #
-# Tag Format (semver build metadata): v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
-# Example: v0.3.1+pulumi.awsecsservice.20260107.1
+# Tag Format: v{semver}-pulumi.{component}.{YYYYMMDD}.{N}
+# Example: v0.3.5-pulumi.awsecsservice.20260108.0
 #
 # Multi-Platform Builds (parallel via matrix):
 #   - linux_amd64    - CI/CD, Docker, cloud servers
@@ -13,39 +13,31 @@
 #   - darwin_amd64   - Intel Macs
 #   - windows_amd64  - Windows
 #
-# Can be called from:
-#   1. The auto-release.yaml orchestrator (with matrix input) - tags already exist
-#   2. Directly via workflow_dispatch (for manual releases) - creates tags
-#
-# Called by: .github/workflows/auto-release.yaml
-# Note: When called via workflow_call, tags are created by auto-tag.yaml
+# Triggered by: auto-tag.yaml via workflow_dispatch (one call per component)
 # =============================================================================
 
 name: auto-release.pulumi-modules
+run-name: "Pulumi: ${{ inputs.component }} (${{ inputs.tag }})"
 
 on:
-  workflow_call:
-    inputs:
-      matrix:
-        description: 'JSON matrix of components to release'
-        required: true
-        type: string
-
   workflow_dispatch:
     inputs:
-      provider:
-        description: 'Provider to release (e.g., aws, gcp, kubernetes)'
-        required: false
+      tag:
+        description: 'Tag to release (e.g., v0.3.5-pulumi.awsecsservice.20260108.0)'
+        required: true
         type: string
       component:
-        description: 'Specific component to release (e.g., awsecsservice)'
-        required: false
+        description: 'Component name (e.g., awsecsservice)'
+        required: true
         type: string
-      force_all:
-        description: 'Force release of all components'
-        required: false
-        type: boolean
-        default: false
+      provider:
+        description: 'Provider name (e.g., aws, gcp, kubernetes)'
+        required: true
+        type: string
+      path:
+        description: 'Path to the Pulumi module (e.g., apis/org/project_planton/provider/aws/awsecsservice/v1/iac/pulumi)'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -53,179 +45,10 @@ permissions:
 
 jobs:
   # ===========================================================================
-  # Detect components (only for workflow_dispatch)
+  # Create Release
   # ===========================================================================
-  detect-changes:
-    if: github.event_name == 'workflow_dispatch'
+  create-release:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-      has_changes: ${{ steps.set-matrix.outputs.has_changes }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect Pulumi modules
-        id: set-matrix
-        run: |
-          TODAY=$(date +%Y%m%d)
-
-          # Get the latest semantic version tag (v*.*.* only)
-          LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-          if [ -z "$LATEST_SEMVER" ]; then
-            LATEST_SEMVER="v0.0.0"
-            echo "No semantic version tags found, using default: ${LATEST_SEMVER}"
-          else
-            echo "Latest semantic version: ${LATEST_SEMVER}"
-          fi
-
-          # Handle manual dispatch options
-          if [ "${{ inputs.force_all }}" = "true" ]; then
-            echo "Manual dispatch: releasing all components"
-            PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/iac/pulumi" | sort)
-          elif [ -n "${{ inputs.component }}" ]; then
-            echo "Manual dispatch: releasing specific component ${{ inputs.component }}"
-            PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/${{ inputs.component }}/*/iac/pulumi" | head -1)
-          elif [ -n "${{ inputs.provider }}" ]; then
-            echo "Manual dispatch: releasing all ${{ inputs.provider }} components"
-            PULUMI_DIRS=$(find apis/org/project_planton/provider/${{ inputs.provider }} -type d -name "pulumi" -path "*/iac/pulumi" | sort)
-          else
-            echo "No components specified for manual dispatch"
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          echo ""
-          echo "Pulumi directories to release:"
-          echo "$PULUMI_DIRS"
-
-          if [ -z "$PULUMI_DIRS" ]; then
-            echo "No Pulumi module directories found"
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Build matrix JSON
-          MATRIX_ITEMS="["
-          FIRST=true
-
-          for dir in $PULUMI_DIRS; do
-            PROVIDER=$(echo "$dir" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
-            COMPONENT=$(echo "$dir" | sed 's|apis/org/project_planton/provider/[^/]*/\([^/]*\)/.*|\1|')
-
-            # Skip test providers
-            if [ "$PROVIDER" = "_test" ]; then
-              continue
-            fi
-
-            # Tag format: v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
-            TAG_PREFIX="${LATEST_SEMVER}+pulumi.${COMPONENT}.${TODAY}"
-            LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-
-            if [ -z "$LATEST_TAG" ]; then
-              NEXT_SEQ=0
-            else
-              CURRENT_SEQ=$(echo "$LATEST_TAG" | sed "s/${TAG_PREFIX}\.//")
-              NEXT_SEQ=$((CURRENT_SEQ + 1))
-            fi
-
-            NEXT_TAG="${TAG_PREFIX}.${NEXT_SEQ}"
-            echo "  ${PROVIDER}/${COMPONENT} -> ${NEXT_TAG}"
-
-            if [ "$FIRST" = true ]; then
-              FIRST=false
-            else
-              MATRIX_ITEMS="${MATRIX_ITEMS},"
-            fi
-
-            MATRIX_ITEMS="${MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"tag\":\"${NEXT_TAG}\"}"
-          done
-
-          MATRIX_ITEMS="${MATRIX_ITEMS}]"
-
-          if [ "$MATRIX_ITEMS" = "[]" ]; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "matrix={\"include\":${MATRIX_ITEMS}}" >> $GITHUB_OUTPUT
-          fi
-
-          echo ""
-          echo "Matrix: {\"include\":${MATRIX_ITEMS}}"
-
-  # ===========================================================================
-  # Expand matrix to include platforms (from orchestrator)
-  # ===========================================================================
-  expand-matrix-orchestrator:
-    if: github.event_name == 'workflow_call'
-    runs-on: ubuntu-latest
-    outputs:
-      expanded_matrix: ${{ steps.expand.outputs.matrix }}
-    steps:
-      - name: Expand matrix with platforms
-        id: expand
-        run: |
-          INPUT_MATRIX='${{ inputs.matrix }}'
-          
-          # Parse the input matrix and expand with platforms
-          PLATFORMS='["linux_amd64","darwin_arm64","darwin_amd64","windows_amd64"]'
-          
-          # Use jq to expand the matrix
-          EXPANDED=$(echo "$INPUT_MATRIX" | jq -c --argjson platforms "$PLATFORMS" '
-            .include as $components |
-            $platforms | map(. as $platform | $components[] | . + {platform: $platform}) |
-            {include: .}
-          ')
-          
-          echo "Expanded matrix:"
-          echo "$EXPANDED" | jq .
-          echo "matrix=$EXPANDED" >> $GITHUB_OUTPUT
-
-  # ===========================================================================
-  # Expand matrix to include platforms (from workflow_dispatch)
-  # ===========================================================================
-  expand-matrix-dispatch:
-    needs: detect-changes
-    if: github.event_name == 'workflow_dispatch' && needs.detect-changes.outputs.has_changes == 'true'
-    runs-on: ubuntu-latest
-    outputs:
-      expanded_matrix: ${{ steps.expand.outputs.matrix }}
-    steps:
-      - name: Expand matrix with platforms
-        id: expand
-        run: |
-          INPUT_MATRIX='${{ needs.detect-changes.outputs.matrix }}'
-          
-          # Parse the input matrix and expand with platforms
-          PLATFORMS='["linux_amd64","darwin_arm64","darwin_amd64","windows_amd64"]'
-          
-          # Use jq to expand the matrix
-          EXPANDED=$(echo "$INPUT_MATRIX" | jq -c --argjson platforms "$PLATFORMS" '
-            .include as $components |
-            $platforms | map(. as $platform | $components[] | . + {platform: $platform}) |
-            {include: .}
-          ')
-          
-          echo "Expanded matrix:"
-          echo "$EXPANDED" | jq .
-          echo "matrix=$EXPANDED" >> $GITHUB_OUTPUT
-
-  # ===========================================================================
-  # Create releases (one per component, from orchestrator)
-  # Note: Tags are already created by auto-tag.yaml
-  # ===========================================================================
-  create-releases-orchestrator:
-    if: github.event_name == 'workflow_call'
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 10
-      matrix: ${{ fromJson(inputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -234,9 +57,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ matrix.tag }}"
-          COMPONENT="${{ matrix.component }}"
-          PROVIDER="${{ matrix.provider }}"
+          TAG="${{ inputs.tag }}"
+          COMPONENT="${{ inputs.component }}"
+          PROVIDER="${{ inputs.provider }}"
           
           # Create release if it doesn't exist (tag already exists from auto-tag.yaml)
           if gh release view "${TAG}" >/dev/null 2>&1; then
@@ -306,121 +129,16 @@ jobs:
           fi
 
   # ===========================================================================
-  # Create tags and releases (one per component, from workflow_dispatch)
+  # Build and Upload (parallel across platforms)
   # ===========================================================================
-  create-releases-dispatch:
-    needs: detect-changes
-    if: github.event_name == 'workflow_dispatch' && needs.detect-changes.outputs.has_changes == 'true'
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 10
-      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Create tag and release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG="${{ matrix.tag }}"
-          COMPONENT="${{ matrix.component }}"
-          PROVIDER="${{ matrix.provider }}"
-          
-          # Create tag if it doesn't exist
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists"
-          else
-            git tag -a "${TAG}" -m "Auto-release Pulumi module ${COMPONENT} - ${TAG}"
-            git push origin "${TAG}"
-            echo "Created and pushed tag: ${TAG}"
-          fi
-          
-          # Create release if it doesn't exist
-          if gh release view "${TAG}" >/dev/null 2>&1; then
-            echo "Release ${TAG} already exists"
-          else
-            cat > release-notes.md << EOF
-          ## Pulumi Module Auto-Release
-
-          This is an auto-release of the **${COMPONENT}** Pulumi deployment component binaries.
-
-          ---
-
-          ## Module Info
-
-          | Field | Value |
-          |-------|-------|
-          | Component | ${COMPONENT} |
-          | Provider | ${PROVIDER} |
-          | Tag | \`${TAG}\` |
-          | Commit | ${{ github.sha }} |
-
-          ---
-
-          ## Available Platforms
-
-          | Platform | Artifact |
-          |----------|----------|
-          | Linux x86-64 | \`pulumi-${COMPONENT}_linux_amd64.gz\` |
-          | macOS Apple Silicon | \`pulumi-${COMPONENT}_darwin_arm64.gz\` |
-          | macOS Intel | \`pulumi-${COMPONENT}_darwin_amd64.gz\` |
-          | Windows x86-64 | \`pulumi-${COMPONENT}_windows_amd64.exe.gz\` |
-
-          ---
-
-          ## Download and Extract
-
-          \`\`\`bash
-          # Linux x86-64
-          curl -LO https://github.com/${{ github.repository }}/releases/download/${TAG}/pulumi-${COMPONENT}_linux_amd64.gz
-          gunzip pulumi-${COMPONENT}_linux_amd64.gz
-          chmod +x pulumi-${COMPONENT}_linux_amd64
-
-          # macOS Apple Silicon
-          curl -LO https://github.com/${{ github.repository }}/releases/download/${TAG}/pulumi-${COMPONENT}_darwin_arm64.gz
-          gunzip pulumi-${COMPONENT}_darwin_arm64.gz
-          chmod +x pulumi-${COMPONENT}_darwin_arm64
-          \`\`\`
-
-          ---
-
-          ## Usage with IaC Runner
-
-          This binary is designed to be used with the Project Planton IaC Runner.
-
-          ---
-
-          ## Source Code
-
-          \`apis/org/project_planton/provider/${PROVIDER}/${COMPONENT}/v1/iac/pulumi/\`
-          EOF
-            
-            gh release create "${TAG}" \
-              --title "Pulumi Module: ${COMPONENT} ${TAG}" \
-              --notes-file release-notes.md
-            
-            echo "Created release: ${TAG}"
-          fi
-
-  # ===========================================================================
-  # Build and upload (from orchestrator - one job per component × platform)
-  # ===========================================================================
-  build-orchestrator:
-    needs: [expand-matrix-orchestrator, create-releases-orchestrator]
-    if: github.event_name == 'workflow_call'
+  build:
+    needs: create-release
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
-      max-parallel: 20
-      matrix: ${{ fromJson(needs.expand-matrix-orchestrator.outputs.expanded_matrix) }}
+      matrix:
+        platform: [linux_amd64, darwin_arm64, darwin_amd64, windows_amd64]
 
     steps:
       - name: Checkout
@@ -436,77 +154,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          COMPONENT="${{ matrix.component }}"
-          PROVIDER="${{ matrix.provider }}"
-          TAG="${{ matrix.tag }}"
-          COMPONENT_PATH="${{ matrix.path }}"
-          PLATFORM="${{ matrix.platform }}"
-          
-          # Parse platform
-          GOOS="${PLATFORM%%_*}"
-          GOARCH="${PLATFORM##*_}"
-          
-          echo "========================================"
-          echo "BUILDING: pulumi-${COMPONENT}"
-          echo "Platform: ${PLATFORM}"
-          echo "========================================"
-          
-          # Handle Windows .exe extension
-          if [ "$GOOS" = "windows" ]; then
-            BINARY_NAME="pulumi-${COMPONENT}.exe"
-            ARTIFACT_NAME="pulumi-${COMPONENT}_${PLATFORM}.exe.gz"
-          else
-            BINARY_NAME="pulumi-${COMPONENT}"
-            ARTIFACT_NAME="pulumi-${COMPONENT}_${PLATFORM}.gz"
-          fi
-          
-          # Build
-          CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" go build \
-            -ldflags="-s -w -X main.Version=${TAG}" \
-            -o "${BINARY_NAME}" \
-            "./${COMPONENT_PATH}"
-          
-          # Compress
-          gzip -9 -c "${BINARY_NAME}" > "${ARTIFACT_NAME}"
-          
-          COMP_SIZE=$(ls -lh "${ARTIFACT_NAME}" | awk '{print $5}')
-          echo "Built: ${ARTIFACT_NAME} (${COMP_SIZE})"
-          
-          # Upload
-          gh release upload "${TAG}" "${ARTIFACT_NAME}" --clobber
-          echo "✓ Uploaded: ${ARTIFACT_NAME}"
-
-  # ===========================================================================
-  # Build and upload (from workflow_dispatch - one job per component × platform)
-  # ===========================================================================
-  build-dispatch:
-    needs: [expand-matrix-dispatch, create-releases-dispatch]
-    if: github.event_name == 'workflow_dispatch' && needs.expand-matrix-dispatch.outputs.expanded_matrix != ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      max-parallel: 20
-      matrix: ${{ fromJson(needs.expand-matrix-dispatch.outputs.expanded_matrix) }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.25'
-          cache: true
-
-      - name: Build and upload binary
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          COMPONENT="${{ matrix.component }}"
-          PROVIDER="${{ matrix.provider }}"
-          TAG="${{ matrix.tag }}"
-          COMPONENT_PATH="${{ matrix.path }}"
+          COMPONENT="${{ inputs.component }}"
+          PROVIDER="${{ inputs.provider }}"
+          TAG="${{ inputs.tag }}"
+          COMPONENT_PATH="${{ inputs.path }}"
           PLATFORM="${{ matrix.platform }}"
           
           # Parse platform
@@ -547,17 +198,29 @@ jobs:
   # Summary
   # ===========================================================================
   summary:
-    needs: [build-orchestrator, build-dispatch]
-    if: always() && (needs.build-orchestrator.result == 'success' || needs.build-dispatch.result == 'success')
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Generate summary
         run: |
-          echo "## Pulumi Module Auto-Release Summary" >> $GITHUB_STEP_SUMMARY
+          TAG="${{ inputs.tag }}"
+          COMPONENT="${{ inputs.component }}"
+          PROVIDER="${{ inputs.provider }}"
+          
+          echo "## Pulumi Module Auto-Release Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Component:** ${COMPONENT}" >> $GITHUB_STEP_SUMMARY
+          echo "**Provider:** ${PROVIDER}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** \`${TAG}\`" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Released Pulumi module binaries (4 platforms each) have been uploaded to GitHub Releases." >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts Uploaded" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "See individual job logs for details on each component × platform." >> $GITHUB_STEP_SUMMARY
+          echo "| Platform | Artifact |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Linux x86-64 | \`pulumi-${COMPONENT}_linux_amd64.gz\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| macOS Apple Silicon | \`pulumi-${COMPONENT}_darwin_arm64.gz\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| macOS Intel | \`pulumi-${COMPONENT}_darwin_amd64.gz\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Windows x86-64 | \`pulumi-${COMPONENT}_windows_amd64.exe.gz\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/${TAG})" >> $GITHUB_STEP_SUMMARY

@@ -21,6 +21,7 @@
 # =============================================================================
 
 name: auto-tag
+run-name: "Auto-tag: ${{ github.event.head_commit.message || 'Manual trigger' }}"
 
 on:
   push:
@@ -79,8 +80,8 @@ jobs:
       cli_tag: ${{ steps.detect.outputs.cli_tag }}
       app_tag: ${{ steps.detect.outputs.app_tag }}
       website_tag: ${{ steps.detect.outputs.website_tag }}
-      pulumi_tags: ${{ steps.detect.outputs.pulumi_tags }}
-      terraform_tags: ${{ steps.detect.outputs.terraform_tags }}
+      pulumi_modules: ${{ steps.detect.outputs.pulumi_modules }}
+      terraform_modules: ${{ steps.detect.outputs.terraform_modules }}
       any_tags_created: ${{ steps.detect.outputs.any_tags_created }}
 
     steps:
@@ -228,7 +229,8 @@ jobs:
           # =================================================================
           # Pulumi Modules Tags
           # =================================================================
-          PULUMI_TAGS=""
+          # Output JSON array with full module info for triggering releases
+          PULUMI_JSON="[]"
 
           if [ "${{ inputs.force_pulumi_all }}" = "true" ]; then
             echo "Pulumi: forced all via manual dispatch"
@@ -263,19 +265,18 @@ jobs:
             git tag -a "${NEXT_TAG}" -m "Auto-tag Pulumi module ${COMPONENT} - ${NEXT_TAG}"
             git push origin "${NEXT_TAG}"
             
-            if [ -n "$PULUMI_TAGS" ]; then
-              PULUMI_TAGS="${PULUMI_TAGS},"
-            fi
-            PULUMI_TAGS="${PULUMI_TAGS}${NEXT_TAG}"
+            # Add to JSON array
+            PULUMI_JSON=$(echo "$PULUMI_JSON" | jq -c --arg tag "$NEXT_TAG" --arg comp "$COMPONENT" --arg prov "$PROVIDER" --arg path "$dir" '. + [{"tag": $tag, "component": $comp, "provider": $prov, "path": $path}]')
             ANY_TAGS_CREATED="true"
           done
 
-          echo "pulumi_tags=${PULUMI_TAGS}" >> $GITHUB_OUTPUT
+          echo "pulumi_modules=${PULUMI_JSON}" >> $GITHUB_OUTPUT
 
           # =================================================================
           # Terraform Modules Tags
           # =================================================================
-          TERRAFORM_TAGS=""
+          # Output JSON array with full module info for triggering releases
+          TERRAFORM_JSON="[]"
 
           if [ "${{ inputs.force_terraform_all }}" = "true" ]; then
             echo "Terraform: forced all via manual dispatch"
@@ -310,14 +311,12 @@ jobs:
             git tag -a "${NEXT_TAG}" -m "Auto-tag Terraform module ${COMPONENT} - ${NEXT_TAG}"
             git push origin "${NEXT_TAG}"
             
-            if [ -n "$TERRAFORM_TAGS" ]; then
-              TERRAFORM_TAGS="${TERRAFORM_TAGS},"
-            fi
-            TERRAFORM_TAGS="${TERRAFORM_TAGS}${NEXT_TAG}"
+            # Add to JSON array
+            TERRAFORM_JSON=$(echo "$TERRAFORM_JSON" | jq -c --arg tag "$NEXT_TAG" --arg comp "$COMPONENT" --arg prov "$PROVIDER" --arg path "$dir" '. + [{"tag": $tag, "component": $comp, "provider": $prov, "path": $path}]')
             ANY_TAGS_CREATED="true"
           done
 
-          echo "terraform_tags=${TERRAFORM_TAGS}" >> $GITHUB_OUTPUT
+          echo "terraform_modules=${TERRAFORM_JSON}" >> $GITHUB_OUTPUT
           echo "any_tags_created=${ANY_TAGS_CREATED}" >> $GITHUB_OUTPUT
 
           # =================================================================
@@ -348,11 +347,11 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'auto-release.yaml',
+              workflow_id: 'auto-release.cli.yaml',
               ref: 'main',
               inputs: { tag: '${{ needs.create-tags.outputs.cli_tag }}' }
             });
-            console.log('Triggered auto-release for CLI: ${{ needs.create-tags.outputs.cli_tag }}');
+            console.log('Triggered auto-release.cli for: ${{ needs.create-tags.outputs.cli_tag }}');
 
       - name: Trigger App release
         if: needs.create-tags.outputs.app_tag != ''
@@ -362,11 +361,11 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'auto-release.yaml',
+              workflow_id: 'auto-release.app.yaml',
               ref: 'main',
               inputs: { tag: '${{ needs.create-tags.outputs.app_tag }}' }
             });
-            console.log('Triggered auto-release for App: ${{ needs.create-tags.outputs.app_tag }}');
+            console.log('Triggered auto-release.app for: ${{ needs.create-tags.outputs.app_tag }}');
 
       - name: Trigger Website release
         if: needs.create-tags.outputs.website_tag != ''
@@ -376,48 +375,54 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'auto-release.yaml',
+              workflow_id: 'auto-release.website.yaml',
               ref: 'main',
               inputs: { tag: '${{ needs.create-tags.outputs.website_tag }}' }
             });
-            console.log('Triggered auto-release for Website: ${{ needs.create-tags.outputs.website_tag }}');
+            console.log('Triggered auto-release.website for: ${{ needs.create-tags.outputs.website_tag }}');
 
       - name: Trigger Pulumi releases
-        if: needs.create-tags.outputs.pulumi_tags != ''
+        if: needs.create-tags.outputs.pulumi_modules != '[]'
         uses: actions/github-script@v7
         with:
           script: |
-            const tags = '${{ needs.create-tags.outputs.pulumi_tags }}'.split(',');
-            for (const tag of tags) {
-              if (tag.trim()) {
-                await github.rest.actions.createWorkflowDispatch({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  workflow_id: 'auto-release.yaml',
-                  ref: 'main',
-                  inputs: { tag: tag.trim() }
-                });
-                console.log('Triggered auto-release for Pulumi: ' + tag.trim());
-              }
+            const modules = JSON.parse('${{ needs.create-tags.outputs.pulumi_modules }}');
+            for (const mod of modules) {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'auto-release.pulumi-modules.yaml',
+                ref: 'main',
+                inputs: {
+                  tag: mod.tag,
+                  component: mod.component,
+                  provider: mod.provider,
+                  path: mod.path
+                }
+              });
+              console.log('Triggered auto-release.pulumi-modules for: ' + mod.component + ' (' + mod.tag + ')');
             }
 
       - name: Trigger Terraform releases
-        if: needs.create-tags.outputs.terraform_tags != ''
+        if: needs.create-tags.outputs.terraform_modules != '[]'
         uses: actions/github-script@v7
         with:
           script: |
-            const tags = '${{ needs.create-tags.outputs.terraform_tags }}'.split(',');
-            for (const tag of tags) {
-              if (tag.trim()) {
-                await github.rest.actions.createWorkflowDispatch({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  workflow_id: 'auto-release.yaml',
-                  ref: 'main',
-                  inputs: { tag: tag.trim() }
-                });
-                console.log('Triggered auto-release for Terraform: ' + tag.trim());
-              }
+            const modules = JSON.parse('${{ needs.create-tags.outputs.terraform_modules }}');
+            for (const mod of modules) {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'auto-release.terraform-modules.yaml',
+                ref: 'main',
+                inputs: {
+                  tag: mod.tag,
+                  component: mod.component,
+                  provider: mod.provider,
+                  path: mod.path
+                }
+              });
+              console.log('Triggered auto-release.terraform-modules for: ' + mod.component + ' (' + mod.tag + ')');
             }
 
   # ===========================================================================
@@ -453,12 +458,14 @@ jobs:
             echo "| Website | \`${{ needs.create-tags.outputs.website_tag }}\` |" >> $GITHUB_STEP_SUMMARY
           fi
 
-          if [ -n "${{ needs.create-tags.outputs.pulumi_tags }}" ]; then
-            echo "| Pulumi | \`${{ needs.create-tags.outputs.pulumi_tags }}\` |" >> $GITHUB_STEP_SUMMARY
+          PULUMI_MODULES='${{ needs.create-tags.outputs.pulumi_modules }}'
+          if [ "$PULUMI_MODULES" != "[]" ] && [ -n "$PULUMI_MODULES" ]; then
+            echo "$PULUMI_MODULES" | jq -r '.[] | "| Pulumi: \(.component) | `\(.tag)` |"' >> $GITHUB_STEP_SUMMARY
           fi
 
-          if [ -n "${{ needs.create-tags.outputs.terraform_tags }}" ]; then
-            echo "| Terraform | \`${{ needs.create-tags.outputs.terraform_tags }}\` |" >> $GITHUB_STEP_SUMMARY
+          TERRAFORM_MODULES='${{ needs.create-tags.outputs.terraform_modules }}'
+          if [ "$TERRAFORM_MODULES" != "[]" ] && [ -n "$TERRAFORM_MODULES" ]; then
+            echo "$TERRAFORM_MODULES" | jq -r '.[] | "| Terraform: \(.component) | `\(.tag)` |"' >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ "${{ needs.create-tags.outputs.any_tags_created }}" != "true" ]; then
@@ -466,6 +473,6 @@ jobs:
             echo "_No tags were created - no relevant changes detected._" >> $GITHUB_STEP_SUMMARY
           else
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Note:** The \`auto-release\` workflow has been triggered for each tag above." >> $GITHUB_STEP_SUMMARY
+            echo "**Note:** Component-specific auto-release workflows have been triggered for each tag above." >> $GITHUB_STEP_SUMMARY
           fi
 
