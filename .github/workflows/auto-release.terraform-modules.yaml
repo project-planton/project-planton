@@ -1,19 +1,21 @@
 # =============================================================================
 # Terraform Modules Auto-Release (Reusable Workflow)
 # =============================================================================
-# Creates git tags for Terraform module changes. Unlike Pulumi modules, no
-# binary is built - users reference Terraform modules via git source.
+# Creates GitHub releases for Terraform module changes with zipped module
+# contents attached as artifacts.
 #
 # Tag Format (semver build metadata): v{semver}+terraform.{component}.{YYYYMMDD}.{N}
 # Example: v0.3.1+terraform.awsecsservice.20260107.1
 #
-# Usage in Terraform:
-#   module "ecs" {
-#     source = "git::https://github.com/plantonhq/project-planton.git//apis/.../iac/tf?ref=v0.3.1+terraform.awsecsservice.20260107.1"
-#   }
+# Artifacts:
+#   - terraform-{component}.zip - zipped contents of the module's tf/ folder
+#
+# Usage Options:
+#   1. Download zip from release (recommended - fastest)
+#   2. Reference via git source (legacy)
 #
 # Called by: .github/workflows/auto-release.yaml
-# Note: Tags are created by auto-tag.yaml, this workflow only creates releases
+# Note: Tags are created by auto-tag.yaml, this workflow creates releases and uploads zips
 # =============================================================================
 
 name: auto-release.terraform-modules
@@ -41,6 +43,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Zip Terraform module
+        run: |
+          COMPONENT="${{ matrix.component }}"
+          MODULE_PATH="${{ matrix.path }}"
+          ARTIFACT_NAME="terraform-${COMPONENT}.zip"
+          
+          echo "========================================"
+          echo "ZIPPING: ${COMPONENT}"
+          echo "Path: ${MODULE_PATH}"
+          echo "========================================"
+          
+          # Create zip from the tf directory contents
+          (cd "${MODULE_PATH}" && zip -r "${GITHUB_WORKSPACE}/${ARTIFACT_NAME}" .)
+          
+          ZIP_SIZE=$(ls -lh "${ARTIFACT_NAME}" | awk '{print $5}')
+          echo "Created: ${ARTIFACT_NAME} (${ZIP_SIZE})"
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,6 +68,7 @@ jobs:
           COMPONENT="${{ matrix.component }}"
           PROVIDER="${{ matrix.provider }}"
           MODULE_PATH="${{ matrix.path }}"
+          ARTIFACT_NAME="terraform-${COMPONENT}.zip"
 
           cat > release-notes.md << 'EOF'
           ## Terraform Module Auto-Release
@@ -59,14 +79,34 @@ jobs:
 
           ## Module Info
 
-          - **Component:** COMPONENT_PLACEHOLDER
-          - **Provider:** PROVIDER_PLACEHOLDER
-          - **Tag:** `TAG_PLACEHOLDER`
-          - **Commit:** COMMIT_PLACEHOLDER
+          | Field | Value |
+          |-------|-------|
+          | Component | COMPONENT_PLACEHOLDER |
+          | Provider | PROVIDER_PLACEHOLDER |
+          | Tag | `TAG_PLACEHOLDER` |
+          | Commit | COMMIT_PLACEHOLDER |
 
           ---
 
-          ## Option 1: Reference via Git Source (Recommended)
+          ## Option 1: Download Zip (Recommended)
+
+          Download the pre-packaged module:
+
+          ```bash
+          # Download and extract
+          curl -LO https://github.com/plantonhq/project-planton/releases/download/TAG_PLACEHOLDER/terraform-COMPONENT_PLACEHOLDER.zip
+          unzip terraform-COMPONENT_PLACEHOLDER.zip -d COMPONENT_PLACEHOLDER
+          cd COMPONENT_PLACEHOLDER
+
+          # Initialize and apply
+          terraform init
+          terraform plan
+          terraform apply
+          ```
+
+          ---
+
+          ## Option 2: Reference via Git Source
 
           Add this module directly to your Terraform configuration:
 
@@ -80,26 +120,11 @@ jobs:
 
           ---
 
-          ## Option 2: Clone and Checkout
+          ## Available Artifacts
 
-          Clone the repository and checkout this specific tag:
-
-          ```bash
-          # Clone the repository
-          git clone https://github.com/plantonhq/project-planton.git
-          cd project-planton
-
-          # Checkout this release tag
-          git checkout TAG_PLACEHOLDER
-
-          # Navigate to the Terraform module
-          cd PATH_PLACEHOLDER
-
-          # Initialize and apply
-          terraform init
-          terraform plan
-          terraform apply
-          ```
+          | Artifact | Description |
+          |----------|-------------|
+          | `terraform-COMPONENT_PLACEHOLDER.zip` | Complete Terraform module |
 
           ---
 
@@ -126,6 +151,17 @@ jobs:
               --notes-file release-notes.md
           fi
 
+      - name: Upload zip to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ matrix.tag }}"
+          COMPONENT="${{ matrix.component }}"
+          ARTIFACT_NAME="terraform-${COMPONENT}.zip"
+          
+          gh release upload "${TAG}" "${ARTIFACT_NAME}" --clobber
+          echo "✓ Uploaded: ${ARTIFACT_NAME}"
+
           echo ""
           echo "========================================"
           echo "RELEASE COMPLETE: ${COMPONENT}"
@@ -144,16 +180,23 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Released Modules" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Provider | Component | Tag |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|-----------|-----|" >> $GITHUB_STEP_SUMMARY
+          echo "| Provider | Component | Tag | Artifact |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-----------|-----|----------|" >> $GITHUB_STEP_SUMMARY
 
           MATRIX='${{ inputs.matrix }}'
-          echo "$MATRIX" | jq -r '.include[] | "| \(.provider) | \(.component) | `\(.tag)` |"' >> $GITHUB_STEP_SUMMARY
+          echo "$MATRIX" | jq -r '.include[] | "| \(.provider) | \(.component) | `\(.tag)` | `terraform-\(.component).zip` |"' >> $GITHUB_STEP_SUMMARY
 
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Usage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Reference modules via git source:" >> $GITHUB_STEP_SUMMARY
+          echo "**Option 1: Download zip (recommended)**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "curl -LO https://github.com/${{ github.repository }}/releases/download/{tag}/terraform-{component}.zip" >> $GITHUB_STEP_SUMMARY
+          echo "unzip terraform-{component}.zip -d {component}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Option 2: Reference via git source**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`hcl" >> $GITHUB_STEP_SUMMARY
           echo "module \"example\" {" >> $GITHUB_STEP_SUMMARY
