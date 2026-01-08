@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
 	"github.com/plantonhq/project-planton/internal/manifest"
@@ -30,7 +31,8 @@ func Init(moduleDir, stackFqdn, targetManifestPath string, valueOverrides map[st
 	finalStackFqdn := stackFqdn
 	if manifestBackendConfig, err := backendconfig.ExtractFromManifest(manifestObject); err == nil && manifestBackendConfig != nil {
 		if manifestBackendConfig.StackFqdn != "" {
-			fmt.Printf("Using Pulumi stack from manifest labels: %s\n\n", manifestBackendConfig.StackFqdn)
+			cyan := color.New(color.FgCyan).SprintFunc()
+			fmt.Printf("\nDetected Stack from Labels: %s\n\n", cyan(manifestBackendConfig.StackFqdn))
 			finalStackFqdn = manifestBackendConfig.StackFqdn
 		}
 	}

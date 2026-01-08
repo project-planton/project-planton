@@ -158,18 +158,18 @@ func EnsureBinary(componentName, releaseVersion string) (string, error) {
 	}
 
 	if cached {
-		cliprint.PrintSuccess(fmt.Sprintf("Using cached binary: %s", filepath.Base(binaryPath)))
+		cliprint.PrintSuccess(fmt.Sprintf("Using cached module: %s", componentName))
 		return binaryPath, nil
 	}
 
 	// Download the binary
-	cliprint.PrintStep(fmt.Sprintf("Downloading Pulumi binary for %s...", componentName))
+	cliprint.PrintStep(fmt.Sprintf("Downloading Pulumi module: %s...", componentName))
 
 	if err := DownloadBinary(componentName, releaseVersion); err != nil {
 		return "", errors.Wrapf(err, "failed to download binary for %s", componentName)
 	}
 
-	cliprint.PrintSuccess(fmt.Sprintf("Binary downloaded: %s", filepath.Base(binaryPath)))
+	cliprint.PrintSuccess(fmt.Sprintf("Module downloaded: %s", componentName))
 	return binaryPath, nil
 }
 

@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/iac/pulumi"
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
@@ -14,6 +15,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	log "github.com/sirupsen/logrus"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
@@ -34,7 +36,8 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	finalStackFqdn := stackFqdn
 	if manifestBackendConfig, err := backendconfig.ExtractFromManifest(manifestObject); err == nil && manifestBackendConfig != nil {
 		if manifestBackendConfig.StackFqdn != "" {
-			fmt.Printf("Using Pulumi stack from manifest labels: %s\n\n", manifestBackendConfig.StackFqdn)
+			cyan := color.New(color.FgCyan).SprintFunc()
+			fmt.Printf("\nDetected Stack from Labels: %s\n\n", cyan(manifestBackendConfig.StackFqdn))
 			finalStackFqdn = manifestBackendConfig.StackFqdn
 		}
 	}
@@ -122,15 +125,15 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	pulumiCmd.Stdout = os.Stdout
 	pulumiCmd.Stderr = os.Stderr
 
-	// Print execution mode and directory info
-	fmt.Println()
+	// Log execution mode and directory info (debug level only)
 	if pathResult.UseBinary {
-		fmt.Printf("execution mode: binary (no compilation)\n")
-		fmt.Printf("binary path: %s\n", pathResult.BinaryPath)
+		log.Debugf("execution mode: binary (no compilation)")
+		log.Debugf("binary path: %s", pathResult.BinaryPath)
 	} else {
-		fmt.Printf("execution mode: source (compilation required)\n")
+		log.Debugf("execution mode: source (compilation required)")
 	}
-	fmt.Printf("workspace directory: %s\n", pulumiModuleRepoPath)
+	log.Debugf("workspace directory: %s", pulumiModuleRepoPath)
+	fmt.Println()
 
 	// Print handoff message after all setup is complete
 	cliprint.PrintHandoff("Pulumi")

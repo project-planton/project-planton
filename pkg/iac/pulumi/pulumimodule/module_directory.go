@@ -71,7 +71,7 @@ func GetPath(moduleDir string, stackFqdn, kindName string, moduleVersion string,
 			return result, nil
 		}
 		// Log warning and fall through to legacy approach
-		cliprint.PrintInfo(fmt.Sprintf("Binary download not available, falling back to source: %v", err))
+		cliprint.PrintWarning(fmt.Sprintf("Binary download not available, falling back to source: %v", err))
 	}
 
 	// Fall back to staging/clone approach
@@ -84,7 +84,7 @@ func GetPath(moduleDir string, stackFqdn, kindName string, moduleVersion string,
 // - Module version like "v0.3.1-pulumi-awsecsservice-20260107.01" (downloads from component-specific release)
 // Returns an error if binary is not available or download fails.
 func tryBinaryApproach(stackFqdn, kindName, releaseVersion string, noCleanup bool) (*GetPathResult, error) {
-	cliprint.PrintStep(fmt.Sprintf("Checking for pre-built binary (version: %s)...", releaseVersion))
+	cliprint.PrintStep(fmt.Sprintf("Checking for Pulumi module: %s (%s)...", kindName, releaseVersion))
 
 	// Ensure binary is downloaded and cached
 	binaryPath, err := pulumibinary.EnsureBinary(kindName, releaseVersion)
@@ -93,13 +93,13 @@ func tryBinaryApproach(stackFqdn, kindName, releaseVersion string, noCleanup boo
 	}
 
 	// Setup workspace with Pulumi.yaml pointing to the binary
-	cliprint.PrintStep("Setting up binary workspace...")
+	cliprint.PrintStep("Setting up module workspace...")
 	workspaceResult, err := pulumibinary.SetupBinaryWorkspace(binaryPath, stackFqdn, kindName)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to setup binary workspace")
 	}
 
-	cliprint.PrintSuccess("Binary workspace ready (no compilation needed)")
+	cliprint.PrintSuccess("Module workspace ready")
 
 	return &GetPathResult{
 		ModulePath:    workspaceResult.WorkspacePath,
