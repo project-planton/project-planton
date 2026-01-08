@@ -6,10 +6,12 @@
 #
 # Features:
 #   - Dynamic component discovery from directory structure
-#   - One job per provider with sequential component builds
-#   - Concurrency control: max-parallel 2 (default), 1 for GCP/Cloudflare
-#   - Clear progress logging with completed/remaining counts
+#   - Matrix-based parallelization: provider × platform (44 parallel jobs)
+#   - Multi-platform builds: linux_amd64, darwin_arm64, darwin_amd64, windows_amd64
+#   - Clear progress logging with component counts
 #   - No hardcoded component paths - auto-discovers from filesystem
+#
+# Matrix: 11 providers × 4 platforms = 44 parallel jobs
 #
 # Path pattern: apis/org/project_planton/provider/{provider}/{component}/v1/iac/pulumi
 #
@@ -30,38 +32,36 @@ env:
 
 jobs:
   # ============================================================================
-  # Build all components for each provider
+  # Build all components for each provider × platform combination
   # ============================================================================
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 10
+      max-parallel: 44
       matrix:
-        include:
-          - provider: atlas
-            max_parallel: 2
-          - provider: auth0
-            max_parallel: 2
-          - provider: aws
-            max_parallel: 2
-          - provider: azure
-            max_parallel: 2
-          - provider: civo
-            max_parallel: 2
-          - provider: cloudflare
-            max_parallel: 1
-          - provider: confluent
-            max_parallel: 2
-          - provider: digitalocean
-            max_parallel: 2
-          - provider: gcp
-            max_parallel: 2
-          - provider: kubernetes
-            max_parallel: 1
-          - provider: snowflake
-            max_parallel: 2
+        provider:
+          - atlas
+          - auth0
+          - aws
+          - azure
+          - civo
+          - cloudflare
+          - confluent
+          - digitalocean
+          - gcp
+          - kubernetes
+          - snowflake
+        platform:
+          - goos: linux
+            goarch: amd64
+          - goos: darwin
+            goarch: arm64
+          - goos: darwin
+            goarch: amd64
+          - goos: windows
+            goarch: amd64
 
     steps:
       - name: Checkout
@@ -77,10 +77,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROVIDER: ${{ matrix.provider }}
-          MAX_PARALLEL: ${{ matrix.max_parallel }}
+          GOOS: ${{ matrix.platform.goos }}
+          GOARCH: ${{ matrix.platform.goarch }}
         run: |
           TAG="${GITHUB_REF#refs/tags/}"
           PROVIDER_PATH="${PROVIDER_BASE_PATH}/${PROVIDER}"
+          PLATFORM_LABEL="${GOOS}_${GOARCH}"
           
           # Discover all components by listing directories
           if [ ! -d "$PROVIDER_PATH" ]; then
@@ -102,11 +104,11 @@ jobs:
           
           echo "========================================"
           echo "PROVIDER: ${PROVIDER}"
-          echo "TOTAL COMPONENTS FOUND: ${TOTAL}"
-          echo "MAX PARALLEL: ${MAX_PARALLEL}"
+          echo "PLATFORM: ${PLATFORM_LABEL}"
+          echo "COMPONENTS: ${TOTAL}"
           echo "========================================"
           echo ""
-          echo "Components to build:"
+          echo "Components:"
           printf '  - %s\n' "${COMPONENTS[@]}"
           echo ""
           echo "========================================"
@@ -123,51 +125,52 @@ jobs:
             COMPLETED=$((COMPLETED + 1))
             REMAINING=$((TOTAL - COMPLETED))
             
-            BINARY_NAME="pulumi-${component}"
             COMPONENT_PATH="${PROVIDER_PATH}/${component}/v1/iac/pulumi"
             
+            # Handle Windows .exe extension
+            if [ "$GOOS" = "windows" ]; then
+              BINARY_NAME="pulumi-${component}.exe"
+              ARTIFACT_NAME="pulumi-${component}_${PLATFORM_LABEL}.exe.gz"
+            else
+              BINARY_NAME="pulumi-${component}"
+              ARTIFACT_NAME="pulumi-${component}_${PLATFORM_LABEL}.gz"
+            fi
+            
             echo ""
-            echo "========================================"
-            echo "BUILDING: ${component}"
+            echo "----------------------------------------"
+            echo "BUILDING: ${component} (${PLATFORM_LABEL})"
             echo "Progress: ${COMPLETED}/${TOTAL} (${REMAINING} remaining)"
-            echo "Provider: ${PROVIDER}"
-            echo "Path: ${COMPONENT_PATH}"
-            echo "========================================"
+            echo "----------------------------------------"
             
             # Build
-            if CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            if CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" go build \
               -ldflags="-s -w" \
               -o "${BINARY_NAME}" \
               "./${COMPONENT_PATH}"; then
               
               # Compress
-              echo "Compressing ${BINARY_NAME}..."
-              gzip -9 "${BINARY_NAME}"
+              gzip -9 -c "${BINARY_NAME}" > "${ARTIFACT_NAME}"
+              rm -f "${BINARY_NAME}"
               
-              # Upload
-              echo "Uploading ${BINARY_NAME}.gz to release ${TAG}..."
-              if gh release upload "${TAG}" "${BINARY_NAME}.gz" --clobber; then
-                echo ""
-                echo "========================================"
-                echo "COMPLETED: ${component} (${PROVIDER})"
-                echo "Progress: ${COMPLETED}/${TOTAL} completed, ${REMAINING} remaining"
-                echo "========================================"
+              # Upload immediately
+              if gh release upload "${TAG}" "${ARTIFACT_NAME}" --clobber; then
+                echo "✓ Uploaded: ${ARTIFACT_NAME}"
               else
-                echo "ERROR: Failed to upload ${BINARY_NAME}.gz"
+                echo "✗ ERROR: Failed to upload ${ARTIFACT_NAME}"
                 FAILED=$((FAILED + 1))
               fi
               
               # Clean up
-              rm -f "${BINARY_NAME}.gz"
+              rm -f "${ARTIFACT_NAME}"
             else
-              echo "ERROR: Failed to build ${component}"
+              echo "✗ ERROR: Failed to build ${component} for ${PLATFORM_LABEL}"
               FAILED=$((FAILED + 1))
             fi
           done
           
           echo ""
           echo "========================================"
-          echo "PROVIDER SUMMARY: ${PROVIDER}"
+          echo "JOB SUMMARY: ${PROVIDER} / ${PLATFORM_LABEL}"
           echo "========================================"
           echo "Total components: ${TOTAL}"
           echo "Successfully built: $((TOTAL - FAILED))"
