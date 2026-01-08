@@ -35,6 +35,12 @@ func PrintInfo(msg string) {
 	fmt.Printf("%s %s\n", Package, msg)
 }
 
+// PrintWarning prints a warning message with a yellow warning sign
+func PrintWarning(msg string) {
+	yellow := color.New(color.FgYellow).SprintFunc()
+	fmt.Printf("%s %s\n", Warning, yellow(msg))
+}
+
 // PrintHandoff prints a handoff message when transitioning to external tools
 func PrintHandoff(tool string) {
 	cyan := color.New(color.FgCyan, color.Bold).SprintFunc()

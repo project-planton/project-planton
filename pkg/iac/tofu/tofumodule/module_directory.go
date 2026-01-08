@@ -14,6 +14,7 @@ import (
 	"github.com/plantonhq/project-planton/internal/cli/workspace"
 	"github.com/plantonhq/project-planton/pkg/crkreflect"
 	"github.com/plantonhq/project-planton/pkg/fileutil"
+	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofuzip"
 )
 
 // GetModulePathResult contains the module path and a cleanup function
@@ -26,8 +27,9 @@ type GetModulePathResult struct {
 
 // GetModulePath returns the path to the Terraform/OpenTofu module directory.
 // If moduleDir is provided and is a valid Terraform module directory, it returns that.
-// Otherwise, it ensures the staging area is set up and copies it to the tofu workspace.
-// If moduleVersion is provided, it checks out that version (tag, branch, or commit SHA) in the workspace copy.
+// Otherwise, it tries to download the module zip from GitHub releases (fast path).
+// If zip download fails or is unavailable, it falls back to the staging area (clone repo).
+// If moduleVersion is provided, it uses that version for the download/checkout.
 // The returned GetModulePathResult includes a cleanup function that should be called after execution
 // unless noCleanup is true.
 func GetModulePath(moduleDir, kindName, moduleVersion string, noCleanup bool) (*GetModulePathResult, error) {
@@ -50,6 +52,63 @@ func GetModulePath(moduleDir, kindName, moduleVersion string, noCleanup bool) (*
 		}
 	}
 
+	// Determine target version - use moduleVersion if provided, otherwise CLI version
+	targetVersion := moduleVersion
+	if targetVersion == "" && version.Version != "" && version.Version != version.DefaultVersion {
+		targetVersion = version.Version
+	}
+
+	// Try zip download mode first (fast path)
+	// Only available for released versions, not dev builds
+	if targetVersion != "" && tofuzip.CanUseZipMode() {
+		result, err := tryZipDownload(kindName, targetVersion)
+		if err != nil {
+			// Log warning and fall back to staging
+			cliprint.PrintWarning(fmt.Sprintf("Zip download failed, falling back to staging: %v", err))
+		} else if result != nil {
+			return result, nil
+		}
+	}
+
+	// Fall back to staging mode (clone repo)
+	return getModulePathFromStaging(kindName, moduleVersion, noCleanup)
+}
+
+// tryZipDownload attempts to download the Terraform module zip from GitHub releases.
+// Returns nil, nil if zip mode is not available (indicating fallback should be used).
+// Returns result, nil on success.
+// Returns nil, error on failure (indicating fallback should be used with a warning).
+func tryZipDownload(kindName, releaseVersion string) (*GetModulePathResult, error) {
+	cliprint.PrintStep(fmt.Sprintf("Downloading Terraform module for %s...", kindName))
+
+	// Ensure module is downloaded/cached
+	modulePath, err := tofuzip.EnsureModule(kindName, releaseVersion)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to download module zip for %s", kindName)
+	}
+
+	// Verify the module path has .tf files
+	isTerraformModuleDir, err := isTerraformModuleDirectory(modulePath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to verify downloaded module at %s", modulePath)
+	}
+
+	if !isTerraformModuleDir {
+		return nil, errors.Errorf("downloaded module at %s does not contain .tf files", modulePath)
+	}
+
+	// Zip mode doesn't need cleanup (cached for future use)
+	return &GetModulePathResult{
+		ModulePath:    modulePath,
+		RepoPath:      modulePath,
+		CleanupFunc:   func() error { return nil },
+		ShouldCleanup: false,
+	}, nil
+}
+
+// getModulePathFromStaging is the fallback path that clones the repo to staging.
+// This is used when zip download is not available or fails.
+func getModulePathFromStaging(kindName, moduleVersion string, noCleanup bool) (*GetModulePathResult, error) {
 	// Get the tofu workspace directory
 	tofuModuleWorkspaceDir, err := getWorkspaceDir()
 	if err != nil {

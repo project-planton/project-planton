@@ -27,6 +27,7 @@ go_library(
         "//pkg/iac/tofu/tfbackend",
         "//pkg/iac/tofu/tfvars",
         "//pkg/iac/tofu/tofumodule/providerconfig",
+        "//pkg/iac/tofu/tofuzip",
         "@com_github_pkg_errors//:errors",
         "@com_github_sirupsen_logrus//:logrus",
         "@in_gopkg_yaml_v3//:yaml_v3",
