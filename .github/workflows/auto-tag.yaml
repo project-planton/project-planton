@@ -7,12 +7,12 @@
 # This workflow only CREATES TAGS - it does NOT build or release anything.
 # The actual release is handled by auto-release.yaml which triggers on tag push.
 #
-# Tag Formats (semver build metadata):
-#   - CLI: v{semver}+cli.{YYYYMMDD}.{N}
-#   - App: v{semver}+app.{YYYYMMDD}.{N}
-#   - Website: v{semver}+website.{YYYYMMDD}.{N}
-#   - Pulumi: v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
-#   - Terraform: v{semver}+terraform.{component}.{YYYYMMDD}.{N}
+# Tag Formats (semver pre-release style):
+#   - CLI: v{semver}-cli.{YYYYMMDD}.{N}
+#   - App: v{semver}-app.{YYYYMMDD}.{N}
+#   - Website: v{semver}-website.{YYYYMMDD}.{N}
+#   - Pulumi: v{semver}-pulumi.{component}.{YYYYMMDD}.{N}
+#   - Terraform: v{semver}-terraform.{component}.{YYYYMMDD}.{N}
 #
 # Trigger: Push to main with changes in monitored paths
 # =============================================================================
@@ -134,7 +134,7 @@ jobs:
           fi
 
           if [ "$CLI_CHANGED" = "true" ]; then
-            CLI_PREFIX="${LATEST_SEMVER}+cli.${TODAY}"
+            CLI_PREFIX="${LATEST_SEMVER}-cli.${TODAY}"
             CLI_LATEST=$(git tag -l "${CLI_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$CLI_LATEST" ]; then
               CLI_SEQ=0
@@ -164,7 +164,7 @@ jobs:
           fi
 
           if [ "$APP_CHANGED" = "true" ]; then
-            APP_PREFIX="${LATEST_SEMVER}+app.${TODAY}"
+            APP_PREFIX="${LATEST_SEMVER}-app.${TODAY}"
             APP_LATEST=$(git tag -l "${APP_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$APP_LATEST" ]; then
               APP_SEQ=0
@@ -194,7 +194,7 @@ jobs:
           fi
 
           if [ "$WEBSITE_CHANGED" = "true" ]; then
-            WEBSITE_PREFIX="${LATEST_SEMVER}+website.${TODAY}"
+            WEBSITE_PREFIX="${LATEST_SEMVER}-website.${TODAY}"
             WEBSITE_LATEST=$(git tag -l "${WEBSITE_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$WEBSITE_LATEST" ]; then
               WEBSITE_SEQ=0
@@ -235,7 +235,7 @@ jobs:
               continue
             fi
 
-            TAG_PREFIX="${LATEST_SEMVER}+pulumi.${COMPONENT}.${TODAY}"
+            TAG_PREFIX="${LATEST_SEMVER}-pulumi.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0
@@ -282,7 +282,7 @@ jobs:
               continue
             fi
 
-            TAG_PREFIX="${LATEST_SEMVER}+terraform.${COMPONENT}.${TODAY}"
+            TAG_PREFIX="${LATEST_SEMVER}-terraform.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0

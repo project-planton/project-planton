@@ -8,11 +8,11 @@
 # Tags are created by auto-tag.yaml which triggers this workflow.
 #
 # Tag Patterns:
-#   - v*+cli.*         -> CLI release (GoReleaser)
-#   - v*+app.*         -> App release (Docker)
-#   - v*+website.*     -> Website release (GitHub Pages)
-#   - v*+pulumi.*      -> Pulumi module release (binary)
-#   - v*+terraform.*   -> Terraform module release (tag-only)
+#   - v*-cli.*         -> CLI release (GoReleaser)
+#   - v*-app.*         -> App release (Docker)
+#   - v*-website.*     -> Website release (GitHub Pages)
+#   - v*-pulumi.*      -> Pulumi module release (binary)
+#   - v*-terraform.*   -> Terraform module release (tag-only)
 #
 # Trigger: Tag push matching auto-release patterns
 # =============================================================================
@@ -22,11 +22,11 @@ name: auto-release
 on:
   push:
     tags:
-      - 'v*+cli.*'
-      - 'v*+app.*'
-      - 'v*+website.*'
-      - 'v*+pulumi.*'
-      - 'v*+terraform.*'
+      - 'v*-cli.*'
+      - 'v*-app.*'
+      - 'v*-website.*'
+      - 'v*-pulumi.*'
+      - 'v*-terraform.*'
 
 permissions:
   contents: write
@@ -56,15 +56,15 @@ jobs:
           echo "Processing tag: ${TAG}"
 
           # Extract component type from tag
-          # Format: v{semver}+{component}.{details}
-          COMPONENT=$(echo "${TAG}" | sed 's/v[0-9]*\.[0-9]*\.[0-9]*+\([^.]*\)\..*/\1/')
+          # Format: v{semver}-{component}.{details}
+          COMPONENT=$(echo "${TAG}" | sed 's/v[0-9]*\.[0-9]*\.[0-9]*-\([^.]*\)\..*/\1/')
           echo "component=${COMPONENT}" >> $GITHUB_OUTPUT
           echo "Component type: ${COMPONENT}"
 
           # For Pulumi and Terraform, extract module name
           if [ "$COMPONENT" = "pulumi" ] || [ "$COMPONENT" = "terraform" ]; then
-            # Format: v{semver}+{type}.{module_name}.{date}.{seq}
-            MODULE_NAME=$(echo "${TAG}" | sed 's/v[0-9]*\.[0-9]*\.[0-9]*+[^.]*\.\([^.]*\)\..*/\1/')
+            # Format: v{semver}-{type}.{module_name}.{date}.{seq}
+            MODULE_NAME=$(echo "${TAG}" | sed 's/v[0-9]*\.[0-9]*\.[0-9]*-[^.]*\.\([^.]*\)\..*/\1/')
             echo "module_name=${MODULE_NAME}" >> $GITHUB_OUTPUT
             echo "Module name: ${MODULE_NAME}"
           fi
