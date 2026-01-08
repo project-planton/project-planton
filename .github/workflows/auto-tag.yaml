@@ -1,0 +1,367 @@
+# =============================================================================
+# Auto-Tag Creator
+# =============================================================================
+# Detects changes in monitored paths and creates appropriate tags. Tags are
+# then pushed to trigger the auto-release.yaml workflow.
+#
+# This workflow only CREATES TAGS - it does NOT build or release anything.
+# The actual release is handled by auto-release.yaml which triggers on tag push.
+#
+# Tag Formats (semver build metadata):
+#   - CLI: v{semver}+cli.{YYYYMMDD}.{N}
+#   - App: v{semver}+app.{YYYYMMDD}.{N}
+#   - Website: v{semver}+website.{YYYYMMDD}.{N}
+#   - Pulumi: v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
+#   - Terraform: v{semver}+terraform.{component}.{YYYYMMDD}.{N}
+#
+# Trigger: Push to main with changes in monitored paths
+# =============================================================================
+
+name: auto-tag
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cmd/**'
+      - 'internal/**'
+      - 'pkg/**'
+      - 'app/**'
+      - 'site/**'
+      - 'apis/**/iac/pulumi/**'
+      - 'apis/**/iac/tf/**'
+      - 'main.go'
+      - 'go.mod'
+      - 'go.sum'
+
+  workflow_dispatch:
+    inputs:
+      force_cli:
+        description: 'Force CLI tag'
+        required: false
+        type: boolean
+        default: false
+      force_app:
+        description: 'Force App tag'
+        required: false
+        type: boolean
+        default: false
+      force_website:
+        description: 'Force Website tag'
+        required: false
+        type: boolean
+        default: false
+      force_pulumi_all:
+        description: 'Force all Pulumi modules tags'
+        required: false
+        type: boolean
+        default: false
+      force_terraform_all:
+        description: 'Force all Terraform modules tags'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  # ===========================================================================
+  # Detect Changes and Create Tags
+  # ===========================================================================
+  create-tags:
+    runs-on: ubuntu-latest
+    outputs:
+      cli_tag: ${{ steps.detect.outputs.cli_tag }}
+      app_tag: ${{ steps.detect.outputs.app_tag }}
+      website_tag: ${{ steps.detect.outputs.website_tag }}
+      pulumi_tags: ${{ steps.detect.outputs.pulumi_tags }}
+      terraform_tags: ${{ steps.detect.outputs.terraform_tags }}
+      any_tags_created: ${{ steps.detect.outputs.any_tags_created }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes and create tags
+        id: detect
+        run: |
+          set -e
+
+          TODAY=$(date +%Y%m%d)
+          ANY_TAGS_CREATED="false"
+
+          # Configure git for tagging
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # =================================================================
+          # Get latest semantic version (v*.*.* only, no auto-release tags)
+          # =================================================================
+          LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          if [ -z "$LATEST_SEMVER" ]; then
+            LATEST_SEMVER="v0.0.0"
+            echo "No semantic version tags found, using default: ${LATEST_SEMVER}"
+          else
+            echo "Latest semantic version: ${LATEST_SEMVER}"
+          fi
+
+          # =================================================================
+          # Get changed files
+          # =================================================================
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual dispatch - using force flags"
+            CHANGED_FILES=""
+          else
+            echo "Detecting changes between ${{ github.event.before }} and ${{ github.sha }}"
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || git diff --name-only HEAD~1 HEAD)
+            echo "Changed files:"
+            echo "$CHANGED_FILES"
+          fi
+
+          # =================================================================
+          # CLI Tag
+          # =================================================================
+          CLI_CHANGED="false"
+          if [ "${{ inputs.force_cli }}" = "true" ]; then
+            CLI_CHANGED="true"
+            echo "CLI: forced via manual dispatch"
+          elif echo "$CHANGED_FILES" | grep -qE '^(cmd/|internal/|pkg/|main\.go|go\.mod|go\.sum)'; then
+            CLI_CHANGED="true"
+            echo "CLI: changes detected"
+          fi
+
+          if [ "$CLI_CHANGED" = "true" ]; then
+            CLI_PREFIX="${LATEST_SEMVER}+cli.${TODAY}"
+            CLI_LATEST=$(git tag -l "${CLI_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
+            if [ -z "$CLI_LATEST" ]; then
+              CLI_SEQ=0
+            else
+              CLI_SEQ=$(echo "$CLI_LATEST" | sed "s/${CLI_PREFIX}\.//")
+              CLI_SEQ=$((CLI_SEQ + 1))
+            fi
+            CLI_TAG="${CLI_PREFIX}.${CLI_SEQ}"
+            
+            echo "Creating CLI tag: ${CLI_TAG}"
+            git tag -a "${CLI_TAG}" -m "Auto-tag CLI ${CLI_TAG}"
+            git push origin "${CLI_TAG}"
+            echo "cli_tag=${CLI_TAG}" >> $GITHUB_OUTPUT
+            ANY_TAGS_CREATED="true"
+          fi
+
+          # =================================================================
+          # App Tag
+          # =================================================================
+          APP_CHANGED="false"
+          if [ "${{ inputs.force_app }}" = "true" ]; then
+            APP_CHANGED="true"
+            echo "App: forced via manual dispatch"
+          elif echo "$CHANGED_FILES" | grep -qE '^app/'; then
+            APP_CHANGED="true"
+            echo "App: changes detected"
+          fi
+
+          if [ "$APP_CHANGED" = "true" ]; then
+            APP_PREFIX="${LATEST_SEMVER}+app.${TODAY}"
+            APP_LATEST=$(git tag -l "${APP_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
+            if [ -z "$APP_LATEST" ]; then
+              APP_SEQ=0
+            else
+              APP_SEQ=$(echo "$APP_LATEST" | sed "s/${APP_PREFIX}\.//")
+              APP_SEQ=$((APP_SEQ + 1))
+            fi
+            APP_TAG="${APP_PREFIX}.${APP_SEQ}"
+            
+            echo "Creating App tag: ${APP_TAG}"
+            git tag -a "${APP_TAG}" -m "Auto-tag App ${APP_TAG}"
+            git push origin "${APP_TAG}"
+            echo "app_tag=${APP_TAG}" >> $GITHUB_OUTPUT
+            ANY_TAGS_CREATED="true"
+          fi
+
+          # =================================================================
+          # Website Tag
+          # =================================================================
+          WEBSITE_CHANGED="false"
+          if [ "${{ inputs.force_website }}" = "true" ]; then
+            WEBSITE_CHANGED="true"
+            echo "Website: forced via manual dispatch"
+          elif echo "$CHANGED_FILES" | grep -qE '^site/'; then
+            WEBSITE_CHANGED="true"
+            echo "Website: changes detected"
+          fi
+
+          if [ "$WEBSITE_CHANGED" = "true" ]; then
+            WEBSITE_PREFIX="${LATEST_SEMVER}+website.${TODAY}"
+            WEBSITE_LATEST=$(git tag -l "${WEBSITE_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
+            if [ -z "$WEBSITE_LATEST" ]; then
+              WEBSITE_SEQ=0
+            else
+              WEBSITE_SEQ=$(echo "$WEBSITE_LATEST" | sed "s/${WEBSITE_PREFIX}\.//")
+              WEBSITE_SEQ=$((WEBSITE_SEQ + 1))
+            fi
+            WEBSITE_TAG="${WEBSITE_PREFIX}.${WEBSITE_SEQ}"
+            
+            echo "Creating Website tag: ${WEBSITE_TAG}"
+            git tag -a "${WEBSITE_TAG}" -m "Auto-tag Website ${WEBSITE_TAG}"
+            git push origin "${WEBSITE_TAG}"
+            echo "website_tag=${WEBSITE_TAG}" >> $GITHUB_OUTPUT
+            ANY_TAGS_CREATED="true"
+          fi
+
+          # =================================================================
+          # Pulumi Modules Tags
+          # =================================================================
+          PULUMI_TAGS=""
+
+          if [ "${{ inputs.force_pulumi_all }}" = "true" ]; then
+            echo "Pulumi: forced all via manual dispatch"
+            PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/iac/pulumi" 2>/dev/null | sort)
+          else
+            PULUMI_DIRS=$(echo "$CHANGED_FILES" | \
+              grep -E '^apis/org/project_planton/provider/[^/]+/[^/]+/v[0-9]+/iac/pulumi/' | \
+              sed 's|\(apis/org/project_planton/provider/[^/]*/[^/]*/v[0-9]*/iac/pulumi\)/.*|\1|' | \
+              sort -u)
+          fi
+
+          for dir in $PULUMI_DIRS; do
+            PROVIDER=$(echo "$dir" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
+            COMPONENT=$(echo "$dir" | sed 's|apis/org/project_planton/provider/[^/]*/\([^/]*\)/.*|\1|')
+
+            # Skip test providers
+            if [ "$PROVIDER" = "_test" ]; then
+              continue
+            fi
+
+            TAG_PREFIX="${LATEST_SEMVER}+pulumi.${COMPONENT}.${TODAY}"
+            LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
+            if [ -z "$LATEST_TAG" ]; then
+              NEXT_SEQ=0
+            else
+              CURRENT_SEQ=$(echo "$LATEST_TAG" | sed "s/${TAG_PREFIX}\.//")
+              NEXT_SEQ=$((CURRENT_SEQ + 1))
+            fi
+
+            NEXT_TAG="${TAG_PREFIX}.${NEXT_SEQ}"
+            echo "Creating Pulumi tag: ${NEXT_TAG} (${PROVIDER}/${COMPONENT})"
+            git tag -a "${NEXT_TAG}" -m "Auto-tag Pulumi module ${COMPONENT} - ${NEXT_TAG}"
+            git push origin "${NEXT_TAG}"
+            
+            if [ -n "$PULUMI_TAGS" ]; then
+              PULUMI_TAGS="${PULUMI_TAGS},"
+            fi
+            PULUMI_TAGS="${PULUMI_TAGS}${NEXT_TAG}"
+            ANY_TAGS_CREATED="true"
+          done
+
+          echo "pulumi_tags=${PULUMI_TAGS}" >> $GITHUB_OUTPUT
+
+          # =================================================================
+          # Terraform Modules Tags
+          # =================================================================
+          TERRAFORM_TAGS=""
+
+          if [ "${{ inputs.force_terraform_all }}" = "true" ]; then
+            echo "Terraform: forced all via manual dispatch"
+            TERRAFORM_DIRS=$(find apis/org/project_planton/provider -type d -name "tf" -path "*/iac/tf" 2>/dev/null | sort)
+          else
+            TERRAFORM_DIRS=$(echo "$CHANGED_FILES" | \
+              grep -E '^apis/org/project_planton/provider/[^/]+/[^/]+/v[0-9]+/iac/tf/' | \
+              sed 's|\(apis/org/project_planton/provider/[^/]*/[^/]*/v[0-9]*/iac/tf\)/.*|\1|' | \
+              sort -u)
+          fi
+
+          for dir in $TERRAFORM_DIRS; do
+            PROVIDER=$(echo "$dir" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
+            COMPONENT=$(echo "$dir" | sed 's|apis/org/project_planton/provider/[^/]*/\([^/]*\)/.*|\1|')
+
+            # Skip test providers
+            if [ "$PROVIDER" = "_test" ]; then
+              continue
+            fi
+
+            TAG_PREFIX="${LATEST_SEMVER}+terraform.${COMPONENT}.${TODAY}"
+            LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
+            if [ -z "$LATEST_TAG" ]; then
+              NEXT_SEQ=0
+            else
+              CURRENT_SEQ=$(echo "$LATEST_TAG" | sed "s/${TAG_PREFIX}\.//")
+              NEXT_SEQ=$((CURRENT_SEQ + 1))
+            fi
+
+            NEXT_TAG="${TAG_PREFIX}.${NEXT_SEQ}"
+            echo "Creating Terraform tag: ${NEXT_TAG} (${PROVIDER}/${COMPONENT})"
+            git tag -a "${NEXT_TAG}" -m "Auto-tag Terraform module ${COMPONENT} - ${NEXT_TAG}"
+            git push origin "${NEXT_TAG}"
+            
+            if [ -n "$TERRAFORM_TAGS" ]; then
+              TERRAFORM_TAGS="${TERRAFORM_TAGS},"
+            fi
+            TERRAFORM_TAGS="${TERRAFORM_TAGS}${NEXT_TAG}"
+            ANY_TAGS_CREATED="true"
+          done
+
+          echo "terraform_tags=${TERRAFORM_TAGS}" >> $GITHUB_OUTPUT
+          echo "any_tags_created=${ANY_TAGS_CREATED}" >> $GITHUB_OUTPUT
+
+          # =================================================================
+          # Summary
+          # =================================================================
+          echo ""
+          echo "========================================"
+          echo "TAG CREATION SUMMARY"
+          echo "========================================"
+          echo "Base Version: ${LATEST_SEMVER}"
+          echo "Tags Created: ${ANY_TAGS_CREATED}"
+          echo "========================================"
+
+  # ===========================================================================
+  # Summary
+  # ===========================================================================
+  summary:
+    needs: create-tags
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Auto-Tag Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Tags Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Tag |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-----|" >> $GITHUB_STEP_SUMMARY
+
+          if [ -n "${{ needs.create-tags.outputs.cli_tag }}" ]; then
+            echo "| CLI | \`${{ needs.create-tags.outputs.cli_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -n "${{ needs.create-tags.outputs.app_tag }}" ]; then
+            echo "| App | \`${{ needs.create-tags.outputs.app_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -n "${{ needs.create-tags.outputs.website_tag }}" ]; then
+            echo "| Website | \`${{ needs.create-tags.outputs.website_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -n "${{ needs.create-tags.outputs.pulumi_tags }}" ]; then
+            echo "| Pulumi | \`${{ needs.create-tags.outputs.pulumi_tags }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -n "${{ needs.create-tags.outputs.terraform_tags }}" ]; then
+            echo "| Terraform | \`${{ needs.create-tags.outputs.terraform_tags }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.create-tags.outputs.any_tags_created }}" != "true" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "_No tags were created - no relevant changes detected._" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Note:** These tags will trigger the \`auto-release\` workflow to build and release artifacts." >> $GITHUB_STEP_SUMMARY
+          fi
+

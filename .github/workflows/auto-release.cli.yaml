@@ -4,10 +4,11 @@
 # Builds and releases the project-planton CLI using GoReleaser for auto-releases.
 # Updates Homebrew tap so users can get the latest CLI via `brew upgrade`.
 #
-# Tag Format: v{semver}.{YYYYMMDD}.{N} (e.g., v0.3.1.20260107.1)
-# Uses dots for Homebrew version comparison compatibility.
+# Tag Format (semver build metadata): v{semver}+cli.{YYYYMMDD}.{N}
+# Example: v0.3.1+cli.20260107.1
 #
 # Called by: .github/workflows/auto-release.yaml
+# Note: Tag is created by auto-tag.yaml, this workflow only builds and releases
 # =============================================================================
 
 name: auto-release.cli
@@ -16,7 +17,7 @@ on:
   workflow_call:
     inputs:
       tag:
-        description: 'The tag to create and release (e.g., v0.3.1.20260107.1)'
+        description: 'The tag to release (e.g., v0.3.1+cli.20260107.1)'
         required: true
         type: string
 
@@ -37,23 +38,6 @@ jobs:
         with:
           go-version: '1.22'
           cache: true
-
-      - name: Create and push tag
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          TAG="${{ inputs.tag }}"
-          echo "Creating tag: ${TAG}"
-
-          # Check if tag already exists
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists, skipping tag creation..."
-          else
-            git tag -a "${TAG}" -m "Auto-release CLI ${TAG}"
-            git push origin "${TAG}"
-            echo "Created and pushed tag: ${TAG}"
-          fi
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6

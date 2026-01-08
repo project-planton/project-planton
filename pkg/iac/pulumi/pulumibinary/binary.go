@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -35,6 +36,12 @@ const (
 	// BinaryPrefix is the prefix for Pulumi component binaries
 	BinaryPrefix = "pulumi-"
 )
+
+// GetPlatformSuffix returns the platform suffix for binary names based on the current OS and architecture.
+// Examples: "linux_amd64", "darwin_arm64", "darwin_amd64", "windows_amd64"
+func GetPlatformSuffix() string {
+	return fmt.Sprintf("%s_%s", runtime.GOOS, runtime.GOARCH)
+}
 
 // GetPulumiBaseDir returns the base directory for all Pulumi-related files
 // (~/.project-planton/pulumi/)
@@ -74,22 +81,33 @@ func GetBinaryPath(componentName, releaseVersion string) (string, error) {
 	return filepath.Join(cacheDir, binaryName), nil
 }
 
-// BuildBinaryName constructs the binary filename for a component
-// e.g., "AwsEcsService" -> "pulumi-awsecsservice"
+// BuildBinaryName constructs the platform-specific binary filename for a component.
+// The binary name includes the platform suffix based on the current OS and architecture.
+// Examples:
+//   - Linux:   "AwsEcsService" -> "pulumi-awsecsservice_linux_amd64"
+//   - macOS:   "AwsEcsService" -> "pulumi-awsecsservice_darwin_arm64"
+//   - Windows: "AwsEcsService" -> "pulumi-awsecsservice_windows_amd64.exe"
 func BuildBinaryName(componentName string) string {
-	return BinaryPrefix + strings.ToLower(componentName)
+	baseName := BinaryPrefix + strings.ToLower(componentName)
+	suffix := GetPlatformSuffix()
+
+	if runtime.GOOS == "windows" {
+		return fmt.Sprintf("%s_%s.exe", baseName, suffix)
+	}
+	return fmt.Sprintf("%s_%s", baseName, suffix)
 }
 
-// BuildDownloadURL constructs the download URL for a component binary.
+// BuildDownloadURL constructs the download URL for a platform-specific component binary.
 // The release version can be:
 // - A semantic version like "v0.3.2" (downloads from main project-planton release)
 // - An auto-release version like "v0.3.1-pulumi-awsecsservice-20260107.01" (downloads from component-specific release)
 //
-// Examples:
+// The URL includes the platform suffix based on the current OS and architecture.
+// Examples (on darwin/arm64):
 //   - BuildDownloadURL("AwsEcsService", "v0.3.2")
-//     -> https://github.com/plantonhq/project-planton/releases/download/v0.3.2/pulumi-awsecsservice.gz
+//     -> https://github.com/plantonhq/project-planton/releases/download/v0.3.2/pulumi-awsecsservice_darwin_arm64.gz
 //   - BuildDownloadURL("AwsEcsService", "v0.3.1-pulumi-awsecsservice-20260107.01")
-//     -> https://github.com/plantonhq/project-planton/releases/download/v0.3.1-pulumi-awsecsservice-20260107.01/pulumi-awsecsservice.gz
+//     -> https://github.com/plantonhq/project-planton/releases/download/v0.3.1-pulumi-awsecsservice-20260107.01/pulumi-awsecsservice_darwin_arm64.gz
 func BuildDownloadURL(componentName, releaseVersion string) string {
 	binaryName := BuildBinaryName(componentName)
 	artifactName := binaryName + ".gz"
@@ -155,10 +173,12 @@ func EnsureBinary(componentName, releaseVersion string) (string, error) {
 	return binaryPath, nil
 }
 
-// DownloadBinary downloads and extracts a component binary from GitHub releases.
-// The releaseVersion determines which GitHub release to download from:
-// - "v0.3.2" -> downloads from https://github.com/plantonhq/project-planton/releases/download/v0.3.2/pulumi-{component}.gz
-// - "v0.3.1-pulumi-awsecsservice-20260107.01" -> downloads from that specific auto-release
+// DownloadBinary downloads and extracts a platform-specific component binary from GitHub releases.
+// The releaseVersion determines which GitHub release to download from.
+// The binary downloaded is platform-specific based on runtime.GOOS and runtime.GOARCH.
+// Examples (on darwin/arm64):
+//   - "v0.3.2" -> downloads pulumi-{component}_darwin_arm64.gz from v0.3.2 release
+//   - "v0.3.1-pulumi-awsecsservice-20260107.01" -> downloads from that specific auto-release
 func DownloadBinary(componentName, releaseVersion string) error {
 	// Ensure cache directory exists
 	cacheDir, err := GetBinaryCacheDir(releaseVersion)

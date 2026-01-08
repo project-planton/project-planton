@@ -5,9 +5,11 @@
 # for auto-releases. Does NOT update the 'latest' tag (reserved for semantic
 # releases).
 #
-# Tag Format: v{semver}-app-{YYYYMMDD}.{N} (e.g., v0.3.1-app-20260107.1)
+# Tag Format (semver build metadata): v{semver}+app.{YYYYMMDD}.{N}
+# Example: v0.3.1+app.20260107.1
 #
 # Called by: .github/workflows/auto-release.yaml
+# Note: Tag is created by auto-tag.yaml, this workflow only builds and releases
 # =============================================================================
 
 name: auto-release.app
@@ -16,7 +18,7 @@ on:
   workflow_call:
     inputs:
       tag:
-        description: 'The tag to create and release (e.g., v0.3.1-app-20260107.1)'
+        description: 'The tag to release (e.g., v0.3.1+app.20260107.1)'
         required: true
         type: string
 
@@ -34,25 +36,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Create and push tag
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          TAG="${{ inputs.tag }}"
-          echo "Creating tag: ${TAG}"
-
-          # Check if tag already exists
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists, skipping tag creation..."
-          else
-            git tag -a "${TAG}" -m "Auto-release App ${TAG}"
-            git push origin "${TAG}"
-            echo "Created and pushed tag: ${TAG}"
-          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
