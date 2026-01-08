@@ -13,6 +13,7 @@
 #   }
 #
 # Called by: .github/workflows/auto-release.yaml
+# Note: Tags are created by auto-tag.yaml, this workflow only creates releases
 # =============================================================================
 
 name: auto-release.terraform-modules
@@ -39,41 +40,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Create and push tag
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          TAG="${{ matrix.tag }}"
-          COMPONENT="${{ matrix.component }}"
-          PROVIDER="${{ matrix.provider }}"
-          PATH="${{ matrix.path }}"
-
-          echo "========================================"
-          echo "TERRAFORM MODULE RELEASE"
-          echo "========================================"
-          echo "Provider: ${PROVIDER}"
-          echo "Component: ${COMPONENT}"
-          echo "Path: ${PATH}"
-          echo "Tag: ${TAG}"
-          echo "========================================"
-
-          # Check if tag already exists
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists, skipping..."
-          else
-            git tag -a "${TAG}" -m "Auto-release Terraform module ${COMPONENT} - ${TAG}"
-            git push origin "${TAG}"
-            echo "Created and pushed tag: ${TAG}"
-          fi
-
-          echo ""
-          echo "========================================"
-          echo "TAG CREATED"
-          echo "========================================"
 
       - name: Create GitHub Release
         env:

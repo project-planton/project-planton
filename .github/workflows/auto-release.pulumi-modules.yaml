@@ -14,10 +14,11 @@
 #   - windows_amd64  - Windows
 #
 # Can be called from:
-#   1. The auto-release.yaml orchestrator (with matrix input)
-#   2. Directly via workflow_dispatch (for manual releases)
+#   1. The auto-release.yaml orchestrator (with matrix input) - tags already exist
+#   2. Directly via workflow_dispatch (for manual releases) - creates tags
 #
 # Called by: .github/workflows/auto-release.yaml
+# Note: When called via workflow_call, tags are created by auto-tag.yaml
 # =============================================================================
 
 name: auto-release.pulumi-modules
@@ -215,7 +216,8 @@ jobs:
           echo "matrix=$EXPANDED" >> $GITHUB_OUTPUT
 
   # ===========================================================================
-  # Create tags and releases (one per component, from orchestrator)
+  # Create releases (one per component, from orchestrator)
+  # Note: Tags are already created by auto-tag.yaml
   # ===========================================================================
   create-releases-orchestrator:
     if: github.event_name == 'workflow_call'
@@ -227,10 +229,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Create tag and release
+      - name: Create release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -238,19 +238,7 @@ jobs:
           COMPONENT="${{ matrix.component }}"
           PROVIDER="${{ matrix.provider }}"
           
-          # Create tag if it doesn't exist
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists"
-          else
-            git tag -a "${TAG}" -m "Auto-release Pulumi module ${COMPONENT} - ${TAG}"
-            git push origin "${TAG}"
-            echo "Created and pushed tag: ${TAG}"
-          fi
-          
-          # Create release if it doesn't exist
+          # Create release if it doesn't exist (tag already exists from auto-tag.yaml)
           if gh release view "${TAG}" >/dev/null 2>&1; then
             echo "Release ${TAG} already exists"
           else

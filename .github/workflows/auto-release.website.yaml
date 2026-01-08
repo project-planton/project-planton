@@ -8,6 +8,7 @@
 # Example: v0.3.1+website.20260107.1
 #
 # Called by: .github/workflows/auto-release.yaml
+# Note: Tag is created by auto-tag.yaml, this workflow only builds and deploys
 # =============================================================================
 
 name: auto-release.website
@@ -16,7 +17,7 @@ on:
   workflow_call:
     inputs:
       tag:
-        description: 'The tag to create (e.g., v0.3.1+website.20260107.1)'
+        description: 'The tag to release (e.g., v0.3.1+website.20260107.1)'
         required: true
         type: string
 
@@ -26,33 +27,7 @@ permissions:
   id-token: write
 
 jobs:
-  create-tag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Create and push tag
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          TAG="${{ inputs.tag }}"
-          echo "Creating tag: ${TAG}"
-
-          # Check if tag already exists
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists, skipping tag creation..."
-          else
-            git tag -a "${TAG}" -m "Auto-release Website ${TAG}"
-            git push origin "${TAG}"
-            echo "Created and pushed tag: ${TAG}"
-          fi
-
   pages-build:
-    needs: create-tag
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -1,69 +1,32 @@
 # =============================================================================
-# Auto-Release Orchestrator
+# Auto-Release Executor
 # =============================================================================
-# Single entry point for all auto-releases on push to main. Detects which
-# components have changes and conditionally triggers the appropriate reusable
-# workflows.
+# Triggers on auto-release tags pushed by auto-tag.yaml and executes the
+# appropriate release workflow based on the tag pattern.
 #
-# Architecture:
-#   1. detect-changes job analyzes git diff to find what changed
-#   2. Each component job runs only if its paths changed
-#   3. Each job calls the corresponding reusable workflow
+# This workflow only BUILDS AND RELEASES - it does NOT create tags.
+# Tags are created by auto-tag.yaml which triggers this workflow.
 #
-# Tag Formats (semver build metadata):
-#   - CLI: v{semver}+cli.{YYYYMMDD}.{N}
-#   - App: v{semver}+app.{YYYYMMDD}.{N}
-#   - Website: v{semver}+website.{YYYYMMDD}.{N}
-#   - Pulumi: v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
-#   - Terraform: v{semver}+terraform.{component}.{YYYYMMDD}.{N}
+# Tag Patterns:
+#   - v*+cli.*         -> CLI release (GoReleaser)
+#   - v*+app.*         -> App release (Docker)
+#   - v*+website.*     -> Website release (GitHub Pages)
+#   - v*+pulumi.*      -> Pulumi module release (binary)
+#   - v*+terraform.*   -> Terraform module release (tag-only)
 #
-# Trigger: Push to main with changes in monitored paths
+# Trigger: Tag push matching auto-release patterns
 # =============================================================================
 
 name: auto-release
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'cmd/**'
-      - 'internal/**'
-      - 'pkg/**'
-      - 'app/**'
-      - 'site/**'
-      - 'apis/**/iac/pulumi/**'
-      - 'apis/**/iac/tf/**'
-      - 'main.go'
-      - 'go.mod'
-      - 'go.sum'
-
-  workflow_dispatch:
-    inputs:
-      force_cli:
-        description: 'Force CLI release'
-        required: false
-        type: boolean
-        default: false
-      force_app:
-        description: 'Force App release'
-        required: false
-        type: boolean
-        default: false
-      force_website:
-        description: 'Force Website release'
-        required: false
-        type: boolean
-        default: false
-      force_pulumi_all:
-        description: 'Force all Pulumi modules release'
-        required: false
-        type: boolean
-        default: false
-      force_terraform_all:
-        description: 'Force all Terraform modules release'
-        required: false
-        type: boolean
-        default: false
+    tags:
+      - 'v*+cli.*'
+      - 'v*+app.*'
+      - 'v*+website.*'
+      - 'v*+pulumi.*'
+      - 'v*+terraform.*'
 
 permissions:
   contents: write
@@ -73,367 +36,180 @@ permissions:
 
 jobs:
   # ===========================================================================
-  # Detect Changes
+  # Parse Tag and Determine Component
   # ===========================================================================
-  detect-changes:
+  parse-tag:
     runs-on: ubuntu-latest
     outputs:
-      cli: ${{ steps.detect.outputs.cli }}
-      cli_tag: ${{ steps.detect.outputs.cli_tag }}
-      app: ${{ steps.detect.outputs.app }}
-      app_tag: ${{ steps.detect.outputs.app_tag }}
-      website: ${{ steps.detect.outputs.website }}
-      website_tag: ${{ steps.detect.outputs.website_tag }}
-      pulumi_has_changes: ${{ steps.detect.outputs.pulumi_has_changes }}
-      pulumi_matrix: ${{ steps.detect.outputs.pulumi_matrix }}
-      terraform_has_changes: ${{ steps.detect.outputs.terraform_has_changes }}
-      terraform_matrix: ${{ steps.detect.outputs.terraform_matrix }}
-      semver: ${{ steps.detect.outputs.semver }}
+      component: ${{ steps.parse.outputs.component }}
+      tag: ${{ steps.parse.outputs.tag }}
+      provider: ${{ steps.parse.outputs.provider }}
+      module_name: ${{ steps.parse.outputs.module_name }}
+      module_path: ${{ steps.parse.outputs.module_path }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect changes and compute versions
-        id: detect
+      - name: Parse tag
+        id: parse
         run: |
-          set -e
+          TAG="${GITHUB_REF#refs/tags/}"
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "Processing tag: ${TAG}"
 
-          TODAY=$(date +%Y%m%d)
-          echo "today=${TODAY}" >> $GITHUB_OUTPUT
+          # Extract component type from tag
+          # Format: v{semver}+{component}.{details}
+          COMPONENT=$(echo "${TAG}" | sed 's/v[0-9]*\.[0-9]*\.[0-9]*+\([^.]*\)\..*/\1/')
+          echo "component=${COMPONENT}" >> $GITHUB_OUTPUT
+          echo "Component type: ${COMPONENT}"
 
-          # =================================================================
-          # Get latest semantic version (v*.*.* only, no auto-release tags)
-          # =================================================================
-          LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-          if [ -z "$LATEST_SEMVER" ]; then
-            LATEST_SEMVER="v0.0.0"
-            echo "No semantic version tags found, using default: ${LATEST_SEMVER}"
+          # For Pulumi and Terraform, extract module name
+          if [ "$COMPONENT" = "pulumi" ] || [ "$COMPONENT" = "terraform" ]; then
+            # Format: v{semver}+{type}.{module_name}.{date}.{seq}
+            MODULE_NAME=$(echo "${TAG}" | sed 's/v[0-9]*\.[0-9]*\.[0-9]*+[^.]*\.\([^.]*\)\..*/\1/')
+            echo "module_name=${MODULE_NAME}" >> $GITHUB_OUTPUT
+            echo "Module name: ${MODULE_NAME}"
+          fi
+
+      - name: Checkout (for module path lookup)
+        if: steps.parse.outputs.component == 'pulumi' || steps.parse.outputs.component == 'terraform'
+        uses: actions/checkout@v4
+
+      - name: Find module path
+        if: steps.parse.outputs.component == 'pulumi' || steps.parse.outputs.component == 'terraform'
+        id: find-path
+        run: |
+          MODULE_NAME="${{ steps.parse.outputs.module_name }}"
+          COMPONENT="${{ steps.parse.outputs.component }}"
+          
+          if [ "$COMPONENT" = "pulumi" ]; then
+            IAC_TYPE="pulumi"
           else
-            echo "Latest semantic version: ${LATEST_SEMVER}"
+            IAC_TYPE="tf"
           fi
-          echo "semver=${LATEST_SEMVER}" >> $GITHUB_OUTPUT
-
-          # =================================================================
-          # Get changed files
-          # =================================================================
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manual dispatch - using force flags"
-            CHANGED_FILES=""
+          
+          # Find the module path
+          MODULE_PATH=$(find apis/org/project_planton/provider -type d -name "${IAC_TYPE}" -path "*/${MODULE_NAME}/*/iac/${IAC_TYPE}" | head -1)
+          
+          if [ -n "$MODULE_PATH" ]; then
+            PROVIDER=$(echo "$MODULE_PATH" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
+            echo "module_path=${MODULE_PATH}" >> $GITHUB_OUTPUT
+            echo "provider=${PROVIDER}" >> $GITHUB_OUTPUT
+            echo "Found: ${PROVIDER}/${MODULE_NAME} at ${MODULE_PATH}"
           else
-            echo "Detecting changes between ${{ github.event.before }} and ${{ github.sha }}"
-            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || git diff --name-only HEAD~1 HEAD)
-            echo "Changed files:"
-            echo "$CHANGED_FILES"
+            echo "ERROR: Could not find module path for ${MODULE_NAME}"
+            exit 1
           fi
-
-          # =================================================================
-          # CLI Detection
-          # =================================================================
-          CLI_CHANGED="false"
-          if [ "${{ inputs.force_cli }}" = "true" ]; then
-            CLI_CHANGED="true"
-            echo "CLI: forced via manual dispatch"
-          elif echo "$CHANGED_FILES" | grep -qE '^(cmd/|internal/|pkg/|main\.go|go\.mod|go\.sum)'; then
-            CLI_CHANGED="true"
-            echo "CLI: changes detected"
-          fi
-
-          if [ "$CLI_CHANGED" = "true" ]; then
-            # CLI uses build metadata format: v0.3.1+cli.20260107.{N}
-            CLI_PREFIX="${LATEST_SEMVER}+cli.${TODAY}"
-            CLI_LATEST=$(git tag -l "${CLI_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-            if [ -z "$CLI_LATEST" ]; then
-              CLI_SEQ=0
-            else
-              CLI_SEQ=$(echo "$CLI_LATEST" | sed "s/${CLI_PREFIX}\.//")
-              CLI_SEQ=$((CLI_SEQ + 1))
-            fi
-            CLI_TAG="${CLI_PREFIX}.${CLI_SEQ}"
-            echo "CLI tag: ${CLI_TAG}"
-            echo "cli_tag=${CLI_TAG}" >> $GITHUB_OUTPUT
-          fi
-          echo "cli=${CLI_CHANGED}" >> $GITHUB_OUTPUT
-
-          # =================================================================
-          # App Detection
-          # =================================================================
-          APP_CHANGED="false"
-          if [ "${{ inputs.force_app }}" = "true" ]; then
-            APP_CHANGED="true"
-            echo "App: forced via manual dispatch"
-          elif echo "$CHANGED_FILES" | grep -qE '^app/'; then
-            APP_CHANGED="true"
-            echo "App: changes detected"
-          fi
-
-          if [ "$APP_CHANGED" = "true" ]; then
-            # App uses build metadata format: v0.3.1+app.20260107.{N}
-            APP_PREFIX="${LATEST_SEMVER}+app.${TODAY}"
-            APP_LATEST=$(git tag -l "${APP_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-            if [ -z "$APP_LATEST" ]; then
-              APP_SEQ=0
-            else
-              APP_SEQ=$(echo "$APP_LATEST" | sed "s/${APP_PREFIX}\.//")
-              APP_SEQ=$((APP_SEQ + 1))
-            fi
-            APP_TAG="${APP_PREFIX}.${APP_SEQ}"
-            echo "App tag: ${APP_TAG}"
-            echo "app_tag=${APP_TAG}" >> $GITHUB_OUTPUT
-          fi
-          echo "app=${APP_CHANGED}" >> $GITHUB_OUTPUT
-
-          # =================================================================
-          # Website Detection
-          # =================================================================
-          WEBSITE_CHANGED="false"
-          if [ "${{ inputs.force_website }}" = "true" ]; then
-            WEBSITE_CHANGED="true"
-            echo "Website: forced via manual dispatch"
-          elif echo "$CHANGED_FILES" | grep -qE '^site/'; then
-            WEBSITE_CHANGED="true"
-            echo "Website: changes detected"
-          fi
-
-          if [ "$WEBSITE_CHANGED" = "true" ]; then
-            # Website uses build metadata format: v0.3.1+website.20260107.{N}
-            WEBSITE_PREFIX="${LATEST_SEMVER}+website.${TODAY}"
-            WEBSITE_LATEST=$(git tag -l "${WEBSITE_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-            if [ -z "$WEBSITE_LATEST" ]; then
-              WEBSITE_SEQ=0
-            else
-              WEBSITE_SEQ=$(echo "$WEBSITE_LATEST" | sed "s/${WEBSITE_PREFIX}\.//")
-              WEBSITE_SEQ=$((WEBSITE_SEQ + 1))
-            fi
-            WEBSITE_TAG="${WEBSITE_PREFIX}.${WEBSITE_SEQ}"
-            echo "Website tag: ${WEBSITE_TAG}"
-            echo "website_tag=${WEBSITE_TAG}" >> $GITHUB_OUTPUT
-          fi
-          echo "website=${WEBSITE_CHANGED}" >> $GITHUB_OUTPUT
-
-          # =================================================================
-          # Pulumi Modules Detection
-          # =================================================================
-          PULUMI_MATRIX_ITEMS="["
-          PULUMI_FIRST=true
-          PULUMI_HAS_CHANGES="false"
-
-          if [ "${{ inputs.force_pulumi_all }}" = "true" ]; then
-            echo "Pulumi: forced all via manual dispatch"
-            PULUMI_DIRS=$(find apis/org/project_planton/provider -type d -name "pulumi" -path "*/iac/pulumi" 2>/dev/null | sort)
-          else
-            PULUMI_DIRS=$(echo "$CHANGED_FILES" | \
-              grep -E '^apis/org/project_planton/provider/[^/]+/[^/]+/v[0-9]+/iac/pulumi/' | \
-              sed 's|\(apis/org/project_planton/provider/[^/]*/[^/]*/v[0-9]*/iac/pulumi\)/.*|\1|' | \
-              sort -u)
-          fi
-
-          for dir in $PULUMI_DIRS; do
-            PROVIDER=$(echo "$dir" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
-            COMPONENT=$(echo "$dir" | sed 's|apis/org/project_planton/provider/[^/]*/\([^/]*\)/.*|\1|')
-
-            # Skip test providers
-            if [ "$PROVIDER" = "_test" ]; then
-              continue
-            fi
-
-            # Compute version: v0.3.1+pulumi.{component}.20260107.{N}
-            TAG_PREFIX="${LATEST_SEMVER}+pulumi.${COMPONENT}.${TODAY}"
-            LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-            if [ -z "$LATEST_TAG" ]; then
-              NEXT_SEQ=0
-            else
-              CURRENT_SEQ=$(echo "$LATEST_TAG" | sed "s/${TAG_PREFIX}\.//")
-              NEXT_SEQ=$((CURRENT_SEQ + 1))
-            fi
-
-            NEXT_TAG="${TAG_PREFIX}.${NEXT_SEQ}"
-            echo "  Pulumi: ${PROVIDER}/${COMPONENT} -> ${NEXT_TAG}"
-
-            if [ "$PULUMI_FIRST" = true ]; then
-              PULUMI_FIRST=false
-            else
-              PULUMI_MATRIX_ITEMS="${PULUMI_MATRIX_ITEMS},"
-            fi
-
-            PULUMI_MATRIX_ITEMS="${PULUMI_MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"tag\":\"${NEXT_TAG}\"}"
-            PULUMI_HAS_CHANGES="true"
-          done
-
-          PULUMI_MATRIX_ITEMS="${PULUMI_MATRIX_ITEMS}]"
-          echo "pulumi_has_changes=${PULUMI_HAS_CHANGES}" >> $GITHUB_OUTPUT
-          echo "pulumi_matrix={\"include\":${PULUMI_MATRIX_ITEMS}}" >> $GITHUB_OUTPUT
-
-          # =================================================================
-          # Terraform Modules Detection
-          # =================================================================
-          TERRAFORM_MATRIX_ITEMS="["
-          TERRAFORM_FIRST=true
-          TERRAFORM_HAS_CHANGES="false"
-
-          if [ "${{ inputs.force_terraform_all }}" = "true" ]; then
-            echo "Terraform: forced all via manual dispatch"
-            TERRAFORM_DIRS=$(find apis/org/project_planton/provider -type d -name "tf" -path "*/iac/tf" 2>/dev/null | sort)
-          else
-            TERRAFORM_DIRS=$(echo "$CHANGED_FILES" | \
-              grep -E '^apis/org/project_planton/provider/[^/]+/[^/]+/v[0-9]+/iac/tf/' | \
-              sed 's|\(apis/org/project_planton/provider/[^/]*/[^/]*/v[0-9]*/iac/tf\)/.*|\1|' | \
-              sort -u)
-          fi
-
-          for dir in $TERRAFORM_DIRS; do
-            PROVIDER=$(echo "$dir" | sed 's|apis/org/project_planton/provider/\([^/]*\)/.*|\1|')
-            COMPONENT=$(echo "$dir" | sed 's|apis/org/project_planton/provider/[^/]*/\([^/]*\)/.*|\1|')
-
-            # Skip test providers
-            if [ "$PROVIDER" = "_test" ]; then
-              continue
-            fi
-
-            # Compute version: v0.3.1+terraform.{component}.20260107.{N}
-            TAG_PREFIX="${LATEST_SEMVER}+terraform.${COMPONENT}.${TODAY}"
-            LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
-            if [ -z "$LATEST_TAG" ]; then
-              NEXT_SEQ=0
-            else
-              CURRENT_SEQ=$(echo "$LATEST_TAG" | sed "s/${TAG_PREFIX}\.//")
-              NEXT_SEQ=$((CURRENT_SEQ + 1))
-            fi
-
-            NEXT_TAG="${TAG_PREFIX}.${NEXT_SEQ}"
-            echo "  Terraform: ${PROVIDER}/${COMPONENT} -> ${NEXT_TAG}"
-
-            if [ "$TERRAFORM_FIRST" = true ]; then
-              TERRAFORM_FIRST=false
-            else
-              TERRAFORM_MATRIX_ITEMS="${TERRAFORM_MATRIX_ITEMS},"
-            fi
-
-            TERRAFORM_MATRIX_ITEMS="${TERRAFORM_MATRIX_ITEMS}{\"provider\":\"${PROVIDER}\",\"component\":\"${COMPONENT}\",\"path\":\"${dir}\",\"tag\":\"${NEXT_TAG}\"}"
-            TERRAFORM_HAS_CHANGES="true"
-          done
-
-          TERRAFORM_MATRIX_ITEMS="${TERRAFORM_MATRIX_ITEMS}]"
-          echo "terraform_has_changes=${TERRAFORM_HAS_CHANGES}" >> $GITHUB_OUTPUT
-          echo "terraform_matrix={\"include\":${TERRAFORM_MATRIX_ITEMS}}" >> $GITHUB_OUTPUT
-
-          # =================================================================
-          # Summary
-          # =================================================================
-          echo ""
-          echo "========================================"
-          echo "DETECTION SUMMARY"
-          echo "========================================"
-          echo "Semantic Version: ${LATEST_SEMVER}"
-          echo "CLI: ${CLI_CHANGED}"
-          echo "App: ${APP_CHANGED}"
-          echo "Website: ${WEBSITE_CHANGED}"
-          echo "Pulumi modules: ${PULUMI_HAS_CHANGES}"
-          echo "Terraform modules: ${TERRAFORM_HAS_CHANGES}"
-          echo "========================================"
 
   # ===========================================================================
   # CLI Release
   # ===========================================================================
   cli:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.cli == 'true'
+    needs: parse-tag
+    if: needs.parse-tag.outputs.component == 'cli'
     uses: ./.github/workflows/auto-release.cli.yaml
     with:
-      tag: ${{ needs.detect-changes.outputs.cli_tag }}
+      tag: ${{ needs.parse-tag.outputs.tag }}
     secrets: inherit
 
   # ===========================================================================
   # App Release
   # ===========================================================================
   app:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.app == 'true'
+    needs: parse-tag
+    if: needs.parse-tag.outputs.component == 'app'
     uses: ./.github/workflows/auto-release.app.yaml
     with:
-      tag: ${{ needs.detect-changes.outputs.app_tag }}
+      tag: ${{ needs.parse-tag.outputs.tag }}
 
   # ===========================================================================
   # Website Release
   # ===========================================================================
   website:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.website == 'true'
+    needs: parse-tag
+    if: needs.parse-tag.outputs.component == 'website'
     uses: ./.github/workflows/auto-release.website.yaml
     with:
-      tag: ${{ needs.detect-changes.outputs.website_tag }}
+      tag: ${{ needs.parse-tag.outputs.tag }}
 
   # ===========================================================================
-  # Pulumi Modules Release
+  # Pulumi Module Release
   # ===========================================================================
-  pulumi-modules:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.pulumi_has_changes == 'true'
+  pulumi:
+    needs: parse-tag
+    if: needs.parse-tag.outputs.component == 'pulumi'
     uses: ./.github/workflows/auto-release.pulumi-modules.yaml
     with:
-      matrix: ${{ needs.detect-changes.outputs.pulumi_matrix }}
+      matrix: '{"include":[{"provider":"${{ needs.parse-tag.outputs.provider }}","component":"${{ needs.parse-tag.outputs.module_name }}","path":"${{ needs.parse-tag.outputs.module_path }}","tag":"${{ needs.parse-tag.outputs.tag }}"}]}'
 
   # ===========================================================================
-  # Terraform Modules Release
+  # Terraform Module Release
   # ===========================================================================
-  terraform-modules:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.terraform_has_changes == 'true'
+  terraform:
+    needs: parse-tag
+    if: needs.parse-tag.outputs.component == 'terraform'
     uses: ./.github/workflows/auto-release.terraform-modules.yaml
     with:
-      matrix: ${{ needs.detect-changes.outputs.terraform_matrix }}
+      matrix: '{"include":[{"provider":"${{ needs.parse-tag.outputs.provider }}","component":"${{ needs.parse-tag.outputs.module_name }}","path":"${{ needs.parse-tag.outputs.module_path }}","tag":"${{ needs.parse-tag.outputs.tag }}"}]}'
 
   # ===========================================================================
   # Summary
   # ===========================================================================
   summary:
-    needs: [detect-changes, cli, app, website, pulumi-modules, terraform-modules]
+    needs: [parse-tag, cli, app, website, pulumi, terraform]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Generate summary
         run: |
+          TAG="${{ needs.parse-tag.outputs.tag }}"
+          COMPONENT="${{ needs.parse-tag.outputs.component }}"
+
           echo "## Auto-Release Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** \`${TAG}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Component:** ${COMPONENT}" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Base Version:** ${{ needs.detect-changes.outputs.semver }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          echo "### Components Released" >> $GITHUB_STEP_SUMMARY
+          case "${COMPONENT}" in
+            cli)
+              echo "### CLI Release" >> $GITHUB_STEP_SUMMARY
+              echo "GoReleaser has built and published CLI binaries." >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Install/Upgrade:**" >> $GITHUB_STEP_SUMMARY
+              echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+              echo "brew upgrade project-planton" >> $GITHUB_STEP_SUMMARY
+              echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+              ;;
+            app)
+              echo "### App Release" >> $GITHUB_STEP_SUMMARY
+              echo "Docker image has been built and pushed to GHCR." >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Pull:**" >> $GITHUB_STEP_SUMMARY
+              echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+              echo "docker pull ghcr.io/${{ github.repository }}:${TAG}" >> $GITHUB_STEP_SUMMARY
+              echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+              ;;
+            website)
+              echo "### Website Release" >> $GITHUB_STEP_SUMMARY
+              echo "Website has been deployed to GitHub Pages." >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**URL:** https://project-planton.org" >> $GITHUB_STEP_SUMMARY
+              ;;
+            pulumi)
+              echo "### Pulumi Module Release" >> $GITHUB_STEP_SUMMARY
+              echo "**Module:** ${{ needs.parse-tag.outputs.module_name }}" >> $GITHUB_STEP_SUMMARY
+              echo "**Provider:** ${{ needs.parse-tag.outputs.provider }}" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "Pre-built binaries have been uploaded to the release." >> $GITHUB_STEP_SUMMARY
+              ;;
+            terraform)
+              echo "### Terraform Module Release" >> $GITHUB_STEP_SUMMARY
+              echo "**Module:** ${{ needs.parse-tag.outputs.module_name }}" >> $GITHUB_STEP_SUMMARY
+              echo "**Provider:** ${{ needs.parse-tag.outputs.provider }}" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "Tag has been created for git source reference." >> $GITHUB_STEP_SUMMARY
+              ;;
+          esac
+
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Component | Status | Tag |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|-----|" >> $GITHUB_STEP_SUMMARY
-
-          if [ "${{ needs.detect-changes.outputs.cli }}" = "true" ]; then
-            echo "| CLI | ✅ Released | \`${{ needs.detect-changes.outputs.cli_tag }}\` |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| CLI | ⏭️ Skipped | - |" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          if [ "${{ needs.detect-changes.outputs.app }}" = "true" ]; then
-            echo "| App | ✅ Released | \`${{ needs.detect-changes.outputs.app_tag }}\` |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| App | ⏭️ Skipped | - |" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          if [ "${{ needs.detect-changes.outputs.website }}" = "true" ]; then
-            echo "| Website | ✅ Released | \`${{ needs.detect-changes.outputs.website_tag }}\` |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| Website | ⏭️ Skipped | - |" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          if [ "${{ needs.detect-changes.outputs.pulumi_has_changes }}" = "true" ]; then
-            echo "| Pulumi Modules | ✅ Released | See details below |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| Pulumi Modules | ⏭️ Skipped | - |" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          if [ "${{ needs.detect-changes.outputs.terraform_has_changes }}" = "true" ]; then
-            echo "| Terraform Modules | ✅ Released | See details below |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| Terraform Modules | ⏭️ Skipped | - |" >> $GITHUB_STEP_SUMMARY
-          fi
-
+          echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/${TAG})" >> $GITHUB_STEP_SUMMARY
