@@ -10,12 +10,12 @@
 #   2. Each component job runs only if its paths changed
 #   3. Each job calls the corresponding reusable workflow
 #
-# Tag Formats:
-#   - CLI: v{semver}.{YYYYMMDD}.{N} (dots for Homebrew compatibility)
-#   - App: v{semver}-app-{YYYYMMDD}.{N}
-#   - Website: v{semver}-website-{YYYYMMDD}.{N}
-#   - Pulumi: v{semver}-pulumi-{component}-{YYYYMMDD}.{N}
-#   - Terraform: v{semver}-terraform-{component}-{YYYYMMDD}.{N}
+# Tag Formats (semver build metadata):
+#   - CLI: v{semver}+cli.{YYYYMMDD}.{N}
+#   - App: v{semver}+app.{YYYYMMDD}.{N}
+#   - Website: v{semver}+website.{YYYYMMDD}.{N}
+#   - Pulumi: v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
+#   - Terraform: v{semver}+terraform.{component}.{YYYYMMDD}.{N}
 #
 # Trigger: Push to main with changes in monitored paths
 # =============================================================================
@@ -142,13 +142,13 @@ jobs:
           fi
 
           if [ "$CLI_CHANGED" = "true" ]; then
-            # CLI uses dot format: v0.3.1.20260107.{N}
-            CLI_PREFIX="${LATEST_SEMVER}.${TODAY}"
-            CLI_LATEST=$(git tag -l "${CLI_PREFIX}.*" 2>/dev/null | sort -t. -k5 -n | tail -1)
+            # CLI uses build metadata format: v0.3.1+cli.20260107.{N}
+            CLI_PREFIX="${LATEST_SEMVER}+cli.${TODAY}"
+            CLI_LATEST=$(git tag -l "${CLI_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$CLI_LATEST" ]; then
               CLI_SEQ=0
             else
-              CLI_SEQ=$(echo "$CLI_LATEST" | rev | cut -d. -f1 | rev)
+              CLI_SEQ=$(echo "$CLI_LATEST" | sed "s/${CLI_PREFIX}\.//")
               CLI_SEQ=$((CLI_SEQ + 1))
             fi
             CLI_TAG="${CLI_PREFIX}.${CLI_SEQ}"
@@ -170,8 +170,8 @@ jobs:
           fi
 
           if [ "$APP_CHANGED" = "true" ]; then
-            # App uses hyphen format: v0.3.1-app-20260107.{N}
-            APP_PREFIX="${LATEST_SEMVER}-app-${TODAY}"
+            # App uses build metadata format: v0.3.1+app.20260107.{N}
+            APP_PREFIX="${LATEST_SEMVER}+app.${TODAY}"
             APP_LATEST=$(git tag -l "${APP_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$APP_LATEST" ]; then
               APP_SEQ=0
@@ -198,8 +198,8 @@ jobs:
           fi
 
           if [ "$WEBSITE_CHANGED" = "true" ]; then
-            # Website uses hyphen format: v0.3.1-website-20260107.{N}
-            WEBSITE_PREFIX="${LATEST_SEMVER}-website-${TODAY}"
+            # Website uses build metadata format: v0.3.1+website.20260107.{N}
+            WEBSITE_PREFIX="${LATEST_SEMVER}+website.${TODAY}"
             WEBSITE_LATEST=$(git tag -l "${WEBSITE_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$WEBSITE_LATEST" ]; then
               WEBSITE_SEQ=0
@@ -239,8 +239,8 @@ jobs:
               continue
             fi
 
-            # Compute version: v0.3.1-pulumi-{component}-20260107.{N}
-            TAG_PREFIX="${LATEST_SEMVER}-pulumi-${COMPONENT}-${TODAY}"
+            # Compute version: v0.3.1+pulumi.{component}.20260107.{N}
+            TAG_PREFIX="${LATEST_SEMVER}+pulumi.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0
@@ -292,8 +292,8 @@ jobs:
               continue
             fi
 
-            # Compute version: v0.3.1-terraform-{component}-20260107.{N}
-            TAG_PREFIX="${LATEST_SEMVER}-terraform-${COMPONENT}-${TODAY}"
+            # Compute version: v0.3.1+terraform.{component}.20260107.{N}
+            TAG_PREFIX="${LATEST_SEMVER}+terraform.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0

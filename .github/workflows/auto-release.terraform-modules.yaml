@@ -4,12 +4,12 @@
 # Creates git tags for Terraform module changes. Unlike Pulumi modules, no
 # binary is built - users reference Terraform modules via git source.
 #
-# Tag Format: v{semver}-terraform-{component}-{YYYYMMDD}.{N}
-# Example: v0.3.1-terraform-awsecsservice-20260107.1
+# Tag Format (semver build metadata): v{semver}+terraform.{component}.{YYYYMMDD}.{N}
+# Example: v0.3.1+terraform.awsecsservice.20260107.1
 #
 # Usage in Terraform:
 #   module "ecs" {
-#     source = "git::https://github.com/plantonhq/project-planton.git//apis/.../iac/tf?ref=v0.3.1-terraform-awsecsservice-20260107.1"
+#     source = "git::https://github.com/plantonhq/project-planton.git//apis/.../iac/tf?ref=v0.3.1+terraform.awsecsservice.20260107.1"
 #   }
 #
 # Called by: .github/workflows/auto-release.yaml

@@ -4,7 +4,8 @@
 # Builds and deploys project-planton.org to GitHub Pages for auto-releases.
 # The tag serves as an audit trail for deployments.
 #
-# Tag Format: v{semver}-website-{YYYYMMDD}.{N} (e.g., v0.3.1-website-20260107.1)
+# Tag Format (semver build metadata): v{semver}+website.{YYYYMMDD}.{N}
+# Example: v0.3.1+website.20260107.1
 #
 # Called by: .github/workflows/auto-release.yaml
 # =============================================================================
@@ -15,7 +16,7 @@ on:
   workflow_call:
     inputs:
       tag:
-        description: 'The tag to create (e.g., v0.3.1-website-20260107.1)'
+        description: 'The tag to create (e.g., v0.3.1+website.20260107.1)'
         required: true
         type: string
 

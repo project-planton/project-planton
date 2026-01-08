@@ -4,8 +4,8 @@
 # Builds and releases the project-planton CLI using GoReleaser for auto-releases.
 # Updates Homebrew tap so users can get the latest CLI via `brew upgrade`.
 #
-# Tag Format: v{semver}.{YYYYMMDD}.{N} (e.g., v0.3.1.20260107.1)
-# Uses dots for Homebrew version comparison compatibility.
+# Tag Format (semver build metadata): v{semver}+cli.{YYYYMMDD}.{N}
+# Example: v0.3.1+cli.20260107.1
 #
 # Called by: .github/workflows/auto-release.yaml
 # =============================================================================

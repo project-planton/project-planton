@@ -4,8 +4,8 @@
 # Builds pre-compiled binaries for Pulumi deployment components and creates
 # GitHub releases with gzipped artifacts.
 #
-# Tag Format: v{semver}-pulumi-{component}-{YYYYMMDD}.{N}
-# Example: v0.3.1-pulumi-awsecsservice-20260107.1
+# Tag Format (semver build metadata): v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
+# Example: v0.3.1+pulumi.awsecsservice.20260107.1
 #
 # Multi-Platform Builds (parallel via matrix):
 #   - linux_amd64    - CI/CD, Docker, cloud servers
@@ -121,8 +121,8 @@ jobs:
               continue
             fi
 
-            # Tag format: v{semver}-pulumi-{component}-{YYYYMMDD}.{N}
-            TAG_PREFIX="${LATEST_SEMVER}-pulumi-${COMPONENT}-${TODAY}"
+            # Tag format: v{semver}+pulumi.{component}.{YYYYMMDD}.{N}
+            TAG_PREFIX="${LATEST_SEMVER}+pulumi.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
 
             if [ -z "$LATEST_TAG" ]; then

@@ -5,7 +5,8 @@
 # for auto-releases. Does NOT update the 'latest' tag (reserved for semantic
 # releases).
 #
-# Tag Format: v{semver}-app-{YYYYMMDD}.{N} (e.g., v0.3.1-app-20260107.1)
+# Tag Format (semver build metadata): v{semver}+app.{YYYYMMDD}.{N}
+# Example: v0.3.1+app.20260107.1
 #
 # Called by: .github/workflows/auto-release.yaml
 # =============================================================================
@@ -16,7 +17,7 @@ on:
   workflow_call:
     inputs:
       tag:
-        description: 'The tag to create and release (e.g., v0.3.1-app-20260107.1)'
+        description: 'The tag to create and release (e.g., v0.3.1+app.20260107.1)'
         required: true
         type: string
 
