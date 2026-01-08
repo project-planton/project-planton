@@ -31,3 +31,4 @@ Notes:
 
 - All Base44 SDK references have been removed in this project.
 - The UI sections mirror the original Vite site components.
+

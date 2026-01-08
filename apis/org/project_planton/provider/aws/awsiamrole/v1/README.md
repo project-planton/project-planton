@@ -42,4 +42,3 @@ The trust policy controls **who** can assume the role, while permissions policie
 - Confused deputy problem: https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html
 - Research documentation: [docs/README.md](docs/README.md)
 - Examples: [examples.md](examples.md)
-

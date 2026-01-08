@@ -517,5 +517,3 @@ This project is part of Project Planton. See main repository for license informa
 - Check documentation: `_projects/20251127-project-planton-web-app/docs/`
 - View logs: `docker-compose logs -f`
 - Open issue on GitHub
-
-
