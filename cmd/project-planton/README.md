@@ -451,6 +451,3 @@ When modifying the CLI:
 - Format output with `cliprint` package
 - Add flag validation
 - Handle temp file cleanup
-
-
-
