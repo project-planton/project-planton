@@ -24,7 +24,7 @@ builds:
 
 archives:
   - id: default
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     formats:
       - tar.gz
     format_overrides:
@@ -33,7 +33,7 @@ archives:
           - zip
 
 checksum:
-  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  name_template: "cli_{{ .Version }}_checksums.txt"
 
 release:
   github:
@@ -66,14 +66,14 @@ release:
 
     ```bash
     # Apple Silicon (M1/M2/M3)
-    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_darwin_arm64.tar.gz
-    tar -xzf project-planton_{{ .Version }}_darwin_arm64.tar.gz
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/cli_{{ .Version }}_darwin_arm64.tar.gz
+    tar -xzf cli_{{ .Version }}_darwin_arm64.tar.gz
     chmod +x project-planton
     sudo mv project-planton /usr/local/bin/
 
     # Intel
-    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_darwin_amd64.tar.gz
-    tar -xzf project-planton_{{ .Version }}_darwin_amd64.tar.gz
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/cli_{{ .Version }}_darwin_amd64.tar.gz
+    tar -xzf cli_{{ .Version }}_darwin_amd64.tar.gz
     chmod +x project-planton
     sudo mv project-planton /usr/local/bin/
     ```
@@ -82,14 +82,14 @@ release:
 
     ```bash
     # x86_64
-    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_linux_amd64.tar.gz
-    tar -xzf project-planton_{{ .Version }}_linux_amd64.tar.gz
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/cli_{{ .Version }}_linux_amd64.tar.gz
+    tar -xzf cli_{{ .Version }}_linux_amd64.tar.gz
     chmod +x project-planton
     sudo mv project-planton /usr/local/bin/
 
     # ARM64
-    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_linux_arm64.tar.gz
-    tar -xzf project-planton_{{ .Version }}_linux_arm64.tar.gz
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/cli_{{ .Version }}_linux_arm64.tar.gz
+    tar -xzf cli_{{ .Version }}_linux_arm64.tar.gz
     chmod +x project-planton
     sudo mv project-planton /usr/local/bin/
     ```
@@ -98,10 +98,10 @@ release:
 
     ```powershell
     # Download the ZIP file
-    Invoke-WebRequest -Uri "https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/project-planton_{{ .Version }}_windows_amd64.zip" -OutFile "project-planton.zip"
+    Invoke-WebRequest -Uri "https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/cli_{{ .Version }}_windows_amd64.zip" -OutFile "cli.zip"
 
     # Extract
-    Expand-Archive -Path "project-planton.zip" -DestinationPath "."
+    Expand-Archive -Path "cli.zip" -DestinationPath "."
 
     # Add to PATH or move to a directory in PATH
     Move-Item -Path "project-planton.exe" -Destination "C:\Windows\System32\"
@@ -133,27 +133,38 @@ release:
 
     ## Pulumi Module Binaries
 
-    Pre-built Pulumi module binaries are attached to this release. Each binary is gzip-compressed.
+    Pre-built Pulumi module binaries are attached to this release for multiple platforms. Each binary is gzip-compressed.
+
+    ### Available Platforms
+
+    | Platform | Suffix | Example |
+    |----------|--------|---------|
+    | Linux x86-64 | `_linux_amd64.gz` | `pulumi-awsecsservice_linux_amd64.gz` |
+    | macOS Apple Silicon | `_darwin_arm64.gz` | `pulumi-awsecsservice_darwin_arm64.gz` |
+    | macOS Intel | `_darwin_amd64.gz` | `pulumi-awsecsservice_darwin_amd64.gz` |
+    | Windows x86-64 | `_windows_amd64.exe.gz` | `pulumi-awsecsservice_windows_amd64.exe.gz` |
 
     ### Download and Extract
 
     ```bash
-    # Example: Download the AWS ECS Service module
-    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/pulumi-awsecsservice.gz
+    # Example: Download the AWS ECS Service module for your platform
 
-    # Extract
-    gunzip pulumi-awsecsservice.gz
+    # Linux x86-64
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/pulumi-awsecsservice_linux_amd64.gz
+    gunzip pulumi-awsecsservice_linux_amd64.gz
+    chmod +x pulumi-awsecsservice_linux_amd64
+    ./pulumi-awsecsservice_linux_amd64
 
-    # Make executable
-    chmod +x pulumi-awsecsservice
-
-    # Run
-    ./pulumi-awsecsservice
+    # macOS Apple Silicon (M1/M2/M3)
+    curl -LO https://github.com/plantonhq/project-planton/releases/download/{{ .Tag }}/pulumi-awsecsservice_darwin_arm64.gz
+    gunzip pulumi-awsecsservice_darwin_arm64.gz
+    chmod +x pulumi-awsecsservice_darwin_arm64
+    ./pulumi-awsecsservice_darwin_arm64
     ```
 
     ### Available Modules
 
-    All `pulumi-*.gz` files attached to this release are pre-built deployment component binaries for the IaC Runner.
+    All `pulumi-*_{platform}.gz` files attached to this release are pre-built deployment component binaries for the IaC Runner.
 
     ---
 
