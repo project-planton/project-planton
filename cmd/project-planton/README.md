@@ -94,7 +94,7 @@ func commandHandler(cmd *cobra.Command, args []string) {
     // 1. Parse flags
     manifest, err := cmd.Flags().GetString(string(flag.Manifest))
     flag.HandleFlagErrAndValue(err, flag.Manifest, manifest)
-    
+
     // 2. Load manifest
     cliprint.PrintStep("Loading manifest...")
     targetManifest, isTemp, err := climanifest.ResolveManifestPath(cmd)
@@ -105,7 +105,7 @@ func commandHandler(cmd *cobra.Command, args []string) {
         defer os.Remove(targetManifest)
     }
     cliprint.PrintSuccess("Manifest loaded")
-    
+
     // 3. Validate
     cliprint.PrintStep("Validating manifest...")
     if err := manifest.Validate(targetManifest); err != nil {
@@ -113,7 +113,7 @@ func commandHandler(cmd *cobra.Command, args []string) {
         os.Exit(1)
     }
     cliprint.PrintSuccess("Manifest validated")
-    
+
     // 4. Execute IaC operation
     cliprint.PrintHandoff("Pulumi")  // or "OpenTofu"
     err = executeOperation(targetManifest, ...)
@@ -192,6 +192,7 @@ error (no manifest source)
 ### Manifest Operations
 
 `internal/manifest/` provides:
+
 - `LoadManifest()`: Load from file/URL
 - `Validate()`: Run proto-validate
 - `LoadWithOverrides()`: Apply --set flags
@@ -200,6 +201,7 @@ error (no manifest source)
 ### Cloud Resource Kind Reflection
 
 `pkg/crkreflect/` provides:
+
 - Kind string → CloudResourceKind enum mapping
 - CloudResourceKind → proto.Message type mapping
 - Kind → provider mapping
@@ -208,11 +210,13 @@ error (no manifest source)
 ### IaC Execution
 
 **Pulumi**: `pkg/iac/pulumi/pulumistack/run.go`
+
 - Exports manifest as `PROJECT_PLANTON_MANIFEST` env var
 - Runs `pulumi <command>` in module directory
 - Streams output to user
 
 **OpenTofu**: `pkg/iac/tofu/tofumodule/run_operation.go`
+
 - Converts manifest to `variables.tf.json`
 - Sets provider env vars
 - Runs `tofu <command>` in module directory
@@ -235,11 +239,13 @@ make build
 ### Dependencies
 
 **Core**:
+
 - `github.com/spf13/cobra`: CLI framework
 - `google.golang.org/protobuf`: Proto handling
 - `buf.build/go/protovalidate`: Validation
 
 **Cloud Providers**:
+
 - Pulumi AWS, GCP, Azure, etc. SDKs (in modules, not CLI)
 - OpenTofu (external binary)
 
@@ -268,10 +274,10 @@ func TestCommandHandler(t *testing.T) {
     // Setup
     cmd := &cobra.Command{}
     cmd.Flags().String("manifest", "test.yaml", "")
-    
+
     // Execute
     err := commandHandler(cmd, []string{})
-    
+
     // Assert
     if err != nil {
         t.Errorf("expected no error, got: %v", err)
@@ -395,6 +401,7 @@ log.Debugf("Loaded manifest: %+v", manifest)
 ### 1. Consistent User Experience
 
 All commands follow the same output pattern:
+
 - Print steps with spinners
 - Show success/failure clearly
 - Hand off to IaC engine explicitly
@@ -403,6 +410,7 @@ All commands follow the same output pattern:
 ### 2. Fail Fast
 
 Validate early, before expensive operations:
+
 - Manifest loading: Fail if file not found
 - Validation: Fail before calling cloud APIs
 - Credential check: Fail before deployment starts
@@ -410,6 +418,7 @@ Validate early, before expensive operations:
 ### 3. Idempotent Operations
 
 Most operations are idempotent:
+
 - `init`: Safe to run multiple times
 - `validate`: Read-only, no side effects
 - `up`/`apply`: Creates if missing, updates if exists
@@ -442,4 +451,3 @@ When modifying the CLI:
 - Format output with `cliprint` package
 - Add flag validation
 - Handle temp file cleanup
-
