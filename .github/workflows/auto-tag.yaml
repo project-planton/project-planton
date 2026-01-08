@@ -7,12 +7,15 @@
 # This workflow only CREATES TAGS - it does NOT build or release anything.
 # The actual release is handled by auto-release.yaml which triggers on tag push.
 #
-# Tag Formats (semver pre-release style):
-#   - CLI: v{semver}-cli.{YYYYMMDD}.{N}
-#   - App: v{semver}-app.{YYYYMMDD}.{N}
-#   - Website: v{semver}-website.{YYYYMMDD}.{N}
-#   - Pulumi: v{semver}-pulumi.{component}.{YYYYMMDD}.{N}
-#   - Terraform: v{semver}-terraform.{component}.{YYYYMMDD}.{N}
+# Tag Formats (pre-release of NEXT version):
+#   - CLI: v{next}-cli.{YYYYMMDD}.{N}
+#   - App: v{next}-app.{YYYYMMDD}.{N}
+#   - Website: v{next}-website.{YYYYMMDD}.{N}
+#   - Pulumi: v{next}-pulumi.{component}.{YYYYMMDD}.{N}
+#   - Terraform: v{next}-terraform.{component}.{YYYYMMDD}.{N}
+#
+# Example: If latest release is v0.3.4, auto-releases become v0.3.5-cli.20260108.0
+# This ensures auto-release tags sort ABOVE the current release in GitHub's UI.
 #
 # Trigger: Push to main with changes in monitored paths
 # =============================================================================
@@ -98,8 +101,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # =================================================================
-          # Get latest semantic version (v*.*.* only, no auto-release tags)
+          # Get latest semantic version and compute next version for auto-releases
           # =================================================================
+          # Auto-releases are pre-releases of the NEXT version, so they sort above
+          # the current release in GitHub's tag list.
           LATEST_SEMVER=$(git tag -l 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
           if [ -z "$LATEST_SEMVER" ]; then
             LATEST_SEMVER="v0.0.0"
@@ -107,6 +112,14 @@ jobs:
           else
             echo "Latest semantic version: ${LATEST_SEMVER}"
           fi
+
+          # Increment patch version for auto-release base
+          MAJOR=$(echo "$LATEST_SEMVER" | sed 's/v\([0-9]*\)\..*/\1/')
+          MINOR=$(echo "$LATEST_SEMVER" | sed 's/v[0-9]*\.\([0-9]*\)\..*/\1/')
+          PATCH=$(echo "$LATEST_SEMVER" | sed 's/v[0-9]*\.[0-9]*\.\([0-9]*\)/\1/')
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_SEMVER="v${MAJOR}.${MINOR}.${NEXT_PATCH}"
+          echo "Auto-release base version: ${NEXT_SEMVER}"
 
           # =================================================================
           # Get changed files
@@ -134,7 +147,7 @@ jobs:
           fi
 
           if [ "$CLI_CHANGED" = "true" ]; then
-            CLI_PREFIX="${LATEST_SEMVER}-cli.${TODAY}"
+            CLI_PREFIX="${NEXT_SEMVER}-cli.${TODAY}"
             CLI_LATEST=$(git tag -l "${CLI_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$CLI_LATEST" ]; then
               CLI_SEQ=0
@@ -164,7 +177,7 @@ jobs:
           fi
 
           if [ "$APP_CHANGED" = "true" ]; then
-            APP_PREFIX="${LATEST_SEMVER}-app.${TODAY}"
+            APP_PREFIX="${NEXT_SEMVER}-app.${TODAY}"
             APP_LATEST=$(git tag -l "${APP_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$APP_LATEST" ]; then
               APP_SEQ=0
@@ -194,7 +207,7 @@ jobs:
           fi
 
           if [ "$WEBSITE_CHANGED" = "true" ]; then
-            WEBSITE_PREFIX="${LATEST_SEMVER}-website.${TODAY}"
+            WEBSITE_PREFIX="${NEXT_SEMVER}-website.${TODAY}"
             WEBSITE_LATEST=$(git tag -l "${WEBSITE_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$WEBSITE_LATEST" ]; then
               WEBSITE_SEQ=0
@@ -235,7 +248,7 @@ jobs:
               continue
             fi
 
-            TAG_PREFIX="${LATEST_SEMVER}-pulumi.${COMPONENT}.${TODAY}"
+            TAG_PREFIX="${NEXT_SEMVER}-pulumi.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0
@@ -282,7 +295,7 @@ jobs:
               continue
             fi
 
-            TAG_PREFIX="${LATEST_SEMVER}-terraform.${COMPONENT}.${TODAY}"
+            TAG_PREFIX="${NEXT_SEMVER}-terraform.${COMPONENT}.${TODAY}"
             LATEST_TAG=$(git tag -l "${TAG_PREFIX}.*" 2>/dev/null | sort -t. -k2 -n | tail -1)
             if [ -z "$LATEST_TAG" ]; then
               NEXT_SEQ=0
@@ -313,7 +326,8 @@ jobs:
           echo "========================================"
           echo "TAG CREATION SUMMARY"
           echo "========================================"
-          echo "Base Version: ${LATEST_SEMVER}"
+          echo "Latest Release: ${LATEST_SEMVER}"
+          echo "Auto-Release Base: ${NEXT_SEMVER}"
           echo "Tags Created: ${ANY_TAGS_CREATED}"
           echo "========================================"
 
