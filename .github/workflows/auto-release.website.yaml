@@ -126,7 +126,7 @@ jobs:
           else
             echo "Creating release ${TAG}..."
             gh release create "${TAG}" \
-              --title "Website Auto-Release ${TAG}" \
+              --title "${TAG}" \
               --notes-file release-notes.md
           fi
 

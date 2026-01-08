@@ -122,7 +122,7 @@ jobs:
           EOF
             
             gh release create "${TAG}" \
-              --title "Pulumi Module: ${COMPONENT} ${TAG}" \
+              --title "${TAG}" \
               --notes-file release-notes.md
             
             echo "Created release: ${TAG}"
