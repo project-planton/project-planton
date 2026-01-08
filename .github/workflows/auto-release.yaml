@@ -1,11 +1,11 @@
 # =============================================================================
 # Auto-Release Executor
 # =============================================================================
-# Triggers on auto-release tags pushed by auto-tag.yaml and executes the
-# appropriate release workflow based on the tag pattern.
+# Called by auto-tag.yaml after creating tags. Executes the appropriate
+# release workflow based on the tag pattern.
 #
 # This workflow only BUILDS AND RELEASES - it does NOT create tags.
-# Tags are created by auto-tag.yaml which triggers this workflow.
+# Tags are created by auto-tag.yaml which then calls this workflow.
 #
 # Tag Patterns:
 #   - v*-cli.*         -> CLI release (GoReleaser)
@@ -14,19 +14,18 @@
 #   - v*-pulumi.*      -> Pulumi module release (binary)
 #   - v*-terraform.*   -> Terraform module release (tag-only)
 #
-# Trigger: Tag push matching auto-release patterns
+# Trigger: Called by auto-tag.yaml via workflow_dispatch
 # =============================================================================
 
 name: auto-release
 
 on:
-  push:
-    tags:
-      - 'v*-cli.*'
-      - 'v*-app.*'
-      - 'v*-website.*'
-      - 'v*-pulumi.*'
-      - 'v*-terraform.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v0.3.5-cli.20260108.0)'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -51,7 +50,7 @@ jobs:
       - name: Parse tag
         id: parse
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
+          TAG="${{ inputs.tag }}"
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "Processing tag: ${TAG}"
 
