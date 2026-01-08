@@ -120,3 +120,4 @@ Specialized node pools for different workload types:
 - AKS Pricing: https://azure.microsoft.com/en-us/pricing/details/kubernetes-service/
 - Terraform Provider: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster
 - Pulumi Provider: https://www.pulumi.com/registry/packages/azure-native/api-docs/containerservice/managedcluster/
+
