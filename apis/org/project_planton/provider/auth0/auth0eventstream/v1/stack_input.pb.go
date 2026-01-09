@@ -30,9 +30,9 @@ type Auth0EventStreamStackInput struct {
 	Target *Auth0EventStream `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// auth0_provider_config contains the Auth0 credentials for authentication.
 	// Includes domain, client_id, and client_secret.
-	Auth0ProviderConfig *auth0.Auth0ProviderConfig `protobuf:"bytes,2,opt,name=auth0_provider_config,json=auth0ProviderConfig,proto3" json:"auth0_provider_config,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	ProviderConfig *auth0.Auth0ProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Auth0EventStreamStackInput) Reset() {
@@ -72,9 +72,9 @@ func (x *Auth0EventStreamStackInput) GetTarget() *Auth0EventStream {
 	return nil
 }
 
-func (x *Auth0EventStreamStackInput) GetAuth0ProviderConfig() *auth0.Auth0ProviderConfig {
+func (x *Auth0EventStreamStackInput) GetProviderConfig() *auth0.Auth0ProviderConfig {
 	if x != nil {
-		return x.Auth0ProviderConfig
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -83,10 +83,10 @@ var File_org_project_planton_provider_auth0_auth0eventstream_v1_stack_input_prot
 
 const file_org_project_planton_provider_auth0_auth0eventstream_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Horg/project_planton/provider/auth0/auth0eventstream/v1/stack_input.proto\x126org.project_planton.provider.auth0.auth0eventstream.v1\x1a@org/project_planton/provider/auth0/auth0eventstream/v1/api.proto\x1a1org/project_planton/provider/auth0/provider.proto\"\xeb\x01\n" +
+	"Horg/project_planton/provider/auth0/auth0eventstream/v1/stack_input.proto\x126org.project_planton.provider.auth0.auth0eventstream.v1\x1a@org/project_planton/provider/auth0/auth0eventstream/v1/api.proto\x1a1org/project_planton/provider/auth0/provider.proto\"\xe0\x01\n" +
 	"\x1aAuth0EventStreamStackInput\x12`\n" +
-	"\x06target\x18\x01 \x01(\v2H.org.project_planton.provider.auth0.auth0eventstream.v1.Auth0EventStreamR\x06target\x12k\n" +
-	"\x15auth0_provider_config\x18\x02 \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigR\x13auth0ProviderConfigB\xbd\x03\n" +
+	"\x06target\x18\x01 \x01(\v2H.org.project_planton.provider.auth0.auth0eventstream.v1.Auth0EventStreamR\x06target\x12`\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v27.org.project_planton.provider.auth0.Auth0ProviderConfigR\x0eproviderConfigB\xbd\x03\n" +
 	":com.org.project_planton.provider.auth0.auth0eventstream.v1B\x0fStackInputProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0eventstream/v1;auth0eventstreamv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Auth0.Auth0eventstream.V1\xca\x025Org\\ProjectPlanton\\Provider\\Auth0\\Auth0eventstream\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Auth0\\Auth0eventstream\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Auth0::Auth0eventstream::V1b\x06proto3"
 
 var (
@@ -109,7 +109,7 @@ var file_org_project_planton_provider_auth0_auth0eventstream_v1_stack_input_prot
 }
 var file_org_project_planton_provider_auth0_auth0eventstream_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: org.project_planton.provider.auth0.auth0eventstream.v1.Auth0EventStreamStackInput.target:type_name -> org.project_planton.provider.auth0.auth0eventstream.v1.Auth0EventStream
-	2, // 1: org.project_planton.provider.auth0.auth0eventstream.v1.Auth0EventStreamStackInput.auth0_provider_config:type_name -> org.project_planton.provider.auth0.Auth0ProviderConfig
+	2, // 1: org.project_planton.provider.auth0.auth0eventstream.v1.Auth0EventStreamStackInput.provider_config:type_name -> org.project_planton.provider.auth0.Auth0ProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

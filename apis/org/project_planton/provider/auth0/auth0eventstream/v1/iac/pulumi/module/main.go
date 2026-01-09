@@ -14,7 +14,7 @@ func Resources(ctx *pulumi.Context, stackInput *auth0eventstreamv1.Auth0EventStr
 	// Setup Auth0 provider with credentials from provider config
 	var provider *auth0.Provider
 	var err error
-	providerConfig := stackInput.Auth0ProviderConfig
+	providerConfig := stackInput.ProviderConfig
 
 	if providerConfig == nil {
 		// Use default provider (assumes credentials from environment variables)
