@@ -97,8 +97,13 @@ resource "kubernetes_cron_job" "this" {
               }
 
               # Add env variables from var.spec.env.variables
+              # The orchestrator resolves valueFrom references and populates .value before invoking Terraform
               dynamic "env" {
-                for_each = try(var.spec.env.variables, {})
+                for_each = {
+                  for k, v in try(var.spec.env.variables, {}) :
+                  k => v.value
+                  if try(v.value, null) != null && v.value != ""
+                }
                 content {
                   name  = env.key
                   value = env.value

@@ -10,7 +10,7 @@ alwaysApply: false
 
 Purpose: When invoked, help users quickly **FIND** existing changelogs from the Project Planton CLI repository without needing to specify directory paths. Parse temporal context (this month, last month, etc.), search appropriate directories, and present results in an easy-to-consume format with both clickable links and copyable paths.
 
-Usage: Invoke explicitly as `@lookup-project-planton-changelog` with contextual information about when the change was made and/or keywords describing the change.
+Usage: Invoke explicitly as `@find-project-planton-changelog` with contextual information about when the change was made and/or keywords describing the change.
 
 **User Intent**: When a user invokes this rule, they are asking you to **SEARCH FOR** and **PRESENT** existing changelogs. They are **NOT** asking you to create a new changelog.
 
@@ -320,7 +320,7 @@ Map user keywords to component categories:
 
 ### Example 1: Search for CLI Feature
 ```
-User: "@lookup-project-planton-changelog We added interactive Pulumi output 
+User: "@find-project-planton-changelog We added interactive Pulumi output 
        support last month"
 ```
 
@@ -339,7 +339,7 @@ User: "@lookup-project-planton-changelog We added interactive Pulumi output
 
 ### Example 2: Bug Fix
 ```
-User: "@lookup-project-planton-changelog Find the fix for temporal namespace 
+User: "@find-project-planton-changelog Find the fix for temporal namespace 
        initialization from October"
 ```
 
@@ -351,7 +351,7 @@ User: "@lookup-project-planton-changelog Find the fix for temporal namespace
 
 ### Example 3: Provider Work
 ```
-User: "@lookup-project-planton-changelog What provider work did we do 
+User: "@find-project-planton-changelog What provider work did we do 
        in the last 3 months?"
 ```
 
@@ -364,7 +364,7 @@ User: "@lookup-project-planton-changelog What provider work did we do
 
 ### Example 4: Proto/API Changes
 ```
-User: "@lookup-project-planton-changelog Show recent proto field defaults work"
+User: "@find-project-planton-changelog Show recent proto field defaults work"
 ```
 
 **Agent actions**:

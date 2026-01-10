@@ -52,7 +52,19 @@ variable "spec" {
       })
     })
     env = optional(object({
-      variables = optional(map(string))
+      # A map of environment variable names to their values.
+      # Each variable can be provided either as a direct string value (value)
+      # or as a reference to another Project Planton resource's field (value_from).
+      # The orchestrator resolves value_from references and populates .value before invoking Terraform.
+      variables = optional(map(object({
+        value = optional(string)
+        value_from = optional(object({
+          kind       = optional(string)
+          env        = optional(string)
+          name       = string
+          field_path = optional(string)
+        }))
+      })))
       secrets = optional(map(object({
         value = optional(string)
         secret_ref = optional(object({

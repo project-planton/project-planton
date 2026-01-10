@@ -448,7 +448,33 @@ type KubernetesStatefulSetContainerAppEnv struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// *
 	// A map of environment variable names to their values.
-	Variables map[string]string `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Each variable can be provided either as a literal string value or as a reference
+	// to another Project Planton resource's field.
+	//
+	// **Option 1: Direct string value**
+	// ```yaml
+	// variables:
+	//
+	//	DATABASE_PORT:
+	//	  value: "5432"
+	//
+	// ```
+	//
+	// **Option 2: Reference to another resource's field**
+	// ```yaml
+	// variables:
+	//
+	//	DATABASE_HOST:
+	//	  valueFrom:
+	//	    kind: PostgresCluster
+	//	    name: my-postgres
+	//	    fieldPath: "status.outputs.host"
+	//
+	// ```
+	//
+	// When using valueFrom references, the orchestrator resolves the reference
+	// and populates the value field before invoking the IaC modules.
+	Variables map[string]*v1.StringValueOrRef `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
 	// A map of secret environment variable names to their values.
 	// Each secret can be provided either as a literal string value or as a reference
@@ -490,7 +516,7 @@ func (*KubernetesStatefulSetContainerAppEnv) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *KubernetesStatefulSetContainerAppEnv) GetVariables() map[string]string {
+func (x *KubernetesStatefulSetContainerAppEnv) GetVariables() map[string]*v1.StringValueOrRef {
 	if x != nil {
 		return x.Variables
 	}
@@ -846,13 +872,13 @@ const file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec
 	"\rstartup_probe\x18\b \x01(\v2..org.project_planton.provider.kubernetes.ProbeR\fstartupProbe\x12\x18\n" +
 	"\acommand\x18\t \x03(\tR\acommand\x12\x12\n" +
 	"\x04args\x18\n" +
-	" \x03(\tR\x04args\"\x89\x04\n" +
+	" \x03(\tR\x04args\"\xc5\x04\n" +
 	"$KubernetesStatefulSetContainerAppEnv\x12\x93\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2u.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.VariablesEntryR\tvariables\x12\x8d\x01\n" +
-	"\asecrets\x18\x02 \x03(\v2s.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
+	"\asecrets\x18\x02 \x03(\v2s.org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntryR\asecrets\x1ax\n" +
 	"\x0eVariablesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a}\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12P\n" +
+	"\x05value\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x05value:\x028\x01\x1a}\n" +
 	"\fSecretsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12W\n" +
 	"\x05value\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueR\x05value:\x028\x01\"\x9c\x05\n" +
@@ -937,12 +963,13 @@ var file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_p
 	10, // 17: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.VariablesEntry
 	11, // 18: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntry
 	7,  // 19: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetAvailability.pod_disruption_budget:type_name -> org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetPodDisruptionBudget
-	19, // 20: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntry.value:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	13, // 20: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.VariablesEntry.value:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	19, // 21: org.project_planton.provider.kubernetes.kubernetesstatefulset.v1.KubernetesStatefulSetContainerAppEnv.SecretsEntry.value:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetesstatefulset_v1_spec_proto_init() }

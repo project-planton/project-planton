@@ -7,7 +7,6 @@ import (
 	"github.com/pkg/errors"
 	kubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	kubernetesdaemonsetv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1"
-	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
@@ -53,12 +52,22 @@ func daemonSet(ctx *pulumi.Context, locals *Locals, serviceAccountName string, k
 
 	if target.Spec.Container.App.Env != nil {
 		if target.Spec.Container.App.Env.Variables != nil {
-			sortedVarKeys := sortstringmap.SortMap(target.Spec.Container.App.Env.Variables)
-			for _, key := range sortedVarKeys {
-				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
-					Name:  pulumi.String(key),
-					Value: pulumi.String(target.Spec.Container.App.Env.Variables[key]),
-				}))
+			// Sort keys for deterministic output
+			sortedVarKeys := make([]string, 0, len(target.Spec.Container.App.Env.Variables))
+			for k := range target.Spec.Container.App.Env.Variables {
+				sortedVarKeys = append(sortedVarKeys, k)
+			}
+			sort.Strings(sortedVarKeys)
+
+			for _, envVarKey := range sortedVarKeys {
+				envVarValue := target.Spec.Container.App.Env.Variables[envVarKey]
+				// Orchestrator resolves valueFrom and places result in .value
+				if envVarValue.GetValue() != "" {
+					envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+						Name:  pulumi.String(envVarKey),
+						Value: pulumi.String(envVarValue.GetValue()),
+					}))
+				}
 			}
 		}
 

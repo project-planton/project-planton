@@ -7,7 +7,6 @@ import (
 	"github.com/pkg/errors"
 	kubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	kubernetesdeploymentv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1"
-	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
@@ -56,13 +55,22 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 
 	if locals.KubernetesDeployment.Spec.Container.App.Env != nil {
 		if locals.KubernetesDeployment.Spec.Container.App.Env.Variables != nil {
-			sortedEnvVariableKeys := sortstringmap.SortMap(locals.KubernetesDeployment.Spec.Container.App.Env.Variables)
+			// Sort keys for deterministic output
+			sortedEnvVariableKeys := make([]string, 0, len(locals.KubernetesDeployment.Spec.Container.App.Env.Variables))
+			for k := range locals.KubernetesDeployment.Spec.Container.App.Env.Variables {
+				sortedEnvVariableKeys = append(sortedEnvVariableKeys, k)
+			}
+			sort.Strings(sortedEnvVariableKeys)
 
-			for _, environmentVariableKey := range sortedEnvVariableKeys {
-				envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
-					Name:  pulumi.String(environmentVariableKey),
-					Value: pulumi.String(locals.KubernetesDeployment.Spec.Container.App.Env.Variables[environmentVariableKey]),
-				}))
+			for _, envVarKey := range sortedEnvVariableKeys {
+				envVarValue := locals.KubernetesDeployment.Spec.Container.App.Env.Variables[envVarKey]
+				// Orchestrator resolves valueFrom and places result in .value
+				if envVarValue.GetValue() != "" {
+					envVarInputs = append(envVarInputs, kubernetescorev1.EnvVarInput(kubernetescorev1.EnvVarArgs{
+						Name:  pulumi.String(envVarKey),
+						Value: pulumi.String(envVarValue.GetValue()),
+					}))
+				}
 			}
 		}
 
