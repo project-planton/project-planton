@@ -134,6 +134,27 @@ message Auth0WebhookConfiguration {
 // Auth0WebhookAuthorization configures authentication for webhook endpoints.
 // Supports both Basic and Bearer token authentication methods.
 message Auth0WebhookAuthorization {
+  // CEL validation: token is required when method is "bearer"
+  option (buf.validate.message).cel = {
+    id: "webhook_auth_bearer_token_required"
+    message: "token is required when authorization method is 'bearer'. Generate one with: openssl rand -base64 32"
+    expression: "this.method != 'bearer' || this.token != ''"
+  };
+
+  // CEL validation: username is required when method is "basic"
+  option (buf.validate.message).cel = {
+    id: "webhook_auth_basic_username_required"
+    message: "username is required when authorization method is 'basic'"
+    expression: "this.method != 'basic' || this.username != ''"
+  };
+
+  // CEL validation: password is required when method is "basic"
+  option (buf.validate.message).cel = {
+    id: "webhook_auth_basic_password_required"
+    message: "password is required when authorization method is 'basic'"
+    expression: "this.method != 'basic' || this.password != ''"
+  };
+
   // method specifies the authorization method for the webhook.
   //
   // - "basic": HTTP Basic Authentication using username and password.
@@ -166,5 +187,12 @@ message Auth0WebhookAuthorization {
   // Required when method is "bearer".
   // This value is stored securely and never returned by the API.
   // Ignored when method is "basic".
+  //
+  // Generate a secure token using OpenSSL:
+  //   openssl rand -base64 32   # Base64 encoded (recommended)
+  //   openssl rand -hex 32      # Hexadecimal
+  //
+  // The same token must be configured on your webhook server to validate
+  // incoming requests via the Authorization: Bearer <token> header.
   string token = 4;
 }

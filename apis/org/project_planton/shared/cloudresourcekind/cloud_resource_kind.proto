@@ -717,4 +717,9 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "a0es"
   }];
+  Auth0ResourceServer = 2103 [(kind_meta) = {
+    provider: auth0
+    version: v1
+    id_prefix: "a0rs"
+  }];
 }

@@ -1,0 +1,3 @@
+name: planton
+description: Deploy Auth0 Resource Server (API) using Pulumi
+runtime: go

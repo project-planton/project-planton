@@ -307,6 +307,14 @@ type Auth0WebhookAuthorization struct {
 	// Required when method is "bearer".
 	// This value is stored securely and never returned by the API.
 	// Ignored when method is "basic".
+	//
+	// Generate a secure token using OpenSSL:
+	//
+	//	openssl rand -base64 32   # Base64 encoded (recommended)
+	//	openssl rand -hex 32      # Hexadecimal
+	//
+	// The same token must be configured on your webhook server to validate
+	// incoming requests via the Authorization: Bearer <token> header.
 	Token         string `protobuf:"bytes,4,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -387,12 +395,15 @@ const file_org_project_planton_provider_auth0_auth0eventstream_v1_spec_proto_raw
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\tawsRegion\"\xee\x01\n" +
 	"\x19Auth0WebhookConfiguration\x12@\n" +
 	"\x10webhook_endpoint\x18\x01 \x01(\tB\x15\xbaH\x12\xc8\x01\x01r\r2\v^https://.+R\x0fwebhookEndpoint\x12\x8e\x01\n" +
-	"\x15webhook_authorization\x18\x02 \x01(\v2Q.org.project_planton.provider.auth0.auth0eventstream.v1.Auth0WebhookAuthorizationB\x06\xbaH\x03\xc8\x01\x01R\x14webhookAuthorization\"\x9a\x01\n" +
+	"\x15webhook_authorization\x18\x02 \x01(\v2Q.org.project_planton.provider.auth0.auth0eventstream.v1.Auth0WebhookAuthorizationB\x06\xbaH\x03\xc8\x01\x01R\x14webhookAuthorization\"\x80\x05\n" +
 	"\x19Auth0WebhookAuthorization\x12/\n" +
 	"\x06method\x18\x01 \x01(\tB\x17\xbaH\x14\xc8\x01\x01r\x0fR\x05basicR\x06bearerR\x06method\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x14\n" +
-	"\x05token\x18\x04 \x01(\tR\x05tokenB\xb7\x03\n" +
+	"\x05token\x18\x04 \x01(\tR\x05token:\xe3\x03\xbaH\xdf\x03\x1a\xb6\x01\n" +
+	"\"webhook_auth_bearer_token_required\x12ctoken is required when authorization method is 'bearer'. Generate one with: openssl rand -base64 32\x1a+this.method != 'bearer' || this.token != ''\x1a\x90\x01\n" +
+	"$webhook_auth_basic_username_required\x129username is required when authorization method is 'basic'\x1a-this.method != 'basic' || this.username != ''\x1a\x90\x01\n" +
+	"$webhook_auth_basic_password_required\x129password is required when authorization method is 'basic'\x1a-this.method != 'basic' || this.password != ''B\xb7\x03\n" +
 	":com.org.project_planton.provider.auth0.auth0eventstream.v1B\tSpecProtoP\x01Zsgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0eventstream/v1;auth0eventstreamv1\xa2\x02\x05OPPAA\xaa\x025Org.ProjectPlanton.Provider.Auth0.Auth0eventstream.V1\xca\x025Org\\ProjectPlanton\\Provider\\Auth0\\Auth0eventstream\\V1\xe2\x02AOrg\\ProjectPlanton\\Provider\\Auth0\\Auth0eventstream\\V1\\GPBMetadata\xea\x02:Org::ProjectPlanton::Provider::Auth0::Auth0eventstream::V1b\x06proto3"
 
 var (

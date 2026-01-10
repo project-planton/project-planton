@@ -213,9 +213,10 @@ const (
 	CloudResourceKind_CloudflareD1Database                 CloudResourceKind = 1805
 	CloudResourceKind_CloudflareZeroTrustAccessApplication CloudResourceKind = 1806
 	// 2100–2299: Auth0 resources
-	CloudResourceKind_Auth0Connection  CloudResourceKind = 2100
-	CloudResourceKind_Auth0Client      CloudResourceKind = 2101
-	CloudResourceKind_Auth0EventStream CloudResourceKind = 2102
+	CloudResourceKind_Auth0Connection     CloudResourceKind = 2100
+	CloudResourceKind_Auth0Client         CloudResourceKind = 2101
+	CloudResourceKind_Auth0EventStream    CloudResourceKind = 2102
+	CloudResourceKind_Auth0ResourceServer CloudResourceKind = 2103
 )
 
 // Enum value maps for CloudResourceKind.
@@ -354,6 +355,7 @@ var (
 		2100: "Auth0Connection",
 		2101: "Auth0Client",
 		2102: "Auth0EventStream",
+		2103: "Auth0ResourceServer",
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                           0,
@@ -489,6 +491,7 @@ var (
 		"Auth0Connection":                       2100,
 		"Auth0Client":                           2101,
 		"Auth0EventStream":                      2102,
+		"Auth0ResourceServer":                   2103,
 	}
 )
 
@@ -633,7 +636,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xf4+\n" +
+	"\x02v1\x10\x01*\x9e,\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -791,7 +794,9 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fAuth0Connection\x10\xb4\x10\x1a\x10\xa2\xf7\x04\f\b\x15\x10\x01\"\x06a0conn\x12!\n" +
 	"\vAuth0Client\x10\xb5\x10\x1a\x0f\xa2\xf7\x04\v\b\x15\x10\x01\"\x05a0cli\x12%\n" +
 	"\x10Auth0EventStream\x10\xb6\x10\x1a\x0e\xa2\xf7\x04\n" +
-	"\b\x15\x10\x01\"\x04a0es:\x84\x01\n" +
+	"\b\x15\x10\x01\"\x04a0es\x12(\n" +
+	"\x13Auth0ResourceServer\x10\xb7\x10\x1a\x0e\xa2\xf7\x04\n" +
+	"\b\x15\x10\x01\"\x04a0rs:\x84\x01\n" +
 	"\tkind_meta\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\v2C.org.project_planton.shared.cloudresourcekind.CloudResourceKindMetaR\bkindMetaB\xf2\x02\n" +
 	"0com.org.project_planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZVgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 
