@@ -320,4 +320,86 @@ var _ = ginkgo.Describe("KubernetesStatefulSet Custom Validation Tests", func() 
 			})
 		})
 	})
+
+	ginkgo.Describe("Environment variables validation", func() {
+		ginkgo.Context("When variables have direct string values", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"PGDATA": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "/var/lib/postgresql/data",
+							},
+						},
+						"POSTGRES_PORT": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "5432",
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have valueFrom references", func() {
+			ginkgo.It("should pass validation with valid valueFrom ref", func() {
+				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"POSTGRES_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-postgres",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have mixed types", func() {
+			ginkgo.It("should pass validation with both direct values and valueFrom refs", func() {
+				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"PGDATA": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "/var/lib/postgresql/data",
+							},
+						},
+						"POSTGRES_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-postgres",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When valueFrom ref is missing required name", func() {
+			ginkgo.It("should fail validation", func() {
+				input.Spec.Container.App.Env = &KubernetesStatefulSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"POSTGRES_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
 })

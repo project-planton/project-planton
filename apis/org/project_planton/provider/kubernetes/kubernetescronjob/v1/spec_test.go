@@ -54,8 +54,12 @@ var _ = ginkgo.Describe("KubernetesCronJob Custom Validation Tests", func() {
 					},
 				},
 				Env: &KubernetesCronJobContainerAppEnv{
-					Variables: map[string]string{
-						"ENV_VAR": "example",
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"ENV_VAR": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "example",
+							},
+						},
 					},
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"SECRET_NAME": {
@@ -175,6 +179,88 @@ var _ = ginkgo.Describe("KubernetesCronJob Custom Validation Tests", func() {
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "my-secret",
 									Key:  "",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Environment variables validation", func() {
+		ginkgo.Context("When variables have direct string values", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.Env = &KubernetesCronJobContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"BACKUP_RETENTION_DAYS": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "30",
+							},
+						},
+						"LOG_LEVEL": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "info",
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have valueFrom references", func() {
+			ginkgo.It("should pass validation with valid valueFrom ref", func() {
+				input.Spec.Env = &KubernetesCronJobContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-postgres",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have mixed types", func() {
+			ginkgo.It("should pass validation with both direct values and valueFrom refs", func() {
+				input.Spec.Env = &KubernetesCronJobContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"BACKUP_RETENTION_DAYS": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "30",
+							},
+						},
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-postgres",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When valueFrom ref is missing required name", func() {
+			ginkgo.It("should fail validation", func() {
+				input.Spec.Env = &KubernetesCronJobContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "",
 								},
 							},
 						},

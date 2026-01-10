@@ -9,8 +9,6 @@ import (
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-
-	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 )
 
 func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) (*batchv1.CronJob, error) {
@@ -39,12 +37,22 @@ func cronJob(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 
 	if target.Spec.Env != nil {
 		if target.Spec.Env.Variables != nil {
-			sortedVarKeys := sortstringmap.SortMap(target.Spec.Env.Variables)
-			for _, key := range sortedVarKeys {
-				envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
-					Name:  pulumi.String(key),
-					Value: pulumi.String(target.Spec.Env.Variables[key]),
-				}))
+			// Sort keys for deterministic output
+			sortedVarKeys := make([]string, 0, len(target.Spec.Env.Variables))
+			for k := range target.Spec.Env.Variables {
+				sortedVarKeys = append(sortedVarKeys, k)
+			}
+			sort.Strings(sortedVarKeys)
+
+			for _, envVarKey := range sortedVarKeys {
+				envVarValue := target.Spec.Env.Variables[envVarKey]
+				// Orchestrator resolves valueFrom and places result in .value
+				if envVarValue.GetValue() != "" {
+					envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
+						Name:  pulumi.String(envVarKey),
+						Value: pulumi.String(envVarValue.GetValue()),
+					}))
+				}
 			}
 		}
 

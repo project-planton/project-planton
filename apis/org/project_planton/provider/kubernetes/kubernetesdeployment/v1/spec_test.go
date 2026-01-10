@@ -177,8 +177,12 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 		ginkgo.Context("When secrets have mixed types", func() {
 			ginkgo.It("should pass validation with both string values and secret refs", func() {
 				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
-					Variables: map[string]string{
-						"DATABASE_NAME": "mydb",
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_NAME": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "mydb",
+							},
+						},
 					},
 					Secrets: map[string]*kubernetes.KubernetesSensitiveValue{
 						"DATABASE_PASSWORD": {
@@ -227,6 +231,88 @@ var _ = ginkgo.Describe("KubernetesDeployment Custom Validation Tests", func() {
 								SecretRef: &kubernetes.KubernetesSecretKeyRef{
 									Name: "my-secrets",
 									Key:  "",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("Environment variables validation", func() {
+		ginkgo.Context("When variables have direct string values", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "localhost",
+							},
+						},
+						"DATABASE_PORT": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "5432",
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have valueFrom references", func() {
+			ginkgo.It("should pass validation with valid valueFrom ref", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-postgres",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have mixed types", func() {
+			ginkgo.It("should pass validation with both direct values and valueFrom refs", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_PORT": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "5432",
+							},
+						},
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-postgres",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When valueFrom ref is missing required name", func() {
+			ginkgo.It("should fail validation", func() {
+				input.Spec.Container.App.Env = &KubernetesDeploymentContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"DATABASE_HOST": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "",
 								},
 							},
 						},

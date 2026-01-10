@@ -290,8 +290,35 @@ func (x *KubernetesCronJobSpec) GetVolumeMounts() []*kubernetes.VolumeMount {
 // and secrets for the cron-job container.
 type KubernetesCronJobContainerAppEnv struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// *
 	// A map of environment variable names to their values.
-	Variables map[string]string `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Each variable can be provided either as a literal string value or as a reference
+	// to another Project Planton resource's field.
+	//
+	// **Option 1: Direct string value**
+	// ```yaml
+	// variables:
+	//
+	//	BACKUP_RETENTION_DAYS:
+	//	  value: "30"
+	//
+	// ```
+	//
+	// **Option 2: Reference to another resource's field**
+	// ```yaml
+	// variables:
+	//
+	//	DATABASE_HOST:
+	//	  valueFrom:
+	//	    kind: PostgresCluster
+	//	    name: my-postgres
+	//	    fieldPath: "status.outputs.host"
+	//
+	// ```
+	//
+	// When using valueFrom references, the orchestrator resolves the reference
+	// and populates the value field before invoking the IaC modules.
+	Variables map[string]*v1.StringValueOrRef `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
 	// A map of secret environment variable names to their values.
 	// Each secret can be provided either as a literal string value or as a reference
@@ -333,7 +360,7 @@ func (*KubernetesCronJobContainerAppEnv) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KubernetesCronJobContainerAppEnv) GetVariables() map[string]string {
+func (x *KubernetesCronJobContainerAppEnv) GetVariables() map[string]*v1.StringValueOrRef {
 	if x != nil {
 		return x.Variables
 	}
@@ -386,13 +413,13 @@ const file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_pro
 	"\x1e_successful_jobs_history_limitB\x1c\n" +
 	"\x1a_failed_jobs_history_limitB\x10\n" +
 	"\x0e_backoff_limitB\x11\n" +
-	"\x0f_restart_policy\"\xf5\x03\n" +
+	"\x0f_restart_policy\"\xb1\x04\n" +
 	" KubernetesCronJobContainerAppEnv\x12\x8b\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2m.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntryR\tvariables\x12\x85\x01\n" +
-	"\asecrets\x18\x02 \x03(\v2k.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
+	"\asecrets\x18\x02 \x03(\v2k.org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntryR\asecrets\x1ax\n" +
 	"\x0eVariablesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a}\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12P\n" +
+	"\x05value\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x05value:\x028\x01\x1a}\n" +
 	"\fSecretsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12W\n" +
 	"\x05value\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesSensitiveValueR\x05value:\x028\x01B\xdc\x03\n" +
@@ -434,12 +461,13 @@ var file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto
 	9,  // 6: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobSpec.volume_mounts:type_name -> org.project_planton.provider.kubernetes.VolumeMount
 	3,  // 7: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.variables:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry
 	4,  // 8: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.secrets:type_name -> org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry
-	10, // 9: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry.value:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	6,  // 9: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.VariablesEntry.value:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	10, // 10: org.project_planton.provider.kubernetes.kubernetescronjob.v1.KubernetesCronJobContainerAppEnv.SecretsEntry.value:type_name -> org.project_planton.provider.kubernetes.KubernetesSensitiveValue
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_kubernetes_kubernetescronjob_v1_spec_proto_init() }

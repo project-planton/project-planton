@@ -208,8 +208,30 @@ message KubernetesStatefulSetContainerApp {
 message KubernetesStatefulSetContainerAppEnv {
   /**
    * A map of environment variable names to their values.
+   * Each variable can be provided either as a literal string value or as a reference
+   * to another Project Planton resource's field.
+   *
+   * **Option 1: Direct string value**
+   * ```yaml
+   * variables:
+   *   DATABASE_PORT:
+   *     value: "5432"
+   * ```
+   *
+   * **Option 2: Reference to another resource's field**
+   * ```yaml
+   * variables:
+   *   DATABASE_HOST:
+   *     valueFrom:
+   *       kind: PostgresCluster
+   *       name: my-postgres
+   *       fieldPath: "status.outputs.host"
+   * ```
+   *
+   * When using valueFrom references, the orchestrator resolves the reference
+   * and populates the value field before invoking the IaC modules.
    */
-  map<string, string> variables = 1;
+  map<string, org.project_planton.shared.foreignkey.v1.StringValueOrRef> variables = 1;
 
   /**
    * A map of secret environment variable names to their values.

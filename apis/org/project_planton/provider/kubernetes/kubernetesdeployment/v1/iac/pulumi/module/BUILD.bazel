@@ -22,7 +22,6 @@ go_library(
         "//apis/org/project_planton/provider/kubernetes",
         "//apis/org/project_planton/provider/kubernetes/kubernetesdeployment/v1:kubernetesdeployment",
         "//apis/org/project_planton/shared/cloudresourcekind",
-        "//pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys",
         "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
         "//pkg/kubernetes/kuberneteslabels",

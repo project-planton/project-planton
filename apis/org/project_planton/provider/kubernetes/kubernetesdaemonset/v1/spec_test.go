@@ -456,4 +456,86 @@ var _ = ginkgo.Describe("KubernetesDaemonSet Custom Validation Tests", func() {
 			})
 		})
 	})
+
+	ginkgo.Describe("Environment variables validation", func() {
+		ginkgo.Context("When variables have direct string values", func() {
+			ginkgo.It("should pass validation", func() {
+				input.Spec.Container.App.Env = &KubernetesDaemonSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"LOG_LEVEL": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "info",
+							},
+						},
+						"NODE_ENV": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "production",
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have valueFrom references", func() {
+			ginkgo.It("should pass validation with valid valueFrom ref", func() {
+				input.Spec.Container.App.Env = &KubernetesDaemonSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"CLUSTER_NAME": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-cluster",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When variables have mixed types", func() {
+			ginkgo.It("should pass validation with both direct values and valueFrom refs", func() {
+				input.Spec.Container.App.Env = &KubernetesDaemonSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"LOG_LEVEL": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "info",
+							},
+						},
+						"CLUSTER_NAME": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "my-cluster",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("When valueFrom ref is missing required name", func() {
+			ginkgo.It("should fail validation", func() {
+				input.Spec.Container.App.Env = &KubernetesDaemonSetContainerAppEnv{
+					Variables: map[string]*foreignkeyv1.StringValueOrRef{
+						"CLUSTER_NAME": {
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+								ValueFrom: &foreignkeyv1.ValueFromRef{
+									Name: "",
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+		})
+	})
 })
