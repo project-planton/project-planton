@@ -42,7 +42,12 @@ locals {
 
   # Additional settings
   is_token_endpoint_ip_header_trusted = coalesce(var.spec.is_token_endpoint_ip_header_trusted, false)
-  enabled_connections                 = coalesce(var.spec.enabled_connections, [])
+
+  # Extract enabled_connections values from StringValueOrRef structure
+  enabled_connections = [
+    for conn in coalesce(var.spec.enabled_connections, []) : conn.value
+    if conn != null && conn.value != null && conn.value != ""
+  ]
 
   # JWT configuration with defaults
   jwt_configuration = var.spec.jwt_configuration != null ? {
@@ -91,7 +96,16 @@ locals {
   } : null
 
   # API grants for authorizing API access
-  api_grants = coalesce(var.spec.api_grants, [])
+  # Transform to extract audience value from StringValueOrRef structure
+  api_grants = [
+    for grant in coalesce(var.spec.api_grants, []) : {
+      audience               = grant.audience.value
+      scopes                 = coalesce(grant.scopes, [])
+      allow_any_organization = coalesce(grant.allow_any_organization, false)
+      organization_usage     = grant.organization_usage
+    }
+    if grant != null && grant.audience != null && grant.audience.value != null
+  ]
 }
 
 

@@ -64,8 +64,16 @@ type Locals struct {
 	OidcBackchannelLogout          *auth0clientv1.Auth0OidcBackchannelLogout
 	EnabledConnections             []string
 
-	// API Grants for authorizing API access
-	ApiGrants []*auth0clientv1.Auth0ClientApiGrant
+	// API Grants for authorizing API access (with resolved audience values)
+	ApiGrants []*ApiGrant
+}
+
+// ApiGrant represents an API grant configuration with resolved audience value
+type ApiGrant struct {
+	Audience             string
+	Scopes               []string
+	AllowAnyOrganization bool
+	OrganizationUsage    string
 }
 
 // initializeLocals creates and populates the Locals struct from stack input
@@ -131,10 +139,25 @@ func initializeLocals(ctx *pulumi.Context, stackInput *auth0clientv1.Auth0Client
 	// Additional settings
 	locals.IsTokenEndpointIpHeaderTrusted = spec.IsTokenEndpointIpHeaderTrusted
 	locals.OidcBackchannelLogout = spec.OidcBackchannelLogout
-	locals.EnabledConnections = spec.EnabledConnections
 
-	// API Grants
-	locals.ApiGrants = spec.ApiGrants
+	// Extract enabled_connections values from StringValueOrRef
+	for _, conn := range spec.EnabledConnections {
+		if conn != nil && conn.GetValue() != "" {
+			locals.EnabledConnections = append(locals.EnabledConnections, conn.GetValue())
+		}
+	}
+
+	// API Grants - extract audience values from StringValueOrRef
+	for _, grant := range spec.ApiGrants {
+		if grant != nil && grant.Audience != nil && grant.Audience.GetValue() != "" {
+			locals.ApiGrants = append(locals.ApiGrants, &ApiGrant{
+				Audience:             grant.Audience.GetValue(),
+				Scopes:               grant.Scopes,
+				AllowAnyOrganization: grant.AllowAnyOrganization,
+				OrganizationUsage:    grant.OrganizationUsage,
+			})
+		}
+	}
 
 	return locals
 }

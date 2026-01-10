@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.auth0.auth0client.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // Auth0ClientSpec defines the configuration for an Auth0 Application (Client).
 // In Auth0, "Applications" represent the clients that interact with Auth0 for authentication.
@@ -196,8 +197,17 @@ message Auth0ClientSpec {
 
   // enabled_connections limits which connections this app can use.
   // If empty, all connections are available.
-  // Specify connection IDs or names to restrict access.
-  repeated string enabled_connections = 28;
+  //
+  // You can provide either:
+  // - Direct connection name: {value: "Username-Password-Authentication"}
+  // - Reference to Auth0Connection component: {value_from: {kind: Auth0Connection, name: "my-connection"}}
+  //
+  // When using references, the connection name is automatically resolved from the
+  // Auth0Connection's status.outputs.name field.
+  repeated org.project_planton.shared.foreignkey.v1.StringValueOrRef enabled_connections = 28 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = Auth0Connection,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.name"
+  ];
 
   // api_grants configures which APIs this client is authorized to access.
   // For M2M applications using client_credentials grant, at least one API grant is typically required.
@@ -377,8 +387,20 @@ message Auth0ClientApiGrant {
   // audience is the API identifier (Resource Server identifier) the client is authorized to access.
   // For Auth0 Management API: "https://{tenant}.{region}.auth0.com/api/v2/"
   // For custom APIs: the identifier you configured when creating the API in Auth0
+  //
+  // You can provide either:
+  // - Direct value: {value: "https://api.example.com/"}
+  // - Reference to Auth0ResourceServer component: {value_from: {kind: Auth0ResourceServer, name: "my-api"}}
+  //
+  // When using references, the audience is automatically resolved from the
+  // Auth0ResourceServer's status.outputs.identifier field.
+  //
   // Example: "https://api.example.com/", "api.planton.live"
-  string audience = 1 [(buf.validate.field).required = true];
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef audience = 1 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = Auth0ResourceServer,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.identifier"
+  ];
 
   // scopes are the permissions granted for this API.
   // For Management API, common scopes include:

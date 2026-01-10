@@ -286,7 +286,8 @@ spec:
   grant_types:
     - client_credentials
   api_grants:
-    - audience: "https://my-tenant.us.auth0.com/api/v2/"
+    - audience:
+        value: "https://my-tenant.us.auth0.com/api/v2/"
       scopes:
         - read:users
         - read:user_idp_tokens
@@ -309,7 +310,33 @@ spec:
   grant_types:
     - client_credentials
   api_grants:
-    - audience: "https://api.example.com/"
+    - audience:
+        value: "https://api.example.com/"
+      scopes:
+        - read:resources
+        - write:resources
+```
+
+### M2M with Auth0ResourceServer Reference
+
+For backend services that reference an Auth0ResourceServer component for the API audience:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: backend-service-with-ref
+  org: my-organization
+  env: production
+spec:
+  application_type: non_interactive
+  description: Backend service referencing Auth0ResourceServer
+  grant_types:
+    - client_credentials
+  api_grants:
+    - audience:
+        value_from:
+          name: my-api  # References Auth0ResourceServer named "my-api"
       scopes:
         - read:resources
         - write:resources
@@ -332,12 +359,17 @@ spec:
   grant_types:
     - client_credentials
   api_grants:
-    - audience: "https://my-tenant.us.auth0.com/api/v2/"
+    # Direct value for Management API
+    - audience:
+        value: "https://my-tenant.us.auth0.com/api/v2/"
       scopes:
         - read:users
         - update:users
         - delete:users
-    - audience: "https://api.example.com/"
+    # Reference to Auth0ResourceServer for custom API
+    - audience:
+        value_from:
+          name: my-custom-api
       scopes:
         - admin:resources
   jwt_configuration:
@@ -420,6 +452,102 @@ spec:
   organization_require_behavior: pre_login_prompt
   callbacks:
     - https://b2b-saas.example.com/callback
+```
+
+## Cross-Referencing Auth0 Components
+
+Auth0Client can reference other Auth0 deployment components to establish relationships:
+- **Auth0ResourceServer**: Reference for `api_grants[].audience`
+- **Auth0Connection**: Reference for `enabled_connections`
+
+### SPA with Auth0Connection References
+
+Limit which connections can be used for this app by referencing Auth0Connection components:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: spa-with-specific-connections
+  org: my-organization
+  env: production
+spec:
+  application_type: spa
+  callbacks:
+    - https://app.example.com/callback
+  web_origins:
+    - https://app.example.com
+  enabled_connections:
+    # Reference Auth0Connection components by name
+    - value_from:
+        name: my-database-connection
+    - value_from:
+        name: my-google-connection
+```
+
+### M2M with Full Cross-References
+
+Complete example showing both Auth0ResourceServer and Auth0Connection references:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: backend-service-full
+  org: my-organization
+  env: production
+spec:
+  application_type: non_interactive
+  description: Backend service with full cross-references
+  grant_types:
+    - client_credentials
+  api_grants:
+    # Reference Auth0ResourceServer for custom API
+    - audience:
+        value_from:
+          name: my-api-resource-server
+      scopes:
+        - read:data
+        - write:data
+  enabled_connections:
+    # Only allow service account connection
+    - value_from:
+        name: service-accounts-connection
+```
+
+### Mixed Direct Values and References
+
+You can mix direct values and component references:
+
+```yaml
+apiVersion: auth0.project-planton.org/v1
+kind: Auth0Client
+metadata:
+  name: mixed-references-app
+  org: my-organization
+  env: production
+spec:
+  application_type: spa
+  callbacks:
+    - https://app.example.com/callback
+  enabled_connections:
+    # Direct connection name
+    - value: "Username-Password-Authentication"
+    # Reference to Auth0Connection component
+    - value_from:
+        name: my-google-social-connection
+  api_grants:
+    # Direct Management API audience
+    - audience:
+        value: "https://my-tenant.us.auth0.com/api/v2/"
+      scopes:
+        - read:users
+    # Reference to Auth0ResourceServer
+    - audience:
+        value_from:
+          name: my-custom-api
+      scopes:
+        - read:resources
 ```
 
 ## Multi-Environment Configuration

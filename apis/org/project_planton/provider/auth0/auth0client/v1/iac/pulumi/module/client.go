@@ -285,7 +285,7 @@ func createClientGrants(ctx *pulumi.Context, locals *Locals, provider *auth0.Pro
 			scopesArray = append(scopesArray, pulumi.String(scope))
 		}
 
-		// Build client grant arguments
+		// Build client grant arguments (audience is already resolved from StringValueOrRef)
 		grantArgs := &auth0.ClientGrantArgs{
 			ClientId: client.ClientId,
 			Audience: pulumi.String(grant.Audience),

@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
+	foreignkeyv1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 )
 
 func TestAuth0Client(t *testing.T) {
@@ -315,6 +316,161 @@ var _ = ginkgo.Describe("Auth0Client Validation Tests", func() {
 						ApplicationType: "regular_web",
 						JwtConfiguration: &Auth0JwtConfiguration{
 							Alg: "PS256",
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("auth0_client with api_grants using direct value", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "m2m-with-api-grant",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "non_interactive",
+						Description:     "M2M client with API access",
+						GrantTypes:      []string{"client_credentials"},
+						ApiGrants: []*Auth0ClientApiGrant{
+							{
+								Audience: &foreignkeyv1.StringValueOrRef{
+									LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+										Value: "https://api.example.com/",
+									},
+								},
+								Scopes: []string{"read:resources", "write:resources"},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("auth0_client with api_grants using reference to Auth0ResourceServer", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "m2m-with-resource-server-ref",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "non_interactive",
+						Description:     "M2M client referencing Auth0ResourceServer",
+						GrantTypes:      []string{"client_credentials"},
+						ApiGrants: []*Auth0ClientApiGrant{
+							{
+								Audience: &foreignkeyv1.StringValueOrRef{
+									LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+										ValueFrom: &foreignkeyv1.ValueFromRef{
+											Name: "my-api-resource-server",
+										},
+									},
+								},
+								Scopes: []string{"read:data"},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("auth0_client with enabled_connections using direct value", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "spa-with-connections",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "spa",
+						Callbacks:       []string{"https://myapp.com/callback"},
+						EnabledConnections: []*foreignkeyv1.StringValueOrRef{
+							{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "Username-Password-Authentication"}},
+							{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "google-oauth2"}},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("auth0_client with enabled_connections using reference to Auth0Connection", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "spa-with-connection-refs",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "spa",
+						Callbacks:       []string{"https://myapp.com/callback"},
+						EnabledConnections: []*foreignkeyv1.StringValueOrRef{
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+									ValueFrom: &foreignkeyv1.ValueFromRef{
+										Name: "my-database-connection",
+									},
+								},
+							},
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+									ValueFrom: &foreignkeyv1.ValueFromRef{
+										Name: "my-google-connection",
+									},
+								},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("auth0_client with multiple api_grants to Management API and custom API", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "platform-admin-service",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "non_interactive",
+						Description:     "Platform admin with multi-API access",
+						GrantTypes:      []string{"client_credentials"},
+						ApiGrants: []*Auth0ClientApiGrant{
+							{
+								Audience: &foreignkeyv1.StringValueOrRef{
+									LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+										Value: "https://my-tenant.us.auth0.com/api/v2/",
+									},
+								},
+								Scopes: []string{"read:users", "update:users"},
+							},
+							{
+								Audience: &foreignkeyv1.StringValueOrRef{
+									LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+										ValueFrom: &foreignkeyv1.ValueFromRef{
+											Name: "my-custom-api",
+										},
+									},
+								},
+								Scopes: []string{"admin:resources"},
+							},
 						},
 					},
 				}
@@ -633,6 +789,60 @@ var _ = ginkgo.Describe("Auth0Client Validation Tests", func() {
 						ApplicationType:             "spa",
 						OrganizationUsage:           "require",
 						OrganizationRequireBehavior: "always_prompt",
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("api_grants with missing required audience", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-app",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "non_interactive",
+						GrantTypes:      []string{"client_credentials"},
+						ApiGrants: []*Auth0ClientApiGrant{
+							{
+								Audience: nil,
+								Scopes:   []string{"read:resources"},
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("api_grants with reference missing required name", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &Auth0Client{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0Client",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-app",
+					},
+					Spec: &Auth0ClientSpec{
+						ApplicationType: "non_interactive",
+						GrantTypes:      []string{"client_credentials"},
+						ApiGrants: []*Auth0ClientApiGrant{
+							{
+								Audience: &foreignkeyv1.StringValueOrRef{
+									LiteralOrRef: &foreignkeyv1.StringValueOrRef_ValueFrom{
+										ValueFrom: &foreignkeyv1.ValueFromRef{
+											Name: "", // Name is required
+										},
+									},
+								},
+								Scopes: []string{"read:resources"},
+							},
+						},
 					},
 				}
 				err := protovalidate.Validate(input)

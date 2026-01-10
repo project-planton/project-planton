@@ -157,7 +157,11 @@ variable "spec" {
     }))
 
     # enabled_connections limits which connections this app can use.
-    enabled_connections = optional(list(string))
+    # Each entry is an object with a 'value' field containing the connection name.
+    # This supports foreign key references resolved by Project Planton runtime.
+    enabled_connections = optional(list(object({
+      value = string
+    })))
 
     # api_grants configures which APIs this client is authorized to access.
     # For M2M applications using client_credentials grant, at least one API grant is typically required.
@@ -165,7 +169,10 @@ variable "spec" {
     api_grants = optional(list(object({
       # audience is the API identifier the client is authorized to access.
       # Required. For Auth0 Management API: "https://{tenant}.{region}.auth0.com/api/v2/"
-      audience = string
+      # This is an object with a 'value' field supporting foreign key references.
+      audience = object({
+        value = string
+      })
 
       # scopes are the permissions granted for this API.
       scopes = optional(list(string))
