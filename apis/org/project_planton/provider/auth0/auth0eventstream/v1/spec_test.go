@@ -564,5 +564,82 @@ var _ = ginkgo.Describe("Auth0EventStream Validation Tests", func() {
 				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
+
+		ginkgo.Context("bearer method without token", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &Auth0EventStream{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0EventStream",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-stream",
+					},
+					Spec: &Auth0EventStreamSpec{
+						DestinationType: "webhook",
+						Subscriptions:   []string{"user.created"},
+						WebhookConfiguration: &Auth0WebhookConfiguration{
+							WebhookEndpoint: "https://example.com/webhook",
+							WebhookAuthorization: &Auth0WebhookAuthorization{
+								Method: "bearer",
+								Token:  "", // missing token
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("basic method without username", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &Auth0EventStream{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0EventStream",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-stream",
+					},
+					Spec: &Auth0EventStreamSpec{
+						DestinationType: "webhook",
+						Subscriptions:   []string{"user.created"},
+						WebhookConfiguration: &Auth0WebhookConfiguration{
+							WebhookEndpoint: "https://example.com/webhook",
+							WebhookAuthorization: &Auth0WebhookAuthorization{
+								Method:   "basic",
+								Username: "", // missing username
+								Password: "secret-password",
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("basic method without password", func() {
+			ginkgo.It("should return a validation error", func() {
+				input := &Auth0EventStream{
+					ApiVersion: "auth0.project-planton.org/v1",
+					Kind:       "Auth0EventStream",
+					Metadata: &shared.CloudResourceMetadata{
+						Name: "test-stream",
+					},
+					Spec: &Auth0EventStreamSpec{
+						DestinationType: "webhook",
+						Subscriptions:   []string{"user.created"},
+						WebhookConfiguration: &Auth0WebhookConfiguration{
+							WebhookEndpoint: "https://example.com/webhook",
+							WebhookAuthorization: &Auth0WebhookAuthorization{
+								Method:   "basic",
+								Username: "webhook-user",
+								Password: "", // missing password
+							},
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
 	})
 })
