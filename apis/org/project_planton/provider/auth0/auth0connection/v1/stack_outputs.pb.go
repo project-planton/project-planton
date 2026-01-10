@@ -43,7 +43,7 @@ type Auth0ConnectionStackOutputs struct {
 	Strategy string `protobuf:"bytes,3,opt,name=strategy,proto3" json:"strategy,omitempty"`
 	// is_enabled indicates whether the connection is currently enabled.
 	// A disabled connection cannot be used for authentication.
-	IsEnabled bool `protobuf:"varint,4,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
+	IsEnabled string `protobuf:"bytes,4,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
 	// provisioning_ticket_url is the URL used for self-service connection setup.
 	// Only available for certain enterprise connections (like SAML or OIDC).
 	// Users can visit this URL to complete connection configuration.
@@ -124,11 +124,11 @@ func (x *Auth0ConnectionStackOutputs) GetStrategy() string {
 	return ""
 }
 
-func (x *Auth0ConnectionStackOutputs) GetIsEnabled() bool {
+func (x *Auth0ConnectionStackOutputs) GetIsEnabled() string {
 	if x != nil {
 		return x.IsEnabled
 	}
-	return false
+	return ""
 }
 
 func (x *Auth0ConnectionStackOutputs) GetProvisioningTicketUrl() string {
@@ -183,7 +183,7 @@ const file_org_project_planton_provider_auth0_auth0connection_v1_stack_outputs_p
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
 	"\bstrategy\x18\x03 \x01(\tR\bstrategy\x12\x1d\n" +
 	"\n" +
-	"is_enabled\x18\x04 \x01(\bR\tisEnabled\x126\n" +
+	"is_enabled\x18\x04 \x01(\tR\tisEnabled\x126\n" +
 	"\x17provisioning_ticket_url\x18\x05 \x01(\tR\x15provisioningTicketUrl\x12!\n" +
 	"\fcallback_url\x18\x06 \x01(\tR\vcallbackUrl\x12!\n" +
 	"\fmetadata_url\x18\a \x01(\tR\vmetadataUrl\x12\x1b\n" +

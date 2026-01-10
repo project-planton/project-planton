@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/auth0/auth0resourceserver/v1/stack_outputs.proto.
  */
 export const file_org_project_planton_provider_auth0_auth0resourceserver_v1_stack_outputs: GenFile = /*@__PURE__*/
-  fileDesc("Ck1vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2F1dGgwL2F1dGgwcmVzb3VyY2VzZXJ2ZXIvdjEvc3RhY2tfb3V0cHV0cy5wcm90bxI5b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5hdXRoMC5hdXRoMHJlc291cmNlc2VydmVyLnYxIuICCh9BdXRoMFJlc291cmNlU2VydmVyU3RhY2tPdXRwdXRzEgoKAmlkGAEgASgJEhIKCmlkZW50aWZpZXIYAiABKAkSDAoEbmFtZRgDIAEoCRITCgtzaWduaW5nX2FsZxgEIAEoCRIWCg5zaWduaW5nX3NlY3JldBgFIAEoCRIWCg50b2tlbl9saWZldGltZRgGIAEoBRIeChZ0b2tlbl9saWZldGltZV9mb3Jfd2ViGAcgASgFEhwKFGFsbG93X29mZmxpbmVfYWNjZXNzGAggASgIEjcKL3NraXBfY29uc2VudF9mb3JfdmVyaWZpYWJsZV9maXJzdF9wYXJ0eV9jbGllbnRzGAkgASgIEhgKEGVuZm9yY2VfcG9saWNpZXMYCiABKAgSFQoNdG9rZW5fZGlhbGVjdBgLIAEoCRIRCglpc19zeXN0ZW0YDCABKAgSEQoJY2xpZW50X2lkGA0gASgJQtQDCj1jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5hdXRoMC5hdXRoMHJlc291cmNlc2VydmVyLnYxQhFTdGFja091dHB1dHNQcm90b1ABWnlnaXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2F1dGgwL2F1dGgwcmVzb3VyY2VzZXJ2ZXIvdjE7YXV0aDByZXNvdXJjZXNlcnZlcnYxogIFT1BQQUGqAjhPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuQXV0aDAuQXV0aDByZXNvdXJjZXNlcnZlci5WMcoCOE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxBdXRoMFxBdXRoMHJlc291cmNlc2VydmVyXFYx4gJET3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEF1dGgwXEF1dGgwcmVzb3VyY2VzZXJ2ZXJcVjFcR1BCTWV0YWRhdGHqAj1Pcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6QXV0aDA6OkF1dGgwcmVzb3VyY2VzZXJ2ZXI6OlYxYgZwcm90bzM");
+  fileDesc("Ck1vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2F1dGgwL2F1dGgwcmVzb3VyY2VzZXJ2ZXIvdjEvc3RhY2tfb3V0cHV0cy5wcm90bxI5b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5hdXRoMC5hdXRoMHJlc291cmNlc2VydmVyLnYxIuICCh9BdXRoMFJlc291cmNlU2VydmVyU3RhY2tPdXRwdXRzEgoKAmlkGAEgASgJEhIKCmlkZW50aWZpZXIYAiABKAkSDAoEbmFtZRgDIAEoCRITCgtzaWduaW5nX2FsZxgEIAEoCRIWCg5zaWduaW5nX3NlY3JldBgFIAEoCRIWCg50b2tlbl9saWZldGltZRgGIAEoCRIeChZ0b2tlbl9saWZldGltZV9mb3Jfd2ViGAcgASgJEhwKFGFsbG93X29mZmxpbmVfYWNjZXNzGAggASgJEjcKL3NraXBfY29uc2VudF9mb3JfdmVyaWZpYWJsZV9maXJzdF9wYXJ0eV9jbGllbnRzGAkgASgJEhgKEGVuZm9yY2VfcG9saWNpZXMYCiABKAkSFQoNdG9rZW5fZGlhbGVjdBgLIAEoCRIRCglpc19zeXN0ZW0YDCABKAkSEQoJY2xpZW50X2lkGA0gASgJQtQDCj1jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5hdXRoMC5hdXRoMHJlc291cmNlc2VydmVyLnYxQhFTdGFja091dHB1dHNQcm90b1ABWnlnaXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2F1dGgwL2F1dGgwcmVzb3VyY2VzZXJ2ZXIvdjE7YXV0aDByZXNvdXJjZXNlcnZlcnYxogIFT1BQQUGqAjhPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuQXV0aDAuQXV0aDByZXNvdXJjZXNlcnZlci5WMcoCOE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxBdXRoMFxBdXRoMHJlc291cmNlc2VydmVyXFYx4gJET3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEF1dGgwXEF1dGgwcmVzb3VyY2VzZXJ2ZXJcVjFcR1BCTWV0YWRhdGHqAj1Pcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6QXV0aDA6OkF1dGgwcmVzb3VyY2VzZXJ2ZXI6OlYxYgZwcm90bzM");
 
 /**
  * Auth0ResourceServerStackOutputs contains the outputs from an Auth0 Resource Server deployment.
@@ -69,37 +69,37 @@ export type Auth0ResourceServerStackOutputs = Message<"org.project_planton.provi
   /**
    * token_lifetime is the configured token validity duration in seconds.
    *
-   * @generated from field: int32 token_lifetime = 6;
+   * @generated from field: string token_lifetime = 6;
    */
-  tokenLifetime: number;
+  tokenLifetime: string;
 
   /**
    * token_lifetime_for_web is the token validity for implicit/hybrid flows.
    *
-   * @generated from field: int32 token_lifetime_for_web = 7;
+   * @generated from field: string token_lifetime_for_web = 7;
    */
-  tokenLifetimeForWeb: number;
+  tokenLifetimeForWeb: string;
 
   /**
    * allow_offline_access indicates if refresh tokens can be issued.
    *
-   * @generated from field: bool allow_offline_access = 8;
+   * @generated from field: string allow_offline_access = 8;
    */
-  allowOfflineAccess: boolean;
+  allowOfflineAccess: string;
 
   /**
    * skip_consent_for_verifiable_first_party_clients indicates consent skip setting.
    *
-   * @generated from field: bool skip_consent_for_verifiable_first_party_clients = 9;
+   * @generated from field: string skip_consent_for_verifiable_first_party_clients = 9;
    */
-  skipConsentForVerifiableFirstPartyClients: boolean;
+  skipConsentForVerifiableFirstPartyClients: string;
 
   /**
    * enforce_policies indicates if RBAC is enabled for this API.
    *
-   * @generated from field: bool enforce_policies = 10;
+   * @generated from field: string enforce_policies = 10;
    */
-  enforcePolicies: boolean;
+  enforcePolicies: string;
 
   /**
    * token_dialect is the access token format configured for this API.
@@ -112,9 +112,9 @@ export type Auth0ResourceServerStackOutputs = Message<"org.project_planton.provi
    * is_system indicates if this is a system-managed resource server.
    * System resource servers (like the Auth0 Management API) cannot be modified.
    *
-   * @generated from field: bool is_system = 12;
+   * @generated from field: string is_system = 12;
    */
-  isSystem: boolean;
+  isSystem: string;
 
   /**
    * client_id is the associated client ID if one has been linked.

@@ -33,26 +33,26 @@ message Auth0ResourceServerStackOutputs {
   string signing_secret = 5;
 
   // token_lifetime is the configured token validity duration in seconds.
-  int32 token_lifetime = 6;
+  string token_lifetime = 6;
 
   // token_lifetime_for_web is the token validity for implicit/hybrid flows.
-  int32 token_lifetime_for_web = 7;
+  string token_lifetime_for_web = 7;
 
   // allow_offline_access indicates if refresh tokens can be issued.
-  bool allow_offline_access = 8;
+  string allow_offline_access = 8;
 
   // skip_consent_for_verifiable_first_party_clients indicates consent skip setting.
-  bool skip_consent_for_verifiable_first_party_clients = 9;
+  string skip_consent_for_verifiable_first_party_clients = 9;
 
   // enforce_policies indicates if RBAC is enabled for this API.
-  bool enforce_policies = 10;
+  string enforce_policies = 10;
 
   // token_dialect is the access token format configured for this API.
   string token_dialect = 11;
 
   // is_system indicates if this is a system-managed resource server.
   // System resource servers (like the Auth0 Management API) cannot be modified.
-  bool is_system = 12;
+  string is_system = 12;
 
   // client_id is the associated client ID if one has been linked.
   // Some resource servers may have an associated client for certain features.

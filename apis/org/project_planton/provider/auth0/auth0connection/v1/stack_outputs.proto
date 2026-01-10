@@ -26,7 +26,7 @@ message Auth0ConnectionStackOutputs {
 
   // is_enabled indicates whether the connection is currently enabled.
   // A disabled connection cannot be used for authentication.
-  bool is_enabled = 4;
+  string is_enabled = 4;
 
   // provisioning_ticket_url is the URL used for self-service connection setup.
   // Only available for certain enterprise connections (like SAML or OIDC).

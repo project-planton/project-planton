@@ -55,13 +55,13 @@ type Auth0ClientStackOutputs struct {
 	SigningKeys []*Auth0SigningKey `protobuf:"bytes,6,rep,name=signing_keys,json=signingKeys,proto3" json:"signing_keys,omitempty"`
 	// callback_url_template indicates if callback URL templating is enabled.
 	// When true, Auth0 allows parameterized callback URLs.
-	CallbackUrlTemplate bool `protobuf:"varint,7,opt,name=callback_url_template,json=callbackUrlTemplate,proto3" json:"callback_url_template,omitempty"`
+	CallbackUrlTemplate string `protobuf:"bytes,7,opt,name=callback_url_template,json=callbackUrlTemplate,proto3" json:"callback_url_template,omitempty"`
 	// allowed_clients lists clients allowed to perform delegation for this client.
 	// Used in legacy delegation flows.
 	AllowedClients []string `protobuf:"bytes,8,rep,name=allowed_clients,json=allowedClients,proto3" json:"allowed_clients,omitempty"`
 	// global indicates if this is a global client (the tenant's default client).
 	// There is only one global client per tenant.
-	Global bool `protobuf:"varint,9,opt,name=global,proto3" json:"global,omitempty"`
+	Global string `protobuf:"bytes,9,opt,name=global,proto3" json:"global,omitempty"`
 	// token_endpoint_auth_method is the authentication method for the token endpoint.
 	// Common values: "none", "client_secret_post", "client_secret_basic", "private_key_jwt"
 	TokenEndpointAuthMethod string `protobuf:"bytes,10,opt,name=token_endpoint_auth_method,json=tokenEndpointAuthMethod,proto3" json:"token_endpoint_auth_method,omitempty"`
@@ -141,11 +141,11 @@ func (x *Auth0ClientStackOutputs) GetSigningKeys() []*Auth0SigningKey {
 	return nil
 }
 
-func (x *Auth0ClientStackOutputs) GetCallbackUrlTemplate() bool {
+func (x *Auth0ClientStackOutputs) GetCallbackUrlTemplate() string {
 	if x != nil {
 		return x.CallbackUrlTemplate
 	}
-	return false
+	return ""
 }
 
 func (x *Auth0ClientStackOutputs) GetAllowedClients() []string {
@@ -155,11 +155,11 @@ func (x *Auth0ClientStackOutputs) GetAllowedClients() []string {
 	return nil
 }
 
-func (x *Auth0ClientStackOutputs) GetGlobal() bool {
+func (x *Auth0ClientStackOutputs) GetGlobal() string {
 	if x != nil {
 		return x.Global
 	}
-	return false
+	return ""
 }
 
 func (x *Auth0ClientStackOutputs) GetTokenEndpointAuthMethod() string {
@@ -254,9 +254,9 @@ const file_org_project_planton_provider_auth0_auth0client_v1_stack_outputs_proto
 	"\x04name\x18\x04 \x01(\tR\x04name\x12)\n" +
 	"\x10application_type\x18\x05 \x01(\tR\x0fapplicationType\x12e\n" +
 	"\fsigning_keys\x18\x06 \x03(\v2B.org.project_planton.provider.auth0.auth0client.v1.Auth0SigningKeyR\vsigningKeys\x122\n" +
-	"\x15callback_url_template\x18\a \x01(\bR\x13callbackUrlTemplate\x12'\n" +
+	"\x15callback_url_template\x18\a \x01(\tR\x13callbackUrlTemplate\x12'\n" +
 	"\x0fallowed_clients\x18\b \x03(\tR\x0eallowedClients\x12\x16\n" +
-	"\x06global\x18\t \x01(\bR\x06global\x12;\n" +
+	"\x06global\x18\t \x01(\tR\x06global\x12;\n" +
 	"\x1atoken_endpoint_auth_method\x18\n" +
 	" \x01(\tR\x17tokenEndpointAuthMethod\"u\n" +
 	"\x0fAuth0SigningKey\x12\x12\n" +

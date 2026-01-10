@@ -48,20 +48,20 @@ type Auth0ResourceServerStackOutputs struct {
 	// IMPORTANT: Keep this secret secure and never expose in client-side code.
 	SigningSecret string `protobuf:"bytes,5,opt,name=signing_secret,json=signingSecret,proto3" json:"signing_secret,omitempty"`
 	// token_lifetime is the configured token validity duration in seconds.
-	TokenLifetime int32 `protobuf:"varint,6,opt,name=token_lifetime,json=tokenLifetime,proto3" json:"token_lifetime,omitempty"`
+	TokenLifetime string `protobuf:"bytes,6,opt,name=token_lifetime,json=tokenLifetime,proto3" json:"token_lifetime,omitempty"`
 	// token_lifetime_for_web is the token validity for implicit/hybrid flows.
-	TokenLifetimeForWeb int32 `protobuf:"varint,7,opt,name=token_lifetime_for_web,json=tokenLifetimeForWeb,proto3" json:"token_lifetime_for_web,omitempty"`
+	TokenLifetimeForWeb string `protobuf:"bytes,7,opt,name=token_lifetime_for_web,json=tokenLifetimeForWeb,proto3" json:"token_lifetime_for_web,omitempty"`
 	// allow_offline_access indicates if refresh tokens can be issued.
-	AllowOfflineAccess bool `protobuf:"varint,8,opt,name=allow_offline_access,json=allowOfflineAccess,proto3" json:"allow_offline_access,omitempty"`
+	AllowOfflineAccess string `protobuf:"bytes,8,opt,name=allow_offline_access,json=allowOfflineAccess,proto3" json:"allow_offline_access,omitempty"`
 	// skip_consent_for_verifiable_first_party_clients indicates consent skip setting.
-	SkipConsentForVerifiableFirstPartyClients bool `protobuf:"varint,9,opt,name=skip_consent_for_verifiable_first_party_clients,json=skipConsentForVerifiableFirstPartyClients,proto3" json:"skip_consent_for_verifiable_first_party_clients,omitempty"`
+	SkipConsentForVerifiableFirstPartyClients string `protobuf:"bytes,9,opt,name=skip_consent_for_verifiable_first_party_clients,json=skipConsentForVerifiableFirstPartyClients,proto3" json:"skip_consent_for_verifiable_first_party_clients,omitempty"`
 	// enforce_policies indicates if RBAC is enabled for this API.
-	EnforcePolicies bool `protobuf:"varint,10,opt,name=enforce_policies,json=enforcePolicies,proto3" json:"enforce_policies,omitempty"`
+	EnforcePolicies string `protobuf:"bytes,10,opt,name=enforce_policies,json=enforcePolicies,proto3" json:"enforce_policies,omitempty"`
 	// token_dialect is the access token format configured for this API.
 	TokenDialect string `protobuf:"bytes,11,opt,name=token_dialect,json=tokenDialect,proto3" json:"token_dialect,omitempty"`
 	// is_system indicates if this is a system-managed resource server.
 	// System resource servers (like the Auth0 Management API) cannot be modified.
-	IsSystem bool `protobuf:"varint,12,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
+	IsSystem string `protobuf:"bytes,12,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
 	// client_id is the associated client ID if one has been linked.
 	// Some resource servers may have an associated client for certain features.
 	ClientId      string `protobuf:"bytes,13,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
@@ -134,39 +134,39 @@ func (x *Auth0ResourceServerStackOutputs) GetSigningSecret() string {
 	return ""
 }
 
-func (x *Auth0ResourceServerStackOutputs) GetTokenLifetime() int32 {
+func (x *Auth0ResourceServerStackOutputs) GetTokenLifetime() string {
 	if x != nil {
 		return x.TokenLifetime
 	}
-	return 0
+	return ""
 }
 
-func (x *Auth0ResourceServerStackOutputs) GetTokenLifetimeForWeb() int32 {
+func (x *Auth0ResourceServerStackOutputs) GetTokenLifetimeForWeb() string {
 	if x != nil {
 		return x.TokenLifetimeForWeb
 	}
-	return 0
+	return ""
 }
 
-func (x *Auth0ResourceServerStackOutputs) GetAllowOfflineAccess() bool {
+func (x *Auth0ResourceServerStackOutputs) GetAllowOfflineAccess() string {
 	if x != nil {
 		return x.AllowOfflineAccess
 	}
-	return false
+	return ""
 }
 
-func (x *Auth0ResourceServerStackOutputs) GetSkipConsentForVerifiableFirstPartyClients() bool {
+func (x *Auth0ResourceServerStackOutputs) GetSkipConsentForVerifiableFirstPartyClients() string {
 	if x != nil {
 		return x.SkipConsentForVerifiableFirstPartyClients
 	}
-	return false
+	return ""
 }
 
-func (x *Auth0ResourceServerStackOutputs) GetEnforcePolicies() bool {
+func (x *Auth0ResourceServerStackOutputs) GetEnforcePolicies() string {
 	if x != nil {
 		return x.EnforcePolicies
 	}
-	return false
+	return ""
 }
 
 func (x *Auth0ResourceServerStackOutputs) GetTokenDialect() string {
@@ -176,11 +176,11 @@ func (x *Auth0ResourceServerStackOutputs) GetTokenDialect() string {
 	return ""
 }
 
-func (x *Auth0ResourceServerStackOutputs) GetIsSystem() bool {
+func (x *Auth0ResourceServerStackOutputs) GetIsSystem() string {
 	if x != nil {
 		return x.IsSystem
 	}
-	return false
+	return ""
 }
 
 func (x *Auth0ResourceServerStackOutputs) GetClientId() string {
@@ -204,14 +204,14 @@ const file_org_project_planton_provider_auth0_auth0resourceserver_v1_stack_outpu
 	"\vsigning_alg\x18\x04 \x01(\tR\n" +
 	"signingAlg\x12%\n" +
 	"\x0esigning_secret\x18\x05 \x01(\tR\rsigningSecret\x12%\n" +
-	"\x0etoken_lifetime\x18\x06 \x01(\x05R\rtokenLifetime\x123\n" +
-	"\x16token_lifetime_for_web\x18\a \x01(\x05R\x13tokenLifetimeForWeb\x120\n" +
-	"\x14allow_offline_access\x18\b \x01(\bR\x12allowOfflineAccess\x12b\n" +
-	"/skip_consent_for_verifiable_first_party_clients\x18\t \x01(\bR)skipConsentForVerifiableFirstPartyClients\x12)\n" +
+	"\x0etoken_lifetime\x18\x06 \x01(\tR\rtokenLifetime\x123\n" +
+	"\x16token_lifetime_for_web\x18\a \x01(\tR\x13tokenLifetimeForWeb\x120\n" +
+	"\x14allow_offline_access\x18\b \x01(\tR\x12allowOfflineAccess\x12b\n" +
+	"/skip_consent_for_verifiable_first_party_clients\x18\t \x01(\tR)skipConsentForVerifiableFirstPartyClients\x12)\n" +
 	"\x10enforce_policies\x18\n" +
-	" \x01(\bR\x0fenforcePolicies\x12#\n" +
+	" \x01(\tR\x0fenforcePolicies\x12#\n" +
 	"\rtoken_dialect\x18\v \x01(\tR\ftokenDialect\x12\x1b\n" +
-	"\tis_system\x18\f \x01(\bR\bisSystem\x12\x1b\n" +
+	"\tis_system\x18\f \x01(\tR\bisSystem\x12\x1b\n" +
 	"\tclient_id\x18\r \x01(\tR\bclientIdB\xd4\x03\n" +
 	"=com.org.project_planton.provider.auth0.auth0resourceserver.v1B\x11StackOutputsProtoP\x01Zygithub.com/plantonhq/project-planton/apis/org/project_planton/provider/auth0/auth0resourceserver/v1;auth0resourceserverv1\xa2\x02\x05OPPAA\xaa\x028Org.ProjectPlanton.Provider.Auth0.Auth0resourceserver.V1\xca\x028Org\\ProjectPlanton\\Provider\\Auth0\\Auth0resourceserver\\V1\xe2\x02DOrg\\ProjectPlanton\\Provider\\Auth0\\Auth0resourceserver\\V1\\GPBMetadata\xea\x02=Org::ProjectPlanton::Provider::Auth0::Auth0resourceserver::V1b\x06proto3"
 
