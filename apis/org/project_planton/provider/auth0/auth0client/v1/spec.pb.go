@@ -8,6 +8,7 @@ package auth0clientv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -164,8 +165,14 @@ type Auth0ClientSpec struct {
 	OidcBackchannelLogout *Auth0OidcBackchannelLogout `protobuf:"bytes,27,opt,name=oidc_backchannel_logout,json=oidcBackchannelLogout,proto3" json:"oidc_backchannel_logout,omitempty"`
 	// enabled_connections limits which connections this app can use.
 	// If empty, all connections are available.
-	// Specify connection IDs or names to restrict access.
-	EnabledConnections []string `protobuf:"bytes,28,rep,name=enabled_connections,json=enabledConnections,proto3" json:"enabled_connections,omitempty"`
+	//
+	// You can provide either:
+	// - Direct connection name: {value: "Username-Password-Authentication"}
+	// - Reference to Auth0Connection component: {value_from: {kind: Auth0Connection, name: "my-connection"}}
+	//
+	// When using references, the connection name is automatically resolved from the
+	// Auth0Connection's status.outputs.name field.
+	EnabledConnections []*v1.StringValueOrRef `protobuf:"bytes,28,rep,name=enabled_connections,json=enabledConnections,proto3" json:"enabled_connections,omitempty"`
 	// api_grants configures which APIs this client is authorized to access.
 	// For M2M applications using client_credentials grant, at least one API grant is typically required.
 	// Each entry creates an auth0_client_grant resource linking this client to an API.
@@ -412,7 +419,7 @@ func (x *Auth0ClientSpec) GetOidcBackchannelLogout() *Auth0OidcBackchannelLogout
 	return nil
 }
 
-func (x *Auth0ClientSpec) GetEnabledConnections() []string {
+func (x *Auth0ClientSpec) GetEnabledConnections() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.EnabledConnections
 	}
@@ -958,8 +965,16 @@ type Auth0ClientApiGrant struct {
 	// audience is the API identifier (Resource Server identifier) the client is authorized to access.
 	// For Auth0 Management API: "https://{tenant}.{region}.auth0.com/api/v2/"
 	// For custom APIs: the identifier you configured when creating the API in Auth0
+	//
+	// You can provide either:
+	// - Direct value: {value: "https://api.example.com/"}
+	// - Reference to Auth0ResourceServer component: {value_from: {kind: Auth0ResourceServer, name: "my-api"}}
+	//
+	// When using references, the audience is automatically resolved from the
+	// Auth0ResourceServer's status.outputs.identifier field.
+	//
 	// Example: "https://api.example.com/", "api.planton.live"
-	Audience string `protobuf:"bytes,1,opt,name=audience,proto3" json:"audience,omitempty"`
+	Audience *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=audience,proto3" json:"audience,omitempty"`
 	// scopes are the permissions granted for this API.
 	// For Management API, common scopes include:
 	//   - read:users, read:user_idp_tokens, create:users, update:users, delete:users
@@ -1014,11 +1029,11 @@ func (*Auth0ClientApiGrant) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *Auth0ClientApiGrant) GetAudience() string {
+func (x *Auth0ClientApiGrant) GetAudience() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Audience
 	}
-	return ""
+	return nil
 }
 
 func (x *Auth0ClientApiGrant) GetScopes() []string {
@@ -1046,7 +1061,7 @@ var File_org_project_planton_provider_auth0_auth0client_v1_spec_proto protorefle
 
 const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/auth0/auth0client/v1/spec.proto\x121org.project_planton.provider.auth0.auth0client.v1\x1a\x1bbuf/validate/validate.proto\"\xdc\x0f\n" +
+	"<org/project_planton/provider/auth0/auth0client/v1/spec.proto\x121org.project_planton.provider.auth0.auth0client.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb7\x10\n" +
 	"\x0fAuth0ClientSpec\x12^\n" +
 	"\x10application_type\x18\x01 \x01(\tB3\xbaH0\xc8\x01\x01r+R\x06nativeR\x03spaR\vregular_webR\x0fnon_interactiveR\x0fapplicationType\x12*\n" +
 	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x8c\x01R\vdescription\x12\x19\n" +
@@ -1077,8 +1092,8 @@ const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc 
 	"\x0fclient_metadata\x18\x18 \x03(\v2V.org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntryR\x0eclientMetadata\x12%\n" +
 	"\x0eclient_aliases\x18\x19 \x03(\tR\rclientAliases\x12K\n" +
 	"#is_token_endpoint_ip_header_trusted\x18\x1a \x01(\bR\x1eisTokenEndpointIpHeaderTrusted\x12\x85\x01\n" +
-	"\x17oidc_backchannel_logout\x18\x1b \x01(\v2M.org.project_planton.provider.auth0.auth0client.v1.Auth0OidcBackchannelLogoutR\x15oidcBackchannelLogout\x12/\n" +
-	"\x13enabled_connections\x18\x1c \x03(\tR\x12enabledConnections\x12e\n" +
+	"\x17oidc_backchannel_logout\x18\x1b \x01(\v2M.org.project_planton.provider.auth0.auth0client.v1.Auth0OidcBackchannelLogoutR\x15oidcBackchannelLogout\x12\x89\x01\n" +
+	"\x13enabled_connections\x18\x1c \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\x88\xd4a\xb4\x10\x92\xd4a\x13status.outputs.nameR\x12enabledConnections\x12e\n" +
 	"\n" +
 	"api_grants\x18\x1d \x03(\v2F.org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrantR\tapiGrants\x1aA\n" +
 	"\x13ClientMetadataEntry\x12\x10\n" +
@@ -1115,9 +1130,9 @@ const file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_rawDesc 
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x122\n" +
 	"\x15app_bundle_identifier\x18\x02 \x01(\tR\x13appBundleIdentifier\"T\n" +
 	"\x1aAuth0OidcBackchannelLogout\x126\n" +
-	"\x17backchannel_logout_urls\x18\x01 \x03(\tR\x15backchannelLogoutUrls\"\xd5\x01\n" +
-	"\x13Auth0ClientApiGrant\x12\"\n" +
-	"\baudience\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\baudience\x12\x16\n" +
+	"\x17backchannel_logout_urls\x18\x01 \x03(\tR\x15backchannelLogoutUrls\"\xb4\x02\n" +
+	"\x13Auth0ClientApiGrant\x12\x80\x01\n" +
+	"\baudience\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xb7\x10\x92\xd4a\x19status.outputs.identifierR\baudience\x12\x16\n" +
 	"\x06scopes\x18\x02 \x03(\tR\x06scopes\x124\n" +
 	"\x16allow_any_organization\x18\x03 \x01(\bR\x14allowAnyOrganization\x12L\n" +
 	"\x12organization_usage\x18\x04 \x01(\tB\x1d\xbaH\x1ar\x18R\x00R\x04denyR\x05allowR\arequireR\x11organizationUsageB\x94\x03\n" +
@@ -1149,6 +1164,7 @@ var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_goTypes = 
 	(*Auth0ClientApiGrant)(nil),            // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrant
 	nil,                                    // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntry
 	nil,                                    // 11: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
+	(*v1.StringValueOrRef)(nil),            // 12: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_depIdxs = []int32{
 	1,  // 0: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.jwt_configuration:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration
@@ -1157,17 +1173,19 @@ var file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_depIdxs = 
 	5,  // 3: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.mobile:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration
 	10, // 4: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.client_metadata:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.ClientMetadataEntry
 	8,  // 5: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.oidc_backchannel_logout:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0OidcBackchannelLogout
-	9,  // 6: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.api_grants:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrant
-	11, // 7: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.scopes:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
-	4,  // 8: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.apple:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
-	4,  // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.facebook:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
-	6,  // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.android:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileAndroid
-	7,  // 11: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.ios:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileIos
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	12, // 6: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.enabled_connections:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	9,  // 7: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientSpec.api_grants:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrant
+	11, // 8: org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.scopes:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0JwtConfiguration.ScopesEntry
+	4,  // 9: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.apple:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
+	4,  // 10: org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLogin.facebook:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0NativeSocialLoginProvider
+	6,  // 11: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.android:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileAndroid
+	7,  // 12: org.project_planton.provider.auth0.auth0client.v1.Auth0MobileConfiguration.ios:type_name -> org.project_planton.provider.auth0.auth0client.v1.Auth0MobileIos
+	12, // 13: org.project_planton.provider.auth0.auth0client.v1.Auth0ClientApiGrant.audience:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_auth0_auth0client_v1_spec_proto_init() }
