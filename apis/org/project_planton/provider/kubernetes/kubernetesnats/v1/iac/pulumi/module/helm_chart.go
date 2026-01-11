@@ -16,12 +16,6 @@ import (
 // The auth password is needed for NACK controller to connect to NATS.
 func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) (pulumi.Resource, pulumi.StringOutput, error) {
 	sc := locals.KubernetesNats.Spec.ServerContainer
-	if sc == nil {
-		return nil, pulumi.StringOutput{}, errors.New("spec.serverContainer must be set")
-	}
-	if sc.Resources == nil || sc.Resources.Requests == nil || sc.Resources.Limits == nil {
-		return nil, pulumi.StringOutput{}, errors.New("serverContainer.resources.{requests,limits} must be set")
-	}
 
 	// Track auth password for NACK controller (only set for basic_auth)
 	var authPassword pulumi.StringOutput
@@ -59,9 +53,6 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 	if locals.KubernetesNats.Spec.DisableJetStream {
 		config["jetstream"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	} else {
-		if sc.DiskSize == "" {
-			return nil, pulumi.StringOutput{}, errors.New("serverContainer.diskSize must be set when JetStream is enabled")
-		}
 		config["jetstream"] = pulumi.Map{
 			"enabled": pulumi.Bool(true),
 			"fileStore": pulumi.Map{

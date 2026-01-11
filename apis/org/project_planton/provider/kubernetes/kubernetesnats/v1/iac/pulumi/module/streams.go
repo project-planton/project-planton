@@ -32,11 +32,8 @@ func streams(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Prov
 		return nil
 	}
 
-	// Build dependencies - streams must wait for NACK controller
-	var deps []pulumi.Resource
-	if nackController != nil {
-		deps = append(deps, nackController)
-	}
+	// Streams depend on NACK controller
+	deps := []pulumi.Resource{nackController}
 
 	// Track created stream names for output
 	var createdStreams []string

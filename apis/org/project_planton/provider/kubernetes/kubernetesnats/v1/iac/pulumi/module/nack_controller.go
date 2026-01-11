@@ -3,8 +3,8 @@ package module
 import (
 	"fmt"
 
-	kubernetesnatsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	"github.com/pkg/errors"
+	kubernetesnatsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -63,12 +63,6 @@ func nackController(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 		values["jetstream"].(pulumi.Map)["additionalArgs"] = pulumi.ToStringArray([]string{"--control-loop"})
 	}
 
-	// Build dependencies - NACK controller must wait for CRDs to be registered
-	var deps []pulumi.Resource
-	if nackCrds != nil {
-		deps = append(deps, nackCrds)
-	}
-
 	// Deploy NACK Helm chart
 	releaseName := fmt.Sprintf("%s-nack", locals.KubernetesNats.Metadata.Name)
 	nackRelease, err := helmv3.NewRelease(ctx, releaseName,
@@ -86,7 +80,7 @@ func nackController(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 			Timeout: pulumi.Int(300),
 		},
 		pulumi.Provider(kubernetesProvider),
-		pulumi.DependsOn(deps),
+		pulumi.DependsOn([]pulumi.Resource{nackCrds}),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to deploy NACK controller")
