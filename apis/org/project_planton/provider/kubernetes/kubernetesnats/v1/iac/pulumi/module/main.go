@@ -43,7 +43,8 @@ func Resources(ctx *pulumi.Context,
 
 	// ------------------------------ NATS helm -----------------------------
 	// Step 1: Deploy NATS server (with JetStream enabled)
-	natsHelmChart, err := helmChart(ctx, locals, kubernetesProvider)
+	// Returns auth password for NACK controller (if basic_auth enabled)
+	natsHelmChart, authPassword, err := helmChart(ctx, locals, kubernetesProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to deploy NATS Helm chart")
 	}
@@ -63,7 +64,8 @@ func Resources(ctx *pulumi.Context,
 
 	// --------------------------- NACK controller --------------------------
 	// Step 3: Deploy NACK controller (watches CRDs and reconciles to NATS)
-	nackControllerResource, err := nackController(ctx, locals, kubernetesProvider, nackCrdsResource)
+	// Pass auth password so NACK can connect to authenticated NATS server
+	nackControllerResource, err := nackController(ctx, locals, kubernetesProvider, nackCrdsResource, authPassword)
 	if err != nil {
 		return errors.Wrap(err, "failed to deploy NACK controller")
 	}

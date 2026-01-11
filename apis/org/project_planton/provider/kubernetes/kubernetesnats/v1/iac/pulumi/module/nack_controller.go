@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 
+	kubernetesnatsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	"github.com/pkg/errors"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -18,12 +19,29 @@ import (
 //
 // Reference: https://github.com/nats-io/nack
 func nackController(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource,
-	nackCrds pulumi.Resource) (pulumi.Resource, error) {
+	nackCrds pulumi.Resource, authPassword pulumi.StringOutput) (pulumi.Resource, error) {
 
 	// Skip if NACK controller is not enabled
 	if locals.KubernetesNats.Spec.NackController == nil ||
 		!locals.KubernetesNats.Spec.NackController.Enabled {
 		return nil, nil
+	}
+
+	// Build NATS URL for NACK controller
+	// If auth is enabled, include credentials in the URL
+	var natsUrl pulumi.StringInput
+	auth := locals.KubernetesNats.Spec.Auth
+	if auth != nil && auth.Enabled && auth.Scheme == kubernetesnatsv1.KubernetesNatsAuthScheme_basic_auth {
+		// For basic auth, embed username:password in the URL
+		// Format: nats://user:pass@host:port
+		serviceName := locals.KubernetesNats.Metadata.Name
+		natsUrl = authPassword.ApplyT(func(pass string) string {
+			return fmt.Sprintf("nats://%s:%s@%s.%s.svc.cluster.local:%d",
+				vars.AdminUsername, pass, serviceName, locals.Namespace, vars.NatsClientPort)
+		}).(pulumi.StringOutput)
+	} else {
+		// No auth or different auth scheme - use plain URL
+		natsUrl = pulumi.String(locals.ClientURLInternal)
 	}
 
 	// Build Helm values for NACK controller
@@ -33,7 +51,7 @@ func nackController(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulu
 			"enabled": pulumi.Bool(true),
 			// NATS URL - points to the NATS service deployed by the NATS Helm chart
 			"nats": pulumi.Map{
-				"url": pulumi.String(locals.ClientURLInternal),
+				"url": natsUrl,
 			},
 		},
 	}

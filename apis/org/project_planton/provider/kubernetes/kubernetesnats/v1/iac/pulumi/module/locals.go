@@ -73,8 +73,8 @@ func initializeLocals(ctx *pulumi.Context,
 	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
 
 	// ------------------------- internal client URL ---------------------------
-	// Helm chart installs a Service named "<name>-nats".  Port 4222 is fixed.
-	serviceName := fmt.Sprintf("%s-nats", target.Metadata.Name)
+	// NATS Helm chart (v2.x) creates a Service named "{release-name}". Port 4222 is fixed.
+	serviceName := target.Metadata.Name
 	locals.ClientURLInternal = fmt.Sprintf("nats://%s.%s.svc.cluster.local:%d",
 		serviceName, locals.Namespace, vars.NatsClientPort)
 	ctx.Export(OpClientUrlInternal, pulumi.String(locals.ClientURLInternal))
