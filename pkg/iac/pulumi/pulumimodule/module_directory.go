@@ -180,6 +180,13 @@ func GetPathLegacy(moduleDir string, stackFqdn, kindName string) (string, error)
 	return result.ModulePath, nil
 }
 
+// GetLocalModulePath constructs the Pulumi module path from a local project-planton git repository.
+// It takes the local repo path and kindName, and returns the path to the Pulumi module.
+// This is used when --local-module flag is specified.
+func GetLocalModulePath(localRepoPath, kindName string) (string, error) {
+	return getPulumiModulePath(localRepoPath, kindName)
+}
+
 // IsPulumiModuleDirectory checks if the given directory contains a Pulumi.yaml file.
 // It returns true if the file exists, false otherwise. If an error occurs during the check, it returns an error.
 func IsPulumiModuleDirectory(moduleDir string) (bool, error) {

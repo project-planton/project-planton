@@ -11,14 +11,14 @@ import (
 )
 
 // helmChart installs the upstream NATS Helm chart and tailors it to the spec.
-func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) error {
+// Returns the chart resource and auth password (if basic_auth is enabled).
+// The chart resource is used as a dependency for NACK deployment.
+// The auth password is needed for NACK controller to connect to NATS.
+func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.ProviderResource) (pulumi.Resource, pulumi.StringOutput, error) {
 	sc := locals.KubernetesNats.Spec.ServerContainer
-	if sc == nil {
-		return errors.New("spec.serverContainer must be set")
-	}
-	if sc.Resources == nil || sc.Resources.Requests == nil || sc.Resources.Limits == nil {
-		return errors.New("serverContainer.resources.{requests,limits} must be set")
-	}
+
+	// Track auth password for NACK controller (only set for basic_auth)
+	var authPassword pulumi.StringOutput
 
 	//----------------------------------------------------------------------
 	// Helm values
@@ -53,9 +53,6 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 	if locals.KubernetesNats.Spec.DisableJetStream {
 		config["jetstream"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	} else {
-		if sc.DiskSize == "" {
-			return errors.New("serverContainer.diskSize must be set when JetStream is enabled")
-		}
 		config["jetstream"] = pulumi.Map{
 			"enabled": pulumi.Bool(true),
 			"fileStore": pulumi.Map{
@@ -78,7 +75,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 				&random.RandomPasswordArgs{Length: pulumi.Int(32), Special: pulumi.Bool(false)},
 				pulumi.Provider(kubernetesProvider))
 			if err != nil {
-				return errors.Wrap(err, "generate auth token")
+				return nil, pulumi.StringOutput{}, errors.Wrap(err, "generate auth token")
 			}
 
 			_, err = kubernetescorev1.NewSecret(ctx, locals.AuthSecretName,
@@ -92,7 +89,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 					Type:       pulumi.String("Opaque"),
 				}, pulumi.Provider(kubernetesProvider))
 			if err != nil {
-				return errors.Wrap(err, "create bearer-token secret")
+				return nil, pulumi.StringOutput{}, errors.Wrap(err, "create bearer-token secret")
 			}
 
 			values["auth"] = pulumi.Map{
@@ -117,8 +114,11 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 				&random.RandomPasswordArgs{Length: pulumi.Int(32), Special: pulumi.Bool(false)},
 				pulumi.Provider(kubernetesProvider))
 			if err != nil {
-				return errors.Wrap(err, "generate admin password")
+				return nil, pulumi.StringOutput{}, errors.Wrap(err, "generate admin password")
 			}
+
+			// Store password for NACK controller
+			authPassword = adminPass.Result
 
 			_, err = kubernetescorev1.NewSecret(ctx, locals.AuthSecretName,
 				&kubernetescorev1.SecretArgs{
@@ -134,7 +134,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 					Type: pulumi.String("Opaque"),
 				}, pulumi.Provider(kubernetesProvider))
 			if err != nil {
-				return errors.Wrap(err, "create admin secret")
+				return nil, pulumi.StringOutput{}, errors.Wrap(err, "create admin secret")
 			}
 
 			// optional no-auth user
@@ -153,7 +153,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 						Type: pulumi.String("Opaque"),
 					}, pulumi.Provider(kubernetesProvider))
 				if err != nil {
-					return errors.Wrap(err, "create no-auth secret")
+					return nil, pulumi.StringOutput{}, errors.Wrap(err, "create no-auth secret")
 				}
 			}
 
@@ -262,20 +262,20 @@ func helmChart(ctx *pulumi.Context, locals *Locals, kubernetesProvider pulumi.Pr
 	// attach chart-level config and deploy
 	values["config"] = config
 
-	_, err := helmv3.NewChart(ctx,
+	natsChart, err := helmv3.NewChart(ctx,
 		locals.KubernetesNats.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
-			Version:   pulumi.String(vars.HelmChartVersion),
+			Version:   pulumi.String(locals.NatsHelmChartVersion),
 			Namespace: pulumi.String(locals.Namespace),
 			Values:    values,
 			FetchArgs: helmv3.FetchArgs{Repo: pulumi.String(vars.HelmChartRepoUrl)},
 		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
-		return errors.Wrap(err, "deploying NATS chart failed")
+		return nil, pulumi.StringOutput{}, errors.Wrap(err, "deploying NATS chart failed")
 	}
 
 	ctx.Export(OpMetricsEndpoint, pulumi.Sprintf(
 		"http://nats-prom.%s.svc.cluster.local:7777/metrics", locals.Namespace))
-	return nil
+	return natsChart, authPassword, nil
 }

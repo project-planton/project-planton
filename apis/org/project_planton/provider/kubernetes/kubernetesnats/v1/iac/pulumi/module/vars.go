@@ -5,10 +5,20 @@ package module
 // Note: Secret NAMES are now computed in locals.go to avoid conflicts
 // when multiple instances share a namespace. Only secret KEYS are kept here.
 var vars = struct {
-	// Helm chart info
+	// NATS Helm chart info
 	HelmChartName    string
 	HelmChartRepoUrl string
 	HelmChartVersion string
+
+	// NACK (NATS Controllers for Kubernetes) Helm chart info
+	// NACK manages JetStream resources (Streams, Consumers, etc.) via CRDs
+	NackHelmChartName    string
+	NackHelmChartRepoUrl string
+	NackHelmChartVersion string
+	// NACK app version (GitHub release tag) - differs from chart version
+	NackAppVersion string
+	// CRDs URL template - app version is substituted at runtime (not chart version!)
+	NackCrdsUrlTemplate string
 
 	// Fixed NATS client port
 	NatsClientPort int
@@ -28,7 +38,15 @@ var vars = struct {
 }{
 	HelmChartName:    "nats",
 	HelmChartRepoUrl: "https://nats-io.github.io/k8s/helm/charts",
-	HelmChartVersion: "1.3.6",
+	HelmChartVersion: "2.12.3", // Default version, can be overridden via spec.nats_helm_chart_version
+
+	// NACK chart and CRDs
+	NackHelmChartName:    "nack",
+	NackHelmChartRepoUrl: "https://nats-io.github.io/k8s/helm/charts",
+	NackHelmChartVersion: "0.31.1", // Default chart version, can be overridden via spec.nack_controller.helm_chart_version
+	NackAppVersion:       "0.21.1", // Default app version (GitHub tag), can be overridden via spec.nack_controller.app_version
+	// CRDs are fetched using app version (not chart version!) from GitHub
+	NackCrdsUrlTemplate: "https://raw.githubusercontent.com/nats-io/nack/v%s/deploy/crds.yml",
 
 	NatsClientPort: 4222,
 

@@ -20,7 +20,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetesnats/v1/spec.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkRvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hdHMvdjEvc3BlYy5wcm90bxI5b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxIqEFChJLdWJlcm5ldGVzTmF0c1NwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEqABChBzZXJ2ZXJfY29udGFpbmVyGAQgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLkt1YmVybmV0ZXNOYXRzU2VydmVyQ29udGFpbmVyQizKrIACJwgBEh0KDAoFMTAwMG0SAzJHaRINCgQxMDBtEgUyNTZNaRoEMTBHaRIaChJkaXNhYmxlX2pldF9zdHJlYW0YBSABKAgSWwoEYXV0aBgGIAEoCzJNLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5LdWJlcm5ldGVzTmF0c0F1dGgSEwoLdGxzX2VuYWJsZWQYByABKAgSYQoHaW5ncmVzcxgIIAEoCzJQLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5LdWJlcm5ldGVzTmF0c0luZ3Jlc3MSGAoQZGlzYWJsZV9uYXRzX2JveBgJIAEoCCKsAQodS3ViZXJuZXRlc05hdHNTZXJ2ZXJDb250YWluZXISGQoIcmVwbGljYXMYASABKAVCB7pIBBoCIAASTgoJcmVzb3VyY2VzGAIgASgLMjsub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLkNvbnRhaW5lclJlc291cmNlcxIgCglkaXNrX3NpemUYAyABKAlCDbpIA8gBAZKmHQMxR2kiRQoYS3ViZXJuZXRlc05hdHNOb0F1dGhVc2VyEg8KB2VuYWJsZWQYASABKAgSGAoQcHVibGlzaF9zdWJqZWN0cxgCIAMoCSL1AQoSS3ViZXJuZXRlc05hdHNBdXRoEg8KB2VuYWJsZWQYASABKAgSYwoGc2NoZW1lGAIgASgOMlMub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLkt1YmVybmV0ZXNOYXRzQXV0aFNjaGVtZRJpCgxub19hdXRoX3VzZXIYAyABKAsyUy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuS3ViZXJuZXRlc05hdHNOb0F1dGhVc2VyIrkBChVLdWJlcm5ldGVzTmF0c0luZ3Jlc3MSDwoHZW5hYmxlZBgBIAEoCBIQCghob3N0bmFtZRgCIAEoCTp9ukh6GngKHnNwZWMuaW5ncmVzcy5ob3N0bmFtZS5yZXF1aXJlZBIsaG9zdG5hbWUgaXMgcmVxdWlyZWQgd2hlbiBpbmdyZXNzIGlzIGVuYWJsZWQaKCF0aGlzLmVuYWJsZWQgfHwgc2l6ZSh0aGlzLmhvc3RuYW1lKSA+IDAqaQoYS3ViZXJuZXRlc05hdHNBdXRoU2NoZW1lEisKJ25hdHNfa3ViZXJuZXRlc19hdXRoX3NjaGVtZV91bnNwZWNpZmllZBAAEhAKDGJlYXJlcl90b2tlbhABEg4KCmJhc2ljX2F1dGgQAjqzAQoYZGVmYXVsdF9zZXJ2ZXJfY29udGFpbmVyEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxjJhSAgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLkt1YmVybmV0ZXNOYXRzU2VydmVyQ29udGFpbmVyUhZkZWZhdWx0U2VydmVyQ29udGFpbmVyQscDCj1jb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxQglTcGVjUHJvdG9QAVp0Z2l0aHViLmNvbS9wbGFudG9uaHEvcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXNuYXRzL3YxO2t1YmVybmV0ZXNuYXRzdjGiAgVPUFBLS6oCOE9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5LdWJlcm5ldGVzLkt1YmVybmV0ZXNuYXRzLlYxygI4T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc25hdHNcVjHiAkRPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzbmF0c1xWMVxHUEJNZXRhZGF0YeoCPU9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpLdWJlcm5ldGVzOjpLdWJlcm5ldGVzbmF0czo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_descriptor, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
+  fileDesc("CkRvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hdHMvdjEvc3BlYy5wcm90bxI5b3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxIsMHChJLdWJlcm5ldGVzTmF0c1NwZWMSWgoOdGFyZ2V0X2NsdXN0ZXIYASABKAsyQi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuS3ViZXJuZXRlc0NsdXN0ZXJTZWxlY3RvchJnCgluYW1lc3BhY2UYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGLpIA8gBAYjUYcQGktRhCXNwZWMubmFtZRIYChBjcmVhdGVfbmFtZXNwYWNlGAMgASgIEqABChBzZXJ2ZXJfY29udGFpbmVyGAQgASgLMlgub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLkt1YmVybmV0ZXNOYXRzU2VydmVyQ29udGFpbmVyQizKrIACJwgBEh0KDAoFMTAwMG0SAzJHaRINCgQxMDBtEgUyNTZNaRoEMTBHaRIaChJkaXNhYmxlX2pldF9zdHJlYW0YBSABKAgSWwoEYXV0aBgGIAEoCzJNLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5LdWJlcm5ldGVzTmF0c0F1dGgSEwoLdGxzX2VuYWJsZWQYByABKAgSYQoHaW5ncmVzcxgIIAEoCzJQLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5LdWJlcm5ldGVzTmF0c0luZ3Jlc3MSGAoQZGlzYWJsZV9uYXRzX2JveBgJIAEoCBJwCg9uYWNrX2NvbnRyb2xsZXIYCiABKAsyVy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuS3ViZXJuZXRlc05hdHNOYWNrQ29udHJvbGxlchJgCgdzdHJlYW1zGAsgAygLMk8ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLkt1YmVybmV0ZXNOYXRzU3RyZWFtEjAKF25hdHNfaGVsbV9jaGFydF92ZXJzaW9uGAwgASgJQgqKph0GMi4xMi4zSACIAQFCGgoYX25hdHNfaGVsbV9jaGFydF92ZXJzaW9uIqwBCh1LdWJlcm5ldGVzTmF0c1NlcnZlckNvbnRhaW5lchIZCghyZXBsaWNhcxgBIAEoBUIHukgEGgIgABJOCglyZXNvdXJjZXMYAiABKAsyOy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMuQ29udGFpbmVyUmVzb3VyY2VzEiAKCWRpc2tfc2l6ZRgDIAEoCUINukgDyAEBkqYdAzFHaSJFChhLdWJlcm5ldGVzTmF0c05vQXV0aFVzZXISDwoHZW5hYmxlZBgBIAEoCBIYChBwdWJsaXNoX3N1YmplY3RzGAIgAygJIvUBChJLdWJlcm5ldGVzTmF0c0F1dGgSDwoHZW5hYmxlZBgBIAEoCBJjCgZzY2hlbWUYAiABKA4yUy5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuS3ViZXJuZXRlc05hdHNBdXRoU2NoZW1lEmkKDG5vX2F1dGhfdXNlchgDIAEoCzJTLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5LdWJlcm5ldGVzTmF0c05vQXV0aFVzZXIiuQEKFUt1YmVybmV0ZXNOYXRzSW5ncmVzcxIPCgdlbmFibGVkGAEgASgIEhAKCGhvc3RuYW1lGAIgASgJOn26SHoaeAoec3BlYy5pbmdyZXNzLmhvc3RuYW1lLnJlcXVpcmVkEixob3N0bmFtZSBpcyByZXF1aXJlZCB3aGVuIGluZ3Jlc3MgaXMgZW5hYmxlZBooIXRoaXMuZW5hYmxlZCB8fCBzaXplKHRoaXMuaG9zdG5hbWUpID4gMCLGAQocS3ViZXJuZXRlc05hdHNOYWNrQ29udHJvbGxlchIPCgdlbmFibGVkGAEgASgIEhsKE2VuYWJsZV9jb250cm9sX2xvb3AYAiABKAgSKwoSaGVsbV9jaGFydF92ZXJzaW9uGAMgASgJQgqKph0GMC4zMS4xSACIAQESJAoLYXBwX3ZlcnNpb24YBCABKAlCCoqmHQYwLjIxLjFIAYgBAUIVChNfaGVsbV9jaGFydF92ZXJzaW9uQg4KDF9hcHBfdmVyc2lvbiJDChFTdHJlYW1TdG9yYWdlRW51bSIuCgVWYWx1ZRIPCgt1bnNwZWNpZmllZBAAEggKBGZpbGUQARIKCgZtZW1vcnkQAiJYChNTdHJlYW1SZXRlbnRpb25FbnVtIkEKBVZhbHVlEg8KC3Vuc3BlY2lmaWVkEAASCgoGbGltaXRzEAESDAoIaW50ZXJlc3QQAhINCgl3b3JrcXVldWUQAyI/ChFTdHJlYW1EaXNjYXJkRW51bSIqCgVWYWx1ZRIPCgt1bnNwZWNpZmllZBAAEgcKA29sZBABEgcKA25ldxACIlEKGUNvbnN1bWVyRGVsaXZlclBvbGljeUVudW0iNAoFVmFsdWUSDwoLdW5zcGVjaWZpZWQQABIHCgNhbGwQARIICgRsYXN0EAISBwoDbmV3EAMiUgoVQ29uc3VtZXJBY2tQb2xpY3lFbnVtIjkKBVZhbHVlEg8KC3Vuc3BlY2lmaWVkEAASCAoEbm9uZRABEgcKA2FsbBACEgwKCGV4cGxpY2l0EAMiTwoYQ29uc3VtZXJSZXBsYXlQb2xpY3lFbnVtIjMKBVZhbHVlEg8KC3Vuc3BlY2lmaWVkEAASDAoIb3JpZ2luYWwQARILCgdpbnN0YW50EAIi/QQKFEt1YmVybmV0ZXNOYXRzU3RyZWFtEhsKBG5hbWUYASABKAlCDbpICsgBAXIFEAEY/wESGgoIc3ViamVjdHMYAiADKAlCCLpIBZIBAggBEmMKB3N0b3JhZ2UYAyABKA4yUi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuU3RyZWFtU3RvcmFnZUVudW0uVmFsdWUSGwoIcmVwbGljYXMYBCABKAVCCbpIBhoEGAUoARJnCglyZXRlbnRpb24YBSABKA4yVC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuU3RyZWFtUmV0ZW50aW9uRW51bS5WYWx1ZRIPCgdtYXhfYWdlGAYgASgJEhEKCW1heF9ieXRlcxgHIAEoAxIQCghtYXhfbXNncxgIIAEoAxIUCgxtYXhfbXNnX3NpemUYCSABKAUSFQoNbWF4X2NvbnN1bWVycxgKIAEoBRJjCgdkaXNjYXJkGAsgASgOMlIub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLlN0cmVhbURpc2NhcmRFbnVtLlZhbHVlEhMKC2Rlc2NyaXB0aW9uGAwgASgJEmQKCWNvbnN1bWVycxgNIAMoCzJRLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5LdWJlcm5ldGVzTmF0c0NvbnN1bWVyIqwEChZLdWJlcm5ldGVzTmF0c0NvbnN1bWVyEiMKDGR1cmFibGVfbmFtZRgBIAEoCUINukgKyAEBcgUQARj/ARJyCg5kZWxpdmVyX3BvbGljeRgCIAEoDjJaLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmF0cy52MS5Db25zdW1lckRlbGl2ZXJQb2xpY3lFbnVtLlZhbHVlEmoKCmFja19wb2xpY3kYAyABKA4yVi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuQ29uc3VtZXJBY2tQb2xpY3lFbnVtLlZhbHVlEhYKDmZpbHRlcl9zdWJqZWN0GAQgASgJEhcKD2RlbGl2ZXJfc3ViamVjdBgFIAEoCRIVCg1kZWxpdmVyX2dyb3VwGAYgASgJEhcKD21heF9hY2tfcGVuZGluZxgHIAEoBRITCgttYXhfZGVsaXZlchgIIAEoBRIQCghhY2tfd2FpdBgJIAEoCRJwCg1yZXBsYXlfcG9saWN5GAogASgOMlkub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5rdWJlcm5ldGVzLmt1YmVybmV0ZXNuYXRzLnYxLkNvbnN1bWVyUmVwbGF5UG9saWN5RW51bS5WYWx1ZRITCgtkZXNjcmlwdGlvbhgLIAEoCSppChhLdWJlcm5ldGVzTmF0c0F1dGhTY2hlbWUSKwonbmF0c19rdWJlcm5ldGVzX2F1dGhfc2NoZW1lX3Vuc3BlY2lmaWVkEAASEAoMYmVhcmVyX3Rva2VuEAESDgoKYmFzaWNfYXV0aBACOrMBChhkZWZhdWx0X3NlcnZlcl9jb250YWluZXISHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGMmFICABKAsyWC5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjEuS3ViZXJuZXRlc05hdHNTZXJ2ZXJDb250YWluZXJSFmRlZmF1bHRTZXJ2ZXJDb250YWluZXJCxwMKPWNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hdHMudjFCCVNwZWNQcm90b1ABWnRnaXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hdHMvdjE7a3ViZXJuZXRlc25hdHN2MaICBU9QUEtLqgI4T3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLkt1YmVybmV0ZXMuS3ViZXJuZXRlc25hdHMuVjHKAjhPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzbmF0c1xWMeICRE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNuYXRzXFYxXEdQQk1ldGFkYXRh6gI9T3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6Okt1YmVybmV0ZXM6Okt1YmVybmV0ZXNuYXRzOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_descriptor, file_org_project_planton_provider_kubernetes_kubernetes, file_org_project_planton_provider_kubernetes_target_cluster, file_org_project_planton_shared_foreignkey_v1_foreign_key, file_org_project_planton_shared_options_options]);
 
 /**
  * NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
@@ -90,6 +90,33 @@ export type KubernetesNatsSpec = Message<"org.project_planton.provider.kubernete
    * @generated from field: bool disable_nats_box = 9;
    */
   disableNatsBox: boolean;
+
+  /**
+   * NACK JetStream controller configuration (opt-in).
+   * When enabled, deploys the NACK controller alongside NATS for managing
+   * streams and consumers via Kubernetes CRDs.
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNackController nack_controller = 10;
+   */
+  nackController?: KubernetesNatsNackController;
+
+  /**
+   * JetStream streams to create.
+   * Requires nack_controller.enabled = true.
+   * Streams are created as Kubernetes custom resources managed by NACK.
+   *
+   * @generated from field: repeated org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStream streams = 11;
+   */
+  streams: KubernetesNatsStream[];
+
+  /**
+   * NATS Helm chart version.
+   * To check available versions: helm search repo nats/nats --versions
+   * Chart repository: https://nats-io.github.io/k8s/
+   *
+   * @generated from field: optional string nats_helm_chart_version = 12;
+   */
+  natsHelmChartVersion?: string;
 };
 
 /**
@@ -228,6 +255,554 @@ export type KubernetesNatsIngress = Message<"org.project_planton.provider.kubern
  */
 export const KubernetesNatsIngressSchema: GenMessage<KubernetesNatsIngress> = /*@__PURE__*/
   messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 4);
+
+/**
+ * KubernetesNatsNackController configures the NACK JetStream controller.
+ * NACK (NATS Controllers for Kubernetes) is the official operator for managing
+ * JetStream resources (Streams, Consumers, KeyValue, ObjectStore) via CRDs.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNackController
+ */
+export type KubernetesNatsNackController = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNackController"> & {
+  /**
+   * Enable the NACK JetStream controller.
+   * When enabled, NACK will be deployed alongside NATS and can manage
+   * Stream/Consumer resources declaratively via Kubernetes CRDs.
+   *
+   * @generated from field: bool enabled = 1;
+   */
+  enabled: boolean;
+
+  /**
+   * Enable control-loop mode for the NACK controller.
+   * Required for KeyValue and ObjectStore support.
+   * Also provides more reliable state enforcement.
+   *
+   * @generated from field: bool enable_control_loop = 2;
+   */
+  enableControlLoop: boolean;
+
+  /**
+   * NACK Helm chart version.
+   * To check available versions: helm search repo nats/nack --versions
+   * Chart repository: https://nats-io.github.io/k8s/
+   *
+   * @generated from field: optional string helm_chart_version = 3;
+   */
+  helmChartVersion?: string;
+
+  /**
+   * NACK app version (GitHub release tag).
+   * Used for fetching CRDs from: https://github.com/nats-io/nack/releases
+   * Note: App version differs from chart version. Check "APP VERSION" column in:
+   * helm search repo nats/nack --versions
+   *
+   * @generated from field: optional string app_version = 4;
+   */
+  appVersion?: string;
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsNackController.
+ * Use `create(KubernetesNatsNackControllerSchema)` to create a new message.
+ */
+export const KubernetesNatsNackControllerSchema: GenMessage<KubernetesNatsNackController> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 5);
+
+/**
+ * Wrapper for stream storage backend enum.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamStorageEnum
+ */
+export type StreamStorageEnum = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamStorageEnum"> & {
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamStorageEnum.
+ * Use `create(StreamStorageEnumSchema)` to create a new message.
+ */
+export const StreamStorageEnumSchema: GenMessage<StreamStorageEnum> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 6);
+
+/**
+ * @generated from enum org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamStorageEnum.Value
+ */
+export enum StreamStorageEnum_Value {
+  /**
+   * @generated from enum value: unspecified = 0;
+   */
+  unspecified = 0,
+
+  /**
+   * File-based storage (persistent, survives restarts).
+   *
+   * @generated from enum value: file = 1;
+   */
+  file = 1,
+
+  /**
+   * Memory-based storage (ephemeral, faster).
+   *
+   * @generated from enum value: memory = 2;
+   */
+  memory = 2,
+}
+
+/**
+ * Describes the enum org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamStorageEnum.Value.
+ */
+export const StreamStorageEnum_ValueSchema: GenEnum<StreamStorageEnum_Value> = /*@__PURE__*/
+  enumDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 6, 0);
+
+/**
+ * Wrapper for stream retention policy enum.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamRetentionEnum
+ */
+export type StreamRetentionEnum = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamRetentionEnum"> & {
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamRetentionEnum.
+ * Use `create(StreamRetentionEnumSchema)` to create a new message.
+ */
+export const StreamRetentionEnumSchema: GenMessage<StreamRetentionEnum> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 7);
+
+/**
+ * @generated from enum org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamRetentionEnum.Value
+ */
+export enum StreamRetentionEnum_Value {
+  /**
+   * @generated from enum value: unspecified = 0;
+   */
+  unspecified = 0,
+
+  /**
+   * Messages kept based on limits (max_age, max_bytes, max_msgs).
+   *
+   * @generated from enum value: limits = 1;
+   */
+  limits = 1,
+
+  /**
+   * Messages removed when no consumers have interest.
+   *
+   * @generated from enum value: interest = 2;
+   */
+  interest = 2,
+
+  /**
+   * Work queue: messages removed once acknowledged.
+   *
+   * @generated from enum value: workqueue = 3;
+   */
+  workqueue = 3,
+}
+
+/**
+ * Describes the enum org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamRetentionEnum.Value.
+ */
+export const StreamRetentionEnum_ValueSchema: GenEnum<StreamRetentionEnum_Value> = /*@__PURE__*/
+  enumDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 7, 0);
+
+/**
+ * Wrapper for stream discard policy enum.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamDiscardEnum
+ */
+export type StreamDiscardEnum = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamDiscardEnum"> & {
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamDiscardEnum.
+ * Use `create(StreamDiscardEnumSchema)` to create a new message.
+ */
+export const StreamDiscardEnumSchema: GenMessage<StreamDiscardEnum> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 8);
+
+/**
+ * @generated from enum org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamDiscardEnum.Value
+ */
+export enum StreamDiscardEnum_Value {
+  /**
+   * @generated from enum value: unspecified = 0;
+   */
+  unspecified = 0,
+
+  /**
+   * Discard old messages when limits reached.
+   *
+   * @generated from enum value: old = 1;
+   */
+  old = 1,
+
+  /**
+   * Reject new messages when limits reached.
+   *
+   * @generated from enum value: new = 2;
+   */
+  new = 2,
+}
+
+/**
+ * Describes the enum org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamDiscardEnum.Value.
+ */
+export const StreamDiscardEnum_ValueSchema: GenEnum<StreamDiscardEnum_Value> = /*@__PURE__*/
+  enumDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 8, 0);
+
+/**
+ * Wrapper for consumer delivery policy enum.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerDeliverPolicyEnum
+ */
+export type ConsumerDeliverPolicyEnum = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerDeliverPolicyEnum"> & {
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerDeliverPolicyEnum.
+ * Use `create(ConsumerDeliverPolicyEnumSchema)` to create a new message.
+ */
+export const ConsumerDeliverPolicyEnumSchema: GenMessage<ConsumerDeliverPolicyEnum> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 9);
+
+/**
+ * @generated from enum org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerDeliverPolicyEnum.Value
+ */
+export enum ConsumerDeliverPolicyEnum_Value {
+  /**
+   * @generated from enum value: unspecified = 0;
+   */
+  unspecified = 0,
+
+  /**
+   * Deliver all messages from the beginning.
+   *
+   * @generated from enum value: all = 1;
+   */
+  all = 1,
+
+  /**
+   * Deliver starting from the last message.
+   *
+   * @generated from enum value: last = 2;
+   */
+  last = 2,
+
+  /**
+   * Deliver only new messages (after consumer creation).
+   *
+   * @generated from enum value: new = 3;
+   */
+  new = 3,
+}
+
+/**
+ * Describes the enum org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerDeliverPolicyEnum.Value.
+ */
+export const ConsumerDeliverPolicyEnum_ValueSchema: GenEnum<ConsumerDeliverPolicyEnum_Value> = /*@__PURE__*/
+  enumDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 9, 0);
+
+/**
+ * Wrapper for consumer acknowledgment policy enum.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerAckPolicyEnum
+ */
+export type ConsumerAckPolicyEnum = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerAckPolicyEnum"> & {
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerAckPolicyEnum.
+ * Use `create(ConsumerAckPolicyEnumSchema)` to create a new message.
+ */
+export const ConsumerAckPolicyEnumSchema: GenMessage<ConsumerAckPolicyEnum> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 10);
+
+/**
+ * @generated from enum org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerAckPolicyEnum.Value
+ */
+export enum ConsumerAckPolicyEnum_Value {
+  /**
+   * @generated from enum value: unspecified = 0;
+   */
+  unspecified = 0,
+
+  /**
+   * No acknowledgment required.
+   *
+   * @generated from enum value: none = 1;
+   */
+  none = 1,
+
+  /**
+   * Acknowledge all previous messages.
+   *
+   * @generated from enum value: all = 2;
+   */
+  all = 2,
+
+  /**
+   * Explicit acknowledgment required for each message.
+   *
+   * @generated from enum value: explicit = 3;
+   */
+  explicit = 3,
+}
+
+/**
+ * Describes the enum org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerAckPolicyEnum.Value.
+ */
+export const ConsumerAckPolicyEnum_ValueSchema: GenEnum<ConsumerAckPolicyEnum_Value> = /*@__PURE__*/
+  enumDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 10, 0);
+
+/**
+ * Wrapper for consumer replay policy enum.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerReplayPolicyEnum
+ */
+export type ConsumerReplayPolicyEnum = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerReplayPolicyEnum"> & {
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerReplayPolicyEnum.
+ * Use `create(ConsumerReplayPolicyEnumSchema)` to create a new message.
+ */
+export const ConsumerReplayPolicyEnumSchema: GenMessage<ConsumerReplayPolicyEnum> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 11);
+
+/**
+ * @generated from enum org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerReplayPolicyEnum.Value
+ */
+export enum ConsumerReplayPolicyEnum_Value {
+  /**
+   * @generated from enum value: unspecified = 0;
+   */
+  unspecified = 0,
+
+  /**
+   * Replay messages at the original rate they were published.
+   *
+   * @generated from enum value: original = 1;
+   */
+  original = 1,
+
+  /**
+   * Replay messages as fast as possible.
+   *
+   * @generated from enum value: instant = 2;
+   */
+  instant = 2,
+}
+
+/**
+ * Describes the enum org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerReplayPolicyEnum.Value.
+ */
+export const ConsumerReplayPolicyEnum_ValueSchema: GenEnum<ConsumerReplayPolicyEnum_Value> = /*@__PURE__*/
+  enumDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 11, 0);
+
+/**
+ * KubernetesNatsStream configures a JetStream stream.
+ * Streams are the core storage layer in JetStream, capturing and storing messages
+ * published to specific subjects.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStream
+ */
+export type KubernetesNatsStream = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStream"> & {
+  /**
+   * A unique name for the stream.
+   * Must be between 1-255 characters, alphanumeric with allowed: - _ .
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * List of subjects to consume, supports wildcards (e.g., "orders.*", "events.>").
+   *
+   * @generated from field: repeated string subjects = 2;
+   */
+  subjects: string[];
+
+  /**
+   * Storage backend for the stream (file or memory).
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamStorageEnum.Value storage = 3;
+   */
+  storage: StreamStorageEnum_Value;
+
+  /**
+   * Number of replicas for the stream (odd number recommended for quorum).
+   *
+   * @generated from field: int32 replicas = 4;
+   */
+  replicas: number;
+
+  /**
+   * Retention policy for the stream (limits, interest, or workqueue).
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamRetentionEnum.Value retention = 5;
+   */
+  retention: StreamRetentionEnum_Value;
+
+  /**
+   * Maximum age of messages in the stream (e.g., "24h", "7d").
+   * Empty string means unlimited.
+   *
+   * @generated from field: string max_age = 6;
+   */
+  maxAge: string;
+
+  /**
+   * Maximum size of the stream in bytes. -1 for unlimited.
+   *
+   * @generated from field: int64 max_bytes = 7;
+   */
+  maxBytes: bigint;
+
+  /**
+   * Maximum number of messages in the stream. -1 for unlimited.
+   *
+   * @generated from field: int64 max_msgs = 8;
+   */
+  maxMsgs: bigint;
+
+  /**
+   * Maximum message size in bytes. -1 for unlimited.
+   *
+   * @generated from field: int32 max_msg_size = 9;
+   */
+  maxMsgSize: number;
+
+  /**
+   * Maximum number of consumers allowed. -1 for unlimited.
+   *
+   * @generated from field: int32 max_consumers = 10;
+   */
+  maxConsumers: number;
+
+  /**
+   * Discard policy when limits are reached (old or new).
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.StreamDiscardEnum.Value discard = 11;
+   */
+  discard: StreamDiscardEnum_Value;
+
+  /**
+   * Description of the stream.
+   *
+   * @generated from field: string description = 12;
+   */
+  description: string;
+
+  /**
+   * Consumers for this stream.
+   *
+   * @generated from field: repeated org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsConsumer consumers = 13;
+   */
+  consumers: KubernetesNatsConsumer[];
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsStream.
+ * Use `create(KubernetesNatsStreamSchema)` to create a new message.
+ */
+export const KubernetesNatsStreamSchema: GenMessage<KubernetesNatsStream> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 12);
+
+/**
+ * KubernetesNatsConsumer configures a JetStream consumer.
+ * Consumers define how messages are delivered and acknowledged from a stream.
+ *
+ * @generated from message org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsConsumer
+ */
+export type KubernetesNatsConsumer = Message<"org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsConsumer"> & {
+  /**
+   * The durable name of the consumer.
+   * Must be unique within the stream.
+   *
+   * @generated from field: string durable_name = 1;
+   */
+  durableName: string;
+
+  /**
+   * Delivery policy for the consumer (all, last, or new).
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerDeliverPolicyEnum.Value deliver_policy = 2;
+   */
+  deliverPolicy: ConsumerDeliverPolicyEnum_Value;
+
+  /**
+   * Acknowledgment policy for the consumer (none, all, or explicit).
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerAckPolicyEnum.Value ack_policy = 3;
+   */
+  ackPolicy: ConsumerAckPolicyEnum_Value;
+
+  /**
+   * Filter subject for the consumer (supports wildcards).
+   * Only messages matching this subject will be delivered.
+   *
+   * @generated from field: string filter_subject = 4;
+   */
+  filterSubject: string;
+
+  /**
+   * Deliver subject for push-based consumers.
+   * If empty, creates a pull-based consumer.
+   *
+   * @generated from field: string deliver_subject = 5;
+   */
+  deliverSubject: string;
+
+  /**
+   * Queue group name for load balancing across multiple consumers.
+   *
+   * @generated from field: string deliver_group = 6;
+   */
+  deliverGroup: string;
+
+  /**
+   * Maximum number of unacknowledged messages.
+   *
+   * @generated from field: int32 max_ack_pending = 7;
+   */
+  maxAckPending: number;
+
+  /**
+   * Maximum number of delivery attempts. -1 for unlimited.
+   *
+   * @generated from field: int32 max_deliver = 8;
+   */
+  maxDeliver: number;
+
+  /**
+   * Time to wait for acknowledgment (e.g., "30s", "1m").
+   *
+   * @generated from field: string ack_wait = 9;
+   */
+  ackWait: string;
+
+  /**
+   * Replay policy for the consumer (original or instant).
+   *
+   * @generated from field: org.project_planton.provider.kubernetes.kubernetesnats.v1.ConsumerReplayPolicyEnum.Value replay_policy = 10;
+   */
+  replayPolicy: ConsumerReplayPolicyEnum_Value;
+
+  /**
+   * Description of the consumer.
+   *
+   * @generated from field: string description = 11;
+   */
+  description: string;
+};
+
+/**
+ * Describes the message org.project_planton.provider.kubernetes.kubernetesnats.v1.KubernetesNatsConsumer.
+ * Use `create(KubernetesNatsConsumerSchema)` to create a new message.
+ */
+export const KubernetesNatsConsumerSchema: GenMessage<KubernetesNatsConsumer> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec, 13);
 
 /**
  * KubernetesNatsAuthScheme is the authentication scheme for the nats cluster.

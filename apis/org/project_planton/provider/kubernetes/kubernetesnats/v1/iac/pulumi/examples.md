@@ -407,6 +407,241 @@ export const internalClientUrl = natsWithExistingNs.internalClientUrl;
 
 **Use Case**: Ideal for GitOps workflows or when namespace has specific ResourceQuotas, NetworkPolicies, or other configurations managed separately.
 
+## Example 8: NATS with NACK Controller and JetStream Streams
+
+Deploy NATS with the NACK (NATS Controllers for Kubernetes) controller for declarative JetStream stream management.
+
+```typescript
+import * as pulumi from "@pulumi/pulumi";
+import * as kubernetesnats from "@project-planton/kubernetesnats";
+
+const natsWithStreams = new kubernetesnats.NatsKubernetes("nats-with-streams", {
+    metadata: {
+        name: "nats-with-streams",
+        org: "my-org",
+        env: "development",
+    },
+    spec: {
+        targetCluster: {
+            clusterName: "my-gke-cluster",
+        },
+        namespace: {
+            value: "nats-streams",
+        },
+        createNamespace: true,
+        serverContainer: {
+            replicas: 3,
+            resources: {
+                limits: {
+                    cpu: "1000m",
+                    memory: "2Gi",
+                },
+                requests: {
+                    cpu: "100m",
+                    memory: "256Mi",
+                },
+            },
+            diskSize: "10Gi",
+        },
+        auth: {
+            enabled: true,
+            scheme: "basic_auth",
+        },
+        // Enable NACK controller for declarative stream management
+        nackController: {
+            enabled: true,
+            enableControlLoop: true,  // Required for KeyValue/ObjectStore support
+        },
+        // Define JetStream streams
+        streams: [
+            {
+                name: "orders",
+                subjects: ["orders.*", "orders.>"],
+                storage: "file",
+                replicas: 3,
+                retention: "limits",
+                maxAge: "7d",
+                maxBytes: 1073741824,  // 1GB
+                consumers: [
+                    {
+                        durableName: "orders-processor",
+                        deliverPolicy: "all",
+                        ackPolicy: "explicit",
+                        maxAckPending: 1000,
+                        ackWait: "30s",
+                    },
+                ],
+            },
+            {
+                name: "events",
+                subjects: ["events.>"],
+                storage: "memory",
+                replicas: 1,
+                retention: "interest",
+            },
+        ],
+    },
+});
+
+// Export stream information
+export const namespace = natsWithStreams.namespace;
+export const internalClientUrl = natsWithStreams.internalClientUrl;
+export const nackEnabled = true;
+export const streamsCreated = ["orders", "events"];
+```
+
+## Example 9: Production NATS with Multiple Streams and Consumers
+
+A comprehensive production configuration with multiple streams, consumers, and external access.
+
+```typescript
+import * as pulumi from "@pulumi/pulumi";
+import * as kubernetesnats from "@project-planton/kubernetesnats";
+
+const natsProd = new kubernetesnats.NatsKubernetes("nats-prod", {
+    metadata: {
+        name: "nats-prod",
+        org: "acme-corp",
+        env: "production",
+        labels: {
+            team: "platform",
+            costCenter: "engineering",
+        },
+    },
+    spec: {
+        targetCluster: {
+            clusterName: "prod-gke-cluster",
+        },
+        namespace: {
+            value: "nats-prod",
+        },
+        createNamespace: true,
+        serverContainer: {
+            replicas: 5,
+            resources: {
+                limits: {
+                    cpu: "2000m",
+                    memory: "4Gi",
+                },
+                requests: {
+                    cpu: "500m",
+                    memory: "1Gi",
+                },
+            },
+            diskSize: "50Gi",
+        },
+        auth: {
+            enabled: true,
+            scheme: "basic_auth",
+        },
+        tlsEnabled: true,
+        ingress: {
+            enabled: true,
+            hostname: "nats.prod.example.com",
+        },
+        // NACK controller with control-loop for reliable state enforcement
+        nackController: {
+            enabled: true,
+            enableControlLoop: true,
+            helmChartVersion: "0.31.1",
+            appVersion: "0.21.1",
+        },
+        // Production streams configuration
+        streams: [
+            // High-throughput API events stream
+            {
+                name: "api-events",
+                subjects: ["api.events.>"],
+                storage: "file",
+                replicas: 3,
+                retention: "limits",
+                maxAge: "24h",
+                maxBytes: 10737418240,  // 10GB
+                maxMsgs: 10000000,
+                discard: "old",
+                description: "API event stream for real-time processing",
+                consumers: [
+                    {
+                        durableName: "api-processor",
+                        deliverPolicy: "all",
+                        ackPolicy: "explicit",
+                        maxAckPending: 5000,
+                        maxDeliver: 5,
+                        ackWait: "60s",
+                        replayPolicy: "instant",
+                        description: "Main API event processor",
+                    },
+                    {
+                        durableName: "api-analytics",
+                        deliverPolicy: "all",
+                        ackPolicy: "explicit",
+                        filterSubject: "api.events.orders.*",
+                        description: "Analytics consumer for order events",
+                    },
+                ],
+            },
+            // Work queue for background jobs
+            {
+                name: "background-jobs",
+                subjects: ["jobs.>"],
+                storage: "file",
+                replicas: 3,
+                retention: "workqueue",
+                maxAge: "1h",
+                description: "Work queue for background job processing",
+                consumers: [
+                    {
+                        durableName: "job-worker",
+                        ackPolicy: "explicit",
+                        maxAckPending: 100,
+                        maxDeliver: 3,
+                        ackWait: "5m",
+                    },
+                ],
+            },
+            // Ephemeral notifications stream
+            {
+                name: "notifications",
+                subjects: ["notify.>"],
+                storage: "memory",
+                replicas: 1,
+                retention: "interest",
+                maxAge: "5m",
+                description: "Real-time notifications (ephemeral)",
+            },
+        ],
+        natsHelmChartVersion: "2.12.3",
+    },
+});
+
+// Comprehensive exports
+export const namespace = natsProd.namespace;
+export const internalClientUrl = natsProd.internalClientUrl;
+export const externalHostname = natsProd.externalHostname;
+```
+
+## Verifying NACK Stream Creation
+
+After deployment, you can verify the streams were created:
+
+```bash
+# Check NACK controller is running
+kubectl get pods -n <namespace> -l app.kubernetes.io/name=nack
+
+# List Stream custom resources
+kubectl get streams -n <namespace>
+
+# List Consumer custom resources
+kubectl get consumers -n <namespace>
+
+# Describe a specific stream
+kubectl describe stream <stream-name> -n <namespace>
+
+# Check stream status using nats-box
+kubectl exec -it <nats-box-pod> -n <namespace> -- nats stream list
+kubectl exec -it <nats-box-pod> -n <namespace> -- nats stream info <stream-name>
+```
+
 ## Notes
 
 - The deployment uses the official NATS Helm chart for production-grade message streaming
@@ -415,4 +650,7 @@ export const internalClientUrl = natsWithExistingNs.internalClientUrl;
 - TLS encryption is recommended for production workloads
 - The `nats-box` utility pod is deployed by default for debugging and testing
 - Metrics are exposed at port 7777 for Prometheus scraping
+- **NACK Controller**: Enables declarative stream/consumer management via Kubernetes CRDs
+- **Control-Loop Mode**: Required for KeyValue, ObjectStore, and Account support
+- **Stream Replication**: Use odd numbers (1, 3, 5) for stream replicas to maintain quorum
 

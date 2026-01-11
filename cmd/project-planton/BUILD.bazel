@@ -8,6 +8,7 @@ go_library(
     deps = [
         "//cmd/project-planton/root",
         "//cmd/project-planton/root/webapp",
+        "//internal/cli/flag",
         "@com_github_spf13_cobra//:cobra",
     ],
 )

@@ -8,8 +8,12 @@ import (
 
 	"github.com/plantonhq/project-planton/cmd/project-planton/root"
 	"github.com/plantonhq/project-planton/cmd/project-planton/root/webapp"
+	"github.com/plantonhq/project-planton/internal/cli/flag"
 	"github.com/spf13/cobra"
 )
+
+// DefaultProjectPlantonGitRepo is the default path for the local project-planton git repository
+const DefaultProjectPlantonGitRepo = "~/scm/github.com/plantonhq/project-planton"
 
 var rootCmd = &cobra.Command{
 	Use:   "project-planton",
@@ -19,6 +23,13 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.DisableSuggestions = true
+
+	// Local module flags - inherited by all subcommands
+	rootCmd.PersistentFlags().Bool(string(flag.LocalModule), false,
+		"Use local project-planton git repository for IaC modules instead of downloading")
+	rootCmd.PersistentFlags().String(string(flag.ProjectPlantonGitRepo), DefaultProjectPlantonGitRepo,
+		"Path to local project-planton git repository (used with --local-module)")
+
 	rootCmd.AddCommand(
 		root.Apply,
 		root.Checkout,

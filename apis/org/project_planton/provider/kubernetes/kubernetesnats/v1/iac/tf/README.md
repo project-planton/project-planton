@@ -13,7 +13,13 @@ Applies consistent labels to all resources for tracking, organization, and integ
 ### 3. **Ingress Support**
 Supports external access via LoadBalancer services with DNS hostname configuration through external-dns annotations.
 
-### 4. **Flexible Configuration**
+### 4. **NACK Controller & JetStream Streams**
+Optionally deploys the NACK (NATS Controllers for Kubernetes) controller for declarative JetStream resource management:
+- **Streams**: Define JetStream streams with subjects, storage types, retention policies, and limits
+- **Consumers**: Create durable consumers with delivery policies, acknowledgment settings, and filtering
+- **Control-Loop Mode**: Enable for KeyValue, ObjectStore, and Account support
+
+### 5. **Flexible Configuration**
 Allows customization of:
 - Server replicas
 - CPU and memory resources
@@ -21,6 +27,8 @@ Allows customization of:
 - Authentication schemes (Bearer Token, Basic Auth)
 - TLS encryption
 - External ingress
+- NACK controller settings
+- JetStream streams and consumers
 
 ## Usage
 
@@ -56,16 +64,69 @@ project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
 After successful deployment, the module provides:
 
 * **namespace**: Kubernetes namespace where NATS is deployed
-* **internal_client_url**: Internal DNS URL for NATS clients (e.g., `nats://nats-basic-nats.nats-basic.svc.cluster.local:4222`)
+* **internal_client_url**: Internal DNS URL for NATS clients (e.g., `nats://nats-basic.nats-basic.svc.cluster.local:4222`)
 * **external_hostname**: External hostname if ingress is enabled
+* **auth_secret_name**: Name of the secret containing authentication credentials
+* **tls_secret_name**: Name of the TLS secret (if TLS is enabled)
+* **nack_controller_enabled**: Whether NACK controller is deployed
+* **nack_controller_version**: Version of the NACK controller
+* **streams_created**: List of JetStream streams created
+* **jetstream_domain**: JetStream domain identifier
+
+## Deployment Architecture
+
+When NACK controller is enabled, the module deploys resources in this order to avoid race conditions:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        Deployment Order                          │
+│                                                                  │
+│  1. NATS Helm Chart ──► 2. NACK CRDs ──► 3. NACK Controller     │
+│                                                  │               │
+│                                                  ▼               │
+│                                    4. Stream/Consumer CRs        │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ## Configuration
 
-The module accepts configuration through a YAML manifest matching the `NatsKubernetes` protobuf specification. See `hack/manifest.yaml` for a complete example.
+The module accepts configuration through a YAML manifest matching the `KubernetesNats` protobuf specification. See `hack/manifest.yaml` for a complete example.
+
+### Example with Streams
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: KubernetesNats
+metadata:
+  name: nats-with-streams
+spec:
+  namespace:
+    value: nats-streams
+  serverContainer:
+    replicas: 3
+    diskSize: 10Gi
+  nack_controller:
+    enabled: true
+    enable_control_loop: true
+  streams:
+    - name: orders
+      subjects:
+        - "orders.>"
+      storage: file
+      replicas: 3
+      retention: limits
+      max_age: 24h
+      consumers:
+        - durable_name: orders-processor
+          ack_policy: explicit
+          max_ack_pending: 1000
+```
 
 ## Benefits
 
 * **Infrastructure-as-Code**: Version-controlled, repeatable deployments
 * **Simplified Management**: Automated namespace and resource creation
+* **Declarative Streams**: Define JetStream streams and consumers in YAML
 * **Flexibility**: Easy customization for various deployment scenarios
 * **Consistency**: Standardized labeling and naming conventions
+* **Race Condition Handling**: Proper dependency ordering for CRDs and custom resources

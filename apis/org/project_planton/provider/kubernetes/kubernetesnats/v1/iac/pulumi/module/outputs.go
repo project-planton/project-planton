@@ -22,4 +22,9 @@ const (
 	// JetStream domain & metrics
 	OpJetStreamDomain = "jet_stream_domain"
 	OpMetricsEndpoint = "metrics_endpoint"
+
+	// NACK controller outputs
+	OpNackControllerEnabled = "nack_controller.enabled"
+	OpNackControllerVersion = "nack_controller.version"
+	OpStreamsCreated        = "streams_created"
 )

@@ -1,8 +1,11 @@
 apiVersion: kubernetes.project-planton.org/v1
-kind: NatsKubernetes
+kind: KubernetesNats
 metadata:
   name: nats-basic
 spec:
+  namespace:
+    value: nats-basic
+  createNamespace: true
   serverContainer:
     replicas: 1
     diskSize: "1Gi"
@@ -22,3 +25,21 @@ spec:
   auth:
     enabled: true
     scheme: basic_auth
+  # NACK controller for declarative stream management
+  nackController:
+    enabled: true
+    enableControlLoop: true
+  # Example streams
+  streams:
+    - name: test-events
+      subjects:
+        - "test.events.>"
+      storage: file
+      replicas: 1
+      retention: limits
+      maxAge: "1h"
+      consumers:
+        - durableName: test-processor
+          ackPolicy: explicit
+          deliverPolicy: all
+          maxAckPending: 100

@@ -5,8 +5,13 @@ go_library(
     srcs = [
         "extract_repo_name.go",
         "git_repo.go",
+        "local_repo.go",
     ],
     importpath = "github.com/plantonhq/project-planton/pkg/iac/gitrepo",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_pkg_errors//:errors"],
+    deps = [
+        "//internal/cli/flag",
+        "@com_github_pkg_errors//:errors",
+        "@com_github_spf13_cobra//:cobra",
+    ],
 )

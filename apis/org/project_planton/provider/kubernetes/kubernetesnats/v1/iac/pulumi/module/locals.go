@@ -26,6 +26,12 @@ type Locals struct {
 	AuthSecretName        string
 	NoAuthUserSecretName  string
 	ExternalLbServiceName string
+
+	// Helm chart versions (from spec or defaults)
+	NatsHelmChartVersion string
+	NackHelmChartVersion string
+	NackAppVersion       string
+	NackCrdsUrl          string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -67,8 +73,8 @@ func initializeLocals(ctx *pulumi.Context,
 	locals.ExternalLbServiceName = fmt.Sprintf("%s-external-lb", target.Metadata.Name)
 
 	// ------------------------- internal client URL ---------------------------
-	// Helm chart installs a Service named "<name>-nats".  Port 4222 is fixed.
-	serviceName := fmt.Sprintf("%s-nats", target.Metadata.Name)
+	// NATS Helm chart (v2.x) creates a Service named "{release-name}". Port 4222 is fixed.
+	serviceName := target.Metadata.Name
 	locals.ClientURLInternal = fmt.Sprintf("nats://%s.%s.svc.cluster.local:%d",
 		serviceName, locals.Namespace, vars.NatsClientPort)
 	ctx.Export(OpClientUrlInternal, pulumi.String(locals.ClientURLInternal))
@@ -100,6 +106,18 @@ func initializeLocals(ctx *pulumi.Context,
 	if !target.Spec.DisableJetStream {
 		localsJetDomain := fmt.Sprintf("%s", locals.Namespace) // simple default
 		ctx.Export(OpJetStreamDomain, pulumi.String(localsJetDomain))
+	}
+
+	// ------------------------ helm chart versions -----------------------------
+	// Defaults are guaranteed by Project Planton CLI from proto definitions
+	locals.NatsHelmChartVersion = *target.Spec.NatsHelmChartVersion
+
+	// NACK chart version, app version, and CRDs URL
+	if target.Spec.NackController != nil {
+		locals.NackHelmChartVersion = *target.Spec.NackController.HelmChartVersion
+		locals.NackAppVersion = *target.Spec.NackController.AppVersion
+		// CRDs URL uses app version (GitHub tag), NOT chart version
+		locals.NackCrdsUrl = fmt.Sprintf(vars.NackCrdsUrlTemplate, locals.NackAppVersion)
 	}
 
 	return locals
