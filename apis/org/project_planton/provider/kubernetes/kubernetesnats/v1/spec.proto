@@ -196,7 +196,9 @@ message StreamDiscardEnum {
     // Discard old messages when limits reached.
     old = 1;
     // Reject new messages when limits reached.
-    new = 2;
+    // Note: Named "new_msgs" instead of "new" because "new" is a reserved keyword in Java.
+    // IaC modules convert this to "new" when sending to NACK CRDs.
+    new_msgs = 2;
   }
 }
 
@@ -213,7 +215,9 @@ message ConsumerDeliverPolicyEnum {
     // Deliver starting from the last message.
     last = 2;
     // Deliver only new messages (after consumer creation).
-    new = 3;
+    // Note: Named "new_msgs" instead of "new" because "new" is a reserved keyword in Java.
+    // IaC modules convert this to "new" when sending to NACK CRDs.
+    new_msgs = 3;
   }
 }
 

@@ -460,8 +460,10 @@ resource "kubernetes_manifest" "nack_streams" {
         maxConsumers = each.value.max_consumers
       } : {},
       # Discard policy
+      # Note: Convert "new_msgs" to "new" because "new" is a reserved keyword in Java.
+      # Proto uses "new_msgs" but NACK CRDs expect "new".
       try(each.value.discard, "") != "" && try(each.value.discard, "") != "old" ? {
-        discard = each.value.discard
+        discard = each.value.discard == "new_msgs" ? "new" : each.value.discard
       } : {},
       # Description
       try(each.value.description, "") != "" ? {
@@ -508,8 +510,10 @@ resource "kubernetes_manifest" "nack_consumers" {
         durableName = each.value.consumer.durable_name
       },
       # Deliver policy
+      # Note: Convert "new_msgs" to "new" because "new" is a reserved keyword in Java.
+      # Proto uses "new_msgs" but NACK CRDs expect "new".
       try(each.value.consumer.deliver_policy, "") != "" && try(each.value.consumer.deliver_policy, "") != "all" ? {
-        deliverPolicy = each.value.consumer.deliver_policy
+        deliverPolicy = each.value.consumer.deliver_policy == "new_msgs" ? "new" : each.value.consumer.deliver_policy
       } : {},
       # Ack policy
       try(each.value.consumer.ack_policy, "") != "" && try(each.value.consumer.ack_policy, "") != "none" ? {

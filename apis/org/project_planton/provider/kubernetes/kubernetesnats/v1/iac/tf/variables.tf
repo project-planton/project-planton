@@ -103,7 +103,9 @@ variable "spec" {
       max_msg_size = optional(number, -1)
       # Maximum number of consumers (-1 for unlimited)
       max_consumers = optional(number, -1)
-      # Discard policy when limits reached: "old" or "new"
+      # Discard policy when limits reached: "old" or "new_msgs"
+      # Note: Use "new_msgs" instead of "new" because "new" is a reserved keyword in Java.
+      # The module converts "new_msgs" to "new" when sending to NACK CRDs.
       discard = optional(string, "old")
       # Description of the stream
       description = optional(string, "")
@@ -111,7 +113,9 @@ variable "spec" {
       consumers = optional(list(object({
         # Durable name of the consumer (unique within stream)
         durable_name = string
-        # Delivery policy: "all", "last", or "new"
+        # Delivery policy: "all", "last", or "new_msgs"
+        # Note: Use "new_msgs" instead of "new" because "new" is a reserved keyword in Java.
+        # The module converts "new_msgs" to "new" when sending to NACK CRDs.
         deliver_policy = optional(string, "all")
         # Acknowledgment policy: "none", "all", or "explicit"
         ack_policy = optional(string, "none")

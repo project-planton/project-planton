@@ -262,7 +262,9 @@ func discardEnumToString(d kubernetesnatsv1.StreamDiscardEnum_Value) string {
 	switch d {
 	case kubernetesnatsv1.StreamDiscardEnum_old:
 		return "old"
-	case kubernetesnatsv1.StreamDiscardEnum_new:
+	// Note: Proto enum is "new_msgs" because "new" is a reserved keyword in Java.
+	// We convert it back to "new" for NACK CRDs.
+	case kubernetesnatsv1.StreamDiscardEnum_new_msgs:
 		return "new"
 	default:
 		return "old" // default per NACK CRD
@@ -275,7 +277,9 @@ func deliverPolicyEnumToString(d kubernetesnatsv1.ConsumerDeliverPolicyEnum_Valu
 		return "all"
 	case kubernetesnatsv1.ConsumerDeliverPolicyEnum_last:
 		return "last"
-	case kubernetesnatsv1.ConsumerDeliverPolicyEnum_new:
+	// Note: Proto enum is "new_msgs" because "new" is a reserved keyword in Java.
+	// We convert it back to "new" for NACK CRDs.
+	case kubernetesnatsv1.ConsumerDeliverPolicyEnum_new_msgs:
 		return "new"
 	default:
 		return "all" // default per NACK CRD

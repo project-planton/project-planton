@@ -416,7 +416,7 @@ var _ = ginkgo.Describe("KubernetesNats Stream Configuration Tests", func() {
 						Consumers: []*KubernetesNatsConsumer{
 							{
 								DurableName:    "push-consumer",
-								DeliverPolicy:  ConsumerDeliverPolicyEnum_new,
+								DeliverPolicy:  ConsumerDeliverPolicyEnum_new_msgs,
 								AckPolicy:      ConsumerAckPolicyEnum_explicit,
 								DeliverSubject: "deliver.push.consumer",
 								DeliverGroup:   "push-workers",

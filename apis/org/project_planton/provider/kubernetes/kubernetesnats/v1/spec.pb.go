@@ -191,7 +191,9 @@ const (
 	// Discard old messages when limits reached.
 	StreamDiscardEnum_old StreamDiscardEnum_Value = 1
 	// Reject new messages when limits reached.
-	StreamDiscardEnum_new StreamDiscardEnum_Value = 2
+	// Note: Named "new_msgs" instead of "new" because "new" is a reserved keyword in Java.
+	// IaC modules convert this to "new" when sending to NACK CRDs.
+	StreamDiscardEnum_new_msgs StreamDiscardEnum_Value = 2
 )
 
 // Enum value maps for StreamDiscardEnum_Value.
@@ -199,12 +201,12 @@ var (
 	StreamDiscardEnum_Value_name = map[int32]string{
 		0: "unspecified",
 		1: "old",
-		2: "new",
+		2: "new_msgs",
 	}
 	StreamDiscardEnum_Value_value = map[string]int32{
 		"unspecified": 0,
 		"old":         1,
-		"new":         2,
+		"new_msgs":    2,
 	}
 )
 
@@ -244,7 +246,9 @@ const (
 	// Deliver starting from the last message.
 	ConsumerDeliverPolicyEnum_last ConsumerDeliverPolicyEnum_Value = 2
 	// Deliver only new messages (after consumer creation).
-	ConsumerDeliverPolicyEnum_new ConsumerDeliverPolicyEnum_Value = 3
+	// Note: Named "new_msgs" instead of "new" because "new" is a reserved keyword in Java.
+	// IaC modules convert this to "new" when sending to NACK CRDs.
+	ConsumerDeliverPolicyEnum_new_msgs ConsumerDeliverPolicyEnum_Value = 3
 )
 
 // Enum value maps for ConsumerDeliverPolicyEnum_Value.
@@ -253,13 +257,13 @@ var (
 		0: "unspecified",
 		1: "all",
 		2: "last",
-		3: "new",
+		3: "new_msgs",
 	}
 	ConsumerDeliverPolicyEnum_Value_value = map[string]int32{
 		"unspecified": 0,
 		"all":         1,
 		"last":        2,
-		"new":         3,
+		"new_msgs":    3,
 	}
 )
 
@@ -1473,18 +1477,18 @@ const file_org_project_planton_provider_kubernetes_kubernetesnats_v1_spec_proto_
 	"\n" +
 	"\x06limits\x10\x01\x12\f\n" +
 	"\binterest\x10\x02\x12\r\n" +
-	"\tworkqueue\x10\x03\"?\n" +
-	"\x11StreamDiscardEnum\"*\n" +
+	"\tworkqueue\x10\x03\"D\n" +
+	"\x11StreamDiscardEnum\"/\n" +
 	"\x05Value\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\a\n" +
-	"\x03old\x10\x01\x12\a\n" +
-	"\x03new\x10\x02\"Q\n" +
-	"\x19ConsumerDeliverPolicyEnum\"4\n" +
+	"\x03old\x10\x01\x12\f\n" +
+	"\bnew_msgs\x10\x02\"V\n" +
+	"\x19ConsumerDeliverPolicyEnum\"9\n" +
 	"\x05Value\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\a\n" +
 	"\x03all\x10\x01\x12\b\n" +
-	"\x04last\x10\x02\x12\a\n" +
-	"\x03new\x10\x03\"R\n" +
+	"\x04last\x10\x02\x12\f\n" +
+	"\bnew_msgs\x10\x03\"R\n" +
 	"\x15ConsumerAckPolicyEnum\"9\n" +
 	"\x05Value\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\b\n" +
