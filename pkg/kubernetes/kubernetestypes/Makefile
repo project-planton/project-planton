@@ -50,6 +50,11 @@ percona_mysql_operator_release=v0.12.0
 #https://github.com/percona/percona-postgresql-operator/releases/tag/v2.0.0
 percona_postgres_operator_release=v2.0.0
 
+#https://github.com/nats-io/nack/releases
+#https://github.com/nats-io/nack/tree/main/deploy
+#Note: Using 'main' branch as CRDs are not published as release assets
+nack_release=main
+
 .PHONY: clean
 clean:
 	rm -rf ${go_build_dir}
@@ -133,8 +138,12 @@ gen-percona-mysql:
 gen-percona-postgres:
 	crd2pulumi --force --goPath=perconapostgres https://raw.githubusercontent.com/percona/percona-postgresql-operator/${percona_postgres_operator_release}/deploy/crd.yaml
 
+.PHONY: gen-nack
+gen-nack:
+	crd2pulumi --force --goPath=nack https://raw.githubusercontent.com/nats-io/nack/${nack_release}/deploy/crds.yml
+
 .PHONY: gen
-gen: clean gen-gateway-apis gen-istio gen-cert-manager gen-solr-operator gen-strimzi-operator gen-zalando-operator gen-external-secrets gen-elastic-operator gen-keycloak gen-altinity-operator gen-percona-mongodb gen-percona-mysql gen-percona-postgres
+gen: clean gen-gateway-apis gen-istio gen-cert-manager gen-solr-operator gen-strimzi-operator gen-zalando-operator gen-external-secrets gen-elastic-operator gen-keycloak gen-altinity-operator gen-percona-mongodb gen-percona-mysql gen-percona-postgres gen-nack
 
 .PHONY: build
 build: clean gen
