@@ -182,6 +182,13 @@ func GetModulePathLegacy(moduleDir, kindName string) (string, error) {
 	return result.ModulePath, nil
 }
 
+// GetLocalModulePath constructs the Terraform module path from a local project-planton git repository.
+// It takes the local repo path and kindName, and returns the path to the Terraform module.
+// This is used when --local-module flag is specified.
+func GetLocalModulePath(localRepoPath, kindName string) (string, error) {
+	return getTerraformModulePath(localRepoPath, kindName)
+}
+
 // IsTerraformModuleDirectory checks if the given directory contains any files with .tf extension.
 // It returns true if any .tf file exists, false otherwise. If an error occurs during the check, it returns an error.
 func isTerraformModuleDirectory(moduleDir string) (bool, error) {

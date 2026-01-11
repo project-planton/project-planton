@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
 	"github.com/plantonhq/project-planton/internal/cli/flag"
 	climanifest "github.com/plantonhq/project-planton/internal/cli/manifest"
 	"github.com/plantonhq/project-planton/internal/manifest"
+	"github.com/plantonhq/project-planton/pkg/iac/localmodule"
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/spf13/cobra"
 )
@@ -77,6 +79,21 @@ func initHandler(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	cliprint.PrintSuccess("Manifest validated")
+
+	// Handle --local-module flag: derive module directory from local project-planton repo
+	localModule, _ := cmd.Flags().GetBool(string(flag.LocalModule))
+	if localModule {
+		var err error
+		moduleDir, err = localmodule.GetModuleDir(targetManifestPath, cmd, shared.IacProvisioner_pulumi)
+		if err != nil {
+			if lmErr, ok := err.(*localmodule.Error); ok {
+				lmErr.PrintError()
+			} else {
+				cliprint.PrintError(err.Error())
+			}
+			os.Exit(1)
+		}
+	}
 
 	cliprint.PrintStep("Initializing Pulumi stack...")
 

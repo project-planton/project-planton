@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
 	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/iac/terraform"
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
 	"github.com/plantonhq/project-planton/internal/cli/flag"
@@ -12,6 +13,7 @@ import (
 	"github.com/plantonhq/project-planton/internal/cli/workspace"
 	"github.com/plantonhq/project-planton/internal/manifest"
 	"github.com/plantonhq/project-planton/pkg/crkreflect"
+	"github.com/plantonhq/project-planton/pkg/iac/localmodule"
 	"github.com/plantonhq/project-planton/pkg/iac/provisioner"
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
@@ -165,6 +167,27 @@ func initHandler(cmd *cobra.Command, args []string) {
 	}
 
 	cliprint.PrintSuccess(fmt.Sprintf("Using provisioner: %s", provType.String()))
+
+	// Handle --local-module flag: derive module directory from local project-planton repo
+	localModule, _ := cmd.Flags().GetBool(string(flag.LocalModule))
+	if localModule {
+		var iacProv shared.IacProvisioner
+		switch provType {
+		case provisioner.ProvisionerTypePulumi:
+			iacProv = shared.IacProvisioner_pulumi
+		case provisioner.ProvisionerTypeTofu, provisioner.ProvisionerTypeTerraform:
+			iacProv = shared.IacProvisioner_terraform
+		}
+		moduleDir, err = localmodule.GetModuleDir(targetManifestPath, cmd, iacProv)
+		if err != nil {
+			if lmErr, ok := err.(*localmodule.Error); ok {
+				lmErr.PrintError()
+			} else {
+				cliprint.PrintError(err.Error())
+			}
+			os.Exit(1)
+		}
+	}
 
 	// Prepare provider configs
 	cliprint.PrintStep("Preparing execution...")
