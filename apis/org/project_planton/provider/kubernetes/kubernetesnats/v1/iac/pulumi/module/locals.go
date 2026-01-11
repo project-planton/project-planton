@@ -26,6 +26,12 @@ type Locals struct {
 	AuthSecretName        string
 	NoAuthUserSecretName  string
 	ExternalLbServiceName string
+
+	// Helm chart versions (from spec or defaults)
+	NatsHelmChartVersion string
+	NackHelmChartVersion string
+	NackAppVersion       string
+	NackCrdsUrl          string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -100,6 +106,18 @@ func initializeLocals(ctx *pulumi.Context,
 	if !target.Spec.DisableJetStream {
 		localsJetDomain := fmt.Sprintf("%s", locals.Namespace) // simple default
 		ctx.Export(OpJetStreamDomain, pulumi.String(localsJetDomain))
+	}
+
+	// ------------------------ helm chart versions -----------------------------
+	// Defaults are guaranteed by Project Planton CLI from proto definitions
+	locals.NatsHelmChartVersion = *target.Spec.NatsHelmChartVersion
+
+	// NACK chart version, app version, and CRDs URL
+	if target.Spec.NackController != nil {
+		locals.NackHelmChartVersion = *target.Spec.NackController.HelmChartVersion
+		locals.NackAppVersion = *target.Spec.NackController.AppVersion
+		// CRDs URL uses app version (GitHub tag), NOT chart version
+		locals.NackCrdsUrl = fmt.Sprintf(vars.NackCrdsUrlTemplate, locals.NackAppVersion)
 	}
 
 	return locals

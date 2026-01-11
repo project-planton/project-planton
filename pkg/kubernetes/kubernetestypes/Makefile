@@ -53,7 +53,7 @@ percona_postgres_operator_release=v2.0.0
 #https://github.com/nats-io/nack/releases
 #https://github.com/nats-io/nack/tree/main/deploy
 #Note: Using 'main' branch as CRDs are not published as release assets
-nack_release=main
+nack_release=v0.21.1
 
 .PHONY: clean
 clean:
