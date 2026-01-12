@@ -1,7 +1,9 @@
 import { PCThemeType } from '@/contexts/models';
 import { Button, styled } from '@mui/material';
 
-export const StyledThemeButton = styled(Button)<{ $mode: PCThemeType }>(({ theme, $mode }) => ({
+export const StyledThemeButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== '$mode',
+})<{ $mode: PCThemeType }>(({ theme, $mode }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',

@@ -1,9 +1,14 @@
 'use client';
-import React, { useContext, useCallback, useMemo, FC } from 'react';
-import { Box, Divider, Tooltip } from '@mui/material';
+import React, { useContext, useCallback, useMemo, FC, ReactNode } from 'react';
+import { Badge, Box, Divider, Tooltip } from '@mui/material';
+import {
+  GridViewRounded,
+  CloudQueue,
+  VpnKeyRounded,
+} from '@mui/icons-material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AppContext } from '@/contexts';
-import { NAVBAR_OPEN, THEME } from '@/contexts/models';
+import { NAVBAR_OPEN } from '@/contexts/models';
 import { Utils } from '@/lib/utils';
 import { setCookieNavbarOpen } from '@/lib/cookie-utils';
 import {
@@ -13,6 +18,7 @@ import {
   StyledListItemIcon,
   StyledListItemText,
   StyledBottomSection,
+  StyledSectionLabel,
 } from '@/components/layout/sidebar/styled';
 import { CustomTooltip } from '@/components/shared/custom-tooltip';
 import { Icon, ICON_NAMES } from '@/components/shared/icon';
@@ -20,27 +26,45 @@ import { Icon, ICON_NAMES } from '@/components/shared/icon';
 export interface Route {
   name: string;
   path: string;
-  iconName: ICON_NAMES;
+  icon: ReactNode;
   activePaths?: string[];
+  badge?: number | string;
 }
 
-const TOP_MENU: Route[] = [
+export interface MenuSection {
+  label?: string;
+  routes: Route[];
+}
+
+const MENU_SECTIONS: MenuSection[] = [
   {
-    name: 'Dashboard',
-    path: '/dashboard',
-    iconName: ICON_NAMES.DASHBOARD,
-    activePaths: ['/', '/dashboard'],
+    // Main section - no label for cleaner look at top
+    routes: [
+      {
+        name: 'Dashboard',
+        path: '/dashboard',
+        icon: <GridViewRounded fontSize="small" />,
+        activePaths: ['/', '/dashboard'],
+      },
+      {
+        name: 'Cloud Resources',
+        path: '/cloud-resources',
+        icon: <CloudQueue fontSize="small" />,
+      },
+      {
+        name: 'Credentials',
+        path: '/credentials',
+        icon: <VpnKeyRounded fontSize="small" />,
+      },
+    ],
   },
-  {
-    name: 'Cloud Resources',
-    path: '/cloud-resources',
-    iconName: ICON_NAMES.INFRA_HUB,
-  },
-  {
-    name: 'Credentials',
-    path: '/credentials',
-    iconName: ICON_NAMES.CONNECTIONS,
-  },
+  // Example of future sections (commented out for now):
+  // {
+  //   label: 'SETTINGS',
+  //   routes: [
+  //     { name: 'Preferences', path: '/settings', icon: <SettingsRounded fontSize="small" /> },
+  //   ],
+  // },
 ];
 
 interface ILeftNavItem {
@@ -52,7 +76,6 @@ const LeftNavItem: FC<ILeftNavItem> = ({ route, navbarOpen }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { push: pushRoute } = useRouter();
-  const { theme } = useContext(AppContext);
 
   const handleListItemClick = (path: string) => {
     pushRoute(`${path}?${searchParams.toString()}`);
@@ -65,6 +88,25 @@ const LeftNavItem: FC<ILeftNavItem> = ({ route, navbarOpen }) => {
     [pathname, route]
   );
 
+  const iconElement = route.badge ? (
+    <Badge
+      badgeContent={route.badge}
+      color="primary"
+      sx={{
+        '& .MuiBadge-badge': {
+          fontSize: '0.625rem',
+          minWidth: 16,
+          height: 16,
+          padding: '0 4px',
+        },
+      }}
+    >
+      {route.icon}
+    </Badge>
+  ) : (
+    route.icon
+  );
+
   return (
     <StyledListItemButton
       onClick={() => handleListItemClick(route.path)}
@@ -72,15 +114,7 @@ const LeftNavItem: FC<ILeftNavItem> = ({ route, navbarOpen }) => {
       open={navbarOpen}
     >
       <CustomTooltip title={!navbarOpen ? route?.name : ''} placement="right">
-        <StyledListItemIcon>
-          <Icon
-            name={route.iconName}
-            fontSize="small"
-            sx={{
-              filter: theme.mode === THEME.DARK ? 'invert(0.3)' : 'none',
-            }}
-          />
-        </StyledListItemIcon>
+        <StyledListItemIcon>{iconElement}</StyledListItemIcon>
       </CustomTooltip>
       <StyledListItemText primary={route.name} open={navbarOpen} />
     </StyledListItemButton>
@@ -89,10 +123,6 @@ const LeftNavItem: FC<ILeftNavItem> = ({ route, navbarOpen }) => {
 
 export const Sidebar = () => {
   const { navbarOpen, setNavbarOpen } = useContext(AppContext);
-
-  const routesArray = useMemo(() => {
-    return TOP_MENU;
-  }, []);
 
   const handleNavbarToggle = useCallback(() => {
     const newValue = !navbarOpen;
@@ -104,8 +134,21 @@ export const Sidebar = () => {
   return (
     <StyledDrawer variant="permanent" open={navbarOpen}>
       <StyledList disablePadding>
-        {routesArray.map((route, index) => (
-          <LeftNavItem key={`${index}-${route.name}`} route={route} navbarOpen={navbarOpen} />
+        {MENU_SECTIONS.map((section, sectionIndex) => (
+          <Box key={`section-${sectionIndex}`} sx={{ width: '100%' }}>
+            {section.label && (
+              <StyledSectionLabel open={navbarOpen}>
+                {section.label}
+              </StyledSectionLabel>
+            )}
+            {section.routes.map((route, routeIndex) => (
+              <LeftNavItem
+                key={`${sectionIndex}-${routeIndex}-${route.name}`}
+                route={route}
+                navbarOpen={navbarOpen}
+              />
+            ))}
+          </Box>
         ))}
       </StyledList>
       <StyledBottomSection>
