@@ -23,6 +23,7 @@ go_library(
         "//pkg/iac/localmodule",
         "//pkg/iac/pulumi/pulumistack",
         "//pkg/iac/stackinput/stackinputproviderconfig",
+        "//pkg/kubernetes/kubecontext",
         "@com_github_spf13_cobra//:cobra",
     ],
 )

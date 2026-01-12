@@ -17,6 +17,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofumodule"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kubecontext"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -74,6 +75,9 @@ func init() {
 	Destroy.PersistentFlags().String(string(flag.ModuleVersion), "",
 		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
 			"This allows using a different module version than what's in the staging area without affecting it.")
+
+	// Kubernetes context flag
+	Destroy.PersistentFlags().String(string(flag.KubeContext), "", "kubectl context to use for Kubernetes deployments (overrides manifest label)")
 
 	// Provider credential flags
 	Destroy.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -167,6 +171,15 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintSuccess(fmt.Sprintf("Using provisioner: %s", provType.String()))
 
+	// Resolve kube context: flag takes priority over manifest label
+	kubeCtx, _ := cmd.Flags().GetString(string(flag.KubeContext))
+	if kubeCtx == "" {
+		kubeCtx = kubecontext.ExtractFromManifest(manifestObject)
+	}
+	if kubeCtx != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using kubectl context: %s", kubeCtx))
+	}
+
 	// Handle --local-module flag: derive module directory from local project-planton repo
 	localModule, _ := cmd.Flags().GetBool(string(flag.LocalModule))
 	if localModule {
@@ -200,9 +213,9 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 	// Route to appropriate provisioner
 	switch provType {
 	case provisioner.ProvisionerTypePulumi:
-		destroyWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, providerConfigOptions)
+		destroyWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
 	case provisioner.ProvisionerTypeTofu:
-		destroyWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, providerConfigOptions)
+		destroyWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
 	case provisioner.ProvisionerTypeTerraform:
 		cliprint.PrintError("Terraform provisioner is not yet implemented. Please use 'tofu' instead.")
 		os.Exit(1)
@@ -213,7 +226,7 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 }
 
 func destroyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	// Stack can be provided via flag or extracted from manifest
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
@@ -224,7 +237,7 @@ func destroyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, kubeContext, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
@@ -233,7 +246,7 @@ func destroyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 }
 
 func destroyWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	isAutoApprove, err := cmd.Flags().GetBool(string(flag.AutoApprove))
 	flag.HandleFlagErr(err, flag.AutoApprove)
@@ -248,6 +261,7 @@ func destroyWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, v
 		isAutoApprove,
 		false,
 		moduleVersion, noCleanup,
+		kubeContext,
 		providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintTofuFailure()

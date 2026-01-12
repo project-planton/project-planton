@@ -21,6 +21,7 @@ const (
 	Force                    Flag = "force"
 	GcpProviderConfig        Flag = "gcp-provider-config"
 	InputDir                 Flag = "input-dir"
+	KubeContext              Flag = "kube-context"
 	KubernetesProviderConfig Flag = "kubernetes-provider-config"
 	KustomizeDir             Flag = "kustomize-dir"
 	LocalModule              Flag = "local-module"

@@ -17,6 +17,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofumodule"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kubecontext"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -69,6 +70,9 @@ func init() {
 	Refresh.PersistentFlags().String(string(flag.ModuleVersion), "",
 		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
 			"This allows using a different module version than what's in the staging area without affecting it.")
+
+	// Kubernetes context flag
+	Refresh.PersistentFlags().String(string(flag.KubeContext), "", "kubectl context to use for Kubernetes deployments (overrides manifest label)")
 
 	// Provider credential flags
 	Refresh.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -162,6 +166,15 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintSuccess(fmt.Sprintf("Using provisioner: %s", provType.String()))
 
+	// Resolve kube context: flag takes priority over manifest label
+	kubeCtx, _ := cmd.Flags().GetString(string(flag.KubeContext))
+	if kubeCtx == "" {
+		kubeCtx = kubecontext.ExtractFromManifest(manifestObject)
+	}
+	if kubeCtx != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using kubectl context: %s", kubeCtx))
+	}
+
 	// Handle --local-module flag: derive module directory from local project-planton repo
 	localModule, _ := cmd.Flags().GetBool(string(flag.LocalModule))
 	if localModule {
@@ -195,9 +208,9 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	// Route to appropriate provisioner
 	switch provType {
 	case provisioner.ProvisionerTypePulumi:
-		refreshWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, providerConfigOptions)
+		refreshWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
 	case provisioner.ProvisionerTypeTofu:
-		refreshWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, providerConfigOptions)
+		refreshWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
 	case provisioner.ProvisionerTypeTerraform:
 		cliprint.PrintError("Terraform provisioner is not yet implemented. Please use 'tofu' instead.")
 		os.Exit(1)
@@ -208,7 +221,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 }
 
 func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	// Stack can be provided via flag or extracted from manifest
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
@@ -219,7 +232,7 @@ func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, kubeContext, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
@@ -228,7 +241,7 @@ func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 }
 
 func refreshWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
@@ -240,6 +253,7 @@ func refreshWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, v
 		true,  // isAutoApprove - refresh doesn't need approval
 		false, // isDestroyPlan - not applicable for refresh
 		moduleVersion, noCleanup,
+		kubeContext,
 		providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintTofuFailure()

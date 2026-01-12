@@ -6,7 +6,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func GetProviderConfigEnvVars(stackInputYaml, fileCacheLoc string) ([]string, error) {
+func GetProviderConfigEnvVars(stackInputYaml, fileCacheLoc, kubeContext string) ([]string, error) {
 	stackInputContentMap := map[string]interface{}{}
 	err := yaml.Unmarshal([]byte(stackInputYaml), &stackInputContentMap)
 	if err != nil {
@@ -53,6 +53,11 @@ func GetProviderConfigEnvVars(stackInputYaml, fileCacheLoc string) ([]string, er
 	providerConfigEnvVars, err = providerconfig.AddSnowflakeProviderConfigEnvVars(stackInputContentMap, providerConfigEnvVars)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get Snowflake provider config")
+	}
+
+	// Add KUBE_CTX environment variable if kube context is specified
+	if kubeContext != "" {
+		providerConfigEnvVars["KUBE_CTX"] = kubeContext
 	}
 
 	return mapToSlice(providerConfigEnvVars), nil

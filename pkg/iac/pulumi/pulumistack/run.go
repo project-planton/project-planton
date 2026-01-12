@@ -20,7 +20,7 @@ import (
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
 	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool, moduleVersion string, noCleanup bool,
-	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
+	kubeContext string, providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
 	for _, opt := range providerConfigOptions {
 		opt(&opts)
@@ -113,8 +113,11 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 
 	pulumiCmd := exec.Command("pulumi", args...)
 
-	// Set the STACK_INPUT_YAML environment variable
+	// Set environment variables
 	pulumiCmd.Env = append(os.Environ(), "STACK_INPUT_YAML="+stackInputYamlContent)
+	if kubeContext != "" {
+		pulumiCmd.Env = append(pulumiCmd.Env, "KUBE_CTX="+kubeContext)
+	}
 
 	// Set the working directory to the repository path
 	pulumiCmd.Dir = pulumiModuleRepoPath

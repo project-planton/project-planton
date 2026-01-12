@@ -1,6 +1,7 @@
 package tofu
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/plantonhq/project-planton/apis/org/project_planton/shared"
@@ -15,6 +16,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofumodule"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kubecontext"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -147,7 +149,16 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to get workspace directory")
 	}
 
-	providerConfigEnvVars, err := tofumodule.GetProviderConfigEnvVars(stackInputYaml, workspaceDir)
+	// Resolve kube context: flag takes priority over manifest label
+	kubeCtx, _ := cmd.Flags().GetString(string(flag.KubeContext))
+	if kubeCtx == "" {
+		kubeCtx = kubecontext.ExtractFromManifest(manifestObject)
+	}
+	if kubeCtx != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using kubectl context: %s", kubeCtx))
+	}
+
+	providerConfigEnvVars, err := tofumodule.GetProviderConfigEnvVars(stackInputYaml, workspaceDir, kubeCtx)
 	if err != nil {
 		log.Fatalf("failed to get credential env vars %v", err)
 	}

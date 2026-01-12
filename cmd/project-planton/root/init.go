@@ -20,6 +20,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofumodule"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kubecontext"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
@@ -75,6 +76,9 @@ func init() {
 	Init.PersistentFlags().String(string(flag.ModuleVersion), "",
 		"Checkout a specific version (tag, branch, or commit SHA) of the IaC modules in the workspace copy.\n"+
 			"This allows using a different module version than what's in the staging area without affecting it.")
+
+	// Kubernetes context flag
+	Init.PersistentFlags().String(string(flag.KubeContext), "", "kubectl context to use for Kubernetes deployments (overrides manifest label)")
 
 	// Provider credential flags
 	Init.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
@@ -168,6 +172,15 @@ func initHandler(cmd *cobra.Command, args []string) {
 
 	cliprint.PrintSuccess(fmt.Sprintf("Using provisioner: %s", provType.String()))
 
+	// Resolve kube context: flag takes priority over manifest label
+	kubeCtx, _ := cmd.Flags().GetString(string(flag.KubeContext))
+	if kubeCtx == "" {
+		kubeCtx = kubecontext.ExtractFromManifest(manifestObject)
+	}
+	if kubeCtx != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using kubectl context: %s", kubeCtx))
+	}
+
 	// Handle --local-module flag: derive module directory from local project-planton repo
 	localModule, _ := cmd.Flags().GetBool(string(flag.LocalModule))
 	if localModule {
@@ -203,7 +216,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 	case provisioner.ProvisionerTypePulumi:
 		initWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides)
 	case provisioner.ProvisionerTypeTofu:
-		initWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, manifestObject, providerConfigOptions)
+		initWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, manifestObject, providerConfigOptions)
 	case provisioner.ProvisionerTypeTerraform:
 		cliprint.PrintError("Terraform provisioner is not yet implemented. Please use 'tofu' instead.")
 		os.Exit(1)
@@ -230,7 +243,7 @@ func initWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, va
 }
 
 func initWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	manifestObject proto.Message, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, manifestObject proto.Message, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	backendTypeString, err := cmd.Flags().GetString(string(flag.BackendType))
 	flag.HandleFlagErrAndValue(err, flag.BackendType, backendTypeString)
@@ -285,7 +298,7 @@ func initWithTofu(cmd *cobra.Command, moduleDir, targetManifestPath string, valu
 		os.Exit(1)
 	}
 
-	providerConfigEnvVars, err := tofumodule.GetProviderConfigEnvVars(stackInputYaml, workspaceDir)
+	providerConfigEnvVars, err := tofumodule.GetProviderConfigEnvVars(stackInputYaml, workspaceDir, kubeContext)
 	if err != nil {
 		cliprint.PrintError(fmt.Sprintf("Failed to get credential env vars: %v", err))
 		os.Exit(1)

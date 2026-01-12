@@ -13,6 +13,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/localmodule"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/plantonhq/project-planton/pkg/iac/tofu/tofumodule"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kubecontext"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -110,6 +111,21 @@ func planHandler(cmd *cobra.Command, args []string) {
 	}
 	cliprint.PrintSuccess("Execution prepared")
 
+	// Load manifest to extract kube context
+	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
+	if err != nil {
+		log.Fatalf("Failed to load manifest: %v", err)
+	}
+
+	// Resolve kube context: flag takes priority over manifest label
+	kubeCtx, _ := cmd.Flags().GetString(string(flag.KubeContext))
+	if kubeCtx == "" {
+		kubeCtx = kubecontext.ExtractFromManifest(manifestObject)
+	}
+	if kubeCtx != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using kubectl context: %s", kubeCtx))
+	}
+
 	cliprint.PrintHandoff("OpenTofu")
 
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
@@ -123,6 +139,7 @@ func planHandler(cmd *cobra.Command, args []string) {
 		true,
 		isDestroyPlan,
 		moduleVersion, noCleanup,
+		kubeCtx,
 		providerConfigOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

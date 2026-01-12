@@ -13,6 +13,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/iac/localmodule"
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	"github.com/plantonhq/project-planton/pkg/kubernetes/kubecontext"
 	"github.com/spf13/cobra"
 )
 
@@ -102,12 +103,28 @@ func previewHandler(cmd *cobra.Command, args []string) {
 	}
 	cliprint.PrintSuccess("Execution prepared")
 
+	// Load manifest to extract kube context
+	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
+	if err != nil {
+		cliprint.PrintError(fmt.Sprintf("Failed to load manifest: %v", err))
+		os.Exit(1)
+	}
+
+	// Resolve kube context: flag takes priority over manifest label
+	kubeCtx, _ := cmd.Flags().GetString(string(flag.KubeContext))
+	if kubeCtx == "" {
+		kubeCtx = kubecontext.ExtractFromManifest(manifestObject)
+	}
+	if kubeCtx != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using kubectl context: %s", kubeCtx))
+	}
+
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, moduleVersion, noCleanup, providerConfigOptions...)
+		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, moduleVersion, noCleanup, kubeCtx, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

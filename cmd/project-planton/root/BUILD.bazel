@@ -64,6 +64,7 @@ go_library(
         "//pkg/iac/stackinput/stackinputproviderconfig",
         "//pkg/iac/tofu/tfbackend",
         "//pkg/iac/tofu/tofumodule",
+        "//pkg/kubernetes/kubecontext",
         "//pkg/kustomize/builder",
         "@com_connectrpc_connect//:connect",
         "@com_github_sirupsen_logrus//:logrus",
