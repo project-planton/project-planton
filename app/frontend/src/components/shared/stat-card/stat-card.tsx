@@ -217,10 +217,10 @@ export const StatCard: React.FC<StatCardProps> = ({
         <Title>{title}</Title>
 
         {loading ? (
-          <Skeleton 
-            variant="text" 
-            width={100} 
-            height={48} 
+          <Skeleton
+            variant="text"
+            width={100}
+            height={48}
             sx={{ borderRadius: 1 }}
           />
         ) : (

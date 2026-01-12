@@ -97,13 +97,13 @@ export const SearchBox = styled(Box)(({ theme }) => ({
     : alpha(theme.palette.common.black, 0.02),
   minWidth: 240,
   transition: 'all 150ms ease',
-  
+
   '&:hover': {
     borderColor: theme.palette.mode === 'dark'
       ? alpha(theme.palette.common.white, 0.15)
       : alpha(theme.palette.common.black, 0.15),
   },
-  
+
   '&:focus-within': {
     borderColor: theme.palette.primary.main,
     boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}`,
@@ -151,14 +151,14 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   padding: 8,
   borderRadius: 8,
   transition: 'all 150ms ease',
-  
+
   '&:hover': {
     backgroundColor: theme.palette.mode === 'dark'
       ? alpha(theme.palette.common.white, 0.05)
       : alpha(theme.palette.common.black, 0.04),
     color: theme.palette.text.primary,
   },
-  
+
   '&:focus-visible': {
     outline: 'none',
     boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.5)}`,
@@ -169,7 +169,7 @@ export const StyledAvatarButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,
   padding: 4,
   borderRadius: 8,
-  
+
   '&:hover': {
     backgroundColor: theme.palette.mode === 'dark'
       ? alpha(theme.palette.common.white, 0.05)
@@ -197,14 +197,14 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     padding: theme.spacing(0.5),
-    
+
     '& .MuiMenuItem-root': {
       borderRadius: 8,
       padding: theme.spacing(1, 1.5),
       fontSize: '0.8125rem',
       gap: theme.spacing(1.5),
       transition: 'background-color 150ms ease',
-      
+
       '&:hover': {
         backgroundColor: theme.palette.mode === 'dark'
           ? alpha(theme.palette.common.white, 0.05)
