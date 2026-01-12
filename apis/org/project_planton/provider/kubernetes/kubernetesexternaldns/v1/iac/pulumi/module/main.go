@@ -105,10 +105,16 @@ func Resources(ctx *pulumi.Context, stackInput *kubernetesexternaldnsv1.Kubernet
 		values["provider"] = pulumi.String("cloudflare")
 
 		// Top-level sources parameter (REQUIRED for RBAC generation)
+		// Sources determine which Kubernetes resources ExternalDNS watches for DNS records:
+		// - service: Services with external-dns.alpha.kubernetes.io/hostname annotation
+		// - ingress: Ingress resources
+		// - gateway-httproute: Gateway API HTTPRoute resources
+		// - istio-gateway: Istio Gateway resources (networking.istio.io/v1 Gateway)
 		values["sources"] = pulumi.StringArray{
 			pulumi.String("service"),
 			pulumi.String("ingress"),
 			pulumi.String("gateway-httproute"),
+			pulumi.String("istio-gateway"),
 		}
 
 		// Mount the API token secret as environment variable

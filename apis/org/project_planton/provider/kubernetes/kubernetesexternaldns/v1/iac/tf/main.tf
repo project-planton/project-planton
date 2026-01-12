@@ -145,6 +145,15 @@ resource "helm_release" "external_dns" {
     }
   }
 
+  # Istio Gateway source - enables ExternalDNS to watch networking.istio.io/v1 Gateway resources
+  dynamic "set" {
+    for_each = local.is_cloudflare ? [1] : []
+    content {
+      name  = "sources[3]"
+      value = "istio-gateway"
+    }
+  }
+
   dynamic "set" {
     for_each = local.is_cloudflare ? [1] : []
     content {
