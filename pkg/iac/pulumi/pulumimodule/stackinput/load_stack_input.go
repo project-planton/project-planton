@@ -15,7 +15,7 @@ import (
 
 const (
 	PulumiConfigKey   = "planton-cloud:stack-input"
-	FilePathEnvVar    = "STACK_INPUT_FILE_PATH"
+	FilePathEnvVar    = "STACK_INPUT_YAML_FILE"
 	YamlContentEnvVar = "STACK_INPUT_YAML"
 )
 

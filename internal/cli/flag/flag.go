@@ -35,6 +35,7 @@ const (
 	Set                      Flag = "set"
 	SnowflakeProviderConfig  Flag = "snowflake-provider-config"
 	Stack                    Flag = "stack"
+	StackInput               Flag = "stack-input"
 	Yes                      Flag = "yes"
 )
 

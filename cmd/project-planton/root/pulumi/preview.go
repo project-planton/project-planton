@@ -122,9 +122,10 @@ func previewHandler(cmd *cobra.Command, args []string) {
 	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
 	noCleanup, _ := cmd.Flags().GetBool(string(flag.NoCleanup))
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
+	stackInputFilePath, _ := cmd.Flags().GetString(string(flag.StackInput))
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, moduleVersion, noCleanup, kubeCtx, providerConfigOptions...)
+		pulumi.PulumiOperationType_update, true, false, valueOverrides, showDiff, moduleVersion, noCleanup, kubeCtx, stackInputFilePath, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
