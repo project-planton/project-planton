@@ -18,6 +18,7 @@ go_library(
         "//pkg/crkreflect",
         "//pkg/iac/pulumi/backendconfig",
         "//pkg/iac/pulumi/pulumimodule",
+        "//pkg/iac/pulumi/pulumimodule/stackinput",
         "//pkg/iac/stackinput",
         "//pkg/iac/stackinput/stackinputproviderconfig",
         "@com_github_fatih_color//:color",

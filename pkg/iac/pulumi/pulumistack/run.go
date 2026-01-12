@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
@@ -13,6 +14,7 @@ import (
 	"github.com/plantonhq/project-planton/pkg/crkreflect"
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/backendconfig"
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule"
+	pulumimodulestackinput "github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput"
 	"github.com/plantonhq/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	log "github.com/sirupsen/logrus"
@@ -20,7 +22,7 @@ import (
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
 	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool, moduleVersion string, noCleanup bool,
-	kubeContext string, providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
+	kubeContext string, stackInputFilePath string, providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
 	for _, opt := range providerConfigOptions {
 		opt(&opts)
@@ -73,9 +75,25 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", finalStackFqdn)
 	}
 
-	stackInputYamlContent, err := stackinput.BuildStackInputYaml(manifestObject, opts)
-	if err != nil {
-		return errors.Wrap(err, "failed to build stack input yaml")
+	// Determine stack input file path:
+	// - If user provided --stack-input flag, use that file directly
+	// - Otherwise, build stack input from manifest and write to temp file
+	var finalStackInputFilePath string
+	if stackInputFilePath != "" {
+		// User provided a pre-built stack input file
+		finalStackInputFilePath = stackInputFilePath
+	} else {
+		// Build stack input from manifest
+		stackInputYamlContent, err := stackinput.BuildStackInputYaml(manifestObject, opts)
+		if err != nil {
+			return errors.Wrap(err, "failed to build stack input yaml")
+		}
+
+		// Write stack input to file (avoids env var size limits for large manifests)
+		finalStackInputFilePath = filepath.Join(pulumiModuleRepoPath, "stack-input.yaml")
+		if err := os.WriteFile(finalStackInputFilePath, []byte(stackInputYamlContent), 0600); err != nil {
+			return errors.Wrap(err, "failed to write stack input file")
+		}
 	}
 
 	// Update project name in Pulumi.yaml
@@ -114,7 +132,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	pulumiCmd := exec.Command("pulumi", args...)
 
 	// Set environment variables
-	pulumiCmd.Env = append(os.Environ(), "STACK_INPUT_YAML="+stackInputYamlContent)
+	pulumiCmd.Env = append(os.Environ(), pulumimodulestackinput.FilePathEnvVar+"="+finalStackInputFilePath)
 	if kubeContext != "" {
 		pulumiCmd.Env = append(pulumiCmd.Env, "KUBE_CTX="+kubeContext)
 	}

@@ -74,6 +74,9 @@ func init() {
 	// Kubernetes context flag
 	Refresh.PersistentFlags().String(string(flag.KubeContext), "", "kubectl context to use for Kubernetes deployments (overrides manifest label)")
 
+	// Stack input file flag
+	Refresh.PersistentFlags().StringP(string(flag.StackInput), "i", "", "path to a YAML file containing the stack input (bypasses building stack input from manifest)")
+
 	// Provider credential flags
 	Refresh.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Refresh.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
@@ -196,6 +199,12 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
+	// Get stack input file path if provided
+	stackInputFilePath, _ := cmd.Flags().GetString(string(flag.StackInput))
+	if stackInputFilePath != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using stack input file: %s", stackInputFilePath))
+	}
+
 	// Prepare provider configs
 	cliprint.PrintStep("Preparing execution...")
 	providerConfigOptions, err := stackinputproviderconfig.BuildWithFlags(cmd.Flags())
@@ -208,7 +217,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	// Route to appropriate provisioner
 	switch provType {
 	case provisioner.ProvisionerTypePulumi:
-		refreshWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
+		refreshWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, stackInputFilePath, providerConfigOptions)
 	case provisioner.ProvisionerTypeTofu:
 		refreshWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
 	case provisioner.ProvisionerTypeTerraform:
@@ -221,7 +230,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 }
 
 func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	kubeContext string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, stackInputFilePath string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	// Stack can be provided via flag or extracted from manifest
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
@@ -232,7 +241,7 @@ func refreshWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, kubeContext, providerConfigOptions...)
+		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, kubeContext, stackInputFilePath, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

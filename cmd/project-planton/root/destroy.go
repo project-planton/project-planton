@@ -79,6 +79,9 @@ func init() {
 	// Kubernetes context flag
 	Destroy.PersistentFlags().String(string(flag.KubeContext), "", "kubectl context to use for Kubernetes deployments (overrides manifest label)")
 
+	// Stack input file flag
+	Destroy.PersistentFlags().StringP(string(flag.StackInput), "i", "", "path to a YAML file containing the stack input (bypasses building stack input from manifest)")
+
 	// Provider credential flags
 	Destroy.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
 	Destroy.PersistentFlags().String(string(flag.Auth0ProviderConfig), "", "path of the auth0-credential file")
@@ -201,6 +204,12 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
+	// Get stack input file path if provided
+	stackInputFilePath, _ := cmd.Flags().GetString(string(flag.StackInput))
+	if stackInputFilePath != "" {
+		cliprint.PrintInfo(fmt.Sprintf("Using stack input file: %s", stackInputFilePath))
+	}
+
 	// Prepare provider configs
 	cliprint.PrintStep("Preparing execution...")
 	providerConfigOptions, err := stackinputproviderconfig.BuildWithFlags(cmd.Flags())
@@ -213,7 +222,7 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 	// Route to appropriate provisioner
 	switch provType {
 	case provisioner.ProvisionerTypePulumi:
-		destroyWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
+		destroyWithPulumi(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, stackInputFilePath, providerConfigOptions)
 	case provisioner.ProvisionerTypeTofu:
 		destroyWithTofu(cmd, moduleDir, targetManifestPath, valueOverrides, kubeCtx, providerConfigOptions)
 	case provisioner.ProvisionerTypeTerraform:
@@ -226,7 +235,7 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 }
 
 func destroyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string, valueOverrides map[string]string,
-	kubeContext string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
+	kubeContext string, stackInputFilePath string, providerConfigOptions []stackinputproviderconfig.StackInputProviderConfigOption) {
 
 	// Stack can be provided via flag or extracted from manifest
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
@@ -237,7 +246,7 @@ func destroyWithPulumi(cmd *cobra.Command, moduleDir, targetManifestPath string,
 	moduleVersion, _ := cmd.Flags().GetString(string(flag.ModuleVersion))
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, kubeContext, providerConfigOptions...)
+		pulumi.PulumiOperationType_destroy, false, true, valueOverrides, showDiff, moduleVersion, noCleanup, kubeContext, stackInputFilePath, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
