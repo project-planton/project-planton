@@ -37,15 +37,15 @@ graph TB
     Tokens --> Spacing[Spacing Scale]
     Tokens --> Shadows[Shadow Hierarchy]
     Tokens --> Transitions[Animation Timing]
-    
+
     Colors --> Dark[Dark Theme]
     Colors --> Light[Light Theme]
-    
+
     Dark --> DarkSurface[Surface Layers]
     Dark --> DarkText[Text Hierarchy]
     Dark --> DarkBorder[Border System]
     Dark --> DarkSemantic[Semantic Colors]
-    
+
     Light --> LightSurface[Surface Layers]
     Light --> LightText[Text Hierarchy]
     Light --> LightBorder[Border System]
@@ -138,7 +138,7 @@ Organized tokens into logical categories:
 - Line height: 6 options from tight (1.2) to loose (2)
 - Letter spacing: 5 options from tighter (-0.02em) to wider (0.02em)
 
-**Spacing System**: 
+**Spacing System**:
 - 26 values from 1px to 128px following a logical progression
 - Aligned with Material-UI's spacing function
 
@@ -163,10 +163,10 @@ Migrated all Material-UI component styles to use design tokens:
 flowchart LR
     Tokens[tokens.ts] --> Dark[dark.tsx]
     Tokens --> Light[light.tsx]
-    
+
     Dark --> MuiComponents[MUI Components]
     Light --> MuiComponents
-    
+
     MuiComponents --> Button[Buttons]
     MuiComponents --> Input[Inputs]
     MuiComponents --> Card[Cards]
@@ -200,11 +200,11 @@ flowchart TB
 flowchart TB
     Dashboard[Dashboard] --> Stats[Stat Cards Row]
     Dashboard --> List[Cloud Resources List]
-    
+
     Stats --> CloudCount[Cloud Resources Count]
     Stats --> Creds[Credentials]
     Stats --> StackUpdates[Stack Updates]
-    
+
     CloudCount -->|Click| Navigate[Navigate to Cloud Resources]
     CloudCount -->|Loading| Skeleton[Skeleton State]
     CloudCount -->|API| RealTimeData[Real-time Data]
@@ -280,16 +280,16 @@ import { alpha } from '@mui/material';
 import { darkColors, typography, borderRadius, transitions } from '@/themes/tokens';
 
 const CustomCard = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' 
-    ? darkColors.background.raised 
+  backgroundColor: theme.palette.mode === 'dark'
+    ? darkColors.background.raised
     : lightColors.background.raised,
-  border: `1px solid ${theme.palette.mode === 'dark' 
-    ? darkColors.border.default 
+  border: `1px solid ${theme.palette.mode === 'dark'
+    ? darkColors.border.default
     : lightColors.border.default}`,
   borderRadius: borderRadius.xl,
   padding: spacing[6],
   transition: transitions.all.normal,
-  
+
   '&:hover': {
     borderColor: theme.palette.mode === 'dark'
       ? darkColors.border.strong
@@ -307,7 +307,7 @@ import { CloudOff } from '@mui/icons-material';
 
 function CloudResourcesPage() {
   const hasResources = resources.length > 0;
-  
+
   if (!hasResources) {
     return (
       <EmptyState
@@ -319,7 +319,7 @@ function CloudResourcesPage() {
       />
     );
   }
-  
+
   // ... render resources
 }
 ```
@@ -331,7 +331,7 @@ import { ShimmerSkeleton, StatCardSkeleton } from '@/components/shared/skeleton'
 
 function Dashboard() {
   const [loading, setLoading] = useState(true);
-  
+
   return (
     <Grid container spacing={2.5}>
       {loading ? (
