@@ -1,6 +1,9 @@
 import { NextFont } from 'next/dist/compiled/@next/font';
 import { alpha, buttonClasses, tabClasses, ThemeOptions } from '@mui/material';
 import { UnfoldMore } from '@mui/icons-material';
+import { darkColors, typography, shadows, borderRadius, transitions } from '@/themes/tokens';
+
+// Legacy color imports for backwards compatibility
 import colors from '@/themes/colors';
 import { formControlLabelLabel, listBase, listPaper, menuItemRoot } from '@/themes/theme';
 
@@ -18,194 +21,224 @@ const {
 
 export const getDarkTheme = (font: NextFont): ThemeOptions => ({
   palette: {
+    mode: 'dark',
     primary: {
-      lighter: primaryDark[90],
-      main: primaryDark[50],
-      light: primaryDark[95],
-      dark: primaryDark[10],
-      darker: primaryDark[95],
-      contrastText: primaryDark[0],
-      ...primaryDark,
+      lighter: darkColors.accent.subtle,
+      main: darkColors.accent.primary,
+      light: darkColors.accent.hover,
+      dark: darkColors.accent.pressed,
+      darker: darkColors.accent.pressed,
+      contrastText: darkColors.text.primary,
+      ...primaryDark, // Keep legacy for backwards compatibility
     },
     secondary: {
-      main: greyDark[10],
-      light: greyDark[95],
-      dark: greyDark[10],
+      main: darkColors.text.primary,
+      light: darkColors.text.secondary,
+      dark: darkColors.text.muted,
       ...secondaryDark,
     },
     error: {
-      main: errorDark[50],
-      light: errorDark[95],
-      dark: errorDark[10],
+      main: darkColors.semantic.error,
+      light: darkColors.semantic.errorSubtle,
+      dark: darkColors.semantic.error,
       ...errorDark,
     },
     warning: {
-      main: warningDark[60],
-      light: warningDark[90],
-      dark: warningDark[10],
+      main: darkColors.semantic.warning,
+      light: darkColors.semantic.warningSubtle,
+      dark: darkColors.semantic.warning,
       ...warningDark,
     },
     info: {
-      main: infoDark[60],
-      light: infoDark[90],
-      dark: infoDark[10],
+      main: darkColors.semantic.info,
+      light: darkColors.semantic.infoSubtle,
+      dark: darkColors.semantic.info,
       ...infoDark,
     },
     success: {
-      main: successDark[50],
-      light: successDark[95],
-      dark: successDark[10],
+      main: darkColors.semantic.success,
+      light: darkColors.semantic.successSubtle,
+      dark: darkColors.semantic.success,
       ...successDark,
     },
     grey: { ...greyDark },
     exceptions: { ...exceptionsDark },
     crimson: { ...crimsonDark },
     background: {
-      default: greyDark[100],
-      paper: greyDark[100],
+      default: darkColors.background.base,
+      paper: darkColors.background.raised,
     },
-    divider: greyDark[60],
+    divider: darkColors.border.default,
     action: {
-      disabledBackground: '#70707046',
-      disabled: '#626262',
+      disabledBackground: darkColors.interactive.active,
+      disabled: darkColors.text.disabled,
+      hover: darkColors.interactive.hover,
+      selected: darkColors.interactive.selected,
     },
     text: {
-      primary: greyDark[10],
-      secondary: greyDark[30],
-      disabled: greyDark[50],
-      link: greyDark[10],
+      primary: darkColors.text.primary,
+      secondary: darkColors.text.secondary,
+      disabled: darkColors.text.disabled,
+      link: darkColors.accent.primary,
     },
     neutral: {
-      main: '#424242',
-      contrastText: '#fff',
+      main: darkColors.background.overlay,
+      contrastText: darkColors.text.primary,
     },
   },
+  shape: {
+    borderRadius: 8,
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          scrollbarColor: `${darkColors.border.strong} ${darkColors.background.base}`,
+          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            width: 8,
+            height: 8,
+          },
+          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            borderRadius: 8,
+            backgroundColor: darkColors.border.strong,
+          },
+          '&::-webkit-scrollbar-track, & *::-webkit-scrollbar-track': {
+            backgroundColor: darkColors.background.base,
+          },
+        },
+      },
+    },
     MuiAlert: {
       styleOverrides: {
         root: ({ theme }) => ({
           padding: theme.spacing(1.5),
-          '& .MuiAlert-message': {
-            // fontSize: 15,
-            // padding: 0,
-          },
-          '&.MuiAlert-standardWarning .MuiAlert-icon': {
-            color: theme.palette.warning.main,
-          },
-          '&.MuiAlert-standardInfo .MuiAlert-icon': {
-            color: theme.palette.info.main,
-          },
-          '&.MuiAlert-standardError .MuiAlert-icon': {
-            color: theme.palette.error.main,
+          borderRadius: borderRadius.lg,
+          '& .MuiAlert-icon': {
+            opacity: 1,
           },
           '&.MuiAlert-colorNeutral': {
-            backgroundColor: theme.palette.neutral.main,
-            color: theme.palette.neutral.contrastText,
+            backgroundColor: darkColors.background.elevated,
+            color: darkColors.text.primary,
           },
         }),
-        standardWarning: ({ theme }) => ({
-          backgroundColor: theme.palette.warning.dark,
-          color: theme.palette.warning.light,
+        standardWarning: () => ({
+          backgroundColor: darkColors.semantic.warningMuted,
+          color: darkColors.semantic.warning,
+          border: `1px solid ${alpha(darkColors.semantic.warning, 0.3)}`,
         }),
-        standardInfo: ({ theme }) => ({
-          backgroundColor: theme.palette.info.dark,
-          color: theme.palette.info.light,
+        standardInfo: () => ({
+          backgroundColor: darkColors.semantic.infoMuted,
+          color: darkColors.semantic.info,
+          border: `1px solid ${alpha(darkColors.semantic.info, 0.3)}`,
         }),
-        standardError: ({ theme }) => ({
-          backgroundColor: theme.palette.error.light,
-          color: theme.palette.error.dark,
+        standardError: () => ({
+          backgroundColor: darkColors.semantic.errorMuted,
+          color: darkColors.semantic.error,
+          border: `1px solid ${alpha(darkColors.semantic.error, 0.3)}`,
         }),
         standardSuccess: () => ({
-          backgroundColor: '#EBF9ED',
-          color: '#2A6841',
+          backgroundColor: darkColors.semantic.successMuted,
+          color: darkColors.semantic.success,
+          border: `1px solid ${alpha(darkColors.semantic.success, 0.3)}`,
         }),
       },
     },
     MuiButton: {
       styleOverrides: {
-        containedPrimary: ({ theme }) => ({
-          color: theme.palette.exceptions[20],
-          backgroundColor: theme.palette.primary[75],
-          '&:hover': {
-            backgroundColor: theme.palette.primary[75],
-            boxShadow: 'none',
-          },
-        }),
-        containedSecondary: ({ theme }) => ({
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.exceptions[20],
-          border: `1px solid ${theme.palette.divider}`,
-          '&:hover': {
-            backgroundColor: theme.palette.exceptions[60],
-            boxShadow: 'none',
-          },
-        }),
-        outlinedPrimary: {
-          border: `1px solid ${primaryDark[50]}`,
-          background: primaryDark[100],
-          '&:hover': {
-            background: primaryDark[95],
-          },
-          color: primaryDark[10],
-        },
-        outlinedSecondary: ({ theme }) => ({
-          background: exceptionsDark[20],
-          border: `1px solid ${greyDark[60]}`,
-          '&:hover': {
-            backgroundColor: theme.palette.exceptions[60],
-            border: `1px solid ${greyDark[60]}`,
-          },
-        }),
-        textSecondary: {
-          background: exceptionsDark[100],
-          color: greyDark[30],
-          '&:hover': {
-            background: greyDark[90],
-          },
-        },
         root: {
           boxShadow: 'none',
           textTransform: 'none',
-          borderRadius: '6px',
-          fontSize: '12px',
+          borderRadius: borderRadius.lg,
+          fontSize: typography.fontSize.sm,
+          fontWeight: typography.fontWeight.medium,
+          transition: transitions.all.fast,
+          '&:focus-visible': {
+            outline: 'none',
+            boxShadow: shadows.focus,
+          },
         },
+        containedPrimary: () => ({
+          background: `linear-gradient(135deg, ${darkColors.accent.primary} 0%, ${darkColors.accent.pressed} 100%)`,
+          color: darkColors.text.primary,
+          boxShadow: `0 1px 2px rgba(0,0,0,0.2), 0 0 0 1px ${alpha(darkColors.accent.primary, 0.2)}`,
+          '&:hover': {
+            background: `linear-gradient(135deg, ${darkColors.accent.hover} 0%, ${darkColors.accent.primary} 100%)`,
+            boxShadow: shadows.glow.accent,
+          },
+        }),
+        containedSecondary: () => ({
+          color: darkColors.text.primary,
+          backgroundColor: darkColors.background.elevated,
+          border: `1px solid ${darkColors.border.default}`,
+          '&:hover': {
+            backgroundColor: darkColors.background.overlay,
+            boxShadow: 'none',
+          },
+        }),
+        outlinedPrimary: () => ({
+          border: `1px solid ${darkColors.accent.primary}`,
+          background: 'transparent',
+          color: darkColors.accent.primary,
+          '&:hover': {
+            background: darkColors.accent.muted,
+            borderColor: darkColors.accent.hover,
+          },
+        }),
+        outlinedSecondary: () => ({
+          background: 'transparent',
+          border: `1px solid ${darkColors.border.default}`,
+          color: darkColors.text.secondary,
+          '&:hover': {
+            backgroundColor: darkColors.interactive.hover,
+            borderColor: darkColors.border.strong,
+          },
+        }),
+        textPrimary: () => ({
+          color: darkColors.accent.primary,
+          '&:hover': {
+            background: darkColors.accent.muted,
+          },
+        }),
+        textSecondary: () => ({
+          color: darkColors.text.secondary,
+          '&:hover': {
+            background: darkColors.interactive.hover,
+          },
+        }),
         sizeMedium: {
-          height: 34,
-          padding: '10px 12px',
+          height: 36,
+          padding: '0 16px',
         },
-        iconSizeMedium: {
-          fontSize: '24px',
+        sizeSmall: {
+          height: 32,
+          padding: '0 12px',
+          fontSize: typography.fontSize.xs,
+        },
+        sizeLarge: {
+          height: 40,
+          padding: '0 20px',
+          fontSize: typography.fontSize.base,
         },
         startIcon: {
-          marginRight: '4px',
+          marginRight: '6px',
         },
         endIcon: {
-          marginLeft: '4px',
+          marginLeft: '6px',
         },
-      },
-    },
-    MuiMenuList: {
-      styleOverrides: {
-        root: {
-          backgroundColor: exceptionsDark[100],
-          color: greyDark[10],
-        },
-      },
-    },
-    MuiMenu: {
-      styleOverrides: {
-        paper: ({ theme }) => listPaper(theme),
-        list: ({ theme }) => listBase(theme),
-      },
-    },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: ({ theme }) => menuItemRoot(theme),
       },
     },
     MuiIconButton: {
       styleOverrides: {
         root: {
+          borderRadius: borderRadius.lg,
+          transition: transitions.all.fast,
+          '&:hover': {
+            backgroundColor: darkColors.interactive.hover,
+          },
+          '&:focus-visible': {
+            outline: 'none',
+            boxShadow: shadows.focus,
+          },
           '&.Mui-disabled': {
             '& .MuiSvgIcon-root': {
               'g, path': {
@@ -216,11 +249,82 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
         },
       },
     },
+    MuiMenuList: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkColors.background.elevated,
+          color: darkColors.text.primary,
+        },
+      },
+    },
+    MuiMenu: {
+      styleOverrides: {
+        paper: ({ theme }) => ({
+          ...listPaper(theme),
+          backgroundColor: darkColors.background.elevated,
+          border: `1px solid ${darkColors.border.default}`,
+          boxShadow: shadows.dark.lg,
+          backdropFilter: 'blur(8px)',
+        }),
+        list: ({ theme }) => listBase(theme),
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          ...menuItemRoot(theme),
+          transition: transitions.all.fast,
+          '&:hover': {
+            backgroundColor: darkColors.interactive.hover,
+          },
+          '&.Mui-selected': {
+            backgroundColor: darkColors.interactive.selected,
+            '&:hover': {
+              backgroundColor: darkColors.interactive.selected,
+            },
+          },
+        }),
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          backgroundColor: greyDark[100],
+          backgroundColor: alpha(darkColors.background.base, 0.8),
+          backdropFilter: 'blur(12px)',
+          borderBottom: `1px solid ${darkColors.border.default}`,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkColors.background.raised,
+          border: `1px solid ${darkColors.border.default}`,
+          borderRadius: borderRadius.xl,
+          boxShadow: 'none',
+          transition: transitions.all.normal,
+          '&:hover': {
+            borderColor: darkColors.border.strong,
+            boxShadow: shadows.dark.md,
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkColors.background.raised,
+          backgroundImage: 'none',
+        },
+        elevation1: {
+          boxShadow: shadows.dark.sm,
+        },
+        elevation2: {
+          boxShadow: shadows.dark.md,
+        },
+        elevation3: {
+          boxShadow: shadows.dark.lg,
         },
       },
     },
@@ -228,17 +332,14 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
       styleOverrides: {
         root: ({ theme }) => ({
           '& label, & label.Mui-disabled': {
-            color: theme.palette.grey[10],
-            top: '-3px',
+            color: darkColors.text.secondary,
+            fontSize: typography.fontSize.sm,
           },
           '& label.MuiFormLabel-filled, & label.Mui-focused': {
-            color: theme.palette.grey[10],
-            top: 0,
+            color: darkColors.text.primary,
           },
           '& .MuiInputLabel-asterisk': {
-            color: theme.palette.error.main,
-            fontSize: '20px',
-            lineHeight: '20px',
+            color: darkColors.semantic.error,
           },
         }),
       },
@@ -251,85 +352,95 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
     MuiInputBase: {
       styleOverrides: {
         root: ({ theme }) => ({
-          minHeight: 34,
-          backgroundColor: theme.palette.exceptions[100],
-          borderRadius: `${theme.shape.borderRadius * 2}px !important`,
-          margin: '4px',
+          minHeight: 36,
+          backgroundColor: darkColors.background.elevated,
+          borderRadius: `${borderRadius.lg} !important`,
+          fontSize: typography.fontSize.sm,
+          transition: transitions.all.fast,
           '& fieldset': {
-            borderColor: theme.palette.divider,
+            borderColor: darkColors.border.default,
+            transition: transitions.all.fast,
           },
           '&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error)': {
             '& fieldset': {
-              borderColor: theme.palette.text.primary,
-              transition: 'border-color 0.5s ease-in-out',
+              borderColor: darkColors.border.strong,
             },
           },
           '&.Mui-focused': {
             '&.Mui-error': {
               '& fieldset': {
-                boxShadow: `0 0 0 3px ${alpha(theme.palette.error.main, 0.2)}`,
-                transition: 'box-shadow 0.5s ease-in-out',
+                boxShadow: shadows.focusError,
+                borderColor: darkColors.semantic.error,
               },
             },
             '&:not(.Mui-error)': {
               '& fieldset': {
-                boxShadow: `0 0 0 3px ${alpha(theme.palette.primary.main, 0.34)}`,
-                borderColor: '#959595 !important',
-                transition: 'box-shadow 0.5s ease-in-out',
+                boxShadow: shadows.focus,
+                borderColor: darkColors.accent.primary,
               },
             },
           },
           '& .MuiInputBase-input': {
-            fontSize: 12,
-            fontWeight: 400,
-            padding: '0px 8px',
-            '&.Mui-disabled': {
-              color: theme.palette.text.secondary,
+            fontSize: typography.fontSize.sm,
+            fontWeight: typography.fontWeight.normal,
+            padding: '8px 12px',
+            '&::placeholder': {
+              color: darkColors.text.muted,
+              opacity: 1,
             },
           },
           '& .MuiSelect-iconOutlined': {
-            color: theme.palette.text.secondary,
-          },
-          '&.MuiAutocomplete-inputRoot': {
-            padding: 0,
+            color: darkColors.text.secondary,
           },
           '& .MuiSvgIcon-root': {
-            color: theme.palette.secondary[50],
-          },
-          '& .MuiButtonBase-tag': {
-            fontWeight: 400,
-            fontSize: 12,
-          },
-          '& .MuiInputAdornment-root': {
-            marginRight: 0,
+            color: darkColors.text.secondary,
           },
         }),
       },
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          fontSize: 12,
-          fontWeight: 400,
-          color: theme.palette.text.primary,
+        root: () => ({
+          fontSize: typography.fontSize.sm,
+          fontWeight: typography.fontWeight.normal,
+          color: darkColors.text.secondary,
         }),
       },
     },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          color: '#626262',
-          fontSize: '13px',
-          lineHeight: '17px',
-          margin: '5px 0 0 0',
+          color: darkColors.text.muted,
+          fontSize: typography.fontSize.xs,
+          marginTop: '6px',
+          marginLeft: 0,
         },
       },
     },
     MuiPopover: {
       styleOverrides: {
         paper: {
-          backgroundColor: '#0F0F0F',
-          color: '#ffffff',
+          backgroundColor: darkColors.background.elevated,
+          border: `1px solid ${darkColors.border.default}`,
+          boxShadow: shadows.dark.lg,
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: darkColors.background.elevated,
+          border: `1px solid ${darkColors.border.default}`,
+          borderRadius: borderRadius['2xl'],
+          boxShadow: shadows.dark['2xl'],
+        },
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: alpha(darkColors.background.base, 0.8),
+          backdropFilter: 'blur(4px)',
         },
       },
     },
@@ -337,61 +448,81 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
       styleOverrides: {
         root: {
           borderRadius: '18px',
-          width: '48px',
-          height: '30px',
-          margin: '4px 0',
-          padding: 'unset',
+          width: '44px',
+          height: '24px',
+          padding: 0,
         },
-        switchBase: ({ theme }) => ({
-          // Controls default (unchecked) color for the thumb
-          padding: '5px',
-          color: theme.palette.background.default,
-        }),
-        colorPrimary: ({ theme }) => ({
+        switchBase: () => ({
+          padding: '2px',
+          color: darkColors.text.muted,
           '&.Mui-checked': {
-            // Controls checked color for the thumb
-            color: theme.palette.background.default,
+            color: darkColors.text.primary,
+            transform: 'translateX(20px)',
+            '& + .MuiSwitch-track': {
+              backgroundColor: darkColors.accent.primary,
+              opacity: 1,
+            },
           },
         }),
-        thumb: ({ theme }) => ({
+        thumb: {
           width: '20px',
           height: '20px',
-          boxShadow: 'unset',
-          '&.Mui-checked': {
-            // Controls checked color for the thumb
-            color: theme.palette.background.default,
-          },
-        }),
-        track: ({ theme }) => ({
-          // Controls default (unchecked) color for the track
-          borderRadius: 26 / 2,
-          background: '#272727',
+          boxShadow: shadows.sm,
+        },
+        track: {
+          borderRadius: 12,
+          backgroundColor: darkColors.border.strong,
           opacity: 1,
-          '.Mui-checked.Mui-checked + &': {
-            // Controls checked color for the track
-            opacity: 1,
-            background: theme.palette.text.primary,
-          },
-        }),
+        },
       },
     },
-    MuiPaper: {
+    MuiChip: {
       styleOverrides: {
         root: {
-          backgroundColor: greyDark[100],
+          borderRadius: borderRadius.md,
+          fontWeight: typography.fontWeight.medium,
+          fontSize: typography.fontSize.xs,
         },
+        filled: () => ({
+          backgroundColor: darkColors.background.overlay,
+          color: darkColors.text.primary,
+          '&:hover': {
+            backgroundColor: darkColors.border.strong,
+          },
+        }),
+        outlined: () => ({
+          borderColor: darkColors.border.default,
+          '&:hover': {
+            backgroundColor: darkColors.interactive.hover,
+          },
+        }),
       },
     },
     MuiDrawer: {
       styleOverrides: {
+        paper: {
+          backgroundColor: darkColors.background.elevated,
+          borderRight: `1px solid ${darkColors.border.default}`,
+        },
         root: {
           '& .MuiPaper-root.MuiCard-root': {
-            backgroundColor: exceptionsDark[70],
+            backgroundColor: darkColors.background.elevated,
           },
-          '& .MuiAccordionSummary-root': {
-            '&.Mui-expanded': {
-              minHeight: '48px',
-            },
+        },
+      },
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkColors.background.raised,
+          border: `1px solid ${darkColors.border.default}`,
+          borderRadius: `${borderRadius.lg} !important`,
+          boxShadow: 'none',
+          '&:before': {
+            display: 'none',
+          },
+          '&.Mui-expanded': {
+            margin: 0,
           },
         },
       },
@@ -399,55 +530,62 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          backgroundColor: '#0F0F0F',
-          borderRadius: '4px',
+          backgroundColor: 'transparent',
+          borderRadius: borderRadius.lg,
+          minHeight: 48,
+          '&.Mui-expanded': {
+            minHeight: 48,
+          },
         },
         expandIconWrapper: {
-          color: greyDark[10],
+          color: darkColors.text.secondary,
         },
       },
     },
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
-          borderBottom: '1px solid #F0F0F030',
+          borderTop: `1px solid ${darkColors.border.default}`,
+          padding: '16px',
         },
       },
     },
     MuiBreadcrumbs: {
       styleOverrides: {
-        separator: ({ theme }) => ({
-          color: theme.palette.text.secondary,
+        separator: () => ({
+          color: darkColors.text.muted,
         }),
-        li: ({ theme }) => ({
-          color: theme.palette.text.secondary,
+        li: () => ({
+          color: darkColors.text.secondary,
+          '& a': {
+            color: darkColors.text.secondary,
+            textDecoration: 'none',
+            transition: transitions.all.fast,
+            '&:hover': {
+              color: darkColors.text.primary,
+            },
+          },
         }),
       },
     },
     MuiInputAdornment: {
       styleOverrides: {
         root: {
-          color: '#d6d6d6',
+          color: darkColors.text.muted,
           '& .MuiTypography-root': {
-            color: '#d6d6d6',
+            color: darkColors.text.muted,
           },
         },
       },
     },
     MuiDivider: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          '&:before': {
-            borderColor: theme.palette.divider,
-          },
-          '&:after': {
-            borderColor: theme.palette.divider,
-          },
+        root: () => ({
+          borderColor: darkColors.border.default,
         }),
-        vertical: ({ theme }) => ({
+        vertical: () => ({
           borderWidth: '1px',
-          margin: '0 10px',
-          borderColor: theme.palette.divider,
+          margin: '0 8px',
         }),
       },
     },
@@ -456,18 +594,20 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
         root: ({ theme }) => ({
           minHeight: 40,
           width: 'fit-content',
-          borderRadius: 0,
-          backgroundColor: theme.palette.grey[20],
-          padding: theme.spacing(1.5),
+          borderRadius: borderRadius.lg,
+          backgroundColor: darkColors.background.subtle,
+          padding: theme.spacing(0.5),
           alignItems: 'center',
           '& .MuiTabs-scroller': {
             overflow: 'visible !important',
           },
         }),
-        flexContainer: ({ theme }) => ({ gap: theme.spacing(1.5) }),
-        indicator: ({ theme }) => ({
-          bottom: theme.spacing(-1.5),
-        }),
+        flexContainer: {
+          gap: '4px',
+        },
+        indicator: {
+          display: 'none',
+        },
       },
     },
     MuiTab: {
@@ -476,31 +616,55 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
       },
       styleOverrides: {
         root: ({ theme }) => ({
-          minHeight: 0,
+          minHeight: 32,
           backgroundColor: 'transparent',
-          color: theme.palette.text.primary,
+          color: darkColors.text.secondary,
           cursor: 'pointer',
-          fontSize: theme.spacing(1.5),
-          fontWeight: 500,
-          padding: theme.spacing(1, 1.5),
-          borderRadius: theme.shape.borderRadius + 2,
+          fontSize: typography.fontSize.sm,
+          fontWeight: typography.fontWeight.medium,
+          padding: theme.spacing(0.75, 1.5),
+          borderRadius: borderRadius.md,
           textTransform: 'none',
+          transition: transitions.all.fast,
           [`& .${tabClasses.icon}`]: {
             marginBottom: 0,
-            color: theme.palette.text.secondary,
+            color: darkColors.text.muted,
           },
-          [`&.${tabClasses.selected}, &:hover`]: {
-            backgroundColor: theme.palette.grey[70],
-            color: theme.palette.text.primary,
+          [`&.${tabClasses.selected}`]: {
+            backgroundColor: darkColors.background.overlay,
+            color: darkColors.text.primary,
             [`& .${tabClasses.icon}`]: {
-              color: theme.palette.text.primary,
+              color: darkColors.text.primary,
             },
+          },
+          '&:hover:not(.Mui-selected)': {
+            backgroundColor: darkColors.interactive.hover,
+            color: darkColors.text.primary,
           },
           [`&.${buttonClasses.disabled}`]: {
             opacity: 0.5,
             cursor: 'not-allowed',
           },
         }),
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: darkColors.background.elevated,
+          color: darkColors.text.primary,
+          border: `1px solid ${darkColors.border.default}`,
+          borderRadius: borderRadius.md,
+          fontSize: typography.fontSize.xs,
+          padding: '6px 10px',
+          boxShadow: shadows.dark.md,
+        },
+        arrow: {
+          color: darkColors.background.elevated,
+          '&:before': {
+            border: `1px solid ${darkColors.border.default}`,
+          },
+        },
       },
     },
     MuiSelect: {
@@ -511,23 +675,42 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
         fontSizeSmall: {
           fontSize: '16px',
         },
+        fontSizeMedium: {
+          fontSize: '20px',
+        },
       },
     },
     MuiCheckbox: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          '& .MuiSvgIcon-root': {
-            height: '1.3rem',
+        root: () => ({
+          color: darkColors.border.strong,
+          transition: transitions.all.fast,
+          '&:hover': {
+            backgroundColor: darkColors.interactive.hover,
           },
-          '&.Mui-checked .MuiSvgIcon-root path': {
-            fill: theme.palette.text.primary,
+          '&.Mui-checked': {
+            color: darkColors.accent.primary,
+          },
+        }),
+      },
+    },
+    MuiRadio: {
+      styleOverrides: {
+        root: () => ({
+          color: darkColors.border.strong,
+          '&.Mui-checked': {
+            color: darkColors.accent.primary,
           },
         }),
       },
     },
     MuiAutocomplete: {
       styleOverrides: {
-        paper: ({ theme }) => listPaper(theme),
+        paper: ({ theme }) => ({
+          ...listPaper(theme),
+          backgroundColor: darkColors.background.elevated,
+          border: `1px solid ${darkColors.border.default}`,
+        }),
         listbox: ({ theme }) => listBase(theme),
         option: ({ theme }) => ({
           ...menuItemRoot(theme),
@@ -536,25 +719,25 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
         tag: ({ theme }) => ({
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          fontWeight: 400,
-          fontSize: 12,
-          borderRadius: theme.shape.borderRadius,
+          fontWeight: typography.fontWeight.normal,
+          fontSize: typography.fontSize.xs,
+          borderRadius: borderRadius.md,
           height: 24,
-          padding: theme.spacing(1, 0, 1, 1),
-          backgroundColor: theme.palette.grey[70],
+          padding: theme.spacing(0.5, 1),
+          backgroundColor: darkColors.background.overlay,
           '& .MuiChip-label': {
             paddingLeft: 0,
           },
           '& .MuiSvgIcon-root': {
             fontSize: 16,
+            color: darkColors.text.muted,
           },
         }),
-        clearIndicator: ({ theme }) => ({
-          color: theme.palette.text.secondary,
+        clearIndicator: () => ({
+          color: darkColors.text.secondary,
         }),
-        popupIndicator: ({ theme }) => ({
-          color: theme.palette.text.secondary,
+        popupIndicator: () => ({
+          color: darkColors.text.secondary,
         }),
       },
       defaultProps: {
@@ -563,46 +746,136 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
     },
     MuiLink: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.text.primary,
-          textDecorationColor: theme.palette.text.primary,
+        root: () => ({
+          color: darkColors.accent.primary,
+          textDecorationColor: 'transparent',
+          transition: transitions.all.fast,
+          '&:hover': {
+            textDecorationColor: darkColors.accent.primary,
+          },
         }),
       },
     },
     MuiToggleButton: {
       styleOverrides: {
-        root: ({ theme, ownerState }) => ({
-          padding: theme.spacing(1, 1.5),
-          borderRadius: theme.shape.borderRadius * 2,
-          color: theme.palette.text.secondary,
+        root: ({ ownerState }) => ({
+          padding: '8px 12px',
+          borderRadius: borderRadius.lg,
+          color: darkColors.text.secondary,
+          borderColor: darkColors.border.default,
+          transition: transitions.all.fast,
           ...(ownerState.selected && {
-            backgroundColor: `${theme.palette.grey[70]} !important`,
-            color: theme.palette.text.primary,
+            backgroundColor: `${darkColors.interactive.selected} !important`,
+            color: darkColors.accent.primary,
+            borderColor: darkColors.accent.primary,
           }),
         }),
+      },
+    },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkColors.background.overlay,
+        },
+      },
+    },
+    MuiLinearProgress: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkColors.background.overlay,
+          borderRadius: borderRadius.full,
+        },
+        bar: {
+          backgroundColor: darkColors.accent.primary,
+          borderRadius: borderRadius.full,
+        },
+      },
+    },
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          color: darkColors.accent.primary,
+        },
       },
     },
   },
 
   typography: {
-    htmlFontSize: 15,
+    htmlFontSize: 16,
+    fontFamily: font.style.fontFamily,
     allVariants: {
       fontFamily: font.style.fontFamily,
-      letterSpacing: '0 !important',
-      fontWeight: 400,
+      letterSpacing: typography.letterSpacing.normal,
     },
-    h1: { fontSize: 90, fontWeight: 700 },
-    h2: { fontSize: 54, fontWeight: 700 },
-    h3: { fontSize: 45, fontWeight: 700 },
-    h4: { fontSize: 32, fontWeight: 700 },
-    h5: { fontSize: 20, fontWeight: 700 },
-    h6: { fontSize: 16, fontWeight: 600 },
-    body1: { fontSize: 15, fontWeight: 600 },
-    body2: { fontSize: 13, fontWeight: 600 },
-    button: { fontSize: 15 },
-    caption: { fontSize: 12, fontWeight: 500 },
-    overline: { fontSize: 14 },
-    subtitle1: { fontSize: 15 },
-    subtitle2: { fontSize: 12 },
+    h1: {
+      fontSize: typography.fontSize['5xl'],
+      fontWeight: typography.fontWeight.bold,
+      lineHeight: typography.lineHeight.tight,
+      letterSpacing: typography.letterSpacing.tighter,
+    },
+    h2: {
+      fontSize: typography.fontSize['4xl'],
+      fontWeight: typography.fontWeight.semibold,
+      lineHeight: typography.lineHeight.tight,
+      letterSpacing: typography.letterSpacing.tight,
+    },
+    h3: {
+      fontSize: typography.fontSize['3xl'],
+      fontWeight: typography.fontWeight.semibold,
+      lineHeight: typography.lineHeight.snug,
+      letterSpacing: typography.letterSpacing.tight,
+    },
+    h4: {
+      fontSize: typography.fontSize['2xl'],
+      fontWeight: typography.fontWeight.semibold,
+      lineHeight: typography.lineHeight.snug,
+    },
+    h5: {
+      fontSize: typography.fontSize.xl,
+      fontWeight: typography.fontWeight.semibold,
+      lineHeight: typography.lineHeight.snug,
+    },
+    h6: {
+      fontSize: typography.fontSize.lg,
+      fontWeight: typography.fontWeight.semibold,
+      lineHeight: typography.lineHeight.normal,
+    },
+    body1: {
+      fontSize: typography.fontSize.md,
+      fontWeight: typography.fontWeight.normal,
+      lineHeight: typography.lineHeight.relaxed,
+    },
+    body2: {
+      fontSize: typography.fontSize.sm,
+      fontWeight: typography.fontWeight.normal,
+      lineHeight: typography.lineHeight.normal,
+    },
+    button: {
+      fontSize: typography.fontSize.sm,
+      fontWeight: typography.fontWeight.medium,
+      textTransform: 'none',
+    },
+    caption: {
+      fontSize: typography.fontSize.xs,
+      fontWeight: typography.fontWeight.normal,
+      lineHeight: typography.lineHeight.normal,
+      color: darkColors.text.muted,
+    },
+    overline: {
+      fontSize: typography.fontSize.xs,
+      fontWeight: typography.fontWeight.medium,
+      letterSpacing: typography.letterSpacing.wider,
+      textTransform: 'uppercase',
+    },
+    subtitle1: {
+      fontSize: typography.fontSize.md,
+      fontWeight: typography.fontWeight.medium,
+      lineHeight: typography.lineHeight.normal,
+    },
+    subtitle2: {
+      fontSize: typography.fontSize.sm,
+      fontWeight: typography.fontWeight.medium,
+      lineHeight: typography.lineHeight.normal,
+    },
   },
 });
