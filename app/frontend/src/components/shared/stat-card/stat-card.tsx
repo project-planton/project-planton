@@ -203,7 +203,6 @@ export const StatCard: React.FC<StatCardProps> = ({
       $accent={accent}
       $clickable={isClickable}
       onClick={onClick}
-      component={href ? 'div' : 'div'}
     >
       <CardHeader>
         {icon && <IconContainer $accent={accent}>{icon}</IconContainer>}

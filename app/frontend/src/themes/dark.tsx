@@ -434,7 +434,11 @@ export const getDarkTheme = (font: NextFont): ThemeOptions => ({
           borderRadius: borderRadius['2xl'],
           boxShadow: shadows.dark['2xl'],
         },
-        backdrop: {
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
           backgroundColor: alpha(darkColors.background.base, 0.8),
           backdropFilter: 'blur(4px)',
         },

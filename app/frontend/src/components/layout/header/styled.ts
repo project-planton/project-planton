@@ -129,7 +129,7 @@ export const SearchShortcut = styled(Box)(({ theme }) => ({
 
 export const StyledSearchIcon = styled(SearchIcon)(({ theme }) => ({
   fontSize: 18,
-  color: theme.palette.text.muted || theme.palette.text.secondary,
+  color: theme.palette.text.secondary,
 }));
 
 export const StyledInputBase = styled(InputBase)(({ theme }) => ({

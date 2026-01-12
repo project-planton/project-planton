@@ -426,7 +426,11 @@ export const getLightTheme = (font: NextFont): ThemeOptions => ({
           borderRadius: borderRadius['2xl'],
           boxShadow: shadows['2xl'],
         },
-        backdrop: {
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
           backgroundColor: alpha(lightColors.text.primary, 0.5),
           backdropFilter: 'blur(4px)',
         },
