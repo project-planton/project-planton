@@ -29,6 +29,7 @@ go_library(
         "//pkg/iac/tofu/tfvars",
         "//pkg/iac/tofu/tofumodule",
         "//pkg/iac/tofu/variablestf",
+        "//pkg/kubernetes/kubecontext",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_cobra//:cobra",
     ],

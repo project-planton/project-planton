@@ -21,6 +21,7 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 	valueOverrides map[string]string,
 	isAutoApprove, isDestroyPlan bool,
 	moduleVersion string, noCleanup bool,
+	kubeContext string,
 	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
@@ -92,7 +93,7 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 		return errors.Wrap(err, "failed to get workspace directory")
 	}
 
-	providerConfigEnvVars, err := GetProviderConfigEnvVars(stackInputYaml, workspaceDir)
+	providerConfigEnvVars, err := GetProviderConfigEnvVars(stackInputYaml, workspaceDir, kubeContext)
 	if err != nil {
 		return errors.Wrap(err, "failed to get provider config env vars")
 	}

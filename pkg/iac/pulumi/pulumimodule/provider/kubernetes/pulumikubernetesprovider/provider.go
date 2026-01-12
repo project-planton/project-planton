@@ -2,6 +2,8 @@ package pulumikubernetesprovider
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/pkg/errors"
 	kubernetesprovider "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
 	"github.com/plantonhq/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider"
@@ -19,11 +21,19 @@ func GetWithKubernetesProviderConfig(ctx *pulumi.Context,
 	providerName string) (*kubernetes.Provider, error) {
 
 	if kubernetesProviderConfig == nil {
-		provider, err := kubernetes.NewProvider(ctx,
-			providerName,
-			&kubernetes.ProviderArgs{
-				EnableServerSideApply: pulumi.Bool(true),
-			})
+		// Check for KUBE_CTX environment variable to configure context
+		kubeContext := os.Getenv("KUBE_CTX")
+
+		providerArgs := &kubernetes.ProviderArgs{
+			EnableServerSideApply: pulumi.Bool(true),
+		}
+
+		// If kube context is specified, configure the provider to use it
+		if kubeContext != "" {
+			providerArgs.Context = pulumi.String(kubeContext)
+		}
+
+		provider, err := kubernetes.NewProvider(ctx, providerName, providerArgs)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to get new provider")
 		}
