@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "upgrade",
+    srcs = [
+        "direct.go",
+        "homebrew.go",
+        "platform.go",
+        "upgrade.go",
+        "version.go",
+    ],
+    importpath = "github.com/plantonhq/project-planton/internal/cli/upgrade",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/cli/cliprint",
+        "//internal/cli/version",
+        "@com_github_fatih_color//:color",
+    ],
+)
