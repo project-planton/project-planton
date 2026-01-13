@@ -55,6 +55,7 @@ func init() {
 		root.Refresh,
 		root.StackUpdateStreamOutputCmd,
 		root.Tofu,
+		root.Upgrade,
 		root.ValidateManifest,
 		root.Version,
 		webapp.WebAppCmd,
