@@ -50,6 +50,8 @@ go_library(
         "//cmd/project-planton/root/tofu",
         "//internal/cli/cliprint",
         "//internal/cli/flag",
+        "//internal/cli/iacflags",
+        "//internal/cli/iacrunner",
         "//internal/cli/manifest",
         "//internal/cli/prompt",
         "//internal/cli/staging",

@@ -2,11 +2,15 @@ load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "manifest",
-    srcs = ["resolver.go"],
+    srcs = [
+        "resolve_from_stack_input.go",
+        "resolver.go",
+    ],
     importpath = "github.com/plantonhq/project-planton/internal/cli/manifest",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/cli/flag",
+        "//pkg/iac/stackinput",
         "//pkg/kustomize/builder",
         "@com_github_pkg_errors//:errors",
         "@com_github_spf13_cobra//:cobra",

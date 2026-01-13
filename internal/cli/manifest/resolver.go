@@ -9,17 +9,27 @@ import (
 
 // ResolveManifestPath determines the target manifest path based on flag priority.
 // Priority order:
-//  1. --manifest flag (if provided, use it directly)
-//  2. --input-dir flag (if provided, use inputDir/target.yaml)
-//  3. --kustomize-dir + --overlay flags (if both provided, build kustomize manifest)
-//  4. Error if none of the above are provided
+//  1. --stack-input flag (if provided, extract manifest from target field)
+//  2. --manifest flag (if provided, use it directly)
+//  3. --input-dir flag (if provided, use inputDir/target.yaml)
+//  4. --kustomize-dir + --overlay flags (if both provided, build kustomize manifest)
+//  5. Error if none of the above are provided
 //
 // Returns:
 //   - manifestPath: The resolved path to the manifest file
 //   - isTemp: Whether the manifest file is temporary and should be cleaned up
 //   - error: Any error encountered during resolution
 func ResolveManifestPath(cmd *cobra.Command) (string, bool, error) {
-	// Priority 1: Check for --manifest flag
+	// Priority 1: Check for --stack-input flag (extracts manifest from target field)
+	stackInputManifest, isTemp, err := resolveFromStackInput(cmd)
+	if err != nil {
+		return "", false, err
+	}
+	if stackInputManifest != "" {
+		return stackInputManifest, isTemp, nil
+	}
+
+	// Priority 2: Check for --manifest flag
 	manifestPath, err := cmd.Flags().GetString(string(flag.Manifest))
 	if err != nil {
 		return "", false, errors.Wrap(err, "failed to get manifest flag")
@@ -63,5 +73,5 @@ func ResolveManifestPath(cmd *cobra.Command) (string, bool, error) {
 	}
 
 	// No valid manifest source provided
-	return "", false, errors.New("must provide one of: --manifest, --input-dir, or (--kustomize-dir + --overlay)")
+	return "", false, errors.New("must provide one of: --stack-input, --manifest, --input-dir, or (--kustomize-dir + --overlay)")
 }

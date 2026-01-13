@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "iacflags",
+    srcs = [
+        "execution_flags.go",
+        "manifest_source_flags.go",
+        "provider_config_flags.go",
+        "pulumi_flags.go",
+        "tofu_flags.go",
+    ],
+    importpath = "github.com/plantonhq/project-planton/internal/cli/iacflags",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/cli/flag",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@com_github_spf13_cobra//:cobra",
+    ],
+)
