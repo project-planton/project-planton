@@ -166,7 +166,13 @@ Recommended for organizations:
 - Repository: `actions:read`, `metadata:read`
 - Organization: `self_hosted_runners:read/write`
 
-**Secret structure:**
+**Private key encoding:**
+The `privateKeyBase64` field must be base64 encoded. Encode your PEM file before providing it:
+```bash
+cat private-key.pem | base64
+```
+
+**Secret structure (created internally):**
 ```yaml
 github_app_id: "123456"
 github_app_installation_id: "654321"
