@@ -8,8 +8,9 @@
 locals {
   # Release configuration
   release_name = "arc"
-  chart_name   = "gha-runner-scale-set-controller"
-  chart_repo   = "oci://ghcr.io/actions/actions-runner-controller-charts"
+  # For OCI charts, the full URL must be passed as the chart parameter
+  # (repository doesn't work with OCI registries in Terraform helm_release)
+  chart_oci = "oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller"
 
   # Standard labels
   labels = merge(

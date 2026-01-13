@@ -6,8 +6,9 @@
 
 locals {
   # Chart configuration
-  chart_repo    = "oci://ghcr.io/actions/actions-runner-controller-charts"
-  chart_name    = "gha-runner-scale-set"
+  # For OCI charts, the full URL must be passed as the chart parameter
+  # (repository doesn't work with OCI registries in Terraform helm_release)
+  chart_oci     = "oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set"
   chart_version = var.spec.helm_chart_version
 
   # Derived values

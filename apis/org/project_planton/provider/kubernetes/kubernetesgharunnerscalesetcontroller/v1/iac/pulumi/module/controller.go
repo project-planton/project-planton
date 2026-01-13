@@ -32,16 +32,15 @@ func ghaRunnerScaleSetController(ctx *pulumi.Context, locals *Locals, k8sProvide
 	helmValues := buildHelmValues(locals)
 
 	// Deploy Helm chart
+	// For OCI charts, the full URL must be passed as the Chart parameter
+	// (RepositoryOpts.Repo doesn't work with OCI registries in Pulumi)
 	_, err := helmv3.NewRelease(ctx, locals.ReleaseName, &helmv3.ReleaseArgs{
 		Name:            pulumi.String(locals.ReleaseName),
 		Namespace:       pulumi.String(locals.Namespace),
 		CreateNamespace: pulumi.Bool(false), // We handle namespace creation ourselves
-		Chart:           pulumi.String(vars.HelmChartName),
+		Chart:           pulumi.String(vars.HelmChartOCI),
 		Version:         pulumi.String(locals.ChartVersion),
-		RepositoryOpts: &helmv3.RepositoryOptsArgs{
-			Repo: pulumi.String(vars.HelmRepoURL),
-		},
-		Values: helmValues,
+		Values:          helmValues,
 	}, pulumi.Provider(k8sProvider), pulumi.DependsOn(dependencies))
 	if err != nil {
 		return errors.Wrap(err, "deploy helm release")

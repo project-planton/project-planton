@@ -2,11 +2,10 @@ package module
 
 // Helm chart constants for GHA Runner Scale Set.
 var (
-	// HelmRepoURL is the OCI repository for the ARC Helm charts.
-	HelmRepoURL = "oci://ghcr.io/actions/actions-runner-controller-charts"
-
-	// HelmChartName is the name of the runner scale set chart.
-	HelmChartName = "gha-runner-scale-set"
+	// HelmChartOCI is the full OCI URL for the runner scale set chart.
+	// For OCI charts, the full URL must be passed as the Chart parameter
+	// (RepositoryOpts.Repo doesn't work with OCI registries in Pulumi).
+	HelmChartOCI = "oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set"
 
 	// DefaultChartVersion is the default version of the Helm chart.
 	DefaultChartVersion = "0.13.1"

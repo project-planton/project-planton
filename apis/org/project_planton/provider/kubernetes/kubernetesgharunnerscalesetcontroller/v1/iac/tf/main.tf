@@ -32,14 +32,15 @@ resource "kubernetes_namespace" "controller" {
 }
 
 # Deploy the controller via Helm
+# For OCI charts, the full URL must be passed as the chart parameter
+# (repository doesn't work with OCI registries in Terraform helm_release)
 resource "helm_release" "controller" {
   name             = local.release_name
   namespace        = var.namespace
   create_namespace = false # We handle namespace creation ourselves
 
-  repository = local.chart_repo
-  chart      = local.chart_name
-  version    = var.helm_chart_version
+  chart   = local.chart_oci
+  version = var.helm_chart_version
 
   values = [yamlencode(local.helm_values_final)]
 
