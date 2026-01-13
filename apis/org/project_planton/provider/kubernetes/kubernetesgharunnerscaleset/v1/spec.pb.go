@@ -469,10 +469,12 @@ type KubernetesGhaRunnerScaleSetGitHubApp struct {
 	AppId string `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
 	// The GitHub App Installation ID.
 	InstallationId string `protobuf:"bytes,2,opt,name=installation_id,json=installationId,proto3" json:"installation_id,omitempty"`
-	// The private key for the GitHub App (PEM format).
-	PrivateKey    string `protobuf:"bytes,3,opt,name=private_key,json=privateKey,proto3" json:"private_key,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The private key for the GitHub App (base64 encoded PEM format).
+	// The PEM file contents must be base64 encoded before providing here.
+	// Example: cat private-key.pem | base64
+	PrivateKeyBase64 string `protobuf:"bytes,3,opt,name=private_key_base64,json=privateKeyBase64,proto3" json:"private_key_base64,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *KubernetesGhaRunnerScaleSetGitHubApp) Reset() {
@@ -519,9 +521,9 @@ func (x *KubernetesGhaRunnerScaleSetGitHubApp) GetInstallationId() string {
 	return ""
 }
 
-func (x *KubernetesGhaRunnerScaleSetGitHubApp) GetPrivateKey() string {
+func (x *KubernetesGhaRunnerScaleSetGitHubApp) GetPrivateKeyBase64() string {
 	if x != nil {
-		return x.PrivateKey
+		return x.PrivateKeyBase64
 	}
 	return ""
 }
@@ -1172,12 +1174,11 @@ const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v
 	"\x14existing_secret_name\x18\x04 \x01(\tH\x00R\x12existingSecretNameB\x06\n" +
 	"\x04auth\"C\n" +
 	"#KubernetesGhaRunnerScaleSetPatToken\x12\x1c\n" +
-	"\x05token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05token\"\x9f\x01\n" +
+	"\x05token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05token\"\xac\x01\n" +
 	"$KubernetesGhaRunnerScaleSetGitHubApp\x12\x1d\n" +
 	"\x06app_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05appId\x12/\n" +
-	"\x0finstallation_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0einstallationId\x12'\n" +
-	"\vprivate_key\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"privateKey\"\xac\x01\n" +
+	"\x0finstallation_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0einstallationId\x124\n" +
+	"\x12private_key_base64\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10privateKeyBase64\"\xac\x01\n" +
 	"\"KubernetesGhaRunnerScaleSetScaling\x122\n" +
 	"\vmin_runners\x18\x01 \x01(\x05B\f\xbaH\x04\x1a\x02(\x00\x8a\xa6\x1d\x010H\x00R\n" +
 	"minRunners\x88\x01\x01\x122\n" +

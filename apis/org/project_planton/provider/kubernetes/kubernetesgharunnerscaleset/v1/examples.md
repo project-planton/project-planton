@@ -55,10 +55,9 @@ spec:
     githubApp:
       appId: "123456"
       installationId: "654321"
-      privateKey: |
-        -----BEGIN RSA PRIVATE KEY-----
-        MIIEpAIBAAKCAQEA...
-        -----END RSA PRIVATE KEY-----
+      # Private key must be base64 encoded
+      # Generate with: cat private-key.pem | base64
+      privateKeyBase64: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVB...
   
   runnerGroup: "production"
   runnerScaleSetName: "org-prod-runners"

@@ -51,9 +51,9 @@ var _ = ginkgo.Describe("KubernetesGhaRunnerScaleSetSpec Validation Tests", func
 			ginkgo.It("should not return a validation error", func() {
 				spec.Github.Auth = &KubernetesGhaRunnerScaleSetGitHubConfig_GithubApp{
 					GithubApp: &KubernetesGhaRunnerScaleSetGitHubApp{
-						AppId:          "123456",
-						InstallationId: "654321",
-						PrivateKey:     "-----BEGIN RSA PRIVATE KEY-----\ntest\n-----END RSA PRIVATE KEY-----",
+						AppId:            "123456",
+						InstallationId:   "654321",
+						PrivateKeyBase64: "-----BEGIN RSA PRIVATE KEY-----\ntest\n-----END RSA PRIVATE KEY-----",
 					},
 				}
 				err := protovalidate.Validate(spec)
@@ -419,9 +419,9 @@ var _ = ginkgo.Describe("KubernetesGhaRunnerScaleSetSpec Validation Tests", func
 			ginkgo.It("should return a validation error", func() {
 				spec.Github.Auth = &KubernetesGhaRunnerScaleSetGitHubConfig_GithubApp{
 					GithubApp: &KubernetesGhaRunnerScaleSetGitHubApp{
-						AppId:          "",
-						InstallationId: "654321",
-						PrivateKey:     "key",
+						AppId:            "",
+						InstallationId:   "654321",
+						PrivateKeyBase64: "key",
 					},
 				}
 				err := protovalidate.Validate(spec)
@@ -433,9 +433,9 @@ var _ = ginkgo.Describe("KubernetesGhaRunnerScaleSetSpec Validation Tests", func
 			ginkgo.It("should return a validation error", func() {
 				spec.Github.Auth = &KubernetesGhaRunnerScaleSetGitHubConfig_GithubApp{
 					GithubApp: &KubernetesGhaRunnerScaleSetGitHubApp{
-						AppId:          "123456",
-						InstallationId: "",
-						PrivateKey:     "key",
+						AppId:            "123456",
+						InstallationId:   "",
+						PrivateKeyBase64: "key",
 					},
 				}
 				err := protovalidate.Validate(spec)
@@ -447,9 +447,9 @@ var _ = ginkgo.Describe("KubernetesGhaRunnerScaleSetSpec Validation Tests", func
 			ginkgo.It("should return a validation error", func() {
 				spec.Github.Auth = &KubernetesGhaRunnerScaleSetGitHubConfig_GithubApp{
 					GithubApp: &KubernetesGhaRunnerScaleSetGitHubApp{
-						AppId:          "123456",
-						InstallationId: "654321",
-						PrivateKey:     "",
+						AppId:            "123456",
+						InstallationId:   "654321",
+						PrivateKeyBase64: "",
 					},
 				}
 				err := protovalidate.Validate(spec)

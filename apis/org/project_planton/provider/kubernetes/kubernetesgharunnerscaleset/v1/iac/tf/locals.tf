@@ -62,7 +62,7 @@ locals {
         local.use_github_app ? {
           github_app_id              = var.spec.github.github_app.app_id
           github_app_installation_id = var.spec.github.github_app.installation_id
-          github_app_private_key     = var.spec.github.github_app.private_key
+          github_app_private_key     = base64decode(var.spec.github.github_app.private_key_base64)
         } : null
       )
     )

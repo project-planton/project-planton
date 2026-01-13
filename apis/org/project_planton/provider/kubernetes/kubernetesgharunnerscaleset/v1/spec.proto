@@ -133,8 +133,10 @@ message KubernetesGhaRunnerScaleSetGitHubApp {
   // The GitHub App Installation ID.
   string installation_id = 2 [(buf.validate.field).required = true];
 
-  // The private key for the GitHub App (PEM format).
-  string private_key = 3 [(buf.validate.field).required = true];
+  // The private key for the GitHub App (base64 encoded PEM format).
+  // The PEM file contents must be base64 encoded before providing here.
+  // Example: cat private-key.pem | base64
+  string private_key_base64 = 3 [(buf.validate.field).required = true];
 }
 
 // KubernetesGhaRunnerScaleSetScaling defines autoscaling behavior.

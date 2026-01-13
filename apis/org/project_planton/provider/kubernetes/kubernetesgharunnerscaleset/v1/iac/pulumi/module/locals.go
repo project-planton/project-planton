@@ -1,6 +1,7 @@
 package module
 
 import (
+	"encoding/base64"
 	"strconv"
 
 	kubernetesgharunnerscalesetv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1"
@@ -117,7 +118,7 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetesgharunnerscalesetv1.Kub
 			if auth.GithubApp != nil {
 				l.GitHubAppID = auth.GithubApp.AppId
 				l.GitHubAppInstallID = auth.GithubApp.InstallationId
-				l.GitHubAppPrivateKey = auth.GithubApp.PrivateKey
+				l.GitHubAppPrivateKey = decodeBase64(auth.GithubApp.PrivateKeyBase64)
 			}
 		case *kubernetesgharunnerscalesetv1.KubernetesGhaRunnerScaleSetGitHubConfig_ExistingSecretName:
 			l.GitHubSecretName = auth.ExistingSecretName
@@ -237,4 +238,14 @@ func containerModeTypeToString(t kubernetesgharunnerscalesetv1.KubernetesGhaRunn
 	default:
 		return ""
 	}
+}
+
+// decodeBase64 decodes a base64 encoded string.
+// Returns empty string if decoding fails.
+func decodeBase64(encoded string) string {
+	decoded, err := base64.StdEncoding.DecodeString(encoded)
+	if err != nil {
+		return ""
+	}
+	return string(decoded)
 }

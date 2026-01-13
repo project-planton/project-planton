@@ -29,9 +29,9 @@ variable "spec" {
         token = string
       }))
       github_app = optional(object({
-        app_id          = string
-        installation_id = string
-        private_key     = string
+        app_id             = string
+        installation_id    = string
+        private_key_base64 = string  # Base64 encoded PEM format
       }))
       existing_secret_name = optional(string)
     })
