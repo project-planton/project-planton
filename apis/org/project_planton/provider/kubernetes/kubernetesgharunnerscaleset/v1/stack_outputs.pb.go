@@ -41,9 +41,9 @@ type KubernetesGhaRunnerScaleSetStackOutputs struct {
 	// Names of PVCs created for persistent volumes.
 	PvcNames []string `protobuf:"bytes,7,rep,name=pvc_names,json=pvcNames,proto3" json:"pvc_names,omitempty"`
 	// Minimum runners configured.
-	MinRunners int32 `protobuf:"varint,8,opt,name=min_runners,json=minRunners,proto3" json:"min_runners,omitempty"`
+	MinRunners string `protobuf:"bytes,8,opt,name=min_runners,json=minRunners,proto3" json:"min_runners,omitempty"`
 	// Maximum runners configured.
-	MaxRunners int32 `protobuf:"varint,9,opt,name=max_runners,json=maxRunners,proto3" json:"max_runners,omitempty"`
+	MaxRunners string `protobuf:"bytes,9,opt,name=max_runners,json=maxRunners,proto3" json:"max_runners,omitempty"`
 	// Container mode type used (dind, kubernetes, kubernetes-novolume, default).
 	ContainerMode string `protobuf:"bytes,10,opt,name=container_mode,json=containerMode,proto3" json:"container_mode,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -129,18 +129,18 @@ func (x *KubernetesGhaRunnerScaleSetStackOutputs) GetPvcNames() []string {
 	return nil
 }
 
-func (x *KubernetesGhaRunnerScaleSetStackOutputs) GetMinRunners() int32 {
+func (x *KubernetesGhaRunnerScaleSetStackOutputs) GetMinRunners() string {
 	if x != nil {
 		return x.MinRunners
 	}
-	return 0
+	return ""
 }
 
-func (x *KubernetesGhaRunnerScaleSetStackOutputs) GetMaxRunners() int32 {
+func (x *KubernetesGhaRunnerScaleSetStackOutputs) GetMaxRunners() string {
 	if x != nil {
 		return x.MaxRunners
 	}
-	return 0
+	return ""
 }
 
 func (x *KubernetesGhaRunnerScaleSetStackOutputs) GetContainerMode() string {
@@ -163,9 +163,9 @@ const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v
 	"\x11github_config_url\x18\x05 \x01(\tR\x0fgithubConfigUrl\x12,\n" +
 	"\x12github_secret_name\x18\x06 \x01(\tR\x10githubSecretName\x12\x1b\n" +
 	"\tpvc_names\x18\a \x03(\tR\bpvcNames\x12\x1f\n" +
-	"\vmin_runners\x18\b \x01(\x05R\n" +
+	"\vmin_runners\x18\b \x01(\tR\n" +
 	"minRunners\x12\x1f\n" +
-	"\vmax_runners\x18\t \x01(\x05R\n" +
+	"\vmax_runners\x18\t \x01(\tR\n" +
 	"maxRunners\x12%\n" +
 	"\x0econtainer_mode\x18\n" +
 	" \x01(\tR\rcontainerModeB\xab\x04\n" +

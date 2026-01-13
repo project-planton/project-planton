@@ -28,10 +28,10 @@ message KubernetesGhaRunnerScaleSetStackOutputs {
   repeated string pvc_names = 7;
 
   // Minimum runners configured.
-  int32 min_runners = 8;
+  string min_runners = 8;
 
   // Maximum runners configured.
-  int32 max_runners = 9;
+  string max_runners = 9;
 
   // Container mode type used (dind, kubernetes, kubernetes-novolume, default).
   string container_mode = 10;
