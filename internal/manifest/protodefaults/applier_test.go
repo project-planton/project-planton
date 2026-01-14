@@ -319,3 +319,66 @@ func TestApplyDefaults_Idempotency(t *testing.T) {
 			"Applying defaults multiple times should produce identical results")
 	})
 }
+
+func TestApplyDefaults_UnsetNestedMessageWithDefaults(t *testing.T) {
+	t.Run("initializes unset nested message when it has fields with defaults", func(t *testing.T) {
+		// Create message WITHOUT nested message set - the key scenario!
+		// This simulates when a YAML manifest has spec.some_field but NOT spec.nested
+		msg := &testcloudresourceonev1.TestCloudResourceOne{
+			ApiVersion: "_test.project-planton.org/v1",
+			Kind:       "TestCloudResourceOne",
+			Metadata: &shared.CloudResourceMetadata{
+				Name: "test-resource",
+			},
+			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
+				// Nested field is NOT set (nil), but TestNestedMessage has fields with defaults
+				// The applier should create the nested message and apply its defaults
+			},
+		}
+
+		// Verify nested is nil before applying defaults
+		assert.Nil(t, msg.Spec.Nested, "nested should be nil before applying defaults")
+
+		// Apply defaults
+		err := ApplyDefaults(msg)
+		require.NoError(t, err)
+
+		// CRITICAL: Nested message should be created because it has fields with defaults
+		require.NotNil(t, msg.Spec.Nested, "nested message should be initialized when it has fields with defaults")
+
+		// Verify defaults were applied to the newly created nested message
+		require.NotNil(t, msg.Spec.Nested.NestedString)
+		assert.Equal(t, "nested-default", *msg.Spec.Nested.NestedString,
+			"nested string should have its default value")
+
+		require.NotNil(t, msg.Spec.Nested.NestedInt)
+		assert.Equal(t, int32(99), *msg.Spec.Nested.NestedInt,
+			"nested int should have its default value")
+
+		// Also verify top-level defaults were applied
+		require.NotNil(t, msg.Spec.StringField)
+		assert.Equal(t, "default-string", *msg.Spec.StringField)
+	})
+
+	t.Run("does not create nested message without fields with defaults", func(t *testing.T) {
+		// TestCloudResourceOne has metadata field which is a message without defaults
+		// It should NOT be created automatically
+		msg := &testcloudresourceonev1.TestCloudResourceOne{
+			ApiVersion: "_test.project-planton.org/v1",
+			Kind:       "TestCloudResourceOne",
+			// Metadata is nil - and CloudResourceMetadata has no fields with defaults
+			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{},
+		}
+
+		// Verify metadata is nil before applying defaults
+		assert.Nil(t, msg.Metadata, "metadata should be nil before applying defaults")
+
+		// Apply defaults
+		err := ApplyDefaults(msg)
+		require.NoError(t, err)
+
+		// Metadata should remain nil since CloudResourceMetadata has no fields with defaults
+		// (This ensures we don't create empty messages unnecessarily)
+		assert.Nil(t, msg.Metadata, "metadata should remain nil when message type has no fields with defaults")
+	})
+}

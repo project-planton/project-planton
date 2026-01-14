@@ -11,8 +11,9 @@ import (
 )
 
 var LoadManifest = &cobra.Command{
-	Use:   "load-manifest [manifest-path]",
-	Short: "load a project-planton manifest from provided path or kustomize",
+	Use:     "load-manifest [manifest-path]",
+	Aliases: []string{"load"},
+	Short:   "load a project-planton manifest from provided path or kustomize",
 	Example: `
 	# Load from file
 	project-planton load-manifest manifest.yaml
