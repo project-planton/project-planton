@@ -45,3 +45,11 @@ NOTES
   - Use lowercase values without prefixes (except unspecified)
   - UNSPECIFIED values: `{enum_name_in_snake_case}_unspecified` (e.g., `built_in_profile_unspecified`)
   - Other values: lowercase, minimal underscores (e.g., `small`, `medium`, `istio`, `baseline`)
+DEFAULT FIELD OPTIONS
+- When fields should have default values, use BOTH:
+  1. `optional` keyword: Enables field presence tracking in Go
+  2. `(org.project_planton.shared.options.default)` field option: Specifies the default
+- Import: `import "org/project_planton/shared/options/options.proto";`
+- Example: `optional string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];`
+- The `DEFAULT_REQUIRES_OPTIONAL` linter enforces this pattern at build time
+- See `.cursor/info/spec_proto.md` for full guidelines

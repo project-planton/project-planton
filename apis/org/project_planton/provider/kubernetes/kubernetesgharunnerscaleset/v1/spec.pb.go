@@ -126,7 +126,7 @@ type KubernetesGhaRunnerScaleSetSpec struct {
 	Scaling *KubernetesGhaRunnerScaleSetScaling `protobuf:"bytes,6,opt,name=scaling,proto3" json:"scaling,omitempty"`
 	// Runner group name in GitHub (organization or enterprise level).
 	// Defaults to "default" if not specified.
-	RunnerGroup string `protobuf:"bytes,7,opt,name=runner_group,json=runnerGroup,proto3" json:"runner_group,omitempty"`
+	RunnerGroup *string `protobuf:"bytes,7,opt,name=runner_group,json=runnerGroup,proto3,oneof" json:"runner_group,omitempty"`
 	// Name of the runner scale set as it appears in GitHub.
 	// Defaults to the Helm release name (metadata.name) if not specified.
 	// This name is used as the runs-on label in workflow YAML.
@@ -226,8 +226,8 @@ func (x *KubernetesGhaRunnerScaleSetSpec) GetScaling() *KubernetesGhaRunnerScale
 }
 
 func (x *KubernetesGhaRunnerScaleSetSpec) GetRunnerGroup() string {
-	if x != nil {
-		return x.RunnerGroup
+	if x != nil && x.RunnerGroup != nil {
+		return *x.RunnerGroup
 	}
 	return ""
 }
@@ -791,12 +791,14 @@ type KubernetesGhaRunnerScaleSetRunnerImage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Container image repository.
 	// Default: ghcr.io/actions/actions-runner
-	Repository string `protobuf:"bytes,1,opt,name=repository,proto3" json:"repository,omitempty"`
+	Repository *string `protobuf:"bytes,1,opt,name=repository,proto3,oneof" json:"repository,omitempty"`
 	// Image tag.
 	// When not specified, uses the chart appVersion (matches controller version).
-	Tag string `protobuf:"bytes,2,opt,name=tag,proto3" json:"tag,omitempty"`
+	// Default tag aligns with helm_chart_version default.
+	Tag *string `protobuf:"bytes,2,opt,name=tag,proto3,oneof" json:"tag,omitempty"`
 	// Image pull policy: Always, IfNotPresent, or Never.
-	PullPolicy    string `protobuf:"bytes,3,opt,name=pull_policy,json=pullPolicy,proto3" json:"pull_policy,omitempty"`
+	// Default: IfNotPresent
+	PullPolicy    *string `protobuf:"bytes,3,opt,name=pull_policy,json=pullPolicy,proto3,oneof" json:"pull_policy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -832,22 +834,22 @@ func (*KubernetesGhaRunnerScaleSetRunnerImage) Descriptor() ([]byte, []int) {
 }
 
 func (x *KubernetesGhaRunnerScaleSetRunnerImage) GetRepository() string {
-	if x != nil {
-		return x.Repository
+	if x != nil && x.Repository != nil {
+		return *x.Repository
 	}
 	return ""
 }
 
 func (x *KubernetesGhaRunnerScaleSetRunnerImage) GetTag() string {
-	if x != nil {
-		return x.Tag
+	if x != nil && x.Tag != nil {
+		return *x.Tag
 	}
 	return ""
 }
 
 func (x *KubernetesGhaRunnerScaleSetRunnerImage) GetPullPolicy() string {
-	if x != nil {
-		return x.PullPolicy
+	if x != nil && x.PullPolicy != nil {
+		return *x.PullPolicy
 	}
 	return ""
 }
@@ -1138,7 +1140,7 @@ var File_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v1_
 
 const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1/spec.proto\x12Forg.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xcb\x0e\n" +
+	"Qorg/project_planton/provider/kubernetes/kubernetesgharunnerscaleset/v1/spec.proto\x12Forg.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1\x1a\x1bbuf/validate/validate.proto\x1a8org/project_planton/provider/kubernetes/kubernetes.proto\x1a5org/project_planton/provider/kubernetes/options.proto\x1a<org/project_planton/provider/kubernetes/target_cluster.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xee\x0e\n" +
 	"\x1fKubernetesGhaRunnerScaleSetSpec\x12i\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2B.org.project_planton.provider.kubernetes.KubernetesClusterSelectorR\rtargetCluster\x12r\n" +
 	"\tnamespace\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xc4\x06\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -1146,8 +1148,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v
 	"\x12helm_chart_version\x18\x04 \x01(\tB\n" +
 	"\x8a\xa6\x1d\x060.13.1H\x00R\x10helmChartVersion\x88\x01\x01\x12\x8f\x01\n" +
 	"\x06github\x18\x05 \x01(\v2o.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetGitHubConfigB\x06\xbaH\x03\xc8\x01\x01R\x06github\x12\x84\x01\n" +
-	"\ascaling\x18\x06 \x01(\v2j.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetScalingR\ascaling\x12!\n" +
-	"\frunner_group\x18\a \x01(\tR\vrunnerGroup\x121\n" +
+	"\ascaling\x18\x06 \x01(\v2j.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetScalingR\ascaling\x123\n" +
+	"\frunner_group\x18\a \x01(\tB\v\x8a\xa6\x1d\adefaultH\x01R\vrunnerGroup\x88\x01\x01\x121\n" +
 	"\x15runner_scale_set_name\x18\b \x01(\tR\x12runnerScaleSetName\x12\x9f\x01\n" +
 	"\x0econtainer_mode\x18\t \x01(\v2p.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetContainerModeB\x06\xbaH\x03\xc8\x01\x01R\rcontainerMode\x12\x81\x01\n" +
 	"\x06runner\x18\n" +
@@ -1163,7 +1165,8 @@ const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x15\n" +
-	"\x13_helm_chart_version\"\xbd\x04\n" +
+	"\x13_helm_chart_versionB\x0f\n" +
+	"\r_runner_group\"\xbd\x04\n" +
 	"'KubernetesGhaRunnerScaleSetGitHubConfig\x12\xb8\x01\n" +
 	"\n" +
 	"config_url\x18\x01 \x01(\tB\x98\x01\xbaH\x94\x01\xba\x01\x8d\x01\n" +
@@ -1209,14 +1212,17 @@ const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v
 	"\x012\x12\x034Gi\x12\v\n" +
 	"\x04500m\x12\x031GiR\tresources\x12{\n" +
 	"\x03env\x18\x03 \x03(\v2i.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetEnvVarR\x03env\x12\x93\x01\n" +
-	"\rvolume_mounts\x18\x04 \x03(\v2n.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetVolumeMountR\fvolumeMounts\"{\n" +
-	"&KubernetesGhaRunnerScaleSetRunnerImage\x12\x1e\n" +
+	"\rvolume_mounts\x18\x04 \x03(\v2n.org.project_planton.provider.kubernetes.kubernetesgharunnerscaleset.v1.KubernetesGhaRunnerScaleSetVolumeMountR\fvolumeMounts\"\xf4\x01\n" +
+	"&KubernetesGhaRunnerScaleSetRunnerImage\x12G\n" +
 	"\n" +
-	"repository\x18\x01 \x01(\tR\n" +
-	"repository\x12\x10\n" +
-	"\x03tag\x18\x02 \x01(\tR\x03tag\x12\x1f\n" +
-	"\vpull_policy\x18\x03 \x01(\tR\n" +
-	"pullPolicy\"U\n" +
+	"repository\x18\x01 \x01(\tB\"\x8a\xa6\x1d\x1eghcr.io/actions/actions-runnerH\x00R\n" +
+	"repository\x88\x01\x01\x12\"\n" +
+	"\x03tag\x18\x02 \x01(\tB\v\x8a\xa6\x1d\a2.321.0H\x01R\x03tag\x88\x01\x01\x126\n" +
+	"\vpull_policy\x18\x03 \x01(\tB\x10\x8a\xa6\x1d\fIfNotPresentH\x02R\n" +
+	"pullPolicy\x88\x01\x01B\r\n" +
+	"\v_repositoryB\x06\n" +
+	"\x04_tagB\x0e\n" +
+	"\f_pull_policy\"U\n" +
 	"!KubernetesGhaRunnerScaleSetEnvVar\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value\"\xa3\x01\n" +
@@ -1316,6 +1322,7 @@ func file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v1
 		(*KubernetesGhaRunnerScaleSetGitHubConfig_ExistingSecretName)(nil),
 	}
 	file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v1_spec_proto_msgTypes[4].OneofWrappers = []any{}
+	file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v1_spec_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

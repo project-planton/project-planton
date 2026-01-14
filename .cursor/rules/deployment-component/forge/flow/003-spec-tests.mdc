@@ -39,3 +39,15 @@ SUCCESS CRITERIA
 - `spec_test.go` exists and compiles.
 - `go test` for the resource passes with both positive and negative cases.
 - CEL expressions are robust (no runtime panics) and enforce intended constraints.
+
+TESTING OPTIONAL FIELDS
+- Fields with `(org.project_planton.shared.options.default)` are marked `optional`
+- Generated Go code uses pointer types (`*string` vs `string`)
+- Tests must assign via pointers:
+  ```go
+  // WRONG: spec.RunnerGroup = "production"
+  // CORRECT:
+  runnerGroup := "production"
+  spec.RunnerGroup = &runnerGroup
+  ```
+- See `.cursor/info/spec_tests.md` for full guidelines

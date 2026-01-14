@@ -67,6 +67,59 @@ message AwsCloudFrontSpec {
 }
 ```
 
+## Default Field Options (Separate from Validation)
+
+Default values use a **separate** field option from buf.validate rules:
+
+### Import
+
+```proto
+import "org/project_planton/shared/options/options.proto";
+```
+
+### Syntax
+
+When a field should have a default value:
+1. Mark as `optional`
+2. Add `(org.project_planton.shared.options.default)` option
+
+```proto
+// Default: ghcr.io/actions/actions-runner
+optional string repository = 1 [(org.project_planton.shared.options.default) = "ghcr.io/actions/actions-runner"];
+
+// Default: 443
+optional int32 port = 2 [(org.project_planton.shared.options.default) = "443"];
+```
+
+### Combining with Validation
+
+Default options can be combined with buf.validate rules:
+
+```proto
+optional string namespace = 1 [
+  (org.project_planton.shared.options.default) = "external-dns",
+  (buf.validate.field).string.min_len = 1
+];
+```
+
+### Build Enforcement
+
+The `DEFAULT_REQUIRES_OPTIONAL` linter fails builds if `(org.project_planton.shared.options.default)` is set without `optional` keyword.
+
+### When to Use Defaults vs Validation
+
+- **Default option**: When Project Planton should automatically provide a sensible value
+- **Validation**: When there are constraints on what values are acceptable
+
+Example:
+```proto
+// Has default AND validation
+optional string image_tag = 1 [
+  (org.project_planton.shared.options.default) = "2.321.0",
+  (buf.validate.field).string.min_len = 1
+];
+```
+
 ## Notes
 - Prefer pragmatic rules with low false positives.
 - Ensure compatibility with protovalidate-go (uses `buf/validate/validate.proto`).
