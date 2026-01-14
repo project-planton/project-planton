@@ -18,11 +18,24 @@ const DefaultProjectPlantonGitRepo = "~/scm/github.com/plantonhq/project-planton
 var rootCmd = &cobra.Command{
 	Use:   "project-planton",
 	Short: "Unified Interface for Multi-Cloud Infrastructure",
+	Run: func(cmd *cobra.Command, args []string) {
+		// Check if version flag was passed
+		showVersion, _ := cmd.Flags().GetBool("version")
+		if showVersion {
+			root.PrintVersion()
+			return
+		}
+		// Otherwise show help
+		cmd.Help()
+	},
 }
 
 func init() {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.DisableSuggestions = true
+
+	// Enable -v as shorthand for --version (handled in Run function for colorful output)
+	rootCmd.Flags().BoolP("version", "v", false, "show version information")
 
 	// Local module flags - inherited by all subcommands
 	rootCmd.PersistentFlags().Bool(string(flag.LocalModule), false,
@@ -46,6 +59,7 @@ func init() {
 		root.CredentialListCmd,
 		root.CredentialUpdateCmd,
 		root.Destroy,
+		root.Downgrade,
 		root.Init,
 		root.LoadManifest,
 		root.ModulesVersion,

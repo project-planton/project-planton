@@ -1,10 +1,12 @@
 package upgrade
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
@@ -12,12 +14,26 @@ import (
 )
 
 // Run executes the upgrade command
-func Run(checkOnly bool, force bool) {
+// If targetVersion is empty, upgrades to the latest version
+// If targetVersion is specified, installs that specific version
+func Run(checkOnly bool, force bool, targetVersion string) {
 	currentVersion := version.Version
 	if currentVersion == "" {
 		currentVersion = "dev"
 	}
 
+	// If a specific version is requested, use the version-specific flow
+	if targetVersion != "" {
+		runWithTargetVersion(currentVersion, targetVersion, force)
+		return
+	}
+
+	// Original flow: upgrade to latest
+	runUpgradeToLatest(currentVersion, checkOnly, force)
+}
+
+// runUpgradeToLatest handles the original upgrade flow (to latest version)
+func runUpgradeToLatest(currentVersion string, checkOnly bool, force bool) {
 	// Step 1: Check for latest version
 	cliprint.PrintStep("Checking for updates...")
 
@@ -99,6 +115,101 @@ func Run(checkOnly bool, force bool) {
 		fmt.Println()
 		cliprint.PrintStep("Note: You may need to restart your terminal for changes to take effect.")
 	}
+}
+
+// runWithTargetVersion handles installing a specific version
+func runWithTargetVersion(currentVersion, targetVersion string, force bool) {
+	cliprint.PrintStep("Checking for updates...")
+
+	// Step 1: Validate the target version exists
+	normalizedVersion, err := ValidateVersion(targetVersion)
+	if err != nil {
+		cliprint.PrintError(fmt.Sprintf("Failed to validate version: %v", err))
+		fmt.Println()
+		fmt.Println("You can view available versions at:")
+		fmt.Println("  https://github.com/plantonhq/project-planton/releases")
+		os.Exit(1)
+	}
+
+	// Step 2: Show current and target versions
+	fmt.Println()
+	cyan := color.New(color.FgCyan, color.Bold).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	fmt.Printf("Current version: %s\n", yellow(currentVersion))
+	fmt.Printf("Target version:  %s\n", cyan(normalizedVersion))
+
+	// Step 3: Check if already on target version
+	if currentVersion == normalizedVersion && !force {
+		fmt.Println()
+		cliprint.PrintSuccess(fmt.Sprintf("project-planton is already at version %s", normalizedVersion))
+		return
+	}
+
+	if currentVersion == normalizedVersion && force {
+		fmt.Println()
+		cliprint.PrintStep("Forcing reinstall...")
+	}
+
+	// Step 4: Check if Homebrew manages the installation
+	method := DetectUpgradeMethod()
+	if method == MethodHomebrew {
+		// Homebrew doesn't support specific versions, need to transition
+		if !confirmHomebrewTransition(normalizedVersion) {
+			fmt.Println()
+			cliprint.PrintStep("Aborted. No changes made.")
+			return
+		}
+
+		// Uninstall via Homebrew first
+		if err := UninstallHomebrew(); err != nil {
+			cliprint.PrintError(fmt.Sprintf("Failed to uninstall via Homebrew: %v", err))
+			fmt.Println()
+			fmt.Println("You can manually uninstall via Homebrew:")
+			fmt.Println("  brew uninstall --cask project-planton")
+			os.Exit(1)
+		}
+	}
+
+	// Step 5: Direct download and install
+	fmt.Println()
+	cliprint.PrintStep("Upgrade method: Direct Download")
+
+	if err := UpgradeViaDirect(normalizedVersion); err != nil {
+		handleUpgradeError(err, normalizedVersion)
+		os.Exit(1)
+	}
+
+	// Step 6: Success message
+	fmt.Println()
+	cliprint.PrintSuccess(fmt.Sprintf("Successfully installed %s", normalizedVersion))
+
+	fmt.Println()
+	cliprint.PrintStep("Note: You may need to restart your terminal for changes to take effect.")
+}
+
+// confirmHomebrewTransition prompts the user to confirm transitioning from Homebrew to direct download
+func confirmHomebrewTransition(targetVersion string) bool {
+	yellow := color.New(color.FgYellow, color.Bold).SprintFunc()
+	cyan := color.New(color.FgCyan).SprintFunc()
+
+	fmt.Println()
+	fmt.Printf("%s Homebrew manages this installation.\n", yellow("⚠"))
+	fmt.Println()
+	fmt.Println("Installing a specific version requires switching to direct-download management.")
+	fmt.Println()
+	fmt.Println("This will:")
+	fmt.Printf("  1. Run: %s\n", cyan("brew uninstall --cask project-planton"))
+	fmt.Printf("  2. Download and install %s\n", cyan(targetVersion))
+	fmt.Println()
+	fmt.Println("Future 'project-planton upgrade' commands will use direct download.")
+	fmt.Println()
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Proceed? [y/N] ")
+	response, _ := reader.ReadString('\n')
+	response = strings.TrimSpace(strings.ToLower(response))
+
+	return response == "y" || response == "yes"
 }
 
 // handleUpgradeError handles and displays upgrade errors with helpful suggestions

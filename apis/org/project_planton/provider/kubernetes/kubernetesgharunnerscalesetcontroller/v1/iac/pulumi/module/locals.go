@@ -79,8 +79,8 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetesgharunnerscalesetcontro
 	}
 	l.CreateNamespace = in.Target.Spec.CreateNamespace
 
-	// Release name
-	l.ReleaseName = vars.DefaultReleaseName
+	// Release name - use resource name for consistency with other components
+	l.ReleaseName = in.Target.Metadata.Name
 
 	// Chart version
 	if v := in.Target.Spec.HelmChartVersion; v != nil {

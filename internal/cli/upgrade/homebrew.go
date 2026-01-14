@@ -36,3 +36,22 @@ func UpgradeViaHomebrew() error {
 
 	return nil
 }
+
+// UninstallHomebrew uninstalls the CLI via Homebrew cask
+// This is used when transitioning from Homebrew to direct-download management
+// for version-specific installs
+func UninstallHomebrew() error {
+	fmt.Println()
+	cliprint.PrintStep("Uninstalling via Homebrew...")
+
+	cmd := exec.Command("brew", "uninstall", "--cask", "project-planton")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to uninstall via Homebrew: %w", err)
+	}
+
+	cliprint.PrintSuccess("Uninstalled via Homebrew")
+	return nil
+}

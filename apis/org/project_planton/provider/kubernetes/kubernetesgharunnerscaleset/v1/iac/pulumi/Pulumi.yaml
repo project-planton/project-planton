@@ -1,7 +1,7 @@
-name: kubernetesgharunnerscaleset
+name: planton
 description: Deploys a GitHub Actions Runner Scale Set on Kubernetes
 runtime:
   name: go
-  options:
-    binary: ./main
+#  options:
+#    binary: ./main
 
