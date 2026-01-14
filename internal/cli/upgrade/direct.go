@@ -16,6 +16,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/plantonhq/project-planton/internal/cli/cliprint"
 )
 
@@ -25,9 +26,12 @@ func UpgradeViaDirect(version string) error {
 	downloadURL := BuildDownloadURL(version, goos, goarch)
 	checksumURL := BuildChecksumURL(version)
 
+	dim := color.New(color.Faint).SprintFunc()
+
 	// Step 1: Download archive to temp file
 	fmt.Println()
 	cliprint.PrintStep(fmt.Sprintf("Downloading project-planton %s...", version))
+	fmt.Printf("  %s\n", dim(downloadURL))
 
 	tempArchive, err := downloadToTemp(downloadURL)
 	if err != nil {
@@ -60,32 +64,100 @@ func UpgradeViaDirect(version string) error {
 	}
 	cliprint.PrintSuccess("Extracted binary")
 
-	// Step 4: Get current binary path
-	currentBinary, err := os.Executable()
-	if err != nil {
-		return fmt.Errorf("failed to determine current binary path: %w", err)
+	// Step 4: Determine installation path
+	installPath, pathWarning := getInstallPath(goos)
+
+	// Step 5: Ensure install directory exists
+	installDir := filepath.Dir(installPath)
+	if err := os.MkdirAll(installDir, 0755); err != nil {
+		return fmt.Errorf("failed to create install directory %s: %w", installDir, err)
 	}
 
-	// Resolve any symlinks to get the actual binary path
-	currentBinary, err = filepath.EvalSymlinks(currentBinary)
-	if err != nil {
-		return fmt.Errorf("failed to resolve binary path: %w", err)
-	}
-
-	// Step 5: Replace binary
+	// Step 6: Install binary
 	cliprint.PrintStep("Installing...")
+	fmt.Printf("  %s\n", dim(installPath))
 
-	if err := replaceBinary(binaryPath, currentBinary); err != nil {
+	if err := replaceBinary(binaryPath, installPath); err != nil {
 		return err
 	}
 	cliprint.PrintSuccess("Installed new binary")
 
-	// Step 6: macOS quarantine removal
+	// Step 7: macOS quarantine removal
 	if runtime.GOOS == "darwin" {
-		_ = exec.Command("xattr", "-dr", "com.apple.quarantine", currentBinary).Run()
+		_ = exec.Command("xattr", "-dr", "com.apple.quarantine", installPath).Run()
+	}
+
+	// Step 8: Show PATH warning if needed
+	if pathWarning != "" {
+		fmt.Println()
+		yellow := color.New(color.FgYellow).SprintFunc()
+		fmt.Printf("%s %s\n", yellow("⚠"), pathWarning)
 	}
 
 	return nil
+}
+
+// getInstallPath determines the best installation path for the binary
+// Returns the install path and an optional warning message if PATH setup is needed
+func getInstallPath(goos string) (string, string) {
+	// First, try to use the current binary location if it exists and is writable
+	currentBinary, err := os.Executable()
+	if err == nil {
+		// Resolve symlinks
+		resolved, err := filepath.EvalSymlinks(currentBinary)
+		if err == nil {
+			currentBinary = resolved
+		}
+
+		// Check if current binary exists and is writable
+		if _, err := os.Stat(currentBinary); err == nil {
+			// File exists, check if we can write to it
+			if isWritable(currentBinary) {
+				return currentBinary, ""
+			}
+		}
+	}
+
+	// Fall back to standard user binary location
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		// Last resort fallback
+		if goos == "windows" {
+			return filepath.Join(os.Getenv("LOCALAPPDATA"), "Programs", "project-planton", "project-planton.exe"), ""
+		}
+		return "/usr/local/bin/project-planton", ""
+	}
+
+	if goos == "windows" {
+		installPath := filepath.Join(homeDir, "AppData", "Local", "Programs", "project-planton", "project-planton.exe")
+		return installPath, fmt.Sprintf("Add %s to your PATH if not already configured.", filepath.Dir(installPath))
+	}
+
+	// macOS and Linux: use ~/.local/bin (XDG standard)
+	installDir := filepath.Join(homeDir, ".local", "bin")
+	installPath := filepath.Join(installDir, "project-planton")
+
+	// Check if ~/.local/bin is in PATH
+	pathEnv := os.Getenv("PATH")
+	if !strings.Contains(pathEnv, installDir) {
+		warning := fmt.Sprintf("Add %s to your PATH:\n  echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> ~/.zshrc && source ~/.zshrc", installDir)
+		if goos == "linux" {
+			warning = fmt.Sprintf("Add %s to your PATH:\n  echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> ~/.bashrc && source ~/.bashrc", installDir)
+		}
+		return installPath, warning
+	}
+
+	return installPath, ""
+}
+
+// isWritable checks if a file is writable by attempting to open it for writing
+func isWritable(path string) bool {
+	file, err := os.OpenFile(path, os.O_WRONLY, 0)
+	if err != nil {
+		return false
+	}
+	file.Close()
+	return true
 }
 
 // downloadToTemp downloads a file from URL to a temporary file and returns the path

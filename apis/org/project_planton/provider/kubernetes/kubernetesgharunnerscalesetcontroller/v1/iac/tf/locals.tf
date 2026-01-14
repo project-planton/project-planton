@@ -6,8 +6,8 @@
 ##############################################
 
 locals {
-  # Release configuration
-  release_name = "arc"
+  # Release configuration - use resource name for consistency with other components
+  release_name = var.metadata.name
   # For OCI charts, the full URL must be passed as the chart parameter
   # (repository doesn't work with OCI registries in Terraform helm_release)
   chart_oci = "oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller"
