@@ -49,7 +49,7 @@ message KubernetesGhaRunnerScaleSetSpec {
 
   // Runner group name in GitHub (organization or enterprise level).
   // Defaults to "default" if not specified.
-  string runner_group = 7;
+  optional string runner_group = 7 [(org.project_planton.shared.options.default) = "default"];
 
   // Name of the runner scale set as it appears in GitHub.
   // Defaults to the Helm release name (metadata.name) if not specified.
@@ -252,14 +252,16 @@ message KubernetesGhaRunnerScaleSetRunner {
 message KubernetesGhaRunnerScaleSetRunnerImage {
   // Container image repository.
   // Default: ghcr.io/actions/actions-runner
-  string repository = 1;
+  optional string repository = 1 [(org.project_planton.shared.options.default) = "ghcr.io/actions/actions-runner"];
 
   // Image tag.
   // When not specified, uses the chart appVersion (matches controller version).
-  string tag = 2;
+  // Default tag aligns with helm_chart_version default.
+  optional string tag = 2 [(org.project_planton.shared.options.default) = "2.321.0"];
 
   // Image pull policy: Always, IfNotPresent, or Never.
-  string pull_policy = 3;
+  // Default: IfNotPresent
+  optional string pull_policy = 3 [(org.project_planton.shared.options.default) = "IfNotPresent"];
 }
 
 // KubernetesGhaRunnerScaleSetEnvVar defines an environment variable.

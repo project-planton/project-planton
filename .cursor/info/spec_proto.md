@@ -100,6 +100,68 @@ message AwsCloudFrontSpec {
 }
 ```
 
+## Default Field Options
+
+When a field should have a default value that Project Planton applies if the user doesn't specify it:
+
+### Requirements
+
+1. **Mark the field as `optional`**: This generates a pointer type (`*string`) in Go with presence tracking
+2. **Add the `(org.project_planton.shared.options.default)` field option**: Specifies the default value
+
+### Import Required
+
+```proto
+import "org/project_planton/shared/options/options.proto";
+```
+
+### Syntax
+
+```proto
+// Container image repository.
+// Default: ghcr.io/actions/actions-runner
+optional string repository = 1 [(org.project_planton.shared.options.default) = "ghcr.io/actions/actions-runner"];
+
+// Port number for the service.
+// Default: 443
+optional int32 port = 2 [(org.project_planton.shared.options.default) = "443"];
+```
+
+**Note:** Default values are always specified as strings, regardless of field type.
+
+### Why Both Are Required
+
+1. **`optional` keyword**: Enables field presence tracking in Go (generates `*string` vs `string`)
+2. **Default field option**: Tells Project Planton middleware what value to apply when field isn't set
+
+### Build Enforcement
+
+The custom linter `DEFAULT_REQUIRES_OPTIONAL` in `buf/lint/optional-linter` fails builds if a field has `(org.project_planton.shared.options.default)` but is NOT marked as `optional`.
+
+### What NOT to Do
+
+```proto
+// WRONG: just a comment, no enforcement!
+// Runner group name (defaults to "default" if not specified)
+string runner_group = 7;
+```
+
+### Correct Pattern
+
+```proto
+// Runner group name.
+// Default: default
+optional string runner_group = 7 [(org.project_planton.shared.options.default) = "default"];
+```
+
+### Impact on IaC Modules
+
+When fields become `optional`:
+- Generated Go code changes from `string` to `*string`
+- IaC modules must use getter methods: `spec.GetFieldName()` instead of `spec.FieldName`
+- Project Planton middleware guarantees defaults are applied before IaC modules run
+- **No defensive coding needed** in IaC modules
+
 ## Notes
 - Use official provider docs as reference while keeping the draft minimal.
 - Validations (buf/validate + CEL) are added by a later rule.

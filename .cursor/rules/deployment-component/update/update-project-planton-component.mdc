@@ -567,3 +567,30 @@ After update completes:
 ---
 
 **Ready to update?** Run `@update-project-planton-component <ComponentName>` and follow the prompts!
+
+#### Scenario 7: Apply Default Field Option Semantics
+
+**When:** Component has default values in comments but not enforced via proto field options
+
+```
+@update-project-planton-component KubernetesGhaRunnerScaleSet --scenario apply-default-semantics
+```
+
+**What it does:**
+1. Reads spec.proto to identify fields with defaults in comments but missing field options
+2. For each identified field:
+   - Adds `optional` keyword
+   - Adds `[(org.project_planton.shared.options.default) = "<value>"]`
+3. Regenerates proto stubs: `make protos`
+4. Updates spec_test.go to use pointers for optional fields
+5. Updates IaC module to use getter methods (e.g., `GetFieldName()`)
+6. Removes any defensive default checks (framework handles it)
+7. Runs build validation: `make build`
+8. Runs test validation: `make test`
+
+**Use when:**
+- Audit or review reveals defaults are only in comments
+- Fields need proper presence tracking for zero-value handling
+- Custom linter `DEFAULT_REQUIRES_OPTIONAL` would fail on new defaults
+
+**Reference:** See `apis/_rules/apply-project-planton-default-option-semantics.mdc` for detailed process

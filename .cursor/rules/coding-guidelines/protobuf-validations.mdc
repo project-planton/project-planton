@@ -62,3 +62,34 @@ option (buf.validate.message).cel = {
   - Cross-field validation rules
 - Run `make build` in apis/ to regenerate proto files after changes
 - Test format: Use ginkgo/gomega similar to existing test files
+
+## Default Field Options
+
+When a field should have a default value that Project Planton applies automatically:
+
+### Requirements
+1. Mark the field as `optional`
+2. Add `(org.project_planton.shared.options.default)` field option
+
+### Import
+```protobuf
+import "org/project_planton/shared/options/options.proto";
+```
+
+### Syntax
+```protobuf
+// ✅ Correct: Both optional keyword AND default option
+optional string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];
+
+// ❌ Wrong: Default only in comment, no enforcement
+string namespace = 1;  // Missing optional + field option!
+```
+
+### Build Enforcement
+The `DEFAULT_REQUIRES_OPTIONAL` linter (`buf/lint/optional-linter`) fails builds if a field has default option but is NOT marked as `optional`.
+
+### Impact on Code
+- `optional` fields generate pointer types in Go (`*string`)
+- IaC modules must use getter methods: `spec.GetFieldName()`
+- Tests must use pointers: `runnerGroup := "prod"; spec.RunnerGroup = &runnerGroup`
+- **No defensive coding needed** - framework applies defaults before IaC modules run

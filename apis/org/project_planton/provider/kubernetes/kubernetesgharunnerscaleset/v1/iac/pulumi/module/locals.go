@@ -144,7 +144,7 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetesgharunnerscalesetv1.Kub
 	}
 
 	// Runner group and name
-	l.RunnerGroup = in.Target.Spec.RunnerGroup
+	l.RunnerGroup = in.Target.Spec.GetRunnerGroup()
 	l.RunnerScaleSetName = in.Target.Spec.RunnerScaleSetName
 	if l.RunnerScaleSetName == "" {
 		l.RunnerScaleSetName = l.ReleaseName
@@ -167,9 +167,9 @@ func initializeLocals(ctx *pulumi.Context, in *kubernetesgharunnerscalesetv1.Kub
 	// Runner configuration
 	if r := in.Target.Spec.Runner; r != nil {
 		if r.Image != nil {
-			l.RunnerImageRepository = r.Image.Repository
-			l.RunnerImageTag = r.Image.Tag
-			l.RunnerImagePullPolicy = r.Image.PullPolicy
+			l.RunnerImageRepository = r.Image.GetRepository()
+			l.RunnerImageTag = r.Image.GetTag()
+			l.RunnerImagePullPolicy = r.Image.GetPullPolicy()
 		}
 		if r.Resources != nil {
 			if r.Resources.Requests != nil {

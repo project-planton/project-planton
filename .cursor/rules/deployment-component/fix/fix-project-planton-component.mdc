@@ -1104,3 +1104,32 @@ After fix completes:
 ---
 
 **Ready to fix?** Run `@fix-project-planton-component <ComponentName> --explain "<what needs fixing>"` to apply targeted fixes with automatic propagation!
+
+### Scenario 7: Fix Default Field Option Semantics
+
+**Trigger:** Fields have defaults in comments but not enforced via proto options
+
+**Example:**
+```bash
+@fix-project-planton-component KubernetesGhaRunnerScaleSet --explain "runner_group and runner image fields have defaults in comments but not in proto field options"
+```
+
+**Actions:**
+1. Read spec.proto and identify fields with comment-only defaults
+2. For each field:
+   - Add `optional` keyword
+   - Add `[(org.project_planton.shared.options.default) = "<value>"]`
+3. Regenerate stubs: `make protos`
+4. Update spec_test.go to use pointers for optional fields
+5. Update IaC module to use getter methods: `GetFieldName()`
+6. Remove defensive default checks (framework applies defaults)
+7. Run component tests: `go test ./apis/.../v1/`
+8. Run build: `make build`
+9. Run all tests: `make test`
+
+**Key Principle:** Don't just document defaults in comments - enforce them via:
+- `optional` keyword for presence tracking
+- `(org.project_planton.shared.options.default)` for middleware application
+- `DEFAULT_REQUIRES_OPTIONAL` linter for build-time enforcement
+
+**Reference:** `apis/_rules/apply-project-planton-default-option-semantics.mdc`

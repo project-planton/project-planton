@@ -150,7 +150,8 @@ var _ = ginkgo.Describe("KubernetesGhaRunnerScaleSetSpec Validation Tests", func
 
 		ginkgo.Context("with runner group", func() {
 			ginkgo.It("should not return a validation error", func() {
-				spec.RunnerGroup = "production"
+				runnerGroup := "production"
+				spec.RunnerGroup = &runnerGroup
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
@@ -166,11 +167,14 @@ var _ = ginkgo.Describe("KubernetesGhaRunnerScaleSetSpec Validation Tests", func
 
 		ginkgo.Context("with custom runner image", func() {
 			ginkgo.It("should not return a validation error", func() {
+				repository := "my-registry.com/custom-runner"
+				tag := "v1.0.0"
+				pullPolicy := "IfNotPresent"
 				spec.Runner = &KubernetesGhaRunnerScaleSetRunner{
 					Image: &KubernetesGhaRunnerScaleSetRunnerImage{
-						Repository: "my-registry.com/custom-runner",
-						Tag:        "v1.0.0",
-						PullPolicy: "IfNotPresent",
+						Repository: &repository,
+						Tag:        &tag,
+						PullPolicy: &pullPolicy,
 					},
 				}
 				err := protovalidate.Validate(spec)

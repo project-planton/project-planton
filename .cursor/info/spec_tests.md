@@ -51,5 +51,78 @@ var _ = Describe("AwsCloudFrontSpec validations", func() {
 })
 ```
 
+## Testing Optional Fields with Default Options
+
+When proto fields are marked as `optional` (required for fields with default options), the generated Go code uses pointer types (`*string`, `*int32`, etc.). Tests must assign values via pointers.
+
+### Problem
+
+```go
+// WRONG: Cannot assign string literal to *string field
+spec.RunnerGroup = "production"  // Compile error!
+```
+
+### Solution
+
+```go
+// CORRECT: Use pointer variable
+runnerGroup := "production"
+spec.RunnerGroup = &runnerGroup
+
+// Or for inline assignment
+spec.Image = &KubernetesGhaRunnerScaleSetRunnerImage{
+    Repository: stringPtr("my-registry.com/runner"),
+    Tag:        stringPtr("v1.0.0"),
+}
+```
+
+### Helper Pattern
+
+Consider defining a helper in your test file:
+
+```go
+func stringPtr(s string) *string {
+    return &s
+}
+
+func int32Ptr(i int32) *int32 {
+    return &i
+}
+```
+
+### Example Test with Optional Fields
+
+```go
+ginkgo.Context("with runner group", func() {
+    ginkgo.It("should not return a validation error", func() {
+        runnerGroup := "production"
+        spec.RunnerGroup = &runnerGroup
+        err := protovalidate.Validate(spec)
+        gomega.Expect(err).To(gomega.BeNil())
+    })
+})
+
+ginkgo.Context("with custom runner image", func() {
+    ginkgo.It("should not return a validation error", func() {
+        repository := "my-registry.com/custom-runner"
+        tag := "v1.0.0"
+        pullPolicy := "IfNotPresent"
+        spec.Runner = &KubernetesGhaRunnerScaleSetRunner{
+            Image: &KubernetesGhaRunnerScaleSetRunnerImage{
+                Repository: &repository,
+                Tag:        &tag,
+                PullPolicy: &pullPolicy,
+            },
+        }
+        err := protovalidate.Validate(spec)
+        gomega.Expect(err).To(gomega.BeNil())
+    })
+})
+```
+
+### Why This Matters
+
+Fields with `(org.project_planton.shared.options.default)` must be `optional`. This changes the generated Go type from `string` to `*string`. Tests that directly assign string literals will fail to compile after proto changes.
+
 ## Notes
 - Keep tests focused and robust; avoid brittle provider-format regexes unless necessary.
