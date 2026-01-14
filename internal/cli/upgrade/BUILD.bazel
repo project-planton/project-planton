@@ -1,4 +1,4 @@
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "upgrade",
@@ -16,4 +16,10 @@ go_library(
         "//internal/cli/version",
         "@com_github_fatih_color//:color",
     ],
+)
+
+go_test(
+    name = "upgrade_test",
+    srcs = ["version_test.go"],
+    embed = [":upgrade"],
 )
