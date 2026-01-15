@@ -6,8 +6,11 @@ import (
 )
 
 // AddManifestSourceFlags adds flags for specifying the manifest source.
-// Priority order: --stack-input > --manifest > --input-dir > --kustomize-dir+--overlay
+// Priority order: --clipboard > --stack-input > --manifest > --input-dir > --kustomize-dir+--overlay
 func AddManifestSourceFlags(cmd *cobra.Command) {
+	cmd.PersistentFlags().BoolP(string(flag.Clipboard), "c", false,
+		"read manifest content from system clipboard")
+
 	cmd.PersistentFlags().StringP(string(flag.Manifest), "f", "",
 		"path of the deployment-component manifest file")
 

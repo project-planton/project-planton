@@ -11,6 +11,7 @@ const (
 	Auth0ProviderConfig      Flag = "auth0-provider-config"
 	AutoApprove              Flag = "auto-approve"
 	AwsProviderConfig        Flag = "aws-provider-config"
+	Clipboard                Flag = "clipboard"
 	AzureProviderConfig      Flag = "azure-provider-config"
 	BackendConfig            Flag = "backend-config"
 	BackendType              Flag = "backend-type"

@@ -20,6 +20,10 @@ var Apply = &cobra.Command{
 
 If the provisioner label is not present, you will be prompted to select one interactively.`,
 	Example: `
+	# Apply from clipboard (manifest content already copied)
+	project-planton apply --clipboard
+	project-planton apply -c
+
 	# Apply with manifest file
 	project-planton apply -f manifest.yaml
 	project-planton apply --manifest manifest.yaml
