@@ -189,7 +189,7 @@ spec:
   runner:
     image:
       repository: ghcr.io/actions/actions-runner
-      tag: "2.321.0"
+      tag: "2.331.0"
       pullPolicy: IfNotPresent
     resources:
       limits:

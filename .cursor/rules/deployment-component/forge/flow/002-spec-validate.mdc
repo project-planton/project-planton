@@ -41,6 +41,6 @@ DEFAULT FIELD OPTIONS (SEPARATE FROM VALIDATION)
 - Default values use `(org.project_planton.shared.options.default)` NOT buf.validate
 - Import: `import "org/project_planton/shared/options/options.proto";`
 - Fields with defaults MUST be marked as `optional`
-- Example combining both: `optional string tag = 1 [(org.project_planton.shared.options.default) = "2.321.0", (buf.validate.field).string.min_len = 1];`
+- Example combining both: `optional string tag = 1 [(org.project_planton.shared.options.default) = "2.331.0", (buf.validate.field).string.min_len = 1];`
 - The `DEFAULT_REQUIRES_OPTIONAL` linter enforces this pattern at build time
 - See `.cursor/info/spec_validate.md` for full guidelines

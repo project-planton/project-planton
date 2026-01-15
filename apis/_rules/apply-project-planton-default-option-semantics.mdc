@@ -116,7 +116,7 @@ Fields that were updated:
 |-------|----------|---------------|
 | `runner_group` | `KubernetesGhaRunnerScaleSetSpec` | `"default"` |
 | `repository` | `KubernetesGhaRunnerScaleSetRunnerImage` | `"ghcr.io/actions/actions-runner"` |
-| `tag` | `KubernetesGhaRunnerScaleSetRunnerImage` | `"2.321.0"` |
+| `tag` | `KubernetesGhaRunnerScaleSetRunnerImage` | `"2.331.0"` |
 | `pull_policy` | `KubernetesGhaRunnerScaleSetRunnerImage` | `"IfNotPresent"` |
 
 ## Reference Files

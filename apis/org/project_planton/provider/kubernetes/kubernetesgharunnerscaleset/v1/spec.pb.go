@@ -795,6 +795,7 @@ type KubernetesGhaRunnerScaleSetRunnerImage struct {
 	// Image tag.
 	// When not specified, uses the chart appVersion (matches controller version).
 	// Default tag aligns with helm_chart_version default.
+	// https://github.com/actions/runner/pkgs/container/actions-runner
 	Tag *string `protobuf:"bytes,2,opt,name=tag,proto3,oneof" json:"tag,omitempty"`
 	// Image pull policy: Always, IfNotPresent, or Never.
 	// Default: IfNotPresent
@@ -1217,7 +1218,7 @@ const file_org_project_planton_provider_kubernetes_kubernetesgharunnerscaleset_v
 	"\n" +
 	"repository\x18\x01 \x01(\tB\"\x8a\xa6\x1d\x1eghcr.io/actions/actions-runnerH\x00R\n" +
 	"repository\x88\x01\x01\x12\"\n" +
-	"\x03tag\x18\x02 \x01(\tB\v\x8a\xa6\x1d\a2.321.0H\x01R\x03tag\x88\x01\x01\x126\n" +
+	"\x03tag\x18\x02 \x01(\tB\v\x8a\xa6\x1d\a2.331.0H\x01R\x03tag\x88\x01\x01\x126\n" +
 	"\vpull_policy\x18\x03 \x01(\tB\x10\x8a\xa6\x1d\fIfNotPresentH\x02R\n" +
 	"pullPolicy\x88\x01\x01B\r\n" +
 	"\v_repositoryB\x06\n" +

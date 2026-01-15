@@ -115,7 +115,7 @@ Example:
 ```proto
 // Has default AND validation
 optional string image_tag = 1 [
-  (org.project_planton.shared.options.default) = "2.321.0",
+  (org.project_planton.shared.options.default) = "2.331.0",
   (buf.validate.field).string.min_len = 1
 ];
 ```

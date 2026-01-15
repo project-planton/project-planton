@@ -257,7 +257,8 @@ message KubernetesGhaRunnerScaleSetRunnerImage {
   // Image tag.
   // When not specified, uses the chart appVersion (matches controller version).
   // Default tag aligns with helm_chart_version default.
-  optional string tag = 2 [(org.project_planton.shared.options.default) = "2.321.0"];
+  // https://github.com/actions/runner/pkgs/container/actions-runner
+  optional string tag = 2 [(org.project_planton.shared.options.default) = "2.331.0"];
 
   // Image pull policy: Always, IfNotPresent, or Never.
   // Default: IfNotPresent
