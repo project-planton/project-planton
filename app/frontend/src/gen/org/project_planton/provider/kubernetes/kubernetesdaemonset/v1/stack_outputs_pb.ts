@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetesdaemonset/v1/stack_outputs.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_stack_outputs: GenFile = /*@__PURE__*/
-  fileDesc("ClJvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2RhZW1vbnNldC92MS9zdGFja19vdXRwdXRzLnByb3RvEj5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MSKmAQofS3ViZXJuZXRlc0RhZW1vblNldFN0YWNrT3V0cHV0cxIRCgluYW1lc3BhY2UYASABKAkSFgoOZGFlbW9uc2V0X25hbWUYAiABKAkSIAoYZGVzaXJlZF9udW1iZXJfc2NoZWR1bGVkGAMgASgFEiAKGGN1cnJlbnRfbnVtYmVyX3NjaGVkdWxlZBgEIAEoBRIUCgxudW1iZXJfcmVhZHkYBSABKAVC8gMKQmNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MUIRU3RhY2tPdXRwdXRzUHJvdG9QAVp+Z2l0aHViLmNvbS9wbGFudG9uaHEvcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXNkYWVtb25zZXQvdjE7a3ViZXJuZXRlc2RhZW1vbnNldHYxogIFT1BQS0uqAj1PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzZGFlbW9uc2V0LlYxygI9T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2RhZW1vbnNldFxWMeICSU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNkYWVtb25zZXRcVjFcR1BCTWV0YWRhdGHqAkJPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc2RhZW1vbnNldDo6VjFiBnByb3RvMw");
+  fileDesc("ClJvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc2RhZW1vbnNldC92MS9zdGFja19vdXRwdXRzLnByb3RvEj5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MSKmAQofS3ViZXJuZXRlc0RhZW1vblNldFN0YWNrT3V0cHV0cxIRCgluYW1lc3BhY2UYASABKAkSFgoOZGFlbW9uc2V0X25hbWUYAiABKAkSIAoYZGVzaXJlZF9udW1iZXJfc2NoZWR1bGVkGAMgASgJEiAKGGN1cnJlbnRfbnVtYmVyX3NjaGVkdWxlZBgEIAEoCRIUCgxudW1iZXJfcmVhZHkYBSABKAlC8gMKQmNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc2RhZW1vbnNldC52MUIRU3RhY2tPdXRwdXRzUHJvdG9QAVp+Z2l0aHViLmNvbS9wbGFudG9uaHEvcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9rdWJlcm5ldGVzL2t1YmVybmV0ZXNkYWVtb25zZXQvdjE7a3ViZXJuZXRlc2RhZW1vbnNldHYxogIFT1BQS0uqAj1PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuS3ViZXJuZXRlcy5LdWJlcm5ldGVzZGFlbW9uc2V0LlYxygI9T3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc2RhZW1vbnNldFxWMeICSU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxLdWJlcm5ldGVzXEt1YmVybmV0ZXNkYWVtb25zZXRcVjFcR1BCTWV0YWRhdGHqAkJPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6S3ViZXJuZXRlczo6S3ViZXJuZXRlc2RhZW1vbnNldDo6VjFiBnByb3RvMw");
 
 /**
  * KubernetesDaemonSetStackOutputs contains the outputs from the KubernetesDaemonSet deployment.
@@ -35,23 +35,23 @@ export type KubernetesDaemonSetStackOutputs = Message<"org.project_planton.provi
   /**
    * Number of nodes that should be running the daemon pod.
    *
-   * @generated from field: int32 desired_number_scheduled = 3;
+   * @generated from field: string desired_number_scheduled = 3;
    */
-  desiredNumberScheduled: number;
+  desiredNumberScheduled: string;
 
   /**
    * Number of nodes that are running at least one daemon pod and are supposed to run the daemon pod.
    *
-   * @generated from field: int32 current_number_scheduled = 4;
+   * @generated from field: string current_number_scheduled = 4;
    */
-  currentNumberScheduled: number;
+  currentNumberScheduled: string;
 
   /**
    * Number of nodes that are running the daemon pod and have one or more ready.
    *
-   * @generated from field: int32 number_ready = 5;
+   * @generated from field: string number_ready = 5;
    */
-  numberReady: number;
+  numberReady: string;
 };
 
 /**

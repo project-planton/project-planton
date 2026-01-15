@@ -22,27 +22,27 @@ message KubernetesNamespaceStackOutputs {
 
   /**
    * Indicates whether resource quotas were applied to the namespace.
-   * true if ResourceQuota objects were created, false otherwise.
+   * "true" if ResourceQuota objects were created, "false" otherwise.
    */
-  bool resource_quotas_applied = 3;
+  string resource_quotas_applied = 3;
 
   /**
    * Indicates whether LimitRanges were applied to the namespace.
-   * true if LimitRange objects were created, false otherwise.
+   * "true" if LimitRange objects were created, "false" otherwise.
    */
-  bool limit_ranges_applied = 4;
+  string limit_ranges_applied = 4;
 
   /**
    * Indicates whether network policies were applied to the namespace.
-   * true if NetworkPolicy objects were created, false otherwise.
+   * "true" if NetworkPolicy objects were created, "false" otherwise.
    */
-  bool network_policies_applied = 5;
+  string network_policies_applied = 5;
 
   /**
    * Indicates whether service mesh sidecar injection is enabled.
-   * true if the namespace is configured for automatic sidecar injection, false otherwise.
+   * "true" if the namespace is configured for automatic sidecar injection, "false" otherwise.
    */
-  bool service_mesh_enabled = 6;
+  string service_mesh_enabled = 6;
 
   /**
    * The service mesh type that is configured for this namespace.

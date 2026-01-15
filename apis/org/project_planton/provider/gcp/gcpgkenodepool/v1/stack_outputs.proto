@@ -12,11 +12,11 @@ message GcpGkeNodePoolStackOutputs {
   repeated string instance_group_urls = 2;
 
   // Effective minimum and maximum size of the node pool (for autoscaling).
-  uint32 min_nodes = 3;
-  uint32 max_nodes = 4;
+  string min_nodes = 3;
+  string max_nodes = 4;
 
   // Current number of nodes in this pool.
-  uint32 current_node_count = 5;
+  string current_node_count = 5;
 
   // (Additional outputs like autoscaler status or errors can be added as needed.)
 }

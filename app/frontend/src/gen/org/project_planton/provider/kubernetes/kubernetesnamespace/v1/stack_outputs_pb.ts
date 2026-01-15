@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/kubernetes/kubernetesnamespace/v1/stack_outputs.proto.
  */
 export const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_stack_outputs: GenFile = /*@__PURE__*/
-  fileDesc("ClJvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hbWVzcGFjZS92MS9zdGFja19vdXRwdXRzLnByb3RvEj5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hbWVzcGFjZS52MSKyAgofS3ViZXJuZXRlc05hbWVzcGFjZVN0YWNrT3V0cHV0cxIRCgluYW1lc3BhY2UYASABKAkSFAoMbmFtZXNwYWNlX2lkGAIgASgJEh8KF3Jlc291cmNlX3F1b3Rhc19hcHBsaWVkGAMgASgIEhwKFGxpbWl0X3Jhbmdlc19hcHBsaWVkGAQgASgIEiAKGG5ldHdvcmtfcG9saWNpZXNfYXBwbGllZBgFIAEoCBIcChRzZXJ2aWNlX21lc2hfZW5hYmxlZBgGIAEoCBIZChFzZXJ2aWNlX21lc2hfdHlwZRgHIAEoCRIdChVwb2Rfc2VjdXJpdHlfc3RhbmRhcmQYCCABKAkSEwoLbGFiZWxzX2pzb24YCSABKAkSGAoQYW5ub3RhdGlvbnNfanNvbhgKIAEoCULyAwpCY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmFtZXNwYWNlLnYxQhFTdGFja091dHB1dHNQcm90b1ABWn5naXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hbWVzcGFjZS92MTtrdWJlcm5ldGVzbmFtZXNwYWNldjGiAgVPUFBLS6oCPU9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5LdWJlcm5ldGVzLkt1YmVybmV0ZXNuYW1lc3BhY2UuVjHKAj1PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzbmFtZXNwYWNlXFYx4gJJT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc25hbWVzcGFjZVxWMVxHUEJNZXRhZGF0YeoCQk9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpLdWJlcm5ldGVzOjpLdWJlcm5ldGVzbmFtZXNwYWNlOjpWMWIGcHJvdG8z");
+  fileDesc("ClJvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hbWVzcGFjZS92MS9zdGFja19vdXRwdXRzLnByb3RvEj5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmt1YmVybmV0ZXMua3ViZXJuZXRlc25hbWVzcGFjZS52MSKyAgofS3ViZXJuZXRlc05hbWVzcGFjZVN0YWNrT3V0cHV0cxIRCgluYW1lc3BhY2UYASABKAkSFAoMbmFtZXNwYWNlX2lkGAIgASgJEh8KF3Jlc291cmNlX3F1b3Rhc19hcHBsaWVkGAMgASgJEhwKFGxpbWl0X3Jhbmdlc19hcHBsaWVkGAQgASgJEiAKGG5ldHdvcmtfcG9saWNpZXNfYXBwbGllZBgFIAEoCRIcChRzZXJ2aWNlX21lc2hfZW5hYmxlZBgGIAEoCRIZChFzZXJ2aWNlX21lc2hfdHlwZRgHIAEoCRIdChVwb2Rfc2VjdXJpdHlfc3RhbmRhcmQYCCABKAkSEwoLbGFiZWxzX2pzb24YCSABKAkSGAoQYW5ub3RhdGlvbnNfanNvbhgKIAEoCULyAwpCY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIua3ViZXJuZXRlcy5rdWJlcm5ldGVzbmFtZXNwYWNlLnYxQhFTdGFja091dHB1dHNQcm90b1ABWn5naXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2t1YmVybmV0ZXMva3ViZXJuZXRlc25hbWVzcGFjZS92MTtrdWJlcm5ldGVzbmFtZXNwYWNldjGiAgVPUFBLS6oCPU9yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5LdWJlcm5ldGVzLkt1YmVybmV0ZXNuYW1lc3BhY2UuVjHKAj1PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcS3ViZXJuZXRlc1xLdWJlcm5ldGVzbmFtZXNwYWNlXFYx4gJJT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEt1YmVybmV0ZXNcS3ViZXJuZXRlc25hbWVzcGFjZVxWMVxHUEJNZXRhZGF0YeoCQk9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpLdWJlcm5ldGVzOjpLdWJlcm5ldGVzbmFtZXNwYWNlOjpWMWIGcHJvdG8z");
 
 /**
  * *
@@ -42,38 +42,38 @@ export type KubernetesNamespaceStackOutputs = Message<"org.project_planton.provi
   /**
    * *
    * Indicates whether resource quotas were applied to the namespace.
-   * true if ResourceQuota objects were created, false otherwise.
+   * "true" if ResourceQuota objects were created, "false" otherwise.
    *
-   * @generated from field: bool resource_quotas_applied = 3;
+   * @generated from field: string resource_quotas_applied = 3;
    */
-  resourceQuotasApplied: boolean;
+  resourceQuotasApplied: string;
 
   /**
    * *
    * Indicates whether LimitRanges were applied to the namespace.
-   * true if LimitRange objects were created, false otherwise.
+   * "true" if LimitRange objects were created, "false" otherwise.
    *
-   * @generated from field: bool limit_ranges_applied = 4;
+   * @generated from field: string limit_ranges_applied = 4;
    */
-  limitRangesApplied: boolean;
+  limitRangesApplied: string;
 
   /**
    * *
    * Indicates whether network policies were applied to the namespace.
-   * true if NetworkPolicy objects were created, false otherwise.
+   * "true" if NetworkPolicy objects were created, "false" otherwise.
    *
-   * @generated from field: bool network_policies_applied = 5;
+   * @generated from field: string network_policies_applied = 5;
    */
-  networkPoliciesApplied: boolean;
+  networkPoliciesApplied: string;
 
   /**
    * *
    * Indicates whether service mesh sidecar injection is enabled.
-   * true if the namespace is configured for automatic sidecar injection, false otherwise.
+   * "true" if the namespace is configured for automatic sidecar injection, "false" otherwise.
    *
-   * @generated from field: bool service_mesh_enabled = 6;
+   * @generated from field: string service_mesh_enabled = 6;
    */
-  serviceMeshEnabled: boolean;
+  serviceMeshEnabled: string;
 
   /**
    * *

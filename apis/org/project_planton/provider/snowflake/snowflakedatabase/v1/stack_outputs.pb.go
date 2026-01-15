@@ -37,12 +37,12 @@ type SnowflakeDatabaseStackOutputs struct {
 	// Timestamp when the database was created
 	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#createdon_yaml
 	CreatedOn string `protobuf:"bytes,4,opt,name=created_on,json=createdOn,proto3" json:"created_on,omitempty"`
-	// Boolean indicating if the database is transient
+	// Indicates if the database is transient ("true" or "false")
 	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#istransient_yaml
-	IsTransient bool `protobuf:"varint,5,opt,name=is_transient,json=isTransient,proto3" json:"is_transient,omitempty"`
-	// Configured data retention time in days
+	IsTransient string `protobuf:"bytes,5,opt,name=is_transient,json=isTransient,proto3" json:"is_transient,omitempty"`
+	// Configured data retention time in days (as string)
 	// https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#dataretentiontimeindays_yaml
-	DataRetentionTimeInDays int32 `protobuf:"varint,6,opt,name=data_retention_time_in_days,json=dataRetentionTimeInDays,proto3" json:"data_retention_time_in_days,omitempty"`
+	DataRetentionTimeInDays string `protobuf:"bytes,6,opt,name=data_retention_time_in_days,json=dataRetentionTimeInDays,proto3" json:"data_retention_time_in_days,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -105,18 +105,18 @@ func (x *SnowflakeDatabaseStackOutputs) GetCreatedOn() string {
 	return ""
 }
 
-func (x *SnowflakeDatabaseStackOutputs) GetIsTransient() bool {
+func (x *SnowflakeDatabaseStackOutputs) GetIsTransient() string {
 	if x != nil {
 		return x.IsTransient
 	}
-	return false
+	return ""
 }
 
-func (x *SnowflakeDatabaseStackOutputs) GetDataRetentionTimeInDays() int32 {
+func (x *SnowflakeDatabaseStackOutputs) GetDataRetentionTimeInDays() string {
 	if x != nil {
 		return x.DataRetentionTimeInDays
 	}
-	return 0
+	return ""
 }
 
 var File_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_outputs_proto protoreflect.FileDescriptor
@@ -130,8 +130,8 @@ const file_org_project_planton_provider_snowflake_snowflakedatabase_v1_stack_out
 	"\x05owner\x18\x03 \x01(\tR\x05owner\x12\x1d\n" +
 	"\n" +
 	"created_on\x18\x04 \x01(\tR\tcreatedOn\x12!\n" +
-	"\fis_transient\x18\x05 \x01(\bR\visTransient\x12<\n" +
-	"\x1bdata_retention_time_in_days\x18\x06 \x01(\x05R\x17dataRetentionTimeInDaysB\xde\x03\n" +
+	"\fis_transient\x18\x05 \x01(\tR\visTransient\x12<\n" +
+	"\x1bdata_retention_time_in_days\x18\x06 \x01(\tR\x17dataRetentionTimeInDaysB\xde\x03\n" +
 	"?com.org.project_planton.provider.snowflake.snowflakedatabase.v1B\x11StackOutputsProtoP\x01Zygithub.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05OPPSS\xaa\x02:Org.ProjectPlanton.Provider.Snowflake.Snowflakedatabase.V1\xca\x02:Org\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02FOrg\\ProjectPlanton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02?Org::ProjectPlanton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
 
 var (

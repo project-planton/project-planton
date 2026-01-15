@@ -24,8 +24,8 @@ message GcpCloudCdnStackOutputs {
   string backend_id = 4;
 
   // Whether Cloud CDN is enabled on the backend.
-  // Should always be true for successful deployments.
-  bool cdn_enabled = 5;
+  // Should always be "true" for successful deployments.
+  string cdn_enabled = 5;
 
   // Cache mode configured for this CDN (CACHE_ALL_STATIC, USE_ORIGIN_HEADERS, FORCE_CACHE_ALL).
   string cache_mode = 6;

@@ -52,7 +52,8 @@ type KubernetesOpenBaoStackOutputs struct {
 	// Example: http://openbao.namespace.svc.cluster.local:8200
 	ApiAddress string `protobuf:"bytes,9,opt,name=api_address,json=apiAddress,proto3" json:"api_address,omitempty"`
 	// Indicates if the OpenBao deployment is running in HA mode.
-	HaEnabled     bool `protobuf:"varint,10,opt,name=ha_enabled,json=haEnabled,proto3" json:"ha_enabled,omitempty"`
+	// "true" if HA mode is enabled, "false" otherwise.
+	HaEnabled     string `protobuf:"bytes,10,opt,name=ha_enabled,json=haEnabled,proto3" json:"ha_enabled,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -150,11 +151,11 @@ func (x *KubernetesOpenBaoStackOutputs) GetApiAddress() string {
 	return ""
 }
 
-func (x *KubernetesOpenBaoStackOutputs) GetHaEnabled() bool {
+func (x *KubernetesOpenBaoStackOutputs) GetHaEnabled() string {
 	if x != nil {
 		return x.HaEnabled
 	}
-	return false
+	return ""
 }
 
 var File_org_project_planton_provider_kubernetes_kubernetesopenbao_v1_stack_outputs_proto protoreflect.FileDescriptor
@@ -175,7 +176,7 @@ const file_org_project_planton_provider_kubernetes_kubernetesopenbao_v1_stack_ou
 	"apiAddress\x12\x1d\n" +
 	"\n" +
 	"ha_enabled\x18\n" +
-	" \x01(\bR\thaEnabledB\xe4\x03\n" +
+	" \x01(\tR\thaEnabledB\xe4\x03\n" +
 	"@com.org.project_planton.provider.kubernetes.kubernetesopenbao.v1B\x11StackOutputsProtoP\x01Zzgithub.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenbao/v1;kubernetesopenbaov1\xa2\x02\x05OPPKK\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Kubernetesopenbao.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesopenbao\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesopenbao\\V1\\GPBMetadata\xea\x02@Org::ProjectPlanton::Provider::Kubernetes::Kubernetesopenbao::V1b\x06proto3"
 
 var (

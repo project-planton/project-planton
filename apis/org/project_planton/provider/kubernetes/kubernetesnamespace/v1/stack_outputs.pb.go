@@ -37,20 +37,20 @@ type KubernetesNamespaceStackOutputs struct {
 	NamespaceId string `protobuf:"bytes,2,opt,name=namespace_id,json=namespaceId,proto3" json:"namespace_id,omitempty"`
 	// *
 	// Indicates whether resource quotas were applied to the namespace.
-	// true if ResourceQuota objects were created, false otherwise.
-	ResourceQuotasApplied bool `protobuf:"varint,3,opt,name=resource_quotas_applied,json=resourceQuotasApplied,proto3" json:"resource_quotas_applied,omitempty"`
+	// "true" if ResourceQuota objects were created, "false" otherwise.
+	ResourceQuotasApplied string `protobuf:"bytes,3,opt,name=resource_quotas_applied,json=resourceQuotasApplied,proto3" json:"resource_quotas_applied,omitempty"`
 	// *
 	// Indicates whether LimitRanges were applied to the namespace.
-	// true if LimitRange objects were created, false otherwise.
-	LimitRangesApplied bool `protobuf:"varint,4,opt,name=limit_ranges_applied,json=limitRangesApplied,proto3" json:"limit_ranges_applied,omitempty"`
+	// "true" if LimitRange objects were created, "false" otherwise.
+	LimitRangesApplied string `protobuf:"bytes,4,opt,name=limit_ranges_applied,json=limitRangesApplied,proto3" json:"limit_ranges_applied,omitempty"`
 	// *
 	// Indicates whether network policies were applied to the namespace.
-	// true if NetworkPolicy objects were created, false otherwise.
-	NetworkPoliciesApplied bool `protobuf:"varint,5,opt,name=network_policies_applied,json=networkPoliciesApplied,proto3" json:"network_policies_applied,omitempty"`
+	// "true" if NetworkPolicy objects were created, "false" otherwise.
+	NetworkPoliciesApplied string `protobuf:"bytes,5,opt,name=network_policies_applied,json=networkPoliciesApplied,proto3" json:"network_policies_applied,omitempty"`
 	// *
 	// Indicates whether service mesh sidecar injection is enabled.
-	// true if the namespace is configured for automatic sidecar injection, false otherwise.
-	ServiceMeshEnabled bool `protobuf:"varint,6,opt,name=service_mesh_enabled,json=serviceMeshEnabled,proto3" json:"service_mesh_enabled,omitempty"`
+	// "true" if the namespace is configured for automatic sidecar injection, "false" otherwise.
+	ServiceMeshEnabled string `protobuf:"bytes,6,opt,name=service_mesh_enabled,json=serviceMeshEnabled,proto3" json:"service_mesh_enabled,omitempty"`
 	// *
 	// The service mesh type that is configured for this namespace.
 	// Empty string if no service mesh is configured.
@@ -116,32 +116,32 @@ func (x *KubernetesNamespaceStackOutputs) GetNamespaceId() string {
 	return ""
 }
 
-func (x *KubernetesNamespaceStackOutputs) GetResourceQuotasApplied() bool {
+func (x *KubernetesNamespaceStackOutputs) GetResourceQuotasApplied() string {
 	if x != nil {
 		return x.ResourceQuotasApplied
 	}
-	return false
+	return ""
 }
 
-func (x *KubernetesNamespaceStackOutputs) GetLimitRangesApplied() bool {
+func (x *KubernetesNamespaceStackOutputs) GetLimitRangesApplied() string {
 	if x != nil {
 		return x.LimitRangesApplied
 	}
-	return false
+	return ""
 }
 
-func (x *KubernetesNamespaceStackOutputs) GetNetworkPoliciesApplied() bool {
+func (x *KubernetesNamespaceStackOutputs) GetNetworkPoliciesApplied() string {
 	if x != nil {
 		return x.NetworkPoliciesApplied
 	}
-	return false
+	return ""
 }
 
-func (x *KubernetesNamespaceStackOutputs) GetServiceMeshEnabled() bool {
+func (x *KubernetesNamespaceStackOutputs) GetServiceMeshEnabled() string {
 	if x != nil {
 		return x.ServiceMeshEnabled
 	}
-	return false
+	return ""
 }
 
 func (x *KubernetesNamespaceStackOutputs) GetServiceMeshType() string {
@@ -180,10 +180,10 @@ const file_org_project_planton_provider_kubernetes_kubernetesnamespace_v1_stack_
 	"\x1fKubernetesNamespaceStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\fnamespace_id\x18\x02 \x01(\tR\vnamespaceId\x126\n" +
-	"\x17resource_quotas_applied\x18\x03 \x01(\bR\x15resourceQuotasApplied\x120\n" +
-	"\x14limit_ranges_applied\x18\x04 \x01(\bR\x12limitRangesApplied\x128\n" +
-	"\x18network_policies_applied\x18\x05 \x01(\bR\x16networkPoliciesApplied\x120\n" +
-	"\x14service_mesh_enabled\x18\x06 \x01(\bR\x12serviceMeshEnabled\x12*\n" +
+	"\x17resource_quotas_applied\x18\x03 \x01(\tR\x15resourceQuotasApplied\x120\n" +
+	"\x14limit_ranges_applied\x18\x04 \x01(\tR\x12limitRangesApplied\x128\n" +
+	"\x18network_policies_applied\x18\x05 \x01(\tR\x16networkPoliciesApplied\x120\n" +
+	"\x14service_mesh_enabled\x18\x06 \x01(\tR\x12serviceMeshEnabled\x12*\n" +
 	"\x11service_mesh_type\x18\a \x01(\tR\x0fserviceMeshType\x122\n" +
 	"\x15pod_security_standard\x18\b \x01(\tR\x13podSecurityStandard\x12\x1f\n" +
 	"\vlabels_json\x18\t \x01(\tR\n" +

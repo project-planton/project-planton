@@ -17,10 +17,10 @@ message SnowflakeDatabaseStackOutputs {
   //Timestamp when the database was created
   //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#createdon_yaml
   string created_on = 4;
-  //Boolean indicating if the database is transient
+  //Indicates if the database is transient ("true" or "false")
   //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#istransient_yaml
-  bool is_transient = 5;
-  //Configured data retention time in days
+  string is_transient = 5;
+  //Configured data retention time in days (as string)
   //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#dataretentiontimeindays_yaml
-  int32 data_retention_time_in_days = 6;
+  string data_retention_time_in_days = 6;
 }

@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file org/project_planton/provider/gcp/gcpgkenodepool/v1/stack_outputs.proto.
  */
 export const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_stack_outputs: GenFile = /*@__PURE__*/
-  fileDesc("CkZvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3Bna2Vub2RlcG9vbC92MS9zdGFja19vdXRwdXRzLnByb3RvEjJvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3Bna2Vub2RlcG9vbC52MSKTAQoaR2NwR2tlTm9kZVBvb2xTdGFja091dHB1dHMSFgoObm9kZV9wb29sX25hbWUYASABKAkSGwoTaW5zdGFuY2VfZ3JvdXBfdXJscxgCIAMoCRIRCgltaW5fbm9kZXMYAyABKA0SEQoJbWF4X25vZGVzGAQgASgNEhoKEmN1cnJlbnRfbm9kZV9jb3VudBgFIAEoDUKlAwo2Y29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGdrZW5vZGVwb29sLnYxQhFTdGFja091dHB1dHNQcm90b1ABWm1naXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3Bna2Vub2RlcG9vbC92MTtnY3Bna2Vub2RlcG9vbHYxogIFT1BQR0eqAjFPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcGdrZW5vZGVwb29sLlYxygIxT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3Bna2Vub2RlcG9vbFxWMeICPU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2NwZ2tlbm9kZXBvb2xcVjFcR1BCTWV0YWRhdGHqAjZPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3Bna2Vub2RlcG9vbDo6VjFiBnByb3RvMw");
+  fileDesc("CkZvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3Bna2Vub2RlcG9vbC92MS9zdGFja19vdXRwdXRzLnByb3RvEjJvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLmdjcC5nY3Bna2Vub2RlcG9vbC52MSKTAQoaR2NwR2tlTm9kZVBvb2xTdGFja091dHB1dHMSFgoObm9kZV9wb29sX25hbWUYASABKAkSGwoTaW5zdGFuY2VfZ3JvdXBfdXJscxgCIAMoCRIRCgltaW5fbm9kZXMYAyABKAkSEQoJbWF4X25vZGVzGAQgASgJEhoKEmN1cnJlbnRfbm9kZV9jb3VudBgFIAEoCUKlAwo2Y29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIuZ2NwLmdjcGdrZW5vZGVwb29sLnYxQhFTdGFja091dHB1dHNQcm90b1ABWm1naXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL2djcC9nY3Bna2Vub2RlcG9vbC92MTtnY3Bna2Vub2RlcG9vbHYxogIFT1BQR0eqAjFPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuR2NwLkdjcGdrZW5vZGVwb29sLlYxygIxT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXEdjcFxHY3Bna2Vub2RlcG9vbFxWMeICPU9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxHY3BcR2NwZ2tlbm9kZXBvb2xcVjFcR1BCTWV0YWRhdGHqAjZPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6R2NwOjpHY3Bna2Vub2RlcG9vbDo6VjFiBnByb3RvMw");
 
 /**
  * Outputs produced after creating/updating a GKE Node Pool.
@@ -36,21 +36,21 @@ export type GcpGkeNodePoolStackOutputs = Message<"org.project_planton.provider.g
   /**
    * Effective minimum and maximum size of the node pool (for autoscaling).
    *
-   * @generated from field: uint32 min_nodes = 3;
+   * @generated from field: string min_nodes = 3;
    */
-  minNodes: number;
+  minNodes: string;
 
   /**
-   * @generated from field: uint32 max_nodes = 4;
+   * @generated from field: string max_nodes = 4;
    */
-  maxNodes: number;
+  maxNodes: string;
 
   /**
    * Current number of nodes in this pool.
    *
-   * @generated from field: uint32 current_node_count = 5;
+   * @generated from field: string current_node_count = 5;
    */
-  currentNodeCount: number;
+  currentNodeCount: string;
 };
 
 /**

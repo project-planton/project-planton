@@ -40,8 +40,8 @@ type GcpCloudCdnStackOutputs struct {
 	// Use this for API calls and Terraform/Pulumi references.
 	BackendId string `protobuf:"bytes,4,opt,name=backend_id,json=backendId,proto3" json:"backend_id,omitempty"`
 	// Whether Cloud CDN is enabled on the backend.
-	// Should always be true for successful deployments.
-	CdnEnabled bool `protobuf:"varint,5,opt,name=cdn_enabled,json=cdnEnabled,proto3" json:"cdn_enabled,omitempty"`
+	// Should always be "true" for successful deployments.
+	CdnEnabled string `protobuf:"bytes,5,opt,name=cdn_enabled,json=cdnEnabled,proto3" json:"cdn_enabled,omitempty"`
 	// Cache mode configured for this CDN (CACHE_ALL_STATIC, USE_ORIGIN_HEADERS, FORCE_CACHE_ALL).
 	CacheMode string `protobuf:"bytes,6,opt,name=cache_mode,json=cacheMode,proto3" json:"cache_mode,omitempty"`
 	// URL map name (for load balancer routing configuration).
@@ -138,11 +138,11 @@ func (x *GcpCloudCdnStackOutputs) GetBackendId() string {
 	return ""
 }
 
-func (x *GcpCloudCdnStackOutputs) GetCdnEnabled() bool {
+func (x *GcpCloudCdnStackOutputs) GetCdnEnabled() string {
 	if x != nil {
 		return x.CdnEnabled
 	}
-	return false
+	return ""
 }
 
 func (x *GcpCloudCdnStackOutputs) GetCacheMode() string {
@@ -254,7 +254,7 @@ const file_org_project_planton_provider_gcp_gcpcloudcdn_v1_stack_outputs_proto_r
 	"\fbackend_name\x18\x03 \x01(\tR\vbackendName\x12\x1d\n" +
 	"\n" +
 	"backend_id\x18\x04 \x01(\tR\tbackendId\x12\x1f\n" +
-	"\vcdn_enabled\x18\x05 \x01(\bR\n" +
+	"\vcdn_enabled\x18\x05 \x01(\tR\n" +
 	"cdnEnabled\x12\x1d\n" +
 	"\n" +
 	"cache_mode\x18\x06 \x01(\tR\tcacheMode\x12 \n" +

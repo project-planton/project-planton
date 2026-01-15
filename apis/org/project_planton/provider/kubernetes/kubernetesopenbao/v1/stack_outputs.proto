@@ -42,5 +42,6 @@ message KubernetesOpenBaoStackOutputs {
   string api_address = 9;
 
   // Indicates if the OpenBao deployment is running in HA mode.
-  bool ha_enabled = 10;
+  // "true" if HA mode is enabled, "false" otherwise.
+  string ha_enabled = 10;
 }

@@ -11,11 +11,11 @@ message KubernetesDaemonSetStackOutputs {
   string daemonset_name = 2;
 
   // Number of nodes that should be running the daemon pod.
-  int32 desired_number_scheduled = 3;
+  string desired_number_scheduled = 3;
 
   // Number of nodes that are running at least one daemon pod and are supposed to run the daemon pod.
-  int32 current_number_scheduled = 4;
+  string current_number_scheduled = 4;
 
   // Number of nodes that are running the daemon pod and have one or more ready.
-  int32 number_ready = 5;
+  string number_ready = 5;
 }

@@ -29,11 +29,11 @@ type KubernetesDaemonSetStackOutputs struct {
 	// Kubernetes DaemonSet name.
 	DaemonsetName string `protobuf:"bytes,2,opt,name=daemonset_name,json=daemonsetName,proto3" json:"daemonset_name,omitempty"`
 	// Number of nodes that should be running the daemon pod.
-	DesiredNumberScheduled int32 `protobuf:"varint,3,opt,name=desired_number_scheduled,json=desiredNumberScheduled,proto3" json:"desired_number_scheduled,omitempty"`
+	DesiredNumberScheduled string `protobuf:"bytes,3,opt,name=desired_number_scheduled,json=desiredNumberScheduled,proto3" json:"desired_number_scheduled,omitempty"`
 	// Number of nodes that are running at least one daemon pod and are supposed to run the daemon pod.
-	CurrentNumberScheduled int32 `protobuf:"varint,4,opt,name=current_number_scheduled,json=currentNumberScheduled,proto3" json:"current_number_scheduled,omitempty"`
+	CurrentNumberScheduled string `protobuf:"bytes,4,opt,name=current_number_scheduled,json=currentNumberScheduled,proto3" json:"current_number_scheduled,omitempty"`
 	// Number of nodes that are running the daemon pod and have one or more ready.
-	NumberReady   int32 `protobuf:"varint,5,opt,name=number_ready,json=numberReady,proto3" json:"number_ready,omitempty"`
+	NumberReady   string `protobuf:"bytes,5,opt,name=number_ready,json=numberReady,proto3" json:"number_ready,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -82,25 +82,25 @@ func (x *KubernetesDaemonSetStackOutputs) GetDaemonsetName() string {
 	return ""
 }
 
-func (x *KubernetesDaemonSetStackOutputs) GetDesiredNumberScheduled() int32 {
+func (x *KubernetesDaemonSetStackOutputs) GetDesiredNumberScheduled() string {
 	if x != nil {
 		return x.DesiredNumberScheduled
 	}
-	return 0
+	return ""
 }
 
-func (x *KubernetesDaemonSetStackOutputs) GetCurrentNumberScheduled() int32 {
+func (x *KubernetesDaemonSetStackOutputs) GetCurrentNumberScheduled() string {
 	if x != nil {
 		return x.CurrentNumberScheduled
 	}
-	return 0
+	return ""
 }
 
-func (x *KubernetesDaemonSetStackOutputs) GetNumberReady() int32 {
+func (x *KubernetesDaemonSetStackOutputs) GetNumberReady() string {
 	if x != nil {
 		return x.NumberReady
 	}
-	return 0
+	return ""
 }
 
 var File_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_stack_outputs_proto protoreflect.FileDescriptor
@@ -111,9 +111,9 @@ const file_org_project_planton_provider_kubernetes_kubernetesdaemonset_v1_stack_
 	"\x1fKubernetesDaemonSetStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12%\n" +
 	"\x0edaemonset_name\x18\x02 \x01(\tR\rdaemonsetName\x128\n" +
-	"\x18desired_number_scheduled\x18\x03 \x01(\x05R\x16desiredNumberScheduled\x128\n" +
-	"\x18current_number_scheduled\x18\x04 \x01(\x05R\x16currentNumberScheduled\x12!\n" +
-	"\fnumber_ready\x18\x05 \x01(\x05R\vnumberReadyB\xf2\x03\n" +
+	"\x18desired_number_scheduled\x18\x03 \x01(\tR\x16desiredNumberScheduled\x128\n" +
+	"\x18current_number_scheduled\x18\x04 \x01(\tR\x16currentNumberScheduled\x12!\n" +
+	"\fnumber_ready\x18\x05 \x01(\tR\vnumberReadyB\xf2\x03\n" +
 	"Bcom.org.project_planton.provider.kubernetes.kubernetesdaemonset.v1B\x11StackOutputsProtoP\x01Z~github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesdaemonset/v1;kubernetesdaemonsetv1\xa2\x02\x05OPPKK\xaa\x02=Org.ProjectPlanton.Provider.Kubernetes.Kubernetesdaemonset.V1\xca\x02=Org\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\xe2\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Kubernetesdaemonset\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Kubernetesdaemonset::V1b\x06proto3"
 
 var (
