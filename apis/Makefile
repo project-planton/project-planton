@@ -7,6 +7,9 @@ build: lint fmt
 	cp -R generated/stubs/ts/. ../app/frontend/src/gen/
 	rm -rf generated/stubs
 
+.PHONY: protos
+protos: build
+
 .PHONY: fmt
 fmt:
 	buf format -w
