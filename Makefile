@@ -200,9 +200,9 @@ checksum: checksum_darwin checksum_linux
 
 .PHONY: local
 local: build_darwin
-	rm -f ${HOME}/bin/${name_local}
-	cp ./${build_dir}/${name}-darwin ${HOME}/bin/${name_local}
-	chmod +x ${HOME}/bin/${name_local}
+	rm -f ${HOME}/.local/bin/${name_local}
+	cp ./${build_dir}/${name}-darwin ${HOME}/.local/bin/${name_local}
+	chmod +x ${HOME}/.local/bin/${name_local}
 
 .PHONY: show-todo
 show-todo:

@@ -2,20 +2,26 @@ package clipboard
 
 import (
 	"github.com/pkg/errors"
-	"golang.design/x/clipboard"
+	"github.com/zyedidia/clipboard"
 )
 
 // Read returns the current text content from the system clipboard.
 // Returns an error if the clipboard cannot be accessed or is empty.
 func Read() ([]byte, error) {
-	if err := clipboard.Init(); err != nil {
+	// Initialize clipboard
+	if err := clipboard.Initialize(); err != nil {
 		return nil, errors.Wrap(err, "failed to initialize clipboard access")
 	}
 
-	content := clipboard.Read(clipboard.FmtText)
+	// Read text content
+	content, err := clipboard.ReadAll("clipboard")
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to read from clipboard")
+	}
+
 	if len(content) == 0 {
 		return nil, errors.New("clipboard is empty")
 	}
 
-	return content, nil
+	return []byte(content), nil
 }
