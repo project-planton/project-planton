@@ -125,6 +125,7 @@ import (
 	kubernetesnamespacev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnamespace/v1"
 	kubernetesnatsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesnats/v1"
 	kubernetesneo4jv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesneo4j/v1"
+	kubernetesopenbaov1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenbao/v1"
 	kubernetesopenfgav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesopenfga/v1"
 	kubernetesperconamongooperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamongooperator/v1"
 	kubernetesperconamysqloperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesperconamysqloperator/v1"
@@ -303,6 +304,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesNamespace:                   &kubernetesnamespacev1.KubernetesNamespace{},
 	cloudresourcekind.CloudResourceKind_KubernetesNats:                        &kubernetesnatsv1.KubernetesNats{},
 	cloudresourcekind.CloudResourceKind_KubernetesNeo4j:                       &kubernetesneo4jv1.KubernetesNeo4J{},
+	cloudresourcekind.CloudResourceKind_KubernetesOpenBao:                     &kubernetesopenbaov1.KubernetesOpenBao{},
 	cloudresourcekind.CloudResourceKind_KubernetesOpenFga:                     &kubernetesopenfgav1.KubernetesOpenFga{},
 	cloudresourcekind.CloudResourceKind_KubernetesPerconaMongoOperator:        &kubernetesperconamongooperatorv1.KubernetesPerconaMongoOperator{},
 	cloudresourcekind.CloudResourceKind_KubernetesPerconaMysqlOperator:        &kubernetesperconamysqloperatorv1.KubernetesPerconaMysqlOperator{},
