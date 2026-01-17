@@ -184,7 +184,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_
 	"Jorg/project_planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12,org.project_planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\"T\n" +
 	"\x19CloudResourceProviderMeta\x12\x14\n" +
 	"\x05group\x18\x01 \x01(\tR\x05group\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xb3\x06\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xb4\x06\n" +
 	"\x15CloudResourceProvider\x12'\n" +
 	"#cloud_resource_provider_unspecified\x10\x00\x12@\n" +
 	"\x05_test\x10\x01\x1a5\xea\xcc'1\n" +
@@ -214,9 +214,9 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_provider_
 	"\tsnowflake\x10\x14\x1a.\xea\xcc'*\n" +
 	"\x1dsnowflake.project-planton.org\x12\tSnowflake\x121\n" +
 	"\x05auth0\x10\x15\x1a&\xea\xcc'\"\n" +
-	"\x19auth0.project-planton.org\x12\x05Auth0\x128\n" +
-	"\bopen_fga\x10\x16\x1a*\xea\xcc'&\n" +
-	"\x1bopenfga.project-planton.org\x12\aOpenFGA:\x91\x01\n" +
+	"\x19auth0.project-planton.org\x12\x05Auth0\x129\n" +
+	"\bopen_fga\x10\x16\x1a+\xea\xcc''\n" +
+	"\x1copen-fga.project-planton.org\x12\aOpenFGA:\x91\x01\n" +
 	"\rprovider_meta\x12!.google.protobuf.EnumValueOptions\x18\xcd\xf9\x04 \x01(\v2G.org.project_planton.shared.cloudresourcekind.CloudResourceProviderMetaR\fproviderMetaB\xf6\x02\n" +
 	"0com.org.project_planton.shared.cloudresourcekindB\x1aCloudResourceProviderProtoP\x01ZVgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 
