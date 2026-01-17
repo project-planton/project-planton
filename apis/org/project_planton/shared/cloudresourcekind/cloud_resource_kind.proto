@@ -732,4 +732,13 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "a0rs"
   }];
+
+  // 2300–2499: OpenFGA resources
+  // Note: OpenFGA is Terraform-only - there is no Pulumi provider available.
+  // Pulumi modules for OpenFGA resources are pass-through placeholders.
+  OpenFgaStore = 2300 [(kind_meta) = {
+    provider: open_fga
+    version: v1
+    id_prefix: "fgastore"
+  }];
 }

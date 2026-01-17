@@ -143,6 +143,7 @@ import (
 	kubernetestektonoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1"
 	kubernetestemporalv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
 	kuberneteszalandopostgresoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
+	openfgastorev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga/openfgastore/v1"
 	snowflakedatabasev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1"
 	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"google.golang.org/protobuf/proto"
@@ -325,6 +326,10 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesZalandoPostgresOperator:     &kuberneteszalandopostgresoperatorv1.KubernetesZalandoPostgresOperator{},
 }
 
+var ProviderOpenFgaMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_OpenFgaStore: &openfgastorev1.OpenFgaStore{},
+}
+
 var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_SnowflakeDatabase: &snowflakedatabasev1.SnowflakeDatabase{},
 }
@@ -341,5 +346,6 @@ var ToMessageMap = merge(
 	ProviderDigitalOceanMap,
 	ProviderGcpMap,
 	ProviderKubernetesMap,
+	ProviderOpenFgaMap,
 	ProviderSnowflakeMap,
 )

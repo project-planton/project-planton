@@ -33,5 +33,10 @@ export const providerConfig: Record<Credential_CredentialProvider, ProviderConfi
     description: 'Link your Auth0 tenant to manage identity resources',
     icon: undefined,
   },
+  [Credential_CredentialProvider.OPEN_FGA]: {
+    label: 'OpenFGA',
+    description: 'Link your OpenFGA server to manage authorization resources',
+    icon: undefined,
+  },
 };
 
