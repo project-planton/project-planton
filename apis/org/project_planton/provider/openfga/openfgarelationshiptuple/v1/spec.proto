@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package org.project_planton.provider.openfga.openfgarelationshiptuple.v1;
+
+import "buf/validate/validate.proto";
+
+// OpenFgaRelationshipTupleSpec defines the configuration for an OpenFGA Relationship Tuple.
+//
+// A relationship tuple is the core data structure in OpenFGA that represents a relationship
+// between a user (or userset) and an object through a specific relation. Together with an
+// authorization model, relationship tuples determine whether a user has access to an object.
+//
+// The tuple consists of three required parts:
+// - user: Who or what is being granted access (e.g., "user:anne", "group:engineering#member")
+// - relation: The type of access or relationship (e.g., "viewer", "editor", "owner")
+// - object: What is being accessed (e.g., "document:budget", "folder:reports")
+//
+// Optionally, a condition can be specified to add dynamic access rules that are evaluated
+// at check time using the provided context.
+//
+// IMPORTANT: Relationship tuples are immutable in OpenFGA. Changing any field requires
+// deleting the old tuple and creating a new one. Terraform handles this automatically.
+//
+// IMPORTANT: OpenFGA only has a Terraform provider - there is no Pulumi provider available.
+// This component must use Terraform/Tofu as the provisioner.
+//
+// Reference:
+// - Terraform: https://registry.terraform.io/providers/openfga/openfga/latest/docs/resources/relationship_tuple
+// - OpenFGA Docs: https://openfga.dev/docs/concepts#what-is-a-relationship-tuple
+message OpenFgaRelationshipTupleSpec {
+  // store_id is the unique identifier of the OpenFGA store this tuple belongs to.
+  //
+  // This ID is obtained from an OpenFgaStore deployment or from an existing store.
+  // The store must exist before creating relationship tuples.
+  //
+  // Note: The store_id is immutable - changing it requires replacing the tuple.
+  //
+  // Example: "01HXYZ..."
+  string store_id = 1 [(buf.validate.field).required = true];
+
+  // authorization_model_id is the unique identifier of the authorization model this tuple
+  // is associated with.
+  //
+  // This field is optional. If not specified, the tuple will be associated with the
+  // latest authorization model in the store at the time of creation.
+  //
+  // When specified, the tuple is validated against this specific model version. This is
+  // useful for ensuring tuples are compatible with a known model version.
+  //
+  // Note: The authorization_model_id is immutable - changing it requires replacing the tuple.
+  //
+  // Example: "01HXYZ..."
+  string authorization_model_id = 2;
+
+  // user is the subject of the relationship tuple - who is being granted access.
+  //
+  // The user can be:
+  // - A specific user: "user:anne"
+  // - A userset (all users with a relation to an object): "group:engineering#member"
+  // - A wildcard for public access: "user:*"
+  //
+  // The user type must be defined in the authorization model and allowed for this relation.
+  //
+  // Note: The user is immutable - changing it requires replacing the tuple.
+  //
+  // Examples:
+  // - "user:anne" - User with ID "anne"
+  // - "user:1234" - User with numeric ID
+  // - "group:engineering#member" - All members of the engineering group
+  // - "user:*" - All users (public access)
+  string user = 3 [(buf.validate.field).required = true];
+
+  // relation is the relationship type between the user and object.
+  //
+  // The relation must be defined in the authorization model for the object type.
+  // Common relations include: viewer, editor, owner, member, admin, parent.
+  //
+  // Note: The relation is immutable - changing it requires replacing the tuple.
+  //
+  // Examples: "viewer", "editor", "owner", "member", "admin"
+  string relation = 4 [(buf.validate.field).required = true];
+
+  // object is the resource the user is being granted access to.
+  //
+  // The object is specified as "type:id" where type is defined in the authorization
+  // model and id is the unique identifier of the specific object.
+  //
+  // Note: The object is immutable - changing it requires replacing the tuple.
+  //
+  // Examples:
+  // - "document:budget-2024"
+  // - "folder:reports"
+  // - "project:acme-corp"
+  string object = 5 [(buf.validate.field).required = true];
+
+  // condition optionally specifies a condition that must be satisfied for this tuple
+  // to be considered during access checks.
+  //
+  // Conditions enable dynamic access control based on runtime context. The condition
+  // must be defined in the authorization model, and the context must provide values
+  // for the condition's required parameters.
+  //
+  // This field is optional. If not specified, the tuple is always considered.
+  OpenFgaRelationshipTupleCondition condition = 6;
+}
+
+// OpenFgaRelationshipTupleCondition defines an optional condition for a relationship tuple.
+//
+// Conditions allow dynamic access decisions based on context provided at check time.
+// For example, you might have a condition that only allows access during business hours
+// or from specific IP ranges.
+//
+// Reference:
+// - OpenFGA Conditions: https://openfga.dev/docs/modeling/conditions
+message OpenFgaRelationshipTupleCondition {
+  // name is the name of the condition as defined in the authorization model.
+  //
+  // The condition must be declared in the authorization model's conditions section
+  // before it can be used in tuples.
+  //
+  // Example: "in_allowed_ip_range", "during_business_hours"
+  string name = 1 [(buf.validate.field).required = true];
+
+  // context_json is the partial context provided with the tuple, in JSON format.
+  //
+  // This context is merged with the context provided at check time. The combined
+  // context is then evaluated against the condition defined in the authorization model.
+  //
+  // The JSON must be a valid object with keys matching the condition's expected parameters.
+  //
+  // Example: {"allowed_ips": ["192.168.1.0/24", "10.0.0.0/8"]}
+  string context_json = 2;
+}
