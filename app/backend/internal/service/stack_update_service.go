@@ -32,6 +32,7 @@ import (
 	confluentv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent"
 	gcpv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	kubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	openfgav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga"
 	snowflakev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake"
 	cloudresourcekind "github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	credentialv1 "github.com/plantonhq/project-planton/apis/org/project_planton/app/credential/v1"
@@ -509,6 +510,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 	var auth0Config *auth0v1.Auth0ProviderConfig
 	var cloudflareConfig *cloudflarev1.CloudflareProviderConfig
 	var confluentConfig *confluentv1.ConfluentProviderConfig
+	var openfgaConfig *openfgav1.OpenFgaProviderConfig
 	var snowflakeConfig *snowflakev1.SnowflakeProviderConfig
 	var kubernetesConfig *kubernetesv1.KubernetesProviderConfig
 
@@ -529,6 +531,8 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 		cloudflareConfig = cfg.Cloudflare
 	case *credentialv1.CredentialProviderConfig_Confluent:
 		confluentConfig = cfg.Confluent
+	case *credentialv1.CredentialProviderConfig_Openfga:
+		openfgaConfig = cfg.Openfga
 	case *credentialv1.CredentialProviderConfig_Snowflake:
 		snowflakeConfig = cfg.Snowflake
 	case *credentialv1.CredentialProviderConfig_Kubernetes:
@@ -543,6 +547,7 @@ func (s *StackUpdateService) deployWithPulumi(ctx context.Context, stackUpdateID
 		auth0Config,
 		cloudflareConfig,
 		confluentConfig,
+		openfgaConfig,
 		snowflakeConfig,
 		kubernetesConfig,
 	)

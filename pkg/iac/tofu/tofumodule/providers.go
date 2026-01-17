@@ -50,6 +50,11 @@ func GetProviderConfigEnvVars(stackInputYaml, fileCacheLoc, kubeContext string) 
 		return nil, errors.Wrap(err, "failed to get Auth0 provider config")
 	}
 
+	providerConfigEnvVars, err = providerconfig.AddOpenFgaProviderConfigEnvVars(stackInputContentMap, providerConfigEnvVars)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get OpenFGA provider config")
+	}
+
 	providerConfigEnvVars, err = providerconfig.AddSnowflakeProviderConfigEnvVars(stackInputContentMap, providerConfigEnvVars)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get Snowflake provider config")

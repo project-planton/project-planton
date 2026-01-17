@@ -15,6 +15,7 @@ import (
 	confluentv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/confluent"
 	gcpv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/gcp"
 	kubernetesv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes"
+	openfgav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga"
 	snowflakev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake"
 	"gopkg.in/yaml.v3"
 )
@@ -48,6 +49,7 @@ func BuildProviderConfigOptionsFromUserCredentials(
 	auth0Config *auth0v1.Auth0ProviderConfig,
 	cloudflareConfig *cloudflarev1.CloudflareProviderConfig,
 	confluentConfig *confluentv1.ConfluentProviderConfig,
+	openfgaConfig *openfgav1.OpenFgaProviderConfig,
 	snowflakeConfig *snowflakev1.SnowflakeProviderConfig,
 	kubernetesConfig *kubernetesv1.KubernetesProviderConfig,
 ) (StackInputProviderConfigOptions, func(), error) {
@@ -121,6 +123,20 @@ func BuildProviderConfigOptionsFromUserCredentials(
 			return opts, nil, errors.Wrap(err, "failed to create Auth0 provider config")
 		}
 		opts.Auth0ProviderConfig = file
+		cleanupFuncs = append(cleanupFuncs, cleanup)
+	}
+
+	// OpenFGA Provider Config
+	if openfgaConfig != nil {
+		file, cleanup, err := createOpenFgaProviderConfigFileFromProto(openfgaConfig)
+		if err != nil {
+			// Cleanup already created files
+			for _, fn := range cleanupFuncs {
+				fn()
+			}
+			return opts, nil, errors.Wrap(err, "failed to create OpenFGA provider config")
+		}
+		opts.OpenFgaProviderConfig = file
 		cleanupFuncs = append(cleanupFuncs, cleanup)
 	}
 
@@ -409,6 +425,63 @@ func createAuth0ProviderConfigFileFromProto(auth0Config *auth0v1.Auth0ProviderCo
 		tmpFile.Close()
 		cleanup()
 		return "", nil, fmt.Errorf("failed to write Auth0 credentials: %w", err)
+	}
+
+	if err := tmpFile.Close(); err != nil {
+		cleanup()
+		return "", nil, fmt.Errorf("failed to close temp file: %w", err)
+	}
+
+	return tmpFile.Name(), cleanup, nil
+}
+
+// createOpenFgaProviderConfigFileFromProto creates an OpenFGA provider config file from proto message
+func createOpenFgaProviderConfigFileFromProto(openfgaConfig *openfgav1.OpenFgaProviderConfig) (string, func(), error) {
+	tmpFile, err := os.CreateTemp("", "openfga-provider-config-*.yaml")
+	if err != nil {
+		return "", nil, fmt.Errorf("failed to create temp file: %w", err)
+	}
+
+	cleanup := func() {
+		os.Remove(tmpFile.Name())
+	}
+
+	// Build YAML content matching CLI credential file format
+	openfgaCredMap := map[string]interface{}{
+		"apiUrl": openfgaConfig.ApiUrl,
+	}
+
+	// Add optional fields only if they are set
+	if openfgaConfig.ApiToken != "" {
+		openfgaCredMap["apiToken"] = openfgaConfig.ApiToken
+	}
+	if openfgaConfig.ClientId != "" {
+		openfgaCredMap["clientId"] = openfgaConfig.ClientId
+	}
+	if openfgaConfig.ClientSecret != "" {
+		openfgaCredMap["clientSecret"] = openfgaConfig.ClientSecret
+	}
+	if openfgaConfig.ApiTokenIssuer != "" {
+		openfgaCredMap["apiTokenIssuer"] = openfgaConfig.ApiTokenIssuer
+	}
+	if openfgaConfig.ApiScopes != "" {
+		openfgaCredMap["apiScopes"] = openfgaConfig.ApiScopes
+	}
+	if openfgaConfig.ApiAudience != "" {
+		openfgaCredMap["apiAudience"] = openfgaConfig.ApiAudience
+	}
+
+	yamlBytes, err := yaml.Marshal(openfgaCredMap)
+	if err != nil {
+		tmpFile.Close()
+		cleanup()
+		return "", nil, fmt.Errorf("failed to marshal OpenFGA credentials to YAML: %w", err)
+	}
+
+	if _, err := tmpFile.Write(yamlBytes); err != nil {
+		tmpFile.Close()
+		cleanup()
+		return "", nil, fmt.Errorf("failed to write OpenFGA credentials: %w", err)
 	}
 
 	if err := tmpFile.Close(); err != nil {

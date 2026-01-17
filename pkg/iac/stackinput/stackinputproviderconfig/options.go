@@ -15,6 +15,7 @@ type StackInputProviderConfigOptions struct {
 	ConfluentProviderConfig  string
 	GcpProviderConfig        string
 	KubernetesProviderConfig string
+	OpenFgaProviderConfig    string
 	SnowflakeProviderConfig  string
 }
 
@@ -65,6 +66,12 @@ func WithAtlasProviderConfig(atlasProviderConfig string) StackInputProviderConfi
 func WithAuth0ProviderConfig(auth0ProviderConfig string) StackInputProviderConfigOption {
 	return func(opts *StackInputProviderConfigOptions) {
 		opts.Auth0ProviderConfig = auth0ProviderConfig
+	}
+}
+
+func WithOpenFgaProviderConfig(openfgaProviderConfig string) StackInputProviderConfigOption {
+	return func(opts *StackInputProviderConfigOptions) {
+		opts.OpenFgaProviderConfig = openfgaProviderConfig
 	}
 }
 
@@ -139,6 +146,14 @@ func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputProviderConfigOp
 	}
 	if auth0ProviderConfig != "" {
 		resp = append(resp, WithAuth0ProviderConfig(auth0ProviderConfig))
+	}
+
+	openfgaProviderConfig, err := commandFlagSet.GetString(string(flag.OpenFgaProviderConfig))
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to read %s flag", flag.OpenFgaProviderConfig)
+	}
+	if openfgaProviderConfig != "" {
+		resp = append(resp, WithOpenFgaProviderConfig(openfgaProviderConfig))
 	}
 
 	snowflakeProviderConfig, err := commandFlagSet.GetString(string(flag.SnowflakeProviderConfig))
@@ -216,6 +231,14 @@ func BuildWithInputDir(inputDir string) ([]StackInputProviderConfigOption, error
 	}
 	if auth0ProviderConfig != "" {
 		resp = append(resp, WithAuth0ProviderConfig(auth0ProviderConfig))
+	}
+
+	openfgaProviderConfig, err := LoadOpenFgaProviderConfig(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up openfga-provider-config in %s", inputDir)
+	}
+	if openfgaProviderConfig != "" {
+		resp = append(resp, WithOpenFgaProviderConfig(openfgaProviderConfig))
 	}
 
 	snowflakeProviderConfig, err := LoadSnowflakeProviderConfig(inputDir)
