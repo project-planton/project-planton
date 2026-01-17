@@ -158,6 +158,7 @@ go_library(
         "//apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1:kubernetestektonoperator",
         "//apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1:kubernetestemporal",
         "//apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1:kuberneteszalandopostgresoperator",
+        "//apis/org/project_planton/provider/openfga/openfgaauthorizationmodel/v1:openfgaauthorizationmodel",
         "//apis/org/project_planton/provider/openfga/openfgastore/v1:openfgastore",
         "//apis/org/project_planton/provider/snowflake/snowflakedatabase/v1:snowflakedatabase",
         "//apis/org/project_planton/shared/cloudresourcekind",
