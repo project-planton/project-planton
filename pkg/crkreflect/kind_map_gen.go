@@ -117,6 +117,7 @@ import (
 	kubernetesingressnginxv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesingressnginx/v1"
 	kubernetesistiov1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesistio/v1"
 	kubernetesjenkinsv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjenkins/v1"
+	kubernetesjobv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetesjob/v1"
 	kuberneteskafkav1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskafka/v1"
 	kuberneteskeycloakv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteskeycloak/v1"
 	kuberneteslocustv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteslocust/v1"
@@ -296,6 +297,7 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_KubernetesIngressNginx:                &kubernetesingressnginxv1.KubernetesIngressNginx{},
 	cloudresourcekind.CloudResourceKind_KubernetesIstio:                       &kubernetesistiov1.KubernetesIstio{},
 	cloudresourcekind.CloudResourceKind_KubernetesJenkins:                     &kubernetesjenkinsv1.KubernetesJenkins{},
+	cloudresourcekind.CloudResourceKind_KubernetesJob:                         &kubernetesjobv1.KubernetesJob{},
 	cloudresourcekind.CloudResourceKind_KubernetesKafka:                       &kuberneteskafkav1.KubernetesKafka{},
 	cloudresourcekind.CloudResourceKind_KubernetesKeycloak:                    &kuberneteskeycloakv1.KubernetesKeycloak{},
 	cloudresourcekind.CloudResourceKind_KubernetesLocust:                      &kuberneteslocustv1.KubernetesLocust{},
