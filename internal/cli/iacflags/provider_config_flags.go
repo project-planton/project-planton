@@ -33,4 +33,7 @@ func AddProviderConfigFlags(cmd *cobra.Command) {
 
 	cmd.PersistentFlags().String(string(flag.SnowflakeProviderConfig), "",
 		"path of the snowflake-credential file")
+
+	cmd.PersistentFlags().String(string(flag.OpenFgaProviderConfig), "",
+		"path of the openfga-credential file")
 }

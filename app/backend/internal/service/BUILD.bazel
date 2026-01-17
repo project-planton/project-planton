@@ -22,6 +22,7 @@ go_library(
         "//apis/org/project_planton/provider/confluent",
         "//apis/org/project_planton/provider/gcp",
         "//apis/org/project_planton/provider/kubernetes",
+        "//apis/org/project_planton/provider/openfga",
         "//apis/org/project_planton/provider/snowflake",
         "//apis/org/project_planton/shared/cloudresourcekind",
         "//app/backend/internal/database",

@@ -18,6 +18,10 @@ func addProviderConfigs(stackInputContentMap map[string]interface{},
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add auth0-provider-config")
 	}
+	updatedStackInputContentMap, err = stackinputproviderconfig.AddOpenFgaProviderConfig(updatedStackInputContentMap, providerConfigOptions)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to add openfga-provider-config")
+	}
 	updatedStackInputContentMap, err = stackinputproviderconfig.AddAwsProviderConfig(updatedStackInputContentMap, providerConfigOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add aws-provider-config")

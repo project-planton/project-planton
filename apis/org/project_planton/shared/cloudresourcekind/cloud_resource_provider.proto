@@ -69,4 +69,8 @@ enum CloudResourceProvider {
     group: "auth0.project-planton.org"
     display_name: "Auth0"
   }];
+  open_fga = 22 [(provider_meta) = {
+    group: "openfga.project-planton.org"
+    display_name: "OpenFGA"
+  }];
 }
