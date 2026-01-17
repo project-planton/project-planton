@@ -746,4 +746,9 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "fgamodel"
   }];
+  OpenFgaRelationshipTuple = 2302 [(kind_meta) = {
+    provider: open_fga
+    version: v1
+    id_prefix: "fgatuple"
+  }];
 }

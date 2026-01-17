@@ -224,6 +224,7 @@ const (
 	// Pulumi modules for OpenFGA resources are pass-through placeholders.
 	CloudResourceKind_OpenFgaStore              CloudResourceKind = 2300
 	CloudResourceKind_OpenFgaAuthorizationModel CloudResourceKind = 2301
+	CloudResourceKind_OpenFgaRelationshipTuple  CloudResourceKind = 2302
 )
 
 // Enum value maps for CloudResourceKind.
@@ -367,6 +368,7 @@ var (
 		2103: "Auth0ResourceServer",
 		2300: "OpenFgaStore",
 		2301: "OpenFgaAuthorizationModel",
+		2302: "OpenFgaRelationshipTuple",
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                           0,
@@ -507,6 +509,7 @@ var (
 		"Auth0ResourceServer":                   2103,
 		"OpenFgaStore":                          2300,
 		"OpenFgaAuthorizationModel":             2301,
+		"OpenFgaRelationshipTuple":              2302,
 	}
 )
 
@@ -651,7 +654,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x0fis_service_kind\x18\x05 \x01(\bR\risServiceKind*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xc9-\n" +
+	"\x02v1\x10\x01*\xfc-\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -815,7 +818,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x13Auth0ResourceServer\x10\xb7\x10\x1a\x0e\xa2\xf7\x04\n" +
 	"\b\x15\x10\x01\"\x04a0rs\x12%\n" +
 	"\fOpenFgaStore\x10\xfc\x11\x1a\x12\xa2\xf7\x04\x0e\b\x16\x10\x01\"\bfgastore\x122\n" +
-	"\x19OpenFgaAuthorizationModel\x10\xfd\x11\x1a\x12\xa2\xf7\x04\x0e\b\x16\x10\x01\"\bfgamodel:\x84\x01\n" +
+	"\x19OpenFgaAuthorizationModel\x10\xfd\x11\x1a\x12\xa2\xf7\x04\x0e\b\x16\x10\x01\"\bfgamodel\x121\n" +
+	"\x18OpenFgaRelationshipTuple\x10\xfe\x11\x1a\x12\xa2\xf7\x04\x0e\b\x16\x10\x01\"\bfgatuple:\x84\x01\n" +
 	"\tkind_meta\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\v2C.org.project_planton.shared.cloudresourcekind.CloudResourceKindMetaR\bkindMetaB\xf2\x02\n" +
 	"0com.org.project_planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZVgithub.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind\xa2\x02\x04OPSC\xaa\x02+Org.ProjectPlanton.Shared.Cloudresourcekind\xca\x02+Org\\ProjectPlanton\\Shared\\Cloudresourcekind\xe2\x027Org\\ProjectPlanton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02.Org::ProjectPlanton::Shared::Cloudresourcekindb\x06proto3"
 
