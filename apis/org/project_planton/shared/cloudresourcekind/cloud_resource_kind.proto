@@ -741,4 +741,9 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "fgastore"
   }];
+  OpenFgaAuthorizationModel = 2301 [(kind_meta) = {
+    provider: open_fga
+    version: v1
+    id_prefix: "fgamodel"
+  }];
 }

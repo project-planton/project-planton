@@ -143,6 +143,7 @@ import (
 	kubernetestektonoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestektonoperator/v1"
 	kubernetestemporalv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kubernetestemporal/v1"
 	kuberneteszalandopostgresoperatorv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/kubernetes/kuberneteszalandopostgresoperator/v1"
+	openfgaauthorizationmodelv1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga/openfgaauthorizationmodel/v1"
 	openfgastorev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga/openfgastore/v1"
 	snowflakedatabasev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/snowflake/snowflakedatabase/v1"
 	"github.com/plantonhq/project-planton/apis/org/project_planton/shared/cloudresourcekind"
@@ -327,7 +328,8 @@ var ProviderKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 }
 
 var ProviderOpenFgaMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
-	cloudresourcekind.CloudResourceKind_OpenFgaStore: &openfgastorev1.OpenFgaStore{},
+	cloudresourcekind.CloudResourceKind_OpenFgaAuthorizationModel: &openfgaauthorizationmodelv1.OpenFgaAuthorizationModel{},
+	cloudresourcekind.CloudResourceKind_OpenFgaStore:              &openfgastorev1.OpenFgaStore{},
 }
 
 var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
