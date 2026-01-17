@@ -8,6 +8,7 @@ package openfgaauthorizationmodelv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/plantonhq/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,12 +29,11 @@ const (
 // within an OpenFGA store. Each store can have multiple authorization models, with each new model
 // being a complete replacement (not a patch) of the type definitions.
 //
-// The model is specified in JSON format and includes:
-// - Type definitions: Define object types and their relations
-// - Conditions (optional): Define dynamic conditions for access decisions
+// The model can be specified in either DSL format (recommended, more human-readable) or JSON format.
+// Exactly one of model_dsl or model_json must be specified.
 //
 // IMPORTANT: Authorization models are immutable in OpenFGA. Creating a new model creates a new
-// version. The model_json change will trigger a replacement (new model ID).
+// version. Changing the model will trigger a replacement (new model ID).
 //
 // IMPORTANT: OpenFGA only has a Terraform provider - there is no Pulumi provider available.
 // This component must use Terraform/Tofu as the provisioner.
@@ -41,28 +41,55 @@ const (
 // Reference:
 // - Terraform: https://registry.terraform.io/providers/openfga/openfga/latest/docs/resources/authorization_model
 // - OpenFGA Docs: https://openfga.dev/docs/concepts#what-is-an-authorization-model
+// - OpenFGA DSL: https://openfga.dev/docs/configuration-language
 type OpenFgaAuthorizationModelSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// store_id is the unique identifier of the OpenFGA store where this model will be created.
 	//
-	// This ID is obtained from an OpenFgaStore deployment or from an existing store.
-	// The store must exist before creating an authorization model.
+	// This can be either:
+	// - A direct value: {value: "01HXYZ..."}
+	// - A reference to an OpenFgaStore: {value_from: {name: "my-store"}}
+	//
+	// When using references, the store ID is automatically resolved from the
+	// OpenFgaStore's status.outputs.id field.
 	//
 	// Note: The store_id is immutable - changing it requires replacing the model.
+	StoreId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	// model_dsl is the authorization model definition in DSL format (recommended).
 	//
-	// Example: "01HXYZ..."
-	StoreId string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	// The DSL format is more human-readable than JSON and is the preferred format
+	// in OpenFGA documentation. The Terraform module automatically converts DSL to JSON
+	// using the openfga_authorization_model_document data source.
+	//
+	// Exactly one of model_dsl or model_json must be specified.
+	//
+	// Example:
+	// model
+	//
+	//	schema 1.1
+	//
+	// type user
+	//
+	// type document
+	//
+	//	relations
+	//	  define viewer: [user]
+	//	  define editor: [user]
+	//	  define owner: [user]
+	//
+	// Reference: https://openfga.dev/docs/configuration-language
+	ModelDsl string `protobuf:"bytes,2,opt,name=model_dsl,json=modelDsl,proto3" json:"model_dsl,omitempty"`
 	// model_json is the authorization model definition in JSON format.
 	//
+	// Use this if you prefer JSON over DSL, or if you're migrating from existing JSON models.
 	// The JSON must conform to the OpenFGA authorization model schema and include:
 	// - schema_version: The schema version (e.g., "1.1")
 	// - type_definitions: Array of type definitions with name, relations, and metadata
 	// - conditions (optional): Map of conditions for dynamic access decisions
 	//
-	// Note: The model is immutable - changing it requires replacing the model (new ID).
+	// Exactly one of model_dsl or model_json must be specified.
 	//
-	// Tip: Use the openfga_authorization_model_document data source in Terraform to convert
-	// DSL format to JSON, or use the OpenFGA CLI to validate models before deployment.
+	// Note: The model is immutable - changing it requires replacing the model (new ID).
 	//
 	// Example:
 	//
@@ -76,15 +103,9 @@ type OpenFgaAuthorizationModelSpec struct {
 	//	    {
 	//	      "type": "document",
 	//	      "relations": {
-	//	        "viewer": {
-	//	          "this": {}
-	//	        },
-	//	        "editor": {
-	//	          "this": {}
-	//	        },
-	//	        "owner": {
-	//	          "this": {}
-	//	        }
+	//	        "viewer": {"this": {}},
+	//	        "editor": {"this": {}},
+	//	        "owner": {"this": {}}
 	//	      },
 	//	      "metadata": {
 	//	        "relations": {
@@ -96,7 +117,7 @@ type OpenFgaAuthorizationModelSpec struct {
 	//	    }
 	//	  ]
 	//	}
-	ModelJson     string `protobuf:"bytes,2,opt,name=model_json,json=modelJson,proto3" json:"model_json,omitempty"`
+	ModelJson     string `protobuf:"bytes,3,opt,name=model_json,json=modelJson,proto3" json:"model_json,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -131,9 +152,16 @@ func (*OpenFgaAuthorizationModelSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *OpenFgaAuthorizationModelSpec) GetStoreId() string {
+func (x *OpenFgaAuthorizationModelSpec) GetStoreId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.StoreId
+	}
+	return nil
+}
+
+func (x *OpenFgaAuthorizationModelSpec) GetModelDsl() string {
+	if x != nil {
+		return x.ModelDsl
 	}
 	return ""
 }
@@ -149,11 +177,12 @@ var File_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_
 
 const file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lorg/project_planton/provider/openfga/openfgaauthorizationmodel/v1/spec.proto\x12Aorg.project_planton.provider.openfga.openfgaauthorizationmodel.v1\x1a\x1bbuf/validate/validate.proto\"i\n" +
-	"\x1dOpenFgaAuthorizationModelSpec\x12!\n" +
-	"\bstore_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\astoreId\x12%\n" +
+	"Lorg/project_planton/provider/openfga/openfgaauthorizationmodel/v1/spec.proto\x12Aorg.project_planton.provider.openfga.openfgaauthorizationmodel.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xd4\x01\n" +
+	"\x1dOpenFgaAuthorizationModelSpec\x12w\n" +
+	"\bstore_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB \xbaH\x03\xc8\x01\x01\x88\xd4a\xfc\x11\x92\xd4a\x11status.outputs.idR\astoreId\x12\x1b\n" +
+	"\tmodel_dsl\x18\x02 \x01(\tR\bmodelDsl\x12\x1d\n" +
 	"\n" +
-	"model_json\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tmodelJsonB\x83\x04\n" +
+	"model_json\x18\x03 \x01(\tR\tmodelJsonB\x83\x04\n" +
 	"Ecom.org.project_planton.provider.openfga.openfgaauthorizationmodel.v1B\tSpecProtoP\x01Z\x87\x01github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga/openfgaauthorizationmodel/v1;openfgaauthorizationmodelv1\xa2\x02\x05OPPOO\xaa\x02@Org.ProjectPlanton.Provider.Openfga.Openfgaauthorizationmodel.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Openfga\\Openfgaauthorizationmodel\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Openfga\\Openfgaauthorizationmodel\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Openfga::Openfgaauthorizationmodel::V1b\x06proto3"
 
 var (
@@ -171,13 +200,15 @@ func file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec
 var file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_proto_goTypes = []any{
 	(*OpenFgaAuthorizationModelSpec)(nil), // 0: org.project_planton.provider.openfga.openfgaauthorizationmodel.v1.OpenFgaAuthorizationModelSpec
+	(*v1.StringValueOrRef)(nil),           // 1: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: org.project_planton.provider.openfga.openfgaauthorizationmodel.v1.OpenFgaAuthorizationModelSpec.store_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec_proto_init() }

@@ -19,19 +19,34 @@ variable "spec" {
   description = "OpenFgaRelationshipTuple specification"
   type = object({
     # store_id is the unique identifier of the OpenFGA store this tuple belongs to.
-    # The store must exist before creating relationship tuples.
+    # This is an object with a 'value' field containing the store ID.
+    # The value is resolved by Project Planton runtime if using foreign key references.
     # Note: Changing the store_id requires replacing the tuple.
-    store_id = string
+    store_id = object({
+      value = string
+    })
 
     # authorization_model_id is the optional ID of the authorization model this tuple
     # is associated with. If not specified, uses the latest model.
+    # This is an object with a 'value' field containing the model ID.
+    # The value is resolved by Project Planton runtime if using foreign key references.
     # Note: Changing this requires replacing the tuple.
-    authorization_model_id = optional(string)
+    authorization_model_id = optional(object({
+      value = string
+    }))
 
     # user is the subject of the relationship tuple - who is being granted access.
-    # Examples: "user:anne", "group:engineering#member", "user:*"
+    # Structured as type + id + optional relation.
+    # Examples:
+    #   - {type: "user", id: "anne"} -> "user:anne"
+    #   - {type: "group", id: "engineering", relation: "member"} -> "group:engineering#member"
+    #   - {type: "user", id: "*"} -> "user:*"
     # Note: Changing the user requires replacing the tuple.
-    user = string
+    user = object({
+      type     = string
+      id       = string
+      relation = optional(string)
+    })
 
     # relation is the relationship type between the user and object.
     # Examples: "viewer", "editor", "owner", "member", "admin"
@@ -39,9 +54,15 @@ variable "spec" {
     relation = string
 
     # object is the resource the user is being granted access to.
-    # Format: "type:id" (e.g., "document:budget-2024", "folder:reports")
+    # Structured as type + id.
+    # Examples:
+    #   - {type: "document", id: "budget-2024"} -> "document:budget-2024"
+    #   - {type: "folder", id: "reports"} -> "folder:reports"
     # Note: Changing the object requires replacing the tuple.
-    object = string
+    object = object({
+      type = string
+      id   = string
+    })
 
     # condition is an optional condition that must be satisfied for this tuple.
     # Includes name (condition name from model) and context_json (partial context).

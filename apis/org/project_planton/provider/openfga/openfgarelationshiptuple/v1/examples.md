@@ -2,7 +2,7 @@
 
 ## Basic Document Access
 
-Grant a user viewer access to a specific document:
+Grant a user viewer access to a specific document using structured fields:
 
 ```yaml
 apiVersion: open-fga.project-planton.org/v1
@@ -12,10 +12,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:anne"
-  relation: "viewer"
-  object: "document:budget-2024"
+  storeId:
+    valueFrom:
+      name: production-authz  # References an OpenFgaStore by name
+  user:
+    type: user
+    id: anne
+  relation: viewer
+  object:
+    type: document
+    id: budget-2024
 ```
 
 ## Role-Based Access
@@ -31,10 +37,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:bob"
-  relation: "owner"
-  object: "project:acme-corp"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: bob
+  relation: owner
+  object:
+    type: project
+    id: acme-corp
 ---
 # Editor can modify
 apiVersion: open-fga.project-planton.org/v1
@@ -44,10 +56,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:carol"
-  relation: "editor"
-  object: "project:acme-corp"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: carol
+  relation: editor
+  object:
+    type: project
+    id: acme-corp
 ---
 # Viewer can only read
 apiVersion: open-fga.project-planton.org/v1
@@ -57,10 +75,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:dave"
-  relation: "viewer"
-  object: "project:acme-corp"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: dave
+  relation: viewer
+  object:
+    type: project
+    id: acme-corp
 ```
 
 ## Group Membership
@@ -75,15 +99,22 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:anne"
-  relation: "member"
-  object: "group:engineering"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: anne
+  relation: member
+  object:
+    type: group
+    id: engineering
 ```
 
 ## Userset Access
 
-Grant access to all members of a group (userset):
+Grant access to all members of a group (userset). The `relation` field in the user
+creates the userset format `group:engineering#member`:
 
 ```yaml
 apiVersion: open-fga.project-planton.org/v1
@@ -93,10 +124,17 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "group:engineering#member"
-  relation: "viewer"
-  object: "folder:engineering-docs"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: group
+    id: engineering
+    relation: member  # Creates "group:engineering#member"
+  relation: viewer
+  object:
+    type: folder
+    id: engineering-docs
 ```
 
 ## Hierarchical Relationships
@@ -112,10 +150,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "folder:reports"
-  relation: "parent"
-  object: "document:budget-2024"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: folder
+    id: reports
+  relation: parent
+  object:
+    type: document
+    id: budget-2024
 ---
 # User has access to folder (inherited by documents via model)
 apiVersion: open-fga.project-planton.org/v1
@@ -125,15 +169,21 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:anne"
-  relation: "viewer"
-  object: "folder:reports"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: anne
+  relation: viewer
+  object:
+    type: folder
+    id: reports
 ```
 
 ## Public Access (Wildcard)
 
-Make a resource publicly accessible:
+Make a resource publicly accessible using the wildcard `*` for user ID:
 
 ```yaml
 apiVersion: open-fga.project-planton.org/v1
@@ -143,15 +193,21 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:*"
-  relation: "viewer"
-  object: "document:company-announcement"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: "*"  # Wildcard - all users
+  relation: viewer
+  object:
+    type: document
+    id: company-announcement
 ```
 
 ## Conditional Access
 
-Grant access with a condition (requires condition defined in model):
+Grant access with a condition (requires condition defined in authorization model):
 
 ```yaml
 # Access only from allowed IP ranges
@@ -162,12 +218,18 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:anne"
-  relation: "viewer"
-  object: "document:sensitive-data"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: anne
+  relation: viewer
+  object:
+    type: document
+    id: sensitive-data
   condition:
-    name: "in_allowed_ip_range"
+    name: in_allowed_ip_range
     contextJson: |
       {
         "allowed_ips": ["192.168.1.0/24", "10.0.0.0/8"]
@@ -187,10 +249,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:alice"
-  relation: "admin"
-  object: "organization:acme-corp"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: alice
+  relation: admin
+  object:
+    type: organization
+    id: acme-corp
 ---
 # User is member of organization
 apiVersion: open-fga.project-planton.org/v1
@@ -200,10 +268,16 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "user:bob"
-  relation: "member"
-  object: "organization:acme-corp"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: user
+    id: bob
+  relation: member
+  object:
+    type: organization
+    id: acme-corp
 ---
 # Project belongs to organization
 apiVersion: open-fga.project-planton.org/v1
@@ -213,15 +287,21 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  user: "organization:acme-corp"
-  relation: "organization"
-  object: "project:internal-tools"
+  storeId:
+    valueFrom:
+      name: production-authz
+  user:
+    type: organization
+    id: acme-corp
+  relation: organization
+  object:
+    type: project
+    id: internal-tools
 ```
 
 ## Specifying Authorization Model
 
-Pin to a specific authorization model version:
+Pin to a specific authorization model version using a reference:
 
 ```yaml
 apiVersion: open-fga.project-planton.org/v1
@@ -231,11 +311,108 @@ metadata:
   org: my-org
   env: production
 spec:
-  storeId: "01HXYZ..."
-  authorizationModelId: "01HABC_MODEL_V2_ID"  # Specific model version
-  user: "user:anne"
-  relation: "viewer"
-  object: "document:budget-2024"
+  storeId:
+    valueFrom:
+      name: production-authz
+  authorizationModelId:
+    valueFrom:
+      name: document-authz-v2  # References an OpenFgaAuthorizationModel
+  user:
+    type: user
+    id: anne
+  relation: viewer
+  object:
+    type: document
+    id: budget-2024
+```
+
+Or with a direct model ID:
+
+```yaml
+apiVersion: open-fga.project-planton.org/v1
+kind: OpenFgaRelationshipTuple
+metadata:
+  name: anne-views-budget-v2
+  org: my-org
+  env: production
+spec:
+  storeId:
+    valueFrom:
+      name: production-authz
+  authorizationModelId:
+    value: "01HABC..."  # Direct model ID
+  user:
+    type: user
+    id: anne
+  relation: viewer
+  object:
+    type: document
+    id: budget-2024
+```
+
+## Complete Workflow Example
+
+Deploy a store, model, and tuples together:
+
+```yaml
+# 1. Create the store
+apiVersion: open-fga.project-planton.org/v1
+kind: OpenFgaStore
+metadata:
+  name: production-authz
+  org: my-org
+  env: production
+spec:
+  name: production-authorization-store
+---
+# 2. Create the authorization model (references store)
+apiVersion: open-fga.project-planton.org/v1
+kind: OpenFgaAuthorizationModel
+metadata:
+  name: document-authz-v1
+  org: my-org
+  env: production
+spec:
+  storeId:
+    valueFrom:
+      name: production-authz
+  modelDsl: |
+    model
+      schema 1.1
+
+    type user
+
+    type group
+      relations
+        define member: [user]
+
+    type document
+      relations
+        define viewer: [user, group#member]
+        define editor: [user, group#member]
+        define owner: [user]
+---
+# 3. Create relationship tuples (references store and model)
+apiVersion: open-fga.project-planton.org/v1
+kind: OpenFgaRelationshipTuple
+metadata:
+  name: anne-views-budget
+  org: my-org
+  env: production
+spec:
+  storeId:
+    valueFrom:
+      name: production-authz
+  authorizationModelId:
+    valueFrom:
+      name: document-authz-v1
+  user:
+    type: user
+    id: anne
+  relation: viewer
+  object:
+    type: document
+    id: budget-2024
 ```
 
 ## Deployment
@@ -249,19 +426,8 @@ apiUrl: https://api.fga.example.com
 apiToken: your-api-token
 EOF
 
-# Deploy the relationship tuple
-project-planton apply --manifest tuple.yaml \
-  --openfga-provider-config openfga-creds.yaml \
-  --provisioner tofu
-```
-
-## Bulk Deployment
-
-Deploy multiple tuples from a single file:
-
-```bash
-# tuples.yaml contains multiple YAML documents separated by ---
-project-planton apply --manifest tuples.yaml \
+# Deploy the complete workflow
+project-planton apply --manifest workflow.yaml \
   --openfga-provider-config openfga-creds.yaml \
   --provisioner tofu
 ```
@@ -273,6 +439,6 @@ After deploying tuples, verify access using the OpenFGA CLI:
 ```bash
 # Check if user:anne can view document:budget-2024
 fga query check user:anne viewer document:budget-2024 \
-  --store-id 01HXYZ... \
+  --store-id $(project-planton get openfgastore production-authz -o json | jq -r '.status.outputs.id') \
   --api-url http://localhost:8080
 ```

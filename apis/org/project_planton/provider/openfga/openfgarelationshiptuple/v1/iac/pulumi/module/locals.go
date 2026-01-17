@@ -1,6 +1,8 @@
 package module
 
 import (
+	"fmt"
+
 	openfgarelationshiptuplev1 "github.com/plantonhq/project-planton/apis/org/project_planton/provider/openfga/openfgarelationshiptuple/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -12,11 +14,11 @@ type Locals struct {
 	StoreId string
 	// AuthorizationModelId is the optional ID of the authorization model.
 	AuthorizationModelId string
-	// User is the subject of the relationship tuple.
+	// User is the subject of the relationship tuple (type:id or type:id#relation).
 	User string
 	// Relation is the relationship type.
 	Relation string
-	// Object is the resource being accessed.
+	// Object is the resource being accessed (type:id).
 	Object string
 }
 
@@ -26,11 +28,41 @@ func initializeLocals(_ *pulumi.Context, stackInput *openfgarelationshiptuplev1.
 	target := stackInput.Target
 	spec := target.Spec
 
+	// Extract store_id from StringValueOrRef
+	storeId := ""
+	if spec.StoreId != nil {
+		storeId = spec.StoreId.GetValue()
+	}
+
+	// Extract authorization_model_id from StringValueOrRef (optional)
+	authorizationModelId := ""
+	if spec.AuthorizationModelId != nil {
+		authorizationModelId = spec.AuthorizationModelId.GetValue()
+	}
+
+	// Construct user string from structured User message
+	// Format: type:id or type:id#relation (for usersets)
+	user := ""
+	if spec.User != nil {
+		if spec.User.Relation != "" {
+			user = fmt.Sprintf("%s:%s#%s", spec.User.Type, spec.User.Id, spec.User.Relation)
+		} else {
+			user = fmt.Sprintf("%s:%s", spec.User.Type, spec.User.Id)
+		}
+	}
+
+	// Construct object string from structured Object message
+	// Format: type:id
+	object := ""
+	if spec.Object != nil {
+		object = fmt.Sprintf("%s:%s", spec.Object.Type, spec.Object.Id)
+	}
+
 	return &Locals{
-		StoreId:              spec.StoreId,
-		AuthorizationModelId: spec.AuthorizationModelId,
-		User:                 spec.User,
+		StoreId:              storeId,
+		AuthorizationModelId: authorizationModelId,
+		User:                 user,
 		Relation:             spec.Relation,
-		Object:               spec.Object,
+		Object:               object,
 	}
 }

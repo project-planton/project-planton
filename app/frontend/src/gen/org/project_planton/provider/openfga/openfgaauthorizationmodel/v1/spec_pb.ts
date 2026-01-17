@@ -5,13 +5,15 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file org/project_planton/provider/openfga/openfgaauthorizationmodel/v1/spec.proto.
  */
 export const file_org_project_planton_provider_openfga_openfgaauthorizationmodel_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CkxvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL29wZW5mZ2Evb3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbC92MS9zcGVjLnByb3RvEkFvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLm9wZW5mZ2Eub3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbC52MSJVCh1PcGVuRmdhQXV0aG9yaXphdGlvbk1vZGVsU3BlYxIYCghzdG9yZV9pZBgBIAEoCUIGukgDyAEBEhoKCm1vZGVsX2pzb24YAiABKAlCBrpIA8gBAUKDBApFY29tLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIub3BlbmZnYS5vcGVuZmdhYXV0aG9yaXphdGlvbm1vZGVsLnYxQglTcGVjUHJvdG9QAVqHAWdpdGh1Yi5jb20vcGxhbnRvbmhxL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvb3BlbmZnYS9vcGVuZmdhYXV0aG9yaXphdGlvbm1vZGVsL3YxO29wZW5mZ2FhdXRob3JpemF0aW9ubW9kZWx2MaICBU9QUE9PqgJAT3JnLlByb2plY3RQbGFudG9uLlByb3ZpZGVyLk9wZW5mZ2EuT3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbC5WMcoCQE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxPcGVuZmdhXE9wZW5mZ2FhdXRob3JpemF0aW9ubW9kZWxcVjHiAkxPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcT3BlbmZnYVxPcGVuZmdhYXV0aG9yaXphdGlvbm1vZGVsXFYxXEdQQk1ldGFkYXRh6gJFT3JnOjpQcm9qZWN0UGxhbnRvbjo6UHJvdmlkZXI6Ok9wZW5mZ2E6Ok9wZW5mZ2FhdXRob3JpemF0aW9ubW9kZWw6OlYxYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("CkxvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL29wZW5mZ2Evb3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbC92MS9zcGVjLnByb3RvEkFvcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLm9wZW5mZ2Eub3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbC52MSK2AQodT3BlbkZnYUF1dGhvcml6YXRpb25Nb2RlbFNwZWMSbgoIc3RvcmVfaWQYASABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCILpIA8gBAYjUYfwRktRhEXN0YXR1cy5vdXRwdXRzLmlkEhEKCW1vZGVsX2RzbBgCIAEoCRISCgptb2RlbF9qc29uGAMgASgJQoMECkVjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5vcGVuZmdhLm9wZW5mZ2FhdXRob3JpemF0aW9ubW9kZWwudjFCCVNwZWNQcm90b1ABWocBZ2l0aHViLmNvbS9wbGFudG9uaHEvcHJvamVjdC1wbGFudG9uL2FwaXMvb3JnL3Byb2plY3RfcGxhbnRvbi9wcm92aWRlci9vcGVuZmdhL29wZW5mZ2FhdXRob3JpemF0aW9ubW9kZWwvdjE7b3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbHYxogIFT1BQT0+qAkBPcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuT3BlbmZnYS5PcGVuZmdhYXV0aG9yaXphdGlvbm1vZGVsLlYxygJAT3JnXFByb2plY3RQbGFudG9uXFByb3ZpZGVyXE9wZW5mZ2FcT3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbFxWMeICTE9yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxPcGVuZmdhXE9wZW5mZ2FhdXRob3JpemF0aW9ubW9kZWxcVjFcR1BCTWV0YWRhdGHqAkVPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6T3BlbmZnYTo6T3BlbmZnYWF1dGhvcml6YXRpb25tb2RlbDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * OpenFgaAuthorizationModelSpec defines the configuration for an OpenFGA Authorization Model.
@@ -20,12 +22,11 @@ export const file_org_project_planton_provider_openfga_openfgaauthorizationmodel
  * within an OpenFGA store. Each store can have multiple authorization models, with each new model
  * being a complete replacement (not a patch) of the type definitions.
  *
- * The model is specified in JSON format and includes:
- * - Type definitions: Define object types and their relations
- * - Conditions (optional): Define dynamic conditions for access decisions
+ * The model can be specified in either DSL format (recommended, more human-readable) or JSON format.
+ * Exactly one of model_dsl or model_json must be specified.
  *
  * IMPORTANT: Authorization models are immutable in OpenFGA. Creating a new model creates a new
- * version. The model_json change will trigger a replacement (new model ID).
+ * version. Changing the model will trigger a replacement (new model ID).
  *
  * IMPORTANT: OpenFGA only has a Terraform provider - there is no Pulumi provider available.
  * This component must use Terraform/Tofu as the provisioner.
@@ -33,6 +34,7 @@ export const file_org_project_planton_provider_openfga_openfgaauthorizationmodel
  * Reference:
  * - Terraform: https://registry.terraform.io/providers/openfga/openfga/latest/docs/resources/authorization_model
  * - OpenFGA Docs: https://openfga.dev/docs/concepts#what-is-an-authorization-model
+ * - OpenFGA DSL: https://openfga.dev/docs/configuration-language
  *
  * @generated from message org.project_planton.provider.openfga.openfgaauthorizationmodel.v1.OpenFgaAuthorizationModelSpec
  */
@@ -40,29 +42,58 @@ export type OpenFgaAuthorizationModelSpec = Message<"org.project_planton.provide
   /**
    * store_id is the unique identifier of the OpenFGA store where this model will be created.
    *
-   * This ID is obtained from an OpenFgaStore deployment or from an existing store.
-   * The store must exist before creating an authorization model.
+   * This can be either:
+   * - A direct value: {value: "01HXYZ..."}
+   * - A reference to an OpenFgaStore: {value_from: {name: "my-store"}}
+   *
+   * When using references, the store ID is automatically resolved from the
+   * OpenFgaStore's status.outputs.id field.
    *
    * Note: The store_id is immutable - changing it requires replacing the model.
    *
-   * Example: "01HXYZ..."
-   *
-   * @generated from field: string store_id = 1;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef store_id = 1;
    */
-  storeId: string;
+  storeId?: StringValueOrRef;
+
+  /**
+   * model_dsl is the authorization model definition in DSL format (recommended).
+   *
+   * The DSL format is more human-readable than JSON and is the preferred format
+   * in OpenFGA documentation. The Terraform module automatically converts DSL to JSON
+   * using the openfga_authorization_model_document data source.
+   *
+   * Exactly one of model_dsl or model_json must be specified.
+   *
+   * Example:
+   * model
+   *   schema 1.1
+   *
+   * type user
+   *
+   * type document
+   *   relations
+   *     define viewer: [user]
+   *     define editor: [user]
+   *     define owner: [user]
+   *
+   * Reference: https://openfga.dev/docs/configuration-language
+   *
+   * @generated from field: string model_dsl = 2;
+   */
+  modelDsl: string;
 
   /**
    * model_json is the authorization model definition in JSON format.
    *
+   * Use this if you prefer JSON over DSL, or if you're migrating from existing JSON models.
    * The JSON must conform to the OpenFGA authorization model schema and include:
    * - schema_version: The schema version (e.g., "1.1")
    * - type_definitions: Array of type definitions with name, relations, and metadata
    * - conditions (optional): Map of conditions for dynamic access decisions
    *
-   * Note: The model is immutable - changing it requires replacing the model (new ID).
+   * Exactly one of model_dsl or model_json must be specified.
    *
-   * Tip: Use the openfga_authorization_model_document data source in Terraform to convert
-   * DSL format to JSON, or use the OpenFGA CLI to validate models before deployment.
+   * Note: The model is immutable - changing it requires replacing the model (new ID).
    *
    * Example:
    * {
@@ -75,15 +106,9 @@ export type OpenFgaAuthorizationModelSpec = Message<"org.project_planton.provide
    *     {
    *       "type": "document",
    *       "relations": {
-   *         "viewer": {
-   *           "this": {}
-   *         },
-   *         "editor": {
-   *           "this": {}
-   *         },
-   *         "owner": {
-   *           "this": {}
-   *         }
+   *         "viewer": {"this": {}},
+   *         "editor": {"this": {}},
+   *         "owner": {"this": {}}
    *       },
    *       "metadata": {
    *         "relations": {
@@ -96,7 +121,7 @@ export type OpenFgaAuthorizationModelSpec = Message<"org.project_planton.provide
    *   ]
    * }
    *
-   * @generated from field: string model_json = 2;
+   * @generated from field: string model_json = 3;
    */
   modelJson: string;
 };

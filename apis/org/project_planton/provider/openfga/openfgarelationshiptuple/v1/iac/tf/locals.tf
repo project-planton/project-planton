@@ -2,17 +2,28 @@
 # This file computes local values from the input variables.
 
 locals {
-  # Store ID from spec (used in the openfga_relationship_tuple resource)
-  store_id = var.spec.store_id
+  # Store ID extracted from the StringValueOrRef object
+  store_id = var.spec.store_id.value
 
-  # Authorization model ID from spec (optional, uses latest if not specified)
-  authorization_model_id = var.spec.authorization_model_id
+  # Authorization model ID extracted from the optional StringValueOrRef object
+  # Returns null if not specified (uses latest model in the store)
+  authorization_model_id = var.spec.authorization_model_id != null ? var.spec.authorization_model_id.value : null
 
-  # User, relation, and object - the core tuple fields
-  user     = var.spec.user
+  # Construct the user string from structured input:
+  # - Without relation: "type:id" (e.g., "user:anne")
+  # - With relation: "type:id#relation" (e.g., "group:engineering#member")
+  user = (
+    var.spec.user.relation != null && var.spec.user.relation != ""
+    ? "${var.spec.user.type}:${var.spec.user.id}#${var.spec.user.relation}"
+    : "${var.spec.user.type}:${var.spec.user.id}"
+  )
+
+  # The relation field (direct pass-through)
   relation = var.spec.relation
-  object   = var.spec.object
 
-  # Condition (optional)
+  # Construct the object string from structured input: "type:id"
+  object = "${var.spec.object.type}:${var.spec.object.id}"
+
+  # Condition (optional, pass-through)
   condition = var.spec.condition
 }
