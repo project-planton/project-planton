@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.openfga.openfgaauthorizationmodel.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 // OpenFgaAuthorizationModelSpec defines the configuration for an OpenFGA Authorization Model.
 //
@@ -10,12 +11,11 @@ import "buf/validate/validate.proto";
 // within an OpenFGA store. Each store can have multiple authorization models, with each new model
 // being a complete replacement (not a patch) of the type definitions.
 //
-// The model is specified in JSON format and includes:
-// - Type definitions: Define object types and their relations
-// - Conditions (optional): Define dynamic conditions for access decisions
+// The model can be specified in either DSL format (recommended, more human-readable) or JSON format.
+// Exactly one of model_dsl or model_json must be specified.
 //
 // IMPORTANT: Authorization models are immutable in OpenFGA. Creating a new model creates a new
-// version. The model_json change will trigger a replacement (new model ID).
+// version. Changing the model will trigger a replacement (new model ID).
 //
 // IMPORTANT: OpenFGA only has a Terraform provider - there is no Pulumi provider available.
 // This component must use Terraform/Tofu as the provisioner.
@@ -23,28 +23,58 @@ import "buf/validate/validate.proto";
 // Reference:
 // - Terraform: https://registry.terraform.io/providers/openfga/openfga/latest/docs/resources/authorization_model
 // - OpenFGA Docs: https://openfga.dev/docs/concepts#what-is-an-authorization-model
+// - OpenFGA DSL: https://openfga.dev/docs/configuration-language
 message OpenFgaAuthorizationModelSpec {
   // store_id is the unique identifier of the OpenFGA store where this model will be created.
   //
-  // This ID is obtained from an OpenFgaStore deployment or from an existing store.
-  // The store must exist before creating an authorization model.
+  // This can be either:
+  // - A direct value: {value: "01HXYZ..."}
+  // - A reference to an OpenFgaStore: {value_from: {name: "my-store"}}
+  //
+  // When using references, the store ID is automatically resolved from the
+  // OpenFgaStore's status.outputs.id field.
   //
   // Note: The store_id is immutable - changing it requires replacing the model.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef store_id = 1 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = OpenFgaStore,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.id"
+  ];
+
+  // model_dsl is the authorization model definition in DSL format (recommended).
   //
-  // Example: "01HXYZ..."
-  string store_id = 1 [(buf.validate.field).required = true];
+  // The DSL format is more human-readable than JSON and is the preferred format
+  // in OpenFGA documentation. The Terraform module automatically converts DSL to JSON
+  // using the openfga_authorization_model_document data source.
+  //
+  // Exactly one of model_dsl or model_json must be specified.
+  //
+  // Example:
+  // model
+  //   schema 1.1
+  //
+  // type user
+  //
+  // type document
+  //   relations
+  //     define viewer: [user]
+  //     define editor: [user]
+  //     define owner: [user]
+  //
+  // Reference: https://openfga.dev/docs/configuration-language
+  string model_dsl = 2;
 
   // model_json is the authorization model definition in JSON format.
   //
+  // Use this if you prefer JSON over DSL, or if you're migrating from existing JSON models.
   // The JSON must conform to the OpenFGA authorization model schema and include:
   // - schema_version: The schema version (e.g., "1.1")
   // - type_definitions: Array of type definitions with name, relations, and metadata
   // - conditions (optional): Map of conditions for dynamic access decisions
   //
-  // Note: The model is immutable - changing it requires replacing the model (new ID).
+  // Exactly one of model_dsl or model_json must be specified.
   //
-  // Tip: Use the openfga_authorization_model_document data source in Terraform to convert
-  // DSL format to JSON, or use the OpenFGA CLI to validate models before deployment.
+  // Note: The model is immutable - changing it requires replacing the model (new ID).
   //
   // Example:
   // {
@@ -57,15 +87,9 @@ message OpenFgaAuthorizationModelSpec {
   //     {
   //       "type": "document",
   //       "relations": {
-  //         "viewer": {
-  //           "this": {}
-  //         },
-  //         "editor": {
-  //           "this": {}
-  //         },
-  //         "owner": {
-  //           "this": {}
-  //         }
+  //         "viewer": {"this": {}},
+  //         "editor": {"this": {}},
+  //         "owner": {"this": {}}
   //       },
   //       "metadata": {
   //         "relations": {
@@ -77,5 +101,5 @@ message OpenFgaAuthorizationModelSpec {
   //     }
   //   ]
   // }
-  string model_json = 2 [(buf.validate.field).required = true];
+  string model_json = 3;
 }

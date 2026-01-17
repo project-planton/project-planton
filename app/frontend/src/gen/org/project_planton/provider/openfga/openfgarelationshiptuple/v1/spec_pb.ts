@@ -5,13 +5,15 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../../../../buf/validate/validate_pb";
+import type { StringValueOrRef } from "../../../../shared/foreignkey/v1/foreign_key_pb";
+import { file_org_project_planton_shared_foreignkey_v1_foreign_key } from "../../../../shared/foreignkey/v1/foreign_key_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file org/project_planton/provider/openfga/openfgarelationshiptuple/v1/spec.proto.
  */
 export const file_org_project_planton_provider_openfga_openfgarelationshiptuple_v1_spec: GenFile = /*@__PURE__*/
-  fileDesc("CktvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL29wZW5mZ2Evb3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxlL3YxL3NwZWMucHJvdG8SQG9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIub3BlbmZnYS5vcGVuZmdhcmVsYXRpb25zaGlwdHVwbGUudjEimAIKHE9wZW5GZ2FSZWxhdGlvbnNoaXBUdXBsZVNwZWMSGAoIc3RvcmVfaWQYASABKAlCBrpIA8gBARIeChZhdXRob3JpemF0aW9uX21vZGVsX2lkGAIgASgJEhQKBHVzZXIYAyABKAlCBrpIA8gBARIYCghyZWxhdGlvbhgEIAEoCUIGukgDyAEBEhYKBm9iamVjdBgFIAEoCUIGukgDyAEBEnYKCWNvbmRpdGlvbhgGIAEoCzJjLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIub3BlbmZnYS5vcGVuZmdhcmVsYXRpb25zaGlwdHVwbGUudjEuT3BlbkZnYVJlbGF0aW9uc2hpcFR1cGxlQ29uZGl0aW9uIk8KIU9wZW5GZ2FSZWxhdGlvbnNoaXBUdXBsZUNvbmRpdGlvbhIUCgRuYW1lGAEgASgJQga6SAPIAQESFAoMY29udGV4dF9qc29uGAIgASgJQvwDCkRjb20ub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5vcGVuZmdhLm9wZW5mZ2FyZWxhdGlvbnNoaXB0dXBsZS52MUIJU3BlY1Byb3RvUAFahQFnaXRodWIuY29tL3BsYW50b25ocS9wcm9qZWN0LXBsYW50b24vYXBpcy9vcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL29wZW5mZ2Evb3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxlL3YxO29wZW5mZ2FyZWxhdGlvbnNoaXB0dXBsZXYxogIFT1BQT0+qAj9PcmcuUHJvamVjdFBsYW50b24uUHJvdmlkZXIuT3BlbmZnYS5PcGVuZmdhcmVsYXRpb25zaGlwdHVwbGUuVjHKAj9PcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcT3BlbmZnYVxPcGVuZmdhcmVsYXRpb25zaGlwdHVwbGVcVjHiAktPcmdcUHJvamVjdFBsYW50b25cUHJvdmlkZXJcT3BlbmZnYVxPcGVuZmdhcmVsYXRpb25zaGlwdHVwbGVcVjFcR1BCTWV0YWRhdGHqAkRPcmc6OlByb2plY3RQbGFudG9uOjpQcm92aWRlcjo6T3BlbmZnYTo6T3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxlOjpWMWIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("CktvcmcvcHJvamVjdF9wbGFudG9uL3Byb3ZpZGVyL29wZW5mZ2Evb3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxlL3YxL3NwZWMucHJvdG8SQG9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIub3BlbmZnYS5vcGVuZmdhcmVsYXRpb25zaGlwdHVwbGUudjEiiAUKHE9wZW5GZ2FSZWxhdGlvbnNoaXBUdXBsZVNwZWMSbgoIc3RvcmVfaWQYASABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCILpIA8gBAYjUYfwRktRhEXN0YXR1cy5vdXRwdXRzLmlkEnYKFmF1dGhvcml6YXRpb25fbW9kZWxfaWQYAiABKAsyOi5vcmcucHJvamVjdF9wbGFudG9uLnNoYXJlZC5mb3JlaWdua2V5LnYxLlN0cmluZ1ZhbHVlT3JSZWZCGojUYf0RktRhEXN0YXR1cy5vdXRwdXRzLmlkEnQKBHVzZXIYAyABKAsyXi5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLm9wZW5mZ2Eub3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxlLnYxLk9wZW5GZ2FSZWxhdGlvbnNoaXBUdXBsZVVzZXJCBrpIA8gBARIYCghyZWxhdGlvbhgEIAEoCUIGukgDyAEBEngKBm9iamVjdBgFIAEoCzJgLm9yZy5wcm9qZWN0X3BsYW50b24ucHJvdmlkZXIub3BlbmZnYS5vcGVuZmdhcmVsYXRpb25zaGlwdHVwbGUudjEuT3BlbkZnYVJlbGF0aW9uc2hpcFR1cGxlT2JqZWN0Qga6SAPIAQESdgoJY29uZGl0aW9uGAYgASgLMmMub3JnLnByb2plY3RfcGxhbnRvbi5wcm92aWRlci5vcGVuZmdhLm9wZW5mZ2FyZWxhdGlvbnNoaXB0dXBsZS52MS5PcGVuRmdhUmVsYXRpb25zaGlwVHVwbGVDb25kaXRpb24iWgocT3BlbkZnYVJlbGF0aW9uc2hpcFR1cGxlVXNlchIUCgR0eXBlGAEgASgJQga6SAPIAQESEgoCaWQYAiABKAlCBrpIA8gBARIQCghyZWxhdGlvbhgDIAEoCSJKCh5PcGVuRmdhUmVsYXRpb25zaGlwVHVwbGVPYmplY3QSFAoEdHlwZRgBIAEoCUIGukgDyAEBEhIKAmlkGAIgASgJQga6SAPIAQEiTwohT3BlbkZnYVJlbGF0aW9uc2hpcFR1cGxlQ29uZGl0aW9uEhQKBG5hbWUYASABKAlCBrpIA8gBARIUCgxjb250ZXh0X2pzb24YAiABKAlC/AMKRGNvbS5vcmcucHJvamVjdF9wbGFudG9uLnByb3ZpZGVyLm9wZW5mZ2Eub3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxlLnYxQglTcGVjUHJvdG9QAVqFAWdpdGh1Yi5jb20vcGxhbnRvbmhxL3Byb2plY3QtcGxhbnRvbi9hcGlzL29yZy9wcm9qZWN0X3BsYW50b24vcHJvdmlkZXIvb3BlbmZnYS9vcGVuZmdhcmVsYXRpb25zaGlwdHVwbGUvdjE7b3BlbmZnYXJlbGF0aW9uc2hpcHR1cGxldjGiAgVPUFBPT6oCP09yZy5Qcm9qZWN0UGxhbnRvbi5Qcm92aWRlci5PcGVuZmdhLk9wZW5mZ2FyZWxhdGlvbnNoaXB0dXBsZS5WMcoCP09yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxPcGVuZmdhXE9wZW5mZ2FyZWxhdGlvbnNoaXB0dXBsZVxWMeICS09yZ1xQcm9qZWN0UGxhbnRvblxQcm92aWRlclxPcGVuZmdhXE9wZW5mZ2FyZWxhdGlvbnNoaXB0dXBsZVxWMVxHUEJNZXRhZGF0YeoCRE9yZzo6UHJvamVjdFBsYW50b246OlByb3ZpZGVyOjpPcGVuZmdhOjpPcGVuZmdhcmVsYXRpb25zaGlwdHVwbGU6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_org_project_planton_shared_foreignkey_v1_foreign_key]);
 
 /**
  * OpenFgaRelationshipTupleSpec defines the configuration for an OpenFGA Relationship Tuple.
@@ -21,9 +23,9 @@ export const file_org_project_planton_provider_openfga_openfgarelationshiptuple_
  * authorization model, relationship tuples determine whether a user has access to an object.
  *
  * The tuple consists of three required parts:
- * - user: Who or what is being granted access (e.g., "user:anne", "group:engineering#member")
+ * - user: Who or what is being granted access (structured as type + id + optional relation)
  * - relation: The type of access or relationship (e.g., "viewer", "editor", "owner")
- * - object: What is being accessed (e.g., "document:budget", "folder:reports")
+ * - object: What is being accessed (structured as type + id)
  *
  * Optionally, a condition can be specified to add dynamic access rules that are evaluated
  * at check time using the provided context.
@@ -44,56 +46,59 @@ export type OpenFgaRelationshipTupleSpec = Message<"org.project_planton.provider
   /**
    * store_id is the unique identifier of the OpenFGA store this tuple belongs to.
    *
-   * This ID is obtained from an OpenFgaStore deployment or from an existing store.
-   * The store must exist before creating relationship tuples.
+   * This can be either:
+   * - A direct value: {value: "01HXYZ..."}
+   * - A reference to an OpenFgaStore: {value_from: {name: "my-store"}}
+   *
+   * When using references, the store ID is automatically resolved from the
+   * OpenFgaStore's status.outputs.id field.
    *
    * Note: The store_id is immutable - changing it requires replacing the tuple.
    *
-   * Example: "01HXYZ..."
-   *
-   * @generated from field: string store_id = 1;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef store_id = 1;
    */
-  storeId: string;
+  storeId?: StringValueOrRef;
 
   /**
    * authorization_model_id is the unique identifier of the authorization model this tuple
    * is associated with.
    *
+   * This can be either:
+   * - A direct value: {value: "01HXYZ..."}
+   * - A reference to an OpenFgaAuthorizationModel: {value_from: {name: "my-model"}}
+   *
+   * When using references, the model ID is automatically resolved from the
+   * OpenFgaAuthorizationModel's status.outputs.id field.
+   *
    * This field is optional. If not specified, the tuple will be associated with the
    * latest authorization model in the store at the time of creation.
    *
    * When specified, the tuple is validated against this specific model version. This is
-   * useful for ensuring tuples are compatible with a known model version.
+   * useful for ensuring tuples are compatible with a known model version in production.
    *
    * Note: The authorization_model_id is immutable - changing it requires replacing the tuple.
    *
-   * Example: "01HXYZ..."
-   *
-   * @generated from field: string authorization_model_id = 2;
+   * @generated from field: org.project_planton.shared.foreignkey.v1.StringValueOrRef authorization_model_id = 2;
    */
-  authorizationModelId: string;
+  authorizationModelId?: StringValueOrRef;
 
   /**
    * user is the subject of the relationship tuple - who is being granted access.
    *
-   * The user can be:
-   * - A specific user: "user:anne"
-   * - A userset (all users with a relation to an object): "group:engineering#member"
-   * - A wildcard for public access: "user:*"
+   * The user is specified as a structured object with:
+   * - type: The user type defined in the authorization model (e.g., "user", "group")
+   * - id: The user identifier (e.g., "anne", "engineering", "*" for wildcard)
+   * - relation: Optional, for usersets (e.g., "member" to create "group:engineering#member")
    *
-   * The user type must be defined in the authorization model and allowed for this relation.
+   * The IaC module combines these into the OpenFGA format:
+   * - Without relation: "type:id" (e.g., "user:anne")
+   * - With relation: "type:id#relation" (e.g., "group:engineering#member")
    *
    * Note: The user is immutable - changing it requires replacing the tuple.
    *
-   * Examples:
-   * - "user:anne" - User with ID "anne"
-   * - "user:1234" - User with numeric ID
-   * - "group:engineering#member" - All members of the engineering group
-   * - "user:*" - All users (public access)
-   *
-   * @generated from field: string user = 3;
+   * @generated from field: org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleUser user = 3;
    */
-  user: string;
+  user?: OpenFgaRelationshipTupleUser;
 
   /**
    * relation is the relationship type between the user and object.
@@ -112,19 +117,18 @@ export type OpenFgaRelationshipTupleSpec = Message<"org.project_planton.provider
   /**
    * object is the resource the user is being granted access to.
    *
-   * The object is specified as "type:id" where type is defined in the authorization
-   * model and id is the unique identifier of the specific object.
+   * The object is specified as a structured object with:
+   * - type: The object type defined in the authorization model (e.g., "document", "folder")
+   * - id: The object identifier (e.g., "budget-2024", "reports")
+   *
+   * The IaC module combines these into the OpenFGA format: "type:id"
+   * (e.g., "document:budget-2024")
    *
    * Note: The object is immutable - changing it requires replacing the tuple.
    *
-   * Examples:
-   * - "document:budget-2024"
-   * - "folder:reports"
-   * - "project:acme-corp"
-   *
-   * @generated from field: string object = 5;
+   * @generated from field: org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleObject object = 5;
    */
-  object: string;
+  object?: OpenFgaRelationshipTupleObject;
 
   /**
    * condition optionally specifies a condition that must be satisfied for this tuple
@@ -147,6 +151,113 @@ export type OpenFgaRelationshipTupleSpec = Message<"org.project_planton.provider
  */
 export const OpenFgaRelationshipTupleSpecSchema: GenMessage<OpenFgaRelationshipTupleSpec> = /*@__PURE__*/
   messageDesc(file_org_project_planton_provider_openfga_openfgarelationshiptuple_v1_spec, 0);
+
+/**
+ * OpenFgaRelationshipTupleUser defines the user (subject) of a relationship tuple.
+ *
+ * In OpenFGA, users are represented as "type:id" or "type:id#relation" for usersets.
+ * This structured message makes it easier to specify users without manually
+ * constructing the colon-separated format.
+ *
+ * Examples:
+ * - Simple user: {type: "user", id: "anne"} → "user:anne"
+ * - Wildcard: {type: "user", id: "*"} → "user:*"
+ * - Userset: {type: "group", id: "engineering", relation: "member"} → "group:engineering#member"
+ *
+ * @generated from message org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleUser
+ */
+export type OpenFgaRelationshipTupleUser = Message<"org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleUser"> & {
+  /**
+   * type is the user type as defined in the authorization model.
+   *
+   * This must match a type defined in the authorization model that is allowed
+   * as a subject for the target relation.
+   *
+   * Examples: "user", "group", "team", "service", "application"
+   *
+   * @generated from field: string type = 1;
+   */
+  type: string;
+
+  /**
+   * id is the unique identifier of the user.
+   *
+   * This can be any string that uniquely identifies the user within the type.
+   * Use "*" for wildcard access (all users of this type).
+   *
+   * Examples: "anne", "1234", "engineering", "backend-api", "*"
+   *
+   * @generated from field: string id = 2;
+   */
+  id: string;
+
+  /**
+   * relation is optional, used to create usersets (type:id#relation format).
+   *
+   * When specified, the user represents "all entities that have this relation
+   * to the specified object". For example, "all members of the engineering group".
+   *
+   * When omitted, the user is a direct reference to "type:id".
+   * When specified, the user becomes "type:id#relation".
+   *
+   * Examples: "member", "admin", "owner"
+   *
+   * @generated from field: string relation = 3;
+   */
+  relation: string;
+};
+
+/**
+ * Describes the message org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleUser.
+ * Use `create(OpenFgaRelationshipTupleUserSchema)` to create a new message.
+ */
+export const OpenFgaRelationshipTupleUserSchema: GenMessage<OpenFgaRelationshipTupleUser> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_openfga_openfgarelationshiptuple_v1_spec, 1);
+
+/**
+ * OpenFgaRelationshipTupleObject defines the object (resource) of a relationship tuple.
+ *
+ * In OpenFGA, objects are represented as "type:id". This structured message
+ * makes it easier to specify objects without manually constructing the
+ * colon-separated format.
+ *
+ * Examples:
+ * - {type: "document", id: "budget-2024"} → "document:budget-2024"
+ * - {type: "folder", id: "reports"} → "folder:reports"
+ * - {type: "project", id: "acme-corp"} → "project:acme-corp"
+ *
+ * @generated from message org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleObject
+ */
+export type OpenFgaRelationshipTupleObject = Message<"org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleObject"> & {
+  /**
+   * type is the object type as defined in the authorization model.
+   *
+   * This must match a type defined in the authorization model.
+   *
+   * Examples: "document", "folder", "project", "organization", "team"
+   *
+   * @generated from field: string type = 1;
+   */
+  type: string;
+
+  /**
+   * id is the unique identifier of the object.
+   *
+   * This can be any string that uniquely identifies the object within the type.
+   *
+   * Examples: "budget-2024", "reports", "acme-corp", "engineering-team"
+   *
+   * @generated from field: string id = 2;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message org.project_planton.provider.openfga.openfgarelationshiptuple.v1.OpenFgaRelationshipTupleObject.
+ * Use `create(OpenFgaRelationshipTupleObjectSchema)` to create a new message.
+ */
+export const OpenFgaRelationshipTupleObjectSchema: GenMessage<OpenFgaRelationshipTupleObject> = /*@__PURE__*/
+  messageDesc(file_org_project_planton_provider_openfga_openfgarelationshiptuple_v1_spec, 2);
 
 /**
  * OpenFgaRelationshipTupleCondition defines an optional condition for a relationship tuple.
@@ -193,5 +304,5 @@ export type OpenFgaRelationshipTupleCondition = Message<"org.project_planton.pro
  * Use `create(OpenFgaRelationshipTupleConditionSchema)` to create a new message.
  */
 export const OpenFgaRelationshipTupleConditionSchema: GenMessage<OpenFgaRelationshipTupleCondition> = /*@__PURE__*/
-  messageDesc(file_org_project_planton_provider_openfga_openfgarelationshiptuple_v1_spec, 1);
+  messageDesc(file_org_project_planton_provider_openfga_openfgarelationshiptuple_v1_spec, 3);
 

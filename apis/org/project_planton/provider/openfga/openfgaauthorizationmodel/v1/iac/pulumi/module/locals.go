@@ -10,6 +10,8 @@ import (
 type Locals struct {
 	// StoreId is the ID of the OpenFGA store where the model will be created.
 	StoreId string
+	// ModelDsl is the authorization model definition in DSL format.
+	ModelDsl string
 	// ModelJson is the authorization model definition in JSON format.
 	ModelJson string
 }
@@ -20,8 +22,15 @@ func initializeLocals(_ *pulumi.Context, stackInput *openfgaauthorizationmodelv1
 	target := stackInput.Target
 	spec := target.Spec
 
+	// Extract store_id from StringValueOrRef
+	storeId := ""
+	if spec.StoreId != nil {
+		storeId = spec.StoreId.GetValue()
+	}
+
 	return &Locals{
-		StoreId:   spec.StoreId,
+		StoreId:   storeId,
+		ModelDsl:  spec.ModelDsl,
 		ModelJson: spec.ModelJson,
 	}
 }
