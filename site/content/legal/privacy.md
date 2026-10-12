@@ -2,7 +2,7 @@
 
 *Effective date: March 25, 2026*
 
-*Last updated: October 4, 2026*
+*Last updated: October 12, 2026*
 
 ## Introduction
 
@@ -34,7 +34,7 @@ This Policy does not apply where Planton acts as a data processor on behalf of c
 
 - **Usage Data.** We collect information about how you use the Service, such as pages visited, features used, infrastructure resources deployed, pipeline runs triggered, and time spent on various sections.
 
-- **Cookies and Similar Technologies.** We use cookies and similar technologies to maintain sessions, remember your preferences, and analyze usage patterns. See Section 9 for details.
+- **Cookies and Similar Technologies.** We use cookies and similar technologies to maintain sessions, remember your preferences, and analyze usage patterns. See Section 10 for details.
 
 ### C. Data Received from Third-Party Sign-In Providers
 
@@ -66,7 +66,51 @@ This architecture means that:
 - Credential rotation requires updating only the secrets manager entry — no connection reconfiguration needed.
 - Audit trails track every secret access event independently.
 
-## 3. How We Use Personal Data
+## 3. Your Source Code and Repositories
+
+To build and deploy your services, Planton needs access to the Git repositories you connect. This section explains exactly what that access is, what we do with it, and what we keep.
+
+### A. How Access Is Granted
+
+- **You choose the repositories.** You connect GitHub by installing Planton's GitHub App on the repositories you select. You can change that selection, or uninstall the app, at any time in GitHub.
+- **Or you bring your own app.** With the "Your Own GitHub App" option, you create a GitHub App in your own GitHub organization, decide its permissions and repositories, and hold its private key. Planton features that need a permission you did not grant will not work.
+- **No long-lived tokens.** Planton stores no GitHub token. Each time it needs access, it asks GitHub for a short-lived installation token, which expires within an hour. After you uninstall the app, GitHub issues no new tokens, so access ends once the last token expires.
+
+### B. What We Read, and Why
+
+Planton reads repository contents only to provide the Service:
+
+- **To build your code.** A build copies the repository at the commit being built into an isolated build workspace. If you run builds on your own cluster, that copy is made in your cluster, not ours.
+- **To keep your deployment settings current.** When you push, Planton reads the deployment files that the push changed (such as `service.yaml` and the configuration for each environment) and its own pipeline files.
+- **To set up a service.** Planton reads a repository's metadata, languages, and list of files to suggest how to build and deploy it.
+- **When you ask.** A member of your organization, or the Planton Assistant acting for one, can list files or read specific files at a commit.
+- **For infrastructure modules.** If you point an infrastructure deployment at your own Terraform or Pulumi module repository, Planton copies that module to run it.
+
+We do not scan, index, or analyze your repositories for any other purpose.
+
+### C. What We Write
+
+- **Build and deployment status.** Planton reports check runs, statuses, and deployments on your commits so you can see results in GitHub.
+- **Pull requests, on new branches only.** When you or an assistant acting for you asks Planton to propose a change, it creates a new branch and opens a pull request for your review. It never writes to your default branch or to any branch that already exists. The Planton Assistant opens one only after the person has seen the change and confirmed it.
+- **Merges, only of its own pull requests.** Planton merges a pull request only when a member of your organization asks, only if Planton opened it, and only at the exact commit that person reviewed.
+
+### D. What We Keep
+
+- **Commit details.** For each build and deployment we keep the repository, branch, commit, commit message, author name and email, pull request title and number, and the paths of the files a commit changed. These make up your deployment history and audit trail.
+- **Your deployment configuration.** The deployment files Planton reads, and the configuration rendered from them for each environment, are stored as part of your service's settings.
+- **Build logs.** Logs from each build step are kept as part of your deployment history. They contain whatever your build prints, which can include fragments of your code.
+- **Not your source code.** We do not copy your repositories into our databases or storage. A build workspace is deleted when the build succeeds. When a build fails, its workspace is kept for up to two days for troubleshooting, then deleted. Files read when you ask are shown to you and not stored. Notifications GitHub sends us about pushes and pull requests are kept for up to 72 hours while they are processed.
+
+### E. Who Can See It
+
+- **Members of your organization**, according to the roles you grant them.
+- **Planton staff, only by time-limited access.** No one at Planton has standing access to your organization. A staff member can enter it only for a stated reason and a limited time. Read access lets them see what your organization's readers see, which can include repository files and build logs. Anything beyond read access needs a second Planton operator's approval. Every such access is recorded in your organization's access history.
+
+### F. AI Features
+
+If your organization uses the Planton Assistant, it reads repository files only when a conversation or an automation you have allowed needs them. Those files are sent to the AI service providers that run the Assistant (see Section 5). Your source code is covered by the same commitment on model training as the rest of your Content (Section 4).
+
+## 4. How We Use Personal Data
 
 We use personal data for the following purposes:
 
@@ -82,11 +126,11 @@ We use personal data for the following purposes:
 
 We may aggregate or de-identify data so that it no longer identifies you, and use such data for analytics, research, and Service improvement. We will not attempt to re-identify de-identified data except as required by law.
 
-## 4. How We Share Personal Data
+## 5. How We Share Personal Data
 
 We may disclose personal data in the following circumstances:
 
-- **Service Providers.** We share data with third-party vendors who help us operate the Service, including cloud hosting providers (Google Cloud Platform, and Cloudflare, which runs status.planton.ai and its bot check), identity providers (Auth0), payment processors (Stripe), email delivery (Resend, which sends the Service's email, including status updates), Slack and Discord (which deliver status messages to the channels you add), analytics services, and customer support tools. These parties process data only as necessary to perform services on our behalf.
+- **Service Providers.** We share data with third-party vendors who help us operate the Service, including cloud hosting providers (Google Cloud Platform, and Cloudflare, which runs status.planton.ai and its bot check), identity providers (Auth0), payment processors (Stripe), email delivery (Resend, which sends the Service's email, including status updates), Slack and Discord (which deliver status messages to the channels you add), AI service providers that run the Planton Assistant (Stigmer and Cursor, with Anthropic's Claude models), analytics services, and customer support tools. These parties process data only as necessary to perform services on our behalf.
 
 - **Business Transfers.** In the event of a merger, acquisition, or similar corporate transaction, personal data may be disclosed to counterparties and advisers as part of due diligence or transferred as part of the transaction.
 
@@ -100,7 +144,7 @@ We may disclose personal data in the following circumstances:
 
 We do not sell your personal data to third parties.
 
-## 5. Third-Party Sign-In Provider Data
+## 6. Third-Party Sign-In Provider Data
 
 ### Google
 
@@ -138,7 +182,7 @@ We do not:
 
 You can revoke Planton's access to your Microsoft account at any time through your [Microsoft account permissions page](https://account.microsoft.com/privacy/app-access).
 
-## 6. Data Retention
+## 7. Data Retention
 
 We retain personal data for as long as necessary to provide the Service and fulfill the purposes described in this Policy, including legal compliance, dispute resolution, safety, and enforcement of agreements.
 
@@ -148,7 +192,7 @@ Status page subscriptions are kept until you unsubscribe or remove Planton Statu
 
 When personal data is no longer needed, we follow procedures to delete, de-identify, or anonymize it in compliance with applicable law.
 
-## 7. Security
+## 8. Security
 
 We implement commercially reasonable technical and organizational measures to protect personal data, including:
 
@@ -161,7 +205,7 @@ We implement commercially reasonable technical and organizational measures to pr
 
 No method of transmission or storage is completely secure. We cannot guarantee absolute security, but we continuously evaluate and improve our security posture.
 
-## 8. Your Rights and Choices
+## 9. Your Rights and Choices
 
 Depending on your location and applicable law, you may have rights regarding your personal data, including:
 
@@ -177,7 +221,7 @@ To exercise any of these rights, contact us at [legal@planton.ai](mailto:legal@p
 
 **No sale or targeted advertising.** We do not sell personal data or use it for cross-contextual behavioral advertising as those terms are defined under applicable US state privacy laws.
 
-## 9. Cookies and Tracking Technologies
+## 10. Cookies and Tracking Technologies
 
 We use cookies and similar technologies to:
 
@@ -194,27 +238,27 @@ We use cookies and similar technologies to:
 
 status.planton.ai sets no cookie unless you choose a theme (a preference cookie) or add a Slack or Discord channel (an essential cookie that lasts ten minutes and ties the app's approval to your browser). We do not use advertising or tracking cookies. You can control cookies through your browser settings. Disabling essential cookies may prevent you from using the Service.
 
-## 10. International Data Transfers
+## 11. International Data Transfers
 
 Planton processes personal data on servers located in various jurisdictions, including the United States. If you are located in the European Economic Area (EEA), United Kingdom, or Switzerland, your personal data may be transferred to countries that have not been recognized as having an adequate level of data protection. When we engage in such transfers, we rely on legally valid transfer mechanisms, including standard contractual clauses published by the European Commission, to protect your data.
 
-## 11. US State-Specific Disclosures
+## 12. US State-Specific Disclosures
 
 ### California (CCPA/CPRA)
 
 California residents have additional rights under the California Consumer Privacy Act and the California Privacy Rights Act, including the right to know what personal information is collected, the right to request deletion, the right to opt out of sales (we do not sell personal data), and the right to non-discrimination. To exercise these rights, contact [legal@planton.ai](mailto:legal@planton.ai).
 
-In the preceding 12 months, we have collected the categories of personal information described in Section 1 of this Policy. We collect this information for the business purposes described in Section 3. We do not sell personal information and do not share personal information for cross-context behavioral advertising.
+In the preceding 12 months, we have collected the categories of personal information described in Section 1 of this Policy. We collect this information for the business purposes described in Section 4. We do not sell personal information and do not share personal information for cross-context behavioral advertising.
 
 ### Other US States
 
 Residents of Colorado, Connecticut, Virginia, Utah, Texas, Oregon, Montana, and other states with consumer privacy laws may have similar rights, including the right to access, correct, and delete personal data, and the right to opt out of the sale of personal data. Contact [legal@planton.ai](mailto:legal@planton.ai) to exercise your rights under applicable state law.
 
-## 12. Changes to This Policy
+## 13. Changes to This Policy
 
 We may update this Policy from time to time. When we make material changes, we will update the effective date at the top of this page and notify you through the Service or by email. Your continued use of the Service after changes take effect constitutes acceptance of the updated Policy.
 
-## 13. Contact Us
+## 14. Contact Us
 
 For questions about this Privacy Policy or to exercise your privacy rights, contact us at:
 
