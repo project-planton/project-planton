@@ -36,6 +36,7 @@ The app owns the instance. When the person opens Planton Desktop, it starts a su
 | Any command: "the lifecycle daemon … is not running" | The instance is stopped, or the app is closed | `planton local start` |
 | `daemon status`: `control-plane` not ready, "the control plane cannot get a database connection, so requests are failing" | Requests fail because the database is unreachable. The `postgres` row says whether the database itself answers | If `postgres` is down, fix the database (for the person's own server, check its host and network). If `postgres` is ready and the line stays for a few minutes, run `planton local restart` |
 | `daemon status`: a part "exited again after 3 restarts within the hour, so it stays down" | That part keeps dying | `planton daemon logs <part>`, name the cause to the person, then `planton local restart` once it is fixed |
+| An apply, destroy, deploy or rerun: "This instance's workflow engine isn't running, so nothing was started" | `temporal` is down: past its restart budget, or hung. Nothing was written, so there is nothing to clean up | `planton daemon status`; if `temporal` is not ready, `planton daemon logs temporal`, then `planton local restart`, then run the command again |
 | `degraded` for more than a few minutes with no restart count rising | A part is up but not ready | `planton daemon logs <part>`, then `planton local restart` |
 | `planton local start` says Planton Desktop is not installed | The app runs the instance, and it is not here | Ask the person to install it: `brew install --cask planton`, or download it from planton.ai |
 
@@ -47,6 +48,7 @@ On the desktop instance on macOS, live:
 - `restart`;
 - `stop` staying down;
 - a killed part coming back and being counted;
-- a killed supervisor being brought back by the app.
+- a killed supervisor being brought back by the app;
+- a workflow engine past its restart budget, and a hung one, refused with the sentence above within seconds and nothing written.
 
 The database health sentence and a network drop's recovery were proven by tests, not by cutting a live network. On Windows and Linux, `planton local start` opens the same `planton-desktop://local-instance/start` link the app's installer registers. Confirm the link opens the app on the person's machine before you rely on it there.
