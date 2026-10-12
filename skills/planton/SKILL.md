@@ -1,6 +1,6 @@
 ---
 name: planton
-description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; or administer a PlantonPlatform and company directory. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, never approve a deployment gate, never leave the workspace given. Not for authoring kind schemas.
+description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, never approve a deployment gate, never leave the workspace given. Not for authoring kind schemas.
 ---
 
 # Planton
@@ -406,6 +406,7 @@ Some people run Planton on their own cluster: a **PlantonPlatform** resource the
 - **Refusals are sentences.** A version below the operator's floor, a contradictory `spec.email`, a failed directory check: the operator names the field and nothing running changes. Relay the sentence; never guess.
 - **The local administrator is the break-glass.** It stays local, never mapped, reachable at `kc_idp_hint=local` on every surface when the directory is primary.
 - **Membership follows the directory.** Access is a mapping from a group to a role; nobody edits a mirrored team by hand; offboarding is the arm's window, never an admin's action.
+- **The desktop instance is yours to run.** On Planton Desktop (`deployment_kind: local`), start, stop, restart and diagnose it with `planton local` and `planton daemon` (`references/self-hosted.desktop-instance.md`); never ask the person to quit and reopen the app.
 - **Say what was verified.** Each `self-hosted.*` reference names the paths proven on running installs and the few not (the desktop app's own sign-in screens, alert email delivery, a live front-door change, Entra P1 group features); confirm those on the person's install, and file a platform gap when one fails (`references/craft.filing-platform-gaps.md`).
 
 ## References
@@ -475,6 +476,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 |---|---|
 | `references/self-hosted.reading-a-platform.md` | The Planton is self-hosted; reading the PlantonPlatform's phase, message, columns, and component sentences before any change; what never to touch; why a feature in early release (the Assistant) is absent and the Feature Flags row reads "no flag source" |
 | `references/self-hosted.front-doors-and-the-cli.md` | Pointing the CLI at a self-hosted Planton; `whoami` fails right after login; choosing Gateway API vs Ingress; the desktop's device sign-in |
+| `references/self-hosted.desktop-instance.md` | The Planton runs on the person's machine (Planton Desktop; `planton instance current` names `127.0.0.1`); starting, stopping or restarting it; it is down, degraded or stuck; a part keeps dying; reading its logs; what heals by itself |
 | `references/self-hosted.upgrading.md` | Upgrading the operator or the platform; the CRD adoption preflight; the version floor; a preview-era install |
 | `references/self-hosted.first-admin-and-seats.md` | Getting into a fresh install; "seats are all in use"; where the license key goes; keeping the local admin |
 | `references/self-hosted.identity-connecting.md` | Connecting Entra ID, Okta, or Active Directory: the manifest, the dry-run, the verdicts, the first sign-in; tenant features not exercised |

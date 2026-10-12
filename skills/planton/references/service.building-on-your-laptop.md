@@ -33,6 +33,8 @@ planton local build-cluster remove        # the cluster and its files go; the ne
 planton service watch <service>           # the watch: status, repository, connection, "Checked N s ago · next in M s", the last gap (Not Checked), branches, PRs, tags, Actions, the GitHub request budget
 planton service watch <service> --history # what the watch recorded, newest first: each gap and its cause, each push handed on, each pause and recovery
 planton daemon status                     # every local component, and "build cluster: <phase>"
+planton daemon logs <part>                # one part's log from the latest start; works while the instance is down
+planton local restart                     # every part starts fresh, no data touched; waits until healthy
 planton follow <run>                      # the run live: the wake as its own beat, the build, the deploy, the GitHub line, the platform line
 planton service urls <service>            # the environment card's truth: URL and rollout verdict, or why there is no address
 ```
@@ -50,7 +52,7 @@ Reading `planton local build-cluster status`: **Not Set Up** (no cluster, no cos
 7. GitHub gets a **commit status** `planton/<service>` from the sign-in — never a check run (the checks API refuses user tokens; only an App can write checks). Its description is the run's verdict sentence. `planton follow` prints the GitHub line, orange when it needs the person.
 8. The laptop's owner is notified: a macOS banner and an in-app card, under the `desktop` toggle; `planton notifications list` reads the same feed.
 
-**When a push is late.** The watch checks ONLY while the local instance runs (the desktop app open). A push "picked up hours late" is almost always the app having been quit: the card's **Not Checked** row names the gap, its length and its cause (*Planton wasn't running*), and `planton service watch <service> --history` lists every gap. The fix to offer is **Start at Login** on the desktop's Local Instance page (macOS 13+; macOS may hold it for approval in System Settings → Login Items). A watch reading **Behind** while the instance runs is a fault — restart the local instance and report it.
+**When a push is late.** The watch checks ONLY while the local instance runs (the desktop app open). A push "picked up hours late" is almost always the app having been quit: the card's **Not Checked** row names the gap, its length and its cause (*Planton wasn't running*), and `planton service watch <service> --history` lists every gap. The fix to offer is **Start at Login** on the desktop's Local Instance page (macOS 13+; macOS may hold it for approval in System Settings → Login Items). A watch reading **Behind** while the instance runs is a fault — run `planton local restart` yourself and report it. Starting, stopping, restarting and diagnosing the local instance is `references/self-hosted.desktop-instance.md`.
 
 ## Measured costs (say these; never invent numbers)
 
