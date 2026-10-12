@@ -37,6 +37,8 @@ export interface LicenseSizeDisplay {
    */
   perYearCard: string;
   seatCeiling: number;
+  /** The catalog offer this size sells -- what the buy page's `?offer=` names. */
+  offerId: string;
 }
 
 export interface Market {
@@ -47,7 +49,7 @@ export interface Market {
   region: string;
   symbol: string;
   teamSeatMonthly: number;
-  /** Per seat per YEAR (two months free vs monthly). */
+  /** Per seat per YEAR; the saving against twelve monthly charges is derived (annualSavingLabel), never restated. */
   teamSeatAnnual: number;
   /** Smallest purchasable AI credit pack. */
   creditPackStart: number;
@@ -65,6 +67,12 @@ export interface Market {
 // ceilings to the platform's authored license offers.
 export const SELF_HOSTED_LICENSE_SEAT_CEILINGS = [10, 25] as const;
 
+// The catalog offer behind each size (metadata.name of the platform's
+// authored license rows), in the same order as the ceilings. The buy links
+// name one with `?offer=` so the store opens on that size; the build's
+// displayed-vs-enforced guard pins this list to the catalog too.
+export const SELF_HOSTED_LICENSE_OFFER_IDS = ['self-hosted-license-10', 'self-hosted-license-25'] as const;
+
 export const MARKETS: Record<MarketId, Market> = {
   us: {
     id: 'us',
@@ -75,8 +83,8 @@ export const MARKETS: Record<MarketId, Market> = {
     teamSeatAnnual: 192,
     creditPackStart: 10,
     licenses: [
-      { perYear: '$3,000', perYearCompact: '$3K', perYearCard: '$3,000', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[0] },
-      { perYear: '$8,000', perYearCompact: '$8K', perYearCard: '$8,000', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[1] },
+      { perYear: '$3,000', perYearCompact: '$3K', perYearCard: '$3,000', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[0], offerId: SELF_HOSTED_LICENSE_OFFER_IDS[0] },
+      { perYear: '$8,000', perYearCompact: '$8K', perYearCard: '$8,000', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[1], offerId: SELF_HOSTED_LICENSE_OFFER_IDS[1] },
     ],
     enterprise: [
       {
@@ -102,8 +110,8 @@ export const MARKETS: Record<MarketId, Market> = {
     teamSeatAnnual: 9990,
     creditPackStart: 499,
     licenses: [
-      { perYear: '₹2,00,000', perYearCompact: '₹2L', perYearCard: '₹2L', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[0] },
-      { perYear: '₹5,00,000', perYearCompact: '₹5L', perYearCard: '₹5L', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[1] },
+      { perYear: '₹2,00,000', perYearCompact: '₹2L', perYearCard: '₹2L', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[0], offerId: SELF_HOSTED_LICENSE_OFFER_IDS[0] },
+      { perYear: '₹5,00,000', perYearCompact: '₹5L', perYearCard: '₹5L', seatCeiling: SELF_HOSTED_LICENSE_SEAT_CEILINGS[1], offerId: SELF_HOSTED_LICENSE_OFFER_IDS[1] },
     ],
     enterprise: [
       {
@@ -123,6 +131,28 @@ export const MARKETS: Record<MarketId, Market> = {
 };
 
 export const DEFAULT_MARKET_ID: MarketId = 'us';
+
+const MONTH_COUNT_WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven'];
+
+/**
+ * The honest name for what paying yearly saves, derived from a market's two
+ * SET prices -- never a phrase typed once and assumed true everywhere. When
+ * the saving is exactly a whole number of monthly charges it reads as months
+ * free (INR: 12 x 999 - 9,990 = 1,998 = two months); otherwise it is the
+ * percentage off twelve monthly charges, rounded DOWN so the label never
+ * overstates (USD: 240 - 192 = 48 = 20%). No saving yields ''.
+ */
+export const annualSavingLabel = (monthly: number, annual: number): string => {
+  const twelveMonths = monthly * 12;
+  const saved = twelveMonths - annual;
+  if (monthly <= 0 || saved <= 0) return '';
+  const monthsFree = saved / monthly;
+  if (Number.isInteger(monthsFree) && monthsFree < MONTH_COUNT_WORDS.length) {
+    return `${MONTH_COUNT_WORDS[monthsFree]} Month${monthsFree === 1 ? '' : 's'} Free`;
+  }
+  const percent = Math.floor((saved * 100) / twelveMonths);
+  return percent > 0 ? `Save ${percent}%` : '';
+};
 
 /**
  * Best-effort market detection from the browser's two locality signals: the
@@ -171,10 +201,15 @@ export const COMMUNITY_SEAT_LIMIT = 5;
 export const EVALUATION_DAYS = 30;
 
 // Where a self-hosted license purchase starts (the console's public
-// buy page; no account required). It accepts `?email=` to open its form
-// prefilled -- the links here carry a console's email handoff into it
-// (see lib/console-handoff).
+// buy page; no account required). It accepts `?offer=<catalog offer id>`
+// to open on one size, and `?email=` to open its form prefilled -- the
+// links here carry a console's email handoff into it (see
+// lib/console-handoff).
 export const BUY_LICENSE_URL = 'https://planton.ai/license/buy';
+
+/** The buy page opened on one license size. */
+export const licenseBuyUrl = (offerId: string): string =>
+  `${BUY_LICENSE_URL}?offer=${encodeURIComponent(offerId)}`;
 
 // Where the free evaluation key is claimed: the same public page, its
 // evaluation section (email in, key by email, once per address).

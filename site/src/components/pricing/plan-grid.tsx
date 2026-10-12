@@ -20,6 +20,8 @@ import {
   EVALUATION_URL,
   COMMUNITY_SEAT_LIMIT,
   FREE_TIER_SEATS,
+  annualSavingLabel,
+  licenseBuyUrl,
 } from '@/data/pricing';
 
 /**
@@ -48,7 +50,8 @@ interface PlanCardData {
    * their cards say Coming Soon and make no credits claim.
    */
   ai: { title: string; sub: string };
-  cta: { label: string; href: string; primary: boolean; external?: boolean };
+  /** One door per card, except where a card sells more than one size (stacked, first is primary). */
+  ctas: Array<{ label: string; href: string; primary: boolean; external?: boolean }>;
   highlighted?: boolean;
 }
 
@@ -91,7 +94,7 @@ const PlanCard: FC<PlanCardData> = ({
   tagline,
   bullets,
   ai,
-  cta,
+  ctas,
   highlighted,
 }) => (
   <Box
@@ -148,13 +151,17 @@ const PlanCard: FC<PlanCardData> = ({
         })}
       </Stack>
       <AiLine ai={ai} />
-      <Link href={cta.href} target={cta.external ? '_blank' : '_self'} className="mt-2">
-        {cta.primary ? (
-          <PrimaryButton className="w-full">{cta.label}</PrimaryButton>
-        ) : (
-          <SecondaryButton className="w-full">{cta.label}</SecondaryButton>
-        )}
-      </Link>
+      <Stack className="gap-2 mt-2">
+        {ctas.map((cta) => (
+          <Link key={cta.href} href={cta.href} target={cta.external ? '_blank' : '_self'}>
+            {cta.primary ? (
+              <PrimaryButton className="w-full">{cta.label}</PrimaryButton>
+            ) : (
+              <SecondaryButton className="w-full">{cta.label}</SecondaryButton>
+            )}
+          </Link>
+        ))}
+      </Stack>
     </Stack>
   </Box>
 );
@@ -175,11 +182,14 @@ const AI_COMING_SELF_HOSTED: PlanCardData['ai'] = {
 export const PlanGrid: FC = () => {
   const { market } = useMarket();
   // A console that already knows the buyer hands their email to this tab;
-  // both doors into the store carry it so the form opens prefilled.
+  // every door into the store carries it so the form opens prefilled.
   const handoffEmail = useHandoffEmail();
 
   const sizeLow = market.licenses[0];
   const sizeHigh = market.licenses[market.licenses.length - 1];
+  // Each market's own saving: its two set prices decide whether yearly is
+  // "Two Months Free" or a percentage, so no market shows another's claim.
+  const annualSaving = annualSavingLabel(market.teamSeatMonthly, market.teamSeatAnnual);
 
   const plantonAiPlans: PlanCardData[] = [
     {
@@ -192,13 +202,15 @@ export const PlanGrid: FC = () => {
         'Pauses at its limit — never bills, never deletes',
       ],
       ai: AI_INCLUDED,
-      cta: { label: 'Start Free', href: `${SITE.url}/login`, primary: false },
+      ctas: [{ label: 'Start Free', href: `${SITE.url}/login`, primary: false }],
     },
     {
       name: 'Team',
       priceMain: `${market.symbol}${market.teamSeatMonthly.toLocaleString()}`,
       priceUnit: '/seat/month',
-      priceSub: `or ${market.symbol}${market.teamSeatAnnual.toLocaleString()}/seat/year — two months free`,
+      priceSub:
+        `or ${market.symbol}${market.teamSeatAnnual.toLocaleString()}/seat/year` +
+        (annualSaving ? ` — ${annualSaving}` : ''),
       tagline: 'The whole platform for your whole team.',
       bullets: [
         'Everything in Free, without the seat cap',
@@ -207,7 +219,7 @@ export const PlanGrid: FC = () => {
         'Cancel anytime, no forms, no calls',
       ],
       ai: AI_INCLUDED,
-      cta: { label: 'Get Started', href: `${SITE.url}/login`, primary: true },
+      ctas: [{ label: 'Get Started', href: `${SITE.url}/login`, primary: true }],
       highlighted: true,
     },
   ];
@@ -229,7 +241,7 @@ export const PlanGrid: FC = () => {
         },
       ],
       ai: AI_COMING_SELF_HOSTED,
-      cta: { label: 'Talk to us', href: '/book-demo', primary: false },
+      ctas: [{ label: 'Talk to us', href: '/book-demo', primary: false }],
     },
     {
       name: 'Licensed',
@@ -245,7 +257,13 @@ export const PlanGrid: FC = () => {
         'No sales call, no account required',
       ],
       ai: AI_COMING_SELF_HOSTED,
-      cta: { label: 'Talk to us', href: '/book-demo', primary: true },
+      // One door per size, straight into the store opened on that offer
+      // (carrying a console's email handoff when one arrived).
+      ctas: market.licenses.map((size, index) => ({
+        label: `Buy ${size.seatCeiling} Seats`,
+        href: withHandoffEmail(licenseBuyUrl(size.offerId), handoffEmail),
+        primary: index === 0,
+      })),
     },
   ];
 

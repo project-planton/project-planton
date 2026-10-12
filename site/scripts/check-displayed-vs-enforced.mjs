@@ -26,6 +26,9 @@
  *    every card, matrix cell, and sentence reads -- so pinning the module
  *    pins every surface. A drift here once lived for weeks: the community
  *    ceiling changed in the platform and the page kept the old number.
+ *    The license sizes' offer ids ride the same law: the buy buttons open
+ *    the store on `?offer=<id>`, so each id must be an authored license
+ *    row's metadata.name, in seat order.
  *
  * The platform half needs the planton-platform checkout beside this repo
  * (or PLANTON_PLATFORM_DIR); when it is absent (e.g. website-only CI) that
@@ -129,19 +132,25 @@ function extractGatedRows(sourceText) {
 // ---------------------------------------------------------------------------
 
 /**
- * The exported numeric constants of pricing.ts, read from the source: a
+ * The exported literal constants of pricing.ts, read from the source: a
  * `export const NAME = <number>` yields a number, `= [<number>, ...] as const`
- * yields an array. Anything else (derived values, strings, objects) is
- * deliberately not a pin target -- the numbers this law pins are authored
+ * yields an array, and so does an array of string literals (the license
+ * offer ids). Anything else (derived values, scalar strings, objects) is
+ * deliberately not a pin target -- the facts this law pins are authored
  * literals, one per fact.
  */
-function extractNumericExports(sourceText) {
+function extractLiteralExports(sourceText) {
   const source = ts.createSourceFile('pricing.ts', sourceText, ts.ScriptTarget.Latest, true);
   const values = new Map();
 
   function numberOf(node) {
     if (ts.isNumericLiteral(node)) return Number(node.text);
     return undefined;
+  }
+
+  function literalOf(node) {
+    if (ts.isStringLiteralLike(node)) return node.text;
+    return numberOf(node);
   }
 
   for (const statement of source.statements) {
@@ -158,7 +167,7 @@ function extractNumericExports(sourceText) {
         continue;
       }
       if (ts.isArrayLiteralExpression(initializer)) {
-        const items = initializer.elements.map(numberOf);
+        const items = initializer.elements.map(literalOf);
         if (items.every((n) => n !== undefined)) values.set(declaration.name.text, items);
       }
     }
@@ -188,7 +197,7 @@ function catalogFeatureUnion(offers) {
   return union;
 }
 
-const sameNumbers = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const sameValues = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 /**
  * The limit pins: each names the site constant, where the platform states
@@ -206,11 +215,11 @@ function checkLimits(pricing, offers, communityEditionPath) {
       fail(`${platformSource} states no value for the fact ${constant} displays -- the platform side of the pin is gone`);
       return;
     }
-    if (!sameNumbers(displayed, enforced)) {
+    if (!sameValues(displayed, enforced)) {
       fail(
         `src/data/pricing.ts says ${constant} = ${JSON.stringify(displayed)}; ` +
           `the platform's ${platformSource} enforces ${JSON.stringify(enforced)} -- ` +
-          `the page would display a number the platform does not enforce; change both together`,
+          `the page would display a value the platform does not enforce; change both together`,
       );
     }
   };
@@ -228,6 +237,15 @@ function checkLimits(pricing, offers, communityEditionPath) {
     `catalog rows ${licenseRows.map((o) => o.file).join(', ') || '(no license rows)'} (spec.licenseTerms.seatLimit)`,
     licenseRows.length > 0
       ? licenseRows.map((o) => o.spec?.licenseTerms?.seatLimit).sort((a, b) => a - b)
+      : undefined);
+
+  // The offer each size's buy button names, in the same seat order.
+  pin('SELF_HOSTED_LICENSE_OFFER_IDS',
+    `catalog rows ${licenseRows.map((o) => o.file).join(', ') || '(no license rows)'} (metadata.name, by seatLimit)`,
+    licenseRows.length > 0
+      ? [...licenseRows]
+          .sort((a, b) => (a.spec?.licenseTerms?.seatLimit ?? 0) - (b.spec?.licenseTerms?.seatLimit ?? 0))
+          .map((o) => o.metadata?.name)
       : undefined);
 
   // The evaluation key's term, from the one claimable license row.
@@ -301,7 +319,7 @@ if (!fs.existsSync(catalogDir)) {
   }
 
   // Law 3: limits.
-  checkLimits(extractNumericExports(fs.readFileSync(pricingPath, 'utf8')), offers, communityEditionPath);
+  checkLimits(extractLiteralExports(fs.readFileSync(pricingPath, 'utf8')), offers, communityEditionPath);
 }
 
 if (process.exitCode !== 1) {
@@ -310,7 +328,7 @@ if (process.exitCode !== 1) {
   if (fs.existsSync(catalogDir)) {
     console.log(
       `\u2713 ${GUARD}: displayed limits agree with the platform ` +
-        `(FREE_TIER_SEATS, SELF_HOSTED_LICENSE_SEAT_CEILINGS, EVALUATION_DAYS, COMMUNITY_SEAT_LIMIT)`,
+        `(FREE_TIER_SEATS, SELF_HOSTED_LICENSE_SEAT_CEILINGS, SELF_HOSTED_LICENSE_OFFER_IDS, EVALUATION_DAYS, COMMUNITY_SEAT_LIMIT)`,
     );
   }
 }
