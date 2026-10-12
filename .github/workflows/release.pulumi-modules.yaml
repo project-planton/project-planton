@@ -192,11 +192,9 @@ jobs:
               gzip -9 -c "${BINARY_NAME}" > "${ARTIFACT_NAME}"
               rm -f "${BINARY_NAME}"
               
-              # Upload to R2
-              if aws s3 cp "${ARTIFACT_NAME}" "s3://${R2_BUCKET}/${R2_KEY}" \
-                --endpoint-url "${AWS_ENDPOINT_URL}" \
+              # Upload to R2, once: a tag's artifacts never change (see publish_once.sh)
+              if tools/ci/release/publish_once.sh "${ARTIFACT_NAME}" "${R2_KEY}" \
                 --cache-control "public, max-age=31536000, immutable"; then
-                echo "✓ Uploaded: https://downloads.planton.ai/${R2_KEY}"
                 LAST_UPLOADED_KEY="${R2_KEY}"
               else
                 echo "✗ ERROR: Failed to upload ${ARTIFACT_NAME} to R2"
@@ -223,10 +221,8 @@ jobs:
               if (cd "${KIND_PATH}" && zip -q -r "${GITHUB_WORKSPACE}/${SOURCE_ARTIFACT}" .) \
                 && zip -q -j "${SOURCE_ARTIFACT}" LICENSE NOTICE; then
                 
-                if aws s3 cp "${SOURCE_ARTIFACT}" "s3://${R2_BUCKET}/${SOURCE_R2_KEY}" \
-                  --endpoint-url "${AWS_ENDPOINT_URL}" \
+                if tools/ci/release/publish_once.sh "${SOURCE_ARTIFACT}" "${SOURCE_R2_KEY}" \
                   --cache-control "public, max-age=31536000, immutable"; then
-                  echo "✓ Uploaded: https://downloads.planton.ai/${SOURCE_R2_KEY}"
                   LAST_UPLOADED_SOURCE_KEY="${SOURCE_R2_KEY}"
                 else
                   echo "✗ ERROR: Failed to upload ${SOURCE_ARTIFACT} to R2"

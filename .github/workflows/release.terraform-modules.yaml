@@ -137,11 +137,9 @@ jobs:
               ZIP_SIZE=$(ls -lh "${ARTIFACT_NAME}" | awk '{print $5}')
               echo "Created: ${ARTIFACT_NAME} (${ZIP_SIZE})"
               
-              # Upload to R2
-              if aws s3 cp "${ARTIFACT_NAME}" "s3://${R2_BUCKET}/${R2_KEY}" \
-                --endpoint-url "${AWS_ENDPOINT_URL}" \
+              # Upload to R2, once: a tag's artifacts never change (see publish_once.sh)
+              if tools/ci/release/publish_once.sh "${ARTIFACT_NAME}" "${R2_KEY}" \
                 --cache-control "public, max-age=31536000, immutable"; then
-                echo "✓ Uploaded: https://downloads.planton.ai/${R2_KEY}"
                 LAST_UPLOADED_KEY="${R2_KEY}"
               else
                 echo "✗ ERROR: Failed to upload ${ARTIFACT_NAME} to R2"

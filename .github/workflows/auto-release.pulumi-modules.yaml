@@ -214,11 +214,9 @@ jobs:
           COMP_SIZE=$(ls -lh "${ARTIFACT_NAME}" | awk '{print $5}')
           echo "Built: ${ARTIFACT_NAME} (${COMP_SIZE})"
           
-          # Upload to R2
-          aws s3 cp "${ARTIFACT_NAME}" "s3://${R2_BUCKET}/${R2_KEY}" \
-            --endpoint-url "${AWS_ENDPOINT_URL}" \
+          # Upload to R2, once: a tag's artifacts never change (see publish_once.sh)
+          tools/ci/release/publish_once.sh "${ARTIFACT_NAME}" "${R2_KEY}" \
             --cache-control "public, max-age=31536000, immutable"
-          echo "✓ Uploaded: https://downloads.planton.ai/${R2_KEY}"
           
           # Publish the module source once (source is platform-independent;
           # the linux_amd64 leg is the designated writer). Apache-2.0 §4(d):
@@ -231,10 +229,8 @@ jobs:
             (cd "${KIND_PATH}" && zip -q -r "${GITHUB_WORKSPACE}/${SOURCE_ARTIFACT}" .)
             zip -q -j "${SOURCE_ARTIFACT}" LICENSE NOTICE
             
-            aws s3 cp "${SOURCE_ARTIFACT}" "s3://${R2_BUCKET}/${SOURCE_R2_KEY}" \
-              --endpoint-url "${AWS_ENDPOINT_URL}" \
+            tools/ci/release/publish_once.sh "${SOURCE_ARTIFACT}" "${SOURCE_R2_KEY}" \
               --cache-control "public, max-age=31536000, immutable"
-            echo "✓ Uploaded: https://downloads.planton.ai/${SOURCE_R2_KEY}"
           fi
 
   # ===========================================================================
