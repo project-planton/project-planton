@@ -329,10 +329,8 @@ shared state and needs the user's explicit go-ahead:
   strongest form -- deploying from THIS machine
   (`references/infra.machine-deploy.md`: the probe, the grammar, the
   consent discipline).
-- **A working copy of a deployed Infra Stack is different**: there, every
-  change is planned (`planton infra stack plan`), shown with every Destroy
-  row named, and applied only on the user's yes (`planton infra stack
-  apply`) -- consent per plan, and per destroy
+- **A working copy of a deployed Infra Stack is different**: every change
+  is planned, shown with every Destroy named, and applied on the user's yes
   (`references/infra.deployed-stacks.md`).
 
 ## Rules that prevent whole failure classes
