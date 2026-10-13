@@ -65,6 +65,12 @@ This visualization makes it easy to understand the deployment topology and diagn
   Alt: Infra Stack DAG visualization showing an AWS VPC connected to subnets, security groups, and an RDS instance
 -->
 
+## One Stack per Environment
+
+An Infra Stack lives in exactly one environment, and its name is unique within that environment. Installing the same chart into staging and production gives you two stacks that share a name: each keeps its own values, its own history and its own pipelines, and changing one never touches the other. Every command that names a stack by name also names its environment with `--env`; a stack's id identifies it on its own. A stack's environment is fixed when it is created.
+
+The environment also decides who may change the stack. Stacks follow the same access rules as the Infra Components they deploy: a permission granted on an environment covers that environment's stacks, and a protected environment stops organization-wide deploy and destroy permissions at its boundary.
+
 ## Infra Stack Lifecycle
 
 ### Create
@@ -81,18 +87,20 @@ Or from the web console's chart catalog by selecting a chart, picking the enviro
 
 ### Redeploy
 
-Trigger a new pipeline without changing the stack's configuration. Useful for drift correction (re-applying desired state after manual cloud console changes), retrying after a failed deployment, or re-running after fixing external issues like quota limits or permissions:
+Trigger a new pipeline without changing the stack's configuration. Useful for retrying after a failed deployment, or re-running after fixing external issues like quota limits or permissions:
 
 ```bash
-planton infra stack deploy <stack-name-or-id>
+planton infra stack deploy <stack-name-or-id> --env <env>
 ```
+
+A redeploy runs only what needs to run (see [What a Run Applies](#what-a-run-applies)). To put back a resource someone changed outside Planton, refresh that Infra Component first, then redeploy the stack.
 
 ### Undeploy
 
 Destroy all Infra Components owned by the stack without deleting the stack record. The stack configuration is preserved and can be redeployed later — useful for temporarily tearing down infrastructure to save costs:
 
 ```bash
-planton infra stack undeploy <stack-name-or-id>
+planton infra stack undeploy <stack-name-or-id> --env <env>
 ```
 
 ### Purge
@@ -100,10 +108,21 @@ planton infra stack undeploy <stack-name-or-id>
 Destroy all Infra Components and delete the stack record permanently:
 
 ```bash
-planton infra stack purge <stack-name-or-id>
+planton infra stack purge <stack-name-or-id> --env <env>
 ```
 
 Deleting an Infra Stack does not automatically destroy its infrastructure. You must explicitly undeploy first if the infrastructure should be removed. This is a deliberate safety measure — deleting a configuration record should never accidentally destroy production resources.
+
+## What a Run Applies
+
+A stack's deploy applies only the resources whose inputs moved since their last successful deploy. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since** the job that last applied it, and hands that job's outputs to the resources that depend on it. Change one value and that resource runs, along with any dependent whose inputs it changes; redeploy with nothing changed and nothing runs. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource always runs.
+
+A change made outside Planton, such as an edit in the cloud console, moves nothing Planton deploys, so a redeploy reads that resource as unchanged. Refresh the Infra Component first: a refresh that finds the change clears what the resource recorded as applied, and the next redeploy runs its job.
+
+Two more outcomes appear on a run's resources:
+
+- **Unmanaged** — an adopted resource, one whose lifecycle events are disabled (see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it: a deploy leaves it alone, and an undeploy or purge leaves it in the cloud.
+- **Owned elsewhere** — a resource another live Infra Stack or Service owns. An undeploy or purge leaves it in place for its owner, and a deploy that would change it is refused, naming the owner to change it through.
 
 ## Using the CLI
 
@@ -112,22 +131,22 @@ Deleting an Infra Stack does not automatically destroy its infrastructure. You m
 planton chart install my-stack ./chart-dir -f values.yaml
 
 # Deploy an existing stack (starts a deploy run and follows it)
-planton infra stack deploy <stack-name-or-id>
+planton infra stack deploy <stack-name-or-id> --env <env>
 
 # List pipelines for a stack
-planton infra stack infra-pipelines <stack-name-or-id>
+planton infra stack infra-pipelines <stack-id>
 
 # Get the last pipeline for a stack
-planton infra stack last-pipeline <stack-name-or-id>
+planton infra stack last-pipeline <stack-id>
 
 # Undeploy (destroy resources, keep stack)
-planton infra stack undeploy <stack-name-or-id>
+planton infra stack undeploy <stack-name-or-id> --env <env>
 
 # Purge (destroy resources and delete stack)
-planton infra stack purge <stack-name-or-id>
+planton infra stack purge <stack-name-or-id> --env <env>
 
 # Get stack details
-planton infra stack get <stack-name-or-id>
+planton infra stack get <stack-name-or-id> --env <env>
 
 # Check a stack out as a chart-shaped folder you can edit and install again
 planton infra stack checkout <stack-name-or-id>
