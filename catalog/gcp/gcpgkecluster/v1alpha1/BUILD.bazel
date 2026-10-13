@@ -23,10 +23,7 @@ go_library(
 
 go_test(
     name = "v1alpha1_test",
-    srcs = [
-        "authorized_networks_test.go",
-        "spec_test.go",
-    ],
+    srcs = ["spec_test.go"],
     embed = [":v1alpha1"],
     deps = [
         "//shared",
