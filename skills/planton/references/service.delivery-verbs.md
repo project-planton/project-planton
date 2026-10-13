@@ -1,13 +1,13 @@
 ---
 title: Deploy, Promote, and Rollback — The Delivery Verbs
-description: The three verbs that deliver a version without a build of their own (deploy an image built anywhere, promote a captured pair between environments, roll an environment back), plus tag releases, feature-branch deploys, and standing branch-to-environment mappings. Read when someone wants a version moved between environments, an image they built running, a tag push to be the release, or a refused delivery explained.
+description: The three verbs that deliver a version without a build of their own (deploy an image built anywhere, promote a captured pair between environments, roll an environment back), plus tag releases, feature-branch deploys, and standing branch-to-environment mappings. Read when someone wants a version moved between environments, an image they built running, a tag push to be the release, every resource re-applied, or a refused delivery or an "Unchanged since" resource explained.
 ---
 
 # Deploy, Promote, and Rollback — The Delivery Verbs
 
 A service's version reaches an environment two ways: a push builds it and deploys it, or someone delivers a version that already exists. This file is about the second way — the three verbs that deploy without a build of their own — plus the two build-and-deliver shapes people ask for by name: releasing by tag, and trying a branch in one environment.
 
-Read this when someone wants a version that runs in one environment to run in another, when something is wrong in an environment and the previous version should come back, when someone has an image built elsewhere (their CI, their laptop) and wants it running, when someone wants a tag push to BE the release or a feature branch running in dev, or when a deployment you started refuses and you need to explain why in terms the person can act on.
+Read this when someone wants a version that runs in one environment to run in another, when something is wrong in an environment and the previous version should come back, when someone has an image built elsewhere (their CI, their laptop) and wants it running, when someone wants a tag push to BE the release or a feature branch running in dev, when a deployment you started refuses and you need to explain why in terms the person can act on, or when a resource read Unchanged and the person wants it applied anyway.
 
 ## Releasing by tag, and trying a branch
 
@@ -46,6 +46,17 @@ Every run captures the resolved manifests for each environment it planned, and e
 - A promotion moves a tested pair. If the configuration for the target environment changed after the artifact was built, promotion still deploys the tested configuration — that is the promise, not a limitation to apologize for.
 
 If someone wants the same version with *current* configuration, that is a different intent. Say so plainly: the honest path today is a new build (for services whose configuration lives in git, a configuration change IS a commit, so pushing is the natural route).
+
+## Only what moved runs, and `--reapply-all`
+
+Every deploy — a push's, and deploy, promote and rollback alike — applies only the resources whose inputs moved since their last successful deploy. Before a resource runs, the platform compares what it would deploy with what its last successful deploy applied: its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt. An exact match runs no job. The resource reads **Unchanged since <job>**, naming the job that last applied it, and hands that job's outputs to everything that depends on it. Any doubt runs the job, so a resource whose module follows a branch, whose secret version cannot be read, or whose connection signs in through the runner's own machine or a broker always runs. An adopted resource reads **Unmanaged**: it is left alone, and no job ever runs for it.
+
+What this means when you explain a delivery:
+
+- **The deployment record lists every resource with what happened to it**: applied by this deploy's job, unchanged (with the job that last applied it), or unmanaged (no job). The rollout's resources check counts them honestly, for example "2 applied; 3 unchanged since their last deploy; 1 adopted and left alone", or "every resource in the environment is unchanged since its last deploy". Unchanged is a success, not a skip: never report it as something that failed to happen.
+- **A delivery runs only what differs from what the environment already runs.** Each resource is compared with that environment's own last deploy of it. When the captured configuration matches what the target ran before and only the image moved, only the resources that carry the image run; the rest read unchanged.
+- **Logs follow the job that did the work.** `planton service logs` on an unchanged resource says "Unchanged since <job> -- this run started no job for it" and follows that job; an unmanaged resource has no engine logs.
+- **A change made outside Planton is invisible to the comparison.** Someone edited the resource in the cloud console, or deleted it: nothing Planton deploys moved, so a plain delivery reads it unchanged. Re-apply every resource instead: `--reapply-all` on `planton service deploy`, `promote` and `rollback`; `reapply_all` on `deploy_service`, `promote_service_deployment` and `rollback_service_deployment`; **Re-apply Every Resource** in the console's Promote and Roll Back dialogs. Every resource then runs its job; an adopted resource stays Unmanaged either way. A rerun of the run repeats its choice. With no backend configured, the deploy already applies every resource in the tree, so the flag is refused there.
 
 ## Environments that take builds only by promotion
 

@@ -1,7 +1,10 @@
 # Deployed Infra Stacks — Working Copies, Fixing Failures, Saving Changes
 
 A chart is a blueprint; an **Infra Stack** is one chart installed into one
-environment. The moment a stack is created it carries its OWN copy of the
+environment. A stack is named within its environment: the same chart
+installed into qa and prod is two stacks that share a name, so every
+command that names a stack also names its environment (`--env`). The moment
+a stack is created it carries its OWN copy of the
 templates and values — detached from the chart it came from. Editing the
 chart never changes a deployed stack, and editing a stack never changes the
 chart. This file governs the second mode of your work: modifying something
@@ -53,8 +56,11 @@ stack. Never reconstruct a stack's files from its record by hand; pull
 the real thing:
 
 ```
-planton infra stack checkout <id-or-name> --output-dir <stack-dir>
+planton infra stack checkout <id-or-name> --env <env> --output-dir <stack-dir>
 ```
+
+A name alone is ambiguous when the chart is installed in several
+environments; pass the environment the user means (an id needs none).
 
 The checkout lays out the working copy — templates, values, and the hidden
 binding — as its own top-level subfolder of your workspace, and everything
@@ -90,7 +96,10 @@ invisible to it). Keep the folder green before proposing to save.
 ## Saving: `chart install` IS the update
 
 The Helm-consistent verb updates the existing stack when the name matches
-— it never creates a duplicate:
+in that environment — it never creates a duplicate. The same name with
+another `--env` is a different stack: installing there creates (or updates)
+that environment's own stack and never touches this one, and a stack's
+environment can never be changed:
 
 ```
 planton chart install <stackName> . --org <org> --env <env> \
@@ -119,6 +128,40 @@ planton chart install <stackName> . --org <org> --env <env> -m "…" --no-follow
 planton infra pipeline status <infpipe_id>     # poll between other work
 planton infra pipeline logs <infpipe_id>       # when a node fails
 ```
+
+## What a run applies, and what it leaves alone
+
+A stack run applies only the resources whose inputs moved since their last
+successful deploy. Before a resource runs, the platform compares what it
+would deploy (its settings, the values it reads from other resources, its
+secrets' current versions and its variables, the account it deploys into,
+the module version, whether anything it sits on was rebuilt) with what its
+last successful deploy applied. An exact match runs no job: the node reads
+**Unchanged since <job>**, naming the job that last applied it, and hands
+that job's outputs to its dependents. So a save that changes one value runs
+that resource, and a dependent only when a value it reads changed; a
+re-apply with nothing changed runs nothing. Say so when you narrate: unchanged nodes are successes, not
+skipped work.
+
+Three more node outcomes to read correctly:
+
+- **Unmanaged** — an adopted resource
+  (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`). The stack
+  records it and never applies or destroys it: a deploy leaves it alone,
+  and an undeploy or purge leaves it in the cloud.
+- **Owned elsewhere** — a component another live stack or service owns.
+  An undeploy or purge leaves it in place for its owner. A deploy that
+  would change it is refused with a sentence naming the owner ("… is owned
+  by infra stack 'x', so this run may not change it -- change it through
+  that stack."); relay it, and change the component through that owner.
+- **A resource changed outside Planton** (edited in the cloud console,
+  deleted by hand) is invisible to the comparison, because nothing Planton
+  deploys moved — a plain re-apply reads it unchanged. Refresh that
+  component first (`planton tofu refresh <ic_id>`, or `planton pulumi
+  refresh`): a refresh that finds the drift clears what the component
+  recorded as applied. Then re-apply the stack
+  (`planton infra stack deploy <stackName> --env <env>`), and that
+  resource runs its job. Both are platform mutations: confirm first.
 
 ## Narrate every transition — the user is watching the app
 

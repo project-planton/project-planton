@@ -31,7 +31,9 @@ This differs from "Pause After Preview" (below), which allows the preview to run
 
 ### Lifecycle Events Disabled
 
-When enabled, Infra Jobs are not automatically created when an Infra Component is created, updated, or deleted. You can still create Infra Jobs manually through the CLI or web console, but the automatic trigger from lifecycle events is suppressed.
+When enabled, Infra Jobs are not automatically created when an Infra Component is created or updated. You can still create Infra Jobs manually through the CLI or web console, but the automatic trigger from lifecycle events is suppressed. This is how a resource that already exists in your cloud is adopted.
+
+Inside an Infra Stack or a Service deployment, such a resource reads **Unmanaged**: the run records it and never applies or destroys it, so a deploy leaves it alone, and a stack's undeploy or a service's deletion leaves it in the cloud. Tearing it down is a deliberate act on that Infra Component alone.
 
 This is useful for shared infrastructure that multiple teams depend on, where accidental changes could have wide impact. Only explicit, intentional Infra Jobs run.
 

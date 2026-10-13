@@ -31,7 +31,7 @@ The pipeline executes the graph:
 1. Resources with no dependencies start immediately, in parallel.
 2. When a resource completes, its dependents become eligible.
 3. Independent branches of the graph execute concurrently.
-4. Each resource deployment runs as a separate [Infra Job](/docs/infrastructure/infra-jobs).
+4. Each resource whose inputs moved since its last successful deploy runs as a separate [Infra Job](/docs/infrastructure/infra-jobs). A resource whose inputs match exactly runs no job: it reads **Unchanged since** the job that last applied it and passes that job's outputs to its dependents (see [What a Run Applies](/docs/infrastructure/infra-stacks#what-a-run-applies)).
 5. If a resource fails, all of its downstream dependents are cancelled.
 
 ```mermaid
@@ -58,6 +58,8 @@ Infra Pipelines support two operations:
 
 - **Deploy** — Create or update Infra Components. This is the default, triggered when an Infra Stack is created, updated, or explicitly redeployed.
 - **Undeploy** — Destroy Infra Components in reverse dependency order. The database is destroyed before the VPC it depends on, ensuring clean teardown.
+
+In both, an adopted resource reads **Unmanaged** and is left alone, and a resource another live stack or service owns reads **Owned elsewhere**: an undeploy leaves it in place, and a deploy that would change it is refused.
 
 ## Manual Approval Gates
 
@@ -88,7 +90,7 @@ planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-i
 
 ## Monitoring Progress
 
-The web console displays the dependency graph with real-time status updates for each resource. Completed resources are marked as successful, active deployments show as in progress, and pending resources wait for their dependencies. Click any resource node to drill down to its Infra Job logs.
+The web console displays the dependency graph with real-time status updates for each resource. Completed resources are marked as successful, active deployments show as in progress, and pending resources wait for their dependencies. Click any resource node to drill down to its Infra Job logs; an unchanged resource links to the job that last applied it.
 
 The pipeline detail view shows the full graph along with timing information — when each resource started, how long it took, and the overall pipeline duration.
 
@@ -108,7 +110,7 @@ The web console provides a cancel button with a confirmation dialog explaining t
 |--------|------------------|----------------|
 | Scope | Single Infra Component | Multiple Infra Components |
 | Dependencies | None — each resource is independent | Automatic — resources deploy in dependency order |
-| Execution | One Infra Job | Multiple Infra Jobs, with parallelism |
+| Execution | One Infra Job | One Infra Job per resource that changed, with parallelism |
 | Approval | Per-resource | Environment-level and per-resource gates |
 | Tracking | Individual Infra Job status | Unified view across all resources |
 

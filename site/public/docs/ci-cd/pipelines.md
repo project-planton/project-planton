@@ -42,7 +42,9 @@ For self-managed pipelines, the build stage runs your custom Tekton pipeline ins
 
 The deploy stage rolls out the built artifact to each configured environment. Environments are deployed sequentially, following your organization's promotion policy (for example: dev, then staging, then production).
 
-For each environment, the deploy stage creates an Infra Job — an atomic infrastructure operation that provisions the Infra Component for that deployment target. The pipeline waits for each environment to complete before proceeding to the next. If a deployment fails, subsequent environments are skipped.
+For each environment, the deploy stage applies the service's Infra Components, each through an Infra Job — an atomic infrastructure operation. Only the resources whose inputs moved since their last successful deploy run a job. The rest read **Unchanged since** the job that last applied them and run nothing; an adopted resource reads **Unmanaged** and is left alone. The deployment record lists every resource with what happened to it. To apply every resource anyway — after someone changed one outside Planton, say — deploy, promote or roll back with `--reapply-all` (**Re-apply Every Resource** in the console's Promote and Roll Back dialogs).
+
+The pipeline waits for each environment to complete before proceeding to the next. If a deployment fails, subsequent environments are skipped.
 
 This sequential model exists for a reason: each environment can depend on the previous one succeeding (you do not want a broken build reaching production), and failure at any stage stops the rollout cleanly rather than leaving partial deployments across environments.
 
