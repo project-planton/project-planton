@@ -233,9 +233,11 @@ var _ = ginkgo.Describe("GcpGkeClusterSpec Custom Validation Tests", func() {
 
 		ginkgo.It("accepts master authorized networks", func() {
 			spec := minimalSpec()
-			spec.MasterAuthorizedNetworks = &GcpGkeClusterMasterAuthorizedNetworks{
-				CidrBlocks: []*GcpGkeClusterMasterAuthorizedNetworkCidr{
-					{CidrBlock: "203.0.113.0/24", DisplayName: "office"},
+			spec.AuthorizedNetworksPolicy = &GcpGkeClusterSpec_MasterAuthorizedNetworks{
+				MasterAuthorizedNetworks: &GcpGkeClusterMasterAuthorizedNetworks{
+					CidrBlocks: []*GcpGkeClusterMasterAuthorizedNetworkCidr{
+						{CidrBlock: "203.0.113.0/24", DisplayName: "office"},
+					},
 				},
 			}
 			err := protovalidate.Validate(newCluster(spec))
@@ -723,9 +725,11 @@ var _ = ginkgo.Describe("GcpGkeClusterSpec Custom Validation Tests", func() {
 
 		ginkgo.It("rejects an invalid master authorized CIDR", func() {
 			spec := minimalSpec()
-			spec.MasterAuthorizedNetworks = &GcpGkeClusterMasterAuthorizedNetworks{
-				CidrBlocks: []*GcpGkeClusterMasterAuthorizedNetworkCidr{
-					{CidrBlock: "office-network"},
+			spec.AuthorizedNetworksPolicy = &GcpGkeClusterSpec_MasterAuthorizedNetworks{
+				MasterAuthorizedNetworks: &GcpGkeClusterMasterAuthorizedNetworks{
+					CidrBlocks: []*GcpGkeClusterMasterAuthorizedNetworkCidr{
+						{CidrBlock: "office-network"},
+					},
 				},
 			}
 			err := protovalidate.Validate(newCluster(spec))

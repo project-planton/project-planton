@@ -272,10 +272,22 @@ message GcpGkeClusterSpec {
   // for production.
   GcpGkeClusterPrivateCluster private_cluster = 27;
 
-  // CIDR allowlist for control-plane API access. Without it, the public
-  // endpoint (when enabled) accepts connections from any IP that presents
-  // valid credentials.
-  GcpGkeClusterMasterAuthorizedNetworks master_authorized_networks = 28;
+  // IP filtering for control-plane API access. Choosing a restricted policy
+  // is meaningful even when it contains no CIDRs. Leaving this choice unset
+  // configures no authorized-networks restriction, as does explicitly choosing
+  // unrestricted_networks. Authentication and endpoint availability are
+  // controlled independently.
+  oneof authorized_networks_policy {
+    // Restrict control-plane IP access to the configured networks. An empty
+    // policy authorizes no external CIDR ranges; the Google public-IP and
+    // private-endpoint switches retain their own documented behavior.
+    GcpGkeClusterMasterAuthorizedNetworks master_authorized_networks = 28;
+
+    // Explicitly configure no authorized-networks IP restriction. A public
+    // endpoint still requires valid credentials, and this does not enable
+    // an endpoint that is disabled by control_plane_endpoints/private_cluster.
+    GcpGkeClusterUnrestrictedNetworks unrestricted_networks = 77;
+  }
 
   // Control-plane endpoint surface: the DNS endpoint (a Google-managed
   // *.gke.goog name reachable without VPC peering — the modern access path)
@@ -1070,6 +1082,10 @@ message GcpGkeClusterPrivateCluster {
   // region).
   bool enable_master_global_access = 5;
 }
+
+// GcpGkeClusterUnrestrictedNetworks explicitly selects no authorized-networks
+// IP restriction. The empty message is the complete choice.
+message GcpGkeClusterUnrestrictedNetworks {}
 
 // GcpGkeClusterMasterAuthorizedNetworks allowlists CIDRs for control-plane
 // API access.
