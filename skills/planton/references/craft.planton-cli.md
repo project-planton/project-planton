@@ -37,7 +37,9 @@ inline for one-off scoping.
 ```
 planton chart list                        # charts in the catalog (org + official)
 planton infra stack list -o json        # the org's Infra Stacks (what has been deployed)
-planton infra stack get <id-or-name>    # one stack, full record
+planton infra stack get <id-or-name>    # one stack, full record (its declaration and live revision)
+planton infra stack history <name> --env <env>  # its revisions: every plan applied, newest first
+planton infra stack plan <name> --env <env>     # what applying would do now (writes nothing)
 planton env list                          # environments in the org
 planton search connections                # provider connections (which clouds/clusters)
 planton connection authorization list     # which connections which envs may use

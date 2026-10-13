@@ -64,9 +64,9 @@ destroys, and deletes of resources that already exist are never blocked by
 the policy — only NEW creations of disabled kinds are refused. Two
 consequences for your behavior:
 
-- A working copy of a deployed Infra Stack saves and redeploys normally even
+- A working copy of a deployed Infra Stack plans and applies normally even
   when its kinds are now disabled — never warn about availability on a
-  working-copy save (`infra.deployed-stacks.md`).
+  working copy's plan (`infra.deployed-stacks.md`).
 - References to existing resources of disabled kinds keep resolving; wiring
   a new resource TO one is a read the platform permits.
 

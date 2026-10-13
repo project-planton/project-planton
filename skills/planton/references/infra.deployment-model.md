@@ -26,7 +26,12 @@ Practical implications worth sharing at the right moment:
   components run in parallel, at most four at once per run; a failed node
   ends everything downstream of it ("Not run: <Kind>/<slug> failed") while
   independent branches carry on.
-- A stack has one run at a time: a save, deploy, undeploy, purge or rerun is
+- Every change to a stack is a plan read first: what applying would do to
+  each resource (Create, Update, Destroy, Keep in Cloud, Adopt, Unchanged…),
+  before anything runs. Applying records a numbered revision and starts one
+  run that applies what the stack declares, then removes what it no longer
+  declares — destroyed, or kept in the cloud as chosen.
+- A stack has one run at a time: an apply, undeploy, purge or rerun is
   refused while a run of that stack is queued, running or waiting for
   approval, and the refusal names the run. Relay it: approve or reject that
   run, or cancel it (`planton infra pipeline cancel <id>`), then retry.
@@ -37,9 +42,11 @@ Practical implications worth sharing at the right moment:
   one of its resources (the refusal names that stack).
 - A failed pipeline is diagnosed node by node: find the failed node, read its
   Infra Job's error and logs (`craft.planton-cli.md` has the exact commands).
-- Redeploying after a chart fix creates a new pipeline run; resources whose
-  inputs did not move run no job and read "Unchanged since <job>" (no
-  duplicate infrastructure). A save never destroys anything.
+- Applying a chart fix creates a new run; resources whose inputs did not
+  move run no job and read "Unchanged since <job>" (no duplicate
+  infrastructure). A resource the templates stop declaring is destroyed
+  only when its plan says Destroy and the person agreed — or kept running
+  in the cloud when they chose Keep in Cloud.
 
 ## Every resource deploys through an open-source module
 

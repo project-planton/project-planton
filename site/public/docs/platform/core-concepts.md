@@ -70,15 +70,15 @@ Key characteristics:
 
 ### Infra Stacks
 
-An Infra Stack is a running instance of an Infra Chart with your specific configuration. If an Infra Chart is the template, an Infra Stack is the deployed instance.
+An Infra Stack is an Infra Chart declared into one environment with your values. If an Infra Chart is the template, an Infra Stack is the deployed instance.
 
 The lifecycle:
 
-1. Choose an Infra Chart (template)
-2. Provide configuration values
-3. An Infra Stack is created (instance)
-4. Infra Components are deployed in dependency order
-5. Progress is tracked in real-time via DAG visualization
+1. Choose an Infra Chart (template) and an environment
+2. Set the values that environment needs
+3. Review the plan: what applying creates, updates or destroys, resource by resource
+4. Apply it: the stack records a numbered revision, and its Infra Components deploy in dependency order
+5. Progress is tracked in real time via DAG visualization; every later change is another plan and another revision
 
 [Learn more about Infra Stacks](/docs/infrastructure/infra-stacks)
 

@@ -34,16 +34,19 @@ planton chart build . -f values-prod.yaml -o json
 A values file has the values.yaml shape and lists only the params it changes;
 every other param keeps the chart's value. Resolution is by name, in this
 order: values.yaml, then each `-f` file, then `--set` (later wins) -- the same
-order `chart install` uses, which adds `--set-file name=path` before `--set`.
+order `chart install` and `infra stack plan|apply` use, which add `--set-file name=path` before `--set`.
 An unknown name in a file or a flag is exit 2, with the declared names listed.
 
 `--show` prints the rendered documents (the params applied), the same
 documents an install stores as the stack's render; `--output-dir` writes both
 `template.yaml` (the combined templates) and `rendered.yaml`. To see exactly
-what an install would apply against a real environment without creating
-anything, use `planton chart install <name> <chart> -f <file> --dry-run`: it
-prints every param with its source and the render, and `-o json` adds `params`
-and `renderedYaml` to this report.
+what installing would do against a real environment without applying
+anything, plan it: `planton infra stack plan <name> <chart> --env <env> -f <file>`
+(or `planton chart install <name> <chart> -f <file> --dry-run`, the same plan).
+It prints every value with its source, then each resource as Create, Update,
+Destroy, Keep in Cloud, Adopt, Unchanged and the rest, with the reason;
+`-o json` prints the plan record, rendered build included. A build checks
+the chart; a plan checks it against what the environment already runs.
 
 Pin the control plane when needed (local instance, CI, desktop studio):
 

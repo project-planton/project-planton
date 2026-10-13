@@ -45,8 +45,10 @@ Deleting an environment removes Planton's records, secrets, variables, grants
 and the Planton-managed state of its resources -- it never touches the cloud.
 So `planton env delete <env>` is REFUSED while anything in the environment is
 still deployed; the refusal names each resource and the command that destroys
-it (`planton infra stack undeploy <stack>` for an Infra Stack's components,
-`planton purge <Kind> <slug>` for anything else). Relay the refusal; destroy
+it (`planton infra stack undeploy <stack> --env <env> --yes` for an Infra
+Stack's components, `planton purge <Kind> <slug> --yes` for anything else --
+`--yes` only after the user agreed, since nothing in your session can answer
+the CLI's question). Relay the refusal; destroy
 first when the user wants the infrastructure gone. When they want it kept
 running outside Planton, `--retain-infra-components` deletes the environment
 and leaves the infrastructure alone -- refused while a running resource keeps
