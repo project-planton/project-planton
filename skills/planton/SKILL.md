@@ -429,7 +429,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/infra.deployment-model.md` | What happens after deploy (Infra Stacks, pipelines, Infra Jobs, IaC modules); explaining or diagnosing it |
 | `references/infra.machine-deploy.md` | Deployment is the next step on a signed-in instance; offering the machine's own cloud login as the deploy path; performing a consented deploy |
 | `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; saving changes to a deployed Infra Stack |
-| `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; adopting an orphaned provider resource into IaC state |
+| `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing an orphaned provider resource into IaC state |
 | `references/infra.workspace-postures.md` | The folder-identity check's full choreography: workspaces, checkouts, loose manifests and SETS, the canvas rules, and the application-repository posture a coding agent works in |
 | `references/infra.worked-example.md` | The full shape of a small chart in one place; checking your layout against a known-good one |
 | `references/cloud.aws-architecture.md` | Choosing AWS service combinations; security and network defaults |

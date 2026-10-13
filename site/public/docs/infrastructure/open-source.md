@@ -65,7 +65,7 @@ The boundary between Planton open source and the Planton platform is clear:
 | Provisioning | IaC modules (Pulumi/Terraform/OpenTofu) | Infra Jobs that execute IaC modules via Runner |
 | Dependencies | `ValueFromRef` references, resolved across a manifest set from captured outputs | Infra Charts and DAG-based Infra Pipelines |
 | Credentials | Local environment variables or config files | Connect (managed credential storage and resolution) |
-| Orchestration | Multi-manifest sets in dependency order, sequential, preflight-verified | Parallelized DAG orchestration with approval gates, history, and drift detection |
+| Orchestration | Multi-manifest sets in dependency order, sequential, preflight-verified | Parallelized DAG orchestration with approval gates and history |
 | Collaboration | CLI-only, single user | Web console, teams, audit trails, RBAC |
 | State management | Local or configured backend; encryption is the engine's own setting (`TF_ENCRYPTION`, a Pulumi passphrase) | Managed state backends with multi-tenant isolation; every backend names the key its state is encrypted with |
 | Governance | None | Flow Control policies, deployment security tiers |

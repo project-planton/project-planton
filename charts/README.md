@@ -118,6 +118,14 @@ kinds in this repo.
   Pulumi) is a property of the deployment target, resolved from the
   organization's mapping, not baked into the chart. Omit the annotation and
   let each resource inherit the deploying organization's choice.
+- **Protection from teardown is a per-resource annotation.** A resource
+  whose loss would be unrecoverable — a production database, a state
+  bucket — can carry `planton.dev/prevent-destroy: "true"` in its
+  metadata annotations, for example
+  `annotations: { planton.dev/prevent-destroy: "true" }`. The platform never
+  tears it down: the stack's undeploy and purge are refused before anything
+  starts, naming the resource, and so is a destroy of that component alone.
+  Adding or removing the annotation changes no deployment.
 
 ## Validating a chart
 

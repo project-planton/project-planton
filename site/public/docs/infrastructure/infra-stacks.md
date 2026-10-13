@@ -1,7 +1,7 @@
 ---
 title: "Infra Stacks"
 sidebar_title: "Infra Stacks"
-description: "An Infra Chart rendered into one environment: the configured, versioned instance that deploys and manages a collection of Infra Components through deploy and undeploy pipelines."
+description: "An Infra Chart rendered into one environment: the configured instance that deploys and manages a collection of Infra Components through deploy and undeploy pipelines."
 icon: infrastructure
 order: 40
 tags:
@@ -14,7 +14,7 @@ tags:
 
 An Infra Chart defines what you *can* deploy — a reusable template with parameterized placeholders. But a template alone does not answer the questions that matter for a specific deployment: which region, which domain name, how many availability zones, which environment. An Infra Stack captures those answers. It is a configured instance of a template with your specific parameter values filled in, ready to deploy as real infrastructure.
 
-The relationship mirrors how Helm works: an Infra Chart is to an Infra Stack as a Helm chart is to a Helm release. The chart is reusable; the stack is the deployed instance with specific values. This separation enables teams to capture infrastructure patterns once and instantiate them many times — across different environments, regions, or customers — each instance tracked as a distinct, versioned Infra Stack.
+The relationship mirrors how Helm works: an Infra Chart is to an Infra Stack as a Helm chart is to a Helm release. The chart is reusable; the stack is the deployed instance with specific values. This separation enables teams to capture infrastructure patterns once and instantiate them many times — across different environments, regions, or customers — each instance tracked as a distinct Infra Stack.
 
 ## Why Infra Stacks Exist
 
@@ -23,9 +23,8 @@ Before Infra Stacks, the platform had Infra Charts for reusability but no persis
 - Which parameters deployed production-us last month?
 - Did staging update to the latest chart version?
 - Who changed the load balancer domain in production-eu?
-- Can we redeploy production-asia with last week's configuration?
 
-Infra Stacks solve this by introducing a persistent, versioned record of every template instantiation. Each stack captures the chart's templates, the exact parameter values used, the environment, the rendered catalog object manifests, the dependency graph, and a link to every pipeline that deployed it. Pipelines are transient — they run and complete. Infra Stacks persist as the source of truth for what was configured and when.
+Infra Stacks solve this by introducing a persistent record of every template instantiation. Each stack captures the chart's templates, the exact parameter values used, the environment, the rendered catalog object manifests, the dependency graph, and a link to every pipeline that deployed it. Pipelines are transient — they run and complete. Infra Stacks persist as the source of truth for what was configured and when.
 
 ## One Chart, One Environment
 
@@ -44,9 +43,13 @@ The web console provides a creation wizard: browse the chart catalog, pick the e
 
 ## Automatic Pipeline Triggering
 
-Creating or updating an Infra Stack starts an [Infra Pipeline](/docs/infrastructure/infra-pipelines). The pipeline takes the stack's Infra Component dependency graph and executes deployments in the correct order. There is no separate "apply" step — an Infra Stack is the declaration of an environment's infrastructure, and the platform acts on it.
+Every save of an Infra Stack — create, update, apply, or `planton chart install` — starts a deploy run, an [Infra Pipeline](/docs/infrastructure/infra-pipelines). The pipeline takes the stack's Infra Component dependency graph and deploys each resource after everything it consumes, up to four at once. There is no separate "apply" step — an Infra Stack is the declaration of an environment's infrastructure, and the platform acts on it. A save never destroys anything: a resource you remove from the templates stays deployed, and stays the stack's, until the stack is undeployed.
 
 Deploying again without changing anything, and tearing the environment down, are explicit operations on the stack: `deploy` and `undeploy` are a pair, and both hand back the stack with the new run's id.
+
+### One Run at a Time
+
+A stack has one run at a time. A save, deploy, undeploy, purge or rerun is refused while a run of the stack is queued, running or waiting for approval, and the refusal names that run. Approve or reject a run that waits for approval, or cancel it (`planton infra pipeline cancel <pipeline-id>`), then try again. A run whose workflow is gone is ended by the platform within about ten minutes, so a stack is never left busy.
 
 ## Dependency Graph Visualization
 
@@ -97,21 +100,54 @@ A redeploy runs only what needs to run (see [What a Run Applies](#what-a-run-app
 
 ### Undeploy
 
-Destroy all Infra Components owned by the stack without deleting the stack record. The stack configuration is preserved and can be redeployed later — useful for temporarily tearing down infrastructure to save costs:
+Destroy everything the stack owns without deleting the stack record. The stack configuration is preserved and can be redeployed later — useful for temporarily tearing down infrastructure to save costs:
 
 ```bash
 planton infra stack undeploy <stack-name-or-id> --env <env>
 ```
 
+An undeploy covers every Infra Component the stack created, including components its templates no longer declare. It reads each resource from its stored record, never from the templates, and destroys dependents first: a workload goes before the cluster it runs on. Each record is settled the moment its own destroy ends:
+
+- A resource the stack holds as **Unmanaged** is released from the stack and stays in the cloud. An undeploy never destroys it.
+- A resource whose record is already gone reads **Already Gone**.
+- A resource another stack or service now owns is left in place for its owner.
+
+An undeploy is refused before anything starts when:
+
+- any resource the stack owns carries `planton.dev/prevent-destroy: "true"` (see [Protecting a Resource from Teardown](#protecting-a-resource-from-teardown));
+- another stack still reads one of its resources — through a reference to it, or with workloads placed in its namespace. The refusal names the reading stack;
+- the stack owns no Infra Components: it "owns no infra components, so there is nothing to undeploy".
+
+A protected environment asks for approval before an undeploy starts, as it does before a deploy.
+
 ### Purge
 
-Destroy all Infra Components and delete the stack record permanently:
+Undeploy the stack, then delete its record — the record is deleted only if the undeploy succeeded:
 
 ```bash
 planton infra stack purge <stack-name-or-id> --env <env>
 ```
 
-Deleting an Infra Stack does not automatically destroy its infrastructure. You must explicitly undeploy first if the infrastructure should be removed. This is a deliberate safety measure — deleting a configuration record should never accidentally destroy production resources.
+A purge is refused whenever an undeploy would be, with one difference: a purge of a stack that owns nothing simply deletes it.
+
+### Delete
+
+Deleting an Infra Stack never destroys infrastructure, so it is refused while the stack still owns Infra Components — undeploy it first, or purge it to do both. A delete is also refused while a run of the stack is in flight.
+
+## Protecting a Resource from Teardown
+
+Annotate a resource with `planton.dev/prevent-destroy: "true"` and it is never torn down through the platform:
+
+```yaml
+metadata:
+  name: prod-db
+  annotations:
+    planton.dev/prevent-destroy: "true"
+```
+
+While any resource the stack owns carries the annotation, the stack's undeploy and purge are refused before anything starts, naming the resource. A person's destroy or purge of that Infra Component is refused too, as is creating, rerunning or resuming a destroy job for it. Adding or removing the annotation changes no deployment: no job runs for that change alone.
+
+To lift the protection, remove the annotation from the stack's templates and apply the stack. For a resource the stack no longer declares, remove it from the Infra Component itself. Deleting a record alone is not a destroy, so the annotation does not stand in its way.
 
 ## What a Run Applies
 
@@ -121,7 +157,7 @@ A change made outside Planton, such as an edit in the cloud console, moves nothi
 
 Two more outcomes appear on a run's resources:
 
-- **Unmanaged** — an adopted resource, one whose lifecycle events are disabled (see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it: a deploy leaves it alone, and an undeploy or purge leaves it in the cloud.
+- **Unmanaged** — a resource whose lifecycle events are disabled (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`, see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it: a deploy leaves it alone, and an undeploy or purge releases it from the stack and leaves it in the cloud.
 - **Owned elsewhere** — a resource another live Infra Stack or Service owns. An undeploy or purge leaves it in place for its owner, and a deploy that would change it is refused, naming the owner to change it through.
 
 ## Using the CLI
@@ -156,11 +192,11 @@ planton infra stack checkout <stack-name-or-id>
 
 | Scenario | Recommended Approach |
 |----------|---------------------|
-| Complete environment (dev, staging, production) | Infra Stack — coordinated deployment, dependency handling, versioned configuration |
+| Complete environment (dev, staging, production) | Infra Stack — coordinated deployment, dependency handling, one recorded configuration |
 | Single resource needed quickly | Direct Infra Component — no orchestration overhead |
-| Reproducible deployments | Infra Stack — configuration captured as a versioned artifact |
+| Reproducible deployments | Infra Stack — configuration captured as a persistent record |
 | Quick experiments | Direct Infra Component — fast iteration, easy to delete |
-| Production infrastructure | Infra Stack — audit trails, parameter history, rollback capability |
+| Production infrastructure | Infra Stack — coordinated changes, approval gates, protected teardown |
 | Adding to existing infrastructure | Direct Infra Component — targeted change without touching other resources |
 
 ## Related Documentation

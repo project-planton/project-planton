@@ -192,7 +192,6 @@ Organization  Environment
 Flow Control Policies govern how infrastructure changes are deployed. They allow you to:
 
 - Require approval before deployment
-- Skip refresh for faster deployments
 - Require plan/preview before apply
 - Pause between plan and apply
 

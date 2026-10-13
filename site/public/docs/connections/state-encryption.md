@@ -115,7 +115,7 @@ Planton supports every combination each engine can do safely, and refuses the re
 - **A deploy whose state could not be saved, on a backend you keep unencrypted.** When OpenTofu changes your infrastructure but cannot save the new state (a credential that expired mid-deploy, a network failure), Planton keeps that state until the resource's next run stores it, before anything else runs. It is sealed under the backend's key, so on a backend you keep unencrypted, it waits unencrypted too.
 - **A saved state that can no longer be stored.** If that kept state no key on the backend opens, or the backend was written outside Planton since, every run on the resource stops with a sentence saying so, until you upload the state the resource should keep.
 - **A lock a failed run left in your own bucket.** On Google Cloud Storage, Azure Blob Storage, or S3 with a DynamoDB lock table, a run that failed mid-deploy can leave its lock behind. Later runs stop with OpenTofu's lock message until you release it with `tofu force-unlock <lock ID>`; Planton cannot release it for you.
-- **A Pulumi create that was in flight when a save failed.** Pulumi keeps every step it saved. A resource it had started creating is recorded as a pending operation: the next run warns about it, and you adopt it with an [import](/docs/infrastructure/importing-resources). Planton does not adopt it for you.
+- **A Pulumi create that was in flight when a save failed.** Pulumi keeps every step it saved. A resource it had started creating is recorded as a pending operation: the next run warns about it, and you bring it into state with an [import](/docs/infrastructure/importing-resources). Planton does not import it for you.
 
 ## Related Documentation
 
