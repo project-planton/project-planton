@@ -1,7 +1,7 @@
 ---
 title: "Infra Stacks"
 sidebar_title: "Infra Stacks"
-description: "An Infra Chart rendered into one environment: the configured instance that deploys and manages a collection of Infra Components through deploy and undeploy pipelines."
+description: "An Infra Chart declared into one environment: every change is a plan you read first, and every applied plan is a numbered revision."
 icon: infrastructure
 order: 40
 tags:
@@ -12,7 +12,7 @@ tags:
 
 # Infra Stacks
 
-An Infra Chart defines what you *can* deploy — a reusable template with parameterized placeholders. But a template alone does not answer the questions that matter for a specific deployment: which region, which domain name, how many availability zones, which environment. An Infra Stack captures those answers. It is a configured instance of a template with your specific parameter values filled in, ready to deploy as real infrastructure.
+An Infra Chart defines what you *can* deploy — a reusable template with parameterized placeholders. But a template alone does not answer the questions that matter for a specific deployment: which region, which domain name, how many availability zones, which environment. An Infra Stack captures those answers. It is a template declared into one environment with the values set there, applied as real infrastructure -- and every change to it is a plan you read before anything runs.
 
 The relationship mirrors how Helm works: an Infra Chart is to an Infra Stack as a Helm chart is to a Helm release. The chart is reusable; the stack is the deployed instance with specific values. This separation enables teams to capture infrastructure patterns once and instantiate them many times — across different environments, regions, or customers — each instance tracked as a distinct Infra Stack.
 
@@ -24,15 +24,15 @@ Before Infra Stacks, the platform had Infra Charts for reusability but no persis
 - Did staging update to the latest chart version?
 - Who changed the load balancer domain in production-eu?
 
-Infra Stacks solve this by introducing a persistent record of every template instantiation. Each stack captures the chart's templates, the exact parameter values used, the environment, the rendered catalog object manifests, the dependency graph, and a link to every pipeline that deployed it. Pipelines are transient — they run and complete. Infra Stacks persist as the source of truth for what was configured and when.
+Infra Stacks answer them with a persistent record of every template instantiation. Each stack holds its declaration — the chart's templates, the chart's `values.yaml` (every value declared, with its default) and the values set for its environment — with its render, its dependency graph, and a numbered **revision** for every plan applied to it: who applied it, why, and how its run ended. Runs are transient; the stack and its revisions are the source of truth for what was declared and when.
 
 ## One Chart, One Environment
 
-You select an Infra Chart from the catalog, pick the environment it deploys into, provide parameter values, and the stack renders the chart's templates into concrete catalog object manifests.
+You select an Infra Chart from the catalog, pick the environment it deploys into, set the values that environment needs, and review the plan of what installing creates.
 
-When the stack is created, the complete template is copied from the chart into the stack. This ensures that chart updates do not break or silently change existing stacks — each stack is a self-contained snapshot of the template it was created from, and it can be checked out to disk and edited with no chart in reach.
+The stack carries its own copy of the chart's templates and `values.yaml`. Chart updates never change an existing stack silently — each stack is self-contained, and it can be checked out to disk and edited with no chart in reach. Only the values someone set are stored as the environment's values; every other value takes the default from the stack's `values.yaml`, so a default the stack's `values.yaml` changes reaches every environment that never chose otherwise — and the plan shows it as a value change first.
 
-The web console provides a creation wizard: browse the chart catalog, pick the environment, fill in the parameter form (auto-generated from the chart's parameter definitions), preview the rendered output, and deploy.
+The web console provides a creation flow: browse the chart catalog, pick the environment, fill in the values form (generated from the chart's declarations, each default shown as a placeholder), then **Review Plan**.
 
 <!-- SCREENSHOT: Infra Stack creation from chart
   Page: /[org]/infra-stacks/create/[infraChartId]
@@ -41,15 +41,45 @@ The web console provides a creation wizard: browse the chart catalog, pick the e
   Alt: Infra Stack creation wizard showing chart parameters and environment selection for an AWS ECS environment chart
 -->
 
-## Automatic Pipeline Triggering
+## Every Change Is a Plan
 
-Every save of an Infra Stack — create, update, apply, or `planton chart install` — starts a deploy run, an [Infra Pipeline](/docs/infrastructure/infra-pipelines). The pipeline takes the stack's Infra Component dependency graph and deploys each resource after everything it consumes, up to four at once. There is no separate "apply" step — an Infra Stack is the declaration of an environment's infrastructure, and the platform acts on it. A save never destroys anything: a resource you remove from the templates stays deployed, and stays the stack's, until the stack is undeployed.
+Every change to an Infra Stack — an edit in the console, `planton infra stack apply`, `planton chart install`, `planton apply -f`, an agent's tool — is first a **plan**: what applying the declaration would do to each resource, before anything runs.
 
-Deploying again without changing anything, and tearing the environment down, are explicit operations on the stack: `deploy` and `undeploy` are a pair, and both hand back the stack with the new run's id.
+| Row | What applying does |
+|-----|--------------------|
+| **Blocked** | Nothing, until it is resolved; the row says why and the way out. |
+| **Destroy** | The resource is no longer in the templates: it is destroyed in the cloud once everything the plan applies has applied. |
+| **Update** | Something that decides its deployment moved: its settings, a secret's version, a value it reads, its module. |
+| **Update Record** | Only Planton's record changes; nothing in the cloud (for example, an annotation added). |
+| **Create** | The resource is new. |
+| **Adopt** | The resource already exists and no stack manages it; the stack takes it over only when you choose Adopt, and the apply may change it to match the template. |
+| **Keep in Cloud** | The resource is no longer in the templates and is kept: Planton stops managing it, and it keeps running and billing in your account. |
+| **May Change** | It reads a value known only after an earlier resource applies. |
+| **Always Runs** | Its job runs on every apply: whether it changes is known only when it runs. |
+| **Unchanged** | Nothing it depends on moved since its last successful deploy. |
+| **Unmanaged** | Planton records it and never applies it. |
+
+Applying a plan runs exactly that plan, and only while nothing it was made from has moved: the apply plans again and is refused when the fresh plan differs ("This plan is out of date…") — someone applied in the meantime, or a resource changed underneath. Plan again and review what changed.
+
+An apply records a numbered **revision** named by its message ("r13 · Raise replicas") and starts one [Infra Pipeline](/docs/infrastructure/infra-pipelines) run: it applies what the stack declares, each resource after everything it consumes, up to four at once; then — only when all of it applied — it removes what the plan removed, dependents first: destroyed, or let go of and kept in the cloud. A failed apply removes nothing. A plan that changes only the declaration (a comment in a template, a value set to its default) records its revision and starts no run; a plan that changes nothing applies nothing.
+
+### Choosing What Happens to Each Resource
+
+- **Destroy or Keep in Cloud.** A removed resource is destroyed unless you keep it. A resource that holds data a destroy cannot give back is destroyed only when you name it: type its name in the console, `--destroy Kind/name` on the CLI. A removed resource whose destroy is blocked — `planton.dev/prevent-destroy`, its own deletion protection, or something that still reads it — blocks only its destroy: choose Keep in Cloud and the plan applies.
+- **Adopt.** A stack never takes over a resource it found; you choose Adopt for it, or remove it from the templates.
+- **Re-apply.** Run an unchanged resource's job anyway, or every resource's (`--reapply Kind/name`, `--reapply-all`).
+
+`planton apply -f` applies a plan only when nothing in it is destroyed, adopted or blocked; otherwise it refuses and names the `planton infra stack apply` command to review the plan with.
+
+### Revisions
+
+Each applied plan is a revision: its number, message, author, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. The stack's **live revision** is the newest that applied; an undeploy clears it. `planton infra stack history <name> --env <env>` lists them, newest first.
+
+A run's Rerun repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
 
 ### One Run at a Time
 
-A stack has one run at a time. A save, deploy, undeploy, purge or rerun is refused while a run of the stack is queued, running or waiting for approval, and the refusal names that run. Approve or reject a run that waits for approval, or cancel it (`planton infra pipeline cancel <pipeline-id>`), then try again. A run whose workflow is gone is ended by the platform within about ten minutes, so a stack is never left busy.
+A stack has one run at a time. While a run is queued, running or waiting for approval, a plan answers with that run instead of rows, and an apply, undeploy, purge or rerun is refused, naming the run. Approve or reject a run that waits for approval, or cancel it (`planton infra pipeline cancel <pipeline-id>`), then try again. A run whose workflow is gone is ended by the platform within about ten minutes, so a stack is never left busy.
 
 ## Dependency Graph Visualization
 
@@ -76,31 +106,26 @@ The environment also decides who may change the stack. Stacks follow the same ac
 
 ## Infra Stack Lifecycle
 
-### Create
+### Plan and Apply
 
-Create an Infra Stack from a chart with the CLI:
-
-```bash
-planton chart install my-stack ./my-chart -f values.yaml --org <org> --env <env> -m "why"
-```
-
-A values file lists only the parameters it changes; every other parameter keeps the chart's value (see [how parameter values resolve](/docs/infrastructure/infra-charts)). Add `--dry-run` to see every parameter and the rendered documents first, without creating anything.
-
-Or from the web console's chart catalog by selecting a chart, picking the environment, filling in parameters, and deploying. The message becomes the run's own name, so a person reading the run later knows why it happened.
-
-### Redeploy
-
-Trigger a new pipeline without changing the stack's configuration. Useful for retrying after a failed deployment, or re-running after fixing external issues like quota limits or permissions:
+Plan a stack from a chart, a checked-out folder, or the declaration it already holds:
 
 ```bash
-planton infra stack deploy <stack-name-or-id> --env <env>
+planton infra stack plan my-stack ./my-chart --env <env> -f values-prod.yaml
+planton infra stack apply my-stack ./my-chart --env <env> -f values-prod.yaml -m "why"
 ```
 
-A redeploy runs only what needs to run (see [What a Run Applies](#what-a-run-applies)). To put back a resource someone changed outside Planton, refresh that Infra Component first, then redeploy the stack.
+A values file lists only the values it sets; every other value keeps the chart's default (see [how values resolve](/docs/infrastructure/infra-charts)). With no chart, the plan is of the stack's own declaration — what moved underneath it — and `--set name=value` alone changes one value. `planton chart install my-stack ./my-chart --env <env>` takes the same path and creates the stack when the name is new; `--dry-run` stops at the plan.
+
+At a terminal, the apply shows the plan and asks once, and asks for the name of anything that holds data before destroying it. Without a terminal (CI), name each destroy with `--destroy Kind/name`, or pass `--plan-digest` from a plan a person reviewed — it consents to that plan's ordinary destroys; a resource that holds data is still named. `--yes` answers the question but consents to no destroy.
+
+`planton infra stack plan` exits `0` when planned, `1` when the declaration does not build, a declared resource is blocked or a run is in flight, and `2` when the plan could not be made; `--detailed-exitcode` adds `4` for a plan that would change something. `-o markdown` prints the plan for a pull request.
+
+In the console, **Review Plan** opens the same plan — from the stack page, the Configuration tab, the create form, or Studio — and **Apply** runs it.
 
 ### Undeploy
 
-Destroy everything the stack owns without deleting the stack record. The stack configuration is preserved and can be redeployed later — useful for temporarily tearing down infrastructure to save costs:
+Destroy everything the stack owns without deleting the stack record. The stack's declaration and revisions are kept, and applying its plan again brings it back — useful for temporarily tearing down infrastructure to save costs:
 
 ```bash
 planton infra stack undeploy <stack-name-or-id> --env <env>
@@ -108,7 +133,7 @@ planton infra stack undeploy <stack-name-or-id> --env <env>
 
 An undeploy covers every Infra Component the stack created, including components its templates no longer declare. It reads each resource from its stored record, never from the templates, and destroys dependents first: a workload goes before the cluster it runs on. Each record is settled the moment its own destroy ends:
 
-- A resource the stack holds as **Unmanaged** is released from the stack and stays in the cloud. An undeploy never destroys it.
+- A resource the stack holds as **Unmanaged**, or one marked `planton.dev/keep-in-cloud: "true"`, is released from the stack and stays in the cloud. An undeploy never destroys it.
 - A resource whose record is already gone reads **Already Gone**.
 - A resource another stack or service now owns is left in place for its owner.
 
@@ -118,7 +143,7 @@ An undeploy is refused before anything starts when:
 - another stack still reads one of its resources — through a reference to it, or with workloads placed in its namespace. The refusal names the reading stack;
 - the stack owns no Infra Components: it "owns no infra components, so there is nothing to undeploy".
 
-A protected environment asks for approval before an undeploy starts, as it does before a deploy.
+A protected environment asks for approval before an undeploy starts, as it does before an apply. The CLI asks before undeploying or purging; `--yes` answers ahead. Applying the stack again later plans each resource anew: any resource the undeploy released plans Adopt.
 
 ### Purge
 
@@ -147,45 +172,54 @@ metadata:
 
 While any resource the stack owns carries the annotation, the stack's undeploy and purge are refused before anything starts, naming the resource. A person's destroy or purge of that Infra Component is refused too, as is creating, rerunning or resuming a destroy job for it. Adding or removing the annotation changes no deployment: no job runs for that change alone.
 
-To lift the protection, remove the annotation from the stack's templates and apply the stack. For a resource the stack no longer declares, remove it from the Infra Component itself. Deleting a record alone is not a destroy, so the annotation does not stand in its way.
+To lift the protection, remove the annotation from the stack's templates and apply the stack (the plan reads Update Record: nothing in the cloud changes). A plan that removes a protected resource reads it Blocked from destroying — choose Keep in Cloud to apply around it. For a resource the stack no longer declares, remove the annotation from the Infra Component itself. Deleting a record alone is not a destroy, so the annotation does not stand in its way.
+
+## Keeping a Resource in the Cloud
+
+Annotate a resource with `planton.dev/keep-in-cloud: "true"` and its stack never destroys it: whenever the stack lets go of it — removed from the templates, undeployed, purged — it is released, still running, and the plan reads Keep in Cloud with the choice locked. A released resource can be adopted by another stack or taken over by a service. This is how a resource moves from an Infra Stack to a Service: remove it from the templates, keep it in the cloud, and the service's next deploy takes it over.
 
 ## What a Run Applies
 
-A stack's deploy applies only the resources whose inputs moved since their last successful deploy. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since** the job that last applied it, and hands that job's outputs to the resources that depend on it. Change one value and that resource runs, along with any dependent whose inputs it changes; redeploy with nothing changed and nothing runs. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource always runs.
+A stack's run applies only the resources whose inputs moved since their last successful deploy — the same comparison its plan shows. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since** the job that last applied it, and hands that job's outputs to the resources that depend on it. Change one value and that resource runs, along with any dependent whose inputs it changes. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource Always Runs.
 
-A change made outside Planton, such as an edit in the cloud console, moves nothing Planton deploys, so a redeploy reads that resource as unchanged. Refresh the Infra Component first: a refresh that finds the change clears what the resource recorded as applied, and the next redeploy runs its job.
+A change made outside Planton, such as an edit in the cloud console, moves nothing Planton deploys, so a plan reads that resource Unchanged. Refresh the Infra Component first: a refresh that finds the change clears what the resource recorded as applied, and the next plan reads it Update.
 
-Two more outcomes appear on a run's resources:
+More outcomes appear on a run's resources:
 
-- **Unmanaged** — a resource whose lifecycle events are disabled (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`, see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it: a deploy leaves it alone, and an undeploy or purge releases it from the stack and leaves it in the cloud.
-- **Owned elsewhere** — a resource another live Infra Stack or Service owns. An undeploy or purge leaves it in place for its owner, and a deploy that would change it is refused, naming the owner to change it through.
+- **Unmanaged** — a resource whose lifecycle events are disabled (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`, see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it; removing it from the templates plans Keep in Cloud, and an undeploy releases it.
+- **Kept in Cloud** — a removed resource the stack let go of; no job ran, and it keeps running.
+- **Owned elsewhere** — a resource another live Infra Stack or Service owns. A teardown leaves it in place for its owner, and a plan that would change it reads Blocked, naming the owner to change it through.
 
 ## Using the CLI
 
 ```bash
-# Create an Infra Stack from a chart (triggers deployment automatically)
-planton chart install my-stack ./chart-dir -f values.yaml
+# Plan: what applying would do, resource by resource (writes nothing)
+planton infra stack plan my-stack ./chart-dir --env <env> -f values.yaml
 
-# Deploy an existing stack (starts a deploy run and follows it)
-planton infra stack deploy <stack-name-or-id> --env <env>
+# Apply exactly the plan shown, as a numbered revision, and follow its run
+planton infra stack apply my-stack ./chart-dir --env <env> -f values.yaml -m "why"
 
-# List pipelines for a stack
+# Install a chart as a stack: the same plan, review and apply
+planton chart install my-stack ./chart-dir --env <env> -f values.yaml -m "why"
+
+# A stack's revisions, newest first
+planton infra stack history <stack-name> --env <env>
+
+# List runs for a stack, and its last run
 planton infra stack infra-pipelines <stack-id>
-
-# Get the last pipeline for a stack
 planton infra stack last-pipeline <stack-id>
 
-# Undeploy (destroy resources, keep stack)
+# Undeploy (destroy resources, keep the stack and its revisions)
 planton infra stack undeploy <stack-name-or-id> --env <env>
 
-# Purge (destroy resources and delete stack)
+# Purge (destroy resources and delete the stack)
 planton infra stack purge <stack-name-or-id> --env <env>
 
-# Get stack details
+# Get stack details: its declaration and live revision
 planton infra stack get <stack-name-or-id> --env <env>
 
-# Check a stack out as a chart-shaped folder you can edit and install again
-planton infra stack checkout <stack-name-or-id>
+# Check a stack out as a working copy: templates, values.yaml, values.<env>.yaml
+planton infra stack checkout <stack-name-or-id> --env <env>
 ```
 
 ## When to Use Infra Stacks vs. Direct Infra Components
@@ -196,7 +230,7 @@ planton infra stack checkout <stack-name-or-id>
 | Single resource needed quickly | Direct Infra Component — no orchestration overhead |
 | Reproducible deployments | Infra Stack — configuration captured as a persistent record |
 | Quick experiments | Direct Infra Component — fast iteration, easy to delete |
-| Production infrastructure | Infra Stack — coordinated changes, approval gates, protected teardown |
+| Production infrastructure | Infra Stack — reviewed plans, revisions, approval gates, protected teardown |
 | Adding to existing infrastructure | Direct Infra Component — targeted change without touching other resources |
 
 ## Related Documentation

@@ -24,7 +24,7 @@ Infra Pipelines automate this. They read the dependency graph from the Infra Sta
 
 ## How It Works
 
-When an Infra Stack is created or updated, the system generates an Infra Pipeline from the stack's dependency graph (DAG). Each node in the graph is an Infra Component; each edge is a dependency where one resource needs an output from another.
+When a plan of an Infra Stack is applied, the platform starts an Infra Pipeline over the plan's graph (DAG): the resources the stack declares, and beside them the resources the plan removes. Each node is an Infra Component, carrying what the reviewed plan said it does; each edge is a dependency where one resource needs an output from another.
 
 The pipeline executes the graph:
 
@@ -33,6 +33,7 @@ The pipeline executes the graph:
 3. Independent branches of the graph execute concurrently, with at most **four resources holding work at once** per run. A job waiting for its runner holds its slot; a resource waiting for a person — at its gate, or on its job's own approval — does not, so the rest of the graph carries on.
 4. Each resource whose inputs moved since its last successful deploy runs as a separate [Infra Job](/docs/infrastructure/infra-jobs). A resource whose inputs match exactly runs no job: it reads **Unchanged since** the job that last applied it and passes that job's outputs to its dependents (see [What a Run Applies](/docs/infrastructure/infra-stacks#what-a-run-applies)).
 5. If a resource fails, everything downstream of it ends at once and reads **Not run: <Kind>/<slug> failed**. Branches that do not depend on it keep running.
+6. Only when everything the stack declares applied, the resources the plan removed are taken down in reverse dependency order: destroyed, or let go of and **Kept in Cloud**, as the person chose. A failed apply removes nothing; its removals read **Not run: nothing is removed while what the stack declares did not all apply**.
 
 ```mermaid
 graph TD
@@ -56,14 +57,16 @@ In this example, the VPC deploys first. Once it completes, both subnets start in
 
 Infra Pipelines support two operations:
 
-- **Deploy** — Create or update Infra Components, each after everything it consumes. This is the default, triggered by every save of an Infra Stack (create, update, apply, `planton chart install`) and by an explicit redeploy. A save never destroys anything.
+- **Deploy** — Apply a stack's plan: create or update Infra Components, each after everything it consumes, then remove what the plan removed. Started by every applied plan that changes a resource (`planton infra stack apply`, `planton chart install`, **Apply** in the console), and named by the revision it applies ("r12 · Raise replicas"). A run whose only failures were removals ends **Applied; 1 removal failed**: what the stack declares is live.
 - **Undeploy** — Destroy everything the stack owns, in reverse dependency order: each resource after everything that consumes it, so the database is destroyed before the VPC it sits in, and a cluster outlives the workloads on it. An undeploy covers every Infra Component the stack created, including components its templates no longer declare, and reads each resource from its stored record rather than from the templates.
 
-In both, a resource the stack holds as **Unmanaged** (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`) runs no job: a deploy leaves it alone, and an undeploy releases it from the stack and leaves it in the cloud, never destroying it. A resource another live stack or service owns reads **Owned elsewhere**: an undeploy leaves it in place for its owner, and a deploy that would change it is refused. In an undeploy, a resource whose record is already gone reads **Already Gone**.
+In both, a resource the stack holds as **Unmanaged** (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`) runs no job: a deploy leaves it alone, and a teardown releases it from the stack and leaves it in the cloud, never destroying it — as it does any resource marked `planton.dev/keep-in-cloud: "true"`. A resource another live stack or service owns reads **Owned elsewhere** and is left in place for its owner. A resource whose record is already gone reads **Already Gone**.
 
-A stack has one run at a time. A save, deploy, undeploy, purge or rerun is refused while a run of that stack is queued, running or waiting for approval, and the refusal names that run: approve or reject it, or cancel it with `planton infra pipeline cancel <pipeline-id>`, then try again. A run's record cannot be deleted while the run is in flight. A run whose workflow is gone — it never started, or stopped without finishing — is ended by the platform within about ten minutes, so a stack is never left busy.
+Before a run reads ended, it settles its revision: Applied (the stack's live revision moves to it), Applied With Removal Failures, Failed or Cancelled. An undeploy clears the stack's live revision.
 
-Rerunning a finished run repeats its operation: a deploy reruns as a deploy, an undeploy as an undeploy of everything the stack owns. Rerunning an undeploy needs destroy access on the stack, just like an undeploy.
+A stack has one run at a time. An apply, undeploy, purge or rerun is refused while a run of that stack is queued, running or waiting for approval, and the refusal names that run: approve or reject it, or cancel it with `planton infra pipeline cancel <pipeline-id>`, then try again. A run's record cannot be deleted while the run is in flight. A run whose workflow is gone — it never started, or stopped without finishing — is ended by the platform within about ten minutes, so a stack is never left busy.
+
+Rerunning a finished run repeats its operation. A deploy reruns its revision — the same reviewed plan, from the graph its last run walked — so what applied stays Unchanged and what failed runs again; it is refused, saying to plan again, once the stack has a newer revision or was undeployed since. An undeploy reruns as an undeploy of everything the stack owns. Rerunning anything that destroys — an undeploy, or a revision that removes resources — needs destroy access on the stack.
 
 ## Manual Approval Gates
 
@@ -144,11 +147,12 @@ planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes
 planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-id> yes
 ```
 
-Infra Pipelines are created automatically when you create or update an Infra Stack. To trigger a pipeline manually:
+Infra Pipelines are started by their stack: an applied plan, an undeploy or a purge.
 
 ```bash
-# Deploy an Infra Stack (starts a deploy run and follows it)
-planton infra stack deploy <stack-id>
+# Plan a stack, then apply exactly that plan (starts a run and follows it)
+planton infra stack plan <stack-name> --env <env>
+planton infra stack apply <stack-name> --env <env> -m "why"
 
 # List pipelines for a stack
 planton infra stack infra-pipelines <stack-name-or-id>

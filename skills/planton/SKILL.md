@@ -110,8 +110,8 @@ file-writing command on any surface:
   manifest; a wired set deploys as one (`planton apply -f <dir>`); a chart
   is for a parameterized architecture.
 - **`.planton/stack.yaml` -- the working copy of a DEPLOYED Infra Stack.**
-  Saving starts a real deployment pipeline; read
-  `references/infra.deployed-stacks.md` before doing anything.
+  Every change is a plan you show the user, then apply; applying starts a
+  real run; read `references/infra.deployed-stacks.md` before doing anything.
 - **No marker, `Chart.yaml` at the root -- the folder itself is the chart.**
 - **No marker, no `Chart.yaml` -- an APPLICATION REPOSITORY.** Infrastructure
   lives under `infrastructure/`; never a `.planton/` directory here.
@@ -322,15 +322,17 @@ shared state and needs the user's explicit go-ahead:
   and compiled -- never fake the step with a different mutation.
 - Deploying the chart is offered, never performed as part of composition
   -- and on the user's EXPLICIT ask you perform it yourself
-  (`planton chart install`, one confirmation, then narrate the pipeline).
+  (`planton chart install`: plan, show, one confirmation, then narrate the run).
   The availability disclosure is a precondition of the deploy act
   (`references/catalog.availability.md`). On a signed-in instance whose
   machine carries a login for the chart's cloud, the offer takes its
   strongest form -- deploying from THIS machine
   (`references/infra.machine-deploy.md`: the probe, the grammar, the
   consent discipline).
-- **A working copy of a deployed Infra Stack is different**: there, the save
-  verb (`planton chart install`) IS the deploy -- consent-gated per save
+- **A working copy of a deployed Infra Stack is different**: there, every
+  change is planned (`planton infra stack plan`), shown with every Destroy
+  row named, and applied only on the user's yes (`planton infra stack
+  apply`) -- consent per plan, and per destroy
   (`references/infra.deployed-stacks.md`).
 
 ## Rules that prevent whole failure classes
@@ -428,7 +430,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/infra.issue-catalog.md` | A build failed and you need the fix pattern for an error |
 | `references/infra.deployment-model.md` | What happens after deploy (Infra Stacks, pipelines, Infra Jobs, IaC modules); explaining or diagnosing it |
 | `references/infra.machine-deploy.md` | Deployment is the next step on a signed-in instance; offering the machine's own cloud login as the deploy path; performing a consented deploy |
-| `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; saving changes to a deployed Infra Stack |
+| `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; planning and applying a change to a deployed Infra Stack; a stack's revisions |
 | `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing an orphaned provider resource into IaC state |
 | `references/infra.workspace-postures.md` | The folder-identity check's full choreography: workspaces, checkouts, loose manifests and SETS, the canvas rules, and the application-repository posture a coding agent works in |
 | `references/infra.worked-example.md` | The full shape of a small chart in one place; checking your layout against a known-good one |

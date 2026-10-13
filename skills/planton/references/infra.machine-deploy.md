@@ -104,15 +104,19 @@ rest deploys now, and that an Infrastructure Admin can enable them
 disclosure was skipped, not that something broke.
 
 ```
-planton chart install <name> <chart-dir> -m "why, like a commit message" --plain
+planton infra stack plan <name> <chart-dir> --env <env>          # show this first
+planton chart install <name> <chart-dir> --env <env> -m "why, like a commit message" \
+  --plan-digest <digest from the plan you showed> --plain
 ```
 
-The install creates the Infra Stack and starts its deployment pipeline
-immediately; follow the pipeline output and narrate what happens — which
-resource is deploying, what failed and why, in the user's vocabulary. The
-org and environment ride your CLI context (`--org`/`-e` when they don't).
-A working copy of a deployed Infra Stack keeps its own rules
-(`references/infra.deployed-stacks.md`) — there the save verb is the deploy.
+Plan first and show the user what installing creates; the install plans
+again, applies exactly that plan, creates the Infra Stack (its first
+revision, r1) and starts its run; follow the run's output and narrate what
+happens — which resource is deploying, what failed and why, in the user's
+vocabulary. The org and environment ride your CLI context (`--org`/`-e`
+when they don't). A working copy of a deployed Infra Stack keeps its own
+rules (`references/infra.deployed-stacks.md`) — every change there is a
+plan, shown, then applied.
 
 ## When it doesn't work — every failure has a way forward
 

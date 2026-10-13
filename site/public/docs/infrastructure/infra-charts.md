@@ -197,14 +197,14 @@ planton chart publish ./my-chart
 # List all charts available for the organization
 planton chart list
 
-# See exactly what an install would apply, and create nothing
-planton chart install my-stack ./my-chart -f values-prod.yaml --dry-run
+# Plan what installing would do, and apply nothing
+planton chart install my-stack ./my-chart --env prod -f values-prod.yaml --dry-run
 
-# Create an Infra Stack from a chart (deploys immediately)
-planton chart install my-stack ./my-chart -f values-prod.yaml
+# Install: plan, review, and apply exactly that plan
+planton chart install my-stack ./my-chart --env prod -f values-prod.yaml -m "why"
 ```
 
-The `chart install` command is the primary entry point for deploying a chart. It creates an Infra Stack with the provided parameter values and automatically triggers an Infra Pipeline.
+The `chart install` command is the primary entry point for deploying a chart. Like `planton infra stack apply`, it plans first — what installing creates, or changes in the stack of that name — shows the plan, asks, and applies exactly that plan as the stack's next revision, starting an Infra Pipeline. The stack keeps the chart's `values.yaml` and only the values you set.
 
 ### How parameter values resolve
 
@@ -221,7 +221,7 @@ params:
     value: 3
 ```
 
-A name the chart does not declare is refused with the list of the chart's parameters, whether it comes from a file, `--set` or `--set-file`. Both commands print where each parameter's value came from and warn about any parameter that renders empty. `--dry-run` goes one step further: it prints every parameter and the rendered documents (to stdout, so `> render.yaml` captures them) and creates nothing. With `--output-format json`, it prints the machine report, including `params` (each value and its source) and `renderedYaml`.
+A name the chart does not declare is refused with the list of the chart's parameters, whether it comes from a file, `--set` or `--set-file`. Every command prints where each parameter's value came from. An installed stack stores only the values you set; every other parameter takes the default from the `values.yaml` the stack carries. `chart build` shows the render; `chart install --dry-run` (or `planton infra stack plan`) shows the plan — each resource as Create, Update, Destroy, Keep in Cloud and the rest — and applies nothing. With `--output-format json`, a plan prints its machine record, the rendered build included.
 
 ## Related Documentation
 

@@ -21,7 +21,7 @@ A plain working folder, like a colleague's directory: you fill it with whatever 
 
 ## `.planton/stack.yaml` — the working copy of a DEPLOYED Infra Stack
 
-The folder is bound to a running deployment: your edits target THAT stack, saving starts a real deployment pipeline, and the workflow bends — read `references/infra.deployed-stacks.md` before doing anything.
+The folder is bound to a running deployment: your edits target THAT stack, every change is a plan you show the user before applying it starts a real run, and the workflow bends — read `references/infra.deployed-stacks.md` before doing anything.
 
 ## No marker, `Chart.yaml` at the root — the folder itself is the chart
 
