@@ -47,12 +47,14 @@ Infra Components support five primary operations:
 - **Create** — Provision new infrastructure. Submitting an Infra Component definition triggers an Infra Job that creates the actual cloud infrastructure.
 - **Update** — Modify the configuration. Changing an Infra Component triggers a new Infra Job that reconciles the infrastructure with the updated definition.
 - **Destroy** — Tear down the cloud infrastructure. The Infra Job removes the actual resources from the cloud provider. The Infra Component record remains in Planton for audit purposes.
-- **Import** — Adopt an existing provider resource into an Infra Component's IaC state without recreating it. The actual infrastructure is not modified — only the state file is updated. Use import when a provider resource was created outside of Planton (manually, by a provider, or through another tool) and you want Planton to manage it going forward. See [Importing Resources](/docs/infrastructure/importing-resources) for the full guide.
+- **Import** — Bring an existing provider resource into an Infra Component's IaC state without recreating it. The actual infrastructure is not modified — only the state file is updated. Use import when a provider resource was created outside of Planton (manually, by a provider, or through another tool) and you want Planton to manage it going forward. See [Importing Resources](/docs/infrastructure/importing-resources) for the full guide.
 - **Purge** — Destroy the infrastructure and delete the Infra Component record from Planton in a single operation. Use this for full cleanup.
 
 The distinction between destroy and purge matters for compliance and auditing. Destroy leaves a record of what existed and when it was torn down. Purge removes all traces.
 
 A destroy reads only what it destroys. A `$secret/` or `$var/` reference the resource was deployed with that has since been deleted does not stop the destroy: the job names the references it could not read and tears the resource down. And a destroy that leaves the IaC state empty removes that state -- the state object in your bucket, or a Pulumi stack with its backups -- and the job says so (`state removed: <key>`); a Terraform Cloud workspace or a Pulumi Cloud stack is kept, holding its history, and a backend that refuses the delete keeps the state, with its reason.
+
+A resource annotated `planton.dev/prevent-destroy: "true"` is never torn down through the platform: its destroy and purge are refused, as is creating, rerunning or resuming a destroy job for it, and the undeploy or purge of a stack that owns it. Remove the annotation to lift the protection. Adding or removing it runs no job.
 
 <!-- SCREENSHOT: Infra Component detail page
   Page: /[org]/infra-component/[env]/[resourceKind]/[resourceName]

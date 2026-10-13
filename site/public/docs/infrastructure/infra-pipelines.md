@@ -1,7 +1,7 @@
 ---
 title: "Infra Pipelines"
 sidebar_title: "Pipelines"
-description: "Coordinated multi-resource deployments that resolve dependencies automatically, execute in parallel where possible, and track progress in real time."
+description: "Coordinated multi-resource deployments and teardowns that resolve dependencies automatically, run up to four resources at once, and track progress in real time."
 icon: pipeline
 order: 45
 tags:
@@ -12,7 +12,7 @@ tags:
 
 # Infra Pipelines
 
-An Infra Pipeline coordinates the deployment of multiple Infra Components in the right order. When an Infra Stack defines resources that depend on each other — a VPC that must exist before the database inside it, a security group that must exist before the load balancer that references it — the Infra Pipeline figures out the order, deploys independent resources in parallel, and waits for dependencies to complete before starting their dependents.
+An Infra Pipeline coordinates the deployment of multiple Infra Components in the right order. When an Infra Stack defines resources that depend on each other — a VPC that must exist before the database inside it, a security group that must exist before the load balancer that references it — the Infra Pipeline figures out the order, deploys independent resources in parallel (up to four at once), and waits for dependencies to complete before starting their dependents.
 
 ## Why Infra Pipelines Exist
 
@@ -28,11 +28,11 @@ When an Infra Stack is created or updated, the system generates an Infra Pipelin
 
 The pipeline executes the graph:
 
-1. Resources with no dependencies start immediately, in parallel.
-2. When a resource completes, its dependents become eligible.
-3. Independent branches of the graph execute concurrently.
+1. Resources with no dependencies start first, in parallel.
+2. When a resource completes, its dependents become eligible; each starts once everything it consumes has finished and a slot is free.
+3. Independent branches of the graph execute concurrently, with at most **four resources holding work at once** per run. A job waiting for its runner holds its slot; a resource waiting for a person — at its gate, or on its job's own approval — does not, so the rest of the graph carries on.
 4. Each resource whose inputs moved since its last successful deploy runs as a separate [Infra Job](/docs/infrastructure/infra-jobs). A resource whose inputs match exactly runs no job: it reads **Unchanged since** the job that last applied it and passes that job's outputs to its dependents (see [What a Run Applies](/docs/infrastructure/infra-stacks#what-a-run-applies)).
-5. If a resource fails, all of its downstream dependents are cancelled.
+5. If a resource fails, everything downstream of it ends at once and reads **Not run: <Kind>/<slug> failed**. Branches that do not depend on it keep running.
 
 ```mermaid
 graph TD
@@ -56,10 +56,14 @@ In this example, the VPC deploys first. Once it completes, both subnets start in
 
 Infra Pipelines support two operations:
 
-- **Deploy** — Create or update Infra Components. This is the default, triggered when an Infra Stack is created, updated, or explicitly redeployed.
-- **Undeploy** — Destroy Infra Components in reverse dependency order. The database is destroyed before the VPC it depends on, ensuring clean teardown.
+- **Deploy** — Create or update Infra Components, each after everything it consumes. This is the default, triggered by every save of an Infra Stack (create, update, apply, `planton chart install`) and by an explicit redeploy. A save never destroys anything.
+- **Undeploy** — Destroy everything the stack owns, in reverse dependency order: each resource after everything that consumes it, so the database is destroyed before the VPC it sits in, and a cluster outlives the workloads on it. An undeploy covers every Infra Component the stack created, including components its templates no longer declare, and reads each resource from its stored record rather than from the templates.
 
-In both, an adopted resource reads **Unmanaged** and is left alone, and a resource another live stack or service owns reads **Owned elsewhere**: an undeploy leaves it in place, and a deploy that would change it is refused.
+In both, a resource the stack holds as **Unmanaged** (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`) runs no job: a deploy leaves it alone, and an undeploy releases it from the stack and leaves it in the cloud, never destroying it. A resource another live stack or service owns reads **Owned elsewhere**: an undeploy leaves it in place for its owner, and a deploy that would change it is refused. In an undeploy, a resource whose record is already gone reads **Already Gone**.
+
+A stack has one run at a time. A save, deploy, undeploy, purge or rerun is refused while a run of that stack is queued, running or waiting for approval, and the refusal names that run: approve or reject it, or cancel it with `planton infra pipeline cancel <pipeline-id>`, then try again. A run's record cannot be deleted while the run is in flight. A run whose workflow is gone — it never started, or stopped without finishing — is ended by the platform within about ten minutes, so a stack is never left busy.
+
+Rerunning a finished run repeats its operation: a deploy reruns as a deploy, an undeploy as an undeploy of everything the stack owns. Rerunning an undeploy needs destroy access on the stack, just like an undeploy.
 
 ## Manual Approval Gates
 
@@ -67,7 +71,7 @@ Infra Pipelines support approval gates at two levels, giving you control over wh
 
 ### Environment-Level Gates
 
-An environment within the pipeline can require manual approval before any of its resources start deploying. When a gate is active, the pipeline pauses and waits for a team member to approve or reject.
+An environment within the pipeline can require manual approval before any of its resources start. A protected environment asks here, for a deploy and an undeploy alike. When a gate is active, the pipeline pauses and waits for a team member to approve or reject.
 
 ```bash
 planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes
@@ -75,11 +79,22 @@ planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes
 
 ### Node-Level Gates
 
-Individual resources within the dependency graph can have their own gates. A node gate pauses the pipeline after that specific resource completes, requiring approval before its downstream dependents proceed. This is useful for high-risk resources where you want to verify the deployment before allowing dependents to start.
+Individual resources within the dependency graph can have their own gates: annotate the resource with `planton.dev/gate.type: manual`. The resource pauses before it runs or after it succeeds (`planton.dev/gate.position`, after by default) until someone approves or rejects, while the rest of the graph carries on. A gate after a resource lets you verify its deployment before its dependents start; a rejection fails the resource. Only a deploy pauses at a resource's gate.
 
 ```bash
 planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-id> yes
 ```
+
+### What an Approval Answers
+
+Approving or rejecting a gate answers at once with what became of the decision:
+
+- **Applied** — the run continues, or the rejected resource fails.
+- **Refused, with the reason** — the gate was already decided by someone else (the first decision stands), it is not waiting for a decision yet, or the run is being cancelled.
+- **The run has ended** — there is nothing left to decide.
+- **Not confirmed in time** — the decision may still apply; check the run before trying again.
+
+The decision, who made it, and their note are recorded where the gate is: an environment gate's on the environment, a resource gate's on that resource.
 
 <!-- SCREENSHOT: Pipeline with manual gate awaiting approval
   Page: /resource/infra-hub/infra-pipeline (DAG graph component)
@@ -96,13 +111,13 @@ The pipeline detail view shows the full graph along with timing information — 
 
 ## Cancelling a Pipeline
 
-Running pipelines can be cancelled. The currently executing resource deployment completes its in-flight infrastructure operation (to avoid leaving resources in an inconsistent state), then remaining resources are cancelled.
+A cancel always ends the run. Nothing new starts, every live Infra Job is asked to stop, and the run waits up to three minutes for them to really end, so each resource reads what its job truly did: a job that finished before the stop reached it is still a success. A job still running after the wait is named on its resource ("Cancel requested; infra job … was still running"). If the run's workflow does not answer the cancel, the platform stops it and ends the run itself.
 
 ```bash
 planton infra pipeline cancel <pipeline-id>
 ```
 
-The web console provides a cancel button with a confirmation dialog explaining that in-flight operations will complete before cancellation takes effect.
+The web console provides a cancel button with a confirmation dialog. Cancelling a run that has already ended changes nothing.
 
 ## Pipeline vs Direct Deployment
 
@@ -110,7 +125,7 @@ The web console provides a cancel button with a confirmation dialog explaining t
 |--------|------------------|----------------|
 | Scope | Single Infra Component | Multiple Infra Components |
 | Dependencies | None — each resource is independent | Automatic — resources deploy in dependency order |
-| Execution | One Infra Job | One Infra Job per resource that changed, with parallelism |
+| Execution | One Infra Job | One Infra Job per resource that changed, up to four at once |
 | Approval | Per-resource | Environment-level and per-resource gates |
 | Tracking | Individual Infra Job status | Unified view across all resources |
 
@@ -122,14 +137,14 @@ Use direct deployment for standalone resources. Use Infra Pipelines (via [Infra 
 # Cancel a running pipeline
 planton infra pipeline cancel <pipeline-id>
 
-# Approve an environment gate
+# Approve an environment gate (yes or no)
 planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes
 
-# Approve a resource-level gate
+# Approve a resource-level gate (yes or no)
 planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-id> yes
 ```
 
-Infra Pipelines are typically created automatically when you create or update an Infra Stack. To trigger a pipeline manually:
+Infra Pipelines are created automatically when you create or update an Infra Stack. To trigger a pipeline manually:
 
 ```bash
 # Deploy an Infra Stack (starts a deploy run and follows it)

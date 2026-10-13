@@ -11,7 +11,7 @@ tags:
 
 # Importing Resources
 
-Importing brings an existing provider resource — a DNS zone, a database, a VPC — under Planton management without recreating it. The import operation reads the resource from the cloud provider and writes it into the Infra Component's IaC state file. The actual infrastructure is never modified. No resources are created, changed, or destroyed. After import, the resource is tracked through Planton's standard lifecycle — updates, drift detection, and teardown all work as if the resource had been created through the platform from the start.
+Importing brings an existing provider resource — a DNS zone, a database, a VPC — under Planton management without recreating it. The import operation reads the resource from the cloud provider and writes it into the Infra Component's IaC state file. The actual infrastructure is never modified. No resources are created, changed, or destroyed. After import, the resource is tracked through Planton's standard lifecycle — updates, refreshes, and teardown all work as if the resource had been created through the platform from the start.
 
 ## Why Import Exists
 
@@ -133,7 +133,7 @@ If you run a provisioner-specific command that does not match the Infra Componen
 
 A successful import means the resource now exists in the IaC state file, but the Planton configuration (the resource spec) may not match the resource's actual settings on the provider. The next step is typically an **Update** operation, which reconciles the desired configuration with the imported state. The update preview shows any differences, letting you decide what to align before applying changes.
 
-Import is the bridge between "this resource exists on a provider" and "Planton manages this resource." The full [Infra Component lifecycle](/docs/infrastructure/infra-components) — updates, drift detection, flow control, and teardown — applies from this point forward.
+Import is the bridge between "this resource exists on a provider" and "Planton manages this resource." The full [Infra Component lifecycle](/docs/infrastructure/infra-components) — updates, refreshes, flow control, and teardown — applies from this point forward.
 
 ## Error Safety
 
@@ -149,7 +149,7 @@ Import failures do not corrupt state. Every error scenario leaves the state file
 
 Import failure is always safe to retry. The Infra Job records the exact error for troubleshooting.
 
-Import is also how you adopt a resource Pulumi created but could not record. When a Pulumi deploy cannot save its state, every step it saved is kept, and a resource whose create was still in flight is recorded as a pending operation. The next run warns about it. Import that resource here; Planton does not adopt it automatically.
+Import is also how you bring in a resource Pulumi created but could not record. When a Pulumi deploy cannot save its state, every step it saved is kept, and a resource whose create was still in flight is recorded as a pending operation. The next run warns about it. Import that resource here; Planton does not import it automatically.
 
 ## Related Documentation
 

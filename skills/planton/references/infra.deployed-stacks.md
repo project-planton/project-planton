@@ -34,9 +34,11 @@ No binding file → a plain chart folder; this reference does not apply.
 
 What the binding changes:
 
-- **Your edits target the running stack.** Saving records a new stack
-  version and the platform starts a deployment pipeline for it immediately —
-  there is no separate "deploy" step to offer. The organization's catalog
+- **Your edits target the running stack.** Saving updates the stack and the
+  platform starts a deployment pipeline for it immediately — there is no
+  separate "deploy" step to offer. A save never destroys anything: a
+  resource you delete from the templates stays deployed, and stays the
+  stack's, until the stack is undeployed. The organization's catalog
   policy never blocks these saves: it refuses only NEW creations of
   disabled kinds, and a deployed stack's Infra Components already exist —
   never warn about availability on a working-copy save
@@ -85,7 +87,7 @@ diagnosis — reading status, logs, and records requires nobody's permission.
 2. Explain what went wrong in the user's language — name the component and
    the cause, not the plumbing.
 3. Recommend the fix with a reason, and say what it will do when applied
-   (new version, new pipeline, roughly how long).
+   (updated stack, new pipeline, roughly how long).
 4. **Ask what they want** — even when the fix is obvious. Modifying a
    deployed stack is always consent-gated.
 
@@ -109,17 +111,24 @@ planton chart install <stackName> . --org <org> --env <env> \
 Read every flag from the binding file — never guess the name, org, or env,
 and never omit `--org`/`--env` (your CLI context may point elsewhere; the
 stack's environment is not yours to move). The `-m` message is mandatory
-practice: it lands on the stack's version history where the whole team
-reads it.
+practice: it becomes the run's name, where the whole team reads why it
+happened.
 
 What one invocation does, in order: builds the folder server-side (refusing
 on errors, before anything is saved), prints where each param's value came
-from, updates the stack (new version), starts the deployment pipeline,
+from, updates the stack, starts the deployment pipeline,
 prints its id, and **follows the run to completion** — the exit code is
 non-zero when the followed pipeline fails. That single command is your save
 AND your monitor. To show the user exactly what a save would apply first,
 run the same command with `--dry-run`: it prints every param and the
 rendered documents and creates nothing.
+
+A stack has one run at a time. A save while a run of the stack is queued,
+running or waiting for approval is refused, naming that run ("… already
+has a run in progress (<id>) …" or "… has a run waiting for approval
+(<id>) …"). Never retry blindly: tell the user, and let them approve or
+reject the waiting run, or cancel it (`planton infra pipeline cancel <id>`,
+a platform mutation — confirm first), then save again.
 
 When holding one long-running command open is unsuitable, split it:
 
@@ -145,10 +154,11 @@ skipped work.
 
 Three more node outcomes to read correctly:
 
-- **Unmanaged** — an adopted resource
+- **Unmanaged** — a resource whose lifecycle events are disabled
   (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`). The stack
   records it and never applies or destroys it: a deploy leaves it alone,
-  and an undeploy or purge leaves it in the cloud.
+  and an undeploy or purge releases it from the stack and leaves it in the
+  cloud.
 - **Owned elsewhere** — a component another live stack or service owns.
   An undeploy or purge leaves it in place for its owner. A deploy that
   would change it is refused with a sentence naming the owner ("… is owned
@@ -196,7 +206,7 @@ but it is still a platform mutation: say what it does and get a yes.
 A different non-taking failure has its own playbook: a rerun that fails
 because a provider resource **already exists** (an earlier run created it in
 the cloud, then died before the state recorded it). Do not delete-and-retry
-— adopt the orphan into state with the platform's import commands. Read
+— import the orphan into state with the platform's import commands. Read
 `infra.state-import.md`.
 
 ## Iterating until green
@@ -218,4 +228,12 @@ proposed fix directly.
 - Never change the target env/org to "make it work" — a failure that smells
   like wrong-environment is a finding to report, not to route around.
 - Undeploying, purging, or deleting the stack is out of scope here —
-  surface the need, let the user drive it in the product.
+  surface the need, let the user drive it in the product. What to tell them
+  when they ask: undeploy destroys everything the stack owns, including
+  components its templates no longer declare, dependents first; unmanaged
+  resources are released and stay in the cloud. It is refused while any
+  owned resource carries `planton.dev/prevent-destroy: "true"` (lift it by
+  removing the annotation from the templates and saving) or while another
+  stack still reads one of its resources (the refusal names it). Purge is
+  undeploy, then delete, only if the undeploy succeeded. Delete alone is
+  refused while the stack still owns components or has a run in flight.

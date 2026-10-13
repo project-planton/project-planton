@@ -15,13 +15,13 @@ A Flow Control policy defines the rules for how [Infra Jobs](/docs/infrastructur
 
 ## Why Flow Control Exists
 
-Without governance, every infrastructure change follows the same path: submit configuration, run the IaC operations, apply the result. That works for development, but production deserves more care. You want to see the plan before it runs. You want someone to approve destructive changes. You might want to skip the refresh step for resources where drift is not a concern and speed matters.
+Without governance, every infrastructure change follows the same path: submit configuration, run the IaC operations, apply the result. That works for development, but production deserves more care. You want to see the plan before it runs. You want someone to approve destructive changes.
 
 Flow Control policies encode these decisions into the platform. Define the rules once, attach them to the right scope, and every Infra Job in that scope automatically follows them. No per-deployment configuration, no manual steps to remember, no governance gaps.
 
-## The Five Controls
+## The Four Controls
 
-Every Flow Control policy consists of five settings. Each is a boolean toggle that modifies how Infra Jobs execute.
+Every Flow Control policy consists of four settings. Each is a boolean toggle that modifies how Infra Jobs execute.
 
 ### Manual Approval Required
 
@@ -31,17 +31,11 @@ This differs from "Pause After Preview" (below), which allows the preview to run
 
 ### Lifecycle Events Disabled
 
-When enabled, Infra Jobs are not automatically created when an Infra Component is created or updated. You can still create Infra Jobs manually through the CLI or web console, but the automatic trigger from lifecycle events is suppressed. This is how a resource that already exists in your cloud is adopted.
+When enabled, Infra Jobs are not automatically created when an Infra Component is created or updated: the resource is unmanaged, and Planton records it without deploying anything. You can still create Infra Jobs manually through the CLI or web console, but the automatic trigger from lifecycle events is suppressed. On a single resource, set it with the annotation `planton.dev/infra-job.disable-on-lifecycle-events: "true"`.
 
-Inside an Infra Stack or a Service deployment, such a resource reads **Unmanaged**: the run records it and never applies or destroys it, so a deploy leaves it alone, and a stack's undeploy or a service's deletion leaves it in the cloud. Tearing it down is a deliberate act on that Infra Component alone.
+Inside an Infra Stack or a Service deployment, such a resource reads **Unmanaged**: the run records it and never applies or destroys it. A deploy leaves it alone; a stack's undeploy or purge releases it from the stack and leaves it in the cloud; a service's deletion leaves it in the cloud too. Tearing it down is a deliberate act on that Infra Component alone.
 
 This is useful for shared infrastructure that multiple teams depend on, where accidental changes could have wide impact. Only explicit, intentional Infra Jobs run.
-
-### Skip Refresh
-
-When enabled, the refresh step is skipped during Infra Job execution. Refresh synchronizes the IaC state file with the actual cloud state, catching drift from manual changes. Skipping it saves time but means the job operates on potentially stale state.
-
-Enable this only for resources managed exclusively through Planton with no manual cloud console access, where drift is not a concern.
 
 ### Preview Before Apply
 
@@ -83,7 +77,6 @@ Optimize for speed. Let changes apply immediately without manual steps:
 
 - Manual Approval Required: **off**
 - Lifecycle Events Disabled: **off**
-- Skip Refresh: **off** (keep drift detection)
 - Preview Before Apply: **on** (the plan still appears in logs)
 - Pause After Preview: **off** (no manual approval step)
 
@@ -93,7 +86,6 @@ Maximize safety. Require preview and manual approval before any change takes eff
 
 - Manual Approval Required: **off** (let the job start and preview automatically)
 - Lifecycle Events Disabled: **off**
-- Skip Refresh: **off**
 - Preview Before Apply: **on**
 - Pause After Preview: **on** (require human approval of the plan)
 
@@ -103,13 +95,12 @@ For resources that multiple teams depend on, disable automatic triggers entirely
 
 - Manual Approval Required: **on**
 - Lifecycle Events Disabled: **on** (no automatic Infra Jobs)
-- Skip Refresh: **off**
 - Preview Before Apply: **on**
 - Pause After Preview: **on**
 
 ## Using the Web Console
 
-Flow Control settings are visible on the Infra Job detail page in the configuration tab. The display shows each of the five controls with an enabled/disabled indicator, reflecting the resolved policy for that specific job.
+Flow Control settings are visible on the Infra Job detail page in the configuration tab. The display shows each of the four controls with an enabled/disabled indicator, reflecting the resolved policy for that specific job.
 
 To create or update Flow Control policies, use the CLI (below). Policy management through the web console is planned.
 

@@ -1,4 +1,4 @@
-# State Import — Adopting Provider Resources That Exist but Aren't in State
+# State Import — Importing Provider Resources That Exist but Aren't in State
 
 Read this when a deploy fails saying something **already exists** — the
 signature of an orphaned resource: an earlier run created it in the cloud,
@@ -6,7 +6,7 @@ then died before the IaC state recorded it (an auth failure or crash mid-way
 through a long create). The cloud has the resource; the state file does not;
 every rerun tries to create it again and collides.
 
-Two runs leave this behind less often than they used to, and one still does:
+Planton repairs one engine's case itself; the other still needs an import:
 - **OpenTofu:** when an apply changes the cloud but cannot save its state,
   Planton keeps that state and the resource's next run stores it before
   anything else runs, so the rerun does not collide. If that kept state can no
@@ -14,7 +14,7 @@ Two runs leave this behind less often than they used to, and one still does:
   the state the resource should keep; that is a state upload, not an import.
 - **Pulumi:** a resource whose create was in flight when the save failed is
   recorded as a pending operation, and the next run warns about it. Planton
-  does not adopt it; import it as below.
+  does not import it for you; import it as below.
 
 Recognize the signature in the failed node's engine logs (step 3 of the
 diagnosis workflow in `craft.planton-cli.md`):
@@ -27,10 +27,10 @@ Error: ... a resource with the ID "..." already exists                     # gen
 ```
 
 **The repair is import, not delete-and-retry.** The platform has first-class
-state-import commands: they run an Infra Job that adopts the existing provider
+state-import commands: they run an Infra Job that imports the existing provider
 resource into the InfraComponent's IaC state — **the cloud is never touched,
 only the state file is updated** — and then a fresh apply reconciles the
-desired configuration against what was adopted.
+desired configuration against what was imported.
 
 ## The commands
 
@@ -41,12 +41,12 @@ Job record; OpenTofu and Terraform are interchangeable here):
 # OpenTofu / Terraform — the state entry is a resource ADDRESS (type.name):
 planton tofu state import <IC_ID | Kind name> \
   --address "<tf_type.tf_name>" --id "<cloud-provider-id>" \
-  -m "adopt orphaned resource created by failed run" [--dry-run]
+  -m "import orphaned resource created by failed run" [--dry-run]
 
 # Pulumi — the state entry is a TYPE plus a logical NAME:
 planton pulumi state import <IC_ID | Kind name> \
   --type "<pulumi:type:Token>" --name "<logical-name>" --id "<cloud-provider-id>" \
-  -m "adopt orphaned resource created by failed run" [--dry-run]
+  -m "import orphaned resource created by failed run" [--dry-run]
 ```
 
 - The target is the **InfraComponent whose stack owns the orphan**: pass its
@@ -60,7 +60,7 @@ planton pulumi state import <IC_ID | Kind name> \
   succeeds) and runs `init → import → refresh → preview → capture` as one
   Infra Job. It reports drift but does not apply it — reconciling is the
   follow-up deploy.
-- One import command adopts ONE resource; run it once per orphan.
+- One import command imports ONE resource; run it once per orphan.
 
 Related state commands when the repair needs them: `planton <prov> state
 list <CR…>` (what the state tracks now — run it after the import to
@@ -100,7 +100,7 @@ to show the user exactly what would run before committing.
 ## Consent and boundaries
 
 - An import is a **platform mutation** (it changes the stack's recorded
-  state): explain what it adopts and get a yes — one confirmation per
+  state): explain what it imports and get a yes — one confirmation per
   import. `--dry-run` and every lookup above run freely.
 - Never repair by deleting the provider resource so the rerun "works" unless
   the user explicitly chooses that instead — deletion destroys whatever the

@@ -226,8 +226,12 @@ Implications for chart authors:
   and resolves at deploy time from the org's deployed estate, so it must
   already exist by then (see "References cross chart boundaries" above).
 - Circular references fail at build time.
-- Resources with no incoming references deploy in parallel in the earliest
-  layer.
+- Resources with no incoming references start first, in parallel — at most
+  four resources hold work at once per run, so a wide layer fills the four
+  slots and the rest start as slots free up.
+- Undeploy walks the same graph in reverse: each resource is destroyed only
+  after everything that consumes it, so a cluster outlives the workloads on
+  it.
 
 ## metadata.relationships — real ordering edges
 
