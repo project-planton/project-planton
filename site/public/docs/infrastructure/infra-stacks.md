@@ -49,6 +49,7 @@ Every change to an Infra Stack — an edit in the console, `planton infra stack 
 |-----|--------------------|
 | **Blocked** | Nothing, until it is resolved; the row says why and the way out. |
 | **Destroy** | The resource is no longer in the templates: it is destroyed in the cloud once everything the plan applies has applied. |
+| **Replace** | The resource stays in the templates, but its provider can't change it in place: it is destroyed and created again, and what it holds does not carry over. A request's preview finds it, and an approver names each one that holds data. |
 | **Update** | Something that decides its deployment moved: its settings, a secret's version, a value it reads, its module. |
 | **Update Record** | Only Planton's record changes; nothing in the cloud (for example, an annotation added). |
 | **Create** | The resource is new. |
@@ -69,17 +70,42 @@ An apply records a numbered **revision** named by its message ("r13 · Raise rep
 - **Adopt.** A stack never takes over a resource it found; you choose Adopt for it, or remove it from the templates.
 - **Re-apply.** Run an unchanged resource's job anyway, or every resource's (`--reapply Kind/name`, `--reapply-all`).
 
-`planton apply -f` applies a plan only when nothing in it is destroyed, adopted or blocked; otherwise it refuses and names the `planton infra stack apply` command to review the plan with.
+`planton apply -f` applies a plan only when nothing in it is destroyed, adopted or blocked; otherwise it refuses and names the `planton infra stack apply` command to review the plan with. It never files a request: in a protected environment it refuses and names that command.
+
+### In a Protected Environment, a Change Is a Request
+
+In a protected environment applying a plan files a **request** instead of writing anything. The plan says **This Plan Needs an Approver**, and the request carries a message its approvers read first:
+
+```bash
+planton infra stack apply app-infra --env prod -m "Raise replicas"
+```
+
+The request's run previews what the change reaches — each preview shows its engine's plan and changes nothing — and an approver reads that exact plan, what is destroyed and replaced first, in the console, on the phone, or in a terminal:
+
+```bash
+planton infra stack review app-infra --env prod
+planton infra stack approve app-infra --env prod --replace AwsRedisElasticache/orders-cache
+planton infra stack reject app-infra --env prod --reason "Not during the freeze"
+planton infra stack withdraw app-infra --env prod   # the requester takes it back
+```
+
+- **Nothing applies until an approval**, and the stack's declaration does not move: a rejected request leaves only its revision in history.
+- **The approver approves exactly the plan they read.** Each resource plans again and applies only when its plan matches its preview; one that moved since — a setting edited in the cloud, a secret's new version — stops before changing anything, shows its new plan and waits for a person. A resource that could only be previewed once an earlier change applied (May Change) applies under the approval unless its plan destroys or replaces something.
+- **What holds data is named.** Approving a plan that destroys or replaces a resource holding data asks the approver to type each name (`--destroy` / `--replace Kind/name` in CI, with the `--review-digest` of the review read).
+- **A second pair of eyes.** The person who asked cannot approve their own change while another approver exists. An undecided request expires after 7 days.
+- **A terminal never waits on a person.** The apply follows while the request previews, then ends with where to review it and the commands that decide it; `-o json` prints `{run_id, review_url, state, expires_at, revision}`.
+
+A request that is rejected, withdrawn, expires, cannot be previewed or goes out of date applies nothing. Plan it again as it was, with the choices its author made: `planton infra stack plan app-infra --env prod --revision 14`. Undeploy, purge and rerun into a protected environment are requests too.
 
 ### Revisions
 
-Each applied plan is a revision: its number, message, author, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. The stack's **live revision** is the newest that applied; an undeploy clears it. `planton infra stack history <name> --env <env>` lists them, newest first.
+Each applied plan is a revision: its number, message, author, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. A request reads **Awaiting Approval** until someone decides it, and closes **Rejected**, **Withdrawn**, **Expired**, **Preview Failed** or **Out of Date** when it applies nothing. The stack's **live revision** is the newest that applied; an undeploy clears it. `planton infra stack history <name> --env <env>` lists them, newest first, with who requested and who approved each.
 
 A run's Rerun (`planton infra pipeline rerun <pipeline-id>` in a terminal) repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. It asks first when the rerun still destroys something. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
 
 ### One Run at a Time
 
-A stack has one run at a time. While a run is queued, running or waiting for approval, a plan answers with that run instead of rows, and an apply, undeploy, purge or rerun is refused, naming the run. Approve or reject a run that waits for approval, or cancel it (`planton infra pipeline cancel <pipeline-id>`), then try again. A run whose workflow is gone is ended by the platform within about ten minutes, so a stack is never left busy.
+A stack has one run at a time. While a run is queued, running or waiting for approval, a plan answers with that run instead of rows, and an apply, undeploy, purge or rerun is refused, naming the run — or the request waiting for approval, with the commands to review or withdraw it. Cancel a run with `planton infra pipeline cancel <pipeline-id>`, then try again. A run whose workflow is gone is ended by the platform within about ten minutes, so a stack is never left busy.
 
 ## Dependency Graph Visualization
 
@@ -143,7 +169,7 @@ An undeploy is refused before anything starts when:
 - another stack still reads one of its resources — through a reference to it, or with workloads placed in its namespace. The refusal names the reading stack;
 - the stack owns no Infra Components: it "owns no infra components, so there is nothing to undeploy".
 
-A protected environment asks for approval before an undeploy starts, as it does before an apply. The CLI asks before undeploying or purging; `--yes` answers ahead. Applying the stack again later plans each resource anew: any resource the undeploy released plans Adopt.
+In a protected environment an undeploy is a request an approver decides, as an apply is: nothing is destroyed until then. The CLI asks before undeploying or purging; `--yes` answers ahead. Applying the stack again later plans each resource anew: any resource the undeploy released plans Adopt.
 
 ### Purge
 
@@ -232,7 +258,7 @@ planton infra stack checkout <stack-name-or-id> --env <env>
 | Single resource needed quickly | Direct Infra Component — no orchestration overhead |
 | Reproducible deployments | Infra Stack — configuration captured as a persistent record |
 | Quick experiments | Direct Infra Component — fast iteration, easy to delete |
-| Production infrastructure | Infra Stack — reviewed plans, revisions, approval gates, protected teardown |
+| Production infrastructure | Infra Stack — reviewed plans, revisions, requests an approver decides on the exact plan, protected teardown |
 | Adding to existing infrastructure | Direct Infra Component — targeted change without touching other resources |
 
 ## Related Documentation

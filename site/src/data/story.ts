@@ -129,7 +129,7 @@ export const CHAPTERS: readonly Chapter[] = [
       'A platform team writes the rules once and every request obeys them, whether it came from a person in the console, a script on the CLI, or a coding agent at two in the morning.',
     proof: [
       'An environment can carry a deployment budget. A deploy whose verified cost exceeds it pauses for a human decision, and who approved, when, and why is stamped on the record.',
-      'Protected environments pause before anything deploys, and nobody approves work they initiated, the assistant included.',
+      'A change to a protected environment is a request: an approver reads the exact plan the engines previewed, and only that plan applies. Nobody approves work they initiated, the assistant included.',
       'The catalog can be curated to the catalog kinds your organization allows. The console, the CLI, and the agent all see the same list and refuse the same things, because one answer serves both.',
       'A field the schema marks sensitive takes a managed secret. There is no way to type a raw secret into it.',
     ],

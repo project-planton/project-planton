@@ -64,21 +64,23 @@ In both, a resource the stack holds as **Unmanaged** (`planton.dev/infra-job.dis
 
 Before a run reads ended, it settles its revision: Applied (the stack's live revision moves to it), Applied With Removal Failures, Failed or Cancelled. An undeploy clears the stack's live revision.
 
-A stack has one run at a time. An apply, undeploy, purge or rerun is refused while a run of that stack is queued, running or waiting for approval, and the refusal names that run: approve or reject it, or cancel it with `planton infra pipeline cancel <pipeline-id>`, then try again. A run's record cannot be deleted while the run is in flight. A run whose workflow is gone — it never started, or stopped without finishing — is ended by the platform within about ten minutes, so a stack is never left busy.
+A stack has one run at a time. An apply, undeploy, purge or rerun is refused while a run of that stack is queued, running or waiting for approval, and the refusal names that run — or the request waiting for approval, with the commands to review or withdraw it; cancel a run with `planton infra pipeline cancel <pipeline-id>`, then try again. A run's record cannot be deleted while the run is in flight. A run whose workflow is gone — it never started, or stopped without finishing — is ended by the platform within about ten minutes, so a stack is never left busy.
 
 Rerunning a finished run repeats its operation. A deploy reruns its revision — the same reviewed plan, from the graph its last run walked — so what applied stays Unchanged and what failed runs again; it is refused, saying to plan again, once the stack has a newer revision or was undeployed since. An undeploy reruns as an undeploy of everything the stack owns. Rerunning anything that destroys — an undeploy, or a revision that removes resources — needs destroy access on the stack. Rerun from the run's page, with `planton infra pipeline rerun <pipeline-id>` (it asks first when the rerun still destroys something; `--yes` answers), or through the agents' `rerun_infra_pipeline`.
 
-## Manual Approval Gates
+## Approvals
 
-Infra Pipelines support approval gates at two levels, giving you control over when deployments proceed.
+### Requests in a Protected Environment
 
-### Environment-Level Gates
-
-An environment within the pipeline can require manual approval before any of its resources start. A protected environment asks here, for a deploy and an undeploy alike. When a gate is active, the pipeline pauses and waits for a team member to approve or reject.
+In a protected environment a stack's run is a **request**, for a deploy and an undeploy alike. The run first previews what the change reaches: one preview job per resource it changes first, each showing its engine's plan and changing nothing. Once every preview finished, the review opens and the run waits for an approver, who reads that exact plan — destroys and replaces first — and approves or rejects it with a reason. Only an approval applies, and each resource proves its plan is the one previewed before it changes; one that moved since stops before changing anything, shows its new plan and waits for a person, and a resource that could only be previewed once an earlier change applied applies under the approval unless its plan destroys or replaces something. A rejected, withdrawn or expired request (undecided for 7 days) ends having applied nothing, and its run reads how it closed.
 
 ```bash
-planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes
+planton infra stack review <stack-name> --env <env>
+planton infra stack approve <stack-name> --env <env>
+planton infra stack reject <stack-name> --env <env> --reason "why"
 ```
+
+See [Infra Stacks](/docs/infrastructure/infra-stacks#in-a-protected-environment-a-change-is-a-request) for who may decide and how a request is planned again.
 
 ### Node-Level Gates
 
@@ -88,16 +90,16 @@ Individual resources within the dependency graph can have their own gates: annot
 planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-id> yes
 ```
 
-### What an Approval Answers
+### What a Decision Answers
 
-Approving or rejecting a gate answers at once with what became of the decision:
+Approving or rejecting answers at once with what became of the decision:
 
-- **Applied** — the run continues, or the rejected resource fails.
-- **Refused, with the reason** — the gate was already decided by someone else (the first decision stands), it is not waiting for a decision yet, or the run is being cancelled.
+- **Applied** — the run continues, the request applies exactly the plan read, or the rejected resource fails.
+- **Refused, with the reason** — it was already decided by someone else (the first decision stands), it is not waiting for a decision yet (a request still previewing), the review changed since it was read, a resource that holds data was not named, or the run is being cancelled.
 - **The run has ended** — there is nothing left to decide.
 - **Not confirmed in time** — the decision may still apply; check the run before trying again.
 
-The decision, who made it, and their note are recorded where the gate is: an environment gate's on the environment, a resource gate's on that resource.
+The decision, who made it, and their reason are recorded where the decision lives: a request's on its run's review, a resource gate's on that resource.
 
 <!-- SCREENSHOT: Pipeline with manual gate awaiting approval
   Page: /resource/infra-hub/infra-pipeline (DAG graph component)
@@ -129,7 +131,7 @@ The web console provides a cancel button with a confirmation dialog. Cancelling 
 | Scope | Single Infra Component | Multiple Infra Components |
 | Dependencies | None — each resource is independent | Automatic — resources deploy in dependency order |
 | Execution | One Infra Job | One Infra Job per resource that changed, up to four at once |
-| Approval | Per-resource | Environment-level and per-resource gates |
+| Approval | Per-resource | A request reviewed on its exact plan, and per-resource gates |
 | Tracking | Individual Infra Job status | Unified view across all resources |
 
 Use direct deployment for standalone resources. Use Infra Pipelines (via [Infra Stacks](/docs/infrastructure/infra-stacks)) when resources depend on each other or when you need coordinated, multi-resource deployments.
@@ -142,9 +144,6 @@ planton infra pipeline cancel <pipeline-id>
 
 # Run a finished run again: the same revision; asks when it destroys (--yes)
 planton infra pipeline rerun <pipeline-id>
-
-# Approve an environment gate (yes or no)
-planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes
 
 # Approve a resource-level gate (yes or no)
 planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-id> yes

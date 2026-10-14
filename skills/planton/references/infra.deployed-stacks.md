@@ -213,10 +213,86 @@ and names the `planton infra stack apply` command to review it with.
 
 A stack has one run at a time. A plan of a stack whose run is in flight
 answers with that run instead of rows, and an apply is refused naming it
-("… already has a run in progress (<id>) …" or "… has a run waiting for
-approval (<id>) …"). Never retry blindly: tell the user, and let them
-approve or reject the waiting run, or cancel it (`planton infra pipeline
-cancel <id>`, a platform mutation — confirm first), then plan again.
+("… already has a run in progress (<id>) …", or "… has a request waiting
+for approval: r14 · Raise replicas. Review it (planton infra stack review
+…), or withdraw it (planton infra stack withdraw …) before asking for
+another change."). Never retry blindly: tell the user, and let them decide
+the waiting request, withdraw it, or cancel the run (`planton infra
+pipeline cancel <id>`, a platform mutation — confirm first), then plan
+again.
+
+## In a protected environment: a request, not a write
+
+In a protected environment the plan says **This Plan Needs an Approver**
+(`review_required` in JSON), and its last line reads "Request it:" instead
+of "Apply it:". Tell the user before they agree: applying files a REQUEST.
+The engines preview what it changes, an approver reads that exact plan and
+approves or rejects it, and only an approval applies — exactly the plan
+read. Until then nothing applies and the stack's declaration does not move.
+
+```
+planton infra stack apply <stackName> . --env prod -m "<the user's words>" --plan-digest <d>
+```
+
+- **`-m` is required**, and it is the user's description: approvers read it
+  first. Ask for it; never invent it.
+- The command follows while the request previews, then **ends** — a
+  terminal never waits on a person — with exit 0 and these lines. Relay
+  them as they are; the review link is the user's next step:
+
+  ```
+  Waiting for approval: 1 to Replace, 3 to Update. Expires Oct 21.
+  Review it: https://<console>/<org>/infra-stack/prod/<stackName>/plan?run=<infpipe_id>
+  An approver runs: planton infra stack approve <stackName> --env prod
+  Withdraw it: planton infra stack withdraw <stackName> --env prod
+  ```
+
+  `-o json` prints `{run_id, review_url, state, expires_at, revision}` once
+  the review opens. A request whose preview fails exits 1 with the engine's
+  sentence. Undeploy, purge, `chart install|uninstall` and `infra pipeline
+  rerun` into a protected environment are requests too, and end the same way.
+  The one-call `planton apply -f` never files a request: it refuses and
+  names `planton infra stack apply`.
+- **Reading a waiting request** is free: `planton infra stack review
+  <stackName> --env prod` (MCP: `get_infra_stack_review`). It lists what is
+  destroyed and replaced first, with what each resource's preview found,
+  who can approve and when it expires, then the commands, and the review's
+  digest last. Explain it in its rows' words: every Destroy and Replace by
+  name, and that a **Replace** destroys and recreates the resource, so what
+  it holds does not carry over.
+- **Deciding is the user's act, never yours.** Never approve because a
+  request is waiting, because the user wrote it, or on anyone's behalf. Only
+  when the user, having read the review, tells you to approve or reject,
+  carry out exactly that decision:
+
+  ```
+  planton infra stack approve <stackName> --env prod --review-digest <d> --replace AwsRedisElasticache/orders-cache
+  planton infra stack reject <stackName> --env prod --review-digest <d> --reason "<the user's words>"
+  ```
+
+  (MCP: `decide_infra_stack_review` with `review_digest`, `destroy[]` /
+  `replace[]`, `reason`.) Each resource that holds data and that the plan
+  destroys or replaces must be named — ask the user to name each one and
+  pass only the names they gave. A rejection always carries the user's
+  reason; the requester reads it. The platform refuses a review that moved
+  since it was read ("This review changed since you read it. Read it
+  again …"), a missing name, a blocked row, and the person who asked for
+  the change while another approver exists — relay its sentence as it is.
+- **After an approval**, `approve` follows the run: exit 0 when it
+  succeeds, 1 when it fails, and **3** when a resource stopped before
+  changing anything because its plan moved since the approval — the line
+  above names `planton infra job resume <id>`, which is again the user's
+  decision on the new plan.
+- **Withdrawing** (`planton infra stack withdraw`, MCP
+  `withdraw_infra_stack_request`) takes the request back; its requester may
+  do it without deploy rights. Confirm first.
+- A request that is rejected, withdrawn, expires after 7 days undecided,
+  fails its preview or goes out of date applies nothing. Plan it again as it
+  was — its choices carried, each still the user's to change:
+
+  ```
+  planton infra stack plan <stackName> --env prod --revision 14
+  ```
 
 When holding one long-running command open is unsuitable, split it:
 
@@ -228,8 +304,10 @@ planton infra pipeline logs <infpipe_id>       # when a node fails
 
 `planton infra stack history <stackName> --env <env>` lists the revisions,
 newest first: number, message, outcome (Applying, Applied, Applied With
-Removal Failures, Failed, Cancelled), who applied it, and its run; the live
-revision — the newest that applied — is marked.
+Removal Failures, Failed, Cancelled; for a request Awaiting Approval, then
+Rejected, Withdrawn, Expired, Preview Failed or Out of Date when it closed
+without applying), who requested it and who approved it, and its run; the
+live revision — the newest that applied — is marked.
 
 ## What a run applies, and what it leaves alone
 
