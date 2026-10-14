@@ -160,14 +160,19 @@ func Validate(dir string, opts Options) (*Report, error) {
 
 	report := &Report{ChartName: chart.Name, ChartDir: dir}
 
-	for _, variant := range planVariants(chart.Params, opts.Set) {
-		ctx, placeholders, err := buildContext(chart.Params, org, env, variant.set)
+	for i, variant := range planVariants(chart.Params, opts.Set) {
+		ctx, err := buildContext(chart.Params, org, env, variant.set)
 		if err != nil {
 			return nil, err
 		}
 		result := VariantResult{Name: variant.name, checks: opts.DocumentChecks, deferredToken: opts.IsDeferredToken}
+		// A param without a default is a fact about the chart, not about a
+		// variant, so the defaults variant names it once.
+		if i == 0 {
+			result.Issues = append(result.Issues, requiredValueIssues(chart.Params)...)
+		}
 		for _, tpl := range chart.Templates {
-			result.validateTemplate(tpl, ctx, placeholders)
+			result.validateTemplate(tpl, ctx)
 		}
 		report.Variants = append(report.Variants, result)
 	}
@@ -211,7 +216,7 @@ func planVariants(params []Param, set map[string]string) []variantPlan {
 
 // validateTemplate renders one template file and validates every document in
 // it, appending issues and docs to the variant result.
-func (r *VariantResult) validateTemplate(tpl TemplateFile, ctx map[string]any, placeholders []string) {
+func (r *VariantResult) validateTemplate(tpl TemplateFile, ctx map[string]any) {
 	addError := func(format string, args ...any) {
 		r.Issues = append(r.Issues, Issue{Severity: SeverityError, File: tpl.Name, Message: fmt.Sprintf(format, args...)})
 	}
@@ -224,19 +229,6 @@ func (r *VariantResult) validateTemplate(tpl TemplateFile, ctx map[string]any, p
 	if err != nil {
 		addError("template rendering failed: %v", err)
 		return
-	}
-
-	// A value-less param renders as its "<name>" placeholder — legal for the
-	// platform (the value arrives from the InfraStack), but this gate's
-	// promise is that DEFAULTS render deployable, so depending on one is
-	// worth a warning even before schema validation rejects it.
-	for _, placeholder := range placeholders {
-		if strings.Contains(rendered, placeholder) {
-			r.Issues = append(r.Issues, Issue{
-				Severity: SeverityWarning, File: tpl.Name,
-				Message: fmt.Sprintf("template uses param %s, which has no default value — supply one in values.yaml or via --set", placeholder),
-			})
-		}
 	}
 
 	docs, err := splitDocs(rendered)

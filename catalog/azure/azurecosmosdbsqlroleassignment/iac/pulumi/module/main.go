@@ -1,7 +1,6 @@
 package module
 
 import (
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	azurecosmosdbsqlroleassignmentv1alpha1 "github.com/plantonhq/planton/catalog/azure/azurecosmosdbsqlroleassignment/v1alpha1"
 	"github.com/plantonhq/planton/pkg/iac/pulumi/pulumimodule/provider/azure/pulumiazureprovider"
@@ -51,13 +50,15 @@ func Resources(ctx *pulumi.Context, iacInput *azurecosmosdbsqlroleassignmentv1al
 	}
 
 	// The assignment's ARM resource name is a GUID. When the spec does
-	// not pin one, generate it here -- mirroring azurerm's create-time
-	// UUID generation. Pulumi-azure autogenerates from the logical
-	// resource name when Name is unset, which produces invalid non-UUID
-	// values and must not be relied on.
+	// not pin one, derive it from the resource's identity. Pulumi-azure
+	// autogenerates from the logical resource name when Name is unset,
+	// which produces invalid non-UUID values and must not be relied on.
+	// Derived, never random: a GUID drawn fresh on every run would plan a
+	// replacement of an unchanged assignment each time, where azurerm draws
+	// one at create and keeps it.
 	assignmentGuid := spec.Name
 	if assignmentGuid == "" {
-		assignmentGuid = uuid.New().String()
+		assignmentGuid = stableGuid(ctx, locals.AzureCosmosdbSqlRoleAssignment.Metadata.GetId())
 	}
 	roleAssignmentArgs.Name = pulumi.String(assignmentGuid)
 

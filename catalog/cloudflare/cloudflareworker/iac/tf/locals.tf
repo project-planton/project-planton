@@ -19,8 +19,11 @@ locals {
   main_module = local.has_script && try(var.spec.body_part, "") == "" ? (var.spec.main_module != "" ? var.spec.main_module : "index.js") : null
   body_part   = try(var.spec.body_part, "") != "" ? var.spec.body_part : null
 
-  # Compatibility date defaults to today when unset.
-  compatibility_date = var.spec.compatibility_date != "" ? var.spec.compatibility_date : formatdate("YYYY-MM-DD", timestamp())
+  # The compatibility date defaults to the spec's recommended date when unset
+  # (the Pulumi module defaults to the same one). It is fixed, never today: a
+  # date that moves with the clock would plan a change on every run of an
+  # unchanged Worker.
+  compatibility_date = var.spec.compatibility_date != "" ? var.spec.compatibility_date : "2025-01-15"
 
   # Every flattened binding object carries the same attribute set (unused ones
   # null) so the provider's bindings list has a single, uniform object type.

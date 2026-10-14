@@ -1,8 +1,9 @@
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "module",
     srcs = [
+        "guid.go",
         "locals.go",
         "main.go",
         "outputs.go",
@@ -16,6 +17,17 @@ go_library(
         "@com_github_google_uuid//:uuid",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_azure_sdk_v6//go/azure/cosmosdb",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)
+
+go_test(
+    name = "module_test",
+    srcs = ["guid_test.go"],
+    embed = [":module"],
+    deps = [
+        "@com_github_google_uuid//:uuid",
+        "@com_github_pulumi_pulumi_sdk_v3//go/common/resource",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

@@ -48,7 +48,7 @@ func TestBuildContextSetOverrides(t *testing.T) {
 		{Name: "zones", Type: "list", Value: []any{"a"}},
 		{Name: "name", Value: "original"},
 	}
-	ctx, _, err := buildContext(params, "acme", "dev", map[string]string{
+	ctx, err := buildContext(params, "acme", "dev", map[string]string{
 		"flag":  "true",
 		"size":  "2.5",
 		"zones": "x,y",
@@ -77,7 +77,7 @@ func TestBuildContextSetOverrides(t *testing.T) {
 }
 
 func TestBuildContextRejectsUnknownSetKey(t *testing.T) {
-	_, _, err := buildContext(nil, "acme", "dev", map[string]string{"ghost": "1"})
+	_, err := buildContext(nil, "acme", "dev", map[string]string{"ghost": "1"})
 	if err == nil {
 		t.Fatal("--set on an undeclared param must be rejected")
 	}
@@ -86,7 +86,7 @@ func TestBuildContextRejectsUnknownSetKey(t *testing.T) {
 func TestBuildContextOrgEnvAlwaysWin(t *testing.T) {
 	// A chart declaring org/env params still renders with the injected values
 	// — mirroring the platform, which overwrites them at render time.
-	ctx, _, err := buildContext([]Param{{Name: "org", Value: "chart-org"}}, "real-org", "dev", nil)
+	ctx, err := buildContext([]Param{{Name: "org", Value: "chart-org"}}, "real-org", "dev", nil)
 	if err != nil {
 		t.Fatal(err)
 	}

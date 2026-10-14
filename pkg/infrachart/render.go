@@ -198,7 +198,7 @@ func renderTemplate(name, source string, ctx map[string]any) (string, error) {
 // `values.*`, and org/env are always present in both scopes, exactly like the
 // server-side overwriter. This is the exported single-template entry point
 // (the engine-conformance suite pins its semantics); the validation pipeline
-// goes through Validate, which layers param typing and placeholder handling
+// goes through Validate, which layers param typing and stand-ins
 // on top via buildContext.
 func RenderTemplate(name, source string, values map[string]any, org, env string) (string, error) {
 	if findings := scanBannedConstructs(source); len(findings) > 0 {

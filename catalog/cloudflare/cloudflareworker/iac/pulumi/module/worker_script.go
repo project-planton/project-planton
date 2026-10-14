@@ -3,7 +3,6 @@ package module
 import (
 	"encoding/base64"
 	"fmt"
-	"time"
 
 	"github.com/pkg/errors"
 	cloudflareworkerv1alpha1 "github.com/plantonhq/planton/catalog/cloudflare/cloudflareworker/v1alpha1"
@@ -12,6 +11,10 @@ import (
 	cloudfl "github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
+
+// defaultCompatibilityDate is the spec's recommended compatibility_date
+// (spec.proto); the tofu module's locals carry the same date.
+const defaultCompatibilityDate = "2025-01-15"
 
 // worker provisions the Worker script and its routing, schedules, and settings.
 func worker(
@@ -22,10 +25,13 @@ func worker(
 ) error {
 	spec := locals.CloudflareWorker.Spec
 
-	// Compatibility date defaults to today when unset.
+	// The compatibility date defaults to the spec's recommended date when unset
+	// (the tofu module defaults to the same one). It is fixed, never today: a
+	// date that moves with the clock would plan a change on every run of an
+	// unchanged Worker.
 	compatibilityDate := spec.CompatibilityDate
 	if compatibilityDate == "" {
-		compatibilityDate = time.Now().UTC().Format("2006-01-02")
+		compatibilityDate = defaultCompatibilityDate
 	}
 
 	scriptArgs := &cloudfl.WorkersScriptArgs{
