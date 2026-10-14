@@ -43,7 +43,7 @@ enum CatalogProvider {
   }];
   gcp = 18 [(provider_meta) = {
     group: "gcp.planton.dev"
-    display_name: "GCP"
+    display_name: "Google Cloud"
   }];
   kubernetes = 19 [(provider_meta) = {
     group: "kubernetes.planton.dev"

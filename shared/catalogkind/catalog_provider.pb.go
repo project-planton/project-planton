@@ -180,7 +180,7 @@ const file_shared_catalogkind_catalog_provider_proto_rawDesc = "" +
 	")shared/catalogkind/catalog_provider.proto\x12\x1edev.planton.shared.catalogkind\x1a google/protobuf/descriptor.proto\"N\n" +
 	"\x13CatalogProviderMeta\x12\x14\n" +
 	"\x05group\x18\x01 \x01(\tR\x05group\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xcb\x04\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xd4\x04\n" +
 	"\x0fCatalogProvider\x12 \n" +
 	"\x1ccatalog_provider_unspecified\x10\x00\x126\n" +
 	"\x05_test\x10\x01\x1a+\xea\xcc''\n" +
@@ -194,9 +194,9 @@ const file_shared_catalogkind_catalog_provider_proto_rawDesc = "" +
 	"\x16cloudflare.planton.dev\x12\n" +
 	"Cloudflare\x12@\n" +
 	"\rdigital_ocean\x10\x11\x1a-\xea\xcc')\n" +
-	"\x19digital-ocean.planton.dev\x12\fDigitalOcean\x12#\n" +
-	"\x03gcp\x10\x12\x1a\x1a\xea\xcc'\x16\n" +
-	"\x0fgcp.planton.dev\x12\x03GCP\x128\n" +
+	"\x19digital-ocean.planton.dev\x12\fDigitalOcean\x12,\n" +
+	"\x03gcp\x10\x12\x1a#\xea\xcc'\x1f\n" +
+	"\x0fgcp.planton.dev\x12\fGoogle Cloud\x128\n" +
 	"\n" +
 	"kubernetes\x10\x13\x1a(\xea\xcc'$\n" +
 	"\x16kubernetes.planton.dev\x12\n" +
