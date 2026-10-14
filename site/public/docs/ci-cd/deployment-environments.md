@@ -30,7 +30,7 @@ Who writes those entries depends on the service:
 Two sibling trees can sit beside the overlays without joining the environment set: `dev/<flavor>/` serves local development only (never deployed), and `previews/<env>/` holds the deltas a pull-request preview of that environment deploys with (rendered per run, never written onto the record).
 
 <!-- SCREENSHOT: A service's environments on the Configuration tab
-  Page: /orgs/{org}/service/{slug} (Configuration tab)
+  Page: /{org}/service/{slug}?view=configuration (Configuration tab)
   Action: A git-maintained service with dev, staging, and prod entries, each panel headed by what is live there and listing the declared resources beneath, with the sync provenance (branch, commit, when) on each
   Focus: The three environment panels in promotion order
   Alt: Configuration tab showing one panel per environment the service deploys to
@@ -77,7 +77,7 @@ A branch is either a trigger branch (walks everything) or a mapped branch (deplo
 On the Configuration tab, the **Deploy Settings** panel's **Branch Deployments** row lists the mappings. **Edit** opens a dialog of branch → environment rows over the organization's environments; the environment must be one the service declares configuration for. If a branch you map is also in the trigger branches, the dialog says so above the field and offers a door to the Build Triggers dial to resolve it.
 
 <!-- SCREENSHOT: Branch Deployments
-  Page: /orgs/{org}/service/{slug} (Configuration tab)
+  Page: /{org}/service/{slug}?view=configuration (Configuration tab)
   Action: The Deploy Settings panel with a Branch Deployments row reading "release-hotfix → prod" and its Edit dialog open
   Focus: The Branch Deployments row and the dialog's branch → environment rows
   Alt: Branch Deployments row on the Deploy Settings panel with its edit dialog
@@ -138,12 +138,38 @@ Start a new service with one environment and add the rest as confidence grows �
 
 Some services should never deploy everywhere — debug tooling in dev only, internal monitoring in the non-production environments. Declare configuration for exactly those environments and no others; the deploy stage has nothing to do for the rest.
 
+## Where Each Environment Stands: the Delivery Path
+
+A service's **Overview** opens on its environments drawn as a path, in promotion order: one tile per environment, with a step between each pair. Each tile shows the build that runs there (its commit and the run that built it, "Built by Run #128"), its rollout verdict, its address, and how far it is from the environment before it:
+
+- **3 commits behind dev** — the later environment runs an older commit of the same line.
+- **Same build as dev** — both run the very same build; nothing to move.
+- **Same commit as dev, rebuilt** — the same commit, built separately.
+- **Diverged from dev: 2 ahead, 3 behind** — each side has commits the other lacks.
+- **Runs an older build than dev** — the commits could not be compared (a GitLab repository, a comparison that timed out), so the build order answers.
+- **Nothing Deployed** — nothing has reached this environment yet.
+
+The first environment is compared with the head of the branch its build came from. Environments with no place in the promotion order follow the path with no step, and environments a branch deploys into directly are compared with their own branch ("2 commits behind release").
+
+A run moving something into an environment plays on its tile until it lands — "Promoting 'Fix login' from dev · Deploying · Run #129", or **Awaiting Your Approval** with **Review** when the decision is yours. The path is live: a promotion started from the CLI, an agent, or a push appears within a second, with no reload.
+
+**Promote lives on the step between two environments.** The step offers Promote when the earlier environment has a build and the later one is behind it or empty. It still offers Promote, behind a one-line caution, when the later environment is ahead, has diverged, was just rolled back, or the earlier one failed its checks. It stays quiet when both run the same build, or when a run already in flight will carry the build there ("Arrives with Run #130"). The confirm asks exactly what will happen — "Promote 'Fix login' to staging?" — and names where the build comes from and which run built it. **Roll Back** lives in the **Deployments** tab, beside the history it restores from.
+
+<!-- SCREENSHOT: The Delivery Path
+  Page: /{org}/service/{slug}
+  Action: A service with dev, staging and prod; staging three commits behind dev with Promote on the dev → staging step; prod running the same build as staging
+  Focus: The environment tiles in promotion order and the steps between them
+  Alt: Service Overview showing three environment tiles in promotion order with Promote on the step between dev and staging
+-->
+
+From a terminal, `planton service status <service>` prints the same path in the same words — each environment's build, rollout, distance, and the runs in flight by number — and `-o json` returns it for scripts and agents.
+
 ## How It Appears in Pipelines
 
-A run's page draws the pipeline as a strip: Build, then one tile per environment the run deploys to, in promotion order. Environments the service does not declare configuration for do not appear, and a push to a mapped branch shows exactly one environment tile.
+A run's page draws the pipeline as a strip: Build, then one tile per environment the run deploys to, in promotion order. Environments the service does not declare configuration for do not appear, and a push to a mapped branch shows exactly one environment tile. When a push stops before an environment that takes builds only by promotion, that environment reads **Awaiting Promotion**, and Promote sits on the strip's step into it — promoting from the run's page keeps you there and turns the environment's panel into the promotion, live.
 
 <!-- SCREENSHOT: Pipeline run page stage strip
-  Page: /orgs/{org}/service/{slug}/runs/{runId}
+  Page: /{org}/service/{slug}/runs/{runId}
   Action: A run from a push to a mapped branch — the strip shows Build and one environment tile
   Focus: The stage strip under the run's header
   Alt: Run page whose stage strip shows Build and a single environment

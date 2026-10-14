@@ -257,7 +257,7 @@ To find a run later, or to read a build's own output (the place a build failure 
 ```bash
 planton service last-pipeline my-service        # the most recent run
 planton service runs my-service                 # everything that ran, newest first
-planton service logs <run-id>                   # the build's logs, every task's lines
+planton service logs my-service <number>        # the build's logs, every task's lines (the run's number, as runs shows it; its id works too)
 ```
 
 ## Step 4: Verify the Deployment
@@ -283,10 +283,10 @@ The push births a run. Find and follow it:
 
 ```bash
 planton service last-pipeline my-service
-planton service follow <run-id>
+planton service follow my-service <number>
 ```
 
-The new run builds a fresh container image tagged with the new commit SHA and deploys it to `dev`. Each push to `main` produces a new deployment with a traceable image tag, and the commit on GitHub carries a check named after the service with the run's verdict.
+The new run builds a fresh container image tagged with the new commit SHA and deploys it to `dev`. Each push to `main` produces a new deployment with a traceable image tag, and the commit on GitHub carries a check named after the service, titled with the run's number, with the run's verdict. `planton service status my-service` shows which build each environment runs.
 
 ## Common Patterns and Tips
 

@@ -37,6 +37,7 @@ planton daemon logs <part>                # one part's log from the latest start
 planton local restart                     # every part starts fresh, no data touched; waits until healthy
 planton follow <run>                      # the run live: the wake as its own beat, the build, the deploy, the GitHub line, the platform line
 planton service urls <service>            # the environment card's truth: URL and rollout verdict, or why there is no address
+planton service status <service>          # every environment in promotion order: its build, verdict, distance, and runs in flight
 ```
 
 Reading `planton local build-cluster status`: **Not Set Up** (no cluster, no cost) · **Setting Up · <note>** (the ladder is narrating) · **Ready · idle for N minutes** / **Building · N builds running** · **Stopped — starts in about fifteen seconds when a build is dispatched** (asleep, costs nothing; the estimate is this machine's own last start) · **Stopped — <cause>** (an unexpected stop, or Docker off — the cause is the sentence) · **Failed · <sentence>** (Try Again in the desktop or `enable` again; the sentence names the next step).
@@ -70,7 +71,7 @@ Relay the sentence verbatim (they are stable), then the next step. All of them l
 | *The build cluster stopped unexpectedly — its container exited while the container runtime kept running. It starts again with your next build; if it keeps happening, the build cluster log has the details.* | The node died on its own | Nothing once; read the log if it repeats |
 | *Restarting the build cluster — it stopped answering…* / *Setting the build cluster up again — it didn't recover from a restart…* | Self-healing under its budget (a confirmed death, never a readiness dip) | Wait; it narrates |
 | *The build cluster keeps stopping answering, even after Planton restarted and set it up again. …* | The recovery budget (3 per hour) is spent | Read the log it names; `remove` and `enable` again, or later |
-| *A build is running. Stop is available when it finishes, or cancel the run first.* | Stop refused | Wait or `planton service cancel <run>` |
+| *A build is running. Stop is available when it finishes, or cancel the run first.* | Stop refused | Wait or `planton service cancel <service> <number>` |
 | *GHCR refused the GitHub sign-in behind connection '…' — this sign-in can read code but not packages; run `gh auth refresh -s read:packages,write:packages`, then check again.* | Token lacks packages scopes; refused before any pod | The `gh auth refresh`, then rerun |
 | *GitHub rejected this connection's sign-in while checking <repo> — the token is expired or revoked, or this machine signed out. Run `gh auth status` and sign in again; checks resume on their own.* | The watch cannot read GitHub | `gh auth status`, `gh auth login` |
 | *GitHub can't see <repo> with this connection's sign-in — the repository was renamed or deleted, or the token has no access to it (a private repository needs the `repo` scope). …* | Repository moved or unreadable | Check the repository; `gh auth refresh -s repo` |

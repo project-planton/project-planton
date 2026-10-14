@@ -18,7 +18,7 @@ What the room deliberately does NOT carry is the failure. A run's status is live
 Read, then speak; the first turn is one answer after these reads, never a question.
 
 1. **The run's own diagnosis** — `get_service_pipeline` (CLI: `planton get service-pipeline <id>`). Read `status.status_reason` first, then the stage's, then the failed environment's or the failed task's: the deepest one is the truth (`reading-a-run`). Classify it (`build-failures`): four of the six classes are answered from the record alone — a compile refusal (the `[code]` lines ARE the cause), a connection or credential before any pod, no runner, never finalized.
-2. **The log, for a task that ran and failed** — `get_service_pipeline_logs` (CLI: `planton service logs <id>`), the failing task's lines relayed verbatim. A deploy failure sends you to the node's Infra Job instead (`infra_job_id` on the node; the infra-job tools). Never quote a wall of it — the run page has every line one click away; quote the decisive lines.
+2. **The log, for a task that ran and failed** — `get_service_pipeline_logs` (CLI: `planton service logs <id>`, or `planton service logs <service> <number>`), the failing task's lines relayed verbatim. A deploy failure sends you to the node's Infra Job instead (`infra_job_id` on the node; the infra-job tools). Never quote a wall of it — the run page has every line one click away; quote the decisive lines.
 3. **The files the run actually saw** — at `spec.git_commit.sha`, never today's head: `read_repo_files` with the service and `ref` = that sha (CLI: `planton service repo cat <service> <path> --ref <sha>`). The Dockerfile and the lockfile an install failure names; the pipeline and its tasks for a task failure; the kustomize overlay for a `kustomize-build` failure.
 4. **Reproduce, when the log and the files do not settle it** — the clone lane at that commit (`reading-a-repository`): on the web your sandbox has `git`, Node, Python, and Go; on the desktop `planton service repo clone <service> --ref <sha>` and the machine's toolchain.
 
@@ -28,9 +28,9 @@ Stop reading when you can name the cause and the fix. Do not read what you do no
 
 The person's first fear is not "why" but "what did this do to my running service". Say it first, in one sentence, and it is always answerable from the records:
 
-- **A failed build deployed nothing.** Each environment still runs what it ran before. Name it: `list_service_deployments` for the service (CLI: `planton service deployments <service>`), each environment's head record with its `artifact.source_commit` — "dev is still on b31c9aa from this morning; nothing changed."
+- **A failed build deployed nothing.** Each environment still runs what it ran before. Name it: `get_service_delivery_path` for the service (CLI: `planton service status <service>`) gives each environment's current deployment with its commit and the run that built it — "dev is still on b31c9aa, built by Run #127 this morning; nothing changed." (`list_service_deployments` has the full records.)
 - **A failed deploy may have left an environment half-changed.** The run's `status.deployment_stage.environments[]` says which environments completed, which failed at which resource, and which never started (the promotion walk stops). The failed environment's `service_deployment_id` is present only when a deployment record was written; the head deployment tells you what is actually serving.
-- **A failed delivery run (promote, rollback, deploy) changed nothing it did not finish.** Say what the target environment runs now.
+- **A failed delivery run (promote, rollback, deploy) changed nothing it did not finish.** Say what the target environment runs now. Its fix is the same verb again once the cause is fixed — promote again, roll back again, deploy again — never a rerun: rerunning a delivery run is refused, and the refusal names the command (`references/service.delivery-verbs.md`).
 
 Then the cause, then the fix.
 
@@ -48,7 +48,7 @@ A non-empty `reconcile_note` means GitHub stopped answering for this run and Pla
 ## The shape of the fix
 
 - **The file and the exact lines.** Quote the change as a diff or as the lines to replace, in the file the run actually used, at the commit it used. A fix that names a file without the lines is not a fix.
-- **The commit to make, and whether a rerun is the wrong verb.** A code or compile failure needs a NEW commit — the push starts the run; a rerun of it fails identically, and you say so. A credential, runner, or egress failure is fixed outside the commit — `rerun_service_pipeline` (CLI: `planton service rerun <id>`) is right, and you offer it (`build-failures` owns the judgment).
+- **The commit to make, and whether a rerun is the wrong verb.** A code or compile failure needs a NEW commit — the push starts the run; a rerun of it fails identically, and you say so. A credential, runner, or egress failure is fixed outside the commit — for a build run, `rerun_service_pipeline` (CLI: `planton service rerun <service> <number>`) is right, and you offer it (`build-failures` owns the judgment).
 - **You propose; the pull request is how it lands.** Nothing you read or clone is written back to the repository by you. Once the fix is exact, offer it as a pull request: show the whole file as it should read and the pull request's title and description, ask, and on yes let the platform open it on a branch of its own with the receipt — then say whether it builds on its own (`references/service.opening-a-pull-request.md`). Never a commit to the default branch; never a merge you were not asked for. If the person would rather commit themselves, hand them the file and the commit and offer to watch the run.
 - **One cause per answer.** A run with several failed resources usually has one root cause and several consequences; name the root and say which failures follow from it.
 

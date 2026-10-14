@@ -18,10 +18,10 @@ A Service in Planton eliminates this overhead. It is a declaration that connects
 Think of a Service like a `.vercel.json` file, but for backend applications with multi-environment, multi-cloud deployment support. It captures everything needed to go from source code to running infrastructure — and the complexity of Docker builds, registry authentication, deployment manifests, and deployment orchestration disappears behind a simple declaration.
 
 <!-- SCREENSHOT: Service details overview
-  Page: /orgs/{org}/service/{serviceId}
-  Action: Show the Overview tab of a configured service with pipeline history
-  Focus: Full page showing Git repo connection, pipeline config, and recent pipelines
-  Alt: Service details page showing connected Git repository, pipeline configuration, and deployment history
+  Page: /{org}/service/{slug}
+  Action: Show the Overview of a configured service: its repository and latest run, and its environments drawn as the Delivery Path
+  Focus: Full page showing the source band and the environment tiles in promotion order
+  Alt: Service details page showing the connected repository, the latest run, and each environment's build in promotion order
 -->
 
 ## The Four Pillars of a Service
@@ -118,17 +118,20 @@ The web console provides a guided wizard for creating services:
 3. **Deployment configuration**: Choose between Git-based and inline deployment, then add deployment targets per environment — select the cloud provider, resource type, and optionally enable manual approval.
 
 <!-- SCREENSHOT: Service creation wizard
-  Page: /orgs/{org}/services (deploy wizard)
+  Page: /orgs/{org}/services/new (deploy wizard)
   Action: Show the deployment configuration step with at least one target added
   Focus: The AddTargetModal showing environment, provider, and kind selection
   Alt: Service creation wizard showing deployment target configuration with environment name, cloud provider, and resource kind selection
 -->
 
-After creation, the service details page provides three tabs:
+After creation, the service's page has these tabs:
 
-- **Overview**: Git repository connection, pipeline configuration, ingress settings, deployment history
-- **Pipelines**: Pipeline run history with status, real-time log streaming, and DAG visualization
-- **Settings**: Advanced configuration including monorepo settings, pipeline controls, and the danger zone for deletion
+- **Overview**: the repository and the latest run, then the **Delivery Path** — each environment in promotion order with the build it runs, how far it is from the environment before ("3 commits behind dev"), and any run moving into it, live. **Promote** sits on the step between two environments. See [Deployment Environments](/docs/ci-cd/deployment-environments#where-each-environment-stands-the-delivery-path).
+- **Deployments**: each environment's deployment history, with **Roll Back** and **Roll Back to This** beside the records they restore.
+- **Runs**: every run, newest first — Planton's runs by number ("Run #128") and the repository's own CI runs by workflow — updating live, with the **Run** button.
+- **Configuration**: the environments the service deploys to, build triggers, deploy settings, and the switches that pause builds or deployments.
+- **Activity**: every deploy, promotion, rollback and configuration change, with who made it.
+- **Map**: what the service is deployed as, in which accounts and environments, with live status on every resource.
 
 ## Using the CLI
 
@@ -148,8 +151,14 @@ planton service deploy my-service --env dev --image ghcr.io/acme/my-service:1.4.
 # The same, but from the _kustomize overlay in the folder you are standing in
 planton service deploy my-service --env dev --image ghcr.io/acme/my-service:1.4.2 --from-tree
 
+# Where each environment stands: its build, rollout, distance, and runs in flight
+planton service status my-service
+
 # Everything that ran for a service, newest first
 planton service runs my-service
+
+# Read one run by its number within the service (or by its id)
+planton service logs my-service 128
 
 # Start a build by hand
 planton service run my-service --branch main
@@ -160,8 +169,9 @@ planton service run my-service --tag v1.4.0
 # View deployment history
 planton service deployments my-service
 
-# Configure or reconfigure the Git webhook
-planton service configure-webhook my-service
+# Promote what runs in dev into staging; roll staging back
+planton service promote my-service --from dev --to staging
+planton service rollback my-service --env staging
 ```
 
 ## Related Documentation

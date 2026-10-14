@@ -92,14 +92,14 @@ To see what is waiting on you:
 ```bash
 planton service pipelines --awaiting-my-approval
 planton service last-pipeline my-service        # the run's record; the paused environment carries requiresManualGate: true
-planton service follow <run-id>                 # live status
+planton service follow my-service 42            # live status, by the run's number (or its id)
 ```
 
 To approve or reject:
 
 ```bash
-planton service resolve-env-manual-gate <run-id> production yes
-planton service resolve-env-manual-gate <run-id> production no
+planton service resolve-env-manual-gate my-service 42 production yes
+planton service resolve-env-manual-gate my-service 42 production no
 ```
 
 Two rules hold on every gate: the person who set the run in motion cannot approve it into a protected environment (separation of duties, enforced by the server), and the decision, the decider, and their note are recorded on the run — the durable "approved by" answer.
@@ -189,12 +189,12 @@ planton service run my-service --branch main                    # build the head
 planton service run my-service --branch main --commit a1b2c3d4  # build a specific commit
 planton service run my-service --branch main --deploy-env dev   # deploy into exactly one environment, no walk
 planton service run my-service --branch staging                 # a mapped branch deploys to its environment, as its push would
-planton service rerun <run-id>                                  # byte-identical: the same compiled pipeline, the same params
-planton service cancel <run-id>
-planton service runs my-service                                 # everything that ran, newest first
+planton service rerun my-service 42                             # a build again, byte-identical: the same compiled pipeline, the same params
+planton service cancel my-service 43
+planton service runs my-service                                 # everything that ran, newest first, each by its number
 ```
 
-A manual run goes through the same path as a push: the same compile, the same build, and the same destination. A trigger branch walks the promotion order, and a mapped branch deploys only to its environment; `--deploy-env` names one environment instead. A service with no trigger branch has no walk for a commit to ride, so `--commit` there needs `--branch` (deploying where that branch is mapped) or `--deploy-env`, and is refused without one. A rerun replays the run's stamped pipeline definition without recompiling, so it is the right verb after a fix outside the code (a credential, a runner); after a code fix, push a new commit.
+A manual run goes through the same path as a push: the same compile, the same build, and the same destination. A trigger branch walks the promotion order, and a mapped branch deploys only to its environment; `--deploy-env` names one environment instead. A service with no trigger branch has no walk for a commit to ride, so `--commit` there needs `--branch` (deploying where that branch is mapped) or `--deploy-env`, and is refused without one. Every run has a number within its service ("Run #42"), and every run verb takes it after the service name, or the run's id. A rerun replays a build's stamped pipeline definition without recompiling, so it is the right verb after a fix outside the code (a credential, a runner); after a code fix, push a new commit. A promotion, rollback, or image deploy is never rerun — it built nothing — so the platform refuses it and names the command to use instead: promote again, roll back again, or deploy the image again.
 
 ## Common Patterns and Tips
 
