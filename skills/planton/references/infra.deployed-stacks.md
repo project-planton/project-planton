@@ -294,10 +294,14 @@ planton get infra-component <ic_id> -o yaml               # confirm the record a
 planton infra component cleanup <ic_id>                   # clear the failed state (confirm with the user first)
 ```
 
-Then have the user rerun the run (Rerun on its page in the console): a
-rerun repeats the same revision, so what applied stays Unchanged and what
-failed runs again. A rerun is refused once a newer revision exists or the
-stack was undeployed since — plan again and apply instead. Cleanup only clears the failed
+Then rerun the run (`planton infra pipeline rerun <infpipe_id>`, or Rerun
+on its page in the console): a rerun repeats the same revision, so what
+applied stays Unchanged and what failed runs again. It asks first only when
+the rerun still destroys something (`--yes` answers, after the user agreed);
+agents use `rerun_infra_pipeline`, with `confirm` on the same condition. A
+rerun is refused once a newer revision exists or the stack was undeployed
+since — plan again and apply instead; the refusal names the plan command.
+A followed run that fails ends by naming the way out that fits it. Cleanup only clears the failed
 deployment state — it does not touch cloud infrastructure — but it is
 still a platform mutation: say what it does and get a yes.
 

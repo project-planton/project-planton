@@ -75,7 +75,7 @@ An apply records a numbered **revision** named by its message ("r13 · Raise rep
 
 Each applied plan is a revision: its number, message, author, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. The stack's **live revision** is the newest that applied; an undeploy clears it. `planton infra stack history <name> --env <env>` lists them, newest first.
 
-A run's Rerun repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
+A run's Rerun (`planton infra pipeline rerun <pipeline-id>` in a terminal) repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. It asks first when the rerun still destroys something. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
 
 ### One Run at a Time
 

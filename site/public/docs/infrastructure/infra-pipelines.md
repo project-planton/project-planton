@@ -66,7 +66,7 @@ Before a run reads ended, it settles its revision: Applied (the stack's live rev
 
 A stack has one run at a time. An apply, undeploy, purge or rerun is refused while a run of that stack is queued, running or waiting for approval, and the refusal names that run: approve or reject it, or cancel it with `planton infra pipeline cancel <pipeline-id>`, then try again. A run's record cannot be deleted while the run is in flight. A run whose workflow is gone — it never started, or stopped without finishing — is ended by the platform within about ten minutes, so a stack is never left busy.
 
-Rerunning a finished run repeats its operation. A deploy reruns its revision — the same reviewed plan, from the graph its last run walked — so what applied stays Unchanged and what failed runs again; it is refused, saying to plan again, once the stack has a newer revision or was undeployed since. An undeploy reruns as an undeploy of everything the stack owns. Rerunning anything that destroys — an undeploy, or a revision that removes resources — needs destroy access on the stack.
+Rerunning a finished run repeats its operation. A deploy reruns its revision — the same reviewed plan, from the graph its last run walked — so what applied stays Unchanged and what failed runs again; it is refused, saying to plan again, once the stack has a newer revision or was undeployed since. An undeploy reruns as an undeploy of everything the stack owns. Rerunning anything that destroys — an undeploy, or a revision that removes resources — needs destroy access on the stack. Rerun from the run's page, with `planton infra pipeline rerun <pipeline-id>` (it asks first when the rerun still destroys something; `--yes` answers), or through the agents' `rerun_infra_pipeline`.
 
 ## Manual Approval Gates
 
@@ -139,6 +139,9 @@ Use direct deployment for standalone resources. Use Infra Pipelines (via [Infra 
 ```bash
 # Cancel a running pipeline
 planton infra pipeline cancel <pipeline-id>
+
+# Run a finished run again: the same revision; asks when it destroys (--yes)
+planton infra pipeline rerun <pipeline-id>
 
 # Approve an environment gate (yes or no)
 planton infra pipeline resolve-env-manual-gate <pipeline-id> <env-name> yes

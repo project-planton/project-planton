@@ -122,6 +122,9 @@ planton infra pipeline status <infpipe_id>
 planton infra pipeline logs <infpipe_id>              # auto-targets the failed node
 planton infra pipeline logs <infpipe_id> --node <slug> # a specific node (slug from status)
 
+# 3b. A passing failure (a timeout, a quota)? Run it again, as it was reviewed:
+planton infra pipeline rerun <infpipe_id>              # same revision; asks when it destroys (--yes)
+
 # 4. Deeper: the Infra Job record carries the full error detail:
 planton infra job list <infra-component-id> -o json
 planton get infra-job <ij_id> -o json
