@@ -241,11 +241,11 @@ The push starts a run through the same webhook as before. Watch it:
 
 ```bash
 planton service runs storefront
-planton service follow <run-id>
-planton service logs <run-id>
+planton service follow storefront <number>
+planton service logs storefront <number>
 ```
 
-You will see `git-checkout`, `sonar-analysis`, `build-image`, and `kustomize-build`. If the scan fails its quality gate, `build-image` never runs and the run fails with the scanner's own output. The run record carries the exact compiled pipeline that executed (`spec.resolved_pipeline`), so a rerun replays it byte-for-byte.
+You will see `git-checkout`, `sonar-analysis`, `build-image`, and `kustomize-build`. If the scan fails its quality gate, `build-image` never runs and the run fails with the scanner's own output. The run record carries the exact compiled pipeline that executed (`spec.resolved_pipeline`), so a rerun of the build (`planton service rerun storefront <number>`) replays it byte-for-byte.
 
 ## Common Patterns
 

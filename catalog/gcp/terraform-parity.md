@@ -1,6 +1,6 @@
 ---
 title: "Terraform Parity"
-description: "Measured parity of the GCP catalog against the pinned Terraform provider"
+description: "Measured parity of the Google Cloud catalog against the pinned Terraform provider"
 icon: "check-circle"
 order: 90
 ---
@@ -12,7 +12,7 @@ order: 90
      parameters: provider=gcp ga-schema=google
      Regenerate: make generate-provider-parity-report -->
 
-# GCP Terraform Parity
+# Google Cloud Terraform Parity
 
 This catalog is **built for 100% Terraform parity**: every configurable
 argument of the pinned Terraform provider is representable through a kind,

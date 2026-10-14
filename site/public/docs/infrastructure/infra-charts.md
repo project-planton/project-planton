@@ -221,7 +221,7 @@ params:
     value: 3
 ```
 
-A name the chart does not declare is refused with the list of the chart's parameters, whether it comes from a file, `--set` or `--set-file`. Every command prints where each parameter's value came from. An installed stack stores only the values you set; every other parameter takes the default from the `values.yaml` the stack carries. `chart build` shows the render; `chart install --dry-run` (or `planton infra stack plan`) shows the plan — each resource as Create, Update, Destroy, Keep in Cloud and the rest — and applies nothing. With `--output-format json`, a plan prints its machine record, the rendered build included.
+A name the chart does not declare is refused with the list of the chart's parameters, whether it comes from a file, `--set` or `--set-file`. Every command prints where each parameter's value came from. An installed stack stores only the values you set; every other parameter takes the default from the `values.yaml` the stack carries. `chart build` shows the render; `chart install --dry-run` (or `planton infra stack plan`) shows the plan — each resource as Create, Update, Destroy, Keep and the rest — and applies nothing. With `--output-format json`, a plan prints its machine record, the rendered build included.
 
 ## Related Documentation
 

@@ -49,11 +49,22 @@ The pipeline waits for each environment to complete before proceeding to the nex
 This sequential model exists for a reason: each environment can depend on the previous one succeeding (you do not want a broken build reaching production), and failure at any stage stops the rollout cleanly rather than leaving partial deployments across environments.
 
 <!-- SCREENSHOT: Pipeline detail view
-  Page: /orgs/{org}/service/{serviceId} (Pipelines tab, specific pipeline)
+  Page: /{org}/service/{slug}/runs/{runId}
   Action: Show a pipeline in progress with build stage completed and deploy stage running
   Focus: The pipeline detail view showing build and deploy stages with task status
   Alt: Pipeline detail view showing completed build stage and in-progress deploy stage with per-environment deployment tasks
 -->
+
+## Run Numbers
+
+Every run gets a number within its service when it is created: the service's first run is Run #1, and each run after it, whatever started it, takes the next number. The number is the handle people say and type — "Run #128" on the Runs tab, the run page, notifications, and the title of the run's GitHub check — while the run's id (`svcpipe_…`) is for machines. Every CLI run verb takes either:
+
+```bash
+planton service logs my-service 128
+planton service logs svcpipe_01k7m3pr5fxmjx3jy7w5afnw6a
+```
+
+A run that failed to be created leaves a gap in the numbers; the number names a run, it does not count them. Runs carry their origin too: a promotion reads "Promoted from staging · Run #129", naming the run it came from, and every deployment names the run that built its image ("Built by Run #128"), unchanged through every promotion and rollback.
 
 ## Pipeline Triggers
 
@@ -131,7 +142,7 @@ Two settings give you fine-grained control over pipeline execution:
 - **Disable pipelines entirely** — Prevents all pipeline execution, including both webhook-triggered and manual pipelines. Useful for temporarily pausing automation during maintenance windows or incident response.
 - **Disable deployments only** — Pipelines still run the build stage (your artifact is built and pushed), but the deploy stage is skipped. Useful for validating builds without affecting running environments.
 
-Both settings are available in the service's **Settings** tab in the web console.
+Both settings are available on the service's **Configuration** tab in the web console.
 
 ## Manual Approval Gates
 
@@ -144,11 +155,11 @@ When a pipeline reaches a gated environment:
 3. On approval, the deployment proceeds. On rejection, the deployment and all subsequent environments are skipped.
 
 ```bash
-# Approve a manual gate
-planton service pipeline resolve-manual-gate <pipeline-id> <deployment-task-name> yes
+# Approve a manual gate (the run by its service and number, or by its id)
+planton service resolve-env-manual-gate my-service 130 prod yes
 
 # Reject a manual gate
-planton service pipeline resolve-manual-gate <pipeline-id> <deployment-task-name> no
+planton service resolve-env-manual-gate my-service 130 prod no
 ```
 
 ## Cancelling a Pipeline
@@ -159,7 +170,7 @@ Running pipelines can be cancelled at any point. The behavior depends on which s
 - **During the deploy stage** — The currently executing deployment completes its in-flight infrastructure operation, then remaining environments are cancelled.
 
 ```bash
-planton service pipeline cancel <pipeline-id>
+planton service cancel my-service 130
 ```
 
 Cancellation is asynchronous — the command sends the signal and returns immediately.
@@ -168,18 +179,19 @@ Cancellation is asynchronous — the command sends the signal and returns immedi
 
 ### Web Console
 
-The **Pipelines** tab on the service detail page shows a table of pipeline runs with:
+The **Runs** tab on the service's page lists every run, newest first, with:
 
+- The run's number ("Run #128"), or a CI run's workflow name
 - Commit SHA and message
 - Pipeline type (Preview for pull requests, Production for branch/tag pushes)
 - Status (running, succeeded, failed, cancelled)
 - Duration and relative time
 - Branch and author
 
-Click any pipeline run to see the detail view with build and deploy stage logs. Active pipelines auto-refresh every few seconds.
+Click any run to see its page with build and deploy stage logs. The list updates live: a run started from the CLI, an agent, or a push appears within a second, with no reload.
 
 <!-- SCREENSHOT: Pipeline list in web console
-  Page: /orgs/{org}/service/{serviceId} (Pipelines tab)
+  Page: /{org}/service/{slug}?view=runs (Runs tab)
   Action: Show the pipeline runs table with at least 3 pipelines in different states
   Focus: The pipeline runs table with status indicators, branch, and commit columns
   Alt: Pipeline runs table showing recent pipelines with status badges, branch names, commit SHAs, and trigger pipeline button
@@ -195,25 +207,34 @@ planton service runs my-service
 planton service pipelines my-service
 planton service pipelines --awaiting-my-approval
 
-# Follow a run's build and deploy progress live
-planton service follow <run-id>
+# Where each environment stands: its build, distance, and runs in flight
+planton service status my-service
+
+# Follow a run's build and deploy progress live (by its number, or its id)
+planton service follow my-service 128
 
 # The build's logs (every task's lines); a deploy node's engine logs
-planton service logs <run-id>
-planton service logs <run-id> --env dev --node KubernetesDeployment/my-service
+planton service logs my-service 128
+planton service logs my-service 128 --env dev --node KubernetesDeployment/my-service
 
 # The most recent run for a service
 planton service last-pipeline my-service
 
-# Re-run a run byte-identically (the same compiled pipeline, the same params)
-planton service rerun <run-id>
+# Re-run a build byte-identically (the same compiled pipeline, the same params)
+planton service rerun my-service 128
+```
+
+A rerun repeats a build. A promotion, a rollback, or a deploy of an image built nothing, so rerunning one is refused, and the refusal names the command that repeats it:
+
+```text
+Run #129 promoted 'Fix login' from dev to staging; running it again would rebuild the commit instead of promoting it. Promote again: planton service promote my-service --from dev --to staging, or Promote on the service's Delivery Path.
 ```
 
 ### GitHub Integration
 
 The integration is rich in both directions. Inbound: if your repository runs its own GitHub Actions workflows, those runs are mirrored into Planton automatically — they render beside Planton-managed pipeline runs in one chronology (`planton service runs`, the service's Runs tab in the console), each with its jobs, steps, GitHub's own status words, and job logs on view, no setup beyond connecting the repository. You can act on them from Planton too, at GitHub's own granularities: re-run all jobs, re-run only the failed jobs, re-run one job, or cancel an in-flight run (`planton service rerun` / `planton service cancel`, the run page's controls, or the agent tools), each optionally with GitHub's debug logging for the new attempt.
 
-Outbound, Planton's facts land on GitHub's own surfaces. Every pipeline run writes a live check on its commit — named by the service, visible from the moment a push triggers work, concluding with the run's verdict and the whole delivery story (build outcome, each environment's outcome with its reason) in the check's output, with "Details" opening the run in Planton. Every successful deploy advances a GitHub Deployment, so the repository's environments panel shows what is running where and "View deployment" opens the live address; a pull request's preview additionally gets a "Preview" check carrying the preview's phase and URL, and its deployment goes inactive when the preview is torn down. Even a broken `service.yaml` pushed to the default branch gets failed-CI ergonomics: a red X on that exact commit naming the exact error — including files so broken they name no service at all — with the error pinned to its line in the diff when the parser reports one. Status checks land on PRs with no configuration; the GitHub App's Checks and Deployments write permissions are the only requirement.
+Outbound, Planton's facts land on GitHub's own surfaces. Every pipeline run writes a live check on its commit — named by the service (so a required check keeps matching), titled with the run's number ("Run #128 · Deploying to staging"), visible from the moment a push triggers work, concluding with the run's verdict and the whole delivery story (build outcome, each environment's outcome with its reason) in the check's output, with "Details" opening the run in Planton. Every successful deploy advances a GitHub Deployment, so the repository's environments panel shows what is running where and "View deployment" opens the live address; a pull request's preview additionally gets a "Preview" check carrying the preview's phase and URL, and its deployment goes inactive when the preview is torn down. Even a broken `service.yaml` pushed to the default branch gets failed-CI ergonomics: a red X on that exact commit naming the exact error — including files so broken they name no service at all — with the error pinned to its line in the diff when the parser reports one. Status checks land on PRs with no configuration; the GitHub App's Checks and Deployments write permissions are the only requirement.
 
 GitHub Actions can also be the deploy platform itself: the published Deploy Action runs connected through your backend or entirely offline with no backend anywhere — see [Deploy from GitHub Actions](/docs/ci-cd/deploy-from-github-actions).
 

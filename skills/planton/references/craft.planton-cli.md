@@ -41,6 +41,9 @@ planton infra stack get <id-or-name>    # one stack, full record (its declaratio
 planton infra stack history <name> --env <env>  # its revisions: every plan applied, newest first
 planton infra stack plan <name> --env <env>     # what applying would do now (writes nothing)
 planton env list                          # environments in the org
+planton service status <service>          # a service's environments in promotion order: the build each
+                                          # runs, rollout, distance ("3 commits behind dev"), runs in
+                                          # flight by number; -o json|yaml for the path itself
 planton search connections                # provider connections (which clouds/clusters)
 planton connection authorization list     # which connections which envs may use
 planton secret list -o json               # managed secrets ("env" field = scope)
@@ -121,6 +124,9 @@ planton infra pipeline status <infpipe_id>
 # 3. Why did the node fail? Engine logs, one hop:
 planton infra pipeline logs <infpipe_id>              # auto-targets the failed node
 planton infra pipeline logs <infpipe_id> --node <slug> # a specific node (slug from status)
+
+# 3b. A passing failure (a timeout, a quota)? Run it again, as it was reviewed:
+planton infra pipeline rerun <infpipe_id>              # same revision; asks when it destroys (--yes)
 
 # 4. Deeper: the Infra Job record carries the full error detail:
 planton infra job list <infra-component-id> -o json
@@ -276,6 +282,9 @@ backend. Authentication and partial-response failures are not empty history.
 ```
 planton follow <infpipe_id|ij_id> --plain   # auto-detects by id prefix
 planton infra pipeline stream-status <id>   # status lines until terminal
+planton service follow <service> <number>   # a service run by its handle ("Run #128"),
+                                            # or by its id; logs, rerun, cancel and both
+                                            # gate resolvers take the same two forms
 ```
 
 Streams block until the pipeline finishes — in a session, prefer polling
