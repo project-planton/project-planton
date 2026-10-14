@@ -81,7 +81,10 @@ source; do not silently erase its error to claim completeness. When the
 in-product Assistant is disabled, do not offer or invoke Assistant workflows.
 
 For each relevant site, say what the person would decide, the environment,
-what would change, and where to review it. Preserve an unknown `waiting_since`
+what would change, and where to review it. A `plan/<env>` site is a stack
+request: read it with `planton infra stack review <stack> --env <env>` (MCP
+`get_infra_stack_review`) and name its destroys and replaces; its review
+page is `/<org>/infra-stack/<env>/<stack>/plan?run=<run>`. Preserve an unknown `waiting_since`
 as unknown; the run's start time is not the gate's wait time. A page is a
 snapshot, not a reservation: if the decision has already changed when opened,
 use the current source response.

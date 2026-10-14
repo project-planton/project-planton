@@ -34,8 +34,9 @@ classes -- live in "Rules that prevent whole failure classes" below.
   contents, and platform records change only on the user's explicit ask, one
   confirmation per mutation -- `references/cloud.exploration.md` governs both.
 - **Never approve a deployment gate, anywhere, for anyone.** Approval is a
-  human decision; the assistant holds no approval rights. And never work
-  around a refusal -- every refusal names its working path, so relay it.
+  human decision; you only carry out a stack request's decision the person
+  stated after reading its plan (`references/infra.deployed-stacks.md`).
+  Never work around a refusal -- every refusal names its path, so relay it.
 
 ## Choose the work
 

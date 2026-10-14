@@ -27,14 +27,20 @@ Practical implications worth sharing at the right moment:
   ends everything downstream of it ("Not run: <Kind>/<slug> failed") while
   independent branches carry on.
 - Every change to a stack is a plan read first: what applying would do to
-  each resource (Create, Update, Destroy, Keep, Adopt, Unchanged…),
-  before anything runs. Applying records a numbered revision and starts one
-  run that applies what the stack declares, then removes what it no longer
-  declares — destroyed, or kept on its provider as chosen.
+  each resource (Create, Update, Destroy, Replace, Keep, Adopt, May Change,
+  Unchanged…), before anything runs. Applying records a numbered revision
+  and starts one run that applies what the stack declares, then removes
+  what it no longer declares — destroyed, or kept on its provider as chosen.
+- In a protected environment a change is a request: the engines preview it,
+  an approver approves exactly the plan they read, and nothing applies
+  before. Each resource proves its plan is the one previewed before it
+  changes; one that moved since stops and asks again
+  (`infra.deployed-stacks.md` has the request's commands).
 - A stack has one run at a time: an apply, undeploy, purge or rerun is
   refused while a run of that stack is queued, running or waiting for
-  approval, and the refusal names the run. Relay it: approve or reject that
-  run, or cancel it (`planton infra pipeline cancel <id>`), then retry.
+  approval, and the refusal names the run or the waiting request. Relay it:
+  the user reviews and decides the request, withdraws it, or cancels the run
+  (`planton infra pipeline cancel <id>`), then retries.
 - Undeploy tears down everything the stack owns — including components its
   templates no longer declare — dependents first, so a cluster outlives the
   workloads on it. It is refused while any owned resource carries

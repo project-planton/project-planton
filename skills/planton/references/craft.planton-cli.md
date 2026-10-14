@@ -40,6 +40,7 @@ planton infra stack list -o json        # the org's Infra Stacks (what has been 
 planton infra stack get <id-or-name>    # one stack, full record (its declaration and live revision)
 planton infra stack history <name> --env <env>  # its revisions: every plan applied, newest first
 planton infra stack plan <name> --env <env>     # what applying would do now (writes nothing)
+planton infra stack review <name> --env <env>   # the request waiting in a protected environment (writes nothing)
 planton env list                          # environments in the org
 planton service status <service>          # a service's environments in promotion order: the build each
                                           # runs, rollout, distance ("3 commits behind dev"), runs in
