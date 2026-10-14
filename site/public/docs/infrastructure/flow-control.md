@@ -33,7 +33,7 @@ This differs from "Pause After Preview" (below), which allows the preview to run
 
 When enabled, Infra Jobs are not automatically created when an Infra Component is created or updated: the resource is unmanaged, and Planton records it without deploying anything. You can still create Infra Jobs manually through the CLI or web console, but the automatic trigger from lifecycle events is suppressed. On a single resource, set it with the annotation `planton.dev/infra-job.disable-on-lifecycle-events: "true"`.
 
-Inside an Infra Stack or a Service deployment, such a resource reads **Unmanaged**: the run records it and never applies or destroys it. A stack's plan reads it Unmanaged; removing it from the templates plans **Keep in Cloud**, with the choice locked; a stack's undeploy or purge releases it and leaves it in the cloud; a service's deletion leaves it in the cloud too. Tearing it down is a deliberate act on that Infra Component alone.
+Inside an Infra Stack or a Service deployment, such a resource reads **Unmanaged**: the run records it and never applies or destroys it. A stack's plan reads it Unmanaged; removing it from the templates plans **Keep** (named by its provider: Keep in AWS), with the choice locked; a stack's undeploy or purge releases it and leaves it in the cloud; a service's deletion leaves it in the cloud too. Tearing it down is a deliberate act on that Infra Component alone.
 
 This is useful for shared infrastructure that multiple teams depend on, where accidental changes could have wide impact. Only explicit, intentional Infra Jobs run.
 
@@ -62,10 +62,10 @@ Two annotations on a resource decide what an [Infra Stack](/docs/infrastructure/
 
 | Annotation | Whenever the stack lets go of the resource | In a plan that removes it |
 |------------|---------------------------------------------|---------------------------|
-| `planton.dev/keep-in-cloud: "true"` | Released, never destroyed: removed from the templates, undeployed or purged, it keeps running in your account, and another stack can adopt it or a service can take it over. | **Keep in Cloud**, the choice locked: "Marked planton.dev/keep-in-cloud: its stack never destroys it". |
-| `planton.dev/prevent-destroy: "true"` | Refused: an undeploy or purge is refused before anything starts, naming the resource. | **Blocked** from destroying — choose Keep in Cloud to apply the plan, or remove the annotation to destroy it. |
+| `planton.dev/keep-on-provider: "true"` | Released, never destroyed: removed from the templates, undeployed or purged, it keeps running on its provider, and another stack can adopt it or a service can take it over. | **Keep** (named by its provider: Keep in AWS), the choice locked: "Marked planton.dev/keep-on-provider: its stack never destroys it". |
+| `planton.dev/prevent-destroy: "true"` | Refused: an undeploy or purge is refused before anything starts, naming the resource. | **Blocked** from destroying — choose Keep to apply the plan, or remove the annotation to destroy it. |
 
-Keep in Cloud answers "this resource outlives its stack"; prevent-destroy answers "stop anyone from tearing this down by mistake". A removed resource without either is destroyed when its plan says Destroy and you agreed — a resource that holds data only when you named it.
+Keep answers "this resource outlives its stack"; prevent-destroy answers "stop anyone from tearing this down by mistake". A removed resource without either is destroyed when its plan says Destroy and you agreed — a resource that holds data only when you named it.
 
 ## Policy Resolution Hierarchy
 

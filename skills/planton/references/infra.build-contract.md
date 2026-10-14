@@ -44,7 +44,7 @@ what installing would do against a real environment without applying
 anything, plan it: `planton infra stack plan <name> <chart> --env <env> -f <file>`
 (or `planton chart install <name> <chart> -f <file> --dry-run`, the same plan).
 It prints every value with its source, then each resource as Create, Update,
-Destroy, Keep in Cloud, Adopt, Unchanged and the rest, with the reason;
+Destroy, Keep, Adopt, Unchanged and the rest, with the reason;
 `-o json` prints the plan record, rendered build included. A build checks
 the chart; a plan checks it against what the environment already runs.
 

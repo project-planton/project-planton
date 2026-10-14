@@ -140,7 +140,7 @@ order, each with its reason:
 | **Update Record** | Only Planton's record changes; nothing in the cloud (an annotation like `planton.dev/prevent-destroy` added). |
 | **Create** | New. |
 | **Adopt** | It already exists and no stack manages it; this stack takes it over only when chosen, and the apply may change it to match the template. |
-| **Keep in Cloud** | No longer in the templates, and kept: the stack lets go of it, and it keeps running and billing in the account. |
+| **Keep** (named by its provider: Keep in AWS) | No longer in the templates, and kept: the stack lets go of it, and it keeps running and billing in the account. |
 | **May Change** | It reads a value known only after an earlier resource applies. |
 | **Always Runs** | Its job runs on every apply: whether it changes is known only when it runs. |
 | **Unchanged** / **Unmanaged** | Nothing moved / the platform records it and never applies it. Collapsed into one line. |
@@ -148,7 +148,7 @@ order, each with its reason:
 A removed resource whose destroy is blocked — protected by
 `planton.dev/prevent-destroy`, its own deletion protection on, or still
 read by another stack or by a resource the templates declare — blocks only
-its destroy: choosing Keep in Cloud applies the plan around it. A Blocked
+its destroy: choosing Keep applies the plan around it. A Blocked
 row on a resource the templates declare (another stack owns it, a secret
 it reads is missing) stops the whole plan until it is resolved.
 
@@ -168,9 +168,14 @@ link); a plan of an edited folder lives only in your output.
 resource: the user agrees to destroy THIS bucket, not "whatever the plan
 says". A resource that holds data a destroy cannot give back is marked in
 the plan and is destroyed only when named (`--destroy Kind/name`).
-Anything the user wants kept goes `--keep-in-cloud Kind/name`; an existing
+Anything the user wants kept goes `--keep Kind/name`; an existing
 resource the stack should take over goes `--adopt Kind/name` — a stack
-never takes over a resource nobody chose to hand it.
+never takes over a resource nobody chose to hand it. A kept resource keeps
+what it depends on: keep a deployment and its namespace must be kept too,
+because destroying the namespace would take the deployment along. Each
+removed row lists the removed resources that depend on it
+(`removed_dependents`); the apply refuses a keep without what it depends on,
+naming every `--keep` it needs in one sentence.
 
 **4. Apply** exactly what was shown:
 
@@ -178,7 +183,7 @@ never takes over a resource nobody chose to hand it.
 planton infra stack apply <stackName> . --env <env> --org <org> \
   -m "one line saying WHY, like a commit message" \
   --plan-digest <digest from the plan you showed> \
-  --destroy AwsS3Bucket/old-logs --keep-in-cloud AwsRoute53Zone/legacy --plain
+  --destroy AwsS3Bucket/old-logs --keep AwsRoute53Zone/legacy --plain
 ```
 
 The apply plans again and goes ahead only while the fresh plan is the one
@@ -193,8 +198,8 @@ replicas"), where the whole team reads why it happened.
 
 What one apply does: records the declaration and a numbered revision, then
 starts ONE run that applies what the stack declares and — only when all
-of it applied — removes what the plan removed (destroyed, or kept in the
-cloud), prints the run's id, and **follows it to completion**; the exit
+of it applied — removes what the plan removed (destroyed, or kept running
+on its provider), prints the run's id, and **follows it to completion**; the exit
 code is non-zero when the followed run fails. A plan that changes only the
 declaration (a comment in a template, a value set to its default) records
 the revision and starts no run. A plan that changes nothing applies
@@ -242,9 +247,9 @@ More node outcomes to read correctly:
 - **Unmanaged** — a resource whose lifecycle events are disabled
   (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`). The stack
   records it and never applies or destroys it: removing it from the
-  templates plans Keep in Cloud, and an undeploy releases it.
-- **Kept in Cloud** — a removed resource the user chose to keep, or one
-  marked `planton.dev/keep-in-cloud: "true"`: the stack let go of it, no job
+  templates plans Keep, and an undeploy releases it.
+- **Kept** — a removed resource the user chose to keep, or one
+  marked `planton.dev/keep-on-provider: "true"`: the stack let go of it, no job
   ran, and it keeps running; another stack or a service can adopt it.
 - **Owned elsewhere** — a component another live stack or service owns.
   A teardown leaves it in place for its owner; a plan that would change it
@@ -324,7 +329,7 @@ each diagnosis or proceed to the proposed fix's plan directly.
   product; surface the need. What to tell them when they ask: undeploy
   destroys everything the stack owns, including components its templates
   no longer declare, dependents first, and keeps the stack and its
-  revisions; unmanaged resources and ones marked `planton.dev/keep-in-cloud`
+  revisions; unmanaged resources and ones marked `planton.dev/keep-on-provider`
   are released and stay in the cloud. It is refused while any owned
   resource carries `planton.dev/prevent-destroy: "true"` (lift it by
   removing the annotation and applying) or while another stack still reads

@@ -53,7 +53,7 @@ Every change to an Infra Stack — an edit in the console, `planton infra stack 
 | **Update Record** | Only Planton's record changes; nothing in the cloud (for example, an annotation added). |
 | **Create** | The resource is new. |
 | **Adopt** | The resource already exists and no stack manages it; the stack takes it over only when you choose Adopt, and the apply may change it to match the template. |
-| **Keep in Cloud** | The resource is no longer in the templates and is kept: Planton stops managing it, and it keeps running and billing in your account. |
+| **Keep** (named by its provider: Keep in AWS) | The resource is no longer in the templates and is kept: Planton stops managing it, and it keeps running where it is, and billing there. |
 | **May Change** | It reads a value known only after an earlier resource applies. |
 | **Always Runs** | Its job runs on every apply: whether it changes is known only when it runs. |
 | **Unchanged** | Nothing it depends on moved since its last successful deploy. |
@@ -61,11 +61,11 @@ Every change to an Infra Stack — an edit in the console, `planton infra stack 
 
 Applying a plan runs exactly that plan, and only while nothing it was made from has moved: the apply plans again and is refused when the fresh plan differs ("This plan is out of date…") — someone applied in the meantime, or a resource changed underneath. Plan again and review what changed.
 
-An apply records a numbered **revision** named by its message ("r13 · Raise replicas") and starts one [Infra Pipeline](/docs/infrastructure/infra-pipelines) run: it applies what the stack declares, each resource after everything it consumes, up to four at once; then — only when all of it applied — it removes what the plan removed, dependents first: destroyed, or let go of and kept in the cloud. A failed apply removes nothing. A plan that changes only the declaration (a comment in a template, a value set to its default) records its revision and starts no run; a plan that changes nothing applies nothing.
+An apply records a numbered **revision** named by its message ("r13 · Raise replicas") and starts one [Infra Pipeline](/docs/infrastructure/infra-pipelines) run: it applies what the stack declares, each resource after everything it consumes, up to four at once; then — only when all of it applied — it removes what the plan removed, dependents first: destroyed, or let go of and kept on its provider. A failed apply removes nothing. A plan that changes only the declaration (a comment in a template, a value set to its default) records its revision and starts no run; a plan that changes nothing applies nothing.
 
 ### Choosing What Happens to Each Resource
 
-- **Destroy or Keep in Cloud.** A removed resource is destroyed unless you keep it. A resource that holds data a destroy cannot give back is destroyed only when you name it: type its name in the console, `--destroy Kind/name` on the CLI. A removed resource whose destroy is blocked — `planton.dev/prevent-destroy`, its own deletion protection, or something that still reads it — blocks only its destroy: choose Keep in Cloud and the plan applies.
+- **Destroy or Keep.** A removed resource is destroyed unless you keep it. A resource that holds data a destroy cannot give back is destroyed only when you name it: type its name in the console, `--destroy Kind/name` on the CLI. A removed resource whose destroy is blocked — `planton.dev/prevent-destroy`, its own deletion protection, or something that still reads it — blocks only its destroy: choose Keep and the plan applies.
 - **Adopt.** A stack never takes over a resource it found; you choose Adopt for it, or remove it from the templates.
 - **Re-apply.** Run an unchanged resource's job anyway, or every resource's (`--reapply Kind/name`, `--reapply-all`).
 
@@ -133,7 +133,7 @@ planton infra stack undeploy <stack-name-or-id> --env <env>
 
 An undeploy covers every Infra Component the stack created, including components its templates no longer declare. It reads each resource from its stored record, never from the templates, and destroys dependents first: a workload goes before the cluster it runs on. Each record is settled the moment its own destroy ends:
 
-- A resource the stack holds as **Unmanaged**, or one marked `planton.dev/keep-in-cloud: "true"`, is released from the stack and stays in the cloud. An undeploy never destroys it.
+- A resource the stack holds as **Unmanaged**, or one marked `planton.dev/keep-on-provider: "true"`, is released from the stack and stays on its provider. An undeploy never destroys it.
 - A resource whose record is already gone reads **Already Gone**.
 - A resource another stack or service now owns is left in place for its owner.
 
@@ -172,11 +172,13 @@ metadata:
 
 While any resource the stack owns carries the annotation, the stack's undeploy and purge are refused before anything starts, naming the resource. A person's destroy or purge of that Infra Component is refused too, as is creating, rerunning or resuming a destroy job for it. Adding or removing the annotation changes no deployment: no job runs for that change alone.
 
-To lift the protection, remove the annotation from the stack's templates and apply the stack (the plan reads Update Record: nothing in the cloud changes). A plan that removes a protected resource reads it Blocked from destroying — choose Keep in Cloud to apply around it. For a resource the stack no longer declares, remove the annotation from the Infra Component itself. Deleting a record alone is not a destroy, so the annotation does not stand in its way.
+To lift the protection, remove the annotation from the stack's templates and apply the stack (the plan reads Update Record: nothing in the cloud changes). A plan that removes a protected resource reads it Blocked from destroying — choose Keep to apply around it. For a resource the stack no longer declares, remove the annotation from the Infra Component itself. Deleting a record alone is not a destroy, so the annotation does not stand in its way.
 
 ## Keeping a Resource in the Cloud
 
-Annotate a resource with `planton.dev/keep-in-cloud: "true"` and its stack never destroys it: whenever the stack lets go of it — removed from the templates, undeployed, purged — it is released, still running, and the plan reads Keep in Cloud with the choice locked. A released resource can be adopted by another stack or taken over by a service. This is how a resource moves from an Infra Stack to a Service: remove it from the templates, keep it in the cloud, and the service's next deploy takes it over.
+Annotate a resource with `planton.dev/keep-on-provider: "true"` and its stack never destroys it: whenever the stack lets go of it — removed from the templates, undeployed, purged — it is released, still running, and the plan reads Keep with the choice locked. A released resource can be adopted by another stack or taken over by a service. This is how a resource moves from an Infra Stack to a Service: remove it from the templates, keep it running on its provider, and the service's next deploy takes it over.
+
+A kept resource keeps what it depends on. While a deployment stays, the namespace it lives in — and anything else it references — is never destroyed: the namespace's plan row says what depends on it, with **Keep This Too** in the console and the exact `--keep` flags on the CLI, and an undeploy is refused before anything is torn down, naming each kept resource and what it depends on.
 
 ## What a Run Applies
 
@@ -186,8 +188,8 @@ A change made outside Planton, such as an edit in the cloud console, moves nothi
 
 More outcomes appear on a run's resources:
 
-- **Unmanaged** — a resource whose lifecycle events are disabled (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`, see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it; removing it from the templates plans Keep in Cloud, and an undeploy releases it.
-- **Kept in Cloud** — a removed resource the stack let go of; no job ran, and it keeps running.
+- **Unmanaged** — a resource whose lifecycle events are disabled (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`, see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it; removing it from the templates plans Keep, and an undeploy releases it.
+- **Kept** — a removed resource the stack let go of; no job ran, and it keeps running.
 - **Owned elsewhere** — a resource another live Infra Stack or Service owns. A teardown leaves it in place for its owner, and a plan that would change it reads Blocked, naming the owner to change it through.
 
 ## Using the CLI

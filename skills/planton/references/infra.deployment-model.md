@@ -27,10 +27,10 @@ Practical implications worth sharing at the right moment:
   ends everything downstream of it ("Not run: <Kind>/<slug> failed") while
   independent branches carry on.
 - Every change to a stack is a plan read first: what applying would do to
-  each resource (Create, Update, Destroy, Keep in Cloud, Adopt, Unchanged…),
+  each resource (Create, Update, Destroy, Keep, Adopt, Unchanged…),
   before anything runs. Applying records a numbered revision and starts one
   run that applies what the stack declares, then removes what it no longer
-  declares — destroyed, or kept in the cloud as chosen.
+  declares — destroyed, or kept on its provider as chosen.
 - A stack has one run at a time: an apply, undeploy, purge or rerun is
   refused while a run of that stack is queued, running or waiting for
   approval, and the refusal names the run. Relay it: approve or reject that
@@ -46,7 +46,7 @@ Practical implications worth sharing at the right moment:
   move run no job and read "Unchanged since <job>" (no duplicate
   infrastructure). A resource the templates stop declaring is destroyed
   only when its plan says Destroy and the person agreed — or kept running
-  in the cloud when they chose Keep in Cloud.
+  on its provider when they chose Keep.
 
 ## Every resource deploys through an open-source module
 
