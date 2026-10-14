@@ -1,0 +1,27 @@
+apiVersion: gcp.planton.dev/v1alpha1
+kind: GcpGkeCluster
+metadata:
+  name: restricted-control-plane
+spec:
+  projectId:
+    value: my-gcp-project-123
+  location: us-central1
+  network:
+    valueFrom:
+      kind: GcpVpcNetwork
+      name: my-app-vpc
+      fieldPath: status.outputs.network_self_link
+  subnetwork:
+    valueFrom:
+      kind: GcpSubnetwork
+      name: my-gke-subnet
+      fieldPath: status.outputs.subnetwork_self_link
+  privateCluster:
+    enablePrivateNodes: true
+  # A configured empty restriction is different from an omitted policy.
+  masterAuthorizedNetworks: {}
+  # Administrators use the IAM-authenticated DNS endpoint independently
+  # of the IP endpoint's authorized CIDR ranges.
+  controlPlaneEndpoints:
+    dnsEndpointAllowExternalTraffic: true
+  releaseChannel: REGULAR

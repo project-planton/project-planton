@@ -126,7 +126,7 @@ planton infra job cancel <infra-job-id>
 
 ### Re-running
 
-Re-run a completed or failed Infra Job to repeat the same operation. Useful after fixing external issues like quota limits or permission errors:
+Re-run a completed or failed Infra Job to repeat the same operation. Useful after fixing external issues like quota limits or permission errors. A resource an Infra Stack owns is rerun through its stack's run instead (`planton infra pipeline rerun <pipeline-id>`), which repeats the reviewed revision:
 
 ```bash
 planton infra job rerun <infra-job-id>
