@@ -155,6 +155,25 @@ func TestResources_R2Bundle_DeploysTheBundleBytesWithTheConnectionsR2Pair(t *tes
 	}
 }
 
+// An unset compatibility date deploys the spec's fixed default, never the day
+// of the run: an unchanged Worker must plan no change tomorrow.
+func TestResources_UnsetCompatibilityDateIsTheFixedDefault(t *testing.T) {
+	mocks := &bundleMocks{bundle: []byte(testBundleSource)}
+
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		return Resources(ctx, bundleIacInput())
+	}, pulumi.WithMocks("cloudflare-worker", "test", mocks))
+	if err != nil {
+		t.Fatalf("the program must run to completion: %v", err)
+	}
+
+	mocks.mu.Lock()
+	defer mocks.mu.Unlock()
+	if got := stringInput(t, mocks.workerScriptInput, "compatibilityDate"); got != "2025-01-15" {
+		t.Errorf("compatibility date = %q, want the spec's default 2025-01-15", got)
+	}
+}
+
 func TestResources_R2Bundle_EmptyBundleStopsTheProgramByName(t *testing.T) {
 	mocks := &bundleMocks{bundle: nil}
 

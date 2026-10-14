@@ -153,8 +153,8 @@ Fixed at creation.
 `string`
 
 A stable UUID for the assignment's ARM resource name. Cosmos
-identifies a role assignment by a GUID; when omitted (recommended), a
-random one is generated at deploy time. Pin it only when an
+identifies a role assignment by a GUID; when omitted (recommended), one
+is chosen at the first deploy and kept on every deploy after. Pin it only when an
 externally-defined GUID must be preserved, e.g. recreating an
 assignment that other tooling references by its full ARM ID. Changing
 a pinned GUID replaces the assignment.

@@ -1,7 +1,6 @@
 package module
 
 import (
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	azurecosmosdbsqlroledefinitionv1alpha1 "github.com/plantonhq/planton/catalog/azure/azurecosmosdbsqlroledefinition/v1alpha1"
 	"github.com/plantonhq/planton/pkg/iac/pulumi/pulumimodule/provider/azure/pulumiazureprovider"
@@ -75,12 +74,14 @@ func Resources(ctx *pulumi.Context, iacInput *azurecosmosdbsqlroledefinitionv1al
 	}
 
 	// The definition's ARM resource name is a GUID. When the spec does
-	// not pin one, generate it here -- mirroring azurerm's create-time
-	// UUID generation (Pulumi-azure must not autogenerate from the
-	// logical resource name).
+	// not pin one, derive it from the resource's identity (Pulumi-azure
+	// must not autogenerate from the logical resource name). Derived, never
+	// random: a GUID drawn fresh on every run would plan a replacement of
+	// an unchanged definition each time, where azurerm draws one at create
+	// and keeps it.
 	roleDefinitionGuid := spec.RoleDefinitionId
 	if roleDefinitionGuid == "" {
-		roleDefinitionGuid = uuid.New().String()
+		roleDefinitionGuid = stableGuid(ctx, locals.AzureCosmosdbSqlRoleDefinition.Metadata.GetId())
 	}
 	roleDefinitionArgs.RoleDefinitionId = pulumi.String(roleDefinitionGuid)
 

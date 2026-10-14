@@ -37,8 +37,10 @@ type CloudflareWorkerSpec struct {
 	// The Worker script name, visible in the Cloudflare dashboard and used as the
 	// target of service bindings and routes.
 	WorkerName string `protobuf:"bytes,2,opt,name=worker_name,json=workerName,proto3" json:"worker_name,omitempty"`
-	// Compatibility date (YYYY-MM-DD) pinning the Workers runtime behavior. When
-	// unset, the module pins today's date at deploy.
+	// Compatibility date (YYYY-MM-DD) pinning the Workers runtime behavior. Both
+	// engines default it to "2025-01-15" when unset: a fixed date, so an
+	// unchanged Worker plans no change from one day to the next. Set it to opt
+	// into newer runtime behavior.
 	CompatibilityDate string `protobuf:"bytes,3,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
 	// Script source — exactly one of the two cases below.
 	//
@@ -3932,13 +3934,14 @@ var File_catalog_cloudflare_cloudflareworker_v1alpha1_spec_proto protoreflect.Fi
 
 const file_catalog_cloudflare_cloudflareworker_v1alpha1_spec_proto_rawDesc = "" +
 	"\n" +
-	"7catalog/cloudflare/cloudflareworker/v1alpha1/spec.proto\x120dev.planton.cloudflare.cloudflareworker.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\x1a\x1cshared/options/options.proto\"\xae9\n" +
+	"7catalog/cloudflare/cloudflareworker/v1alpha1/spec.proto\x120dev.planton.cloudflare.cloudflareworker.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\x1a\x1cshared/options/options.proto\"\xbc9\n" +
 	"\x14CloudflareWorkerSpec\x12=\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12-\n" +
 	"\vworker_name\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18?R\n" +
-	"workerName\x12U\n" +
-	"\x12compatibility_date\x18\x03 \x01(\tB&\xbaH#r!2\x1f^([0-9]{4}-[0-9]{2}-[0-9]{2})?$R\x11compatibilityDate\x12\x1a\n" +
+	"workerName\x12c\n" +
+	"\x12compatibility_date\x18\x03 \x01(\tB4\xbaH#r!2\x1f^([0-9]{4}-[0-9]{2}-[0-9]{2})?$\x92\xa6\x1d\n" +
+	"2025-01-15R\x11compatibilityDate\x12\x1a\n" +
 	"\acontent\x18\x04 \x01(\tH\x00R\acontent\x12m\n" +
 	"\tr2_bundle\x18\x05 \x01(\v2N.dev.planton.cloudflare.cloudflareworker.v1alpha1.CloudflareWorkerScriptBundleH\x00R\br2Bundle\x12-\n" +
 	"\vmain_module\x18\x06 \x01(\tB\f\x92\xa6\x1d\bindex.jsR\n" +

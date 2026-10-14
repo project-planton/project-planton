@@ -65,8 +65,8 @@ func loadValuesFile(path string) ([]Param, error) {
 
 // validateParam mirrors the platform's param-type validation: a declared type
 // must match the supplied default value's YAML type. Params without values
-// are legal (supplied at deployment time), but the offline gate will surface
-// them as placeholders if templates depend on them.
+// are legal (every stack supplies one); the offline gate renders them with a
+// typed stand-in and names each as one every stack sets.
 func validateParam(p *Param) error {
 	mismatch := func(want string) error {
 		return errors.Errorf("param %q is declared %s but its value is not a %s (got %T)",
@@ -136,10 +136,8 @@ func validateParam(p *Param) error {
 // overrides) into the template rendering context, mirroring the platform's
 // renderer exactly: every param is bound both as a top-level variable and
 // under "values", org/env are always bound (overwriting any params of those
-// names), and a param without a value renders as the placeholder "<name>".
-// The returned placeholders are those literal "<name>" strings, so the
-// validator can flag templates that depend on value-less params.
-func buildContext(params []Param, org, env string, setOverrides map[string]string) (map[string]any, []string, error) {
+// names), and a param without a value renders as its typed stand-in.
+func buildContext(params []Param, org, env string, setOverrides map[string]string) (map[string]any, error) {
 	values := map[string]any{}
 	byName := map[string]*Param{}
 	for i := range params {
@@ -159,11 +157,11 @@ func buildContext(params []Param, org, env string, setOverrides map[string]strin
 		}
 		p, ok := byName[key]
 		if !ok {
-			return nil, nil, errors.Errorf("--set %s: chart declares no param named %q", key, key)
+			return nil, errors.Errorf("--set %s: chart declares no param named %q", key, key)
 		}
 		coerced, err := coerceOverride(p, raw)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 		values[key] = coerced
 	}
@@ -172,13 +170,6 @@ func buildContext(params []Param, org, env string, setOverrides map[string]strin
 	values["org"] = org
 	values["env"] = env
 
-	var placeholders []string
-	for name, v := range values {
-		if s, ok := v.(string); ok && s == "<"+name+">" {
-			placeholders = append(placeholders, s)
-		}
-	}
-
 	ctx := map[string]any{}
 	for k, v := range values {
 		ctx[k] = v
@@ -186,16 +177,14 @@ func buildContext(params []Param, org, env string, setOverrides map[string]strin
 	ctx["values"] = values
 	ctx["org"] = org
 	ctx["env"] = env
-	return ctx, placeholders, nil
+	return ctx, nil
 }
 
-// templateValue converts a param's default into the value templates see. The
-// "<name>" placeholder for value-less params mirrors the platform renderer,
-// so a chart whose defaults don't fully render fails validation loudly (the
-// placeholder never survives schema validation) instead of silently.
+// templateValue converts a param's default into the value templates see; a
+// param without one renders as its stand-in.
 func templateValue(p *Param) any {
 	if p.Value == nil {
-		return "<" + p.Name + ">"
+		return standIn(p)
 	}
 	if items, ok := p.Value.([]any); ok {
 		strs := make([]string, 0, len(items))
@@ -205,6 +194,56 @@ func templateValue(p *Param) any {
 		return strs
 	}
 	return p.Value
+}
+
+// standIn is what a template sees for a param the chart gives no default,
+// exactly as the platform's chart build binds it. A chart is validated before
+// any stack sets its values, so such a param has nothing to bind; its
+// stand-in lets the chart render whole -- every resource, every reference --
+// while the gate names it as one every stack sets (requiredValueIssues).
+//
+// Each stand-in is the plainest value of its type that a kind's schema
+// accepts most often, so a verdict stays about the chart and never about the
+// stand-in -- the reasoning behind the synthetic org/env defaults. A string is
+// the param's own name as a slug (bucket_name renders bucket-name): legal
+// wherever a resource name is, and a reader of the render sees which param
+// fills the field. A choice is its first allowed value. A number is 1,
+// because count-like fields refuse zero. A switch is off; a list is empty.
+func standIn(p *Param) any {
+	switch p.Type {
+	case paramTypeNumber:
+		return float64(1)
+	case paramTypeBool:
+		return false
+	case paramTypeList:
+		return []string{}
+	case paramTypeStringEnum:
+		if len(p.EnumValues) > 0 {
+			return p.EnumValues[0]
+		}
+	}
+	// A param name is a template identifier (letters, digits, underscores), so
+	// lowering it and turning its underscores into hyphens makes it a slug.
+	return strings.ReplaceAll(strings.ToLower(p.Name), "_", "-")
+}
+
+// requiredValueIssues names each param the chart gives no default, as a
+// warning attributed to values.yaml: every stack must set it, and a stack's
+// plan refuses to render until it does. A warning, never an error -- the
+// chart is complete, and the value is each environment's to choose. org and
+// env are the platform's to set, never a stack's.
+func requiredValueIssues(params []Param) []Issue {
+	var issues []Issue
+	for _, p := range params {
+		if p.Value != nil || p.Name == "org" || p.Name == "env" {
+			continue
+		}
+		issues = append(issues, Issue{
+			Severity: SeverityWarning, File: "values.yaml",
+			Message: fmt.Sprintf("Every stack sets `%s` -- the chart declares no default", p.Name),
+		})
+	}
+	return issues
 }
 
 // coerceOverride parses a --set string into the param's declared type.

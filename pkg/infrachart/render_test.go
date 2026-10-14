@@ -15,7 +15,7 @@ func render(t *testing.T, source string, ctx map[string]any) string {
 }
 
 func TestRenderVariableBindings(t *testing.T) {
-	ctx, _, err := buildContext([]Param{
+	ctx, err := buildContext([]Param{
 		{Name: "region", Value: "us-central1"},
 	}, "acme", "dev", nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func TestRenderBoolFilter(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			ctx, _, err := buildContext([]Param{{Name: "flag", Value: tc.value}}, "acme", "dev", nil)
+			ctx, err := buildContext([]Param{{Name: "flag", Value: tc.value}}, "acme", "dev", nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -146,7 +146,7 @@ func TestBoolFilterRejectsAmbiguousStrings(t *testing.T) {
 }
 
 func TestRenderB64DecodeFilter(t *testing.T) {
-	ctx, _, err := buildContext([]Param{{Name: "blob", Value: "aGVsbG8="}}, "acme", "dev", nil)
+	ctx, err := buildContext([]Param{{Name: "blob", Value: "aGVsbG8="}}, "acme", "dev", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -156,7 +156,7 @@ func TestRenderB64DecodeFilter(t *testing.T) {
 }
 
 func TestRenderForLoopOverListParam(t *testing.T) {
-	ctx, _, err := buildContext([]Param{
+	ctx, err := buildContext([]Param{
 		{Name: "zones", Type: "list", Value: []any{"us-central1-a", "us-central1-b"}},
 	}, "acme", "dev", nil)
 	if err != nil {
@@ -168,16 +168,28 @@ func TestRenderForLoopOverListParam(t *testing.T) {
 	}
 }
 
-func TestRenderPlaceholderForValuelessParam(t *testing.T) {
-	ctx, placeholders, err := buildContext([]Param{{Name: "bucket_name"}}, "acme", "dev", nil)
+func TestRenderStandInForValuelessParam(t *testing.T) {
+	ctx, err := buildContext([]Param{
+		{Name: "bucket_name"},
+		{Name: "replicas", Type: paramTypeNumber},
+		{Name: "backups_enabled", Type: paramTypeBool},
+		{Name: "zones", Type: paramTypeList},
+		{Name: "tier", Type: paramTypeStringEnum, EnumValues: []string{"standard", "premium"}},
+	}, "acme", "dev", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(placeholders) != 1 || placeholders[0] != "<bucket_name>" {
-		t.Fatalf("placeholders: got %v", placeholders)
+	cases := map[string]string{
+		"{{ values.bucket_name }}":                         "bucket-name",
+		"{{ values.replicas }}":                            "1.0", // as every number param renders
+		"{% if values.backups_enabled %}on{% endif %}":     "",
+		"[{% for z in values.zones %}{{ z }}{% endfor %}]": "[]",
+		"{{ values.tier }}":                                "standard",
 	}
-	if out := render(t, "{{ values.bucket_name }}", ctx); out != "<bucket_name>" {
-		t.Fatalf("placeholder render: got %q", out)
+	for source, want := range cases {
+		if out := render(t, source, ctx); out != want {
+			t.Errorf("%s: got %q, want %q", source, out, want)
+		}
 	}
 }
 

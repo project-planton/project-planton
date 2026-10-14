@@ -57,7 +57,7 @@ spec:
 |---|---|---|---|---|
 | `spec.accountId` | `string` | yes |  |  |
 | `spec.workerName` | `string` | yes |  |  |
-| `spec.compatibilityDate` | `string` |  |  |  |
+| `spec.compatibilityDate` | `string` |  | `2025-01-15` |  |
 | `spec.content` | `string` |  |  |  |
 | `spec.r2Bundle` | `CloudflareWorkerScriptBundle` |  |  |  |
 | `spec.r2Bundle.bucket` | `string \| valueFrom` | yes |  | CloudflareR2Bucket (`status.outputs.bucket_name`) |
@@ -298,9 +298,12 @@ target of service bindings and routes.
 
 `string`
 
-Compatibility date (YYYY-MM-DD) pinning the Workers runtime behavior. When
-unset, the module pins today's date at deploy.
+Compatibility date (YYYY-MM-DD) pinning the Workers runtime behavior. Both
+engines default it to "2025-01-15" when unset: a fixed date, so an
+unchanged Worker plans no change from one day to the next. Set it to opt
+into newer runtime behavior.
 
+- default: `2025-01-15`
 - rule: {"string":{"pattern":"^([0-9]{4}-[0-9]{2}-[0-9]{2})?$"}}
 
 ### spec.content

@@ -469,10 +469,12 @@ func TestValidateDuplicateIdentityIsAnError(t *testing.T) {
 	requireError(t, report, "duplicate resource identity")
 }
 
-func TestValidateValuelessParamWarnsWhenUsed(t *testing.T) {
+func TestValidateValuelessParamIsOneEveryStackSets(t *testing.T) {
 	values := `params:
   - name: base_name
     description: has no default
+  - name: region
+    value: us-east-1
 `
 	dir := writeChartWithValues(t, values, map[string]string{
 		"a.yaml": `---
@@ -486,14 +488,21 @@ spec:
 `,
 	})
 	report := mustValidate(t, dir, Options{})
-	found := false
-	for _, msg := range issueMessages(report, SeverityWarning) {
-		if strings.Contains(msg, "has no default value") {
-			found = true
-		}
+	// The stand-in (base-name) satisfies the name rule, so the chart passes;
+	// the param is named once, against values.yaml.
+	if report.HasErrors() {
+		t.Fatalf("a value-less param must render a valid stand-in, got: %v", issueMessages(report, SeverityError))
 	}
-	if !found {
-		t.Fatalf("expected a no-default warning, got: %+v", report.Variants)
+	warnings := issueMessages(report, SeverityWarning)
+	want := "[defaults] Every stack sets `base_name` -- the chart declares no default"
+	if len(warnings) != 1 || warnings[0] != want {
+		t.Fatalf("expected exactly %q, got: %v", want, warnings)
+	}
+	if file := defaultsVariant(t, report).Issues[0].File; file != "values.yaml" {
+		t.Fatalf("the warning belongs to values.yaml, got %q", file)
+	}
+	if name := defaultsVariant(t, report).Docs[0].Name; name != "base-name" {
+		t.Fatalf("the name renders the stand-in, got %q", name)
 	}
 }
 

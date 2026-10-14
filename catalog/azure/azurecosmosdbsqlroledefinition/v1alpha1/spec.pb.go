@@ -165,8 +165,8 @@ type AzureCosmosdbSqlRoleDefinitionSpec struct {
 	// nothing and ARM's contract requires the list).
 	Permissions []*AzureCosmosdbSqlRoleDefinitionPermission `protobuf:"bytes,5,rep,name=permissions,proto3" json:"permissions,omitempty"`
 	// A stable UUID for the role definition's ARM resource name. Cosmos
-	// identifies a role definition by a GUID; when omitted (recommended), a
-	// random one is generated at deploy time. Pin it only when an
+	// identifies a role definition by a GUID; when omitted (recommended), one
+	// is chosen at the first deploy and kept on every deploy after. Pin it only when an
 	// externally-known GUID must be preserved -- e.g. recreating a
 	// definition that existing assignments or tooling reference by its full
 	// ARM ID. Changing a pinned GUID replaces the definition.

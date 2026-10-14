@@ -47,9 +47,14 @@ message CloudflareWorkerSpec {
     (buf.validate.field).string.max_len = 63
   ];
 
-  // Compatibility date (YYYY-MM-DD) pinning the Workers runtime behavior. When
-  // unset, the module pins today's date at deploy.
-  string compatibility_date = 3 [(buf.validate.field).string.pattern = "^([0-9]{4}-[0-9]{2}-[0-9]{2})?$"];
+  // Compatibility date (YYYY-MM-DD) pinning the Workers runtime behavior. Both
+  // engines default it to "2025-01-15" when unset: a fixed date, so an
+  // unchanged Worker plans no change from one day to the next. Set it to opt
+  // into newer runtime behavior.
+  string compatibility_date = 3 [
+    (buf.validate.field).string.pattern = "^([0-9]{4}-[0-9]{2}-[0-9]{2})?$",
+    (dev.planton.shared.options.recommended_default) = "2025-01-15"
+  ];
 
   // Script source — exactly one of the two cases below.
   oneof source {
