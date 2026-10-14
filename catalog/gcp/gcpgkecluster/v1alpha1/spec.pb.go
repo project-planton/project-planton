@@ -215,10 +215,17 @@ type GcpGkeClusterSpec struct {
 	// and the control plane has a public endpoint — fine for sandboxes, not
 	// for production.
 	PrivateCluster *GcpGkeClusterPrivateCluster `protobuf:"bytes,27,opt,name=private_cluster,json=privateCluster,proto3" json:"private_cluster,omitempty"`
-	// CIDR allowlist for control-plane API access. Without it, the public
-	// endpoint (when enabled) accepts connections from any IP that presents
-	// valid credentials.
-	MasterAuthorizedNetworks *GcpGkeClusterMasterAuthorizedNetworks `protobuf:"bytes,28,opt,name=master_authorized_networks,json=masterAuthorizedNetworks,proto3" json:"master_authorized_networks,omitempty"`
+	// IP filtering for control-plane API access. Choosing a restricted policy
+	// is meaningful even when it contains no CIDRs. Leaving this choice unset
+	// configures no authorized-networks restriction, as does explicitly choosing
+	// unrestricted_networks. Authentication and endpoint availability are
+	// controlled independently.
+	//
+	// Types that are valid to be assigned to AuthorizedNetworksPolicy:
+	//
+	//	*GcpGkeClusterSpec_MasterAuthorizedNetworks
+	//	*GcpGkeClusterSpec_UnrestrictedNetworks
+	AuthorizedNetworksPolicy isGcpGkeClusterSpec_AuthorizedNetworksPolicy `protobuf_oneof:"authorized_networks_policy"`
 	// Control-plane endpoint surface: the DNS endpoint (a Google-managed
 	// *.gke.goog name reachable without VPC peering — the modern access path)
 	// and the IP endpoints toggle.
@@ -646,9 +653,27 @@ func (x *GcpGkeClusterSpec) GetPrivateCluster() *GcpGkeClusterPrivateCluster {
 	return nil
 }
 
+func (x *GcpGkeClusterSpec) GetAuthorizedNetworksPolicy() isGcpGkeClusterSpec_AuthorizedNetworksPolicy {
+	if x != nil {
+		return x.AuthorizedNetworksPolicy
+	}
+	return nil
+}
+
 func (x *GcpGkeClusterSpec) GetMasterAuthorizedNetworks() *GcpGkeClusterMasterAuthorizedNetworks {
 	if x != nil {
-		return x.MasterAuthorizedNetworks
+		if x, ok := x.AuthorizedNetworksPolicy.(*GcpGkeClusterSpec_MasterAuthorizedNetworks); ok {
+			return x.MasterAuthorizedNetworks
+		}
+	}
+	return nil
+}
+
+func (x *GcpGkeClusterSpec) GetUnrestrictedNetworks() *GcpGkeClusterUnrestrictedNetworks {
+	if x != nil {
+		if x, ok := x.AuthorizedNetworksPolicy.(*GcpGkeClusterSpec_UnrestrictedNetworks); ok {
+			return x.UnrestrictedNetworks
+		}
 	}
 	return nil
 }
@@ -988,6 +1013,28 @@ func (x *GcpGkeClusterSpec) GetDesiredEmulatedVersion() string {
 	}
 	return ""
 }
+
+type isGcpGkeClusterSpec_AuthorizedNetworksPolicy interface {
+	isGcpGkeClusterSpec_AuthorizedNetworksPolicy()
+}
+
+type GcpGkeClusterSpec_MasterAuthorizedNetworks struct {
+	// Restrict control-plane IP access to the configured networks. An empty
+	// policy authorizes no external CIDR ranges; the Google public-IP and
+	// private-endpoint switches retain their own documented behavior.
+	MasterAuthorizedNetworks *GcpGkeClusterMasterAuthorizedNetworks `protobuf:"bytes,28,opt,name=master_authorized_networks,json=masterAuthorizedNetworks,proto3,oneof"`
+}
+
+type GcpGkeClusterSpec_UnrestrictedNetworks struct {
+	// Explicitly configure no authorized-networks IP restriction. A public
+	// endpoint still requires valid credentials, and this does not enable
+	// an endpoint that is disabled by control_plane_endpoints/private_cluster.
+	UnrestrictedNetworks *GcpGkeClusterUnrestrictedNetworks `protobuf:"bytes,77,opt,name=unrestricted_networks,json=unrestrictedNetworks,proto3,oneof"`
+}
+
+func (*GcpGkeClusterSpec_MasterAuthorizedNetworks) isGcpGkeClusterSpec_AuthorizedNetworksPolicy() {}
+
+func (*GcpGkeClusterSpec_UnrestrictedNetworks) isGcpGkeClusterSpec_AuthorizedNetworksPolicy() {}
 
 // GcpGkeClusterRollbackSafeUpgrade configures two-step control-plane
 // upgrades.
@@ -2313,6 +2360,44 @@ func (x *GcpGkeClusterPrivateCluster) GetEnableMasterGlobalAccess() bool {
 	return false
 }
 
+// GcpGkeClusterUnrestrictedNetworks explicitly selects no authorized-networks
+// IP restriction. The empty message is the complete choice.
+type GcpGkeClusterUnrestrictedNetworks struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GcpGkeClusterUnrestrictedNetworks) Reset() {
+	*x = GcpGkeClusterUnrestrictedNetworks{}
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GcpGkeClusterUnrestrictedNetworks) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GcpGkeClusterUnrestrictedNetworks) ProtoMessage() {}
+
+func (x *GcpGkeClusterUnrestrictedNetworks) ProtoReflect() protoreflect.Message {
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GcpGkeClusterUnrestrictedNetworks.ProtoReflect.Descriptor instead.
+func (*GcpGkeClusterUnrestrictedNetworks) Descriptor() ([]byte, []int) {
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{18}
+}
+
 // GcpGkeClusterMasterAuthorizedNetworks allowlists CIDRs for control-plane
 // API access.
 type GcpGkeClusterMasterAuthorizedNetworks struct {
@@ -2332,7 +2417,7 @@ type GcpGkeClusterMasterAuthorizedNetworks struct {
 
 func (x *GcpGkeClusterMasterAuthorizedNetworks) Reset() {
 	*x = GcpGkeClusterMasterAuthorizedNetworks{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[18]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2344,7 +2429,7 @@ func (x *GcpGkeClusterMasterAuthorizedNetworks) String() string {
 func (*GcpGkeClusterMasterAuthorizedNetworks) ProtoMessage() {}
 
 func (x *GcpGkeClusterMasterAuthorizedNetworks) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[18]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2357,7 +2442,7 @@ func (x *GcpGkeClusterMasterAuthorizedNetworks) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GcpGkeClusterMasterAuthorizedNetworks.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterMasterAuthorizedNetworks) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{18}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GcpGkeClusterMasterAuthorizedNetworks) GetCidrBlocks() []*GcpGkeClusterMasterAuthorizedNetworkCidr {
@@ -2394,7 +2479,7 @@ type GcpGkeClusterMasterAuthorizedNetworkCidr struct {
 
 func (x *GcpGkeClusterMasterAuthorizedNetworkCidr) Reset() {
 	*x = GcpGkeClusterMasterAuthorizedNetworkCidr{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[19]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2406,7 +2491,7 @@ func (x *GcpGkeClusterMasterAuthorizedNetworkCidr) String() string {
 func (*GcpGkeClusterMasterAuthorizedNetworkCidr) ProtoMessage() {}
 
 func (x *GcpGkeClusterMasterAuthorizedNetworkCidr) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[19]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2419,7 +2504,7 @@ func (x *GcpGkeClusterMasterAuthorizedNetworkCidr) ProtoReflect() protoreflect.M
 
 // Deprecated: Use GcpGkeClusterMasterAuthorizedNetworkCidr.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterMasterAuthorizedNetworkCidr) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{19}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GcpGkeClusterMasterAuthorizedNetworkCidr) GetCidrBlock() string {
@@ -2461,7 +2546,7 @@ type GcpGkeClusterControlPlaneEndpoints struct {
 
 func (x *GcpGkeClusterControlPlaneEndpoints) Reset() {
 	*x = GcpGkeClusterControlPlaneEndpoints{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[20]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2473,7 +2558,7 @@ func (x *GcpGkeClusterControlPlaneEndpoints) String() string {
 func (*GcpGkeClusterControlPlaneEndpoints) ProtoMessage() {}
 
 func (x *GcpGkeClusterControlPlaneEndpoints) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[20]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2486,7 +2571,7 @@ func (x *GcpGkeClusterControlPlaneEndpoints) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use GcpGkeClusterControlPlaneEndpoints.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterControlPlaneEndpoints) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{20}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GcpGkeClusterControlPlaneEndpoints) GetDnsEndpointAllowExternalTraffic() bool {
@@ -2547,7 +2632,7 @@ type GcpGkeClusterMaintenancePolicy struct {
 
 func (x *GcpGkeClusterMaintenancePolicy) Reset() {
 	*x = GcpGkeClusterMaintenancePolicy{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[21]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2559,7 +2644,7 @@ func (x *GcpGkeClusterMaintenancePolicy) String() string {
 func (*GcpGkeClusterMaintenancePolicy) ProtoMessage() {}
 
 func (x *GcpGkeClusterMaintenancePolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[21]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2572,7 +2657,7 @@ func (x *GcpGkeClusterMaintenancePolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterMaintenancePolicy.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterMaintenancePolicy) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{21}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GcpGkeClusterMaintenancePolicy) GetDailyWindow() *GcpGkeClusterDailyMaintenanceWindow {
@@ -2624,7 +2709,7 @@ type GcpGkeClusterDisruptionBudget struct {
 
 func (x *GcpGkeClusterDisruptionBudget) Reset() {
 	*x = GcpGkeClusterDisruptionBudget{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[22]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2636,7 +2721,7 @@ func (x *GcpGkeClusterDisruptionBudget) String() string {
 func (*GcpGkeClusterDisruptionBudget) ProtoMessage() {}
 
 func (x *GcpGkeClusterDisruptionBudget) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[22]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2649,7 +2734,7 @@ func (x *GcpGkeClusterDisruptionBudget) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterDisruptionBudget.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterDisruptionBudget) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{22}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GcpGkeClusterDisruptionBudget) GetMinorVersionDisruptionInterval() string {
@@ -2677,7 +2762,7 @@ type GcpGkeClusterDailyMaintenanceWindow struct {
 
 func (x *GcpGkeClusterDailyMaintenanceWindow) Reset() {
 	*x = GcpGkeClusterDailyMaintenanceWindow{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[23]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2689,7 +2774,7 @@ func (x *GcpGkeClusterDailyMaintenanceWindow) String() string {
 func (*GcpGkeClusterDailyMaintenanceWindow) ProtoMessage() {}
 
 func (x *GcpGkeClusterDailyMaintenanceWindow) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[23]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2702,7 +2787,7 @@ func (x *GcpGkeClusterDailyMaintenanceWindow) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use GcpGkeClusterDailyMaintenanceWindow.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterDailyMaintenanceWindow) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{23}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GcpGkeClusterDailyMaintenanceWindow) GetStartTime() string {
@@ -2728,7 +2813,7 @@ type GcpGkeClusterRecurringMaintenanceWindow struct {
 
 func (x *GcpGkeClusterRecurringMaintenanceWindow) Reset() {
 	*x = GcpGkeClusterRecurringMaintenanceWindow{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[24]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2740,7 +2825,7 @@ func (x *GcpGkeClusterRecurringMaintenanceWindow) String() string {
 func (*GcpGkeClusterRecurringMaintenanceWindow) ProtoMessage() {}
 
 func (x *GcpGkeClusterRecurringMaintenanceWindow) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[24]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2753,7 +2838,7 @@ func (x *GcpGkeClusterRecurringMaintenanceWindow) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use GcpGkeClusterRecurringMaintenanceWindow.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterRecurringMaintenanceWindow) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{24}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *GcpGkeClusterRecurringMaintenanceWindow) GetStartTime() string {
@@ -2797,7 +2882,7 @@ type GcpGkeClusterRecurringTimeMaintenanceWindow struct {
 
 func (x *GcpGkeClusterRecurringTimeMaintenanceWindow) Reset() {
 	*x = GcpGkeClusterRecurringTimeMaintenanceWindow{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[25]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2809,7 +2894,7 @@ func (x *GcpGkeClusterRecurringTimeMaintenanceWindow) String() string {
 func (*GcpGkeClusterRecurringTimeMaintenanceWindow) ProtoMessage() {}
 
 func (x *GcpGkeClusterRecurringTimeMaintenanceWindow) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[25]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2822,7 +2907,7 @@ func (x *GcpGkeClusterRecurringTimeMaintenanceWindow) ProtoReflect() protoreflec
 
 // Deprecated: Use GcpGkeClusterRecurringTimeMaintenanceWindow.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterRecurringTimeMaintenanceWindow) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{25}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GcpGkeClusterRecurringTimeMaintenanceWindow) GetWindowStartTime() *GcpGkeClusterTimeOfDay {
@@ -2868,7 +2953,7 @@ type GcpGkeClusterTimeOfDay struct {
 
 func (x *GcpGkeClusterTimeOfDay) Reset() {
 	*x = GcpGkeClusterTimeOfDay{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[26]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2880,7 +2965,7 @@ func (x *GcpGkeClusterTimeOfDay) String() string {
 func (*GcpGkeClusterTimeOfDay) ProtoMessage() {}
 
 func (x *GcpGkeClusterTimeOfDay) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[26]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2893,7 +2978,7 @@ func (x *GcpGkeClusterTimeOfDay) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterTimeOfDay.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterTimeOfDay) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{26}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GcpGkeClusterTimeOfDay) GetHours() int32 {
@@ -2932,7 +3017,7 @@ type GcpGkeClusterCalendarDate struct {
 
 func (x *GcpGkeClusterCalendarDate) Reset() {
 	*x = GcpGkeClusterCalendarDate{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[27]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2944,7 +3029,7 @@ func (x *GcpGkeClusterCalendarDate) String() string {
 func (*GcpGkeClusterCalendarDate) ProtoMessage() {}
 
 func (x *GcpGkeClusterCalendarDate) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[27]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2957,7 +3042,7 @@ func (x *GcpGkeClusterCalendarDate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterCalendarDate.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterCalendarDate) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{27}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *GcpGkeClusterCalendarDate) GetYear() int32 {
@@ -3004,7 +3089,7 @@ type GcpGkeClusterMaintenanceExclusion struct {
 
 func (x *GcpGkeClusterMaintenanceExclusion) Reset() {
 	*x = GcpGkeClusterMaintenanceExclusion{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[28]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3016,7 +3101,7 @@ func (x *GcpGkeClusterMaintenanceExclusion) String() string {
 func (*GcpGkeClusterMaintenanceExclusion) ProtoMessage() {}
 
 func (x *GcpGkeClusterMaintenanceExclusion) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[28]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3029,7 +3114,7 @@ func (x *GcpGkeClusterMaintenanceExclusion) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use GcpGkeClusterMaintenanceExclusion.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterMaintenanceExclusion) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{28}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *GcpGkeClusterMaintenanceExclusion) GetExclusionName() string {
@@ -3097,7 +3182,7 @@ type GcpGkeClusterAutoscaling struct {
 
 func (x *GcpGkeClusterAutoscaling) Reset() {
 	*x = GcpGkeClusterAutoscaling{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[29]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3109,7 +3194,7 @@ func (x *GcpGkeClusterAutoscaling) String() string {
 func (*GcpGkeClusterAutoscaling) ProtoMessage() {}
 
 func (x *GcpGkeClusterAutoscaling) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[29]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3122,7 +3207,7 @@ func (x *GcpGkeClusterAutoscaling) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterAutoscaling.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterAutoscaling) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{29}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *GcpGkeClusterAutoscaling) GetEnabled() bool {
@@ -3183,7 +3268,7 @@ type GcpGkeClusterAutoscalingResourceLimit struct {
 
 func (x *GcpGkeClusterAutoscalingResourceLimit) Reset() {
 	*x = GcpGkeClusterAutoscalingResourceLimit{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[30]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3195,7 +3280,7 @@ func (x *GcpGkeClusterAutoscalingResourceLimit) String() string {
 func (*GcpGkeClusterAutoscalingResourceLimit) ProtoMessage() {}
 
 func (x *GcpGkeClusterAutoscalingResourceLimit) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[30]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3208,7 +3293,7 @@ func (x *GcpGkeClusterAutoscalingResourceLimit) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GcpGkeClusterAutoscalingResourceLimit.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterAutoscalingResourceLimit) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{30}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *GcpGkeClusterAutoscalingResourceLimit) GetResourceType() string {
@@ -3275,7 +3360,7 @@ type GcpGkeClusterAutoProvisioningDefaults struct {
 
 func (x *GcpGkeClusterAutoProvisioningDefaults) Reset() {
 	*x = GcpGkeClusterAutoProvisioningDefaults{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[31]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3287,7 +3372,7 @@ func (x *GcpGkeClusterAutoProvisioningDefaults) String() string {
 func (*GcpGkeClusterAutoProvisioningDefaults) ProtoMessage() {}
 
 func (x *GcpGkeClusterAutoProvisioningDefaults) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[31]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3300,7 +3385,7 @@ func (x *GcpGkeClusterAutoProvisioningDefaults) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GcpGkeClusterAutoProvisioningDefaults.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterAutoProvisioningDefaults) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{31}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *GcpGkeClusterAutoProvisioningDefaults) GetServiceAccount() *v1.StringValueOrRef {
@@ -3405,7 +3490,7 @@ type GcpGkeClusterNapUpgradeSettings struct {
 
 func (x *GcpGkeClusterNapUpgradeSettings) Reset() {
 	*x = GcpGkeClusterNapUpgradeSettings{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[32]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3417,7 +3502,7 @@ func (x *GcpGkeClusterNapUpgradeSettings) String() string {
 func (*GcpGkeClusterNapUpgradeSettings) ProtoMessage() {}
 
 func (x *GcpGkeClusterNapUpgradeSettings) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[32]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3430,7 +3515,7 @@ func (x *GcpGkeClusterNapUpgradeSettings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterNapUpgradeSettings.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterNapUpgradeSettings) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{32}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *GcpGkeClusterNapUpgradeSettings) GetMaxSurge() uint32 {
@@ -3476,7 +3561,7 @@ type GcpGkeClusterNapBlueGreenSettings struct {
 
 func (x *GcpGkeClusterNapBlueGreenSettings) Reset() {
 	*x = GcpGkeClusterNapBlueGreenSettings{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[33]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3488,7 +3573,7 @@ func (x *GcpGkeClusterNapBlueGreenSettings) String() string {
 func (*GcpGkeClusterNapBlueGreenSettings) ProtoMessage() {}
 
 func (x *GcpGkeClusterNapBlueGreenSettings) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[33]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3501,7 +3586,7 @@ func (x *GcpGkeClusterNapBlueGreenSettings) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use GcpGkeClusterNapBlueGreenSettings.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterNapBlueGreenSettings) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{33}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *GcpGkeClusterNapBlueGreenSettings) GetStandardRolloutPolicy() *GcpGkeClusterNapStandardRolloutPolicy {
@@ -3534,7 +3619,7 @@ type GcpGkeClusterNapStandardRolloutPolicy struct {
 
 func (x *GcpGkeClusterNapStandardRolloutPolicy) Reset() {
 	*x = GcpGkeClusterNapStandardRolloutPolicy{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[34]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3546,7 +3631,7 @@ func (x *GcpGkeClusterNapStandardRolloutPolicy) String() string {
 func (*GcpGkeClusterNapStandardRolloutPolicy) ProtoMessage() {}
 
 func (x *GcpGkeClusterNapStandardRolloutPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[34]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3559,7 +3644,7 @@ func (x *GcpGkeClusterNapStandardRolloutPolicy) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GcpGkeClusterNapStandardRolloutPolicy.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterNapStandardRolloutPolicy) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{34}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *GcpGkeClusterNapStandardRolloutPolicy) GetBatchPercentage() float32 {
@@ -3601,7 +3686,7 @@ type GcpGkeClusterDatabaseEncryption struct {
 
 func (x *GcpGkeClusterDatabaseEncryption) Reset() {
 	*x = GcpGkeClusterDatabaseEncryption{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[35]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3613,7 +3698,7 @@ func (x *GcpGkeClusterDatabaseEncryption) String() string {
 func (*GcpGkeClusterDatabaseEncryption) ProtoMessage() {}
 
 func (x *GcpGkeClusterDatabaseEncryption) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[35]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3626,7 +3711,7 @@ func (x *GcpGkeClusterDatabaseEncryption) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterDatabaseEncryption.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterDatabaseEncryption) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{35}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *GcpGkeClusterDatabaseEncryption) GetState() string {
@@ -3658,7 +3743,7 @@ type GcpGkeClusterSecurityPosture struct {
 
 func (x *GcpGkeClusterSecurityPosture) Reset() {
 	*x = GcpGkeClusterSecurityPosture{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[36]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3670,7 +3755,7 @@ func (x *GcpGkeClusterSecurityPosture) String() string {
 func (*GcpGkeClusterSecurityPosture) ProtoMessage() {}
 
 func (x *GcpGkeClusterSecurityPosture) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[36]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3683,7 +3768,7 @@ func (x *GcpGkeClusterSecurityPosture) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterSecurityPosture.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterSecurityPosture) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{36}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *GcpGkeClusterSecurityPosture) GetMode() string {
@@ -3715,7 +3800,7 @@ type GcpGkeClusterConfidentialNodes struct {
 
 func (x *GcpGkeClusterConfidentialNodes) Reset() {
 	*x = GcpGkeClusterConfidentialNodes{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[37]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3727,7 +3812,7 @@ func (x *GcpGkeClusterConfidentialNodes) String() string {
 func (*GcpGkeClusterConfidentialNodes) ProtoMessage() {}
 
 func (x *GcpGkeClusterConfidentialNodes) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[37]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3740,7 +3825,7 @@ func (x *GcpGkeClusterConfidentialNodes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterConfidentialNodes.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterConfidentialNodes) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{37}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *GcpGkeClusterConfidentialNodes) GetEnabled() bool {
@@ -3778,7 +3863,7 @@ type GcpGkeClusterLogging struct {
 
 func (x *GcpGkeClusterLogging) Reset() {
 	*x = GcpGkeClusterLogging{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[38]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3790,7 +3875,7 @@ func (x *GcpGkeClusterLogging) String() string {
 func (*GcpGkeClusterLogging) ProtoMessage() {}
 
 func (x *GcpGkeClusterLogging) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[38]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3803,7 +3888,7 @@ func (x *GcpGkeClusterLogging) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterLogging.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterLogging) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{38}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *GcpGkeClusterLogging) GetComponents() []string {
@@ -3854,7 +3939,7 @@ type GcpGkeClusterMonitoring struct {
 
 func (x *GcpGkeClusterMonitoring) Reset() {
 	*x = GcpGkeClusterMonitoring{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[39]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3866,7 +3951,7 @@ func (x *GcpGkeClusterMonitoring) String() string {
 func (*GcpGkeClusterMonitoring) ProtoMessage() {}
 
 func (x *GcpGkeClusterMonitoring) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[39]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3879,7 +3964,7 @@ func (x *GcpGkeClusterMonitoring) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterMonitoring.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterMonitoring) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{39}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *GcpGkeClusterMonitoring) GetComponents() []string {
@@ -3936,7 +4021,7 @@ type GcpGkeClusterNotificationPubSub struct {
 
 func (x *GcpGkeClusterNotificationPubSub) Reset() {
 	*x = GcpGkeClusterNotificationPubSub{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[40]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3948,7 +4033,7 @@ func (x *GcpGkeClusterNotificationPubSub) String() string {
 func (*GcpGkeClusterNotificationPubSub) ProtoMessage() {}
 
 func (x *GcpGkeClusterNotificationPubSub) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[40]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3961,7 +4046,7 @@ func (x *GcpGkeClusterNotificationPubSub) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterNotificationPubSub.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterNotificationPubSub) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{40}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *GcpGkeClusterNotificationPubSub) GetEnabled() bool {
@@ -4003,7 +4088,7 @@ type GcpGkeClusterResourceUsageExport struct {
 
 func (x *GcpGkeClusterResourceUsageExport) Reset() {
 	*x = GcpGkeClusterResourceUsageExport{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[41]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4015,7 +4100,7 @@ func (x *GcpGkeClusterResourceUsageExport) String() string {
 func (*GcpGkeClusterResourceUsageExport) ProtoMessage() {}
 
 func (x *GcpGkeClusterResourceUsageExport) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[41]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4028,7 +4113,7 @@ func (x *GcpGkeClusterResourceUsageExport) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterResourceUsageExport.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterResourceUsageExport) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{41}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *GcpGkeClusterResourceUsageExport) GetBigqueryDatasetId() *v1.StringValueOrRef {
@@ -4126,7 +4211,7 @@ type GcpGkeClusterAddons struct {
 
 func (x *GcpGkeClusterAddons) Reset() {
 	*x = GcpGkeClusterAddons{}
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[42]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4138,7 +4223,7 @@ func (x *GcpGkeClusterAddons) String() string {
 func (*GcpGkeClusterAddons) ProtoMessage() {}
 
 func (x *GcpGkeClusterAddons) ProtoReflect() protoreflect.Message {
-	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[42]
+	mi := &file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4151,7 +4236,7 @@ func (x *GcpGkeClusterAddons) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GcpGkeClusterAddons.ProtoReflect.Descriptor instead.
 func (*GcpGkeClusterAddons) Descriptor() ([]byte, []int) {
-	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{42}
+	return file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *GcpGkeClusterAddons) GetHttpLoadBalancingEnabled() bool {
@@ -4326,7 +4411,7 @@ var File_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto protoreflect.FileDescript
 
 const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"\n" +
-	"-catalog/gcp/gcpgkecluster/v1alpha1/spec.proto\x12&dev.planton.gcp.gcpgkecluster.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\x1a\x1cshared/options/options.proto\"\xccV\n" +
+	"-catalog/gcp/gcpgkecluster/v1alpha1/spec.proto\x12&dev.planton.gcp.gcpgkecluster.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\x1a\x1cshared/options/options.proto\"\xefW\n" +
 	"\x11GcpGkeClusterSpec\x12u\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB\"\x88\xd4a\xc1\x17\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12N\n" +
@@ -4339,13 +4424,13 @@ const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"subnetwork\x12S\n" +
 	"\x0enode_locations\x18\a \x03(\tB,\xbaH)\xd8\x01\x01\x92\x01#\x18\x01\"\x1fr\x1d2\x1b^[a-z]+-[a-z]+[0-9]+-[a-z]$R\rnodeLocations\x12v\n" +
 	"\x0fresource_labels\x18\b \x03(\v2M.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.ResourceLabelsEntryR\x0eresourceLabels\x12>\n" +
-	"\x13deletion_protection\x18\t \x01(\bB\b\x8a\xa6\x1d\x04trueH\x00R\x12deletionProtection\x88\x01\x01\x12f\n" +
+	"\x13deletion_protection\x18\t \x01(\bB\b\x8a\xa6\x1d\x04trueH\x01R\x12deletionProtection\x88\x01\x01\x12f\n" +
 	"\rip_allocation\x18\n" +
 	" \x01(\v2A.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocationR\fipAllocation\x12\xd7\x01\n" +
 	"\x11datapath_provider\x18\v \x01(\tB\xa9\x01\xbaH\xa5\x01\xba\x01\xa1\x01\n" +
 	"\x17datapath_provider_valid\x12Fdatapath_provider must be empty, LEGACY_DATAPATH, or ADVANCED_DATAPATH\x1a>this == '' || this in ['LEGACY_DATAPATH', 'ADVANCED_DATAPATH']R\x10datapathProvider\x12I\n" +
 	"\x19default_max_pods_per_node\x18\f \x01(\x05B\n" +
-	"\xbaH\a\x1a\x05\x18\x80\x02(\bH\x01R\x15defaultMaxPodsPerNode\x88\x01\x01\x12>\n" +
+	"\xbaH\a\x1a\x05\x18\x80\x02(\bH\x02R\x15defaultMaxPodsPerNode\x88\x01\x01\x12>\n" +
 	"\x1benable_intranode_visibility\x18\r \x01(\bR\x19enableIntranodeVisibility\x127\n" +
 	"\x18enable_l4_ilb_subsetting\x18\x0e \x01(\bR\x15enableL4IlbSubsetting\x12;\n" +
 	"\x1aenable_fqdn_network_policy\x18\x0f \x01(\bR\x17enableFqdnNetworkPolicy\x12V\n" +
@@ -4365,10 +4450,11 @@ const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"\x1btotal_egress_bandwidth_tier\x18\x19 \x01(\tB\xa3\x01\xbaH\x9f\x01\xba\x01\x9b\x01\n" +
 	"\x1begress_bandwidth_tier_valid\x12Ftotal_egress_bandwidth_tier must be empty, TIER_UNSPECIFIED, or TIER_1\x1a4this == '' || this in ['TIER_UNSPECIFIED', 'TIER_1']R\x18totalEgressBandwidthTier\x12P\n" +
 	"%disable_l4_lb_firewall_reconciliation\x18\x1a \x01(\bR!disableL4LbFirewallReconciliation\x12l\n" +
-	"\x0fprivate_cluster\x18\x1b \x01(\v2C.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateClusterR\x0eprivateCluster\x12\x8b\x01\n" +
-	"\x1amaster_authorized_networks\x18\x1c \x01(\v2M.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworksR\x18masterAuthorizedNetworks\x12\x82\x01\n" +
+	"\x0fprivate_cluster\x18\x1b \x01(\v2C.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateClusterR\x0eprivateCluster\x12\x8d\x01\n" +
+	"\x1amaster_authorized_networks\x18\x1c \x01(\v2M.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworksH\x00R\x18masterAuthorizedNetworks\x12\x80\x01\n" +
+	"\x15unrestricted_networks\x18M \x01(\v2I.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUnrestrictedNetworksH\x00R\x14unrestrictedNetworks\x12\x82\x01\n" +
 	"\x17control_plane_endpoints\x18\x1d \x01(\v2J.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterControlPlaneEndpointsR\x15controlPlaneEndpoints\x12t\n" +
-	"\x0frelease_channel\x18\x1e \x01(\x0e29.dev.planton.gcp.gcpgkecluster.v1alpha1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARH\x02R\x0ereleaseChannel\x88\x01\x01\x12,\n" +
+	"\x0frelease_channel\x18\x1e \x01(\x0e29.dev.planton.gcp.gcpgkecluster.v1alpha1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARH\x03R\x0ereleaseChannel\x88\x01\x01\x12,\n" +
 	"\x12min_master_version\x18\x1f \x01(\tR\x10minMasterVersion\x12u\n" +
 	"\x12maintenance_policy\x18  \x01(\v2F.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicyR\x11maintenancePolicy\x12q\n" +
 	"\x13cluster_autoscaling\x18! \x01(\v2@.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscalingR\x12clusterAutoscaling\x12E\n" +
@@ -4376,8 +4462,8 @@ const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"\vhpa_profile\x18# \x01(\tBy\xbaHv\xba\x01s\n" +
 	"\x11hpa_profile_valid\x12/hpa_profile must be empty, NONE, or PERFORMANCE\x1a-this == '' || this in ['NONE', 'PERFORMANCE']R\n" +
 	"hpaProfile\x12I\n" +
-	"\x19workload_identity_enabled\x18$ \x01(\bB\b\x8a\xa6\x1d\x04trueH\x03R\x17workloadIdentityEnabled\x88\x01\x01\x127\n" +
-	"\x15enable_shielded_nodes\x18% \x01(\bH\x04R\x13enableShieldedNodes\x88\x01\x01\x12x\n" +
+	"\x19workload_identity_enabled\x18$ \x01(\bB\b\x8a\xa6\x1d\x04trueH\x04R\x17workloadIdentityEnabled\x88\x01\x01\x127\n" +
+	"\x15enable_shielded_nodes\x18% \x01(\bH\x05R\x13enableShieldedNodes\x88\x01\x01\x12x\n" +
 	"\x13database_encryption\x18& \x01(\v2G.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryptionR\x12databaseEncryption\x12\xa1\x02\n" +
 	"$binary_authorization_evaluation_mode\x18' \x01(\tB\xcf\x01\xbaH\xcb\x01\xba\x01\xc7\x01\n" +
 	"\x1abinary_authorization_valid\x12abinary_authorization_evaluation_mode must be empty, DISABLED, or PROJECT_SINGLETON_POLICY_ENFORCE\x1aFthis == '' || this in ['DISABLED', 'PROJECT_SINGLETON_POLICY_ENFORCE']R!binaryAuthorizationEvaluationMode\x12o\n" +
@@ -4410,7 +4496,7 @@ const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"\x17enable_kubernetes_alpha\x18= \x01(\bR\x15enableKubernetesAlpha\x12*\n" +
 	"\rk8s_beta_apis\x18> \x03(\tB\x06\xbaH\x03\xd8\x01\x01R\vk8sBetaApis\x12>\n" +
 	"\x1bdataplane_optimization_mode\x18? \x01(\tR\x19dataplaneOptimizationMode\x12=\n" +
-	"\x18issue_client_certificate\x18@ \x01(\bH\x05R\x16issueClientCertificate\x88\x01\x01\x12\xd2\x01\n" +
+	"\x18issue_client_certificate\x18@ \x01(\bH\x06R\x16issueClientCertificate\x88\x01\x01\x12\xd2\x01\n" +
 	"\x12node_creation_mode\x18A \x01(\tB\xa3\x01\xbaH\x9f\x01\xba\x01\x9b\x01\n" +
 	"\x18node_creation_mode_valid\x12Cnode_creation_mode must be empty, VIA_KUBELET, or VIA_CONTROL_PLANE\x1a:this == '' || this in ['VIA_KUBELET', 'VIA_CONTROL_PLANE']R\x10nodeCreationMode\x12\xc9\x01\n" +
 	"\x1bgke_auto_upgrade_patch_mode\x18B \x01(\tB\x8a\x01\xbaH\x86\x01\xba\x01\x82\x01\n" +
@@ -4439,7 +4525,8 @@ const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"\x1cnet_admin_requires_autopilot\x12`allow_net_admin applies to Autopilot clusters only — Standard clusters always permit NET_ADMIN\x1a.!this.allow_net_admin || this.enable_autopilot\x1a\x90\x01\n" +
 	"#autopilot_policy_requires_autopilot\x123autopilot_policy applies to Autopilot clusters only\x1a4!has(this.autopilot_policy) || this.enable_autopilot\x1a\xc1\x01\n" +
 	"'privileged_admission_requires_autopilot\x12Gautopilot_privileged_admission_paths applies to Autopilot clusters only\x1aMsize(this.autopilot_privileged_admission_paths) == 0 || this.enable_autopilot\x1a\xf5\x01\n" +
-	"(node_pool_auto_config_requires_autopilot\x12\x8d\x01node_pool_auto_config configures the nodes GKE manages on an Autopilot cluster — on Standard clusters configure each GcpGkeNodePool instead\x1a9!has(this.node_pool_auto_config) || this.enable_autopilotB\x16\n" +
+	"(node_pool_auto_config_requires_autopilot\x12\x8d\x01node_pool_auto_config configures the nodes GKE manages on an Autopilot cluster — on Standard clusters configure each GcpGkeNodePool instead\x1a9!has(this.node_pool_auto_config) || this.enable_autopilotB\x1c\n" +
+	"\x1aauthorized_networks_policyB\x16\n" +
 	"\x14_deletion_protectionB\x1c\n" +
 	"\x1a_default_max_pods_per_nodeB\x12\n" +
 	"\x10_release_channelB\x1c\n" +
@@ -4575,7 +4662,8 @@ const file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc = "" +
 	"\x1bprivate_endpoint_subnetwork\x18\x04 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB,\x88\xd4a\xc3\x17\x92\xd4a#status.outputs.subnetwork_self_linkR\x19privateEndpointSubnetwork\x12=\n" +
 	"\x1benable_master_global_access\x18\x05 \x01(\bR\x18enableMasterGlobalAccess:\xf0\x03\xbaH\xec\x03\x1a\xdf\x01\n" +
 	"'private_endpoint_requires_private_nodes\x12xenable_private_endpoint requires enable_private_nodes — a public-node cluster cannot have a private-only control plane\x1a:!this.enable_private_endpoint || this.enable_private_nodes\x1a\x87\x02\n" +
-	"#master_cidr_xor_endpoint_subnetwork\x12\x90\x01set either master_ipv4_cidr_block (peering-based control-plane range) or private_endpoint_subnetwork (PSC-based endpoint placement) — not both\x1aM!(this.master_ipv4_cidr_block != '' && has(this.private_endpoint_subnetwork))\"\x88\x03\n" +
+	"#master_cidr_xor_endpoint_subnetwork\x12\x90\x01set either master_ipv4_cidr_block (peering-based control-plane range) or private_endpoint_subnetwork (PSC-based endpoint placement) — not both\x1aM!(this.master_ipv4_cidr_block != '' && has(this.private_endpoint_subnetwork))\"#\n" +
+	"!GcpGkeClusterUnrestrictedNetworks\"\x88\x03\n" +
 	"%GcpGkeClusterMasterAuthorizedNetworks\x12q\n" +
 	"\vcidr_blocks\x18\x01 \x03(\v2P.dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworkCidrR\n" +
 	"cidrBlocks\x12I\n" +
@@ -4818,7 +4906,7 @@ func file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDescGZIP() []byte {
 }
 
 var file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 46)
+var file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 47)
 var file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_goTypes = []any{
 	(GkeReleaseChannel)(0),                              // 0: dev.planton.gcp.gcpgkecluster.v1alpha1.GkeReleaseChannel
 	(*GcpGkeClusterSpec)(nil),                           // 1: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec
@@ -4839,107 +4927,109 @@ var file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_goTypes = []any{
 	(*GcpGkeClusterAdditionalIpRange)(nil),              // 16: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAdditionalIpRange
 	(*GcpGkeClusterDnsConfig)(nil),                      // 17: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDnsConfig
 	(*GcpGkeClusterPrivateCluster)(nil),                 // 18: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateCluster
-	(*GcpGkeClusterMasterAuthorizedNetworks)(nil),       // 19: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworks
-	(*GcpGkeClusterMasterAuthorizedNetworkCidr)(nil),    // 20: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworkCidr
-	(*GcpGkeClusterControlPlaneEndpoints)(nil),          // 21: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterControlPlaneEndpoints
-	(*GcpGkeClusterMaintenancePolicy)(nil),              // 22: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy
-	(*GcpGkeClusterDisruptionBudget)(nil),               // 23: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDisruptionBudget
-	(*GcpGkeClusterDailyMaintenanceWindow)(nil),         // 24: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDailyMaintenanceWindow
-	(*GcpGkeClusterRecurringMaintenanceWindow)(nil),     // 25: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringMaintenanceWindow
-	(*GcpGkeClusterRecurringTimeMaintenanceWindow)(nil), // 26: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow
-	(*GcpGkeClusterTimeOfDay)(nil),                      // 27: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterTimeOfDay
-	(*GcpGkeClusterCalendarDate)(nil),                   // 28: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterCalendarDate
-	(*GcpGkeClusterMaintenanceExclusion)(nil),           // 29: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenanceExclusion
-	(*GcpGkeClusterAutoscaling)(nil),                    // 30: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling
-	(*GcpGkeClusterAutoscalingResourceLimit)(nil),       // 31: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscalingResourceLimit
-	(*GcpGkeClusterAutoProvisioningDefaults)(nil),       // 32: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults
-	(*GcpGkeClusterNapUpgradeSettings)(nil),             // 33: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapUpgradeSettings
-	(*GcpGkeClusterNapBlueGreenSettings)(nil),           // 34: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapBlueGreenSettings
-	(*GcpGkeClusterNapStandardRolloutPolicy)(nil),       // 35: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapStandardRolloutPolicy
-	(*GcpGkeClusterDatabaseEncryption)(nil),             // 36: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryption
-	(*GcpGkeClusterSecurityPosture)(nil),                // 37: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecurityPosture
-	(*GcpGkeClusterConfidentialNodes)(nil),              // 38: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterConfidentialNodes
-	(*GcpGkeClusterLogging)(nil),                        // 39: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterLogging
-	(*GcpGkeClusterMonitoring)(nil),                     // 40: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMonitoring
-	(*GcpGkeClusterNotificationPubSub)(nil),             // 41: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNotificationPubSub
-	(*GcpGkeClusterResourceUsageExport)(nil),            // 42: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterResourceUsageExport
-	(*GcpGkeClusterAddons)(nil),                         // 43: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAddons
-	nil,                                                 // 44: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.ResourceLabelsEntry
-	nil,                                                 // 45: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig.ResourceManagerTagsEntry
-	nil,                                                 // 46: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint.HeadersEntry
-	(*v1.StringValueOrRef)(nil),                         // 47: dev.planton.shared.foreignkey.v1.StringValueOrRef
+	(*GcpGkeClusterUnrestrictedNetworks)(nil),           // 19: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUnrestrictedNetworks
+	(*GcpGkeClusterMasterAuthorizedNetworks)(nil),       // 20: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworks
+	(*GcpGkeClusterMasterAuthorizedNetworkCidr)(nil),    // 21: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworkCidr
+	(*GcpGkeClusterControlPlaneEndpoints)(nil),          // 22: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterControlPlaneEndpoints
+	(*GcpGkeClusterMaintenancePolicy)(nil),              // 23: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy
+	(*GcpGkeClusterDisruptionBudget)(nil),               // 24: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDisruptionBudget
+	(*GcpGkeClusterDailyMaintenanceWindow)(nil),         // 25: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDailyMaintenanceWindow
+	(*GcpGkeClusterRecurringMaintenanceWindow)(nil),     // 26: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringMaintenanceWindow
+	(*GcpGkeClusterRecurringTimeMaintenanceWindow)(nil), // 27: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow
+	(*GcpGkeClusterTimeOfDay)(nil),                      // 28: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterTimeOfDay
+	(*GcpGkeClusterCalendarDate)(nil),                   // 29: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterCalendarDate
+	(*GcpGkeClusterMaintenanceExclusion)(nil),           // 30: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenanceExclusion
+	(*GcpGkeClusterAutoscaling)(nil),                    // 31: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling
+	(*GcpGkeClusterAutoscalingResourceLimit)(nil),       // 32: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscalingResourceLimit
+	(*GcpGkeClusterAutoProvisioningDefaults)(nil),       // 33: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults
+	(*GcpGkeClusterNapUpgradeSettings)(nil),             // 34: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapUpgradeSettings
+	(*GcpGkeClusterNapBlueGreenSettings)(nil),           // 35: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapBlueGreenSettings
+	(*GcpGkeClusterNapStandardRolloutPolicy)(nil),       // 36: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapStandardRolloutPolicy
+	(*GcpGkeClusterDatabaseEncryption)(nil),             // 37: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryption
+	(*GcpGkeClusterSecurityPosture)(nil),                // 38: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecurityPosture
+	(*GcpGkeClusterConfidentialNodes)(nil),              // 39: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterConfidentialNodes
+	(*GcpGkeClusterLogging)(nil),                        // 40: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterLogging
+	(*GcpGkeClusterMonitoring)(nil),                     // 41: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMonitoring
+	(*GcpGkeClusterNotificationPubSub)(nil),             // 42: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNotificationPubSub
+	(*GcpGkeClusterResourceUsageExport)(nil),            // 43: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterResourceUsageExport
+	(*GcpGkeClusterAddons)(nil),                         // 44: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAddons
+	nil,                                                 // 45: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.ResourceLabelsEntry
+	nil,                                                 // 46: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig.ResourceManagerTagsEntry
+	nil,                                                 // 47: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint.HeadersEntry
+	(*v1.StringValueOrRef)(nil),                         // 48: dev.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_depIdxs = []int32{
-	47, // 0: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.project_id:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 1: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.network:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 2: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.subnetwork:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	44, // 3: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.resource_labels:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.ResourceLabelsEntry
+	48, // 0: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.project_id:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 1: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.network:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 2: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.subnetwork:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	45, // 3: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.resource_labels:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.ResourceLabelsEntry
 	15, // 4: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.ip_allocation:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation
 	17, // 5: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.dns_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDnsConfig
 	18, // 6: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.private_cluster:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateCluster
-	19, // 7: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.master_authorized_networks:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworks
-	21, // 8: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.control_plane_endpoints:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterControlPlaneEndpoints
-	0,  // 9: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.release_channel:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GkeReleaseChannel
-	22, // 10: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.maintenance_policy:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy
-	30, // 11: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.cluster_autoscaling:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling
-	36, // 12: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.database_encryption:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryption
-	37, // 13: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.security_posture:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecurityPosture
-	38, // 14: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.confidential_nodes:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterConfidentialNodes
-	39, // 15: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.logging:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterLogging
-	40, // 16: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.monitoring:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMonitoring
-	41, // 17: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.notification_pubsub:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNotificationPubSub
-	42, // 18: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.resource_usage_export:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterResourceUsageExport
-	43, // 19: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.addons:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAddons
-	47, // 20: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.fleet_project:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	3,  // 21: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.rbac_binding_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRbacBindingConfig
-	4,  // 22: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.autopilot_policy:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutopilotPolicy
-	5,  // 23: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.node_pool_auto_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig
-	6,  // 24: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.node_pool_defaults:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolDefaults
-	12, // 25: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.user_managed_keys:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys
-	13, // 26: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.secret_manager_rotation:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecretRotation
-	14, // 27: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.secret_sync:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecretSync
-	2,  // 28: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.rollback_safe_upgrade:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRollbackSafeUpgrade
-	45, // 29: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig.resource_manager_tags:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig.ResourceManagerTagsEntry
-	7,  // 30: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolDefaults.containerd_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterContainerdDefaults
-	8,  // 31: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterContainerdDefaults.private_registry_access:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateRegistryAccess
-	10, // 32: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterContainerdDefaults.registry_hosts:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHost
-	9,  // 33: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateRegistryAccess.certificate_authority_domains:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryCaDomain
-	11, // 34: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHost.hosts:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint
-	46, // 35: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint.headers:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint.HeadersEntry
-	47, // 36: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.cluster_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 37: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.etcd_api_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 38: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.etcd_peer_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 39: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.aggregation_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 40: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.control_plane_disk_encryption_key:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 41: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.gkeops_etcd_backup_encryption_key:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 42: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation.cluster_secondary_range_name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 43: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation.services_secondary_range_name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	16, // 44: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation.additional_ip_ranges:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAdditionalIpRange
-	47, // 45: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAdditionalIpRange.subnetwork:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 46: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateCluster.private_endpoint_subnetwork:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	20, // 47: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworks.cidr_blocks:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworkCidr
-	24, // 48: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.daily_window:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDailyMaintenanceWindow
-	25, // 49: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.recurring_window:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringMaintenanceWindow
-	26, // 50: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.recurring_time_window:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow
-	29, // 51: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.exclusions:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenanceExclusion
-	23, // 52: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.disruption_budget:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDisruptionBudget
-	27, // 53: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow.window_start_time:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterTimeOfDay
-	28, // 54: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow.delay_until:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterCalendarDate
-	31, // 55: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling.resource_limits:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscalingResourceLimit
-	32, // 56: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling.auto_provisioning_defaults:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults
-	47, // 57: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults.service_account:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 58: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults.boot_disk_kms_key:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	33, // 59: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults.upgrade_settings:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapUpgradeSettings
-	34, // 60: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapUpgradeSettings.blue_green_settings:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapBlueGreenSettings
-	35, // 61: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapBlueGreenSettings.standard_rollout_policy:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapStandardRolloutPolicy
-	47, // 62: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryption.key_name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 63: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNotificationPubSub.topic:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	47, // 64: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterResourceUsageExport.bigquery_dataset_id:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
-	65, // [65:65] is the sub-list for method output_type
-	65, // [65:65] is the sub-list for method input_type
-	65, // [65:65] is the sub-list for extension type_name
-	65, // [65:65] is the sub-list for extension extendee
-	0,  // [0:65] is the sub-list for field type_name
+	20, // 7: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.master_authorized_networks:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworks
+	19, // 8: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.unrestricted_networks:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUnrestrictedNetworks
+	22, // 9: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.control_plane_endpoints:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterControlPlaneEndpoints
+	0,  // 10: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.release_channel:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GkeReleaseChannel
+	23, // 11: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.maintenance_policy:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy
+	31, // 12: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.cluster_autoscaling:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling
+	37, // 13: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.database_encryption:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryption
+	38, // 14: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.security_posture:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecurityPosture
+	39, // 15: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.confidential_nodes:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterConfidentialNodes
+	40, // 16: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.logging:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterLogging
+	41, // 17: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.monitoring:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMonitoring
+	42, // 18: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.notification_pubsub:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNotificationPubSub
+	43, // 19: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.resource_usage_export:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterResourceUsageExport
+	44, // 20: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.addons:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAddons
+	48, // 21: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.fleet_project:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	3,  // 22: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.rbac_binding_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRbacBindingConfig
+	4,  // 23: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.autopilot_policy:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutopilotPolicy
+	5,  // 24: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.node_pool_auto_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig
+	6,  // 25: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.node_pool_defaults:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolDefaults
+	12, // 26: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.user_managed_keys:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys
+	13, // 27: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.secret_manager_rotation:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecretRotation
+	14, // 28: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.secret_sync:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSecretSync
+	2,  // 29: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterSpec.rollback_safe_upgrade:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRollbackSafeUpgrade
+	46, // 30: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig.resource_manager_tags:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolAutoConfig.ResourceManagerTagsEntry
+	7,  // 31: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNodePoolDefaults.containerd_config:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterContainerdDefaults
+	8,  // 32: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterContainerdDefaults.private_registry_access:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateRegistryAccess
+	10, // 33: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterContainerdDefaults.registry_hosts:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHost
+	9,  // 34: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateRegistryAccess.certificate_authority_domains:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryCaDomain
+	11, // 35: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHost.hosts:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint
+	47, // 36: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint.headers:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRegistryHostEndpoint.HeadersEntry
+	48, // 37: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.cluster_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 38: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.etcd_api_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 39: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.etcd_peer_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 40: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.aggregation_ca:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 41: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.control_plane_disk_encryption_key:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 42: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterUserManagedKeys.gkeops_etcd_backup_encryption_key:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 43: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation.cluster_secondary_range_name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 44: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation.services_secondary_range_name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	16, // 45: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterIpAllocation.additional_ip_ranges:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAdditionalIpRange
+	48, // 46: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAdditionalIpRange.subnetwork:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 47: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterPrivateCluster.private_endpoint_subnetwork:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	21, // 48: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworks.cidr_blocks:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMasterAuthorizedNetworkCidr
+	25, // 49: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.daily_window:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDailyMaintenanceWindow
+	26, // 50: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.recurring_window:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringMaintenanceWindow
+	27, // 51: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.recurring_time_window:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow
+	30, // 52: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.exclusions:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenanceExclusion
+	24, // 53: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterMaintenancePolicy.disruption_budget:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDisruptionBudget
+	28, // 54: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow.window_start_time:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterTimeOfDay
+	29, // 55: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterRecurringTimeMaintenanceWindow.delay_until:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterCalendarDate
+	32, // 56: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling.resource_limits:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscalingResourceLimit
+	33, // 57: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoscaling.auto_provisioning_defaults:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults
+	48, // 58: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults.service_account:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 59: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults.boot_disk_kms_key:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	34, // 60: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterAutoProvisioningDefaults.upgrade_settings:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapUpgradeSettings
+	35, // 61: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapUpgradeSettings.blue_green_settings:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapBlueGreenSettings
+	36, // 62: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapBlueGreenSettings.standard_rollout_policy:type_name -> dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNapStandardRolloutPolicy
+	48, // 63: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterDatabaseEncryption.key_name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 64: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterNotificationPubSub.topic:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	48, // 65: dev.planton.gcp.gcpgkecluster.v1alpha1.GcpGkeClusterResourceUsageExport.bigquery_dataset_id:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	66, // [66:66] is the sub-list for method output_type
+	66, // [66:66] is the sub-list for method input_type
+	66, // [66:66] is the sub-list for extension type_name
+	66, // [66:66] is the sub-list for extension extendee
+	0,  // [0:66] is the sub-list for field type_name
 }
 
 func init() { file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_init() }
@@ -4947,30 +5037,33 @@ func file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_init() {
 	if File_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto != nil {
 		return
 	}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[0].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[0].OneofWrappers = []any{
+		(*GcpGkeClusterSpec_MasterAuthorizedNetworks)(nil),
+		(*GcpGkeClusterSpec_UnrestrictedNetworks)(nil),
+	}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[2].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[3].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[5].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[6].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[10].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[14].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[18].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[20].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[29].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[31].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[19].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[21].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[30].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[32].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[34].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[38].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[33].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[35].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[39].OneofWrappers = []any{}
-	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[41].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[40].OneofWrappers = []any{}
 	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[42].OneofWrappers = []any{}
+	file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_msgTypes[43].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc), len(file_catalog_gcp_gcpgkecluster_v1alpha1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   46,
+			NumMessages:   47,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -10,6 +10,17 @@ On Standard clusters the API-mandated default node pool is removed at create tim
 
 `deletion_protection` defaults to true, matching GCP: a destroy plan fails until the spec explicitly sets it false.
 
+Authorized-network policy is an explicit choice. `master_authorized_networks = {}`
+emits a configured restriction with no external CIDR ranges. An omitted policy or
+`unrestricted_networks = {}` emits no authorized-networks configuration. The two
+alternatives are mutually exclusive in the catalog schema; authentication, endpoint
+availability and the policy's Google public-IP/private-endpoint switches remain
+separate controls.
+
+The credential-free `tofu test` cases under `tests/` prove the module's planned
+blocks with a mocked Google provider. They cover absent, empty, unrestricted and
+populated policies plus explicit false switches.
+
 ## Usage with Planton CLI
 
 ```shell

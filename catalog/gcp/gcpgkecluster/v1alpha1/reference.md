@@ -198,6 +198,7 @@ spec:
 | `spec.masterAuthorizedNetworks.cidrBlocks[].displayName` | `string` |  |  |  |
 | `spec.masterAuthorizedNetworks.gcpPublicCidrsAccessEnabled` | `bool` |  |  |  |
 | `spec.masterAuthorizedNetworks.privateEndpointEnforcementEnabled` | `bool` |  |  |  |
+| `spec.unrestrictedNetworks` | `GcpGkeClusterUnrestrictedNetworks` |  |  |  |
 | `spec.controlPlaneEndpoints` | `GcpGkeClusterControlPlaneEndpoints` |  |  |  |
 | `spec.controlPlaneEndpoints.dnsEndpointAllowExternalTraffic` | `bool` |  |  |  |
 | `spec.controlPlaneEndpoints.ipEndpointsEnabled` | `bool` |  | `true` |  |
@@ -857,9 +858,9 @@ region).
 
 `GcpGkeClusterMasterAuthorizedNetworks`
 
-CIDR allowlist for control-plane API access. Without it, the public
-endpoint (when enabled) accepts connections from any IP that presents
-valid credentials.
+Restrict control-plane IP access to the configured networks. An empty
+policy authorizes no external CIDR ranges; the Google public-IP and
+private-endpoint switches retain their own documented behavior.
 
 ### spec.masterAuthorizedNetworks.cidrBlocks
 
@@ -895,6 +896,14 @@ pools) may reach the control plane.
 
 Enforces the allowlist on the PRIVATE endpoint too (by default only the
 public endpoint is filtered).
+
+### spec.unrestrictedNetworks
+
+`GcpGkeClusterUnrestrictedNetworks`
+
+Explicitly configure no authorized-networks IP restriction. A public
+endpoint still requires valid credentials, and this does not enable
+an endpoint that is disabled by control_plane_endpoints/private_cluster.
 
 ### spec.controlPlaneEndpoints
 
