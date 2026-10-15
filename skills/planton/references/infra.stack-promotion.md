@@ -177,7 +177,7 @@ own revisions), the stack's own file, and the new version's:
 - On a later stage whose earlier stage already runs the new version, the
   path reads "qa runs v5 · Promote from qa": promote the tested template
   instead of upgrading each environment on its own.
-- `planton chart install <name> <catalog chart> --env <env>` onto a stack
+- `planton chart install <name> <catalog-chart> --env <env>` onto a stack
   that already follows that chart is an upgrade; a conflict there names
   `planton infra stack upgrade` with its flags.
 
