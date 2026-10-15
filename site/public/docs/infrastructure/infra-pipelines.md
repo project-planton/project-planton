@@ -31,7 +31,7 @@ The pipeline executes the graph:
 1. Resources with no dependencies start first, in parallel.
 2. When a resource completes, its dependents become eligible; each starts once everything it consumes has finished and a slot is free.
 3. Independent branches of the graph execute concurrently, with at most **four resources holding work at once** per run. A job waiting for its runner holds its slot; a resource waiting for a person — at its gate, or on its job's own approval — does not, so the rest of the graph carries on.
-4. Each resource whose inputs moved since its last successful deploy runs as a separate [Infra Job](/docs/infrastructure/infra-jobs). A resource whose inputs match exactly runs no job: it reads **Unchanged since** the job that last applied it and passes that job's outputs to its dependents (see [What a Run Applies](/docs/infrastructure/infra-stacks#what-a-run-applies)).
+4. Each resource whose inputs moved since its last successful deploy runs as a separate [Infra Job](/docs/infrastructure/infra-jobs). A resource whose inputs match exactly runs no job: it reads **Unchanged since r11**, the revision whose run last applied it, and passes that job's outputs to its dependents (see [What a Run Applies](/docs/infrastructure/infra-stacks#what-a-run-applies)).
 5. If a resource fails, everything downstream of it ends at once and reads **Not run: <Kind>/<slug> failed**. Branches that do not depend on it keep running.
 6. Only when everything the stack declares applied, the resources the plan removed are taken down in reverse dependency order: destroyed, or let go of and **Kept**, as the person chose. A failed apply removes nothing; its removals read **Not run: nothing is removed while what the stack declares did not all apply**.
 

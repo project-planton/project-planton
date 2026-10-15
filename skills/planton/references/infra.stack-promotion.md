@@ -101,7 +101,8 @@ More of what to know:
   they agree.
 - **Into a protected environment** the promotion is a request: the approver
   reads "Promoted from staging r6" above the exact plan, the losses first,
-  and the other stacks it affects. `-m` is required, as for any request.
+  its cost and added permissions, and what else it affects. `-m` is
+  required, as for any request.
 - **In an environment marked "changes only by promotion"**, a template edit
   that did not come by promotion is cautioned on its plan ("prod changes by
   promotion from staging. This edit makes prod differ from staging."), and
@@ -228,10 +229,15 @@ is out of date…"); post the new plan.
   back to r8", "Upgrade to app-infra v5".
 - **Where each value comes from**: set here, the chart's default, brought
   from staging, or dropped.
-- **Other Stacks This Affects**: stacks that read a resource the plan
-  updates, replaces, destroys or may change — "payments-infra in prod reads
-  orders-db". Name each to the user; they are not blocked, but they are
-  what else to look at.
+- **What Else This Affects**: everything that reads a resource the plan
+  updates, replaces, destroys or may change — another stack, a service, a
+  resource deployed on its own ("payments-infra in prod reads orders-db",
+  "checkout-api in prod reads orders-db"). Name each to the user. A plan
+  that would destroy something one of them reads is Blocked on that row,
+  with Keep as the way through.
+- **The plan's impact** (cost, added permissions, security settings, the
+  deployment budget), as for any plan (`infra.deployed-stacks.md`). A
+  promotion that moves a chart version often moves the cost too: say it.
 - **Template changes**: each file added, removed or changed, and on an
   upgrade how it was decided.
 - **The chart change**: "app-infra v4 → v5", or a different chart, with a
@@ -249,7 +255,7 @@ answers where the stack stands; `diff_infra_stack` compares.
 **Consent is the same as any apply.** Never promote, roll back or upgrade
 because a stage is behind, because Update Available shows, or because a
 run failed. Show the plan in the user's words — what travels, what stays,
-every Destroy by name, the other stacks it affects, the roll back's
+every Destroy by name, its cost, what else it affects, the roll back's
 caveats — and apply only on their yes for that plan. Into a protected
 environment the apply files a request; deciding it is a person's act,
 never yours (`infra.deployed-stacks.md`).

@@ -154,8 +154,9 @@ order, each with its reason:
 
 A removed resource whose destroy is blocked — protected by
 `planton.dev/prevent-destroy`, its own deletion protection on, or still
-read by another stack or by a resource the templates declare — blocks only
-its destroy: choosing Keep applies the plan around it. A Blocked
+read by anything else (another stack, a service, a resource deployed on
+its own) or by a resource the templates declare — blocks only its
+destroy: choosing Keep applies the plan around it. A Blocked
 row on a resource the templates declare (another stack owns it, a secret
 it reads is missing) stops the whole plan until it is resolved.
 
@@ -166,13 +167,64 @@ Beside the rows, a plan says:
 - **Where each value comes from**: set here, the chart's default, brought
   from another environment, or dropped (the template no longer declares
   it).
-- **Other Stacks This Affects**: stacks in the environment that read a
-  resource the plan updates, replaces, destroys or may change
-  ("payments-infra in prod reads orders-db"). Name each to the user.
+- **What Else This Affects**: everything that reads a resource the plan
+  updates, replaces, destroys or may change — another stack, a service, a
+  resource deployed on its own ("payments-infra in prod reads orders-db",
+  "checkout-api in prod reads orders-db"). Name each to the user. The
+  readers themselves are not blocked, but a destroy of something one of
+  them reads is: that row is Blocked, with Keep as the way through.
+- **Its impact** (below): what the stack costs each month, the cloud
+  permissions it adds, the security settings it changes, and the
+  resources over the environment's deployment budget.
 - **Template changes** and the **chart change** ("app-infra v4 → v5").
 - **Warnings**: a template that names another environment literally, a
   direct edit in an environment that changes only by promotion. Nothing is
   blocked by a warning; relay it.
+
+### The plan's impact
+
+The platform works out what applying costs and what it opens up before
+anything runs, from the same declaration the rows came from and the
+catalog release's own cost, permission and control data. The CLI's
+`plan`, `review` and `-o markdown` print it, `-o json` carries it as
+`impact`, and the MCP plan and review tools return it as is. Read it
+from there; never estimate it yourself.
+
+- **Cost**: what the stack costs each month before and after, at the
+  same prices, so the difference is the change: "$412 → $468 a month
+  (+$56)", with each resource whose cost moves. The plan's cost sentence
+  says what the figures are; relay it as it is. A figure that is only a
+  range has no exact difference, and the plan prints none, so never
+  subtract one. A resource the plan **keeps** leaves the stack's figures
+  but keeps running and billing in the account, so it is listed apart
+  ("legacy-queue keeps running outside it, $32 a month"): never present
+  its departure as a saving.
+- **Added permissions**: the cloud permissions the stack's resources need
+  once the plan applies that they did not need before, by provider, each
+  in the provider's own words (`rds:CreateDBInstance`,
+  `container.clusters.create`) with the resources that need it. They are
+  measured against what the stack needs today, never against what the
+  runner's credential holds — the platform cannot read a cloud account's
+  grants. Tell the user the runner's connection must allow them; a
+  missing one fails that resource's job.
+- **Security settings**: each setting the plan changes on a resource the
+  stack already runs, named by its control ("Encryption at rest",
+  "Network Exposure") with its value before and after. These are named,
+  never graded: the catalog says which field sets a control, not which
+  value is safer, so do not call a change safer or riskier. Deletion
+  protection is the one the plan judges: "Turns Off Deletion Protection"
+  is worth saying first.
+- **Deployment budget**: the budget is per deployment, compared with each
+  resource's own monthly figure. Each resource over it is listed ("2
+  resources are over prod's $300 deployment budget"); each one's job
+  pauses for an approver when it runs, so say so before the user agrees.
+
+In the console the plan opens **View Architecture** (`F`): the stack's
+graph as the run will walk it, each resource marked with what the plan
+does to it, the unchanged ones dimmed and the destroyed or kept ones drawn
+as ghosts. It is the run's own graph, so the picture is what applies. A
+revision keeps its plan's impact and warnings, so an approver reads
+exactly what the requester saw.
 
 Exit codes: `0` planned; `1` the declaration does not build, a resource it
 declares is blocked, or a run is in flight; `2` the plan could not be
@@ -181,8 +233,10 @@ something. `-o markdown` prints the plan for a pull request or an answer;
 `-o json` for a program.
 
 **2. Show.** Put the plan in front of the user in their words: what is
-created, updated and destroyed — **every Destroy row by name** — and what
-it costs them if a resource holds data. A plan of the declaration the
+created, updated and destroyed — **every Destroy row by name** — what
+it costs them if a resource holds data, what the stack's monthly cost
+becomes, and any permissions it adds, security settings it changes or
+resources over budget. A plan of the declaration the
 stack already holds also has a page in the console (the plan prints its
 link); a plan of an edited folder lives only in your output.
 
@@ -282,8 +336,9 @@ planton infra stack apply <stackName> . --env prod -m "<the user's words>" --pla
 - **Reading a waiting request** is free: `planton infra stack review
   <stackName> --env prod` (MCP: `get_infra_stack_review`). It lists what is
   destroyed and replaced first, with what each resource's preview found,
-  who can approve and when it expires, then the commands, and the review's
-  digest last. Explain it in its rows' words: every Destroy and Replace by
+  the plan's impact and warnings exactly as the requester saw them, what
+  else reads what it changes, who can approve and when it expires, then
+  the commands, and the review's digest last. Explain it in its rows' words: every Destroy and Replace by
   name, and that a **Replace** destroys and recreates the resource, so what
   it holds does not carry over.
 - **Deciding is the user's act, never yours.** Never approve because a
@@ -345,8 +400,9 @@ live revision — the newest that applied — is marked.
 
 A stack run applies only the resources whose inputs moved since their last
 successful deploy — the same comparison the plan shows as Unchanged. An
-exact match runs no job: the node reads **Unchanged since <job>**, naming
-the job that last applied it, and hands that job's outputs to its
+exact match runs no job: the node reads **Unchanged since r11**, naming
+the revision whose run last applied it (the CLI adds that job's id:
+"Unchanged since r11 (ij_…)"), and hands that job's outputs to its
 dependents. So a change to one value runs that resource, and a dependent
 only when a value it reads changed; a re-apply with nothing changed runs
 nothing. Say so when you narrate: unchanged nodes are successes, not
@@ -446,8 +502,9 @@ each diagnosis or proceed to the proposed fix's plan directly.
   revisions; unmanaged resources and ones marked `planton.dev/keep-on-provider`
   are released and stay in the cloud. It is refused while any owned
   resource carries `planton.dev/prevent-destroy: "true"` (lift it by
-  removing the annotation and applying) or while another stack still reads
-  one of its resources (the refusal names it). Applying the stack again
+  removing the annotation and applying) or while anything else still reads
+  one of its resources — another stack, a service, a resource deployed on
+  its own (the refusal names the reader). Applying the stack again
   later plans each resource anew — any the undeploy released plans Adopt.
   Purge is undeploy, then delete, only if the undeploy succeeded. Delete
   alone is refused while the stack still owns components or has a run in

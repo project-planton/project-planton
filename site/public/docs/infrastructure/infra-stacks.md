@@ -70,6 +70,19 @@ An apply records a numbered **revision** named by its message ("r13 · Raise rep
 - **Adopt.** A stack never takes over a resource it found; you choose Adopt for it, or remove it from the templates.
 - **Re-apply.** Run an unchanged resource's job anyway, or every resource's (`--reapply Kind/name`, `--reapply-all`).
 
+### What a Plan Costs and Opens Up
+
+Before anything runs, a plan says what applying it costs and what it opens up. Planton works it out from the same declaration the rows came from and the pinned catalog release's own cost, permission and security data, so the console, the phone, `planton infra stack plan` and an agent all read the same figures:
+
+- **Cost.** What the stack costs each month before and after, at the same prices, so the difference is the change: "$412 → $468 a month (+$56)", with each resource whose cost moves. A figure known only as a range shows no exact difference. A resource you keep leaves the stack's figures but keeps running and billing in your account, so the plan says so instead of counting it as a saving: "$412 → $380 a month for this stack; legacy-queue keeps running outside it, $32 a month".
+- **Added Permissions.** The cloud permissions the stack's resources need once the plan applies that they did not need before, by provider and in the provider's own words (`rds:CreateDBInstance`, `container.clusters.create`), each with the resources that need it: "Adds 4 Permissions This Stack Didn't Need Before". They are measured against what the stack needs today, never against what your runner's credential holds, because Planton cannot read a cloud account's grants. The runner's connection must allow them.
+- **Security Settings.** Each security or resilience setting the plan changes on a resource the stack already runs, named with its value before and after: "Changes 2 Security Settings: Network Exposure, Encryption at Rest". Settings are named, never graded: the catalog says which field sets a control, not which value is safer. Deletion protection is the exception, where the plan says the direction: "Turns Off Deletion Protection".
+- **Deployment budget.** Where an environment sets a deployment budget, each resource whose own monthly cost is over it is named: "2 resources are over prod's $300 deployment budget; each pauses for an approver when it runs".
+
+In the console the plan's summary shows the cost and two chips, **Added Permissions** and **Security Settings**, each opening the full list. `planton infra stack plan`, `review` and `-o markdown` print the same sections, so a pull request carries them too, and `-o json` carries them as `impact`.
+
+**View Architecture** (`F`) draws the plan as the architecture it changes: the stack's graph exactly as the run will walk it, each resource marked with what the plan does to it, the unchanged ones dimmed and the destroyed or kept ones drawn as ghosts. It is the run's own graph, so the picture is what applies. Click a resource to go to its row.
+
 `planton apply -f` applies a plan only when nothing in it is destroyed, adopted or blocked; otherwise it refuses and names the `planton infra stack apply` command to review the plan with. It never files a request: in a protected environment it refuses and names that command.
 
 ### In a Protected Environment, a Change Is a Request
@@ -80,7 +93,7 @@ In a protected environment applying a plan files a **request** instead of writin
 planton infra stack apply app-infra --env prod -m "Raise replicas"
 ```
 
-The request's run previews what the change reaches — each preview shows its engine's plan and changes nothing — and an approver reads that exact plan, what is destroyed and replaced first, in the console, on the phone, or in a terminal:
+The request's run previews what the change reaches — each preview shows its engine's plan and changes nothing — and an approver reads that exact plan, what is destroyed and replaced first, in the console, on the phone, or in a terminal. The revision keeps its plan's cost, permissions, security settings and warnings, so the approver reads exactly what the requester saw, along with everything that reads what the change touches:
 
 ```bash
 planton infra stack review app-infra --env prod
@@ -109,7 +122,9 @@ A stack has one run at a time. While a run is queued, running or waiting for app
 
 ## Dependency Graph Visualization
 
-Each Infra Stack maintains a dependency graph that visualizes the relationships between its Infra Components. The web console displays this as an interactive DAG where you can see:
+A stack's page lists its resources first: each one's name, kind and the revision that last applied it ("orders-db · AWS RDS Instance · Applied in r9"), searchable and filterable by kind. **Remove from Stack** on a row opens the plan of the stack without it, where you choose Destroy or Keep; when the resource shares its template file with others, it opens that file in the stack's configuration instead, saying which document to remove.
+
+Behind **List | Graph**, each Infra Stack maintains a dependency graph that visualizes the relationships between its Infra Components. The web console displays this as an interactive DAG where you can see:
 
 - Resource nodes with their current deployment status (queued, running, succeeded, failed)
 - Dependency edges showing which resources must be deployed before others
@@ -206,7 +221,8 @@ planton infra stack diff app-infra --env qa --revision 10 --against-revision 9
 Every plan — an edit, a promotion, a roll back or an upgrade — shows above its rows where the declaration came from, and beside them:
 
 - **where each value comes from**: set here, the chart's default, brought from another environment, or dropped;
-- **Other Stacks This Affects**: stacks that read a resource the plan updates, replaces or destroys ("payments-infra in prod reads orders-db");
+- **What Else This Affects**: everything that reads a resource the plan updates, replaces, destroys or may change — another stack, a service, a resource deployed on its own ("payments-infra in prod reads orders-db", "checkout-api in prod reads orders-db"). The readers are not blocked, but a destroy of something one of them reads is: that row reads Blocked, and Keep applies the plan around it;
+- **what it costs and opens up**: the monthly cost before and after, the permissions it adds, the security settings it changes and anything over budget (see [What a Plan Costs and Opens Up](#what-a-plan-costs-and-opens-up));
 - **the template files** it changes and the **chart version** it moves between;
 - **warnings**, which block nothing.
 
@@ -253,7 +269,7 @@ An undeploy covers every Infra Component the stack created, including components
 An undeploy is refused before anything starts when:
 
 - any resource the stack owns carries `planton.dev/prevent-destroy: "true"` (see [Protecting a Resource from Teardown](#protecting-a-resource-from-teardown));
-- another stack still reads one of its resources — through a reference to it, or with workloads placed in its namespace. The refusal names the reading stack;
+- anything else still reads one of its resources — another stack, a service, or a resource deployed on its own, through a reference to it or with workloads placed in its namespace. The refusal names the reader and how to let go of the reference;
 - the stack owns no Infra Components: it "owns no infra components, so there is nothing to undeploy".
 
 In a protected environment an undeploy is a request an approver decides, as an apply is: nothing is destroyed until then. The CLI asks before undeploying or purging; `--yes` answers ahead. Applying the stack again later plans each resource anew: any resource the undeploy released plans Adopt.
@@ -295,7 +311,7 @@ A kept resource keeps what it depends on. While a deployment stays, the namespac
 
 ## What a Run Applies
 
-A stack's run applies only the resources whose inputs moved since their last successful deploy — the same comparison its plan shows. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since** the job that last applied it, and hands that job's outputs to the resources that depend on it. Change one value and that resource runs, along with any dependent whose inputs it changes. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource Always Runs.
+A stack's run applies only the resources whose inputs moved since their last successful deploy — the same comparison its plan shows. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since r11**, naming the revision whose run last applied it, linked to that run, and hands that job's outputs to the resources that depend on it. The job's id stays one click away for its logs (`Unchanged since r11 (ij_…)` in a terminal). Change one value and that resource runs, along with any dependent whose inputs it changes. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource Always Runs.
 
 A change made outside Planton, such as an edit in the cloud console, moves nothing Planton deploys, so a plan reads that resource Unchanged. Refresh the Infra Component first: a refresh that finds the change clears what the resource recorded as applied, and the next plan reads it Update.
 
