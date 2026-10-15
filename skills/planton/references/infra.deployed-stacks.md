@@ -143,7 +143,7 @@ order, each with its reason:
 |-----|---------|
 | **Blocked** | It cannot apply as declared; the row says why and the way out. |
 | **Destroy** | No longer in the templates: destroyed in the cloud once everything the plan applies has applied. |
-| **Update** | Its settings, a secret's version, a value it reads or its module moved. |
+| **Update** | Its settings, a secret's version, a value it reads or its module moved — or a drift check found it changed outside Planton ("Drifted: 3 changes made outside Planton"), and applying puts the declaration back. |
 | **Update Record** | Only Planton's record changes; nothing in the cloud (an annotation like `planton.dev/prevent-destroy` added). |
 | **Create** | New. |
 | **Adopt** | It already exists and no stack manages it; this stack takes it over only when chosen, and the apply may change it to match the template. |
@@ -163,7 +163,8 @@ it reads is missing) stops the whole plan until it is resolved.
 Beside the rows, a plan says:
 
 - **Where the declaration came from**, above it: "Promoted from staging
-  r6", "Roll back to r8", "Upgrade to app-infra v5" (empty for an edit).
+  r6", "Roll back to r8", "Upgrade to app-infra v5", "Reconcile drift on
+  orders-db and cache" (empty for an edit).
 - **Where each value comes from**: set here, the chart's default, brought
   from another environment, or dropped (the template no longer declares
   it).
@@ -391,7 +392,8 @@ planton infra pipeline logs <infpipe_id>       # when a node fails
 
 `planton infra stack history <stackName> --env <env>` lists the revisions,
 newest first: number, message, source (an edit, a re-apply, "Promoted from
-staging r6", "Rolled back to r8", "Upgraded to app-infra v5"), outcome (Applying, Applied, Applied With
+staging r6", "Rolled back to r8", "Upgraded to app-infra v5", "Reconciled
+drift on orders-db and cache"), outcome (Applying, Applied, Applied With
 Removal Failures, Failed, Cancelled; for a request Awaiting Approval, then
 Rejected, Withdrawn, Expired, Preview Failed or Out of Date when it closed
 without applying), who requested it and who approved it, and its run; the
@@ -422,18 +424,89 @@ More node outcomes to read correctly:
   A teardown leaves it in place for its owner; a plan that would change it
   is Blocked, naming the owner. Change it through that owner.
 - **A resource changed outside Planton** (edited in the cloud console,
-  deleted by hand) is invisible to the comparison, because nothing Planton
-  deploys moved — a plain re-plan reads it Unchanged. Refresh that
-  component first (`planton tofu refresh <ic_id>`, or `planton pulumi
-  refresh`): a refresh that finds the drift clears what the component
-  recorded as applied. Then plan the stack again (`planton infra stack plan
-  <stackName> --env <env>`) — that resource plans Update — and apply it.
-  Both are platform mutations: confirm first.
+  deleted by hand) is invisible to that comparison, because nothing
+  Planton deploys moved — a plain re-plan reads it Unchanged until a drift
+  check finds it. Check for drift, then Reconcile (next section).
 
 A run whose declared resources applied but a removal failed ends
 **"Applied; 1 removal failed"**: what the stack declares is live, and the
 revision reads Applied With Removal Failures. Diagnose the failed destroy
 like any failed node.
+
+## Changed outside Planton: check for drift, then Reconcile
+
+Someone edited a database in the cloud console during an incident, or
+deleted a bucket by hand. A **drift check** finds it: for each resource,
+it compares what Planton recorded when it last applied it with what is
+really in the cloud, setting by setting, and writes nothing — not the
+state, not the resource. Checking is free to do; it changes nothing and
+never waits for an approver, not even in a protected environment.
+
+```
+planton infra stack drift check <stackName> --env <env> --org <org>   # every resource the stack holds
+planton infra stack drift show <stackName> --env <env> --org <org>    # where each resource stands
+planton infra component drift check <ic_id>                           # one resource (or: <Kind> <name>)
+planton infra component drift show <ic_id>
+```
+
+`check` follows until every resource has its verdict; `show` reads the
+latest verdicts without checking again. Both take `-o table|json|markdown`.
+Exit codes: `0` checked, `1` a resource could not be checked, `2` the
+check could not run; with `--detailed-exitcode`, `4` means drift was
+found. Agents: `check_infra_stack_drift` / `get_infra_stack_drift`, and
+`check_infra_component_drift` / `get_infra_component_drift` for one
+resource.
+
+Each resource reads one verdict:
+
+- **In Sync** — the cloud matches what Planton applied.
+- **Drifted · 3 changes** — something was changed outside Planton. The
+  change list names each setting as **Applied by Planton** and **In the
+  Cloud Now** ("instance_class · db.t3.medium → db.t3.large"). A secret
+  reads "Hidden value changed", never its value; a resource removed by
+  hand reads "Deleted Outside Planton".
+- **Couldn't Check** — with the reason ("The drift check failed: …", or
+  "The runner did not run the drift check; it may need updating."). It
+  never erases an earlier Drifted verdict: a check that could not look
+  proves nothing.
+
+A resource Planton never deployed has nothing to compare with and is
+refused ("orders-db was never deployed by Planton, so there is nothing to
+compare the cloud with. Deploy it first."); a stack check skips it.
+
+**What drift does next.** Once a check finds drift, the next plan of the
+stack — any plan, even an unrelated edit — includes that resource as
+Update, reason "Drifted: 3 changes made outside Planton", and applying
+puts the declaration back. Say so when you show any plan with such a row:
+the user may have made that cloud change on purpose.
+
+**Ask which they want** — this is the user's decision, never yours:
+
+- **Put it back: Reconcile.** It plans the declaration the stack already
+  holds and names what it reverts ("Reconcile drift on orders-db and
+  cache"). Then show, ask and apply exactly as for any plan above — in a
+  protected environment it files a request:
+
+  ```
+  planton infra stack reconcile <stackName> --env <env> --org <org>
+  ```
+
+  A stack is never applied in part, so a resource that also changes for
+  another reason (a newer module, a new secret version) stays in the plan,
+  with a warning naming it — relay it. With nothing drifted it is refused
+  ("Nothing in payments-infra in prod has drifted since its last check.
+  Check for Drift to look again."). Agents plan it with `plan_infra_stack`
+  and its `reconcile` source. A resource deployed on its own is put back by
+  deploying it again; a service's resource by redeploying the service.
+- **Keep the cloud's change: edit the template.** Carry each changed value
+  into the template file that declares the resource (the change list names
+  the setting and its value in the cloud), then plan and apply as usual;
+  the next plan has nothing left to put back. In the console, **Edit in
+  Template** opens that file.
+
+A successful apply clears the resource's Drifted verdict. A plan alone —
+`planton tofu plan`, `planton pulumi preview` — is not a drift check: it
+answers "what would a deploy change?", not "does the cloud still match?".
 
 ## Narrate every transition — the user is watching the app
 
