@@ -54,7 +54,9 @@ The distinction between destroy and purge matters for compliance and auditing. D
 
 A destroy reads only what it destroys. A `$secret/` or `$var/` reference the resource was deployed with that has since been deleted does not stop the destroy: the job names the references it could not read and tears the resource down. And a destroy that leaves the IaC state empty removes that state -- the state object in your bucket, or a Pulumi stack with its backups -- and the job says so (`state removed: <key>`); a Terraform Cloud workspace or a Pulumi Cloud stack is kept, holding its history, and a backend that refuses the delete keeps the state, with its reason.
 
-A resource annotated `planton.dev/prevent-destroy: "true"` is never torn down through the platform: its destroy and purge are refused, as is creating, rerunning or resuming a destroy job for it, and the undeploy or purge of a stack that owns it. Remove the annotation to lift the protection. Adding or removing it runs no job.
+A resource annotated `planton.dev/prevent-destroy: "true"` is never torn down through the platform: its destroy and purge are refused, as is creating, rerunning or resuming a destroy job for it, and the undeploy or purge of a stack that owns it, or the deletion of a service that deployed it. Remove the annotation to lift the protection. Adding or removing it runs no job.
+
+An Infra Component that an Infra Stack or a Service deployed names that owner, and while the owner still declares it, it changes only through the owner: a direct deploy, destroy, purge, rename or edit is refused, naming the owner and the way through (apply the stack; or change the service's configuration and deploy, or `planton service redeploy <service> --env <env>`). Refreshing it, checking it for drift and repairing its state stay available on the component itself.
 
 <!-- SCREENSHOT: Infra Component detail page
   Page: /[org]/infra-component/[env]/[resourceKind]/[resourceName]

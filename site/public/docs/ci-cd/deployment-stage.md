@@ -171,10 +171,10 @@ This keeps local development configuration version-controlled alongside deployme
 For each resolved manifest (excluding the local overlay), the deployment stage creates a deployment task:
 
 1. **Environment matching** — If the service has deployment environment filters configured, only matching overlays produce tasks. See [Deployment Environments](/docs/ci-cd/deployment-environments).
-2. **Ordering** — Tasks execute sequentially following the organization's promotion policy (for example: dev, then staging, then production).
-3. **Manual gates** — If a deployment target requires manual approval, the pipeline pauses at that task until a team member approves or rejects. See [Pipelines](/docs/ci-cd/pipelines#manual-approval-gates).
-4. **Infra Job creation** — Each task provisions the catalog object manifest through an [Infra Job](/docs/infrastructure/infra-jobs). The Infra Job applies the infrastructure changes and reports completion.
-5. **Failure handling** — If a deployment task fails, all subsequent tasks are cancelled. No partial rollouts across environments.
+2. **Ordering** — Environments deploy one at a time, following the organization's promotion policy (for example: dev, then staging, then production). Within an environment, resources apply in dependency order, independent ones side by side.
+3. **Manual gates** — If a deployment target requires manual approval, the pipeline pauses at that environment until a team member approves or rejects. See [Pipelines](/docs/ci-cd/pipelines#manual-approval-gates).
+4. **Infra Job creation** — Each resource provisions its catalog object manifest through an [Infra Job](/docs/infrastructure/infra-jobs), which applies the infrastructure changes and reports back to the run.
+5. **Failure handling** — If a resource fails, every resource that depends on it reads "Not run: <Kind>/<name> failed", the environment fails, and later environments are skipped. No partial rollouts across environments.
 
 ## How the Image Is Pulled
 

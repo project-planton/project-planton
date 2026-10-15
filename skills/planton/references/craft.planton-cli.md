@@ -241,6 +241,8 @@ planton infra component drift check <ic_id>                      # or: <Kind> <n
 planton infra component drift show <ic_id>                       # its latest verdict, without checking again
 planton infra stack drift check <stack> --env <env>              # every resource the stack holds
 planton infra stack drift show <stack> --env <env>
+planton service drift check <service> --env <env>               # every resource the service runs there
+planton service drift show <service> --env <env>
 ```
 
 A drift check compares what Planton recorded when it last applied a
@@ -261,12 +263,15 @@ Drift found means the next plan or deploy that reaches the resource puts
 the declaration back, with the reason "Drifted: 3 changes made outside
 Planton". Putting it back on purpose is, for a stack's resource,
 `planton infra stack reconcile <stack> --env <env>` (a plan you show and
-the user approves; read `references/infra.deployed-stacks.md`), or a fresh
-deploy for a resource deployed on its own. Keeping the cloud's change means
-carrying the value into the template or manifest. Which one is the user's
-call. Platform-tools twins: `check_infra_component_drift`,
+the user approves; read `references/infra.deployed-stacks.md`),
+`planton service redeploy <service> --env <env>` for a service's resource
+(read `references/service.delivery-verbs.md`), or a fresh deploy for a
+resource deployed on its own. Keeping the cloud's change means carrying the
+value into the template, the service's configuration or the manifest. Which
+one is the user's call. Platform-tools twins: `check_infra_component_drift`,
 `get_infra_component_drift`, `check_infra_stack_drift`,
-`get_infra_stack_drift`.
+`get_infra_stack_drift`, `check_service_drift`, `get_service_drift`,
+`redeploy_service`.
 
 A refresh is different: `planton tofu refresh` writes what it reads into
 the recorded state, a platform mutation. Never use it to look for drift.
