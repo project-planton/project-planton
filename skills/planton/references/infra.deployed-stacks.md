@@ -170,7 +170,8 @@ Beside the rows, a plan says:
 - **What Else This Affects**: everything that reads a resource the plan
   updates, replaces, destroys or may change — another stack, a service, a
   resource deployed on its own ("payments-infra in prod reads orders-db",
-  "checkout-api in prod reads orders-db"). Name each to the user. The
+  "checkout-api, a service in prod, reads orders-db", "AWS Lambda 'notify'
+  in prod reads orders-db"). Name each to the user by what it is. The
   readers themselves are not blocked, but a destroy of something one of
   them reads is: that row is Blocked, with Keep as the way through.
 - **Its impact** (below): what the stack costs each month, the cloud
