@@ -743,6 +743,25 @@ release-operator:  ## Release the operator image + chart: auto-bump (bump=major|
 	git tag -a "$(OPERATOR_TAG_PREFIX)$$rel_version" -m "operator $$rel_version"; \
 	git push origin "$(OPERATOR_TAG_PREFIX)$$rel_version"
 
+# ── Agent Substrate images (release.agent-substrate.yaml) ─────────────────────
+# Agent Substrate publishes no images, so Planton builds them from upstream's
+# own tag and publishes them with the install set: a git tag
+# `agent-substrate/vX.Y.Z` publishes ghcr.io/plantonhq/planton/agent-substrate/<component>:vX.Y.Z
+# and downloads.planton.ai/releases/agent-substrate/vX.Y.Z/. The version is
+# upstream's, never bumped: the target tags the one version the committed
+# tools/ci/release/agent-substrate.yaml declares, which the pull request that
+# declared it has rehearsed.
+.PHONY: release-agent-substrate
+release-agent-substrate:  ## Publish Agent Substrate's images and install set at the version tools/ci/release/agent-substrate.yaml declares
+	@rel_version=$$(git show HEAD:tools/ci/release/agent-substrate.yaml | sed -n 's/^version: *//p'); \
+	case "$$rel_version" in v[0-9]*.[0-9]*.[0-9]*) ;; *) echo "tools/ci/release/agent-substrate.yaml at HEAD declares no vX.Y.Z version (got '$$rel_version')"; exit 1;; esac; \
+	if ! git ls-remote --exit-code --tags https://github.com/agent-substrate/substrate "refs/tags/$$rel_version" >/dev/null; then \
+		echo "agent-substrate/substrate has no tag $$rel_version; Planton publishes only upstream's own releases (https://github.com/agent-substrate/substrate/tags)"; exit 1; \
+	fi; \
+	echo "Publishing Agent Substrate $$rel_version"; \
+	git tag -a "agent-substrate/$$rel_version" -m "Agent Substrate $$rel_version images and install set"; \
+	git push origin "agent-substrate/$$rel_version"
+
 # ── Helm charts (helm/) ───────────────────────────────────────────────────────
 # Every chart under helm/ releases from a git tag named by its directory and
 # version: `helm/<chart>/vX.Y.Z` publishes oci://ghcr.io/plantonhq/charts/<chart>
