@@ -139,6 +139,12 @@ Organizations can also create custom charts tailored to their specific standards
 
 Common customizations include enforcing tagging policies, requiring HTTPS in production environments, setting minimum replica counts, and restricting VPC CIDR ranges to organizational standards.
 
+## Chart Versions
+
+Planton counts a chart's versions; you never write one. A chart is **v1** when first published and becomes the next version each time its templates or `values.yaml` change, so a version always means the same files — each carries a digest Planton computes from them. Publishing unchanged files keeps the version, and `planton chart publish` prints the version it made. Chart.yaml has no `version:` line. Platform charts are versioned the same way, counted on each Planton instance.
+
+A stack installed from a catalog chart records the chart and the version it took ("app-infra v3"). When the chart publishes a newer version, that stack reads **Update Available**, and **Upgrade** moves it there, keeping its values and any file it customised: a file both you and the chart changed asks **Keep Mine** or **Take v5**. Publishing never changes a deployed stack on its own. See [Infra Stacks](/docs/infrastructure/infra-stacks#upgrade).
+
 <!-- SCREENSHOT: Infra Chart list
   Page: /resource/infra-hub/infra-chart
   Action: Show the list of available charts with platform and custom charts visible
@@ -191,11 +197,14 @@ planton chart build ./my-chart --set dns_enabled=true --set region=eu-west-1
 # Compile an environment's values file before installing it
 planton chart build ./my-chart -f values-prod.yaml --show
 
-# Publish a chart to the organization's chart registry
+# Publish a chart to the organization's chart registry; prints the version it made
 planton chart publish ./my-chart
 
-# List all charts available for the organization
+# List all charts available for the organization, each with its version
 planton chart list
+
+# Install from the catalog: the stack records the chart and its version
+planton chart install my-stack app-infra --env prod -f values-prod.yaml -m "why"
 
 # Plan what installing would do, and apply nothing
 planton chart install my-stack ./my-chart --env prod -f values-prod.yaml --dry-run
@@ -204,7 +213,7 @@ planton chart install my-stack ./my-chart --env prod -f values-prod.yaml --dry-r
 planton chart install my-stack ./my-chart --env prod -f values-prod.yaml -m "why"
 ```
 
-The `chart install` command is the primary entry point for deploying a chart. Like `planton infra stack apply`, it plans first — what installing creates, or changes in the stack of that name — shows the plan, asks, and applies exactly that plan as the stack's next revision, starting an Infra Pipeline. The stack keeps the chart's `values.yaml` and only the values you set.
+The `chart install` command is the primary entry point for deploying a chart. Like `planton infra stack apply`, it plans first — what installing creates, or changes in the stack of that name — shows the plan, asks, and applies exactly that plan as the stack's next revision, starting an Infra Pipeline. The stack keeps the chart's `values.yaml` and only the values you set. The chart is a local folder, a catalog chart by name, or `org/<name>` for your organization's own. From the catalog, Planton copies the chart's files itself and records the chart and its version; installing onto a stack that already follows that chart is an upgrade, and a file both changed is settled with `planton infra stack upgrade`.
 
 ### How parameter values resolve
 

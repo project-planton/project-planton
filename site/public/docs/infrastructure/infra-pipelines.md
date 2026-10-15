@@ -57,7 +57,7 @@ In this example, the VPC deploys first. Once it completes, both subnets start in
 
 Infra Pipelines support two operations:
 
-- **Deploy** — Apply a stack's plan: create or update Infra Components, each after everything it consumes, then remove what the plan removed. Started by every applied plan that changes a resource (`planton infra stack apply`, `planton chart install`, **Apply** in the console), and named by the revision it applies ("r12 · Raise replicas"). A run whose only failures were removals ends **Applied; 1 removal failed**: what the stack declares is live.
+- **Deploy** — Apply a stack's plan: create or update Infra Components, each after everything it consumes, then remove what the plan removed. Started by every applied plan that changes a resource (`planton infra stack apply`, `planton chart install`, `promote`, `rollback`, `upgrade`, **Apply** in the console), and named by the revision it applies ("r12 · Raise replicas"). A run whose revision came by promotion, roll back or upgrade says so beside its name — "r16 · Raise replicas · Promoted from staging r6", "Rolled back to r8", "Upgraded to app-infra v5" — on its page, on the phone, in the activity feed and in notifications. Promote, roll back and upgrade are plans, not pipelines of their own: their runs are ordinary deploys. A run whose only failures were removals ends **Applied; 1 removal failed**: what the stack declares is live.
 - **Undeploy** — Destroy everything the stack owns, in reverse dependency order: each resource after everything that consumes it, so the database is destroyed before the VPC it sits in, and a cluster outlives the workloads on it. An undeploy covers every Infra Component the stack created, including components its templates no longer declare, and reads each resource from its stored record rather than from the templates.
 
 In both, a resource the stack holds as **Unmanaged** (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`) runs no job: a deploy leaves it alone, and a teardown releases it from the stack and leaves it in the cloud, never destroying it — as it does any resource marked `planton.dev/keep-on-provider: "true"`. A resource another live stack or service owns reads **Owned elsewhere** and is left in place for its owner. A resource whose record is already gone reads **Already Gone**.
@@ -114,6 +114,8 @@ The web console displays the dependency graph with real-time status updates for 
 
 The pipeline detail view shows the full graph along with timing information — when each resource started, how long it took, and the overall pipeline duration.
 
+A stack's page follows its runs live, in every environment: when a run starts — from the console, a terminal or a promotion landing from staging — or its status or review moves, the page re-reads at once, so its header, its Delivery Path and its Pipelines tab show the run without a refresh.
+
 ## Cancelling a Pipeline
 
 A cancel always ends the run. Nothing new starts, every live Infra Job is asked to stop, and the run waits up to three minutes for them to really end, so each resource reads what its job truly did: a job that finished before the stop reached it is still a success. A job still running after the wait is named on its resource ("Cancel requested; infra job … was still running"). If the run's workflow does not answer the cancel, the platform stops it and ends the run itself.
@@ -168,5 +170,5 @@ planton infra stack last-pipeline <stack-name-or-id>
 - [Infra Stacks](/docs/infrastructure/infra-stacks) — The deployed stacks that pipelines deploy and undeploy
 - [Infra Components](/docs/infrastructure/infra-components) — The resources deployed by pipelines
 - [Infra Jobs](/docs/infrastructure/infra-jobs) — The atomic IaC execution units within pipelines
-- [Flow Control](/docs/infrastructure/flow-control) — Governance policies for approval gates
+- [Flow Control](/docs/infrastructure/flow-control) — What a resource's annotations and a protected environment decide about how its jobs run
 - [Infra Charts](/docs/infrastructure/infra-charts) — Templates that define the resources an Infra Stack deploys

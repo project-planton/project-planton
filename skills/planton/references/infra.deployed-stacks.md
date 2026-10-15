@@ -1,15 +1,22 @@
 # Deployed Infra Stacks — Working Copies, Plans, Fixing Failures
 
 A chart is a blueprint; an **Infra Stack** is one chart declared into one
-environment. A stack is named within its environment: the same chart
-installed into qa and prod is two stacks that share a name, so every
-command that names a stack also names its environment (`--env`). A stack
-carries its OWN declaration — the templates, the chart's `values.yaml`
-(every value declared, with its default) and the values set for its
-environment — detached from the chart it came from. Editing the chart
-never changes a deployed stack, and editing a stack never changes the
-chart. This file governs the second mode of your work: changing something
-that is already running.
+environment. A stack is named within its environment, and the same name in
+every environment is the same stack at another stage: `app-infra` in qa and
+in prod are two records — each with its own values, revisions and runs —
+and one stack moving through its stages, so every command that names a
+stack also names its environment (`--env`). A stack carries its OWN
+declaration — the templates, the chart's `values.yaml` (every value
+declared, with its default) and the values set for its environment.
+Editing a chart never changes a deployed stack, and editing a stack never
+changes the chart. A stack installed or upgraded from a catalog chart
+records that chart and its version ("app-infra v3") — the platform's
+record, kept beside the declaration and never inside it, carried by every
+later edit — so a newer version of the chart reads **Update Available**
+and **Upgrade** brings it. Moving a template between environments,
+returning to an earlier revision and upgrading are their own reference:
+`infra.stack-promotion.md`. This file governs the second mode of your
+work: changing something that is already running.
 
 Every change to a stack is a **plan** a person reads first. A plan says
 what applying would do to each resource, before anything runs; applying
@@ -152,6 +159,21 @@ its destroy: choosing Keep applies the plan around it. A Blocked
 row on a resource the templates declare (another stack owns it, a secret
 it reads is missing) stops the whole plan until it is resolved.
 
+Beside the rows, a plan says:
+
+- **Where the declaration came from**, above it: "Promoted from staging
+  r6", "Roll back to r8", "Upgrade to app-infra v5" (empty for an edit).
+- **Where each value comes from**: set here, the chart's default, brought
+  from another environment, or dropped (the template no longer declares
+  it).
+- **Other Stacks This Affects**: stacks in the environment that read a
+  resource the plan updates, replaces, destroys or may change
+  ("payments-infra in prod reads orders-db"). Name each to the user.
+- **Template changes** and the **chart change** ("app-infra v4 → v5").
+- **Warnings**: a template that names another environment literally, a
+  direct edit in an environment that changes only by promotion. Nothing is
+  blocked by a warning; relay it.
+
 Exit codes: `0` planned; `1` the declaration does not build, a resource it
 declares is blocked, or a run is in flight; `2` the plan could not be
 made. With `--detailed-exitcode`, `4` means applying would change
@@ -207,7 +229,11 @@ nothing: "No changes".
 
 `planton chart install <stackName> . --env <env>` takes the same path (plan,
 show, ask, apply), and creates the stack when the name is new; `--dry-run`
-stops at the plan. `planton apply -f <stack manifest>` applies a plan only
+stops at the plan. Installed from a catalog chart (`planton chart install
+<stackName> app-infra --env <env>`, or `org/<slug>`), the platform copies
+the chart's files itself and records the chart and its version; onto a
+stack already following that chart it is an upgrade
+(`infra.stack-promotion.md`). A local chart folder records no chart. `planton apply -f <stack manifest>` applies a plan only
 when nothing in it is destroyed, adopted or blocked; otherwise it refuses
 and names the `planton infra stack apply` command to review it with.
 
@@ -294,6 +320,11 @@ planton infra stack apply <stackName> . --env prod -m "<the user's words>" --pla
   planton infra stack plan <stackName> --env prod --revision 14
   ```
 
+  Planning again keeps where the revision came from: a rejected promotion
+  planned again is still a promotion ("Promoted from staging r6"), and a
+  roll back or an upgrade likewise; a carried Keep keeps its origin ("kept
+  in staging r6"). The new revision reads "Planned again from r14".
+
 When holding one long-running command open is unsuitable, split it:
 
 ```
@@ -303,7 +334,8 @@ planton infra pipeline logs <infpipe_id>       # when a node fails
 ```
 
 `planton infra stack history <stackName> --env <env>` lists the revisions,
-newest first: number, message, outcome (Applying, Applied, Applied With
+newest first: number, message, source (an edit, a re-apply, "Promoted from
+staging r6", "Rolled back to r8", "Upgraded to app-infra v5"), outcome (Applying, Applied, Applied With
 Removal Failures, Failed, Cancelled; for a request Awaiting Approval, then
 Rejected, Withdrawn, Expired, Preview Failed or Out of Date when it closed
 without applying), who requested it and who approved it, and its run; the
