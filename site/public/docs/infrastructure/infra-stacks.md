@@ -30,7 +30,7 @@ Infra Stacks answer them with a persistent record of every template instantiatio
 
 You select an Infra Chart from the catalog, pick the environment it deploys into, set the values that environment needs, and review the plan of what installing creates.
 
-The stack carries its own copy of the chart's templates and `values.yaml`. Chart updates never change an existing stack silently — each stack is self-contained, and it can be checked out to disk and edited with no chart in reach. Only the values someone set are stored as the environment's values; every other value takes the default from the stack's `values.yaml`, so a default the stack's `values.yaml` changes reaches every environment that never chose otherwise — and the plan shows it as a value change first.
+The stack carries its own copy of the chart's templates and `values.yaml`. Chart updates never change an existing stack silently — each stack is self-contained, and it can be checked out to disk and edited with no chart in reach. A stack installed from a catalog chart also records which chart and which version it came from ("app-infra v3"). That record is the platform's, kept beside the declaration rather than inside it, so no file can claim a chart it did not come from, and every later edit keeps it. When the chart publishes a newer version, the stack reads **Update Available**, and [Upgrade](#upgrade) brings it in. Only the values someone set are stored as the environment's values; every other value takes the default from the stack's `values.yaml`, so a default the stack's `values.yaml` changes reaches every environment that never chose otherwise — and the plan shows it as a value change first.
 
 The web console provides a creation flow: browse the chart catalog, pick the environment, fill in the values form (generated from the chart's declarations, each default shown as a placeholder), then **Review Plan**.
 
@@ -95,11 +95,11 @@ planton infra stack withdraw app-infra --env prod   # the requester takes it bac
 - **A second pair of eyes.** The person who asked cannot approve their own change while another approver exists. An undecided request expires after 7 days.
 - **A terminal never waits on a person.** The apply follows while the request previews, then ends with where to review it and the commands that decide it; `-o json` prints `{run_id, review_url, state, expires_at, revision}`.
 
-A request that is rejected, withdrawn, expires, cannot be previewed or goes out of date applies nothing. Plan it again as it was, with the choices its author made: `planton infra stack plan app-infra --env prod --revision 14`. Undeploy, purge and rerun into a protected environment are requests too.
+A request that is rejected, withdrawn, expires, cannot be previewed or goes out of date applies nothing. Plan it again as it was, with the choices its author made: `planton infra stack plan app-infra --env prod --revision 14`. Planning again keeps where it came from: a rejected promotion planned again is still a promotion, and its new revision reads "Planned again from r14". Undeploy, purge and rerun into a protected environment are requests too.
 
 ### Revisions
 
-Each applied plan is a revision: its number, message, author, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. A request reads **Awaiting Approval** until someone decides it, and closes **Rejected**, **Withdrawn**, **Expired**, **Preview Failed** or **Out of Date** when it applies nothing. The stack's **live revision** is the newest that applied; an undeploy clears it. `planton infra stack history <name> --env <env>` lists them, newest first, with who requested and who approved each.
+Each applied plan is a revision: its number, message, author, where its declaration came from (an edit, a re-apply, "Promoted from staging r6", "Rolled back to r8", "Upgraded to app-infra v5"), the chart version it took, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. A request reads **Awaiting Approval** until someone decides it, and closes **Rejected**, **Withdrawn**, **Expired**, **Preview Failed** or **Out of Date** when it applies nothing. The stack's **live revision** is the newest that applied; an undeploy clears it. The stack page's **Revisions** tab and `planton infra stack history <name> --env <env>` list them, newest first, with each one's source and who requested and who approved it; from a revision you can [Roll Back](#roll-back) to it or [Compare](#compare) it with what is live.
 
 A run's Rerun (`planton infra pipeline rerun <pipeline-id>` in a terminal) repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. It asks first when the rerun still destroys something. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
 
@@ -124,11 +124,98 @@ This visualization makes it easy to understand the deployment topology and diagn
   Alt: Infra Stack DAG visualization showing an AWS VPC connected to subnets, security groups, and an RDS instance
 -->
 
-## One Stack per Environment
+## One Stack, Many Environments
 
-An Infra Stack lives in exactly one environment, and its name is unique within that environment. Installing the same chart into staging and production gives you two stacks that share a name: each keeps its own values, its own history and its own pipelines, and changing one never touches the other. Every command that names a stack by name also names its environment with `--env`; a stack's id identifies it on its own. A stack's environment is fixed when it is created.
+An Infra Stack lives in exactly one environment, and its name is unique within that environment. The same name in every environment is the same stack at another stage: `app-infra` in qa, staging and prod is three records — each with its own values, its own history and its own runs, and changing one never touches another — and one stack moving through its stages. A template moves forward by [Promote](#promote), and each environment keeps the values it set. Every command that names a stack by name also names its environment with `--env`; a stack's id identifies it on its own. A stack's environment is fixed when it is created.
 
 The environment also decides who may change the stack. Stacks follow the same access rules as the Infra Components they deploy: a permission granted on an environment covers that environment's stacks, and a protected environment stops organization-wide deploy and destroy permissions at its boundary.
+
+### Where Each Environment Stands
+
+*Did staging update to the latest chart version?* The stack's page opens on its **Delivery Path**: its environments in promotion order, each saying what it runs and how far it is from the stage before.
+
+```text
+qa       Live r9 · Raise replicas · app-infra v4
+staging  Live r6 · Raise replicas · app-infra v4    Same template as qa
+prod     Live r14 · Pin version · app-infra v3      2 revisions behind staging
+```
+
+- **What runs**: the live revision and the chart version it runs. A stage with nothing applied reads **Not Applied**.
+- **How far from the stage before**, read from the templates' digests, never from timestamps: **Same template as qa**, **2 revisions behind staging** (Promote brings it here), **Ahead of qa** (the stage before moved away from this template), or **Differs from staging** (it was changed on its own). A roll back is never mistaken for being behind.
+- **Update Available** when the chart has a newer version than the stage runs, and **customised** when the stack's files differ from the chart version it is on.
+- **What is moving in**, live: a run applying, a request waiting for approval ("Promoting staging r6 · Applying").
+
+The step between two stages offers **Promote**. A stage you can't read says only that. `planton infra stack status <name>` prints the same path, and agents read it with `get_infra_stack_delivery_path`.
+
+## Promote
+
+Promote carries one environment's live template forward, with its `values.yaml` and its chart version; the target keeps every value it set.
+
+```bash
+planton infra stack promote app-infra --from staging --to prod -m "Raise replicas"
+```
+
+- **A value travels only when you bring it**: **Bring This Value** in the dialog, `--bring <name>` on the CLI. A param the travelling `values.yaml` newly requires asks for a value (`--set name=value`); a value for a param it no longer declares is shown as dropped.
+- **What the source keeps, the target keeps.** A resource staging removed from its templates but kept running is offered as Keep in prod too ("kept in staging r6"), never silently destroyed. A Destroy, Adopt or Re-apply chosen in one environment never carries to another.
+- **A first promotion** into an environment with no stack of that name creates it there, with every value from the source. Promotion runs in either direction.
+- **The message** defaults to the source revision's, and the revision, its run, the activity feed and notifications read **"Promoted from staging r6"**.
+- **A template that names its source environment** is a warning on the plan, never a block: "templates/db.yaml names qa (line 12). It reads the same in prod. Use {{ values.env }}."
+- **Into a protected environment** a promotion is a request, and the approver reads "Promoted from staging r6" above the exact plan.
+- **In an environment that changes only by promotion**, a template edit that did not come by promotion is cautioned on its plan and the path reads "Differs from staging"; it is never refused, and protection still decides who may change the environment.
+
+## Roll Back
+
+Roll Back plans an earlier revision's declaration — its templates, values and chart version — fresh against today's cloud, as a new revision ("Roll back to r8"). From the **Revisions** tab, **Roll Back to r9**; in a terminal:
+
+```bash
+planton infra stack rollback app-infra --env qa                  # the default target
+planton infra stack rollback app-infra --env qa --to-revision 8
+```
+
+The default target is the live revision when the latest one failed, otherwise the newest applied revision before the live one; the target must have applied. Before you apply, know what a roll back does not do:
+
+- **Module versions stay current.** It restores the declaration, not the modules that applied it.
+- **Data destroyed since comes back empty.** A database destroyed after that revision is created again, not restored.
+- **The old choices are not carried.** A resource kept on its provider since then plans Adopt (`--adopt Kind/name`), and one another stack now owns plans Blocked, naming the owner.
+
+A roll back is refused while a request waits or a run is in flight on the stack.
+
+## Upgrade
+
+A stack installed from a catalog chart can move to the chart's newest version, keeping its values: **Update Available · Upgrade** on the stack's Overview, or
+
+```bash
+planton infra stack upgrade app-infra --env qa
+```
+
+Each file is compared three ways — the version the stack is on, the stack's own file, and the new version's. A file you never changed takes the new version's; a file only you changed stays yours; a file both changed is a conflict you settle with **Keep Mine** or **Take v5** (`--keep-mine <file>`, `--take-chart <file>`), and the plan cannot apply until each is chosen. `values.yaml` is compared the same way. A file the new version deletes is removed when you take it, and its resources plan Destroy. A value the new version no longer declares reads "Dropped: v5 no longer declares it". When an earlier stage already runs the new version, the later stage reads "qa runs v5 · Promote from qa": promote the template qa tested instead.
+
+## Compare
+
+Compare puts two environments, or two revisions, side by side: values first, each with where it comes from, then how far apart the templates are, the resources only one side declares, and the files that differ. **Make prod Like qa** opens Promote.
+
+```bash
+planton infra stack diff app-infra --env prod --against qa
+planton infra stack diff app-infra --env qa --revision 10 --against-revision 9
+```
+
+`diff` exits `0` when the two are the same and `1` when they differ.
+
+### What Every Plan Adds
+
+Every plan — an edit, a promotion, a roll back or an upgrade — shows above its rows where the declaration came from, and beside them:
+
+- **where each value comes from**: set here, the chart's default, brought from another environment, or dropped;
+- **Other Stacks This Affects**: stacks that read a resource the plan updates, replaces or destroys ("payments-infra in prod reads orders-db");
+- **the template files** it changes and the **chart version** it moves between;
+- **warnings**, which block nothing.
+
+Promote, Roll Back and Upgrade take what `planton infra stack apply` takes — `--plan-digest`, `--yes`, `--destroy`, `--keep`, `--adopt` — plus `--dry-run`, `--detailed-exitcode` (exit `4` when applying would change something) and `-o json|markdown|yaml`. In CI, post the plan to the pull request, then apply only that plan:
+
+```bash
+planton infra stack promote app-infra --from staging --to prod --dry-run -o markdown
+planton infra stack promote app-infra --from staging --to prod -m "Raise replicas" --plan-digest <digest>
+```
 
 ## Infra Stack Lifecycle
 
@@ -230,8 +317,26 @@ planton infra stack apply my-stack ./chart-dir --env <env> -f values.yaml -m "wh
 # Install a chart as a stack: the same plan, review and apply
 planton chart install my-stack ./chart-dir --env <env> -f values.yaml -m "why"
 
-# A stack's revisions, newest first
+# Install from the catalog: the stack records the chart and its version
+planton chart install my-stack app-infra --env <env> -f values.yaml -m "why"
+
+# A stack's revisions, newest first, each with where it came from
 planton infra stack history <stack-name> --env <env>
+
+# Where the stack stands in each environment, in promotion order
+planton infra stack status <stack-name>
+
+# Carry staging's live template to prod; prod keeps its values
+planton infra stack promote <stack-name> --from staging --to prod -m "why"
+
+# Return to an earlier revision, planned fresh
+planton infra stack rollback <stack-name> --env <env> --to-revision 8
+
+# Move to the chart's newest version, keeping your values
+planton infra stack upgrade <stack-name> --env <env>
+
+# Compare two environments, or two revisions
+planton infra stack diff <stack-name> --env prod --against qa
 
 # List runs for a stack, and its last run
 planton infra stack infra-pipelines <stack-id>
@@ -267,4 +372,4 @@ planton infra stack checkout <stack-name-or-id> --env <env>
 - [Infra Pipelines](/docs/infrastructure/infra-pipelines) — How Infra Stack deployments are orchestrated
 - [Infra Components](/docs/infrastructure/infra-components) — The deployed instances that Infra Stacks own and manage
 - [Infra Jobs](/docs/infrastructure/infra-jobs) — The atomic execution units within pipelines
-- [Flow Control](/docs/infrastructure/flow-control) — Governance policies that affect pipeline execution
+- [Flow Control](/docs/infrastructure/flow-control) — What a resource's annotations and a protected environment decide about how its jobs run

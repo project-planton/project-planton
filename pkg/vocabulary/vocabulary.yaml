@@ -61,6 +61,18 @@ words:
     means: What an IaC module receives for one InfraComponent (<Kind>IacInput, read under planton:iac-input).
   - name: Outputs
     means: What an IaC module returns for one InfraComponent (<Kind>Outputs, held in status.outputs).
+  - name: Promote
+    means: Carry one environment's live template and chart version to the same stack in another environment (the same name is the same stack at another stage); that environment keeps its own values. planton infra stack promote.
+  - name: Roll Back
+    means: Plan an earlier revision's declaration again, fresh against today's cloud, as a new revision; module versions stay current. planton infra stack rollback.
+  - name: Upgrade
+    means: Move a stack to its catalog chart's newest version, keeping its values and the files it customised; a file both changed asks Keep Mine or Take vN. planton infra stack upgrade.
+  - name: Compare
+    means: "Two environments of a stack, or two of its revisions, side by side: values first, then the template's distance, then files. planton infra stack diff."
+  - name: Revisions
+    means: A stack's history of applied plans (r1, r2, ...), newest first, each with where it came from; Roll Back and Compare start here.
+  - name: Not Applied
+    means: "A stage of a stack that has nothing applied: never applied, or undeployed since. Never \"Nothing applied\" or \"Never Applied\"."
 
 retired:
   - spelling: CloudResource

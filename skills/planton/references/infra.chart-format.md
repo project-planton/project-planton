@@ -40,6 +40,24 @@ including which spec fields the tooling assembles from the chart directory
 appear in Chart.yaml. This file covers the practical shape; the explain
 report is the field-name authority.
 
+## Versions are counted by the platform
+
+A chart has no `version:` line — never write one in Chart.yaml. The
+platform counts versions itself: a chart is **v1** when first published,
+and becomes the next version (v2, v3, …) each time its templates or
+`values.yaml` change. Publishing unchanged files keeps the version, so a
+version always means the same files; each version carries a digest the
+platform computes from them. `planton chart publish` prints the version it
+made, and `planton chart list` shows each
+chart's version. Platform charts are versioned the same way, counted on
+each instance.
+
+A stack installed from a catalog chart records the chart and the version
+it took ("app-infra v3"). When the chart publishes a newer version, the
+stack reads **Update Available**, and **Upgrade** moves it there while
+keeping its values and any file it customised
+(`infra.stack-promotion.md`). Publishing never changes a deployed stack.
+
 ## values.yaml
 
 A single `params` list. Each param:
@@ -146,6 +164,11 @@ spec:
   prefix. Tell-tale sign: the spec schema has no field for the value you
   expected to set, because `metadata.name` carries it.
 - Template file names: lowercase, by concern, `.yaml`.
+- **Never write an environment's name literally.** The same templates
+  travel from qa to prod when a stack is promoted; a literal `qa` in a
+  name or a hostname would read the same in prod. A promotion's plan warns
+  ("templates/db.yaml names qa (line 12). It reads the same in prod. Use
+  {{ values.env }}."); write `{{ values.env }}` instead.
 
 ## What never goes in a chart
 

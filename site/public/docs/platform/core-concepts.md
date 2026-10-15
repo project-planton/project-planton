@@ -187,13 +187,15 @@ Organization  Environment
   Alt: Console header showing the context selector with current organization and environment
 -->
 
-### Flow Control Policies
+### Flow Control
 
-Flow Control Policies govern how infrastructure changes are deployed. They allow you to:
+Flow control is written on the resource it governs, as annotations or a typed field, and decides how cautiously its Infra Jobs run:
 
-- Require approval before deployment
-- Require plan/preview before apply
-- Pause between plan and apply
+- Record a resource without ever deploying it (unmanaged)
+- Make a job wait for approval before it begins
+- Pause between preview and apply
+
+A protected environment adds its own review on top: a direct change pauses for an approver, and an Infra Stack's change becomes a request an approver decides on the exact plan.
 
 [Learn more about Flow Control](/docs/infrastructure/flow-control)
 

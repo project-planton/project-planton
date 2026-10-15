@@ -47,7 +47,7 @@ sequenceDiagram
     Platform-->>You: Import succeeded
 ```
 
-The same [preflight essentials](/docs/infrastructure/infra-jobs#what-gets-resolved-before-execution) apply — the IaC module, provider credentials, state backend, and flow control policy must all be resolvable before the Infra Job starts. If any are missing, the preflight check fails with a clear report.
+The same [preflight essentials](/docs/infrastructure/infra-jobs#what-gets-resolved-before-execution) apply — the IaC module, provider credentials and state backend must all be resolvable before the Infra Job starts. If any are missing, the preflight check fails with a clear report.
 
 ## Provisioner-Specific Identifiers
 

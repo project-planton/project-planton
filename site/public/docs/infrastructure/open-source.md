@@ -68,7 +68,7 @@ The boundary between Planton open source and the Planton platform is clear:
 | Orchestration | Multi-manifest sets in dependency order, sequential, preflight-verified | Parallelized DAG orchestration with approval gates and history |
 | Collaboration | CLI-only, single user | Web console, teams, audit trails, RBAC |
 | State management | Local or configured backend; encryption is the engine's own setting (`TF_ENCRYPTION`, a Pulumi passphrase) | Managed state backends with multi-tenant isolation; every backend names the key its state is encrypted with |
-| Governance | None | Flow Control policies, deployment security tiers |
+| Governance | None | Per-resource flow control, protected environments, requests an approver decides |
 
 ## How Planton Uses the Open-Source Core
 

@@ -17,7 +17,7 @@ An Infra Job is the execution unit behind every infrastructure change in Planton
 
 Running infrastructure automation manually is fragile. You start with `terraform apply` (or `tofu apply`), then realize you should preview first, then add a refresh to catch drift, then add approval gates for production — and before long you are maintaining custom CI pipelines just to deploy a database safely.
 
-Infra Jobs codify this workflow into the platform. The right operations run in the right order, every time. Credentials are resolved automatically. Flow control policies enforce governance without requiring manual intervention. And every execution — successful or failed — is recorded with full logs and resource diffs for troubleshooting and compliance.
+Infra Jobs codify this workflow into the platform. The right operations run in the right order, every time. Credentials are resolved automatically. A resource's flow control and its environment's protection decide where a job waits for a person. And every execution — successful or failed — is recorded with full logs and resource diffs for troubleshooting and compliance.
 
 ## How an Infra Job Executes
 
@@ -45,7 +45,7 @@ Every Infra Job follows a defined sequence of operations. Which operations run d
 
 Import Infra Jobs do not include preview or apply steps. The import operation writes to state only. See [Importing Resources](/docs/infrastructure/importing-resources) for the full guide, including provisioner-specific identifiers and CLI commands.
 
-[Flow control policies](/docs/infrastructure/flow-control) can modify this sequence. The refresh step can be skipped for speed. The preview step can be made mandatory. A pause can be inserted between preview and apply to require manual approval before changes take effect.
+A resource's [flow control](/docs/infrastructure/flow-control) can make a job wait for approval before it begins, or pause between preview and apply until someone approves the plan; a protected environment adds that pause to every direct change made there.
 
 <!-- SCREENSHOT: Infra Job detail page
   Page: /resource/infra-hub/infra-job/[infraJobId]
@@ -70,11 +70,11 @@ The cloud provider credentials needed to provision the infrastructure — an AWS
 
 Where the IaC state file is stored. Each Infra Component gets a dedicated state file, stored in a backend (such as an S3 bucket or Pulumi Cloud) configured at the organization level. This ensures that one resource's state operations never interfere with another's.
 
-### Flow Control Policy
+### Flow Control
 
-The governance rules for this execution — whether manual approval is required, whether preview runs before apply, whether to pause between steps. Resolved from the most specific policy that applies: a policy targeting this specific resource, then the environment, then the organization, then the platform default. See [Flow Control](/docs/infrastructure/flow-control) for the full resolution hierarchy.
+Whether the job waits for approval before it begins, and whether it pauses between preview and apply. It comes from the Infra Component itself — its annotations or its typed `flow_control` — and is off by default; a protected environment adds the pause to a direct change. It always resolves, so it never stops a job from starting. See [Flow Control](/docs/infrastructure/flow-control).
 
-If any of these four cannot be resolved — missing credentials, no registered module, no state backend configured — the Infra Job fails its preflight check and does not execute. The preflight report identifies exactly what is missing.
+If the module, the credentials or the state backend cannot be resolved — missing credentials, no registered module, no state backend configured — the Infra Job fails its preflight check and does not execute. The preflight report identifies exactly what is missing.
 
 A connection that exists but isn't [authorized](/docs/connections/environment-mappings) for the job's environment is refused the same way, before any resource runs, and the reason names the fix: *"Nothing ran: environment staging may not use the aws connection aws-prod. Authorize it (planton connection auth create --provider aws --connection aws-prod --scope environment --environments staging), or make it the organization's (--scope organization), then run the job again."*
 
@@ -110,7 +110,7 @@ This command (aliased as `logs`) streams progress events in real time, including
 
 ### Pausing and Resuming
 
-When a flow control policy requires manual approval — either before execution starts or between preview and apply — the Infra Job pauses and waits. Resume it from the web console or CLI:
+When the resource's flow control or a protected environment requires approval — either before execution starts or between preview and apply — the Infra Job pauses and waits. Resume it from the web console or CLI:
 
 ```bash
 planton infra job resume <infra-job-id>
@@ -140,7 +140,7 @@ Before committing to execution, verify that all four essentials are in place for
 planton infra job preflight-checks --catalog-kind <kind>
 ```
 
-The report shows whether the IaC module, provider credentials, state backend, and flow control policy can all be resolved. This is useful when setting up a new environment or debugging why an Infra Job failed to start.
+The report shows whether the IaC module, provider credentials and state backend can all be resolved. This is useful when setting up a new environment or debugging why an Infra Job failed to start.
 
 ## Using the CLI
 
