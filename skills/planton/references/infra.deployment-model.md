@@ -44,13 +44,14 @@ Practical implications worth sharing at the right moment:
 - Undeploy tears down everything the stack owns — including components its
   templates no longer declare — dependents first, so a cluster outlives the
   workloads on it. It is refused while any owned resource carries
-  `planton.dev/prevent-destroy: "true"`, or while another stack still reads
-  one of its resources (the refusal names that stack).
+  `planton.dev/prevent-destroy: "true"`, or while anything else still
+  reads one of its resources — another stack, a service, a resource
+  deployed on its own (the refusal names the reader).
 - A failed pipeline is diagnosed node by node: find the failed node, read its
   Infra Job's error and logs (`craft.planton-cli.md` has the exact commands).
 - Applying a chart fix creates a new run; resources whose inputs did not
-  move run no job and read "Unchanged since <job>" (no duplicate
-  infrastructure). A resource the templates stop declaring is destroyed
+  move run no job and read "Unchanged since r11", the revision whose run
+  last applied them (no duplicate infrastructure). A resource the templates stop declaring is destroyed
   only when its plan says Destroy and the person agreed — or kept running
   on its provider when they chose Keep.
 
