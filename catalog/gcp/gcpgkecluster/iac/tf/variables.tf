@@ -263,9 +263,9 @@ variable "spec" {
       enable_master_global_access = optional(bool, false)
     }))
 
-    # Restrict control-plane IP access to the configured networks. An empty
-    # policy authorizes no external CIDR ranges; the Google public-IP and
-    # private-endpoint switches retain their own documented behavior.
+    # CIDR allowlist for control-plane API access. Without it, the public
+    # endpoint (when enabled) accepts connections from any IP that presents
+    # valid credentials.
     master_authorized_networks = optional(object({
       # CIDR ranges allowed to reach the control-plane endpoint(s). An empty
       # list with the block present means "no external networks authorized".
@@ -285,11 +285,6 @@ variable "spec" {
       # public endpoint is filtered).
       private_endpoint_enforcement_enabled = optional(bool)
     }))
-
-    # Explicitly configure no authorized-networks IP restriction. A public
-    # endpoint still requires valid credentials, and this does not enable
-    # an endpoint that is disabled by control_plane_endpoints/private_cluster.
-    unrestricted_networks = optional(object({}))
 
     # Control-plane endpoint surface: the DNS endpoint (a Google-managed
     # *.gke.goog name reachable without VPC peering — the modern access path)

@@ -64,25 +64,6 @@ the control plane upgrades but keeps emulating the old minor during the
 soak, so the upgrade can be rolled back; setting
 `desiredEmulatedVersion` to the target minor completes it declaratively.
 
-## Control-plane IP access is an explicit choice
-
-`masterAuthorizedNetworks` and `unrestrictedNetworks` are mutually exclusive.
-Omitting both configures no authorized-networks IP restriction. Choose
-`unrestrictedNetworks: {}` to state that explicitly, or choose
-`masterAuthorizedNetworks` to configure the authorized networks.
-
-A configured policy with no CIDRs (`masterAuthorizedNetworks: {}`) is a real
-restriction: no external CIDR ranges are authorized. It is different from an
-omitted policy and remains present when the resource is read or edited. Removing
-the last CIDR keeps the restriction; switching to unrestricted access removes it.
-Google Cloud public-IP access and enforcement on the private endpoint are separate
-switches inside the restricted policy.
-
-These settings filter IP-based access. They do not grant Kubernetes credentials,
-enable a disabled endpoint, or replace the DNS endpoint's IAM access controls.
-Before restricting the IP endpoint, establish the intended private-network or
-DNS-endpoint access path for the tools that administer the cluster.
-
 ## NAP is a cost brake wearing an autoscaler's clothes
 
 Node auto-provisioning creates pools you never wrote. The spec refuses
