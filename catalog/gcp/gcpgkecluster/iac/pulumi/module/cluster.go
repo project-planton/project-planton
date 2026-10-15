@@ -310,16 +310,16 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) err
 		args.PrivateClusterConfig = privateArgs
 	}
 
-	if networks := spec.GetMasterAuthorizedNetworks(); networks != nil {
+	if spec.MasterAuthorizedNetworks != nil {
 		manArgs := &container.ClusterMasterAuthorizedNetworksConfigArgs{}
-		if networks.GcpPublicCidrsAccessEnabled != nil {
-			manArgs.GcpPublicCidrsAccessEnabled = pulumi.BoolPtr(networks.GetGcpPublicCidrsAccessEnabled())
+		if spec.MasterAuthorizedNetworks.GcpPublicCidrsAccessEnabled != nil {
+			manArgs.GcpPublicCidrsAccessEnabled = pulumi.BoolPtr(spec.MasterAuthorizedNetworks.GetGcpPublicCidrsAccessEnabled())
 		}
-		if networks.PrivateEndpointEnforcementEnabled != nil {
-			manArgs.PrivateEndpointEnforcementEnabled = pulumi.BoolPtr(networks.GetPrivateEndpointEnforcementEnabled())
+		if spec.MasterAuthorizedNetworks.PrivateEndpointEnforcementEnabled != nil {
+			manArgs.PrivateEndpointEnforcementEnabled = pulumi.BoolPtr(spec.MasterAuthorizedNetworks.GetPrivateEndpointEnforcementEnabled())
 		}
 		cidrBlocks := container.ClusterMasterAuthorizedNetworksConfigCidrBlockArray{}
-		for _, cidr := range networks.CidrBlocks {
+		for _, cidr := range spec.MasterAuthorizedNetworks.CidrBlocks {
 			cidrArgs := &container.ClusterMasterAuthorizedNetworksConfigCidrBlockArgs{
 				CidrBlock: pulumi.String(cidr.CidrBlock),
 			}

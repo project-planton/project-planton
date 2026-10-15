@@ -2,16 +2,6 @@
 
 This Pulumi (Go) module provisions a Google Kubernetes Engine cluster (`container.Cluster`). It is the Pulumi-side implementation of the Planton `GcpGkeCluster` resource kind and has feature parity with the Terraform module.
 
-## Authorized-Network Policy
-
-The catalog's `masterAuthorizedNetworks` and `unrestrictedNetworks` alternatives
-are mutually exclusive. A present empty `masterAuthorizedNetworks: {}` emits a
-configured restriction with no external CIDR ranges. Omission or explicit
-`unrestrictedNetworks: {}` emits no authorized-networks configuration. Authentication,
-endpoint availability and Google public-IP/private-endpoint policy switches remain
-separate controls. The module's mock tests inspect the actual registered cluster
-inputs for each policy without making cloud calls.
-
 ## Overview
 
 The module enables the Kubernetes Engine API (`container.googleapis.com`) so a fresh project works first try, then creates the cluster with the full released-provider surface: VPC-native IP allocation (named ranges, GKE-managed, additional subnetwork ranges, or auto-IPAM), private topology (peering- or PSC-based control planes), master authorized networks and the DNS endpoint (including token/cert serving via DNS), release channels, maintenance scheduling with disruption budgets, node auto-provisioning with upgrade rollout defaults and default compute classes, Dataplane V2 features, CMEK etcd encryption and customer-managed control-plane keys/CAs, Binary Authorization, Security Posture, RBAC binding lockdown, per-component observability with managed Prometheus, Pub/Sub notifications, BigQuery usage export, the full addon set (including Cloud Run, Ray, Lustre/Parallelstore CSI, Slurm), Secret Manager CSI rotation and the sync add-on, node-pool creation defaults, fleet registration, engine-side deletion policy, and Autopilot mode with its policy, privileged-admission, and managed-node controls. The kind's `iac/provider-parity.yaml` records the full argument accounting against the pinned provider.
