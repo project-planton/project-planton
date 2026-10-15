@@ -95,7 +95,9 @@ graph LR
 3. **Deploy**: The pipeline deploys the artifact to each configured environment in order, respecting manual approval gates where configured.
 4. **Iterate**: Update the Service configuration as requirements change — add environments, switch build methods, adjust trigger paths. Changes take effect on the next pipeline run.
 
-Deleting a Service removes the configuration and disconnects the webhook. It does **not** delete deployed Infra Components — those must be removed separately.
+Deleting a Service destroys what it deployed, environment by environment, then removes its history and its record. It is refused up front when a resource it would destroy is marked `planton.dev/prevent-destroy`, has its own deletion protection on, or is still read by something else; a resource marked `planton.dev/keep-on-provider` is released and keeps running. To remove the service but keep everything it deployed, delete with **Keep Resources** (`--retain-infra-components`): each resource is released, as Keep does on an Infra Stack.
+
+While a Service is live, the Infra Components its latest run into an environment planned change only through the service: a direct deploy, destroy, rename or edit of one is refused, naming the service, because its next deploy would undo the change. Change the service's configuration and deploy, or redeploy.
 
 ## Related Resources
 
@@ -127,7 +129,7 @@ The web console provides a guided wizard for creating services:
 After creation, the service's page has these tabs:
 
 - **Overview**: the repository and the latest run, then the **Delivery Path** — each environment in promotion order with the build it runs, how far it is from the environment before ("3 commits behind dev"), and any run moving into it, live. **Promote** sits on the step between two environments. See [Deployment Environments](/docs/ci-cd/deployment-environments#where-each-environment-stands-the-delivery-path).
-- **Deployments**: each environment's deployment history, with **Roll Back** and **Roll Back to This** beside the records they restore.
+- **Deployments**: each environment's deployment history, with **Roll Back** and **Roll Back to This** beside the records they restore, and on each environment **Redeploy** (apply what runs there again, putting back anything changed outside Planton) and **Check for Drift** (compare what runs with the cloud; the result shows on each environment as In Sync or Drifted).
 - **Runs**: every run, newest first — Planton's runs by number ("Run #128") and the repository's own CI runs by workflow — updating live, with the **Run** button.
 - **Configuration**: the environments the service deploys to, build triggers, deploy settings, and the switches that pause builds or deployments.
 - **Activity**: every deploy, promotion, rollback and configuration change, with who made it.
@@ -172,6 +174,10 @@ planton service deployments my-service
 # Promote what runs in dev into staging; roll staging back
 planton service promote my-service --from dev --to staging
 planton service rollback my-service --env staging
+
+# Was anything in prod changed outside Planton? Put it back
+planton service drift check my-service --env prod
+planton service redeploy my-service --env prod
 ```
 
 ## Related Documentation
