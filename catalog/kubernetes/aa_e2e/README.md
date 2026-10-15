@@ -214,6 +214,8 @@ When extending E2E testing to a new provider (e.g., AWS):
 ## Test Manifests
 
 Test manifests live colocated with their kinds at
-`{kind}/v1alpha1/e2e/*.yaml`, not in this directory. The test framework
+`{kind}/e2e/scenarios/*.yaml` (the kind root, beside `iac/`), not in this
+directory; fixtures a kind's scenarios depend on live in
+`{kind}/e2e/prerequisites/`. The test framework
 discovers them automatically via `e2e/framework/discovery/`. Adding a new
 test scenario means dropping a YAML file -- zero Go code changes.

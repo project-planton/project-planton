@@ -129,6 +129,11 @@ var kubernetesTier3Kinds = []string{
 	// TaskManagers; the behavioral lane chains a consumer-scoped
 	// SeaweedFS fixture for checkpoint/HA storage.
 	"kubernetesflinkdeployment",
+	// Langfuse composes four store kinds (registry prerequisites:
+	// Postgres, ClickHouse, Valkey, SeaweedFS - their operators chain
+	// transitively) into the lane's shared namespace; every lane ingests
+	// a trace through all four.
+	"kuberneteslangfuse",
 }
 
 // Kubernetes Tier 4 kinds: operators, addons, and cluster-level
@@ -299,6 +304,10 @@ func TestKubernetesKarpenterEc2NodeClass_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kuberneteskarpenterec2nodeclass", "pulumi")
 }
 
+func TestKubernetesGkeComputeClass_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesgkecomputeclass", "pulumi")
+}
+
 // ─── Tier 1 Terraform ───────────────────────────────────────────────────────
 
 func TestKubernetesNamespace_Terraform(t *testing.T) {
@@ -424,6 +433,10 @@ func TestKubernetesKarpenterNodePool_Terraform(t *testing.T) {
 
 func TestKubernetesKarpenterEc2NodeClass_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kuberneteskarpenterec2nodeclass", "terraform")
+}
+
+func TestKubernetesGkeComputeClass_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesgkecomputeclass", "terraform")
 }
 
 // ─── Tier 2 Pulumi (Helm-based) ─────────────────────────────────────────────
@@ -723,6 +736,9 @@ func TestKubernetesTrino_Pulumi(t *testing.T) {
 func TestKubernetesSuperset_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetessuperset", "pulumi")
 }
+func TestKubernetesLangfuse_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kuberneteslangfuse", "pulumi")
+}
 func TestKubernetesGhaRunnerScaleSet_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesgharunnerscaleset", "pulumi")
 }
@@ -800,6 +816,9 @@ func TestKubernetesTrino_Terraform(t *testing.T) {
 }
 func TestKubernetesSuperset_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetessuperset", "terraform")
+}
+func TestKubernetesLangfuse_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kuberneteslangfuse", "terraform")
 }
 func TestKubernetesGhaRunnerScaleSet_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesgharunnerscaleset", "terraform")

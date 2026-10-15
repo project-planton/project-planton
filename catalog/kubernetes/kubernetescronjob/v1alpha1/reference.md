@@ -1970,6 +1970,7 @@ Allowed values (use exactly as shown):
 - `KubernetesKarpenterEc2NodeClass`
 - `KubernetesClusterAutoscaler`
 - `KubernetesVelero`
+- `KubernetesGkeComputeClass`
 - `KubernetesKubePrometheusStack` -- 4070–4079: Kubernetes observability
 - `KubernetesGrafana`
 - `KubernetesSignoz` -- KubernetesClickHouse is a prerequisite because SigNoz stores every trace, metric and log in ClickHouse and deploys none of its own — the telemetry store is composed, never bundled.
@@ -2024,6 +2025,7 @@ Allowed values (use exactly as shown):
 - `KubernetesMlflow` -- KubernetesPostgres is a prerequisite because MLflow's backend store composes a KubernetesPostgres in its production arm (FK defaults onto its outputs; the module composes the connection URI from its credential Secret), and KubernetesSeaweedFs because the artifact store's S3-compatible arm FK-defaults onto the SeaweedFS endpoint and credential Secret.
 - `KubernetesTrino` -- KubernetesPostgres is a prerequisite because Trino's postgres catalogs compose a KubernetesPostgres (the catalog host and credential FK-default onto its outputs), and the pods read that database's credential Secret to resolve catalog passwords from environment.
 - `KubernetesSuperset` -- KubernetesPostgres is a prerequisite because Superset's REQUIRED metadata database composes a KubernetesPostgres (FK defaults onto its outputs; the module composes the environment Secret from its credential Secret), and KubernetesValkey because the cache/broker arm FK-defaults onto a KubernetesValkey's service and password Secret.
+- `KubernetesLangfuse` -- Langfuse's four required stores each FK-default onto a catalog kind: KubernetesPostgres (users, projects, prompts, API keys - host and password Secret), KubernetesClickHouse (traces and scores - host, cluster name and auth Secret), KubernetesValkey (the ingestion queues - host, ACL user and password Secret), and KubernetesSeaweedFs (the S3-compatible event store - endpoint and credentials Secret).
 - `KubernetesArgocd` -- 4150–4169: Kubernetes GitOps and CI/CD
 - `KubernetesArgoWorkflows`
 - `KubernetesTektonOperator`
@@ -2978,6 +2980,7 @@ Allowed values (use exactly as shown):
 - `KubernetesKarpenterEc2NodeClass`
 - `KubernetesClusterAutoscaler`
 - `KubernetesVelero`
+- `KubernetesGkeComputeClass`
 - `KubernetesKubePrometheusStack` -- 4070–4079: Kubernetes observability
 - `KubernetesGrafana`
 - `KubernetesSignoz` -- KubernetesClickHouse is a prerequisite because SigNoz stores every trace, metric and log in ClickHouse and deploys none of its own — the telemetry store is composed, never bundled.
@@ -3032,6 +3035,7 @@ Allowed values (use exactly as shown):
 - `KubernetesMlflow` -- KubernetesPostgres is a prerequisite because MLflow's backend store composes a KubernetesPostgres in its production arm (FK defaults onto its outputs; the module composes the connection URI from its credential Secret), and KubernetesSeaweedFs because the artifact store's S3-compatible arm FK-defaults onto the SeaweedFS endpoint and credential Secret.
 - `KubernetesTrino` -- KubernetesPostgres is a prerequisite because Trino's postgres catalogs compose a KubernetesPostgres (the catalog host and credential FK-default onto its outputs), and the pods read that database's credential Secret to resolve catalog passwords from environment.
 - `KubernetesSuperset` -- KubernetesPostgres is a prerequisite because Superset's REQUIRED metadata database composes a KubernetesPostgres (FK defaults onto its outputs; the module composes the environment Secret from its credential Secret), and KubernetesValkey because the cache/broker arm FK-defaults onto a KubernetesValkey's service and password Secret.
+- `KubernetesLangfuse` -- Langfuse's four required stores each FK-default onto a catalog kind: KubernetesPostgres (users, projects, prompts, API keys - host and password Secret), KubernetesClickHouse (traces and scores - host, cluster name and auth Secret), KubernetesValkey (the ingestion queues - host, ACL user and password Secret), and KubernetesSeaweedFs (the S3-compatible event store - endpoint and credentials Secret).
 - `KubernetesArgocd` -- 4150–4169: Kubernetes GitOps and CI/CD
 - `KubernetesArgoWorkflows`
 - `KubernetesTektonOperator`
@@ -5187,6 +5191,7 @@ Allowed values (use exactly as shown):
 - `KubernetesKarpenterEc2NodeClass`
 - `KubernetesClusterAutoscaler`
 - `KubernetesVelero`
+- `KubernetesGkeComputeClass`
 - `KubernetesKubePrometheusStack` -- 4070–4079: Kubernetes observability
 - `KubernetesGrafana`
 - `KubernetesSignoz` -- KubernetesClickHouse is a prerequisite because SigNoz stores every trace, metric and log in ClickHouse and deploys none of its own — the telemetry store is composed, never bundled.
@@ -5241,6 +5246,7 @@ Allowed values (use exactly as shown):
 - `KubernetesMlflow` -- KubernetesPostgres is a prerequisite because MLflow's backend store composes a KubernetesPostgres in its production arm (FK defaults onto its outputs; the module composes the connection URI from its credential Secret), and KubernetesSeaweedFs because the artifact store's S3-compatible arm FK-defaults onto the SeaweedFS endpoint and credential Secret.
 - `KubernetesTrino` -- KubernetesPostgres is a prerequisite because Trino's postgres catalogs compose a KubernetesPostgres (the catalog host and credential FK-default onto its outputs), and the pods read that database's credential Secret to resolve catalog passwords from environment.
 - `KubernetesSuperset` -- KubernetesPostgres is a prerequisite because Superset's REQUIRED metadata database composes a KubernetesPostgres (FK defaults onto its outputs; the module composes the environment Secret from its credential Secret), and KubernetesValkey because the cache/broker arm FK-defaults onto a KubernetesValkey's service and password Secret.
+- `KubernetesLangfuse` -- Langfuse's four required stores each FK-default onto a catalog kind: KubernetesPostgres (users, projects, prompts, API keys - host and password Secret), KubernetesClickHouse (traces and scores - host, cluster name and auth Secret), KubernetesValkey (the ingestion queues - host, ACL user and password Secret), and KubernetesSeaweedFs (the S3-compatible event store - endpoint and credentials Secret).
 - `KubernetesArgocd` -- 4150–4169: Kubernetes GitOps and CI/CD
 - `KubernetesArgoWorkflows`
 - `KubernetesTektonOperator`
@@ -6195,6 +6201,7 @@ Allowed values (use exactly as shown):
 - `KubernetesKarpenterEc2NodeClass`
 - `KubernetesClusterAutoscaler`
 - `KubernetesVelero`
+- `KubernetesGkeComputeClass`
 - `KubernetesKubePrometheusStack` -- 4070–4079: Kubernetes observability
 - `KubernetesGrafana`
 - `KubernetesSignoz` -- KubernetesClickHouse is a prerequisite because SigNoz stores every trace, metric and log in ClickHouse and deploys none of its own — the telemetry store is composed, never bundled.
@@ -6249,6 +6256,7 @@ Allowed values (use exactly as shown):
 - `KubernetesMlflow` -- KubernetesPostgres is a prerequisite because MLflow's backend store composes a KubernetesPostgres in its production arm (FK defaults onto its outputs; the module composes the connection URI from its credential Secret), and KubernetesSeaweedFs because the artifact store's S3-compatible arm FK-defaults onto the SeaweedFS endpoint and credential Secret.
 - `KubernetesTrino` -- KubernetesPostgres is a prerequisite because Trino's postgres catalogs compose a KubernetesPostgres (the catalog host and credential FK-default onto its outputs), and the pods read that database's credential Secret to resolve catalog passwords from environment.
 - `KubernetesSuperset` -- KubernetesPostgres is a prerequisite because Superset's REQUIRED metadata database composes a KubernetesPostgres (FK defaults onto its outputs; the module composes the environment Secret from its credential Secret), and KubernetesValkey because the cache/broker arm FK-defaults onto a KubernetesValkey's service and password Secret.
+- `KubernetesLangfuse` -- Langfuse's four required stores each FK-default onto a catalog kind: KubernetesPostgres (users, projects, prompts, API keys - host and password Secret), KubernetesClickHouse (traces and scores - host, cluster name and auth Secret), KubernetesValkey (the ingestion queues - host, ACL user and password Secret), and KubernetesSeaweedFs (the S3-compatible event store - endpoint and credentials Secret).
 - `KubernetesArgocd` -- 4150–4169: Kubernetes GitOps and CI/CD
 - `KubernetesArgoWorkflows`
 - `KubernetesTektonOperator`
@@ -8518,6 +8526,7 @@ Allowed values (use exactly as shown):
 - `KubernetesKarpenterEc2NodeClass`
 - `KubernetesClusterAutoscaler`
 - `KubernetesVelero`
+- `KubernetesGkeComputeClass`
 - `KubernetesKubePrometheusStack` -- 4070–4079: Kubernetes observability
 - `KubernetesGrafana`
 - `KubernetesSignoz` -- KubernetesClickHouse is a prerequisite because SigNoz stores every trace, metric and log in ClickHouse and deploys none of its own — the telemetry store is composed, never bundled.
@@ -8572,6 +8581,7 @@ Allowed values (use exactly as shown):
 - `KubernetesMlflow` -- KubernetesPostgres is a prerequisite because MLflow's backend store composes a KubernetesPostgres in its production arm (FK defaults onto its outputs; the module composes the connection URI from its credential Secret), and KubernetesSeaweedFs because the artifact store's S3-compatible arm FK-defaults onto the SeaweedFS endpoint and credential Secret.
 - `KubernetesTrino` -- KubernetesPostgres is a prerequisite because Trino's postgres catalogs compose a KubernetesPostgres (the catalog host and credential FK-default onto its outputs), and the pods read that database's credential Secret to resolve catalog passwords from environment.
 - `KubernetesSuperset` -- KubernetesPostgres is a prerequisite because Superset's REQUIRED metadata database composes a KubernetesPostgres (FK defaults onto its outputs; the module composes the environment Secret from its credential Secret), and KubernetesValkey because the cache/broker arm FK-defaults onto a KubernetesValkey's service and password Secret.
+- `KubernetesLangfuse` -- Langfuse's four required stores each FK-default onto a catalog kind: KubernetesPostgres (users, projects, prompts, API keys - host and password Secret), KubernetesClickHouse (traces and scores - host, cluster name and auth Secret), KubernetesValkey (the ingestion queues - host, ACL user and password Secret), and KubernetesSeaweedFs (the S3-compatible event store - endpoint and credentials Secret).
 - `KubernetesArgocd` -- 4150–4169: Kubernetes GitOps and CI/CD
 - `KubernetesArgoWorkflows`
 - `KubernetesTektonOperator`
@@ -9526,6 +9536,7 @@ Allowed values (use exactly as shown):
 - `KubernetesKarpenterEc2NodeClass`
 - `KubernetesClusterAutoscaler`
 - `KubernetesVelero`
+- `KubernetesGkeComputeClass`
 - `KubernetesKubePrometheusStack` -- 4070–4079: Kubernetes observability
 - `KubernetesGrafana`
 - `KubernetesSignoz` -- KubernetesClickHouse is a prerequisite because SigNoz stores every trace, metric and log in ClickHouse and deploys none of its own — the telemetry store is composed, never bundled.
@@ -9580,6 +9591,7 @@ Allowed values (use exactly as shown):
 - `KubernetesMlflow` -- KubernetesPostgres is a prerequisite because MLflow's backend store composes a KubernetesPostgres in its production arm (FK defaults onto its outputs; the module composes the connection URI from its credential Secret), and KubernetesSeaweedFs because the artifact store's S3-compatible arm FK-defaults onto the SeaweedFS endpoint and credential Secret.
 - `KubernetesTrino` -- KubernetesPostgres is a prerequisite because Trino's postgres catalogs compose a KubernetesPostgres (the catalog host and credential FK-default onto its outputs), and the pods read that database's credential Secret to resolve catalog passwords from environment.
 - `KubernetesSuperset` -- KubernetesPostgres is a prerequisite because Superset's REQUIRED metadata database composes a KubernetesPostgres (FK defaults onto its outputs; the module composes the environment Secret from its credential Secret), and KubernetesValkey because the cache/broker arm FK-defaults onto a KubernetesValkey's service and password Secret.
+- `KubernetesLangfuse` -- Langfuse's four required stores each FK-default onto a catalog kind: KubernetesPostgres (users, projects, prompts, API keys - host and password Secret), KubernetesClickHouse (traces and scores - host, cluster name and auth Secret), KubernetesValkey (the ingestion queues - host, ACL user and password Secret), and KubernetesSeaweedFs (the S3-compatible event store - endpoint and credentials Secret).
 - `KubernetesArgocd` -- 4150–4169: Kubernetes GitOps and CI/CD
 - `KubernetesArgoWorkflows`
 - `KubernetesTektonOperator`

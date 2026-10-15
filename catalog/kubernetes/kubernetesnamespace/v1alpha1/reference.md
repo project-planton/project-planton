@@ -492,6 +492,7 @@ Fields on other kinds that can point at this resource:
 | KubernetesKubePrometheusStack | `spec.namespace` | `spec.name` |
 | KubernetesKubeRayOperator | `spec.namespace` | `spec.name` |
 | KubernetesKyverno | `spec.namespace` | `spec.name` |
+| KubernetesLangfuse | `spec.namespace` | `spec.name` |
 | KubernetesListenerSet | `spec.namespace` | `spec.name` |
 | KubernetesLocust | `spec.namespace` | `spec.name` |
 | KubernetesLoki | `spec.namespace` | `spec.name` |

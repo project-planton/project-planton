@@ -649,6 +649,38 @@ by exact name is at total accounting with no `provider-parity.yaml` at all.
 For a provider without schema artifacts, skip silently -- the gate reports
 NOT INSTRUMENTED there.
 
+### Phase 6e: Mirror schema for a projection kind (orchestrator step -- no flow-rule file)
+
+A Kubernetes projection kind (registry `kubernetes_manifest_projection`)
+promises that its spec mirrors one custom resource field for field. Its
+parity is measured against that resource's served definition, not a
+Terraform schema, by `TestProjection_MirrorsItsPinnedCustomResource` in
+`pkg/kubernetes/manifestprojection`:
+
+1. Pin the definition at
+   `pkg/kubernetes/manifestprojection/testdata/schemas/<group>_<plural>.yaml`.
+   Take it from the pinned upstream release when one publishes it, or read
+   it from a real cluster when only the cloud serves it
+   (`kubectl get crd <plural>.<group> -o yaml`). Head the file with a
+   comment naming the version it was captured at and the exact command.
+   The served schema is the target, documented or not.
+2. Model the spec from it: every property under `spec` is a field under the
+   same JSON key (`json_name` where protojson would spell an acronym or a
+   snake_case key differently), types match, free-form subtrees are
+   `google.protobuf.Struct`, number-or-name values carry
+   `kubernetes_int_or_string`, and a property the definition requires is
+   present in every valid manifest (a required rule, a minimum count or
+   length, or a platform default). The object's own name, labels and
+   annotations are envelope fields (`kubernetes_object_metadata`), never
+   part of the comparison.
+3. Run `go test ./pkg/kubernetes/manifestprojection/ -run Mirror`. Every
+   finding names an upstream path; fix the spec, never the pinned file.
+   A pinned file no projection kind applies fails the same test.
+
+Re-pinning (an upstream release or a cloud version adds fields) repeats the
+three steps with the new definition; the test then names every field the
+spec must gain.
+
 ### Phase 7: Presets (Rule 018)
 
 16. **018-presets** - Generate initial presets (2-3 common configuration templates)

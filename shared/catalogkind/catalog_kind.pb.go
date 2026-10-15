@@ -2316,6 +2316,7 @@ const (
 	CatalogKind_KubernetesKarpenterEc2NodeClass CatalogKind = 4065
 	CatalogKind_KubernetesClusterAutoscaler     CatalogKind = 4066
 	CatalogKind_KubernetesVelero                CatalogKind = 4067
+	CatalogKind_KubernetesGkeComputeClass       CatalogKind = 4068
 	// 4070–4079: Kubernetes observability
 	CatalogKind_KubernetesKubePrometheusStack CatalogKind = 4070
 	CatalogKind_KubernetesGrafana             CatalogKind = 4071
@@ -2448,6 +2449,13 @@ const (
 	// arm FK-defaults onto a KubernetesValkey's service and password
 	// Secret.
 	CatalogKind_KubernetesSuperset CatalogKind = 4139
+	// Langfuse's four required stores each FK-default onto a catalog kind:
+	// KubernetesPostgres (users, projects, prompts, API keys - host and
+	// password Secret), KubernetesClickHouse (traces and scores - host,
+	// cluster name and auth Secret), KubernetesValkey (the ingestion queues
+	// - host, ACL user and password Secret), and KubernetesSeaweedFs (the
+	// S3-compatible event store - endpoint and credentials Secret).
+	CatalogKind_KubernetesLangfuse CatalogKind = 4140
 	// 4150–4169: Kubernetes GitOps and CI/CD
 	CatalogKind_KubernetesArgocd         CatalogKind = 4150
 	CatalogKind_KubernetesArgoWorkflows  CatalogKind = 4151
@@ -3472,6 +3480,7 @@ var (
 		4065:  "KubernetesKarpenterEc2NodeClass",
 		4066:  "KubernetesClusterAutoscaler",
 		4067:  "KubernetesVelero",
+		4068:  "KubernetesGkeComputeClass",
 		4070:  "KubernetesKubePrometheusStack",
 		4071:  "KubernetesGrafana",
 		4072:  "KubernetesSignoz",
@@ -3526,6 +3535,7 @@ var (
 		4137:  "KubernetesMlflow",
 		4138:  "KubernetesTrino",
 		4139:  "KubernetesSuperset",
+		4140:  "KubernetesLangfuse",
 		4150:  "KubernetesArgocd",
 		4151:  "KubernetesArgoWorkflows",
 		4152:  "KubernetesTektonOperator",
@@ -4317,6 +4327,7 @@ var (
 		"KubernetesKarpenterEc2NodeClass":                4065,
 		"KubernetesClusterAutoscaler":                    4066,
 		"KubernetesVelero":                               4067,
+		"KubernetesGkeComputeClass":                      4068,
 		"KubernetesKubePrometheusStack":                  4070,
 		"KubernetesGrafana":                              4071,
 		"KubernetesSignoz":                               4072,
@@ -4371,6 +4382,7 @@ var (
 		"KubernetesMlflow":                               4137,
 		"KubernetesTrino":                                4138,
 		"KubernetesSuperset":                             4139,
+		"KubernetesLangfuse":                             4140,
 		"KubernetesArgocd":                               4150,
 		"KubernetesArgoWorkflows":                        4151,
 		"KubernetesTektonOperator":                       4152,
@@ -4627,14 +4639,17 @@ type CatalogKindMeta struct {
 	// because it creates postgresql.cnpg.io/v1 Cluster resources.
 	Prerequisites []CatalogKind `protobuf:"varint,7,rep,packed,name=prerequisites,proto3,enum=dev.planton.shared.catalogkind.CatalogKind" json:"prerequisites,omitempty"`
 	// set ONLY for kinds whose spec is a direct projection of a single Kubernetes
-	// custom resource -- i.e. the Terraform module is a thin `kubernetes_manifest`
+	// custom resource -- i.e. the Terraform module is a thin `kubectl_manifest`
 	// passthrough rather than hand-written provider logic. its presence flips the
 	// proto->tfvars converter to emit the manifest-shaped (camelCase, pruned) spec
 	// and drives deterministic thin-module generation (see `planton tofu
 	// generate-module`). absent for provider-abstraction kinds (aws/gcp/etc.),
 	// which keep idiomatic snake_case typed variables. the api_version/kind here
 	// are the UPSTREAM CRD's group-version-kind, distinct from the Planton
-	// groupVersion returned by catalogkindreflect.GroupVersion.
+	// groupVersion returned by catalogkindreflect.GroupVersion. a kind whose
+	// custom resource definition is pinned under
+	// pkg/kubernetes/manifestprojection/testdata/schemas/ is held to it field for
+	// field, both ways and type for type, by that package's mirror test.
 	KubernetesManifestProjection *KubernetesManifestProjection `protobuf:"bytes,8,opt,name=kubernetes_manifest_projection,json=kubernetesManifestProjection,proto3" json:"kubernetes_manifest_projection,omitempty"`
 	// schema versions of this kind announced as deprecated. a deprecated version
 	// keeps working exactly as before -- documents authored at it are accepted
@@ -4969,7 +4984,7 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"\x1cKubernetesManifestProjection\x12\x1f\n" +
 	"\vapi_version\x18\x01 \x01(\tR\n" +
 	"apiVersion\x12\x12\n" +
-	"\x04kind\x18\x02 \x01(\tR\x04kind*Օ\x03\n" +
+	"\x04kind\x18\x02 \x01(\tR\x04kind*\xfb\x96\x03\n" +
 	"\vCatalogKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12`\n" +
 	"\x16TestCatalogKindGeneric\x10\x01\x1aD\xa2\xf7\x04@\b\x01\x12\bv1alpha2\"\x04tckgJ,\n" +
@@ -5681,7 +5696,9 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"k8skarpenc:\x02\xdf\x1fB$\n" +
 	"\x14karpenter.k8s.aws/v1\x12\fEC2NodeClassP\x91\x03\x12=\n" +
 	"\x1bKubernetesClusterAutoscaler\x10\xe2\x1f\x1a\x1b\xa2\xf7\x04\x17\b\x13\x12\bv1alpha1\"\x06k8scasP\x91\x03\x122\n" +
-	"\x10KubernetesVelero\x10\xe3\x1f\x1a\x1b\xa2\xf7\x04\x17\b\x13\x12\bv1alpha1\"\x06k8svelP\x91\x03\x12?\n" +
+	"\x10KubernetesVelero\x10\xe3\x1f\x1a\x1b\xa2\xf7\x04\x17\b\x13\x12\bv1alpha1\"\x06k8svelP\x91\x03\x12b\n" +
+	"\x19KubernetesGkeComputeClass\x10\xe4\x1f\x1aB\xa2\xf7\x04>\b\x13\x12\bv1alpha1\"\bk8sgkeccB#\n" +
+	"\x13cloud.google.com/v1\x12\fComputeClassP\x91\x03\x12?\n" +
 	"\x1dKubernetesKubePrometheusStack\x10\xe6\x1f\x1a\x1b\xa2\xf7\x04\x17\b\x13\x12\bv1alpha1\"\x06k8skpsP\x91\x03\x123\n" +
 	"\x11KubernetesGrafana\x10\xe7\x1f\x1a\x1b\xa2\xf7\x04\x17\b\x13\x12\bv1alpha1\"\x06k8sgfnP\x92\x03\x126\n" +
 	"\x10KubernetesSignoz\x10\xe8\x1f\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x12\bv1alpha1\"\x06k8ssgz:\x02\x97 P\x92\x03\x121\n" +
@@ -5740,7 +5757,8 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"\x14KubernetesJupyterHub\x10\xa8 \x1a \xa2\xf7\x04\x1c\b\x13\x12\bv1alpha1\"\ak8sjhub:\x02\x85 P\x92\x03\x12:\n" +
 	"\x10KubernetesMlflow\x10\xa9 \x1a#\xa2\xf7\x04\x1f\b\x13\x12\bv1alpha1\"\bk8smlflw:\x04\x85 \x9b P\x92\x03\x127\n" +
 	"\x0fKubernetesTrino\x10\xaa \x1a!\xa2\xf7\x04\x1d\b\x13\x12\bv1alpha1\"\bk8strino:\x02\x85 P\x92\x03\x12<\n" +
-	"\x12KubernetesSuperset\x10\xab \x1a#\xa2\xf7\x04\x1f\b\x13\x12\bv1alpha1\"\bk8ssprst:\x04\x85 \x86 P\x92\x03\x123\n" +
+	"\x12KubernetesSuperset\x10\xab \x1a#\xa2\xf7\x04\x1f\b\x13\x12\bv1alpha1\"\bk8ssprst:\x04\x85 \x86 P\x92\x03\x12@\n" +
+	"\x12KubernetesLangfuse\x10\xac \x1a'\xa2\xf7\x04#\b\x13\x12\bv1alpha1\"\bk8slfuse:\b\x85 \x97 \x86 \x9b P\x92\x03\x123\n" +
 	"\x10KubernetesArgocd\x10\xb6 \x1a\x1c\xa2\xf7\x04\x18\b\x13\x12\bv1alpha1\"\ak8sargoP\x91\x03\x12<\n" +
 	"\x17KubernetesArgoWorkflows\x10\xb7 \x1a\x1e\xa2\xf7\x04\x1a\b\x13\x12\bv1alpha1\"\tk8sargowfP\x91\x03\x12=\n" +
 	"\x18KubernetesTektonOperator\x10\xb8 \x1a\x1e\xa2\xf7\x04\x1a\b\x13\x12\bv1alpha1\"\tk8stktnopP\x91\x03\x127\n" +

@@ -735,6 +735,7 @@ import (
 	kubernetesgatewayclassv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgatewayclass/v1alpha1"
 	kubernetesgharunnerscalesetv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgharunnerscaleset/v1alpha1"
 	kubernetesgharunnerscalesetcontrollerv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgharunnerscalesetcontroller/v1alpha1"
+	kubernetesgkecomputeclassv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgkecomputeclass/v1alpha1"
 	kubernetesgofeatureflagv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgofeatureflag/v1alpha1"
 	kubernetesgofeatureflagflagfilev1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgofeatureflagflagfile/v1alpha1"
 	kubernetesgrafanav1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesgrafana/v1alpha1"
@@ -768,6 +769,7 @@ import (
 	kuberneteskubeprometheusstackv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kuberneteskubeprometheusstack/v1alpha1"
 	kuberneteskuberayoperatorv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kuberneteskuberayoperator/v1alpha1"
 	kuberneteskyvernov1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kuberneteskyverno/v1alpha1"
+	kuberneteslangfusev1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kuberneteslangfuse/v1alpha1"
 	kuberneteslistenersetv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kuberneteslistenerset/v1alpha1"
 	kuberneteslocustv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kuberneteslocust/v1alpha1"
 	kuberneteslokiv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesloki/v1alpha1"
@@ -1613,6 +1615,7 @@ var ProviderKubernetesMap = map[catalogkind.CatalogKind]proto.Message{
 	catalogkind.CatalogKind_KubernetesGatewayClass:                &kubernetesgatewayclassv1alpha1.KubernetesGatewayClass{},
 	catalogkind.CatalogKind_KubernetesGhaRunnerScaleSet:           &kubernetesgharunnerscalesetv1alpha1.KubernetesGhaRunnerScaleSet{},
 	catalogkind.CatalogKind_KubernetesGhaRunnerScaleSetController: &kubernetesgharunnerscalesetcontrollerv1alpha1.KubernetesGhaRunnerScaleSetController{},
+	catalogkind.CatalogKind_KubernetesGkeComputeClass:             &kubernetesgkecomputeclassv1alpha1.KubernetesGkeComputeClass{},
 	catalogkind.CatalogKind_KubernetesGoFeatureFlag:               &kubernetesgofeatureflagv1alpha1.KubernetesGoFeatureFlag{},
 	catalogkind.CatalogKind_KubernetesGoFeatureFlagFlagFile:       &kubernetesgofeatureflagflagfilev1alpha1.KubernetesGoFeatureFlagFlagFile{},
 	catalogkind.CatalogKind_KubernetesGrafana:                     &kubernetesgrafanav1alpha1.KubernetesGrafana{},
@@ -1646,6 +1649,7 @@ var ProviderKubernetesMap = map[catalogkind.CatalogKind]proto.Message{
 	catalogkind.CatalogKind_KubernetesKubePrometheusStack:         &kuberneteskubeprometheusstackv1alpha1.KubernetesKubePrometheusStack{},
 	catalogkind.CatalogKind_KubernetesKubeRayOperator:             &kuberneteskuberayoperatorv1alpha1.KubernetesKubeRayOperator{},
 	catalogkind.CatalogKind_KubernetesKyverno:                     &kuberneteskyvernov1alpha1.KubernetesKyverno{},
+	catalogkind.CatalogKind_KubernetesLangfuse:                    &kuberneteslangfusev1alpha1.KubernetesLangfuse{},
 	catalogkind.CatalogKind_KubernetesListenerSet:                 &kuberneteslistenersetv1alpha1.KubernetesListenerSet{},
 	catalogkind.CatalogKind_KubernetesLocust:                      &kuberneteslocustv1alpha1.KubernetesLocust{},
 	catalogkind.CatalogKind_KubernetesLoki:                        &kuberneteslokiv1alpha1.KubernetesLoki{},

@@ -788,6 +788,8 @@ Status values:
 - **deferred** -- known failure with documented reason, skipped in CI
 - **skip** -- intentionally excluded (needs cloud credentials, etc.)
 - **stub** -- module is a stub with no real deployment logic
+- **real_cluster** -- every lane needs an externally provided real cluster (the kind cannot run on a local kind cluster at all, e.g. its custom resource definition is served only by a managed cloud cluster); skipped with its `deferred_reason` unless `PLANTON_E2E_KUBECONFIG` names one, and runs in the real-cluster batches (`catalog/kubernetes/aa_e2e/realcluster/`)
+- **pending_proof** -- fully authored and offline-validated, live lanes not yet run; skipped everywhere until a proving session runs them and flips the profile (`validated_provisioners` stays empty meanwhile)
 
 The status is enforced at two layers: CI matrices are built from `planton
 e2e discover` filters, and the provider test runners load the kind's
