@@ -215,11 +215,13 @@ planton pulumi preview <Kind> <name>         # a Pulumi component
 planton tofu plan <Kind> <name> --destroy    # what a teardown would remove
 ```
 
-Each starts a plan-only Infra Job: it refreshes the recorded state, plans,
-prints the diff, and ends. It has no apply step and never waits for
-approval, so nothing can make it change infrastructure: run it freely to
-check drift, verify a takeover, or show the person a change before they
-deploy. It exits 1 when the job fails (so does every command that follows
+Each starts a plan-only Infra Job: it reads the live cloud inside the plan,
+writes nothing (not the recorded state, not the resource), prints the diff,
+and ends. It has no apply step and never waits for approval, so nothing can
+make it change infrastructure: run it freely to verify a takeover or show
+the person a change before they deploy. A plan answers "what would a
+deploy change?"; "was anything changed outside Planton?" is a drift check
+(below). It exits 1 when the job fails (so does every command that follows
 its job: `apply`, `destroy`, `refresh`), so a burst of plans in a script can
 trust the exit code. The plan stays on the job: `planton get infra-job <ij_id>
 -o json` carries it under `status.iac_operations.update_preview.snapshot`
@@ -231,6 +233,43 @@ teardown), then `get_infra_job` on the returned id.
 Not to be confused with `planton tofu apply --pause-for-approval`: that is a
 DEPLOY that plans, then waits for someone to approve before applying -- a
 mutation, and its approval is a person's decision, never yours.
+
+## Was anything changed outside Planton? A drift check
+
+```
+planton infra component drift check <ic_id>                      # or: <Kind> <name>, as tofu plan takes
+planton infra component drift show <ic_id>                       # its latest verdict, without checking again
+planton infra stack drift check <stack> --env <env>              # every resource the stack holds
+planton infra stack drift show <stack> --env <env>
+```
+
+A drift check compares what Planton recorded when it last applied a
+resource with what is really in the cloud, setting by setting, and writes
+nothing. It never waits for approval, so run it freely; it is the answer
+when the user asks whether the cloud still matches, or suspects someone
+edited a resource by hand. A resource check follows its job; a stack check
+follows until every resource has its verdict. Each verdict is In Sync,
+Drifted (with each change: the setting, the value Planton applied, the
+value in the cloud now, a secret only as "Hidden value changed", a
+resource deleted by hand as "Deleted Outside Planton"), or Couldn't Check
+with its reason. `-o json` and `-o markdown` carry the same. Exit codes:
+`0` checked, `1` a resource could not be checked, `2` the check could not
+run; `--detailed-exitcode` adds `4` for drift found. A resource Planton
+never deployed is refused: there is nothing to compare with.
+
+Drift found means the next plan or deploy that reaches the resource puts
+the declaration back, with the reason "Drifted: 3 changes made outside
+Planton". Putting it back on purpose is, for a stack's resource,
+`planton infra stack reconcile <stack> --env <env>` (a plan you show and
+the user approves; read `references/infra.deployed-stacks.md`), or a fresh
+deploy for a resource deployed on its own. Keeping the cloud's change means
+carrying the value into the template or manifest. Which one is the user's
+call. Platform-tools twins: `check_infra_component_drift`,
+`get_infra_component_drift`, `check_infra_stack_drift`,
+`get_infra_stack_drift`.
+
+A refresh is different: `planton tofu refresh` writes what it reads into
+the recorded state, a platform mutation. Never use it to look for drift.
 
 **A rename is not cosmetic.** `planton rename <Kind> <id> -n <name>` (and
 `rename_infra_component`) changes the name the component's IaC module is
@@ -291,7 +330,7 @@ backend. Authentication and partial-response failures are not empty history.
 ## Watching a running deploy (humans; agents prefer snapshots)
 
 ```
-planton follow <infpipe_id|ij_id> --plain   # auto-detects by id prefix
+planton follow <run-id> --plain             # any run, its kind read from the id's prefix
 planton infra pipeline stream-status <id>   # status lines until terminal
 planton service follow <service> <number>   # a service run by its handle ("Run #128"),
                                             # or by its id; logs, rerun, cancel and both
@@ -300,6 +339,25 @@ planton service follow <service> <number>   # a service run by its handle ("Run 
 
 Streams block until the pipeline finishes — in a session, prefer polling
 `status` between other work over holding a stream open.
+
+## Running something again: `planton rerun`
+
+```
+planton rerun <run-id>                      # any run; follows it to the end
+planton rerun <run-id> --no-follow          # starts it and returns
+```
+
+`planton follow`, `planton cancel` and `planton rerun` take any run's id
+and read its kind from the prefix: `ij_` an Infra Job, `infpipe_` a stack
+run, `svcpipe_` a service run, `extrun_` an external CI run. Any other id
+exits 1 naming the four. A rerun is a platform mutation: say what it runs
+again and confirm first. When the rerun still destroys something it asks;
+`--yes` answers, only after the user agreed. `--failed-only`, `--job` and
+`--debug-logging` work only for an external CI run and are refused
+elsewhere. Exit codes: `0` done, or a request is waiting for its approver
+(relay the review link); `1` it failed or was refused; `3` a person must
+decide. The noun-scoped forms (`planton infra pipeline rerun`,
+`planton service rerun`) behave the same.
 
 ## Reading a value in a script
 
