@@ -1,17 +1,25 @@
 # =============================================================================
 # Pulumi Modules Release (Reusable Workflow)
 # =============================================================================
-# Builds pre-compiled binaries for all Pulumi modules across
-# all providers and uploads them to Cloudflare R2 (downloads.planton.ai).
+# Builds every Pulumi module for every platform and uploads the binaries to
+# Cloudflare R2 (downloads.planton.ai).
 #
-# Features:
-#   - Dynamic kind discovery from directory structure
-#   - Matrix-based parallelization: provider × platform
-#   - Multi-platform builds: linux_amd64, linux_arm64, darwin_arm64, darwin_amd64, windows_amd64
-#     (linux_arm64 is every ARM runner the platform ships: Graviton, and kind
-#     on an Apple Silicon Mac, whose containers are Linux ARM)
-#   - Clear progress logging with kind counts
-#   - No hardcoded kind paths - auto-discovers from filesystem
+# tools/modulebuild builds them: it is the one place a release decides how a
+# module is compiled and compressed, and it builds reproducibly (fixed
+# toolchain, -trimpath, no VCS stamp, no build id, gzip with no name or time),
+# so a module whose source did not change publishes the same bytes release
+# after release. That is what lets a platform skip resources whose module did
+# not change: it compares module digests (see pkg/downloads/modulemanifest).
+#
+#   - Matrix: provider x platform (linux_amd64, linux_arm64, darwin_arm64,
+#     darwin_amd64, windows_amd64 -- the platforms the module manifest
+#     requires; linux_arm64 is every ARM runner the platform ships: Graviton,
+#     and kind on an Apple Silicon Mac)
+#   - Modules: `modulebuild list`, the tracked catalog/{provider}/{kind}/iac/pulumi
+#     directories
+#   - Each leg records what it published (module dir, artifact, the published
+#     sha256 publish_once.sh reports) and uploads that list as a workflow
+#     artifact; release.yaml merges every leg's list into the module manifest
 #
 # Upload path: s3://planton-foundation-downloads/releases/{tag}/modules/pulumi/{kind}/{platform}.gz
 #              (windows artifacts carry the executable suffix: {platform}.exe.gz)
@@ -21,11 +29,8 @@
 #   releases/{tag}/modules/pulumi/{kind}/source.zip
 # Source is platform-independent, so the zip uploads from exactly one matrix
 # leg (linux_amd64) instead of five redundant writes. Consumers: the CLI's
-# module-eject flow and source-rendering surfaces.
-#
-# Path pattern: catalog/{provider}/{kind}/iac/pulumi (one live module set
-# per kind -- the key carries no API version segment; the release tag
-# versions the artifact)
+# module-eject flow and source-rendering surfaces. Nothing executes it, so it
+# is not part of the module manifest.
 #
 # Called by: .github/workflows/release.yaml (after CLI release creates the release)
 # =============================================================================
@@ -46,8 +51,6 @@ permissions:
   contents: read
 
 env:
-  GO_VERSION: '1.25'
-  CATALOG_ROOT: catalog
   R2_BUCKET: planton-foundation-downloads
 
 jobs:
@@ -102,11 +105,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # The toolchain is the one go.mod names: modulebuild compiles modules
+      # with exactly that toolchain and refuses to run on any other.
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
           cache: true
+
+      - name: Build modulebuild
+        run: go build -o "${RUNNER_TEMP}/modulebuild" ./tools/modulebuild
 
       - name: Build and upload all kinds
         env:
@@ -114,136 +122,90 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
           AWS_ENDPOINT_URL: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
           PROVIDER: ${{ matrix.provider }}
-          GOOS: ${{ matrix.platform.goos }}
-          GOARCH: ${{ matrix.platform.goarch }}
+          PLATFORM: ${{ matrix.platform.goos }}_${{ matrix.platform.goarch }}
         run: |
           TAG="${GITHUB_REF#refs/tags/}"
-          PROVIDER_PATH="${CATALOG_ROOT}/${PROVIDER}"
-          PLATFORM_LABEL="${GOOS}_${GOARCH}"
-          
-          # Discover all kinds by listing directories
-          if [ ! -d "$PROVIDER_PATH" ]; then
-            echo "WARNING: Provider path not found: $PROVIDER_PATH"
-            exit 0
+          MB="${RUNNER_TEMP}/modulebuild"
+          PART="${RUNNER_TEMP}/published.tsv"
+          : > "${PART}"
+
+          if [ "${PLATFORM#windows}" != "${PLATFORM}" ]; then
+            ARTIFACT_NAME="${PLATFORM}.exe.gz"
+          else
+            ARTIFACT_NAME="${PLATFORM}.gz"
           fi
-          
-          # Get all kinds that have a pulumi module. Modules live at the
-          # kind root (one live module set per kind), so discovery
-          # is a single-level walk with no version segment.
-          KINDS=()
-          for kind_path in "$PROVIDER_PATH"/*/; do
-            kind=$(basename "$kind_path")
-            if [ -d "${kind_path}iac/pulumi" ]; then
-              KINDS+=("${kind}")
-            fi
-          done
-          
-          TOTAL=${#KINDS[@]}
-          
+
+          mapfile -t MODULES < <("${MB}" list -engine pulumi -provider "${PROVIDER}")
+          TOTAL=${#MODULES[@]}
+
           echo "========================================"
           echo "PROVIDER: ${PROVIDER}"
-          echo "PLATFORM: ${PLATFORM_LABEL}"
-          echo "KINDS: ${TOTAL}"
+          echo "PLATFORM: ${PLATFORM}"
+          echo "MODULES: ${TOTAL}"
           echo "========================================"
-          echo ""
-          echo "Kinds:"
-          printf '  - %s\n' "${KINDS[@]}"
-          echo ""
-          echo "========================================"
-          
+
           if [ $TOTAL -eq 0 ]; then
-            echo "WARNING: No kinds found for provider ${PROVIDER}"
+            echo "WARNING: No Pulumi modules found for provider ${PROVIDER}"
             exit 0
           fi
-          
+
           COMPLETED=0
           FAILED=0
-          
-          for kind in "${KINDS[@]}"; do
+
+          for MODULE_DIR in "${MODULES[@]}"; do
             COMPLETED=$((COMPLETED + 1))
-            REMAINING=$((TOTAL - COMPLETED))
-            
-            KIND_PATH="${PROVIDER_PATH}/${kind}/iac/pulumi"
-            
-            # Handle Windows .exe extension
-            if [ "$GOOS" = "windows" ]; then
-              BINARY_NAME="${kind}.exe"
-              ARTIFACT_NAME="${PLATFORM_LABEL}.exe.gz"
-            else
-              BINARY_NAME="${kind}"
-              ARTIFACT_NAME="${PLATFORM_LABEL}.gz"
-            fi
-            
+            kind="$(echo "${MODULE_DIR}" | cut -d/ -f3)"
             R2_KEY="releases/${TAG}/modules/pulumi/${kind}/${ARTIFACT_NAME}"
-            
+
             echo ""
             echo "----------------------------------------"
-            echo "BUILDING: ${kind} (${PLATFORM_LABEL})"
-            echo "Progress: ${COMPLETED}/${TOTAL} (${REMAINING} remaining)"
+            echo "BUILDING: ${kind} (${PLATFORM})  ${COMPLETED}/${TOTAL}"
             echo "----------------------------------------"
-            
-            # Build
-            if CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" go build \
-              -ldflags="-s -w" \
-              -o "${BINARY_NAME}" \
-              "./${KIND_PATH}"; then
-              
-              # Compress
-              gzip -9 -c "${BINARY_NAME}" > "${ARTIFACT_NAME}"
-              rm -f "${BINARY_NAME}"
-              
-              # Upload to R2, once: a tag's artifacts never change (see publish_once.sh)
-              if tools/ci/release/publish_once.sh "${ARTIFACT_NAME}" "${R2_KEY}" \
-                --cache-control "public, max-age=31536000, immutable"; then
+
+            if "${MB}" pulumi -module "${MODULE_DIR}" -platform "${PLATFORM}" -out "${ARTIFACT_NAME}"; then
+              # Upload once (a tag's artifacts never change) and record the
+              # checksum of the bytes the key holds.
+              if SHA=$(tools/ci/release/publish_once.sh "${ARTIFACT_NAME}" "${R2_KEY}" \
+                --cache-control "public, max-age=31536000, immutable"); then
+                printf '%s\t%s\t%s\n' "${MODULE_DIR}" "${ARTIFACT_NAME}" "${SHA}" >> "${PART}"
                 LAST_UPLOADED_KEY="${R2_KEY}"
               else
                 echo "✗ ERROR: Failed to upload ${ARTIFACT_NAME} to R2"
                 FAILED=$((FAILED + 1))
               fi
-              
-              # Clean up
               rm -f "${ARTIFACT_NAME}"
             else
-              echo "✗ ERROR: Failed to build ${kind} for ${PLATFORM_LABEL}"
+              echo "✗ ERROR: Failed to build ${kind} for ${PLATFORM}"
               FAILED=$((FAILED + 1))
             fi
-            
-            # Publish the module source once per kind (source is
-            # platform-independent; the linux_amd64 leg is the designated
-            # writer). Apache-2.0 §4(d): LICENSE and NOTICE must accompany
-            # every redistribution, and a source zip is a standalone
-            # redistribution of that kind — both land at the zip root,
-            # mirroring the terraform module lane.
-            if [ "${PLATFORM_LABEL}" = "linux_amd64" ]; then
-              SOURCE_ARTIFACT="${kind}_source.zip"
+
+            # The module source, once per kind (the linux_amd64 leg writes it).
+            # LICENSE and NOTICE land at its root (Apache-2.0 section 4(d)).
+            if [ "${PLATFORM}" = "linux_amd64" ]; then
               SOURCE_R2_KEY="releases/${TAG}/modules/pulumi/${kind}/source.zip"
-              
-              if (cd "${KIND_PATH}" && zip -q -r "${GITHUB_WORKSPACE}/${SOURCE_ARTIFACT}" .) \
-                && zip -q -j "${SOURCE_ARTIFACT}" LICENSE NOTICE; then
-                
-                if tools/ci/release/publish_once.sh "${SOURCE_ARTIFACT}" "${SOURCE_R2_KEY}" \
-                  --cache-control "public, max-age=31536000, immutable"; then
+              if "${MB}" source -module "${MODULE_DIR}" -out source.zip; then
+                if tools/ci/release/publish_once.sh source.zip "${SOURCE_R2_KEY}" \
+                  --cache-control "public, max-age=31536000, immutable" >/dev/null; then
                   LAST_UPLOADED_SOURCE_KEY="${SOURCE_R2_KEY}"
                 else
-                  echo "✗ ERROR: Failed to upload ${SOURCE_ARTIFACT} to R2"
+                  echo "✗ ERROR: Failed to upload the source of ${kind} to R2"
                   FAILED=$((FAILED + 1))
                 fi
-                rm -f "${SOURCE_ARTIFACT}"
+                rm -f source.zip
               else
-                echo "✗ ERROR: Failed to zip source for ${kind}"
+                echo "✗ ERROR: Failed to pack the source of ${kind}"
                 FAILED=$((FAILED + 1))
               fi
             fi
           done
-          
-          # Probe one uploaded artifact through the public URL. The CLI
-          # composes these URLs from a shape it pins in its own tests
-          # (pkg/downloads); this probe pins the OTHER half of the contract —
-          # that what CI just uploaded actually serves at that shape. Without
-          # it, a key-shape change here ships silently and every released CLI
-          # degrades module fetches into full git clones.
-          if [ -n "${LAST_UPLOADED_KEY:-}" ]; then
-            PROBE_URL="https://downloads.planton.ai/${LAST_UPLOADED_KEY}"
+
+          # Probe one uploaded artifact through the public URL. The CLI and
+          # runners compose these URLs from a shape pinned in pkg/downloads;
+          # this probe pins the OTHER half of the contract -- that what CI
+          # just uploaded actually serves at that shape.
+          for PROBE_KEY in "${LAST_UPLOADED_KEY:-}" "${LAST_UPLOADED_SOURCE_KEY:-}"; do
+            [ -n "${PROBE_KEY}" ] || continue
+            PROBE_URL="https://downloads.planton.ai/${PROBE_KEY}"
             PROBE_CODE=$(curl -sf -I -o /dev/null -w "%{http_code}" \
               --retry 3 --retry-delay 5 --retry-all-errors "${PROBE_URL}" || true)
             if [ "${PROBE_CODE}" = "200" ]; then
@@ -252,33 +214,26 @@ jobs:
               echo "✗ ERROR: uploaded artifact does not serve at its public URL (HTTP ${PROBE_CODE}): ${PROBE_URL}"
               FAILED=$((FAILED + 1))
             fi
-          fi
-          
-          # Same probe for the source artifact (only the linux_amd64 leg
-          # uploads one). The CLI's eject flow composes this URL from a shape
-          # pinned in pkg/downloads — this pins the CI half of that contract.
-          if [ -n "${LAST_UPLOADED_SOURCE_KEY:-}" ]; then
-            PROBE_URL="https://downloads.planton.ai/${LAST_UPLOADED_SOURCE_KEY}"
-            PROBE_CODE=$(curl -sf -I -o /dev/null -w "%{http_code}" \
-              --retry 3 --retry-delay 5 --retry-all-errors "${PROBE_URL}" || true)
-            if [ "${PROBE_CODE}" = "200" ]; then
-              echo "✓ Public URL probe passed: ${PROBE_URL}"
-            else
-              echo "✗ ERROR: uploaded source zip does not serve at its public URL (HTTP ${PROBE_CODE}): ${PROBE_URL}"
-              FAILED=$((FAILED + 1))
-            fi
-          fi
-          
+          done
+
           echo ""
           echo "========================================"
-          echo "JOB SUMMARY: ${PROVIDER} / ${PLATFORM_LABEL}"
+          echo "JOB SUMMARY: ${PROVIDER} / ${PLATFORM}"
+          echo "Modules: ${TOTAL}  Failed: ${FAILED}"
           echo "========================================"
-          echo "Total kinds: ${TOTAL}"
-          echo "Successfully built: $((TOTAL - FAILED))"
-          echo "Failed: ${FAILED}"
-          echo "========================================"
-          
+
           if [ $FAILED -gt 0 ]; then
-            echo "ERROR: ${FAILED} kind(s) failed to build"
+            echo "ERROR: ${FAILED} module(s) failed"
             exit 1
           fi
+
+      # What this leg published, for the module manifest release.yaml
+      # publishes once every leg has finished. A rerun of the leg replaces it.
+      - name: Record what this leg published
+        uses: actions/upload-artifact@v4
+        with:
+          name: module-part-pulumi-${{ matrix.provider }}-${{ matrix.platform.goos }}_${{ matrix.platform.goarch }}
+          path: ${{ runner.temp }}/published.tsv
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7

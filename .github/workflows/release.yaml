@@ -11,7 +11,9 @@
 #   1. The github-release job creates the GitHub Release for the tag
 #   2. Pulumi modules, Terraform modules, Content, and Definitions jobs
 #      upload to Cloudflare R2 (downloads.planton.ai) after it completes
-#   3. Charts job attaches the InfraChart catalog zip to the GitHub Release
+#   3. The module-manifest job publishes the module manifest once both
+#      module lanes have uploaded every module
+#   4. Charts job attaches the InfraChart catalog zip to the GitHub Release
 #
 # Job visibility: the content and definitions workflows run ONE JOB PER
 # ARTIFACT (content: one per zip; definitions: one per skill/agent, with the
@@ -21,6 +23,7 @@
 # Artifact hosting:
 #   - Pulumi modules -> Cloudflare R2 (downloads.planton.ai/releases/{tag}/modules/pulumi/)
 #   - Terraform zips -> Cloudflare R2 (downloads.planton.ai/releases/{tag}/modules/terraform/)
+#   - Module manifest -> Cloudflare R2 (downloads.planton.ai/releases/{tag}/modules/manifest.json)
 #   - Content zips   -> Cloudflare R2 (downloads.planton.ai/releases/{tag}/content/)
 #   - Stub SDKs      -> Cloudflare R2 (downloads.planton.ai/releases/{tag}/stubs/)
 #   - Buf module     -> BSR (buf.build/planton/planton, labeled with the tag)
@@ -128,6 +131,63 @@ jobs:
       CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
       CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
       CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+
+  # ============================================================================
+  # Module Manifest - every official module's published checksums and digest.
+  # Published once, after both module lanes have uploaded everything: a
+  # platform pins a release only once its manifest exists, and a runner runs
+  # an official module only when its bytes match the manifest, so a partial
+  # manifest is never published (modulebuild refuses one). A rerun of a failed
+  # leg reruns this job; publish_once.sh keeps a manifest already published.
+  # ============================================================================
+  module-manifest:
+    needs: [pulumi-modules, terraform-modules]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Collect what every module leg published
+        uses: actions/download-artifact@v4
+        with:
+          pattern: module-part-*
+          path: ${{ runner.temp }}/parts
+
+      - name: Assemble the module manifest
+        run: |
+          set -euo pipefail
+          go run ./tools/modulebuild manifest \
+            -tag "${GITHUB_REF_NAME}" \
+            -parts "${RUNNER_TEMP}/parts" \
+            -out "${RUNNER_TEMP}/manifest.json"
+
+      - name: Publish the module manifest
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+          R2_BUCKET: planton-foundation-downloads
+        run: |
+          set -euo pipefail
+          KEY="releases/${GITHUB_REF_NAME}/modules/manifest.json"
+          tools/ci/release/publish_once.sh "${RUNNER_TEMP}/manifest.json" "${KEY}" \
+            --content-type application/json \
+            --cache-control "public, max-age=31536000, immutable" > /dev/null
+          PROBE_URL="https://downloads.planton.ai/${KEY}"
+          PROBE_CODE=$(curl -sf -I -o /dev/null -w "%{http_code}" \
+            --retry 3 --retry-delay 5 --retry-all-errors "${PROBE_URL}" || true)
+          if [ "${PROBE_CODE}" != "200" ]; then
+            echo "✗ ERROR: the module manifest does not serve at its public URL (HTTP ${PROBE_CODE}): ${PROBE_URL}"
+            exit 1
+          fi
+          echo "✓ Module manifest published: ${PROBE_URL}"
 
   # ============================================================================
   # Content Distribution - one job per zip: presets, IaC source, catalog

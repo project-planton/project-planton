@@ -1,17 +1,14 @@
 package main
 
 import (
-	"archive/zip"
-	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"hash/crc32"
 	"os"
 	"path/filepath"
-	"sort"
-	"time"
+
+	"github.com/plantonhq/planton/pkg/detzip"
 )
 
 // ManifestFileName is the manifest's filename inside a definitions release.
@@ -43,13 +40,6 @@ type Artifact struct {
 	SizeBytes int64  `json:"sizeBytes"`
 }
 
-// zipEpoch is the fixed modification time stamped on every archive entry.
-// Archive bytes must be a pure function of the tree's content so a rebuild
-// of unchanged content reproduces the recorded checksum exactly; wall-clock
-// timestamps would break that. 1980-01-01 is the earliest time the ZIP
-// format's MS-DOS timestamp can represent.
-var zipEpoch = time.Date(1980, 1, 1, 0, 0, 0, 0, time.UTC)
-
 // skillEntries is the ONE definition of what a skill's published content
 // is, keyed by archive-relative path. Both carriers of that content -- the
 // zip archive (BuildSkillArchive) and the browse manifest (see browse.go)
@@ -68,46 +58,18 @@ func skillEntries(skill Skill) map[string][]byte {
 	return entries
 }
 
-// BuildSkillArchive packs one skill into a deterministic zip: lexically
-// ordered entries, the fixed timestamp, stored (uncompressed) content, and
-// CreateRaw with pre-computed sizes -- descriptor-free entries are the
-// maximally compatible ZIP shape, and storing keeps the bytes immune even
-// to compressor changes across Go releases. Storing (not deflating) also
-// keeps the archive bytes a pure function of file content, which is what
-// lets every consumer -- the release manifest, the daemon's re-pack
-// verifier, and the serving engine's content-addressed storage -- agree on
-// one checksum for one content state.
+// BuildSkillArchive packs one skill into a deterministic zip (detzip): the
+// archive bytes are a pure function of the skill's files. Entries are stored
+// uncompressed, which keeps the bytes immune even to compressor changes across
+// Go releases -- that is what lets every consumer -- the release manifest, the
+// daemon's re-pack verifier, and the serving engine's content-addressed
+// storage -- agree on one checksum for one content state.
 func BuildSkillArchive(skill Skill) ([]byte, error) {
-	entries := skillEntries(skill)
-	var paths []string
-	for path := range entries {
-		paths = append(paths, path)
+	archive, err := detzip.Bytes(skillEntries(skill), detzip.Store)
+	if err != nil {
+		return nil, fmt.Errorf("packing archive for %s: %w", skill.Slug, err)
 	}
-	sort.Strings(paths)
-
-	var buf bytes.Buffer
-	w := zip.NewWriter(&buf)
-	for _, path := range paths {
-		content := entries[path]
-		entry, err := w.CreateRaw(&zip.FileHeader{
-			Name:               path,
-			Method:             zip.Store,
-			Modified:           zipEpoch,
-			CRC32:              crc32.ChecksumIEEE(content),
-			CompressedSize64:   uint64(len(content)),
-			UncompressedSize64: uint64(len(content)),
-		})
-		if err != nil {
-			return nil, fmt.Errorf("creating archive entry %s: %w", path, err)
-		}
-		if _, err := entry.Write(content); err != nil {
-			return nil, fmt.Errorf("writing archive entry %s: %w", path, err)
-		}
-	}
-	if err := w.Close(); err != nil {
-		return nil, fmt.Errorf("finalizing archive for %s: %w", skill.Slug, err)
-	}
-	return buf.Bytes(), nil
+	return archive, nil
 }
 
 // PackageRelease writes every release artifact plus the manifest into

@@ -1,0 +1,59 @@
+# =============================================================================
+# Reproducible Modules Gate
+# =============================================================================
+# A platform recognises an official module by the checksums its release
+# published (the module manifest's digest), and skips every resource whose
+# module digest did not change. So a module whose source did not change must
+# publish the same bytes release after release, or every release re-runs
+# every resource built from it.
+#
+# This gate builds representative modules twice -- in two checkouts of the
+# same commit, each with its own empty Go build cache -- and fails unless
+# every artifact is byte-identical (tools/ci/release/check_reproducible_modules.sh).
+# It runs on the changes that decide how a module is built, not on every
+# catalog change, because it compiles whole provider SDKs from scratch.
+# =============================================================================
+
+name: lint.reproducible-modules
+
+on:
+  pull_request:
+    paths:
+      - 'tools/modulebuild/**'
+      - 'pkg/detzip/**'
+      - 'go.mod'
+      - 'go.sum'
+      - 'tools/ci/release/check_reproducible_modules.sh'
+      - '.github/workflows/lint.reproducible-modules.yaml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/modulebuild/**'
+      - 'pkg/detzip/**'
+      - 'go.mod'
+      - 'go.sum'
+      - 'tools/ci/release/check_reproducible_modules.sh'
+      - '.github/workflows/lint.reproducible-modules.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  reproducible-modules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          # Each build brings its own empty cache; a shared one would let the
+          # second build reuse the first's work instead of reproducing it.
+          cache: false
+
+      - name: Two builds of one commit are byte-identical
+        run: bash tools/ci/release/check_reproducible_modules.sh
