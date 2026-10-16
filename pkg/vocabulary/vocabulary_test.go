@@ -76,6 +76,10 @@ func TestRetiredSpellingsAreFound(t *testing.T) {
 		"cat .planton/project.yaml",
 		"planton project create --from-chart gcp/cloud-run-environment",
 		"- name: STACK_EXECUTION_LOGS_GCS_BUCKET",
+		"choose Keep in Cloud",
+		"the stack keeps it in the cloud",
+		"## Keeping a Resource in the Cloud",
+		"a teardown keeps the resources in the cloud",
 	} {
 		if len(matches(t, s, "README.md", line)) == 0 {
 			t.Errorf("no finding in %q", line)

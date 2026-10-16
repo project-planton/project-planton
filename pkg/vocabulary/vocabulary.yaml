@@ -158,8 +158,9 @@ phrases:
     anchors: ['stack_execution', 'stack-execution']
     use: IAC_EXECUTION_ (iac-execution- in kebab case)
   # A resource its stack lets go of keeps running on its provider -- AWS,
-  # Stripe, Auth0, a cluster -- which is rarely "the cloud".
-  - pattern: '(?i)keep[-_ ]?in[-_ ]?cloud|kept[-_ ]?in[-_ ]?cloud|\b(keeps?|kept|keeping) (it |them |running |each )?in the cloud'
+  # Stripe, Auth0, a cluster -- which is rarely "the cloud". The object may
+  # be named ("Keeping a Resource in the Cloud").
+  - pattern: '(?i)keep[-_ ]?in[-_ ]?cloud|kept[-_ ]?in[-_ ]?cloud|\b(keeps?|kept|keeping) (it |them |running |each |(an? |the |this |that )?resources? )?in the cloud'
     anchors: ['keep in cloud', 'kept in cloud', 'in the cloud']
     use: planton.dev/keep-on-provider; Keep and Kept, named by the provider ("Keep in Stripe", "Kept in AWS")
 
