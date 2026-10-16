@@ -7341,6 +7341,34 @@ enum CatalogKind {
     }
     service_group: kubernetes_operators_controllers
   }];
+  // KubernetesAgentSandboxController is a prerequisite because it installs the
+  // extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance
+  // of, and the controller that keeps the pool's members ready.
+  KubernetesAgentSandboxWarmPool = 4183 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasbwp"
+    prerequisites: [KubernetesAgentSandboxController]
+    kubernetes_manifest_projection: {
+      api_version: "extensions.agents.x-k8s.io/v1beta1"
+      kind: "SandboxWarmPool"
+    }
+    service_group: kubernetes_operators_controllers
+  }];
+  // KubernetesAgentSandboxController is a prerequisite because it installs the
+  // extensions.agents.x-k8s.io definition the SandboxClaim is an instance of,
+  // and the controller that binds it to a warm pool member.
+  KubernetesAgentSandboxClaim = 4184 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasbcl"
+    prerequisites: [KubernetesAgentSandboxController]
+    kubernetes_manifest_projection: {
+      api_version: "extensions.agents.x-k8s.io/v1beta1"
+      kind: "SandboxClaim"
+    }
+    service_group: kubernetes_operators_controllers
+  }];
 
   // 5000–5999: DigitalOcean resources
   DigitalOceanApp = 5000 [(kind_meta) = {

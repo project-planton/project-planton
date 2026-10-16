@@ -12605,6 +12605,14 @@ Fields that can point at another resource's outputs:
 | `spec.podTemplate.spec.priorityClassName` | KubernetesPriorityClass | `status.outputs.priority_class_name` |
 | `spec.volumeClaimTemplates[].spec.storageClassName` | KubernetesStorageClass | `status.outputs.storage_class_name` |
 
+## Referenced By
+
+Fields on other kinds that can point at this resource:
+
+| Kind | Field | Reads |
+|---|---|---|
+| KubernetesAgentSandboxWarmPool | `spec.sandboxTemplateRef.name` | `status.outputs.sandbox_template_name` |
+
 ## See Also
 
 - [Overview](../README.md)

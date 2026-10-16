@@ -1243,6 +1243,24 @@ func TestOutputsConformance(t *testing.T) {
 			mustPopulate: []string{"sandbox_template_name", "namespace"},
 		},
 		{
+			name: "KubernetesAgentSandboxWarmPool",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxWarmPool,
+			rawOutputs: map[string]interface{}{
+				"sandbox_warm_pool_name": "coding-agent-pool",
+				"namespace":              "agents",
+			},
+			mustPopulate: []string{"sandbox_warm_pool_name", "namespace"},
+		},
+		{
+			name: "KubernetesAgentSandboxClaim",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxClaim,
+			rawOutputs: map[string]interface{}{
+				"sandbox_claim_name": "alice-workbench",
+				"namespace":          "agents",
+			},
+			mustPopulate: []string{"sandbox_claim_name", "namespace"},
+		},
+		{
 			name: "KubernetesServiceMonitor",
 			kind: catalogkind.CatalogKind_KubernetesServiceMonitor,
 			rawOutputs: map[string]interface{}{

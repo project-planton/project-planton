@@ -670,14 +670,25 @@ Terraform schema, by `TestProjection_MirrorsItsPinnedCustomResource` in
    same JSON key (`json_name` where protojson would spell an acronym or a
    snake_case key differently), types match, free-form subtrees are
    `google.protobuf.Struct`, number-or-name values carry
-   `kubernetes_int_or_string`, and a property the definition requires is
+   `kubernetes_int_or_string`, quantities (an int-or-string with
+   Kubernetes' quantity pattern, such as resource limits) are plain strings
+   held to the quantity grammar and never marked, an object served with no
+   properties is an empty message, and a property the definition requires is
    present in every valid manifest (a required rule, a minimum count or
    length, or a platform default). The object's own name, labels and
    annotations are envelope fields (`kubernetes_object_metadata`), never
-   part of the comparison.
-3. Run `go test ./pkg/kubernetes/manifestprojection/ -run Mirror`. Every
-   finding names an upstream path; fix the spec, never the pinned file.
-   A pinned file no projection kind applies fails the same test.
+   part of the comparison. Types the custom resource embeds from Kubernetes
+   itself (a pod specification, NetworkPolicy rules) come from the faithful
+   libraries `catalog/kubernetes/core_v1_api.proto` and
+   `networking_v1_api.proto`, never from the curated `workload_*` protos.
+3. Run `go test ./pkg/kubernetes/manifestprojection/`. The mirror test
+   names every key divergence by its upstream path; fix the spec, never the
+   pinned file. A pinned file no projection kind applies fails the same
+   test. `TestProjection_RenderedExamplesValidateAgainstServedSchema` then
+   renders the kind's e2e scenarios and `e2e/manifest.yaml` the way both
+   engines do and runs them through the API server's own pruning and
+   validation: a value the projection writes in the wrong form fails there,
+   with no cluster. The `lint.manifest-projection` lane runs both.
 
 Re-pinning (an upstream release or a cloud version adds fields) repeats the
 three steps with the new definition; the test then names every field the

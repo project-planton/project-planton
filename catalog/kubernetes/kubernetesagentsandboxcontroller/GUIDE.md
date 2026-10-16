@@ -123,6 +123,7 @@ Built for 100% parity with every setting upstream's controller and router offer 
 
 ## Pairs well with
 
+- **[KubernetesAgentSandbox](../kubernetesagentsandbox/README.md)**, **[KubernetesAgentSandboxTemplate](../kubernetesagentsandboxtemplate/README.md)**, **[KubernetesAgentSandboxWarmPool](../kubernetesagentsandboxwarmpool/README.md)**, **[KubernetesAgentSandboxClaim](../kubernetesagentsandboxclaim/README.md)** — the resources this controller runs; each declares this kind as its prerequisite.
 - **[KubernetesNamespace](../kubernetesnamespace/README.md)** — owns `agent-sandbox-system` when other components put Secrets there.
 - **[KubernetesCertificate](../kubernetescertificate/README.md)** — the router's TLS certificate, issued into `agent-sandbox-system`.
 - **[KubernetesSecret](../kubernetessecret/README.md)** — scoped-token verification keys, a client CA bundle, OTLP headers.

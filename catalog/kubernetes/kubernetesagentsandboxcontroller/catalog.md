@@ -144,6 +144,10 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 ## Works With
 
+- [**Agent Sandbox**](/infra-catalog/kubernetes-agent-sandbox) — one long-lived sandbox this controller runs.
+- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) — the hardened blueprint, and network fence, of the sandboxes a product claims (extensions on).
+- [**Agent Sandbox Warm Pool**](/infra-catalog/kubernetes-agent-sandbox-warm-pool) — ready sandboxes from a template, which this controller keeps filled.
+- [**Agent Sandbox Claim**](/infra-catalog/kubernetes-agent-sandbox-claim) — a sandbox taken from a pool, which this controller binds.
 - [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — own `agent-sandbox-system` with its quotas and policies, so the Secrets this kind reads can be placed there first.
 - [**Kubernetes Certificate**](/infra-catalog/kubernetes-certificate) — the TLS certificate the router (or the controller's metrics endpoint) serves.
 - [**Kubernetes Secret**](/infra-catalog/kubernetes-secret) — the scoped-token verification keys, a client CA bundle, and OTLP collector headers.

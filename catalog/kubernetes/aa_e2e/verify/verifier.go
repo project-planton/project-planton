@@ -697,6 +697,19 @@ func GetVerifierFromManifest(manifestPath string) (ResourceVerifier, error) {
 	case "kubernetesagentsandboxtemplate":
 		return newAgentSandboxTemplateVerifier(manifestPath, info.Name, info.Namespace), nil
 
+	// An agent-sandbox SandboxWarmPool: every field reads back, the pool
+	// fills to its size with ready members, and its scale endpoint (the one
+	// an autoscaler drives) reports that size.
+	case "kubernetesagentsandboxwarmpool":
+		return newAgentSandboxWarmPoolVerifier(manifestPath, info.Name, info.Namespace), nil
+
+	// An agent-sandbox SandboxClaim: every field reads back, and the claim
+	// binds warm (a ready pool member) or cold (a sandbox of its own, with
+	// its variables, labels and volumes) exactly as its spec requires, or is
+	// refused with its template's reason.
+	case "kubernetesagentsandboxclaim":
+		return newAgentSandboxClaimVerifier(manifestPath, info.Name, info.Namespace), nil
+
 	// An operator-managed SolrCloud: every node ready + the common
 	// Service. The behavioral-collection scenario (recognized by name)
 	// creates a collection, indexes a document and queries it back —

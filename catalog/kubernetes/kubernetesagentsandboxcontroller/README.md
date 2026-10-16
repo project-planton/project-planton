@@ -6,7 +6,7 @@
 
 Not the right kind when:
 
-- **You want a sandbox** — that is `KubernetesAgentSandbox` (one sandbox), or `KubernetesAgentSandboxTemplate` with `KubernetesAgentSandboxWarmPool` (ready sandboxes your product claims). Installing this controller alone runs no sandboxes.
+- **You want a sandbox** — that is [`KubernetesAgentSandbox`](../kubernetesagentsandbox/README.md) (one sandbox), or [`KubernetesAgentSandboxTemplate`](../kubernetesagentsandboxtemplate/README.md) with [`KubernetesAgentSandboxWarmPool`](../kubernetesagentsandboxwarmpool/README.md) (ready sandboxes your product claims, through [`KubernetesAgentSandboxClaim`](../kubernetesagentsandboxclaim/README.md) or agent-sandbox's SDKs). Installing this controller alone runs no sandboxes.
 - **Your cluster is on GKE with the Agent Sandbox add-on on** — the add-on is the same controller, managed by Google, in the same namespace. Keep one of the two. This kind refuses to install over the add-on and names it.
 - **You want a general sandbox for untrusted code with no agent lifecycle** — a plain Deployment on a gVisor RuntimeClass is enough; agent-sandbox earns its place through stable identity, suspend and resume, expiry, warm pools and claims.
 

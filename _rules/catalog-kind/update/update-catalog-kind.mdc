@@ -1284,9 +1284,14 @@ After all updates, **execute validation commands in sequence**:
    clean. The `lint.provider-parity` CI lane is this step's tripwire.
    For a Kubernetes projection kind the yardstick is its pinned custom resource
    definition instead: when the upstream release or the cloud's served version
-   moves, re-pin the definition and run the mirror test (the forge
-   orchestrator's Phase 6e has the capture and the command); a projection kind
-   with no pinned definition yet enrolls in the same update.
+   moves, re-pin the definition and run the projection tests (the forge
+   orchestrator's Phase 6e has the capture and the command: the mirror test
+   for keys, the served-schema test for the values every scenario sends); a
+   projection kind with no pinned definition yet enrolls in the same update.
+   A family whose definitions an operator kind installs from a pinned release
+   (the agent-sandbox controller and its four resource kinds) moves together:
+   the operator's pin and every resource kind's pinned definition change in
+   one update.
    If the provider has a committed parity page (`catalog/<provider>/terraform-parity.md`),
    regenerate it in the same change -- `make generate-provider-parity-report` -- the
    page's drift test fails CI when the accounting moved and the page did not.

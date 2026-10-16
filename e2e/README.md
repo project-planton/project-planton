@@ -4147,6 +4147,35 @@ builds the appropriate verification dynamically. This means adding a new test
 scenario is as simple as dropping a YAML file into the kind's
 `e2e/scenarios/` folder -- no Go code changes needed.
 
+### Projection kinds: every field reads back
+
+A projection kind (its spec mirrors one custom resource) is only proven when
+every field its scenario sets is on the live object, because an API server
+silently prunes a key its definition does not serve.
+`proveProjectionReadback` (`catalog/kubernetes/aa_e2e/verify/projectionreadback.go`)
+renders the scenario through the projection both engines apply and requires
+the rendered spec to be CONTAINED in the live spec, value for value, with the
+declared labels and annotations on the object. Containment rather than
+equality: the server writes its definition's defaults into the stored object
+(a custom resource embedding a pod carries many, inside list items), and an
+exact comparison would need a hand-kept copy of upstream's defaults. Kinds
+whose stored spec carries only a short, fixed default list (the
+ServiceMonitor and PodMonitor) compare exactly, defaults applied. Every
+projection lane runs the read-back first, then its behavioral proof.
+
+The same rendering is checked offline for every kind with a pinned
+definition: `TestProjection_RenderedExamplesValidateAgainstServedSchema`
+(`pkg/kubernetes/manifestprojection`) runs each scenario and `e2e/manifest.yaml`
+through the API server's own pruning and validation code, so a lane never
+discovers a pruned key or a value in the wrong form for the first time.
+
+A family of resources whose operator is a catalog kind ships the operator's
+`e2e/prerequisite.yaml` tuned for them. The agent-sandbox controller's turns
+the extensions on (templates, warm pools and claims need them), keeps no
+definitions (the controller's own lanes need the names free), and raises the
+warm-candidate wait so a claim applied moments after its pool fixture binds a
+ready member deterministically instead of racing the cold path.
+
 ## Adding a New Test Scenario
 
 1. Create a YAML manifest in `{kind}/e2e/scenarios/` with a descriptive

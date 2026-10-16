@@ -253,6 +253,7 @@ Fields on other kinds that can point at this resource:
 |---|---|---|
 | KubernetesAgentSandbox | `spec.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.storageClassName` | `status.outputs.storage_class_name` |
 | KubernetesAgentSandbox | `spec.volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
+| KubernetesAgentSandboxClaim | `spec.volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
 | KubernetesAgentSandboxTemplate | `spec.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.storageClassName` | `status.outputs.storage_class_name` |
 | KubernetesAgentSandboxTemplate | `spec.volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
 | KubernetesClickHouse | `spec.storageClass` | `status.outputs.storage_class_name` |
