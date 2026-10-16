@@ -724,6 +724,7 @@ KubernetesFlagd=4177
 KubernetesGoFeatureFlagFlagFile=4178
 KubernetesFlagdFlagFile=4179
 KubernetesAgentSandboxController=4180
+KubernetesAgentSandbox=4181
 DigitalOceanApp=5000
 DigitalOceanBucket=5001
 DigitalOceanContainerRegistry=5002

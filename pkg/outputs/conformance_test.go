@@ -1225,6 +1225,15 @@ func TestOutputsConformance(t *testing.T) {
 			mustPopulate: []string{"prometheus_rule_name", "namespace"},
 		},
 		{
+			name: "KubernetesAgentSandbox",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandbox,
+			rawOutputs: map[string]interface{}{
+				"sandbox_name": "coding-agent",
+				"namespace":    "agents",
+			},
+			mustPopulate: []string{"sandbox_name", "namespace"},
+		},
+		{
 			name: "KubernetesServiceMonitor",
 			kind: catalogkind.CatalogKind_KubernetesServiceMonitor,
 			rawOutputs: map[string]interface{}{

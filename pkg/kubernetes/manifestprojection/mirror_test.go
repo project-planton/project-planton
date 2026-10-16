@@ -68,7 +68,15 @@ type schemaNode struct {
 	Default               json.RawMessage        `json:"default"`
 	IntOrString           bool                   `json:"x-kubernetes-int-or-string"`
 	PreserveUnknownFields bool                   `json:"x-kubernetes-preserve-unknown-fields"`
+	Pattern               string                 `json:"pattern"`
 }
+
+// quantityPattern is the pattern controller-gen writes for a
+// resource.Quantity ("500m", "2Gi"): an int-or-string the API server accepts
+// as a string in every case, so the spec models it as a plain string held to
+// this grammar, never with the int-or-string marker (which would turn "2"
+// into a number, equally valid, but two spellings of one setting).
+const quantityPattern = `^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$`
 
 func TestProjection_MirrorsItsPinnedCustomResource(t *testing.T) {
 	paths, err := filepath.Glob(filepath.Join(pinnedSchemasDir, "*.yaml"))
@@ -204,6 +212,12 @@ func compareValue(node *schemaNode, fd protoreflect.FieldDescriptor, path string
 	mismatch := func(want string) {
 		*findings = append(*findings, path+" is "+want+" in the custom resource and "+describeKind(fd)+" in the spec")
 	}
+	if node.IntOrString && node.Pattern == quantityPattern {
+		if fd.Kind() != protoreflect.StringKind || specprojection.IsKubernetesIntOrStringField(fd) {
+			mismatch("a quantity")
+		}
+		return
+	}
 	if node.IntOrString {
 		if fd.Kind() != protoreflect.StringKind || !specprojection.IsKubernetesIntOrStringField(fd) {
 			mismatch("an int-or-string")
@@ -226,6 +240,12 @@ func compareValue(node *schemaNode, fd protoreflect.FieldDescriptor, path string
 			if !node.PreserveUnknownFields {
 				mismatch(describeSchema(node))
 			}
+			return
+		}
+		if node.Type == "object" && node.Properties == nil && node.AdditionalProperties == nil && fd.Message().Fields().Len() == 0 {
+			// An object served with no properties keeps nothing set inside
+			// it (the API server prunes it all); an empty message is its
+			// faithful model.
 			return
 		}
 		if node.Type != "object" || node.Properties == nil {
@@ -348,6 +368,10 @@ func TestMirrorFindings_NamesEveryDivergence(t *testing.T) {
 		"groups": &schemaNode{Type: "array", Items: group},
 	}}
 
+	// A quantity is a plain string in the spec: interval carries no marker,
+	// so a quantity-patterned int-or-string there is no finding.
+	group.Properties["interval"] = &schemaNode{IntOrString: true, Pattern: quantityPattern}
+
 	got := mirrorFindings(schema, spec, manifestprojection.EnvelopeOf(spec))
 	want := []string{
 		"spec.groups[].limit is a boolean in the custom resource and int32 in the spec",
@@ -357,5 +381,26 @@ func TestMirrorFindings_NamesEveryDivergence(t *testing.T) {
 	}
 	if strings.Join(got, "\n") != strings.Join(want, "\n") {
 		t.Errorf("findings =\n%s\nwant\n%s", strings.Join(got, "\n"), strings.Join(want, "\n"))
+	}
+}
+
+// TestMirrorFindings_AQuantityIsNeverMarked proves the quantity rule's other
+// half: a field carrying the int-or-string marker where the served schema has
+// a quantity is a finding, because the spec would then spell one setting two
+// ways ("2" as a number, "2Gi" as a string).
+func TestMirrorFindings_AQuantityIsNeverMarked(t *testing.T) {
+	msg, err := catalogkindreflect.NewInstance(catalogkind.CatalogKind_KubernetesServiceMonitor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	spec := msg.ProtoReflect().Descriptor().Fields().ByName("spec").Message()
+	endpoint := spec.Fields().ByName("endpoints").Message()
+	node := &schemaNode{IntOrString: true, Pattern: quantityPattern}
+
+	var findings []string
+	compareValue(node, endpoint.Fields().ByName("target_port"), "spec.endpoints[].targetPort", &findings)
+	want := "spec.endpoints[].targetPort is a quantity in the custom resource and string in the spec"
+	if len(findings) != 1 || findings[0] != want {
+		t.Errorf("findings = %q, want [%q]", findings, want)
 	}
 }

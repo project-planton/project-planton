@@ -134,6 +134,11 @@ var kubernetesTier3Kinds = []string{
 	// transitively) into the lane's shared namespace; every lane ingests
 	// a trace through all four.
 	"kuberneteslangfuse",
+	// The agent-sandbox resources KubernetesAgentSandboxController (their
+	// registry prerequisite, from its prerequisite profile) reconciles into
+	// sandboxes: a Sandbox's pod and claims, a template's network policy, a
+	// warm pool's members, a claim bound to one of them.
+	"kubernetesagentsandbox",
 }
 
 // Kubernetes Tier 4 kinds: operators, addons, and cluster-level
@@ -749,6 +754,9 @@ func TestKubernetesPlantonRunner_Pulumi(t *testing.T) {
 func TestKubernetesPlantonPlatform_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesplantonplatform", "pulumi")
 }
+func TestKubernetesAgentSandbox_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsandbox", "pulumi")
+}
 
 // ─── Tier 3 Terraform (operator-dependent) ──────────────────────────────────
 
@@ -829,6 +837,9 @@ func TestKubernetesPlantonRunner_Terraform(t *testing.T) {
 }
 func TestKubernetesPlantonPlatform_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesplantonplatform", "terraform")
+}
+func TestKubernetesAgentSandbox_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsandbox", "terraform")
 }
 
 // ─── Tier 4 Pulumi (operators, addons) ──────────────────────────────────────

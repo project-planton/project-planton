@@ -7312,6 +7312,20 @@ enum CatalogKind {
     id_prefix: "k8sasbc"
     service_group: kubernetes_operators_controllers
   }];
+  // KubernetesAgentSandboxController is a prerequisite because it installs the
+  // agents.x-k8s.io definition the Sandbox is an instance of, and the
+  // controller that runs its pod.
+  KubernetesAgentSandbox = 4181 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasbx"
+    prerequisites: [KubernetesAgentSandboxController]
+    kubernetes_manifest_projection: {
+      api_version: "agents.x-k8s.io/v1beta1"
+      kind: "Sandbox"
+    }
+    service_group: kubernetes_operators_controllers
+  }];
 
   // 5000–5999: DigitalOcean resources
   DigitalOceanApp = 5000 [(kind_meta) = {

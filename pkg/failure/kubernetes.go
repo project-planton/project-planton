@@ -18,36 +18,51 @@ const signatureKubernetesFieldNotInDefinition = "as a field its installed defini
 // for CRDs in its authorization texts.
 const CustomResourceDefinitionsResource = "customresourcedefinitions"
 
+// definitionOwner is the catalog resource that installs a custom resource's
+// definition, and the field on it that picks the definition's version -- or
+// none, when the owner's module pins the upstream release and a catalog
+// release moves it.
+type definitionOwner struct {
+	kind         string
+	versionField string
+}
+
 // definitionOwners names, for a custom resource kind the catalog declares,
-// the catalog resource that installs its definition and the field on it that
-// picks the definition's version. A kind absent here gets the generic next
-// step (upgrade whatever installs the definition).
+// the catalog resource that installs its definition. A kind absent here gets
+// the generic next step (upgrade whatever installs the definition).
 //
 // Kept to kinds whose definition another catalog resource owns; a module that
 // applies its own chart's definitions never hits this failure, because its
 // definitions and its declaration come from the same release.
-var definitionOwners = map[string]string{
-	"PlantonPlatform": "KubernetesPlantonOperator (spec.chart_version)",
+var definitionOwners = map[string]definitionOwner{
+	"PlantonPlatform": {kind: "KubernetesPlantonOperator", versionField: "spec.chart_version"},
+	"Sandbox":         {kind: "KubernetesAgentSandboxController"},
+	"SandboxTemplate": {kind: "KubernetesAgentSandboxController"},
+	"SandboxWarmPool": {kind: "KubernetesAgentSandboxController"},
+	"SandboxClaim":    {kind: "KubernetesAgentSandboxController"},
 }
 
 // KubernetesFieldNotInDefinition: the API server rejected a field of a custom
 // resource because the kind's installed definition (its CRD) predates the
 // field. The catalog release the declaration comes from knows the field; the
 // definition on the cluster does not — the definition was installed from an
-// older release of the chart that owns it, and nothing upgrades that chart
-// implicitly. Under server-side apply the server refuses outright (an unknown
+// older release of the chart or manifest that owns it, and nothing upgrades
+// that release implicitly. Under server-side apply the server refuses outright (an unknown
 // field is never pruned silently), but its sentence names only the mechanism.
 // kind is the API server's Kind; field is the dotted path without a leading
 // dot (spec.ingress.gatewayRef); raw is the server's text, kept whole.
 func KubernetesFieldNotInDefinition(kind, field, raw string) *Failure {
 	owner, known := definitionOwners[kind]
 	next := fmt.Sprintf("upgrade the resource that installs the %s definition to the current catalog default or newer, apply it, then re-apply this resource", kind)
-	if known {
-		next = fmt.Sprintf("set %s to the current catalog default or newer, apply it, then re-apply this resource", owner)
+	switch {
+	case known && owner.versionField != "":
+		next = fmt.Sprintf("set %s (%s) to the current catalog default or newer, apply it, then re-apply this resource", owner.kind, owner.versionField)
+	case known:
+		next = fmt.Sprintf("redeploy %s from the current catalog release (its module pins the release whose definitions it installs), then re-apply this resource", owner.kind)
 	}
 	return &Failure{
 		Observed: fmt.Sprintf("the API server rejected %s on %s %s (the API server answered: %s)", field, kind, signatureKubernetesFieldNotInDefinition, raw),
-		Meaning:  fmt.Sprintf("the definition of %s installed on this cluster predates %s: the catalog release this declaration comes from knows the field, the chart that installed the definition is older than it, and nothing upgrades that chart implicitly", kind, field),
+		Meaning:  fmt.Sprintf("the definition of %s installed on this cluster predates %s: the catalog release this declaration comes from knows the field, the release that installed the definition is older than it, and nothing upgrades that release implicitly", kind, field),
 		NextStep: next,
 	}
 }

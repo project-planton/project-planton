@@ -196,6 +196,19 @@ func TestExplainFieldNotInDefinitionGenericOwner(t *testing.T) {
 	}
 }
 
+func TestExplainFieldNotInDefinitionModulePinnedOwner(t *testing.T) {
+	raw := `failed to create typed patch object (agents/workbench; agents.x-k8s.io/v1beta1, Kind=Sandbox): .spec.podTemplate.spec.hostnameOverride: field not declared in schema`
+	failures := Explain(raw)
+	if len(failures) != 1 {
+		t.Fatalf("expected one explanation, got %d", len(failures))
+	}
+	f := failures[0]
+	requireParts(t, f)
+	if !strings.Contains(f.NextStep, "redeploy KubernetesAgentSandboxController from the current catalog release") {
+		t.Errorf("a definition whose owner pins the release names a redeploy, not a version field: %s", f.NextStep)
+	}
+}
+
 func TestExplainHelmTexts(t *testing.T) {
 	cases := []struct {
 		name, raw, observedHas, nextStepHas string

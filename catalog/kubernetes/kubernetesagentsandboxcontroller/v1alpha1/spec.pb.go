@@ -639,8 +639,10 @@ type KubernetesAgentSandboxControllerExtensions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// *
 	// Run the extension controllers and install their definitions. False keeps
-	// the settings below while turning the extensions off; their definitions
-	// stay on the cluster (they are kept), so existing objects survive.
+	// the settings below while turning the extensions off. Their definitions
+	// stay on the cluster while crds.keep_on_uninstall is true, so existing
+	// templates, warm pools and claims survive and resume when the extensions
+	// return; with it false they are deleted, with every object of their kind.
 	Enabled *bool `protobuf:"varint,1,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
 	// *
 	// Label domains a SandboxClaim may set on its sandbox's pod through

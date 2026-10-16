@@ -684,6 +684,13 @@ func GetVerifierFromManifest(manifestPath string) (ResourceVerifier, error) {
 	case "kubernetesagentsandboxcontroller":
 		return newAgentSandboxControllerVerifier(manifestPath), nil
 
+	// An agent-sandbox Sandbox: every field the scenario sets reads back,
+	// the Sandbox Ready (or Suspended with no pod), its claims created. The
+	// behavioral-suspend scenario's two acts prove suspending keeps the same
+	// claim and resuming brings the sandbox's files back.
+	case "kubernetesagentsandbox":
+		return newAgentSandboxVerifier(manifestPath, info.Name, info.Namespace), nil
+
 	// An operator-managed SolrCloud: every node ready + the common
 	// Service. The behavioral-collection scenario (recognized by name)
 	// creates a collection, indexes a document and queries it back —
