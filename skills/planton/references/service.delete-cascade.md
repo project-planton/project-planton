@@ -17,10 +17,10 @@ Deleting a service deletes it genuinely: the platform stops the service's in-fli
 
 At each resource the same decision a stack's teardown makes is taken again, at the moment of destroy:
 
-- **`planton.dev/keep-on-provider: "true"`** — never destroyed. The resource is **released**: the service lets go of it, its record stays, and it keeps running on its provider, findable and adoptable into something else.
+- **`planton.dev/keep-on-provider: "true"`** — never destroyed. The resource is **released**: the service lets go of it, its record stays, and it keeps running on its provider, findable and adoptable into something else. The mark is an annotation under the resource manifest's `metadata.annotations`, set in the service's configuration for each environment whose copy should stay (prod's overlay keeps prod's database; dev's copy is still destroyed), then deployed before the delete. A kept resource is never destroyed, so the up-front checks that guard a destroy (deletion protection, readers) do not ask about it; the protected-environment refusal still applies while the service has other deployments there.
 - **`planton.dev/prevent-destroy: "true"`** — never destroyed (the up-front check already refused the delete; this guards a mark added since).
 - **Unmanaged** (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`) — never destroyed; it stays on its provider and its record goes with the service.
-- **Owned elsewhere** — a resource another live stack or service now owns, or one an earlier run already let go of (a removal it kept on its provider), is left exactly as it is. A removal a run left in place, or one whose destroy failed, is still the service's and is destroyed here like the rest.
+- **Owned Elsewhere** — a resource another live stack or service now owns, or one an earlier run already let go of (a removal it kept on its provider), is left exactly as it is. A removal a run left in place, or one whose destroy failed, is still the service's and is destroyed here like the rest.
 - **Already gone** — a record that no longer exists counts as done.
 
 The delete API returns as soon as the cascade STARTS. The record shows `spec.is_delete_in_progress: true` while it runs; when the service answers NOT_FOUND, the deletion finished. The `delete_service` agent tool works the same way — it requires `confirm: true`, and completion is observed by polling `get_service` until NOT_FOUND. A lost report from a destroy job never leaves a deletion hanging: the platform re-sends any ending the cascade missed.

@@ -37,7 +37,8 @@ inline for one-off scoping.
 ```
 planton chart list                        # charts in the catalog (org + official), each with its version
 planton infra stack list -o json        # the org's Infra Stacks (what has been deployed)
-planton infra stack get <id-or-name>    # one stack, full record (its declaration and live revision)
+planton infra stack get <id-or-name> --env <env>  # one stack, full record (its declaration and live revision);
+                                                 # a name needs --env, an id does not
 planton infra stack history <name> --env <env>  # its revisions: every plan applied, newest first
 planton infra stack plan <name> --env <env>     # what applying would do now (writes nothing)
 planton infra stack review <name> --env <env>   # the request waiting in a protected environment (writes nothing)
@@ -84,16 +85,70 @@ with pull requests, refuse direct deletes, and never join promotion order —
 never propose architecture that depends on one. Their story lives in
 `references/service.preview-environments.md`.
 
-Moving a stack between its environments is a mutation, planned and shown
-like any apply, never run uninvited: `planton infra stack promote <name>
---from <env> --to <env>`, `rollback <name> --env <env>` and `upgrade <name>
---env <env>` (`references/infra.stack-promotion.md` has the flags, the CI
-flow and what to say first).
-
 Read `infra stack list` results with an eye on `env` — a stack in env
 `dev` means that chart's Infra Components exist in dev. Caveat: the list rides the search index, so a
 stack created seconds ago may briefly be missing; `infra stack get`
 by id/name is the direct read.
+
+## Changing a deployed stack (mutations)
+
+Every change to a stack is a plan you show first, then apply on the user's
+yes for THAT plan; none of these runs uninvited:
+
+```
+planton infra stack apply <name> [folder] --env <env> -m "<why>" --plan-digest <d>
+                              # applies exactly the plan shown and follows its run;
+                              # --destroy / --keep / --adopt Kind/name name choices
+planton infra stack reconcile <name> --env <env>      # plans putting back what drifted; applies
+                              # like apply (-m, --plan-digest; --dry-run stops at the plan)
+planton infra stack withdraw <name> --env <env>       # takes a waiting request back
+planton infra stack promote <name> --from <env> --to <env>
+planton infra stack rollback <name> --env <env> [--to-revision N]
+planton infra stack upgrade <name> --env <env>
+```
+
+A request waiting in a protected environment is decided by a PERSON who
+read its review; you only carry out the decision they stated:
+
+```
+planton infra stack approve <name> --env <env> --review-digest <d>
+planton infra stack reject <name> --env <env> --review-digest <d> --reason "<their words>"
+```
+
+`references/infra.deployed-stacks.md` carries the plan rows, consent,
+requests, drift and Reconcile; `references/infra.stack-promotion.md`
+carries promote, roll back, upgrade and the CI flow.
+
+## Delivering a service (mutations, except the reads marked)
+
+```
+planton service status <service>                        # read: each environment in promotion order
+planton service promote <service> --from <env> --to <env> --dry-run   # what the run would do
+planton service promote <service> --from <env> --to <env>   # or --deployment <svcdepl_id> --to <env>
+planton service rollback <service> --env <env> [--to-deployment <svcdepl_id>]
+planton service redeploy <service> --env <env>          # what runs, applied again (puts drift back)
+planton service deploy <service> --env <env> --image <ref>
+planton service drift check <service> --env <env>       # read: compares the cloud, writes nothing
+planton service drift show <service> --env <env>        # read: the latest verdicts
+```
+
+Each delivery verb takes `--dry-run` (what the run would apply, whether it
+waits at a gate, and every removal; nothing saved, no run number taken),
+`--reapply-all` and `--follow`; each answers with a run ("Run #129") to
+follow. A run removes what the service no longer declares once everything
+declared applied; a removal that holds data, or one a protected gate
+approved before it appeared, waits for a person, and so does the
+environment's gate:
+
+```
+planton service removal destroy <service> <number> <env> <Kind/name>   # naming it is the consent
+planton service removal keep <service> <number> <env> <Kind/name>      # keeps it on its provider
+planton service resolve-env-manual-gate <service> <number> <env> approve --keep <Kind/name> --destroy <Kind/name>
+```
+
+These decisions are a person's, never yours: relay the question and the
+command. `references/service.delivery-verbs.md` carries the verbs, the
+removals and drift; `references/service.reading-a-run.md` the gates.
 
 ## Checking out real files (charts and deployed stacks)
 
@@ -103,8 +158,9 @@ What already exists on the platform is checked out, never re-typed:
 planton chart checkout <slug> --output-dir <dir>            # a published chart, ready to
                                                             # build/customize (org/<slug>
                                                             # scopes to the org's charts)
-planton infra stack checkout <id-or-name> --output-dir <dir>  # a deployed stack's
-                                                            # WORKING COPY, binding included
+planton infra stack checkout <id-or-name> --env <env> --output-dir <dir>
+                                                            # a deployed stack's WORKING COPY,
+                                                            # binding included
 ```
 
 Both default the directory to `./<slug>` when the flag is omitted; in your
@@ -157,7 +213,7 @@ A node with result `failed` and a
 concepts (subnets, IAM, quotas) is an infrastructure class — the engine logs
 from step 3 carry the provider's own error, and `infra.deployment-model.md`
 explains how to map it back to the module and spec field. A failure saying a
-resource **already exists** is the orphaned-resource class (an earlier run
+resource **already exists** is the unrecorded-resource class (an earlier run
 created it, then died before recording it in state) — repair by importing,
 never by delete-and-retry: read `infra.state-import.md`.
 
@@ -343,7 +399,16 @@ planton service follow <service> <number>   # a service run by its handle ("Run 
 ```
 
 Streams block until the pipeline finishes — in a session, prefer polling
-`status` between other work over holding a stream open.
+`status` between other work over holding a stream open. `planton follow`
+reads the id's prefix (`ij_`, `infpipe_`, `svcpipe_`; an `extrun_` run is
+GitHub's, so it names `planton service logs` instead) and answers by exit
+code: `0` the run is done, `1` it failed or was cancelled (or the id names
+no run), `3` it waits for a person, and the line before says who runs
+what. Branch on the code, never on the words. A command that files a
+request instead of applying (an apply, rerun or undeploy into a protected
+environment) ends `0` with the review lines: the filed request is its
+outcome, and deciding it is a person's act. `3` is a run already in
+flight that stopped for a person.
 
 ## Running something again: `planton rerun`
 

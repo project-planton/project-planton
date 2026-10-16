@@ -63,10 +63,10 @@ planton service deploy checkout-api --org acme --env prod \
   --commit "$GITHUB_SHA" --branch "$GITHUB_REF_NAME" --follow
 ```
 
-The deploy renders manifests from the service's CURRENT inline deploy declaration with the image injected, and rides the same engine as every deploy: protection gates, separation of duties (the deployer can never approve), URLs, and rollout verification. Facts to hold:
+The deploy renders manifests from the service's CURRENT deploy declaration (the record's `deploy.environments`) with the image injected, and rides the same engine as every deploy: protection gates, separation of duties (the CI credential approves nothing), URLs, and rollout verification. Facts to hold:
 
 - **`--follow` tells the truth in CI**: the command exits non-zero when the run fails AND when rollout verification reports `failed` (the workload demonstrably never came online) — the failed checks print with the provider's own words. An honestly `unverifiable` rollout passes with a note. This is why a green deploy step means something.
-- **Kustomize-source services refuse** the deploy verb (their rendering runs on the build lane) — the working paths are the git-push lane or promoting an existing deployment.
+- **A kustomize-source service deploys what its last push rendered onto the record** (the rendering runs on the build lane). Until a push to a branch that drives the environment has rendered it, the deploy verb refuses; the working paths are that push, or promoting an existing deployment. `--from-tree` is for a person at a terminal and refuses a CI credential.
 - **The environment must be declared** in the service's deploy configuration; the refusal names the declared set.
 - **A protected environment parks the run at its approval gate** — a followed CI job waits for the approval; set the job's own timeout accordingly.
 
@@ -78,4 +78,4 @@ The deploy renders manifests from the service's CURRENT inline deploy declaratio
 
 A service registered with a federated credential may only declare the repository the credential's own verified token names — a mismatch is refused, naming both repositories. This is the point of CI-step registration: a catalog entry whose repository was typed can drift or lie; one registered from the repository's own CI is **proven**. A service that declares no repository (a pure catalog entry) registers fine from any lane.
 
-The same law narrows the delivery verbs, and MORE strictly: a federated credential may deploy, promote, or roll back **only the service whose declared repository matches its token's** — and here a repo-less service refuses (with no declared repository there is no proof relation at all, so the answer is to set the service's repository or deliver from a lane with standing access). The deploy rules themselves are org-wide by grammar; this per-service narrowing is what keeps one repository's workflow from deploying every service in the organization.
+The same law narrows the delivery verbs, and MORE strictly: a federated credential may deploy, promote, roll back or redeploy **only the service whose declared repository matches its token's** — and here a repo-less service refuses (with no declared repository there is no proof relation at all, so the answer is to set the service's repository or deliver from a lane with standing access). The deploy rules themselves are org-wide by grammar; this per-service narrowing is what keeps one repository's workflow from deploying every service in the organization.

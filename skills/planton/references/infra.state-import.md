@@ -1,8 +1,8 @@
 # State Import — Importing Provider Resources That Exist but Aren't in State
 
 Read this when a deploy fails saying something **already exists** — the
-signature of an orphaned resource: an earlier run created it in the cloud,
-then died before the IaC state recorded it (an auth failure or crash mid-way
+signature of a resource the state never recorded: an earlier run created it
+on its provider, then died before the IaC state recorded it (an auth failure or crash mid-way
 through a long create). The cloud has the resource; the state file does not;
 every rerun tries to create it again and collides.
 
@@ -28,9 +28,9 @@ Error: ... a resource with the ID "..." already exists                     # gen
 
 **The repair is import, not delete-and-retry.** The platform has first-class
 state-import commands: they run an Infra Job that imports the existing provider
-resource into the InfraComponent's IaC state — **the cloud is never touched,
-only the state file is updated** — and then a fresh apply reconciles the
-desired configuration against what was imported.
+resource into the InfraComponent's IaC state — **the provider is never
+touched, only the state file is updated** — and then a fresh deploy brings
+the resource to its declared configuration.
 
 ## The commands
 
@@ -41,15 +41,15 @@ Job record; OpenTofu and Terraform are interchangeable here):
 # OpenTofu / Terraform — the state entry is a resource ADDRESS (type.name):
 planton tofu state import <IC_ID | Kind name> \
   --address "<tf_type.tf_name>" --id "<cloud-provider-id>" \
-  -m "import orphaned resource created by failed run" [--dry-run]
+  -m "import the resource a failed run created" [--dry-run]
 
 # Pulumi — the state entry is a TYPE plus a logical NAME:
 planton pulumi state import <IC_ID | Kind name> \
   --type "<pulumi:type:Token>" --name "<logical-name>" --id "<cloud-provider-id>" \
-  -m "import orphaned resource created by failed run" [--dry-run]
+  -m "import the resource a failed run created" [--dry-run]
 ```
 
-- The target is the **InfraComponent whose stack owns the orphan**: pass its
+- The target is the **InfraComponent the unrecorded resource belongs to**: pass its
   id (`ic_...`) or `<Kind> <name>` under the current org/env context (e.g.
   `GcpGkeCluster prod-cluster`). Find it with
   `planton search infra-components --org <org> -e <env>`.
@@ -58,9 +58,10 @@ planton pulumi state import <IC_ID | Kind name> \
   the real one.
 - The import job is **idempotent** (importing an already-tracked resource
   succeeds) and runs `init → import → refresh → preview → capture` as one
-  Infra Job. It reports drift but does not apply it — reconciling is the
-  follow-up deploy.
-- One import command imports ONE resource; run it once per orphan.
+  Infra Job. Its preview shows how the imported resource differs from its
+  declaration and applies nothing; the next deploy applies it.
+- One import command imports ONE resource; run it once per unrecorded
+  resource.
 
 Related state commands when the repair needs them: `planton <prov> state
 list <CR…>` (what the state tracks now — run it after the import to
@@ -74,7 +75,7 @@ state entry without touching the cloud).
 - The failed run's engine logs name the address being created at the moment
   of failure (`google_container_cluster.this: Creating...`).
 - `planton <prov> state list <CR…>` shows the addresses of everything
-  already tracked — the orphan's siblings reveal the module's naming shape.
+  already tracked — the resource's siblings reveal the module's naming shape.
 
 **The cloud ID** — the provider's identifier, in the format the provider's
 import documentation defines for that resource type. Look it up read-only
@@ -105,5 +106,7 @@ to show the user exactly what would run before committing.
 - Never repair by deleting the provider resource so the rerun "works" unless
   the user explicitly chooses that instead — deletion destroys whatever the
   resource already holds and is a cloud mutation with its own confirmation.
-- After a successful import, the deploy is still pending: save/rerun (its
-  own consent, per `infra.deployed-stacks.md`) and confirm the run goes green.
+- After a successful import, the deploy is still pending: rerun the failed
+  run (`planton infra pipeline rerun <infpipe_id>`), or plan and apply the
+  stack again — each its own consent, per `infra.deployed-stacks.md` — and
+  confirm the run goes green.

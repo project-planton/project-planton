@@ -68,5 +68,11 @@ jobs:
       - name: Validator unit tests
         run: go test ./pkg/skills/...
 
+      # The embedded skill text, and the eval bank's answers pinned to it
+      # (skills/eval_questions.yaml): an edit that drops a sentence an
+      # answer rests on fails here, naming the question.
+      - name: Skill text and eval bank
+        run: go test ./skills/...
+
       - name: Validate the committed definition trees
         run: go run ./pkg/skills/defspack

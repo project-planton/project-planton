@@ -30,7 +30,8 @@ environment, service, pull request number, expiry — and it is server-managed
 (create, update, and apply refuse it). Two laws to relay:
 
 - **Never try to delete one by hand** — `planton env delete` REFUSES a
-  preview, because a record-only delete would orphan its Infra Components. If
+  preview, because a record-only delete would leave its Infra Components
+  running with no environment to answer for them. If
   a user asks to remove a preview, close its pull request — that IS the
   delete button (or let the expiry pass).
 - **Previews never join promotion order** — they exist beside the durable

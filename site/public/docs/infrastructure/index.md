@@ -62,7 +62,7 @@ The atomic execution unit that provisions infrastructure. Every infrastructure c
 
 ### Flow Control
 
-Governance policies that control how infrastructure changes are deployed — approval gates, plan-before-apply requirements, and deployment pauses.
+Settings written on a resource that decide how cautiously its Infra Jobs run: whether it is deployed at all, whether a job waits for approval, and whether it pauses between preview and apply. A protected environment adds its own review on top.
 
 [Learn about Flow Control](/docs/infrastructure/flow-control)
 
@@ -83,7 +83,7 @@ graph TD
 - **Infrastructure** provisions the infrastructure where everything runs
 - **CI/CD** deploys applications to infrastructure provisioned by Infrastructure
 - **[Connections](/docs/connections)** provides the cloud provider credentials for Infra Job execution
-- **Flow Control** policies govern the deployment workflow
+- **Flow Control** settings on each resource, and protected environments, decide where a change waits for a person
 
 ## Open Source
 

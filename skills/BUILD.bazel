@@ -21,7 +21,11 @@ go_library(
 
 go_test(
     name = "skills_test",
-    srcs = ["embed_test.go"],
-    data = _SKILL_TEXT,  # keep
+    srcs = [
+        "embed_test.go",
+        "eval_test.go",
+    ],
+    data = _SKILL_TEXT + ["eval_questions.yaml"],  # keep
     embed = [":skills"],
+    deps = ["@in_gopkg_yaml_v3//:yaml_v3"],
 )
