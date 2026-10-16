@@ -52,6 +52,70 @@ func KubernetesFieldNotInDefinition(kind, field, raw string) *Failure {
 	}
 }
 
+// WorkloadOwnerLabel is the label a kind stamps on the workloads it installs
+// under fixed, upstream-chosen names, and the mark the workload-ownership
+// check reads: a Deployment carrying it with the kind's own name was created
+// by that kind (planton.ai/kind, the identity label the Pulumi modules
+// stamp).
+const WorkloadOwnerLabel = "planton.ai/kind"
+
+// KubernetesWorkloadOwnedElsewhere: a kind that installs an upstream's own
+// workloads under fixed names (one install per cluster is the upstream
+// contract) found one of them already running, created by something else: a
+// managed add-on that installs the same software, a `kubectl apply` of the
+// upstream's release, another tool. Server-side apply would take it over
+// without a word, two owners would then fight over one controller, and a
+// later destroy would delete workloads this kind never created. So the
+// deploy stops before writing anything. owner is what the cluster says about
+// who wrote it (the field managers), or the honest absence of any mark.
+func KubernetesWorkloadOwnedElsewhere(kind, namespace, name, owner string) *Failure {
+	return &Failure{
+		Observed: fmt.Sprintf("Deployment %s/%s already runs on the cluster and was not created by this %s (%s)", namespace, name, kind, owner),
+		Meaning:  "another installation of the same software runs here, such as a managed add-on or a kubectl apply of the upstream release; installing over it would take over its workloads, and destroying this resource later would delete them",
+		NextStep: fmt.Sprintf("remove the other installation first, or keep it and do not install %s on this cluster; to hand over an installation you made yourself, import it, then mark it as this kind's (`kubectl -n %s label deployment %s %s=%s`) and re-run", kind, namespace, name, WorkloadOwnerLabel, kind),
+	}
+}
+
+// KubernetesNamespaceMissing: a kind that installs into an upstream-fixed
+// namespace was told another component owns it (create_namespace false), and
+// the namespace does not exist. Nothing could start; the usual cause is that
+// the namespace's owner has not been deployed yet, or the two were deployed
+// without a reference ordering them.
+func KubernetesNamespaceMissing(kind, namespace string) *Failure {
+	return &Failure{
+		Observed: fmt.Sprintf("namespace %s does not exist on the cluster, and this %s does not create it (spec.create_namespace is false)", namespace, kind),
+		Meaning:  fmt.Sprintf("everything installs into %s, so its owner must create it first; nothing could start without it", namespace),
+		NextStep: fmt.Sprintf("deploy the KubernetesNamespace named %s first and reference it from spec.namespace so the two deploy in order, or set spec.create_namespace to true to let this resource create and own it", namespace),
+	}
+}
+
+// KubernetesNamespaceCreatedHere: create_namespace was turned off on an
+// installation whose namespace this kind created. The engines would delete
+// the namespace they hold in state, and with it the kind's own workloads and
+// everything other components put there, so the change is refused with the
+// path that moves ownership without losing anything.
+func KubernetesNamespaceCreatedHere(kind, namespace string) *Failure {
+	return &Failure{
+		Observed: fmt.Sprintf("namespace %s was created by this %s, and spec.create_namespace is now false", namespace, kind),
+		Meaning:  "turning create_namespace off would delete the namespace, and with it this installation's workloads and everything other components put there",
+		NextStep: fmt.Sprintf("keep spec.create_namespace true; to move the namespace to a KubernetesNamespace, destroy this resource first (its resource definitions and every sandbox outside %s are kept), deploy the KubernetesNamespace, then deploy this resource again with create_namespace false", namespace),
+	}
+}
+
+// KubernetesNamespaceOwnedElsewhere: a kind asked to create an
+// upstream-fixed namespace (create_namespace true) found it already there,
+// created by something else. Taking it over would make this resource its
+// owner, and destroying the resource would delete the namespace with
+// everything other components put in it. owner is what the cluster says
+// about who wrote it.
+func KubernetesNamespaceOwnedElsewhere(kind, namespace, owner string) *Failure {
+	return &Failure{
+		Observed: fmt.Sprintf("namespace %s already exists on the cluster and was not created by this %s (%s)", namespace, kind, owner),
+		Meaning:  "with spec.create_namespace true this resource would take the namespace over, and destroying it later would delete the namespace and everything other components put in it",
+		NextStep: fmt.Sprintf("set spec.create_namespace to false and reference the namespace's owner from spec.namespace; or, if you created it yourself for this installation, mark it as this kind's (`kubectl label namespace %s %s=%s`) and re-run", namespace, WorkloadOwnerLabel, kind),
+	}
+}
+
 // KubernetesForbidden: the API server refused a verb to the identity the
 // deploy authenticates as. The server's own text names the identity, the verb,
 // the resource, and the scope, which is the whole observation; what it never

@@ -321,7 +321,9 @@ type KubernetesGkeComputeClassPriority struct {
 	// The fewest vCPUs a node from this rule may have. With `machine_family`,
 	// keeps GKE from choosing a smaller machine than the workloads were sized
 	// for (the stockout default uses 8 on every rule so each fallback is the
-	// same size). Requires GKE 1.30.3-gke.1451000.
+	// same size). More than any machine of the family offers marks the class
+	// CrdMisconfigured (NoSuitableMachineExists). Requires GKE
+	// 1.30.3-gke.1451000.
 	MinCores *int32 `protobuf:"varint,3,opt,name=min_cores,json=minCores,proto3,oneof" json:"min_cores,omitempty"`
 	// The least memory, in GB, a node from this rule may have. Requires GKE
 	// 1.30.3-gke.1451000.
@@ -1714,7 +1716,10 @@ type KubernetesGkeComputeClassReservations struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// How reservations are consumed:
 	//   - Specific: only the listed reservations, with no fallback (the rule is
-	//     skipped when they are full).
+	//     skipped when they are full). GKE checks the reservations exist and
+	//     are reachable from the cluster's project; a missing one marks the
+	//     whole class CrdMisconfigured (ReservationNotFound), not just the
+	//     rule.
 	//   - AnyBestEffort: any matching non-specific reservation, falling back to
 	//     on-demand.
 	//   - AnyThenFail: any matching non-specific reservation, never on-demand.
@@ -1779,7 +1784,8 @@ type KubernetesGkeComputeClassSpecificReservation struct {
 	// project. Unset, the cluster's project. The class runs in the cluster, not
 	// in this project, so the reference never nests it there.
 	Project *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=project,proto3" json:"project,omitempty"`
-	// The zones the reservation is consumed in.
+	// The zones the reservation is consumed in; each must be in the cluster's
+	// region, or GKE refuses the class.
 	Zones []string `protobuf:"bytes,3,rep,name=zones,proto3" json:"zones,omitempty"`
 	// A block of the reservation, for reservations split into blocks. Requires
 	// GKE 1.31.4-gke.1072000.
@@ -1951,12 +1957,15 @@ func (x *KubernetesGkeComputeClassReservationSubBlock) GetName() string {
 // KubernetesGkeComputeClassLocation is where a rule creates nodes.
 type KubernetesGkeComputeClassLocation struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The zones nodes may be created in. Requires GKE 1.34.1-gke.3759000.
+	// The zones nodes may be created in. GKE refuses a zone outside the
+	// cluster's region (or its node locations). Requires GKE
+	// 1.34.1-gke.3759000.
 	Zones []string `protobuf:"bytes,1,rep,name=zones,proto3" json:"zones,omitempty"`
 	// Sets of zones instead of a list: STANDARD (the region's core zones), AI
 	// (zones built for AI hardware), CLUSTER_DEFAULT (the cluster's
-	// auto-provisioning locations, or its locations). Requires GKE
-	// 1.35.2-gke.1842000.
+	// auto-provisioning locations, or its locations). GKE refuses zone types in
+	// `priority_defaults` when any rule consumes a Specific reservation (the
+	// reservation fixes its own zones). Requires GKE 1.35.2-gke.1842000.
 	ZoneTypes []string `protobuf:"bytes,2,rep,name=zone_types,json=zoneTypes,proto3" json:"zone_types,omitempty"`
 	// How new nodes spread across the zones: BALANCED (even spread) or ANY
 	// (wherever capacity is, which finds scarce machines and Spot capacity
@@ -2031,7 +2040,9 @@ type KubernetesGkeComputeClassStorage struct {
 	// projects/<p>/locations/<l>/keyRings/<r>/cryptoKeys/<k>. The Compute
 	// Engine service agent needs encrypter/decrypter on the key.
 	BootDiskKmsKey *v1.StringValueOrRef `protobuf:"bytes,3,opt,name=boot_disk_kms_key,json=bootDiskKMSKey,proto3" json:"boot_disk_kms_key,omitempty"`
-	// Local SSDs per node (1 or more), for scratch space and caches.
+	// Local SSDs per node (1 or more), for scratch space and caches. GKE
+	// accepts it only on a rule with a `machine_type` or a `gpu`, since the
+	// count a machine can carry depends on its exact shape.
 	LocalSsdCount *int32 `protobuf:"varint,4,opt,name=local_ssd_count,json=localSSDCount,proto3,oneof" json:"local_ssd_count,omitempty"`
 	// Persistent disks preloaded with data (a container image cache) attached
 	// to every node, so large images start without a pull. Requires GKE

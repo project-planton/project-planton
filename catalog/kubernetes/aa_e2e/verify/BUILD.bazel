@@ -3,6 +3,7 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "verify",
     srcs = [
+        "agentsandbox.go",
         "airflow.go",
         "altinityoperatorinstall.go",
         "argocd.go",
@@ -141,6 +142,7 @@ go_library(
 go_test(
     name = "verify_test",
     srcs = [
+        "agentsandbox_test.go",
         "kubeprometheusstack_rules_test.go",
         "openbao_test.go",
         "plantonplatform_test.go",

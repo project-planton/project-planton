@@ -159,7 +159,7 @@ func (l helmCRDLifecycle) verifyEstablishedAndStamped(ctx context.Context, kubec
 		}
 	}
 	if len(l.CRDs) > 0 {
-		fmt.Printf("  [verify] all %d module-owned CRDs Established and stamped with chart %s\n", len(l.CRDs), l.ChartVersion)
+		fmt.Printf("  [verify] all %d module-owned CRDs Established and stamped with %s %s\n", len(l.CRDs), l.SourceLabel, l.ChartVersion)
 	}
 	return nil
 }

@@ -722,6 +722,7 @@ go_library(
         "//catalog/gcp/gcpworkflow/v1alpha1",
         "//catalog/gcp/gcpworkloadidentitypool/v1alpha1",
         "//catalog/gcp/gcpworkloadidentitypoolprovider/v1alpha1",
+        "//catalog/kubernetes/kubernetesagentsandboxcontroller/v1alpha1",
         "//catalog/kubernetes/kubernetesairflow/v1alpha1",
         "//catalog/kubernetes/kubernetesaltinityoperator/v1alpha1",
         "//catalog/kubernetes/kubernetesargocd/v1alpha1",

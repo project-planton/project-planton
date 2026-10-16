@@ -2238,7 +2238,7 @@ const (
 	CatalogKind_GcpDeployCustomTargetType CatalogKind = 3262
 	// 4000–4999: Kubernetes resources, organized in family sub-bands
 	// (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts
-	// analytics & ML; 4190–4199 reserved for growth)
+	// analytics & ML; 4180–4199 hosts agent sandbox runtimes)
 	// 4000–4029: Kubernetes building blocks (core API primitives)
 	CatalogKind_KubernetesNamespace      CatalogKind = 4000
 	CatalogKind_KubernetesDeployment     CatalogKind = 4001
@@ -2472,7 +2472,7 @@ const (
 	CatalogKind_KubernetesGhaRunnerScaleSet CatalogKind = 4155
 	CatalogKind_KubernetesHarbor            CatalogKind = 4156
 	CatalogKind_KubernetesJenkins           CatalogKind = 4157
-	// 4170–4189: Kubernetes app platforms
+	// 4170–4179: Kubernetes app platforms
 	// KubernetesPostgres is a prerequisite because the recommended (and
 	// E2E-proven) database composition backs Temporal's default and
 	// visibility stores with a CloudNativePG cluster.
@@ -2489,6 +2489,9 @@ const (
 	CatalogKind_KubernetesFlagd                 CatalogKind = 4177
 	CatalogKind_KubernetesGoFeatureFlagFlagFile CatalogKind = 4178
 	CatalogKind_KubernetesFlagdFlagFile         CatalogKind = 4179
+	// 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps'
+	// agent-sandbox; 4190–4199 Agent Substrate)
+	CatalogKind_KubernetesAgentSandboxController CatalogKind = 4180
 	// 5000–5999: DigitalOcean resources
 	CatalogKind_DigitalOceanApp               CatalogKind = 5000
 	CatalogKind_DigitalOceanBucket            CatalogKind = 5001
@@ -3554,6 +3557,7 @@ var (
 		4177:  "KubernetesFlagd",
 		4178:  "KubernetesGoFeatureFlagFlagFile",
 		4179:  "KubernetesFlagdFlagFile",
+		4180:  "KubernetesAgentSandboxController",
 		5000:  "DigitalOceanApp",
 		5001:  "DigitalOceanBucket",
 		5002:  "DigitalOceanContainerRegistry",
@@ -4401,6 +4405,7 @@ var (
 		"KubernetesFlagd":                                4177,
 		"KubernetesGoFeatureFlagFlagFile":                4178,
 		"KubernetesFlagdFlagFile":                        4179,
+		"KubernetesAgentSandboxController":               4180,
 		"DigitalOceanApp":                                5000,
 		"DigitalOceanBucket":                             5001,
 		"DigitalOceanContainerRegistry":                  5002,
@@ -4984,7 +4989,7 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"\x1cKubernetesManifestProjection\x12\x1f\n" +
 	"\vapi_version\x18\x01 \x01(\tR\n" +
 	"apiVersion\x12\x12\n" +
-	"\x04kind\x18\x02 \x01(\tR\x04kind*\xfb\x96\x03\n" +
+	"\x04kind\x18\x02 \x01(\tR\x04kind*\xc0\x97\x03\n" +
 	"\vCatalogKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12`\n" +
 	"\x16TestCatalogKindGeneric\x10\x01\x1aD\xa2\xf7\x04@\b\x01\x12\bv1alpha2\"\x04tckgJ,\n" +
@@ -5776,7 +5781,8 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"\x17KubernetesGoFeatureFlag\x10\xd0 \x1a\x1c\xa2\xf7\x04\x18\b\x13\x12\bv1alpha1\"\ak8sgoffP\x92\x03\x123\n" +
 	"\x0fKubernetesFlagd\x10\xd1 \x1a\x1d\xa2\xf7\x04\x19\b\x13\x12\bv1alpha1\"\bk8sflagdP\x92\x03\x12C\n" +
 	"\x1fKubernetesGoFeatureFlagFlagFile\x10\xd2 \x1a\x1d\xa2\xf7\x04\x19\b\x13\x12\bv1alpha1\"\bk8sgofffP\x92\x03\x12;\n" +
-	"\x17KubernetesFlagdFlagFile\x10\xd3 \x1a\x1d\xa2\xf7\x04\x19\b\x13\x12\bv1alpha1\"\bk8sflgdfP\x92\x03\x120\n" +
+	"\x17KubernetesFlagdFlagFile\x10\xd3 \x1a\x1d\xa2\xf7\x04\x19\b\x13\x12\bv1alpha1\"\bk8sflgdfP\x92\x03\x12C\n" +
+	" KubernetesAgentSandboxController\x10\xd4 \x1a\x1c\xa2\xf7\x04\x18\b\x13\x12\bv1alpha1\"\ak8sasbcP\x91\x03\x120\n" +
 	"\x0fDigitalOceanApp\x10\x88'\x1a\x1a\xa2\xf7\x04\x16\b\x11\x12\bv1alpha1\"\x05doappP\xf6\x03\x123\n" +
 	"\x12DigitalOceanBucket\x10\x89'\x1a\x1a\xa2\xf7\x04\x16\b\x11\x12\bv1alpha1\"\x05dobktP\xf8\x03\x12=\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\x8a'\x1a\x19\xa2\xf7\x04\x15\b\x11\x12\bv1alpha1\"\x04docrP\xfa\x03\x12=\n" +

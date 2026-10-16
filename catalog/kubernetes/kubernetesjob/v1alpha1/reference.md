@@ -1800,7 +1800,7 @@ Allowed values (use exactly as shown):
 - `GcpCloudBuildWorkerPool` -- 3260–3269: GCP platform engineering, continued (Cloud Build and Cloud Deploy resources many pipelines share) A private Cloud Build worker pool: build machines many triggers and Cloud Deploy targets share, optionally on a private network.
 - `GcpDeployPolicy` -- A Cloud Deploy deploy policy: rollout restrictions (freeze windows) that apply to every pipeline and target its selectors match.
 - `GcpDeployCustomTargetType` -- A Cloud Deploy custom target type: how to render and deploy to a target Google does not deploy natively; many targets share one.
-- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4190–4199 reserved for growth) 4000–4029: Kubernetes building blocks (core API primitives)
+- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4180–4199 hosts agent sandbox runtimes) 4000–4029: Kubernetes building blocks (core API primitives)
 - `KubernetesDeployment`
 - `KubernetesStatefulSet`
 - `KubernetesDaemonSet`
@@ -1923,7 +1923,7 @@ Allowed values (use exactly as shown):
 - `KubernetesGhaRunnerScaleSet` -- KubernetesGhaRunnerScaleSetController is a prerequisite because this kind renders an AutoscalingRunnerSet custom resource that only the controller's CRDs admit and only the controller reconciles into listener and runner pods.
 - `KubernetesHarbor`
 - `KubernetesJenkins`
-- `KubernetesTemporal` -- 4170–4189: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
+- `KubernetesTemporal` -- 4170–4179: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
 - `KubernetesNats`
 - `KubernetesLocust`
 - `KubernetesPlantonRunner`
@@ -1933,6 +1933,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagd`
 - `KubernetesGoFeatureFlagFlagFile`
 - `KubernetesFlagdFlagFile`
+- `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -2810,7 +2811,7 @@ Allowed values (use exactly as shown):
 - `GcpCloudBuildWorkerPool` -- 3260–3269: GCP platform engineering, continued (Cloud Build and Cloud Deploy resources many pipelines share) A private Cloud Build worker pool: build machines many triggers and Cloud Deploy targets share, optionally on a private network.
 - `GcpDeployPolicy` -- A Cloud Deploy deploy policy: rollout restrictions (freeze windows) that apply to every pipeline and target its selectors match.
 - `GcpDeployCustomTargetType` -- A Cloud Deploy custom target type: how to render and deploy to a target Google does not deploy natively; many targets share one.
-- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4190–4199 reserved for growth) 4000–4029: Kubernetes building blocks (core API primitives)
+- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4180–4199 hosts agent sandbox runtimes) 4000–4029: Kubernetes building blocks (core API primitives)
 - `KubernetesDeployment`
 - `KubernetesStatefulSet`
 - `KubernetesDaemonSet`
@@ -2933,7 +2934,7 @@ Allowed values (use exactly as shown):
 - `KubernetesGhaRunnerScaleSet` -- KubernetesGhaRunnerScaleSetController is a prerequisite because this kind renders an AutoscalingRunnerSet custom resource that only the controller's CRDs admit and only the controller reconciles into listener and runner pods.
 - `KubernetesHarbor`
 - `KubernetesJenkins`
-- `KubernetesTemporal` -- 4170–4189: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
+- `KubernetesTemporal` -- 4170–4179: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
 - `KubernetesNats`
 - `KubernetesLocust`
 - `KubernetesPlantonRunner`
@@ -2943,6 +2944,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagd`
 - `KubernetesGoFeatureFlagFlagFile`
 - `KubernetesFlagdFlagFile`
+- `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -5019,7 +5021,7 @@ Allowed values (use exactly as shown):
 - `GcpCloudBuildWorkerPool` -- 3260–3269: GCP platform engineering, continued (Cloud Build and Cloud Deploy resources many pipelines share) A private Cloud Build worker pool: build machines many triggers and Cloud Deploy targets share, optionally on a private network.
 - `GcpDeployPolicy` -- A Cloud Deploy deploy policy: rollout restrictions (freeze windows) that apply to every pipeline and target its selectors match.
 - `GcpDeployCustomTargetType` -- A Cloud Deploy custom target type: how to render and deploy to a target Google does not deploy natively; many targets share one.
-- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4190–4199 reserved for growth) 4000–4029: Kubernetes building blocks (core API primitives)
+- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4180–4199 hosts agent sandbox runtimes) 4000–4029: Kubernetes building blocks (core API primitives)
 - `KubernetesDeployment`
 - `KubernetesStatefulSet`
 - `KubernetesDaemonSet`
@@ -5142,7 +5144,7 @@ Allowed values (use exactly as shown):
 - `KubernetesGhaRunnerScaleSet` -- KubernetesGhaRunnerScaleSetController is a prerequisite because this kind renders an AutoscalingRunnerSet custom resource that only the controller's CRDs admit and only the controller reconciles into listener and runner pods.
 - `KubernetesHarbor`
 - `KubernetesJenkins`
-- `KubernetesTemporal` -- 4170–4189: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
+- `KubernetesTemporal` -- 4170–4179: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
 - `KubernetesNats`
 - `KubernetesLocust`
 - `KubernetesPlantonRunner`
@@ -5152,6 +5154,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagd`
 - `KubernetesGoFeatureFlagFlagFile`
 - `KubernetesFlagdFlagFile`
+- `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -6029,7 +6032,7 @@ Allowed values (use exactly as shown):
 - `GcpCloudBuildWorkerPool` -- 3260–3269: GCP platform engineering, continued (Cloud Build and Cloud Deploy resources many pipelines share) A private Cloud Build worker pool: build machines many triggers and Cloud Deploy targets share, optionally on a private network.
 - `GcpDeployPolicy` -- A Cloud Deploy deploy policy: rollout restrictions (freeze windows) that apply to every pipeline and target its selectors match.
 - `GcpDeployCustomTargetType` -- A Cloud Deploy custom target type: how to render and deploy to a target Google does not deploy natively; many targets share one.
-- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4190–4199 reserved for growth) 4000–4029: Kubernetes building blocks (core API primitives)
+- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4180–4199 hosts agent sandbox runtimes) 4000–4029: Kubernetes building blocks (core API primitives)
 - `KubernetesDeployment`
 - `KubernetesStatefulSet`
 - `KubernetesDaemonSet`
@@ -6152,7 +6155,7 @@ Allowed values (use exactly as shown):
 - `KubernetesGhaRunnerScaleSet` -- KubernetesGhaRunnerScaleSetController is a prerequisite because this kind renders an AutoscalingRunnerSet custom resource that only the controller's CRDs admit and only the controller reconciles into listener and runner pods.
 - `KubernetesHarbor`
 - `KubernetesJenkins`
-- `KubernetesTemporal` -- 4170–4189: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
+- `KubernetesTemporal` -- 4170–4179: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
 - `KubernetesNats`
 - `KubernetesLocust`
 - `KubernetesPlantonRunner`
@@ -6162,6 +6165,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagd`
 - `KubernetesGoFeatureFlagFlagFile`
 - `KubernetesFlagdFlagFile`
+- `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -8354,7 +8358,7 @@ Allowed values (use exactly as shown):
 - `GcpCloudBuildWorkerPool` -- 3260–3269: GCP platform engineering, continued (Cloud Build and Cloud Deploy resources many pipelines share) A private Cloud Build worker pool: build machines many triggers and Cloud Deploy targets share, optionally on a private network.
 - `GcpDeployPolicy` -- A Cloud Deploy deploy policy: rollout restrictions (freeze windows) that apply to every pipeline and target its selectors match.
 - `GcpDeployCustomTargetType` -- A Cloud Deploy custom target type: how to render and deploy to a target Google does not deploy natively; many targets share one.
-- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4190–4199 reserved for growth) 4000–4029: Kubernetes building blocks (core API primitives)
+- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4180–4199 hosts agent sandbox runtimes) 4000–4029: Kubernetes building blocks (core API primitives)
 - `KubernetesDeployment`
 - `KubernetesStatefulSet`
 - `KubernetesDaemonSet`
@@ -8477,7 +8481,7 @@ Allowed values (use exactly as shown):
 - `KubernetesGhaRunnerScaleSet` -- KubernetesGhaRunnerScaleSetController is a prerequisite because this kind renders an AutoscalingRunnerSet custom resource that only the controller's CRDs admit and only the controller reconciles into listener and runner pods.
 - `KubernetesHarbor`
 - `KubernetesJenkins`
-- `KubernetesTemporal` -- 4170–4189: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
+- `KubernetesTemporal` -- 4170–4179: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
 - `KubernetesNats`
 - `KubernetesLocust`
 - `KubernetesPlantonRunner`
@@ -8487,6 +8491,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagd`
 - `KubernetesGoFeatureFlagFlagFile`
 - `KubernetesFlagdFlagFile`
+- `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -9364,7 +9369,7 @@ Allowed values (use exactly as shown):
 - `GcpCloudBuildWorkerPool` -- 3260–3269: GCP platform engineering, continued (Cloud Build and Cloud Deploy resources many pipelines share) A private Cloud Build worker pool: build machines many triggers and Cloud Deploy targets share, optionally on a private network.
 - `GcpDeployPolicy` -- A Cloud Deploy deploy policy: rollout restrictions (freeze windows) that apply to every pipeline and target its selectors match.
 - `GcpDeployCustomTargetType` -- A Cloud Deploy custom target type: how to render and deploy to a target Google does not deploy natively; many targets share one.
-- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4190–4199 reserved for growth) 4000–4029: Kubernetes building blocks (core API primitives)
+- `KubernetesNamespace` -- 4000–4999: Kubernetes resources, organized in family sub-bands (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts analytics & ML; 4180–4199 hosts agent sandbox runtimes) 4000–4029: Kubernetes building blocks (core API primitives)
 - `KubernetesDeployment`
 - `KubernetesStatefulSet`
 - `KubernetesDaemonSet`
@@ -9487,7 +9492,7 @@ Allowed values (use exactly as shown):
 - `KubernetesGhaRunnerScaleSet` -- KubernetesGhaRunnerScaleSetController is a prerequisite because this kind renders an AutoscalingRunnerSet custom resource that only the controller's CRDs admit and only the controller reconciles into listener and runner pods.
 - `KubernetesHarbor`
 - `KubernetesJenkins`
-- `KubernetesTemporal` -- 4170–4189: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
+- `KubernetesTemporal` -- 4170–4179: Kubernetes app platforms KubernetesPostgres is a prerequisite because the recommended (and E2E-proven) database composition backs Temporal's default and visibility stores with a CloudNativePG cluster.
 - `KubernetesNats`
 - `KubernetesLocust`
 - `KubernetesPlantonRunner`
@@ -9497,6 +9502,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagd`
 - `KubernetesGoFeatureFlagFlagFile`
 - `KubernetesFlagdFlagFile`
+- `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`

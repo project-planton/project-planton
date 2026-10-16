@@ -1439,7 +1439,9 @@ directory, `templates/`, and the values file) and choose:
    provider 3.x; the Helm SDK's client-only dry-run install with CRDs
    included on Pulumi — both return the same document set, verified),
    or fetches the pinned upstream bundle by a URL derived from the
-   version; filters the documents to `kind: CustomResourceDefinition`;
+   version (for a kind installed from a released manifest, the release
+   asset itself, with the CRDs dropped from the module's own document
+   set); filters the documents to `kind: CustomResourceDefinition`;
    applies each one keyed by its OWN `metadata.name` as a KEPT resource
    (server-side apply with force; `apply_only` on `kubectl_manifest`;
    the classic-yaml ConfigGroup with a retainOnDelete transformation

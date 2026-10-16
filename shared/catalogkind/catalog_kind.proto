@@ -6209,7 +6209,7 @@ enum CatalogKind {
 
   // 4000–4999: Kubernetes resources, organized in family sub-bands
   // (4030–4069 also hosts CNI/autoscaling/DR addons; 4130–4149 hosts
-  // analytics & ML; 4190–4199 reserved for growth)
+  // analytics & ML; 4180–4199 hosts agent sandbox runtimes)
   // 4000–4029: Kubernetes building blocks (core API primitives)
   KubernetesNamespace = 4000 [(kind_meta) = {
     provider: kubernetes
@@ -7233,7 +7233,7 @@ enum CatalogKind {
     id_prefix: "k8sjkn"
     service_group: kubernetes_open_source_software
   }];
-  // 4170–4189: Kubernetes app platforms
+  // 4170–4179: Kubernetes app platforms
   // KubernetesPostgres is a prerequisite because the recommended (and
   // E2E-proven) database composition backs Temporal's default and
   // visibility stores with a CloudNativePG cluster.
@@ -7303,6 +7303,14 @@ enum CatalogKind {
     version: "v1alpha1"
     id_prefix: "k8sflgdf"
     service_group: kubernetes_open_source_software
+  }];
+  // 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps'
+  // agent-sandbox; 4190–4199 Agent Substrate)
+  KubernetesAgentSandboxController = 4180 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasbc"
+    service_group: kubernetes_operators_controllers
   }];
 
   // 5000–5999: DigitalOcean resources

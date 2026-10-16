@@ -755,6 +755,8 @@ Fields on other kinds that can point at this resource:
 
 | Kind | Field | Reads |
 |---|---|---|
+| KubernetesAgentSandboxController | `spec.controller.metrics.tls.certificateSecret` | `status.outputs.secret_name` |
+| KubernetesAgentSandboxController | `spec.router.tls.certificateSecret` | `status.outputs.secret_name` |
 | KubernetesClusterIssuer | `spec.config.ca.caSecretName` | `status.outputs.secret_name` |
 | KubernetesGatekeeper | `spec.externalCert.secretName` | `spec.secret_name` |
 | KubernetesHarbor | `spec.expose.tls.certSecretName` | `status.outputs.secret_name` |

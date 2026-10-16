@@ -1762,6 +1762,24 @@ func TestOutputsConformance(t *testing.T) {
 			},
 		},
 		{
+			// KubernetesAgentSandboxController: upstream's fixed namespace,
+			// the controller's metrics handles a ServiceMonitor composes
+			// against, and the router handles (populated with a router).
+			name: "KubernetesAgentSandboxController",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxController,
+			rawOutputs: map[string]interface{}{
+				"namespace":            "agent-sandbox-system",
+				"metrics_service_name": "agent-sandbox-controller",
+				"metrics_port":         "8080",
+				"router_service_name":  "sandbox-router-svc",
+				"router_endpoint":      "http://sandbox-router-svc.agent-sandbox-system.svc.cluster.local:8080",
+			},
+			mustPopulate: []string{
+				"namespace", "metrics_service_name", "metrics_port",
+				"router_service_name", "router_endpoint",
+			},
+		},
+		{
 			// KubernetesTekton: the resolved installation handles — target
 			// namespace, profile, and the dashboard Service handles exposure
 			// kinds compose against (populated on profile `all`).

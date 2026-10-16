@@ -677,6 +677,13 @@ func GetVerifierFromManifest(manifestPath string) (ResourceVerifier, error) {
 	case "kubernetessolroperator":
 		return newSolrOperatorInstallVerifier(manifestPath, info.Name, info.Namespace), nil
 
+	// The agent-sandbox controller: the controller (and router) Available
+	// and the kept definitions stamped, then a probe proving it serves: a
+	// Sandbox Ready, a claim bound from a warm pool, a request through the
+	// router by sandbox name. Destroy asserts the sandbox outlives it.
+	case "kubernetesagentsandboxcontroller":
+		return newAgentSandboxControllerVerifier(manifestPath), nil
+
 	// An operator-managed SolrCloud: every node ready + the common
 	// Service. The behavioral-collection scenario (recognized by name)
 	// creates a collection, indexes a document and queries it back —

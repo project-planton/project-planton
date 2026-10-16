@@ -311,6 +311,11 @@ Fields on other kinds that can point at this resource:
 
 | Kind | Field | Reads |
 |---|---|---|
+| KubernetesAgentSandboxController | `spec.controller.tracing.headers.secret` | `status.outputs.secret_name` |
+| KubernetesAgentSandboxController | `spec.router.authorization.scopedToken.v1Secret.secret` | `status.outputs.secret_name` |
+| KubernetesAgentSandboxController | `spec.router.authorization.scopedToken.verificationKeys.secret` | `status.outputs.secret_name` |
+| KubernetesAgentSandboxController | `spec.router.tls.clientCa.secret` | `status.outputs.secret_name` |
+| KubernetesAgentSandboxController | `spec.router.telemetry.headers.secret` | `status.outputs.secret_name` |
 | KubernetesCronJob | `spec.jobTemplate.pod.imagePullSecrets` | `spec.name` |
 | KubernetesDaemonSet | `spec.pod.imagePullSecrets` | `spec.name` |
 | KubernetesDeployment | `spec.pod.imagePullSecrets` | `spec.name` |

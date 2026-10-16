@@ -650,6 +650,21 @@ teardown script exists; it uses a chart no other lane keeps CRDs for on the
 shared cluster (metacontroller), because a kept CRD would be re-adopted,
 not refused. The denied lane runs as a different identity, below.
 
+A kind that pins its release and installs under upstream's fixed names
+(the agent-sandbox controller) has no chart-version lanes, and every lane
+writes the same definition names, so exactly ONE lane may keep
+definitions behind: `minimal`, core only, which keeps the one definition
+the core install carries. Every lane that installs more turns keep off,
+which leaves the remaining names free for the owned-elsewhere lane to
+plant. Such kinds add three failure classes, asserted in three parts by
+their own verifier: `workload-owned-elsewhere` (a Deployment under a fixed
+name exists without the kind's `planton.ai/kind` label; the verifier
+checks it gained none), `namespace-missing` (`create_namespace` is off and
+the namespace's owner has not created it), and `namespace-owned-elsewhere`
+(`create_namespace` is on and someone else created the namespace). Their
+fixtures are a `KubernetesManifest` planting the other installation's
+Deployment and a `KubernetesNamespace` owning the namespace.
+
 Before the verifier sees a deploy error, the runner passes the engine's
 output through `pkg/failure.Explain` (the same step the CLI takes): a
 module refuses in place wherever HCL can see the fact, and a failure that
