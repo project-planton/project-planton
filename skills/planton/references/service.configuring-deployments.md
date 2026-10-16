@@ -1,6 +1,6 @@
 ---
 title: Reading and Changing a Service's Deployment Configuration
-description: What a service is DECLARED to deploy per environment and who writes that declaration — reading deploy.environments honestly, the two writers (a git kustomize tree vs platform-authored), editing through get-then-apply without destroying authored content, which resources belong on the service and which on an Infra Stack (and how to move one across), adding and removing target environments, and the deployments on/off switch. Read when someone asks what an environment is configured to run, wants more memory or a new variable on a running service, wants a new target environment, asks why the service shows no URL while a route fronts it elsewhere, or asks why deployments stopped happening.
+description: What a service is DECLARED to deploy per environment and who writes that declaration — reading deploy.environments honestly, the two writers (a git kustomize tree vs platform-authored), editing through get-then-apply without destroying authored content, which resources belong on the service and which on an Infra Stack (and how to move one across), adding and removing target environments, removing a resource (the next deployment destroys it unless kept), and the deployments on/off switch. Read when someone asks what an environment is configured to run, wants more memory or a new variable on a running service, wants a new target environment or a resource gone, asks why the service shows no URL while a route fronts it elsewhere, or asks why deployments stopped happening.
 ---
 
 # Reading and Changing a Service's Deployment Configuration
@@ -47,9 +47,13 @@ The boundary matters for more than tidiness. The platform reads a service's URL 
 
 **Moving a resource from an Infra Stack onto the service.** The hand-over is three ordinary acts, and the resource keeps running through all of them: (1) declare the resource under the service's environment (`deploy.environments[].resources[]`, per the get-then-apply loop above) with the SAME kind, environment and name the stack gave it; (2) remove it from the Infra Stack's templates, plan the stack (`planton infra stack plan <stack> . --env <env>`) -- the resource plans Destroy -- and apply the plan with that resource kept: `planton infra stack apply <stack> . --env <env> --keep <Kind>/<name> -m "hand <name> over to <service>"`. The stack lets go of it; nothing changes where it runs. (3) Deploy the service (a push, or `planton service deploy`): the service's run takes over the record nobody owns and applies it from the service's declaration. Show the user the stack's plan before step 2 and confirm the kept resource by name -- a Destroy there would take it down. Do not hand-edit ownership: the plan's Keep is the only way a stack lets go of a running resource.
 
+**Moving one the other way, from the service onto an Infra Stack,** mirrors it: (1) mark the resource `planton.dev/keep-on-provider: "true"` in the service's declaration and deploy; (2) remove it from the service and deploy again, and the run keeps it (the service lets go; nothing changes where it runs); (3) declare it in the stack and apply the plan with its Adopt chosen. Skipping step 1 makes step 2 destroy it.
+
 **Adding** an environment is adding one entry to `deploy.environments` — the slug plus its manifests. Copying an existing environment's resources and re-stamping `metadata.env` (and the `{service}-{env}` name convention, when the source followed it) is the faithful path for any resource shape. Nothing deploys at add time; the next push (or a promote into the new environment) performs the first deployment. Adding an entry can newly collide on the serving hostname — the refusal names it.
 
-**Removing** an entry stops FUTURE deploys to that environment. State the no-teardown fact plainly: **anything already running there keeps running** — removing configuration never destroys resources. Tearing down deployed resources is the service delete cascade's job (`references/service.delete-cascade.md`), not a configuration edit's.
+**Removing** an entry stops FUTURE deploys to that environment. State the fact plainly: **anything already running there keeps running** — removing a whole environment from the service tears nothing down. Tearing down a service's deployed resources is the service delete cascade's job (`references/service.delete-cascade.md`), not a configuration edit's.
+
+**Removing a resource** from an environment that stays is different: the next deployment to that environment destroys it, after everything else applied and verified. Say so before the edit, in the console's own words: "The next push or deploy to staging destroys it. A resource that holds data waits for someone to confirm first. To keep it running without Planton, mark it Keep on Provider and deploy before removing it." A resource marked `planton.dev/keep-on-provider: "true"` is kept (the service lets go and it keeps running); one protected from destroy, or still read by something else, is left in place with the reason. A redeploy does not remove it: it re-applies the current deployment, which still declares it. What the run does, and the question it asks about data, is in `references/service.delivery-verbs.md` ("What a run removes").
 
 ## The deployments on/off switch
 
@@ -61,7 +65,7 @@ Which environments a push reaches is decided on the Environment records, for eve
 
 ## What a configuration edit can never do
 
-- It cannot change what is currently RUNNING (only the next deployment reads the declaration).
+- It cannot change what is currently RUNNING (only the next deployment reads the declaration — and that deployment destroys a resource the edit removed).
 - It cannot touch a git-maintained service's environments (silently preserved-over — say so instead of trying).
 - It cannot author `sync` provenance (user-supplied values are discarded) or resolve secrets into the record.
 - It is refused entirely on a service that is being deleted.
