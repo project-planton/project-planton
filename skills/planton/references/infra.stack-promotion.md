@@ -196,7 +196,7 @@ redacted. Exit `0` when the two are the same, `1` when they differ, like
 `planton diff`. Agents use `diff_infra_stack`. In the console, **Make prod
 Like qa** opens Promote.
 
-## What Promote, Roll Back and Upgrade all take
+## What Promote, Roll Back, Upgrade and Reconcile all take
 
 - The plan, show, consent and apply steps of `planton infra stack apply`:
   at a terminal it shows the plan and asks once; `--plan-digest <digest>`

@@ -104,7 +104,7 @@ While a Service is live, the Infra Components its latest run into an environment
 A Service's configuration is what runs in your cloud, so taking a resource out of it takes the resource out of the cloud. When a run no longer declares a resource the Service deployed to an environment, the run removes it at the very end, after everything it declares has applied and the rollout has verified. The run lists its removals from the moment it starts, under **No Longer Declared**, so you see what it will remove before it does.
 
 - **Destroyed** is the default for a resource that holds no data. A push that removes a queue's manifest destroys the queue.
-- **Kept** applies to a resource marked `planton.dev/keep-on-provider: "true"`: the Service lets go of it and it keeps running, findable and adoptable. Mark it and deploy before removing it.
+- **Kept** (named by its provider: Kept in AWS) applies to a resource marked `planton.dev/keep-on-provider: "true"`: the Service lets go of it and it keeps running, findable and adoptable. Mark it and deploy before removing it.
 - **Left in Place** applies when something stops the destroy: `planton.dev/prevent-destroy`, the resource's own deletion protection, something else still reading it, or a kept resource living inside it. The run says why and how to clear it, and the next run tries again.
 
 A resource that holds data, such as a database, is never destroyed by a push alone. The rest of the environment deploys, then the run asks: destroy it (type its name), or keep it. In a protected environment the approver sees every removal at the gate and can keep any of them. If a removal was a mistake, such as a renamed resource, restore the name and push: the newer run takes over and nothing is removed.

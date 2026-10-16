@@ -63,7 +63,9 @@ Two annotations on a resource decide what an [Infra Stack](/docs/infrastructure/
 | `planton.dev/keep-on-provider: "true"` | Released, never destroyed: removed from the templates, undeployed or purged, it keeps running on its provider, and another stack can adopt it or a service can take it over. | **Keep** (named by its provider: Keep in AWS), the choice locked: "Marked planton.dev/keep-on-provider: its stack never destroys it". |
 | `planton.dev/prevent-destroy: "true"` | Refused: an undeploy or purge is refused before anything starts, naming the resource. | **Blocked** from destroying — choose Keep to apply the plan, or remove the annotation to destroy it. |
 
-A [Service](/docs/ci-cd/what-is-a-service) honours both the same way when it is deleted: a resource marked keep-on-provider is released and keeps running, and one marked prevent-destroy refuses the delete before anything starts, naming the resource ("checkout-api can't be deleted: orders-db in prod is marked prevent-destroy. Remove the mark, or delete with Keep Resources.").
+The annotation is not the only thing that blocks a destroy: the resource's own deletion protection, or anything else still reading it (another stack, a service, a resource deployed on its own), blocks it the same way, and the row says which.
+
+A [Service](/docs/ci-cd/what-is-a-service) reads both marks when a run removes a resource it no longer declares: a resource marked keep-on-provider reads **Kept** (Kept in AWS) and keeps running, and one marked prevent-destroy reads **Left in Place**, naming the mark, until it is lifted and the next run destroys it ([Removing a Resource](/docs/ci-cd/what-is-a-service#removing-a-resource)). It honours both the same way when it is deleted: a resource marked keep-on-provider is released and keeps running, and one marked prevent-destroy refuses the delete before anything starts, naming the resource ("checkout-api can't be deleted: orders-db in prod is marked prevent-destroy. Remove the mark, or delete with Keep Resources.").
 
 Keep answers "this resource outlives its owner"; prevent-destroy answers "stop anyone from tearing this down by mistake". A removed resource without either is destroyed when its plan says Destroy and you agreed — a resource that holds data only when you named it.
 
@@ -76,7 +78,7 @@ Keep answers "this resource outlives its owner"; prevent-destroy answers "stop a
 | Every direct change to a resource waits for someone | `planton.dev/infra-job.is-manual: "true"` |
 | Read the plan before each update or destroy applies | `spec.flow_control.pause_between_preview_and_update_or_destroy: true` |
 | Every change in an environment reviewed by a second person | Protect the environment |
-| A resource that outlives its stack | `planton.dev/keep-on-provider: "true"` |
+| A resource that outlives its stack or service | `planton.dev/keep-on-provider: "true"` |
 | A resource nobody tears down by mistake | `planton.dev/prevent-destroy: "true"` |
 
 ## Where to See It

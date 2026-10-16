@@ -198,5 +198,5 @@ Additional flags for `create`, `resume`, and `rerun`:
 - [Infra Components](/docs/infrastructure/infra-components) — The infrastructure that Infra Jobs provision
 - [Importing Resources](/docs/infrastructure/importing-resources) — Importing existing infrastructure into IaC state
 - [Infra Pipelines](/docs/infrastructure/infra-pipelines) — Orchestrating multiple Infra Jobs across resources
-- [Flow Control](/docs/infrastructure/flow-control) — Governance policies that control Infra Job execution
+- [Flow Control](/docs/infrastructure/flow-control) — The settings on a resource that decide how cautiously its Infra Jobs run
 - [Connections](/docs/connections) — How provider credentials are managed and resolved

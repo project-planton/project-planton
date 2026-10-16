@@ -30,7 +30,7 @@ The person's first fear is not "why" but "what did this do to my running service
 
 - **A failed build deployed nothing.** Each environment still runs what it ran before. Name it: `get_service_delivery_path` for the service (CLI: `planton service status <service>`) gives each environment's current deployment with its commit and the run that built it — "dev is still on b31c9aa, built by Run #127 this morning; nothing changed." (`list_service_deployments` has the full records.)
 - **A failed deploy may have left an environment half-changed.** The run's `status.deployment_stage.environments[]` says which environments completed, which failed at which resource, and which never started (the promotion walk stops). The failed environment's `service_deployment_id` is present only when a deployment record was written; the head deployment tells you what is actually serving.
-- **A failed delivery run (promote, rollback, deploy) changed nothing it did not finish.** Say what the target environment runs now. Its fix is the same verb again once the cause is fixed — promote again, roll back again, deploy again — never a rerun: rerunning a delivery run is refused, and the refusal names the command (`references/service.delivery-verbs.md`).
+- **A failed delivery run (promote, rollback, deploy, redeploy) changed nothing it did not finish.** Say what the target environment runs now. Its fix is the same verb again once the cause is fixed — promote again, roll back again, deploy again, redeploy again — never a rerun: rerunning a delivery run is refused, and the refusal names the command (`references/service.delivery-verbs.md`).
 
 Then the cause, then the fix.
 

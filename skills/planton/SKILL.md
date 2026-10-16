@@ -384,8 +384,8 @@ Hold these invariants in every service answer:
   `deploy.environments`; user applies preserve the stored section. On a
   manually-declared service, the caller writes it. Nothing else ever does (`references/service.configuring-deployments.md`).
 - **Environments are the organization's, ordered by promotion rank**; protection and
-  approval are the ENVIRONMENT's properties, never the service's. A delivery's initiator can never be its approver.
-- **Receipts are exact.** Promote re-applies a captured artifact+configuration pair; rollback restores a receipt byte-for-byte; neither re-renders nor needs the repository reachable.
+  approval are the ENVIRONMENT's properties, never the service's. A delivery's initiator approves it only when no other approver exists.
+- **Receipts are exact.** Promote re-applies a captured artifact+configuration pair; rollback restores a receipt byte-for-byte; redeploy applies what runs again, exactly, to put drift back; none re-renders or needs the repository reachable. What a run no longer declares is removed after the rest applied (`references/service.delivery-verbs.md`).
 - **Refusals name their working paths**: relay them, never retry them.
 
 Registration has four doors: detection-first, the primary -- the platform
@@ -428,9 +428,9 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/infra.issue-catalog.md` | A build failed and you need the fix pattern for an error |
 | `references/infra.deployment-model.md` | What happens after deploy (Infra Stacks, pipelines, Infra Jobs, IaC modules); explaining or diagnosing it |
 | `references/infra.machine-deploy.md` | Deployment is the next step on a signed-in instance; offering the machine's own cloud login as the deploy path; performing a consented deploy |
-| `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; planning and applying a change to a deployed Infra Stack; a stack's revisions |
+| `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; planning and applying a change to a deployed Infra Stack (the plan's rows, Destroy and Keep, What Else This Affects: the stacks, services and resources that read what it changes); a request in a protected environment (reviewing it, approving or rejecting on the person's word, withdrawing it, one that lapsed); drift (checking a stack, Reconcile); a stack's revisions |
 | `references/infra.stack-promotion.md` | A stack across its environments: is prod behind, which chart version each runs; promoting, rolling back, upgrading to a chart's newer version, comparing two environments or revisions |
-| `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing an orphaned provider resource into IaC state |
+| `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing a provider resource the state never recorded into IaC state |
 | `references/infra.workspace-postures.md` | The folder-identity check's full choreography: workspaces, checkouts, loose manifests and SETS, the canvas rules, and the application-repository posture a coding agent works in |
 | `references/infra.worked-example.md` | The full shape of a small chart in one place; checking your layout against a known-good one |
 | `references/cloud.aws-architecture.md` | Choosing AWS service combinations; security and network defaults |
@@ -492,7 +492,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/craft.discovery.md` | Starting a conversation; learning the person, their Planton, and the motive |
 | `references/craft.personalization.md` | A profile fact sheet is present; shaping ANY explanation |
 | `references/craft.profile-vocabulary.md` | Reading the fact sheet; what each Role/Goal/Team/Mode/Tool id means |
-| `references/craft.planton-cli.md` | Looking up charts, Infra Stacks, pipelines, connections, activity and versions; diagnosing failed deploys; the command map |
+| `references/craft.planton-cli.md` | The command map: looking up charts, Infra Stacks, services, pipelines, connections, activity and versions; the verbs that change a stack or deliver a service; drift checks; following a run and its exit codes; `planton rerun` for any run; diagnosing failed deploys |
 | `references/craft.organization-activity.md` | What changed, unread failures, decisions awaiting the caller, reviewing exact saved edits or deployment proposals, and explicitly marking inspected failures |
 | `references/craft.cost-transparency.md` | The monthly cost picture from the catalog's verified estimates; honesty rules for money; saving levers |
 | `references/craft.filing-platform-gaps.md` | Planton fell short of a need; filing the gap as a GitHub issue |
