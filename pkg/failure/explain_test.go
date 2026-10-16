@@ -104,10 +104,13 @@ func TestExplainForbiddenCRDsOnceAcrossThreeResources(t *testing.T) {
 			t.Errorf("observation lacks %q: %s", want, f.Observed)
 		}
 	}
-	if !strings.Contains(f.Meaning, "outside the Helm release") {
+	if !strings.Contains(f.Meaning, "as kept resources apart from the release or manifest it installs") {
 		t.Errorf("the CRD meaning must say why the module needs the right: %s", f.Meaning)
 	}
-	for _, want := range []string{"iac/permissions.yaml", "spec.crds.install", "helm template --include-crds"} {
+	if strings.Contains(f.Meaning, "Helm") {
+		t.Errorf("the runner explains this text for chart and manifest kinds alike, so the meaning names no source: %s", f.Meaning)
+	}
+	for _, want := range []string{"iac/permissions.yaml", "spec.crds.install", "helm template --include-crds", "the kind's README names where its CRDs come from"} {
 		if !strings.Contains(f.NextStep, want) {
 			t.Errorf("next step lacks %q: %s", want, f.NextStep)
 		}

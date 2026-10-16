@@ -57,7 +57,8 @@ type helmCRDLifecycle struct {
 	// the value every derived CRD must carry in its source-version stamp.
 	ChartVersion string
 	// SourceLabel is the value of the planton.ai/crd-source label the module
-	// stamps: the chart name.
+	// stamps: the source's own name (the chart name, or a bundle's upstream
+	// project name).
 	SourceLabel string
 	// KeepOnUninstall is the manifest's crds.keepOnUninstall (default true):
 	// whether destroy must leave the CRDs or take them.
@@ -154,7 +155,7 @@ func (l helmCRDLifecycle) verifyEstablishedAndStamped(ctx context.Context, kubec
 			return errors.Errorf("CRD %q carries source version %q, the manifest pins %q -- the derived CRDs did not follow the chart version", crd, parts[0], l.ChartVersion)
 		}
 		if parts[1] != l.SourceLabel {
-			return errors.Errorf("CRD %q carries source label %q, expected %q (the chart name)", crd, parts[1], l.SourceLabel)
+			return errors.Errorf("CRD %q carries source label %q, expected %q (the source's own name)", crd, parts[1], l.SourceLabel)
 		}
 	}
 	if len(l.CRDs) > 0 {

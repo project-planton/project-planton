@@ -60,10 +60,11 @@ func KubernetesFieldNotInDefinition(kind, field, raw string) *Failure {
 // `in the namespace "x"`); raw is the server's text, kept whole.
 //
 // A denied write on CustomResourceDefinitions gets the fuller answer: a module
-// on the catalog's derive branch applies its chart's CRDs itself, outside the
-// Helm release, so it needs cluster-scoped CRD rights a namespace-admin
-// identity never has, and the user has a way around it that keeps the deploy
-// namespaced.
+// on the catalog's derive branch applies its CRDs itself, as kept resources
+// apart from the release or manifest it installs, so it needs cluster-scoped
+// CRD rights a namespace-admin identity never has, and the user has a way
+// around it. The words name no source (chart or upstream manifest) because
+// the Terraform twin's runner explains the raw text without knowing which.
 func KubernetesForbidden(user, verb, resource, group, scope, raw string) *Failure {
 	qualified := resource
 	if group != "" {
@@ -73,8 +74,8 @@ func KubernetesForbidden(user, verb, resource, group, scope, raw string) *Failur
 	if resource == CustomResourceDefinitionsResource {
 		return &Failure{
 			Observed: observed,
-			Meaning:  "the module applies the chart's CustomResourceDefinitions itself, outside the Helm release, so it needs cluster-scoped rights on CRDs that a namespace-admin identity does not have",
-			NextStep: fmt.Sprintf("grant the rules in the module's iac/permissions.yaml (customresourcedefinitions: get, list, create, update, patch, and delete when crds.keep_on_uninstall is false) to %s, or run the deploy with an identity that has them; or set spec.crds.install to false and have a cluster administrator apply the CRDs (`helm template --include-crds` renders them)", user),
+			Meaning:  "the module applies its CustomResourceDefinitions itself, as kept resources apart from the release or manifest it installs, so it needs cluster-scoped rights on CRDs that a namespace-admin identity does not have",
+			NextStep: fmt.Sprintf("grant the rules in the module's iac/permissions.yaml (customresourcedefinitions: get, list, create, update, patch, and delete when crds.keep_on_uninstall is false) to %s, or run the deploy with an identity that has them; or set spec.crds.install to false and have a cluster administrator apply the CRDs (for a Helm chart, `helm template --include-crds` renders them; the kind's README names where its CRDs come from)", user),
 		}
 	}
 	return &Failure{
