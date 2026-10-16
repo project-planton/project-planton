@@ -2,6 +2,7 @@ package verify
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -170,6 +171,122 @@ func (v *AgentSandboxVerifier) VerifyAbsent(ctx context.Context, kubeconfig stri
 		}
 	}
 	return nil
+}
+
+// AgentSandboxTemplateVerifier proves a SandboxTemplate by what the
+// controller does with it, since a template runs nothing: managed with no
+// rules, the shared NetworkPolicy carries the secure default (ingress only
+// from the router); managed with rules, it carries exactly the declared
+// rules; unmanaged, there is none.
+type AgentSandboxTemplateVerifier struct {
+	Name, Namespace, ManifestPath string
+	Managed, CustomRules          bool
+}
+
+func newAgentSandboxTemplateVerifier(manifestPath, name, namespace string) *AgentSandboxTemplateVerifier {
+	spec := manifestSpecMap(manifestPath)
+	_, custom := specField(spec, "networkPolicy").(map[string]interface{})
+	return &AgentSandboxTemplateVerifier{
+		Name: name, Namespace: namespace, ManifestPath: manifestPath,
+		Managed:     stringOr(specField(spec, "networkPolicyManagement"), "Managed") == "Managed",
+		CustomRules: custom,
+	}
+}
+
+func (v *AgentSandboxTemplateVerifier) policyName() string {
+	return v.Name + "-network-policy"
+}
+
+func (v *AgentSandboxTemplateVerifier) VerifyExists(ctx context.Context, kubeconfig string) error {
+	fmt.Printf("  [verify] SandboxTemplate %q in %q (managed=%t, custom rules=%t)\n", v.Name, v.Namespace, v.Managed, v.CustomRules)
+	if err := KubectlResourceExists(ctx, kubeconfig, agentSandboxTemplateResource, v.Name, v.Namespace); err != nil {
+		return err
+	}
+	if err := proveProjectionReadback(ctx, kubeconfig, agentSandboxTemplateResource, v.Name, v.Namespace, v.ManifestPath); err != nil {
+		return err
+	}
+	if !v.Managed {
+		// Give the controller a reconcile to create one, then require none.
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(20 * time.Second):
+		}
+		if err := KubectlResourceAbsent(ctx, kubeconfig, "networkpolicy", v.policyName(), v.Namespace); err != nil {
+			return errors.Wrap(err, "the template is Unmanaged, but the controller created its NetworkPolicy")
+		}
+		fmt.Printf("  [verify] UNMANAGED: the controller created no NetworkPolicy for the template\n")
+		return nil
+	}
+	policy, err := awaitJSONPath(ctx, kubeconfig, "networkpolicy", v.policyName(), v.Namespace, "{.spec}", 3*time.Minute)
+	if err != nil {
+		return errors.Wrap(err, "the template is Managed, but the controller never created its NetworkPolicy")
+	}
+	var live map[string]interface{}
+	if err := json.Unmarshal([]byte(policy), &live); err != nil {
+		return errors.Wrap(err, "decoding the template's NetworkPolicy")
+	}
+	if !v.CustomRules {
+		ingress, _ := live["ingress"].([]interface{})
+		if !strings.Contains(policy, `"app":"sandbox-router"`) || len(ingress) == 0 {
+			return errors.Errorf("the template's NetworkPolicy is not the secure default (ingress only from the router): %s", policy)
+		}
+		fmt.Printf("  [verify] MANAGED: the controller applied the secure-default NetworkPolicy (ingress only from the router)\n")
+		return nil
+	}
+	want, err := expectedProjection(v.ManifestPath)
+	if err != nil {
+		return err
+	}
+	encoded, err := json.Marshal(want.Spec["networkPolicy"])
+	if err != nil {
+		return err
+	}
+	var declared map[string]interface{}
+	if err := json.Unmarshal(encoded, &declared); err != nil {
+		return err
+	}
+	var missing []string
+	for _, direction := range []string{"ingress", "egress"} {
+		if rules, ok := declared[direction]; ok {
+			missing = append(missing, missingFromLive(rules, live[direction], "networkPolicy."+direction)...)
+		}
+	}
+	if len(missing) > 0 {
+		return errors.Errorf("the template's NetworkPolicy does not carry its declared rules:\n  %s", joinLines(missing))
+	}
+	fmt.Printf("  [verify] MANAGED: the controller's NetworkPolicy %q carries exactly the declared rules\n", v.policyName())
+	return nil
+}
+
+func (v *AgentSandboxTemplateVerifier) VerifyAbsent(ctx context.Context, kubeconfig string) error {
+	if err := KubectlResourceAbsent(ctx, kubeconfig, agentSandboxTemplateResource, v.Name, v.Namespace); err != nil {
+		return err
+	}
+	return errors.Wrap(KubectlResourceAbsent(ctx, kubeconfig, "networkpolicy", v.policyName(), v.Namespace),
+		"the template is gone but its NetworkPolicy remains")
+}
+
+// awaitJSONPath reads a jsonpath of an object until it exists and is not
+// empty, within budget.
+func awaitJSONPath(ctx context.Context, kubeconfig, kind, name, namespace, jsonPath string, budget time.Duration) (string, error) {
+	deadline := time.Now().Add(budget)
+	var lastErr error
+	for {
+		out, err := kubectlGetJSONPath(ctx, kubeconfig, kind, name, namespace, jsonPath)
+		if err == nil && strings.TrimSpace(out) != "" {
+			return out, nil
+		}
+		lastErr = err
+		if time.Now().After(deadline) {
+			return "", errors.Wrapf(lastErr, "%s %s/%s %s stayed empty for %s", kind, namespace, name, jsonPath, budget)
+		}
+		select {
+		case <-ctx.Done():
+			return "", ctx.Err()
+		case <-time.After(3 * time.Second):
+		}
+	}
 }
 
 // kubectlExec runs a command in a pod's first container.

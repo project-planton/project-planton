@@ -147,6 +147,7 @@ Fields on other kinds that can point at this resource:
 | Kind | Field | Reads |
 |---|---|---|
 | KubernetesAgentSandbox | `spec.podTemplate.spec.priorityClassName` | `status.outputs.priority_class_name` |
+| KubernetesAgentSandboxTemplate | `spec.podTemplate.spec.priorityClassName` | `status.outputs.priority_class_name` |
 
 ## See Also
 

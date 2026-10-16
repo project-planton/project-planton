@@ -333,6 +333,7 @@ Fields on other kinds that can point at this resource:
 | Kind | Field | Reads |
 |---|---|---|
 | KubernetesAgentSandbox | `spec.podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | `status.outputs.pvc_name` |
+| KubernetesAgentSandboxTemplate | `spec.podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | `status.outputs.pvc_name` |
 
 ## See Also
 

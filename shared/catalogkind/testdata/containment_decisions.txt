@@ -647,6 +647,7 @@ contained dev.planton.gcp.gcpworkloadidentitypoolprovider.v1alpha1.GcpWorkloadId
 contained dev.planton.gcp.gcpworkloadidentitypoolprovider.v1alpha1.GcpWorkloadIdentityPoolProviderSpec.workload_identity_pool_id -> GcpWorkloadIdentityPool
 contained dev.planton.kubernetes.kubernetesagentsandbox.v1alpha1.KubernetesAgentSandboxSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesagentsandboxcontroller.v1alpha1.KubernetesAgentSandboxControllerSpec.namespace -> KubernetesNamespace
+contained dev.planton.kubernetes.kubernetesagentsandboxtemplate.v1alpha1.KubernetesAgentSandboxTemplateSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesairflow.v1alpha1.KubernetesAirflowSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesaltinityoperator.v1alpha1.KubernetesAltinityOperatorSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesargocd.v1alpha1.KubernetesArgocdSpec.namespace -> KubernetesNamespace

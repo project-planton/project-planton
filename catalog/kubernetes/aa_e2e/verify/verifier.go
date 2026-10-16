@@ -691,6 +691,12 @@ func GetVerifierFromManifest(manifestPath string) (ResourceVerifier, error) {
 	case "kubernetesagentsandbox":
 		return newAgentSandboxVerifier(manifestPath, info.Name, info.Namespace), nil
 
+	// An agent-sandbox SandboxTemplate: every field reads back, and the
+	// controller's shared NetworkPolicy is the secure default, exactly the
+	// declared rules, or absent when the template is Unmanaged.
+	case "kubernetesagentsandboxtemplate":
+		return newAgentSandboxTemplateVerifier(manifestPath, info.Name, info.Namespace), nil
+
 	// An operator-managed SolrCloud: every node ready + the common
 	// Service. The behavioral-collection scenario (recognized by name)
 	// creates a collection, indexes a document and queries it back —

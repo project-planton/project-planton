@@ -433,6 +433,7 @@ Fields on other kinds that can point at this resource:
 | GcpDataprocCluster | `spec.virtualClusterConfig.kubernetesClusterConfig.kubernetesNamespace` | `spec.name` |
 | KubernetesAgentSandbox | `spec.namespace` | `spec.name` |
 | KubernetesAgentSandboxController | `spec.namespace` | `spec.name` |
+| KubernetesAgentSandboxTemplate | `spec.namespace` | `spec.name` |
 | KubernetesAirflow | `spec.namespace` | `spec.name` |
 | KubernetesAltinityOperator | `spec.namespace` | `spec.name` |
 | KubernetesArgoWorkflows | `spec.namespace` | `spec.name` |

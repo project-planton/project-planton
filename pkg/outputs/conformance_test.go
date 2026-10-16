@@ -1234,6 +1234,15 @@ func TestOutputsConformance(t *testing.T) {
 			mustPopulate: []string{"sandbox_name", "namespace"},
 		},
 		{
+			name: "KubernetesAgentSandboxTemplate",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxTemplate,
+			rawOutputs: map[string]interface{}{
+				"sandbox_template_name": "coding-agent",
+				"namespace":             "agents",
+			},
+			mustPopulate: []string{"sandbox_template_name", "namespace"},
+		},
+		{
 			name: "KubernetesServiceMonitor",
 			kind: catalogkind.CatalogKind_KubernetesServiceMonitor,
 			rawOutputs: map[string]interface{}{

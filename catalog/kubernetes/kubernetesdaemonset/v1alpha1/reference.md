@@ -1910,6 +1910,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagdFlagFile`
 - `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `KubernetesAgentSandbox` -- KubernetesAgentSandboxController is a prerequisite because it installs the agents.x-k8s.io definition the Sandbox is an instance of, and the controller that runs its pod.
+- `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -2922,6 +2923,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagdFlagFile`
 - `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `KubernetesAgentSandbox` -- KubernetesAgentSandboxController is a prerequisite because it installs the agents.x-k8s.io definition the Sandbox is an instance of, and the controller that runs its pod.
+- `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -5130,6 +5132,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagdFlagFile`
 - `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `KubernetesAgentSandbox` -- KubernetesAgentSandboxController is a prerequisite because it installs the agents.x-k8s.io definition the Sandbox is an instance of, and the controller that runs its pod.
+- `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -6142,6 +6145,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagdFlagFile`
 - `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `KubernetesAgentSandbox` -- KubernetesAgentSandboxController is a prerequisite because it installs the agents.x-k8s.io definition the Sandbox is an instance of, and the controller that runs its pod.
+- `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -8471,6 +8475,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagdFlagFile`
 - `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `KubernetesAgentSandbox` -- KubernetesAgentSandboxController is a prerequisite because it installs the agents.x-k8s.io definition the Sandbox is an instance of, and the controller that runs its pod.
+- `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -9483,6 +9488,7 @@ Allowed values (use exactly as shown):
 - `KubernetesFlagdFlagFile`
 - `KubernetesAgentSandboxController` -- 4180–4199: agent sandbox runtimes (4180–4189 Kubernetes SIG Apps' agent-sandbox; 4190–4199 Agent Substrate)
 - `KubernetesAgentSandbox` -- KubernetesAgentSandboxController is a prerequisite because it installs the agents.x-k8s.io definition the Sandbox is an instance of, and the controller that runs its pod.
+- `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`

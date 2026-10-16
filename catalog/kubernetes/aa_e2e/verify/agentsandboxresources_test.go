@@ -41,3 +41,28 @@ func TestAgentSandboxResourceVerifierReadsTheScenarios(t *testing.T) {
 		})
 	}
 }
+
+const agentSandboxTemplateScenarios = "../../kubernetesagentsandboxtemplate/e2e/scenarios"
+
+func TestAgentSandboxTemplateVerifierReadsTheScenarios(t *testing.T) {
+	if _, err := os.Stat(agentSandboxTemplateScenarios); err != nil {
+		t.Skip("catalog source tree not present (bazel sandbox); runs under go test")
+	}
+	cases := map[string]struct{ managed, custom bool }{
+		"minimal.yaml":              {managed: true},
+		"full-surface.yaml":         {managed: true, custom: true},
+		"behavioral-unmanaged.yaml": {custom: true},
+	}
+	files, err := filepath.Glob(filepath.Join(agentSandboxTemplateScenarios, "*.yaml"))
+	if err != nil || len(files) != len(cases) {
+		t.Fatalf("every scenario needs a case here: found %d files, %d cases (%v)", len(files), len(cases), err)
+	}
+	for name, want := range cases {
+		t.Run(name, func(t *testing.T) {
+			v := newAgentSandboxTemplateVerifier(filepath.Join(agentSandboxTemplateScenarios, name), "t", "ns")
+			if v.Managed != want.managed || v.CustomRules != want.custom {
+				t.Errorf("managed=%t custom=%t, want %t %t", v.Managed, v.CustomRules, want.managed, want.custom)
+			}
+		})
+	}
+}
