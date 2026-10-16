@@ -231,8 +231,10 @@ PROACTIVE DEFAULT IDENTIFICATION (MANDATORY STEP)
   validation language or a generated SDK's language (`for`): name the proto
   field for its meaning (`for_duration`) and pin `json_name = "for"`, so the
   manifest key stays the upstream one while CEL can name the field. Integer
-  fields follow the upstream format and are never `int64`, which protojson
-  writes as a string.
+  fields follow the upstream format: `int32` for `format: int32`, `int64` for
+  `format: int64`. Protojson writes 64-bit integers as strings; the projection
+  turns them back into JSON numbers for the object (up to 53 bits, the range a
+  JSON number holds exactly), so the API server sees an integer.
 - **CRD-projection kinds: the object's own labels and annotations are a marked
   envelope, not spec.** When the custom resource's metadata is configuration
   (prometheus-operator selects ServiceMonitors, PodMonitors and PrometheusRules

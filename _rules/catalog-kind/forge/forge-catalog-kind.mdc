@@ -488,8 +488,10 @@ minutes on a default kubelet).
     - **Lists that carry a free-form value arrive untyped** (`variables.tf`
       declares any list or map whose element holds a `Struct` as `any`): read
       every field with `try()`, and wrap every numeric leaf in `tonumber()` --
-      the converter renders int64 fields as JSON strings, and only typed
-      variables convert them back. A conditional whose branches are differently
+      the snake_case converter renders int64 fields as JSON strings, and only
+      typed variables convert them back. (A projection kind's generated module
+      receives numbers: the manifest-projection converter writes 64-bit
+      integers as JSON numbers.) A conditional whose branches are differently
       shaped objects fails plan-time type unification (`cond ? {} : {...}`);
       use the null-prune idiom, and `try(<object expression>, fallback)` where a
       value may be an object or a scalar (a depth-limited key lowercase of a
