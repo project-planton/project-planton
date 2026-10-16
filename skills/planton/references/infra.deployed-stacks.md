@@ -132,7 +132,7 @@ Read every flag from the binding file — never guess the name, org, or env,
 and never omit `--org`/`--env` (your CLI context may point elsewhere; the
 stack's environment is not yours to move). With no folder argument it
 plans the declaration the stack already holds — what moved underneath it
-(a module release, a secret's new version, an upstream output). `--set
+(a module a new release changed, a secret's new version, an upstream output). `--set
 name=value`, `--set-file name=path` and `-f <file>` change values on top of
 the ones the environment already sets.
 
