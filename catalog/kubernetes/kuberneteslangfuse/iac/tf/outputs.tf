@@ -50,7 +50,7 @@ output "project_id" {
 output "project_public_key" {
   description = "Public key of the seeded project key pair"
   value = !local.init_enabled ? "" : (
-    local.declared_keys ? try(var.spec.init.project.public_key, "") : try("pk-lf-${random_password.init_project_public_key[0].result}", "")
+    local.declared_keys ? try(var.spec.init.project.public_key, "") : try(nonsensitive("pk-lf-${random_password.init_project_public_key[0].result}"), "")
   )
 }
 

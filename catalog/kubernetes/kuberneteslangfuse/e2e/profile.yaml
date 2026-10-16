@@ -15,7 +15,9 @@ spec:
   # behavioral lanes prove state
   # across a chart upgrade and across a reinstall over surviving stores.
   status: green
-  validated_provisioners: []
+  validated_provisioners:
+    - pulumi
+    - terraform
   # Each scenario stands up its whole store chain, then Langfuse's first
   # start runs every Postgres and ClickHouse migration.
   timeout_minutes: 45

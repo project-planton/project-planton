@@ -75,13 +75,14 @@ locals {
     try(local.service_account.workload_identity.aks.tenant_id, "") != "" ? { "azure.workload.identity/tenant-id" = local.service_account.workload_identity.aks.tenant_id } : {},
   )
   automount_token = try(local.service_account.automount_token, null) == null ? true : local.service_account.automount_token
-  service_account_values = try(local.service_account.existing_name, "") != "" ? {
+  # One object filtered by null, never a choice between two object shapes
+  # (a conditional's branches must share one type).
+  existing_service_account = try(local.service_account.existing_name, "")
+  service_account_values = { for k, v in {
     automountServiceAccountToken = local.automount_token
-    create                       = false
-    name                         = local.service_account.existing_name
-    } : { for k, v in {
-      automountServiceAccountToken = local.automount_token
-      annotations                  = length(local.sa_annotations) > 0 ? local.sa_annotations : null
+    create                       = local.existing_service_account != "" ? false : null
+    name                         = local.existing_service_account != "" ? local.existing_service_account : null
+    annotations                  = local.existing_service_account == "" && length(local.sa_annotations) > 0 ? local.sa_annotations : null
   } : k => v if v != null }
 
   # ---- per-component rendering (twin: componentValues) ------------------------
@@ -164,7 +165,7 @@ locals {
         } }
       }] : null
       priorityClassName = try(c.scheduling.priority_class_name, "") != "" ? c.scheduling.priority_class_name : null
-      additionalEnv     = length(name == "web" ? local.web_env : local.worker_env) > 0 ? (name == "web" ? local.web_env : local.worker_env) : null
+      additionalEnv     = length(local.component_env[name]) > 0 ? local.component_env[name] : null
     } : pk => pv if pv != null }
     deployment = length({ for dk, dv in {
       additionalLabels = length(try(c.workload.deployment_labels, {})) > 0 ? c.workload.deployment_labels : null
@@ -178,6 +179,11 @@ locals {
     revisionHistoryLimit = try(c.workload.revision_history_limit, null)
     hostAliases          = length(try(c.workload.host_aliases, [])) > 0 ? [for a in c.workload.host_aliases : { ip = a.ip, hostnames = a.hostnames }] : null
   } : k => v if v != null } }
+
+  # Keyed by component so each one reads its own list: a conditional that
+  # picked between the two lists would need both to share one type, and
+  # their entries differ.
+  component_env = { web = local.web_env, worker = local.worker_env }
 
   affinity = { for name, c in local.components : name => (
     length(local.affinity_parts[name]) == 0 ? null : local.affinity_parts[name]
@@ -227,12 +233,15 @@ locals {
 
   # Rollout strategy; an integer-looking bound renders as a number (a string
   # "1" would read as an invalid percentage) - twin: strategyBody.
+  # An integer-looking bound renders as a number (Kubernetes reads a string
+  # only as a percentage). try() keeps the number: a conditional would unify
+  # both branches to string.
   strategy = { for name, c in local.components : name => (
     (try(c.workload.strategy.type, "") == "" && try(c.workload.strategy.max_surge, "") == "" && try(c.workload.strategy.max_unavailable, "") == "") ? null : { for k, v in {
       type = try(c.workload.strategy.type, "") != "" ? c.workload.strategy.type : null
       rollingUpdate = (try(c.workload.strategy.max_surge, "") == "" && try(c.workload.strategy.max_unavailable, "") == "") ? null : { for rk, rv in {
-        maxSurge       = try(c.workload.strategy.max_surge, "") == "" ? null : (can(regex("^[0-9]+$", c.workload.strategy.max_surge)) ? tonumber(c.workload.strategy.max_surge) : c.workload.strategy.max_surge)
-        maxUnavailable = try(c.workload.strategy.max_unavailable, "") == "" ? null : (can(regex("^[0-9]+$", c.workload.strategy.max_unavailable)) ? tonumber(c.workload.strategy.max_unavailable) : c.workload.strategy.max_unavailable)
+        maxSurge       = try(c.workload.strategy.max_surge, "") == "" ? null : try(tonumber(c.workload.strategy.max_surge), c.workload.strategy.max_surge)
+        maxUnavailable = try(c.workload.strategy.max_unavailable, "") == "" ? null : try(tonumber(c.workload.strategy.max_unavailable), c.workload.strategy.max_unavailable)
       } : rk => rv if rv != null }
     } : k => v if v != null }
   ) }

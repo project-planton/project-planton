@@ -115,7 +115,9 @@ func instanceSecret(ctx *pulumi.Context,
 		if err != nil {
 			return nil, err
 		}
-		projectPublicKey = pulumi.Sprintf("pk-lf-%s", publicPart)
+		// The public key identifies the project; only the secret key is a
+		// credential, so the output is not marked secret.
+		projectPublicKey = pulumi.Unsecret(pulumi.Sprintf("pk-lf-%s", publicPart)).(pulumi.StringOutput)
 		data[keyInitProjectPublicKey] = projectPublicKey
 		data[keyInitProjectPublicKeySuffix] = publicPart
 		data[keyInitProjectSecretKey] = pulumi.Sprintf("sk-lf-%s", secretPart)

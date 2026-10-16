@@ -809,7 +809,11 @@ Steps 018–019 prove the kind compiles and its schema validates. **Live E2E**
 proves the IaC modules actually create, verify, and destroy real resources via
 the provider API. Every kind ships an `e2e/profile.yaml` + `e2e/scenarios/*.yaml`,
 and the provider harness (`catalog/<provider>/aa_e2e/`) runs them
-on both Pulumi and Terraform.
+on both Pulumi and Terraform. Lifecycle lanes (an upgrade, a reinstall, a
+refused change) follow `e2e/README.md`'s "Lifecycle lanes" section; an
+upgrade's second-act manifest carries `planton.dev/e2e-second-act: <first-act
+file>`, or discovery runs it as a lane of its own, out of context, and it
+fails on state its first act was meant to leave.
 
 Live E2E needs provider credentials. **Never ask the human to paste them, and never
 fabricate them.** Acquire them with this do-first, two-tier protocol. (Note: `gh`
