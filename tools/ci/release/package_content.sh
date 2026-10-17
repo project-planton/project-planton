@@ -5,8 +5,9 @@
 # Creates six zip files, each scoped to a single concern:
 #
 #   presets.zip           -- Preset YAML + MD files, kind enum proto
-#   iac-source.zip        -- IaC source (.go, .tf, .md, .yaml under iac/) plus
-#                            the provider import catalogs (aa_import/catalog.yaml
+#   iac-source.zip        -- IaC source (.go, .tf, .md, .yaml under iac/), each
+#                            OpenTofu module's provider lock (.terraform.lock.hcl),
+#                            plus the provider import catalogs (aa_import/catalog.yaml
 #                            -- read together with each kind's iac/import-map.yaml)
 #   catalog-pages.zip     -- each catalog kind root's catalog.md
 #   proto-source.zip      -- Raw proto source (spec, api, input, outputs)
@@ -146,7 +147,9 @@ fi
 # ─── IaC Source ──────────────────────────────────────────────────────────────
 # IaC modules live at the kind root (catalog/{provider}/{kind}/iac/).
 # Mirrors the ALLOWED_EXTENSIONS in iac-bundler.ts: .go, .tf, .md, .yaml
-# Excludes hidden dirs, vendor, and node_modules (same as iac-bundler.ts).
+# Excludes hidden dirs, vendor, and node_modules (same as iac-bundler.ts) --
+# except each OpenTofu module's committed provider lock: the module is only
+# the module it is with its exact provider releases, so its source ships them.
 # The provider-level import catalogs (catalog/{provider}/aa_import/catalog.yaml)
 # ride along: consumers resolve each kind's iac/import-map.yaml against them,
 # so an artifact root carrying one without the other cannot answer imports.
@@ -159,6 +162,7 @@ if wants iac-source; then
         ! -path '*/node_modules/*' \
         ! -path '*/.terraform/*' \
         ! -path '*/.*'
+    find "$CATALOG_ROOT" -path '*/iac/tf/.terraform.lock.hcl' ! -path '*/_test/*'
     find "$CATALOG_ROOT" -path '*/aa_import/*' ! -path '*/_test/*' -name 'catalog.yaml'
   } | create_zip "iac-source.zip" "IaC source"
 fi

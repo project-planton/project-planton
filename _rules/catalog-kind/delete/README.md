@@ -113,6 +113,7 @@ catalog/<provider>/<kind>/
         ├── locals.tf            ❌ Deleted
         ├── main.tf              ❌ Deleted
         ├── outputs.tf           ❌ Deleted
+        ├── .terraform.lock.hcl  ❌ Deleted
         └── README.md            ❌ Deleted
 ```
 

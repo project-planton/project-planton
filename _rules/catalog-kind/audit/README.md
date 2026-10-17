@@ -124,6 +124,7 @@ of re-checking file inventories by hand:
 - [ ] `iac/tf/locals.tf` exists
 - [ ] `iac/tf/main.tf` exists (>1KB)
 - [ ] `iac/tf/outputs.tf` exists
+- [ ] `iac/tf/.terraform.lock.hcl` exists and is current (`bash hack/guards/ensure_tf_provider_locks.sh`)
 
 ### 6. Documentation - Authored Judgment (Important - 13.34%)
 

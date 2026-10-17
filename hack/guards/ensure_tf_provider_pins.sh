@@ -20,6 +20,16 @@ set -euo pipefail
 #
 # This is a static check (no network, no cluster, no credentials), so it covers every
 # module -- including e2e `skip`/`deferred` kinds that never run a real apply.
+#
+# A constraint says which releases a module CAN run; the module's committed
+# .terraform.lock.hcl says which one it DOES run (ensure_tf_provider_locks.sh).
+# Moving a provider is therefore two deliberate steps, in one change:
+#   1. widen or raise the constraint, if the new release needs it -- in canonical_pins
+#      below and in every module together for a unified cloud;
+#   2. `make lock-providers upgrade=<provider>` (e.g. upgrade=aws) to record the newest
+#      release every module's constraint allows, with its checksums, in the canonical
+#      lock and every module's projection.
+# Only the modules that require that provider change, so only their resources re-run.
 
 repo_root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root_dir"
