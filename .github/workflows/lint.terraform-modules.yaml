@@ -10,6 +10,10 @@
 # Jobs:
 #   tf-provider-pins   (PR + push, BLOCKING) -- every iac/tf module must pin every
 #                       provider it references (root-cause guard; repo-wide, static).
+#   tf-provider-locks  (PR + push, BLOCKING) -- every iac/tf module's committed
+#                       .terraform.lock.hcl is its projection of the catalog's one
+#                       canonical lock (catalog/_providers), which covers every
+#                       module's constraints (offline; `make lock-providers` fixes it).
 #   tf-beta-admissions (PR + push, BLOCKING) -- every `provider = <secondary channel>`
 #                       attachment is recorded in pkg/providerparity/admissions and every
 #                       admission is attached by a module (static, no Go).
@@ -18,11 +22,12 @@
 #                       provider, plus the individually enrolled ones; helm_crds.tf wherever
 #                       it exists) equals the generator's output (pkg/iac/tofu/generators
 #                       drift tests).
-#   tf-validate-changed (PR, BLOCKING)       -- tofu fmt -check + init -backend=false +
-#                       validate on the iac/tf modules changed in the PR.
-#   tf-validate-all    (nightly + manual)    -- init + validate across ALL modules, the
-#                       net for provider-release drift in modules no PR touched (the exact
-#                       ExternalDns scenario). Reports failures; does not gate PRs.
+#   tf-validate-changed (PR, BLOCKING)       -- tofu fmt -check + init -backend=false
+#                       -lockfile=readonly + validate on the iac/tf modules changed in the PR.
+#   tf-validate-all    (nightly + manual)    -- the same read-only init + validate across
+#                       ALL modules: every module still installs exactly its locked,
+#                       checksummed providers and validates against them. Reports
+#                       failures; does not gate PRs.
 #   tf-isolated-plans  (PR + push, BLOCKING) -- credential-isolated `tofu plan` guards: a
 #                       module planned with ONLY what its connection supplies (no AWS_*,
 #                       empty HOME). `validate` never configures a provider, so a module that
@@ -40,6 +45,9 @@ on:
     paths:
       - 'catalog/**/iac/tf/**'
       - 'hack/guards/ensure_tf_provider_pins.sh'
+      - 'hack/guards/ensure_tf_provider_locks.sh'
+      - 'catalog/_providers/**'
+      - 'pkg/iac/tofu/providerlocks/**'
       - 'hack/guards/ensure_beta_admissions.sh'
       - 'pkg/providerparity/admissions/**'
       - 'hack/guards/ensure_create_namespace_default_false.sh'
@@ -53,6 +61,9 @@ on:
     paths:
       - 'catalog/**/iac/tf/**'
       - 'hack/guards/ensure_tf_provider_pins.sh'
+      - 'hack/guards/ensure_tf_provider_locks.sh'
+      - 'catalog/_providers/**'
+      - 'pkg/iac/tofu/providerlocks/**'
       - 'hack/guards/ensure_beta_admissions.sh'
       - 'pkg/providerparity/admissions/**'
       - 'hack/guards/ensure_create_namespace_default_false.sh'
@@ -81,6 +92,21 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify all iac/tf modules pin their providers
         run: bash ./hack/guards/ensure_tf_provider_pins.sh
+
+  # Every module runs exact, checksummed provider releases: its committed lock is
+  # its projection of the one canonical lock, and the canonical lock satisfies
+  # every module's constraint. Static, no network.
+  tf-provider-locks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Verify every module's provider lock is current
+        run: bash ./hack/guards/ensure_tf_provider_locks.sh
 
   # Secondary-channel discipline: a resource block attaches google-beta only
   # under a recorded admission, and every admission is attached somewhere.
@@ -169,7 +195,7 @@ jobs:
             (
               cd "$d"
               tofu fmt -check -recursive
-              tofu init -backend=false -input=false -no-color
+              tofu init -backend=false -lockfile=readonly -input=false -no-color
               tofu validate -no-color
             ) || { echo "::error file=$d::tofu fmt/validate failed"; rc=1; }
             echo "::endgroup::"
@@ -207,7 +233,7 @@ jobs:
           failed=()
           while IFS= read -r d; do
             echo "::group::$d"
-            if ! ( cd "$d" && tofu init -backend=false -input=false -no-color >/dev/null && tofu validate -no-color ); then
+            if ! ( cd "$d" && tofu init -backend=false -lockfile=readonly -input=false -no-color >/dev/null && tofu validate -no-color ); then
               echo "::error file=$d::tofu validate failed"
               failed+=("$d")
               rc=1

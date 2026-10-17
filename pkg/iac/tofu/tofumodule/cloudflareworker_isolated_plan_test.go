@@ -134,9 +134,9 @@ func isolatedWorkerModule(t *testing.T, root string) string {
 	if err := fileutil.CopyDir(src, workDir); err != nil {
 		t.Fatalf("copy the Worker module: %v", err)
 	}
-	for _, residue := range []string{".terraform", ".terraform.lock.hcl"} {
-		_ = os.RemoveAll(filepath.Join(workDir, residue))
-	}
+	// A local init's leftovers go; the committed provider lock stays, so the plan runs the
+	// provider releases every deploy of the module runs.
+	_ = os.RemoveAll(filepath.Join(workDir, ".terraform"))
 	return workDir
 }
 

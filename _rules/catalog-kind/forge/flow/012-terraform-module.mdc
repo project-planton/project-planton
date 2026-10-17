@@ -180,6 +180,13 @@ SEQUENTIAL STEPS
      { "files": [ {"name": "provider.tf", "content": "..."}, {"name": "locals.tf", "content": "..."}, {"name": "outputs.tf", "content": "..."} ] }
      JSON
    - If validation fails, refine and re-run (≤3).
+   - `--validate` also writes the module's provider lock (`make lock-providers`):
+     `iac/tf/.terraform.lock.hcl`, its projection of the catalog's canonical lock
+     (`catalog/_providers/.terraform.lock.hcl`), and inits read-only against it. Commit
+     that lock with the module; never hand-edit it, and never let a plain
+     `terraform init` or `tofu init` write one (they record a single platform, and the
+     lock guard refuses it). A provider no module required before is the one case that
+     reaches the registry; `make lock-providers` records it for every platform.
 5) Reconcile parity (MANDATORY): re-walk the PARITY WITH PULUMI checklist above against the
    finished module and confirm each dimension matches the Pulumi module. Verify outputs with
    the automated guard rather than by eye:
@@ -197,7 +204,8 @@ OUTPUT
 SUCCESS CRITERIA
 - `variables.tf` is generated in step 2 at the module path and matches the expected schema; the drift gate is green for the kind
 - Drafted files reference inputs that exist in `variables.tf`
-- Core files (`provider.tf`, `locals.tf`, `outputs.tf`, resource files) exist and `terraform validate` passes
+- Core files (`provider.tf`, `locals.tf`, `outputs.tf`, resource files) exist and `tofu validate` passes after a read-only init
+- `iac/tf/.terraform.lock.hcl` is committed and `bash hack/guards/ensure_tf_provider_locks.sh` passes
 - Module code is richly commented to the module-comment bar (why/trade-offs/provider quirks/ordering, not narration)
 - **Cross-engine parity holds:** every parity dimension matches the Pulumi module, or the
   divergence is minimal, output-neutral, and carries a `PARITY-EXCEPTION:` comment in BOTH

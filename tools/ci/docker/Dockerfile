@@ -9,8 +9,10 @@
 # Built by:     .github/workflows/build.ci-image.yaml (rebuilt on tools/ci/docker changes)
 #
 # Version policy: tools are installed at their LATEST at build time (no pins),
-# mirroring the previous per-run behavior of the workflows this replaces. The Go
-# toolchain is the one exception - it is pinned to the EXACT base image tag equal
+# mirroring the previous per-run behavior of the workflows this replaces. Two
+# tools are exceptions. OpenTofu is pinned (below) to the release the runner
+# executes modules with, because the modules' committed provider locks are
+# proven against it. The Go toolchain is pinned to the EXACT base image tag equal
 # to the `go` directive in go.mod; bump it here when go.mod bumps (that Dockerfile
 # edit is what triggers a rebuild). A minor-only tag (golang:1.26-bookworm) froze
 # at whatever patch was current at the last build and fell behind go.mod, and a
@@ -92,20 +94,21 @@ RUN set -eux; \
     pulumi version
 
 # -----------------------------------------------------------------------------
-# OpenTofu (latest, standalone install to /usr/local/bin).
-# The installer's own "latest" lookup hits the rate-limited api.github.com REST
-# API, which fails under an exhausted anonymous quota. We instead resolve the
-# latest version from the github.com releases/latest redirect (plain web, not the
-# metered API) and pass it explicitly - still "always latest", but reliable.
+# OpenTofu, pinned to the release the platform runner executes modules with, so
+# the lint lanes init and validate every module's committed provider lock with
+# the engine that will run it. Bump it with the runner's OPENTOFU_VERSION.
+# Installed from the release archive, verified against its published SHA256SUMS.
 # -----------------------------------------------------------------------------
+ARG OPENTOFU_VERSION=1.13.1
 RUN set -eux; \
-    latest_url="$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/opentofu/opentofu/releases/latest)"; \
-    tofu_version="${latest_url##*/tag/v}"; \
-    echo "Latest OpenTofu version: ${tofu_version}"; \
-    curl -fsSL https://get.opentofu.org/install-opentofu.sh -o /tmp/install-opentofu.sh; \
-    chmod +x /tmp/install-opentofu.sh; \
-    /tmp/install-opentofu.sh --install-method standalone --skip-verify --opentofu-version "${tofu_version}"; \
-    rm /tmp/install-opentofu.sh; \
+    arch="$(dpkg --print-architecture)"; \
+    archive="tofu_${OPENTOFU_VERSION}_linux_${arch}.tar.gz"; \
+    base="https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}"; \
+    curl -fsSL "${base}/${archive}" -o "/tmp/${archive}"; \
+    curl -fsSL "${base}/tofu_${OPENTOFU_VERSION}_SHA256SUMS" -o /tmp/tofu_SHA256SUMS; \
+    (cd /tmp && grep " ${archive}\$" tofu_SHA256SUMS | sha256sum -c -); \
+    tar -xzf "/tmp/${archive}" -C /usr/local/bin tofu; \
+    rm "/tmp/${archive}" /tmp/tofu_SHA256SUMS; \
     tofu version
 
 WORKDIR /workspace
