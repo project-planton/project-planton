@@ -959,10 +959,12 @@ Based on scenario:
   with its image pinned to the release in the module.
 - **Upstream's fixed names are a contract, so a kind that installs under
   them refuses rather than adopts**: before writing anything, read each
-  Deployment it applies under a fixed name and refuse one without the
-  kind's `planton.ai/kind` label (another installation: a managed
-  add-on, a `kubectl apply` of the release) — the Pulumi helper is
-  `pkg/iac/pulumi/pulumimodule/provider/kubernetes/workloadowner`, the
+  Deployment, DaemonSet and StatefulSet it applies under a fixed name and
+  refuse one without the kind's `planton.ai/kind` label (another
+  installation: a managed add-on, a `kubectl apply` of the release) — the
+  Pulumi helper is
+  `pkg/iac/pulumi/pulumimodule/provider/kubernetes/workloadowner`
+  (`Refuse` takes every namespace and every workload in one call), the
   Terraform twin a `kubernetes_resources` read plus preconditions on a
   `terraform_data` preflight (values known at plan, never evaluated on
   destroy). A fixed namespace still has a choosable OWNER: when the kind
@@ -973,6 +975,40 @@ Based on scenario:
   namespace missing while another resource owns it, created by someone
   else while this resource would create it, and created by this resource
   while `create_namespace` is now off (the engines would delete it).
+- **A release published as a TREE of files (Planton's build of upstream's
+  `manifests/`, every image digest-pinned) is COMPOSED, not kustomized**
+  (KubernetesAgentSubstrate is the reference): read every file from the
+  immutable tree at the pin, select files the way upstream's installer
+  does, and apply upstream's own kustomize components as written — JSON
+  patches and strategic merges read from the tree, text markers spliced
+  at upstream's marker — never retyped. Kustomize merges a keyed list as
+  a map, so an item a JSON patch appended under a name already present
+  collapses into it at the next strategic merge; a composer that keeps
+  both ships a pod template the API server rejects, identically on both
+  engines (parity never sees it). Prove the composition with a SERVER
+  dry run of every composed document under `--validate=strict` (an
+  unknown or duplicate field fails) against a cluster carrying the
+  release's definitions. Two Terraform traps on the way: `split("\n",
+  ...)` drops each piece's trailing newline (re-append it before
+  `yamldecode`), and `yamldecode` is YAML 1.2, so a YAML 1.1 octal such
+  as `defaultMode: 0600` decodes as decimal 600, which the API server
+  rejects — rewrite octal literals to decimal before decoding.
+- **Key material upstream's installer mints (CA pools, token-signing
+  keys) becomes typed Secrets the module generates** (`hashicorp/tls` and
+  `pulumi-tls`), in upstream's exact wire format, stable across applies
+  and replaced by a destroy, as an upstream reinstall would. Prove both
+  engines' output with upstream's own parser, from a throwaway module at
+  upstream's import path when the parser is internal. `pulumi-tls`
+  emits no PKCS#8; convert with `x509.MarshalPKCS8PrivateKey`, the call
+  the Terraform provider makes.
+- **When upstream writes no installed-version marker and its upgrade
+  policy forbids some moves, the kind stamps two and refuses at plan**:
+  the release as an annotation on a workload it owns, and the minor as a
+  label on the data volume's claim template (immutable, so never the
+  patch), read in the preflight and refused with
+  `failure.KubernetesUpgradeRefused` naming the backup, destroy and
+  clear steps. A claim outlives a destroy only while another resource
+  owns its namespace; say exactly that wherever the docs promise it.
 - **A manifest bundle that packs an operator WITH its CRDs applies as
   THREE ordered groups — namespace ← workloads ← CRDs — on BOTH
   engines; a flat one-pass apply is wrong in both directions** (verified

@@ -3,6 +3,7 @@ kinds:
   - KubernetesNamespace
   - KubernetesPostgres
   - KubernetesValkey
+  - KubernetesAgentSubstrate
 ---
 
 # Namespace Ownership: Dedicated Component vs the createNamespace Flag
@@ -114,6 +115,8 @@ namespace of its own. Each conventionally owns a dedicated namespace no
 other tenant will ever join, so the flag is the NORMAL shape there, not a
 violation of this pattern.
 
+One sole-tenant case still wants the dedicated component: a kind that reads Secrets someone must put in its namespace before it starts. KubernetesAgentSubstrate is the instance. Its namespace, `ate-system`, is fixed by upstream, and with S3 storage or an external database it reads the store's key and the connection strings from Secrets there. With the flag, those Secrets could only be created after the control plane they are meant for. So a KubernetesNamespace owns `ate-system`, the Secrets follow it, and the control plane comes last with `createNamespace: false`. It is also the shape that keeps the bundled database's volume across a destroy of the control plane, because the namespace it lives in is not the control plane's to delete.
+
 ## See also
 
 - [KubernetesNamespace reference](../kubernetes/kubernetesnamespace/v1alpha1/reference.md)
@@ -121,3 +124,5 @@ violation of this pattern.
 - [KubernetesPostgres reference](../kubernetes/kubernetespostgres/v1alpha1/reference.md)
   and [guide](../kubernetes/kubernetespostgres/GUIDE.md)
 - [KubernetesValkey reference](../kubernetes/kubernetesvalkey/v1alpha1/reference.md)
+- [KubernetesAgentSubstrate reference](../kubernetes/kubernetesagentsubstrate/v1alpha1/reference.md)
+  and [guide](../kubernetes/kubernetesagentsubstrate/GUIDE.md)

@@ -1037,7 +1037,15 @@ assert the NotReady→Ready transition in the kind's install verifier
 instead, where it becomes part of the proof; and behavioral scenarios that
 merely CONSUME the profile kind declare it a scenario-level prerequisite
 (annotation), never a registry prerequisite — the kind under test
-deploys fine without it on ordinary clusters.
+deploys fine without it on ordinary clusters. A profile also exists for
+Kubernetes APIs that ship off by default (`pod-certificates`: the
+pod-certificate and cluster-trust-bundle APIs, upstream's own kind
+configuration at the pin). Lanes on one profile cluster share every
+cluster-scoped name, and run in scenario filename order on each engine:
+when one lane must leave kept definitions behind (the keep-and-readopt
+proof) and another plants a foreign one (the owned-elsewhere refusal),
+the lane that sorts first lets definitions go on destroy, so every
+engine's pass starts clean; say so in both scenarios.
 
 **Real-cluster lanes fit what is already on the cluster.** A real cluster
 (`aws-eks`, `gcp-gke` profiles) arrives with residents — the GKE management
