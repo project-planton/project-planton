@@ -1,0 +1,14 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "detzip",
+    srcs = ["detzip.go"],
+    importpath = "github.com/plantonhq/planton/pkg/detzip",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "detzip_test",
+    srcs = ["detzip_test.go"],
+    embed = [":detzip"],
+)

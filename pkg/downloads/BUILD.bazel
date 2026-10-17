@@ -5,6 +5,7 @@ go_library(
     srcs = ["downloads.go"],
     importpath = "github.com/plantonhq/planton/pkg/downloads",
     visibility = ["//visibility:public"],
+    deps = ["//pkg/downloads/modulemanifest"],
 )
 
 go_test(

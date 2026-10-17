@@ -134,3 +134,11 @@ func TestBuildDefinitionsExplodedFileURL(t *testing.T) {
 		t.Errorf("BuildDefinitionsExplodedFileURL() = %q, want %q", got, want)
 	}
 }
+
+func TestBuildModuleManifestURL(t *testing.T) {
+	got := BuildModuleManifestURL("v0.6.15")
+	want := "https://downloads.planton.ai/releases/v0.6.15/modules/manifest.json"
+	if got != want {
+		t.Errorf("BuildModuleManifestURL() = %q, want %q", got, want)
+	}
+}

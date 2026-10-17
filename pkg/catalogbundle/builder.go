@@ -1,16 +1,14 @@
 package catalogbundle
 
 import (
-	"archive/zip"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
+	"github.com/plantonhq/planton/pkg/detzip"
 	"sigs.k8s.io/yaml"
 )
 
@@ -105,28 +103,17 @@ func Build(input BuildInput) (*Manifest, error) {
 		return nil, err
 	}
 
+	// The bundle is written deterministically (detzip), so two builds of one
+	// tree publish one checksum -- the checksum a platform pins. It deflates:
+	// the bundle is large, and a platform pins one release's bytes, never a
+	// rebuild's.
+	entries["manifest.yaml"] = manifestYAML
 	out, err := os.Create(input.OutputPath)
 	if err != nil {
 		return nil, err
 	}
 	defer out.Close()
-	zw := zip.NewWriter(out)
-
-	names := make([]string, 0, len(entries)+1)
-	for name := range entries {
-		names = append(names, name)
-	}
-	sort.Strings(names)
-
-	if err := writeZipEntry(zw, "manifest.yaml", manifestYAML); err != nil {
-		return nil, err
-	}
-	for _, name := range names {
-		if err := writeZipEntry(zw, name, entries[name]); err != nil {
-			return nil, err
-		}
-	}
-	if err := zw.Close(); err != nil {
+	if err := detzip.Write(out, entries, detzip.Deflate); err != nil {
 		return nil, err
 	}
 	return manifest, nil
@@ -164,13 +151,4 @@ func collectFiles(entries map[string][]byte, catalogDir, glob string, depth int,
 		entries[entryName(parts)] = content
 	}
 	return nil
-}
-
-func writeZipEntry(zw *zip.Writer, name string, content []byte) error {
-	w, err := zw.Create(name)
-	if err != nil {
-		return err
-	}
-	_, err = io.Copy(w, strings.NewReader(string(content)))
-	return err
 }

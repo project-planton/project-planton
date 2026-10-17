@@ -23,6 +23,7 @@ go_library(
         "//iac/catalogkindpermissions/v1:catalogkindpermissions",
         "//pkg/catalogkindreflect",
         "//pkg/conversion",
+        "//pkg/detzip",
         "//pkg/protobufyaml",
         "//shared/catalogkind",
         "@io_k8s_sigs_yaml//:yaml",
