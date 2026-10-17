@@ -349,6 +349,18 @@ generate-proto-docs:
 		--out pkg/protodocs/index.json.gz
 	rm -f build/proto-docs-image.binpb
 
+# Keeps every OpenTofu module's provider lock current. One canonical lock
+# (catalog/_providers/.terraform.lock.hcl) names the exact release, and its
+# package checksums, of every provider a module requires; each module's
+# committed .terraform.lock.hcl is its projection. A locked version is kept
+# until a module's constraint excludes it or `upgrade` names the provider
+# (upgrade=aws, or upgrade=aws,helm); only then does it reach the registry and
+# `tofu providers lock`. Requires `tofu` on PATH; offline when nothing moves.
+# The offline proof is hack/guards/ensure_tf_provider_locks.sh.
+.PHONY: lock-providers
+lock-providers:
+	go run ./pkg/iac/tofu/providerlocks/cli lock --upgrade '$(upgrade)'
+
 # Regenerates pkg/providerparity/schemas/ -- the distilled Terraform provider
 # schemas the parity accounting measures the catalog against. One artifact
 # per provider at the exact release its pin resolves to; bumping a pin means

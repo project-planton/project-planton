@@ -383,7 +383,7 @@ Phase 1: Create Terraform Module
 [4/7] ✅ Generated main.tf (creates cluster + database)
 [5/7] ✅ Generated outputs.tf (maps to outputs.proto)
 [6/7] ✅ Generated README.md
-[7/7] ✅ Passed terraform validate
+[7/7] ✅ Wrote the provider lock (make lock-providers) and passed tofu validate
 
 Phase 2: Generate Documentation
 [8/8] ✅ Wrote GUIDE.md (kind guide)

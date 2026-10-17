@@ -18,7 +18,7 @@ The relationship mirrors how Helm works: an Infra Chart is to an Infra Stack as 
 
 ## Why Infra Stacks Exist
 
-Before Infra Stacks, the platform had Infra Charts for reusability but no persistent record of each deployment instance. Consider an organization that deploys five ECS environments from the same chart — development, staging, production-us, production-eu, and production-asia. Each uses different parameter values. Without a stack record, fundamental questions have no answers:
+An Infra Chart gives reusability, but a chart alone keeps no record of each place it was deployed. Consider an organization that deploys five ECS environments from the same chart — development, staging, production-us, production-eu, and production-asia. Each uses different parameter values. Without a stack record, fundamental questions have no answers:
 
 - Which parameters deployed production-us last month?
 - Did staging update to the latest chart version?
@@ -48,10 +48,10 @@ Every change to an Infra Stack — an edit in the console, `planton infra stack 
 | Row | What applying does |
 |-----|--------------------|
 | **Blocked** | Nothing, until it is resolved; the row says why and the way out. |
-| **Destroy** | The resource is no longer in the templates: it is destroyed in the cloud once everything the plan applies has applied. |
-| **Replace** | The resource stays in the templates, but its provider can't change it in place: it is destroyed and created again, and what it holds does not carry over. A request's preview finds it, and an approver names each one that holds data. |
+| **Destroy** | The resource is no longer in the templates: it is destroyed on its provider once everything the plan applies has applied. |
+| **Replace** | The resource stays in the templates, but its provider can't change it in place: it is destroyed and created again, and what it holds does not carry over. A request's preview finds it; it needs the requester's destroy rights, or the row reads Blocked, and an approver names each one that holds data. |
 | **Update** | Something that decides its deployment moved: its settings, a secret's version, a value it reads, its module. |
-| **Update Record** | Only Planton's record changes; nothing in the cloud (for example, an annotation added). |
+| **Update Record** | Only Planton's record changes; nothing on the provider (for example, an annotation added). |
 | **Create** | The resource is new. |
 | **Adopt** | The resource already exists and no stack manages it; the stack takes it over only when you choose Adopt, and the apply may change it to match the template. |
 | **Keep** (named by its provider: Keep in AWS) | The resource is no longer in the templates and is kept: Planton stops managing it, and it keeps running where it is, and billing there. |
@@ -105,14 +105,15 @@ planton infra stack withdraw app-infra --env prod   # the requester takes it bac
 - **Nothing applies until an approval**, and the stack's declaration does not move: a rejected request leaves only its revision in history.
 - **The approver approves exactly the plan they read.** Each resource plans again and applies only when its plan matches its preview; one that moved since — a setting edited in the cloud, a secret's new version — stops before changing anything, shows its new plan and waits for a person. A resource that could only be previewed once an earlier change applied (May Change) applies under the approval unless its plan destroys or replaces something.
 - **What holds data is named.** Approving a plan that destroys or replaces a resource holding data asks the approver to type each name (`--destroy` / `--replace Kind/name` in CI, with the `--review-digest` of the review read).
-- **A second pair of eyes.** The person who asked cannot approve their own change while another approver exists. An undecided request expires after 7 days.
-- **A terminal never waits on a person.** The apply follows while the request previews, then ends with where to review it and the commands that decide it; `-o json` prints `{run_id, review_url, state, expires_at, revision}`.
+- **A second pair of eyes.** The person who asked cannot approve their own change while another approver exists.
+- **A request nobody decides lapses.** While it waits it reads "Lapses at Oct 21, 14:30 IST, in 6 days"; after 7 days undecided it closes **Lapsed**: no one decided within 7 days, so nothing was applied, and the stack is free for the next change.
+- **A terminal never waits on a person.** The apply follows while the request previews, then ends with where to review it and the commands that decide it; `-o json` prints `{run_id, review_url, state, lapses_at, revision, source, from_env}`.
 
-A request that is rejected, withdrawn, expires, cannot be previewed or goes out of date applies nothing. Plan it again as it was, with the choices its author made: `planton infra stack plan app-infra --env prod --revision 14`. Planning again keeps where it came from: a rejected promotion planned again is still a promotion, and its new revision reads "Planned again from r14". Undeploy, purge and rerun into a protected environment are requests too.
+A request that is rejected, withdrawn or lapsed, cannot be previewed or goes out of date applies nothing. Plan it again as it was, with the choices its author made: `planton infra stack plan app-infra --env prod --revision 14`. Planning again keeps where it came from: a rejected promotion planned again is still a promotion, and its new revision reads "Planned again from r14". Undeploy, purge and rerun into a protected environment are requests too.
 
 ### Revisions
 
-Each applied plan is a revision: its number, message, author, where its declaration came from (an edit, a re-apply, "Promoted from staging r6", "Rolled back to r8", "Upgraded to app-infra v5"), the chart version it took, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. A request reads **Awaiting Approval** until someone decides it, and closes **Rejected**, **Withdrawn**, **Expired**, **Preview Failed** or **Out of Date** when it applies nothing. The stack's **live revision** is the newest that applied; an undeploy clears it. The stack page's **Revisions** tab and `planton infra stack history <name> --env <env>` list them, newest first, with each one's source and who requested and who approved it; from a revision you can [Roll Back](#roll-back) to it or [Compare](#compare) it with what is live.
+Each applied plan is a revision: its number, message, author, where its declaration came from (an edit, a re-apply, "Promoted from staging r6", "Rolled back to r8", "Upgraded to app-infra v5", "Reconciled drift on orders-db and cache"), the chart version it took, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. A request reads **Awaiting Approval** until someone decides it, and closes **Rejected**, **Withdrawn**, **Lapsed**, **Preview Failed** or **Out of Date** when it applies nothing. The stack's **live revision** is the newest that applied; an undeploy clears it. The stack page's **Revisions** tab and `planton infra stack history <name> --env <env>` list them, newest first, with each one's source and who requested and who approved it; from a revision you can [Roll Back](#roll-back) to it or [Compare](#compare) it with what is live.
 
 A run's Rerun (`planton infra pipeline rerun <pipeline-id>` in a terminal) repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. It asks first when the rerun still destroys something. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
 
@@ -126,7 +127,7 @@ A stack's page lists its resources first: each one's name, kind and the revision
 
 Behind **List | Graph**, each Infra Stack maintains a dependency graph that visualizes the relationships between its Infra Components. The web console displays this as an interactive DAG where you can see:
 
-- Resource nodes with their current deployment status (queued, running, succeeded, failed)
+- Resource nodes with their current deployment status (queued, running, succeeded, failed), and, for a resource the run left as it was with no job, its outcome: **Unchanged since r11**, **Unmanaged**, **Kept** (named by its provider: Kept in AWS), **Owned Elsewhere** or **Already Gone**
 - Dependency edges showing which resources must be deployed before others
 - Real-time updates as a pipeline progresses through the graph
 
@@ -303,7 +304,7 @@ While any resource the stack owns carries the annotation, the stack's undeploy a
 
 To lift the protection, remove the annotation from the stack's templates and apply the stack (the plan reads Update Record: nothing in the cloud changes). A plan that removes a protected resource reads it Blocked from destroying — choose Keep to apply around it. For a resource the stack no longer declares, remove the annotation from the Infra Component itself. Deleting a record alone is not a destroy, so the annotation does not stand in its way.
 
-## Keeping a Resource in the Cloud
+## Keeping a Resource on Its Provider
 
 Annotate a resource with `planton.dev/keep-on-provider: "true"` and its stack never destroys it: whenever the stack lets go of it — removed from the templates, undeployed, purged — it is released, still running, and the plan reads Keep with the choice locked. A released resource can be adopted by another stack or taken over by a service. This is how a resource moves from an Infra Stack to a Service: remove it from the templates, keep it running on its provider, and the service's next deploy takes it over.
 
@@ -311,15 +312,28 @@ A kept resource keeps what it depends on. While a deployment stays, the namespac
 
 ## What a Run Applies
 
-A stack's run applies only the resources whose inputs moved since their last successful deploy — the same comparison its plan shows. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module version, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since r11**, naming the revision whose run last applied it, linked to that run, and hands that job's outputs to the resources that depend on it. The job's id stays one click away for its logs (`Unchanged since r11 (ij_…)` in a terminal). Change one value and that resource runs, along with any dependent whose inputs it changes. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource Always Runs.
+A stack's run applies only the resources whose inputs moved since their last successful deploy — the same comparison its plan shows. Before a resource runs, Planton compares what it would deploy — its settings, the values it reads from other resources, its secrets' current versions and its variables, the account it deploys into, the module it runs, and whether anything it sits on was rebuilt — with what its last successful deploy applied. An exact match runs no job: the resource reads **Unchanged since r11**, naming the revision whose run last applied it, linked to that run, and hands that job's outputs to the resources that depend on it. The job's id stays one click away for its logs (`Unchanged since r11 (ij_…)` in a terminal). Change one value and that resource runs, along with any dependent whose inputs it changes. A module is compared by the digest its release published over every artifact it ships, so a new Planton release runs only the resources whose module that release changed. When Planton cannot know exactly what a resource would deploy — a module that follows a branch, a secret whose version cannot be read, a connection that signs in through the runner's own machine — the resource Always Runs.
 
-A change made outside Planton, such as an edit in the cloud console, moves nothing Planton deploys, so a plan reads that resource Unchanged. Refresh the Infra Component first: a refresh that finds the change clears what the resource recorded as applied, and the next plan reads it Update.
+A change made outside Planton, such as an edit in the cloud console, moves nothing Planton deploys, so a plan reads that resource Unchanged until a drift check finds it (below).
 
 More outcomes appear on a run's resources:
 
 - **Unmanaged** — a resource whose lifecycle events are disabled (`planton.dev/infra-job.disable-on-lifecycle-events: "true"`, see [Flow Control](/docs/infrastructure/flow-control)). The stack records it and never applies or destroys it; removing it from the templates plans Keep, and an undeploy releases it.
 - **Kept** — a removed resource the stack let go of; no job ran, and it keeps running.
-- **Owned elsewhere** — a resource another live Infra Stack or Service owns. A teardown leaves it in place for its owner, and a plan that would change it reads Blocked, naming the owner to change it through.
+- **Owned Elsewhere** — a resource another live Infra Stack or Service owns. A teardown leaves it in place for its owner, and a plan that would change it reads Blocked, naming the owner to change it through.
+
+## Changed Outside Planton: Drift
+
+Choose **Check for Drift** on a stack's resources, or run `planton infra stack drift check <stack-name> --env <env>`, and Planton compares every resource the stack holds with what is really in the cloud, setting by setting. A drift check writes nothing and changes nothing, so it never waits for an approver, even in a protected environment. Each resource reads **In Sync**, **Drifted** (with the number of changes), or **Couldn't Check** (with the reason). One resource can be checked on its own page, or with `planton infra component drift check <infra-component-id>`.
+
+**View Changes** lists each change under **Applied by Planton** and **In the Cloud Now** — `instance_class · db.t3.medium → db.t3.large` — with a secret shown only as "Hidden value changed" (an earlier value of a rotated secret too, unless its backend has deleted that version) and a resource removed by hand as "Deleted Outside Planton".
+
+Once a check finds drift, the next plan of the stack includes that resource as Update, with the reason "Drifted: 3 changes made outside Planton", and applying it puts the declaration back. You choose what happens:
+
+- **Reconcile** — a plan of the declaration the stack already holds, titled "Reconcile drift on orders-db and cache", reviewed and applied like any plan (in a protected environment, a request for an approver). A stack is never applied in part, so a resource that also changes for another reason stays in the plan with a warning naming it. From a terminal: `planton infra stack reconcile <stack-name> --env <env>`.
+- **Edit in Template** — keep the change made in the cloud: open the template file that declares the resource, carry the value over, and apply. The next plan has nothing left to put back.
+
+A successful apply clears the resource's Drifted mark. The person who ran a stack's check is notified when it finds drift or can't check something, and every check a person runs appears in Activity.
 
 ## Using the CLI
 
@@ -353,6 +367,13 @@ planton infra stack upgrade <stack-name> --env <env>
 
 # Compare two environments, or two revisions
 planton infra stack diff <stack-name> --env prod --against qa
+
+# Check every resource for changes made outside Planton, and read the result
+planton infra stack drift check <stack-name> --env <env>
+planton infra stack drift show <stack-name> --env <env>
+
+# Put drifted resources back: a plan you review, then apply
+planton infra stack reconcile <stack-name> --env <env>
 
 # List runs for a stack, and its last run
 planton infra stack infra-pipelines <stack-id>

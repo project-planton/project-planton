@@ -2,7 +2,7 @@
 
 *Effective date: March 25, 2026*
 
-*Last updated: October 12, 2026*
+*Last updated: October 17, 2026*
 
 ## Introduction
 
@@ -40,7 +40,7 @@ This Policy does not apply where Planton acts as a data processor on behalf of c
 
 When you sign in to Planton using a third-party identity provider such as Google, GitHub, or Microsoft, we receive certain profile information from that provider. The specific data depends on the provider and the permissions you grant during sign-in:
 
-- **Google Sign-In.** We receive your name, email address, and profile picture from your Google Account. We use this information solely to create and manage your Planton account, display your identity within the Service, and communicate with you. We do not request access to your Google Drive, Gmail, Calendar, or any other Google service data beyond basic profile information.
+- **Google Sign-In.** We receive your name, email address, and profile picture from your Google Account. We use this information solely to create and manage your Planton account, display your identity within the Service, and communicate with you. Signing in requests no access to your Google Drive, Gmail, Calendar, or any other Google service data beyond basic profile information. Connecting a Google Cloud account is a separate step you choose, described in Section 6.
 
 - **GitHub Sign-In.** We receive your name, email address, profile picture, and GitHub username. Your GitHub username is also used to attribute Git commits to your Planton identity for CI/CD pipeline authorization and audit trails.
 
@@ -150,11 +150,26 @@ We do not sell your personal data to third parties.
 
 Planton's use and transfer to any other app of information received from Google APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.
 
-When you authenticate with Google, we access only your basic profile information (name, email address, and profile picture). We use this data to:
+**Signing in with Google.**
+
+When you sign in with Google, we access only your basic profile information (name, email address, and profile picture). We use this data to:
 
 - Create and maintain your Planton account.
 - Display your name and avatar within the Service.
 - Send you account-related communications.
+
+**Connecting a Google Cloud account.**
+
+Separately from signing in, a member of your organization can connect a Google Cloud account so Planton can work in your Google Cloud projects. Two of the ways to connect use your Google account in the browser, and both ask Google for the `cloud-platform` permission, which lets Planton act in Google Cloud as the person who approves it, within what that person's own Google Cloud roles allow. Planton asks for it only when you start one of these two ways, and you see Google's consent screen before anything happens.
+
+- **One-click keyless setup.** You approve once, and Planton uses that approval only to set up a keyless trust in the Google Cloud project you chose: it creates a workload identity pool and provider that trust Planton's identity, a service account named "Planton Provisioner", and grants that service account the roles you selected. Planton reads which projects your account can see, to confirm the one you chose. Your Google access token is used only during that setup and is never stored; no refresh token is requested, and no service account key is created. From then on, Planton reaches the project through the keyless trust, which you can remove in your own project at any time.
+- **Sign in with Google as the connection.** The connection then acts as you. Planton asks Google for a refresh token so the connection keeps working after you leave, and stores it as a secret in your organization's secrets store (encrypted when Planton's built-in store holds it); the connection record keeps only a reference to that secret, and the token is never sent to your browser. Planton also keeps the email address of the Google account that approved it, to show on the connection, and lists the projects, folders, and organizations your account can see so you can pick a default project (that list is not kept). When a member of your organization uses the connection, Planton exchanges the refresh token for an access token that expires within an hour and uses it to read your Google Cloud resources, such as projects, networks, compute instances, storage buckets, and service accounts, and to check that the connection still works. Planton does not deploy infrastructure through this kind of connection.
+
+The email address of the Google account used in either way may appear in our service logs. Deleting the connection deletes the stored refresh token. To also end the permission on Google's side, remove Planton at your [Google Account permissions page](https://myaccount.google.com/permissions); for the keyless setup, delete the workload identity pool and service account Planton created in your project.
+
+We use data received through these Google Cloud permissions only to provide the connection features you use: setting up the trust, showing your Google Cloud resources in the Service, and keeping the connection working.
+
+**What we do not do with Google user data.**
 
 We do not:
 

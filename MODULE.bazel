@@ -130,6 +130,7 @@ use_repo(
     "com_github_google_go_containerregistry",
     "com_github_google_uuid",
     "com_github_gruntwork_io_terratest",
+    "com_github_hashicorp_go_version",
     "com_github_hashicorp_hcl_v2",
     "com_github_iancoleman_strcase",
     "com_github_masterminds_semver_v3",

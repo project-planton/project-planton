@@ -384,8 +384,8 @@ Hold these invariants in every service answer:
   `deploy.environments`; user applies preserve the stored section. On a
   manually-declared service, the caller writes it. Nothing else ever does (`references/service.configuring-deployments.md`).
 - **Environments are the organization's, ordered by promotion rank**; protection and
-  approval are the ENVIRONMENT's properties, never the service's. A delivery's initiator can never be its approver.
-- **Receipts are exact.** Promote re-applies a captured artifact+configuration pair; rollback restores a receipt byte-for-byte; neither re-renders nor needs the repository reachable.
+  approval are the ENVIRONMENT's properties, never the service's. A delivery's initiator approves it only when no other approver exists.
+- **Receipts are exact.** Promote re-applies a captured artifact+configuration pair; rollback restores a receipt byte-for-byte; redeploy applies what runs again, exactly, to put drift back; none re-renders or needs the repository reachable. What a run no longer declares is removed after the rest applied (`references/service.delivery-verbs.md`).
 - **Refusals name their working paths**: relay them, never retry them.
 
 Registration has four doors: detection-first, the primary -- the platform
@@ -428,9 +428,9 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/infra.issue-catalog.md` | A build failed and you need the fix pattern for an error |
 | `references/infra.deployment-model.md` | What happens after deploy (Infra Stacks, pipelines, Infra Jobs, IaC modules); explaining or diagnosing it |
 | `references/infra.machine-deploy.md` | Deployment is the next step on a signed-in instance; offering the machine's own cloud login as the deploy path; performing a consented deploy |
-| `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; planning and applying a change to a deployed Infra Stack; a stack's revisions |
+| `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; planning and applying a change to a deployed Infra Stack (the plan's rows, Destroy and Keep, What Else This Affects: the stacks, services and resources that read what it changes); a request in a protected environment (reviewing it, approving or rejecting on the person's word, withdrawing it, one that lapsed); drift (checking a stack, Reconcile); a stack's revisions |
 | `references/infra.stack-promotion.md` | A stack across its environments: is prod behind, which chart version each runs; promoting, rolling back, upgrading to a chart's newer version, comparing two environments or revisions |
-| `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing an orphaned provider resource into IaC state |
+| `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing a provider resource the state never recorded into IaC state |
 | `references/infra.workspace-postures.md` | The folder-identity check's full choreography: workspaces, checkouts, loose manifests and SETS, the canvas rules, and the application-repository posture a coding agent works in |
 | `references/infra.worked-example.md` | The full shape of a small chart in one place; checking your layout against a known-good one |
 | `references/cloud.aws-architecture.md` | Choosing AWS service combinations; security and network defaults |
@@ -458,7 +458,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/service.managed-pipelines.md` | What a Planton-managed build runs: the platform tracks, the catalog tasks a repository pipeline reuses by plain name, the param contract and bindable workspaces, the `platform-content` pin, the compile verdicts, the images a build cluster pulls |
 | `references/service.pipeline-authoring.md` | Writing or changing a service's own pipeline: the files, Tasks beside the pipeline, name resolution, the param contract and the optional trigger facts with `when`, the validate loop, every compile verdict's fix, and what to edit when asked for a step, a release-only step, or a shared task |
 | `references/service.org-publishing.md` | Sharing a pipeline or a task across services: the `TektonPipeline`/`TektonTask` record shapes, the name law, publish order and the publish check, consuming by one line or a plain `taskRef`, what an update changes, the delete guards, listing what the organization published |
-| `references/service.delivery-verbs.md` | Deploying an image built anywhere, promoting between environments, rolling back, tag releases, feature-branch deploys, explaining a refused delivery or an unchanged resource, `--reapply-all` |
+| `references/service.delivery-verbs.md` | Deploying an image built anywhere, promoting between environments, rolling back, redeploying what runs, a service environment's drift check, a direct change to a service's resource refused (the owner rule), tag releases, feature-branch deploys, explaining a refused delivery or an unchanged resource, `--reapply-all` |
 | `references/service.urls-and-rollout-verification.md` | Where a deployed service answers: URLs on the deployment record, reading the rollout verdict accurately |
 | `references/service.secret-backends.md` | Secrets should live in the person's own AWS Secrets Manager, Google Cloud Secret Manager or Azure Key Vault; where secrets live and what each place offers (hosted, Planton Desktop, self-hosted with the vault on or off: the default backend, platform vs local, ambient identity, keyless or not); how Planton signs in to that store (a cloud connection -- keyless stores nothing -- inline credentials, or ambient identity, refused on hosted); which connections can serve; where a new secret lands; the one-hop rule; moving a backend off a pasted key; a refused verify, create, connection delete or secret delete, or a self-hosted boot that can serve no backend, with every sentence and its remedy |
 | `references/service.pulling-private-images.md` | A pod in `ImagePullBackOff`, "do I need a pull secret", a run's pull sentence, a GHCR registry connected through a sign-in, or a Cloud Run / App Runner / Lambda target: the three ways a workload pulls, what the deploy fills from the registry connection and when it fills nothing, the GHCR pull token, the own-registry-only runtimes, the refusal and remedy sentences, previews and rotation, what never to suggest |
@@ -469,7 +469,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/service.configuring-deployments.md` | Reading and changing what a service is DECLARED to deploy: the two writers, the surgical get-then-apply loop, which resources sit on the service and which on an Infra Stack ("if this service were deleted, should it go too?" -- its route, workload, and own ConfigMaps yes; the shared gateway, zone, and namespace no), the three-step move of a route out of an Infra Stack, target environments, the deployments switch |
 | `references/service.kustomize-authoring.md` | Moving a service's configuration into its repository (eject/init/checkout), the `_kustomize` tree conventions |
 | `references/service.preview-environments.md` | Per-pull-request preview environments: the opt-in, the previews tree, the one-call preview read, teardown |
-| `references/service.delete-cascade.md` | Retiring a service: the destroy-then-delete cascade, the retain-resources arm, the protected-environment refusal |
+| `references/service.delete-cascade.md` | Retiring a service: the destroy-then-delete cascade, its up-front refusals (prevent-destroy, deletion protection, a reader, a protected environment), keep-on-provider resources released, the Keep Resources arm |
 
 ### Self-hosted Planton (`self-hosted.*`)
 
@@ -492,7 +492,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/craft.discovery.md` | Starting a conversation; learning the person, their Planton, and the motive |
 | `references/craft.personalization.md` | A profile fact sheet is present; shaping ANY explanation |
 | `references/craft.profile-vocabulary.md` | Reading the fact sheet; what each Role/Goal/Team/Mode/Tool id means |
-| `references/craft.planton-cli.md` | Looking up charts, Infra Stacks, pipelines, connections, activity and versions; diagnosing failed deploys; the command map |
+| `references/craft.planton-cli.md` | The command map: looking up charts, Infra Stacks, services, pipelines, connections, activity and versions; the verbs that change a stack or deliver a service; drift checks; following a run and its exit codes; `planton rerun` for any run; diagnosing failed deploys |
 | `references/craft.organization-activity.md` | What changed, unread failures, decisions awaiting the caller, reviewing exact saved edits or deployment proposals, and explicitly marking inspected failures |
 | `references/craft.cost-transparency.md` | The monthly cost picture from the catalog's verified estimates; honesty rules for money; saving levers |
 | `references/craft.filing-platform-gaps.md` | Planton fell short of a need; filing the gap as a GitHub issue |

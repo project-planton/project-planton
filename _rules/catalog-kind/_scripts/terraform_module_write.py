@@ -2,7 +2,8 @@
 """
 Deterministic tool: Write multiple Terraform module files under iac/tf for a provider/kind.
 
-Also supports generating variables.tf via the Planton CLI and validating with Terraform.
+Also supports generating variables.tf via the Planton CLI and validating with OpenTofu
+against the module's committed provider lock.
 
 Manifest JSON shape (stdin or file):
 {
@@ -27,6 +28,7 @@ Outputs JSON:
   - make_local: {exit_code, stdout, stderr} (if run)
   - generate_variables: {exit_code, stdout, stderr, output_file} (if run)
   - generate_module: {exit_code, stdout, stderr, output_dir} (if run; full thin module for projection kinds)
+  - provider_lock: {exit_code, stdout, stderr} (if run; `make lock-providers`)
   - tf_init: {exit_code, stdout, stderr} (if run)
   - tf_validate: {exit_code, stdout, stderr} (if run)
   - validate_succeeded: bool
@@ -122,7 +124,8 @@ def main() -> int:
     parser.add_argument("--generate-module", action="store_true",
                         help="Generate the ENTIRE thin module via Planton CLI (kubernetes_manifest-projection kinds only). "
                              "Emits variables.tf/locals.tf/main.tf/provider.tf/outputs.tf; no hand-authored files needed.")
-    parser.add_argument("--validate", action="store_true", help="Run terraform init/validate after writing")
+    parser.add_argument("--validate", action="store_true",
+                        help="Write the module's provider lock, then run tofu init (read-only lock) and validate")
     args = parser.parse_args()
 
     try:
@@ -206,14 +209,19 @@ def main() -> int:
         result["generate_module"] = run(gen_cmd, cwd=repo_root, env=env)
         result["generate_module"]["output_dir"] = base_abs
 
-    # Optionally validate the module
+    # Optionally validate the module. A module runs exact, checksummed provider
+    # releases: its committed .terraform.lock.hcl is its projection of the
+    # catalog's canonical lock, written by `make lock-providers` (which reaches
+    # the registry only for a provider no module required before). The init is
+    # read-only against that lock, exactly as the runner's is, so a module that
+    # validates here installs the same providers a deploy does.
     if args.validate:
-        # terraform init -backend=false
-        result["tf_init"] = run(["terraform", "-chdir=" + base_abs, "init", "-backend=false"], cwd=repo_root, env=env)
-        # terraform validate
-        result["tf_validate"] = run(["terraform", "-chdir=" + base_abs, "validate"], cwd=repo_root, env=env)
-        result["validate_succeeded"] = (
-            result.get("tf_init", {}).get("exit_code", 1) == 0 and result.get("tf_validate", {}).get("exit_code", 1) == 0
+        result["provider_lock"] = run(["make", "lock-providers"], cwd=repo_root, env=env)
+        result["tf_init"] = run(["tofu", "-chdir=" + base_abs, "init", "-backend=false", "-lockfile=readonly"],
+                                cwd=repo_root, env=env)
+        result["tf_validate"] = run(["tofu", "-chdir=" + base_abs, "validate"], cwd=repo_root, env=env)
+        result["validate_succeeded"] = all(
+            result.get(step, {}).get("exit_code", 1) == 0 for step in ("provider_lock", "tf_init", "tf_validate")
         )
 
     print(json.dumps(result))

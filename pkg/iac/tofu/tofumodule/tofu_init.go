@@ -67,6 +67,7 @@ func Init(
 	if isReconfigure {
 		cmdArgs = append(cmdArgs, "-reconfigure")
 	}
+	cmdArgs = append(cmdArgs, lockFileArgs(engine, modulePath)...)
 	if isJsonOutput {
 		cmdArgs = append(cmdArgs, "-json")
 	}
@@ -101,4 +102,22 @@ func Init(
 	}
 
 	return nil
+}
+
+// lockFileArgs makes init honour a module's committed provider lock exactly.
+// A catalog module ships a .terraform.lock.hcl naming one release, and the
+// package checksums, of every provider it requires; read-only, init installs
+// precisely those and refuses to rewrite the file -- so a module that did not
+// change cannot quietly start running a newer provider. A module without a
+// lock (a custom or generated module, an ejected copy) resolves its providers
+// as before. The lock names OpenTofu's registry, so the terraform binary,
+// which resolves the same sources against its own registry, records its own.
+func lockFileArgs(engine provisioner.ProvisionerType, modulePath string) []string {
+	if engine != provisioner.ProvisionerTypeTofu {
+		return nil
+	}
+	if _, err := os.Stat(filepath.Join(modulePath, ".terraform.lock.hcl")); err != nil {
+		return nil
+	}
+	return []string{"-lockfile=readonly"}
 }

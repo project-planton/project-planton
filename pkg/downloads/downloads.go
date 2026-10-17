@@ -3,6 +3,8 @@ package downloads
 import (
 	"fmt"
 	"strings"
+
+	"github.com/plantonhq/planton/pkg/downloads/modulemanifest"
 )
 
 const (
@@ -14,7 +16,8 @@ const (
 
 // This package is pure URL grammar: every function composes the R2 key shapes
 // that the release workflows upload (release.terraform-modules.yaml,
-// release.pulumi-modules.yaml). The two sides MUST stay in lockstep — a shape
+// release.pulumi-modules.yaml, and the module manifest release.yaml publishes
+// after both). The two sides MUST stay in lockstep — a shape
 // change here or in CI without the matching change on the other side does not
 // fail loudly; it turns every module fetch into a 404 that downstream code
 // masks with a slow git-clone fallback. The unit tests in this package pin the
@@ -37,14 +40,10 @@ const (
 //	BuildPulumiDownloadURL("AwsEcsService", "v0.3.50", "darwin_arm64")
 //	  -> https://downloads.planton.ai/releases/v0.3.50/modules/pulumi/awsecsservice/darwin_arm64.gz
 func BuildPulumiDownloadURL(kindDir, releaseVersion, platform string) string {
-	// The release lane gzips "{kind}.exe" on windows, so the remote
-	// artifact name carries ".exe.gz" there; local cache naming re-adds the
-	// ".exe" independently (see pulumibinary.BuildBinaryName).
-	suffix := ".gz"
-	if strings.HasPrefix(platform, "windows") {
-		suffix = ".exe.gz"
-	}
-	return fmt.Sprintf("%s/%s/modules/pulumi/%s/%s%s", BaseURL, releaseVersion, strings.ToLower(kindDir), platform, suffix)
+	// The artifact name is the module manifest's (the windows binary carries
+	// ".exe.gz"); local cache naming re-adds the ".exe" independently (see
+	// pulumibinary.BuildBinaryName).
+	return fmt.Sprintf("%s/%s/modules/pulumi/%s/%s", BaseURL, releaseVersion, strings.ToLower(kindDir), modulemanifest.PulumiArtifact(platform))
 }
 
 // BuildPulumiSourceDownloadURL constructs the R2 download URL for a Pulumi
@@ -71,7 +70,23 @@ func BuildPulumiSourceDownloadURL(kindDir, releaseVersion string) string {
 //	BuildTerraformDownloadURL("AwsEcsService", "v0.3.50")
 //	  -> https://downloads.planton.ai/releases/v0.3.50/modules/terraform/awsecsservice/module.zip
 func BuildTerraformDownloadURL(kindDir, releaseVersion string) string {
-	return fmt.Sprintf("%s/%s/modules/terraform/%s/module.zip", BaseURL, releaseVersion, strings.ToLower(kindDir))
+	return fmt.Sprintf("%s/%s/modules/terraform/%s/%s", BaseURL, releaseVersion, strings.ToLower(kindDir), modulemanifest.TerraformArtifact)
+}
+
+// BuildModuleManifestURL constructs the R2 download URL for a release's module
+// manifest: every official module's published artifact checksums and digest
+// (see package modulemanifest). The release publishes it once, after every
+// module artifact under the tag is uploaded, so its presence means the
+// release's modules are complete.
+//
+// URL format: https://downloads.planton.ai/releases/{version}/modules/manifest.json
+//
+// Examples:
+//
+//	BuildModuleManifestURL("v0.6.15")
+//	  -> https://downloads.planton.ai/releases/v0.6.15/modules/manifest.json
+func BuildModuleManifestURL(releaseVersion string) string {
+	return fmt.Sprintf("%s/%s/modules/%s", BaseURL, releaseVersion, modulemanifest.FileName)
 }
 
 // BuildDefinitionsDownloadURL constructs the R2 download URL for a file in

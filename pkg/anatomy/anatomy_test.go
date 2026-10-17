@@ -95,6 +95,7 @@ func TestCheck_HermeticFixture(t *testing.T) {
 	write("catalog/stray-file.txt")                           // -> unexpected-entry (catalog root)
 	write("catalog/_compliance/controls-catalog.yaml")        // ignored: non-kind home at the catalog root
 	write("catalog/_pricing/estimates/awss3bucket.yaml")      // ignored: non-kind home at the catalog root
+	write("catalog/_providers/.terraform.lock.hcl")           // ignored: non-kind home at the catalog root
 
 	violations, err := Check(root)
 	if err != nil {

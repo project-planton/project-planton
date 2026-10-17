@@ -223,7 +223,15 @@ If confirmed:
    ```
    This removes stale .pb.go files for deleted kind
 
-4. **Verify deletion**
+4. **Refresh the provider locks**
+   ```bash
+   make lock-providers
+   ```
+   The kind's own `.terraform.lock.hcl` went with its folder; this drops from
+   `catalog/_providers/.terraform.lock.hcl` any provider no remaining module
+   requires (offline). `bash hack/guards/ensure_tf_provider_locks.sh` passes.
+
+5. **Verify deletion**
    - Kind folder gone
    - Enum entry removed
    - No stale references

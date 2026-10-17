@@ -1806,8 +1806,10 @@ rewrite before designing the arm.
 ### The canonical LOCK decides the engine, not the pin RANGE -- and an upstream "fix" can change the failure mode
 
 Every Terraform module here carries a committed `.terraform.lock.hcl`
-pinning the exact provider build; the `~> X.Y` constraint in provider.tf
-only bounds what a DELIBERATE pin bump may select. Two traps measured live
+pinning the exact provider build -- its projection of the catalog's
+canonical lock, `catalog/_providers/.terraform.lock.hcl`; the `~> X.Y`
+constraint in provider.tf only bounds what a DELIBERATE
+`make lock-providers upgrade=<provider>` may select. Two traps measured live
 2026-08-29 on `cloudflare_hostname_tls_setting`: (1) a defect fix released
 within the pin range (v5.24.0 fixing the v5.23.0 Read) is NOT in your lane
 -- the lock still selects v5.23.0 from the shared plugin cache, so verify
@@ -3300,12 +3302,12 @@ the platform's `TF_VAR_digitalocean_token` path and a developer shell both
 work. The Spaces pair already followed this shape; a new token-taking
 provider module should start there.
 
-**The pin floats within its minor: record the resolved provider version
-per session.** The modules pin `~> 2.99`; the first live session resolved
-`digitalocean/digitalocean v2.100.0` at `tofu init` while the design floor
-and every schema reading are v2.99.1. Nothing diverged, but "proven at the
-pin" means proven at whatever the constraint resolved to on that day — the
-session record names it.
+**The lock names the release a session proves, not the pin.** The modules
+pin `~> 2.99`, while each module's committed `.terraform.lock.hcl` selects
+one exact `digitalocean/digitalocean` release for every run, and the design
+floor and every schema reading are v2.99.1. "Proven at the pin" therefore
+means proven at the locked release; the session record names it, and moving
+to a newer release is a deliberate `make lock-providers upgrade=digitalocean`.
 
 **Import round-trip classes met on the first kinds.** (1) Create-only
 initialization arguments that are `ForceNew` and never read back

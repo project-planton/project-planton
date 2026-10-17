@@ -1,0 +1,392 @@
+# The skills' eval question bank.
+#
+# Each question is something a real person asks an agent that loaded a
+# skill, with the answer the platform actually gives (the ground truth) and
+# machine-checkable `checks` that pin that answer to the sentences of the
+# skill that teach it. `eval_test.go` verifies every check against the
+# embedded skill on every test run, so an edit that drops or changes a
+# sentence an answer depends on fails with the question named -- the
+# teaching can never quietly rot.
+#
+# A green test proves the sentences are still there, not that a reader
+# finds them. That is the fresh-reader protocol in skills/README.md
+# ("Proving the teaching"): an agent given only the skill answers these
+# questions, and its answers are graded against `answer`.
+#
+# Authoring rules for checks:
+#   - `skill` names the skill directory (planton); `file` is SKILL.md or
+#     references/<name>.md inside it.
+#   - Patterns are RE2 regexes matched against the whole file. The files
+#     are hard-wrapped prose, so a phrase that may cross a line break joins
+#     its words with \s+ and turns on (?s) where it needs to.
+#   - Pin checks to durable teaching -- commands with their flags, rules,
+#     the exact words the product prints -- never to an example's numbers.
+
+questions:
+  - id: engineer-promote-keeping-values
+    persona: platform engineer
+    question: >
+      I have a chart in my workspace. Install it as app-infra in qa, then
+      carry it to prod without overwriting the values prod already set.
+      What do I run, and what travels?
+    answer: >
+      Install it into qa with `planton chart install app-infra <chart-dir>
+      --env qa` -- the same plan, show, consent and apply as any stack
+      change, creating the stack because the name is new. Then
+      `planton infra stack promote app-infra --from qa --to prod`. qa's
+      live template, its values.yaml and its chart version travel; every
+      value prod set stays. A value travels only when named with
+      `--bring <name>`; a param the template newly requires asks for
+      `--set name=value`. A first promotion into an environment with no
+      stack of that name creates it there with every value from the
+      source. Into a protected prod the promotion is a request an approver
+      decides, and `-m` is required.
+    checks:
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton chart install <stackName> \. --env <env>'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: 'planton infra stack promote <slug> --from <env> --to <env>'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: '\*\*Stays\*\*: every value the target environment set'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: 'named with `--bring <name>`'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: '\*\*A first promotion\*\*'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: '(?s)Into a protected environment\*\*\s+the\s+promotion\s+is\s+a\s+request'
+
+  - id: engineer-review-and-approve
+    persona: platform engineer
+    question: >
+      A change to app-infra in prod is waiting for approval. How do I read
+      it, how is it approved, and what can stop the approval?
+    answer: >
+      Read it with `planton infra stack review app-infra --env prod`:
+      Destroy and Replace rows first (a Replace destroys and recreates the
+      resource, so what it holds does not carry over), its impact,
+      warnings, readers, who can approve and when it lapses, and the
+      review's digest last. Approving is a person's decision, never the
+      agent's: `planton infra stack approve app-infra --env prod
+      --review-digest <d>`, naming each data-bearing destroy or replace
+      with `--destroy` / `--replace Kind/name`. The platform refuses an
+      approval when the review changed since it was read, a data-bearing
+      resource is not named, a row is Blocked (including a Replace the
+      requester has no destroy rights for), or the approver is the person
+      who asked while another approver exists. A request nobody decides
+      within 7 days lapses and closes Lapsed, having applied nothing.
+    checks:
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)planton infra stack review\s+<stackName> --env prod'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton infra stack approve <stackName> --env prod --review-digest <d> --destroy AwsRdsInstance/orders-db'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'Deciding is the user''s act, never yours'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'This review changed since you read it'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'needs the requester''s destroy rights'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)A request nobody decides within 7 days lapses'
+
+  - id: engineer-drift-and-reconcile
+    persona: platform engineer
+    question: >
+      Someone resized the orders database in the AWS console during an
+      incident. How do I find out what changed, and how do I put it back?
+    answer: >
+      Run a drift check: `planton infra stack drift check <stack> --env
+      <env>` (or `planton infra component drift check` for one resource).
+      It writes nothing and never waits for an approver. Each resource
+      reads In Sync, Drifted (each setting as Applied by Planton and In
+      the Cloud Now) or Couldn't Check. Whether to revert is the person's
+      call: Reconcile (`planton infra stack reconcile <stack> --env <env>`)
+      plans the declaration the stack already holds, then shows, asks and
+      applies like any plan -- it takes apply's flags, so `-m "<why>"
+      --plan-digest <d>` applies exactly the plan read, and `--dry-run`
+      stops at it (a request in a protected environment); or
+      keep the cloud's change by carrying the value into the template.
+      Once drift is found, any next plan includes the resource as Update
+      and applying puts the declaration back.
+    checks:
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton infra stack drift check <stackName> --env <env>'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton infra stack reconcile <stackName> --env <env> --org <org> -m "<why>" --plan-digest <d>'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'Ask which they want\*\* — this is the user''s decision'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'Keep the cloud''s change: edit the template'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'Drifted: 3 changes made outside Planton'
+
+  - id: engineer-roll-back
+    persona: platform engineer
+    question: >
+      The last change to app-infra in qa broke it. How do I go back to
+      revision 8, and what should I know before I do?
+    answer: >
+      List revisions with `planton infra stack history app-infra --env qa`,
+      then `planton infra stack rollback app-infra --env qa
+      --to-revision 8`. It plans r8's declaration fresh against today's
+      cloud as a new revision, through the same plan, show, consent and
+      apply. Module versions stay current; data destroyed since comes back
+      empty; a resource kept on its provider since plans Adopt
+      (`--adopt Kind/name`); nothing its author chose then is carried. The
+      target must have applied, and a roll back is refused while a request
+      waits or a run is in flight.
+    checks:
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton infra stack history <stackName> --env <env>'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: 'planton infra stack rollback <slug> --env <env> \[--to-revision N\]'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: 'Module versions stay current'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: 'Data destroyed since comes back empty'
+
+  - id: engineer-removed-from-template
+    persona: platform engineer
+    question: >
+      I deleted a bucket's template from app-infra. What happens to the
+      bucket when I apply, and how do I keep it running instead?
+    answer: >
+      The plan reads it Destroy: it is destroyed on its provider, only
+      after everything the plan applies has applied, and only with the
+      person's consent named per resource; one that holds data (its
+      catalog kind marks backup and recovery applicable; the plan marks it)
+      is destroyed only when named with `--destroy Kind/name`. To keep it,
+      apply with `--keep Kind/name` (the stack lets go of it and it keeps
+      running and billing on its provider), or mark it
+      `planton.dev/keep-on-provider: "true"` under the resource's
+      metadata.annotations so the stack never destroys it. A kept resource keeps what it depends on. A resource marked
+      prevent-destroy, with its own deletion protection on, or still read
+      by something else blocks only its destroy: Keep applies the plan
+      around it.
+    checks:
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'No longer in the templates: destroyed on its provider once everything the plan applies has applied'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)destroyed only when named\s+\(`--destroy Kind/name`\)'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'its catalog\s+kind marks backup and recovery applicable'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton\.dev/keep-on-provider: "true"   # never destroyed'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'goes `--keep Kind/name`'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'planton\.dev/keep-on-provider: "true"'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)A kept resource keeps\s+what it depends on'
+
+  - id: developer-redeploy-after-hand-edit
+    persona: developer
+    question: >
+      I changed checkout-api's queue settings by hand in the cloud console.
+      How do I see what moved and put the service's configuration back?
+    answer: >
+      `planton service drift check checkout-api --env <env>` compares every
+      resource of the environment's current deployment with the cloud and
+      writes nothing. Then `planton service redeploy checkout-api --env
+      <env>` applies the current deployment again, exactly as it runs:
+      resources that still match are skipped and the drifted ones run, so
+      a redeploy is how drift is put back. `--dry-run` shows what the run
+      would do first; a protected environment still stops at its gate.
+      Keeping the console change means carrying it into the service's
+      configuration and deploying.
+    checks:
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'planton service drift check <service> --env <env>'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'planton service redeploy <service> --env <env>'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'a redeploy is how drift is put back'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'Promote, rollback, redeploy and deploy each take `--dry-run`'
+
+  - id: developer-push-removes
+    persona: developer
+    question: >
+      I removed a cache and the orders database from checkout-api's
+      kustomize tree and pushed. What happens to them?
+    answer: >
+      Both are removals of the run: listed from the start, carried out at
+      the very end, after everything declared applied, the rollout
+      verified and the deployment record was written. The cache, holding
+      no data, is destroyed by default. The database holds data, so the run
+      waits for a person: destroy it by typing its name, or keep it on its
+      provider (`planton service removal destroy|keep <service> <number>
+      <env> <Kind/name>`). In a protected environment the approver decides
+      every removal at the gate. A failed apply or verification removes
+      nothing; a mistake is fixed by restoring the resource and pushing.
+    checks:
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'carries out each one at the very end, after everything declared applied'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: '\*\*Destroyed\*\* — the default for a resource that holds no data'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'A resource that holds data always waits for a person'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'planton service removal keep checkout-api 131 prod AwsRdsInstance/orders-db'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'A failed apply or a failed verification removes nothing'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'A mistake is fixed by pushing the fix'
+
+  - id: developer-delete-keeping-database
+    persona: developer
+    question: >
+      I want to delete checkout-api but keep its production database
+      running. How?
+    answer: >
+      Mark the database `planton.dev/keep-on-provider: "true"` before
+      `planton service delete checkout-api`: the cascade destroys the rest
+      and releases the database, still running on its provider and
+      adoptable. Or delete with Keep Resources
+      (`--retain-infra-components`), which releases every resource. The
+      delete is refused up front when a resource is marked prevent-destroy,
+      has deletion protection on, or is still read by something else, and
+      when the service has deployments in a protected environment.
+    checks:
+      - skill: planton
+        file: references/service.delete-cascade.md
+        pattern: '`planton\.dev/keep-on-provider: "true"`\*\* — never destroyed'
+      - skill: planton
+        file: references/service.delete-cascade.md
+        pattern: 'planton service delete <service> --retain-infra-components'
+      - skill: planton
+        file: references/service.delete-cascade.md
+        pattern: 'is marked prevent-destroy\. Remove the mark, or delete with Keep Resources'
+      - skill: planton
+        file: references/service.delete-cascade.md
+        pattern: 'Something else still reads a resource'
+
+  - id: agent-apply-reviewed-plan-in-ci
+    persona: coding agent
+    question: >
+      In CI, how do I apply exactly the stack plan a person reviewed on
+      the pull request, and what happens if something moved since?
+    answer: >
+      Plan with `-o markdown` and post it; the digest is on the plan (its
+      "Apply it:" line, the markdown's "Plan digest:", `plan_digest` in
+      JSON). Apply with `planton infra stack apply <stack> . --env <env>
+      -m "<why>" --plan-digest <d>`: it plans again and applies only while
+      the fresh plan is that one, otherwise it refuses saying the plan is
+      out of date. The digest consents to that plan's ordinary destroys;
+      a data-bearing destroy is still named with `--destroy`; `--yes` alone
+      consents to no destroy. Into a protected environment the apply files
+      a request and ends with exit 0 and the review lines.
+    checks:
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '--plan-digest <digest from the plan you showed>'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '`-o json` as `plan_digest`'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)saying the plan is out of\s+date'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '`--yes` alone answers it but consents to no destroy'
+      - skill: planton
+        file: references/infra.stack-promotion.md
+        pattern: '--dry-run -o markdown'
+
+  - id: agent-follow-and-exit-codes
+    persona: coding agent
+    question: >
+      I started a run. How do I follow it to the end and tell success,
+      failure and "waiting for a person" apart in a script?
+    answer: >
+      `planton follow <run-id>` reads the run's kind from its prefix
+      (ij_, infpipe_, svcpipe_) and exits 0 when the run is done, 1 when it
+      failed or was cancelled (or the id names no run), 3 when it waits for
+      a person, with the line before saying who runs what. Branch on the
+      code, never the words. A stack apply follows its run and exits
+      non-zero when it fails; a stack plan exits 0 planned, 1 when it does
+      not build, a resource is blocked or a run is in flight, 2 when it
+      could not be made, and 4 with `--detailed-exitcode` when applying
+      would change something.
+    checks:
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'planton follow <run-id> --plain'
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: '(?s)`3` it waits for a person'
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'Branch on the code, never on the words'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)`2` the plan could not be\s+made'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)the exit\s+code is non-zero when the followed run fails'
+
+  - id: agent-rerun-by-id
+    persona: coding agent
+    question: >
+      A run failed on a timeout. How do I run it again from its id, and
+      when is a rerun the wrong move?
+    answer: >
+      `planton rerun <run-id>` takes any run's id (ij_, infpipe_,
+      svcpipe_, extrun_) and follows the new run (`--no-follow` returns).
+      It is a mutation: confirm first; when it still destroys something it
+      asks, and `--yes` answers only after the person agreed. Exit 0 done
+      (or a request waiting for its approver), 1 failed or refused, 3 a
+      person must decide. A stack run's rerun repeats its revision and is
+      refused once a newer revision exists or the stack was undeployed;
+      a service delivery run (promote, rollback, deploy, redeploy) is never
+      rerun -- the refusal names the verb to ask again.
+    checks:
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'planton rerun <run-id>\s+# any run; follows it to the end'
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: '`ij_` an Infra Job'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: 'rerun is refused once a newer revision exists'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: '## A delivery run is never rerun'

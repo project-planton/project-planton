@@ -15,7 +15,7 @@ An Infra Job is the execution unit behind every infrastructure change in Planton
 
 ## Why Infra Jobs Exist
 
-Running infrastructure automation manually is fragile. You start with `terraform apply` (or `tofu apply`), then realize you should preview first, then add a refresh to catch drift, then add approval gates for production — and before long you are maintaining custom CI pipelines just to deploy a database safely.
+Running infrastructure automation manually is fragile. You start with `terraform apply` (or `tofu apply`), then realize you should preview first, then add a drift check to catch changes made in the console, then add approval gates for production — and before long you are maintaining custom CI pipelines just to deploy a database safely.
 
 Infra Jobs codify this workflow into the platform. The right operations run in the right order, every time. Credentials are resolved automatically. A resource's flow control and its environment's protection decide where a job waits for a person. And every execution — successful or failed — is recorded with full logs and resource diffs for troubleshooting and compliance.
 
@@ -26,16 +26,21 @@ Every Infra Job follows a defined sequence of operations. Which operations run d
 ### For Creating or Updating Infrastructure
 
 1. **Initialize** — Set up the IaC module, download providers, configure the state backend.
-2. **Refresh** — Synchronize the IaC state file with the actual state of the provider resources. This catches drift — changes made outside of Planton, such as manual edits in the cloud console.
-3. **Preview** — Generate a plan showing what will change. Additions, modifications, and deletions are displayed before anything happens.
-4. **Apply** — Execute the changes. Create new resources, modify existing ones, update configurations.
+2. **Preview** — Generate a plan against the live cloud showing what will change. Additions, modifications, and deletions are displayed before anything happens, and the plan writes nothing.
+3. **Apply** — Execute the changes. Create new resources, modify existing ones, update configurations.
 
 ### For Destroying Infrastructure
 
 1. **Initialize** — Same module and state backend setup.
-2. **Refresh** — Synchronize with actual cloud state.
-3. **Preview** — Show what will be destroyed.
-4. **Destroy** — Remove the resources from the cloud provider.
+2. **Preview** — Show what will be destroyed.
+3. **Destroy** — Remove the resources from the cloud provider.
+
+### For Checking for Drift
+
+1. **Initialize** — Same module and state backend setup.
+2. **Drift Check** — Compare what the state recorded when Planton last applied the resource with what is really in the cloud, setting by setting. This catches drift — changes made outside of Planton, such as manual edits in the cloud console. It writes nothing: not the state file, not the resource.
+
+The resource then reads **In Sync**, **Drifted**, or **Couldn't Check**, and a drifted resource is put back by its next plan or deploy. See [Infra Stacks](/docs/infrastructure/infra-stacks#changed-outside-planton-drift) for checking a whole stack and reconciling it.
 
 ### For Importing Existing Resources
 
@@ -132,6 +137,8 @@ Re-run a completed or failed Infra Job to repeat the same operation. Useful afte
 planton infra job rerun <infra-job-id>
 ```
 
+`planton rerun <run-id>` reruns any run from its id alone — an Infra Job (`ij_`), a stack run (`infpipe_`), a service run (`svcpipe_`) or an external CI run (`extrun_`) — and follows it to the end; `--no-follow` returns once it starts.
+
 ## Preflight Checks
 
 Before committing to execution, verify that all four essentials are in place for a given catalog kind and environment:
@@ -191,5 +198,5 @@ Additional flags for `create`, `resume`, and `rerun`:
 - [Infra Components](/docs/infrastructure/infra-components) — The infrastructure that Infra Jobs provision
 - [Importing Resources](/docs/infrastructure/importing-resources) — Importing existing infrastructure into IaC state
 - [Infra Pipelines](/docs/infrastructure/infra-pipelines) — Orchestrating multiple Infra Jobs across resources
-- [Flow Control](/docs/infrastructure/flow-control) — Governance policies that control Infra Job execution
+- [Flow Control](/docs/infrastructure/flow-control) — The settings on a resource that decide how cautiously its Infra Jobs run
 - [Connections](/docs/connections) — How provider credentials are managed and resolved

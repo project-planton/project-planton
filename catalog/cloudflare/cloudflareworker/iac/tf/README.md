@@ -20,7 +20,7 @@ Provisions a Cloudflare Worker script and the companions that hang off it: worke
 
 Without a bundle the `aws.r2` provider is configured with a placeholder key pair and every skip flag, so it makes no network call and no request is ever signed with it (`provider.tf` explains why the block exists at all).
 
-A local `.terraform.lock.hcl` that pins an AWS provider outside `~> 6.58` fails `tofu init`; run `tofu init -upgrade`.
+The committed `.terraform.lock.hcl` fixes both providers, the Cloudflare one and the AWS one behind the `aws.r2` alias, to the catalog's locked releases; `tofu init -lockfile=readonly` installs exactly those.
 
 ## Outputs
 

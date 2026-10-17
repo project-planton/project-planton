@@ -95,7 +95,32 @@ graph LR
 3. **Deploy**: The pipeline deploys the artifact to each configured environment in order, respecting manual approval gates where configured.
 4. **Iterate**: Update the Service configuration as requirements change — add environments, switch build methods, adjust trigger paths. Changes take effect on the next pipeline run.
 
-Deleting a Service removes the configuration and disconnects the webhook. It does **not** delete deployed Infra Components — those must be removed separately.
+Deleting a Service destroys what it deployed, environment by environment, then removes its history and its record. It is refused up front when a resource it would destroy is marked `planton.dev/prevent-destroy`, has its own deletion protection on, or is still read by something else; a resource marked `planton.dev/keep-on-provider` is released and keeps running. To remove the service but keep everything it deployed, delete with **Keep Resources** (`--retain-infra-components`): each resource is released, as Keep does on an Infra Stack.
+
+While a Service is live, the Infra Components its latest run into an environment planned change only through the service: a direct deploy, destroy, rename or edit of one is refused, naming the service, because its next deploy would undo the change. Change the service's configuration and deploy, or redeploy. Once no run plans a resource, it is free again: you can mark it `planton.dev/keep-on-provider` on its own page before the next deployment lets it go.
+
+## Removing a Resource
+
+A Service's configuration is what runs in your cloud, so taking a resource out of it takes the resource out of the cloud. When a run no longer declares a resource the Service deployed to an environment, the run removes it at the very end, after everything it declares has applied and the rollout has verified. The run lists its removals from the moment it starts, under **No Longer Declared**, so you see what it will remove before it does.
+
+- **Destroyed** is the default for a resource that holds no data. A push that removes a queue's manifest destroys the queue.
+- **Kept** (named by its provider: Kept in AWS) applies to a resource marked `planton.dev/keep-on-provider: "true"`: the Service lets go of it and it keeps running, findable and adoptable. Mark it and deploy before removing it.
+- **Left in Place** applies when something stops the destroy: `planton.dev/prevent-destroy`, the resource's own deletion protection, something else still reading it, or a kept resource living inside it. The run says why and how to clear it, and the next run tries again.
+
+A resource that holds data, such as a database, is never destroyed by a push alone. The rest of the environment deploys, then the run asks: destroy it (type its name), or keep it. In a protected environment the approver sees every removal at the gate and can keep any of them. If a removal was a mistake, such as a renamed resource, restore the name and push: the newer run takes over and nothing is removed.
+
+A failed deploy removes nothing, and a removal that fails never fails the deployment: the environment reads "1 removal failed" and the next run tries again. Removing a whole environment from the Service is different: its resources keep running.
+
+Promote, roll back, redeploy and deploy follow the same rule, because each applies a configuration: a rollback destroys what was added after the deployment it restores. Each takes `--dry-run`, which prints what the run would apply and remove without starting it, and the console's confirms show the same answer before you click.
+
+```bash
+# What would rolling prod back do? Nothing starts
+planton service rollback my-service --env prod --dry-run
+
+# Answer a run's question about a database it no longer declares
+planton service removal destroy my-service 131 prod AwsRdsInstance/orders-db
+planton service removal keep my-service 131 prod AwsRdsInstance/orders-db
+```
 
 ## Related Resources
 
@@ -127,7 +152,7 @@ The web console provides a guided wizard for creating services:
 After creation, the service's page has these tabs:
 
 - **Overview**: the repository and the latest run, then the **Delivery Path** — each environment in promotion order with the build it runs, how far it is from the environment before ("3 commits behind dev"), and any run moving into it, live. **Promote** sits on the step between two environments. See [Deployment Environments](/docs/ci-cd/deployment-environments#where-each-environment-stands-the-delivery-path).
-- **Deployments**: each environment's deployment history, with **Roll Back** and **Roll Back to This** beside the records they restore.
+- **Deployments**: each environment's deployment history, with **Roll Back** and **Roll Back to This** beside the records they restore, and on each environment **Redeploy** (apply what runs there again, putting back anything changed outside Planton) and **Check for Drift** (compare what runs with the cloud; the result shows on each environment as In Sync or Drifted).
 - **Runs**: every run, newest first — Planton's runs by number ("Run #128") and the repository's own CI runs by workflow — updating live, with the **Run** button.
 - **Configuration**: the environments the service deploys to, build triggers, deploy settings, and the switches that pause builds or deployments.
 - **Activity**: every deploy, promotion, rollback and configuration change, with who made it.
@@ -172,6 +197,10 @@ planton service deployments my-service
 # Promote what runs in dev into staging; roll staging back
 planton service promote my-service --from dev --to staging
 planton service rollback my-service --env staging
+
+# Was anything in prod changed outside Planton? Put it back
+planton service drift check my-service --env prod
+planton service redeploy my-service --env prod
 ```
 
 ## Related Documentation

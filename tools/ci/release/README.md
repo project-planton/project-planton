@@ -65,11 +65,24 @@ When you run `make release`, here's what happens:
 │  ├── Create the GitHub Release with auto-generated notes                    │
 │  ├── Pulumi module binaries    -> Cloudflare R2 (downloads.planton.ai)      │
 │  ├── Terraform module zips     -> Cloudflare R2 (downloads.planton.ai)      │
+│  ├── Module manifest (after both module lanes) -> Cloudflare R2             │
 │  ├── Content distribution zips -> Cloudflare R2 (downloads.planton.ai)      │
 │  ├── Definitions               -> Cloudflare R2 (downloads.planton.ai)      │
 │  └── InfraChart catalog zip    -> attached to the GitHub Release            │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
+
+## Official modules: how they are built, published and recognised
+
+A platform that deploys Planton's official IaC modules recognises each module by its **module digest**: sha256 over the `"<artifact> <sha256>"` lines, in name order, of every artifact a runner may execute for it (one gzipped Pulumi binary per platform, or the OpenTofu/Terraform `module.zip`). The digest is computed from the bytes a release actually published, so it is exact: two releases carry the same digest for a module only when they published byte-identical artifacts for it. A platform records the digest each resource was last applied with and re-runs a resource on a new release only when its module's digest moved; a runner refuses a download whose bytes are not the ones the release published.
+
+Three pieces make that hold:
+
+- **`tools/modulebuild` is the only place a module is built or packed.** The release lanes call it and upload what it produces. A `module.zip` holds the module directory's git-tracked files except Markdown (so a README edit never moves the digest), its provider lock file included, plus `LICENSE` and `NOTICE`. A Pulumi binary is compiled with the toolchain `go.mod` names, `GOWORK=off`, cgo off, default microarchitecture levels, `-trimpath -buildvcs=false -ldflags "-s -w -buildid="`, and gzipped with no file name or time. Archives are written by `pkg/detzip`: lexical entry order, no timestamps, stored entries. `modulebuild list` names the modules a release ships (every tracked `catalog/<provider>/<kind>/iac/{pulumi,tf}`, internal `_`-prefixed providers excluded).
+- **The module manifest.** Each module leg records what it published -- module directory, artifact, and the checksum of the bytes the key holds, which `publish_once.sh` reports even for an object a rerun kept -- and uploads that list as a workflow artifact. Once both module lanes have finished, `release.yaml`'s `module-manifest` job merges every list with `modulebuild manifest` and publishes `releases/<tag>/modules/manifest.json`. It refuses an incomplete release (a module missing a platform, a module no leg recorded), so the manifest's presence means the release's modules are complete. Its grammar, and the reader platforms use, is `pkg/downloads/modulemanifest`.
+- **Reproducibility gates.** `lint.reproducible-modules.yaml` builds representative modules twice, in two checkouts of one commit with empty build caches, and fails unless the bytes are identical (`check_reproducible_modules.sh`). Correctness never depends on it -- a module that rebuilt differently would only read as changed -- but it keeps a release from re-running resources whose modules it did not change.
+
+What moves a module's digest, and so re-runs the resources built from it: any change to the files it ships (its lock file included), to `LICENSE` or `NOTICE`, and for a Pulumi module to anything compiled into its binary -- its own code, every package it imports (the kind registry included, so a release that adds a kind moves every Pulumi module), its dependencies' versions, and the Go toolchain.
 
 ## Scripts
 
@@ -101,6 +114,14 @@ Tests: `cd tools/ci/release && python3 -m unittest next_version_test.py`.
 Which changed files count as Pulumi/Terraform module changes (maturity-grammar-aware), with a `--self-test` that proves the patterns fire for every version channel.
 
 Not wired to CI since 2026-09-04: module auto-tags are dispatch-only by founder direction (`force_*_all` tags every module, so nothing detects changes), and `auto-tag.yaml` no longer calls this script or its self-test. It stays because it is what push-time module tagging needs and that may come back; re-enabling restores the two `iac/` push paths, the detector call, and the self-test step in `auto-tag.yaml` (see `.github/workflows/docs/auto-tags.md`). Run `bash tools/ci/release/detect_module_dirs.sh --self-test` by hand to prove it still works.
+
+### publish_once.sh
+
+Uploads an artifact under its tag exactly once (a tag's artifacts never change: a rerun keeps what is published) and prints on stdout the sha256 of the bytes the key holds. Every upload records its sha256 as object metadata; a kept object without one is hashed. A rebuild that differs from a kept object is a warning, because the published bytes stand. Tests: `cd tools/ci/release && python3 -m unittest publish_once_test.py`.
+
+### check_reproducible_modules.sh
+
+The reproducibility gate above, runnable by hand: `bash tools/ci/release/check_reproducible_modules.sh`.
 
 ### package_content.sh
 

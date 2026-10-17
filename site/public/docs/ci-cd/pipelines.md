@@ -42,9 +42,13 @@ For self-managed pipelines, the build stage runs your custom Tekton pipeline ins
 
 The deploy stage rolls out the built artifact to each configured environment. Environments are deployed sequentially, following your organization's promotion policy (for example: dev, then staging, then production).
 
-For each environment, the deploy stage applies the service's Infra Components, each through an Infra Job — an atomic infrastructure operation. Only the resources whose inputs moved since their last successful deploy run a job. The rest read **Unchanged since Run #126**, naming the run whose job last applied them, and run nothing; a resource whose lifecycle events are disabled reads **Unmanaged** and is left alone. The deployment record lists every resource with what happened to it. To apply every resource anyway — after someone changed one outside Planton, say — deploy, promote or roll back with `--reapply-all` (**Re-apply Every Resource** in the console's Promote and Roll Back dialogs).
+For each environment, the deploy stage applies the service's Infra Components, each through an Infra Job — an atomic infrastructure operation. Only the resources whose inputs moved since their last successful deploy run a job. The rest read **Unchanged since Run #126**, naming the run whose job last applied them, and run nothing; a resource whose lifecycle events are disabled reads **Unmanaged** and is left alone. The deployment record lists every resource with what happened to it. To apply every resource anyway, deploy, promote, roll back or redeploy with `--reapply-all` (**Re-apply Every Resource** in the console's Promote, Roll Back and Redeploy dialogs).
+
+Within an environment, Planton walks the service's resources as a graph, with the same engine that applies an Infra Stack: a resource starts as soon as everything it depends on has succeeded, so independent resources apply side by side. If a resource fails, everything that depends on it ends at once, reading "Not run: AwsRdsInstance/orders-db failed", while independent resources carry on.
 
 The pipeline waits for each environment to complete before proceeding to the next. If a deployment fails, subsequent environments are skipped.
+
+When two runs of a service reach the same environment, the newer commit always lands last. A newer run waits for an older run still deploying there — "Waiting for Run #127 to finish deploying prod." — however long that takes, and never deploys over it. A run started by a push gives the environment up to a newer run that already reached it, ending there with a sentence that names the newer run.
 
 This sequential model exists for a reason: each environment can depend on the previous one succeeding (you do not want a broken build reaching production), and failure at any stage stops the rollout cleanly rather than leaving partial deployments across environments.
 
@@ -162,18 +166,26 @@ planton service resolve-env-manual-gate my-service 130 prod yes
 planton service resolve-env-manual-gate my-service 130 prod no
 ```
 
+When the run no longer declares resources the service deployed to that environment, the gate lists each removal, and approving decides them all: each one is destroyed unless you keep it. A resource that holds data must be kept or named before the approval goes through. A removal that appears after the approval, or whose resource was replaced since, asks on its own. See [Removing a Resource](/docs/ci-cd/what-is-a-service#removing-a-resource).
+
+```bash
+# Approve, keeping the cache on its provider and naming the database to destroy
+planton service resolve-env-manual-gate my-service 130 prod approve \
+  --keep AwsElasticacheCluster/orders-cache --destroy AwsRdsInstance/orders-db
+```
+
 ## Cancelling a Pipeline
 
 Running pipelines can be cancelled at any point. The behavior depends on which stage is active:
 
 - **During the build stage** — Running build processes are terminated immediately. The deploy stage is skipped entirely.
-- **During the deploy stage** — The currently executing deployment completes its in-flight infrastructure operation, then remaining environments are cancelled.
+- **During the deploy stage** — Nothing new starts, every running Infra Job is asked to stop, and the run waits for the jobs to really end before it reads Cancelled. Each resource then says what its job truly did: one that finished before the cancel reached it keeps its success, and one that outlived the wait reads "Cancel requested; infra job … was still running".
 
 ```bash
 planton service cancel my-service 130
 ```
 
-Cancellation is asynchronous — the command sends the signal and returns immediately.
+The command answers once the run confirms it took the cancel. A run that does not answer is stopped and ended by the platform, with its jobs stopped too, so a cancel always lands.
 
 ## Monitoring Pipelines
 
@@ -224,7 +236,7 @@ planton service last-pipeline my-service
 planton service rerun my-service 128
 ```
 
-A rerun repeats a build. A promotion, a rollback, or a deploy of an image built nothing, so rerunning one is refused, and the refusal names the command that repeats it:
+A rerun repeats a build. A promotion, a rollback, a redeploy, or a deploy of an image built nothing, so rerunning one is refused, and the refusal names the command that repeats it:
 
 ```text
 Run #129 promoted 'Fix login' from dev to staging; running it again would rebuild the commit instead of promoting it. Promote again: planton service promote my-service --from dev --to staging, or Promote on the service's Delivery Path.

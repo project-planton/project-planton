@@ -35,6 +35,7 @@ When you run forge, you get a fully-implemented kind:
 
 ### IaC Modules - Terraform (iac/tf/)
 - ✅ Module files: `variables.tf` (generated), `provider.tf`, `locals.tf`, `main.tf`, `outputs.tf`
+- ✅ Provider lock: `.terraform.lock.hcl`, written by `make lock-providers` (the module's projection of `catalog/_providers/.terraform.lock.hcl`)
 - ✅ Documentation: `README.md`
 - ✅ **100% behavioral parity** with the Pulumi module (Parity Mandate)
 

@@ -307,7 +307,10 @@ race with the controller's log before writing the gate; a gate that merely
    Pulumi exports them all — the class was found live on AwsNeptuneCluster).
    Also verify the exact pin `= x.y.z` in `iac/tf/provider.tf` is lifted to the
    provider family's floor constraint (see forge rule 012) before adding fields
-   that need a newer provider. Finally verify the test-manifest anatomy exists:
+   that need a newer provider. A field that needs a newer provider RELEASE than
+   the catalog runs also moves the lock: `make lock-providers upgrade=<provider>`
+   records the newest release every module allows in the canonical lock and every
+   module's `.terraform.lock.hcl` (see hack/guards/ensure_tf_provider_pins.sh). Finally verify the test-manifest anatomy exists:
    `e2e/manifest.yaml` at the kind root (a kind can lack it — and
    without it the offline `tofu plan` proof has NO input, so that gate silently
    never runs for the kind). Create it from the current spec when missing;

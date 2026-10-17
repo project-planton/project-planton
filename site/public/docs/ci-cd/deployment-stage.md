@@ -171,10 +171,14 @@ This keeps local development configuration version-controlled alongside deployme
 For each resolved manifest (excluding the local overlay), the deployment stage creates a deployment task:
 
 1. **Environment matching** — If the service has deployment environment filters configured, only matching overlays produce tasks. See [Deployment Environments](/docs/ci-cd/deployment-environments).
-2. **Ordering** — Tasks execute sequentially following the organization's promotion policy (for example: dev, then staging, then production).
-3. **Manual gates** — If a deployment target requires manual approval, the pipeline pauses at that task until a team member approves or rejects. See [Pipelines](/docs/ci-cd/pipelines#manual-approval-gates).
-4. **Infra Job creation** — Each task provisions the catalog object manifest through an [Infra Job](/docs/infrastructure/infra-jobs). The Infra Job applies the infrastructure changes and reports completion.
-5. **Failure handling** — If a deployment task fails, all subsequent tasks are cancelled. No partial rollouts across environments.
+2. **Ordering** — Environments deploy one at a time, following the organization's promotion policy (for example: dev, then staging, then production). Within an environment, resources apply in dependency order, independent ones side by side.
+3. **Manual gates** — If a deployment target requires manual approval, the pipeline pauses at that environment until a team member approves or rejects. See [Pipelines](/docs/ci-cd/pipelines#manual-approval-gates).
+4. **Only what moved runs** — Before a resource runs, the platform compares what it would deploy with what its last successful deploy applied: its settings, the values it reads, its secrets' versions, its variables, its account and its module, by the digest its release published. An exact match runs no job: the resource reads **Unchanged since Run #126**, naming the run that last applied it, and hands that job's outputs to what depends on it. A resource whose lifecycle events are disabled reads **Unmanaged** and never runs.
+5. **Infra Job creation** — Every other resource provisions its catalog object manifest through an [Infra Job](/docs/infrastructure/infra-jobs), which applies the infrastructure changes and reports back to the run.
+6. **Failure handling** — If a resource fails, every resource that depends on it reads "Not run: <Kind>/<name> failed", the environment fails, and later environments are skipped. No partial rollouts across environments.
+7. **Removals** — Once everything the environment declares applied and the rollout verified, the run removes what the service owns there and no longer declares: destroyed, **Kept in AWS** (named by its provider) when marked `planton.dev/keep-on-provider: "true"`, or **Left in Place** when something stops the destroy. A resource that holds data waits for a person to destroy it by name or keep it. A failed apply or verification removes nothing, and a failed removal never fails the deployment. See [Removing a Resource](/docs/ci-cd/what-is-a-service#removing-a-resource).
+
+A change made outside Planton, such as an edit in the cloud console, moves nothing the comparison sees, so the resource reads Unchanged until a drift check finds it. `planton service drift check <service> --env <env>` compares every resource the environment runs with what is really on its provider, and `planton service redeploy <service> --env <env>` puts what drifted back.
 
 ## How the Image Is Pulled
 

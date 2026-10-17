@@ -189,3 +189,11 @@ sidecars and central `_pricing/`/`_compliance/` trees — both are composed
 into agents by reference (the multi-cloud-catalog skill's reference pack
 teaches reading them as files), never duplicated into a skill's prose,
 where they would rot.
+
+## Proving the teaching
+
+A skill is right only when a reader who has nothing else can answer real questions from it. Two proofs hold the `planton` skill to that.
+
+**The eval bank** (`eval_questions.yaml`, checked by `eval_test.go`, run by `go test ./skills/...` and the `lint.skills` workflow) records questions real people ask — a platform engineer, a developer, a coding agent — each with the answer the platform actually gives and `checks` that pin that answer to the skill's own sentences. Each check names a skill, a file inside it (`SKILL.md` or `references/<name>.md`) and an RE2 pattern the file must match. The test reads the embedded skill, the bytes agents load, so an edit that drops a sentence an answer rests on fails with the question named. Fix the skill, or update the answer and its checks in the same change.
+
+**The fresh-reader protocol** proves a reader finds those sentences. Give a new agent only `skills/planton/` and the bank's questions, never the answers, and ask it to answer each one using only those files, citing file and section, and to list what the skill did not tell it. Grade its answers against `answer`. Every wrong or missing answer is a gap in the skill: close it in the skill, pin the sentence that closes it with a check, and run the reader again after a large change. Run the protocol whenever a change reshapes what the skill teaches.

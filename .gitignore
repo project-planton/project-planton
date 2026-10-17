@@ -36,9 +36,13 @@ site/.venv/
 # Pinned proto toolchain, provisioned by `make proto-tools`
 .tools/
 
-# Terraform init/plan/apply artifacts (generated locally, never committed)
+# Terraform init/plan/apply artifacts (generated locally, never committed).
+# A catalog module's .terraform.lock.hcl is the exception: it is committed,
+# a projection of catalog/_providers/.terraform.lock.hcl (make lock-providers),
+# so every module runs exact, checksummed provider releases.
 **/.terraform/
 .terraform.lock.hcl
+!catalog/**/.terraform.lock.hcl
 *.tfstate
 *.tfstate.*
 terraform.tfplan
