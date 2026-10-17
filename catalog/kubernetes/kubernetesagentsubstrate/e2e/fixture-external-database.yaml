@@ -1,0 +1,102 @@
+# A PostgreSQL the customer runs, set up the way the kind's docs ask: once,
+# with upstream's own setup script at the release the kind installs, which
+# creates the two NOLOGIN roles, the schema, and here two password logins
+# that may assume them. The script is fetched at the pinned tag by an init
+# container, never copied into the repository, and runs from the image's
+# first-start hook. The connection-string Secret fixture carries the same
+# logins. Nothing here is a real secret; the database lives and dies with
+# the lane.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-ate-external-db
+spec:
+  namespace:
+    value: e2e-ate-db
+  create_namespace: true
+  manifest_yaml: |
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: substrate-setup
+      namespace: e2e-ate-db
+    data:
+      10-substrate.sh: |
+        #!/bin/sh
+        set -eu
+        psql --no-psqlrc --set=ON_ERROR_STOP=1 --single-transaction \
+          --username "${POSTGRES_USER}" --dbname atepg \
+          --set=substrate_schema=substrate \
+          --set=substrate_owner_role=substrate_owner \
+          --set=substrate_owner_user=e2e_owner \
+          --set=substrate_owner_password=e2e-owner-not-a-real-secret \
+          --set=substrate_readwrite_role=substrate_readwrite \
+          --set=substrate_readwrite_user=e2e_readwrite \
+          --set=substrate_readwrite_password=e2e-readwrite-not-a-real-secret \
+          --file=/setup/setup.sql
+    ---
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: e2e-ate-db
+      namespace: e2e-ate-db
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: e2e-ate-db
+      template:
+        metadata:
+          labels:
+            app: e2e-ate-db
+        spec:
+          initContainers:
+            - name: fetch-setup
+              image: busybox:1.36
+              command:
+                - wget
+                - -q
+                - -O
+                - /setup/setup.sql
+                - https://raw.githubusercontent.com/agent-substrate/substrate/v0.5.0/pkg/postgressetup/setup.sql
+              volumeMounts:
+                - name: setup
+                  mountPath: /setup
+          containers:
+            - name: postgres
+              image: postgres:18-alpine
+              env:
+                - name: POSTGRES_USER
+                  value: postgres
+                - name: POSTGRES_PASSWORD
+                  value: e2e-superuser-not-a-real-secret
+                - name: POSTGRES_DB
+                  value: atepg
+              ports:
+                - containerPort: 5432
+              readinessProbe:
+                exec:
+                  command: ["pg_isready", "--username", "postgres", "--dbname", "atepg"]
+              volumeMounts:
+                - name: setup
+                  mountPath: /setup
+                - name: init
+                  mountPath: /docker-entrypoint-initdb.d
+          volumes:
+            - name: setup
+              emptyDir: {}
+            - name: init
+              configMap:
+                name: substrate-setup
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: e2e-ate-db
+      namespace: e2e-ate-db
+    spec:
+      selector:
+        app: e2e-ate-db
+      ports:
+        - port: 5432
+          targetPort: 5432

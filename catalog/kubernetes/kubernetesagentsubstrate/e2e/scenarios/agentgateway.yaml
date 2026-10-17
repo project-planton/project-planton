@@ -1,0 +1,40 @@
+# THE AGENTGATEWAY DATAPLANE: the router and the egress gateway run
+# agentgateway in place of Envoy, upstream's agentgateway component applied
+# as written. The verifier asserts both run the agentgateway container, and
+# that the router still answers and the API still serves.
+#
+# This lane sorts first on the shared cluster and lets the definitions go
+# on destroy (keepOnUninstall off), so whatever the previous engine's
+# minimal lane kept is gone before the definition refusal plants its own.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-agw
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-namespace.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-store.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-credentials.yaml"
+spec:
+  namespace:
+    value: ate-system
+  crds:
+    keepOnUninstall: false
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled:
+      volumeSize: 2Gi
+  storage:
+    s3:
+      endpoint:
+        valueFrom:
+          name: e2e-ate-s3
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  router:
+    dataplane: agentgateway
+  egress:
+    credentialProvider:
+      disabled: {}

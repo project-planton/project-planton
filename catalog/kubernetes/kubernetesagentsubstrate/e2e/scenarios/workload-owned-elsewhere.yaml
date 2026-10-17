@@ -1,0 +1,33 @@
+# THE WORKLOAD-OWNED-ELSEWHERE REFUSAL: a Deployment named ate-api-server
+# already runs in ate-system without this kind's mark (the fixture, standing
+# in for a kubectl apply or `ate-setup` install of upstream's release). The
+# deploy must be refused before anything is written rather than take that
+# installation over; the verifier asserts the three parts and that the
+# other API server gained no mark.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-wl-owned
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-foreign-api-server.yaml"
+    planton.dev/e2e-expect-deploy-failure: workload-owned-elsewhere
+spec:
+  namespace:
+    value: ate-system
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled: {}
+  storage:
+    s3:
+      endpoint:
+        value: http://s3.example.invalid:8333
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

@@ -1,0 +1,33 @@
+# THE NAMESPACE-OWNED-ELSEWHERE REFUSAL: a KubernetesNamespace owns
+# ate-system (the fixture), and this resource is asked to create it. Taking
+# it over would make a later destroy delete what others put there, the
+# bundled database's volume included, so the deploy must be refused at plan
+# with the remedy.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-ns-owned
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-namespace.yaml"
+    planton.dev/e2e-expect-deploy-failure: namespace-owned-elsewhere
+spec:
+  namespace:
+    value: ate-system
+  createNamespace: true
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled: {}
+  storage:
+    s3:
+      endpoint:
+        value: http://s3.example.invalid:8333
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

@@ -190,6 +190,15 @@ per-family maps such as `crdInstallKinds`, `gatewayApiKinds` and
 New catalog kinds are added to the appropriate map. Tier 1 native resources
 (namespace, deployment, statefulset, secret, service) are routed via the switch.
 
+A verifier may implement optional capabilities beyond `ResourceVerifier`:
+`DeployFailureVerifier` pins a designed refusal to its three-part text,
+`RuntimeCauseVerifier` pins a designed runtime failure to its cause, and
+`OutputsVerifier` receives the deployed kind's outputs in place of
+`VerifyExists`, for proofs that must use the handles a consumer composes
+against rather than restate them. The Agent Substrate verifier is the
+reference for the last: it calls the API from the address, server name,
+token audience and trust bundle the kind outputs.
+
 ### Retry Strategy (`kubectl.go`)
 
 All kubectl operations use retry loops with progressive backoff to handle

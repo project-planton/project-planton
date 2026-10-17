@@ -1,0 +1,43 @@
+# THE KEYLESS GKE PROOF: snapshots in Google Cloud Storage with no key
+# anywhere. The node agent and the API server act as the Google service
+# accounts the gcp-gke batch created and bound to their Kubernetes
+# ServiceAccounts through Workload Identity
+# (aa_e2e/realcluster/gcp-gke, manifests/07-agent-substrate-gcs.yaml), the
+# API server trusts GKE's own token issuer for the cluster named here, and
+# this resource creates and owns ate-system (nothing has to be there
+# first). The bundled database keeps the lane free of a Cloud SQL
+# instance; the offline proofs cover Cloud SQL.
+#
+# The batch cluster must serve the pod-certificate and cluster-trust-bundle
+# APIs (the batch README says how). The cluster's project, location and
+# name come from the batch's env file.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-gke
+  annotations:
+    planton.dev/e2e-cluster-profile: "gcp-gke"
+spec:
+  namespace:
+    value: ate-system
+  createNamespace: true
+  crds:
+    keepOnUninstall: false
+  platform:
+    gke:
+      clusterId:
+        value: projects/${E2E_ENV:PLANTON_E2E_GCP_PROJECT}/locations/${E2E_ENV:PLANTON_E2E_GKE_CLUSTER_LOCATION}/clusters/${E2E_ENV:PLANTON_E2E_GKE_CLUSTER_NAME}
+      apiServerServiceAccount:
+        value: ${E2E_ENV:PLANTON_E2E_GKE_SUBSTRATE_API_GSA}
+      nodeAgentServiceAccount:
+        value: ${E2E_ENV:PLANTON_E2E_GKE_SUBSTRATE_ATELET_GSA}
+  database:
+    bundled:
+      volumeSize: 10Gi
+  storage:
+    gcs:
+      bucket:
+        value: ${E2E_ENV:PLANTON_E2E_GKE_SUBSTRATE_BUCKET}
+  egress:
+    credentialProvider:
+      disabled: {}

@@ -1,0 +1,16 @@
+# The external database's connection strings, in ate-system where the API
+# server reads them: the read/write pool's login and the owner pool's, both
+# the logins the database fixture's setup created. Deployed after the
+# namespace fixture, which owns ate-system.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesSecret
+metadata:
+  name: e2e-ate-db-connection
+spec:
+  name: substrate-database
+  namespace:
+    value: ate-system
+  opaque:
+    data:
+      read-write: postgresql://e2e_readwrite:e2e-readwrite-not-a-real-secret@e2e-ate-db.e2e-ate-db.svc:5432/atepg?sslmode=disable
+      owner: postgresql://e2e_owner:e2e-owner-not-a-real-secret@e2e-ate-db.e2e-ate-db.svc:5432/atepg?sslmode=disable

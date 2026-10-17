@@ -1,0 +1,37 @@
+apiVersion: qa.planton.dev/v1
+kind: CatalogKindE2EProfile
+metadata:
+  name: kubernetesagentsubstrate
+spec:
+  tier: 4
+  # The Agent Substrate v0.5.0 control plane from Planton's published build
+  # of upstream's own release, the resource definitions kept and
+  # ownership-checked. Every lane proves what a product is promised, from
+  # the kind's outputs alone: a service-account token minted for the output
+  # audience, trusted through the output ClusterTrustBundle and dialed under
+  # the output server name, creates, reads and deletes an atespace; the API
+  # admits the namespace carrying the output label and (on kind, which
+  # enforces NetworkPolicy) refuses one without it; the router answers.
+  #
+  # The kind lanes run on the pod-certificates profile (Kubernetes 1.37 with
+  # the pod-certificate and cluster-trust-bundle APIs on). Their snapshot
+  # store is the catalog's own SeaweedFS, whose key lives in a Secret in
+  # ate-system, so a KubernetesNamespace fixture owns ate-system and creates
+  # it first: the kind lanes run with createNamespace off, which also proves
+  # the bundled database's volume outlives the control plane. The scenarios:
+  # bundled database with keep-and-readopt over the kept volume (minimal),
+  # authorization with the probe as bootstrap owner and a stranger denied
+  # (full-surface), the Kubernetes Secrets credential provider with a grant
+  # change rolling it (credential-policy-change), the agentgateway
+  # dataplane, an external PostgreSQL through connection strings, GKE with
+  # GCS and Workload Identity and the namespace created here (gke-keyless,
+  # real cluster), and the refusals: a namespace missing or owned elsewhere,
+  # an API server or a definition another installation holds, and an
+  # earlier minor recorded on the API server or on the database volume.
+  #
+  # cordonControlPlane needs nodes labelled for the control plane and the
+  # database, which the one-node kind cluster cannot offer; the offline
+  # proofs cover it.
+  status: pending_proof
+  validated_provisioners: []
+  timeout_minutes: 40

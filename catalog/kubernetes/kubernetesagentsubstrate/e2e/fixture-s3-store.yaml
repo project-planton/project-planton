@@ -1,0 +1,27 @@
+# The snapshot store for the kind lanes: the catalog's own S3-compatible
+# store, wired as a customer composes it -- the control plane's
+# storage.s3.endpoint references this resource's s3_endpoint output, and
+# snapshots land in the bucket declared here at install.
+#
+# The admin key pair is FIXED through the chart's own
+# `s3.credentials.admin` values (the kind's helmValues escape hatch), so the
+# Secret fixture in ate-system can carry the same pair as literals and the
+# two agree by construction. Nothing here is a real secret; the store lives
+# and dies with the lane.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesSeaweedFs
+metadata:
+  name: e2e-ate-s3
+spec:
+  namespace:
+    value: e2e-ate-s3
+  createNamespace: true
+  s3:
+    buckets:
+      - name: substrate-snapshots
+  helmValues: |
+    s3:
+      credentials:
+        admin:
+          accessKey: e2e-ate-snapshots-admin
+          secretKey: e2e-ate-snapshots-admin-secret-not-a-real-secret

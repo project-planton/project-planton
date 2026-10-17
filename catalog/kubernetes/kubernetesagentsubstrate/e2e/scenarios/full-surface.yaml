@@ -1,0 +1,120 @@
+# Every setting a one-node kind cluster can honor, at non-default values:
+# authorization with the verifier's probe client as bootstrap owner, actor
+# JWTs on RS256 with an issuer, every workload's replicas, log levels,
+# drains and resources, the node agent's image cache and staging, the
+# router's parking and timeouts and its allowed SPIFFE client, the egress
+# gateway's caches and Envoy threads, the pod-certificate controller's rate,
+# the size10 tuning, and telemetry exporters with a sampler.
+#
+# THE AUTHORIZATION PROOF: the probe client
+# (system:serviceaccount:e2e-ate-probe:e2e-ate-client, the token subject)
+# creates an atespace as an owner, while a second service account in the
+# same namespace is denied by its principal. cordonControlPlane is left to
+# the offline proofs: it needs labelled nodes the one-node cluster has not.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-full
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-namespace.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-store.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-credentials.yaml"
+spec:
+  namespace:
+    value: ate-system
+  crds:
+    keepOnUninstall: false
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled:
+      volumeSize: 2Gi
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: "2"
+          memory: 2Gi
+    poolMaxConnections: 8
+  storage:
+    s3:
+      endpoint:
+        valueFrom:
+          name: e2e-ate-s3
+      bucket: substrate-snapshots
+      region: us-east-1
+      forcePathStyle: true
+      credentials:
+        secretName:
+          value: substrate-s3
+        accessKeyIdKey: access_key_id
+        secretAccessKeyKey: secret_access_key
+  apiServer:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    logLevel: debug
+    authorization:
+      enabled: true
+      bootstrapOwners:
+        - system:serviceaccount:e2e-ate-probe:e2e-ate-client
+    actorJwt:
+      algorithm: rs256
+      issuer: https://agents.e2e.example.com
+    drainDelay: 5s
+    drainTimeout: 10s
+    templateResyncInterval: 30s
+  controller:
+    logLevel: debug
+    workerSyncConcurrency: 4
+  nodeAgent:
+    logLevel: debug
+    actorStatsPollInterval: 15s
+    drainDelay: 5s
+    drainTimeout: 30s
+    imageCache:
+      gcPeriod: 10m
+      highPercent: 90
+      lowPercent: 80
+      minAge: 30m
+      dryRun: true
+    assetStagingCapacityGib: 4
+  router:
+    replicas: 1
+    logLevel: debug
+    allowedClientSpiffeIds:
+      - spiffe://cluster.local/ns/e2e-ate-probe/sa/e2e-ate-client
+    routeTimeout: 2m
+    parkedRequests:
+      budget: 8s
+      max: 256
+      retryInterval: 200ms
+      retryFactor: 1.5
+      retryJitter: 0.2
+    extProcMaxRequests: 128
+    drainDelay: 5s
+    drainTimeout: 20s
+  egress:
+    credentialProvider:
+      disabled: {}
+    replicas: 1
+    logLevel: debug
+    policyCacheTtl: 5s
+    interceptCertificateTtl: 30m
+    envoyConcurrency: 2
+    drainDelay: 5s
+  podCertificates:
+    workersPerSigner: 2
+    kubeApiQps: 50
+    kubeApiBurst: 100
+  telemetry:
+    metricsExporters:
+      - prometheus
+    logsExporters:
+      - console
+    tracesSampler: parentbased_traceidratio
+    tracesSamplerRatio: 0.5
+  clusterSize: size10

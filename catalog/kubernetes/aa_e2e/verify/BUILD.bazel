@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "agentsandbox.go",
         "agentsandboxresources.go",
+        "agentsubstrate.go",
         "airflow.go",
         "altinityoperatorinstall.go",
         "argocd.go",
@@ -111,6 +112,7 @@ go_library(
     importpath = "github.com/plantonhq/planton/catalog/kubernetes/aa_e2e/verify",
     visibility = ["//visibility:public"],
     deps = [
+        "//catalog/kubernetes/aa_e2e/verify/internal/ateapipb",
         "//catalog/kubernetes/kubernetesplantonoperator/v1alpha1",
         "//internal/manifest",
         "//pkg/cloudflare/r2",
@@ -136,6 +138,11 @@ go_library(
         "@io_temporal_go_sdk//client",
         "@io_temporal_go_sdk//worker",
         "@io_temporal_go_sdk//workflow",
+        "@org_golang_google_grpc//:grpc",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//credentials",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_google_grpc//status",
         "@org_golang_google_protobuf//proto",
         "@org_golang_google_protobuf//types/known/durationpb",
     ],
@@ -146,11 +153,15 @@ go_test(
     srcs = [
         "agentsandbox_test.go",
         "agentsandboxresources_test.go",
+        "agentsubstrate_test.go",
         "kubeprometheusstack_rules_test.go",
         "openbao_test.go",
         "plantonplatform_test.go",
         "projectionreadback_test.go",
     ],
     embed = [":verify"],
-    deps = ["@in_gopkg_yaml_v3//:yaml_v3"],
+    deps = [
+        "//pkg/failure",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+    ],
 )

@@ -158,6 +158,7 @@ var kubernetesTier4Kinds = []string{
 	"kuberneteskuberayoperator",
 	"kubernetesflinkoperator",
 	"kubernetesagentsandboxcontroller",
+	"kubernetesagentsubstrate",
 }
 
 // Kubernetes Tier 2 kinds: Helm-based, self-contained chart installs.
@@ -904,6 +905,9 @@ func TestKubernetesTektonOperator_Pulumi(t *testing.T) {
 func TestKubernetesAgentSandboxController_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesagentsandboxcontroller", "pulumi")
 }
+func TestKubernetesAgentSubstrate_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstrate", "pulumi")
+}
 func TestKubernetesPlantonOperator_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesplantonoperator", "pulumi")
 }
@@ -954,6 +958,9 @@ func TestKubernetesTektonOperator_Terraform(t *testing.T) {
 }
 func TestKubernetesAgentSandboxController_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesagentsandboxcontroller", "terraform")
+}
+func TestKubernetesAgentSubstrate_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstrate", "terraform")
 }
 func TestKubernetesPlantonOperator_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesplantonoperator", "terraform")

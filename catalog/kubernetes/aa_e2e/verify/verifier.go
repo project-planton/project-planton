@@ -31,6 +31,15 @@ type DeployFailureVerifier interface {
 	VerifyExpectedDeployFailure(ctx context.Context, kubeconfig, expectation string, deployErr error) error
 }
 
+// OutputsVerifier is the optional capability a verifier implements when its
+// proof must use the kind's outputs, the handles a consumer composes against
+// (an API address, its server name, its trust bundle), rather than names the
+// verifier would otherwise restate. The harness calls it in place of
+// VerifyExists.
+type OutputsVerifier interface {
+	VerifyExistsWithOutputs(ctx context.Context, kubeconfig string, outputs map[string]interface{}) error
+}
+
 // operatorKinds lists manifest kind values (lowercased) for operator/controller
 // kinds. Operators install CRD controllers that watch resources but typically
 // do not expose a Kubernetes Service. Verification checks namespace + running
@@ -683,6 +692,15 @@ func GetVerifierFromManifest(manifestPath string) (ResourceVerifier, error) {
 	// router by sandbox name. Destroy asserts the sandbox outlives it.
 	case "kubernetesagentsandboxcontroller":
 		return newAgentSandboxControllerVerifier(manifestPath), nil
+
+	// The Agent Substrate control plane: every workload rolled out, the kept
+	// definitions and the release stamps on, then the API called the way a
+	// product calls it, from the kind's outputs alone (a token for the output
+	// audience, the output trust bundle and server name): an atespace
+	// created, read and deleted. Refusal lanes pin the kind's three-part
+	// texts, the minor-release refusal included.
+	case "kubernetesagentsubstrate":
+		return newAgentSubstrateVerifier(manifestPath), nil
 
 	// An agent-sandbox Sandbox: every field the scenario sets reads back,
 	// the Sandbox Ready (or Suspended with no pod), its claims created. The

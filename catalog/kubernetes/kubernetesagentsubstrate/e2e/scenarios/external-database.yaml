@@ -1,0 +1,43 @@
+# AN EXTERNAL POSTGRESQL: the customer's own database (the fixture), set up
+# once with upstream's setup script, reached through connection strings in
+# a Secret in ate-system -- one login for the read/write pool, one for the
+# owner pool that runs the schema migrations. No bundled database runs.
+# The verifier's API round trip IS the proof: creating an atespace writes
+# it through the read/write pool into the schema the owner pool migrated.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-extdb
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-namespace.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-store.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-credentials.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-external-database.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-database-connection.yaml"
+spec:
+  namespace:
+    value: ate-system
+  crds:
+    keepOnUninstall: false
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    external:
+      readWriteConnectionString:
+        name:
+          value: substrate-database
+        key: read-write
+      ownerConnectionString:
+        name:
+          value: substrate-database
+        key: owner
+  storage:
+    s3:
+      endpoint:
+        valueFrom:
+          name: e2e-ate-s3
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

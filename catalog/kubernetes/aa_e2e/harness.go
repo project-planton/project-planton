@@ -402,6 +402,9 @@ func (h *Harness) VerifyDeployed(ctx context.Context, kindDir string, outputs ma
 	if err != nil {
 		return err
 	}
+	if ov, ok := verifier.(verify.OutputsVerifier); ok {
+		return ov.VerifyExistsWithOutputs(ctx, h.kubeconfigPath, outputs)
+	}
 	return verifier.VerifyExists(ctx, h.kubeconfigPath)
 }
 

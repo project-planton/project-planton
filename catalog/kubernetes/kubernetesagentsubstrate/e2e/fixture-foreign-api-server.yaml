@@ -1,0 +1,38 @@
+# THE OTHER INSTALLATION for the workload-owned-elsewhere lane: a Deployment
+# under upstream's fixed API server name in ate-system, without this kind's
+# ownership label, standing in for a kubectl apply or `ate-setup` install of
+# upstream's release. The fixture owns the namespace too, so the control
+# plane under test runs with createNamespace off and the refusal it must
+# give is the workload's, not the namespace's. A pause container is enough:
+# the refusal is about who wrote the Deployment, read before anything is
+# applied.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-ate-foreign-api-server
+spec:
+  namespace:
+    value: ate-system
+  create_namespace: true
+  skip_await: true
+  manifest_yaml: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: ate-api-server
+      namespace: ate-system
+      labels:
+        app: ate-api-server
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: ate-api-server
+      template:
+        metadata:
+          labels:
+            app: ate-api-server
+        spec:
+          containers:
+            - name: ate-api-server
+              image: registry.k8s.io/pause:3.10
