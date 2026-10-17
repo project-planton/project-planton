@@ -54,8 +54,8 @@ func Resources(ctx *pulumi.Context, iacInput *kubernetesagentsandboxcontrollerv1
 		return err
 	}
 
-	namespace := workloadowner.Namespace{Name: vars.Namespace, Create: s.createNamespace}
-	if err := workloadowner.Refuse(iacInput.ProviderConfig, kindName, namespace, ownedDeployments(s)); err != nil {
+	namespaces := []workloadowner.Namespace{{Name: vars.Namespace, Create: s.createNamespace}}
+	if err := workloadowner.Refuse(iacInput.ProviderConfig, kindName, namespaces, ownedDeployments(s)); err != nil {
 		return err
 	}
 
@@ -137,10 +137,10 @@ func namespaceNotUpstreams(requested string) error {
 
 // ownedDeployments are the Deployments the module applies under upstream's
 // fixed names, which no other installation may already hold.
-func ownedDeployments(s *settings) []workloadowner.Deployment {
-	deployments := []workloadowner.Deployment{{Namespace: vars.Namespace, Name: vars.ControllerDeploymentName}}
+func ownedDeployments(s *settings) []workloadowner.Workload {
+	deployments := []workloadowner.Workload{{Kind: workloadowner.Deployment, Namespace: vars.Namespace, Name: vars.ControllerDeploymentName}}
 	if s.router != nil {
-		deployments = append(deployments, workloadowner.Deployment{Namespace: vars.Namespace, Name: vars.RouterDeploymentName})
+		deployments = append(deployments, workloadowner.Workload{Kind: workloadowner.Deployment, Namespace: vars.Namespace, Name: vars.RouterDeploymentName})
 	}
 	return deployments
 }

@@ -93,7 +93,7 @@ resource "terraform_data" "preflight" {
     }
     precondition {
       condition     = !local.namespace_created_here
-      error_message = local.namespace_created_here ? "observed: namespace ${local.namespace} was created by this ${local.kind_name}, and spec.create_namespace is now false\nmeaning: turning create_namespace off would delete the namespace, and with it this installation's workloads and everything other components put there\nnext step: keep spec.create_namespace true; to move the namespace to a KubernetesNamespace, destroy this resource first (its resource definitions and every sandbox outside ${local.namespace} are kept), deploy the KubernetesNamespace, then deploy this resource again with create_namespace false" : ""
+      error_message = local.namespace_created_here ? "observed: namespace ${local.namespace} was created by this ${local.kind_name}, and spec.create_namespace is now false\nmeaning: turning create_namespace off would delete the namespace, and with it this installation's workloads and everything other components put there\nnext step: keep spec.create_namespace true; to move the namespace to a KubernetesNamespace, destroy this resource first (resource definitions it keeps, and everything outside ${local.namespace}, stay), deploy the KubernetesNamespace, then deploy this resource again with create_namespace false" : ""
     }
     precondition {
       condition     = !local.namespace_foreign

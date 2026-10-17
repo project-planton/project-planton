@@ -81,13 +81,14 @@ const WorkloadOwnerLabel = "planton.ai/kind"
 // upstream's release, another tool. Server-side apply would take it over
 // without a word, two owners would then fight over one controller, and a
 // later destroy would delete workloads this kind never created. So the
-// deploy stops before writing anything. owner is what the cluster says about
+// deploy stops before writing anything. workloadKind is the apps/v1 kind
+// (Deployment, DaemonSet, StatefulSet); owner is what the cluster says about
 // who wrote it (the field managers), or the honest absence of any mark.
-func KubernetesWorkloadOwnedElsewhere(kind, namespace, name, owner string) *Failure {
+func KubernetesWorkloadOwnedElsewhere(kind, workloadKind, namespace, name, owner string) *Failure {
 	return &Failure{
-		Observed: fmt.Sprintf("Deployment %s/%s already runs on the cluster and was not created by this %s (%s)", namespace, name, kind, owner),
+		Observed: fmt.Sprintf("%s %s/%s already runs on the cluster and was not created by this %s (%s)", workloadKind, namespace, name, kind, owner),
 		Meaning:  "another installation of the same software runs here, such as a managed add-on or a kubectl apply of the upstream release; installing over it would take over its workloads, and destroying this resource later would delete them",
-		NextStep: fmt.Sprintf("remove the other installation first, or keep it and do not install %s on this cluster; to hand over an installation you made yourself, import it, then mark it as this kind's (`kubectl -n %s label deployment %s %s=%s`) and re-run", kind, namespace, name, WorkloadOwnerLabel, kind),
+		NextStep: fmt.Sprintf("remove the other installation first, or keep it and do not install %s on this cluster; to hand over an installation you made yourself, import it, then mark it as this kind's (`kubectl -n %s label %s %s %s=%s`) and re-run", kind, namespace, strings.ToLower(workloadKind), name, WorkloadOwnerLabel, kind),
 	}
 }
 
@@ -113,7 +114,27 @@ func KubernetesNamespaceCreatedHere(kind, namespace string) *Failure {
 	return &Failure{
 		Observed: fmt.Sprintf("namespace %s was created by this %s, and spec.create_namespace is now false", namespace, kind),
 		Meaning:  "turning create_namespace off would delete the namespace, and with it this installation's workloads and everything other components put there",
-		NextStep: fmt.Sprintf("keep spec.create_namespace true; to move the namespace to a KubernetesNamespace, destroy this resource first (its resource definitions and every sandbox outside %s are kept), deploy the KubernetesNamespace, then deploy this resource again with create_namespace false", namespace),
+		NextStep: fmt.Sprintf("keep spec.create_namespace true; to move the namespace to a KubernetesNamespace, destroy this resource first (resource definitions it keeps, and everything outside %s, stay), deploy the KubernetesNamespace, then deploy this resource again with create_namespace false", namespace),
+	}
+}
+
+// KubernetesUpgradeRefused: a kind that installs an upstream's own release
+// found an earlier installation on the cluster whose version the upstream
+// does not upgrade from in place, and stopped before writing anything. An
+// upstream that migrates its own storage on start (a database schema, an
+// on-disk format) turns such an apply into damage nothing undoes, so the
+// refusal comes at plan time, from a version stamp the module wrote.
+//
+// record names the object carrying the stamp (Deployment ns/name, the
+// database's PersistentVolumeClaim ns/name); rule is the upstream's own
+// upgrade rule that the move breaks, in a full clause; nextStep is the
+// upstream's own way across (usually back up, destroy, clear the stored
+// state, apply), because only the kind knows where that state lives.
+func KubernetesUpgradeRefused(kind, software, record, installed, requested, rule, nextStep string) *Failure {
+	return &Failure{
+		Observed: fmt.Sprintf("%s records %s %s on this cluster, and this %s installs %s", record, software, installed, kind, requested),
+		Meaning:  fmt.Sprintf("%s does not move from %s to %s in place: %s", software, installed, requested, rule),
+		NextStep: nextStep,
 	}
 }
 
