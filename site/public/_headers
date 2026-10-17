@@ -1,0 +1,9 @@
+# Response headers for the static export, read by Cloudflare's static assets (wrangler.jsonc).
+#
+# The changelog feed is a public document read from other origins: the desktop app
+# (tauri://localhost), the dev and demo consoles, and every self-hosted console draw
+# Home's "What's New at Planton" from it in the browser. Only the console served on
+# planton.ai itself reads it same-origin, so without this header every other console's
+# card says the changelog could not be read.
+/changelog/recent.json
+  Access-Control-Allow-Origin: *
