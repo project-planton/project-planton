@@ -1816,6 +1816,37 @@ func TestOutputsConformance(t *testing.T) {
 			},
 		},
 		{
+			// KubernetesAgentSubstrate: the handles a product calls the API
+			// with (address, server name, token audience, trust bundle, the
+			// namespace label the API admits), the router, the storage
+			// location actor templates use, and the worker images the worker
+			// pool kind runs.
+			name: "KubernetesAgentSubstrate",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrate,
+			rawOutputs: map[string]interface{}{
+				"namespace":                  "ate-system",
+				"api_address":                "api.ate-system.svc:443",
+				"api_server_name":            "api.ate-system.svc",
+				"api_token_audience":         "api.ate-system.svc",
+				"api_trust_bundle_name":      "servicedns.podcert.ate.dev:identity:primary-bundle",
+				"api_trust_bundle_signer":    "servicedns.podcert.ate.dev/identity",
+				"api_access_namespace_label": "ate.dev/api-access=true",
+				"router_endpoint":            "http://atenet-router.ate-system.svc:80",
+				"router_tls_endpoint":        "https://atenet-router.ate-system.svc:443",
+				"storage_location":           "s3://substrate-snapshots",
+				"actor_jwt_issuer":           "https://idp.ate-system.svc",
+				"gvisor_worker_image":        "ghcr.io/plantonhq/planton/agent-substrate/ateom-gvisor:v0.5.0@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+				"microvm_worker_image":       "ghcr.io/plantonhq/planton/agent-substrate/ateom-microvm:v0.5.0@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+				"version":                    "v0.5.0",
+			},
+			mustPopulate: []string{
+				"namespace", "api_address", "api_server_name", "api_token_audience",
+				"api_trust_bundle_name", "api_trust_bundle_signer", "api_access_namespace_label",
+				"router_endpoint", "router_tls_endpoint", "storage_location", "actor_jwt_issuer",
+				"gvisor_worker_image", "microvm_worker_image", "version",
+			},
+		},
+		{
 			// KubernetesTekton: the resolved installation handles — target
 			// namespace, profile, and the dashboard Service handles exposure
 			// kinds compose against (populated on profile `all`).

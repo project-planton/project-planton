@@ -650,6 +650,7 @@ contained dev.planton.kubernetes.kubernetesagentsandboxclaim.v1alpha1.Kubernetes
 contained dev.planton.kubernetes.kubernetesagentsandboxcontroller.v1alpha1.KubernetesAgentSandboxControllerSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesagentsandboxtemplate.v1alpha1.KubernetesAgentSandboxTemplateSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesagentsandboxwarmpool.v1alpha1.KubernetesAgentSandboxWarmPoolSpec.namespace -> KubernetesNamespace
+contained dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1.KubernetesAgentSubstrateSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesairflow.v1alpha1.KubernetesAirflowSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesaltinityoperator.v1alpha1.KubernetesAltinityOperatorSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesargocd.v1alpha1.KubernetesArgocdSpec.namespace -> KubernetesNamespace
@@ -1050,6 +1051,8 @@ exempt    dev.planton.kubernetes.ExternalSecretsStoreAzure.vault_url -> AzureKey
 exempt    dev.planton.kubernetes.ExternalSecretsStoreGcp.project_id -> GcpProject
 exempt    dev.planton.kubernetes.KubernetesPrometheusOperatorApiNamespaceSelector.match_names -> KubernetesNamespace
 exempt    dev.planton.kubernetes.StrimziKafkaClientTrustedCertificate.secret_name -> KubernetesKafka
+exempt    dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1.KubernetesAgentSubstrateCloudSqlDatabase.instance_connection_name -> GcpCloudSql
+exempt    dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1.KubernetesAgentSubstrateGke.cluster_id -> GcpGkeCluster
 exempt    dev.planton.kubernetes.kubernetesexternaldns.v1alpha1.KubernetesExternalDnsAwsRoute53.zone_id_filters -> AwsRoute53Zone
 exempt    dev.planton.kubernetes.kubernetesexternaldns.v1alpha1.KubernetesExternalDnsAzureDns.zone_id_filters -> AzureDnsZone
 exempt    dev.planton.kubernetes.kubernetesexternaldns.v1alpha1.KubernetesExternalDnsCloudflare.zone_id_filters -> CloudflareDnsZone

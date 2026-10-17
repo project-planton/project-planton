@@ -919,6 +919,7 @@ Fields on other kinds that can point at this resource:
 
 | Kind | Field | Reads |
 |---|---|---|
+| KubernetesAgentSubstrate | `spec.storage.s3.endpoint` | `status.outputs.s3_endpoint` |
 | KubernetesArgoWorkflows | `spec.artifactRepository.s3.endpoint` | `status.outputs.s3_endpoint` |
 | KubernetesArgoWorkflows | `spec.artifactRepository.s3.credentialsSecret.secretName` | `status.outputs.s3_credentials_secret_name` |
 | KubernetesFlinkDeployment | `spec.state.s3.endpoint` | `status.outputs.s3_endpoint` |

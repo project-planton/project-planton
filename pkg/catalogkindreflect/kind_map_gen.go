@@ -706,6 +706,7 @@ import (
 	kubernetesagentsandboxcontrollerv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsandboxcontroller/v1alpha1"
 	kubernetesagentsandboxtemplatev1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsandboxtemplate/v1alpha1"
 	kubernetesagentsandboxwarmpoolv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsandboxwarmpool/v1alpha1"
+	kubernetesagentsubstratev1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsubstrate/v1alpha1"
 	kubernetesairflowv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesairflow/v1alpha1"
 	kubernetesaltinityoperatorv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesaltinityoperator/v1alpha1"
 	kubernetesargocdv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesargocd/v1alpha1"
@@ -1591,6 +1592,7 @@ var ProviderKubernetesMap = map[catalogkind.CatalogKind]proto.Message{
 	catalogkind.CatalogKind_KubernetesAgentSandboxController:      &kubernetesagentsandboxcontrollerv1alpha1.KubernetesAgentSandboxController{},
 	catalogkind.CatalogKind_KubernetesAgentSandboxTemplate:        &kubernetesagentsandboxtemplatev1alpha1.KubernetesAgentSandboxTemplate{},
 	catalogkind.CatalogKind_KubernetesAgentSandboxWarmPool:        &kubernetesagentsandboxwarmpoolv1alpha1.KubernetesAgentSandboxWarmPool{},
+	catalogkind.CatalogKind_KubernetesAgentSubstrate:              &kubernetesagentsubstratev1alpha1.KubernetesAgentSubstrate{},
 	catalogkind.CatalogKind_KubernetesAirflow:                     &kubernetesairflowv1alpha1.KubernetesAirflow{},
 	catalogkind.CatalogKind_KubernetesAltinityOperator:            &kubernetesaltinityoperatorv1alpha1.KubernetesAltinityOperator{},
 	catalogkind.CatalogKind_KubernetesArgoWorkflows:               &kubernetesargoworkflowsv1alpha1.KubernetesArgoWorkflows{},

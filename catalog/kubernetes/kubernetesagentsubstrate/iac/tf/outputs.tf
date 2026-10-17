@@ -1,0 +1,58 @@
+# Outputs (outputs.go): exactly what a product that creates actors on this
+# control plane reads.
+
+output "namespace" {
+  value = local.namespace
+}
+
+output "api_address" {
+  value = "${local.api_server_host}:443"
+}
+
+output "api_server_name" {
+  value = local.api_server_host
+}
+
+output "api_token_audience" {
+  value = local.api_server_host
+}
+
+output "api_trust_bundle_name" {
+  value = local.api_trust_bundle_name
+}
+
+output "api_trust_bundle_signer" {
+  value = local.api_trust_bundle_sign
+}
+
+output "api_access_namespace_label" {
+  value = "${local.api_access_label_key}=${local.api_access_label_value}"
+}
+
+output "router_endpoint" {
+  value = "http://${local.router_name}.${local.namespace}.svc:80"
+}
+
+output "router_tls_endpoint" {
+  value = "https://${local.router_name}.${local.namespace}.svc:443"
+}
+
+output "storage_location" {
+  value = local.storage_location
+}
+
+output "actor_jwt_issuer" {
+  value = local.api.actor_issuer
+}
+
+output "gvisor_worker_image" {
+  value = try(local.mirrored[local.images["ateom-gvisor"]], "")
+}
+
+output "microvm_worker_image" {
+  value = try(local.mirrored[local.images["ateom-microvm"]], "")
+}
+
+output "version" {
+  value = local.release
+}

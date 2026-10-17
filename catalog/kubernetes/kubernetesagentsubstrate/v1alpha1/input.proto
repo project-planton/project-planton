@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1;
+
+import "catalog/kubernetes/kubernetesagentsubstrate/v1alpha1/api.proto";
+import "catalog/kubernetes/provider.proto";
+
+// KubernetesAgentSubstrateIacInput defines the inputs required for the Agent Substrate control plane IaC modules.
+message KubernetesAgentSubstrateIacInput {
+  // the catalog object to deploy
+  KubernetesAgentSubstrate target = 1;
+  // provider-config for Kubernetes
+  dev.planton.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

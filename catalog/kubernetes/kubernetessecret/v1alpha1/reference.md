@@ -352,6 +352,11 @@ Fields on other kinds that can point at this resource:
 | KubernetesAgentSandboxTemplate | `spec.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.name` | `status.outputs.secret_name` |
 | KubernetesAgentSandboxTemplate | `spec.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.name` | `status.outputs.secret_name` |
 | KubernetesAgentSandboxTemplate | `spec.podTemplate.spec.imagePullSecrets[].name` | `status.outputs.secret_name` |
+| KubernetesAgentSubstrate | `spec.database.external.readWriteConnectionString.name` | `status.outputs.secret_name` |
+| KubernetesAgentSubstrate | `spec.database.external.ownerConnectionString.name` | `status.outputs.secret_name` |
+| KubernetesAgentSubstrate | `spec.database.cloudSql.readWriteConnectionString.name` | `status.outputs.secret_name` |
+| KubernetesAgentSubstrate | `spec.database.cloudSql.ownerConnectionString.name` | `status.outputs.secret_name` |
+| KubernetesAgentSubstrate | `spec.storage.s3.credentials.secretName` | `status.outputs.secret_name` |
 | KubernetesCronJob | `spec.jobTemplate.pod.imagePullSecrets` | `spec.name` |
 | KubernetesDaemonSet | `spec.pod.imagePullSecrets` | `spec.name` |
 | KubernetesDeployment | `spec.pod.imagePullSecrets` | `spec.name` |

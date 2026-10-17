@@ -2624,6 +2624,7 @@ Fields on other kinds that can point at this resource:
 | GcpGkeFleetScope | `spec.membershipBindings[].membership` | `status.outputs.fleet_membership` |
 | GcpGkeNodePool | `spec.clusterName` | `status.outputs.name` |
 | GcpGkeNodePool | `spec.location` | `status.outputs.location` |
+| KubernetesAgentSubstrate | `spec.platform.gke.clusterId` | `status.outputs.cluster_id` |
 | KubernetesNetworkPolicy | `spec.ingressRules[].from[].ipBlock.cidr` | `spec.ip_allocation.cluster_ipv4_cidr_block` |
 | KubernetesNetworkPolicy | `spec.ingressRules[].from[].ipBlock.cidr` | `spec.ip_allocation.services_ipv4_cidr_block` |
 | KubernetesNetworkPolicy | `spec.ingressRules[].from[].ipBlock.cidr` | `spec.private_cluster.master_ipv4_cidr_block` |

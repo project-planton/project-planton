@@ -2509,6 +2509,7 @@ const (
 	// extensions.agents.x-k8s.io definition the SandboxClaim is an instance of,
 	// and the controller that binds it to a warm pool member.
 	CatalogKind_KubernetesAgentSandboxClaim CatalogKind = 4184
+	CatalogKind_KubernetesAgentSubstrate    CatalogKind = 4190
 	// 5000–5999: DigitalOcean resources
 	CatalogKind_DigitalOceanApp               CatalogKind = 5000
 	CatalogKind_DigitalOceanBucket            CatalogKind = 5001
@@ -3579,6 +3580,7 @@ var (
 		4182:  "KubernetesAgentSandboxTemplate",
 		4183:  "KubernetesAgentSandboxWarmPool",
 		4184:  "KubernetesAgentSandboxClaim",
+		4190:  "KubernetesAgentSubstrate",
 		5000:  "DigitalOceanApp",
 		5001:  "DigitalOceanBucket",
 		5002:  "DigitalOceanContainerRegistry",
@@ -4431,6 +4433,7 @@ var (
 		"KubernetesAgentSandboxTemplate":                 4182,
 		"KubernetesAgentSandboxWarmPool":                 4183,
 		"KubernetesAgentSandboxClaim":                    4184,
+		"KubernetesAgentSubstrate":                       4190,
 		"DigitalOceanApp":                                5000,
 		"DigitalOceanBucket":                             5001,
 		"DigitalOceanContainerRegistry":                  5002,
@@ -5014,7 +5017,7 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"\x1cKubernetesManifestProjection\x12\x1f\n" +
 	"\vapi_version\x18\x01 \x01(\tR\n" +
 	"apiVersion\x12\x12\n" +
-	"\x04kind\x18\x02 \x01(\tR\x04kind*\x99\x9b\x03\n" +
+	"\x04kind\x18\x02 \x01(\tR\x04kind*֛\x03\n" +
 	"\vCatalogKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12`\n" +
 	"\x16TestCatalogKindGeneric\x10\x01\x1aD\xa2\xf7\x04@\b\x01\x12\bv1alpha2\"\x04tckgJ,\n" +
@@ -5815,7 +5818,8 @@ const file_shared_catalogkind_catalog_kind_proto_rawDesc = "" +
 	"\x1eKubernetesAgentSandboxWarmPool\x10\xd7 \x1aX\xa2\xf7\x04T\b\x13\x12\bv1alpha1\"\bk8sasbwp:\x02\xd4 B5\n" +
 	"\"extensions.agents.x-k8s.io/v1beta1\x12\x0fSandboxWarmPoolP\x91\x03\x12w\n" +
 	"\x1bKubernetesAgentSandboxClaim\x10\xd8 \x1aU\xa2\xf7\x04Q\b\x13\x12\bv1alpha1\"\bk8sasbcl:\x02\xd4 B2\n" +
-	"\"extensions.agents.x-k8s.io/v1beta1\x12\fSandboxClaimP\x91\x03\x120\n" +
+	"\"extensions.agents.x-k8s.io/v1beta1\x12\fSandboxClaimP\x91\x03\x12;\n" +
+	"\x18KubernetesAgentSubstrate\x10\xde \x1a\x1c\xa2\xf7\x04\x18\b\x13\x12\bv1alpha1\"\ak8sasubP\x91\x03\x120\n" +
 	"\x0fDigitalOceanApp\x10\x88'\x1a\x1a\xa2\xf7\x04\x16\b\x11\x12\bv1alpha1\"\x05doappP\xf6\x03\x123\n" +
 	"\x12DigitalOceanBucket\x10\x89'\x1a\x1a\xa2\xf7\x04\x16\b\x11\x12\bv1alpha1\"\x05dobktP\xf8\x03\x12=\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\x8a'\x1a\x19\xa2\xf7\x04\x15\b\x11\x12\bv1alpha1\"\x04docrP\xfa\x03\x12=\n" +

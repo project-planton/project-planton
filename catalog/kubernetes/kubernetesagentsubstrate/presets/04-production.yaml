@@ -1,0 +1,57 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: agent-substrate
+spec:
+  # A shape to run agents on for real, on GKE: the control plane on its own
+  # nodes, authorization enforced, three API servers, two router and egress
+  # pods, requests the cluster's quotas can count, and telemetry to your
+  # collector.
+  namespace:
+    value: ate-system
+  createNamespace: true
+  platform:
+    gke:
+      clusterId:
+        valueFrom:
+          name: agents
+      apiServerServiceAccount:
+        valueFrom:
+          name: ate-api-server
+      nodeAgentServiceAccount:
+        valueFrom:
+          name: atelet
+  database:
+    cloudSql:
+      instanceConnectionName:
+        valueFrom:
+          name: substrate
+  storage:
+    gcs:
+      bucket:
+        valueFrom:
+          name: agent-snapshots
+  cordonControlPlane: true
+  apiServer:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    authorization:
+      enabled: true
+      bootstrapOwners:
+        - system:serviceaccount:platform:agent-orchestrator
+  router:
+    replicas: 2
+    allowedClientSpiffeIds:
+      - spiffe://cluster.local/ns/platform/sa/agent-orchestrator
+  egress:
+    replicas: 2
+    credentialProvider:
+      disabled: {}
+  nodeAgent:
+    nodeSelector:
+      ate.dev/worker-nodes: "true"
+  telemetry:
+    otlpEndpoint: http://otel-collector.observability.svc:4317

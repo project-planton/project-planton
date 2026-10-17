@@ -436,6 +436,7 @@ Fields on other kinds that can point at this resource:
 | KubernetesAgentSandboxController | `spec.namespace` | `spec.name` |
 | KubernetesAgentSandboxTemplate | `spec.namespace` | `spec.name` |
 | KubernetesAgentSandboxWarmPool | `spec.namespace` | `spec.name` |
+| KubernetesAgentSubstrate | `spec.namespace` | `spec.name` |
 | KubernetesAirflow | `spec.namespace` | `spec.name` |
 | KubernetesAltinityOperator | `spec.namespace` | `spec.name` |
 | KubernetesArgoWorkflows | `spec.namespace` | `spec.name` |

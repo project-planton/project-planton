@@ -1913,6 +1913,7 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
+- `KubernetesAgentSubstrate`
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -2928,6 +2929,7 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
+- `KubernetesAgentSubstrate`
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -5139,6 +5141,7 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
+- `KubernetesAgentSubstrate`
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -6154,6 +6157,7 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
+- `KubernetesAgentSubstrate`
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -8486,6 +8490,7 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
+- `KubernetesAgentSubstrate`
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -9501,6 +9506,7 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxTemplate` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxTemplate is an instance of, and the extension controllers that turn it into network policy and warm pool members.
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
+- `KubernetesAgentSubstrate`
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`

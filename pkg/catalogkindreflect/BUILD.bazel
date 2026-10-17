@@ -727,6 +727,7 @@ go_library(
         "//catalog/kubernetes/kubernetesagentsandboxcontroller/v1alpha1",
         "//catalog/kubernetes/kubernetesagentsandboxtemplate/v1alpha1",
         "//catalog/kubernetes/kubernetesagentsandboxwarmpool/v1alpha1",
+        "//catalog/kubernetes/kubernetesagentsubstrate/v1alpha1",
         "//catalog/kubernetes/kubernetesairflow/v1alpha1",
         "//catalog/kubernetes/kubernetesaltinityoperator/v1alpha1",
         "//catalog/kubernetes/kubernetesargocd/v1alpha1",

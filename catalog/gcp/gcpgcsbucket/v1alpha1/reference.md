@@ -1087,6 +1087,7 @@ Fields on other kinds that can point at this resource:
 | GcpPrivateCaCertificateAuthority | `spec.gcsBucket` | `status.outputs.bucket_name` |
 | GcpPubSubSubscription | `spec.cloudStorageConfig.bucket` | `status.outputs.bucket_id` |
 | GcpPubSubTopic | `spec.ingestionDataSourceSettings.cloudStorage.bucket` | `status.outputs.bucket_id` |
+| KubernetesAgentSubstrate | `spec.storage.gcs.bucket` | `status.outputs.bucket_name` |
 | KubernetesLangfuse | `spec.blobStorage.target.gcs.bucket` | `status.outputs.bucket_name` |
 | KubernetesLangfuse | `spec.blobStorage.mediaUpload.target.gcs.bucket` | `status.outputs.bucket_name` |
 | KubernetesLangfuse | `spec.blobStorage.batchExport.target.gcs.bucket` | `status.outputs.bucket_name` |

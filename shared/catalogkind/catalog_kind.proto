@@ -7369,6 +7369,12 @@ enum CatalogKind {
     }
     service_group: kubernetes_operators_controllers
   }];
+  KubernetesAgentSubstrate = 4190 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasub"
+    service_group: kubernetes_operators_controllers
+  }];
 
   // 5000–5999: DigitalOcean resources
   DigitalOceanApp = 5000 [(kind_meta) = {

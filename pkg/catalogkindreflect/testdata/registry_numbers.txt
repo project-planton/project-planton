@@ -728,6 +728,7 @@ KubernetesAgentSandbox=4181
 KubernetesAgentSandboxTemplate=4182
 KubernetesAgentSandboxWarmPool=4183
 KubernetesAgentSandboxClaim=4184
+KubernetesAgentSubstrate=4190
 DigitalOceanApp=5000
 DigitalOceanBucket=5001
 DigitalOceanContainerRegistry=5002

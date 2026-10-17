@@ -1,0 +1,129 @@
+apiVersion: iac.planton.dev/v1
+kind: CatalogKindImportMap
+metadata:
+  name: kubernetesagentsubstrate
+spec:
+  # The module applies the release's documents through five kubectl_manifest
+  # resources -- "namespace", "prerequisites", "database", "system" and
+  # "runtime" -- whose for_each is keyed by each document's own composed
+  # identity, apiVersion//kind//name[//namespace], exactly the ID form the
+  # kubectl importer takes. The unscoped placeholders below therefore read
+  # the segments of the address key itself (the multi-GVK bundle class).
+  # Cluster-scoped documents (the namespaces, ClusterRoles and bindings, the
+  # PriorityClass, the admission policy, the SandboxConfig) carry 3-part
+  # keys; the namespace segment resolves empty and the ID drops it.
+  #
+  # The generated key material (tls_private_key, tls_self_signed_cert) has no
+  # importer upstream, so adopting an installation mints new authorities and a
+  # new signing key on the first apply: every certificate the pod-certificate
+  # controller issued is re-issued from the new roots, and agent tokens signed
+  # with the old key stop verifying. The Secrets holding them import by
+  # namespace and name, and are rewritten from the new keys.
+  values:
+    - name: api_version
+      derivations:
+        - from_address_key_segment: 0
+      where_to_find: >-
+        The document's own apiVersion -- the first "//" segment of the state
+        address key; `kubectl get <kind> <name> -o
+        jsonpath='{.apiVersion}'`.
+    - name: kind
+      derivations:
+        - from_address_key_segment: 1
+      where_to_find: >-
+        The document's own kind -- the second "//" segment of the state
+        address key.
+    - name: name
+      derivations:
+        - from_address_key_segment: 2
+      where_to_find: >-
+        The document's metadata.name -- the third "//" segment of the state
+        address key. Every name is fixed by upstream (the API server
+        Deployment is "ate-api-server", the node agent DaemonSet "atelet").
+    - name: namespace
+      derivations:
+        - from_address_key_segment: 3
+      where_to_find: >-
+        "ate-system", or "podcertificate-controller-system" for the
+        pod-certificate controller's objects; absent for the cluster-scoped
+        ones.
+    # -- the kept resource definitions (for_each resource "helm_crds") ------
+    - name: api_version
+      tofu_resource_name: helm_crds
+      derivations:
+        - literal: apiextensions.k8s.io/v1
+      where_to_find: Always "apiextensions.k8s.io/v1" -- the CRD group/version.
+    - name: kind
+      tofu_resource_name: helm_crds
+      derivations:
+        - literal: CustomResourceDefinition
+      where_to_find: Always "CustomResourceDefinition".
+    - name: name
+      tofu_resource_name: helm_crds
+      derivations:
+        - from_address_key: true
+      where_to_find: >-
+        Each definition's metadata.name (the for_each key) -- `kubectl get
+        crd -l planton.ai/crd-source=agent-substrate` (NAME column):
+        workerpools.ate.dev, sandboxconfigs.ate.dev and
+        csidriverconfigs.ate.dev.
+    - name: namespace
+      tofu_resource_name: helm_crds
+      where_to_find: >-
+        Not applicable -- CustomResourceDefinitions are cluster-scoped, so
+        the composed import ID has no namespace segment.
+    # -- the Secrets (kubernetes_secret_v1) ------------------------------------
+    - name: secret_name
+      tofu_resource_name: ca_pool
+      derivations:
+        - from_address_key: true
+      where_to_find: >-
+        The CA pool's name (the for_each key): service-dns-ca-pool,
+        pod-identity-ca-pool, postgres-ca-pool, actor-id-ca-pool or
+        egress-mitm-ca-pool.
+    - name: secret_namespace
+      tofu_resource_name: ca_pool
+      where_to_find: >-
+        "podcertificate-controller-system" for service-dns-ca-pool,
+        pod-identity-ca-pool and postgres-ca-pool; "ate-system" for
+        actor-id-ca-pool and egress-mitm-ca-pool.
+    - name: secret_name
+      tofu_resource_name: actor_ca_certs
+      derivations:
+        - literal: actor-id-ca-certs
+      where_to_find: Always "actor-id-ca-certs".
+    - name: secret_namespace
+      tofu_resource_name: actor_ca_certs
+      derivations:
+        - literal: ate-system
+      where_to_find: Always "ate-system".
+    - name: secret_name
+      tofu_resource_name: actor_jwt_pool
+      derivations:
+        - literal: actor-id-jwt-pool
+      where_to_find: Always "actor-id-jwt-pool".
+    - name: secret_namespace
+      tofu_resource_name: actor_jwt_pool
+      derivations:
+        - literal: ate-system
+      where_to_find: Always "ate-system".
+    - name: secret_name
+      tofu_resource_name: api_env
+      derivations:
+        - literal: ate-api-server-secret-envvars
+      where_to_find: Always "ate-api-server-secret-envvars".
+    - name: secret_namespace
+      tofu_resource_name: api_env
+      derivations:
+        - literal: ate-system
+      where_to_find: Always "ate-system".
+    - name: secret_name
+      tofu_resource_name: postgres_server_ca
+      derivations:
+        - literal: postgres-server-ca
+      where_to_find: Always "postgres-server-ca" -- present only with an external database's server CA.
+    - name: secret_namespace
+      tofu_resource_name: postgres_server_ca
+      derivations:
+        - literal: ate-system
+      where_to_find: Always "ate-system".
