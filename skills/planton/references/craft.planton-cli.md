@@ -35,7 +35,7 @@ inline for one-off scoping.
 ## Grounding lookups (session start, before proposing architecture)
 
 ```
-planton chart list                        # charts in the catalog (org + official), each with its version
+planton chart list                        # charts in the catalog (org + platform), each with its version
 planton infra stack list -o json        # the org's Infra Stacks (what has been deployed)
 planton infra stack get <id-or-name> --env <env>  # one stack, full record (its declaration and live revision);
                                                  # a name needs --env, an id does not

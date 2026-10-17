@@ -95,7 +95,6 @@ spec:
       name: Production
     admins:
       - platform-team@example.com
-    iac_provisioner: tofu
     secret_backend:
       type: platform
   runner:

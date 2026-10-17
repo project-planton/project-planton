@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Kubernetes Self-Hosted Temporal
 spec:
-  selector:
-    kind: platform
   description: >-
     A production-shaped Temporal on your own cluster in one deploy — the
     durable workflow engine with its PostgreSQL wiring already right: a

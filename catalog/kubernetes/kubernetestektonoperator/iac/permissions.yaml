@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Kubernetes principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources plus the
 # pinned v0.80.0 release manifest's document census, cited in notes) until
 # the live capture lane upgrades it to `proven`. Schema:

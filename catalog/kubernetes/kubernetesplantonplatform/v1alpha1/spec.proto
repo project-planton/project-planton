@@ -1653,26 +1653,12 @@ message KubernetesPlantonPlatformBootstrap {
   repeated string admins = 3;
 
   /**
-   * The IaC provisioner the in-cluster runner deploys with.
-   */
-  optional string iac_provisioner = 4 [
-    (dev.planton.shared.options.default) = "tofu",
-    (buf.validate.field).string = {
-      in: [
-        "",
-        "tofu",
-        "terraform"
-      ]
-    }
-  ];
-
-  /**
    * The bootstrap organization's declared default secret backend: the
    * bundled secrets manager ("platform") or a cloud backend. Unset, the
    * platform picks the one it can serve — the bundled vault when it runs,
    * otherwise its own database under the secrets key.
    */
-  KubernetesPlantonPlatformSecretBackend secret_backend = 5;
+  KubernetesPlantonPlatformSecretBackend secret_backend = 4;
 }
 
 /**
@@ -2330,7 +2316,7 @@ message KubernetesPlantonPlatformControlPlane {
   map<string, string> service_account_annotations = 4;
 
   /**
-   * Override of the release the platform downloads official IaC module
+   * Override of the release the platform downloads platform IaC module
    * artifacts from (vX.Y.Z; both engines ride one tag). Leave it unset:
    * the platform resolves modules at its own catalog release — the same
    * pin its schemas and chart bundle come from — so a kind it accepts

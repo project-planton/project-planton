@@ -24,7 +24,7 @@ const (
 
 // CatalogKindPermissions declares the least-privilege permissions the IaC
 // runner's cloud principal needs to provision, update, and destroy this
-// kind with the OFFICIAL modules. This is the data behind "download
+// kind with the PLATFORM modules. This is the data behind "download
 // the exact IAM policy your runner needs" -- the air-gapped enterprise's
 // first-day question, answered per kind and unioned per stack.
 // Follows the KRM pattern (apiVersion + kind + metadata + spec).
@@ -36,7 +36,7 @@ const (
 // distinction is itself a trust feature -- consumers show it, and the e2e
 // harness upgrades entries from derived to proven as capture lanes land.
 // Deployments using customized modules must be presented as
-// "official-module baseline; verify against your customization".
+// "platform-module baseline; verify against your customization".
 //
 // Example:
 //

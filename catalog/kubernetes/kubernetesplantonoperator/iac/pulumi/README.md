@@ -1,6 +1,6 @@
 # KubernetesPlantonOperator Pulumi Module
 
-Installs the Planton operator from the official `planton-operator` Helm
+Installs the Planton operator from Planton's `planton-operator` Helm
 chart (OCI, `ghcr.io/plantonhq/charts`) as ONE real Helm release,
 byte-identical to a hand-installed one; the chart owns its two definitions
 as release resources. The typed spec renders

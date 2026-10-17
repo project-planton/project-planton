@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile

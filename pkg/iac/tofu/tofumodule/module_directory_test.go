@@ -9,7 +9,7 @@ import (
 
 // These tests pin the explicit-vs-implicit contract of local module
 // resolution: an explicitly chosen directory that is not a usable module
-// fails loudly (falling through would silently deploy the official module in
+// fails loudly (falling through would silently deploy the platform module in
 // place of the user's), while the implicit current-directory probe falls
 // through quietly — the behavior every default-path deployment depends on.
 
@@ -42,7 +42,7 @@ func TestResolveLocalModuleDirExplicitInvalidFailsLoudly(t *testing.T) {
 
 	_, err := resolveLocalModuleDir(dir)
 	if err == nil {
-		t.Fatal("an explicitly passed non-module directory must fail, not fall through to the official module")
+		t.Fatal("an explicitly passed non-module directory must fail, not fall through to the platform module")
 	}
 	if !strings.Contains(err.Error(), dir) || !strings.Contains(err.Error(), ".tf") {
 		t.Errorf("error %q must name the directory and what was missing", err.Error())
@@ -54,7 +54,7 @@ func TestResolveLocalModuleDirExplicitUnreadableFailsLoudly(t *testing.T) {
 
 	_, err := resolveLocalModuleDir(missing)
 	if err == nil {
-		t.Fatal("an explicitly passed unreadable directory must fail, not fall through to the official module")
+		t.Fatal("an explicitly passed unreadable directory must fail, not fall through to the platform module")
 	}
 	if !strings.Contains(err.Error(), missing) {
 		t.Errorf("error %q must name the directory", err.Error())

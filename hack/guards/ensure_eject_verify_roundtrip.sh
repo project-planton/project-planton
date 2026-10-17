@@ -4,7 +4,7 @@ set -euo pipefail
 # Guard: the eject -> verify roundtrip works end to end, and verify can fail.
 #
 # WHY THIS EXISTS
-# `planton module eject` copies an official module into a user-owned
+# `planton module eject` copies a platform module into a user-owned
 # directory, and `planton module verify` proves a customization still honors
 # the kind's contract. Two promises must hold together, and only an
 # end-to-end run proves them:
@@ -63,7 +63,7 @@ expect_fail() {
 echo ""
 echo "=== OpenTofu module roundtrip (${kind}) ==="
 tofu_dir="${work_dir}/tofu-module"
-expect_ok "eject the official tofu module" \
+expect_ok "eject the platform tofu module" \
   "$planton_bin" module eject "$kind" --provisioner tofu --output-dir "$tofu_dir"
 
 for required_file in variables.tf LICENSE NOTICE CONTRACT.md; do
@@ -90,7 +90,7 @@ expect_fail "a contract-breaking change verifies red" \
 echo ""
 echo "=== Pulumi module roundtrip (${kind}) ==="
 pulumi_dir="${work_dir}/pulumi-module"
-expect_ok "eject the official pulumi module (resolves dependencies)" \
+expect_ok "eject the platform pulumi module (resolves dependencies)" \
   "$planton_bin" module eject "$kind" --provisioner pulumi --output-dir "$pulumi_dir" \
   --go-module "example.com/roundtrip/$(echo "$kind" | tr '[:upper:]' '[:lower:]')"
 

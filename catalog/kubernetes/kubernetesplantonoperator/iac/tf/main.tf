@@ -2,7 +2,7 @@
 #
 # Installs the Planton operator — the lifecycle manager that reconciles
 # PlantonPlatform declarations (KubernetesPlantonPlatform resources) into
-# running self-hosted Planton platforms — from the official
+# running self-hosted Planton platforms — from Planton's
 # planton-operator Helm chart (OCI, ghcr.io/plantonhq/charts) as ONE real
 # Helm release, byte-identical to a hand-installed one.
 #

@@ -1,6 +1,6 @@
 # Kubernetes Planton Runner
 
-Deploys a standing Planton runner appliance on a Kubernetes cluster -- an always-on, outbound-only worker that receives deploy operations from the control plane and executes them from inside the cluster's network. The module installs the official `planton-runner` chart (OCI, ghcr.io/plantonhq/charts) as a real Helm release, so the deployed runner is byte-identical to a hand-installed one. Enrollment is token-first: the runner joins with a token, registers itself, and receives its own individually revocable identity.
+Deploys a standing Planton runner appliance on a Kubernetes cluster -- an always-on, outbound-only worker that receives deploy operations from the control plane and executes them from inside the cluster's network. The module installs Planton's `planton-runner` chart (OCI, ghcr.io/plantonhq/charts) as a real Helm release, so the deployed runner is byte-identical to a hand-installed one. Enrollment is token-first: the runner joins with a token, registers itself, and receives its own individually revocable identity.
 
 ## What Gets Created
 
@@ -54,7 +54,7 @@ spec:
 planton apply -f runner.yaml
 ```
 
-This minimal manifest installs chart version 0.11.0 tracking the latest runner release from the official image repository, at the chart's own default sizing (requests 100m/2Gi, limits 1/2Gi). The runner registers itself as `prod-cluster-runner` (`<env>-<metadata.name>`) the moment it joins, and `planton runner list` shows it. An Infra Job tracks the provisioning in real time.
+This minimal manifest installs chart version 0.11.0 tracking the latest runner release from Planton's image repository, at the chart's own default sizing (requests 100m/2Gi, limits 1/2Gi). The runner registers itself as `prod-cluster-runner` (`<env>-<metadata.name>`) the moment it joins, and `planton runner list` shows it. An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 

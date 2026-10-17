@@ -258,7 +258,6 @@ func (cp *ControlPlane) buildConfig(planton *v1.PlantonPlatform, ownerRef *metav
 	if isRunnerEnabled(planton) {
 		cfg.Runner = &resources.RunnerBinding{
 			CloudOpsSecretName: resources.RunnerCloudOpsSecretName(planton.Name),
-			Provisioner:        effectiveIacProvisioner(planton),
 			DirectDialHost:     resources.RunnerServiceFQDN(planton.Name, planton.Namespace),
 			BuildEnabled:       isBuildEffective(planton),
 		}
@@ -385,16 +384,6 @@ func effectiveBootstrap(planton *v1.PlantonPlatform) resources.BootstrapBinding 
 	}
 
 	return binding
-}
-
-// effectiveIacProvisioner resolves spec.bootstrap.iacProvisioner. Defaulted
-// here as well as in the CRD marker for the same reason as effectiveBootstrap:
-// a nil spec.bootstrap gets no marker defaults.
-func effectiveIacProvisioner(planton *v1.PlantonPlatform) string {
-	if planton.Spec.Bootstrap != nil && planton.Spec.Bootstrap.IacProvisioner != "" {
-		return planton.Spec.Bootstrap.IacProvisioner
-	}
-	return "tofu"
 }
 
 // declaredSecretBackend passes on the bootstrap organization's declared

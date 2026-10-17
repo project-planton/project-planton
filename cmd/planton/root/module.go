@@ -9,7 +9,7 @@ import (
 )
 
 // Module groups the verbs for working with the IaC modules behind catalog
-// kinds: ejecting an official module into a user-owned copy to
+// kinds: ejecting a platform module into a user-owned copy to
 // customize, and verifying that a customized module still honors its
 // kind's contract. Both verbs work standalone — no platform account,
 // no control plane.

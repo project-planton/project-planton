@@ -1,7 +1,7 @@
 # Template Language
 
 Chart templates are rendered with Jinjava -- a Java implementation of Jinja2.
-The practical subset below is everything the official chart fleet uses; stay
+The practical subset below is everything the platform chart fleet uses; stay
 inside it.
 
 ## Context: what variables exist

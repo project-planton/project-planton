@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile
@@ -25,7 +25,7 @@ spec:
       notes: "The table data plane has no anonymous mode -- every request requires authorization (Entra RBAC, SAS, or shared key) -- but internet REACHABILITY of the account's table endpoint is the account's firewall and private-endpoint posture, with no per-table network lever."
     - control_id: restricted-ingress
       status: not_applicable
-      notes: "Network-source restriction (IP rules, VNet rules, private endpoints) is the account's firewall posture -- one table endpoint serves every table in the account. Worth knowing when composing: the official modules deploy over the table DATA plane, so a firewall that blocks the runner blocks deploys too."
+      notes: "Network-source restriction (IP rules, VNet rules, private endpoints) is the account's firewall posture -- one table endpoint serves every table in the account. Worth knowing when composing: the platform modules deploy over the table DATA plane, so a firewall that blocks the runner blocks deploys too."
     - control_id: edge-protection
       status: not_applicable
       notes: "The table endpoint accepts storage API requests, not application traffic -- no WAF attachment point exists at this grain."
@@ -40,7 +40,7 @@ spec:
       notes: "The table holds no credentials and runs no workloads; keyless access is composed caller-side (a managed identity plus a table data role). Shared-key and SAS alternatives are governed by the account's shared_access_key_enabled posture."
     - control_id: no-legacy-auth
       status: not_applicable
-      notes: "Disabling shared-key authorization is the AzureStorageAccount's shared_access_key_enabled switch -- but note the deploy contract: the official modules drive table creation and stored access policies through the table data plane WITH shared-key authorization, so the parent account must keep shared_access_key_enabled true (Azure's default) for this kind to deploy at all. Locking down legacy auth on the account and provisioning tables through these modules are mutually exclusive today."
+      notes: "Disabling shared-key authorization is the AzureStorageAccount's shared_access_key_enabled switch -- but note the deploy contract: the platform modules drive table creation and stored access policies through the table data plane WITH shared-key authorization, so the parent account must keep shared_access_key_enabled true (Azure's default) for this kind to deploy at all. Locking down legacy auth on the account and provisioning tables through these modules are mutually exclusive today."
     - control_id: strong-user-auth
       status: not_applicable
       notes: The component itself enforces no end-user sign-in -- it packages no human sign-in surface; any credentials it carries are workload or administrative access, whose posture rbac and workload-identity carry.

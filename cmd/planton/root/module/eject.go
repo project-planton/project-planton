@@ -16,13 +16,13 @@ import (
 
 var Eject = &cobra.Command{
 	Use:   "eject <kind>",
-	Short: "copy the official IaC module for a kind into your own directory",
-	Long: `Ejects the official OpenTofu/Terraform or Pulumi module behind a catalog
+	Short: "copy the platform IaC module for a kind into your own directory",
+	Long: `Ejects the platform OpenTofu/Terraform or Pulumi module behind a catalog
 kind into a directory you own, ready to customize.
 
 The copy is fully yours: edit it freely, keep it in your own git repository,
 and register it so your organization's deployments of the kind run your
-module instead of the official one. A generated CONTRACT.md inside the copy
+module instead of the platform one. A generated CONTRACT.md inside the copy
 explains the input/outputs contract the module must keep honoring, and
 'planton module verify' proves a customization still conforms.
 
@@ -95,7 +95,7 @@ func ejectHandler(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	cliprint.PrintSuccess(fmt.Sprintf("Ejected the official %s module for %s (from %s)",
+	cliprint.PrintSuccess(fmt.Sprintf("Ejected the platform %s module for %s (from %s)",
 		prov.String(), result.KindName, result.SourceVersion))
 	cliprint.PrintModulePath(result.OutputDir)
 

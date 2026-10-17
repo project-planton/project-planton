@@ -104,11 +104,11 @@ func TestVerify_GeneratedSurfaceIsGreen(t *testing.T) {
 	}
 }
 
-// An UNMODIFIED ejected official module must verify green (no errors) — the
+// An UNMODIFIED ejected platform module must verify green (no errors) — the
 // one outcome verify must never produce is failing the module it just
 // handed the user. Runs against the real catalog: a generator-owned kind, a
 // hand-curated kind, and a pulumi module.
-func TestVerify_UnmodifiedOfficialModulesAreGreen(t *testing.T) {
+func TestVerify_UnmodifiedPlatformModulesAreGreen(t *testing.T) {
 	root := repoRoot(t)
 
 	cases := []struct {
@@ -133,7 +133,7 @@ func TestVerify_UnmodifiedOfficialModulesAreGreen(t *testing.T) {
 				Provisioner: tc.provisioner,
 			})
 			if result.HasErrors() {
-				t.Errorf("an unmodified official module must verify green, got: %v", errorSummaries(result))
+				t.Errorf("an unmodified platform module must verify green, got: %v", errorSummaries(result))
 			}
 		})
 	}

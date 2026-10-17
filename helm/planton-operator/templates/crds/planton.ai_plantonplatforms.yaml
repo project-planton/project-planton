@@ -132,21 +132,6 @@ spec:
                           within the organization.
                         type: string
                     type: object
-                  iacProvisioner:
-                    default: tofu
-                    description: |-
-                      iacProvisioner is the IaC engine seeded as the organization's deploy
-                      default. "tofu" (OpenTofu, the default) and "terraform" both execute
-                      with the bundled OpenTofu binary against the Terraform-compatible
-                      module catalog. Seeded create-once: a different choice made later in
-                      the console is never overwritten by a restart. Pulumi is deliberately
-                      not accepted here -- it has no zero-config state backend (its file
-                      backend requires a state-encryption passphrase), so seeding it as the
-                      default would produce an install where every deploy fails.
-                    enum:
-                    - tofu
-                    - terraform
-                    type: string
                   organization:
                     description: organization is the default organization every declared
                       admin owns.
@@ -348,7 +333,7 @@ spec:
               console:
                 description: |-
                   console configures the Planton web console (Next.js).
-                  The console is always deployed. Image defaults to the official
+                  The console is always deployed. Image defaults to Planton's published
                   GHCR image tagged with spec.version.
                 properties:
                   externalConfigSecretName:
@@ -414,7 +399,7 @@ spec:
               controlPlane:
                 description: |-
                   controlPlane configures the Planton control plane monolith.
-                  The control plane is always deployed. Image defaults to the official
+                  The control plane is always deployed. Image defaults to Planton's published
                   GHCR image tagged with spec.version.
                 properties:
                   externalConfigSecretName:
@@ -427,7 +412,7 @@ spec:
                     type: string
                   iacModulesVersion:
                     description: |-
-                      iacModulesVersion overrides the release the platform downloads official
+                      iacModulesVersion overrides the release the platform downloads its
                       IaC module artifacts from (both engines: the OpenTofu module zips and
                       the Pulumi module binaries ride the same release tag). Unset -- the
                       shape every install should have -- the platform resolves modules at its

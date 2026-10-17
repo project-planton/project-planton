@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile
@@ -29,7 +29,7 @@ spec:
       notes: "The filesystem exposes no anonymous-access lever at all -- the container it surfaces as in ARM is born private, and every data request is evaluated against RBAC, ACLs, or the account's shared key. Internet REACHABILITY of the dfs endpoint is the account's firewall and private-endpoint posture, with no per-filesystem network control."
     - control_id: restricted-ingress
       status: not_applicable
-      notes: "Network-source restriction is the account's firewall posture -- one dfs endpoint serves every filesystem in the account. Worth knowing when composing: the official modules deploy over the dfs DATA plane, so a firewall that blocks the runner blocks the create even though ARM would allow it."
+      notes: "Network-source restriction is the account's firewall posture -- one dfs endpoint serves every filesystem in the account. Worth knowing when composing: the platform modules deploy over the dfs DATA plane, so a firewall that blocks the runner blocks the create even though ARM would allow it."
     - control_id: edge-protection
       status: not_applicable
       notes: "The dfs endpoint accepts storage API requests from analytics engines and SDKs, not application traffic -- no WAF attachment point exists at this grain."
@@ -45,7 +45,7 @@ spec:
       notes: "The filesystem authenticates nobody and holds no credentials. It is, however, built to be GRANTED to keyless workloads: owner, group, and ace entries reference an AzureUserAssignedIdentity's principal_id so a workload identity can own or access a zone -- the identity plumbing itself lives on the caller's side."
     - control_id: no-legacy-auth
       status: not_applicable
-      notes: "Disabling shared-key authorization is the AzureStorageAccount's switch -- but note the deploy contract: the official modules talk to the dfs data plane with the account's shared key by default, so locking shared key down on the account affects how this kind deploys."
+      notes: "Disabling shared-key authorization is the AzureStorageAccount's switch -- but note the deploy contract: the platform modules talk to the dfs data plane with the account's shared key by default, so locking shared key down on the account affects how this kind deploys."
     - control_id: strong-user-auth
       status: not_applicable
       notes: The component itself enforces no end-user sign-in -- it packages no human sign-in surface; any credentials it carries are workload or administrative access, whose posture rbac and workload-identity carry.

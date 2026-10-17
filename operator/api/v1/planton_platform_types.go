@@ -308,7 +308,7 @@ type ControlPlaneSpec struct {
 	// +optional
 	SecretsKeySecretName string `json:"secretsKeySecretName,omitempty"`
 
-	// iacModulesVersion overrides the release the platform downloads official
+	// iacModulesVersion overrides the release the platform downloads its
 	// IaC module artifacts from (both engines: the OpenTofu module zips and
 	// the Pulumi module binaries ride the same release tag). Unset -- the
 	// shape every install should have -- the platform resolves modules at its
@@ -687,13 +687,13 @@ type PlantonPlatformSpec struct {
 	Prerequisites *PrerequisitesSpec `json:"prerequisites,omitempty"`
 
 	// controlPlane configures the Planton control plane monolith.
-	// The control plane is always deployed. Image defaults to the official
+	// The control plane is always deployed. Image defaults to Planton's published
 	// GHCR image tagged with spec.version.
 	// +optional
 	ControlPlane *ControlPlaneSpec `json:"controlPlane,omitempty"`
 
 	// console configures the Planton web console (Next.js).
-	// The console is always deployed. Image defaults to the official
+	// The console is always deployed. Image defaults to Planton's published
 	// GHCR image tagged with spec.version.
 	// +optional
 	Console *ConsoleSpec `json:"console,omitempty"`
@@ -1318,19 +1318,6 @@ type BootstrapSpec struct {
 	// [spec.identity.adminEmail] when that field is set.
 	// +optional
 	Admins []string `json:"admins,omitempty"`
-
-	// iacProvisioner is the IaC engine seeded as the organization's deploy
-	// default. "tofu" (OpenTofu, the default) and "terraform" both execute
-	// with the bundled OpenTofu binary against the Terraform-compatible
-	// module catalog. Seeded create-once: a different choice made later in
-	// the console is never overwritten by a restart. Pulumi is deliberately
-	// not accepted here -- it has no zero-config state backend (its file
-	// backend requires a state-encryption passphrase), so seeding it as the
-	// default would produce an install where every deploy fails.
-	// +kubebuilder:default="tofu"
-	// +kubebuilder:validation:Enum=tofu;terraform
-	// +optional
-	IacProvisioner string `json:"iacProvisioner,omitempty"`
 
 	// secretBackend declares the organization's default secret backend,
 	// seeded create-once at boot (a choice made later in the console is never

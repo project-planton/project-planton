@@ -26,7 +26,7 @@ type Status int32
 
 const (
 	Status_status_unspecified Status = 0
-	// The official modules (or the provider itself) enforce the control on
+	// The platform modules (or the provider itself) enforce the control on
 	// every deployment; no spec choice can disable it.
 	Status_enforced_by_default Status = 1
 	// The control is a spec choice: field_path names the field, and notes
@@ -85,7 +85,7 @@ type Type int32
 
 const (
 	Type_type_unspecified Type = 0
-	// The official IaC modules hardcode the posture (verified in module
+	// The platform IaC modules hardcode the posture (verified in module
 	// source).
 	Type_module_default Type = 1
 	// The cloud provider guarantees the posture for this resource class;
@@ -210,7 +210,7 @@ type ControlPosture struct {
 	// (catalog/_compliance/controls-catalog.yaml). Must exist there -- the
 	// conformance gate enforces it.
 	ControlId string `protobuf:"bytes,1,opt,name=control_id,json=controlId,proto3" json:"control_id,omitempty"`
-	// Whether the official modules enforce, expose, or cannot express the
+	// Whether the platform modules enforce, expose, or cannot express the
 	// control.
 	Status Status `protobuf:"varint,2,opt,name=status,proto3,enum=dev.planton.compliance.catalogkindcontrolprofile.v1.Status" json:"status,omitempty"`
 	// The spec field that turns the control on/off or tunes it. Required when

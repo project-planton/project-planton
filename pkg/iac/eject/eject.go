@@ -1,4 +1,4 @@
-// Package eject copies the official IaC module behind a catalog kind
+// Package eject copies the platform IaC module behind a catalog kind
 // into a user-owned directory, ready to customize.
 //
 // An ejected module is a first-party redistribution of Apache-2.0 catalog
@@ -33,7 +33,7 @@ const NotesFileName = "CONTRACT.md"
 
 // Input configures a single eject operation.
 type Input struct {
-	// KindName is the catalog kind whose official module is ejected.
+	// KindName is the catalog kind whose platform module is ejected.
 	// Tolerant forms accepted (AwsS3Bucket, awss3bucket, aws-s3-bucket).
 	KindName string
 
@@ -75,7 +75,7 @@ type Result struct {
 	GoModTidyRan bool
 }
 
-// Eject copies the official module for the given kind and provisioner into
+// Eject copies the platform module for the given kind and provisioner into
 // in.OutputDir and prepares it for customization.
 func Eject(in Input) (*Result, error) {
 	kind := catalogkindreflect.KindFromString(in.KindName)

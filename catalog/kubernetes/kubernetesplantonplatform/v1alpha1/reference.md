@@ -155,7 +155,6 @@ spec:
       name: Production
     admins:
       - platform-team@example.com
-    iac_provisioner: tofu
     secret_backend:
       type: platform
   runner:
@@ -338,7 +337,6 @@ spec:
 | `spec.bootstrap.environment.slug` | `string` |  | `default` |  |
 | `spec.bootstrap.environment.name` | `string` |  |  |  |
 | `spec.bootstrap.admins` | `[]string` |  |  |  |
-| `spec.bootstrap.iacProvisioner` | `string` |  | `tofu` |  |
 | `spec.bootstrap.secretBackend` | `KubernetesPlantonPlatformSecretBackend` |  |  |  |
 | `spec.bootstrap.secretBackend.type` | `string` | yes |  |  |
 | `spec.bootstrap.secretBackend.awsSecretsManager` | `KubernetesPlantonPlatformAwsSecretsManager` |  |  |  |
@@ -1772,15 +1770,6 @@ Additional admin emails granted org ownership and platform-operator
 rights at boot (the identity.admin_email, when set, is always
 included).
 
-### spec.bootstrap.iacProvisioner
-
-`string` · optional (explicit presence)
-
-The IaC provisioner the in-cluster runner deploys with.
-
-- default: `tofu`
-- rule: {"string":{"in":["","tofu","terraform"]}}
-
 ### spec.bootstrap.secretBackend
 
 `KubernetesPlantonPlatformSecretBackend`
@@ -2550,7 +2539,7 @@ DEPLOY-TIME identity.
 
 `string`
 
-Override of the release the platform downloads official IaC module
+Override of the release the platform downloads platform IaC module
 artifacts from (vX.Y.Z; both engines ride one tag). Leave it unset:
 the platform resolves modules at its own catalog release — the same
 pin its schemas and chart bundle come from — so a kind it accepts

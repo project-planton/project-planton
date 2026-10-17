@@ -125,8 +125,8 @@ the wire:
   directory, include every file, then call.
 
 Local parse failures (malformed `Chart.yaml` or `values.yaml`) and
-server-side rejection of the chart manifest itself (e.g. a missing
-`spec.selector`) all arrive through the same `issues[]` channel with
+server-side rejection of the chart manifest itself (e.g. a field the
+InfraChart kind does not have) all arrive through the same `issues[]` channel with
 exit 1 — one channel for everything fixable.
 
 ## Human mode (no `-o json`)

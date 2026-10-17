@@ -126,6 +126,15 @@ phrases:
   - pattern: '(?i)lego[ _-]?blocks?'
     anchors: ['lego block']
     use: catalog kinds
+  # What Planton itself provides -- its modules, charts and presets -- is
+  # "platform". "Official" stays only as another company's word: a vendor's
+  # official Helm chart, image or icon.
+  - pattern: '(?i)\bofficial[ _-]?((iac|pulumi|opentofu|terraform|tofu)[ _-]?)?modules?\b'
+    anchors: ['official module', 'official iac', 'official pulumi', 'official opentofu', 'official terraform', 'official tofu', 'officialmodule']
+    use: platform module (the IaC modules Planton ships in its release)
+  - pattern: '(?i)\bofficial[ _-]?(presets?|chart[ _-]?fleet|catalog)\b|org \+ official'
+    anchors: ['official preset', 'official chart', 'official catalog', 'org + official']
+    use: platform preset / platform chart / platform catalog
   # Retired ID shapes. An InfraComponent ID is ic_<kind id prefix>_<ulid>, an
   # InfraJob ID ij_<ulid>, an InfraStack ID infstk_<ulid>, an InfraPipeline ID
   # infpipe_<ulid>.
@@ -165,6 +174,14 @@ phrases:
     use: planton.dev/keep-on-provider; Keep and Kept, named by the provider ("Keep in Stripe", "Kept in AWS")
 
 allow:
+  # Dated changelog entries keep the words of their day; history is never
+  # rewritten. Every newer entry speaks "platform module".
+  - pattern: '(?i)official[ _-]?(iac[ _-]?)?modules?'
+    paths:
+      - '_changelog/2026-09/2026-09-16-003000-the-platform-downloads-official-modules-at-its-own-catalog-release-and-the-operator-stops-naming-one.md'
+      - '_changelog/2026-09/2026-09-27-060000-a-secret-a-resource-generates-is-declared-and-kept-secret.md'
+      - '_changelog/2026-10/2026-10-17-020000-every-release-publishes-its-modules-checksums-and-builds-them-reproducibly.md'
+    reason: dated changelog entries written before Planton's modules were called platform modules
   # Current words followed by an ordinary word, which would otherwise read as
   # a retired spelling: the InfraStack Input tab, an InfraStack job, and an
   # InfraComponent's cost estimate.

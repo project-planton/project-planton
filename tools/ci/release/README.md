@@ -67,9 +67,9 @@ When you run `make release`, here's what happens:
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Official modules: how they are built, published and recognised
+## Platform modules: how they are built, published and recognised
 
-A platform that deploys Planton's official IaC modules recognises each module by its **module digest**: sha256 over the `"<artifact> <sha256>"` lines, in name order, of every artifact a runner may execute for it (one gzipped Pulumi binary per platform, or the OpenTofu/Terraform `module.zip`). The digest is computed from the bytes a release actually published, so it is exact: two releases carry the same digest for a module only when they published byte-identical artifacts for it. A platform records the digest each resource was last applied with and re-runs a resource on a new release only when its module's digest moved; a runner refuses a download whose bytes are not the ones the release published.
+A platform that deploys Planton's platform IaC modules recognises each module by its **module digest**: sha256 over the `"<artifact> <sha256>"` lines, in name order, of every artifact a runner may execute for it (one gzipped Pulumi binary per platform, or the OpenTofu/Terraform `module.zip`). The digest is computed from the bytes a release actually published, so it is exact: two releases carry the same digest for a module only when they published byte-identical artifacts for it. A platform records the digest each resource was last applied with and re-runs a resource on a new release only when its module's digest moved; a runner refuses a download whose bytes are not the ones the release published.
 
 Three pieces make that hold:
 

@@ -953,7 +953,7 @@ from those three facts.
 **Custom modules:**
 
 ```bash
-# Start from the official module: eject a customizable copy you own
+# Start from the platform module: eject a customizable copy you own
 # (a generated CONTRACT.md inside explains the contract it must keep)
 planton module eject AwsS3Bucket --provisioner tofu --output-dir ./my-custom-module
 
@@ -1188,7 +1188,7 @@ git push origin main
 **Scenario:** Your organization has specific security policies (always encrypt, always multi-AZ, specific tagging).
 
 **Approach:**
-1. Eject the official module into a directory you own
+1. Eject the platform module into a directory you own
 2. Add organizational defaults
 3. Prove the module still conforms to the kind's contract
 4. Deploy with the CLI pointed at your module
@@ -1196,7 +1196,7 @@ git push origin main
 **Example:**
 
 ```bash
-# Eject a customizable copy of the official module (the generated
+# Eject a customizable copy of the platform module (the generated
 # CONTRACT.md inside explains the contract it must keep honoring)
 planton module eject AwsRdsInstance --provisioner tofu --output-dir ./my-rds-module
 # Edit to add organizational defaults, then version it in your own repository

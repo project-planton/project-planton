@@ -37,7 +37,7 @@ Two validation surfaces exist:
   chart edit.
 - **`planton chart build <chart>`** (the Planton Platform CLI) — the
   authoritative server-side gate. Renders and validates through the live
-  control plane exactly as the console does. Run it before publishing.
+  control plane exactly as the console does. Run it before the chart ships.
 
 ## The design bar
 
@@ -145,8 +145,6 @@ kind: InfraChart
 metadata:
   name: <Provider> <Human Name>          # e.g. "AWS Terraform State Backend"
 spec:
-  selector:
-    kind: platform
   description: <one sentence that sells the chart honestly>
   iconUrl: <VERIFIED live URL — see icon rules below>
   webLinks:
@@ -592,8 +590,11 @@ Working around a kind defect inside a chart (a renamed record, a dropped
 resource, a placeholder) ships the defect to every other consumer and hides it
 from the kind's owner.
 
-The server-side `planton chart build` / `chart publish` (Platform CLI) remains
-the engine-of-record gate for publishing — see `@publish-planton-infra-charts`.
+The server-side `planton chart build` (Platform CLI) remains the
+engine-of-record gate. These charts ship only in the release: each release
+bundles `charts/`, and every instance seeds the bundle its release pins as
+platform charts, which belong to no organization. Nothing publishes them by
+hand.
 
 ## Quality standards
 
@@ -617,5 +618,4 @@ the engine-of-record gate for publishing — see `@publish-planton-infra-charts`
 ## Related rules
 
 - `@build-and-fix-planton-infra-charts` — diagnosing validation failures against the protos.
-- `@publish-planton-infra-charts` — publishing to the platform catalog.
 - `@create-infra-charts-changelog` — documenting completed chart work.

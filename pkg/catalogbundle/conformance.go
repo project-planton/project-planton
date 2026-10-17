@@ -30,7 +30,7 @@ import (
 //  2. the kind's Spec exposes the identical top-level JSON field set,
 //  3. the served version recorded in the bundle's kind registry matches,
 //  4. the catalog entries name exactly the registry's user-facing kinds
-//     (both directions), with unique slugs and at least one official IaC
+//     (both directions), with unique slugs and at least one platform IaC
 //     module directory each,
 //  5. the version deprecations agree with the compiled registry (both
 //     directions), and every deprecation the bundle announces names a
@@ -111,7 +111,7 @@ func CheckConformance(bundle *Bundle) error {
 // entryProblems checks the bundle's catalog entries against the compiled
 // registry: every user-facing kind has its entry, every entry names a
 // registered kind, slugs are unique, and every entry carries at least one
-// official module directory (a kind with no deployable module has no
+// platform module directory (a kind with no deployable module has no
 // business in the catalog).
 func entryProblems(bundle *Bundle) []string {
 	var problems []string
@@ -143,7 +143,7 @@ func entryProblems(bundle *Bundle) []string {
 		}
 		if entry.IacModules.TerraformModuleDir == "" && entry.IacModules.PulumiModuleDir == "" {
 			problems = append(problems, fmt.Sprintf(
-				"%s: its catalog entry names no official IaC module directory for any engine", kindName))
+				"%s: its catalog entry names no platform IaC module directory for any engine", kindName))
 		}
 		// The entry's service group must agree with the compiled registry in
 		// both directions -- a mismatch means the bundle was built from a

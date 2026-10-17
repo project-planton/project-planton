@@ -64,7 +64,7 @@ func checkTofuVariables(kind catalogkind.CatalogKind, kindName, moduleDir string
 	src, err := os.ReadFile(variablesPath)
 	if err != nil {
 		result.addError(variablesFileName, fmt.Sprintf(
-			"variables.tf is missing — deployments pass the resource's metadata and spec as variables, so the module must declare both (eject the official %s module to see the expected shape)", kindName))
+			"variables.tf is missing — deployments pass the resource's metadata and spec as variables, so the module must declare both (eject the platform %s module to see the expected shape)", kindName))
 		return
 	}
 

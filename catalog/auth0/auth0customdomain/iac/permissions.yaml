@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Auth0 credential needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Auth0 authenticates with a machine-to-machine application authorized for
 # the tenant's Management API (https://{tenant-domain}/api/v2/); the
 # auth0/auth0 Terraform provider (~> 1.58 per iac/tf/provider.tf) and the

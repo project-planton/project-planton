@@ -3,7 +3,7 @@ syntax = "proto3";
 package dev.planton.finops.catalogkindcostprofile.v1;
 
 // CatalogKindCostProfileSpec is the kind's cost anatomy. Authoring
-// contract: every statement here must be true of the OFFICIAL modules as
+// contract: every statement here must be true of the PLATFORM modules as
 // shipped -- a profile describes what the kind IS, not what a customer
 // might customize it into. Field paths use spec-relative proto field names
 // (the same vocabulary as import-map from_spec_field), validated against the

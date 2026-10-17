@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile
@@ -56,7 +56,7 @@ spec:
       status: enforced_by_default
       evidence:
         type: provider_default
-        reference: "Soft delete is always on vault-wide and covers every secret: a deleted secret stays recoverable for the vault's retention window (7-90 days, default 90), and the official modules auto-recover a name-colliding create against a soft-deleted secret rather than failing."
+        reference: "Soft delete is always on vault-wide and covers every secret: a deleted secret stays recoverable for the vault's retention window (7-90 days, default 90), and the platform modules auto-recover a name-colliding create against a soft-deleted secret rather than failing."
       notes: "Deletion-recovery, not replication-grade backup -- point-in-time protection of the VALUE is version history, which every write extends. A data-plane backup/restore blob exists as an operation outside this spec."
     - control_id: backup-retention-policy
       status: not_applicable
