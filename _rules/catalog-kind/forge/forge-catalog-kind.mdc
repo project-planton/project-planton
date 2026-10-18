@@ -984,6 +984,16 @@ the kind has never had E2E coverage of its own. A dependency without a
 verifier fails every consumer's DEPENDENCIES-UP phase with "no verifier
 registered", after the resource has already deployed.
 
+**A verifier proves a resource through its prerequisite's outputs, never
+restated names.** When the promise runs through what the kind composes with
+(a worker pool proved by an actor the control plane's API places on it), read
+the prerequisite's outputs from the verify context
+(`provider.DependencyOutputsFrom(ctx)`, keyed by kind name, then instance)
+and reach it at the addresses it published. The Agent Substrate resource
+verifiers (`aa_e2e/verify/agentsubstrateresources.go`) are the reference;
+the shared dial in `agentsubstrateapi.go` is how any Substrate verifier calls
+the API.
+
 **Consumer-specific fixture shapes live in the shared profile.** There is
 exactly ONE prerequisite profile per kind, shared by every consumer that
 declares the kind in `prerequisites` — so when consumers need differently

@@ -135,6 +135,15 @@ prerequisites with `${E2E_RUN_ID}` in the cloud-side VPC and address names (fixe
 `metadata.name` for FK resolution) so parallel runs and stale orphans from a
 half-finished teardown do not 409 on recreate.
 
+**Agent Substrate chain note:** the worker pool, sandbox config and CSI
+driver config kinds declare `prerequisites: [KubernetesAgentSubstrate]`, whose
+published install profile names `KubernetesNamespace, KubernetesSeaweedFs,
+KubernetesSecret` in its annotation, in that deploy order: the Secrets the
+control plane reads must be in `ate-system` before it starts. Install-manifest
+edges must be kind names, so each consuming kind ships consumer-scoped copies
+of the control plane's namespace, store and store-key fixtures under its own
+`e2e/prerequisites/`, with the `metadata.name`s the profile references.
+
 *Example:* every Gateway API kind declares `KubernetesGatewayApiCrds`, so the
 harness installs the Gateway API CRDs (experimental channel, version-pinned)
 before applying a GatewayClass / Gateway / route / ReferenceGrant. The Tier 3

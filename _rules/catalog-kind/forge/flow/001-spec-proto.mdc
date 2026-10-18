@@ -269,6 +269,15 @@ PROACTIVE DEFAULT IDENTIFICATION (MANDATORY STEP)
     manifest writes `{key: {values: [...]}}`; the object receives the bare list,
     with each element projected by its own type's rules. Show both forms in the
     field comment.
+  - A map whose upstream values are themselves free-keyed maps (a SandboxConfig's
+    `assets`: architecture, then asset name) is `map<string, Wrapper>` where
+    Wrapper holds one map field named `entries`, marked
+    `(dev.planton.shared.options.kubernetes_map_valued_map) = true`. The
+    manifest writes `{key: {entries: {name: ...}}}`; the object receives the
+    bare inner map, each value projected by its own type's rules. Show both
+    forms in the field comment. Keep upstream's free keys a map even when
+    today's names are few: a fixed message would drop the next name upstream
+    adds.
 - **CRD-projection kinds: a `{name, key}` selector of a Secret or ConfigMap is a
   reference.** Its `name` is a `StringValueOrRef` with `default_kind`
   KubernetesSecret (`status.outputs.secret_name`) or KubernetesConfigMap

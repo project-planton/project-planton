@@ -11,6 +11,10 @@ kinds:
   - KubernetesAgentSandboxWarmPool
   - KubernetesAgentSandboxClaim
   - KubernetesAgentSandboxController
+  - KubernetesAgentSubstrateWorkerPool
+  - KubernetesAgentSubstrateSandboxConfig
+  - KubernetesAgentSubstrateCsiDriverConfig
+  - KubernetesAgentSubstrate
 ---
 
 # Operator Prerequisite: the Controller a Custom-Resource Kind Needs

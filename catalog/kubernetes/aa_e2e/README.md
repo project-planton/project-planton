@@ -53,7 +53,7 @@ metadata:
 |---------|---------|---------|
 | (absent) | the default shared cluster | everything else |
 | `cilium-cni` | `<base>-cilium`, single-node, `disableDefaultCNI: true` | Cilium-as-primary-CNI lanes; NetworkPolicy behavioral enforcement |
-| `pod-certificates` | `<base>-podcert`, single-node, node image pinned to `kindest/node:v1.37.0` (needs kind v0.33 or newer), feature gates `ClusterTrustBundle`, `ClusterTrustBundleProjection`, `PodCertificateRequest`, runtime config `certificates.k8s.io/v1beta1`, parallel image pulls | Software that mints workload identities through the pod-certificate APIs: every Agent Substrate lane (its pod-certificate controller signs every component's mTLS) |
+| `pod-certificates` | `<base>-podcert`, single-node, node image pinned to `kindest/node:v1.37.0` (needs kind v0.33 or newer), feature gates `ClusterTrustBundle`, `ClusterTrustBundleProjection`, `PodCertificateRequest`, runtime config `certificates.k8s.io/v1beta1`, parallel image pulls, node sysctls `net.ipv4.conf.all.proxy_arp=1` and `net.ipv6.conf.all.proxy_ndp=1` (set over `docker exec` on create and on reuse, as Substrate's own kind script does for gVisor's pod-to-pod networking) | Software that mints workload identities through the pod-certificate APIs: every Agent Substrate lane (its pod-certificate controller signs every component's mTLS), the worker pool's actor lane included |
 | `aws-eks` | REAL cluster (no local constructor) — batch-provisioned EKS via `realcluster/aws-eks/` | Cloud-LB provisioning, IRSA identity hops, snapshot-capable CSI storage, real node autoscaling |
 | `gcp-gke` | REAL cluster (no local constructor) — an existing GKE cluster with Workload Identity; the GCP side (identities, bindings, bucket) and the Cloudflare R2 side (bucket, scoped API token) created from the catalog via `realcluster/gcp-gke/` | Keyless GCS backups and restores through Workload Identity, R2 backups and restores through the databases' `r2` arms, multi-node HA under real anti-affinity, lanes beside resident operators |
 
@@ -198,6 +198,14 @@ A verifier may implement optional capabilities beyond `ResourceVerifier`:
 against rather than restate them. The Agent Substrate verifier is the
 reference for the last: it calls the API from the address, server name,
 token audience and trust bundle the kind outputs.
+
+A verifier whose proof runs through what the resource composes with reads
+the outputs of the prerequisites deployed in front of the scenario from the
+verify context (`provider.DependencyOutputsFrom(ctx)`, keyed by kind name and
+then by instance). The Agent Substrate worker pool and sandbox config
+verifiers are the reference: they reach the API through the control plane
+the registry prerequisite installed, and the actor lane lists its snapshot
+in the SeaweedFS store in front of it, so no proof restates an address.
 
 ### Retry Strategy (`kubectl.go`)
 
