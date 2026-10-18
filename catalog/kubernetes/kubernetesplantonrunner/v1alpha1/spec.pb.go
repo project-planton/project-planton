@@ -103,8 +103,8 @@ type KubernetesPlantonRunnerSpec struct {
 	RunnerVersion *string `protobuf:"bytes,6,opt,name=runner_version,json=runnerVersion,proto3,oneof" json:"runner_version,omitempty"`
 	// *
 	// The container image repository the runner is pulled from. Override
-	// only for air-gapped or mirrored registries hosting a copy of the
-	// Planton's image; the digest-identical mirror is your responsibility.
+	// only for air-gapped or mirrored registries hosting a copy of
+	// Planton's runner image; the digest-identical mirror is your responsibility.
 	ImageRepository *string `protobuf:"bytes,7,opt,name=image_repository,json=imageRepository,proto3,oneof" json:"image_repository,omitempty"`
 	// *
 	// The planton-runner chart version to install. Defaults to the version

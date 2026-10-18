@@ -175,8 +175,8 @@ version tag for change control.
 `string` · optional (explicit presence)
 
 The container image repository the runner is pulled from. Override
-only for air-gapped or mirrored registries hosting a copy of the
-Planton's image; the digest-identical mirror is your responsibility.
+only for air-gapped or mirrored registries hosting a copy of
+Planton's runner image; the digest-identical mirror is your responsibility.
 
 - default: `ghcr.io/plantonhq/planton/runner`
 

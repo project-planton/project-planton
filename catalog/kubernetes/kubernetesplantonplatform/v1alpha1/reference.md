@@ -1719,8 +1719,7 @@ Specify the minimum amount of CPU and memory that the container is guaranteed.
 `KubernetesPlantonPlatformBootstrap`
 
 First-boot seeding: the initial organization and environment, extra
-admins, the IaC provisioner the in-cluster runner uses, and where the
-platform's managed secrets live.
+admins, and where the platform's managed secrets live.
 
 ### spec.bootstrap.organization
 

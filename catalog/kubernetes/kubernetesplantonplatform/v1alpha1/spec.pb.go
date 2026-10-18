@@ -130,8 +130,7 @@ type KubernetesPlantonPlatformSpec struct {
 	Identity *KubernetesPlantonPlatformIdentity `protobuf:"bytes,9,opt,name=identity,proto3" json:"identity,omitempty"`
 	// *
 	// First-boot seeding: the initial organization and environment, extra
-	// admins, the IaC provisioner the in-cluster runner uses, and where the
-	// platform's managed secrets live.
+	// admins, and where the platform's managed secrets live.
 	Bootstrap *KubernetesPlantonPlatformBootstrap `protobuf:"bytes,10,opt,name=bootstrap,proto3" json:"bootstrap,omitempty"`
 	// *
 	// The in-cluster deployment runner — how this platform deploys real
