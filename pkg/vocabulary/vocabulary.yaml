@@ -95,6 +95,10 @@ retired:
     use: InfraStack
   - spelling: crkreflect
     use: catalogkindreflect
+  # What Planton itself provides is "platform"; the platform's preset-proof
+  # helper names say so (platformPresetSlugs, platformPresetSpec).
+  - spelling: OfficialPreset
+    use: platform preset (platformPresetSlugs, platformPresetSpec)
 
 phrases:
   # "Component" names one deployed InfraComponent and nothing else. These are
@@ -135,6 +139,16 @@ phrases:
   - pattern: '(?i)\bofficial[ _-]?(presets?|chart[ _-]?fleet|catalog)\b|org \+ official'
     anchors: ['official preset', 'official chart', 'official catalog', 'org + official']
     use: platform preset / platform chart / platform catalog
+  # ...including with a kind named between ("every official AwsVpc preset",
+  # "the official kubernetestrino modules").
+  - pattern: '(?i)\bofficial [a-z0-9]+ (presets?|modules?)\b'
+    anchors: ['official ']
+    use: platform <Kind> preset / platform <kind> modules
+  # A new organization deploys with OpenTofu; Pulumi is an organization's own
+  # choice, never Planton's default.
+  - pattern: '(?i:\bpulumi \(default\)|\bpulumi is the (platform )?default\b)'
+    anchors: ['pulumi (default)', 'pulumi is the']
+    use: OpenTofu by default; Pulumi when the organization chooses it
   # Retired ID shapes. An InfraComponent ID is ic_<kind id prefix>_<ulid>, an
   # InfraJob ID ij_<ulid>, an InfraStack ID infstk_<ulid>, an InfraPipeline ID
   # infpipe_<ulid>.

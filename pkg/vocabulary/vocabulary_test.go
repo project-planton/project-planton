@@ -80,6 +80,11 @@ func TestRetiredSpellingsAreFound(t *testing.T) {
 		"the stack keeps it in the cloud",
 		"## Keeping a Resource in the Cloud",
 		"a teardown keeps the resources in the cloud",
+		"const slugs = officialPresetSlugs(KIND);",
+		"every official AwsVpc preset, loaded from the asset",
+		"# Least-privilege permissions for the official kubernetestrino modules",
+		"This kind supports both Pulumi (default) and Terraform:",
+		"Pulumi is the default engine on every instance",
 	} {
 		if len(matches(t, s, "README.md", line)) == 0 {
 			t.Errorf("no finding in %q", line)
@@ -142,6 +147,10 @@ func TestOtherPeoplesWordsAreAllowed(t *testing.T) {
 		{"docs/x.md", "Pulumi stack execution is orchestrated by the runner"},
 		{"docs/x.md", "planton-os project create --name q4-launch"},
 		{"docs/x.md", "the Dockerfile in the service's project root"},
+		{"catalog/kubernetes/kubernetesharbor/README.md", "installs the vendor's official Helm chart"},
+		{"docs/x.md", "the official Docker image for Postgres"},
+		{"catalog/aws/awsvpc/logo.svg", "<desc>Official AWS product icon</desc>"},
+		{"docs/x.md", "it deploys with OpenTofu unless the organization chose Pulumi"},
 	} {
 		if got := matches(t, s, c.path, c.line); len(got) != 0 {
 			t.Errorf("%s: %q flagged %v", c.path, c.line, got)

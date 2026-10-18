@@ -1217,7 +1217,7 @@ ejected from and rewrites the module's self-imports onto a module path you
 choose with `--go-module` — the copy compiles and deploys outside this
 repository from the moment it lands.
 
-When a custom module's raw outputs use different names than the official
+When a custom module's raw outputs use different names than the platform
 one, ship an output transformation alongside it — a declarative
 `output_transform.yaml` mapping raw output names to the kind's outputs
 schema, or a `transform-outputs` executable for logic a mapping cannot

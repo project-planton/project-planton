@@ -172,7 +172,7 @@ is active and the DS records are accepted by the registrar.
 
 ## Terraform and Pulumi
 
-This kind supports both Pulumi (default) and Terraform, producing identical infrastructure:
+This kind ships both engines, producing identical infrastructure; it deploys with OpenTofu unless the organization chose Pulumi:
 
 - **Pulumi**: `iac/pulumi/` — Go-based implementation
 - **Terraform**: `iac/tf/` — HCL-based implementation
