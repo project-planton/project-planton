@@ -651,6 +651,7 @@ contained dev.planton.kubernetes.kubernetesagentsandboxcontroller.v1alpha1.Kuber
 contained dev.planton.kubernetes.kubernetesagentsandboxtemplate.v1alpha1.KubernetesAgentSandboxTemplateSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesagentsandboxwarmpool.v1alpha1.KubernetesAgentSandboxWarmPoolSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1.KubernetesAgentSubstrateSpec.namespace -> KubernetesNamespace
+contained dev.planton.kubernetes.kubernetesagentsubstrateworkerpool.v1alpha1.KubernetesAgentSubstrateWorkerPoolSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesairflow.v1alpha1.KubernetesAirflowSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesaltinityoperator.v1alpha1.KubernetesAltinityOperatorSpec.namespace -> KubernetesNamespace
 contained dev.planton.kubernetes.kubernetesargocd.v1alpha1.KubernetesArgocdSpec.namespace -> KubernetesNamespace

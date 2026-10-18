@@ -1,0 +1,40 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateWorkerPool
+metadata:
+  name: <pool-name>
+spec:
+  namespace:
+    value: acme-agents
+  labels:
+    tenant: acme
+  replicas: 5
+  workerImage:
+    valueFrom:
+      kind: KubernetesAgentSubstrate
+      name: <substrate-resource-name>
+      fieldPath: status.outputs.gvisor_worker_image
+  template:
+    labels:
+      tenant: acme
+    nodeSelector:
+      agents.example.com/tenant: acme
+    tolerations:
+      - key: agents.example.com/tenant
+        operator: Equal
+        value: acme
+        effect: NoSchedule
+    resources:
+      requests:
+        cpu: "1"
+        memory: 2Gi
+      limits:
+        cpu: "2"
+        memory: 2Gi
+  sandboxClasses:
+    - name: gvisor
+      configRef:
+        name:
+          valueFrom:
+            kind: KubernetesAgentSubstrateSandboxConfig
+            name: <sandbox-config-resource-name>
+            fieldPath: status.outputs.sandbox_config_name

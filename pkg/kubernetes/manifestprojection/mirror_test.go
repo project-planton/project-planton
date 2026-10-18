@@ -194,6 +194,16 @@ func compareField(node *schemaNode, fd protoreflect.FieldDescriptor, path string
 			compareValue(node.AdditionalProperties.Items, wrapper, path+".*[]", findings)
 			return
 		}
+		if specprojection.IsKubernetesMapValuedMapField(fd) {
+			wrapper := fd.MapValue().Message().Fields().Get(0)
+			inner := node.AdditionalProperties
+			if inner.Type != "object" || inner.AdditionalProperties == nil || len(inner.Properties) > 0 {
+				*findings = append(*findings, path+" is a map-valued map in the spec and its custom resource values are not free-keyed objects")
+				return
+			}
+			compareValue(inner.AdditionalProperties, wrapper.MapValue(), path+".*.*", findings)
+			return
+		}
 		compareValue(node.AdditionalProperties, fd.MapValue(), path+".*", findings)
 	case fd.IsList():
 		if node.Type != "array" || node.Items == nil {

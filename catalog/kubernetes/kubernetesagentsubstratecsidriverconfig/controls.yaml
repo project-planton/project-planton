@@ -1,0 +1,70 @@
+# Control profile: this component's posture against every control in the
+# central catalog (catalog/_compliance/controls-catalog.yaml). Every control
+# is examined; not_applicable states why. Evidence is verifiable against the
+# spec contract and the official modules. Schema:
+# compliance/catalogkindcontrolprofile/v1.
+apiVersion: compliance.planton.dev/v1
+kind: CatalogKindControlProfile
+metadata:
+  name: kubernetesagentsubstratecsidriverconfig
+spec:
+  controls:
+    - control_id: enc-at-rest
+      status: not_applicable
+      notes: "The config stores no data; the volumes the driver provisions are encrypted by that storage."
+    - control_id: enc-at-rest-cmk
+      status: not_applicable
+      notes: "Customer-managed keys for actors' external volumes are the driver's and its StorageClass's choice."
+    - control_id: enc-in-transit
+      status: configurable
+      field_path: tls
+      evidence:
+        type: spec_default
+        reference: "tls.enabled with use_pod_identity encrypts the API server's connection to the driver's Controller service and authenticates both ends (Substrate's pod identity as the client certificate, Substrate's service-DNS signer as the only trusted server issuer). Unset, the connection is plaintext."
+      notes: "Turn TLS on unless only the API server can reach the Controller service."
+    - control_id: no-public-access
+      status: not_applicable
+      notes: "A config is a declaration the control plane reads, not a network endpoint; the driver's Controller service is the driver's to keep private."
+    - control_id: restricted-ingress
+      status: not_applicable
+      notes: "Restrict the driver's Controller Service to the control plane's namespace with a NetworkPolicy; the config cannot."
+    - control_id: edge-protection
+      status: not_applicable
+      notes: "There is no endpoint to protect at the edge."
+    - control_id: rbac
+      status: not_applicable
+      notes: "Who may create or change a config is the cluster's Kubernetes RBAC on csidriverconfigs.ate.dev (cluster-scoped). A config decides where the API server sends volume operations, so grant write access as narrowly as cluster administration."
+    - control_id: workload-identity
+      status: configurable
+      field_path: tls
+      evidence:
+        type: spec_default
+        reference: "tls.use_pod_identity presents the API server's Substrate pod identity (its SPIFFE certificate) to the driver."
+      notes: "The driver can then admit only Substrate's API server."
+    - control_id: no-legacy-auth
+      status: not_applicable
+      notes: "The config performs no authentication itself; with TLS, the connection uses certificates only."
+    - control_id: strong-user-auth
+      status: not_applicable
+      notes: "The config has no users."
+    - control_id: audit-logging
+      status: not_applicable
+      notes: "Changes to the config are recorded by the cluster's API server audit log, a property of the cluster component."
+    - control_id: monitoring-integration
+      status: not_applicable
+      notes: "A config has no status, and Substrate's API reports no driver health; a wrong endpoint surfaces when an actor with an external volume resumes."
+    - control_id: backup-recovery
+      status: not_applicable
+      notes: "The config holds no state beyond its manifest; actors' external volumes are backed up by their storage."
+    - control_id: backup-retention-policy
+      status: not_applicable
+      notes: "There is nothing to retain (see backup-recovery)."
+    - control_id: multi-zone-ha
+      status: not_applicable
+      notes: "A cluster-scoped declaration has no placement; the driver's availability is its own deployment's."
+    - control_id: deletion-protection
+      status: not_applicable
+      notes: "The object carries no deletion protection of its own; Kubernetes objects are protected through RBAC and admission policy on the cluster. Deleting the config stops volume operations for the driver once the API server and the node agents restart (they keep a driver's client from its first use until then); existing volumes stay on the storage."
+    - control_id: managed-patching
+      status: not_applicable
+      notes: "The config runs nothing; the driver is patched by whoever installs it."

@@ -194,11 +194,25 @@ extend google.protobuf.FieldOptions {
   // `{key: [...]}`. Honored once, in pkg/iac/specprojection, which both
   // engines' modules read.
   //
-  // A catalog test proves each of the three projection markers
-  // (kubernetes_object_metadata, kubernetes_int_or_string and this one) sits
-  // only on the field shape it is defined for, and only where a projection
-  // kind's spec reaches it.
+  // A catalog test proves each of the four projection markers
+  // (kubernetes_object_metadata, kubernetes_int_or_string, this one and
+  // kubernetes_map_valued_map) sits only on the field shape it is defined for,
+  // and only where a projection kind's spec reaches it.
   bool kubernetes_list_valued_map = 60013;
+
+  // Marks a map<string, Wrapper> field of a Kubernetes manifest projection
+  // kind whose upstream values are themselves free-keyed maps (an Agent
+  // Substrate SandboxConfig's assets: architecture, then asset name, then the
+  // file). A proto map value cannot be a map, so each value is a wrapper
+  // message whose single field is the inner map (named `entries`, the
+  // catalog's wrapper convention); the projection writes each entry as that
+  // bare map, the custom resource's own shape, and projects the inner values
+  // by their own type's rules.
+  //
+  // The manifest author writes `{key: {entries: {name: ...}}}`; the object
+  // carries `{key: {name: ...}}`. Honored once, in pkg/iac/specprojection,
+  // which both engines' modules read.
+  bool kubernetes_map_valued_map = 60014;
 }
 
 // The part of a Kubernetes object's metadata a spec field holds. See

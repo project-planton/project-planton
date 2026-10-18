@@ -1,0 +1,25 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateWorkerPool
+metadata:
+  name: <pool-name>
+spec:
+  namespace:
+    value: <namespace>
+  labels:
+    isolation: microvm
+  replicas: 2
+  workerImage:
+    valueFrom:
+      kind: KubernetesAgentSubstrate
+      name: <substrate-resource-name>
+      fieldPath: status.outputs.microvm_worker_image
+  template:
+    resources:
+      requests:
+        cpu: "2"
+        memory: 4Gi
+      limits:
+        cpu: "2"
+        memory: 4Gi
+  sandboxClasses:
+    - name: microvm

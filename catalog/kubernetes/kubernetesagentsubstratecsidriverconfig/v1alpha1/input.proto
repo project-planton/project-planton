@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstratecsidriverconfig.v1alpha1;
+
+import "catalog/kubernetes/kubernetesagentsubstratecsidriverconfig/v1alpha1/api.proto";
+import "catalog/kubernetes/provider.proto";
+
+// KubernetesAgentSubstrateCsiDriverConfigIacInput provides the inputs for creating the
+// CSIDriverConfig on a Kubernetes cluster.
+message KubernetesAgentSubstrateCsiDriverConfigIacInput {
+  // the catalog object to deploy
+  KubernetesAgentSubstrateCsiDriverConfig target = 1;
+  // provider-config
+  dev.planton.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

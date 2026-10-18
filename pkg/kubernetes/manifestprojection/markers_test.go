@@ -11,7 +11,7 @@ import (
 )
 
 // TestProjectionMarkers_SitWhereTheyAreHonored walks every registered kind's
-// spec, through every message it reaches, and holds the three projection
+// spec, through every message it reaches, and holds the four projection
 // markers to the one place each is honored: the manifest projection of a
 // Kubernetes custom resource. A marker anywhere else would be read by no
 // engine, so the field would reach its module in the wrong shape.
@@ -21,6 +21,8 @@ import (
 //   - kubernetes_int_or_string: a singular string field.
 //   - kubernetes_list_valued_map: a map whose value is a message with exactly
 //     one field, and that field repeated.
+//   - kubernetes_map_valued_map: a map whose value is a message with exactly
+//     one field, and that field a map.
 //
 // And each only where a projection kind's spec reaches it: a shared message
 // that carries a marker may be used by projection kinds alone.
@@ -52,8 +54,9 @@ func TestProjectionMarkers_SitWhereTheyAreHonored(t *testing.T) {
 				objectMetadata := metadataPart != options.KubernetesObjectMetadataField_kubernetes_object_metadata_field_unspecified
 				intOrString := specprojection.IsKubernetesIntOrStringField(fd)
 				listValuedMap := specprojection.IsKubernetesListValuedMapField(fd)
+				mapValuedMap := specprojection.IsKubernetesMapValuedMapField(fd)
 
-				if objectMetadata || intOrString || listValuedMap {
+				if objectMetadata || intOrString || listValuedMap || mapValuedMap {
 					marked++
 					if !projection {
 						t.Errorf("%s: %s carries a projection marker, but %s is not a Kubernetes manifest projection kind, so no engine honors it", kind, fd.FullName(), kind)
@@ -74,6 +77,12 @@ func TestProjectionMarkers_SitWhereTheyAreHonored(t *testing.T) {
 				}
 				if listValuedMap && !isListWrapperMap(fd) {
 					t.Errorf("%s: kubernetes_list_valued_map on %s, which is not a map whose value message holds exactly one repeated field", kind, fd.FullName())
+				}
+				if mapValuedMap && !isMapWrapperMap(fd) {
+					t.Errorf("%s: kubernetes_map_valued_map on %s, which is not a map whose value message holds exactly one map field", kind, fd.FullName())
+				}
+				if listValuedMap && mapValuedMap {
+					t.Errorf("%s: %s carries both kubernetes_list_valued_map and kubernetes_map_valued_map; a wrapper holds a list or a map, never both", kind, fd.FullName())
 				}
 
 				switch {
@@ -99,4 +108,12 @@ func isListWrapperMap(fd protoreflect.FieldDescriptor) bool {
 	}
 	wrapper := fd.MapValue().Message().Fields()
 	return wrapper.Len() == 1 && wrapper.Get(0).IsList()
+}
+
+func isMapWrapperMap(fd protoreflect.FieldDescriptor) bool {
+	if !fd.IsMap() || fd.MapValue().Kind() != protoreflect.MessageKind {
+		return false
+	}
+	wrapper := fd.MapValue().Message().Fields()
+	return wrapper.Len() == 1 && wrapper.Get(0).IsMap()
 }

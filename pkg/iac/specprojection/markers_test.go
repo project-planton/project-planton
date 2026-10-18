@@ -5,16 +5,19 @@ import (
 	"testing"
 
 	"github.com/plantonhq/planton/catalog/kubernetes"
+	kubernetesagentsubstratesandboxconfigv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsubstratesandboxconfig/v1alpha1"
 	kubernetesservicemonitorv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesservicemonitor/v1alpha1"
 	foreignkeyv1 "github.com/plantonhq/planton/shared/foreignkey/v1"
 )
 
-// These tests pin the two Kubernetes shape markers on a real projection kind's
-// spec, through the same Project call both engines' modules make: an
-// IntOrString written as a number or a name, and a list-valued map's wrappers
+// These tests pin the three Kubernetes shape markers on real projection kinds'
+// specs, through the same Project call both engines' modules make: an
+// IntOrString written as a number or a name, a list-valued map's wrappers
 // written as bare lists with their elements projected (references collapsed)
-// inside. They also pin that an explicitly empty object survives, since a
-// required-but-empty selector means "select everything" upstream.
+// inside, and a map-valued map's wrappers written as bare maps with their
+// values projected as objects inside. They also pin that an explicitly empty
+// object survives, since a required-but-empty selector means "select
+// everything" upstream.
 
 func literal(v string) *foreignkeyv1.StringValueOrRef {
 	return &foreignkeyv1.StringValueOrRef{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: v}}
@@ -119,5 +122,45 @@ func TestProject_EmptySelectorIsKept(t *testing.T) {
 	}
 	if got, ok := selector.(map[string]interface{}); !ok || len(got) != 0 {
 		t.Errorf("selector = %#v, want an empty object", selector)
+	}
+}
+
+func sandboxConfigSpec() *kubernetesagentsubstratesandboxconfigv1alpha1.KubernetesAgentSubstrateSandboxConfigSpec {
+	return &kubernetesagentsubstratesandboxconfigv1alpha1.KubernetesAgentSubstrateSandboxConfigSpec{
+		Name:           "gvisor-pinned",
+		SandboxClass:   "gvisor",
+		DefaultVersion: "v1",
+		Versions: []*kubernetesagentsubstratesandboxconfigv1alpha1.KubernetesAgentSubstrateSandboxConfigVersion{{
+			Name:       "v1",
+			PauseImage: "registry.k8s.io/pause:3.10.2@sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4",
+			Assets: map[string]*kubernetesagentsubstratesandboxconfigv1alpha1.KubernetesAgentSubstrateSandboxConfigAssetFiles{
+				"amd64": {Entries: map[string]*kubernetesagentsubstratesandboxconfigv1alpha1.KubernetesAgentSubstrateSandboxConfigAssetFile{
+					"gvisor": {Url: "gs://gvisor/releases/nightly/2026-10-10/x86_64/gvisor.tar.zstd", Sha256: "4ae7fab988c3647d2a835d6c3c70c6a99021c562db97827592562b6c51c3e88c"},
+				}},
+				"arm64": {},
+			},
+		}},
+	}
+}
+
+func TestProject_MapValuedMap_WrappersBecomeBareMaps(t *testing.T) {
+	for _, style := range []KeyStyle{JSONKeys, SnakeCaseKeys} {
+		data, err := Project(sandboxConfigSpec(), style)
+		if err != nil {
+			t.Fatalf("Project: %v", err)
+		}
+		version := data["versions"].([]interface{})[0].(map[string]interface{})
+		want := map[string]interface{}{
+			"amd64": map[string]interface{}{
+				"gvisor": map[string]interface{}{
+					"url":    "gs://gvisor/releases/nightly/2026-10-10/x86_64/gvisor.tar.zstd",
+					"sha256": "4ae7fab988c3647d2a835d6c3c70c6a99021c562db97827592562b6c51c3e88c",
+				},
+			},
+			"arm64": map[string]interface{}{},
+		}
+		if got := version["assets"]; !reflect.DeepEqual(got, want) {
+			t.Errorf("style %v: assets = %#v, want %#v (each architecture's files as the bare map, with no entries wrapper)", style, got, want)
+		}
 	}
 }

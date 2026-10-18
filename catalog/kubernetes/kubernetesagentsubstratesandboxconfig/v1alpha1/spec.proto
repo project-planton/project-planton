@@ -1,0 +1,261 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstratesandboxconfig.v1alpha1;
+
+import "buf/validate/validate.proto";
+import "shared/options/options.proto";
+
+// KubernetesAgentSubstrateSandboxConfigSpec defines an Agent Substrate
+// SandboxConfig: the exact sandbox runtime an actor boots with, for one
+// sandbox class. A config lists versions, each an exact set of files the node
+// agent downloads (the gVisor release tarball, or a microVM's hypervisor,
+// kernel and root filesystem), checked by SHA-256, plus the pause image a
+// gVisor sandbox holds its namespaces with. Every boot and every restore of
+// an actor uses the default version of the config its actor template names,
+// as the config stands at that moment.
+//
+// 100% fidelity with the upstream SandboxConfig custom resource
+// (ate.dev/v1alpha1, cluster-scoped), pinned to Agent Substrate v0.5.0 -- the
+// release KubernetesAgentSubstrate installs -- and held to its served
+// definition by the mirror test. The definition's three rules and the
+// per-class asset rules of upstream's admission policy (sandboxconfig-assets)
+// are written below, so a config the cluster would refuse fails validation
+// before the apply.
+//
+// Who reads it:
+//   - an actor template names a config by name and class
+//     (`sandbox_config.config_name`, `sandbox_config.sandbox_class`); the API
+//     server refuses a template whose config is missing or of another class;
+//   - a worker pool resolves one config of its class
+//     (KubernetesAgentSubstrateWorkerPool `sandbox_classes[].config_ref`, or
+//     the class default) and keeps it from deletion while it uses it;
+//   - the node agent on every node downloads each config's default version
+//     ahead of time (a microVM config only where /dev/kvm exists), so an
+//     actor's boot does not wait for the download.
+//
+// The control plane ships one: `gvisor-default`, gVisor's class default.
+// Declare another to pin a different gVisor release, to roll a new one out
+// beside the old (a second version, then `default_version` moved to it, the
+// old one kept listed so a rollback is moving it back), or to run microVM
+// sandboxes, whose files you stage in your own bucket.
+message KubernetesAgentSubstrateSandboxConfigSpec {
+  option (buf.validate.message).cel = {
+    id: "spec.default_version.listed"
+    message: "default_version must name an entry in versions"
+    expression: "this.versions.exists(v, v.name == this.default_version)"
+  };
+  option (buf.validate.message).cel = {
+    id: "spec.default_version.enabled"
+    message: "the version named by default_version must not be Disabled"
+    expression: "!this.versions.exists(v, v.name == this.default_version && has(v.state) && v.state == 'Disabled')"
+  };
+  option (buf.validate.message).cel = {
+    id: "spec.pause_image.by_class"
+    message: "pause_image is required on every version for gvisor and not allowed for microvm, which runs no pause container"
+    expression: "this.sandbox_class == 'gvisor' ? this.versions.all(v, size(v.pause_image) > 0) : this.versions.all(v, size(v.pause_image) == 0)"
+  };
+  option (buf.validate.message).cel = {
+    id: "spec.assets.gvisor"
+    message: "a gvisor config must define a 'gvisor' asset (the release tarball) or a legacy 'runsc' asset for every architecture of every version"
+    expression: "this.sandbox_class != 'gvisor' || this.versions.all(v, size(v.assets) > 0 && v.assets.all(arch, 'gvisor' in v.assets[arch].entries || 'runsc' in v.assets[arch].entries))"
+  };
+  option (buf.validate.message).cel = {
+    id: "spec.assets.microvm"
+    message: "a microvm config must define cloud-hypervisor, virtiofsd, kata-kernel and kata-image assets for every architecture of every version"
+    expression: "this.sandbox_class != 'microvm' || this.versions.all(v, size(v.assets) > 0 && v.assets.all(arch, ['cloud-hypervisor', 'virtiofsd', 'kata-kernel', 'kata-image'].all(name, name in v.assets[arch].entries)))"
+  };
+  option (buf.validate.message).cel = {
+    id: "spec.versions.unique_names"
+    message: "each version needs a unique name"
+    expression: "this.versions.all(v, this.versions.filter(w, w.name == v.name).size() == 1)"
+  };
+
+  // The SandboxConfig's name in the cluster (its metadata.name): the value an
+  // actor template's `sandbox_config.config_name` and a worker pool's
+  // `config_ref.name` name. A DNS subdomain name. Renaming creates a new
+  // config and deletes the old one; templates that name the old one stop
+  // resolving, and the old one stays (Terminating) while a worker pool still
+  // runs it.
+  string name = 1 [
+    (dev.planton.shared.options.kubernetes_object_metadata) = object_name,
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 253,
+    (buf.validate.field).cel = {
+      id: "spec.name.dns_subdomain"
+      message: "name must be a valid DNS subdomain (lowercase alphanumeric, hyphens and dots, starting and ending with an alphanumeric)"
+      expression: "this.matches('^[a-z0-9]([a-z0-9.-]{0,251}[a-z0-9])?$')"
+    }
+  ];
+
+  // Labels on the SandboxConfig object itself (its metadata.labels), merged
+  // under Planton's identity labels (a key in both keeps the identity value).
+  map<string, string> labels = 2 [
+    (dev.planton.shared.options.kubernetes_object_metadata) = object_labels,
+    (buf.validate.field).map = {
+      keys: {
+        string: {
+          min_len: 1
+          max_len: 317
+          pattern: "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?[A-Za-z0-9]([-A-Za-z0-9_.]{0,61}[A-Za-z0-9])?$"
+        }
+      }
+      values: {
+        string: {
+          max_len: 63
+          pattern: "^([A-Za-z0-9]([-A-Za-z0-9_.]{0,61}[A-Za-z0-9])?)?$"
+        }
+      }
+    }
+  ];
+
+  // Annotations on the SandboxConfig object itself (its
+  // metadata.annotations).
+  //
+  // One annotation is Substrate's own switch:
+  // `sandboxconfig.ate.dev/is-class-default: "true"` makes this config the
+  // default for its class, the one a worker pool resolves when its
+  // `config_ref` is unset. More than one config of a class may carry it;
+  // the one created last wins (on a tie, the name that sorts first), and a
+  // config being deleted is passed over. The control plane's `gvisor-default`
+  // carries it for gVisor, so a gVisor config created with it takes over the
+  // moment it is created. Two consequences: adding the annotation to a config
+  // created earlier than `gvisor-default` never makes it win, and a control
+  // plane reinstall recreates `gvisor-default`, which then wins again. The
+  // value must be exactly "true".
+  map<string, string> annotations = 3 [(dev.planton.shared.options.kubernetes_object_metadata) = object_annotations];
+
+  // The sandbox runtime family this config is for. "gvisor" runs the actor
+  // under gVisor inside its worker pod (no node changes needed). "microvm"
+  // runs it in a cloud-hypervisor microVM with Kata's guest kernel and root
+  // filesystem, and needs nodes that expose /dev/kvm. An actor template only
+  // uses configs of its own class, and a worker pool only resolves configs of
+  // its class.
+  //
+  // Required here although the cluster would write "gvisor": the class decides
+  // which assets every version needs, and a consumer reads it back as an
+  // output to fill in a template's `sandbox_config.sandbox_class`.
+  string sandbox_class = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      in: [
+        "gvisor",
+        "microvm"
+      ]
+    }
+  ];
+
+  // The version every actor boots and restores with: the name of an entry in
+  // `versions` that is not Disabled. Moving it is how a new runtime rolls
+  // out: an actor running now keeps its sandbox, and the next time it is
+  // created or resumed, from a snapshot taken before the move too, it runs
+  // the new default.
+  string default_version = 5 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 63
+  ];
+
+  // The runtime versions this config lists, 1 to 16, each with a unique
+  // name. At this release an actor only ever boots or restores the default
+  // version, and only the default is downloaded ahead of time; the others
+  // change nothing an actor runs until one is named the default, which is
+  // what makes a rollback a one-field change.
+  repeated KubernetesAgentSubstrateSandboxConfigVersion versions = 6 [
+    (buf.validate.field).repeated.min_items = 1,
+    (buf.validate.field).repeated.max_items = 16
+  ];
+}
+
+// KubernetesAgentSubstrateSandboxConfigVersion is one version of a
+// SandboxConfig: the exact pause image and files a sandbox boots with.
+// Faithful to upstream SandboxVersionConfig.
+message KubernetesAgentSubstrateSandboxConfigVersion {
+  // The version's name within its config: a DNS label (lower-case
+  // alphanumerics and '-', at most 63 characters), such as "v3" or
+  // "gvisor-2026-10-10".
+  string name = 1 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 63,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+  ];
+
+  // Whether the version may be used. The version `default_version` names
+  // cannot be Disabled, so "Disabled" marks a listed version that must not
+  // be made the default again; the node agent also leaves Disabled versions
+  // out of the runtimes it records for each worker. Unset, the cluster
+  // writes "Enabled".
+  optional string state = 2 [(buf.validate.field).string = {
+    in: [
+      "Enabled",
+      "Disabled"
+    ]
+  }];
+
+  // The image of the root sandbox container, which holds the sandbox's
+  // namespaces and runs no workload code. Required for gvisor, not allowed for
+  // microvm. Pinned by digest (it must contain '@'), a rule of the cluster's
+  // own, so every boot and restore on every node runs the same bytes.
+  // Upstream's choices: `registry.k8s.io/pause:3.10.2@sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4`
+  // anywhere, or the in-project mirror
+  // `gcr.io/gke-release/pause@sha256:bcbd57ba5653580ec647b16d8163cdd1112df3609129b01f912a8032e48265da`
+  // on GCP. The control plane's registry mirror does not rewrite it here: name
+  // the mirrored image yourself when nodes cannot reach the public one.
+  string pause_image = 3 [
+    (buf.validate.field).string.max_len = 512,
+    (buf.validate.field).cel = {
+      id: "version.pause_image.digest"
+      message: "pause_image must be pinned by digest (image@sha256:...)"
+      expression: "this == '' || this.contains('@')"
+    }
+  ];
+
+  // The files the node agent downloads for this version, keyed by the node's
+  // architecture (Go's names: "amd64", "arm64") and then by asset name. A
+  // node uses the block for its own architecture; a version with no block for
+  // a node's architecture is skipped there, except the default, which every
+  // worker must be able to boot.
+  //
+  // The asset names are the runtime's: gVisor needs "gvisor" (the release's
+  // gvisor.tar.zstd, extracted so runsc's helpers sit beside it; a legacy
+  // bare "runsc" binary still works); microVM needs "cloud-hypervisor",
+  // "virtiofsd", "kata-kernel" and "kata-image". The names stay a free map
+  // because upstream keeps them generic, so a future runtime adds assets
+  // without a schema change.
+  //
+  // A manifest writes each architecture's files under `entries`
+  // (`amd64: {entries: {gvisor: {url: ..., sha256: ...}}}`); the object
+  // carries the bare map upstream defines.
+  map<string, KubernetesAgentSubstrateSandboxConfigAssetFiles> assets = 4 [(dev.planton.shared.options.kubernetes_map_valued_map) = true];
+}
+
+// KubernetesAgentSubstrateSandboxConfigAssetFiles is one architecture's asset
+// files, by asset name. A wrapper, because a proto map value cannot be a map;
+// the projection writes the bare `entries` map.
+message KubernetesAgentSubstrateSandboxConfigAssetFiles {
+  // The architecture's files, keyed by asset name.
+  map<string, KubernetesAgentSubstrateSandboxConfigAssetFile> entries = 1;
+}
+
+// KubernetesAgentSubstrateSandboxConfigAssetFile is one content-addressed file
+// the node agent fetches for a sandbox runtime. Faithful to upstream
+// AssetFile.
+message KubernetesAgentSubstrateSandboxConfigAssetFile {
+  // Where the file is downloaded from, at most 2048 characters. The node
+  // agent fetches every URL through its object-store plugin with the
+  // plugin's credentials; that plugin serves only its own backend's scheme
+  // (gs:// on GCS, s3:// on S3), and any gs:// URL it cannot serve is read
+  // anonymously, which is how public buckets such as gs://gvisor work from
+  // any cluster with internet egress. A URL under the control plane's
+  // snapshot location is refused: stage runtime files outside it.
+  string url = 1 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 2048
+  ];
+
+  // The file's lower-case hex SHA-256. It names the cached copy on each node
+  // and verifies every download, so a changed file at the same URL is refused
+  // rather than booted.
+  string sha256 = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-f0-9]{64}$"
+  ];
+}

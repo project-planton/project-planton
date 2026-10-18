@@ -2050,6 +2050,9 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
 - `KubernetesAgentSubstrate`
+- `KubernetesAgentSubstrateWorkerPool` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the WorkerPool is an instance of, the controller that turns it into worker pods, and the node agent and API server the workers register with.
+- `KubernetesAgentSubstrateSandboxConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the SandboxConfig is an instance of, the admission policy that holds each class to its assets, and the API server and node agent that read it.
+- `KubernetesAgentSubstrateCsiDriverConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the CSIDriverConfig is an instance of, and the API server and node agent that look a driver up in it.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -3066,6 +3069,9 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
 - `KubernetesAgentSubstrate`
+- `KubernetesAgentSubstrateWorkerPool` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the WorkerPool is an instance of, the controller that turns it into worker pods, and the node agent and API server the workers register with.
+- `KubernetesAgentSubstrateSandboxConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the SandboxConfig is an instance of, the admission policy that holds each class to its assets, and the API server and node agent that read it.
+- `KubernetesAgentSubstrateCsiDriverConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the CSIDriverConfig is an instance of, and the API server and node agent that look a driver up in it.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -5283,6 +5289,9 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
 - `KubernetesAgentSubstrate`
+- `KubernetesAgentSubstrateWorkerPool` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the WorkerPool is an instance of, the controller that turns it into worker pods, and the node agent and API server the workers register with.
+- `KubernetesAgentSubstrateSandboxConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the SandboxConfig is an instance of, the admission policy that holds each class to its assets, and the API server and node agent that read it.
+- `KubernetesAgentSubstrateCsiDriverConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the CSIDriverConfig is an instance of, and the API server and node agent that look a driver up in it.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -6299,6 +6308,9 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
 - `KubernetesAgentSubstrate`
+- `KubernetesAgentSubstrateWorkerPool` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the WorkerPool is an instance of, the controller that turns it into worker pods, and the node agent and API server the workers register with.
+- `KubernetesAgentSubstrateSandboxConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the SandboxConfig is an instance of, the admission policy that holds each class to its assets, and the API server and node agent that read it.
+- `KubernetesAgentSubstrateCsiDriverConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the CSIDriverConfig is an instance of, and the API server and node agent that look a driver up in it.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -8630,6 +8642,9 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
 - `KubernetesAgentSubstrate`
+- `KubernetesAgentSubstrateWorkerPool` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the WorkerPool is an instance of, the controller that turns it into worker pods, and the node agent and API server the workers register with.
+- `KubernetesAgentSubstrateSandboxConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the SandboxConfig is an instance of, the admission policy that holds each class to its assets, and the API server and node agent that read it.
+- `KubernetesAgentSubstrateCsiDriverConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the CSIDriverConfig is an instance of, and the API server and node agent that look a driver up in it.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`
@@ -9646,6 +9661,9 @@ Allowed values (use exactly as shown):
 - `KubernetesAgentSandboxWarmPool` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxWarmPool is an instance of, and the controller that keeps the pool's members ready.
 - `KubernetesAgentSandboxClaim` -- KubernetesAgentSandboxController is a prerequisite because it installs the extensions.agents.x-k8s.io definition the SandboxClaim is an instance of, and the controller that binds it to a warm pool member.
 - `KubernetesAgentSubstrate`
+- `KubernetesAgentSubstrateWorkerPool` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the WorkerPool is an instance of, the controller that turns it into worker pods, and the node agent and API server the workers register with.
+- `KubernetesAgentSubstrateSandboxConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the SandboxConfig is an instance of, the admission policy that holds each class to its assets, and the API server and node agent that read it.
+- `KubernetesAgentSubstrateCsiDriverConfig` -- KubernetesAgentSubstrate is a prerequisite because it installs the ate.dev definition the CSIDriverConfig is an instance of, and the API server and node agent that look a driver up in it.
 - `DigitalOceanApp` -- 5000–5999: DigitalOcean resources
 - `DigitalOceanBucket`
 - `DigitalOceanContainerRegistry`

@@ -42,7 +42,7 @@ Changing a database setting rolls the API server: its pod template carries upstr
 
 ## Storage
 
-Snapshots of suspended agents, and the sandbox runtime assets workers stage, move through an object-storage sidecar beside the API server and on every node.
+Snapshots of suspended agents, and the sandbox runtime files every node downloads, move through an object-storage sidecar beside the API server and on every node.
 
 - **GCS** — the bucket, keyless through Workload Identity. The API server needs `storage.objectAdmin` and `storage.bucketViewer` on it; the node agent the same, plus `artifactregistry.reader` on the project for private agent images.
 - **S3-compatible** — the endpoint, bucket, region and path style, and a Secret in `ate-system` holding the access key (Kubernetes reads a Secret only from the pod's own namespace). SeaweedFS and MinIO need path-style addressing, the default.
@@ -90,7 +90,7 @@ The volume stamp catches the quieter case: a destroy that left the bundled datab
 
 ## Destroying it
 
-Destroy runs in reverse: the default SandboxConfig first, while the controller that clears its finalizer still runs, then the control plane, then the namespaces. The definitions are kept unless `crds.keepOnUninstall` is false, so worker pools survive, stopped until a control plane returns. Destroy worker pools before the control plane: a worker pool that still names `gvisor-default` holds that SandboxConfig in deletion until the pool goes. The charts order this for you.
+Destroy runs in reverse: the default SandboxConfig first, while the controller that clears its finalizer still runs, then the control plane, then the namespaces. The definitions are kept unless `crds.keepOnUninstall` is false, so worker pools survive, stopped until a control plane returns. Destroy worker pools before the control plane: a worker pool that still runs `gvisor-default` holds that SandboxConfig in deletion until the pool goes. A KubernetesAgentSubstrateWorkerPool that takes its worker image from this resource's outputs is ordered after it, so a combined destroy removes the pool first and never waits.
 
 ## Pulling from a mirror
 
@@ -169,13 +169,16 @@ With agentgateway, upstream's component replaces the router and egress binaries 
 - **`--ingress-auth-mode`** — the router binary has the static mTLS mode, but v0.5.0 ships no manifest support for it (closing the plaintext listeners and mounting the client CA into Envoy); the component arrives in a later release.
 - **`--dns-egress-policy`** — upstream's controller accepts only the value its manifest sets.
 - **`--localhost-registry-replacement`** — the kind overlay's pointer at a local development registry.
-- **`csi.setup`** — installs third-party test CSI drivers from upstream's `hack/` tree. Register real drivers with a CSIDriverConfig.
+- **`csi.setup`** — installs third-party test CSI drivers from upstream's `hack/` tree. Register real drivers with a [KubernetesAgentSubstrateCsiDriverConfig](../kubernetesagentsubstratecsidriverconfig/README.md).
 - **`fakeDataPlane.enabled`, `benchmark.*`, `demo.*`** — upstream's benchmark and demo machinery.
 - **`kubeconfig`, `context`, `ko.*`, `docker.buildFlags`, `record.dir`, `kindCluster.name`** — the installer's own machine settings; the provider connection and Planton's image line take their place.
-- **Worker settings** (`--max-actors` and the like) — a worker pool's, not the control plane's.
+- **Worker settings** (`--max-actors` and the like) — a worker pool's, not the control plane's ([KubernetesAgentSubstrateWorkerPool](../kubernetesagentsubstrateworkerpool/README.md)).
 
 ## Pairs well with
 
+- **[KubernetesAgentSubstrateWorkerPool](../kubernetesagentsubstrateworkerpool/README.md)** — the workers agents run on, from this release's `gvisor_worker_image` or `microvm_worker_image` output.
+- **[KubernetesAgentSubstrateSandboxConfig](../kubernetesagentsubstratesandboxconfig/README.md)** — a runtime of your own beside `gvisor-default`: a pinned gVisor release, a rollout with a way back, or microVM.
+- **[KubernetesAgentSubstrateCsiDriverConfig](../kubernetesagentsubstratecsidriverconfig/README.md)** — your CSI driver registered for agents' external volumes.
 - **KubernetesNamespace** — own `ate-system`, with the S3 Secret or the database Secret placed first.
 - **KubernetesSecret** — the S3 access key, or an external database's connection strings.
 - **KubernetesSeaweedFs** — an in-cluster S3 store.

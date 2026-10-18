@@ -1,0 +1,23 @@
+# Consumer-scoped install manifest for the Agent Substrate control plane's
+# snapshot store (its published prerequisite profile names
+# KubernetesSeaweedFs and references this store, e2e-ate-s3): a copy of the
+# control plane's own fixture-s3-store.yaml. The admin key pair is fixed
+# through the chart's values so the Secret in ate-system carries the same
+# pair; nothing here is a real secret.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesSeaweedFs
+metadata:
+  name: e2e-ate-s3
+spec:
+  namespace:
+    value: e2e-ate-s3
+  createNamespace: true
+  s3:
+    buckets:
+      - name: substrate-snapshots
+  helmValues: |
+    s3:
+      credentials:
+        admin:
+          accessKey: e2e-ate-snapshots-admin
+          secretKey: e2e-ate-snapshots-admin-secret-not-a-real-secret

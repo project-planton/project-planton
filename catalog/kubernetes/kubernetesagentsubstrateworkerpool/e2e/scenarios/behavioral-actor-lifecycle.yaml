@@ -1,0 +1,48 @@
+# THE ACTOR LANE: the promise Agent Substrate exists for, on a pool this kind
+# declares. Two gVisor workers (one builds the template's golden snapshot,
+# one runs the actor), labeled so an actor template selects them, running a
+# SandboxConfig that is not the class default (fixture-sandbox-config.yaml).
+#
+# The verifier, through the control plane's outputs alone:
+#   1. waits for the pool to resolve to that config and its workers to
+#      register;
+#   2. creates an atespace and upstream's counter template (VOLUMES fidelity,
+#      a durable directory, the pool's labels as its worker selector, the
+#      config the pool resolved, snapshots under the control plane's storage
+#      location) and waits for its golden snapshot;
+#   3. creates and resumes the actor, and calls it through the router with
+#      `ate-target-actor`: file counter 1, memory 1;
+#   4. suspends it, and lists the snapshot in the S3 store with the control
+#      plane's own key;
+#   5. resumes it and calls again: file counter 2 (the durable directory came
+#      back from storage), memory 1 (it really left memory).
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateWorkerPool
+metadata:
+  name: e2e-asubwp-actor
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrateworkerpool/e2e/fixture-namespace.yaml, catalog/kubernetes/kubernetesagentsubstrateworkerpool/e2e/fixture-sandbox-config.yaml"
+spec:
+  namespace:
+    value: e2e-ate-workers
+  labels:
+    workload: e2e-counter
+  replicas: 2
+  workerImage:
+    valueFrom:
+      name: e2e-ate-prereq
+  template:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+  sandboxClasses:
+    - name: gvisor
+      configRef:
+        name:
+          valueFrom:
+            name: e2e-ate-sandbox-config

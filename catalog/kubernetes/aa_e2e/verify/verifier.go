@@ -702,6 +702,18 @@ func GetVerifierFromManifest(manifestPath string) (ResourceVerifier, error) {
 	case "kubernetesagentsubstrate":
 		return newAgentSubstrateVerifier(manifestPath), nil
 
+	// The resources that run on Agent Substrate: every field reads back, a
+	// SandboxConfig is resolved by the API server for a template of its class,
+	// and a WorkerPool's workers register with the API (and, on the actor
+	// lane, run an actor that sleeps into storage and wakes with its files).
+	// Each reaches the API through the control plane deployed in front of it.
+	case "kubernetesagentsubstratesandboxconfig":
+		return newAgentSubstrateSandboxConfigVerifier(manifestPath, info.Name), nil
+	case "kubernetesagentsubstrateworkerpool":
+		return newAgentSubstrateWorkerPoolVerifier(manifestPath, info.Name, info.Namespace), nil
+	case "kubernetesagentsubstratecsidriverconfig":
+		return &AgentSubstrateCSIDriverConfigVerifier{ManifestPath: manifestPath, Name: info.Name}, nil
+
 	// An agent-sandbox Sandbox: every field the scenario sets reads back,
 	// the Sandbox Ready (or Suspended with no pod), its claims created. The
 	// behavioral-suspend scenario's two acts prove suspending keeps the same

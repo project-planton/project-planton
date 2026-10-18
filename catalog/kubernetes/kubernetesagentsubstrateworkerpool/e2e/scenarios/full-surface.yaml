@@ -1,0 +1,60 @@
+# Every field: the pool's own labels and annotations, two workers, and the
+# whole worker pod template -- labels and annotations, a node selector and a
+# node affinity the kind node satisfies, a toleration, a PriorityClass and a
+# ServiceAccount from catalog-kind fixtures, and resources sized for one
+# counter actor -- on the class default. The verifier reads every field back
+# from the live object and has the API list both workers as active.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateWorkerPool
+metadata:
+  name: e2e-asubwp-full
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrateworkerpool/e2e/fixture-namespace.yaml, catalog/kubernetes/kubernetesagentsubstrateworkerpool/e2e/fixture-service-account.yaml, catalog/kubernetes/kubernetesagentsubstrateworkerpool/e2e/fixture-priority-class.yaml"
+spec:
+  namespace:
+    value: e2e-ate-workers
+  labels:
+    tenant: acme
+  annotations:
+    planton.dev/e2e-note: full-surface
+  replicas: 2
+  workerImage:
+    valueFrom:
+      name: e2e-ate-prereq
+  template:
+    labels:
+      team: platform
+    annotations:
+      planton.dev/e2e-note: worker
+    nodeSelector:
+      kubernetes.io/os: linux
+    tolerations:
+      - key: tenant
+        operator: Equal
+        value: acme
+        effect: NoSchedule
+    priorityClassName:
+      valueFrom:
+        name: e2e-ate-workers-priority
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - amd64
+                  - arm64
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    serviceAccountName:
+      valueFrom:
+        name: e2e-ate-workers-sa
+  sandboxClasses:
+    - name: gvisor

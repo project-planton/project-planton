@@ -2176,6 +2176,14 @@ Fields that can point at another resource's outputs:
 | `spec.storage.s3.endpoint` | KubernetesSeaweedFs | `status.outputs.s3_endpoint` |
 | `spec.storage.s3.credentials.secretName` | KubernetesSecret | `status.outputs.secret_name` |
 
+## Referenced By
+
+Fields on other kinds that can point at this resource:
+
+| Kind | Field | Reads |
+|---|---|---|
+| KubernetesAgentSubstrateWorkerPool | `spec.workerImage` | `status.outputs.gvisor_worker_image` |
+
 ## See Also
 
 - [Overview](../README.md)

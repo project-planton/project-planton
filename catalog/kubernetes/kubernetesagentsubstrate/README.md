@@ -6,7 +6,7 @@
 
 Not the right kind when:
 
-- **You want capacity to run agents** — that is a worker pool, its own resource on top of this one: the control plane alone runs no agent.
+- **You want capacity to run agents** — that is a worker pool, [`KubernetesAgentSubstrateWorkerPool`](../kubernetesagentsubstrateworkerpool/README.md), its own resource on top of this one: the control plane alone runs no agent. The runtime an agent boots is a [`KubernetesAgentSubstrateSandboxConfig`](../kubernetesagentsubstratesandboxconfig/README.md), and a storage driver for agents' external volumes is a [`KubernetesAgentSubstrateCsiDriverConfig`](../kubernetesagentsubstratecsidriverconfig/README.md).
 - **You want a sandbox per user session, with no suspend and resume** — [`KubernetesAgentSandboxController`](../kubernetesagentsandboxcontroller/README.md) and its sandbox kinds give each agent a pod of its own; Agent Substrate earns its place when most agents sit idle and should cost nothing until a request wakes them.
 - **Your cluster cannot serve the pod-certificate APIs** — Substrate needs Kubernetes' PodCertificateRequest and ClusterTrustBundle APIs. On GKE they must be enabled when the cluster is created (GKE 1.36 with the beta APIs, or 1.37); there is no way to add them to a running cluster.
 

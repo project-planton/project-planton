@@ -31,6 +31,7 @@ go_test(
     deps = [
         "//catalog/_test/testcatalogkindkubernetes/v1alpha1",
         "//catalog/kubernetes",
+        "//catalog/kubernetes/kubernetesagentsubstratesandboxconfig/v1alpha1",
         "//catalog/kubernetes/kubernetesgkecomputeclass/v1alpha1",
         "//catalog/kubernetes/kubernetesservicemonitor/v1alpha1",
         "//catalog/stripe/stripecoupon/v1alpha1",

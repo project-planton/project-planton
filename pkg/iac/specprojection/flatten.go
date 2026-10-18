@@ -44,11 +44,13 @@ type flattenOpts struct {
 //   - Map with message values: {"variables": {"K": {"value": "v"}}} -> {"variables": {"K": "v"}}
 //   - Repeated message field: [{"value": "a"}, {"value": "b"}] -> ["a", "b"]
 //
-// Two field markers reshape a value for a Kubernetes custom resource whose
+// Three field markers reshape a value for a Kubernetes custom resource whose
 // upstream key has no direct proto form: a `kubernetes_int_or_string` string
-// writes an all-digit value as a number ("8080" -> 8080), and a
+// writes an all-digit value as a number ("8080" -> 8080), a
 // `kubernetes_list_valued_map` map writes each wrapper value as its bare list
-// ({"k": {"values": ["a"]}} -> {"k": ["a"]}).
+// ({"k": {"values": ["a"]}} -> {"k": ["a"]}), and a
+// `kubernetes_map_valued_map` map writes each wrapper value as its bare map
+// ({"k": {"entries": {"a": x}}} -> {"k": {"a": x}}).
 //
 // After processing each field, if the value remains a nested map (not flattened
 // and not skipped), the function recurses into it with the corresponding nested
@@ -167,6 +169,11 @@ func flattenMapField(data map[string]interface{}, jsonKey string, fd protoreflec
 
 	if IsKubernetesListValuedMapField(fd) {
 		unwrapListValues(mapObj, valueDesc.Message(), rules, opts)
+		return
+	}
+
+	if IsKubernetesMapValuedMapField(fd) {
+		unwrapMapValues(mapObj, valueDesc.Message(), rules, opts)
 		return
 	}
 
@@ -338,6 +345,28 @@ func unwrapListValues(mapObj map[string]interface{}, wrapper protoreflect.Messag
 			continue
 		}
 		mapObj[k] = items
+	}
+}
+
+// unwrapMapValues writes each value of a `kubernetes_map_valued_map` map as
+// the bare inner map its wrapper holds ({"k": {"entries": {"a": x}}} ->
+// {"k": {"a": x}}), projecting the inner values by their own type's rules.
+// The wrapper's single field is the inner map (the marker test pins that
+// shape); a wrapper the author left empty becomes an empty map, the object's
+// own form of "no entries".
+func unwrapMapValues(mapObj map[string]interface{}, wrapper protoreflect.MessageDescriptor, rules map[string]TypeRule, opts flattenOpts) {
+	mapField := wrapper.Fields().Get(0)
+	mapKey := jsonFieldName(mapField)
+	for k, v := range mapObj {
+		inner := map[string]interface{}{}
+		if w, ok := v.(map[string]interface{}); ok {
+			if m, ok := w[mapKey].(map[string]interface{}); ok {
+				inner = m
+			}
+		}
+		holder := map[string]interface{}{mapKey: inner}
+		flattenMapField(holder, mapKey, mapField, inner, rules, opts)
+		mapObj[k] = holder[mapKey]
 	}
 }
 

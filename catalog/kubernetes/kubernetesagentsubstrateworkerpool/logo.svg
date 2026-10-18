@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <desc>Planton-drawn glyph: an Agent Substrate WorkerPool -- a row of three workers on one base, one running an agent and two free</desc>
+  <rect x="2.5" y="18" width="19" height="2.6" rx="1.1" fill="#326ce5"/>
+  <rect x="3" y="6.5" width="5" height="9.5" rx="1.2" fill="#326ce5"/>
+  <rect x="4.4" y="9" width="2.2" height="2.2" rx="0.6" fill="#ffffff"/>
+  <rect x="9.5" y="6.5" width="5" height="9.5" rx="1.2" fill="none" stroke="#74a5f4" stroke-width="1.4"/>
+  <rect x="16" y="6.5" width="5" height="9.5" rx="1.2" fill="none" stroke="#74a5f4" stroke-width="1.4"/>
+  <line x1="5.5" y1="16" x2="5.5" y2="18" stroke="#326ce5" stroke-width="1.4"/>
+  <line x1="12" y1="16" x2="12" y2="18" stroke="#74a5f4" stroke-width="1.4"/>
+  <line x1="18.5" y1="16" x2="18.5" y2="18" stroke="#74a5f4" stroke-width="1.4"/>
+</svg>

@@ -1,0 +1,12 @@
+# The smallest config: a driver's name and its Controller endpoint, plaintext,
+# on the kubelet's node socket. The verifier reads it back.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateCsiDriverConfig
+metadata:
+  name: e2e-asubcsi-min
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+spec:
+  name: nfs.csi.k8s.io
+  driverName: nfs.csi.k8s.io
+  controllerEndpoint: tcp://csi-nfs-controller.kube-system.svc.cluster.local:50052

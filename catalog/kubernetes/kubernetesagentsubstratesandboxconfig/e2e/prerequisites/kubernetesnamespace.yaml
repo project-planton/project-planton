@@ -1,0 +1,11 @@
+# Consumer-scoped install manifest for the Agent Substrate control plane's
+# namespace (its published prerequisite profile names KubernetesNamespace):
+# a copy of the control plane's own fixture-namespace.yaml. The Secrets the
+# control plane reads must be in ate-system before it starts, so this owns
+# ate-system and the control plane runs with createNamespace off.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesNamespace
+metadata:
+  name: e2e-ate-namespace
+spec:
+  name: ate-system

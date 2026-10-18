@@ -1847,6 +1847,38 @@ func TestOutputsConformance(t *testing.T) {
 			},
 		},
 		{
+			// KubernetesAgentSubstrateWorkerPool: the pool's identity, which
+			// its worker Deployment shares.
+			name: "KubernetesAgentSubstrateWorkerPool",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrateWorkerPool,
+			rawOutputs: map[string]interface{}{
+				"worker_pool_name": "acme-workers",
+				"namespace":        "acme-agents",
+			},
+			mustPopulate: []string{"worker_pool_name", "namespace"},
+		},
+		{
+			// KubernetesAgentSubstrateSandboxConfig: what an actor template's
+			// config_name names, and the class the template must match.
+			name: "KubernetesAgentSubstrateSandboxConfig",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrateSandboxConfig,
+			rawOutputs: map[string]interface{}{
+				"sandbox_config_name": "gvisor-pinned",
+				"sandbox_class":       "gvisor",
+			},
+			mustPopulate: []string{"sandbox_config_name", "sandbox_class"},
+		},
+		{
+			// KubernetesAgentSubstrateCsiDriverConfig: the driver's name, which
+			// a StorageClass names as its provisioner.
+			name: "KubernetesAgentSubstrateCsiDriverConfig",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrateCsiDriverConfig,
+			rawOutputs: map[string]interface{}{
+				"driver_name": "hostpath.csi.k8s.io",
+			},
+			mustPopulate: []string{"driver_name"},
+		},
+		{
 			// KubernetesTekton: the resolved installation handles — target
 			// namespace, profile, and the dashboard Service handles exposure
 			// kinds compose against (populated on profile `all`).

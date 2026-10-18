@@ -1,0 +1,21 @@
+apiVersion: qa.planton.dev/v1
+kind: CatalogKindE2EProfile
+metadata:
+  name: kubernetesagentsubstrateworkerpool
+spec:
+  tier: 4
+  # Every lane runs on the pod-certificates cluster profile (its nodes carry
+  # upstream's proxy ARP setting for gVisor), behind the control plane the
+  # registry prerequisite installs from its published profile (bundled
+  # database, S3 on the catalog's SeaweedFS, definitions not kept), whose
+  # namespace, store and store key come from this kind's consumer-scoped
+  # prerequisites/. Every lane puts its pool in the e2e-ate-workers namespace
+  # (fixture-namespace.yaml), reads every field back from the live object,
+  # waits for the class to resolve and the workers to be ready, and has the
+  # API list every worker as active. The actor lane then creates the upstream
+  # counter actor on the pool, calls it through the router, suspends it into
+  # the S3 store, finds the snapshot in the bucket, and resumes it with its
+  # files (VOLUMES fidelity: the file counter continues, memory starts over).
+  status: pending_proof
+  validated_provisioners: []
+  timeout_minutes: 60

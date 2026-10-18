@@ -159,6 +159,9 @@ var kubernetesTier4Kinds = []string{
 	"kubernetesflinkoperator",
 	"kubernetesagentsandboxcontroller",
 	"kubernetesagentsubstrate",
+	"kubernetesagentsubstrateworkerpool",
+	"kubernetesagentsubstratesandboxconfig",
+	"kubernetesagentsubstratecsidriverconfig",
 }
 
 // Kubernetes Tier 2 kinds: Helm-based, self-contained chart installs.
@@ -908,6 +911,15 @@ func TestKubernetesAgentSandboxController_Pulumi(t *testing.T) {
 func TestKubernetesAgentSubstrate_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesagentsubstrate", "pulumi")
 }
+func TestKubernetesAgentSubstrateWorkerPool_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstrateworkerpool", "pulumi")
+}
+func TestKubernetesAgentSubstrateSandboxConfig_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstratesandboxconfig", "pulumi")
+}
+func TestKubernetesAgentSubstrateCsiDriverConfig_Pulumi(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstratecsidriverconfig", "pulumi")
+}
 func TestKubernetesPlantonOperator_Pulumi(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesplantonoperator", "pulumi")
 }
@@ -961,6 +973,15 @@ func TestKubernetesAgentSandboxController_Terraform(t *testing.T) {
 }
 func TestKubernetesAgentSubstrate_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesagentsubstrate", "terraform")
+}
+func TestKubernetesAgentSubstrateWorkerPool_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstrateworkerpool", "terraform")
+}
+func TestKubernetesAgentSubstrateSandboxConfig_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstratesandboxconfig", "terraform")
+}
+func TestKubernetesAgentSubstrateCsiDriverConfig_Terraform(t *testing.T) {
+	runAllScenariosForKind(t, "kubernetesagentsubstratecsidriverconfig", "terraform")
 }
 func TestKubernetesPlantonOperator_Terraform(t *testing.T) {
 	runAllScenariosForKind(t, "kubernetesplantonoperator", "terraform")

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstratecsidriverconfig.v1alpha1;
+
+// KubernetesAgentSubstrateCsiDriverConfigOutputs captures observable outputs
+// after the CSIDriverConfig is created on the target cluster.
+message KubernetesAgentSubstrateCsiDriverConfigOutputs {
+  // The CSI driver's name, which is also the config's name in the cluster.
+  // A StorageClass names it as its `provisioner`, and an actor template's
+  // external volume names that StorageClass; Substrate then finds this config
+  // by the driver name and dials the driver.
+  string driver_name = 1;
+}

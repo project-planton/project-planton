@@ -7375,6 +7375,50 @@ enum CatalogKind {
     id_prefix: "k8sasub"
     service_group: kubernetes_operators_controllers
   }];
+  // KubernetesAgentSubstrate is a prerequisite because it installs the
+  // ate.dev definition the WorkerPool is an instance of, the controller that
+  // turns it into worker pods, and the node agent and API server the workers
+  // register with.
+  KubernetesAgentSubstrateWorkerPool = 4191 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasubwp"
+    prerequisites: [KubernetesAgentSubstrate]
+    kubernetes_manifest_projection: {
+      api_version: "ate.dev/v1alpha1"
+      kind: "WorkerPool"
+    }
+    service_group: kubernetes_operators_controllers
+  }];
+  // KubernetesAgentSubstrate is a prerequisite because it installs the
+  // ate.dev definition the SandboxConfig is an instance of, the admission
+  // policy that holds each class to its assets, and the API server and node
+  // agent that read it.
+  KubernetesAgentSubstrateSandboxConfig = 4192 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasubsc"
+    prerequisites: [KubernetesAgentSubstrate]
+    kubernetes_manifest_projection: {
+      api_version: "ate.dev/v1alpha1"
+      kind: "SandboxConfig"
+    }
+    service_group: kubernetes_operators_controllers
+  }];
+  // KubernetesAgentSubstrate is a prerequisite because it installs the
+  // ate.dev definition the CSIDriverConfig is an instance of, and the API
+  // server and node agent that look a driver up in it.
+  KubernetesAgentSubstrateCsiDriverConfig = 4193 [(kind_meta) = {
+    provider: kubernetes
+    version: "v1alpha1"
+    id_prefix: "k8sasubcsi"
+    prerequisites: [KubernetesAgentSubstrate]
+    kubernetes_manifest_projection: {
+      api_version: "ate.dev/v1alpha1"
+      kind: "CSIDriverConfig"
+    }
+    service_group: kubernetes_operators_controllers
+  }];
 
   // 5000–5999: DigitalOcean resources
   DigitalOceanApp = 5000 [(kind_meta) = {

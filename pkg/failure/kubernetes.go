@@ -40,6 +40,9 @@ var definitionOwners = map[string]definitionOwner{
 	"SandboxTemplate": {kind: "KubernetesAgentSandboxController"},
 	"SandboxWarmPool": {kind: "KubernetesAgentSandboxController"},
 	"SandboxClaim":    {kind: "KubernetesAgentSandboxController"},
+	"WorkerPool":      {kind: "KubernetesAgentSubstrate"},
+	"SandboxConfig":   {kind: "KubernetesAgentSubstrate"},
+	"CSIDriverConfig": {kind: "KubernetesAgentSubstrate"},
 }
 
 // KubernetesFieldNotInDefinition: the API server rejected a field of a custom

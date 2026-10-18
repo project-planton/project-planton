@@ -1,0 +1,11 @@
+# Cost profile: what drives this component's bill. Field paths are
+# spec-relative proto field names, held to the served contract by the
+# catalog-data conformance gate. Schema: finops/catalogkindcostprofile/v1.
+apiVersion: finops.planton.dev/v1
+kind: CatalogKindCostProfile
+metadata:
+  name: kubernetesagentsubstratecsidriverconfig
+spec:
+  billing_model: free
+  free_tier: A CSIDriverConfig is a cluster-scoped Agent Substrate declaration -- the name, Controller endpoint, node socket and TLS settings Substrate uses to reach a CSI driver. It is a custom resource the API server and node agents read; no compute runs for it and no provider meters it.
+  notes: "No field of this spec buys anything. The spend near a config rides elsewhere: the volumes the driver provisions for actors bill as that storage's capacity (disks, file shares, NFS servers), and the driver's own pods run on the cluster's capacity."

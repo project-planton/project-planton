@@ -2,8 +2,6 @@ package verify
 
 import (
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"fmt"
 	"net"
 	"os/exec"
@@ -14,9 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/plantonhq/planton/catalog/kubernetes/aa_e2e/verify/internal/ateapipb"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"sigs.k8s.io/yaml"
@@ -225,7 +221,7 @@ func (v *AgentSubstrateVerifier) VerifyExistsWithOutputs(ctx context.Context, ku
 		}
 	}
 
-	if err := v.applyProbe(ctx, kubeconfig, out("api_access_namespace_label")); err != nil {
+	if err := applySubstrateProbe(ctx, kubeconfig, out("api_access_namespace_label"), true); err != nil {
 		return err
 	}
 	if err := v.verifyAPIRoundTrip(ctx, kubeconfig, outputs); err != nil {
@@ -400,103 +396,15 @@ func (v *AgentSubstrateVerifier) verifyGrants(ctx context.Context, kubeconfig st
 	return nil
 }
 
-func (v *AgentSubstrateVerifier) applyProbe(ctx context.Context, kubeconfig, accessLabel string) error {
-	key, value, ok := strings.Cut(accessLabel, "=")
-	if !ok {
-		return errors.Errorf("the api_access_namespace_label output %q is not key=value", accessLabel)
-	}
-	shell := func(namespace string) string {
-		return fmt.Sprintf(`---
-apiVersion: v1
-kind: Pod
-metadata:
-  name: %s
-  namespace: %s
-spec:
-  containers:
-    - name: shell
-      image: %s
-      command: ["sleep", "3600"]
-`, agentSubstrateProbePod, namespace, agentSubstrateProbeImage)
-	}
-	manifest := fmt.Sprintf(`apiVersion: v1
-kind: Namespace
-metadata:
-  name: %[1]s
-  labels:
-    %[2]q: %[3]q
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: %[4]s
-  namespace: %[1]s
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: %[5]s
-  namespace: %[1]s
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: %[6]s
-`, agentSubstrateProbeNamespace, key, value, agentSubstrateProbeClient, agentSubstrateProbeStranger, agentSubstrateOutsiderNamespace)
-	manifest += shell(agentSubstrateProbeNamespace) + shell(agentSubstrateOutsiderNamespace)
-	if err := kubectlApplyStdin(ctx, kubeconfig, manifest); err != nil {
-		return errors.Wrap(err, "creating the API probe")
-	}
-	for _, namespace := range []string{agentSubstrateProbeNamespace, agentSubstrateOutsiderNamespace} {
-		if err := kubectlWait(ctx, kubeconfig, "pod", agentSubstrateProbePod, namespace, "condition=Ready", 3*time.Minute); err != nil {
-			return errors.Wrapf(err, "the probe shell in %s never became Ready", namespace)
-		}
-	}
-	return nil
-}
-
 // verifyAPIRoundTrip calls the API exactly as a product does, from the
 // outputs alone.
 func (v *AgentSubstrateVerifier) verifyAPIRoundTrip(ctx context.Context, kubeconfig string, outputs map[string]interface{}) error {
-	address := fmt.Sprint(outputs["api_address"])
-	serverName := fmt.Sprint(outputs["api_server_name"])
-	audience := fmt.Sprint(outputs["api_token_audience"])
-	bundle := fmt.Sprint(outputs["api_trust_bundle_name"])
-
-	pem, err := kubectlGetJSONPath(ctx, kubeconfig, "clustertrustbundle", bundle, "", "{.spec.trustBundle}")
-	if err != nil {
-		return errors.Wrapf(err, "reading the API's trust bundle %s (the api_trust_bundle_name output)", bundle)
-	}
-	roots := x509.NewCertPool()
-	if !roots.AppendCertsFromPEM([]byte(pem)) {
-		return errors.Errorf("ClusterTrustBundle %s holds no certificate", bundle)
-	}
-
-	host, port, err := net.SplitHostPort(address)
-	if err != nil {
-		return errors.Wrapf(err, "the api_address output %q is not host:port", address)
-	}
-	labels := strings.Split(host, ".")
-	if len(labels) < 2 {
-		return errors.Errorf("the api_address output %q does not name a Service", address)
-	}
-	localPort, err := freeLocalPort()
+	conn, err := dialSubstrateAPI(ctx, kubeconfig, outputs)
 	if err != nil {
 		return err
 	}
-	stop, err := startPortForward(ctx, kubeconfig, "svc/"+labels[0], labels[1], fmt.Sprintf("%d:%s", localPort, port))
-	if err != nil {
-		return errors.Wrap(err, "forwarding a local port to the API")
-	}
-	defer stop()
-
-	conn, err := grpc.NewClient(fmt.Sprintf("127.0.0.1:%d", localPort),
-		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{RootCAs: roots, ServerName: serverName, MinVersion: tls.VersionTLS12})))
-	if err != nil {
-		return errors.Wrap(err, "dialing the API")
-	}
-	defer func() { _ = conn.Close() }()
-	api := ateapipb.NewControlClient(conn)
+	defer conn.Close()
+	api := conn.control
 
 	tokenless, cancel := context.WithTimeout(ctx, 30*time.Second)
 	_, err = api.GetAtespace(tokenless, &ateapipb.GetAtespaceRequest{Atespace: &ateapipb.ObjectRef{Name: agentSubstrateProbeAtespace}})
@@ -505,21 +413,11 @@ func (v *AgentSubstrateVerifier) verifyAPIRoundTrip(ctx context.Context, kubecon
 		return errors.Errorf("a call without a token returned %v; the API must refuse it as Unauthenticated", err)
 	}
 
-	token, err := mintToken(ctx, kubeconfig, agentSubstrateProbeClient, audience)
-	if err != nil {
-		return err
-	}
-	call := func(token string) (context.Context, context.CancelFunc) {
-		c, cancel := context.WithTimeout(ctx, 30*time.Second)
-		return withBearer(c, token), cancel
-	}
-
 	if v.Authorization {
-		stranger, err := mintToken(ctx, kubeconfig, agentSubstrateProbeStranger, audience)
+		c, cancel, err := conn.as(ctx, agentSubstrateProbeStranger, 30*time.Second)
 		if err != nil {
 			return err
 		}
-		c, cancel := call(stranger)
 		_, err = api.CreateAtespace(c, &ateapipb.CreateAtespaceRequest{Atespace: &ateapipb.Atespace{Metadata: &ateapipb.ResourceMetadata{Name: agentSubstrateProbeAtespace}}})
 		cancel()
 		strangerID := "system:serviceaccount:" + agentSubstrateProbeNamespace + ":" + agentSubstrateProbeStranger
@@ -531,18 +429,24 @@ func (v *AgentSubstrateVerifier) verifyAPIRoundTrip(ctx context.Context, kubecon
 
 	deadline := time.Now().Add(3 * time.Minute)
 	for {
-		c, cancel := call(token)
+		c, cancel, err := conn.as(ctx, agentSubstrateProbeClient, 30*time.Second)
+		if err != nil {
+			return err
+		}
 		_, err = api.CreateAtespace(c, &ateapipb.CreateAtespaceRequest{Atespace: &ateapipb.Atespace{Metadata: &ateapipb.ResourceMetadata{Name: agentSubstrateProbeAtespace}}})
 		cancel()
 		if err == nil || status.Code(err) == codes.AlreadyExists {
 			break
 		}
 		if time.Now().After(deadline) {
-			return errors.Wrapf(err, "creating atespace %s as %s through %s (server name %s, token audience %s)", agentSubstrateProbeAtespace, v.probeOwner(), address, serverName, audience)
+			return errors.Wrapf(err, "creating atespace %s as %s through %s (server name %s, token audience %s)", agentSubstrateProbeAtespace, v.probeOwner(), conn.address, conn.serverName, conn.audience)
 		}
 		time.Sleep(5 * time.Second)
 	}
-	c, cancel := call(token)
+	c, cancel, err := conn.as(ctx, agentSubstrateProbeClient, 30*time.Second)
+	if err != nil {
+		return err
+	}
 	got, err := api.GetAtespace(c, &ateapipb.GetAtespaceRequest{Atespace: &ateapipb.ObjectRef{Name: agentSubstrateProbeAtespace}})
 	cancel()
 	if err != nil {
@@ -551,13 +455,16 @@ func (v *AgentSubstrateVerifier) verifyAPIRoundTrip(ctx context.Context, kubecon
 	if got.GetMetadata().GetName() != agentSubstrateProbeAtespace || got.GetMetadata().GetUid() == "" {
 		return errors.Errorf("atespace %s read back as %v", agentSubstrateProbeAtespace, got.GetMetadata())
 	}
-	c, cancel = call(token)
+	c, cancel, err = conn.as(ctx, agentSubstrateProbeClient, 30*time.Second)
+	if err != nil {
+		return err
+	}
 	_, err = api.DeleteAtespace(c, &ateapipb.DeleteAtespaceRequest{Atespace: &ateapipb.ObjectRef{Name: agentSubstrateProbeAtespace}})
 	cancel()
 	if err != nil {
 		return errors.Wrapf(err, "deleting atespace %s", agentSubstrateProbeAtespace)
 	}
-	fmt.Printf("  [verify] the API created, read and deleted an atespace for %s, trusted through %s as %s\n", v.probeOwner(), bundle, serverName)
+	fmt.Printf("  [verify] the API created, read and deleted an atespace for %s, trusted through %s as %s\n", v.probeOwner(), conn.bundle, conn.serverName)
 	return nil
 }
 
@@ -650,13 +557,7 @@ func (v *AgentSubstrateVerifier) VerifyAbsent(ctx context.Context, kubeconfig st
 	if err := v.verifyDestroyPosture(ctx, kubeconfig); err != nil {
 		return err
 	}
-	for _, namespace := range []string{agentSubstrateProbeNamespace, agentSubstrateOutsiderNamespace} {
-		if out, err := exec.CommandContext(ctx, "kubectl", "--kubeconfig", kubeconfig, "delete", "namespace",
-			namespace, "--ignore-not-found", "--wait=true", "--timeout=3m").CombinedOutput(); err != nil {
-			return errors.Wrapf(err, "removing the probe namespace %s: %s", namespace, firstLines(string(out), 3))
-		}
-	}
-	return nil
+	return removeSubstrateProbe(ctx, kubeconfig)
 }
 
 // VerifyExpectedDeployFailure pins a refused deploy to its three-part text:

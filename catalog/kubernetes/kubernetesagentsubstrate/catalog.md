@@ -2,7 +2,7 @@
 
 Installs the Agent Substrate control plane: the system that runs a large fleet of mostly idle AI agents on a small set of ready worker pods. An idle agent's memory and disk are suspended into object storage and resumed in moments when a request arrives, each agent sandboxed under gVisor or a microVM. Your product creates agents through Substrate's API; this kind runs everything that API needs.
 
-This kind installs the **control plane**, once per cluster. Agents run on worker pools, declared on top of it.
+This kind installs the **control plane**, once per cluster. Agents run on worker pools (Agent Substrate Worker Pool), declared on top of it, with the runtimes Agent Substrate Sandbox Configs pin.
 
 ## What Gets Created
 
@@ -115,7 +115,7 @@ spec:
           fieldPath: status.outputs.bucket_name
 ```
 
-The InfraPipeline creates the cloud resources first, then installs the control plane with every identity and address wired by reference.
+The InfraPipeline creates the cluster, the two service accounts, the Cloud SQL instance and the bucket first, then installs the control plane with every identity and address wired by reference.
 
 ## Key Configuration
 
@@ -177,6 +177,9 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 ## Works With
 
+- [**Agent Substrate Worker Pool**](/infra-catalog/kubernetes-agent-substrate-worker-pool) — the workers agents run on, from this release's worker image outputs.
+- [**Agent Substrate Sandbox Config**](/infra-catalog/kubernetes-agent-substrate-sandbox-config) — a runtime of your own beside `gvisor-default`.
+- [**Agent Substrate CSI Driver Config**](/infra-catalog/kubernetes-agent-substrate-csi-driver-config) — your CSI driver registered for agents' external volumes.
 - [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — own `ate-system` so the Secrets this kind reads can be placed there first.
 - [**Kubernetes Secret**](/infra-catalog/kubernetes-secret) — the S3 access key, or an external database's connection strings.
 - [**SeaweedFS**](/infra-catalog/kubernetes-seaweed-fs) — an in-cluster S3 store for snapshots.
