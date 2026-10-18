@@ -1,0 +1,54 @@
+# Dependency-install profile for the Agent Substrate control plane.
+#
+# The E2E harness deploys this manifest (via the registry prerequisite graph:
+# KubernetesAgentSubstrateWorkerPool, KubernetesAgentSubstrateSandboxConfig
+# and KubernetesAgentSubstrateCsiDriverConfig declare
+# `prerequisites: [KubernetesAgentSubstrate]`) before applying any Substrate
+# resource scenario, on the pod-certificates cluster profile.
+#
+#   - The minimal lane's shape: a generic cluster, upstream's bundled
+#     PostgreSQL, snapshots in the catalog's own S3 store, credential
+#     injection off.
+#   - crds.keepOnUninstall: false: the definitions leave with the install,
+#     so every lane leaves the shared profile cluster as it found it, and the
+#     control plane's own lanes (one keeps definitions, one plants a foreign
+#     one) start clean.
+#   - The three kinds below, in this order, deploy first. The Secrets the
+#     control plane reads must be in ate-system before it starts, so a
+#     KubernetesNamespace owns ate-system, the S3 store comes up, and the
+#     store's key lands in ate-system. An install profile's edges must be
+#     kind names, so each consumer supplies their install manifests as
+#     consumer-scoped overrides (`<consumer>/e2e/prerequisites/
+#     kubernetesnamespace.yaml`, `kubernetesseaweedfs.yaml`,
+#     `kubernetessecret.yaml`), copies of this kind's own fixtures: the
+#     namespace ate-system, the store e2e-ate-s3 referenced below, and the
+#     Secret substrate-s3 carrying the store's fixed admin pair.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-prereq
+  annotations:
+    planton.dev/e2e-prerequisites: "KubernetesNamespace, KubernetesSeaweedFs, KubernetesSecret"
+spec:
+  namespace:
+    value: ate-system
+  crds:
+    keepOnUninstall: false
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled:
+      volumeSize: 2Gi
+  storage:
+    s3:
+      endpoint:
+        valueFrom:
+          name: e2e-ate-s3
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

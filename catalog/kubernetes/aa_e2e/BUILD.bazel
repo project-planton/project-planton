@@ -20,7 +20,10 @@ go_library(
 
 go_test(
     name = "aa_e2e_test",
-    srcs = ["identity_test.go"],
+    srcs = [
+        "harness_sysctl_test.go",
+        "identity_test.go",
+    ],
     embed = [":aa_e2e"],
     deps = [
         "//e2e/framework/provider",

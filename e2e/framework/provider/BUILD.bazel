@@ -3,6 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "provider",
     srcs = [
+        "dependencies.go",
         "failuremode.go",
         "identity.go",
         "lifecycle.go",
