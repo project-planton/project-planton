@@ -49,7 +49,7 @@
 </#macro>
 
 <#macro facts>
-<table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" class="pl-panel" style="background-color:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:12px 16px;margin:0 0 20px"><tbody><tr><td><#nested></td></tr></tbody></table>
+<table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" class="pl-panel" style="background-color:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:12px 16px;margin:0 0 20px"><tbody><tr><td><#nested></td></tr></tbody></table>
 </#macro>
 
 <#macro fact label>
@@ -57,5 +57,5 @@
 </#macro>
 
 <#macro code>
-<table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" class="pl-code" style="background-color:#eaeef2;border:1px solid #d0d7de;border-radius:6px;padding:12px 16px;margin:0 0 20px"><tbody><tr><td><p style="font-size:13px;line-height:20px;font-family:&quot;JetBrains Mono&quot;, &quot;SFMono-Regular&quot;, Menlo, Consolas, monospace;color:#1f2328;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0"><#nested></p></td></tr></tbody></table>
+<table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" class="pl-code" style="background-color:#eaeef2;border:1px solid #d0d7de;border-radius:8px;padding:12px 16px;margin:0 0 20px"><tbody><tr><td><p style="font-size:13px;line-height:20px;font-family:&quot;JetBrains Mono&quot;, &quot;SFMono-Regular&quot;, Menlo, Consolas, monospace;color:#1f2328;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0"><#nested></p></td></tr></tbody></table>
 </#macro>

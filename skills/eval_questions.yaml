@@ -390,3 +390,47 @@ questions:
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: '## A delivery run is never rerun'
+
+  - id: agent-stranger-reads-as-not-found
+    persona: coding agent
+    question: >
+      My script ran `planton get Service checkout-api` against another
+      team's organization and it exited 3. Does that mean they have no
+      service by that name?
+    answer: >
+      No. A record in an organization you are not part of answers exactly
+      like a record that does not exist: the same exit 3 and the same
+      sentence, by id or by organization and slug. Check the instance and
+      organization first with `planton context get`. Inside an
+      organization you belong to, a record you may not read is a refusal
+      instead: the Access Needed banner names the roles that could and who
+      can grant them, and the command exits 1.
+    checks:
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'A record in an organization you are not part of answers exactly like a record that does not exist'
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'a record you may not read is a refusal, not a miss'
+
+  - id: approver-opens-the-run-by-id
+    persona: release approver
+    question: >
+      I am only a Release Approver on prod. A run is waiting on me, but the
+      service's page refuses me and `planton service logs checkout-api 130`
+      fails. How do I read what I am approving?
+    answer: >
+      Approve on an environment lets you read every run that waits at a
+      gate there, or once did -- its record, logs and live status -- but
+      not the service, so the service page, its run list and the
+      `<service> <number>` handle refuse you. Name the run by its id
+      (svcpipe_...), which the waiting queue, Home's Waiting on You and the
+      gate notification carry: `planton service logs svcpipe_...`, then
+      `planton service resolve-env-manual-gate svcpipe_... prod approve`.
+    checks:
+      - skill: planton
+        file: references/service.reading-a-run.md
+        pattern: 'Approve on an environment lets a person read every run that waits at a gate in that environment, or once did'
+      - skill: planton
+        file: references/service.reading-a-run.md
+        pattern: 'Name the run by its id for them'
