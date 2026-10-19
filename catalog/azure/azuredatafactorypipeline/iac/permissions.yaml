@@ -16,4 +16,5 @@ spec:
           - Microsoft.DataFactory/factories/pipelines/write
           - Microsoft.DataFactory/factories/pipelines/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_data_factory_pipeline / datafactory.NewPipeline -- create, read/refresh (the provider normalizes activities-JSON key ordering when diffing, so refresh is a plain GET), in-place update of every spec field except name and data_factory_id (both ForceNew), and destroy. The module parses data_factory_id client-side and performs no factory read; running the pipeline (factories/pipelines/createrun/action) is an operator grant, never the deployer's. Held at the factory's scope; Data Factory Contributor carries them.

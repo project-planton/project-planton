@@ -22,6 +22,8 @@ spec:
           - arn:aws:lambda:*:*:event-source-mapping:*
           - arn:aws:lambda:*:*:function:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The module is a single aws_lambda_event_source_mapping resource. Get/update/delete/tag act on the mapping ARN; the function ARN rides the same statement because updates authorize against it as well. Create and List cannot be resource-scoped and live in their own statement.
       - sid: CreateAndListEventSourceMappings
         actions:
@@ -30,6 +32,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The service reference lists NO resource types for CreateEventSourceMapping (the mapping UUID does not exist until the call returns) or ListEventSourceMappings, so IAM evaluates both against Resource "*" -- ARN-scoped grants never match and would deny provisioning and plan/refresh at runtime. The wildcard is the narrowest possible scope.
       - sid: UseCustomerManagedKey
         actions:
@@ -38,4 +42,6 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when kms_key_arn references a customer-managed key for filter-criteria encryption -- Lambda grants itself decrypt access through the configuring principal. Scope to the actual key ARN in a hardened deployment.

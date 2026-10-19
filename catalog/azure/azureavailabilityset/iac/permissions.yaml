@@ -16,4 +16,5 @@ spec:
           - Microsoft.Compute/availabilitySets/write
           - Microsoft.Compute/availabilitySets/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_availability_set -- create, read/refresh, tag updates (the only in-place change; every other field is ForceNew), and destroy. Held via Virtual Machine Contributor, Contributor, or narrower custom roles. The module makes no other provider calls -- a referenced proximity placement group ID is passed through and validated by ARM server-side.

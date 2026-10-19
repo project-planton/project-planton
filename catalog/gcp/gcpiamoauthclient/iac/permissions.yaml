@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling iam.googleapis.com on the target project. The Terraform module sets disable_on_destroy false explicitly and the Pulumi module leaves it unset -- the provider documents that unset means the service is left enabled on destroy -- so the disable permission is never needed.
       - purpose: ManageOauthClient
         permissions:
@@ -24,6 +26,8 @@ spec:
           - iam.oauthClients.update
           - iam.oauthClients.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_iam_oauth_client (Pulumi iam.OauthClient) -- create, read/refresh, in-place updates (display name, description, disabled, grant types, scopes, redirect URIs; oauth_client_id, location, and client_type are ForceNew), and the soft delete on destroy. All grants are project-scoped; together with the credentials group below they are the contents of roles/iam.oauthClientAdmin, IAM's purpose-built role for this surface.
       - purpose: ManageOauthClientCredentials
         permissions:
@@ -32,6 +36,8 @@ spec:
           - iam.oauthClientCredentials.update
           - iam.oauthClientCredentials.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: credentials
         notes: Covers google_iam_oauth_client_credential (Pulumi iam.OauthClientCredential), one per spec.credentials entry -- create (GCP generates the secret server-side), read/refresh, update (including the disable-before-delete transition GCP requires), and delete. Credentials are the operating norm for a CONFIDENTIAL_CLIENT.

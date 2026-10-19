@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:backup:*:*:framework:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_backup_framework / backup.Framework -- the modules' single resource -- across create, refresh (DescribeFramework also polls deployment_status until the framework leaves its transitional states), in-place control/description updates, and destroy. All four actions authorize on the framework ARN format (arn:...:framework:${FrameworkName}-${FrameworkId}) per the service reference.
       - sid: ManageTags
         actions:
@@ -28,4 +30,6 @@ spec:
         resources:
           - arn:aws:backup:*:*:framework:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: TagResource rides CreateFramework for the module's identity tags and serves later tag reconciliation; ListTags backs every refresh. All three list the framework resource type in the service reference, so they stay ARN-scoped.

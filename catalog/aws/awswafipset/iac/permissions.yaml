@@ -23,4 +23,6 @@ spec:
           - arn:aws:wafv2:*:*:regional/ipset/*/*
           - arn:aws:wafv2:*:*:global/ipset/*/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_wafv2_ip_set -- creation with tags, in-place address-list updates (UpdateIPSet), reads during plan/refresh (GetIPSet and ListTagsForResource -- WAFv2 Get and tag-read actions ARE resource-scoped to the ipset ARN format, unlike most services' Describe APIs), tagging, and deletion. Both scope segments are included because the spec supports REGIONAL sets (any region) and CLOUDFRONT sets (the global scope segment, created in us-east-1); the service reference's ipset ARN format parameterizes that first path segment as the scope.

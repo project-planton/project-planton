@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling bigqueryreservation.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageReservationGroup
         permissions:
@@ -23,4 +25,6 @@ spec:
           - bigquery.reservationGroups.get
           - bigquery.reservationGroups.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_bigquery_reservation_group (Pulumi bigquery.ReservationGroup) -- created, read on every refresh, deleted; every argument is immutable, so no update. Names grounded in Google's BigQuery roles page.

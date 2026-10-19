@@ -9,6 +9,8 @@ metadata:
   name: gcppscserviceattachment
 spec:
   gcp:
+    api_enabled_by:
+      - GcpVpcNetwork
     groups:
       - purpose: ManageServiceAttachment
         permissions:
@@ -19,4 +21,6 @@ spec:
           - compute.forwardingRules.get
           - compute.subnetworks.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers google_compute_service_attachment (Pulumi compute.ServiceAttachment): create on first apply, get on every refresh, update when the connection policy changes in place (connection_preference, accept and reject lists, reconcile_connections, enable_proxy_protocol, propagated_connection_limit, description), delete on destroy under deletion_policy DELETE (ABANDON and PREVENT call no delete API). Google validates the target forwarding rule and the NAT subnets at create, which reads them. roles/compute.networkAdmin contains all six."

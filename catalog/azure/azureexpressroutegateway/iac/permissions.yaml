@@ -16,6 +16,7 @@ spec:
           - Microsoft.Network/expressRouteGateways/write
           - Microsoft.Network/expressRouteGateways/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_express_route_gateway / network.NewExpressRouteGateway -- create (a roughly 30-minute operation), refresh, in-place updates (scale_units, allow_non_virtual_wan_traffic, tags), and destroy. All actions in this manifest are included in Azure's built-in Network Contributor role, the coarse grant this manifest replaces.
       - purpose: ManageExpressRouteConnections
         actions:
@@ -23,14 +24,17 @@ spec:
           - Microsoft.Network/expressRouteGateways/expressRouteConnections/write
           - Microsoft.Network/expressRouteGateways/expressRouteConnections/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_express_route_connection / network.NewExpressRouteConnection -- one ARM child resource per spec connections entry, keyed by name. Connections are children of the gateway, so their actions live under the expressRouteGateways namespace. Deletion is ordered bottom-up (connections before the gateway) by both engines' dependency graphs.
       - purpose: ReadVirtualHub
         actions:
           - Microsoft.Network/virtualHubs/read
         provenance: derived
+        privilege: ordinary
         notes: The modules never call the hub API -- they pass the resolved virtual_hub_id in the gateway payload -- but ARM validates the referenced hub at create (service-side), which requires read on the hub's scope. One ExpressRoute gateway per hub is ARM's rule; the create fails against a hub that already carries one.
       - purpose: JoinExpressRouteCircuit
         actions:
           - Microsoft.Network/expressRouteCircuits/join/action
         provenance: derived
+        privilege: ordinary
         notes: Needed when connections join a circuit peering in the SAME subscription -- ARM authorizes the join against the circuit's scope (service-side; the referenced peering is an ARM child of the circuit, so the circuit-scope action covers it). For a circuit in ANOTHER subscription the connection's authorization_key redeems the circuit owner's issued authorization instead -- the key substitutes for RBAC the runner cannot hold on the foreign scope. ARM additionally accepts the connection only when the circuit's provider side is PROVISIONED -- a prerequisite check, not a permission.

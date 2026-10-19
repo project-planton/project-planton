@@ -54,7 +54,11 @@
 // organization, and a billing-account scope and unions the results;
 // permissions a provider enforces but publishes under NO scope (Cloud
 // Run's domainmappings family) stay teachable only in manifest notes,
-// exactly as before.
+// exactly as before. The union keeps what the scopes say: which permissions
+// only an organization or a billing account answers for (the reach a
+// manifest entry must declare), which ones Google will not place in a
+// custom role, and the permissions of the predefined roles manifests name
+// in a custom role's place.
 //
 // DigitalOcean is the fourth arm, read from the provider's published
 // token-scope reference (docs.digitalocean.com serves it as
@@ -138,6 +142,23 @@ type Inventory struct {
 	Provider string `yaml:"provider"`
 	// Services are the per-service action lists, sorted by prefix.
 	Services []Service `yaml:"services"`
+	// PredefinedRoles are the provider's own roles that manifests name in
+	// place of a custom role (GCP's predefined_role), each with the subset
+	// of its permissions that manifests reference, sorted by name. Only the
+	// GCP arm populates it.
+	PredefinedRoles []PredefinedRole `yaml:"predefined_roles,omitempty"`
+}
+
+// PredefinedRole is one of the provider's own roles as the snapshot
+// records it: its name and the permissions it holds that manifests
+// reference -- enough for the gate to prove a role a manifest names
+// really carries the group it stands in for.
+type PredefinedRole struct {
+	// Name is the role's full name, e.g. "roles/billing.user".
+	Name string `yaml:"name"`
+	// Permissions are the role's permissions that some manifest
+	// references, in full dotted form, sorted.
+	Permissions []string `yaml:"permissions"`
 }
 
 // Service is one cloud service's action list as the provider publishes it.
@@ -177,6 +198,20 @@ type Service struct {
 	// split planes (Azure) populate it; a manifest's data_actions are held
 	// to THIS list, never to Actions.
 	DataActions []string `yaml:"data_actions,omitempty"`
+	// OrganizationActions is the subset of Actions a project cannot answer
+	// for: listed by the provider only on an organization (or folder) scope.
+	// A manifest entry holding one declares reach organization. Sorted;
+	// only GCP populates it.
+	OrganizationActions []string `yaml:"organization_actions,omitempty"`
+	// BillingAccountActions is the subset of Actions a project cannot
+	// answer for that a billing account does. Where both an organization
+	// and a billing account list a permission, it is the billing account's:
+	// that is the narrowest scope holding it. Sorted; only GCP populates it.
+	BillingAccountActions []string `yaml:"billing_account_actions,omitempty"`
+	// CustomRoleUnsupportedActions is the subset of Actions the provider
+	// publishes as unsupported in custom roles. A manifest group holding
+	// one names a predefined role instead. Sorted; only GCP populates it.
+	CustomRoleUnsupportedActions []string `yaml:"custom_role_unsupported_actions,omitempty"`
 }
 
 // LoadAws reads and strictly parses the committed AWS inventory snapshot
@@ -265,25 +300,109 @@ func load(dir, fileName, provider string, requireSourceModified bool) (*Inventor
 		if err := checkActionList(fileName, svc.Prefix, "data_actions", svc.DataActions); err != nil {
 			return nil, err
 		}
-		if err := checkActionList(fileName, svc.Prefix, "non_scopable_actions", svc.NonScopableActions); err != nil {
-			return nil, err
+		// The subset invariant: an entry of a subset list that is not a
+		// published action would let a gate reason about a name the
+		// existence gate never admitted.
+		published := make(map[string]bool, len(svc.Actions))
+		for _, action := range svc.Actions {
+			published[action] = true
 		}
-		// The subset invariant: a non-scopable entry that is not a
-		// published action would let the scopability gate reason about a
-		// name the existence gate never admitted.
-		if len(svc.NonScopableActions) > 0 {
-			published := make(map[string]bool, len(svc.Actions))
-			for _, action := range svc.Actions {
-				published[action] = true
+		inScope := map[string]string{}
+		for _, subset := range []struct {
+			plane   string
+			actions []string
+		}{
+			{"non_scopable_actions", svc.NonScopableActions},
+			{"organization_actions", svc.OrganizationActions},
+			{"billing_account_actions", svc.BillingAccountActions},
+			{"custom_role_unsupported_actions", svc.CustomRoleUnsupportedActions},
+		} {
+			if err := checkActionList(fileName, svc.Prefix, subset.plane, subset.actions); err != nil {
+				return nil, err
 			}
-			for _, action := range svc.NonScopableActions {
+			for _, action := range subset.actions {
 				if !published[action] {
-					return nil, fmt.Errorf("%s: service %q non_scopable_actions entry %q is not in actions", fileName, svc.Prefix, action)
+					return nil, fmt.Errorf("%s: service %q %s entry %q is not in actions", fileName, svc.Prefix, subset.plane, action)
+				}
+				// A permission has one reach: the two reach lists never
+				// overlap.
+				if subset.plane == "organization_actions" || subset.plane == "billing_account_actions" {
+					if other, ok := inScope[action]; ok {
+						return nil, fmt.Errorf("%s: service %q action %q is in both %s and %s", fileName, svc.Prefix, action, other, subset.plane)
+					}
+					inScope[action] = subset.plane
 				}
 			}
 		}
 	}
+	for i, role := range inv.PredefinedRoles {
+		if role.Name == "" || len(role.Permissions) == 0 {
+			return nil, fmt.Errorf("%s: predefined role %d: name and permissions are both required", fileName, i)
+		}
+		if i > 0 && inv.PredefinedRoles[i-1].Name >= role.Name {
+			return nil, fmt.Errorf("%s: predefined roles not sorted or duplicated at %q", fileName, role.Name)
+		}
+		if err := checkActionList(fileName, role.Name, "permissions", role.Permissions); err != nil {
+			return nil, err
+		}
+	}
 	return inv, nil
+}
+
+// Reach returns where a GCP permission (in full dotted form) is granted,
+// read from the snapshot's scope lists: "organization", "billing_account",
+// or "target" for a permission a project answers for. ok is false when the
+// snapshot does not publish the permission at all.
+func (inv *Inventory) Reach(permission string) (reach string, ok bool) {
+	service, name, found := strings.Cut(permission, ".")
+	if !found {
+		return "", false
+	}
+	svc := inv.Lookup(service)
+	if svc == nil || !containsString(svc.Actions, name) {
+		return "", false
+	}
+	switch {
+	case containsString(svc.OrganizationActions, name):
+		return "organization", true
+	case containsString(svc.BillingAccountActions, name):
+		return "billing_account", true
+	default:
+		return "target", true
+	}
+}
+
+// CustomRoleUnsupported reports whether the provider publishes a GCP
+// permission (in full dotted form) as unsupported in custom roles.
+func (inv *Inventory) CustomRoleUnsupported(permission string) bool {
+	service, name, found := strings.Cut(permission, ".")
+	if !found {
+		return false
+	}
+	svc := inv.Lookup(service)
+	return svc != nil && containsString(svc.CustomRoleUnsupportedActions, name)
+}
+
+// PredefinedRole returns the snapshot's record of a predefined role, or
+// nil when the snapshot does not hold it.
+func (inv *Inventory) PredefinedRole(name string) *PredefinedRole {
+	for i := range inv.PredefinedRoles {
+		if inv.PredefinedRoles[i].Name == name {
+			return &inv.PredefinedRoles[i]
+		}
+	}
+	return nil
+}
+
+// containsString reports membership in a sorted or unsorted list; the
+// lists are short enough that a scan reads clearer than a search.
+func containsString(list []string, value string) bool {
+	for _, entry := range list {
+		if entry == value {
+			return true
+		}
+	}
+	return false
 }
 
 // checkActionList enforces one plane's list invariants: no empties, no
@@ -418,16 +537,40 @@ func Render(inv *Inventory) string {
 				b.WriteString("      - " + action + "\n")
 			}
 		}
-		if len(svc.DataActions) > 0 {
-			b.WriteString("    data_actions:\n")
-			dataActions := append([]string(nil), svc.DataActions...)
-			sort.Strings(dataActions)
-			for _, action := range dataActions {
-				b.WriteString("      - " + action + "\n")
+		writeSortedList(&b, "data_actions", svc.DataActions)
+		writeSortedList(&b, "organization_actions", svc.OrganizationActions)
+		writeSortedList(&b, "billing_account_actions", svc.BillingAccountActions)
+		writeSortedList(&b, "custom_role_unsupported_actions", svc.CustomRoleUnsupportedActions)
+	}
+	if len(inv.PredefinedRoles) > 0 {
+		b.WriteString("predefined_roles:\n")
+		roles := append([]PredefinedRole(nil), inv.PredefinedRoles...)
+		sort.Slice(roles, func(i, j int) bool { return roles[i].Name < roles[j].Name })
+		for _, role := range roles {
+			b.WriteString("  - name: " + role.Name + "\n")
+			b.WriteString("    permissions:\n")
+			permissions := append([]string(nil), role.Permissions...)
+			sort.Strings(permissions)
+			for _, permission := range permissions {
+				b.WriteString("      - " + permission + "\n")
 			}
 		}
 	}
 	return b.String()
+}
+
+// writeSortedList writes one of a service's optional action lists under
+// its key, sorted, or nothing when the list is empty.
+func writeSortedList(b *strings.Builder, key string, actions []string) {
+	if len(actions) == 0 {
+		return
+	}
+	b.WriteString("    " + key + ":\n")
+	sorted := append([]string(nil), actions...)
+	sort.Strings(sorted)
+	for _, action := range sorted {
+		b.WriteString("      - " + action + "\n")
+	}
 }
 
 // ---------------------------------------------------------------------------

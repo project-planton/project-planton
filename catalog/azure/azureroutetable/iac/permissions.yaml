@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/routeTables/write
           - Microsoft.Network/routeTables/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_route_table -- create, read/refresh, in-place updates, and destroy. The module manages routes INLINE on the table (the route list is part of the table's PUT payload), so the routeTables/routes/* child operations are not separately required. Held via Network Contributor, Contributor, or Owner on the resource group.

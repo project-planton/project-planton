@@ -16,4 +16,5 @@ spec:
           - Microsoft.Storage/storageAccounts/fileServices/shares/write
           - Microsoft.Storage/storageAccounts/fileServices/shares/delete
         provenance: derived
+        privilege: ordinary
         notes: "Covers azurerm_storage_share / storage.NewShare on the CONTROL-PLANE path -- both modules address the share by the parent account's ARM ID (the account-name data-plane form is the provider's legacy path, removed in azurerm v5), so share CRUD is pure management-plane and needs no data actions and no account keys. Quota growth, tier changes, ACL policies, and metadata are in-place updates on the same shares/write; ACLs and metadata ride the share payload. Neither module reads the storage account itself -- the account name is parsed locally from the resolved ARM ID. Typically held via Storage Account Contributor or Contributor on the account's resource group."

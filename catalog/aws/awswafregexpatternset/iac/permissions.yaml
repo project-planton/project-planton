@@ -23,4 +23,6 @@ spec:
           - arn:aws:wafv2:*:*:regional/regexpatternset/*/*
           - arn:aws:wafv2:*:*:global/regexpatternset/*/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_wafv2_regex_pattern_set -- creation with tags, in-place expression updates (UpdateRegexPatternSet), reads during plan/refresh (GetRegexPatternSet and ListTagsForResource -- WAFv2 Get and tag-read actions ARE resource-scoped to the regexpatternset ARN format, unlike most services' Describe APIs), tagging, and deletion. Both scope segments are included because the spec supports REGIONAL sets (any region) and CLOUDFRONT sets (the global scope segment, created in us-east-1); the service reference's regexpatternset ARN format parameterizes that first path segment as the scope.

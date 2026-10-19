@@ -20,6 +20,8 @@ spec:
           - arn:aws:ec2:*:*:transit-gateway-route-table/*
           - arn:aws:ec2:*:*:transit-gateway/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_ec2_transit_gateway_route_table / ec2transitgateway.RouteTable. The service reference authorizes CreateTransitGatewayRouteTable on BOTH the transit-gateway-route-table and transit-gateway ARN formats (an under-scoped create denies provisioning). CreateTags rides the create call and later tag reconciliation on the table ARN.
       - sid: ManageDomainMembership
         actions:
@@ -31,6 +33,8 @@ spec:
           - arn:aws:ec2:*:*:transit-gateway-route-table/*
           - arn:aws:ec2:*:*:transit-gateway-attachment/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_ec2_transit_gateway_route_table_association and _propagation (and their Pulumi twins) -- binding attachments' outbound lookups to this table and admitting their advertised routes. The association pair also serves replace_existing_association, which disassociates an attachment's existing association (default table or another custom table) before associating here in one apply. All four actions authorize on both the route-table and attachment ARN formats.
       - sid: ManageRoutesAndPrefixListReferences
         actions:
@@ -44,6 +48,8 @@ spec:
           - arn:aws:ec2:*:*:transit-gateway-attachment/*
           - arn:aws:ec2:*:*:prefix-list/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_ec2_transit_gateway_route (static routes, forwarded or blackholed -- routes are create/delete only, keyed by destination CIDR) and aws_ec2_transit_gateway_prefix_list_reference (whole prefix-list routing with in-place target changes via Modify). Route actions authorize on the route-table plus the target attachment; prefix-list references additionally authorize on the prefix-list ARN.
       - sid: RepointGatewayDefaultTables
         actions:
@@ -51,6 +57,8 @@ spec:
         resources:
           - arn:aws:ec2:*:*:transit-gateway/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_ec2_transit_gateway_default_route_table_association and _propagation -- set_as_default_association_table / set_as_default_propagation_table repoint the GATEWAY's default-table pointers at this table by modifying the gateway itself, and the destroy path repoints them back to the original tables the provider recorded at designation time.
       - sid: SearchRoutes
         actions:
@@ -58,6 +66,8 @@ spec:
         resources:
           - arn:aws:ec2:*:*:transit-gateway-route-table/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Static-route reads during plan/refresh (there is no per-route Describe). SearchTransitGatewayRoutes takes resource-level scoping on the route-table ARN per the service reference, so it is scoped.
       - sid: ReadRoutingDomain
         actions:
@@ -67,6 +77,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of the folded members during plan/refresh -- association and propagation state and prefix-list references. The service reference lists NO resource types for these three Get APIs (unlike SearchTransitGatewayRoutes, which does), so IAM evaluates them against Resource "*" -- an ARN-scoped grant never matches and would deny plan/refresh at runtime. The wildcard is the narrowest possible scope.
       - sid: DescribeTransitGatewayResources
         actions:
@@ -76,4 +88,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Table existence and tags during plan/refresh, attachment association discovery for the replace_existing_association takeover, and the gateway read that records original default tables for the designation resources. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/vpnsites/write
           - Microsoft.Network/vpnsites/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_vpn_site -- create, read/refresh, in-place updates (links, CIDRs, device metadata, O365 policy, tags; name/region/resource_group/virtual_wan_id are ForceNew), and destroy. Held via Network Contributor, Contributor, or Owner on the resource group. The referenced Virtual WAN ID is passed through and validated by ARM server-side. (Azure's operation catalog publishes these names as "Microsoft.Network/vpnsites/*"; ARM operation matching is case-insensitive.)

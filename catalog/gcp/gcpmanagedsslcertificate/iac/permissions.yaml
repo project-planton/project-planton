@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageSslCertificate
         permissions:
@@ -24,4 +26,6 @@ spec:
           - compute.sslCertificates.delete
           - compute.globalOperations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_compute_managed_ssl_certificate -- create, read/refresh, and destroy, with compute.globalOperations.get for polling the operations create and delete return. GCP defines NO compute.sslCertificates.update permission (verified against IAM's testable-permissions inventory, which lists only create/get/delete plus list and tag permissions for the family) -- the resource is fully immutable in the API, so every change is a delete-and-recreate authorized by the create and delete permissions, never an update.

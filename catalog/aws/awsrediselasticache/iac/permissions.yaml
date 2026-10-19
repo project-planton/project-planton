@@ -24,6 +24,8 @@ spec:
           - arn:aws:elasticache:*:*:replicationgroup:*
           - arn:aws:elasticache:*:*:cluster:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_elasticache_replication_group -- creation (including joining a global datastore), layout and engine modifications, tagging, and teardown; the provider also describes the member cache clusters the group manages.
       - sid: ManageSubnetAndParameterGroups
         actions:
@@ -40,6 +42,8 @@ spec:
           - arn:aws:elasticache:*:*:subnetgroup:*
           - arn:aws:elasticache:*:*:parametergroup:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the conditional aws_elasticache_subnet_group and aws_elasticache_parameter_group satellites -- each created only when the spec provides subnets or inline parameters.
       - sid: DescribeVpcContext
         actions:
@@ -48,6 +52,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: UseCustomerManagedKey
         actions:
@@ -56,6 +62,8 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when spec.kms_key_id selects a customer-managed at-rest key -- ElastiCache creates a grant against it during group creation.
       - sid: DeliverLogsAndNotifications
         actions:
@@ -65,4 +73,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Log delivery (spec.log_delivery_configurations) and the notification topic (spec.notification_topic_arn) validate their destinations at configure time; the destination-side resource policies are owned by those components.

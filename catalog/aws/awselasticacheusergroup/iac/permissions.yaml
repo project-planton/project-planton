@@ -23,4 +23,6 @@ spec:
           - arn:aws:elasticache:*:*:usergroup:*
           - arn:aws:elasticache:*:*:user:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_elasticache_user_group -- creation with tags, in-place membership updates (ModifyUserGroup), reads during plan/refresh, tagging, and deletion. The user ARN format is required alongside usergroup because the service reference scopes CreateUserGroup and ModifyUserGroup to BOTH -- authorizing membership means authorizing against every member user's ARN, and omitting the user format denies provisioning outright. DeleteUserGroup and DescribeUserGroups scope to the usergroup format alone; all actions here are resource-scoped, so no wildcard statement is needed.

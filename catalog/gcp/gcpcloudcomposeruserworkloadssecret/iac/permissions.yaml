@@ -9,6 +9,8 @@ metadata:
   name: gcpcloudcomposeruserworkloadssecret
 spec:
   gcp:
+    api_enabled_by:
+      - GcpCloudComposerEnvironment
     groups:
       - purpose: ManageUserWorkloadsSecret
         permissions:
@@ -17,4 +19,6 @@ spec:
           - composer.userworkloadssecrets.update
           - composer.userworkloadssecrets.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_composer_user_workloads_secret -- create, read/refresh, in-place data rotation, and the removal at destroy (deletion_policy PREVENT and ABANDON are client-side and never call the API). Although Composer manages the Secret as a Kubernetes object inside the environment's cluster, GCP defines a DEDICATED IAM permission family for it rather than authorizing through composer.environments.update -- verified against IAM's testable-permissions inventory, which lists these all-lowercase spellings (the API surface camelCases the resource as userWorkloadsSecrets; the permission strings do not). Contrast with GKE node pools, where no nodePools.* permissions exist and mutations authorize on the parent cluster. A principal holding this group can READ credential material through the get call, so scope its grant tightly. No serviceusage group -- the module deliberately enables no API (the Composer API is enabled by the environment this Secret is delivered into).

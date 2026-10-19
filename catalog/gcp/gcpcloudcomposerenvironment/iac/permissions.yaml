@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling composer.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageEnvironment
         permissions:
@@ -25,11 +27,15 @@ spec:
           - composer.environments.delete
           - composer.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_composer_environment -- create (a 25-45 minute long-running operation the provider polls via composer.operations.get, a permission Composer defines in its own right, verified in IAM's testable-permissions inventory), read/refresh, in-place updates (workloads sizing, software config, maintenance window, labels), and destroy. The underlying GKE cluster, Cloud SQL database, and bucket are assembled by Composer's own service agent, so no container.*, cloudsql.*, or storage.* permissions fall on the runner.
       - purpose: ActAsEnvironmentServiceAccount
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: node_config.service_account
         notes: Required when node_config.service_account pins the environment's workload identity (presets 02 and 03 do; Composer 3 requires the field) -- the Composer API demands actAs on that account at environment creation. The account itself must separately hold roles/composer.worker, a prerequisite on the environment's identity rather than a runner permission.
@@ -51,6 +57,8 @@ spec:
           - secretmanager.versions.disable
           - secretmanager.versions.destroy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: software_config.secret_env_variables
         notes: Covers the secret the modules keep per software_config.secret_env_variables entry -- google_project_service enabling secretmanager.googleapis.com (disable_on_destroy false), google_secret_manager_secret (user-managed replication in the environment's region, attribution labels), google_secret_manager_secret_version holding the value (a new value creates the new version before destroying the old; versions.access is the provider's read of the payload on refresh), and google_secret_manager_secret_iam_member granting roles/secretmanager.secretAccessor on that one secret to the environment's node service account (IAM member resources read the policy before modifying it). Teardown deletes the secret, which destroys its versions.
@@ -58,6 +66,8 @@ spec:
         permissions:
           - resourcemanager.projects.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: software_config.secret_env_variables
         notes: The data source the modules use to name the project's Compute Engine default service account (<project-number>-compute@developer.gserviceaccount.com) in the secretAccessor grant when node_config.service_account is unset -- google_project reads the project to learn its number. Not exercised when node_config.service_account names the identity (the condition cannot express "unset", so the entry rides the stored-value condition).
@@ -79,6 +89,8 @@ spec:
           - secretmanager.versions.disable
           - secretmanager.versions.destroy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: software_config.secret_env_variables
         notes: Covers the secret the modules keep per software_config.secret_env_variables entry -- google_project_service enabling secretmanager.googleapis.com (disable_on_destroy false), google_secret_manager_secret (user-managed replication in the environment's region, attribution labels), google_secret_manager_secret_version holding the value (a new value creates the new version before destroying the old; versions.access is the provider's read of the payload on refresh), and google_secret_manager_secret_iam_member granting roles/secretmanager.secretAccessor on that one secret to the environment's node service account (IAM member resources read the policy before modifying it). Teardown deletes the secret, which destroys its versions.
@@ -86,6 +98,8 @@ spec:
         permissions:
           - resourcemanager.projects.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: software_config.secret_env_variables
         notes: The data source the modules use to name the project's Compute Engine default service account (<project-number>-compute@developer.gserviceaccount.com) in the secretAccessor grant when node_config.service_account is unset -- google_project reads the project to learn its number. Not exercised when node_config.service_account names the identity (the condition cannot express "unset", so the entry rides the stored-value condition).

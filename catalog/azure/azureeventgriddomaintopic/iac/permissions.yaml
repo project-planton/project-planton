@@ -16,4 +16,5 @@ spec:
           - Microsoft.EventGrid/domains/topics/write
           - Microsoft.EventGrid/domains/topics/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_eventgrid_domain_topic -- create under the domain (parsed from domain_id into resource group and domain name), read/refresh, and destroy; everything is create-only, so no in-place updates exist. Held via EventGrid Contributor or narrower custom roles, matching the module README's prose.

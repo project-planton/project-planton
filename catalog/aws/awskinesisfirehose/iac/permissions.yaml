@@ -24,6 +24,8 @@ spec:
         resources:
           - arn:aws:firehose:*:*:deliverystream/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_kinesis_firehose_delivery_stream (and its Pulumi twin), the module's single resource. Destination configuration changes flow through UpdateDestination (the destination TYPE itself is ForceNew -- a type change is a delete-and-create). Toggling sse_enabled after creation calls Start/StopDeliveryStreamEncryption, and CreateDeliveryStream folds in firehose:TagDeliveryStream when tags ride the create. Every action here scopes to the deliverystream ARN per the service reference.
       - sid: PassDeliveryRoles
         actions:
@@ -31,4 +33,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Creating or updating the stream passes every role the manifest references -- the destination's role_arn (required on all eight destination shapes), the source roles (kinesis_stream_source.role_arn, msk_source.role_arn), processor roles, vpc_config.role_arn for ENI management, and secrets_manager_config roles. Firehose assumes them at runtime for its reads and writes. Add an iam:PassedToService=firehose.amazonaws.com condition and narrow to the actual role ARNs in a hardened deployment.

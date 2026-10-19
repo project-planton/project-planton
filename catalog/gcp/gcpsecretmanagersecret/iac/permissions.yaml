@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling secretmanager.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
       - purpose: ManageSecret
         permissions:
@@ -24,6 +26,8 @@ spec:
           - secretmanager.secrets.update
           - secretmanager.secrets.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_secret_manager_secret and google_secret_manager_regional_secret (exactly one deploys, from the region discriminator) -- create, read/refresh, in-place updates (labels, annotations, aliases, rotation, expiry, version_destroy_ttl), and destroy under deletion_policy DELETE.
       - purpose: SeedInitialVersion
         permissions:
@@ -34,6 +38,8 @@ spec:
           - secretmanager.versions.disable
           - secretmanager.versions.destroy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: initial_version
         notes: Required only when initial_version seeds version 1 -- covers google_secret_manager_secret_version and its regional variant. GCP defines NO secretmanager.versions.create or .delete permissions -- storing a payload authorizes as versions.add against the parent secret, and teardown as versions.destroy (or versions.disable when the version's deletion_policy is DISABLE); both verified against IAM's testable-permissions inventory. versions.access backs the provider's payload read on refresh, and enable/disable cover the enabled flag's transitions.
@@ -42,6 +48,8 @@ spec:
           - secretmanager.secrets.getIamPolicy
           - secretmanager.secrets.setIamPolicy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: iam_members
         notes: Required only when iam_members is non-empty -- google_secret_manager_secret_iam_member (and the regional variant) performs the read-modify-write of the secret-scoped policy for each additive grant.
@@ -52,6 +60,8 @@ spec:
           - resourcemanager.tagValueBindings.create
           - resourcemanager.tagValueBindings.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: tags
         notes: Required only when spec.tags binds resource manager tags at creation -- GCP authorizes a tag binding on BOTH sides, the secret (createTagBinding/deleteTagBinding) and the tag value (tagValueBindings.create/delete, typically carried by roles/resourcemanager.tagUser on the tag's scope). All four verified against IAM's testable-permissions inventory.

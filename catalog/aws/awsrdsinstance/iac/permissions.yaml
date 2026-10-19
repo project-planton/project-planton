@@ -26,6 +26,8 @@ spec:
         resources:
           - arn:aws:rds:*:*:db:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_db_instance across its create shapes -- fresh instance, read replica (replicate_source_db), snapshot restore, and point-in-time restore -- plus modify, tagging, and teardown.
       - sid: ManageSnapshotsOnLifecycle
         actions:
@@ -35,6 +37,8 @@ spec:
         resources:
           - arn:aws:rds:*:*:snapshot:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Final snapshots on teardown (skip_final_snapshot=false) and reads of the source snapshot for restore-based creates.
       - sid: ManageSubnetAndParameterGroups
         actions:
@@ -56,6 +60,8 @@ spec:
           - arn:aws:rds:*:*:pg:*
           - arn:aws:rds:*:*:og:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the conditional aws_db_subnet_group, aws_db_parameter_group, and aws_db_option_group satellites -- each created only when the spec provides subnets, parameters, or options inline.
       - sid: DescribeVpcContext
         actions:
@@ -65,6 +71,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: ManageIamRoleAssociations
         actions:
@@ -75,6 +83,8 @@ spec:
           - arn:aws:rds:*:*:db:*
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Covers aws_db_instance_role_association (spec.iam_roles, and s3_import's ingestion role) plus monitoring_role_arn for Enhanced Monitoring -- RDS assumes the referenced roles, and associating them passes them. Narrow the role ARN in a hardened deployment.
       - sid: UseCustomerManagedKeys
         actions:
@@ -83,6 +93,8 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when kms_key_id, master_user_secret_kms_key_id, or performance_insights_kms_key_id selects a customer-managed key -- RDS creates grants against the key during instance create/modify.
       - sid: ManageMasterUserSecret
         actions:
@@ -90,4 +102,6 @@ spec:
         resources:
           - arn:aws:secretsmanager:*:*:secret:rds!*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: With manage_master_user_password=true, RDS owns the Secrets Manager secret; the provider reads it back into state after create. Scoped to the rds!-prefixed secrets RDS manages.

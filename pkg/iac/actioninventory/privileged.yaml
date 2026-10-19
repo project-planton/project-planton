@@ -1,0 +1,69 @@
+# AUTHORED -- edit by hand, never generated.
+#
+# The permissions that let a principal do more than create, change and
+# delete resources, per provider. A connection's permission choices are
+# drawn along this line: "uses_identity" lets a resource run as an identity
+# that already exists, which deploying needs (a Cloud Run service runs as a
+# service account, a Lambda function assumes its execution role), so it is
+# granted by default; "grants_access" changes who holds power over the
+# whole account -- roles on a project, folder, organization, account or
+# subscription, roles and policies themselves, users, keys, and acting as
+# another identity -- so it is granted only when asked for. A principal
+# holding it could grant itself anything.
+#
+# Granting access to ONE resource a kind manages (a secret its service
+# reads, a bucket's reader, a service's public invoker) is part of managing
+# that resource and stays ordinary: it can expose that resource, never make
+# the principal more powerful.
+#
+# Every permissions manifest entry's privilege is the highest of its
+# permissions' on this list (ordinary when none is listed), and the
+# conformance gate holds every entry to it. Every name here must exist in
+# the provider's inventory snapshot.
+providers:
+  - provider: aws
+    uses_identity:
+      - iam:PassRole
+    grants_access:
+      - iam:AddUserToGroup
+      - iam:AttachGroupPolicy
+      - iam:AttachRolePolicy
+      - iam:AttachUserPolicy
+      - iam:CreateAccessKey
+      - iam:CreateLoginProfile
+      - iam:CreatePolicy
+      - iam:CreatePolicyVersion
+      - iam:CreateRole
+      - iam:CreateUser
+      - iam:DeleteRolePermissionsBoundary
+      - iam:DeleteUserPermissionsBoundary
+      - iam:PutGroupPolicy
+      - iam:PutRolePolicy
+      - iam:PutUserPolicy
+      - iam:SetDefaultPolicyVersion
+      - iam:UpdateAssumeRolePolicy
+      - iam:UpdateLoginProfile
+  - provider: azure
+    uses_identity:
+      - Microsoft.ManagedIdentity/userAssignedIdentities/assign/action
+    grants_access:
+      - Microsoft.Authorization/roleAssignments/write
+      - Microsoft.Authorization/roleDefinitions/write
+      - Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/write
+  - provider: gcp
+    uses_identity:
+      - iam.serviceAccounts.actAs
+    grants_access:
+      - billing.accounts.setIamPolicy
+      - iam.roles.create
+      - iam.roles.update
+      - iam.serviceAccountKeys.create
+      - iam.serviceAccounts.getAccessToken
+      - iam.serviceAccounts.getOpenIdToken
+      - iam.serviceAccounts.implicitDelegation
+      - iam.serviceAccounts.setIamPolicy
+      - iam.serviceAccounts.signBlob
+      - iam.serviceAccounts.signJwt
+      - resourcemanager.folders.setIamPolicy
+      - resourcemanager.organizations.setIamPolicy
+      - resourcemanager.projects.setIamPolicy

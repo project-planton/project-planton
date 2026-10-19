@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/frontDoorWebApplicationFirewallPolicies/write
           - Microsoft.Network/frontDoorWebApplicationFirewallPolicies/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_cdn_frontdoor_firewall_policy / cdn.NewFrontdoorFirewallPolicy -- the single ARM resource either module creates -- through create, refresh, in-place updates (mode, rules, scrubbing, tags), and destroy. Despite the modules' cdn-prefixed names, the Front Door WAF policy is a Microsoft.Network resource type, NOT Microsoft.Cdn -- the profile it pairs with lives in Microsoft.Cdn, and the two namespaces meet only at association time. The modules reference no other resource (resource_group is passed by name), so no join or read on any foreign scope is checked at deploy time; the frontDoorWebApplicationFirewallPolicies/join/action Microsoft defines is consumed by the principal deploying the ASSOCIATING AzureFrontDoorSecurityPolicy, whose payload references this policy's id -- that kind's manifest, not this one.

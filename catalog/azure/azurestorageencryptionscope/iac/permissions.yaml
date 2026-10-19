@@ -15,4 +15,5 @@ spec:
           - Microsoft.Storage/storageAccounts/encryptionScopes/read
           - Microsoft.Storage/storageAccounts/encryptionScopes/write
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_storage_encryption_scope -- create, read/refresh, key-source and key updates, and destroy, all on the account's encryptionScopes child endpoint (the module parses storage_account_id client-side and performs no account read or key-vault call; Azure validates key_vault_key_id server-side, and the wrap/unwrap access it demands belongs to the ACCOUNT's identity, not the deploying principal). There is deliberately no delete action -- ARM has no true delete for scopes, so the inventory carries none and the provider's destroy is a write that PATCHes the scope's state to Disabled.

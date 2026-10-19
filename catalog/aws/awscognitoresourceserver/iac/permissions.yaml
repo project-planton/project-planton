@@ -19,4 +19,6 @@ spec:
         resources:
           - arn:aws:cognito-idp:*:*:userpool/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cognito_resource_server, the only resource either module registers (the Pulumi module drives the same provider through the pulumi-aws bridge). Create attaches the resource server to the referenced pool; Update handles in-place scope and name changes (identifier and pool binding are ForceNew and replace via Delete+Create); Describe serves plan/refresh. Cognito resource servers are sub-resources of the pool with no ARN of their own -- the service reference authorizes all four actions on the userpool ARN format, so the pool pattern is the exact scope. The resource carries no tags, so no tagging actions are needed.

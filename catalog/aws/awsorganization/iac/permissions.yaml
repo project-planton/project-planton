@@ -27,6 +27,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: organization
+        privilege: ordinary
         notes: "Covers aws_organizations_organization / organizations.Organization plus the read-and-delete side of the delegated-administrator and resource-policy arms. Every action here is NON-SCOPABLE -- the AWS service reference lists no resource types for any of them, so an ARN-scoped grant would be a runtime DENY and the wildcard IS the narrowest possible scope. Create/Delete bracket the organization's life (destroy calls DeleteOrganization -- the whole organization ends); EnableAllFeatures serves the in-place CONSOLIDATED_BILLING -> ALL upgrade of feature_set; Describe/ListRoots/ListAccounts/ListAWSServiceAccessForOrganization run on every plan/refresh (the provider reads the org, its root, member accounts, and trusted-access list back each time); Enable/DisableAWSServiceAccess reconcile aws_service_access_principals as diffed enable/disable calls. ListDelegatedAdministrators is the read side of aws_organizations_delegated_administrator (the registration has no per-item read API), and DescribeResourcePolicy/DeleteResourcePolicy are the non-scopable read and delete of aws_organizations_resource_policy. The whole kind only works from the organization's management account."
       - sid: ManagePolicyTypes
         actions:
@@ -35,6 +37,8 @@ spec:
         resources:
           - arn:aws:organizations::*:root/o-*/r-*
         provenance: derived
+        reach: organization
+        privilege: ordinary
         notes: Reconciles enabled_policy_types on aws_organizations_organization / organizations.Organization -- each type is enabled or disabled on the organization's ROOT (disables first on update, each call waiting for AWS to confirm the type's state), and the service reference scopes both actions to the root ARN format.
       - sid: ManageDelegatedAdministrators
         actions:
@@ -43,6 +47,8 @@ spec:
         resources:
           - arn:aws:organizations::*:account/o-*/*
         provenance: derived
+        reach: organization
+        privilege: ordinary
         notes: Covers aws_organizations_delegated_administrator / organizations.DelegatedAdministrator -- one registration per (account_id, service_principal) entry, and because both leaves are immutable a change re-registers (deregister + register). The service reference scopes both actions to the member-account ARN being delegated to.
       - sid: ManageResourcePolicy
         actions:
@@ -53,6 +59,8 @@ spec:
         resources:
           - arn:aws:organizations::*:resourcepolicy/o-*/rp-*
         provenance: derived
+        reach: organization
+        privilege: ordinary
         notes: "Covers aws_organizations_resource_policy / organizations.ResourcePolicy -- the organization's SINGLETON delegation policy (PutResourcePolicy is an upsert serving both create and update). The resource policy is this kind's one taggable surface: tag-on-create plus later reconciliation and the tag read on every refresh. All four actions take resource-level scoping on the resourcepolicy ARN format per the service reference (the read and delete of the same object are non-scopable and live in ManageOrganization)."
       - sid: ManageRootAccessFeatures
         actions:
@@ -64,4 +72,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_iam_organizations_features / iam.OrganizationsFeatures -- created only when root_access_management is set. Each feature in enabled_features maps to its own Enable/Disable call, ListOrganizationsFeatures is the read on every plan/refresh, and destroying the arm disables every enabled feature. All five actions are NON-SCOPABLE (the IAM service reference lists no resource types for them), so the wildcard is the narrowest possible scope. The calls also require iam.amazonaws.com trusted access on the organization, which this very spec wires through aws_service_access_principals.

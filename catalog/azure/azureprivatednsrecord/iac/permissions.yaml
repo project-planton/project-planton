@@ -34,4 +34,5 @@ spec:
           - Microsoft.Network/privateDnsZones/TXT/write
           - Microsoft.Network/privateDnsZones/TXT/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers the module's seven count-gated azurerm_private_dns_*_record resources -- exactly one materializes per deployment (the spec's exactly-one-payload rule), but the grant spans all seven record types so one profile serves any manifest. Record sets are addressed by the parent zone's ARM ID plus the record name. Held via Private DNS Zone Contributor on the zone's resource group, or a narrower custom role.

@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling monitoring.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageSlo
         permissions:
@@ -24,6 +26,8 @@ spec:
           - monitoring.slos.update
           - monitoring.slos.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_monitoring_slo -- create, read/refresh, in-place updates (goal, display name, SLI tuning), and destroy. All four verified present in IAM's testable-permissions inventory. Measuring an EXISTING service (service.service_id) needs no service-side permission -- the SLO API stores the parent service name without a separate read.
       - purpose: ManageCustomMonitoringService
         permissions:
@@ -32,6 +36,8 @@ spec:
           - monitoring.services.update
           - monitoring.services.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: service.custom_service
         notes: Covers google_monitoring_custom_service, the service the service.custom_service arm creates; the existing-service arm never touches the services API. All four verified present in IAM's testable-permissions inventory.
@@ -42,6 +48,8 @@ spec:
           - monitoring.services.update
           - monitoring.services.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: service.basic_service
         notes: Covers google_monitoring_service, the service the service.basic_service arm creates; the existing-service arm never touches the services API. All four verified present in IAM's testable-permissions inventory.

@@ -16,4 +16,5 @@ spec:
           - Microsoft.Storage/storageAccounts/queueServices/queues/write
           - Microsoft.Storage/storageAccounts/queueServices/queues/delete
         provenance: derived
+        privilege: ordinary
         notes: "Covers azurerm_storage_queue / storage.NewQueue -- both modules address the queue by the parent account's ARM ID (the control-plane path; the account-name form is the provider's legacy data-plane path, removed in azurerm v5), so create, refresh, in-place metadata updates, and destroy all ride the account's queueServices/queues child endpoint. The account name in the outputs is parsed client-side from the resolved ARM ID -- neither module reads the account, and no data-plane call (and therefore no listkeys grant) is involved."

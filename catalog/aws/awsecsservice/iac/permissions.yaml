@@ -22,6 +22,8 @@ spec:
         resources:
           - arn:aws:ecs:*:*:service/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_ecs_service -- creation, convergence of every declared block (deployment configuration, Service Connect, volume configuration), and the scale-to-zero-then-delete teardown.
       - sid: ManageAutoscaling
         actions:
@@ -34,6 +36,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_appautoscaling_target and the three aws_appautoscaling_policy resources (cpu, memory, requests), created only when spec.autoscaling is set. Application Auto Scaling does not support resource-level ARN scoping for these actions -- the wildcard is the service's own documented policy shape; condition keys can pin the ecs service namespace in a hardened deployment.
       - sid: PassTaskRoles
         actions:
@@ -41,6 +45,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: CreateService and UpdateService pass the referenced task definition's execution and task roles (and the infrastructure role for managed EBS volumes) to ECS. Scope to the actual role ARNs in a hardened deployment.
       - sid: CreateServiceLinkedRole
         actions:
@@ -48,4 +54,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/aws-service-role/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: First use of ECS (and of Application Auto Scaling's ECS integration) in an account creates their service-linked roles implicitly -- required once per account, then dormant.

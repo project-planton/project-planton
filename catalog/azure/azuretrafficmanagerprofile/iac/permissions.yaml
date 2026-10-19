@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/trafficManagerProfiles/write
           - Microsoft.Network/trafficManagerProfiles/delete
         provenance: derived
+        privilege: ordinary
         notes: "Covers azurerm_traffic_manager_profile / network.TrafficManagerProfile end to end -- the provider's whole surface is Get, CreateOrUpdate, Update, and Delete on the profile resource (traffic_manager_profile_resource.go); everything except name, resource group, and the DNS relative name updates in place. No name-availability call precedes the create -- a taken trafficmanager.net name simply fails the write. Typically held via Network Contributor, Contributor, or Owner on the resource group (the module READMEs' original recommendation -- Microsoft.Network/trafficManagerProfiles/* under Network Contributor -- is contained in exactly these three actions). Endpoints are separate AzureTrafficManagerEndpoint components with their own manifest; their typed child-collection actions are not needed here."

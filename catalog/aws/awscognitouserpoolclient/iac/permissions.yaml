@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:cognito-idp:*:*:userpool/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cognito_user_pool_client across both source arms (the Pulumi module drives the same provider through the pulumi-aws bridge). Create registers the client with its OAuth contract, auth flows, token lifetimes, and optional analytics wiring; Update handles every in-place change (user_pool_id and generate_secret are ForceNew and replace via Delete+Create); Describe serves plan/refresh. App clients are sub-resources of the pool with no ARN of their own -- the service reference authorizes all four actions on the userpool ARN format, so the pool pattern is the exact scope. The resource carries no tags, so no tagging actions are needed.
       - sid: ManageRiskConfiguration
         actions:
@@ -27,6 +29,8 @@ spec:
         resources:
           - arn:aws:cognito-idp:*:*:userpool/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Exercised only when spec.risk_configuration is set -- both modules then register aws_cognito_risk_configuration scoped to this client's ID. SetRiskConfiguration writes the configuration (and clears it on destroy); DescribeRiskConfiguration serves plan/refresh. Both actions authorize on the userpool ARN per the service reference.
       - sid: PassAnalyticsRoleToCognito
         actions:
@@ -34,4 +38,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Exercised only when spec.analytics_configuration uses the application_id arm -- both modules then submit analytics_configuration.role_arn, the role Cognito assumes (service principal cognito-idp.amazonaws.com, guarded by the external_id) to publish sign-in/sign-up events to Pinpoint, and Create/UpdateUserPoolClient validate the caller may pass it. The application_arn arm derives the publish role AWS-side and passes nothing. Narrow the resource to the deployment's analytics role ARN (or naming convention) once fixed, and add an iam:PassedToService=cognito-idp.amazonaws.com condition.

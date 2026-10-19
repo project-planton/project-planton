@@ -16,6 +16,7 @@ spec:
           - Microsoft.Network/networkSecurityGroups/write
           - Microsoft.Network/networkSecurityGroups/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_network_security_group -- create, read/refresh, tag updates, and destroy. Held via Network Contributor, Contributor, or Owner on the resource group.
       - purpose: ManageSecurityRules
         actions:
@@ -23,4 +24,5 @@ spec:
           - Microsoft.Network/networkSecurityGroups/securityRules/write
           - Microsoft.Network/networkSecurityGroups/securityRules/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_network_security_rule -- the module manages each rule as a STANDALONE child resource under the group (one per security_rules entry), so the securityRules child operations are exercised directly rather than through the group's PUT.

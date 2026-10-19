@@ -20,6 +20,8 @@ spec:
         resources:
           - arn:aws:s3express:*:*:bucket/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers aws_s3_directory_bucket / s3.DirectoryBucket. Directory buckets authorize in the s3express namespace, NOT s3 -- an s3:-prefixed grant is a runtime deny here. CreateBucket and DeleteBucket are Regional (control-plane) endpoint operations scoped to the s3express bucket ARN format (arn:aws:s3express:region:account:bucket/base--zone-id--x-s3, per the service reference and AWS's directory-bucket IAM guide); the tagging trio serves tag-on-create, later reconciliation, and the tag read on refresh."
       - sid: EmptyBucketOnForceDestroy
         actions:
@@ -27,6 +29,8 @@ spec:
         resources:
           - arn:aws:s3express:*:*:bucket/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Needed when force_destroy empties the bucket at destroy: ALL object-level (Zonal endpoint) operations against a directory bucket -- listing and deleting objects included -- authorize through this single action's short-lived session token; AWS's IAM model for directory buckets grants no per-object actions at all. Scoped to the bucket ARN per the service reference (which also lists the accesspoint format this module never touches)."
       - sid: ListDirectoryBuckets
         actions:
@@ -34,4 +38,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Read-side during plan/refresh: the s3express action inventory publishes no dedicated bucket-read (HeadBucket-style) action, so bucket existence and attributes read back through the directory-bucket listing -- the narrowest published grant for the read path (non-scopable; the service reference lists no resource types for it). If AWS later publishes a finer read action, this grant is the one to tighten."

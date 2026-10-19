@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling dns.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageZone
         permissions:
@@ -24,11 +26,15 @@ spec:
           - dns.managedZones.update
           - dns.managedZones.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_dns_managed_zone -- create, read/refresh, in-place updates (DNSSEC, logging, forwarding), and destroy.
       - purpose: BindPrivateZoneNetworks
         permissions:
           - dns.networks.bindPrivateDNSZone
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: private_visibility_config.networks
         notes: Binding a private zone's resolution scope to the VPC networks in private_visibility_config demands this permission on each network's project.
@@ -36,6 +42,8 @@ spec:
         permissions:
           - dns.gkeClusters.bindPrivateDNSZone
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: private_visibility_config.gke_clusters
         notes: Binding a private zone to the GKE clusters in private_visibility_config.gke_clusters demands this permission on each cluster's project.
@@ -43,6 +51,8 @@ spec:
         permissions:
           - dns.networks.targetWithPeeringZone
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: peering_config
         notes: A peering zone resolves through peering_config's target network, which demands this permission on that network's project.

@@ -16,4 +16,5 @@ spec:
           - Microsoft.RecoveryServices/Vaults/backupPolicies/write
           - Microsoft.RecoveryServices/Vaults/backupPolicies/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_backup_policy_file_share -- create, read/refresh, in-place schedule/retention/tier updates, and destroy; the policy is an ARM child of the vault, addressed by (resource group, vault name, policy name). Azure spells the backup surface with capital "Vaults" (verified against the live Microsoft.RecoveryServices operation inventory). Held via Backup Contributor on the vault's resource group, or a narrower custom role.

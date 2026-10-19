@@ -18,4 +18,6 @@ spec:
         resources:
           - arn:aws:cloudwatch::*:dashboard/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_dashboard / cloudwatch.Dashboard -- the module's only resource. PutDashboard is both create and update (AWS has no separate call; every body change is the same upsert); GetDashboard runs on every plan/refresh to read the body back; DeleteDashboards runs on destroy. All three actions take resource-level scoping on the dashboard ARN per the service reference, and the ARN format is REGION-LESS (arn:${Partition}:cloudwatch::${Account}:dashboard/${DashboardName} -- empty region segment), so a region-qualified ARN here would never match. Dashboards are untaggable at AWS (no tags argument exists on the resource), so no tagging actions are needed.

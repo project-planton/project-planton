@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/write
           - Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_web_application_firewall_policy -- create, read/refresh, in-place rule and settings updates, and destroy. Held via Network Contributor, Contributor, or narrower custom roles. The module makes no other provider calls; the separate .../join/action belongs to whoever deploys the Application Gateway that attaches this policy, not to this runner.

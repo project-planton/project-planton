@@ -18,4 +18,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_resource_policy / cloudwatch.LogResourcePolicy -- the module's only resource, serving BOTH scopes (account-wide by policy_name and log-group-pinned by resource_arn). PutResourcePolicy creates and updates (passing AWS's tracked revision ID so concurrent out-of-band edits fail loudly); DescribeResourcePolicies serves every plan/refresh (the provider reads the policy back by listing the region's policies at the matching scope); DeleteResourcePolicy destroys (resource-scoped deletes also require the tracked revision ID). None of the three actions takes resource-level scoping -- the CloudWatch Logs service reference lists no resource types for any of them, so "*" is the narrowest possible grant; an ARN-scoped grant here would be a runtime DENY. No tagging actions exist to grant -- resource policies are untaggable at AWS (the provider resource has no tags argument).

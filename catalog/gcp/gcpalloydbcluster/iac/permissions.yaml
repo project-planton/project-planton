@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling alloydb.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageCluster
         permissions:
@@ -24,6 +26,8 @@ spec:
           - alloydb.clusters.update
           - alloydb.clusters.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_alloydb_cluster -- create, read/refresh, in-place updates (backup policies, maintenance window, labels, deletion guards), and destroy. All four exist in IAM's testable-permissions inventory as alloydb.clusters.* dotted permissions.
       - purpose: ManagePrimaryInstance
         permissions:
@@ -33,4 +37,6 @@ spec:
           - alloydb.instances.delete
           - alloydb.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_alloydb_instance for the bundled primary. AlloyDB instance mutations are long-running operations the provider polls to completion, which authorizes as alloydb.operations.get (a real dotted permission in the IAM inventory, unlike some services where polling rides the resource's own get).

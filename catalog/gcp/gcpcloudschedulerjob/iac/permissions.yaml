@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling cloudscheduler.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageJob
         permissions:
@@ -24,11 +26,15 @@ spec:
           - cloudscheduler.jobs.update
           - cloudscheduler.jobs.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_cloud_scheduler_job for all three target arms -- create, read/refresh, in-place updates (schedule, targets, retry config, paused state), and destroy. Job mutations return synchronously, so no operations permission exists or is needed (Cloud Scheduler defines no cloudscheduler.operations.* permissions in IAM's testable-permissions inventory -- verified live). Pause/resume driven through the paused field authorizes as cloudscheduler.jobs.update on this provider version, not the separate jobs.pause/jobs.enable permissions the API also defines for its dedicated pause/resume RPCs.
       - purpose: ActAsOauthTokenServiceAccount
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: http_target.oauth_token
         notes: The Cloud Scheduler API demands actAs on the service account http_target.oauth_token names for authenticated dispatch, at job create/update time.
@@ -36,6 +42,8 @@ spec:
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: http_target.oidc_token
         notes: The Cloud Scheduler API demands actAs on the service account http_target.oidc_token names for authenticated dispatch (the 03-secure-cloud-run-trigger preset does), at job create/update time.

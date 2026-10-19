@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:dsql:*:*:cluster/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_dsql_cluster / dsql.Cluster. GetCluster serves every plan/refresh (it also feeds the encryption_type and multi-region outputs); UpdateCluster reconciles deletion_protection_enabled and kms_encryption_key in place (a key change re-encrypts without replacement), and force_destroy makes the provider call UpdateCluster to drop deletion protection before DeleteCluster. All four actions scope to the Cluster ARN per the dsql service reference -- DSQL is new but its reference is fully published, so no inventory-lag fallback is needed.
       - sid: TagCluster
         actions:
@@ -28,6 +30,8 @@ spec:
         resources:
           - arn:aws:dsql:*:*:cluster/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Tag-on-create (metadata.name rides in as the Name tag -- DSQL generates the cluster identifier itself) plus tag reconciliation and the tag read on every refresh. All three actions scope to the Cluster ARN per the service reference.
       - sid: ManageMultiRegionPeering
         actions:
@@ -38,4 +42,6 @@ spec:
         resources:
           - arn:aws:dsql:*:*:cluster/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_dsql_cluster_peering / dsql.ClusterPeering -- created only when multi_region is set. The peering is a disguised UpdateCluster that AWS authorizes with these finer-grained permission checks (witness region at create, peer list while the cluster is still PENDING_SETUP). The grant must also cover the PEER clusters' ARNs in their regions -- the region wildcard here does that. RemovePeerCluster is included for the destroy path of a paired cluster; the peering resource itself has a no-op delete. All four actions scope to the Cluster ARN per the service reference.

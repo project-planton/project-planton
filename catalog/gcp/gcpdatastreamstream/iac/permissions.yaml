@@ -9,6 +9,8 @@ metadata:
   name: gcpdatastreamstream
 spec:
   gcp:
+    api_enabled_by:
+      - GcpDatastreamConnectionProfile
     groups:
       - purpose: ManageStream
         permissions:
@@ -19,6 +21,8 @@ spec:
           - datastream.operations.get
           - datastream.connectionProfiles.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_datastream_stream (Pulumi datastream.Stream) -- created (validated against both profiles unless create_without_validation), patched, read on every refresh, deleted, and its long-running operations polled; Google reads the source and destination profiles the stream names. Names grounded in Google's Datastream roles page; roles/datastream.admin contains all six.
       - purpose: ControlStreamState
         permissions:
@@ -26,6 +30,8 @@ spec:
           - datastream.streams.pause
           - datastream.streams.resume
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: desired_state
         notes: The provider moves the stream between NOT_STARTED, RUNNING, and PAUSED by updating its state; Google's roles page lists start, pause, and resume beside update. The proof lane's capture confirms which of them a state change checks.

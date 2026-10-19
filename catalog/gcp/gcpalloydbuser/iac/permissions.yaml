@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling alloydb.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageUser
         permissions:
@@ -24,4 +26,6 @@ spec:
           - alloydb.users.update
           - alloydb.users.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_alloydb_user -- create, read/refresh, in-place updates (password rotation, database_roles changes), and destroy. User mutations return the user synchronously rather than a long-running operation, so no alloydb.operations.* permission is needed; the module never reads the parent cluster either (the cluster path is passed through verbatim), so no alloydb.clusters.get.

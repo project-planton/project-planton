@@ -16,4 +16,5 @@ spec:
           - Microsoft.ManagedIdentity/userAssignedIdentities/write
           - Microsoft.ManagedIdentity/userAssignedIdentities/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_user_assigned_identity -- create, read/refresh, in-place updates (tags, isolation_scope), and destroy. Held via Managed Identity Contributor, Contributor, or Owner in the target resource group. Note the assign/action operation is NOT needed here -- it belongs to the resources that later attach the identity, not to creating it.

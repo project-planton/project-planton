@@ -22,4 +22,6 @@ spec:
         resources:
           - arn:aws:elasticache:*:*:user:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_elasticache_user -- creation with tags, in-place updates to the access string and authentication mode (ModifyUser), reads during plan/refresh, tagging, and deletion. Every action here, DescribeUsers included, is resource-scoped to the user ARN format (arn:...:user:{UserId}, colon-separated) in the ElastiCache service reference, so one resource pattern covers the full lifecycle with no wildcard statement needed.

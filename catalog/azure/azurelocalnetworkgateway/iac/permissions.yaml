@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/localnetworkgateways/write
           - Microsoft.Network/localnetworkgateways/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_local_network_gateway -- create, read/refresh, in-place endpoint/routing/BGP updates, and destroy. Action casing follows Azure's own operation inventory (lowercase resource-type segment). Held via Network Contributor, Contributor, or narrower custom roles.

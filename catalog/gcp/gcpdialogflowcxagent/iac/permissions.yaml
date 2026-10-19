@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling dialogflow.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageAgent
         permissions:
@@ -24,6 +26,8 @@ spec:
           - dialogflow.agents.update
           - dialogflow.agents.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_dialogflow_cx_agent (Pulumi diagflow.CxAgent) -- created, patched with a field mask, read on every refresh, deleted. Also covers the folded generative settings (google_dialogflow_cx_generative_settings / diagflow.CxGenerativeSettings), which Google serves as the agent methods getGenerativeSettings and updateGenerativeSettings; Dialogflow defines no separate generative-settings permission.
       - purpose: ManageWebhooks
         permissions:
@@ -32,6 +36,8 @@ spec:
           - dialogflow.webhooks.update
           - dialogflow.webhooks.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: webhooks
         notes: Covers google_dialogflow_cx_webhook (Pulumi diagflow.CxWebhook) for every declared webhook. A webhook that authenticates with a service account also needs roles/iam.serviceAccountTokenCreator granted to the Dialogflow service agent on that account -- a grant on the account, not a permission of the runner.
@@ -42,6 +48,8 @@ spec:
           - dialogflow.tools.update
           - dialogflow.tools.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: tools
         notes: Covers google_dialogflow_cx_tool and google_dialogflow_cx_tool_version (Pulumi diagflow.CxTool / CxToolVersion). Tool versions are a sub-resource of their tool; Dialogflow defines no separate tool-version permission, so the tool permissions cover creating, reading, and deleting them.
@@ -53,6 +61,8 @@ spec:
           - dialogflow.versions.delete
           - dialogflow.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: versions
         notes: Covers google_dialogflow_cx_version (Pulumi diagflow.CxVersion) -- created through a long-running operation the provider polls while the flow's model trains.
@@ -64,6 +74,8 @@ spec:
           - dialogflow.environments.delete
           - dialogflow.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: environments
         notes: Covers google_dialogflow_cx_environment (Pulumi diagflow.CxEnvironment) -- created and updated through long-running operations the provider polls.
@@ -72,6 +84,8 @@ spec:
           - discoveryengine.engines.get
           - discoveryengine.engines.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: delete_chat_engine_on_destroy
         notes: On destroy the provider reads the Vertex AI Search engine named in gen_app_builder_settings and deletes it. roles/dialogflow.admin contains every Dialogflow permission above; the engine delete needs roles/discoveryengine.admin or an equivalent.

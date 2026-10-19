@@ -26,6 +26,8 @@ spec:
         resources:
           - arn:aws:dynamodb:*:*:table/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_dynamodb_table -- table lifecycle, GSIs (managed through UpdateTable), TTL, point-in-time recovery, table class, deletion protection, and replica updates (global tables are UpdateTable ReplicaUpdates; the wildcard region in the ARN covers replica-region table access).
       - sid: UseCustomerManagedKey
         actions:
@@ -34,6 +36,8 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when server_side_encryption.kms_key_arn (or a replica's kms_key_arn) selects a customer-managed key -- DynamoDB creates a grant against the key on the caller's behalf during aws_dynamodb_table create/update.
       - sid: ManageAutoscaling
         actions:
@@ -49,6 +53,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_appautoscaling_target/policy (read and write) and aws_appautoscaling_scheduled_action -- the modules pin provisioned capacity through a scalable target even without user autoscaling. Application Auto Scaling APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: CreateAutoscalingServiceLinkedRole
         actions:
@@ -56,6 +62,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The first Application Auto Scaling target for DynamoDB in an account creates the service-linked role automatically; scoped to exactly that role path.
       - sid: ManageContributorInsights
         actions:
@@ -65,6 +73,8 @@ spec:
           - arn:aws:dynamodb:*:*:table/*
           - arn:aws:dynamodb:*:*:table/*/index/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_dynamodb_contributor_insights at table level and per GSI.
       - sid: ManageKinesisStreamingDestination
         actions:
@@ -76,6 +86,8 @@ spec:
           - arn:aws:dynamodb:*:*:table/*
           - arn:aws:kinesis:*:*:stream/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_dynamodb_kinesis_streaming_destination -- created only when spec.kinesis_streaming_destination is set; DescribeStream validates the destination stream.
       - sid: ManageResourcePolicy
         actions:
@@ -85,4 +97,6 @@ spec:
         resources:
           - arn:aws:dynamodb:*:*:table/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_dynamodb_resource_policy -- created only when spec.resource_policy is set.

@@ -16,4 +16,5 @@ spec:
           - Microsoft.DataProtection/subscriptions/resourceGroups/providers/resourceGuards/write
           - Microsoft.DataProtection/subscriptions/resourceGroups/providers/resourceGuards/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_data_protection_resource_guard -- create, read/refresh, in-place exclusion-list and tag updates, and destroy. Azure's own operation inventory spells resource-guard operations with the scope segments shown (verified against the live Microsoft.DataProtection inventory); Contributor on the guard's resource group covers them. By the guard's security model that resource group should belong to a DIFFERENT administrator than the vaults it guards -- so this principal is typically NOT the one deploying the vaults.
