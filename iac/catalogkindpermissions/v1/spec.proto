@@ -37,7 +37,7 @@ message CatalogKindPermissionsSpec {
 // Provenance says how a permission entry was established.
 enum Provenance {
   provenance_unspecified = 0;
-  // Derived by static analysis of the official module sources: the entry
+  // Derived by static analysis of the platform module sources: the entry
   // covers the module's declared resources but has not been observed
   // against a live cloud account.
   derived = 1;

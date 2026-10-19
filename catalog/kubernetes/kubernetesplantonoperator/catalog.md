@@ -1,6 +1,6 @@
 # Planton Operator
 
-Installs the Planton operator — the lifecycle manager that reconciles `PlantonPlatform` declarations into running self-hosted Planton platforms (control plane, console, identity, databases, secrets manager, in-cluster runner) — from the official `planton-operator` Helm chart (OCI, ghcr.io/plantonhq/charts). This component installs the MANAGER; the platforms themselves are declared with KubernetesPlantonPlatform resources, one per platform, all served by this one operator. One installation per cluster: the operator enforces that itself at startup, and the release name is fixed to `planton-operator`.
+Installs the Planton operator — the lifecycle manager that reconciles `PlantonPlatform` declarations into running self-hosted Planton platforms (control plane, console, identity, databases, secrets manager, in-cluster runner) — from Planton's `planton-operator` Helm chart (OCI, ghcr.io/plantonhq/charts). This component installs the MANAGER; the platforms themselves are declared with KubernetesPlantonPlatform resources, one per platform, all served by this one operator. One installation per cluster: the operator enforces that itself at startup, and the release name is fixed to `planton-operator`.
 
 ## What Gets Created
 

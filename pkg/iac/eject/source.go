@@ -17,7 +17,7 @@ import (
 
 // resolvedSource is where an eject copies from.
 type resolvedSource struct {
-	// dir is the official module directory to copy.
+	// dir is the platform module directory to copy.
 	dir string
 
 	// version records the release tag (or staging checkout) the module
@@ -35,7 +35,7 @@ type resolvedSource struct {
 // downloads artifacts or clones the staging repo).
 var resolveSourceFn = resolveSource
 
-// resolveSource locates the official module source, mirroring the deploy
+// resolveSource locates the platform module source, mirroring the deploy
 // path's resolution order: release artifact first (fast, cached), git
 // staging clone as the fallback. A released CLI whose tag predates a given
 // artifact self-corrects through the fallback (a git checkout of that tag).
@@ -91,7 +91,7 @@ func resolveFromStaging(kindName string, prov provisioner.ProvisionerType, targe
 	if err != nil {
 		kind := catalogkindreflect.KindFromString(kindName)
 		return nil, errors.Wrapf(err,
-			"the official %s module for %s was not found in the staging checkout — expected at %s; run 'planton pull' to refresh the staging area",
+			"the platform %s module for %s was not found in the staging checkout — expected at %s; run 'planton pull' to refresh the staging area",
 			describeProvisioner(prov), kindName, moduleSubPath(kind, kindName, prov))
 	}
 

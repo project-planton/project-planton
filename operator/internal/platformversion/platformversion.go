@@ -70,7 +70,7 @@ import (
 // placeholder key, the base path, and the queue name to boot at all, so under
 // this operator it would never come up.
 //
-// v0.0.65: the control plane resolves official IaC modules at its own catalog
+// v0.0.65: the control plane resolves platform IaC modules at its own catalog
 // release -- the same pin its schemas and chart bundle come from -- and the
 // operator stops handing it a module version (the former PLANTON_VERSION,
 // which this operator once compiled in as a constant three weeks behind the

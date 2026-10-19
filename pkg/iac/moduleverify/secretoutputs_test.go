@@ -5,7 +5,7 @@ package moduleverify
 
 // An output the schema marks sensitive is a secret the resource generates, and the engine
 // sees it before the platform does: exported in the clear, it is printed in the engine's deploy
-// logs and kept readable in state. This suite pins that every official module of every kind
+// logs and kept readable in state. This suite pins that every platform module of every kind
 // exports exactly its schema's secret outputs as secrets, in both engines, and that each check
 // fires on a module that does not -- a gate that cannot fail teaches false confidence.
 
@@ -43,7 +43,7 @@ func TestOutputFields_ReadTheSchemasMarks(t *testing.T) {
 	}
 }
 
-func TestVerify_SecretOutputs_EveryOfficialModuleExportsExactlyItsSecrets(t *testing.T) {
+func TestVerify_SecretOutputs_EveryPlatformModuleExportsExactlyItsSecrets(t *testing.T) {
 	root := repoRoot(t)
 	kindsWithSecrets := 0
 	for _, kind := range catalogkindreflect.KindsList() {

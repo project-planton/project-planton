@@ -187,7 +187,7 @@ func getPathFromStaging(stackFqdn, kindName, targetVersion, moduleVersion string
 //   - moduleDir non-empty is a user decision (--module-dir, or a directory
 //     derived by --local-module); a directory that is not a usable module
 //     must fail loudly here, because falling through would silently deploy
-//     the official module in place of the one the user pointed at.
+//     the platform module in place of the one the user pointed at.
 //
 // Returns the absolute module directory, or "" when resolution should fall
 // through to binary/staging.
@@ -207,14 +207,14 @@ func resolveLocalModuleDir(moduleDir string) (string, error) {
 			return "", nil
 		}
 		return "", errors.Wrapf(err,
-			"cannot read the module directory %s — check that it exists and is readable, or drop --module-dir to use the official module", moduleDir)
+			"cannot read the module directory %s — check that it exists and is readable, or drop --module-dir to use the platform module", moduleDir)
 	}
 	if !isPulumiModuleDir {
 		if !explicit {
 			return "", nil
 		}
 		return "", errors.Errorf(
-			"the module directory %s contains no Pulumi.yaml — a Pulumi module needs its project file at the root; point --module-dir at the folder holding Pulumi.yaml, or drop the flag to use the official module", moduleDir)
+			"the module directory %s contains no Pulumi.yaml — a Pulumi module needs its project file at the root; point --module-dir at the folder holding Pulumi.yaml, or drop the flag to use the platform module", moduleDir)
 	}
 
 	// Normalize to an absolute path: the directory becomes the automation

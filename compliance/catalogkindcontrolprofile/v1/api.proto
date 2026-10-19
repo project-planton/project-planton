@@ -6,11 +6,11 @@ import "compliance/catalogkindcontrolprofile/v1/spec.proto";
 import "shared/metadata.proto";
 
 // CatalogKindControlProfile declares a single kind's posture against the
-// central control catalog: for each control, whether the official modules
+// central control catalog: for each control, whether the platform modules
 // enforce it by default, expose it as a spec choice, or whether it does not
-// apply -- each claim backed by evidence. It describes the OFFICIAL modules
+// apply -- each claim backed by evidence. It describes the PLATFORM modules
 // as shipped; deployments using customized modules must be presented as
-// "official-module baseline; verify against your customization". Follows
+// "platform-module baseline; verify against your customization". Follows
 // the KRM pattern (apiVersion + kind + metadata + spec).
 // Lives at catalog/{provider}/{kind}/controls.yaml.
 //

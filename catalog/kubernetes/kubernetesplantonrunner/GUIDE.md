@@ -1,6 +1,6 @@
 # KubernetesPlantonRunner Guide
 
-The judgment this guide carries: the module wraps the official
+The judgment this guide carries: the module wraps Planton's
 `planton-runner` chart instead of re-modeling its resources -- the chart
 is the one source of truth for the enrollment mechanics; the runner
 token only gates JOINING and is only read at join; and the runner is
@@ -13,7 +13,7 @@ replicas pinned to 1 with a Recreate strategy (two live pods under one
 runner name would revoke each other's keys), the ephemeral identity
 volume the runner persists its minted identity into (container restarts
 reuse it; pod recreation re-joins with the token), and the health
-endpoints. The official chart already encodes all of it, so the module
+endpoints. Planton's chart already encodes all of it, so the module
 installs the chart as a real Helm release -- a runner deployed through
 this kind is byte-identical to a hand-installed one -- and confines
 itself to the satellites: the optional namespace and the `<name>-token`

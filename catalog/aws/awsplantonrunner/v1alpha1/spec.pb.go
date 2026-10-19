@@ -98,14 +98,14 @@ type AwsPlantonRunnerSpec struct {
 	// failed IaC operations mid-apply; when in doubt, size memory up before
 	// cpu.
 	Memory *int32 `protobuf:"varint,6,opt,name=memory,proto3,oneof" json:"memory,omitempty"`
-	// The runner build to deploy: an image tag of the official runner
+	// The runner build to deploy: an image tag of Planton's runner
 	// container image. "latest" tracks the newest release; pin a specific
 	// version tag for change control. New tasks pull the tag on every
 	// (re)start.
 	RunnerVersion *string `protobuf:"bytes,7,opt,name=runner_version,json=runnerVersion,proto3,oneof" json:"runner_version,omitempty"`
 	// The container image repository the runner is pulled from. Override
-	// only for air-gapped or mirrored registries hosting a copy of the
-	// official image; the digest-identical mirror is your responsibility.
+	// only for air-gapped or mirrored registries hosting a copy of
+	// Planton's runner image; the digest-identical mirror is your responsibility.
 	ImageRepository *string `protobuf:"bytes,8,opt,name=image_repository,json=imageRepository,proto3,oneof" json:"image_repository,omitempty"`
 	// The control-plane endpoint the runner joins, as host:port. Leave
 	// unset for Planton's hosted control plane (the runner's built-in

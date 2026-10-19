@@ -1,7 +1,7 @@
 // Package permissions loads and validates per-kind runner permission
 // manifests -- the catalog/<provider>/<kind>/iac/permissions.yaml sidecars
 // declaring the least-privilege permissions the IaC runner's cloud
-// principal needs for the OFFICIAL modules. Every entry carries provenance
+// principal needs for the PLATFORM modules. Every entry carries provenance
 // (derived from module static analysis, or proven by live-run capture);
 // the distinction is a trust feature consumers display. Enrollment is the
 // file's presence: every discovered permissions.yaml is held to this

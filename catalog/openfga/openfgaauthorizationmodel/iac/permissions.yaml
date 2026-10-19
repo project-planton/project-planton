@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's OpenFGA credential needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Schema: iac/catalogkindpermissions/v1.
 #
 # OpenFGA authenticates with a bearer credential against the customer-run
@@ -36,7 +36,7 @@
 #   (openfga_authorization_model_document data source) is a local transform
 #   via the openfga/language library -- no API call.
 #
-# All entries are derived from static analysis of the official module
+# All entries are derived from static analysis of the platform module
 # (openfga_authorization_model's create/read paths and no-op delete in the
 # provider's authorization_model_client.go / authorization_model_resource.go,
 # github.com/openfga/terraform-provider-openfga, retrieved 2026-08-22); the

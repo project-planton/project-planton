@@ -8,7 +8,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources deploys a standing Planton runner from the official
+// Resources deploys a standing Planton runner from Planton's
 // planton-runner OCI chart as a real Helm release, so the deployed runner
 // is byte-identical to a hand-installed one — the chart carries the
 // load-bearing enrollment mechanics this module deliberately does NOT

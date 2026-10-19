@@ -116,9 +116,9 @@ one law gets four extra clauses when you read it:
   benchmark onto another provider's kind -- if asked, say the
   framework names only its own provider in scope.
 - **Provenance is part of the answer.** Permission entries are `derived`
-  (read from the official module sources by static analysis) or `proven`
+  (read from the platform module sources by static analysis) or `proven`
   (observed from live provisioning runs) -- state which, and that manifests
-  describe the official modules as shipped.
+  describe the platform modules as shipped.
 
 ## Speak the user's language
 

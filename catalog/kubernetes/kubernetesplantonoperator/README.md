@@ -25,8 +25,8 @@ Also not the right kind when:
 
 ## Overview
 
-**KubernetesPlantonOperator** installs the Planton operator from the
-official `planton-operator` Helm chart (OCI,
+**KubernetesPlantonOperator** installs the Planton operator from
+Planton's `planton-operator` Helm chart (OCI,
 `ghcr.io/plantonhq/charts`). The operator reconciles `PlantonPlatform`
 custom resources into running self-hosted Planton platforms — control
 plane, web console, identity server (Keycloak), PostgreSQL

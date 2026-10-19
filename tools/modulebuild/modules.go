@@ -29,7 +29,7 @@ func parseEngine(s string) (Engine, error) {
 	return "", fmt.Errorf("engine %q is neither pulumi nor terraform", s)
 }
 
-// Module is one official module a release ships.
+// Module is one platform module a release ships.
 type Module struct {
 	// Dir is the module directory as the catalog names it, e.g.
 	// catalog/aws/awsvpc/iac/tf -- the module manifest's key.

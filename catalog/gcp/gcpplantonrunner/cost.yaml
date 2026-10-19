@@ -1,7 +1,7 @@
 # Cost profile: what drives this component's bill. Field paths are
 # spec-relative proto field names, held to the served contract by the
 # catalog-data conformance gate. The spec deliberately hides the compute
-# substrate; the official modules provision it on Cloud Run -- one
+# substrate; the platform modules provision it on Cloud Run -- one
 # always-on instance (min = max = 1, CPU always allocated) plus a Secret
 # Manager secret holding the runner token. Schema:
 # finops/catalogkindcostprofile/v1.

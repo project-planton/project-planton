@@ -1,7 +1,7 @@
 # =============================================================================
 # Reproducible Modules Gate
 # =============================================================================
-# A platform recognises an official module by the checksums its release
+# A platform recognises a platform module by the checksums its release
 # published (the module manifest's digest), and skips every resource whose
 # module digest did not change. So a module whose source did not change must
 # publish the same bytes release after release, or every release re-runs

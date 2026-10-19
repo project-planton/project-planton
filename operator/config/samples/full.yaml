@@ -146,7 +146,6 @@ spec:
   #   organization: {slug: acme, name: Acme Corp}
   #   environment: {slug: prod}
   #   admins: [you@example.com, teammate@example.com]
-  #   iacProvisioner: tofu               # or terraform; the zero-config default is tofu
 
   # In-cluster runner -- deployed BY DEFAULT: the worker that executes IaC
   # deploys, pre-registered at first boot with state on its own volume. Zero

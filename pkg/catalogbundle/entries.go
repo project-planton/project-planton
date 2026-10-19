@@ -17,7 +17,7 @@ import (
 // Catalog entries are the bundle's display-and-deploy-coordinates cargo: one
 // document per user-facing kind (entries/<provider>/<kind>.yaml) carrying the
 // kind's title, description, URL slug, logo, contract links, and the
-// official IaC module directories the release ships for it. Every field is a
+// platform IaC module directories the release ships for it. Every field is a
 // projection of the release's own tree -- the catalog page's H1 and intro,
 // the iac/ directories that actually exist -- authored once beside the
 // kind and never restated by hand, so consumers render and deploy the
@@ -67,7 +67,7 @@ type CatalogEntry struct {
 	LogoUrl string `json:"logoUrl"`
 	// WebLinks point at the kind's versioned API contract.
 	WebLinks CatalogEntryWebLinks `json:"webLinks"`
-	// IacModules names the official module directories the release ships.
+	// IacModules names the platform module directories the release ships.
 	IacModules CatalogEntryIacModules `json:"iacModules"`
 	// CostSummary is the kind's cost anatomy at a glance, projected
 	// from its cost profile and generated preset estimates (the costs/ and
@@ -80,7 +80,7 @@ type CatalogEntry struct {
 	ControlSummary *CatalogEntryControlSummary `json:"controlSummary,omitempty"`
 	// PermissionsProvenance says how the kind's permission manifest
 	// (the permissions/ cargo) was established: "derived" (static analysis
-	// of the official modules), "proven" (observed from live provisioning),
+	// of the platform modules), "proven" (observed from live provisioning),
 	// or "mixed". Presence signals a downloadable least-privilege manifest
 	// exists; the value carries the trust distinction. Absent when the
 	// kind ships no fact-sheets.
@@ -113,7 +113,7 @@ type CatalogEntryCostSummary struct {
 // gate guarantees every catalog control is examined, so these counts always
 // sum to the catalog's size and "examined" is never in question.
 type CatalogEntryControlSummary struct {
-	// EnforcedByDefault counts controls the official modules (or the
+	// EnforcedByDefault counts controls the platform modules (or the
 	// provider) enforce on every deployment.
 	EnforcedByDefault int `json:"enforcedByDefault"`
 	// Configurable counts controls exposed as spec choices.
@@ -139,7 +139,7 @@ type CatalogEntryContractLinks struct {
 	Outputs  string `json:"outputs"`
 }
 
-// CatalogEntryIacModules names the official module directories the release
+// CatalogEntryIacModules names the platform module directories the release
 // ships for a kind. An engine whose directory is absent from the tree
 // stays empty here, and deploy paths refuse that engine for the kind --
 // presence is truth from the release's own tree, never an assumption. A

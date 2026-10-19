@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract, the official modules, and Cloudflare's own documentation
+# spec contract, the platform modules, and Cloudflare's own documentation
 # (R2 data security page, retrieved 2026-08-22). Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1

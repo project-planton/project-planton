@@ -13,7 +13,7 @@
 //	conversions/**        every authored ConversionSpec, provider/kind layout
 //	presets/**            every kind's preset manifests, provider/kind layout
 //	entries/**            every user-facing kind's catalog entry (title,
-//	                      description, slug, logo, contract links, official
+//	                      description, slug, logo, contract links, platform
 //	                      IaC module directories, and -- for covered
 //	                      kinds -- fact-sheet summaries), provider/kind
 //	                      layout

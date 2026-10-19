@@ -8,7 +8,7 @@ var vars = struct {
 	// reference must be the JOINED "<repo>/<chart>" string (see main.go).
 	DefaultChartRepository string
 
-	// HelmChartName is the official runner chart.
+	// HelmChartName is Planton's runner chart.
 	HelmChartName string
 
 	// DefaultChartVersion is the chart this catalog release was validated

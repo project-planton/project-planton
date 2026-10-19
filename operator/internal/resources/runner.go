@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	// RunnerDefaultImageRepo is the official runner image. It bundles the
+	// RunnerDefaultImageRepo is Planton's runner image. It bundles the
 	// planton-runner binary plus the IaC toolchain (OpenTofu, Pulumi, cloud
 	// auth exec plugins), so the pod needs no init or sidecar containers.
 	RunnerDefaultImageRepo = DefaultImageRegistry + "/" + RunnerImageSlug

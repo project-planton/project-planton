@@ -92,7 +92,7 @@ func secretHomeOf(field protoreflect.FieldDescriptor) string {
 func secretHomeUnread(home secretHome, engine string) string {
 	return fmt.Sprintf(
 		"the %s module never reads spec.%s -- the platform refuses a secret in spec.%s and sends the author there, "+
-			"so a secret put where the platform asks is silently not deployed; read it the way the official module "+
+			"so a secret put where the platform asks is silently not deployed; read it the way the platform module "+
 			"does (eject it to see how)", engine, home.HomePath, home.Refused)
 }
 

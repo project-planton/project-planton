@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's OpenFGA credential needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Schema: iac/catalogkindpermissions/v1.
 #
 # OpenFGA authenticates with a bearer credential against the customer-run
@@ -32,7 +32,7 @@
 #     "POST /stores/{store_id}/write" -- write the tuple on create (Write with a writes arm) and delete it on destroy (Write with a deletes arm); every spec field is immutable, so any change is a delete followed by a write on this same endpoint
 #     "POST /stores/{store_id}/read"  -- read the tuple back on refresh (Read, filtered to the exact user/relation/object)
 #
-# All entries are derived from static analysis of the official module
+# All entries are derived from static analysis of the platform module
 # (openfga_relationship_tuple's create/read/delete paths in the provider's
 # relationship_tuple_client.go, github.com/openfga/terraform-provider-openfga,
 # retrieved 2026-08-22); the live capture lane upgrades them to proven.

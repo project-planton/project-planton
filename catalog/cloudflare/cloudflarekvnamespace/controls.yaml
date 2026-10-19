@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract, the official modules, and Cloudflare's own documentation
+# spec contract, the platform modules, and Cloudflare's own documentation
 # (Workers KV data security page, retrieved 2026-08-22). Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
@@ -67,7 +67,7 @@ spec:
       notes: KV is Cloudflare's globally distributed store -- values are served from Cloudflare's network with no zonal or regional placement for this spec to configure; there is no availability topology to choose.
     - control_id: deletion-protection
       status: not_applicable
-      notes: Neither the Cloudflare API nor either official module exposes a deletion-protection flag for KV namespaces; deleting the namespace deletes every key in it whenever the credential allows.
+      notes: Neither the Cloudflare API nor either platform module exposes a deletion-protection flag for KV namespaces; deleting the namespace deletes every key in it whenever the credential allows.
     - control_id: managed-patching
       status: enforced_by_default
       evidence:

@@ -1,5 +1,5 @@
 // Command modulebuild is the one place a release builds, packs and describes
-// Planton's official IaC modules.
+// Planton's platform IaC modules.
 //
 // A platform recognises a module by its digest: the checksums of the artifacts
 // a release published for it (see pkg/downloads/modulemanifest). For that to

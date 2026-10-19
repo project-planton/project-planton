@@ -192,8 +192,7 @@ variable "spec" {
         slug = optional(string)
         name = optional(string, "")
       }))
-      admins          = optional(list(string), [])
-      iac_provisioner = optional(string)
+      admins = optional(list(string), [])
       secret_backend = optional(object({
         type = string
         aws_secrets_manager = optional(object({
@@ -448,7 +447,7 @@ variable "spec" {
       replicas                    = optional(number)
       external_config_secret_name = optional(string, "")
       service_account_annotations = optional(map(string), {})
-      # Override of the release official IaC modules are downloaded from; unset
+      # Override of the release platform IaC modules are downloaded from; unset
       # means the platform's own catalog release (the shape every install should have).
       iac_modules_version = optional(string, "")
       # A Secret you own for the platform's secrets key (vault off); unset means

@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Planton on Kubernetes
 spec:
-  selector:
-    kind: platform
   description: >-
     Run Planton itself on your own cluster. One deploy installs the
     Planton operator (once per cluster) and declares a complete

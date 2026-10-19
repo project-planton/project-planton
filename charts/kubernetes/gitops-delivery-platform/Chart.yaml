@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Kubernetes GitOps Delivery Platform
 spec:
-  selector:
-    kind: platform
   description: >-
     Git as the deployment truth from day one — Argo CD continuously
     syncing your clusters from repositories, and Argo Workflows running

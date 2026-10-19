@@ -26,7 +26,7 @@ type Provenance int32
 
 const (
 	Provenance_provenance_unspecified Provenance = 0
-	// Derived by static analysis of the official module sources: the entry
+	// Derived by static analysis of the platform module sources: the entry
 	// covers the module's declared resources but has not been observed
 	// against a live cloud account.
 	Provenance_derived Provenance = 1

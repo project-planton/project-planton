@@ -19,7 +19,7 @@ message ControlPosture {
   // (catalog/_compliance/controls-catalog.yaml). Must exist there -- the
   // conformance gate enforces it.
   string control_id = 1;
-  // Whether the official modules enforce, expose, or cannot express the
+  // Whether the platform modules enforce, expose, or cannot express the
   // control.
   Status status = 2;
   // The spec field that turns the control on/off or tunes it. Required when
@@ -38,7 +38,7 @@ message ControlPosture {
 // Status is the kind's enforcement stance on a control.
 enum Status {
   status_unspecified = 0;
-  // The official modules (or the provider itself) enforce the control on
+  // The platform modules (or the provider itself) enforce the control on
   // every deployment; no spec choice can disable it.
   enforced_by_default = 1;
   // The control is a spec choice: field_path names the field, and notes
@@ -63,7 +63,7 @@ message Evidence {
 // Type classifies where evidence comes from.
 enum Type {
   type_unspecified = 0;
-  // The official IaC modules hardcode the posture (verified in module
+  // The platform IaC modules hardcode the posture (verified in module
   // source).
   module_default = 1;
   // The cloud provider guarantees the posture for this resource class;

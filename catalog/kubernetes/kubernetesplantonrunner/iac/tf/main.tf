@@ -1,6 +1,6 @@
 # KubernetesPlantonRunner Terraform module.
 #
-# Deploys a standing Planton runner from the official planton-runner OCI
+# Deploys a standing Planton runner from Planton's planton-runner OCI
 # chart as a real Helm release, so the deployed runner is byte-identical
 # to a hand-installed one — the chart carries the load-bearing enrollment
 # mechanics this module deliberately does NOT re-model: replicas pinned to

@@ -176,7 +176,7 @@ func getModulePathFromStaging(kindName, moduleVersion string, noCleanup bool) (*
 //   - moduleDir non-empty is a user decision (--module-dir, or a directory
 //     derived by --local-module); a directory that is not a usable module
 //     must fail loudly here, because falling through would silently deploy
-//     the official module in place of the one the user pointed at.
+//     the platform module in place of the one the user pointed at.
 //
 // Returns the absolute module directory, or "" when resolution should fall
 // through to download/staging.
@@ -196,14 +196,14 @@ func resolveLocalModuleDir(moduleDir string) (string, error) {
 			return "", nil
 		}
 		return "", errors.Wrapf(err,
-			"cannot read the module directory %s — check that it exists and is readable, or drop --module-dir to use the official module", moduleDir)
+			"cannot read the module directory %s — check that it exists and is readable, or drop --module-dir to use the platform module", moduleDir)
 	}
 	if !isTerraformModuleDir {
 		if !explicit {
 			return "", nil
 		}
 		return "", errors.Errorf(
-			"the module directory %s contains no .tf files — an OpenTofu/Terraform module needs at least one; point --module-dir at the folder holding the module's .tf files, or drop the flag to use the official module", moduleDir)
+			"the module directory %s contains no .tf files — an OpenTofu/Terraform module needs at least one; point --module-dir at the folder holding the module's .tf files, or drop the flag to use the platform module", moduleDir)
 	}
 
 	// Normalize to an absolute path: downstream steps build the generated

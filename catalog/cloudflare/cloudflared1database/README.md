@@ -268,7 +268,7 @@ For in-depth architectural guidance, deployment methods comparison, and producti
 
 ## Terraform and Pulumi
 
-This kind supports both Pulumi (default) and Terraform:
+This kind ships both engines; it deploys with OpenTofu unless the organization chose Pulumi:
 
 - **Pulumi**: `iac/pulumi/` - Go-based implementation
 - **Terraform**: `iac/tf/` - HCL-based implementation

@@ -8,7 +8,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources installs the Planton operator from the official
+// Resources installs the Planton operator from Planton's
 // planton-operator Helm chart (OCI, ghcr.io/plantonhq/charts) as ONE real
 // Helm release, byte-identical to a hand-installed one. The chart owns its
 // two definitions (PlantonPlatform, PlantonIdentityProvider) as release

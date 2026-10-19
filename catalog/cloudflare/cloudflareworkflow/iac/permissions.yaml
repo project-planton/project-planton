@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Cloudflare credential needs
-# to provision, update, and destroy this component with the official
+# to provision, update, and destroy this component with the platform
 # modules. Cloudflare authenticates with a bearer API token assembled from
 # named permission groups; every group entry is `derived` (static analysis
 # of the module sources, cited in notes) until the live capture lane

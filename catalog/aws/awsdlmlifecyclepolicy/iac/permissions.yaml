@@ -1,6 +1,6 @@
 # IaC runner permissions: the least-privilege statements a provisioning
 # identity needs to manage this component's full lifecycle (create, read,
-# update, delete, tag) through the official modules. Resource patterns use
+# update, delete, tag) through the platform modules. Resource patterns use
 # catalog placeholders; NON-SCOPABLE facts are verified against the AWS
 # service reference (servicereference.us-east-1.amazonaws.com/v1/dlm/dlm.json).
 # Schema: iac/catalogkindpermissions/v1.

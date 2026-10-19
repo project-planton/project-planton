@@ -1,6 +1,6 @@
 # Terraform Module to Deploy KubernetesPlantonRunner
 
-This module installs a standing Planton runner from the official
+This module installs a standing Planton runner from Planton's
 `planton-runner` chart (oci://ghcr.io/plantonhq/charts) as a real Helm
 release. The resources, in dependency order: the installation namespace
 (created only when `create_namespace` is true, with the Planton

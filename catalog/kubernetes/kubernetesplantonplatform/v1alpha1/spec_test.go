@@ -938,16 +938,6 @@ var _ = ginkgo.Describe("KubernetesPlantonPlatformSpec Validation Tests", func()
 			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
 
-		ginkgo.It("should fail on an unknown IaC provisioner", func() {
-			input := minimalValidPlatform()
-			provisioner := "pulumi"
-			input.Spec.Bootstrap = &KubernetesPlantonPlatformBootstrap{
-				IacProvisioner: &provisioner,
-			}
-			err := protovalidate.Validate(input)
-			gomega.Expect(err).NotTo(gomega.BeNil())
-		})
-
 		ginkgo.It("should fail on an out-of-range gateway port", func() {
 			input := minimalValidPlatform()
 			port := int32(70000)

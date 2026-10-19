@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile
@@ -38,7 +38,7 @@ spec:
       notes: The MCP endpoint is a public AWS-managed URL -- this kind exposes no network-source restriction (no security groups, no VPC endpoint policy) on the inbound path. Caller restriction is identity-shaped (authorizer_type, custom_jwt_authorizer.allowed_workloads and custom claims); the private_endpoint arms in the spec are OUTBOUND paths to private backends and IdPs, not inbound controls.
     - control_id: edge-protection
       status: not_applicable
-      notes: The service reference publishes WebACL association actions for gateways (GatewayAssociateWebACL and kin), but neither this spec nor the official modules expose an attachment surface yet. In-manifest request filtering is limited to JWT claim checks and Lambda REQUEST interceptors, which rewrite rather than block at the edge.
+      notes: The service reference publishes WebACL association actions for gateways (GatewayAssociateWebACL and kin), but neither this spec nor the platform modules expose an attachment surface yet. In-manifest request filtering is limited to JWT claim checks and Lambda REQUEST interceptors, which rewrite rather than block at the edge.
     - control_id: rbac
       status: enforced_by_default
       evidence:

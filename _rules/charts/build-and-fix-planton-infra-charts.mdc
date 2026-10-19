@@ -92,7 +92,7 @@ Run the build from the `charts/` directory:
 cd charts && make build
 ```
 
-This discovers all charts and runs `planton chart build <chart> --no-browser` on each one, printing a pass/fail summary. The `planton chart build` and `planton chart publish` commands are provided by the Planton **Platform** CLI (the `InfraChart` kind is a platform API); the offline `chart validate` used by Phase 0 is defined once in this repo and mounted by BOTH binaries. The Platform build remains the engine-of-record gate for publishing.
+This discovers all charts and runs `planton chart build <chart> --no-browser` on each one, printing a pass/fail summary. The `planton chart build` command is provided by the Planton **Platform** CLI (the `InfraChart` kind is a platform API); the offline `chart validate` used by Phase 0 is defined once in this repo and mounted by BOTH binaries. The Platform build remains the engine-of-record gate before a chart ships in the release.
 
 To build a single chart:
 

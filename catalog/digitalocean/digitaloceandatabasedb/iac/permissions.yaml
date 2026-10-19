@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's DigitalOcean credential
-# needs to provision, update, and destroy this component with the official
+# needs to provision, update, and destroy this component with the platform
 # modules. DigitalOcean authenticates with a bearer API token carrying
 # named scopes; every group entry is `derived` (static analysis of the
 # module sources, cited in notes) until the live capture lane upgrades it

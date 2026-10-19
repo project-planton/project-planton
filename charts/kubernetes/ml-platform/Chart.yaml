@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Kubernetes ML Platform
 spec:
-  selector:
-    kind: platform
   description: >-
     Declare an ML platform in one manifest — JupyterHub notebooks for
     every team member, MLflow tracking and model registry with durable

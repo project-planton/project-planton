@@ -8,7 +8,7 @@ package moduleverify
 // region, an ECS service's cluster). A module that never emits a field leaves it empty on every
 // resource it deploys, and whatever reads it fails far from the cause -- a Cloud Run service that
 // ran but read "cannot be located on the provider". Both engines feed one transformer, so each
-// must emit every field. This suite pins that every official module of every kind, in each
+// must emit every field. This suite pins that every platform module of every kind, in each
 // engine it ships, populates its kind's whole contract, and that the check fires per engine.
 
 import (
@@ -21,7 +21,7 @@ import (
 	"github.com/plantonhq/planton/pkg/iac/provisioner"
 )
 
-// outputsPending names the official modules that do not yet emit their kind's whole contract.
+// outputsPending names the platform modules that do not yet emit their kind's whole contract.
 // The ledger only shrinks: a listed module that now emits everything fails the suite until its
 // line is removed, so a fix is never left unrecorded, and a module not listed may never regress.
 var outputsPending = map[string]string{
@@ -43,7 +43,7 @@ func unpopulatedOutputWarnings(result *Result) []string {
 	return found
 }
 
-func TestVerify_Outputs_EveryOfficialModulePopulatesItsKindsContract(t *testing.T) {
+func TestVerify_Outputs_EveryPlatformModulePopulatesItsKindsContract(t *testing.T) {
 	root := repoRoot(t)
 	modules := 0
 	for _, kind := range catalogkindreflect.KindsList() {
@@ -79,7 +79,7 @@ func TestVerify_Outputs_EveryOfficialModulePopulatesItsKindsContract(t *testing.
 		}
 	}
 	if modules < 100 {
-		t.Fatalf("found %d official modules; the catalog carries hundreds -- the walk is not reaching catalog/", modules)
+		t.Fatalf("found %d platform modules; the catalog carries hundreds -- the walk is not reaching catalog/", modules)
 	}
 }
 

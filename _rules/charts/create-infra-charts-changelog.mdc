@@ -327,9 +327,6 @@ planton chart validate charts/gcp/cloud-run-service
 # Build and preview chart (platform CLI)
 planton chart build gcp/cloud-run-service
 
-# Publish chart to platform
-planton chart publish gcp/cloud-run-service
-
 # Install the chart as an Infra Stack
 planton chart install my-stack gcp/cloud-run-service -f ./my-values.yaml
 ```

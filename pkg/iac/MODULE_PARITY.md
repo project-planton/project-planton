@@ -134,7 +134,7 @@ before the module runs.
   input surface against the kind's schema, and that every secret home the kind declares
   (`secret_home` on a field every viewer reads) is read by the module in both engines,
   with severities tied to what actually breaks a deployment. Its fleet test proves every
-  official module reads its kind's secret homes.
+  platform module reads its kind's secret homes.
 
 ## Worked example
 

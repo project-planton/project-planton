@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Stripe key needs to provision, update, and
-# destroy this component with the official module. Stripe authenticates with a restricted API
+# destroy this component with the platform module. Stripe authenticates with a restricted API
 # key whose permissions are a Read or Write choice per resource on the Dashboard's restricted-key
 # form (Write includes Read); the stripe/stripe provider (0.3.0, iac/tf/provider.tf) sends it as
 # a bearer token. Resource names are the form's labels. Every group is `derived` (static analysis

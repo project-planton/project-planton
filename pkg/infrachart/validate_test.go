@@ -23,8 +23,6 @@ kind: InfraChart
 metadata:
   name: Test Chart
 spec:
-  selector:
-    kind: platform
   description: hermetic test chart
 `
 
