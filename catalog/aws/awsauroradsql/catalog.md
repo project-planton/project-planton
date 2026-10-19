@@ -51,7 +51,7 @@ This creates a delete-protected single-region cluster with AWS-owned encryption;
 
 ### InfraChart
 
-When the cluster deploys alongside its encryption key in one chart, wire the key via ValueFromRef:
+When the cluster deploys alongside its encryption key in one chart, wire the key by reference:
 
 ```yaml
 spec:
@@ -80,7 +80,7 @@ These are the most important decisions when configuring a cluster. Explore the f
 
 **Deletes are gated twice by design** — `deletionProtectionEnabled` refuses deletes at AWS; `forceDestroy` makes the module disable protection first and then delete. Keep `forceDestroy` false in production — it converts deletion protection from a wall into a speed bump. Both toggles update in place.
 
-**Encryption can change, cheaply** — leave `kmsEncryptionKey` empty for the AWS-owned key, or reference an AwsKmsKey for your own governance. Switching keys later re-encrypts in place with no replacement, so starting on the AWS-owned key is not a one-way door.
+**Encryption can change, cheaply** — leave `kmsEncryptionKey` empty for the AWS-owned key, or reference an AWS KMS Key for your own governance. Switching keys later re-encrypts in place with no replacement, so starting on the AWS-owned key is not a one-way door.
 
 **Cost follows usage, not capacity** — there is nothing to size: the drivers are request volume and bytes stored. That makes DSQL forgiving for spiky and idle workloads, and makes a runaway query loop a billing event rather than a saturated instance — put application-side guardrails where you would once have put a connection pool.
 
@@ -88,20 +88,20 @@ These are the most important decisions when configuring a cluster. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `kmsEncryptionKey` | `status.outputs.key_arn` |
-| **AwsAuroraDsql** | `multiRegion.peerClusterArns[]` | `status.outputs.cluster_arn` |
+| **AWS KMS Key** | `kmsEncryptionKey` | `status.outputs.key_arn` |
+| **AWS Aurora DSQL** | `multiRegion.peerClusterArns[]` | `status.outputs.cluster_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `endpoint` | The PostgreSQL connection host, `{identifier}.dsql.{region}.on.aws` | Application database-host configuration — the chart-ready join key |
 | `cluster_arn` | The cluster's ARN | A peer cluster's `multiRegion.peerClusterArns`; IAM policies granting `dsql:DbConnect` |
-| `vpc_endpoint_service_name` | The PrivateLink service name | An interface VPC endpoint (AwsVpcEndpoint) for private connectivity without public egress |
+| `vpc_endpoint_service_name` | The PrivateLink service name | An interface VPC endpoint (AWS VPC Endpoint) for private connectivity without public egress |
 
 `identifier` (the AWS-generated cluster ID and import address) and `encryption_type` (AWS's report of `AWS_OWNED_KMS_KEY` or `CUSTOMER_MANAGED_KMS_KEY`) are also present — audit echoes, not composition inputs.
 

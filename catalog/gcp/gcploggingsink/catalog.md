@@ -6,15 +6,15 @@ Creates a Cloud Logging sink — the routing rule that exports log entries match
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Logging Sink** -- exactly one of the four scope-specific sink resources, selected by `spec.scope`
-- **Logging API enablement** -- `logging.googleapis.com` enabled (project-scope sinks only)
+- **Logging Sink** — exactly one of the four scope-specific sink resources, selected by `spec.scope`
+- **Logging API enablement** — `logging.googleapis.com` enabled (project-scope sinks only)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target scope.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target scope.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### GCP Project
 
@@ -53,7 +53,7 @@ This exports every ERROR-and-above entry in the project to hourly JSON batches i
 
 ### InfraChart
 
-When deploying alongside its destination, the sink references the bucket via ValueFromRef:
+When deploying alongside its destination, the sink references the bucket:
 
 ```yaml
 spec:
@@ -72,28 +72,28 @@ The InfraPipeline deploys the bucket first, then the sink with the resolved buck
 
 These are the most important decisions when configuring a logging sink. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Scope** -- omit for the ambient project; set `folderId`/`organizationId` for centralized capture across children (with `includeChildren`), or `billingAccount` for billing-account logs.
+**Scope** — omit for the ambient project; set `folderId`/`organizationId` for centralized capture across children (with `includeChildren`), or `billingAccount` for billing-account logs.
 
-**Destination** -- reference the resource, not the URI: `gcsBucket` (hourly batches, cheapest archive), `bigqueryDataset` (near-real-time, queryable; enable `usePartitionedTables`), `pubsubTopic` (streaming to third-party pipelines), or `rawUri` for Cloud Logging buckets.
+**Destination** — reference the resource, not the URI: `gcsBucket` (hourly batches, cheapest archive), `bigqueryDataset` (near-real-time, queryable; enable `usePartitionedTables`), `pubsubTopic` (streaming to third-party pipelines), or `rawUri` for Cloud Logging buckets.
 
-**Filter and exclusions** -- the filter selects what exports; exclusions carve noisy sub-streams (health checks, debug logs) out of a broad export, with `sample()` support for percentage drops.
+**Filter and exclusions** — the filter selects what exports; exclusions carve noisy sub-streams (health checks, debug logs) out of a broad export, with `sample()` support for percentage drops.
 
-**Writer identity** -- GCP mints a service account per sink; the `writer_identity` output is what you grant on the destination. Project sinks can opt into the legacy shared account or bring their own — other scopes always mint one.
+**Writer identity** — GCP mints a service account per sink; the `writer_identity` output is what you grant on the destination. Project sinks can opt into the legacy shared account or bring their own — other scopes always mint one.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpGcsBucket** (optional) | `destination.gcsBucket` | `status.outputs.bucket_id` |
-| **GcpBigQueryDataset** (optional) | `destination.bigqueryDataset` | `status.outputs.self_link` |
-| **GcpPubSubTopic** (optional) | `destination.pubsubTopic` | `status.outputs.topic_id` |
-| **GcpProject** (optional) | `scope.projectId` | `status.outputs.project_id` |
+| **GCP GCS Bucket** (optional) | `destination.gcsBucket` | `status.outputs.bucket_id` |
+| **GCP BigQuery Dataset** (optional) | `destination.bigqueryDataset` | `status.outputs.self_link` |
+| **GCP Pub/Sub Topic** (optional) | `destination.pubsubTopic` | `status.outputs.topic_id` |
+| **GCP Project** (optional) | `scope.projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -104,14 +104,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Error archive to GCS** -- ERROR-and-above to a bucket: the cheapest compliance archive. Start from the **Error Archive to GCS** preset.
+**Error archive to GCS** — ERROR-and-above to a bucket: the cheapest compliance archive. Start from the **Error Archive to GCS** preset.
 
-**Audit logs to BigQuery** -- audit entries to partitioned BigQuery tables for SQL-queryable forensics. Start from the **Audit Logs to BigQuery** preset.
+**Audit logs to BigQuery** — audit entries to partitioned BigQuery tables for SQL-queryable forensics. Start from the **Audit Logs to BigQuery** preset.
 
-**Log stream to Pub/Sub** -- everything (minus carve-outs) streamed to a topic — the front door to Datadog/Splunk-class pipelines. Start from the **Log Stream to Pub/Sub** preset.
+**Log stream to Pub/Sub** — everything (minus carve-outs) streamed to a topic — the front door to Datadog/Splunk-class pipelines. Start from the **Log Stream to Pub/Sub** preset.
 
 ## Works With
 
-- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) -- the archival destination
-- [**GCP BigQuery Dataset**](/infra-catalog/gcp-big-query-dataset) -- the queryable destination
-- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) -- the streaming destination
+- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) — the archival destination
+- [**GCP BigQuery Dataset**](/infra-catalog/gcp-big-query-dataset) — the queryable destination
+- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) — the streaming destination

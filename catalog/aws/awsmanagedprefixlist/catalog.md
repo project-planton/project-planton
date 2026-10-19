@@ -1,6 +1,6 @@
 # AWS Managed Prefix List
 
-Deploys a customer-managed prefix list — a named, versioned set of CIDR blocks that security-group rules, NACL rules, and route tables reference as a single `pl-` id. Define "our offices" or "partner ranges" once, reference the one id everywhere, then update the list once when the network changes instead of hunting rules across accounts. The list's name in AWS is `metadata.name`, entries are managed as the complete declarative set, and the address family is fixed for life.
+Deploys a customer-managed prefix list — a named, versioned set of CIDR blocks that security-group rules, NACL rules, and route tables reference as a single prefix-list ID (pl-…). Define "our offices" or "partner ranges" once, reference the one id everywhere, then update the list once when the network changes instead of hunting rules across accounts. The list's name in AWS is `metadata.name`, entries are managed as the complete declarative set, and the address family is fixed for life.
 
 ## What Gets Created
 
@@ -76,7 +76,7 @@ This kind has no foreign key dependencies — it is a leaf: its entries are lite
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -6,10 +6,10 @@ Deploys an AWS Batch job queue: the place jobs are submitted to, and the routing
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Batch Job Queue** -- with the configured priority, accept/drain state, and the ordered compute-environment mapping
-- **Fair-share attachment** -- when `schedulingPolicy` references an [AWS Batch Scheduling Policy](/infra-catalog/aws-batch-scheduling-policy), jobs are ordered by share identifier instead of first-in-first-out
-- **Stuck-job fuses** -- optional `jobStateTimeLimitActions` that automatically CANCEL jobs stuck at the head of the queue in RUNNABLE past a threshold
-- **AWS Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
+- **Batch Job Queue** — with the configured priority, accept/drain state, and the ordered compute-environment mapping
+- **Fair-share attachment** — when `schedulingPolicy` references an [AWS Batch Scheduling Policy](/infra-catalog/aws-batch-scheduling-policy), jobs are ordered by share identifier instead of first-in-first-out
+- **Stuck-job fuses** — optional `jobStateTimeLimitActions` that automatically CANCEL jobs stuck at the head of the queue in RUNNABLE past a threshold
+- **AWS Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
 
 Jobs themselves are submitted against the queue at runtime (SubmitJob) using an [AWS Batch Job Definition](/infra-catalog/aws-batch-job-definition); the queue holds them until a mapped environment has capacity.
 
@@ -17,13 +17,13 @@ Jobs themselves are submitted against the queue at runtime (SubmitJob) using an 
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
 
 ### AWS Account
 
-- **At least one Batch compute environment** in the same region, in the VALID state. Reference an AwsBatchComputeEnvironment Infra Component or provide a literal ARN.
-- **A scheduling policy** (optional) for fair-share ordering. Reference an AwsBatchSchedulingPolicy Infra Component or provide a literal ARN — and note that once attached, a policy can be replaced but never removed.
+- **At least one Batch compute environment** in the same region, in the VALID state. Reference an AWS Batch Compute Environment Infra Component or provide a literal ARN.
+- **A scheduling policy** (optional) for fair-share ordering. Reference an AWS Batch Scheduling Policy Infra Component or provide a literal ARN — and note that once attached, a policy can be replaced but never removed.
 
 ## Deploy
 
@@ -97,28 +97,28 @@ The InfraPipeline resolves the dependency graph, deploys both environments and t
 
 These are the most important decisions when configuring a job queue. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Environment mapping** -- up to three environments in preference order; the scheduler tries the LOWEST order first and overflows upward when capacity runs out. All mapped environments must be one compute family: EC2-based (EC2/SPOT) or Fargate-based (FARGATE/FARGATE_SPOT), never mixed.
+**Environment mapping** — up to three environments in preference order; the scheduler tries the LOWEST order first and overflows upward when capacity runs out. All mapped environments must be one compute family: EC2-based (EC2/SPOT) or Fargate-based (FARGATE/FARGATE_SPOT), never mixed.
 
-**Priority** -- BETWEEN queues sharing a compute environment, not between jobs: when two queues compete for the same capacity, the higher value schedules first. Ordering within one queue comes from submission order or the fair-share policy.
+**Priority** — BETWEEN queues sharing a compute environment, not between jobs: when two queues compete for the same capacity, the higher value schedules first. Ordering within one queue comes from submission order or the fair-share policy.
 
-**Fair-share policy** -- attach an AwsBatchSchedulingPolicy to order jobs by share identifier. The one asymmetric decision on this kind: a live queue can REPLACE its policy but never REMOVE it — returning to first-in-first-out requires recreating the queue.
+**Fair-share policy** — attach an AWS Batch Scheduling Policy to order jobs by share identifier. The one asymmetric decision on this kind: a live queue can REPLACE its policy but never REMOVE it — returning to first-in-first-out requires recreating the queue.
 
-**Stuck-job fuses** -- one entry per stuck-cause (`reason` is a matcher against AWS's own three causes, not free text): insufficient capacity, exceeds-environment-maximum, or unsatisfiable resource requirements. `action` and `state` are fixed by AWS at CANCEL/RUNNABLE.
+**Stuck-job fuses** — one entry per stuck-cause (`reason` is a matcher against AWS's own three causes, not free text): insufficient capacity, exceeds-environment-maximum, or unsatisfiable resource requirements. `action` and `state` are fixed by AWS at CANCEL/RUNNABLE.
 
-**Drain switch** -- set `state: DISABLED` to reject new submissions while queued jobs finish — the safe first step of maintenance or decommissioning.
+**Drain switch** — set `state: DISABLED` to reject new submissions while queued jobs finish — the safe first step of maintenance or decommissioning.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsBatchComputeEnvironment** (1-3) | `computeEnvironmentOrder[].computeEnvironment` | `status.outputs.compute_environment_arn` |
-| **AwsBatchSchedulingPolicy** (optional) | `schedulingPolicy` | `status.outputs.scheduling_policy_arn` |
+| **AWS Batch Compute Environment** (1-3) | `computeEnvironmentOrder[].computeEnvironment` | `status.outputs.compute_environment_arn` |
+| **AWS Batch Scheduling Policy** (optional) | `schedulingPolicy` | `status.outputs.scheduling_policy_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -129,14 +129,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Single environment** -- the standard starting point: one queue on one environment with a stuck-job fuse. Start from the **Single Environment Queue** preset.
+**Single environment** — the standard starting point: one queue on one environment with a stuck-job fuse. Start from the **Single Environment Queue** preset.
 
-**Spot overflow** -- Spot environment at order 1, On-Demand at order 2: lower-cost Spot capacity when it exists, reliable capacity when it does not. Start from the **Spot-First With On-Demand Overflow** preset.
+**Spot overflow** — Spot environment at order 1, On-Demand at order 2: lower-cost Spot capacity when it exists, reliable capacity when it does not. Start from the **Spot-First With On-Demand Overflow** preset.
 
-**Two-tier priority** -- an urgent queue (priority 100) and a backfill queue (priority 1) on the same environment: urgent jobs always claim capacity first.
+**Two-tier priority** — an urgent queue (priority 100) and a backfill queue (priority 1) on the same environment: urgent jobs always claim capacity first.
 
 ## Works With
 
-- [**AWS Batch Compute Environment**](/infra-catalog/aws-batch-compute-environment) -- the capacity this queue dispatches onto, in preference order
-- [**AWS Batch Job Definition**](/infra-catalog/aws-batch-job-definition) -- the container blueprint jobs are submitted from at runtime
-- [**AWS Batch Scheduling Policy**](/infra-catalog/aws-batch-scheduling-policy) -- fair-share ordering within this queue (replaceable, never removable)
+- [**AWS Batch Compute Environment**](/infra-catalog/aws-batch-compute-environment) — the capacity this queue dispatches onto, in preference order
+- [**AWS Batch Job Definition**](/infra-catalog/aws-batch-job-definition) — the container blueprint jobs are submitted from at runtime
+- [**AWS Batch Scheduling Policy**](/infra-catalog/aws-batch-scheduling-policy) — fair-share ordering within this queue (replaceable, never removable)

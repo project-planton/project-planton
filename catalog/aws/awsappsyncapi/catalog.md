@@ -103,7 +103,7 @@ This creates a Cognito-authorized GraphQL API whose `getOrder` resolver reads th
 
 ### InfraChart
 
-When the API deploys alongside its user pool, table, and data-source role in one chart, the same reference fields wire via ValueFromRef:
+When the API deploys alongside its user pool, table, and data-source role in one chart, the same reference fields wire:
 
 ```yaml
 spec:
@@ -161,22 +161,22 @@ These are the most important decisions when configuring an AppSync API. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCognitoUserPool** | `graphql.auth.userPool.userPoolId` | `status.outputs.user_pool_id` |
-| **AwsIamRole** | `datasources[].serviceRoleArn` | `status.outputs.role_arn` |
-| **AwsDynamodb** | `datasources[].dynamodb.tableName` | `status.outputs.table_name` |
-| **AwsLambda** | `datasources[].lambda.functionArn` | `status.outputs.function_arn` |
-| **AwsEventBridgeBus** | `datasources[].eventbridge.eventBusArn` | `status.outputs.bus_arn` |
-| **AwsOpenSearchDomain** | `datasources[].opensearch.endpoint` | `status.outputs.endpoint` |
-| **AwsRdsCluster** | `datasources[].relationalDatabase.dbClusterIdentifier` | `status.outputs.cluster_identifier` |
-| **AwsWafWebAcl** | `graphql.webAclArn` | `status.outputs.web_acl_arn` |
-| **AwsCertManagerCert** | `customDomain.certificateArn` | `status.outputs.cert_arn` |
-| **AwsAppSyncApi** | `graphql.merged.sourceApis[].sourceApiId` | `status.outputs.api_id` |
+| **AWS Cognito User Pool** | `graphql.auth.userPool.userPoolId` | `status.outputs.user_pool_id` |
+| **AWS IAM Role** | `datasources[].serviceRoleArn` | `status.outputs.role_arn` |
+| **AWS DynamoDB** | `datasources[].dynamodb.tableName` | `status.outputs.table_name` |
+| **AWS Lambda** | `datasources[].lambda.functionArn` | `status.outputs.function_arn` |
+| **AWS EventBridge Bus** | `datasources[].eventbridge.eventBusArn` | `status.outputs.bus_arn` |
+| **AWS OpenSearch Domain** | `datasources[].opensearch.endpoint` | `status.outputs.endpoint` |
+| **AWS RDS Cluster** | `datasources[].relationalDatabase.dbClusterIdentifier` | `status.outputs.cluster_identifier` |
+| **AWS WAF Web ACL** | `graphql.webAclArn` | `status.outputs.web_acl_arn` |
+| **AWS ACM Certificate** | `customDomain.certificateArn` | `status.outputs.cert_arn` |
+| **AWS AppSync API** | `graphql.merged.sourceApis[].sourceApiId` | `status.outputs.api_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

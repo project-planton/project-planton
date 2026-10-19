@@ -59,7 +59,7 @@ This uploads an SNI-class custom certificate to the zone with Cloudflare's defau
 
 ### InfraChart
 
-When the zone is deployed in the same InfraPipeline, wire the reference with ValueFromRef:
+When the zone is deployed in the same InfraPipeline, wire the reference:
 
 ```yaml
 spec:
@@ -102,13 +102,13 @@ These are the most important decisions when configuring a custom SSL certificate
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -130,7 +130,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 ## Works With
 
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone the certificate is uploaded to; wire `zoneId` via ValueFromRef
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone the certificate is uploaded to; wire `zoneId` by reference
 - [**Cloudflare Certificate Pack**](/infra-catalog/cloudflare-certificate-pack) — the managed-renewal alternative; pick it unless an external issuer is mandated
 - [**Cloudflare Zone TLS Settings**](/infra-catalog/cloudflare-zone-tls-settings) — minimum TLS version and Universal SSL posture on the same zone
 - [**Cloudflare Authenticated Origin Pulls Certificate**](/infra-catalog/cloudflare-authenticated-origin-pulls-certificate) — the right kind when the goal is Cloudflare-to-origin authentication rather than visitor-facing TLS

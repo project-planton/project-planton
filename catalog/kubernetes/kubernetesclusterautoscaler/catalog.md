@@ -6,14 +6,14 @@ Installs the Kubernetes Cluster Autoscaler from the official Helm chart. The aut
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Helm Release** (`cluster-autoscaler`) -- the autoscaler Deployment (chart default 1 replica; extras leader-elect as warm standbys), RBAC, the provider-specific credential Secret when declared credentials are used, and the chart-derived service account cloud-side keyless bindings are written against
-- **Namespace** (optional) -- created with standard governance labels when `createNamespace` is true; a pre-existing `kube-system` is the upstream convention
+- **Helm Release** (`cluster-autoscaler`) — the autoscaler Deployment (chart default 1 replica; extras leader-elect as warm standbys), RBAC, the provider-specific credential Secret when declared credentials are used, and the chart-derived service account cloud-side keyless bindings are written against
+- **Namespace** (optional) — created with standard governance labels when `createNamespace` is true; a pre-existing `kube-system` is the upstream convention
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### Kubernetes Cluster
 
@@ -79,29 +79,29 @@ The InfraPipeline creates the namespace first, then installs the autoscaler into
 
 These are the most important decisions when configuring the autoscaler. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Exactly one provider arm** -- the installation serves one cloud; switching arms is a redeploy decision, not a runtime toggle. The KWOK arm is a simulation sandbox — never production.
+**Exactly one provider arm** — the installation serves one cloud; switching arms is a redeploy decision, not a runtime toggle. The KWOK arm is a simulation sandbox — never production.
 
-**Auto-discovery over explicit lists** -- tag-based discovery (AWS) enrolls new node groups with no autoscaler change; explicit group lists go stale as infrastructure evolves.
+**Auto-discovery over explicit lists** — tag-based discovery (AWS) enrolls new node groups with no autoscaler change; explicit group lists go stale as infrastructure evolves.
 
-**Scale-down posture** -- the scaling block's thresholds control how aggressively idle capacity is reclaimed; the untouched dials keep upstream's defaults (an unset dial ships nothing). `least-waste` is the common production expander, and balancing similar node groups keeps one-group-per-zone layouts even.
+**Scale-down posture** — the scaling block's thresholds control how aggressively idle capacity is reclaimed; the untouched dials keep upstream's defaults (an unset dial ships nothing). `least-waste` is the common production expander, and balancing similar node groups keeps one-group-per-zone layouts even.
 
-**Version alignment** -- keep the autoscaler's minor version aligned with the cluster's Kubernetes minor per upstream guidance; the chart pin is that decision.
+**Version alignment** — keep the autoscaler's minor version aligned with the cluster's Kubernetes minor per upstream guidance; the chart pin is that decision.
 
-**The flag long tail** -- `extraArgs` carries the autoscaler's long tail of flags as key/value pairs (the chart's own contract) — the tier between the typed fields and the `helmValues` YAML hatch.
+**The flag long tail** — `extraArgs` carries the autoscaler's long tail of flags as key/value pairs (the chart's own contract) — the tier between the typed fields and the `helmValues` YAML hatch.
 
-**Pick one fleet controller** -- the autoscaler and Karpenter must not manage the same capacity. For AWS clusters that would rather launch right-sized machines on demand than manage groups, Karpenter is the modern alternative.
+**Pick one fleet controller** — the autoscaler and Karpenter must not manage the same capacity. For AWS clusters that would rather launch right-sized machines on demand than manage groups, Karpenter is the modern alternative.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -113,15 +113,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**EKS autodiscovery** -- tag-discovered ASGs with IRSA identity — the standard AWS posture. Start from the **EKS Autodiscovery** preset.
+**EKS autodiscovery** — tag-discovered ASGs with IRSA identity — the standard AWS posture. Start from the **EKS Autodiscovery** preset.
 
-**Cluster API** -- annotated MachineDeployments on management or workload clusters. Start from the **Cluster API** preset.
+**Cluster API** — annotated MachineDeployments on management or workload clusters. Start from the **Cluster API** preset.
 
-**Azure VMSS** -- VMSS-backed node pools with workload-identity or declared-credential postures. Start from the **Azure VMSS** preset.
+**Azure VMSS** — VMSS-backed node pools with workload-identity or declared-credential postures. Start from the **Azure VMSS** preset.
 
 ## Works With
 
-- [**Karpenter**](/infra-catalog/kubernetes-karpenter) -- the alternative fleet controller for just-in-time, right-sized nodes; never both on the same capacity.
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- unschedulable pods from any workload (Deployments, StatefulSets, Jobs) trigger scale-up; no per-workload wiring needed.
-- [**Kubernetes PodDisruptionBudget**](/infra-catalog/kubernetes-pod-disruption-budget) -- shapes what the autoscaler may evict during scale-down.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- reference it when installing outside `kube-system` so Infra Charts create the namespace first.
+- [**Karpenter**](/infra-catalog/kubernetes-karpenter) — the alternative fleet controller for just-in-time, right-sized nodes; never both on the same capacity.
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — unschedulable pods from any workload (Deployments, StatefulSets, Jobs) trigger scale-up; no per-workload wiring needed.
+- [**Kubernetes PodDisruptionBudget**](/infra-catalog/kubernetes-pod-disruption-budget) — shapes what the autoscaler may evict during scale-down.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — reference it when installing outside `kube-system` so Infra Charts create the namespace first.

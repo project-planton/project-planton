@@ -1,14 +1,14 @@
 # Stripe Billing Portal Configuration
 
-Declares what Stripe's customer portal lets your customers do -- cancel, update payment methods and details, download invoices -- as a configuration of your own that every portal session names. One Infra Component per configuration.
+Declares what Stripe's customer portal lets your customers do — cancel, update payment methods and details, download invoices — as a configuration of your own that every portal session names. One Infra Component per configuration.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one portal configuration in the Stripe account your Stripe connection's key belongs to:
 
-- **The features** -- exactly what a customer may do, each off unless enabled
-- **The policies** -- cancellation timing and reasons, what a customer may change on a subscription, how changes are prorated
-- **The branding** -- the headline and the privacy and terms links
+- **The features** — exactly what a customer may do, each off unless enabled
+- **The policies** — cancellation timing and reasons, what a customer may change on a subscription, how changes are prorated
+- **The branding** — the headline and the privacy and terms links
 
 The account's default configuration is never adopted or changed.
 
@@ -16,8 +16,8 @@ The account's default configuration is never adopted or changed.
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -60,7 +60,7 @@ Name `status.outputs.id` as `configuration` when your application opens a portal
 
 ### InfraChart
 
-When the payment-method configuration and this portal deploy together, wire the portal to the configuration with ValueFromRef, so a customer adding a card in the portal is offered the same methods as checkout:
+When the payment-method configuration and this portal deploy together, wire the portal to the configuration with references, so a customer adding a card in the portal is offered the same methods as checkout:
 
 ```yaml
 spec:
@@ -81,13 +81,13 @@ The InfraPipeline deploys the payment-method configuration first, then this port
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Cancel when the paid period ends** -- `subscriptionCancel.mode: at_period_end` keeps what the customer paid for; `immediately` needs a `prorationBehavior` decision.
+**Cancel when the paid period ends** — `subscriptionCancel.mode: at_period_end` keeps what the customer paid for; `immediately` needs a `prorationBehavior` decision.
 
-**No subscription changes yet** -- letting customers switch plans or change quantities can't be declared: Stripe requires switchable products whenever `subscriptionUpdate` is on, returns them only when a read expands them, and the pinned Stripe provider never does, so every create that names them fails after Stripe has made the configuration. Validation refuses `subscriptionUpdate.enabled` and its `products`.
+**No subscription changes yet** — letting customers switch plans or change quantities can't be declared: Stripe requires switchable products whenever `subscriptionUpdate` is on, returns them only when a read expands them, and the pinned Stripe provider never does, so every create that names them fails after Stripe has made the configuration. Validation refuses `subscriptionUpdate.enabled` and its `products`.
 
-**The same methods as checkout** -- reference a Stripe Payment Method Configuration in `paymentMethodUpdate`.
+**The same methods as checkout** — reference a Stripe Payment Method Configuration in `paymentMethodUpdate`.
 
-**Destroy deactivates** -- Stripe keeps the configuration, inactive, forever; a session that names it afterwards is refused.
+**Destroy deactivates** — Stripe keeps the configuration, inactive, forever; a session that names it afterwards is refused.
 
 ## Outputs and Dependencies
 
@@ -114,12 +114,12 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Self-serve, cancel at period end** -- Details, payment methods, invoices and cancellation with a reason. Start from the **Self-Serve Portal, Cancel at Period End** preset.
+**Self-serve, cancel at period end** — Details, payment methods, invoices and cancellation with a reason. Start from the **Self-Serve Portal, Cancel at Period End** preset.
 
-**Cancel at once, with a credit** -- Cancellation that takes effect immediately and credits the unused time. Start from the **Cancel at Once, with a Credit** preset.
+**Cancel at once, with a credit** — Cancellation that takes effect immediately and credits the unused time. Start from the **Cancel at Once, with a Credit** preset.
 
 ## Works With
 
-- [**Stripe Payment Method Configuration**](/infra-catalog/stripe-payment-method-configuration) -- the methods a customer may add in the portal.
-- [**Stripe Webhook Endpoint**](/infra-catalog/stripe-webhook-endpoint) -- where the subscription changes customers make here arrive as events.
-- [**Stripe Product**](/infra-catalog/stripe-product) and [**Stripe Price**](/infra-catalog/stripe-price) -- the plans a customer subscribes to. A portal can't name them as plans to switch between on the pinned provider.
+- [**Stripe Payment Method Configuration**](/infra-catalog/stripe-payment-method-configuration) — the methods a customer may add in the portal.
+- [**Stripe Webhook Endpoint**](/infra-catalog/stripe-webhook-endpoint) — where the subscription changes customers make here arrive as events.
+- [**Stripe Product**](/infra-catalog/stripe-product) and [**Stripe Price**](/infra-catalog/stripe-price) — the plans a customer subscribes to. A portal can't name them as plans to switch between on the pinned provider.

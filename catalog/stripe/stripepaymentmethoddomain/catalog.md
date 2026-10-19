@@ -1,20 +1,20 @@
 # Stripe Payment Method Domain
 
-Registers a domain where your own checkout pages may show wallet buttons -- Apple Pay, Google Pay, Link, PayPal, Amazon Pay and Klarna -- and reports, wallet by wallet, whether each can appear and why not. One Infra Component per domain.
+Registers a domain where your own checkout pages may show wallet buttons — Apple Pay, Google Pay, Link, PayPal, Amazon Pay and Klarna — and reports, wallet by wallet, whether each can appear and why not. One Infra Component per domain.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module registers one domain in the Stripe account your Stripe connection's key belongs to:
 
-- **The registration** -- the hostname your checkout page is served from
-- **Each wallet's state** -- active or inactive, with Stripe's reason
+- **The registration** — the hostname your checkout page is served from
+- **Each wallet's state** — active or inactive, with Stripe's reason
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -52,11 +52,11 @@ An Infra Job tracks the change in real time.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The host, not a URL** -- `domainName` is `pay.acme.com`, never `https://pay.acme.com/checkout`.
+**The host, not a URL** — `domainName` is `pay.acme.com`, never `https://pay.acme.com/checkout`.
 
-**Read the wallet outputs** -- an inactive wallet says why in `status.outputs`.
+**Read the wallet outputs** — an inactive wallet says why in `status.outputs`.
 
-**Destroy only forgets** -- the domain stays registered and enabled in Stripe; apply `enabled: false` first to turn wallets off.
+**Destroy only forgets** — the domain stays registered and enabled in Stripe; apply `enabled: false` first to turn wallets off.
 
 ## Outputs and Dependencies
 
@@ -78,10 +78,10 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Checkout domain** -- wallets on your checkout host. Start from the **Checkout Domain** preset.
+**Checkout domain** — wallets on your checkout host. Start from the **Checkout Domain** preset.
 
-**Wallets paused** -- a registration with wallets off, the step before retiring it. Start from the **Wallets Paused** preset.
+**Wallets paused** — a registration with wallets off, the step before retiring it. Start from the **Wallets Paused** preset.
 
 ## Works With
 
-- [**Stripe Payment Method Configuration**](/infra-catalog/stripe-payment-method-configuration) -- which methods checkout offers; wallets among them appear on registered domains.
+- [**Stripe Payment Method Configuration**](/infra-catalog/stripe-payment-method-configuration) — which methods checkout offers; wallets among them appear on registered domains.

@@ -76,7 +76,7 @@ This creates an enabled schedule that invokes the referenced Lambda at 2 AM East
 
 ### InfraChart
 
-When the schedule deploys alongside its target and role in one chart, wire the edges via ValueFromRef — `target.arn` carries no default kind, so its valueFrom states the kind explicitly:
+When the schedule deploys alongside its target and role in one chart, wire the edges by reference — `target.arn` carries no default kind, so its valueFrom states the kind explicitly:
 
 ```yaml
 spec:
@@ -122,17 +122,17 @@ These are the most important decisions when configuring a schedule. Explore the 
 
 `target.arn` ranges over many services (Lambda, SQS, ECS, Kinesis, Step Functions, event buses, SageMaker, API destinations), so it carries no default kind — a valueFrom on it states its kind explicitly. The common wirings:
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `target.roleArn` | `status.outputs.role_arn` |
-| **AwsLambda** | `target.arn` | `status.outputs.function_arn` |
-| **AwsSqsQueue** | `target.arn` / `target.deadLetterQueueArn` | `status.outputs.queue_arn` |
-| **AwsEcsTaskDefinition** | `target.ecsParameters.taskDefinitionArn` | `status.outputs.task_definition_arn` |
-| **AwsKmsKey** | `kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** | `target.roleArn` | `status.outputs.role_arn` |
+| **AWS Lambda** | `target.arn` | `status.outputs.function_arn` |
+| **AWS SQS Queue** | `target.arn` / `target.deadLetterQueueArn` | `status.outputs.queue_arn` |
+| **AWS ECS Task Definition** | `target.ecsParameters.taskDefinitionArn` | `status.outputs.task_definition_arn` |
+| **AWS KMS Key** | `kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

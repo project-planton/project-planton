@@ -6,18 +6,18 @@ Declares one Kafka topic in the manifest of the team that owns it: its partition
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kafka topic** -- a `managed_kafka_topic` on the referenced cluster
+- **Kafka topic** — a `managed_kafka_topic` on the referenced cluster
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **`GcpManagedKafkaCluster`** -- the cluster the topic lives on (`cluster`), by reference or by name.
+- **`GcpManagedKafkaCluster`** — the cluster the topic lives on (`cluster`), by reference or by name.
 
 ## Deploy
 
@@ -58,24 +58,24 @@ Reference the `GcpManagedKafkaCluster` from `cluster` so the topic deploys after
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Partitions** -- `partitionCount` is the unit of consumer parallelism; it can grow later but never shrink.
+**Partitions** — `partitionCount` is the unit of consumer parallelism; it can grow later but never shrink.
 
-**Replication** -- `replicationFactor: 3` keeps a copy in each of the cluster's three zones -- the high-availability choice. It cannot change after creation.
+**Replication** — `replicationFactor: 3` keeps a copy in each of the cluster's three zones — the high-availability choice. It cannot change after creation.
 
-**Retention and compaction** -- `configs` overrides the cluster's defaults per topic: `retention.ms` for time-based retention, `cleanup.policy: compact` to keep the latest value per key.
+**Retention and compaction** — `configs` overrides the cluster's defaults per topic: `retention.ms` for time-based retention, `cleanup.policy: compact` to keep the latest value per key.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpManagedKafkaCluster** | `cluster` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Managed Kafka Cluster** | `cluster` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -86,12 +86,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Event stream** -- 12 partitions, three replicas, seven days of retention. Start from the **Event Stream** preset.
+**Event stream** — 12 partitions, three replicas, seven days of retention. Start from the **Event Stream** preset.
 
-**Changelog** -- A log-compacted topic that keeps the latest value per key. Start from the **Compacted Changelog** preset.
+**Changelog** — A log-compacted topic that keeps the latest value per key. Start from the **Compacted Changelog** preset.
 
 ## Works With
 
-- [**GCP Managed Kafka Cluster**](/infra-catalog/gcp-managed-kafka-cluster) -- the cluster the topic lives on
-- [**GCP Managed Kafka ACL**](/infra-catalog/gcp-managed-kafka-acl) -- access for producers and consumers
-- [**GCP Managed Kafka Connector**](/infra-catalog/gcp-managed-kafka-connector) -- pipelines in and out of the topic
+- [**GCP Managed Kafka Cluster**](/infra-catalog/gcp-managed-kafka-cluster) — the cluster the topic lives on
+- [**GCP Managed Kafka ACL**](/infra-catalog/gcp-managed-kafka-acl) — access for producers and consumers
+- [**GCP Managed Kafka Connector**](/infra-catalog/gcp-managed-kafka-connector) — pipelines in and out of the topic

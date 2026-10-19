@@ -1,24 +1,24 @@
 # GCP Colab Runtime
 
-Hands a person a ready notebook machine. A Colab Enterprise runtime is a notebook VM assigned to one user, built from one of your runtime templates -- so a new hire or a workshop participant opens Colab Enterprise and finds their runtime waiting, already on the right machine, network, and image. The block can also keep a runtime stopped until it is needed, so you pay only for its disk.
+Hands a person a ready notebook machine. A Colab Enterprise runtime is a notebook VM assigned to one user, built from one of your runtime templates — so a new hire or a workshop participant opens Colab Enterprise and finds their runtime waiting, already on the right machine, network, and image. The block can also keep a runtime stopped until it is needed, so you pay only for its disk.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **Runtime** -- a `colab.Runtime` assigned to the user from the template
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **Runtime** — a `colab.Runtime` assigned to the user from the template
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **GcpColabRuntimeTemplate** -- the template the runtime is built from.
+- **GCP Colab Runtime Template** — the template the runtime is built from.
 
 ## Deploy
 
@@ -62,24 +62,24 @@ Reference a `GcpColabRuntimeTemplate` from `runtimeTemplate`; declare one runtim
 
 These are the most important decisions when configuring a runtime. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Who it belongs to** -- `runtimeUser` is the only person who can connect notebooks to it.
+**Who it belongs to** — `runtimeUser` is the only person who can connect notebooks to it.
 
-**Which template** -- the machine, network, and image all come from `runtimeTemplate`.
+**Which template** — the machine, network, and image all come from `runtimeTemplate`.
 
-**Running or stopped** -- `desiredState` starts or stops the runtime on every apply; `STOPPED` keeps the disk and stops the compute bill. Leave it unset to let the user decide.
+**Running or stopped** — `desiredState` starts or stops the runtime on every apply; `STOPPED` keeps the disk and stops the compute bill. Leave it unset to let the user decide.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpColabRuntimeTemplate** | `runtimeTemplate` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Colab Runtime Template** | `runtimeTemplate` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -91,11 +91,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Personal runtime** -- a runtime for one person on the team's standard template, left for them to start and stop. Start from the **Personal Runtime** preset.
+**Personal runtime** — a runtime for one person on the team's standard template, left for them to start and stop. Start from the **Personal Runtime** preset.
 
-**Parked GPU runtime** -- a GPU runtime kept stopped and auto-upgraded, ready on demand. Start from the **Parked GPU** preset.
+**Parked GPU runtime** — a GPU runtime kept stopped and auto-upgraded, ready on demand. Start from the **Parked GPU** preset.
 
 ## Works With
 
-- [**GCP Colab Runtime Template**](/infra-catalog/gcp-colab-runtime-template) -- the template the runtime is built from
-- [**GCP Colab Schedule**](/infra-catalog/gcp-colab-schedule) -- scheduled notebook runs
+- [**GCP Colab Runtime Template**](/infra-catalog/gcp-colab-runtime-template) — the template the runtime is built from
+- [**GCP Colab Schedule**](/infra-catalog/gcp-colab-schedule) — scheduled notebook runs

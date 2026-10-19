@@ -103,14 +103,14 @@ These are the most important decisions when configuring a Gateway policy. Explor
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| CloudflareZeroTrustTunnelVirtualNetwork | `spec.ruleSettings.dnsResolvers.ipv4[].vnetId` | `status.outputs.virtual_network_id` |
-| CloudflareZeroTrustTunnelVirtualNetwork | `spec.ruleSettings.dnsResolvers.ipv6[].vnetId` | `status.outputs.virtual_network_id` |
+| Cloudflare Zero Trust Tunnel Virtual Network | `spec.ruleSettings.dnsResolvers.ipv4[].vnetId` | `status.outputs.virtual_network_id` |
+| Cloudflare Zero Trust Tunnel Virtual Network | `spec.ruleSettings.dnsResolvers.ipv6[].vnetId` | `status.outputs.virtual_network_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

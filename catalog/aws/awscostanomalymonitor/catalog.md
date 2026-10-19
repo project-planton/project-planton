@@ -78,7 +78,7 @@ This creates a CUSTOM monitor watching spend tagged `team: platform` (spelled `u
 
 ### InfraChart
 
-When real-time alerts should publish to an SNS topic deployed in the same chart, wire the subscriber via ValueFromRef:
+When real-time alerts should publish to an SNS topic deployed in the same chart, wire the subscriber by reference:
 
 ```yaml
 spec:
@@ -133,13 +133,13 @@ These are the most important decisions when configuring an anomaly monitor. Expl
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSnsTopic** | `subscriptions[].subscribers[].address` (type SNS) | `status.outputs.topic_arn` |
+| **AWS SNS Topic** | `subscriptions[].subscribers[].address` (type SNS) | `status.outputs.topic_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -6,15 +6,15 @@ Deploys a type-safe Kubernetes Secret supporting Opaque, TLS, Docker registry, B
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Secret** -- a single Secret resource in the specified namespace with the correct `type` field set automatically based on the chosen variant (Opaque, `kubernetes.io/tls`, `kubernetes.io/dockerconfigjson`, `kubernetes.io/basic-auth`, `kubernetes.io/ssh-auth`, or `kubernetes.io/service-account-token`). UTF-8 values are written using Kubernetes `stringData` semantics; Opaque `binaryData` entries are written pre-encoded as base64.
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes Secret** — a single Secret resource in the specified namespace with the correct `type` field set automatically based on the chosen variant (Opaque, `kubernetes.io/tls`, `kubernetes.io/dockerconfigjson`, `kubernetes.io/basic-auth`, `kubernetes.io/ssh-auth`, or `kubernetes.io/service-account-token`). UTF-8 values are written using Kubernetes `stringData` semantics; Opaque `binaryData` entries are written pre-encoded as base64.
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
@@ -76,26 +76,26 @@ The InfraPipeline deploys the namespace first, then creates the Secret inside it
 
 These are the most important decisions when configuring a Kubernetes Secret. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Secret type selection** -- Exactly one variant must be provided: `opaque` for arbitrary key-value data (with a `binaryData` map for base64 payloads), `tls` for certificate and private key pairs, `dockerConfigJson` for container registry credentials, `basicAuth` for username/password pairs, `sshAuth` for SSH private keys, or `serviceAccountToken` for a long-lived API token the cluster mints for a ServiceAccount. The variant determines the Kubernetes secret type automatically.
+**Secret type selection** — Exactly one variant must be provided: `opaque` for arbitrary key-value data (with a `binaryData` map for base64 payloads), `tls` for certificate and private key pairs, `dockerConfigJson` for container registry credentials, `basicAuth` for username/password pairs, `sshAuth` for SSH private keys, or `serviceAccountToken` for a long-lived API token the cluster mints for a ServiceAccount. The variant determines the Kubernetes secret type automatically.
 
-**Immutability** -- Set `immutable` to `true` to prevent updates after creation. Immutable secrets reduce API server watch load and protect against accidental overwrites. Once set, the secret data cannot be changed -- you must delete and recreate it.
+**Immutability** — Set `immutable` to `true` to prevent updates after creation. Immutable secrets reduce API server watch load and protect against accidental overwrites. Once set, the secret data cannot be changed — you must delete and recreate it.
 
-**Namespace targeting** -- The `namespace` field defaults to `default` if omitted. Ensure the target namespace exists before deploying.
+**Namespace targeting** — The `namespace` field defaults to `default` if omitted. Ensure the target namespace exists before deploying.
 
-**TLS certificate chain** -- When using the `tls` variant, provide the full PEM-encoded certificate chain in `tlsCrt` (leaf + intermediates) and the corresponding private key in `tlsKey`. Ingress controllers and service meshes automatically validate this type.
+**TLS certificate chain** — When using the `tls` variant, provide the full PEM-encoded certificate chain in `tlsCrt` (leaf + intermediates) and the corresponding private key in `tlsKey`. Ingress controllers and service meshes automatically validate this type.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesServiceAccount** | `serviceAccountToken.serviceAccountName` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes ServiceAccount** | `serviceAccountToken.serviceAccountName` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -107,14 +107,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Application credentials** -- Opaque secret storing database passwords, API keys, and connection strings consumed by application pods via `envFrom` or mounted volumes. Start from the **Opaque Secret** preset.
+**Application credentials** — Opaque secret storing database passwords, API keys, and connection strings consumed by application pods via `envFrom` or mounted volumes. Start from the **Opaque Secret** preset.
 
-**Ingress TLS termination** -- TLS secret containing a certificate and private key pair referenced by Ingress resources for HTTPS termination. Use when cert-manager is not available and certificates are managed externally. Start from the **TLS Secret** preset.
+**Ingress TLS termination** — TLS secret containing a certificate and private key pair referenced by Ingress resources for HTTPS termination. Use when cert-manager is not available and certificates are managed externally. Start from the **TLS Secret** preset.
 
-**Private registry access** -- Docker registry secret providing authentication for pulling images from private container registries (Docker Hub, GCR, ECR, ACR, GHCR). Referenced by pods via `imagePullSecrets`. Start from the **Docker Registry Secret** preset.
+**Private registry access** — Docker registry secret providing authentication for pulling images from private container registries (Docker Hub, GCR, ECR, ACR, GHCR). Referenced by pods via `imagePullSecrets`. Start from the **Docker Registry Secret** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- reference the namespace so Infra Charts create it and this Secret in dependency order.
-- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) -- the `serviceAccountToken` variant references the identity its token belongs to; docker-registry Secrets are attached to ServiceAccounts as `imagePullSecrets`.
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) and the other workload kinds -- consume secrets as env vars, mounted files, or registry credentials.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — reference the namespace so Infra Charts create it and this Secret in dependency order.
+- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) — the `serviceAccountToken` variant references the identity its token belongs to; docker-registry Secrets are attached to ServiceAccounts as `imagePullSecrets`.
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) and the other workload kinds — consume secrets as env vars, mounted files, or registry credentials.

@@ -6,19 +6,19 @@ Creates a Cloud Monitoring dashboard — the console page of charts, scorecards,
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Dashboard** -- a `monitoring.Dashboard` from the spec's `dashboardJson` document
-- **Monitoring API enablement** -- `monitoring.googleapis.com` enabled in the target project (never disabled on destroy)
+- **Dashboard** — a `monitoring.Dashboard` from the spec's `dashboardJson` document
+- **Monitoring API enablement** — `monitoring.googleapis.com` enabled in the target project (never disabled on destroy)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### GCP Project
 
-- **A GCP project** where the dashboard is created (directly or via a GcpProject reference).
+- **A GCP project** where the dashboard is created (directly or via a GCP Project reference).
 - **IAM**: the deploying identity needs `roles/monitoring.dashboardEditor` or broader.
 
 ## Deploy
@@ -71,7 +71,7 @@ This creates a one-chart grid dashboard charting fleet CPU utilization. An Infra
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, the dashboard references its project via ValueFromRef:
+When deploying as part of a multi-resource environment, the dashboard references its project:
 
 ```yaml
 spec:
@@ -90,21 +90,21 @@ The InfraPipeline deploys the project first, then creates the dashboard in it.
 
 These are the most important decisions when configuring a dashboard. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**dashboardJson** -- the whole dashboard as one JSON document in the Monitoring API's own Dashboard format: `displayName` plus exactly one layout (`gridLayout`, `mosaicLayout`, `rowLayout`, or `columnLayout`) whose widgets carry the charts. The practical workflow: build the dashboard visually in the GCP console, open its **JSON editor**, and paste the export here — server-assigned keys round-trip cleanly.
+**dashboardJson** — the whole dashboard as one JSON document in the Monitoring API's own Dashboard format: `displayName` plus exactly one layout (`gridLayout`, `mosaicLayout`, `rowLayout`, or `columnLayout`) whose widgets carry the charts. The practical workflow: build the dashboard visually in the GCP console, open its **JSON editor**, and paste the export here — server-assigned keys round-trip cleanly.
 
-**deletionPolicy** -- `DELETE` (default), `PREVENT` (protects a team's primary operational view from accidental teardown), or `ABANDON` (remove from management, keep in GCP).
+**deletionPolicy** — `DELETE` (default), `PREVENT` (protects a team's primary operational view from accidental teardown), or `ABANDON` (remove from management, keep in GCP).
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -114,12 +114,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Golden signals** -- the SRE starter dashboard: traffic, errors, latency, saturation on one page. Start from the **Golden Signals** preset.
+**Golden signals** — the SRE starter dashboard: traffic, errors, latency, saturation on one page. Start from the **Golden Signals** preset.
 
-**Infrastructure overview** -- fleet-level CPU, memory, disk, and network for Compute Engine workloads. Start from the **Infrastructure Overview** preset.
+**Infrastructure overview** — fleet-level CPU, memory, disk, and network for Compute Engine workloads. Start from the **Infrastructure Overview** preset.
 
 ## Works With
 
-- [**GCP Monitoring Alert Policy**](/infra-catalog/gcp-monitoring-alert-policy) -- link the dashboard from alert runbook documentation
-- [**GCP Log Metric**](/infra-catalog/gcp-log-metric) -- chart log-based metrics on dashboard widgets
-- [**GCP Project**](/infra-catalog/gcp-project) -- provides the GCP project where the dashboard is created
+- [**GCP Monitoring Alert Policy**](/infra-catalog/gcp-monitoring-alert-policy) — link the dashboard from alert runbook documentation
+- [**GCP Log Metric**](/infra-catalog/gcp-log-metric) — chart log-based metrics on dashboard widgets
+- [**GCP Project**](/infra-catalog/gcp-project) — provides the GCP project where the dashboard is created

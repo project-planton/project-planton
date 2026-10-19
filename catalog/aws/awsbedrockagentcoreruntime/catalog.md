@@ -76,7 +76,7 @@ This creates a code-bundle runtime running `main.py` on the managed Python 3.13 
 
 ### InfraChart
 
-When the runtime deploys alongside its execution role and code bucket in one chart, wire both references via ValueFromRef:
+When the runtime deploys alongside its execution role and code bucket in one chart, wire both references:
 
 ```yaml
 spec:
@@ -127,19 +127,19 @@ These are the most important decisions when configuring an agent runtime. Explor
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** | `artifact.code.s3.bucket` | `status.outputs.bucket_id` |
-| **AwsSubnet** | `network.vpcConfig.subnets` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `network.vpcConfig.securityGroups` | `status.outputs.security_group_id` |
-| **AwsEfsAccessPoint** | `filesystems[].efsAccessPointArn` | `status.outputs.access_point_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `artifact.code.s3.bucket` | `status.outputs.bucket_id` |
+| **AWS Subnet** | `network.vpcConfig.subnets` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `network.vpcConfig.securityGroups` | `status.outputs.security_group_id` |
+| **AWS EFS Access Point** | `filesystems[].efsAccessPointArn` | `status.outputs.access_point_arn` |
 
-The JWT authorizer's private endpoint additionally takes **AwsVpc**, **AwsSubnet**, and **AwsSecurityGroup** references when the OIDC provider is reached through your VPC.
+The JWT authorizer's private endpoint additionally takes **AWS VPC**, **AWS Subnet**, and **AWS Security Group** references when the OIDC provider is reached through your VPC.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

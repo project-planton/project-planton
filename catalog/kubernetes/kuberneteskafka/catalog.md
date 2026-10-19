@@ -1,6 +1,6 @@
 # Apache Kafka
 
-Deploys an Apache Kafka cluster on Kubernetes as Strimzi `Kafka` + `KafkaNodePool` custom resources in **KRaft mode** — Kafka's built-in Raft metadata quorum; ZooKeeper does not exist in this architecture. The cluster is declared as node pools (independently scalable groups of nodes carrying the `controller` and/or `broker` roles), listeners (how clients reach the brokers, from in-cluster plaintext to cloud LoadBalancers with TLS and SASL), and broker configuration. The Strimzi cluster operator (installed separately as Strimzi Kafka Operator) reconciles the declaration into brokers, controllers, certificates, and the per-cluster entity operators. Topics and users are first-class Infra Components — Kafka Topic and Kafka User — never embedded in this spec.
+Deploys an Apache Kafka cluster on Kubernetes as Strimzi Kafka + KafkaNodePool custom resources in KRaft mode — Kafka's built-in Raft metadata quorum; ZooKeeper does not exist in this architecture. The cluster is declared as node pools (independently scalable groups of nodes carrying the `controller` and/or `broker` roles), listeners (how clients reach the brokers, from in-cluster plaintext to cloud LoadBalancers with TLS and SASL), and broker configuration. The Strimzi cluster operator (installed separately as Strimzi Kafka Operator) reconciles the declaration into brokers, controllers, certificates, and the per-cluster entity operators. Topics and users are first-class Infra Components — Kafka Topic and Kafka User — never embedded in this spec.
 
 ## What Gets Created
 
@@ -117,11 +117,11 @@ These are the most important decisions when configuring an Apache Kafka deployme
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `nodePools[].storage.storageClass` (and per JBOD volume) | `metadata.name` |
-| **KubernetesCertificate** | `listeners[].configuration.brokerCertChainAndKey.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `nodePools[].storage.storageClass` (and per JBOD volume) | `metadata.name` |
+| **Cert Manager Certificate** | `listeners[].configuration.brokerCertChainAndKey.secretName` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 

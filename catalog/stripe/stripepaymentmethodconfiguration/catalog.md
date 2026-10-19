@@ -1,13 +1,13 @@
 # Stripe Payment Method Configuration
 
-Declares which payment methods your checkout offers -- cards, wallets, bank debits, buy now pay later, local methods -- method by method, as a configuration of your own that every checkout names. One Infra Component per configuration.
+Declares which payment methods your checkout offers — cards, wallets, bank debits, buy now pay later, local methods — method by method, as a configuration of your own that every checkout names. One Infra Component per configuration.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one payment-method configuration in the Stripe account your Stripe connection's key belongs to:
 
-- **A preference per method** -- on, off, or left to Stripe, for any of 59 methods
-- **What is really available** -- the methods Stripe reports on and with their capability active
+- **A preference per method** — on, off, or left to Stripe, for any of 59 methods
+- **What is really available** — the methods Stripe reports on and with their capability active
 
 The account's default configuration is never adopted or changed.
 
@@ -15,8 +15,8 @@ The account's default configuration is never adopted or changed.
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -60,13 +60,13 @@ Name `status.outputs.id` as `payment_method_configuration` when your application
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Quote `"on"` and `"off"` for other tools** -- Planton reads them bare, but YAML 1.1 tools such as PyYAML read them as booleans.
+**Quote `"on"` and `"off"` for other tools** — Planton reads them bare, but YAML 1.1 tools such as PyYAML read them as booleans.
 
-**Off means off, left out means Stripe decides** -- a method you do not list keeps Stripe's default for the account; set `"off"` to hide it.
+**Off means off, left out means Stripe decides** — a method you do not list keeps Stripe's default for the account; set `"off"` to hide it.
 
-**Check what is available** -- `status.outputs.availablePaymentMethods` shows the methods Stripe will really offer; a method set on but missing there needs its capability turned on.
+**Check what is available** — `status.outputs.availablePaymentMethods` shows the methods Stripe will really offer; a method set on but missing there needs its capability turned on.
 
-**Destroy deactivates** -- Stripe keeps the configuration, inactive, forever.
+**Destroy deactivates** — Stripe keeps the configuration, inactive, forever.
 
 ## Outputs and Dependencies
 
@@ -89,11 +89,11 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Cards and wallets** -- Cards plus Apple Pay, Google Pay and Link. Start from the **Cards and Wallets** preset.
+**Cards and wallets** — Cards plus Apple Pay, Google Pay and Link. Start from the **Cards and Wallets** preset.
 
-**Cards only** -- Cards, with wallets and deferred payments off. Start from the **Cards Only** preset.
+**Cards only** — Cards, with wallets and deferred payments off. Start from the **Cards Only** preset.
 
 ## Works With
 
-- [**Stripe Billing Portal Configuration**](/infra-catalog/stripe-billing-portal-configuration) -- reference this configuration so the portal offers the same methods.
-- [**Stripe Webhook Endpoint**](/infra-catalog/stripe-webhook-endpoint) -- where the payments these methods complete arrive as events.
+- [**Stripe Billing Portal Configuration**](/infra-catalog/stripe-billing-portal-configuration) — reference this configuration so the portal offers the same methods.
+- [**Stripe Webhook Endpoint**](/infra-catalog/stripe-webhook-endpoint) — where the payments these methods complete arrive as events.

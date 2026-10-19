@@ -6,20 +6,20 @@ Deploys a MongoDB API collection inside a Cosmos DB Mongo database — the unit 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Cosmos DB Mongo Collection** -- a named collection inside the referenced Mongo database, with its shard key and declared indexes (including the `_id` index Azure requires)
-- **Dedicated Throughput** (optional) -- fixed RU/s or an autoscale ceiling owned by this collection alone; omit both to share the database's provisioned throughput (or on serverless accounts)
-- **TTL Policies** (optional) -- a document TTL (an expireAfter index on `_ts`) and an analytical-store TTL
+- **Cosmos DB Mongo Collection** — a named collection inside the referenced Mongo database, with its shard key and declared indexes (including the `_id` index Azure requires)
+- **Dedicated Throughput** (optional) — fixed RU/s or an autoscale ceiling owned by this collection alone; omit both to share the database's provisioned throughput (or on serverless accounts)
+- **TTL Policies** (optional) — a document TTL (an expireAfter index on `_ts`) and an analytical-store TTL
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **A Cosmos DB Mongo database**. Reference an AzureCosmosdbMongoDatabase Infra Component via ValueFromRef, or provide the database's ARM ID directly.
+- **A Cosmos DB Mongo database**. Reference an Azure Cosmos DB Mongo Database Infra Component, or provide the database's ARM ID directly.
 - **For the analytical TTL**: analytical storage enabled on the account.
 
 ## Deploy
@@ -71,25 +71,25 @@ When deploying as part of a multi-resource environment, the account, database, a
 
 These are the most important decisions when configuring a Mongo collection. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Shard key** -- The one decision that cannot change. Pick a document property with high cardinality and even request distribution (tenantId, userId, deviceId). Unset creates an UNSHARDED collection confined to a single physical partition — acceptable only for small, bounded collections.
+**Shard key** — The one decision that cannot change. Pick a document property with high cardinality and even request distribution (tenantId, userId, deviceId). Unset creates an UNSHARDED collection confined to a single physical partition — acceptable only for small, bounded collections.
 
-**Indexes** -- Azure REQUIRES an index on `_id` (declare it with `unique: true`); a collection cannot be created without it. Every other index is a query-performance decision: compound indexes serve queries that filter on their keys in order, and each index taxes every write with extra RU/s. Indexes update in place.
+**Indexes** — Azure REQUIRES an index on `_id` (declare it with `unique: true`); a collection cannot be created without it. Every other index is a query-performance decision: compound indexes serve queries that filter on their keys in order, and each index taxes every write with extra RU/s. Indexes update in place.
 
-**Throughput model** -- Leave both fields unset to share the database's budget; set `throughput` (minimum 400 RU/s, increments of 100) or `autoscaleMaxThroughput` (minimum 1000 RU/s, increments of 1000) for a dedicated budget. Mutually exclusive; neither may be set on serverless accounts.
+**Throughput model** — Leave both fields unset to share the database's budget; set `throughput` (minimum 400 RU/s, increments of 100) or `autoscaleMaxThroughput` (minimum 1000 RU/s, increments of 1000) for a dedicated budget. Mutually exclusive; neither may be set on serverless accounts.
 
-**TTLs** -- `defaultTtlSeconds`: -1 turns TTL on with per-document opt-in expiry; a positive value expires documents that many seconds after their last write; 0 is invalid; unset leaves TTL off. `analyticalStorageTtl` governs the analytical-store copy and requires analytical storage on the account.
+**TTLs** — `defaultTtlSeconds`: -1 turns TTL on with per-document opt-in expiry; a positive value expires documents that many seconds after their last write; 0 is invalid; unset leaves TTL off. `analyticalStorageTtl` governs the analytical-store copy and requires analytical storage on the account.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| AzureCosmosdbMongoDatabase | `mongoDatabaseId` | `status.outputs.mongo_database_id` |
+| Azure Cosmos DB Mongo Database | `mongoDatabaseId` | `status.outputs.mongo_database_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -98,7 +98,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 | `mongo_database_name` | The parent database's name | Application configuration |
 | `cosmosdb_account_name` | The account's name | Connection string composition |
 
-There are deliberately no endpoint or credential outputs here: connectivity and the MongoDB connection strings live on the account (AzureCosmosdbAccount's outputs); the collection is addressed inside that connection by database and collection name.
+There are deliberately no endpoint or credential outputs here: connectivity and the MongoDB connection strings live on the account (Azure Cosmos DB Account's outputs); the collection is addressed inside that connection by database and collection name.
 
 ## Common Patterns
 

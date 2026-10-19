@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 ### AWS Account
 
 - **Quota headroom** — AWS caps account-scope resource policies at 10 per region, and the quota fills fast when every stack ships its own grant. Prefer one shared policy per service class over many near-duplicates.
-- **The target log group** (only for resource scope) — the group whose ARN pins the policy; reference an AwsCloudwatchLogGroup or pass a literal ARN.
+- **The target log group** (only for resource scope) — the group whose ARN pins the policy; reference an AWS CloudWatch Log Group or pass a literal ARN.
 
 ## Deploy
 
@@ -59,7 +59,7 @@ This creates the account-scope grant letting Route53 write query logs into any g
 
 ### InfraChart
 
-When a resource-scoped policy deploys alongside its log group in one chart, wire the group reference via ValueFromRef:
+When a resource-scoped policy deploys alongside its log group in one chart, wire the group reference:
 
 ```yaml
 spec:
@@ -101,13 +101,13 @@ These are the most important decisions when configuring a resource policy. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCloudwatchLogGroup** (resource scope only) | `resourceArn` | `status.outputs.log_group_arn` |
+| **AWS CloudWatch Log Group** (resource scope only) | `resourceArn` | `status.outputs.log_group_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` records the policy's operational identity: `policy_id` (the name or the target ARN — also the provider's import ID), `policy_scope` (ACCOUNT or RESOURCE as AWS recorded it), and `revision_id` (the optimistic-concurrency token guarding the next update). These are audit and import records — nothing downstream composes on a resource policy via ValueFromRef.
+After provisioning, `status.outputs` records the policy's operational identity: `policy_id` (the name or the target ARN — also the provider's import ID), `policy_scope` (ACCOUNT or RESOURCE as AWS recorded it), and `revision_id` (the optimistic-concurrency token guarding the next update). These are audit and import records — nothing downstream composes on a resource policy by reference.
 
 ## Common Patterns
 

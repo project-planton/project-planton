@@ -1,24 +1,24 @@
 # GCP Colab Schedule
 
-Runs a notebook or a pipeline on a timer. A schedule launches a Colab Enterprise notebook -- executing it top to bottom on a runtime template's machine and saving the executed copy with its outputs -- or a Vertex AI Pipelines run, on a cron. Nightly reports, weekly retraining, and hourly data checks become one declared block your team can pause, bound, and review, instead of a cron job on someone's laptop.
+Runs a notebook or a pipeline on a timer. A schedule launches a Colab Enterprise notebook — executing it top to bottom on a runtime template's machine and saving the executed copy with its outputs — or a Vertex AI Pipelines run, on a cron. Nightly reports, weekly retraining, and hourly data checks become one declared block your team can pause, bound, and review, instead of a cron job on someone's laptop.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **Schedule** -- a `colab.Schedule` that launches the declared notebook or pipeline run on its cron
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **Schedule** — a `colab.Schedule` that launches the declared notebook or pipeline run on its cron
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Vertex AI admin permissions on the project, and permission to act as the runs' service account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Vertex AI admin permissions on the project, and permission to act as the runs' service account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpColabRuntimeTemplate**, **GcpGcsBucket**, **GcpServiceAccount** -- the machine, the output bucket, and the identity for notebook runs.
+- **GCP Colab Runtime Template**, **GCP GCS Bucket**, **GCP Service Account** — the machine, the output bucket, and the identity for notebook runs.
 
 ## Deploy
 
@@ -75,34 +75,34 @@ Wire the schedule to a `GcpColabRuntimeTemplate`, a `GcpGcsBucket`, and a `GcpSe
 
 These are the most important decisions when configuring a schedule. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**What runs** -- a notebook (`notebookExecutionJob`) or a pipeline (`pipelineJob`), never both.
+**What runs** — a notebook (`notebookExecutionJob`) or a pipeline (`pipelineJob`), never both.
 
-**When it runs** -- `cron` (with an optional `TZ=` prefix), bounded by `startTime`, `endTime`, and `maxRunCount`.
+**When it runs** — `cron` (with an optional `TZ=` prefix), bounded by `startTime`, `endTime`, and `maxRunCount`.
 
-**How many at once** -- `maxConcurrentRunCount` and `allowQueueing` decide whether a slow run makes the next one skip or wait.
+**How many at once** — `maxConcurrentRunCount` and `allowQueueing` decide whether a slow run makes the next one skip or wait.
 
-**As whom** -- runs execute as a service account (for production) or a user.
+**As whom** — runs execute as a service account (for production) or a user.
 
-**Paused or active** -- `desiredState` pauses and resumes the schedule on every apply.
+**Paused or active** — `desiredState` pauses and resumes the schedule on every apply.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpColabRuntimeTemplate** | `notebookExecutionJob.notebookRuntimeTemplateResourceName` | `status.outputs.name` |
-| **GcpGcsBucket** | `notebookExecutionJob.gcsOutputUri` | `status.outputs.url` |
-| **GcpServiceAccount** | `notebookExecutionJob.serviceAccount`, `pipelineJob.serviceAccount` | `status.outputs.email` |
-| **GcpVpcNetwork** | `notebookExecutionJob.customEnvironmentSpec.networkSpec.network` | `status.outputs.network_id` |
-| **GcpVpcNetwork** | `pipelineJob.network` | `status.outputs.network_self_link` |
-| **GcpSubnetwork** | `notebookExecutionJob.customEnvironmentSpec.networkSpec.subnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpKmsKey** | `notebookExecutionJob.kmsKeyName`, `pipelineJob.kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Colab Runtime Template** | `notebookExecutionJob.notebookRuntimeTemplateResourceName` | `status.outputs.name` |
+| **GCP GCS Bucket** | `notebookExecutionJob.gcsOutputUri` | `status.outputs.url` |
+| **GCP Service Account** | `notebookExecutionJob.serviceAccount`, `pipelineJob.serviceAccount` | `status.outputs.email` |
+| **GCP VPC Network** | `notebookExecutionJob.customEnvironmentSpec.networkSpec.network` | `status.outputs.network_id` |
+| **GCP VPC Network** | `pipelineJob.network` | `status.outputs.network_self_link` |
+| **GCP Subnetwork** | `notebookExecutionJob.customEnvironmentSpec.networkSpec.subnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP KMS Key** | `notebookExecutionJob.kmsKeyName`, `pipelineJob.kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -114,12 +114,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Nightly notebook report** -- a notebook from Cloud Storage run nightly on a template's machine as a service account. Start from the **Nightly Notebook Report** preset.
+**Nightly notebook report** — a notebook from Cloud Storage run nightly on a template's machine as a service account. Start from the **Nightly Notebook Report** preset.
 
-**Weekly pipeline retraining** -- a compiled pipeline from Artifact Registry run weekly with parameters, fail-fast, on a peered network. Start from the **Weekly Pipeline Retraining** preset.
+**Weekly pipeline retraining** — a compiled pipeline from Artifact Registry run weekly with parameters, fail-fast, on a peered network. Start from the **Weekly Pipeline Retraining** preset.
 
 ## Works With
 
-- [**GCP Colab Runtime Template**](/infra-catalog/gcp-colab-runtime-template) -- the machine notebook runs use
-- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) -- notebook sources and outputs
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the run identity
+- [**GCP Colab Runtime Template**](/infra-catalog/gcp-colab-runtime-template) — the machine notebook runs use
+- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) — notebook sources and outputs
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the run identity

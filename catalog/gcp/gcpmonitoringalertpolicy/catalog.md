@@ -1,27 +1,27 @@
 # GCP Monitoring Alert Policy
 
-Creates a Cloud Monitoring alerting policy — the rule that watches metrics or logs (threshold, absence, log-match, MQL, PromQL, or scheduled-SQL conditions) and opens an incident, notifying the referenced channels, when its conditions are met. Channels wire in through ValueFromRef, so the whole paging path — check, policy, channel — is one declarative graph.
+Creates a Cloud Monitoring alerting policy — the rule that watches metrics or logs (threshold, absence, log-match, MQL, PromQL, or scheduled-SQL conditions) and opens an incident, notifying the referenced channels, when its conditions are met. Channels wire in by reference, so the whole paging path — check, policy, channel — is one declarative graph.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Alert Policy** -- a `monitoring.AlertPolicy` with the configured conditions, combiner, severity, notification channels, alert strategy, and runbook documentation
-- **Monitoring API enablement** -- `monitoring.googleapis.com` enabled in the target project (never disabled on destroy)
-- **GCP Labels** -- resource metadata labels applied automatically as `user_labels`
+- **Alert Policy** — a `monitoring.AlertPolicy` with the configured conditions, combiner, severity, notification channels, alert strategy, and runbook documentation
+- **Monitoring API enablement** — `monitoring.googleapis.com` enabled in the target project (never disabled on destroy)
+- **GCP Labels** — resource metadata labels applied automatically as `user_labels`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### GCP Project
 
-- **A GCP project** where the policy is created (directly or via a GcpProject reference).
+- **A GCP project** where the policy is created (directly or via a GCP Project reference).
 - **IAM**: the deploying identity needs `roles/monitoring.alertPolicyEditor` or broader.
-- **Notification channels** to page — deploy GcpMonitoringNotificationChannel resources first (or in the same chart).
+- **Notification channels** to page — deploy GCP Monitoring Notification Channel resources first (or in the same chart).
 
 ## Deploy
 
@@ -80,26 +80,26 @@ The InfraPipeline deploys the channel first, then the policy with the resolved c
 
 These are the most important decisions when configuring an alert policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Conditions** -- one to six, each with exactly one condition arm. `conditionThreshold` is the workhorse (metric crosses a value for a duration); `conditionAbsent` alerts on silence; `conditionMatchedLog` alerts on log entries (and requires the rate limit); `conditionPrometheusQueryLanguage` carries ported Prometheus rules; `conditionSql` runs scheduled SQL over log analytics.
+**Conditions** — one to six, each with exactly one condition arm. `conditionThreshold` is the workhorse (metric crosses a value for a duration); `conditionAbsent` alerts on silence; `conditionMatchedLog` alerts on log entries (and requires the rate limit); `conditionPrometheusQueryLanguage` carries ported Prometheus rules; `conditionSql` runs scheduled SQL over log analytics.
 
-**Combiner** -- how multiple conditions merge into one incident decision (`OR` is the default posture; required by GCP even with one condition).
+**Combiner** — how multiple conditions merge into one incident decision (`OR` is the default posture; required by GCP even with one condition).
 
-**Alert strategy** -- `autoClose` for incidents whose condition stopped violating, `notificationRateLimit` for log-based policies, `notificationChannelStrategy` for re-notification cadence per channel subset.
+**Alert strategy** — `autoClose` for incidents whose condition stopped violating, `notificationRateLimit` for log-based policies, `notificationChannelStrategy` for re-notification cadence per channel subset.
 
-**Documentation** -- the runbook the on-call engineer sees, with `${resource.label.*}` substitution and up to three links.
+**Documentation** — the runbook the on-call engineer sees, with `${resource.label.*}` substitution and up to three links.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpMonitoringNotificationChannel** | `notificationChannels[]` | `status.outputs.channel_name` |
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Monitoring Notification Channel** | `notificationChannels[]` | `status.outputs.channel_name` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -109,14 +109,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**CPU threshold** -- the canonical infrastructure alert: sustained CPU above a bound. Start from the **CPU Threshold** preset.
+**CPU threshold** — the canonical infrastructure alert: sustained CPU above a bound. Start from the **CPU Threshold** preset.
 
-**Uptime-check failure** -- pages when a GcpMonitoringUptimeCheck stops passing — the other half of every availability monitor. Start from the **Uptime Check Failure** preset.
+**Uptime-check failure** — pages when a GCP Monitoring Uptime Check stops passing — the other half of every availability monitor. Start from the **Uptime Check Failure** preset.
 
-**Error-log match** -- pages on matching log entries (with the required rate limit), extracting labels into the incident. Start from the **Error Log Match** preset.
+**Error-log match** — pages on matching log entries (with the required rate limit), extracting labels into the incident. Start from the **Error Log Match** preset.
 
 ## Works With
 
-- [**GCP Monitoring Notification Channel**](/infra-catalog/gcp-monitoring-notification-channel) -- where incidents are delivered
-- [**GCP Monitoring Uptime Check**](/infra-catalog/gcp-monitoring-uptime-check) -- the availability probe policies typically watch
-- [**GCP Project**](/infra-catalog/gcp-project) -- provides the GCP project where the policy is created
+- [**GCP Monitoring Notification Channel**](/infra-catalog/gcp-monitoring-notification-channel) — where incidents are delivered
+- [**GCP Monitoring Uptime Check**](/infra-catalog/gcp-monitoring-uptime-check) — the availability probe policies typically watch
+- [**GCP Project**](/infra-catalog/gcp-project) — provides the GCP project where the policy is created

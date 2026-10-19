@@ -6,22 +6,22 @@ Deploys an API Gateway v2 VPC link — the managed network attachment that lets 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API Gateway v2 VPC Link** -- the managed attachment HTTP APIs route through (this is the v2 link for HTTP APIs; REST APIs use a different, NLB-only v1 link)
-- **Managed Network Interfaces** -- cross-account ENIs in your chosen subnets (create-time immutable; the link can only reach targets in AZs it has an ENI in)
-- **Security Group Bindings** -- the groups governing what the link's ENIs may reach (create-time immutable; empty means no link-side filtering)
-- **AWS Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
+- **API Gateway v2 VPC Link** — the managed attachment HTTP APIs route through (this is the v2 link for HTTP APIs; REST APIs use a different, NLB-only v1 link)
+- **Managed Network Interfaces** — cross-account ENIs in your chosen subnets (create-time immutable; the link can only reach targets in AZs it has an ENI in)
+- **Security Group Bindings** — the groups governing what the link's ENIs may reach (create-time immutable; empty means no link-side filtering)
+- **AWS Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Network resources** -- the target VPC's [AWS Subnet](/infra-catalog/aws-subnet) resources (at least one; two AZs for production) and ideally an egress-scoped [AWS Security Group](/infra-catalog/aws-security-group), deployed first and referenced.
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Network resources** — the target VPC's [AWS Subnet](/infra-catalog/aws-subnet) resources (at least one; two AZs for production) and ideally an egress-scoped [AWS Security Group](/infra-catalog/aws-security-group), deployed first and referenced.
 
 ### AWS Account
 
-- **The backend's security group must admit the link** -- allow ingress on the listener ports FROM the link's security groups (reference by group ID, never CIDR).
-- **AZ alignment** -- the link only reaches targets in AZs it has an ENI in; mirror the internal load balancer's AZ spread.
+- **The backend's security group must admit the link** — allow ingress on the listener ports FROM the link's security groups (reference by group ID, never CIDR).
+- **AZ alignment** — the link only reaches targets in AZs it has an ENI in; mirror the internal load balancer's AZ spread.
 
 ## Deploy
 
@@ -66,7 +66,7 @@ This creates a two-AZ link with an egress-scoped security group — the shape ev
 
 ### InfraChart
 
-When the link deploys alongside its subnets and security group in one chart, wire the references via ValueFromRef:
+When the link deploys alongside its subnets and security group in one chart, wire the references:
 
 ```yaml
 spec:
@@ -93,24 +93,24 @@ The InfraPipeline resolves the dependency graph, deploys the subnets and securit
 
 These are the most important decisions when configuring a VPC link. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Subnets are the one-way door** -- AWS has no update API for the link's network attachment: changing the subnet or security-group set replaces the link, and every private integration referencing its ID re-homes with it. Spread across at least two availability zones at create time; the link cannot reach backends in AZs it has no ENI in.
+**Subnets are the one-way door** — AWS has no update API for the link's network attachment: changing the subnet or security-group set replaces the link, and every private integration referencing its ID re-homes with it. Spread across at least two availability zones at create time; the link cannot reach backends in AZs it has no ENI in.
 
-**Security groups are the reach contract** -- the link's groups allow egress to the backend listener ports; the backend's group admits ingress from the link's groups. Omitting them creates the link with no link-side filtering — workable, but the set is immutable, so the production-grade group cannot be added later.
+**Security groups are the reach contract** — the link's groups allow egress to the backend listener ports; the backend's group admits ingress from the link's groups. Omitting them creates the link with no link-side filtering — workable, but the set is immutable, so the production-grade group cannot be added later.
 
-**One link, many APIs** -- the link is infrastructure, not per-API config. Deploy it once per VPC and let every HTTP API's private integrations share it by `connectionId`.
+**One link, many APIs** — the link is infrastructure, not per-API config. Deploy it once per VPC and let every HTTP API's private integrations share it by `connectionId`.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSubnet** | `subnetIds[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** (optional) | `securityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS Subnet** | `subnetIds[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** (optional) | `securityGroupIds[]` | `status.outputs.security_group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -121,13 +121,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Private ALB frontend** -- HTTP APIs fronting an internal Application Load Balancer; two AZs, an egress-scoped security group. Start from the **Private ALB Link** preset.
+**Private ALB frontend** — HTTP APIs fronting an internal Application Load Balancer; two AZs, an egress-scoped security group. Start from the **Private ALB Link** preset.
 
-**Minimal link** -- a single-subnet development link with no security groups. Start from the **Minimal Link** preset.
+**Minimal link** — a single-subnet development link with no security groups. Start from the **Minimal Link** preset.
 
 ## Works With
 
-- [**AWS HTTP API Gateway**](/infra-catalog/aws-http-api-gateway) -- the API whose private integrations route through this link (references `vpc_link_id`)
-- [**AWS Subnet**](/infra-catalog/aws-subnet) -- where the link's ENIs land
-- [**AWS Security Group**](/infra-catalog/aws-security-group) -- the egress contract to the private backend
-- [**AWS ALB**](/infra-catalog/aws-alb) -- the internal load balancer the link typically fronts
+- [**AWS HTTP API Gateway**](/infra-catalog/aws-http-api-gateway) — the API whose private integrations route through this link (references `vpc_link_id`)
+- [**AWS Subnet**](/infra-catalog/aws-subnet) — where the link's ENIs land
+- [**AWS Security Group**](/infra-catalog/aws-security-group) — the egress contract to the private backend
+- [**AWS ALB**](/infra-catalog/aws-alb) — the internal load balancer the link typically fronts

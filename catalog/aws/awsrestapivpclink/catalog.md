@@ -54,7 +54,7 @@ This creates a VPC link in us-west-2 fronting the referenced internal NLB, ready
 
 ### InfraChart
 
-When the link deploys alongside its balancer in one chart, wire the NLB reference via ValueFromRef:
+When the link deploys alongside its balancer in one chart, wire the NLB reference:
 
 ```yaml
 spec:
@@ -87,13 +87,13 @@ These are the most important decisions when configuring a REST API VPC link. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsNlb** | `targetArn` | `status.outputs.load_balancer_arn` |
+| **AWS NLB** | `targetArn` | `status.outputs.load_balancer_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

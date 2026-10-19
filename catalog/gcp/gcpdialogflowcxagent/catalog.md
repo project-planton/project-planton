@@ -6,25 +6,25 @@ Stands up a conversational agent for chat, voice, and telephony on Google's Dial
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `dialogflow.googleapis.com` on the project
-- **Agent** -- a `diagflow.CxAgent`, with its default start flow and default playbook
-- **Webhooks, tools, and tool versions** -- one `diagflow.CxWebhook`, `diagflow.CxTool`, or `diagflow.CxToolVersion` per declared entry
-- **Flow versions and environments** -- one `diagflow.CxVersion` and `diagflow.CxEnvironment` per declared entry
-- **Generative settings** -- one `diagflow.CxGenerativeSettings` per declared language
+- **API enablement** — `dialogflow.googleapis.com` on the project
+- **Agent** — a `diagflow.CxAgent`, with its default start flow and default playbook
+- **Webhooks, tools, and tool versions** — one `diagflow.CxWebhook`, `diagflow.CxTool`, or `diagflow.CxToolVersion` per declared entry
+- **Flow versions and environments** — one `diagflow.CxVersion` and `diagflow.CxEnvironment` per declared entry
+- **Generative settings** — one `diagflow.CxGenerativeSettings` per declared language
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Dialogflow admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Dialogflow admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpDialogflowCxSecuritySettings** -- redaction and retention, referenced by `securitySettings`.
-- **GcpVertexAiSearchDataStore** -- the stores a data store tool searches.
-- **GcpVertexAiSearchEngine** -- the Vertex AI Search engine linked to the agent.
-- **GcpServiceAccount** -- the identity a webhook authenticates as.
+- **GCP Dialogflow CX Security Settings** — redaction and retention, referenced by `securitySettings`.
+- **GCP Vertex AI Search Data Store** — the stores a data store tool searches.
+- **GCP Vertex AI Search Engine** — the Vertex AI Search engine linked to the agent.
+- **GCP Service Account** — the identity a webhook authenticates as.
 
 ## Deploy
 
@@ -68,29 +68,29 @@ When deploying as part of a multi-resource environment, reference a `GcpDialogfl
 
 These are the most important decisions when configuring an agent. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Flows or playbooks** -- a flow agent routes each turn through state machines you design; `startWithDefaultPlaybook` makes a generative agent that follows natural-language instructions and calls tools. Playbook turns bill at a higher rate.
+**Flows or playbooks** — a flow agent routes each turn through state machines you design; `startWithDefaultPlaybook` makes a generative agent that follows natural-language instructions and calls tools. Playbook turns bill at a higher rate.
 
-**Location** -- `global` needs no setup; a region such as `us-central1` keeps data in that region but needs Google's one-time location settings in the console for a project's first regional agent. Fixed at creation.
+**Location** — `global` needs no setup; a region such as `us-central1` keeps data in that region but needs Google's one-time location settings in the console for a project's first regional agent. Fixed at creation.
 
-**Releases** -- declare `versions` of your flows and `environments` that pin them, so production answers from a frozen release while the draft keeps changing. An environment needs a version for every flow its start flow can reach.
+**Releases** — declare `versions` of your flows and `environments` that pin them, so production answers from a frozen release while the draft keeps changing. An environment needs a version for every flow its start flow can reach.
 
-**Privacy** -- attach security settings before turning on logging, and keep credentials in Secret Manager (`secretVersionFor...` fields) rather than in the spec.
+**Privacy** — attach security settings before turning on logging, and keep credentials in Secret Manager (`secretVersionFor...` fields) rather than in the spec.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpDialogflowCxSecuritySettings** | `securitySettings` | `status.outputs.name` |
-| **GcpVertexAiSearchEngine** | `genAppBuilderSettings.engine` | `status.outputs.name` |
-| **GcpVertexAiSearchDataStore** | `tools[].dataStoreSpec.dataStoreConnections[].dataStore` | `status.outputs.name` |
-| **GcpServiceAccount** | `webhooks[].genericWebService.serviceAccount` | `status.outputs.email` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Dialogflow CX Security Settings** | `securitySettings` | `status.outputs.name` |
+| **GCP Vertex AI Search Engine** | `genAppBuilderSettings.engine` | `status.outputs.name` |
+| **GCP Vertex AI Search Data Store** | `tools[].dataStoreSpec.dataStoreConnections[].dataStore` | `status.outputs.name` |
+| **GCP Service Account** | `webhooks[].genericWebService.serviceAccount` | `status.outputs.email` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -106,15 +106,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Flow agent** -- A global flow-first agent with spell correction and interaction history. Start from the **Flow Agent** preset.
+**Flow agent** — A global flow-first agent with spell correction and interaction history. Start from the **Flow Agent** preset.
 
-**Playbook agent with tools** -- A generative agent with an OpenAPI tool, a data store tool, and a knowledge-connector persona. Start from the **Playbook Agent with Tools** preset.
+**Playbook agent with tools** — A generative agent with an OpenAPI tool, a data store tool, and a knowledge-connector persona. Start from the **Playbook Agent with Tools** preset.
 
-**Production release** -- A regional agent with security settings, a Cloud Run webhook, a frozen release served from production and staging, and `PREVENT` on destroy. Start from the **Production Release** preset.
+**Production release** — A regional agent with security settings, a Cloud Run webhook, a frozen release served from production and staging, and `PREVENT` on destroy. Start from the **Production Release** preset.
 
 ## Works With
 
-- [**GCP Dialogflow CX Security Settings**](/infra-catalog/gcp-dialogflow-cx-security-settings) -- redaction, retention, and exports for every conversation
-- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) -- the stores data store tools answer from
-- [**GCP Vertex AI Search Engine**](/infra-catalog/gcp-vertex-ai-search-engine) -- a chat engine that answers through the agent
-- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) -- a common home for webhook fulfillment code
+- [**GCP Dialogflow CX Security Settings**](/infra-catalog/gcp-dialogflow-cx-security-settings) — redaction, retention, and exports for every conversation
+- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) — the stores data store tools answer from
+- [**GCP Vertex AI Search Engine**](/infra-catalog/gcp-vertex-ai-search-engine) — a chat engine that answers through the agent
+- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) — a common home for webhook fulfillment code

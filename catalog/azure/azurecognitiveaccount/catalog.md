@@ -1,25 +1,25 @@
 # Azure Cognitive Account
 
-Deploys an Azure AI services account -- the container Azure AI capabilities are provisioned and billed through: Azure OpenAI model deployments, the multi-service AI Services account behind AI Foundry, and the single-service accounts (Speech, Vision, Language, Content Safety, ...). The account owns the endpoint, the access keys, the network perimeter, and the responsible-AI policy; model deployments and AI Foundry projects are separate Infra Components created onto it. Deletion is a soft delete: the ghost keeps holding the account name until purged.
+Deploys an Azure AI services account — the container Azure AI capabilities are provisioned and billed through: Azure OpenAI model deployments, the multi-service AI Services account behind AI Foundry, and the single-service accounts (Speech, Vision, Language, Content Safety, ...). The account owns the endpoint, the access keys, the network perimeter, and the responsible-AI policy; model deployments and AI Foundry projects are separate Infra Components created onto it. Deletion is a soft delete: the ghost keeps holding the account name until purged.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **AI services account** -- the endpoint, keys, kind (OpenAI / AIServices / single-service), SKU, identity, network perimeter, and encryption settings
-- **Responsible-AI blocklists** (optional) -- one ARM child per `raiBlocklists` entry, keyed by name (the `rai_blocklist_ids` output republishes each ARM ID)
-- **Responsible-AI policies** (optional) -- one ARM child per `raiPolicies` entry, keyed by name (the `rai_policy_ids` output republishes each ARM ID); model deployments select a policy via `raiPolicyName`
+- **AI services account** — the endpoint, keys, kind (OpenAI / AIServices / single-service), SKU, identity, network perimeter, and encryption settings
+- **Responsible-AI blocklists** (optional) — one ARM child per `raiBlocklists` entry, keyed by name (the `rai_blocklist_ids` output republishes each ARM ID)
+- **Responsible-AI policies** (optional) — one ARM child per `raiPolicies` entry, keyed by name (the `rai_policy_ids` output republishes each ARM ID); model deployments select a policy via `raiPolicyName`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **Model and SKU availability differs per region** -- Azure OpenAI models especially. Pick the region where the models you plan to deploy exist.
+- **Model and SKU availability differs per region** — Azure OpenAI models especially. Pick the region where the models you plan to deploy exist.
 - **A deleted account is a soft-deleted ghost** that keeps holding the account name until purged; recreating under the same name fails until then (the module purges on destroy by default).
 
 ## Deploy
@@ -56,11 +56,11 @@ spec:
 planton apply -f azure-cognitive-account.yaml
 ```
 
-This creates an S0 Azure OpenAI account with a custom subdomain, ready for model deployments -- the account object itself carries no idle cost for OpenAI (billing follows deployment usage). An Infra Job tracks the provisioning in real time.
+This creates an S0 Azure OpenAI account with a custom subdomain, ready for model deployments — the account object itself carries no idle cost for OpenAI (billing follows deployment usage). An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 
-In an AI-platform chart the order is: resource group → **account** → model deployments and projects. Wire the resource group with ValueFromRef so the InfraPipeline deploys it first:
+In an AI-platform chart the order is: resource group → **account** → model deployments and projects. Wire the resource group with references so the InfraPipeline deploys it first:
 
 ```yaml
 spec:
@@ -71,35 +71,35 @@ spec:
       fieldPath: status.outputs.resource_group_name
 ```
 
-The InfraPipeline resolves the dependency graph, provisions the resource group first, then the account -- and the deployments and projects that reference this account's `cognitive_account_id` deploy after it.
+The InfraPipeline resolves the dependency graph, provisions the resource group first, then the account — and the deployments and projects that reference this account's `cognitive_account_id` deploy after it.
 
 ## Key Configuration
 
 These are the most important decisions when configuring the account. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Kind** -- the central choice. `OpenAI` for Azure OpenAI model deployments; `AIServices` for the multi-service account that also backs AI Foundry projects and agents; the rest are single-service accounts. Changing kind replaces the account except between `OpenAI` and `AIServices` (in-place upgrade).
+**Kind** — the central choice. `OpenAI` for Azure OpenAI model deployments; `AIServices` for the multi-service account that also backs AI Foundry projects and agents; the rest are single-service accounts. Changing kind replaces the account except between `OpenAI` and `AIServices` (in-place upgrade).
 
-**Custom subdomain** -- required before network ACLs work and before Entra ID (token) authentication. Set it at creation: it can be added later to an account without one, but changing an existing value replaces the account.
+**Custom subdomain** — required before network ACLs work and before Entra ID (token) authentication. Set it at creation: it can be added later to an account without one, but changing an existing value replaces the account.
 
-**Auth posture** -- `localAuthEnabled: false` disables the access keys and forces Entra ID tokens (the hardened posture; the key outputs are then empty).
+**Auth posture** — `localAuthEnabled: false` disables the access keys and forces Entra ID tokens (the hardened posture; the key outputs are then empty).
 
-**Responsible AI** -- define `raiPolicies` on the account and point each model deployment's `raiPolicyName` at one; custom word/pattern lists ride `raiBlocklists`. Severity-less binary filters (Jailbreak, Indirect Attack, Protected Material Text/Code) deploy through the Terraform provisioner only -- the classic Pulumi SDK requires a severity on every filter while Azure rejects one on the binary names.
+**Responsible AI** — define `raiPolicies` on the account and point each model deployment's `raiPolicyName` at one; custom word/pattern lists ride `raiBlocklists`. Severity-less binary filters (Jailbreak, Indirect Attack, Protected Material Text/Code) deploy through the Terraform provisioner only — the classic Pulumi SDK requires a severity on every filter while Azure rejects one on the binary names.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
-| **AzureSubnet** (optional) | `networkAcls.virtualNetworkRules[].subnetId`, `networkInjection.subnetId` | `status.outputs.subnet_id` |
-| **AzureKeyVaultKey** (optional) | `customerManagedKey.keyVaultKeyId` | `status.outputs.versionless_id` |
-| **AzureStorageAccount** (optional) | `storage[].storageAccountId` | `status.outputs.storage_account_id` |
-| **AzureUserAssignedIdentity** (optional) | `identity.identityIds` | `status.outputs.identity_id` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Subnet** (optional) | `networkAcls.virtualNetworkRules[].subnetId`, `networkInjection.subnetId` | `status.outputs.subnet_id` |
+| **Azure Key Vault Key** (optional) | `customerManagedKey.keyVaultKeyId` | `status.outputs.versionless_id` |
+| **Azure Storage Account** (optional) | `storage[].storageAccountId` | `status.outputs.storage_account_id` |
+| **Azure User Assigned Identity** (optional) | `identity.identityIds` | `status.outputs.identity_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -116,15 +116,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Azure OpenAI account** -- an `OpenAI`-kind S0 account with a custom subdomain, ready for model deployments. Start from the **Azure OpenAI Account** preset.
+**Azure OpenAI account** — an `OpenAI`-kind S0 account with a custom subdomain, ready for model deployments. Start from the **Azure OpenAI Account** preset.
 
-**AI Foundry account** -- an `AIServices`-kind account with project management and a system identity, ready for projects and agents. Start from the **AI Foundry Account** preset.
+**AI Foundry account** — an `AIServices`-kind account with project management and a system identity, ready for projects and agents. Start from the **AI Foundry Account** preset.
 
-**Locked-down account** -- deny-by-default network ACLs, Entra-ID-only auth, restricted outbound. Start from the **Private Hardened Account** preset.
+**Locked-down account** — deny-by-default network ACLs, Entra-ID-only auth, restricted outbound. Start from the **Private Hardened Account** preset.
 
 ## Works With
 
-- [**Azure Cognitive Deployment**](/infra-catalog/azure-cognitive-deployment) -- the model deployments applications call
-- [**Azure Cognitive Account Project**](/infra-catalog/azure-cognitive-account-project) -- AI Foundry team workspaces on the account
-- [**Azure Key Vault Key**](/infra-catalog/azure-key-vault-key) -- customer-managed encryption
-- [**Azure Subnet**](/infra-catalog/azure-subnet) -- network rules and agent injection
+- [**Azure Cognitive Deployment**](/infra-catalog/azure-cognitive-deployment) — the model deployments applications call
+- [**Azure Cognitive Account Project**](/infra-catalog/azure-cognitive-account-project) — AI Foundry team workspaces on the account
+- [**Azure Key Vault Key**](/infra-catalog/azure-key-vault-key) — customer-managed encryption
+- [**Azure Subnet**](/infra-catalog/azure-subnet) — network rules and agent injection

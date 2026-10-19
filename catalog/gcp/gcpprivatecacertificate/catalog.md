@@ -1,19 +1,19 @@
 # GCP Private CA Certificate
 
-Issue a certificate from your private CA as code -- for a load balancer, a server, a device, or a client -- from a signing request or from structured fields, with the signed certificate and its chain as outputs and revocation on destroy.
+Issue a certificate from your private CA as code — for a load balancer, a server, a device, or a client — from a signing request or from structured fields, with the signed certificate and its chain as outputs and revocation on destroy.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Certificate** -- a `privateca_certificate` signed by the pool (or the named authority in it), optionally through a template
+- **Certificate** — a `privateca_certificate` signed by the pool (or the named authority in it), optionally through a template
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with certificate permissions (`roles/privateca.certificateManager`) on the pool. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with certificate permissions (`roles/privateca.certificateManager`) on the pool. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
@@ -63,26 +63,26 @@ Reference the pool from `pool`, optionally the authority from `certificateAuthor
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**CSR or config** -- a CSR when the workload already produces one; structured config (subject, SANs, key usage, public key) when you want the certificate's contents in the manifest.
+**CSR or config** — a CSR when the workload already produces one; structured config (subject, SANs, key usage, public key) when you want the certificate's contents in the manifest.
 
-**Template** -- issue through a template to inherit its shape and limits.
+**Template** — issue through a template to inherit its shape and limits.
 
-**Lifetime** -- how long it is valid, capped by the pool, the template, and the signing authority's own expiry.
+**Lifetime** — how long it is valid, capped by the pool, the template, and the signing authority's own expiry.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpPrivateCaPool** | `pool` | `status.outputs.name` |
-| **GcpPrivateCaCertificateAuthority** | `certificateAuthority` | `status.outputs.name` |
-| **GcpPrivateCaCertificateTemplate** | `certificateTemplate` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Private CA Pool** | `pool` | `status.outputs.name` |
+| **GCP Private CA Certificate Authority** | `certificateAuthority` | `status.outputs.name` |
+| **GCP Private CA Certificate Template** | `certificateTemplate` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -93,12 +93,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Server certificate from structured fields** -- start from the **TLS Server From Config** preset.
+**Server certificate from structured fields** — start from the **TLS Server From Config** preset.
 
-**Certificate from a CSR** -- start from the **From CSR** preset.
+**Certificate from a CSR** — start from the **From CSR** preset.
 
 ## Works With
 
-- [**GCP Private CA Pool**](/infra-catalog/gcp-private-ca-pool) -- the pool that issues it
-- [**GCP Private CA Certificate Authority**](/infra-catalog/gcp-private-ca-certificate-authority) -- the authority that signs it
-- [**GCP Private CA Certificate Template**](/infra-catalog/gcp-private-ca-certificate-template) -- the shape it is issued with
+- [**GCP Private CA Pool**](/infra-catalog/gcp-private-ca-pool) — the pool that issues it
+- [**GCP Private CA Certificate Authority**](/infra-catalog/gcp-private-ca-certificate-authority) — the authority that signs it
+- [**GCP Private CA Certificate Template**](/infra-catalog/gcp-private-ca-certificate-template) — the shape it is issued with

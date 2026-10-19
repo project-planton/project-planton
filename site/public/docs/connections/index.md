@@ -30,7 +30,7 @@ Cloud providers where Planton deploys and manages resources on your behalf.
 | Provider | What It Enables |
 |----------|----------------|
 | **AWS** | VPCs, EKS clusters, RDS databases, S3 buckets, Lambda functions, Route 53, and 40+ other resource types |
-| **Google Cloud** | GKE clusters, Cloud SQL, GCS buckets, Cloud Run services, Cloud DNS, and more |
+| **GCP** | GKE clusters, Cloud SQL, GCS buckets, Cloud Run services, Cloud DNS, and more |
 | **Azure** | AKS clusters, Azure SQL, Blob Storage, Container Instances, Application Gateways |
 | **DigitalOcean** | Kubernetes clusters (DOKS), Droplets, managed databases, Spaces object storage |
 | **Cloudflare** | DNS zones, CDN, Workers, R2 storage |
@@ -62,7 +62,7 @@ State backends that store the state files for Pulumi, Terraform, and OpenTofu de
 | **Pulumi** | State storage via Pulumi Cloud, S3, GCS, or Azure Blob — used by all Pulumi-based infrastructure deployments |
 | **Terraform** | State storage via S3, GCS, or Azure RM — used by Terraform and OpenTofu-based infrastructure deployments |
 
-Every backend also names the key that encrypts its state -- Planton's key by default, or a passphrase, cloud KMS key or Vault key you hold, which an AWS, Google Cloud, Azure or Vault connection supplies. For details, see [State Backends](/docs/connections/state-backends) and [State Encryption](/docs/connections/state-encryption).
+Every backend also names the key that encrypts its state -- Planton's key by default, or a passphrase, cloud KMS key or Vault key you hold, which an AWS, GCP, Azure or Vault connection supplies. For details, see [State Backends](/docs/connections/state-backends) and [State Encryption](/docs/connections/state-encryption).
 
 ### Managed Services
 

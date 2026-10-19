@@ -6,8 +6,8 @@ Deploys an Azure Private DNS Zone Virtual Network Link — the attachment that m
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Virtual Network Link** -- the attachment written on the zone, with your registration and resolution-policy dials
-- **Azure Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
+- **Virtual Network Link** — the attachment written on the zone, with your registration and resolution-policy dials
+- **Azure Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
 
 The link is an ARM **child of the zone** — it carries no region and no resource group of its own; both derive from the zone's ARM ID and can never contradict it. Peered networks do NOT inherit a link: each network in a topology needs its own.
 
@@ -15,13 +15,13 @@ The link is an ARM **child of the zone** — it carries no region and no resourc
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **A Private DNS Zone** to link — reference an AzurePrivateDnsZone Infra Component's `zone_id` output, or provide the full ARM ID of an existing zone.
-- **A Virtual Network** to make the zone resolvable from — reference an AzureVirtualNetwork's `virtual_network_id` output, or provide the full ARM ID.
+- **A Private DNS Zone** to link — reference an Azure Private DNS Zone Infra Component's `zone_id` output, or provide the full ARM ID of an existing zone.
+- **A Virtual Network** to make the zone resolvable from — reference an Azure Virtual Network's `virtual_network_id` output, or provide the full ARM ID.
 
 ## Deploy
 
@@ -62,7 +62,7 @@ This writes the link on the referenced zone: workloads in `hub-vnet` can now res
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the link to its dependencies:
+When deploying as part of a multi-resource environment, use references to wire the link to its dependencies:
 
 ```yaml
 spec:
@@ -84,20 +84,20 @@ The InfraPipeline resolves the dependency graph, deploys the zone and network fi
 
 These are the most important decisions when configuring a Virtual Network Link. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Registration** -- `registrationEnabled` decides whether Azure auto-registers VM records: each VM in the linked network gets an A record at boot, removed when it goes away. Right for custom internal zones ("corp.internal"); **keep it off (the default) for privatelink.\* zones** — their records are managed by private endpoints — and note Azure allows only ONE registration-enabled link per network.
+**Registration** — `registrationEnabled` decides whether Azure auto-registers VM records: each VM in the linked network gets an A record at boot, removed when it goes away. Right for custom internal zones ("corp.internal"); **keep it off (the default) for privatelink.\* zones** — their records are managed by private endpoints — and note Azure allows only ONE registration-enabled link per network.
 
-**Resolution policy** -- what happens when the private zone cannot answer: `DEFAULT` answers strictly from the private zone (unresolvable names fail); `NX_DOMAIN_REDIRECT` retries against public DNS — the fallback pattern for Private Link zones shared across environments where some records exist only publicly. Unset lets Azure choose its per-zone-type default.
+**Resolution policy** — what happens when the private zone cannot answer: `DEFAULT` answers strictly from the private zone (unresolvable names fail); `NX_DOMAIN_REDIRECT` retries against public DNS — the fallback pattern for Private Link zones shared across environments where some records exist only publicly. Unset lets Azure choose its per-zone-type default.
 
-**Name** -- unique per zone, up to 80 characters; since each link attaches exactly one network, name it after that network ("hub-vnet", "spoke-payments") so the zone's link list reads as its audience. Renaming replaces the link (a brief resolution gap for the affected network, nothing else).
+**Name** — unique per zone, up to 80 characters; since each link attaches exactly one network, name it after that network ("hub-vnet", "spoke-payments") so the zone's link list reads as its audience. Renaming replaces the link (a brief resolution gap for the affected network, nothing else).
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzurePrivateDnsZone** | `privateDnsZoneId` | `status.outputs.zone_id` |
-| **AzureVirtualNetwork** | `virtualNetworkId` | `status.outputs.virtual_network_id` |
+| **Azure Private DNS Zone** | `privateDnsZoneId` | `status.outputs.zone_id` |
+| **Azure Virtual Network** | `virtualNetworkId` | `status.outputs.virtual_network_id` |
 
 ### What This Kind Provides
 
@@ -107,15 +107,15 @@ These are the most important decisions when configuring a Virtual Network Link. 
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Privatelink zone link** -- attach a shared `privatelink.*` zone to a network so its private endpoints resolve; registration off, records owned by the endpoints. Start from the **Private Link Zone Attachment** preset.
+**Privatelink zone link** — attach a shared `privatelink.*` zone to a network so its private endpoints resolve; registration off, records owned by the endpoints. Start from the **Private Link Zone Attachment** preset.
 
-**Internal zone with auto-registration** -- a custom zone ("corp.internal") where every VM registers its hostname at boot — remember: one registration link per network. Start from the **Internal Zone with VM Auto-Registration** preset.
+**Internal zone with auto-registration** — a custom zone ("corp.internal") where every VM registers its hostname at boot — remember: one registration link per network. Start from the **Internal Zone with VM Auto-Registration** preset.
 
-**Public fallback** -- the NX_DOMAIN_REDIRECT policy for shared zones where some records exist only publicly. Start from the **Shared Zone with Public DNS Fallback** preset.
+**Public fallback** — the NX_DOMAIN_REDIRECT policy for shared zones where some records exist only publicly. Start from the **Shared Zone with Public DNS Fallback** preset.
 
 ## Works With
 
-- [**Azure Private DNS Zone**](/infra-catalog/azure-private-dns-zone) -- the zone this link is written on, referenced by its `zone_id` output
-- [**Azure Virtual Network**](/infra-catalog/azure-virtual-network) -- the network that gains resolution, referenced by its `virtual_network_id` output
-- [**Azure Private Endpoint**](/infra-catalog/azure-private-endpoint) -- writes the privatelink records this link makes resolvable
-- [**Azure Virtual Network Peering**](/infra-catalog/azure-virtual-network-peering) -- connects networks, but does NOT propagate DNS links — each peered network still needs its own link
+- [**Azure Private DNS Zone**](/infra-catalog/azure-private-dns-zone) — the zone this link is written on, referenced by its `zone_id` output
+- [**Azure Virtual Network**](/infra-catalog/azure-virtual-network) — the network that gains resolution, referenced by its `virtual_network_id` output
+- [**Azure Private Endpoint**](/infra-catalog/azure-private-endpoint) — writes the privatelink records this link makes resolvable
+- [**Azure Virtual Network Peering**](/infra-catalog/azure-virtual-network-peering) — connects networks, but does NOT propagate DNS links — each peered network still needs its own link

@@ -66,7 +66,7 @@ This creates a plan that every Monday at 05:00 UTC restores a random snapshot fr
 
 ### InfraChart
 
-When the testing plan deploys alongside its restore role in one chart, wire the role reference via ValueFromRef:
+When the testing plan deploys alongside its restore role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -110,15 +110,15 @@ These are the most important decisions when configuring a restore testing plan. 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `selections[].iamRoleArn` | `status.outputs.role_arn` |
+| **AWS IAM Role** | `selections[].iamRoleArn` | `status.outputs.role_arn` |
 
 The vaults drilled against are named as ARN strings (or `"*"`) in `recoveryPointSelection.includeVaults`, not as typed references.
 
 ### What This Kind Provides
 
-The single output, `restore_testing_plan_arn`, is an identity echo rather than a composition input — no catalog kind consumes it via ValueFromRef. The plan and its selections import by name (AWS assigns no separate ID); test results and restore-time metrics surface in the Backup console's restore testing view, which is where the drill evidence actually lives.
+The single output, `restore_testing_plan_arn`, is an identity echo rather than a composition input — no catalog kind references it. The plan and its selections import by name (AWS assigns no separate ID); test results and restore-time metrics surface in the Backup console's restore testing view, which is where the drill evidence actually lives.
 
 ## Common Patterns
 

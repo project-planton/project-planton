@@ -6,16 +6,16 @@ Installs an upstream Helm chart as a REAL Helm release — the catalog's sole in
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Helm Release** -- the chart fetched from `repo` (an HTTPS repository index or an `oci://` registry pull), installed at the PINNED `version` into `namespace`, named `releaseName` when set (otherwise `metadata.name`)
-- **Everything the chart renders** -- workloads, Services, ConfigMaps, and any CRDs the chart templates as release resources (Helm-owned; a chart that templates them without `helm.sh/resource-policy: keep` is refused unless `crds.allowHelmManaged` accepts it)
-- **The CRDs in the chart's `crds/` directory** -- derived from the pinned chart and applied by the module itself outside the release, keyed by CRD name: a `version` bump moves them with it, destroy keeps them (unless `crds.keepOnUninstall` is false), a reinstall re-adopts them, and a version below what the cluster's CRDs carry is refused before anything changes
-- **Namespace** (optional) -- created with standard governance labels when `createNamespace` is true, and deleted with the resource
+- **Helm Release** — the chart fetched from `repo` (an HTTPS repository index or an `oci://` registry pull), installed at the PINNED `version` into `namespace`, named `releaseName` when set (otherwise `metadata.name`)
+- **Everything the chart renders** — workloads, Services, ConfigMaps, and any CRDs the chart templates as release resources (Helm-owned; a chart that templates them without `helm.sh/resource-policy: keep` is refused unless `crds.allowHelmManaged` accepts it)
+- **The CRDs in the chart's `crds/` directory** — derived from the pinned chart and applied by the module itself outside the release, keyed by CRD name: a `version` bump moves them with it, destroy keeps them (unless `crds.keepOnUninstall` is false), a reinstall re-adopts them, and a version below what the cluster's CRDs carry is refused before anything changes
+- **Namespace** (optional) — created with standard governance labels when `createNamespace` is true, and deleted with the resource
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 - For a **private chart source**: an organization secret holding the repository password or registry token — `repositoryPassword` stores a `$secret/<name>` reference, resolved just-in-time at deploy.
 
 ### Kubernetes Cluster
@@ -84,31 +84,31 @@ The InfraPipeline deploys the namespace first, then installs the release into it
 
 These are the most important decisions when configuring a Helm release. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The version is pinned on purpose** -- an unpinned "latest" install is not reproducible, and reproducibility is the point of declaring the release here. Editing the version on a deployed release IS the `helm upgrade`.
+**The version is pinned on purpose** — an unpinned "latest" install is not reproducible, and reproducibility is the point of declaring the release here. Editing the version on a deployed release IS the `helm upgrade`.
 
-**The values model is Helm's own** -- `valuesYaml` is the values file (applied first), and `set`, `setString`, `setSensitive` are the `--set` layers applied on top, in that order. Both engines merge the layers with identical precedence and hand Helm ONE final values map — the same manifest installs byte-identical releases on either engine.
+**The values model is Helm's own** — `valuesYaml` is the values file (applied first), and `set`, `setString`, `setSensitive` are the `--set` layers applied on top, in that order. Both engines merge the layers with identical precedence and hand Helm ONE final values map — the same manifest installs byte-identical releases on either engine.
 
-**The coercion boundary** -- `set` values get Helm's coercion ("true"/"false" become booleans, digits become numbers, null removes the key); a version-like value that must STAY a string ("1.30") belongs in `setString`.
+**The coercion boundary** — `set` values get Helm's coercion ("true"/"false" become booleans, digits become numbers, null removes the key); a version-like value that must STAY a string ("1.30") belongs in `setString`.
 
-**Secrets never enter the spec** -- `setSensitive` values and `repositoryPassword` are `$secret/<name>` references to organization secrets, resolved at deploy time and kept out of rendered plans and state where each engine supports it.
+**Secrets never enter the spec** — `setSensitive` values and `repositoryPassword` are `$secret/<name>` references to organization secrets, resolved at deploy time and kept out of rendered plans and state where each engine supports it.
 
-**Atomic vs skip-await** -- atomic rolls a failed install/upgrade back whole (it must WAIT for readiness to know whether to roll back), skip-await returns as soon as Helm records the release; the spec rejects the pair. `waitForJobs` extends the readiness wait to chart Jobs and is ignored while the wait is skipped.
+**Atomic vs skip-await** — atomic rolls a failed install/upgrade back whole (it must WAIT for readiness to know whether to roll back), skip-await returns as soon as Helm records the release; the spec rejects the pair. `waitForJobs` extends the readiness wait to chart Jobs and is ignored while the wait is skipped.
 
-**Upgrades are declarative by default** -- the values declared here are the whole story on every upgrade. `reuseValues` merges over the previous release's values instead, `resetValues` starts from chart defaults — mutually exclusive. `maxHistory` bounds rollback history (0 keeps everything).
+**Upgrades are declarative by default** — the values declared here are the whole story on every upgrade. `reuseValues` merges over the previous release's values instead, `resetValues` starts from chart defaults — mutually exclusive. `maxHistory` bounds rollback history (0 keeps everything).
 
-**Adoption is engine-asymmetric** -- `takeOwnership` (adopt matching resources an earlier tool created) is honored by the Terraform provisioner only; the Pulumi engine's pinned SDK rejects the flag loudly rather than silently ignoring it.
+**Adoption is engine-asymmetric** — `takeOwnership` (adopt matching resources an earlier tool created) is honored by the Terraform provisioner only; the Pulumi engine's pinned SDK rejects the flag loudly rather than silently ignoring it.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -123,13 +123,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Public HTTPS chart** -- a pinned chart from a public repository with a values document — the everyday shape. Start from the **HTTPS Repo Chart** preset.
+**Public HTTPS chart** — a pinned chart from a public repository with a values document — the everyday shape. Start from the **HTTPS Repo Chart** preset.
 
-**OCI registry chart** -- an `oci://` reference pulled like a container image, with targeted `set`/`setString` overrides. Start from the **OCI Registry Chart** preset.
+**OCI registry chart** — an `oci://` reference pulled like a container image, with targeted `set`/`setString` overrides. Start from the **OCI Registry Chart** preset.
 
-**Private repository with secrets** -- repository credentials and sensitive chart values, all as organization-secret references; atomic install for rollback safety. Start from the **Private Repo With Secrets** preset.
+**Private repository with secrets** — repository credentials and sensitive chart values, all as organization-secret references; atomic install for rollback safety. Start from the **Private Repo With Secrets** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target; reference one by name or compose it as a first-class resource.
-- First-class chart kinds -- when the catalog grows a typed kind for a chart you run through this kind ([**Cert Manager**](/infra-catalog/kubernetes-cert-manager), [**Ingress NGINX**](/infra-catalog/kubernetes-ingress-nginx), [**Istio**](/infra-catalog/kubernetes-istio), and the rest already exist), prefer it: validation, outputs, and field-level teaching come with it.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target; reference one by name or compose it as a first-class resource.
+- First-class chart kinds — when the catalog grows a typed kind for a chart you run through this kind ([**Cert Manager**](/infra-catalog/kubernetes-cert-manager), [**Ingress NGINX**](/infra-catalog/kubernetes-ingress-nginx), [**Istio**](/infra-catalog/kubernetes-istio), and the rest already exist), prefer it: validation, outputs, and field-level teaching come with it.

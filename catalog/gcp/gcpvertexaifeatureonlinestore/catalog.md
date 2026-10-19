@@ -6,22 +6,22 @@ Serves your models' features in production at millisecond latency: when a reques
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **Online store** -- a `vertex.AiFeatureOnlineStore` with Bigtable or Optimized storage
-- **Feature views** -- one `vertex.AiFeatureOnlineStoreFeatureview` per declared view
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **Online store** — a `vertex.AiFeatureOnlineStore` with Bigtable or Optimized storage
+- **Feature views** — one `vertex.AiFeatureOnlineStoreFeatureview` per declared view
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpVertexAiFeatureGroup** -- the feature groups registry-sourced views serve.
-- **GcpBigQueryTable** -- the table a BigQuery-sourced view materializes.
-- **GcpKmsKey** -- for customer-managed encryption, referenced by `kmsKeyName`.
+- **GCP Vertex AI Feature Group** — the feature groups registry-sourced views serve.
+- **GCP BigQuery Table** — the table a BigQuery-sourced view materializes.
+- **GCP KMS Key** — for customer-managed encryption, referenced by `kmsKeyName`.
 
 ## Deploy
 
@@ -77,27 +77,27 @@ When deploying as part of a multi-resource environment, reference each `GcpVerte
 
 These are the most important decisions when configuring an online store. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Bigtable or Optimized** -- Bigtable storage autoscales between node bounds and suits large feature sets served by entity key; Optimized storage serves from a dedicated endpoint at the lowest latency. The choice is fixed at creation, and both bill for capacity around the clock.
+**Bigtable or Optimized** — Bigtable storage autoscales between node bounds and suits large feature sets served by entity key; Optimized storage serves from a dedicated endpoint at the lowest latency. The choice is fixed at creation, and both bill for capacity around the clock.
 
-**What each view serves** -- a view either selects features from feature groups (the registry path, one definition shared with training) or materializes a BigQuery table directly. Clients query a view by name.
+**What each view serves** — a view either selects features from feature groups (the registry path, one definition shared with training) or materializes a BigQuery table directly. Clients query a view by name.
 
-**How fresh** -- a cron sync copies the latest values on a schedule; `continuous: true` streams changes as the source changes. Every sync reads BigQuery as the Vertex AI Service Agent.
+**How fresh** — a cron sync copies the latest values on a schedule; `continuous: true` streams changes as the source changes. Every sync reads BigQuery as the Vertex AI Service Agent.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVertexAiFeatureGroup** | `featureViews[].featureRegistrySource.featureGroups[].featureGroupId` | `status.outputs.feature_group_id` |
-| **GcpProject** | `featureViews[].featureRegistrySource.projectNumber` | `status.outputs.project_number` |
-| **GcpBigQueryTable** | `featureViews[].bigQuerySource.uri` | `status.outputs.qualified_name` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Vertex AI Feature Group** | `featureViews[].featureRegistrySource.featureGroups[].featureGroupId` | `status.outputs.feature_group_id` |
+| **GCP Project** | `featureViews[].featureRegistrySource.projectNumber` | `status.outputs.project_number` |
+| **GCP BigQuery Table** | `featureViews[].bigQuerySource.uri` | `status.outputs.qualified_name` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -112,13 +112,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Bigtable serving** -- a small autoscaled Bigtable store serving registry features on a cron. Start from the **Bigtable Serving** preset.
+**Bigtable serving** — a small autoscaled Bigtable store serving registry features on a cron. Start from the **Bigtable Serving** preset.
 
-**Optimized over PSC** -- an Optimized store reachable only over Private Service Connect, encrypted under your key, with a continuously synced view. Start from the **Optimized Private** preset.
+**Optimized over PSC** — an Optimized store reachable only over Private Service Connect, encrypted under your key, with a continuously synced view. Start from the **Optimized Private** preset.
 
 ## Works With
 
-- [**GCP Vertex AI Feature Group**](/infra-catalog/gcp-vertex-ai-feature-group) -- the registered features views serve
-- [**GCP BigQuery Table**](/infra-catalog/gcp-big-query-table) -- a view's direct source
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
-- [**GCP Forwarding Rule**](/infra-catalog/gcp-global-forwarding-rule) -- the consumer-side PSC endpoint
+- [**GCP Vertex AI Feature Group**](/infra-catalog/gcp-vertex-ai-feature-group) — the registered features views serve
+- [**GCP BigQuery Table**](/infra-catalog/gcp-big-query-table) — a view's direct source
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption
+- [**GCP Forwarding Rule**](/infra-catalog/gcp-global-forwarding-rule) — the consumer-side PSC endpoint

@@ -1,20 +1,20 @@
 # GCP Deploy Target
 
-Names a place your releases go. A Cloud Deploy target is one environment a delivery pipeline promotes through -- a Cloud Run region, a GKE cluster, a fleet cluster, a group of targets deployed together, or a custom platform -- with an optional approval gate and the identity, bucket, and build machines its deploy jobs use.
+Names a place your releases go. A Cloud Deploy target is one environment a delivery pipeline promotes through — a Cloud Run region, a GKE cluster, a fleet cluster, a group of targets deployed together, or a custom platform — with an optional approval gate and the identity, bucket, and build machines its deploy jobs use.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Cloud Deploy API on the target's project
-- **Target** -- the deployment target
+- **API enablement** — the Cloud Deploy API on the target's project
+- **Target** — the deployment target
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with permission to manage Cloud Deploy targets in the target's project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with permission to manage Cloud Deploy targets in the target's project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -55,31 +55,31 @@ Reference a project's `status.outputs.project_id` from `projectId`; a cluster's 
 
 These are the most important decisions when configuring a target. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Target type** -- exactly one: Cloud Run, a GKE cluster, a fleet membership, a multi-target, or a custom target type.
+**Target type** — exactly one: Cloud Run, a GKE cluster, a fleet membership, a multi-target, or a custom target type.
 
-**Approval** -- `requireApproval` makes every rollout to the target wait for a human, the usual gate in front of production.
+**Approval** — `requireApproval` makes every rollout to the target wait for a human, the usual gate in front of production.
 
-**Execution** -- which service account deploys, where rendered manifests and logs go, and whether the jobs run on a private worker pool (needed to reach a private GKE control plane).
+**Execution** — which service account deploys, where rendered manifests and logs go, and whether the jobs run on a private worker pool (needed to reach a private GKE control plane).
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpGkeCluster** | `gke.cluster`, `associatedEntities[].gkeClusters[].cluster` | `status.outputs.cluster_id` |
-| **GcpGkeFleetMembership** | `anthosCluster.membership` | `status.outputs.name` |
-| **GcpGkeCluster** | `anthosCluster.membership` | `status.outputs.fleet_membership` |
-| **GcpDeployTarget** | `multiTarget.targetIds` | `status.outputs.target_id` |
-| **GcpDeployCustomTargetType** | `customTarget.customTargetType` | `status.outputs.name` |
-| **GcpServiceAccount** | `executionConfigs[].serviceAccount` | `status.outputs.email` |
-| **GcpGcsBucket** | `executionConfigs[].artifactStorage` | `status.outputs.url` |
-| **GcpCloudBuildWorkerPool** | `executionConfigs[].workerPool` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP GKE Cluster** | `gke.cluster`, `associatedEntities[].gkeClusters[].cluster` | `status.outputs.cluster_id` |
+| **GCP GKE Fleet Membership** | `anthosCluster.membership` | `status.outputs.name` |
+| **GCP GKE Cluster** | `anthosCluster.membership` | `status.outputs.fleet_membership` |
+| **GCP Deploy Target** | `multiTarget.targetIds` | `status.outputs.target_id` |
+| **GCP Deploy Custom Target Type** | `customTarget.customTargetType` | `status.outputs.name` |
+| **GCP Service Account** | `executionConfigs[].serviceAccount` | `status.outputs.email` |
+| **GCP GCS Bucket** | `executionConfigs[].artifactStorage` | `status.outputs.url` |
+| **GCP Cloud Build Worker Pool** | `executionConfigs[].workerPool` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -91,16 +91,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Cloud Run environment** -- a region in a project. Start from the **Cloud Run Target** preset.
+**Cloud Run environment** — a region in a project. Start from the **Cloud Run Target** preset.
 
-**Production behind an approval** -- a gated GKE target with its own deployer identity. Start from the **Approved GKE Target** preset.
+**Production behind an approval** — a gated GKE target with its own deployer identity. Start from the **Approved GKE Target** preset.
 
-**Multi-region rollout** -- one target that deploys to several at once. Start from the **Multi-Region Target** preset.
+**Multi-region rollout** — one target that deploys to several at once. Start from the **Multi-Region Target** preset.
 
 ## Works With
 
-- [**GCP Delivery Pipeline**](/infra-catalog/gcp-delivery-pipeline) -- the pipeline that deploys to the target
-- [**GCP Deploy Custom Target Type**](/infra-catalog/gcp-deploy-custom-target-type) -- the type behind a custom target
-- [**GCP Deploy Policy**](/infra-catalog/gcp-deploy-policy) -- rollout restrictions on targets
-- [**GCP Cloud Build Worker Pool**](/infra-catalog/gcp-cloud-build-worker-pool) -- private machines for deploy jobs
-- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) -- clusters to deploy to
+- [**GCP Delivery Pipeline**](/infra-catalog/gcp-delivery-pipeline) — the pipeline that deploys to the target
+- [**GCP Deploy Custom Target Type**](/infra-catalog/gcp-deploy-custom-target-type) — the type behind a custom target
+- [**GCP Deploy Policy**](/infra-catalog/gcp-deploy-policy) — rollout restrictions on targets
+- [**GCP Cloud Build Worker Pool**](/infra-catalog/gcp-cloud-build-worker-pool) — private machines for deploy jobs
+- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) — clusters to deploy to

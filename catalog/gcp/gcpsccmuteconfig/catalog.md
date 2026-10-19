@@ -1,20 +1,20 @@
 # GCP SCC Mute Config
 
-Silences Security Command Center findings you have decided not to act on -- accepted risks, noisy detectors, sandbox projects -- for a project, a folder, or the whole organization. Muted findings stay on record but drop out of triage, filtered notifications, and exports, so responders see only what needs attention.
+Silences Security Command Center findings you have decided not to act on — accepted risks, noisy detectors, sandbox projects — for a project, a folder, or the whole organization. Muted findings stay on record but drop out of triage, filtered notifications, and exports, so responders see only what needs attention.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `securitycenter.googleapis.com` on a project rule's project
-- **Mute config** -- the scope's `securitycenter.V2*MuteConfig`
+- **API enablement** — `securitycenter.googleapis.com` on a project rule's project
+- **Mute config** — the scope's `securitycenter.V2*MuteConfig`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Security Command Center mute-config admin permissions at the scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Security Command Center mute-config admin permissions at the scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -54,24 +54,24 @@ Reference a `GcpFolder` from `scope.folderId` to apply one rule to every project
 
 These are the most important decisions when configuring a mute rule. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Dynamic or static** -- `DYNAMIC` mutes existing and future matches and is reversible; `STATIC` permanently mutes future matches.
+**Dynamic or static** — `DYNAMIC` mutes existing and future matches and is reversible; `STATIC` permanently mutes future matches.
 
-**Filter** -- which findings, written for the rule's scope.
+**Filter** — which findings, written for the rule's scope.
 
-**Scope** -- a project, a folder, or the organization.
+**Scope** — a project, a folder, or the organization.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `scope.projectId` | `status.outputs.project_id` |
-| **GcpFolder** | `scope.folderId` | `status.outputs.folder_id` |
+| **GCP Project** | `scope.projectId` | `status.outputs.project_id` |
+| **GCP Folder** | `scope.folderId` | `status.outputs.folder_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -81,12 +81,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Sandbox project noise** -- mute a category in one sandbox project. Start from the **Sandbox Project Noise** preset.
+**Sandbox project noise** — mute a category in one sandbox project. Start from the **Sandbox Project Noise** preset.
 
-**Folder accepted risk** -- mute a low-severity category across a folder. Start from the **Folder Accepted Risk** preset.
+**Folder accepted risk** — mute a low-severity category across a folder. Start from the **Folder Accepted Risk** preset.
 
 ## Works With
 
-- [**GCP SCC Notification Config**](/infra-catalog/gcp-scc-notification-config) -- streams unmuted findings
-- [**GCP SCC BigQuery Export**](/infra-catalog/gcp-scc-bigquery-export) -- exports unmuted findings
-- [**GCP Folder**](/infra-catalog/gcp-folder) -- a folder-wide rule
+- [**GCP SCC Notification Config**](/infra-catalog/gcp-scc-notification-config) — streams unmuted findings
+- [**GCP SCC BigQuery Export**](/infra-catalog/gcp-scc-bigquery-export) — exports unmuted findings
+- [**GCP Folder**](/infra-catalog/gcp-folder) — a folder-wide rule

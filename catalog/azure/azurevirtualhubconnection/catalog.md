@@ -1,21 +1,21 @@
 # Azure Virtual Hub Connection
 
-Deploys a Virtual Hub Connection -- the attachment that joins one spoke virtual network to a Virtual WAN hub. The connection itself is free; its routing block is where WAN topologies are actually built: route-table association, label-based propagation, static routes toward appliances, and internet security.
+Deploys a Virtual Hub Connection — the attachment that joins one spoke virtual network to a Virtual WAN hub. The connection itself is free; its routing block is where WAN topologies are actually built: route-table association, label-based propagation, static routes toward appliances, and internet security.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Virtual Hub Connection** -- the ARM attachment between the hub and the spoke VNet, with its routing configuration
+- **Virtual Hub Connection** — the ARM attachment between the hub and the spoke VNet, with its routing configuration
 
-The connection carries no tags of its own -- ARM addresses it as a child of the hub, and the provider exposes no tags surface on it.
+The connection carries no tags of its own — ARM addresses it as a child of the hub, and the provider exposes no tags surface on it.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
@@ -51,7 +51,7 @@ spec:
 planton apply -f azure-virtual-hub-connection.yaml
 ```
 
-This attaches the spoke VNet to the hub with ARM's default routing -- any-to-any reachability through the hub's built-in route table. The connection provisions in a few minutes and is free; transit through the hub is what bills. An Infra Job tracks the provisioning in real time.
+This attaches the spoke VNet to the hub with ARM's default routing — any-to-any reachability through the hub's built-in route table. The connection provisions in a few minutes and is free; transit through the hub is what bills. An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 
@@ -78,26 +78,26 @@ The InfraPipeline resolves the dependency graph, deploys the hub and spoke netwo
 
 These are the most important decisions when configuring a connection. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Routing** -- unset means ARM's default: associate with and propagate to the hub's built-in default route table (any-to-any reachability). Every WAN topology beyond that -- isolation, shared services, service chaining -- is expressed here.
+**Routing** — unset means ARM's default: associate with and propagate to the hub's built-in default route table (any-to-any reachability). Every WAN topology beyond that — isolation, shared services, service chaining — is expressed here.
 
-**Association vs. propagation** -- a connection is routed BY exactly one table (`associatedRouteTableId`) and its routes are LEARNED via the tables it propagates to (`propagatedRouteTable`: explicit IDs, labels, or both).
+**Association vs. propagation** — a connection is routed BY exactly one table (`associatedRouteTableId`) and its routes are LEARNED via the tables it propagates to (`propagatedRouteTable`: explicit IDs, labels, or both).
 
-**Internet security** -- `internetSecurityEnabled: true` makes the hub advertise 0.0.0.0/0 to this spoke (typically into a hub firewall via routing intent). Off by default: the spoke keeps its own internet egress.
+**Internet security** — `internetSecurityEnabled: true` makes the hub advertise 0.0.0.0/0 to this spoke (typically into a hub firewall via routing intent). Off by default: the spoke keeps its own internet egress.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureVirtualHub** | `virtualHubId` | `status.outputs.virtual_hub_id` |
-| **AzureVirtualNetwork** | `remoteVirtualNetworkId` | `status.outputs.virtual_network_id` |
-| **AzureVirtualHub** (optional) | `routing.associatedRouteTableId` | `status.outputs.default_route_table_id` or `status.outputs.route_table_ids.<name>` |
-| **AzureVirtualHub** (optional) | `routing.inboundRouteMapId` / `outboundRouteMapId` | `status.outputs.route_map_ids.<name>` |
+| **Azure Virtual Hub** | `virtualHubId` | `status.outputs.virtual_hub_id` |
+| **Azure Virtual Network** | `remoteVirtualNetworkId` | `status.outputs.virtual_network_id` |
+| **Azure Virtual Hub** (optional) | `routing.associatedRouteTableId` | `status.outputs.default_route_table_id` or `status.outputs.route_table_ids.<name>` |
+| **Azure Virtual Hub** (optional) | `routing.inboundRouteMapId` / `outboundRouteMapId` | `status.outputs.route_map_ids.<name>` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -109,11 +109,11 @@ The only other output, `virtual_hub_connection_name`, echoes the connection's na
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Any-to-any attachment** -- the default routing: every connected network reaches every other. Start from the **Any-to-Any Attachment** preset.
+**Any-to-any attachment** — the default routing: every connected network reaches every other. Start from the **Any-to-Any Attachment** preset.
 
-**Isolated spoke** -- associate with an isolated table, propagate only to shared targets. Start from the **Isolated Spoke** preset.
+**Isolated spoke** — associate with an isolated table, propagate only to shared targets. Start from the **Isolated Spoke** preset.
 
 ## Works With
 
-- [**Azure Virtual Hub**](/infra-catalog/azure-virtual-hub) -- the hub the network attaches to
-- [**Azure Virtual Network**](/infra-catalog/azure-virtual-network) -- the spoke being attached
+- [**Azure Virtual Hub**](/infra-catalog/azure-virtual-hub) — the hub the network attaches to
+- [**Azure Virtual Network**](/infra-catalog/azure-virtual-network) — the spoke being attached

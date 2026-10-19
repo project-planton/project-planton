@@ -20,7 +20,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **The source volume** (volume arm) — in the same region; reference an AwsEbsVolume Infra Component or pass a literal `vol-...` id.
+- **The source volume** (volume arm) — in the same region; reference an AWS EBS Volume Infra Component or pass a literal `vol-...` id.
 - **The disk image and the vmimport role** (import arm) — the image staged in S3 (or reachable by URL), and the VM Import/Export service role (`vmimport` by convention, or the role named in `importFrom.roleName`) with AWS's documented trust and S3 policy. The service validates the role only when the task runs, so a missing role fails the create after several minutes, not at plan.
 - **KMS key sharing** (only when sharing encrypted snapshots) — `shareWithAccountIds` grants createVolumePermission, but an encrypted snapshot is useless to the peer until the KMS key also grants them decrypt.
 
@@ -56,7 +56,7 @@ This snapshots the referenced volume in place, ready to restore from before the 
 
 ### InfraChart
 
-When the snapshot deploys alongside its source volume in one chart, wire the volume reference via ValueFromRef:
+When the snapshot deploys alongside its source volume in one chart, wire the volume reference:
 
 ```yaml
 spec:
@@ -91,20 +91,20 @@ These are the most important decisions when configuring an EBS snapshot. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsEbsVolume** (volume arm) | `volumeId` | `status.outputs.volume_id` |
-| **AwsEbsSnapshot** (copy arm) | `copyFrom.sourceSnapshotId` | `status.outputs.snapshot_id` |
-| **AwsKmsKey** (optional, copy arm) | `copyFrom.kmsKeyId` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional, import arm) | `importFrom.kmsKeyId` | `status.outputs.key_arn` |
+| **AWS EBS Volume** (volume arm) | `volumeId` | `status.outputs.volume_id` |
+| **AWS EBS Snapshot** (copy arm) | `copyFrom.sourceSnapshotId` | `status.outputs.snapshot_id` |
+| **AWS KMS Key** (optional, copy arm) | `copyFrom.kmsKeyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional, import arm) | `importFrom.kmsKeyId` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `snapshot_id` | The snapshot's id (`snap-...`) | AwsEbsVolume restores (`snapshotId`) and other snapshots' copy arms (`copyFrom.sourceSnapshotId`) |
+| `snapshot_id` | The snapshot's id (`snap-...`) | AWS EBS Volume restores (`snapshotId`) and other snapshots' copy arms (`copyFrom.sourceSnapshotId`) |
 | `snapshot_arn` | The snapshot's ARN | IAM policy statements scoping snapshot actions |
 
 `owner_id` and `volume_size_gb` are also exported — the owning account and the captured size (for imports, the size AWS derived from the image). They are observability values rather than composition inputs.
@@ -117,7 +117,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Cross-region DR in one resource** — a copy-arm instance in the DR region, re-encrypted under that region's own KMS key (copying is the only way snapshots change keys). Restore volumes from it the day the primary region has a bad day. Start from the **Cross-Region DR Copy** preset.
 
-**Recurring cadence belongs to DLM** — a hand-managed snapshot resource is a point-in-time act. For hourly/daily/weekly backups with retention, tag the volumes and let an AwsDlmLifecyclePolicy create and prune the snapshots; keep this kind for deliberate, named captures.
+**Recurring cadence belongs to DLM** — a hand-managed snapshot resource is a point-in-time act. For hourly/daily/weekly backups with retention, tag the volumes and let an AWS Data Lifecycle Manager Policy create and prune the snapshots; keep this kind for deliberate, named captures.
 
 ## Works With
 

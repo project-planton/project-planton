@@ -88,11 +88,11 @@ This kind has no foreign key dependencies — the document body, type, and shari
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `document_name` | The document's name (also the provider's import ID) | The `documentName` reference on AwsSsmAssociation; maintenance window task ARNs |
+| `document_name` | The document's name (also the provider's import ID) | The `documentName` reference on AWS SSM Association; maintenance window task ARNs |
 | `document_arn` | The document's ARN | IAM policy statements scoping who may execute or update it |
 | `default_version` | The version `$DEFAULT` pins resolve to; content updates promote the new version here | Verifying which release consumers are running |
 
@@ -102,7 +102,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Fleet scripts through an audited channel** — A parameterized Command document replaces SSH-and-run for agent installs, cert rotation, and diagnostics: IAM gates who can execute it, and every run is recorded. Pair it with an AwsSsmAssociation targeting by tag so new instances join coverage automatically. Start from the **Shell Command Document** preset.
+**Fleet scripts through an audited channel** — A parameterized Command document replaces SSH-and-run for agent installs, cert rotation, and diagnostics: IAM gates who can execute it, and every run is recorded. Pair it with an AWS SSM Association targeting by tag so new instances join coverage automatically. Start from the **Shell Command Document** preset.
 
 **Automation runbooks for AWS-API procedures** — Stop-resize-restart, snapshotting, remediation: multi-step Automation documents with typed parameters, executable unattended from a maintenance window or rate-controlled across a fleet via an association's `automationTargetParameterName`. Add `aws:approve` steps for human gates on destructive operations. Start from the **Automation Runbook** preset.
 

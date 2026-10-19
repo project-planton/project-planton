@@ -6,15 +6,15 @@ Deploys a Kubernetes PersistentVolumeClaim — the durable-disk primitive. A cla
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes PersistentVolumeClaim** -- a core/v1 claim in the specified namespace carrying capacity, access modes, storage-class selection, optional static binding, and an optional clone/snapshot data source
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes PersistentVolumeClaim** — a core/v1 claim in the specified namespace carrying capacity, access modes, storage-class selection, optional static binding, and an optional clone/snapshot data source
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
@@ -53,7 +53,7 @@ This requests a 10Gi ReadWriteOnce volume through the cluster's default StorageC
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to place the claim in a managed namespace and pin its class to a composed StorageClass:
+When deploying as part of a multi-resource environment, use references to place the claim in a managed namespace and pin its class to a composed StorageClass:
 
 ```yaml
 spec:
@@ -77,28 +77,28 @@ The InfraPipeline creates the namespace and StorageClass first, then the claim a
 
 These are the most important decisions when configuring a Kubernetes PersistentVolumeClaim. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Size for growth** -- The request is a Kubernetes quantity ("10Gi", "500Mi"). Growing later requires the claim's StorageClass to allow expansion, and Kubernetes NEVER shrinks a volume — the only way down is a data migration.
+**Size for growth** — The request is a Kubernetes quantity ("10Gi", "500Mi"). Growing later requires the claim's StorageClass to allow expansion, and Kubernetes NEVER shrinks a volume — the only way down is a data migration.
 
-**Access modes are driver promises** -- ReadWriteOnce (one node, the default) works everywhere; ReadWriteMany needs a shared-filesystem driver (EFS, Filestore, Azure Files); ReadWriteOncePod is the strictest isolation. A mode the backing storage cannot deliver leaves the claim Pending.
+**Access modes are driver promises** — ReadWriteOnce (one node, the default) works everywhere; ReadWriteMany needs a shared-filesystem driver (EFS, Filestore, Azure Files); ReadWriteOncePod is the strictest isolation. A mode the backing storage cannot deliver leaves the claim Pending.
 
-**Absent and empty class names differ** -- Omitting the class uses the cluster DEFAULT; `disableDynamicProvisioning` pins it to the EMPTY string, meaning no volume is ever provisioned — the claim binds only to a matching pre-provisioned PersistentVolume. The two are mutually exclusive by design.
+**Absent and empty class names differ** — Omitting the class uses the cluster DEFAULT; `disableDynamicProvisioning` pins it to the EMPTY string, meaning no volume is ever provisioned — the claim binds only to a matching pre-provisioned PersistentVolume. The two are mutually exclusive by design.
 
-**Pending can be correct** -- With a WaitForFirstConsumer class (the norm for zonal cloud disks), a claim stays Pending until a pod uses it. Deploys never block on the claim reaching Bound — deliberate, so they never hang waiting for a consumer that arrives later.
+**Pending can be correct** — With a WaitForFirstConsumer class (the norm for zonal cloud disks), a claim stays Pending until a pod uses it. Deploys never block on the claim reaching Bound — deliberate, so they never hang waiting for a consumer that arrives later.
 
-**Data sources have driver rules** -- Cloning runs as snapshot-then-restore on AWS EBS (minutes even for small volumes), and EC2 refuses to clone an UNENCRYPTED source; snapshots restore faster with no encryption constraint. Sources are same-namespace only.
+**Data sources have driver rules** — Cloning runs as snapshot-then-restore on AWS EBS (minutes even for small volumes), and EC2 refuses to clone an UNENCRYPTED source; snapshots restore faster with no encryption constraint. Sources are same-namespace only.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** (optional) | `namespace` | `spec.name` |
-| **KubernetesStorageClass** (optional) | `storageClassName` | `status.outputs.storage_class_name` |
+| **Kubernetes Namespace** (optional) | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** (optional) | `storageClassName` | `status.outputs.storage_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -110,16 +110,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Default-class app storage** -- One claim, cluster default class, ReadWriteOnce. Start from the **Dynamic Default Class** preset.
+**Default-class app storage** — One claim, cluster default class, ReadWriteOnce. Start from the **Dynamic Default Class** preset.
 
-**Pinned performance tier** -- A named class (SSD, encrypted) chosen deliberately. Start from the **Pinned Class** preset.
+**Pinned performance tier** — A named class (SSD, encrypted) chosen deliberately. Start from the **Pinned Class** preset.
 
-**Shared filesystem** -- ReadWriteMany through a shared-filesystem class for multi-pod access. Start from the **Shared RWM** preset.
+**Shared filesystem** — ReadWriteMany through a shared-filesystem class for multi-pod access. Start from the **Shared RWM** preset.
 
-**Environment stamping** -- A new claim born from an existing claim's data. Start from the **Clone From Claim** preset.
+**Environment stamping** — A new claim born from an existing claim's data. Start from the **Clone From Claim** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- reference the namespace so Infra Charts create it and this claim in dependency order
-- [**Kubernetes StorageClass**](/infra-catalog/kubernetes-storage-class) -- reference a class created on this platform to pin the performance tier declaratively
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- mounts the claim by name via its volume mounts, from the same namespace only; per-replica StatefulSet storage uses the workload's own volume claim templates instead
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — reference the namespace so Infra Charts create it and this claim in dependency order
+- [**Kubernetes StorageClass**](/infra-catalog/kubernetes-storage-class) — reference a class created on this platform to pin the performance tier declaratively
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — mounts the claim by name via its volume mounts, from the same namespace only; per-replica StatefulSet storage uses the workload's own volume claim templates instead

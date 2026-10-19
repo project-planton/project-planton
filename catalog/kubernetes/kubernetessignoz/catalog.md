@@ -117,17 +117,17 @@ These are the most important decisions when configuring a SigNoz deployment. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesClickHouse** | `clickhouse.host` | `status.outputs.service_name` |
-| **KubernetesClickHouse** | `clickhouse.clusterName` | `status.outputs.cluster_name` |
-| **KubernetesClickHouse** | `clickhouse.passwordSecret.secretName` | `status.outputs.auth_secret_name` |
-| **KubernetesStorageClass** | `server.storageClass` | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **ClickHouse** | `clickhouse.host` | `status.outputs.service_name` |
+| **ClickHouse** | `clickhouse.clusterName` | `status.outputs.cluster_name` |
+| **ClickHouse** | `clickhouse.passwordSecret.secretName` | `status.outputs.auth_secret_name` |
+| **Kubernetes StorageClass** | `server.storageClass` | `metadata.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -1,6 +1,6 @@
 # GCP GKE Node Pool
 
-Deploys a GKE node pool — a group of Compute Engine VMs with one shared configuration, attached to a `GcpGkeCluster`. Covers the full pool surface: fixed or autoscaled sizing (per-zone or total bounds), the complete node VM shape (machine type, disks, local SSDs, GPUs), Spot/preemptible capacity models, reservations and Dynamic Workload Scheduler paths, node identity and hardening, Kubernetes scheduling metadata (labels/taints/tags), surge or blue-green upgrade rollouts, per-pool networking, and kubelet/OS tuning. Node pools apply to Standard clusters only — Autopilot clusters manage their own nodes.
+Deploys a GKE node pool — a group of Compute Engine VMs with one shared configuration, attached to a GCP GKE Cluster. Covers the full pool surface: fixed or autoscaled sizing (per-zone or total bounds), the complete node VM shape (machine type, disks, local SSDs, GPUs), Spot/preemptible capacity models, reservations and Dynamic Workload Scheduler paths, node identity and hardening, Kubernetes scheduling metadata (labels/taints/tags), surge or blue-green upgrade rollouts, per-pool networking, and kubelet/OS tuning. Node pools apply to Standard clusters only — Autopilot clusters manage their own nodes.
 
 ## What Gets Created
 
@@ -73,7 +73,7 @@ This creates an autoscaled pool (0-4 nodes per zone — free while idle) of n2-s
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, the cluster and its pools compose through ValueFromRef:
+When deploying as part of a multi-resource environment, the cluster and its pools compose by reference:
 
 ```yaml
 spec:
@@ -126,18 +126,18 @@ These are the most important decisions when configuring a node pool. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpGkeCluster** | `clusterName` | `status.outputs.name` |
-| **GcpGkeCluster** | `location` | `status.outputs.location` |
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpServiceAccount** | `nodeConfig.serviceAccount` | `status.outputs.email` |
-| **GcpKmsKey** | `nodeConfig.bootDiskKmsKey` | `status.outputs.key_id` |
-| **GcpComputeImage** (optional) | `nodeConfig.secondaryBootDisks[].diskImage` | `status.outputs.image_id` |
+| **GCP GKE Cluster** | `clusterName` | `status.outputs.name` |
+| **GCP GKE Cluster** | `location` | `status.outputs.location` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Service Account** | `nodeConfig.serviceAccount` | `status.outputs.email` |
+| **GCP KMS Key** | `nodeConfig.bootDiskKmsKey` | `status.outputs.key_id` |
+| **GCP Compute Image** (optional) | `nodeConfig.secondaryBootDisks[].diskImage` | `status.outputs.image_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

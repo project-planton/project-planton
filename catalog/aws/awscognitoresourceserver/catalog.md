@@ -16,7 +16,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **A Cognito User Pool** — the directory whose access tokens will carry these scopes. Reference an AwsCognitoUserPool Infra Component or provide the pool ID (`{region}_{poolId}`) directly.
+- **A Cognito User Pool** — the directory whose access tokens will carry these scopes. Reference an AWS Cognito User Pool Infra Component or provide the pool ID (`{region}_{poolId}`) directly.
 
 ## Deploy
 
@@ -59,7 +59,7 @@ This registers a resource server on the referenced pool minting two requestable 
 
 ### InfraChart
 
-When the resource server deploys alongside its pool in one chart, wire the pool reference via ValueFromRef:
+When the resource server deploys alongside its pool in one chart, wire the pool reference:
 
 ```yaml
 spec:
@@ -96,17 +96,17 @@ These are the most important decisions when configuring a resource server. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCognitoUserPool** | `userPoolId` | `status.outputs.user_pool_id` |
+| **AWS Cognito User Pool** | `userPoolId` | `status.outputs.user_pool_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `scope_identifiers` | The fully-qualified scope strings (`{identifier}/{scope_name}`) this server mints | The exact values an AwsCognitoUserPoolClient lists in `allowedOauthScopes` |
+| `scope_identifiers` | The fully-qualified scope strings (`{identifier}/{scope_name}`) this server mints | The exact values an AWS Cognito User Pool Client lists in `allowedOauthScopes` |
 | `resource_server_identifier` | The identifier — the scope prefix access tokens carry | API-side token validation configuration (the audience/prefix to check) |
 | `user_pool_id` | The pool this server belongs to, resolved from the reference | Consumers holding only this resource get both halves of the (pool, identifier) key AWS uses |
 
@@ -116,7 +116,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **One resource server per API** — each API the pool protects gets its own identifier and scope vocabulary, so permission models evolve per API without cross-talk. The scope list starts coarse (`read`, `write`) and grows finer (`orders:read`, `admin`) as the API's authorization model matures — additions are free of migration cost, removals carry the token-lifetime tail. Start from the **API Scopes** preset.
 
-**The M2M pair** — this resource server plus an AwsCognitoUserPoolClient with `allowedOauthFlows: [client_credentials]` listing the minted scopes. The client authenticates with its secret, receives an access token carrying exactly these scopes, and your API authorizes on them — no user in the loop.
+**The M2M pair** — this resource server plus an AWS Cognito User Pool Client with `allowedOauthFlows: [client_credentials]` listing the minted scopes. The client authenticates with its secret, receives an access token carrying exactly these scopes, and your API authorizes on them — no user in the loop.
 
 ## Works With
 

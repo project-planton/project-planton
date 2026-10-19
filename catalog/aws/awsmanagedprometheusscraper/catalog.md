@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **The destination** — an AMP workspace (reference an AwsManagedPrometheus's `workspace_arn` output) or a CloudWatch dataset ARN.
+- **The destination** — an AMP workspace (reference an AWS Managed Prometheus's `workspace_arn` output) or a CloudWatch dataset ARN.
 - **At least two subnets** — CreateScraper rejects fewer ("Number of subnets must be at least 2"); for EKS sources use the cluster's subnets.
 - **EKS arm only** — the cluster itself, referenced by ARN. AWS also needs the cluster's access entries to allow the scraper's role, which AWS manages automatically for same-account setups.
 - **VPC arm only** — at least one security group whose rules let the collectors reach your scrape targets' ports.
@@ -66,7 +66,7 @@ This provisions collectors into the two subnets, resolves AWS's published defaul
 
 ### InfraChart
 
-When the scraper deploys alongside its workspace in one chart, wire the destination via ValueFromRef:
+When the scraper deploys alongside its workspace in one chart, wire the destination by reference:
 
 ```yaml
 spec:
@@ -109,18 +109,18 @@ These are the most important decisions when configuring a scraper. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsEksCluster** | `sourceEks.clusterArn` | `status.outputs.cluster_arn` |
-| **AwsSubnet** | `sourceEks.subnetIds[]` / `sourceVpc.subnetIds[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `sourceEks.securityGroupIds[]` / `sourceVpc.securityGroupIds[]` | `status.outputs.security_group_id` |
-| **AwsManagedPrometheus** | `ampWorkspaceArn` | `status.outputs.workspace_arn` |
-| **AwsIamRole** | `roleConfiguration.sourceRoleArn` / `roleConfiguration.targetRoleArn` | `status.outputs.role_arn` |
-| **AwsCloudwatchLogGroup** | `logging.logGroupArn` | `status.outputs.log_group_arn` |
+| **AWS EKS Cluster** | `sourceEks.clusterArn` | `status.outputs.cluster_arn` |
+| **AWS Subnet** | `sourceEks.subnetIds[]` / `sourceVpc.subnetIds[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `sourceEks.securityGroupIds[]` / `sourceVpc.securityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS Managed Prometheus** | `ampWorkspaceArn` | `status.outputs.workspace_arn` |
+| **AWS IAM Role** | `roleConfiguration.sourceRoleArn` / `roleConfiguration.targetRoleArn` | `status.outputs.role_arn` |
+| **AWS CloudWatch Log Group** | `logging.logGroupArn` | `status.outputs.log_group_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

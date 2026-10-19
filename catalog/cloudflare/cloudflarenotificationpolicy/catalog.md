@@ -6,20 +6,20 @@ Deploys a Cloudflare notification policy: one alert type — a tunnel degrading,
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Notification Policy** -- one `cloudflare_notification_policy` watching the declared `alertType`, with each flattened destination (an address or a UUID) rebuilt into the API's object rows and only the declared filters sent
+- **Notification Policy** — one `cloudflare_notification_policy` watching the declared `alertType`, with each flattened destination (an address or a UUID) rebuilt into the API's object rows and only the declared filters sent
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Notifications Write on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Notifications Write on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **A plan carrying the chosen alert type** -- advanced DDoS (L4 and L7), bot traffic, and several script-monitor and security-insight families are Business or Enterprise features. Cloudflare refuses the create when the plan lacks the type — an honest failure, but at apply time, not review time.
-- **A connected PagerDuty integration** (only for `pagerdutyIds`) -- the service UUID must come from an integration already connected in the Cloudflare dashboard. An unknown UUID is accepted at deploy and fails at delivery.
-- **Live webhook destinations** (only for `webhookIds`) -- each UUID must point at an existing notification webhook, ideally a Cloudflare Notification Webhook Infra Component wired by reference.
+- **A plan carrying the chosen alert type** — advanced DDoS (L4 and L7), bot traffic, and several script-monitor and security-insight families are Business or Enterprise features. Cloudflare refuses the create when the plan lacks the type — an honest failure, but at apply time, not review time.
+- **A connected PagerDuty integration** (only for `pagerdutyIds`) — the service UUID must come from an integration already connected in the Cloudflare dashboard. An unknown UUID is accepted at deploy and fails at delivery.
+- **Live webhook destinations** (only for `webhookIds`) — each UUID must point at an existing notification webhook, ideally a Cloudflare Notification Webhook Infra Component wired by reference.
 
 ## Deploy
 
@@ -92,13 +92,13 @@ These are the most important decisions when configuring a notification policy. E
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareNotificationWebhook** | `mechanisms.webhookIds[]` | `status.outputs.webhook_id` |
+| **Cloudflare Notification Webhook** | `mechanisms.webhookIds[]` | `status.outputs.webhook_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -108,14 +108,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**On-call paging** -- A tunnel turning unhealthy pages PagerDuty and copies the on-call inbox, with a 30-minute refire floor. Swap `tunnel_health_event` for `load_balancing_health_alert` or `http_alert_origin_error` to page on those instead. Start from the **On-call paging** preset.
+**On-call paging** — A tunnel turning unhealthy pages PagerDuty and copies the on-call inbox, with a 30-minute refire floor. Swap `tunnel_health_event` for `load_balancing_health_alert` or `http_alert_origin_error` to page on those instead. Start from the **On-call paging** preset.
 
-**Certificate expiry warning** -- Universal SSL certificate events emailed to the platform team and mirrored into chat through a webhook destination. Cloudflare splits certificate expiry across five alert families (`universal_ssl_event_type`, `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`, `mtls_certificate_store_certificate_expiration_type`, and the Authenticated Origin Pulls variants) — clone the shape per certificate kind the account actually uses. Start from the **Certificate expiry warning** preset.
+**Certificate expiry warning** — Universal SSL certificate events emailed to the platform team and mirrored into chat through a webhook destination. Cloudflare splits certificate expiry across five alert families (`universal_ssl_event_type`, `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`, `mtls_certificate_store_certificate_expiration_type`, and the Authenticated Origin Pulls variants) — clone the shape per certificate kind the account actually uses. Start from the **Certificate expiry warning** preset.
 
-**Guarding log delivery** -- A policy on `failing_logpush_job_disabled_alert` beside every Logpush job that matters for audit or compliance, closing the gap where log delivery stops and nothing else notices.
+**Guarding log delivery** — A policy on `failing_logpush_job_disabled_alert` beside every Logpush job that matters for audit or compliance, closing the gap where log delivery stops and nothing else notices.
 
 ## Works With
 
-- [**Cloudflare Notification Webhook**](/infra-catalog/cloudflare-notification-webhook) -- registers the webhook destinations this policy delivers to; wire `webhookIds` via ValueFromRef.
-- [**Cloudflare Health Check**](/infra-catalog/cloudflare-healthcheck) -- the origin probes behind `health_check_status_notification` policies.
-- [**Cloudflare Logpush Job**](/infra-catalog/cloudflare-logpush-job) -- pair a policy on the failing-job alert with every job whose delivery must not stop silently.
+- [**Cloudflare Notification Webhook**](/infra-catalog/cloudflare-notification-webhook) — registers the webhook destinations this policy delivers to; wire `webhookIds` by reference.
+- [**Cloudflare Health Check**](/infra-catalog/cloudflare-healthcheck) — the origin probes behind `health_check_status_notification` policies.
+- [**Cloudflare Logpush Job**](/infra-catalog/cloudflare-logpush-job) — pair a policy on the failing-job alert with every job whose delivery must not stop silently.

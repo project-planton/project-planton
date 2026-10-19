@@ -1,6 +1,6 @@
 # Kafka Connector
 
-Declares ONE data pipe — a connector instance — on a Strimzi `KafkaConnector` custom resource. The target Connect cluster's operator-managed workers run it: a SOURCE connector streams an external system into Kafka (Debezium CDC from Postgres/MySQL, file tails, SaaS APIs); a SINK connector streams Kafka topics out (object stores, search indexes, warehouses). The placement contract is strict: the KafkaConnector must live in the SAME NAMESPACE as its Connect cluster and bind to that cluster through the `strimzi.io/cluster` label (rendered from `connectCluster`). A connector in another namespace, or naming a Connect cluster that does not exist there, is accepted by the API server and then silently never reconciled — no pipe, no error. The connector's CLASS must be available on the Connect cluster's workers — via the stock image, a prebuilt `image`, OCI `plugins`, or a `build` on the KubernetesKafkaConnect resource. A class the workers do not carry fails at reconcile with a "class not found" condition on the resource.
+Declares ONE data pipe — a connector instance — on a Strimzi KafkaConnector custom resource. The target Connect cluster's operator-managed workers run it: a SOURCE connector streams an external system into Kafka (Debezium CDC from Postgres/MySQL, file tails, SaaS APIs); a SINK connector streams Kafka topics out (object stores, search indexes, warehouses). The placement contract is strict: the KafkaConnector must live in the SAME NAMESPACE as its Connect cluster and bind to that cluster through the `strimzi.io/cluster` label (rendered from `connectCluster`). A connector in another namespace, or naming a Connect cluster that does not exist there, is accepted by the API server and then silently never reconciled — no pipe, no error. The connector's CLASS must be available on the Connect cluster's workers — via the stock image, a prebuilt `image`, OCI `plugins`, or a `build` on the Kafka Connect resource. A class the workers do not carry fails at reconcile with a "class not found" condition on the resource.
 
 ## What Gets Created
 
@@ -90,7 +90,7 @@ The InfraPipeline deploys the Connect cluster first, then declares the connector
 
 These are the most important decisions when declaring a connector. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The placement contract** — the KafkaConnector must live in the Connect cluster's OWN namespace. `connectCluster` renders as the `strimzi.io/cluster` label that binds the connector to its cluster. Reference the KubernetesKafkaConnect resource to inherit its `connect_name` output and draw the dependency edge.
+**The placement contract** — the KafkaConnector must live in the Connect cluster's OWN namespace. `connectCluster` renders as the `strimzi.io/cluster` label that binds the connector to its cluster. Reference the Kafka Connect resource to inherit its `connect_name` output and draw the dependency edge.
 
 **The class decides source vs sink** — a fully-qualified Java class name (e.g. `io.debezium.connector.postgresql.PostgresConnector`). The class must be ON the Connect cluster's workers. The stock image carries ONLY the MirrorMaker 2 connectors; Debezium, S3 sinks, Elasticsearch sinks, and warehouse connectors arrive through the Connect cluster's `image`, `plugins`, or `build` arms.
 
@@ -108,16 +108,16 @@ These are the most important decisions when declaring a connector. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesKafkaConnect** | `connectCluster` | `status.outputs.connect_name` |
-| **KubernetesConfigMap** | `listOffsets.toConfigMap` | `status.outputs.configmap_name` |
-| **KubernetesConfigMap** | `alterOffsets.fromConfigMap` | `status.outputs.configmap_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kafka Connect** | `connectCluster` | `status.outputs.connect_name` |
+| **Kubernetes ConfigMap** | `listOffsets.toConfigMap` | `status.outputs.configmap_name` |
+| **Kubernetes ConfigMap** | `alterOffsets.fromConfigMap` | `status.outputs.configmap_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

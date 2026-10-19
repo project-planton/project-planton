@@ -6,19 +6,19 @@ Deploys a production-ready Kubernetes namespace with optional resource quotas, L
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Namespace** -- the core namespace object with user-specified labels, annotations, and pod security standard labels
-- **ResourceQuota** -- created only when a resource profile is configured (built-in T-shirt size or custom quotas); enforces aggregate CPU, memory, and object count limits
-- **LimitRange** -- created only when custom default limits are specified; injects default CPU and memory requests/limits into containers that omit them
-- **NetworkPolicy (ingress isolation)** -- created only when `networkConfig.isolateIngress` is `true`; default-denies all ingress and allows traffic only from namespaces listed in `allowedIngressNamespaces`
-- **NetworkPolicy (egress restriction)** -- created only when `networkConfig.restrictEgress` is `true`; blocks all egress except to kube-system (DNS) and the Kubernetes API, plus any CIDRs in `allowedEgressCidrs`
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes Namespace** — the core namespace object with user-specified labels, annotations, and pod security standard labels
+- **ResourceQuota** — created only when a resource profile is configured (built-in T-shirt size or custom quotas); enforces aggregate CPU, memory, and object count limits
+- **LimitRange** — created only when custom default limits are specified; injects default CPU and memory requests/limits into containers that omit them
+- **NetworkPolicy (ingress isolation)** — created only when `networkConfig.isolateIngress` is `true`; default-denies all ingress and allows traffic only from namespaces listed in `allowedIngressNamespaces`
+- **NetworkPolicy (egress restriction)** — created only when `networkConfig.restrictEgress` is `true`; blocks all egress except to kube-system (DNS) and the Kubernetes API, plus any CIDRs in `allowedEgressCidrs`
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
@@ -60,13 +60,13 @@ This creates a namespace with a medium resource quota profile (4 CPU / 8Gi reque
 
 These are the most important decisions when configuring a Kubernetes Namespace. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Resource profile** -- Choose a built-in T-shirt size (`small`, `medium`, `large`, `xlarge`) for quick resource guardrails, or specify `custom` quotas for precise control over CPU, memory, object counts, and default container limits. Custom quotas also accept `additionalHardLimits` -- an open map for any other ResourceQuota key Kubernetes supports (extended resources like `requests.nvidia.com/gpu`, storage classes, hugepages), merged with the typed fields into one ResourceQuota. Omitting the profile creates a namespace with no resource quotas.
+**Resource profile** — Choose a built-in T-shirt size (`small`, `medium`, `large`, `xlarge`) for quick resource guardrails, or specify `custom` quotas for precise control over CPU, memory, object counts, and default container limits. Custom quotas also accept `additionalHardLimits` — an open map for any other ResourceQuota key Kubernetes supports (extended resources like `requests.nvidia.com/gpu`, storage classes, hugepages), merged with the typed fields into one ResourceQuota. Omitting the profile creates a namespace with no resource quotas.
 
-**Pod security standard** -- Set to `baseline` for most workloads (prevents known privilege escalations), `restricted` for security-sensitive production (requires non-root, drops all capabilities), or `privileged` only for system-level workloads like monitoring agents and CNI plugins.
+**Pod security standard** — Set to `baseline` for most workloads (prevents known privilege escalations), `restricted` for security-sensitive production (requires non-root, drops all capabilities), or `privileged` only for system-level workloads like monitoring agents and CNI plugins.
 
-**Network isolation** -- Enable `networkConfig.isolateIngress` to default-deny all inbound traffic, then whitelist specific namespaces via `allowedIngressNamespaces`. Enable `networkConfig.restrictEgress` to block outbound traffic except DNS and the Kubernetes API, then open specific CIDRs or domains.
+**Network isolation** — Enable `networkConfig.isolateIngress` to default-deny all inbound traffic, then whitelist specific namespaces via `allowedIngressNamespaces`. Enable `networkConfig.restrictEgress` to block outbound traffic except DNS and the Kubernetes API, then open specific CIDRs or domains.
 
-**Service mesh injection** -- Set `serviceMeshConfig.enabled` to `true` and choose a `meshType` (Istio, Linkerd, or Consul) to add the appropriate sidecar injection label. For Istio, the optional `revisionTag` field targets a specific control plane revision for safe canary upgrades.
+**Service mesh injection** — Set `serviceMeshConfig.enabled` to `true` and choose a `meshType` (Istio, Linkerd, or Consul) to add the appropriate sidecar injection label. For Istio, the optional `revisionTag` field targets a specific control plane revision for safe canary upgrades.
 
 ## Outputs and Dependencies
 
@@ -76,7 +76,7 @@ This kind has no foreign key dependencies.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -88,12 +88,12 @@ The remaining outputs (`namespace_id`, the `*_applied` flags, `pod_security_stan
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Development namespace with basic guardrails** -- Small resource profile, baseline pod security, no network isolation. Fast to provision and suitable for most development and staging workloads. Start from the **Standard Namespace** preset.
+**Development namespace with basic guardrails** — Small resource profile, baseline pod security, no network isolation. Fast to provision and suitable for most development and staging workloads. Start from the **Standard Namespace** preset.
 
-**Production namespace with governance** -- Custom resource quotas, default container limits, ingress isolation allowing only kube-system and istio-system, restricted pod security. Designed for multi-tenant production clusters. Start from the **Production Namespace with Custom Quotas** preset.
+**Production namespace with governance** — Custom resource quotas, default container limits, ingress isolation allowing only kube-system and istio-system, restricted pod security. Designed for multi-tenant production clusters. Start from the **Production Namespace with Custom Quotas** preset.
 
-**Service mesh namespace** -- Medium resource profile with Istio sidecar injection enabled. All pods deployed in this namespace automatically receive an Istio proxy for mTLS, traffic management, and observability. Start from the **Istio-Enabled Namespace** preset.
+**Service mesh namespace** — Medium resource profile with Istio sidecar injection enabled. All pods deployed in this namespace automatically receive an Istio proxy for mTLS, traffic management, and observability. Start from the **Istio-Enabled Namespace** preset.
 
 ## Works With
 
-This kind references no other kinds -- it IS the placement unit the rest of the Kubernetes catalog builds on. Nearly every namespaced kind (Deployment, Secret, ConfigMap, ServiceAccount, Ingress, and the rest) carries a `spec.namespace` field that references this component's `spec.name`, so Infra Charts create the namespace first and place everything else inside it in dependency order.
+This kind references no other kinds — it IS the placement unit the rest of the Kubernetes catalog builds on. Nearly every namespaced kind (Deployment, Secret, ConfigMap, ServiceAccount, Ingress, and the rest) carries a `spec.namespace` field that references this component's `spec.name`, so Infra Charts create the namespace first and place everything else inside it in dependency order.

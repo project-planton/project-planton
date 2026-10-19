@@ -6,16 +6,16 @@ Turns on a fleet-wide capability for every cluster in a GKE fleet: Config Sync t
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Fleet API and the feature's own API
-- **Feature** -- the fleet feature with its fleet-wide settings
-- **Per-cluster settings** -- one entry per declared cluster override
+- **API enablement** — the Fleet API and the feature's own API
+- **Feature** — the fleet feature with its fleet-wide settings
+- **Per-cluster settings** — one entry per declared cluster override
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with fleet admin permissions on the fleet host project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with fleet admin permissions on the fleet host project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -66,27 +66,27 @@ Reference the fleet's `status.outputs.project_id` from `projectId`; per-cluster 
 
 These are the most important decisions when configuring a fleet feature. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Which feature** -- `feature` names it; only that feature's settings are accepted.
+**Which feature** — `feature` names it; only that feature's settings are accepted.
 
-**Fleet default or per cluster** -- `fleetDefaultMemberConfig` reaches every cluster; `membershipConfigs` overrides named ones.
+**Fleet default or per cluster** — `fleetDefaultMemberConfig` reaches every cluster; `membershipConfigs` overrides named ones.
 
-**Upgrade sequencing** -- `clusterupgrade` makes this fleet wait for upgrades to soak in an upstream fleet.
+**Upgrade sequencing** — `clusterupgrade` makes this fleet wait for upgrades to soak in an upstream fleet.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpGkeFleet** | `projectId`, `clusterupgrade.upstreamFleets` | `status.outputs.project_id` |
-| **GcpGkeCluster** | `membershipConfigs[].membership`, `multiclusteringress.configMembership` | `status.outputs.fleet_membership` |
-| **GcpGkeFleetMembership** | `membershipConfigs[].membership`, `multiclusteringress.configMembership` | `status.outputs.name` |
-| **GcpServiceAccount** | Config Sync service-account emails | `status.outputs.email` |
-| **GcpWorkloadIdentityPool** | `workloadidentity.scopeTenancyPool` | `status.outputs.name` |
+| **GCP GKE Fleet** | `projectId`, `clusterupgrade.upstreamFleets` | `status.outputs.project_id` |
+| **GCP GKE Cluster** | `membershipConfigs[].membership`, `multiclusteringress.configMembership` | `status.outputs.fleet_membership` |
+| **GCP GKE Fleet Membership** | `membershipConfigs[].membership`, `multiclusteringress.configMembership` | `status.outputs.name` |
+| **GCP Service Account** | Config Sync service-account emails | `status.outputs.email` |
+| **GCP Workload Identity Pool** | `workloadidentity.scopeTenancyPool` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -96,14 +96,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**GitOps everywhere** -- start from the **Config Sync from Git** preset.
+**GitOps everywhere** — start from the **Config Sync from Git** preset.
 
-**Policy baseline** -- start from the **Policy Controller Baseline** preset.
+**Policy baseline** — start from the **Policy Controller Baseline** preset.
 
-**Prod behind dev** -- start from the **Upgrade Behind the Dev Fleet** preset.
+**Prod behind dev** — start from the **Upgrade Behind the Dev Fleet** preset.
 
 ## Works With
 
-- [**GCP GKE Fleet**](/infra-catalog/gcp-gke-fleet) -- the fleet the feature configures
-- [**GCP GKE Fleet Scope**](/infra-catalog/gcp-gke-fleet-scope) -- team scopes that use allowlisted custom roles
-- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) -- clusters the features reach
+- [**GCP GKE Fleet**](/infra-catalog/gcp-gke-fleet) — the fleet the feature configures
+- [**GCP GKE Fleet Scope**](/infra-catalog/gcp-gke-fleet-scope) — team scopes that use allowlisted custom roles
+- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) — clusters the features reach

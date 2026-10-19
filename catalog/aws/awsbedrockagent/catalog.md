@@ -77,7 +77,7 @@ This creates a Nova Micro support agent with one return-control tool group and a
 
 ### InfraChart
 
-When the agent deploys alongside its role and knowledge base in one chart, wire the references via ValueFromRef:
+When the agent deploys alongside its role and knowledge base in one chart, wire the references:
 
 ```yaml
 spec:
@@ -126,20 +126,20 @@ These are the most important decisions when configuring an agent. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `agentResourceRoleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `customerEncryptionKeyArn` | `status.outputs.key_arn` |
-| **AwsBedrockGuardrail** | `guardrail.guardrailId` | `status.outputs.guardrail_id` |
-| **AwsBedrockKnowledgeBase** | `knowledgeBaseAssociations[].knowledgeBaseId` | `status.outputs.knowledge_base_id` |
-| **AwsLambda** | `actionGroups[].executor.lambda`, `promptOverride.overrideLambda` | `status.outputs.function_arn` |
-| **AwsS3Bucket** | `actionGroups[].apiSchema.s3.bucketName` | `status.outputs.bucket_id` |
-| **AwsBedrockAgent** | `collaborators[].collaboratorAliasArn` | `status.outputs.alias_arns.<alias-name>` |
-| **AwsBedrockProvisionedThroughput** | `aliases[].routing.provisionedThroughput` | `status.outputs.provisioned_model_arn` |
+| **AWS IAM Role** | `agentResourceRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `customerEncryptionKeyArn` | `status.outputs.key_arn` |
+| **AWS Bedrock Guardrail** | `guardrail.guardrailId` | `status.outputs.guardrail_id` |
+| **AWS Bedrock Knowledge Base** | `knowledgeBaseAssociations[].knowledgeBaseId` | `status.outputs.knowledge_base_id` |
+| **AWS Lambda** | `actionGroups[].executor.lambda`, `promptOverride.overrideLambda` | `status.outputs.function_arn` |
+| **AWS S3 Bucket** | `actionGroups[].apiSchema.s3.bucketName` | `status.outputs.bucket_id` |
+| **AWS Bedrock Agent** | `collaborators[].collaboratorAliasArn` | `status.outputs.alias_arns.<alias-name>` |
+| **AWS Bedrock Provisioned Throughput** | `aliases[].routing.provisionedThroughput` | `status.outputs.provisioned_model_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

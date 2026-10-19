@@ -1,25 +1,25 @@
 # GCP Vector Search Collection
 
-Stands up a Vector Search collection -- Google's managed store for objects with vector fields -- together with the approximate-nearest-neighbor indexes that make similarity search fast over them. Declare what an object looks like, which fields are vectors (and whether Vertex AI should compute the embeddings itself), and which indexes serve searches, and your applications write objects and query them through the Vector Search API. It is the vector database behind semantic search, recommendations, and retrieval-augmented generation.
+Stands up a Vector Search collection — Google's managed store for objects with vector fields — together with the approximate-nearest-neighbor indexes that make similarity search fast over them. Declare what an object looks like, which fields are vectors (and whether Vertex AI should compute the embeddings itself), and which indexes serve searches, and your applications write objects and query them through the Vector Search API. It is the vector database behind semantic search, recommendations, and retrieval-augmented generation.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `vectorsearch.googleapis.com` on the project
-- **Collection** -- a `vectorsearch.Collection` with the data schema, vector fields, and optional CMEK
-- **Indexes** -- one `vectorsearch.Index` per declared index
+- **API enablement** — `vectorsearch.googleapis.com` on the project
+- **Collection** — a `vectorsearch.Collection` with the data schema, vector fields, and optional CMEK
+- **Indexes** — one `vectorsearch.Index` per declared index
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Vector Search admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Vector Search admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpKmsKey** -- for customer-managed encryption, referenced by `kmsKeyName`.
+- **GCP KMS Key** — for customer-managed encryption, referenced by `kmsKeyName`.
 
 ## Deploy
 
@@ -70,24 +70,24 @@ When deploying as part of a multi-resource environment, reference the collection
 
 These are the most important decisions when configuring a collection. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Who computes the vectors** -- a dense field with `vertexEmbeddingConfig` is embedded by Vertex AI from a text template over the object's fields on every write; without it, your pipeline writes the vectors. A `sparseVector: true` field holds lexical (keyword) vectors for hybrid search.
+**Who computes the vectors** — a dense field with `vertexEmbeddingConfig` is embedded by Vertex AI from a text template over the object's fields on every write; without it, your pipeline writes the vectors. A `sparseVector: true` field holds lexical (keyword) vectors for hybrid search.
 
-**Indexes are immutable** -- every index setting but labels replaces the index when changed, and the replacement is rebuilt from the collection's data. Pick the metric (`DOT_PRODUCT` or `COSINE_DISTANCE`), the fields to filter and store inline, and the infrastructure once.
+**Indexes are immutable** — every index setting but labels replaces the index when changed, and the replacement is rebuilt from the collection's data. Pick the metric (`DOT_PRODUCT` or `COSINE_DISTANCE`), the fields to filter and store inline, and the infrastructure once.
 
-**Pooled or dedicated** -- an index serves from Google's pooled infrastructure by default, billing per query; `dedicatedInfrastructure` gives it its own autoscaled nodes for latency-sensitive serving, billing per node-hour.
+**Pooled or dedicated** — an index serves from Google's pooled infrastructure by default, billing per query; `dedicatedInfrastructure` gives it its own autoscaled nodes for latency-sensitive serving, billing per node-hour.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -101,12 +101,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Semantic docs** -- Vertex-computed embeddings over documents with one dot-product index. Start from the **Semantic Docs** preset.
+**Semantic docs** — Vertex-computed embeddings over documents with one dot-product index. Start from the **Semantic Docs** preset.
 
-**Hybrid dedicated** -- Precomputed dense vectors plus a sparse field, two indexes, dedicated autoscaled nodes, CMEK, and `PREVENT`. Start from the **Hybrid Dedicated** preset.
+**Hybrid dedicated** — Precomputed dense vectors plus a sparse field, two indexes, dedicated autoscaled nodes, CMEK, and `PREVENT`. Start from the **Hybrid Dedicated** preset.
 
 ## Works With
 
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
-- [**GCP Vertex AI RAG Engine Config**](/infra-catalog/gcp-vertex-ai-rag-engine-config) -- RAG Engine, which can use the collection as its vector database
-- [**GCP Vertex AI Agent Engine**](/infra-catalog/gcp-vertex-ai-agent-engine) -- agents whose tools search the collection
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption
+- [**GCP Vertex AI RAG Engine Config**](/infra-catalog/gcp-vertex-ai-rag-engine-config) — RAG Engine, which can use the collection as its vector database
+- [**GCP Vertex AI Agent Engine**](/infra-catalog/gcp-vertex-ai-agent-engine) — agents whose tools search the collection

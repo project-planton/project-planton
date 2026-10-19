@@ -59,7 +59,7 @@ This creates a logging configuration writing the app VPC's resolver queries to t
 
 ### InfraChart
 
-When query logging deploys alongside its destination and VPC in one chart, wire both references via ValueFromRef:
+When query logging deploys alongside its destination and VPC in one chart, wire both references:
 
 ```yaml
 spec:
@@ -98,16 +98,16 @@ These are the most important decisions when configuring resolver query logging. 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCloudwatchLogGroup** | `destinationArn` | `status.outputs.log_group_arn` |
-| **AwsVpc** | `vpcIds` | `status.outputs.vpc_id` |
+| **AWS CloudWatch Log Group** | `destinationArn` | `status.outputs.log_group_arn` |
+| **AWS VPC** | `vpcIds` | `status.outputs.vpc_id` |
 
 S3 bucket and Kinesis Data Firehose destinations travel as literal ARNs in `destinationArn`.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

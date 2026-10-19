@@ -6,21 +6,21 @@ Creates an Eventarc trigger — the routing rule "when THIS event happens, call 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Eventarc trigger** -- an `eventarc.Trigger` with the configured criteria, destination, identity, and transport
-- **Partner channel** (when `partnerChannel` is set) -- an `eventarc.Channel` the trigger is wired to, with its one-time activation token exported
-- **Google channel config** (when `googleChannelCryptoKey` is set) -- the per-project-per-location CMEK singleton
-- **Eventarc API enablement** -- `eventarc.googleapis.com` enabled in the target project (never disabled on destroy)
+- **Eventarc trigger** — an `eventarc.Trigger` with the configured criteria, destination, identity, and transport
+- **Partner channel** (when `partnerChannel` is set) — an `eventarc.Channel` the trigger is wired to, with its one-time activation token exported
+- **Google channel config** (when `googleChannelCryptoKey` is set) — the per-project-per-location CMEK singleton
+- **Eventarc API enablement** — `eventarc.googleapis.com` enabled in the target project (never disabled on destroy)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### GCP Project
 
-- **A GCP project** to host the trigger (directly or via a GcpProject reference).
+- **A GCP project** to host the trigger (directly or via a GCP Project reference).
 - **IAM**: the deploying identity needs `roles/eventarc.admin` (or narrower); the trigger's `serviceAccount` needs `roles/eventarc.eventReceiver`, plus `roles/run.invoker` for authenticated Cloud Run destinations.
 
 ## Deploy
@@ -61,7 +61,7 @@ This creates a trigger that delivers every Pub/Sub message published to its Even
 
 ### InfraChart
 
-When the destination and identity are deployed in the same InfraPipeline, wire them with ValueFromRef:
+When the destination and identity are deployed in the same InfraPipeline, wire them with references:
 
 ```yaml
 spec:
@@ -89,35 +89,35 @@ The InfraPipeline deploys the Cloud Run service and service account first, then 
 
 These are the most important decisions when configuring a trigger. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**matchingCriteria** -- ALL criteria must match. Every trigger MUST filter the `type` attribute (the CloudEvents type, e.g. `google.cloud.pubsub.topic.v1.messagePublished` or `google.cloud.audit.log.v1.written`); only the attributes the event type declares filterable are accepted. `match-path-pattern` is the only non-exact operator (Storage object names, audit-log resourceName).
+**matchingCriteria** — ALL criteria must match. Every trigger MUST filter the `type` attribute (the CloudEvents type, e.g. `google.cloud.pubsub.topic.v1.messagePublished` or `google.cloud.audit.log.v1.written`); only the attributes the event type declares filterable are accepted. `match-path-pattern` is the only non-exact operator (Storage object names, audit-log resourceName).
 
-**destination** -- exactly one arm: `cloudRunService` (the workhorse), `gke` (needs one-time `gcloud eventarc gke-destinations init` per project), `workflow` (references a GcpWorkflow), or `httpEndpoint` (private endpoints via a VPC network attachment).
+**destination** — exactly one arm: `cloudRunService` (the workhorse), `gke` (needs one-time `gcloud eventarc gke-destinations init` per project), `workflow` (references a GCP Workflow), or `httpEndpoint` (private endpoints via a VPC network attachment).
 
-**serviceAccount** -- the trigger's identity: `roles/eventarc.eventReceiver` always; `roles/run.invoker` for authenticated Cloud Run destinations; REQUIRED for audit-log triggers.
+**serviceAccount** — the trigger's identity: `roles/eventarc.eventReceiver` always; `roles/run.invoker` for authenticated Cloud Run destinations; REQUIRED for audit-log triggers.
 
-**transportPubsubTopic** -- messagePublished triggers only: consume an EXISTING topic instead of letting Eventarc mint one. The topic is never deleted with the trigger.
+**transportPubsubTopic** — messagePublished triggers only: consume an EXISTING topic instead of letting Eventarc mint one. The topic is never deleted with the trigger.
 
-**partnerChannel** -- receive events from a SaaS partner: the module creates the channel and wires the trigger; hand the `partner_channel_activation_token` output to the partner to complete the handshake — the channel stays PENDING and delivers nothing until then. The channel name is immutable: changing it replaces the channel and mints a NEW token, redoing the handshake.
+**partnerChannel** — receive events from a SaaS partner: the module creates the channel and wires the trigger; hand the `partner_channel_activation_token` output to the partner to complete the handshake — the channel stays PENDING and delivers nothing until then. The channel name is immutable: changing it replaces the channel and mints a NEW token, redoing the handshake.
 
-**googleChannelCryptoKey** -- CMEK for the shared Google channel ALL non-partner triggers in this project+location deliver through. The module manages the per-project-per-location singleton: set this from AT MOST ONE trigger per project+location — a second manager fights over the same singleton.
+**googleChannelCryptoKey** — CMEK for the shared Google channel ALL non-partner triggers in this project+location deliver through. The module manages the per-project-per-location singleton: set this from AT MOST ONE trigger per project+location — a second manager fights over the same singleton.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpCloudRun** (destination arm) | `destination.cloudRunService.service` | `status.outputs.service_name` |
-| **GcpGkeCluster** (destination arm) | `destination.gke.cluster` | `status.outputs.name` |
-| **GcpWorkflow** (destination arm) | `destination.workflow` | `status.outputs.workflow_id` |
-| **GcpPubSubTopic** (optional) | `transportPubsubTopic` | `status.outputs.topic_id` |
-| **GcpServiceAccount** (optional) | `serviceAccount` | `status.outputs.email` |
-| **GcpKmsKey** (optional) | `partnerChannel.cryptoKey`, `googleChannelCryptoKey` | `status.outputs.key_id` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Cloud Run** (destination arm) | `destination.cloudRunService.service` | `status.outputs.service_name` |
+| **GCP GKE Cluster** (destination arm) | `destination.gke.cluster` | `status.outputs.name` |
+| **GCP Workflow** (destination arm) | `destination.workflow` | `status.outputs.workflow_id` |
+| **GCP Pub/Sub Topic** (optional) | `transportPubsubTopic` | `status.outputs.topic_id` |
+| **GCP Service Account** (optional) | `serviceAccount` | `status.outputs.email` |
+| **GCP KMS Key** (optional) | `partnerChannel.cryptoKey`, `googleChannelCryptoKey` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -129,15 +129,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Pub/Sub to Cloud Run** -- the workhorse: a message published to a topic invokes a service. Start from the **Pub/Sub to Cloud Run** preset.
+**Pub/Sub to Cloud Run** — the workhorse: a message published to a topic invokes a service. Start from the **Pub/Sub to Cloud Run** preset.
 
-**Audit-log to Workflow** -- react to control-plane changes (a bucket created, an IAM grant) with an orchestrated response. Start from the **Audit Log to Workflow** preset.
+**Audit-log to Workflow** — react to control-plane changes (a bucket created, an IAM grant) with an orchestrated response. Start from the **Audit Log to Workflow** preset.
 
 ## Works With
 
-- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) -- the most common destination
-- [**GCP Workflow**](/infra-catalog/gcp-workflow) -- orchestrated event handling
-- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) -- GKE service destinations
-- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) -- bring-your-own transport
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the trigger's identity
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- channel CMEK
+- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) — the most common destination
+- [**GCP Workflow**](/infra-catalog/gcp-workflow) — orchestrated event handling
+- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) — GKE service destinations
+- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) — bring-your-own transport
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the trigger's identity
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — channel CMEK

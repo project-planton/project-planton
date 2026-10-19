@@ -1,13 +1,13 @@
 # Kafka UI
 
-Deploys kafbat UI — the Apache-2.0 web console for Kafka — from the served `kafka-ui` Helm chart. One installation observes and manages **many** clusters: browse topics and live messages, inspect consumer groups and lag, view schemas through a connected registry, and monitor Connect pipes. Each `clusters` entry wires one Kafka cluster (plus its optional schema registry and Connect clusters) into the console; the foreign keys compose directly with KubernetesKafka, KubernetesKarapace, and KubernetesKafkaConnect siblings.
+Deploys kafbat UI — the Apache-2.0 web console for Kafka — from the served kafka-ui Helm chart. One installation observes and manages **many** clusters: browse topics and live messages, inspect consumer groups and lag, view schemas through a connected registry, and monitor Connect pipes. Each `clusters` entry wires one Kafka cluster (plus its optional schema registry and Connect clusters) into the console; the foreign keys compose directly with Apache Kafka, Karapace Schema Registry, and Kafka Connect siblings.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
 - **Helm Release** (`<metadata.name>`) — the kafbat UI chart with the Service pinned to the resource name (`fullnameOverride`), so outputs stay deterministic and several consoles can coexist in one cluster
-- **Console Service** — ClusterIP by default; compose KubernetesIngress or Gateway routes against the exported `service_name` / `endpoint` handles for shared access
+- **Console Service** — ClusterIP by default; compose Kubernetes Ingress or Gateway routes against the exported `service_name` / `endpoint` handles for shared access
 - **Module-owned Secrets** — the console login password (when declared) materializes into `<name>-secrets`; referenced cluster SASL and basic-auth passwords mount from their source Secrets — nothing sensitive lands in rendered chart values
 - **Namespace** (optional) — created with standard governance labels when `createNamespace` is true
 
@@ -122,14 +122,14 @@ These are the most important decisions when configuring the console. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesKafka** | `clusters[].bootstrapServers` | `status.outputs.internal_bootstrap_endpoint` |
-| **KubernetesKafka** | `clusters[].tls.caSecretName` | `status.outputs.cluster_ca_cert_secret_name` |
-| **KubernetesKafkaUser** | `clusters[].sasl.passwordSecret.secretName` | `status.outputs.secret_name` |
-| **KubernetesKarapace** | `clusters[].schemaRegistry.url` | `status.outputs.endpoint` |
-| **KubernetesKafkaConnect** | `clusters[].kafkaConnect[].address` | `status.outputs.rest_api_endpoint` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Apache Kafka** | `clusters[].bootstrapServers` | `status.outputs.internal_bootstrap_endpoint` |
+| **Apache Kafka** | `clusters[].tls.caSecretName` | `status.outputs.cluster_ca_cert_secret_name` |
+| **Kafka User** | `clusters[].sasl.passwordSecret.secretName` | `status.outputs.secret_name` |
+| **Karapace Schema Registry** | `clusters[].schemaRegistry.url` | `status.outputs.endpoint` |
+| **Kafka Connect** | `clusters[].kafkaConnect[].address` | `status.outputs.rest_api_endpoint` |
 
 ### What This Kind Provides
 
@@ -138,7 +138,7 @@ After provisioning, `status.outputs` contains values downstream Infra Components
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `namespace` | Namespace the console runs in | Composed route placement context |
-| `service_name` | Name of the console Service | KubernetesIngress / Gateway backend target |
+| `service_name` | Name of the console Service | Kubernetes Ingress / Gateway backend target |
 | `endpoint` | In-cluster HTTP endpoint | Internal tooling links |
 | `port_forward_command` | Copyable kubectl port-forward | Quick look with no exposure |
 

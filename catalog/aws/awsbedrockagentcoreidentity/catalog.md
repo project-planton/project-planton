@@ -60,7 +60,7 @@ This vaults one API key and one GitHub OAuth client as credential providers — 
 
 ### InfraChart
 
-When the bundle's policy engine encrypts with a customer-managed key deployed in the same chart, wire the key reference via ValueFromRef:
+When the bundle's policy engine encrypts with a customer-managed key deployed in the same chart, wire the key reference:
 
 ```yaml
 spec:
@@ -101,15 +101,15 @@ These are the most important decisions when configuring an identity bundle. Expl
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `policyEngine.encryptionKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** | `policyEngine.encryptionKeyArn` | `status.outputs.key_arn` |
 
 Credential values (`apiKey`, `clientId`, `clientSecret`) travel as `$secret/<slug>` managed-secret references rather than foreign keys.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

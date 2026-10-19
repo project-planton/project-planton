@@ -6,15 +6,15 @@ Runs many GKE clusters as one. A fleet is the home of your clusters' shared conf
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Fleet API on the host project
-- **Fleet** -- the project's one fleet, with its cluster defaults
+- **API enablement** — the Fleet API on the host project
+- **Fleet** — the project's one fleet, with its cluster defaults
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with fleet admin permissions on the host project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with fleet admin permissions on the host project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -57,23 +57,23 @@ Declare the fleet first and reference its `status.outputs.project_id` from every
 
 These are the most important decisions when configuring a fleet. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Host project** -- the project that holds the fleet; clusters in other projects can still join it.
+**Host project** — the project that holds the fleet; clusters in other projects can still join it.
 
-**Security posture defaults** -- `BASIC` configuration auditing and vulnerability scanning on every cluster, included with GKE.
+**Security posture defaults** — `BASIC` configuration auditing and vulnerability scanning on every cluster, included with GKE.
 
-**Binary Authorization defaults** -- audit every cluster's workloads against GKE platform policies.
+**Binary Authorization defaults** — audit every cluster's workloads against GKE platform policies.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -85,13 +85,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Platform fleet** -- a fleet with Google's standard posture checks. Start from the **Platform Fleet** preset.
+**Platform fleet** — a fleet with Google's standard posture checks. Start from the **Platform Fleet** preset.
 
-**Audited fleet** -- every workload audited against a platform policy. Start from the **Binary Authorization Audit** preset.
+**Audited fleet** — every workload audited against a platform policy. Start from the **Binary Authorization Audit** preset.
 
 ## Works With
 
-- [**GCP GKE Fleet Scope**](/infra-catalog/gcp-gke-fleet-scope) -- team scopes inside the fleet
-- [**GCP GKE Fleet Feature**](/infra-catalog/gcp-gke-fleet-feature) -- fleet-wide features
-- [**GCP GKE Fleet Membership**](/infra-catalog/gcp-gke-fleet-membership) -- explicit cluster registration
-- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) -- clusters that join through `fleetProject`
+- [**GCP GKE Fleet Scope**](/infra-catalog/gcp-gke-fleet-scope) — team scopes inside the fleet
+- [**GCP GKE Fleet Feature**](/infra-catalog/gcp-gke-fleet-feature) — fleet-wide features
+- [**GCP GKE Fleet Membership**](/infra-catalog/gcp-gke-fleet-membership) — explicit cluster registration
+- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) — clusters that join through `fleetProject`

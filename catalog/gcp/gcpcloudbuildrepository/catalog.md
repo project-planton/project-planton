@@ -6,18 +6,18 @@ Links one repository from your code host into Cloud Build through an existing co
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Repository link** -- the repository, linked under its connection in the connection's project and region
+- **Repository link** — the repository, linked under its connection in the connection's project and region
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with permission to manage Cloud Build repositories in the connection's project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with permission to manage Cloud Build repositories in the connection's project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Code Host Account
 
-- **A finished connection** -- a `GcpCloudBuildConnection` whose installation is complete, with access to the repository.
+- **A finished connection** — a `GcpCloudBuildConnection` whose installation is complete, with access to the repository.
 
 ## Deploy
 
@@ -56,21 +56,21 @@ Reference the connection's `status.outputs.name` from `parentConnection`.
 
 These are the most important decisions when configuring a repository link. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Connection** -- the connection's full name; the link lives in its project and region.
+**Connection** — the connection's full name; the link lives in its project and region.
 
-**Remote URI** -- the repository's HTTPS clone URI.
+**Remote URI** — the repository's HTTPS clone URI.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpCloudBuildConnection** | `parentConnection` | `status.outputs.name` |
+| **GCP Cloud Build Connection** | `parentConnection` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -82,10 +82,10 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Linked repository** -- one repository through a GitHub connection. Start from the **Linked Repository** preset.
+**Linked repository** — one repository through a GitHub connection. Start from the **Linked Repository** preset.
 
 ## Works With
 
-- [**GCP Cloud Build Connection**](/infra-catalog/gcp-cloud-build-connection) -- the connection the repository is linked through
-- [**GCP Cloud Build Trigger**](/infra-catalog/gcp-cloud-build-trigger) -- builds started by the repository's events
-- [**GCP Deploy Custom Target Type**](/infra-catalog/gcp-deploy-custom-target-type) -- Skaffold modules read from the repository
+- [**GCP Cloud Build Connection**](/infra-catalog/gcp-cloud-build-connection) — the connection the repository is linked through
+- [**GCP Cloud Build Trigger**](/infra-catalog/gcp-cloud-build-trigger) — builds started by the repository's events
+- [**GCP Deploy Custom Target Type**](/infra-catalog/gcp-deploy-custom-target-type) — Skaffold modules read from the repository

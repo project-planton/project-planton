@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **A zone on the account** — `zoneId` names the zone the room protects; reference a CloudflareDnsZone Infra Component or pass the 32-character zone ID.
+- **A zone on the account** — `zoneId` names the zone the room protects; reference a Cloudflare DNS Zone Infra Component or pass the 32-character zone ID.
 - **The Waiting Rooms Advanced add-on** (only for Advanced fields) — `additionalRoutes`, `customPageHtml`, `disableSessionRenewal`, `jsonResponseEnabled`, a non-fifo `queueingMethod`, `turnstileAction: infinite_queue`, and any `turnstileMode` other than `off` all fail at apply on a plan without it.
 
 ## Deploy
@@ -56,7 +56,7 @@ This creates a queue on `shop.acme.com/checkout` at Cloudflare's 200/200 floors 
 
 ### InfraChart
 
-When the zone is deployed in the same InfraPipeline, wire `zoneId` with ValueFromRef:
+When the zone is deployed in the same InfraPipeline, wire `zoneId` with references:
 
 ```yaml
 spec:
@@ -77,11 +77,11 @@ The InfraPipeline resolves the dependency graph, deploys the zone first, then pr
 
 These are the most important decisions when configuring a waiting room. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Thresholds have a floor of 200** — Cloudflare will not create a room with `newUsersPerMinute` or `totalActiveUsers` below 200, and the spec validates that before apply. Size them for what the origin actually survives: `totalActiveUsers` is the concurrency cap on the route, `newUsersPerMinute` is the admission rate once slots free up. A scheduled launch window that temporarily overrides these rates is a separate CloudflareWaitingRoomEvent, not a field of the room.
+**Thresholds have a floor of 200** — Cloudflare will not create a room with `newUsersPerMinute` or `totalActiveUsers` below 200, and the spec validates that before apply. Size them for what the origin actually survives: `totalActiveUsers` is the concurrency cap on the route, `newUsersPerMinute` is the admission rate once slots free up. A scheduled launch window that temporarily overrides these rates is a separate Cloudflare Waiting Room Event, not a field of the room.
 
 **Bypass rules are the whole table** — Cloudflare stores waiting-room rules as a per-room list replaced whole on every update, and this kind folds that list into the room. Every apply sets the room's rule set to exactly `bypassRules`; rules added in the dashboard disappear on the next apply. To stop bypassing without losing a rule's place, set its `enabled: false` instead of deleting it.
 
-**Destroy semantics** — destroy clears the rules list (wiping rules added outside the manifest too) and deletes the room; any CloudflareWaitingRoomEvent referencing its `waiting_room_id` starts failing. When you want the room's ID to survive, pause instead: `suspended: true` stops queueing while keeping the configuration, and `queueAll: true` is the "close the shop" switch that queues everyone for a maintenance window.
+**Destroy semantics** — destroy clears the rules list (wiping rules added outside the manifest too) and deletes the room; any Cloudflare Waiting Room Event referencing its `waiting_room_id` starts failing. When you want the room's ID to survive, pause instead: `suspended: true` stops queueing while keeping the configuration, and `queueAll: true` is the "close the shop" switch that queues everyone for a maintenance window.
 
 **Advanced fields fail at apply, not at validation** — the entitlement wall is Cloudflare's. On a plan without the Waiting Rooms Advanced add-on, keep to the defaults: `queueingMethod: fifo`, no `additionalRoutes`, no `customPageHtml`, Turnstile untouched.
 
@@ -95,17 +95,17 @@ These are the most important decisions when configuring a waiting room. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `waiting_room_id` | The created room's ID | `waitingRoomId` on CloudflareWaitingRoomEvent |
+| `waiting_room_id` | The created room's ID | `waitingRoomId` on Cloudflare Waiting Room Event |
 | `zone_id` | The zone the room belongs to | Zone-scoped siblings deployed in the same pipeline |
 
 ## Common Patterns
@@ -116,7 +116,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Office bypass** — the same room with `bypassRules` matching the office network (`ip.src in {203.0.113.0/24}`) so internal testers skip the queue. Declare the rules in this manifest — the list is authoritative.
 
-**Launch window** — keep the room's steady-state rates and pair it with a CloudflareWaitingRoomEvent that raises (or hard-caps) them for a scheduled on-sale, created and deleted per launch while the room persists.
+**Launch window** — keep the room's steady-state rates and pair it with a Cloudflare Waiting Room Event that raises (or hard-caps) them for a scheduled on-sale, created and deleted per launch while the room persists.
 
 ## Works With
 

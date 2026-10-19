@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **A deployed Worker script** — `scriptName` must name a script already deployed (a CloudflareWorker Infra Component) that exports the `WorkflowEntrypoint` subclass named in `className`. Deploy order is script first, workflow second.
+- **A deployed Worker script** — `scriptName` must name a script already deployed (a Cloudflare Worker Infra Component) that exports the `WorkflowEntrypoint` subclass named in `className`. Deploy order is script first, workflow second.
 - **Workers Paid** (only for scale) — the registration itself works on the free tier; production instance runs at scale ride Workers Paid limits.
 
 ## Deploy
@@ -53,7 +53,7 @@ This registers the `order-fulfillment` workflow against the `OrderFulfillment` c
 
 ### InfraChart
 
-When the Worker is deployed in the same InfraPipeline, wire `scriptName` with ValueFromRef:
+When the Worker is deployed in the same InfraPipeline, wire `scriptName` with references:
 
 ```yaml
 spec:
@@ -87,13 +87,13 @@ These are the most important decisions when configuring a workflow. Explore the 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareWorker** | `scriptName` | `status.outputs.script_name` |
+| **Cloudflare Worker** | `scriptName` | `status.outputs.script_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -106,7 +106,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Scheduled batch workflow** — a nightly multi-step job (reconciliation, report generation, cleanup sweeps) triggered by cron, with a week of error retention for debugging and a day for successes. Start from the **Scheduled workflow** preset.
 
-**Event-driven workflow** — no `schedules`; instances are created by the Worker itself (often fed by a CloudflareQueue) through a `workflows` binding that references this registration by name. The registration carries only retention and limits.
+**Event-driven workflow** — no `schedules`; instances are created by the Worker itself (often fed by a Cloudflare Queue) through a `workflows` binding that references this registration by name. The registration carries only retention and limits.
 
 ## Works With
 

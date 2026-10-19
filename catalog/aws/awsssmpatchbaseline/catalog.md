@@ -88,7 +88,7 @@ This kind has no foreign key dependencies — the approval policy, patch groups,
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -101,7 +101,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Security-only with a soak** — Critical/Important security classifications, `approveAfterDays: 7`, one governed patch group. This is the first custom baseline most accounts need: AWS's predefined defaults approve with no soak, so a bad vendor patch reaches your fleet the day it ships. Pair it with a scanning AwsSsmAssociation to see what the policy would install before any install runs. Start from the **AL2023 Security Baseline** preset.
+**Security-only with a soak** — Critical/Important security classifications, `approveAfterDays: 7`, one governed patch group. This is the first custom baseline most accounts need: AWS's predefined defaults approve with no soak, so a bad vendor patch reaches your fleet the day it ships. Pair it with a scanning AWS SSM Association to see what the policy would install before any install runs. Start from the **AL2023 Security Baseline** preset.
 
 **Claiming the OS default** — `setAsDefaultBaseline: true` with a visible compliance posture (`availableSecurityUpdatesComplianceStatus: NON_COMPLIANT` on Windows) so every node — grouped or not — patches against your policy and unapproved-but-available security updates cannot hide. The trade: the designation is account-wide state that displaces silently, so it needs a single owner. Start from the **Windows Default Baseline** preset.
 

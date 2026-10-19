@@ -55,7 +55,7 @@ This creates a standard vault named `app-backups`, encrypted with the AWS Backup
 
 ### InfraChart
 
-When the vault deploys alongside its encryption key in one chart, wire the key reference via ValueFromRef:
+When the vault deploys alongside its encryption key in one chart, wire the key reference:
 
 ```yaml
 spec:
@@ -90,15 +90,15 @@ These are the most important decisions when configuring a backup vault. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `standard.kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsKmsKey** | `airGapped.encryptionKeyArn` | `status.outputs.key_arn` |
-| **AwsSnsTopic** | `standard.notifications.snsTopicArn` | `status.outputs.topic_arn` |
+| **AWS KMS Key** | `standard.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** | `airGapped.encryptionKeyArn` | `status.outputs.key_arn` |
+| **AWS SNS Topic** | `standard.notifications.snsTopicArn` | `status.outputs.topic_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -61,7 +61,7 @@ This creates an ml.t3.medium Jupyter workstation with a 50 GB volume, bootstrapp
 
 ### InfraChart
 
-When the notebook deploys alongside its role and VPC wiring in one chart, wire the references via ValueFromRef:
+When the notebook deploys alongside its role and VPC wiring in one chart, wire the references:
 
 ```yaml
 spec:
@@ -107,16 +107,16 @@ These are the most important decisions when configuring a notebook instance. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsSubnet** | `subnetId` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `securityGroupIds[]` | `status.outputs.security_group_id` |
-| **AwsKmsKey** | `kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS Subnet** | `subnetId` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `securityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS KMS Key** | `kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

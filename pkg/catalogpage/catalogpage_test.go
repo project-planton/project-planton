@@ -104,7 +104,7 @@ These are the most important decisions.
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |---|---|---|
 | Acme Zone | spec.zoneId | status.outputs.zone_id |
 
@@ -175,10 +175,47 @@ func TestCheckPage_HermeticFixture(t *testing.T) {
 		t.Errorf("expected %s when Consumes has rows and the arm is absent, got %v", RuleInfraChartArm, got)
 	}
 	noRows := strings.Replace(conformingPage,
-		"| Dependency | Field | ValueFromRef Path |\n|---|---|---|\n| Acme Zone | spec.zoneId | status.outputs.zone_id |",
+		"| Dependency | Field | Reference Path |\n|---|---|---|\n| Acme Zone | spec.zoneId | status.outputs.zone_id |",
 		"This kind has no foreign key dependencies.", 1)
 	if got := rulesOf(noRows); !got[RuleInfraChartArm] {
 		t.Errorf("expected %s when Consumes is empty and the arm is present, got %v", RuleInfraChartArm, got)
+	}
+
+	// The description the bundle cuts from the intro is plain text: a code
+	// tick, a link or emphasis in its first sentence would show raw.
+	for _, marked := range []string{"an `Acme` widget", "an [Acme](/x) widget", "an *Acme* widget", "an **Acme** widget"} {
+		page := strings.Replace(conformingPage, "Deploys an Acme widget", "Deploys "+marked, 1)
+		if got := rulesOf(page); !got[RuleMarkedUpDescription] {
+			t.Errorf("expected %s for %q, got %v", RuleMarkedUpDescription, marked, got)
+		}
+	}
+	// A wildcard host is not emphasis, and Markdown after the first sentence
+	// is the Overview's business, not the description's.
+	for _, plain := range []string{"Deploys an Acme widget for *.example.com hosts. More `detail` follows here."} {
+		page := strings.Replace(conformingPage, "Deploys an Acme widget with sensible defaults. More detail follows here.", plain, 1)
+		if got := rulesOf(page); got[RuleMarkedUpDescription] {
+			t.Errorf("expected no %s for %q, got %v", RuleMarkedUpDescription, plain, got)
+		}
+	}
+
+	// Prose typography and identity: a typed double hyphen, a kind's
+	// PascalCase name, and the API's name for a reference are each a red in
+	// prose and in a table cell, and each is fine set in code.
+	prose := map[string]string{
+		"Use it well -- always.":           RuleDoubleHyphen,
+		"Pair it with an AwsVpc.":          RuleKindNameInProse,
+		"| AwsVpc | spec.vpcId | vpc_id |": RuleKindNameInProse,
+		"Wire the zone via ValueFromRef.":  RuleValueFromRefInProse,
+	}
+	for line, rule := range prose {
+		if got := rulesOf(strings.Replace(conformingPage, "Use it well.", line, 1)); !got[rule] {
+			t.Errorf("expected %s for %q, got %v", rule, line, got)
+		}
+	}
+	for _, code := range []string{"Run `planton apply -- --dry-run`.", "Set `kind: AwsVpc`.", "Read `ValueFromRef` in the API."} {
+		if got := rulesOf(strings.Replace(conformingPage, "Use it well.", code, 1)); len(got) != 0 {
+			t.Errorf("code spans are code, not prose: %q, got %v", code, got)
+		}
 	}
 
 	// A complete manifest that cannot validate (unknown kind) is a lie the

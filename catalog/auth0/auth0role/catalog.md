@@ -1,20 +1,20 @@
 # Auth0 Role
 
-Deploys an Auth0 Role and its complete set of API permissions (scopes) as a single Infra Component. Roles are the middle layer of Auth0 role-based access control (RBAC) -- they group the scopes defined on a Resource Server into a reusable access tier that you assign to users.
+Deploys an Auth0 Role and its complete set of API permissions (scopes) as a single Infra Component. Roles are the middle layer of Auth0 role-based access control (RBAC) — they group the scopes defined on a Resource Server into a reusable access tier that you assign to users.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Auth0 Role** -- a role configured with the specified display name and description
-- **Role Permissions** -- created only when `permissions` is non-empty, an authoritative permission assignment that sets the role's complete scope list
+- **Auth0 Role** — a role configured with the specified display name and description
+- **Role Permissions** — created only when `permissions` is non-empty, an authoritative permission assignment that sets the role's complete scope list
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Auth0 Provider Connection** -- an active connection in the Connect module with Auth0 domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Auth0 Provider Connection** — an active connection in the Connect module with Auth0 domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Auth0 Account
 
@@ -52,19 +52,19 @@ spec:
 planton apply -f auth0-role.yaml
 ```
 
-This creates an Editor role and grants it two scopes on a single API. All spec fields are optional -- omit `permissions` to create an empty role, or omit `name` to default the role name to `metadata.name`. An Infra Job tracks the provisioning in real time.
+This creates an Editor role and grants it two scopes on a single API. All spec fields are optional — omit `permissions` to create an empty role, or omit `name` to default the role name to `metadata.name`. An Infra Job tracks the provisioning in real time.
 
 ## Key Configuration
 
 These are the most important decisions when configuring an Auth0 Role. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Display name** -- The `name` field sets the human-readable role name shown in the Auth0 dashboard and when assigning the role to users. When omitted, it defaults to `metadata.name`. Set it when you want a friendlier label (e.g., resource name `viewer`, display name `Viewer`).
+**Display name** — The `name` field sets the human-readable role name shown in the Auth0 dashboard and when assigning the role to users. When omitted, it defaults to `metadata.name`. Set it when you want a friendlier label (e.g., resource name `viewer`, display name `Viewer`).
 
-**Permission set** -- The `permissions` array is the heart of the role. Each entry pairs a scope `name` (e.g., `read:orders`) with the `resourceServerIdentifier` (audience) of the API that defines it. A single role can span multiple APIs by listing permissions with different identifiers.
+**Permission set** — The `permissions` array is the heart of the role. Each entry pairs a scope `name` (e.g., `read:orders`) with the `resourceServerIdentifier` (audience) of the API that defines it. A single role can span multiple APIs by listing permissions with different identifiers.
 
-**Authoritative reconciliation** -- The permission set is authoritative: each deploy sets the role's permissions to exactly the list provided. Removing a permission from the spec revokes it from everyone who holds the role on the next apply -- there is no partial or additive mode.
+**Authoritative reconciliation** — The permission set is authoritative: each deploy sets the role's permissions to exactly the list provided. Removing a permission from the spec revokes it from everyone who holds the role on the next apply — there is no partial or additive mode.
 
-**Audience accuracy** -- The `resourceServerIdentifier` must exactly match the target Resource Server's identifier. A mismatched audience silently grants nothing, so reuse the same value across permissions on the same API.
+**Audience accuracy** — The `resourceServerIdentifier` must exactly match the target Resource Server's identifier. A mismatched audience silently grants nothing, so reuse the same value across permissions on the same API.
 
 ## Outputs and Dependencies
 
@@ -74,7 +74,7 @@ This kind has no foreign key dependencies. Permissions reference a Resource Serv
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -86,12 +86,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Role with permissions** -- A named access tier backed by a focused set of scopes on one API. Start from the **Role with Permissions** preset.
+**Role with permissions** — A named access tier backed by a focused set of scopes on one API. Start from the **Role with Permissions** preset.
 
-**Administrator across APIs** -- A role that grants scopes spanning multiple Resource Servers. Start from the **Administrator Role (Multiple APIs)** preset.
+**Administrator across APIs** — A role that grants scopes spanning multiple Resource Servers. Start from the **Administrator Role (Multiple APIs)** preset.
 
-**Empty role** -- A role created without permissions, to be populated later or assigned as a placeholder tier. Start from the **Role Without Permissions** preset.
+**Empty role** — A role created without permissions, to be populated later or assigned as a placeholder tier. Start from the **Role Without Permissions** preset.
 
 ## Works With
 
-- [**Auth0 Resource Server (API)**](/infra-catalog/auth0-resource-server) -- defines the scopes a role grants; each permission references a Resource Server by its identifier (audience).
+- [**Auth0 Resource Server (API)**](/infra-catalog/auth0-resource-server) — defines the scopes a role grants; each permission references a Resource Server by its identifier (audience).

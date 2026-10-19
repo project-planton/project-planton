@@ -23,7 +23,7 @@ Zone settings and the crawler-bypass toggle have no delete at Cloudflare, so des
 
 ### Cloudflare Account
 
-- **A zone on the account** — `zoneId` names the zone; reference a CloudflareDnsZone Infra Component or pass the zone ID from the dashboard.
+- **A zone on the account** — `zoneId` names the zone; reference a Cloudflare DNS Zone Infra Component or pass the zone ID from the dashboard.
 - **The right plan for gated settings** (only for those fields) — `advancedDdos`, `orangeToOrange`, `prefetchPreload`, `responseBuffering`, `sortQueryStringForCache`, `trueClientIpHeader`, and `proxyReadTimeout` need Enterprise; `polish`, `mirage`, and `imageResizing` need Pro or above. The apply fails with the API's editable=false error on a plan that lacks a setting; nothing is billed or upgraded. `ciphers` is gated by product, not plan: writes need the zone's Advanced Certificate Manager subscription (API code 1023 without it) even though the settings list reports it editable.
 
 ## Deploy
@@ -58,7 +58,7 @@ This manages exactly two settings — every plain-http request redirects to HTTP
 
 ### InfraChart
 
-When the zone is deployed in the same InfraPipeline, wire `zoneId` with ValueFromRef:
+When the zone is deployed in the same InfraPipeline, wire `zoneId` with references:
 
 ```yaml
 spec:
@@ -86,11 +86,11 @@ These are the most important decisions when configuring zone settings. Explore t
 
 **HSTS is a browser-side commitment** — `securityHeader` with `includeSubdomains: true` and a one-year `maxAge` pins browsers to HTTPS across every subdomain for that long; enable it only when every subdomain serves HTTPS. `preload: true` requests inclusion in browser preload lists, and removal from those lists is slow and manual — a one-way door in practice.
 
-**Plan-gated settings fail at apply** — the API reports a setting the plan cannot edit as editable=false and the module surfaces it as an apply error. The fix is to remove the field or upgrade the plan (a CloudflareDnsZone `subscription` decision, and real money) — not to retry.
+**Plan-gated settings fail at apply** — the API reports a setting the plan cannot edit as editable=false and the module surfaces it as an apply error. The fix is to remove the field or upgrade the plan (a Cloudflare DNS Zone `subscription` decision, and real money) — not to retry.
 
-**Cache baseline versus cache rules** — `cacheLevel`, `browserCacheTtl`, and `edgeCacheTtl` set the zone-wide caching baseline; per-path overrides belong to CloudflareCacheSettings, and per-request setting overrides to a CloudflareRuleset in the `http_config_settings` phase. `browserCacheTtl` and the other numeric settings accept only Cloudflare's fixed value sets — out-of-set values are rejected at apply.
+**Cache baseline versus cache rules** — `cacheLevel`, `browserCacheTtl`, and `edgeCacheTtl` set the zone-wide caching baseline; per-path overrides belong to Cloudflare Cache Settings, and per-request setting overrides to a Cloudflare Ruleset in the `http_config_settings` phase. `browserCacheTtl` and the other numeric settings accept only Cloudflare's fixed value sets — out-of-set values are rejected at apply.
 
-**The DNS boundary** — CloudflareDnsZone's `dnsSettings` owns how the zone resolves (SOA tuning, NS TTL, DNSSEC); this kind owns how Cloudflare serves HTTP. The `cnameFlattening` field here is the serving-side setting of that name, exposed through the settings API.
+**The DNS boundary** — Cloudflare DNS Zone's `dnsSettings` owns how the zone resolves (SOA tuning, NS TTL, DNSSEC); this kind owns how Cloudflare serves HTTP. The `cnameFlattening` field here is the serving-side setting of that name, exposed through the settings API.
 
 **Field-name quirks the module absorbs** — `zeroRtt` is Cloudflare's setting ID `0rtt` (the one name that differs, since proto identifiers cannot start with a digit); `automaticPlatformOptimization` requires every member of its object on every write; `sslRecommender` is written in the value form the provider actually accepts. You just set the fields.
 
@@ -98,13 +98,13 @@ These are the most important decisions when configuring zone settings. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-This kind has no consumable outputs of its own: zone settings are a zone-scoped singleton with no resource ID, so `status.outputs` only echoes the input `zone_id` back for reference. Downstream resources that need the zone should reference the CloudflareDnsZone directly.
+This kind has no consumable outputs of its own: zone settings are a zone-scoped singleton with no resource ID, so `status.outputs` only echoes the input `zone_id` back for reference. Downstream resources that need the zone should reference the Cloudflare DNS Zone directly.
 
 ## Common Patterns
 

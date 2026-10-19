@@ -67,7 +67,7 @@ This creates the region's detector with S3 protection and runtime monitoring on,
 
 ### InfraChart
 
-When the detector deploys alongside its findings-export bucket and key in one chart, wire the references via ValueFromRef:
+When the detector deploys alongside its findings-export bucket and key in one chart, wire the references:
 
 ```yaml
 spec:
@@ -111,21 +111,21 @@ These are the most important decisions when configuring GuardDuty. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsS3Bucket** | `publishingDestination.bucketArn` | `status.outputs.bucket_arn` |
-| **AwsKmsKey** | `publishingDestination.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS S3 Bucket** | `publishingDestination.bucketArn` | `status.outputs.bucket_arn` |
+| **AWS KMS Key** | `publishingDestination.kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `detector_id` | The detector's AWS-assigned ID — the region's GuardDuty identity | Addressing the detector in AWS CLI/API operations; the import key every satellite composes from |
 | `detector_arn` | The detector's ARN | IAM policies scoping GuardDuty administration |
 
-`account_id`, `ip_set_ids`, `threat_intel_set_ids`, and `publishing_destination_id` are also exported; they are import and audit echoes for the folded satellites, not composition inputs — no catalog kind consumes them via ValueFromRef.
+`account_id`, `ip_set_ids`, `threat_intel_set_ids`, and `publishing_destination_id` are also exported; they are import and audit echoes for the folded satellites, not composition inputs — no catalog kind references them.
 
 ## Common Patterns
 

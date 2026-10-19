@@ -1,6 +1,6 @@
 # Kafka Connect
 
-Deploys a Kafka Connect cluster on Kubernetes as a Strimzi `KafkaConnect` custom resource — the worker pool that runs connector plugins streaming data between Kafka and external systems (Debezium CDC, object stores, search indexes). Connector management is declarative-only on this platform: the module pins Strimzi's `strimzi.io/use-connector-resources` annotation, so pipes are declared as Kafka Connector resources and anything created through the Connect REST API is reverted by the operator. Plugin delivery is the star decision — the stock image carries ONLY the MirrorMaker 2 connector classes, so every real integration needs a prebuilt `image`, OCI image-volume `plugins`, or an operator `build`.
+Deploys a Kafka Connect cluster on Kubernetes as a Strimzi KafkaConnect custom resource — the worker pool that runs connector plugins streaming data between Kafka and external systems (Debezium CDC, object stores, search indexes). Connector management is declarative-only on this platform: the module pins Strimzi's `strimzi.io/use-connector-resources` annotation, so pipes are declared as Kafka Connector resources and anything created through the Connect REST API is reverted by the operator. Plugin delivery is the star decision — the stock image carries ONLY the MirrorMaker 2 connector classes, so every real integration needs a prebuilt `image`, OCI image-volume `plugins`, or an operator `build`.
 
 ## What Gets Created
 
@@ -107,16 +107,16 @@ These are the most important decisions when configuring a Kafka Connect cluster.
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesKafka** | `bootstrapServers` | `status.outputs.internal_bootstrap_endpoint` |
-| **KubernetesKafka** | `tls.trustedCertificates[].secretName` | `status.outputs.cluster_ca_cert_secret_name` |
-| **KubernetesKafkaUser** | `authentication.certificateAndKey.secretName` / `authentication.passwordSecret.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Apache Kafka** | `bootstrapServers` | `status.outputs.internal_bootstrap_endpoint` |
+| **Apache Kafka** | `tls.trustedCertificates[].secretName` | `status.outputs.cluster_ca_cert_secret_name` |
+| **Kafka User** | `authentication.certificateAndKey.secretName` / `authentication.passwordSecret.secretName` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

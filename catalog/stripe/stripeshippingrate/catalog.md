@@ -1,21 +1,21 @@
 # Stripe Shipping Rate
 
-Declares a shipping option -- standard at 5 dollars in 3 to 5 business days, free express overnight -- that customers choose in Checkout or on a payment link. One Infra Component per option.
+Declares a shipping option — standard at 5 dollars in 3 to 5 business days, free express overnight — that customers choose in Checkout or on a payment link. One Infra Component per option.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one shipping rate in the Stripe account your Stripe connection's key belongs to:
 
-- **The price of shipping** -- a fixed amount, in one or more currencies
-- **The delivery window** -- shown to customers when they choose it
-- **How it is taxed** -- inclusive or exclusive, and its tax category
+- **The price of shipping** — a fixed amount, in one or more currencies
+- **The delivery window** — shown to customers when they choose it
+- **How it is taxed** — inclusive or exclusive, and its tax category
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -56,11 +56,11 @@ An Infra Job tracks the change in real time.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Name, amount and window are fixed** -- changing them creates a new rate; payment links that offer it are replaced with it.
+**Name, amount and window are fixed** — changing them creates a new rate; payment links that offer it are replaced with it.
 
-**Other currencies change in place** -- add a euro or pound amount without a new rate.
+**Other currencies change in place** — add a euro or pound amount without a new rate.
 
-**Destroy deactivates** -- new purchases can't choose it; orders already placed keep it.
+**Destroy deactivates** — new purchases can't choose it; orders already placed keep it.
 
 ## Outputs and Dependencies
 
@@ -81,11 +81,11 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Standard shipping** -- a paid option in two currencies. Start from the **Standard Shipping** preset.
+**Standard shipping** — a paid option in two currencies. Start from the **Standard Shipping** preset.
 
-**Free express** -- free next-day shipping. Start from the **Free Express** preset.
+**Free express** — free next-day shipping. Start from the **Free Express** preset.
 
 ## Works With
 
-- [**Stripe Payment Link**](/infra-catalog/stripe-payment-link) -- offers the rate on a hosted page, naming it by reference in `shippingOptions`.
-- [**Stripe Product**](/infra-catalog/stripe-product) -- the physical goods it ships.
+- [**Stripe Payment Link**](/infra-catalog/stripe-payment-link) — offers the rate on a hosted page, naming it by reference in `shippingOptions`.
+- [**Stripe Product**](/infra-catalog/stripe-product) — the physical goods it ships.

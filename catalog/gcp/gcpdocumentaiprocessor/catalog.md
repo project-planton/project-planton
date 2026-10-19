@@ -6,20 +6,20 @@ Turns documents into data. A Document AI processor reads PDFs, scans, and photos
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `documentai.googleapis.com` on the project
-- **Processor** -- a Document AI processor of the chosen type, location, and encryption
-- **Default version** (optional) -- which processor version serves requests by default
+- **API enablement** — `documentai.googleapis.com` on the project
+- **Processor** — a Document AI processor of the chosen type, location, and encryption
+- **Default version** (optional) — which processor version serves requests by default
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Document AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Document AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpKmsKey** -- for customer-managed encryption, referenced by `kmsKeyName`.
+- **GCP KMS Key** — for customer-managed encryption, referenced by `kmsKeyName`.
 
 ## Deploy
 
@@ -58,24 +58,24 @@ Hand the processor's `process_endpoint` or `name` output to the service or pipel
 
 These are the most important decisions when configuring a processor. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**What it extracts** -- `type` picks the model: OCR for any page, Form Parser for forms and tables, Layout Parser for chunking documents for RAG, or a specialized parser for invoices, receipts, IDs, and more. It cannot change later.
+**What it extracts** — `type` picks the model: OCR for any page, Form Parser for forms and tables, Layout Parser for chunking documents for RAG, or a specialized parser for invoices, receipts, IDs, and more. It cannot change later.
 
-**Where documents are processed** -- `us` or `eu`; your documents never leave the location.
+**Where documents are processed** — `us` or `eu`; your documents never leave the location.
 
-**Which version answers** -- `defaultVersion` pins the model version requests use unless they name one. Pinning keeps results stable when Google ships a new version.
+**Which version answers** — `defaultVersion` pins the model version requests use unless they name one. Pinning keeps results stable when Google ships a new version.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -88,12 +88,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Enterprise OCR** -- text, layout, and handwriting from any document, the general-purpose starting point. Start from the **Enterprise OCR** preset.
+**Enterprise OCR** — text, layout, and handwriting from any document, the general-purpose starting point. Start from the **Enterprise OCR** preset.
 
-**Encrypted invoice parser** -- invoices parsed under a customer-managed key with a pinned version and destroy protection. Start from the **Encrypted Invoice Parser** preset.
+**Encrypted invoice parser** — invoices parsed under a customer-managed key with a pinned version and destroy protection. Start from the **Encrypted Invoice Parser** preset.
 
 ## Works With
 
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
-- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) -- batch input and output documents
-- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) -- search and RAG over parsed documents
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption
+- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) — batch input and output documents
+- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) — search and RAG over parsed documents

@@ -1,6 +1,6 @@
 # GCP AlloyDB Instance
 
-Deploys a standalone AlloyDB instance (`google_alloydb_instance`) attached to an existing cluster. Read pools scale read traffic independently of the bundled primary in GcpAlloydbCluster. PRIMARY and SECONDARY types exist for advanced topologies; presets target READ_POOL.
+Deploys a standalone AlloyDB instance (google_alloydb_instance) attached to an existing cluster. Read pools scale read traffic independently of the bundled primary in GCP AlloyDB Cluster. PRIMARY and SECONDARY types exist for advanced topologies; presets target READ_POOL.
 
 ## What Gets Created
 
@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### GCP Project
 
-- **A GcpAlloydbCluster** — the cluster this instance joins. Reference its `status.outputs.cluster_id`, or pass the full cluster resource path directly.
+- **A GCP AlloyDB Cluster** — the cluster this instance joins. Reference its `status.outputs.cluster_id`, or pass the full cluster resource path directly.
 - **A GCP project** — only needed as an override when the cluster's project differs from the provider default.
 
 ## Deploy
@@ -82,14 +82,14 @@ These are the most important decisions when configuring an AlloyDB instance. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpAlloydbCluster** | `cluster` | `status.outputs.cluster_id` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP AlloyDB Cluster** | `cluster` | `status.outputs.cluster_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

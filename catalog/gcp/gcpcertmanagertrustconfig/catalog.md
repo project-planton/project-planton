@@ -7,17 +7,17 @@ Creates one Certificate Manager trust config — the root and intermediate CAs, 
 When you deploy this Infra Component, the IaC module provisions:
 
 - **Certificate Manager API enablement** (`certificatemanager.googleapis.com`) on the target project (never disabled on destroy)
-- **Certificate Manager Trust Config** -- a `google_certificate_manager_trust_config` holding one trust store (trust anchors and intermediate CAs) and any allowlisted certificates
+- **Certificate Manager Trust Config** — a `google_certificate_manager_trust_config` holding one trust store (trust anchors and intermediate CAs) and any allowlisted certificates
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
 
 ### GCP Project
 
-- **The CA certificates clients chain to**, PEM-encoded — your private root (a GcpPrivateCaPool's CA, a corporate PKI root) or a partner's. Certificates are public material; no private key is ever needed.
+- **The CA certificates clients chain to**, PEM-encoded — your private root (a GCP Private CA Pool's CA, a corporate PKI root) or a partner's. Certificates are public material; no private key is ever needed.
 
 ## Deploy
 
@@ -80,27 +80,27 @@ The InfraPipeline provisions the project first, then the trust config; a server 
 
 These are the most important decisions when configuring a trust config. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Trust store** (`trustStores`) -- at most one, as Google allows today. `trustAnchors` are the roots a client chain must build up to; `intermediateCas` complete chains when clients do not send their intermediates. Each entry is one PEM certificate (`-----BEGIN CERTIFICATE-----`).
+**Trust store** (`trustStores`) — at most one, as Google allows today. `trustAnchors` are the roots a client chain must build up to; `intermediateCas` complete chains when clients do not send their intermediates. Each entry is one PEM certificate (`-----BEGIN CERTIFICATE-----`).
 
-**Allowlisted certificates** -- individual certificates accepted even when they chain to no anchor: self-signed device certificates, or one partner certificate you do not want to trust a whole CA for. A matching certificate must still parse, prove possession of its private key, and satisfy its SAN constraints.
+**Allowlisted certificates** — individual certificates accepted even when they chain to no anchor: self-signed device certificates, or one partner certificate you do not want to trust a whole CA for. A matching certificate must still parse, prove possession of its private key, and satisfy its SAN constraints.
 
-**Location** -- empty means `global`, which serves global external and cross-region internal Application Load Balancers. A regional load balancer needs a trust config in its own region. Immutable.
+**Location** — empty means `global`, which serves global external and cross-region internal Application Load Balancers. A regional load balancer needs a trust config in its own region. Immutable.
 
-**Rotation** -- every change is an in-place update. Rotate a root by adding the new anchor beside the old one, moving clients, then removing the old anchor.
+**Rotation** — every change is an in-place update. Rotate a root by adding the new anchor beside the old one, moving clients, then removing the old anchor.
 
-**Deletion policy** -- `PREVENT` makes destroy fail, the guard rail for a trust config live mTLS traffic depends on. Google also refuses deletion while a TLS policy still references the config.
+**Deletion policy** — `PREVENT` makes destroy fail, the guard rail for a trust config live mTLS traffic depends on. Google also refuses deletion while a TLS policy still references the config.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -112,12 +112,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Private root trust store** -- one root CA (and optionally its intermediates) that signs every client certificate your load balancer should accept. Start from the **Private Root Trust Store** preset.
+**Private root trust store** — one root CA (and optionally its intermediates) that signs every client certificate your load balancer should accept. Start from the **Private Root Trust Store** preset.
 
-**Allowlisted device certificates** -- a handful of self-signed device or partner certificates accepted individually, with no CA trusted at all. Start from the **Allowlisted Device Certificates** preset.
+**Allowlisted device certificates** — a handful of self-signed device or partner certificates accepted individually, with no CA trusted at all. Start from the **Allowlisted Device Certificates** preset.
 
 ## Works With
 
-- [**GCP Target HTTPS Proxy**](/infra-catalog/gcp-target-https-proxy) -- attaches the server TLS policy that names this trust config
-- [**GCP Cert Manager Cert**](/infra-catalog/gcp-cert-manager-cert) -- the server certificate the load balancer presents; the trust config validates the client side
-- [**GCP Private CA Pool**](/infra-catalog/gcp-private-ca-pool) -- a private CA whose root certificate can be this config's trust anchor
+- [**GCP Target HTTPS Proxy**](/infra-catalog/gcp-target-https-proxy) — attaches the server TLS policy that names this trust config
+- [**GCP Cert Manager Cert**](/infra-catalog/gcp-cert-manager-cert) — the server certificate the load balancer presents; the trust config validates the client side
+- [**GCP Private CA Pool**](/infra-catalog/gcp-private-ca-pool) — a private CA whose root certificate can be this config's trust anchor

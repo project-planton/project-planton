@@ -1,31 +1,31 @@
 # DigitalOcean App Platform App
 
-Deploys a full App Platform application -- HTTP services, workers, jobs, static sites, functions, and in-app databases -- from Git or from a container image. One manifest declares every component with its source, sizing, and autoscaling, plus app-level domains, ingress rules, alerts, and VPC egress placement; App Platform builds and serves the result with automatic HTTPS on a default `ondigitalocean.app` hostname. The decisions that matter most: which source type the DigitalOcean account can actually use, and the two fields that still deploy only through Terraform at the current Pulumi SDK.
+Deploys a full App Platform application — HTTP services, workers, jobs, static sites, functions, and in-app databases — from Git or from a container image. One manifest declares every component with its source, sizing, and autoscaling, plus app-level domains, ingress rules, alerts, and VPC egress placement; App Platform builds and serves the result with automatic HTTPS on a default `ondigitalocean.app` hostname. The decisions that matter most: which source type the DigitalOcean account can actually use, and the two fields that still deploy only through Terraform at the current Pulumi SDK.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **App Platform Application** -- a `digitalocean_app` resource whose spec lists every component you declared
-- **HTTP services** -- created from `spec.services`; receive traffic with automatic HTTPS
-- **Workers** -- created from `spec.workers`; long-running processes without HTTP ingress
-- **Jobs** -- created from `spec.jobs`; run around a deployment (`pre_deploy`, `post_deploy`, or `failed_deploy`)
-- **Static sites, functions, in-app databases** -- created from the matching spec lists when present
-- **Domains and ingress** -- created from `spec.domains` and `spec.ingress` when present
-- **Environment variables** -- from `spec.envs` and per-component `envs`; `secret` values are stored in App Platform's secret store
+- **App Platform Application** — a `digitalocean_app` resource whose spec lists every component you declared
+- **HTTP services** — created from `spec.services`; receive traffic with automatic HTTPS
+- **Workers** — created from `spec.workers`; long-running processes without HTTP ingress
+- **Jobs** — created from `spec.jobs`; run around a deployment (`pre_deploy`, `post_deploy`, or `failed_deploy`)
+- **Static sites, functions, in-app databases** — created from the matching spec lists when present
+- **Domains and ingress** — created from `spec.domains` and `spec.ingress` when present
+- **Environment variables** — from `spec.envs` and per-component `envs`; `secret` values are stored in App Platform's secret store
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **DigitalOcean Provider Connection** -- an active connection in the Connect module with a DigitalOcean API token. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **DigitalOcean Provider Connection** — an active connection in the Connect module with a DigitalOcean API token. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### DigitalOcean Account
 
 - **A source** for each component: a public Git clone URL, a linked GitHub/GitLab/Bitbucket repo, or a container image (Docker Hub, GHCR, or DigitalOcean Container Registry). The `github`/`gitlab`/`bitbucket` sources need the matching connection in the DigitalOcean control panel; `git` with a public clone URL needs none.
-- **An App Platform region group** (for example `nyc`, `sfo`, `fra` -- these are datacenter groups, not droplet slugs like `nyc3`).
-- **A DigitalOcean-managed DNS zone** (only for custom domains) -- `domains[].zone` expects the zone to already exist; App Platform will not create DNS for you.
+- **An App Platform region group** (for example `nyc`, `sfo`, `fra` — these are datacenter groups, not droplet slugs like `nyc3`).
+- **A DigitalOcean-managed DNS zone** (only for custom domains) — `domains[].zone` expects the zone to already exist; App Platform will not create DNS for you.
 
 ## Deploy
 
@@ -64,7 +64,7 @@ This creates a single-instance web app in NYC3 built from the sample Node.js rep
 
 ### InfraChart
 
-When wiring VPC egress placement, a custom domain on a DigitalOcean-managed zone, or a production database attachment, use ValueFromRef to reference resources deployed in the same InfraPipeline:
+When wiring VPC egress placement, a custom domain on a DigitalOcean-managed zone, or a production database attachment, use references to reference resources deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -97,42 +97,42 @@ The InfraPipeline resolves the dependency graph, deploys the VPC, DNS zone, and 
 
 These are the most important decisions when configuring an App Platform application. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Components** -- add at least one of `services`, `workers`, `jobs`, `staticSites`, or `functions`; validation rejects an empty app before any provisioner runs. Jobs run around a deployment and never autoscale; static sites build from Git only (no image source).
+**Components** — add at least one of `services`, `workers`, `jobs`, `staticSites`, or `functions`; validation rejects an empty app before any provisioner runs. Jobs run around a deployment and never autoscale; static sites build from Git only (no image source).
 
-**Source per component** -- each component sets exactly one of `git`, `github`, `gitlab`, `bitbucket`, or (services/workers/jobs) `image`. The VCS-linked sources need the matching connection in the DigitalOcean control panel -- `deployOnPush` is silently ignored without it and a missing connection fails the deploy -- so `git` with a public clone URL is the right default for unlinked accounts. For Docker Hub images, `registry` is the namespace (`library` for official images), not the string "docker-hub"; for DigitalOcean Container Registry set `registryType: docr` and leave `registry` empty.
+**Source per component** — each component sets exactly one of `git`, `github`, `gitlab`, `bitbucket`, or (services/workers/jobs) `image`. The VCS-linked sources need the matching connection in the DigitalOcean control panel — `deployOnPush` is silently ignored without it and a missing connection fails the deploy — so `git` with a public clone URL is the right default for unlinked accounts. For Docker Hub images, `registry` is the namespace (`library` for official images), not the string "docker-hub"; for DigitalOcean Container Registry set `registryType: docr` and leave `registry` empty.
 
-**App name** -- `appName` is 2-32 characters matching `^[a-z][a-z0-9-]{0,30}[a-z0-9]$` (starts with a letter) and unique across every app in the account; component names follow the same rule and validation enforces it on each. Renaming updates the app in place, but the default `<name>-<hash>.ondigitalocean.app` URL changes with the name.
+**App name** — `appName` is 2-32 characters matching `^[a-z][a-z0-9-]{0,30}[a-z0-9]$` (starts with a letter) and unique across every app in the account; component names follow the same rule and validation enforces it on each. Renaming updates the app in place, but the default `<name>-<hash>.ondigitalocean.app` URL changes with the name.
 
-**Instance size and count** -- `instanceSizeSlug` is a free-form string (`basic-xxs`, `professional-s`, ...); new provider sizes work without a catalog change. The slug is the cost driver: every instance of every service, worker, and job bills by its size, so a forgotten `professional` slug on a staging worker costs real money.
+**Instance size and count** — `instanceSizeSlug` is a free-form string (`basic-xxs`, `professional-s`, ...); new provider sizes work without a catalog change. The slug is the cost driver: every instance of every service, worker, and job bills by its size, so a forgotten `professional` slug on a staging worker costs real money.
 
-**Autoscaling** -- set `autoscaling` on a service or worker and leave `instanceCount` unset; the spec rejects the combination because App Platform ignores a fixed count while autoscaling is on. Jobs cannot autoscale.
+**Autoscaling** — set `autoscaling` on a service or worker and leave `instanceCount` unset; the spec rejects the combination because App Platform ignores a fixed count while autoscaling is on. Jobs cannot autoscale.
 
-**Termination** -- `termination.drainSeconds` is a service-only HTTP connection drain; workers and jobs reject it and honor `gracePeriodSeconds` only.
+**Termination** — `termination.drainSeconds` is a service-only HTTP connection drain; workers and jobs reject it and honor `gracePeriodSeconds` only.
 
-**Liveness and secure headers** -- service/worker `livenessHealthCheck` is the restart probe (the service `healthCheck` is the readiness probe that gates traffic), and `ingress.secureHeader` adds one response header to every route. Both deploy on both provisioners, as does every other spec field including `vpc`, `maintenance`, ingress `authorityExact` matches, and alert destinations.
+**Liveness and secure headers** — service/worker `livenessHealthCheck` is the restart probe (the service `healthCheck` is the readiness probe that gates traffic), and `ingress.secureHeader` adds one response header to every route. Both deploy on both provisioners, as does every other spec field including `vpc`, `maintenance`, ingress `authorityExact` matches, and alert destinations.
 
-**Alert destinations** -- both engines wire email and Slack destinations, but the provider never reads them back, so a Terraform apply with destinations set re-plans and redeploys the app every time (a provider defect, tracked as [digitalocean/terraform-provider-digitalocean#1606](https://github.com/digitalocean/terraform-provider-digitalocean/issues/1606)). Set them on Pulumi stacks, or leave them unset on Terraform and manage recipients in the control panel; recipients must be verified team members.
+**Alert destinations** — both engines wire email and Slack destinations, but the provider never reads them back, so a Terraform apply with destinations set re-plans and redeploys the app every time (a provider defect, tracked as [digitalocean/terraform-provider-digitalocean#1606](https://github.com/digitalocean/terraform-provider-digitalocean/issues/1606)). Set them on Pulumi stacks, or leave them unset on Terraform and manage recipients in the control panel; recipients must be verified team members.
 
-**Project** -- `projectId` is create-only: changing it destroys and recreates the app. Leave it unset to use the account's default project.
+**Project** — `projectId` is create-only: changing it destroys and recreates the app. Leave it unset to use the account's default project.
 
-**In-app databases** -- a `databases[]` entry without `clusterName` is App Platform's managed dev database, not a production data store. Set `production: true` with `clusterName` referencing an existing cluster; the attachment never creates the cluster.
+**In-app databases** — a `databases[]` entry without `clusterName` is App Platform's managed dev database, not a production data store. Set `production: true` with `clusterName` referencing an existing cluster; the attachment never creates the cluster.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **DigitalOceanVpc** (optional) | `vpc` | `status.outputs.vpc_id` |
-| **DigitalOceanDnsZone** (optional) | `domains[].zone` | `status.outputs.zone_name` |
-| **DigitalOceanDatabaseCluster** (optional) | `databases[].clusterName` | `spec.cluster_name` |
-| **DigitalOceanProject** (optional) | `projectId` | `status.outputs.project_id` |
+| **DigitalOcean VPC** (optional) | `vpc` | `status.outputs.vpc_id` |
+| **DigitalOcean DNS Zone** (optional) | `domains[].zone` | `status.outputs.zone_name` |
+| **DigitalOcean Database Cluster** (optional) | `databases[].clusterName` | `spec.cluster_name` |
+| **DigitalOcean Project** (optional) | `projectId` | `status.outputs.project_id` |
 
 VPC placement is wired by both provisioners.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -146,13 +146,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Git source web app** -- one HTTP service built from a public repository; App Platform detects the language and builds it, no VCS connection required. The shape for getting an app live before wiring GitHub. Start from the **Git Source Web App** preset.
+**Git source web app** — one HTTP service built from a public repository; App Platform detects the language and builds it, no VCS connection required. The shape for getting an app live before wiring GitHub. Start from the **Git Source Web App** preset.
 
-**Container image app** -- one HTTP service from Docker Hub, GHCR, or DOCR with CPU autoscaling; skips the build entirely, so deploys are as fast as an image pull and the running artifact is exactly what CI produced. Start from the **Container Image App** preset.
+**Container image app** — one HTTP service from Docker Hub, GHCR, or DOCR with CPU autoscaling; skips the build entirely, so deploys are as fast as an image pull and the running artifact is exactly what CI produced. Start from the **Container Image App** preset.
 
 ## Works With
 
-- [**DigitalOcean VPC**](/infra-catalog/digital-ocean-vpc) -- optional egress placement (`spec.vpc`)
-- [**DigitalOcean DNS Zone**](/infra-catalog/digital-ocean-dns-zone) -- custom domains (`spec.domains`)
-- [**DigitalOcean Database Cluster**](/infra-catalog/digital-ocean-database-cluster) -- in-app database `clusterName`
-- [**DigitalOcean Function**](/infra-catalog/digital-ocean-function) -- standalone functions app when the functions component should not share this app
+- [**DigitalOcean VPC**](/infra-catalog/digital-ocean-vpc) — optional egress placement (`spec.vpc`)
+- [**DigitalOcean DNS Zone**](/infra-catalog/digital-ocean-dns-zone) — custom domains (`spec.domains`)
+- [**DigitalOcean Database Cluster**](/infra-catalog/digital-ocean-database-cluster) — in-app database `clusterName`
+- [**DigitalOcean Function**](/infra-catalog/digital-ocean-function) — standalone functions app when the functions component should not share this app

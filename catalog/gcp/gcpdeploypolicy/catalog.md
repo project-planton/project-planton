@@ -1,20 +1,20 @@
 # GCP Deploy Policy
 
-Puts change freezes into code. A deploy policy blocks rollouts to the pipelines and targets you choose during the windows you choose -- every weekend, Friday afternoons, a year-end freeze -- for people, for automations, or both. A blocked rollout fails with a clear policy violation, and the people you trust can still override it in an emergency.
+Puts change freezes into code. A deploy policy blocks rollouts to the pipelines and targets you choose during the windows you choose — every weekend, Friday afternoons, a year-end freeze — for people, for automations, or both. A blocked rollout fails with a clear policy violation, and the people you trust can still override it in an emergency.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Cloud Deploy API on the policy's project
-- **Deploy policy** -- the policy with its rules and selectors
+- **API enablement** — the Cloud Deploy API on the policy's project
+- **Deploy policy** — the policy with its rules and selectors
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with permission to manage Cloud Deploy deploy policies in the target project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with permission to manage Cloud Deploy deploy policies in the target project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -66,25 +66,25 @@ Reference a delivery pipeline's `status.outputs.delivery_pipeline_id` from `sele
 
 These are the most important decisions when configuring a deploy policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**What it governs** -- selectors pick pipelines and targets by ID, by `*` for all of them in the location, or by labels. Any selector matching is enough.
+**What it governs** — selectors pick pipelines and targets by ID, by `*` for all of them in the location, or by labels. Any selector matching is enough.
 
-**What it blocks** -- each rule's actions (creating rollouts, approving, rolling back, and more) and invokers (people, automations, or both). Empty lists block everything.
+**What it blocks** — each rule's actions (creating rollouts, approving, rolling back, and more) and invokers (people, automations, or both). Empty lists block everything.
 
-**When** -- weekly windows (days and hours) and one-time windows (dated), all in one time zone.
+**When** — weekly windows (days and hours) and one-time windows (dated), all in one time zone.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpDeliveryPipeline** | `selectors[].deliveryPipeline.id` | `status.outputs.delivery_pipeline_id` |
-| **GcpDeployTarget** | `selectors[].target.id` | `status.outputs.target_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Delivery Pipeline** | `selectors[].deliveryPipeline.id` | `status.outputs.delivery_pipeline_id` |
+| **GCP Deploy Target** | `selectors[].target.id` | `status.outputs.target_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -96,11 +96,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Weekend freeze** -- no production rollouts on Saturdays and Sundays. Start from the **Weekend Freeze** preset.
+**Weekend freeze** — no production rollouts on Saturdays and Sundays. Start from the **Weekend Freeze** preset.
 
-**Holiday freeze** -- a dated freeze plus Friday afternoons, for people only. Start from the **Holiday Freeze** preset.
+**Holiday freeze** — a dated freeze plus Friday afternoons, for people only. Start from the **Holiday Freeze** preset.
 
 ## Works With
 
-- [**GCP Delivery Pipeline**](/infra-catalog/gcp-delivery-pipeline) -- pipelines the policy governs
-- [**GCP Deploy Target**](/infra-catalog/gcp-deploy-target) -- targets the policy governs
+- [**GCP Delivery Pipeline**](/infra-catalog/gcp-delivery-pipeline) — pipelines the policy governs
+- [**GCP Deploy Target**](/infra-catalog/gcp-deploy-target) — targets the policy governs

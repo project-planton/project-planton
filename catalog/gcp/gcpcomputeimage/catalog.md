@@ -6,15 +6,15 @@ Builds a golden VM image once and reuses it everywhere: an operating system hard
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Compute Engine API on the project
-- **Image** -- one custom image
+- **API enablement** — the Compute Engine API on the project
+- **Image** — one custom image
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with permission to create images in the project and read the source. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with permission to create images in the project and read the source. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -56,27 +56,27 @@ Reference a disk's `status.outputs.self_link` from `sourceDisk`; consumers boot 
 
 These are the most important decisions when configuring an image. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Source** -- exactly one of a disk, an image, a snapshot, or a raw disk tarball.
+**Source** — exactly one of a disk, an image, a snapshot, or a raw disk tarball.
 
-**Family** -- the stable name consumers boot from; each build is a new image in it.
+**Family** — the stable name consumers boot from; each build is a new image in it.
 
-**Encryption** -- a Cloud KMS key or an Autokey key handle, or Google-managed by default.
+**Encryption** — a Cloud KMS key or an Autokey key handle, or Google-managed by default.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpComputeDisk** | `sourceDisk` | `status.outputs.self_link` |
-| **GcpComputeImage** | `sourceImage` | `status.outputs.self_link` |
-| **GcpKmsKey** | `kmsKey`, source encryption keys | `status.outputs.key_id` |
-| **GcpKmsKeyHandle** | `kmsKey` | `status.outputs.kms_key` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Compute Disk** | `sourceDisk` | `status.outputs.self_link` |
+| **GCP Compute Image** | `sourceImage` | `status.outputs.self_link` |
+| **GCP KMS Key** | `kmsKey`, source encryption keys | `status.outputs.key_id` |
+| **GCP KMS Key Handle** | `kmsKey` | `status.outputs.kms_key` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -90,14 +90,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Golden image** -- start from the **Golden Image from a Disk** preset.
+**Golden image** — start from the **Golden Image from a Disk** preset.
 
-**Pinned OS** -- start from the **Copy a Public Image** preset.
+**Pinned OS** — start from the **Copy a Public Image** preset.
 
-**Regulated** -- start from the **CMEK Image** preset.
+**Regulated** — start from the **CMEK Image** preset.
 
 ## Works With
 
-- [**GCP Compute Disk**](/infra-catalog/gcp-compute-disk) -- the build disk and the boot disks
-- [**GCP Compute Instance**](/infra-catalog/gcp-compute-instance) -- VMs that boot the image
-- [**GCP KMS Key Handle**](/infra-catalog/gcp-kms-key-handle) -- Autokey encryption
+- [**GCP Compute Disk**](/infra-catalog/gcp-compute-disk) — the build disk and the boot disks
+- [**GCP Compute Instance**](/infra-catalog/gcp-compute-instance) — VMs that boot the image
+- [**GCP KMS Key Handle**](/infra-catalog/gcp-kms-key-handle) — Autokey encryption

@@ -6,13 +6,13 @@ Declares a Karpenter NodePool — the fleet shape Karpenter provisions machines 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **NodePool** (cluster-scoped, named after `metadata.name`) -- the `karpenter.sh/v1` custom resource carrying the NodeClaim template (requirements, taints, labels, lifetime), the disruption policy (consolidation and budgets), pool-wide limits, and weight
+- **NodePool** (cluster-scoped, named after `metadata.name`) — the `karpenter.sh/v1` custom resource carrying the NodeClaim template (requirements, taints, labels, lifetime), the disruption policy (consolidation and budgets), pool-wide limits, and weight
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### Kubernetes Cluster
 
@@ -88,27 +88,27 @@ The InfraPipeline deploys the EC2NodeClass first, then declares the pool against
 
 These are the most important decisions when configuring a NodePool. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The node class is the machine, the pool is the policy** -- AMIs, subnets, security groups, and IAM live on the EC2NodeClass; the pool decides which instance shapes may launch, what they are tainted and labeled with, and when they are disrupted.
+**The node class is the machine, the pool is the policy** — AMIs, subnets, security groups, and IAM live on the EC2NodeClass; the pool decides which instance shapes may launch, what they are tainted and labeled with, and when they are disrupted.
 
-**Layer pools by purpose** -- taint dedicated pools (GPU, batch) so only tolerating pods land there; rank overlapping pools with `weight` so Karpenter prefers the cheaper or safer pool first.
+**Layer pools by purpose** — taint dedicated pools (GPU, batch) so only tolerating pods land there; rank overlapping pools with `weight` so Karpenter prefers the cheaper or safer pool first.
 
-**Bound spot churn** -- `minValues` instance diversity keeps spot pools resilient, and disruption budgets bound how much of the fleet can be disrupted at once — a `"0"` budget on a cron schedule freezes voluntary disruption during business hours.
+**Bound spot churn** — `minValues` instance diversity keeps spot pools resilient, and disruption budgets bound how much of the fleet can be disrupted at once — a `"0"` budget on a cron schedule freezes voluntary disruption during business hours.
 
-**Cap the pool** -- `limits` bound the total CPU/memory the pool may reach so a runaway workload cannot provision unbounded capacity.
+**Cap the pool** — `limits` bound the total CPU/memory the pool may reach so a runaway workload cannot provision unbounded capacity.
 
-**Expiry recycles nodes** -- node lifetime (720h upstream default) rolls the fleet through fresh AMIs and patched hosts; shorter lifetimes trade churn for freshness.
+**Expiry recycles nodes** — node lifetime (720h upstream default) rolls the fleet through fresh AMIs and patched hosts; shorter lifetimes trade churn for freshness.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesKarpenterEc2NodeClass** | `template.nodeClassRef.name` | `status.outputs.node_class_name` |
+| **Karpenter EC2 Node Class** | `template.nodeClassRef.name` | `status.outputs.node_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -118,14 +118,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**The first fleet** -- a general-purpose on-demand pool with sane lifetime and consolidation. Start from the **General Purpose On-Demand** preset.
+**The first fleet** — a general-purpose on-demand pool with sane lifetime and consolidation. Start from the **General Purpose On-Demand** preset.
 
-**Spot with diversity** -- capacity-type spot, wide instance diversity via `minValues`, budgets bounding churn. Start from the **Spot Diversified** preset.
+**Spot with diversity** — capacity-type spot, wide instance diversity via `minValues`, budgets bounding churn. Start from the **Spot Diversified** preset.
 
-**Dedicated GPU pool** -- tainted so only tolerating pods land, accelerated instance families only. Start from the **GPU Dedicated** preset.
+**Dedicated GPU pool** — tainted so only tolerating pods land, accelerated instance families only. Start from the **GPU Dedicated** preset.
 
 ## Works With
 
-- [**Karpenter**](/infra-catalog/kubernetes-karpenter) -- the controller that watches this pool; install it first
-- [**Karpenter EC2 Node Class**](/infra-catalog/kubernetes-karpenter-ec2-node-class) -- the machine template this pool references; one class typically serves several pools
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- pending pods trigger provisioning against the pools whose requirements they fit (the same holds for StatefulSets and Jobs)
+- [**Karpenter**](/infra-catalog/kubernetes-karpenter) — the controller that watches this pool; install it first
+- [**Karpenter EC2 Node Class**](/infra-catalog/kubernetes-karpenter-ec2-node-class) — the machine template this pool references; one class typically serves several pools
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — pending pods trigger provisioning against the pools whose requirements they fit (the same holds for StatefulSets and Jobs)

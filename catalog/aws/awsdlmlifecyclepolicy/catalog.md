@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **An execution role trusting `dlm.amazonaws.com`** — AWS's service default `AWSDataLifecycleManagerDefaultRole` (create it once per account with `aws dlm create-default-role`), or an AwsIamRole Infra Component carrying the documented DLM permissions. The policy is rejected without it, and it silently stops working if the role later loses permissions.
+- **An execution role trusting `dlm.amazonaws.com`** — AWS's service default `AWSDataLifecycleManagerDefaultRole` (create it once per account with `aws dlm create-default-role`), or an AWS IAM Role Infra Component carrying the documented DLM permissions. The policy is rejected without it, and it silently stops working if the role later loses permissions.
 - **KMS keys in the destination regions** (only for encrypted cross-region copies) — each copy rule's key lives in ITS target region.
 
 ## Deploy
@@ -67,7 +67,7 @@ This creates a policy that snapshots every volume tagged `backup: daily` at 03:0
 
 ### InfraChart
 
-When the policy deploys alongside its execution role in one chart, wire the role reference via ValueFromRef:
+When the policy deploys alongside its execution role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -114,11 +114,11 @@ These are the most important decisions when configuring a DLM policy. Explore th
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `executionRoleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** (optional, per copy rule) | `customPolicy.schedules[].crossRegionCopyRules[].cmkArn` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional, event-based copies) | `customPolicy.action.crossRegionCopies[].cmkArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** | `executionRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** (optional, per copy rule) | `customPolicy.schedules[].crossRegionCopyRules[].cmkArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional, event-based copies) | `customPolicy.action.crossRegionCopies[].cmkArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 

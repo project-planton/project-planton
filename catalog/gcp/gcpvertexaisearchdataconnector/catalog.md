@@ -1,20 +1,20 @@
 # GCP Vertex AI Search Data Connector
 
-Connects a source -- Jira, Confluence, ServiceNow, SharePoint, OneDrive, Outlook, Salesforce, Slack, BigQuery, Google Drive, and more -- to Vertex AI Search and Gemini Enterprise, syncing it into data stores on a schedule or searching it live. Name the source, list the entities to bring in, point at the Secret Manager secrets that hold the credentials, and an engine can search the whole collection. Credentials never sit in the manifest.
+Connects a source — Jira, Confluence, ServiceNow, SharePoint, OneDrive, Outlook, Salesforce, Slack, BigQuery, Google Drive, and more — to Vertex AI Search and Gemini Enterprise, syncing it into data stores on a schedule or searching it live. Name the source, list the entities to bring in, point at the Secret Manager secrets that hold the credentials, and an engine can search the whole collection. Credentials never sit in the manifest.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `discoveryengine.googleapis.com` on the project
-- **Data connector** -- a `discoveryengine.DataConnector`, which creates the collection and one data store per entity
+- **API enablement** — `discoveryengine.googleapis.com` on the project
+- **Data connector** — a `discoveryengine.DataConnector`, which creates the collection and one data store per entity
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Discovery Engine admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Discovery Engine admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Prerequisites Outside This Block
 
@@ -23,7 +23,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Optional Dependencies
 
-- **GcpKmsKey** -- for customer-managed encryption of every store the connector creates, referenced by `kmsKeyName`.
+- **GCP KMS Key** — for customer-managed encryption of every store the connector creates, referenced by `kmsKeyName`.
 
 ## Deploy
 
@@ -72,24 +72,24 @@ When deploying as part of a multi-resource environment, reference the connector'
 
 These are the most important decisions when configuring a connector. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Index or federate** -- `connectorModes` decides whether the source is indexed into the stores (`DATA_INGESTION`, fast ranked search) or searched live (`FEDERATED`, nothing copied); `ACTIONS` lets an assistant act on the source through a BAP connection.
+**Index or federate** — `connectorModes` decides whether the source is indexed into the stores (`DATA_INGESTION`, fast ranked search) or searched live (`FEDERATED`, nothing copied); `ACTIONS` lets an assistant act on the source through a BAP connection.
 
-**Which entities** -- each `entities[]` entry becomes a data store; `params` filter what is ingested and `keyPropertyMappings` say which source fields render as a result's title and description.
+**Which entities** — each `entities[]` entry becomes a data store; `params` filter what is ingested and `keyPropertyMappings` say which source fields render as a result's title and description.
 
-**Where the credentials live** -- every secret in `params` is a Secret Manager resource name; the Discovery Engine service agent fetches it. Nothing sensitive is written into the manifest or the state.
+**Where the credentials live** — every secret in `params` is a Secret Manager resource name; the Discovery Engine service agent fetches it. Nothing sensitive is written into the manifest or the state.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -102,13 +102,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Jira federated with actions** -- Live search over Jira with an assistant that can open and update issues, on static egress addresses. Start from the **Jira Federated with Actions** preset.
+**Jira federated with actions** — Live search over Jira with an assistant that can open and update issues, on static egress addresses. Start from the **Jira Federated with Actions** preset.
 
-**ServiceNow periodic with CMEK** -- ServiceNow knowledge indexed daily in `us` under your own key. Start from the **ServiceNow Periodic with CMEK** preset.
+**ServiceNow periodic with CMEK** — ServiceNow knowledge indexed daily in `us` under your own key. Start from the **ServiceNow Periodic with CMEK** preset.
 
 ## Works With
 
-- [**GCP Vertex AI Search Engine**](/infra-catalog/gcp-vertex-ai-search-engine) -- the app over the connector's stores
-- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) -- stores you fill yourself
-- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) -- the source credentials
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
+- [**GCP Vertex AI Search Engine**](/infra-catalog/gcp-vertex-ai-search-engine) — the app over the connector's stores
+- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) — stores you fill yourself
+- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) — the source credentials
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption

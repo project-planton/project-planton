@@ -1,25 +1,25 @@
 # Azure Cosmos DB SQL Role Assignment
 
-Grants a Cosmos DB data-plane role to a Microsoft Entra principal at a scope inside one SQL (NoSQL) API account. Cosmos DB carries its own RBAC system, separate from ARM RBAC — this assignment is how an Entra identity (a workload's managed identity, a CI principal, an operator) gets data access. With the account's local (key) authentication disabled, grants like this are the ONLY way clients connect: the fully keyless posture. Every grant has three coordinates: WHAT (`roleDefinitionId` — a built-in role by well-known ID, or a custom AzureCosmosdbSqlRoleDefinition by reference), WHO (`principalId` — the Entra OBJECT ID), and WHERE (`scope` — the account, one database, or one container; permissions inherit downward).
+Grants a Cosmos DB data-plane role to a Microsoft Entra principal at a scope inside one SQL (NoSQL) API account. Cosmos DB carries its own RBAC system, separate from ARM RBAC — this assignment is how an Entra identity (a workload's managed identity, a CI principal, an operator) gets data access. With the account's local (key) authentication disabled, grants like this are the ONLY way clients connect: the fully keyless posture. Every grant has three coordinates: WHAT (`roleDefinitionId` — a built-in role by well-known ID, or a custom Azure Cosmos DB SQL Role Definition by reference), WHO (`principalId` — the Entra OBJECT ID), and WHERE (`scope` — the account, one database, or one container; permissions inherit downward).
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Cosmos DB SQL Role Assignment** -- a GUID-identified grant record binding the role to the principal at the scope
+- **Cosmos DB SQL Role Assignment** — a GUID-identified grant record binding the role to the principal at the scope
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
 - **A Cosmos DB account** speaking the SQL (NoSQL) API.
-- **The principal's OBJECT ID** — for a Planton-managed identity, reference the AzureUserAssignedIdentity's `principal_id` output; for users, groups, or external service principals, the object ID from Entra. The object ID is NOT the application (client) ID — an assignment authored with a client ID deploys successfully and grants nothing.
-- **For custom roles**: an AzureCosmosdbSqlRoleDefinition whose assignable scopes cover the grant's scope.
+- **The principal's OBJECT ID** — for a Planton-managed identity, reference the Azure User Assigned Identity's `principal_id` output; for users, groups, or external service principals, the object ID from Entra. The object ID is NOT the application (client) ID — an assignment authored with a client ID deploys successfully and grants nothing.
+- **For custom roles**: an Azure Cosmos DB SQL Role Definition whose assignable scopes cover the grant's scope.
 
 ## Deploy
 
@@ -72,28 +72,28 @@ When deploying as part of a multi-resource environment, the account, the identit
 
 These are the most important decisions when configuring a role assignment. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Role** -- Built-in roles (Data Reader `…0001`, Data Contributor `…0002`) exist in every account and are addressed by their well-known GUID composed on the account's ARM ID as a literal. Custom roles reference an AzureCosmosdbSqlRoleDefinition's output with zero translation. Rebinding the role is the grant's ONE in-place update.
+**Role** — Built-in roles (Data Reader `…0001`, Data Contributor `…0002`) exist in every account and are addressed by their well-known GUID composed on the account's ARM ID as a literal. Custom roles reference an Azure Cosmos DB SQL Role Definition's output with zero translation. Rebinding the role is the grant's ONE in-place update.
 
-**Scope** -- The account (the default reference), one database (`{account-id}/dbs/{db}`), or one container (`{account-id}/dbs/{db}/colls/{container}`). Sub-account scopes are literals composed on the account ID. Prefer the narrowest scope that satisfies the use case; the scope must sit at or below one of the role definition's assignable scopes.
+**Scope** — The account (the default reference), one database (`{account-id}/dbs/{db}`), or one container (`{account-id}/dbs/{db}/colls/{container}`). Sub-account scopes are literals composed on the account ID. Prefer the narrowest scope that satisfies the use case; the scope must sit at or below one of the role definition's assignable scopes.
 
-**Principal** -- The Entra OBJECT ID. Referencing a managed identity's `principal_id` output makes the object-ID-vs-client-ID mistake unrepresentable.
+**Principal** — The Entra OBJECT ID. Referencing a managed identity's `principal_id` output makes the object-ID-vs-client-ID mistake unrepresentable.
 
-**Immutability** -- Account, principal, scope, and the pinned GUID all replace the assignment; only the role binding updates in place — each grant record stays an auditable fact.
+**Immutability** — Account, principal, scope, and the pinned GUID all replace the assignment; only the role binding updates in place — each grant record stays an auditable fact.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| AzureCosmosdbAccount | `cosmosdbAccountId` | `status.outputs.cosmosdb_account_id` |
-| AzureCosmosdbSqlRoleDefinition | `roleDefinitionId` | `status.outputs.role_definition_id` |
-| AzureUserAssignedIdentity | `principalId` | `status.outputs.principal_id` |
-| AzureCosmosdbAccount | `scope` | `status.outputs.cosmosdb_account_id` |
+| Azure Cosmos DB Account | `cosmosdbAccountId` | `status.outputs.cosmosdb_account_id` |
+| Azure Cosmos DB SQL Role Definition | `roleDefinitionId` | `status.outputs.role_definition_id` |
+| Azure User Assigned Identity | `principalId` | `status.outputs.principal_id` |
+| Azure Cosmos DB Account | `scope` | `status.outputs.cosmosdb_account_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -109,7 +109,7 @@ Nothing deploys INTO a grant — these outputs exist so automation can audit or 
 
 **Least-privilege reader on one container** — the built-in Data Reader scoped to exactly one container (`{account-id}/dbs/{db}/colls/{container}`): an analytics job or debugging operator sees the documents it needs and nothing else — no neighboring containers, no writes anywhere. Start from the **Container-Scoped Reader** preset.
 
-**Custom-RBAC composition** — an AzureCosmosdbSqlRoleDefinition's fully-scoped ID flows into the grant by reference, so the definition (WHAT), this grant (WHO and WHERE), the identity, and the account deploy from one manifest set. Use it whenever the built-ins don't express the permission set. Start from the **Custom Role Grant** preset.
+**Custom-RBAC composition** — an Azure Cosmos DB SQL Role Definition's fully-scoped ID flows into the grant by reference, so the definition (WHAT), this grant (WHO and WHERE), the identity, and the account deploy from one manifest set. Use it whenever the built-ins don't express the permission set. Start from the **Custom Role Grant** preset.
 
 ## Works With
 

@@ -1,20 +1,20 @@
 # GCP TPU VM
 
-Gives your team Google's AI chips. A Cloud TPU VM is a slice of Tensor Processing Units -- from a single 8-chip host to multi-host slices -- with its own VMs, ready for training or serving large models with JAX, PyTorch/XLA, or TensorFlow. Declare the chip generation, the size, and whether to use cheap spot capacity, and the slice comes up on your network with your identity.
+Gives your team Google's AI chips. A Cloud TPU VM is a slice of Tensor Processing Units — from a single 8-chip host to multi-host slices — with its own VMs, ready for training or serving large models with JAX, PyTorch/XLA, or TensorFlow. Declare the chip generation, the size, and whether to use cheap spot capacity, and the slice comes up on your network with your identity.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `tpu.googleapis.com` on the project
-- **TPU VM** -- a `tpu.V2Vm` (Google's beta-only TPU resource, used under the catalog's recorded admission)
+- **API enablement** — `tpu.googleapis.com` on the project
+- **TPU VM** — a `tpu.V2Vm` (Google's beta-only TPU resource, used under the catalog's recorded admission)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Cloud TPU admin permissions on the project, and TPU quota for the generation in the zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Cloud TPU admin permissions on the project, and TPU quota for the generation in the zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -55,29 +55,29 @@ Reference a `GcpSubnetwork` for private networking, a `GcpServiceAccount` for th
 
 These are the most important decisions when configuring a TPU. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Generation and size** -- `acceleratorType` (e.g. `v5litepod-8`, `v6e-16`) or `acceleratorConfig` (generation plus topology). Match `runtimeVersion` to the generation.
+**Generation and size** — `acceleratorType` (e.g. `v5litepod-8`, `v6e-16`) or `acceleratorConfig` (generation plus topology). Match `runtimeVersion` to the generation.
 
-**Where** -- `zone`: each generation exists in only a few zones.
+**Where** — `zone`: each generation exists in only a few zones.
 
-**Capacity model** -- on-demand, `spot` (much cheaper, reclaimable any time), or `reserved`. When on-demand capacity is short, use a `GcpTpuQueuedResource` instead.
+**Capacity model** — on-demand, `spot` (much cheaper, reclaimable any time), or `reserved`. When on-demand capacity is short, use a `GcpTpuQueuedResource` instead.
 
-**Network and identity** -- the subnetwork, whether workers get external IPs, and the service account the hosts run as.
+**Network and identity** — the subnetwork, whether workers get external IPs, and the service account the hosts run as.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `networkConfig.network`, `networkConfigs[].network` | `status.outputs.network_id` |
-| **GcpSubnetwork** | `networkConfig.subnetwork`, `networkConfigs[].subnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpServiceAccount** | `serviceAccount.email` | `status.outputs.email` |
-| **GcpComputeDisk** | `dataDisks[].sourceDisk` | `status.outputs.self_link` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `networkConfig.network`, `networkConfigs[].network` | `status.outputs.network_id` |
+| **GCP Subnetwork** | `networkConfig.subnetwork`, `networkConfigs[].subnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP Service Account** | `serviceAccount.email` | `status.outputs.email` |
+| **GCP Compute Disk** | `dataDisks[].sourceDisk` | `status.outputs.self_link` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -89,13 +89,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Spot v5e fine-tuning** -- an 8-chip v5e slice on spot capacity with a startup script, for cost-sensitive fine-tuning. Start from the **Spot v5e Fine-Tuning** preset.
+**Spot v5e fine-tuning** — an 8-chip v5e slice on spot capacity with a startup script, for cost-sensitive fine-tuning. Start from the **Spot v5e Fine-Tuning** preset.
 
-**Private reserved v6e** -- a Trillium slice from a reservation on a private subnetwork with its own identity, no external IPs, Secure Boot, and a shared read-only dataset disk. Start from the **Private Reserved v6e** preset.
+**Private reserved v6e** — a Trillium slice from a reservation on a private subnetwork with its own identity, no external IPs, Secure Boot, and a shared read-only dataset disk. Start from the **Private Reserved v6e** preset.
 
 ## Works With
 
-- [**GCP TPU Queued Resource**](/infra-catalog/gcp-tpu-queued-resource) -- wait for scarce capacity
-- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- private networking
-- [**GCP Compute Disk**](/infra-catalog/gcp-compute-disk) -- shared data and checkpoints
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the TPU's identity
+- [**GCP TPU Queued Resource**](/infra-catalog/gcp-tpu-queued-resource) — wait for scarce capacity
+- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — private networking
+- [**GCP Compute Disk**](/infra-catalog/gcp-compute-disk) — shared data and checkpoints
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the TPU's identity

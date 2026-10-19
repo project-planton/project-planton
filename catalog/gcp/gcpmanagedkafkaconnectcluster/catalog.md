@@ -6,20 +6,20 @@ Runs Kafka Connect without managing workers: a Google-operated Connect cluster a
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `managedkafka.googleapis.com` on the project (never disabled on destroy)
-- **Connect cluster** -- a `managed_kafka_connect_cluster` with its capacity and worker networks, carrying the platform attribution labels
+- **API enablement** — `managedkafka.googleapis.com` on the project (never disabled on destroy)
+- **Connect cluster** — a `managed_kafka_connect_cluster` with its capacity and worker networks, carrying the platform attribution labels
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **`GcpManagedKafkaCluster`** -- the Kafka cluster the workers attach to (`kafkaCluster`, its full path).
-- **`GcpSubnetwork`** -- a private (RFC 1918) subnet in the Connect cluster's region for the workers' interface (`networkConfigs[].primarySubnet`).
+- **`GcpManagedKafkaCluster`** — the Kafka cluster the workers attach to (`kafkaCluster`, its full path).
+- **`GcpSubnetwork`** — a private (RFC 1918) subnet in the Connect cluster's region for the workers' interface (`networkConfigs[].primarySubnet`).
 
 ## Deploy
 
@@ -64,25 +64,25 @@ Reference the `GcpManagedKafkaCluster` from `kafkaCluster` and a `GcpSubnetwork`
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Capacity** -- `vcpuCount` and `memoryBytes` size the workers every connector shares and bill around the clock; both scale in place.
+**Capacity** — `vcpuCount` and `memoryBytes` size the workers every connector shares and bill around the clock; both scale in place.
 
-**Networks** -- each `primarySubnet` gets a Private Service Connect interface for the workers -- the path to the Kafka cluster and to the systems connectors reach.
+**Networks** — each `primarySubnet` gets a Private Service Connect interface for the workers — the path to the Kafka cluster and to the systems connectors reach.
 
-**DNS** -- `dnsDomainNames` lets workers resolve names in other clusters' private zones -- required for MirrorMaker 2 from another Managed Kafka cluster.
+**DNS** — `dnsDomainNames` lets workers resolve names in other clusters' private zones — required for MirrorMaker 2 from another Managed Kafka cluster.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpManagedKafkaCluster** | `kafkaCluster` | `status.outputs.name` |
-| **GcpSubnetwork** | `networkConfigs[].primarySubnet` | `status.outputs.subnetwork_self_link` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Managed Kafka Cluster** | `kafkaCluster` | `status.outputs.name` |
+| **GCP Subnetwork** | `networkConfigs[].primarySubnet` | `status.outputs.subnetwork_self_link` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -94,12 +94,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Connect workers** -- 3 vCPU and 12 GiB of workers on the Kafka cluster's subnet. Start from the **Connect Workers** preset.
+**Connect workers** — 3 vCPU and 12 GiB of workers on the Kafka cluster's subnet. Start from the **Connect Workers** preset.
 
-**Cluster migration** -- Workers that can resolve a second Kafka cluster's DNS domain for MirrorMaker 2. Start from the **MirrorMaker 2 Migration** preset.
+**Cluster migration** — Workers that can resolve a second Kafka cluster's DNS domain for MirrorMaker 2. Start from the **MirrorMaker 2 Migration** preset.
 
 ## Works With
 
-- [**GCP Managed Kafka Cluster**](/infra-catalog/gcp-managed-kafka-cluster) -- the Kafka cluster served
-- [**GCP Managed Kafka Connector**](/infra-catalog/gcp-managed-kafka-connector) -- the pipelines that run here
-- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- the workers' interface
+- [**GCP Managed Kafka Cluster**](/infra-catalog/gcp-managed-kafka-cluster) — the Kafka cluster served
+- [**GCP Managed Kafka Connector**](/infra-catalog/gcp-managed-kafka-connector) — the pipelines that run here
+- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — the workers' interface

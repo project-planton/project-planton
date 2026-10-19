@@ -65,7 +65,7 @@ This creates a two-node all-roles cluster (the smallest shape that survives the 
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to place the cluster in a managed namespace and pin its storage to a composed StorageClass:
+When deploying as part of a multi-resource environment, use references to place the cluster in a managed namespace and pin its storage to a composed StorageClass:
 
 ```yaml
 spec:
@@ -111,22 +111,22 @@ These are the most important decisions when configuring an OpenSearch cluster. E
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** (optional, per pool) | `nodePools[].persistence.pvc.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesCertificate** (bring-your-own TLS) | `security.transportTls.secret` | `status.outputs.secret_name` |
-| **KubernetesCertificate** (bring-your-own TLS) | `security.httpTls.secret` | `status.outputs.secret_name` |
-| **KubernetesSecret** (optional) | `security.transportTls.caSecret` | `metadata.name` |
-| **KubernetesSecret** (custom security config) | `security.config.securityConfigSecret` | `metadata.name` |
-| **KubernetesCertificate** (optional) | `dashboards.tls.secret` | `status.outputs.secret_name` |
-| **KubernetesSecret** (custom security config) | `dashboards.opensearchCredentialsSecret` | `metadata.name` |
-| **KubernetesSecret** (custom security config) | `monitoring.monitoringUserSecret` | `metadata.name` |
-| **KubernetesSecret** (per entry) | `keystore[].secret` | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** (optional, per pool) | `nodePools[].persistence.pvc.storageClass` | `status.outputs.storage_class_name` |
+| **Cert Manager Certificate** (bring-your-own TLS) | `security.transportTls.secret` | `status.outputs.secret_name` |
+| **Cert Manager Certificate** (bring-your-own TLS) | `security.httpTls.secret` | `status.outputs.secret_name` |
+| **Kubernetes Secret** (optional) | `security.transportTls.caSecret` | `metadata.name` |
+| **Kubernetes Secret** (custom security config) | `security.config.securityConfigSecret` | `metadata.name` |
+| **Cert Manager Certificate** (optional) | `dashboards.tls.secret` | `status.outputs.secret_name` |
+| **Kubernetes Secret** (custom security config) | `dashboards.opensearchCredentialsSecret` | `metadata.name` |
+| **Kubernetes Secret** (custom security config) | `monitoring.monitoringUserSecret` | `metadata.name` |
+| **Kubernetes Secret** (per entry) | `keystore[].secret` | `metadata.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

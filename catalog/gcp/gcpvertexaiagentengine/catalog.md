@@ -6,21 +6,21 @@ Runs your AI agent as a managed service. Hand Agent Engine the agent's source (i
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **Agent Engine instance** -- a `vertex.AiReasoningEngine` with its code source, identity, deployment shape, and optional Memory Bank
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **Agent Engine instance** — a `vertex.AiReasoningEngine` with its code source, identity, deployment shape, and optional Memory Bank
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with `roles/aiplatform.admin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with `roles/aiplatform.admin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpServiceAccount** -- a custom identity for the agent
-- **GcpSecretManagerSecret** -- secrets injected as environment variables
-- **GcpKmsKey** -- customer-managed encryption
+- **GCP Service Account** — a custom identity for the agent
+- **GCP Secret Manager Secret** — secrets injected as environment variables
+- **GCP KMS Key** — customer-managed encryption
 
 ## Deploy
 
@@ -69,28 +69,28 @@ When deploying as part of a multi-resource environment, reference a `GcpServiceA
 
 These are the most important decisions when configuring an agent. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Source or container** -- `sourceCodeSpec` has Vertex AI build the agent: an inline archive, a Developer Connect repository, or an ADK config, built with the Python build (`requirements.txt` plus an entrypoint) or a Dockerfile. `containerSpec` runs an image you built. Never both.
+**Source or container** — `sourceCodeSpec` has Vertex AI build the agent: an inline archive, a Developer Connect repository, or an ADK config, built with the Python build (`requirements.txt` plus an entrypoint) or a Dockerfile. `containerSpec` runs an image you built. Never both.
 
-**Identity** -- by default the agent runs as the project's Vertex AI service agent; `serviceAccount` names a custom `GcpServiceAccount`, and `identityType: AGENT_IDENTITY` gives the agent its own identity instead.
+**Identity** — by default the agent runs as the project's Vertex AI service agent; `serviceAccount` names a custom `GcpServiceAccount`, and `identityType: AGENT_IDENTITY` gives the agent its own identity instead.
 
-**Memory Bank** -- `contextSpec.memoryBankConfig` turns on long-term memory: the Gemini model that generates memories and when it runs, the embedding model that finds them, TTLs, and per-scope topics and worked examples.
+**Memory Bank** — `contextSpec.memoryBankConfig` turns on long-term memory: the Gemini model that generates memories and when it runs, the embedding model that finds them, TTLs, and per-scope topics and worked examples.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId`, `agent.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProject` | `status.outputs.project_id` |
-| **GcpServiceAccount** | `agent.serviceAccount` | `status.outputs.email` |
-| **GcpSecretManagerSecret** | `agent.deploymentSpec.secretEnv[].secretRef.secret` | `status.outputs.secret_id` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
-| **GcpCloudBuildWorkerPool** | `agent.buildSpec.workerPool` | `status.outputs.name` |
-| **GcpVpcNetwork** | `agent.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetwork` | `status.outputs.network_name` |
+| **GCP Project** | `projectId`, `agent.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProject` | `status.outputs.project_id` |
+| **GCP Service Account** | `agent.serviceAccount` | `status.outputs.email` |
+| **GCP Secret Manager Secret** | `agent.deploymentSpec.secretEnv[].secretRef.secret` | `status.outputs.secret_id` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Cloud Build Worker Pool** | `agent.buildSpec.workerPool` | `status.outputs.name` |
+| **GCP VPC Network** | `agent.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetwork` | `status.outputs.network_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -103,14 +103,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**ADK agent from source** -- Build from an inline archive with the Python build. Start from the **ADK Agent from Source** preset.
+**ADK agent from source** — Build from an inline archive with the Python build. Start from the **ADK Agent from Source** preset.
 
-**Container agent with Memory Bank** -- Your own image, a custom identity, a secret from Secret Manager, and long-term memory. Start from the **Container Agent with Memory Bank** preset.
+**Container agent with Memory Bank** — Your own image, a custom identity, a secret from Secret Manager, and long-term memory. Start from the **Container Agent with Memory Bank** preset.
 
 ## Works With
 
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the agent's identity
-- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) -- secrets as environment variables
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
-- [**GCP Vertex AI Model Garden Deployment**](/infra-catalog/gcp-vertex-ai-model-garden-deployment) -- a model the agent calls
-- [**GCP Vector Search Collection**](/infra-catalog/gcp-vector-search-collection) -- a vector store the agent searches
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the agent's identity
+- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) — secrets as environment variables
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption
+- [**GCP Vertex AI Model Garden Deployment**](/infra-catalog/gcp-vertex-ai-model-garden-deployment) — a model the agent calls
+- [**GCP Vector Search Collection**](/infra-catalog/gcp-vector-search-collection) — a vector store the agent searches

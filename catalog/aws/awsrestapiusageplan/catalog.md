@@ -65,7 +65,7 @@ This creates a usage plan covering the orders API's `prod` stage with a 1,000-re
 
 ### InfraChart
 
-When the plan deploys alongside the API it meters in one chart, wire the stage coverage via ValueFromRef:
+When the plan deploys alongside the API it meters in one chart, wire the stage coverage by reference:
 
 ```yaml
 spec:
@@ -108,14 +108,14 @@ These are the most important decisions when configuring a usage plan. Explore th
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsRestApiGateway** | `apiStages[].restApiId` | `status.outputs.rest_api_id` |
-| **AwsRestApiGateway** | `apiStages[].stageName` | `status.outputs.stage_name` |
+| **AWS REST API Gateway** | `apiStages[].restApiId` | `status.outputs.rest_api_id` |
+| **AWS REST API Gateway** | `apiStages[].stageName` | `status.outputs.stage_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

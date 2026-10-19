@@ -1,6 +1,6 @@
 # Cloudflare Zero Trust MCP Portal
 
-Publishes a Cloudflare MCP portal: the single Access-protected endpoint users and their AI clients connect to for a curated collection of MCP servers. The portal aggregates registered servers (CloudflareZeroTrustMcpServer), applies per-server and per-prompt/tool overrides for this audience, and fronts everything with Access on its hostname. The portal's `portalId` slug is immutable — it keys the portal and is part of what clients configure — while hostname and name update in place.
+Publishes a Cloudflare MCP portal: the single Access-protected endpoint users and their AI clients connect to for a curated collection of MCP servers. The portal aggregates registered servers (Cloudflare Zero Trust MCP Server), applies per-server and per-prompt/tool overrides for this audience, and fronts everything with Access on its hostname. The portal's `portalId` slug is immutable — it keys the portal and is part of what clients configure — while hostname and name update in place.
 
 ## What Gets Created
 
@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 ### Cloudflare Account
 
 - **Zero Trust enabled** — the account must have completed Cloudflare Zero Trust onboarding (the team-name step).
-- **Registered MCP servers** (unless starting empty) — the CloudflareZeroTrustMcpServer registrations this portal publishes must exist first.
+- **Registered MCP servers** (unless starting empty) — the Cloudflare Zero Trust MCP Server registrations this portal publishes must exist first.
 
 ## Deploy
 
@@ -52,7 +52,7 @@ This creates an empty Access-protected portal at the hostname; add server rows t
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, wire the published servers to CloudflareZeroTrustMcpServer resources so the dependency graph carries the edge:
+When deploying as part of a multi-resource environment, wire the published servers to Cloudflare Zero Trust MCP Server resources so the dependency graph carries the edge:
 
 ```yaml
 spec:
@@ -87,13 +87,13 @@ These are the most important decisions when configuring an MCP portal. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| CloudflareZeroTrustMcpServer | `spec.servers[].serverId` | `status.outputs.server_id` |
+| Cloudflare Zero Trust MCP Server | `spec.servers[].serverId` | `status.outputs.server_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -104,7 +104,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Single-server portal** — the starter shape: one registered MCP server published on one Access-protected hostname, with the server referenced by ValueFromRef so the dependency graph carries the edge. Start from the **Single-server portal** preset.
+**Single-server portal** — the starter shape: one registered MCP server published on one Access-protected hostname, with the server referenced so the dependency graph carries the edge. Start from the **Single-server portal** preset.
 
 **Curated audience portal** — the same registered servers, curated for one team: destructive tools disabled for this portal only (the registration keeps them), friendlier aliases on the rest, and code mode off for a non-engineering audience. Start from the **Curated audience portal** preset.
 

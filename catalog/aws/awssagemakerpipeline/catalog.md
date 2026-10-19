@@ -63,7 +63,7 @@ This creates the pipeline shell with a placeholder single-step DAG (a Fail step 
 
 ### InfraChart
 
-When the pipeline deploys alongside its execution role and definition bucket in one chart, wire the references via ValueFromRef:
+When the pipeline deploys alongside its execution role and definition bucket in one chart, wire the references:
 
 ```yaml
 spec:
@@ -104,14 +104,14 @@ These are the most important decisions when configuring a pipeline. Explore the 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** | `definitionS3Location.bucket` | `status.outputs.bucket_id` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `definitionS3Location.bucket` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

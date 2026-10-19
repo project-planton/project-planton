@@ -1,36 +1,36 @@
 # Azure Load Balancer
 
-Deploys an Azure Load Balancer -- the Layer 4 (TCP/UDP) traffic distributor, complete with its frontend IP configurations, backend address pools, health probes, load-balancing rules, inbound NAT rules, and outbound (SNAT) rules. The load balancer and its sub-resources are configured as one unit because none of them has a life outside it; what IS independent -- pool membership -- is expressed from the member side, matching Azure's own attachment model (a network interface or scale set references the pool's exported ID). Public vs internal is decided per frontend, not per load balancer: one resource can carry public ingress and internal east-west traffic side by side.
+Deploys an Azure Load Balancer — the Layer 4 (TCP/UDP) traffic distributor, complete with its frontend IP configurations, backend address pools, health probes, load-balancing rules, inbound NAT rules, and outbound (SNAT) rules. The load balancer and its sub-resources are configured as one unit because none of them has a life outside it; what IS independent — pool membership — is expressed from the member side, matching Azure's own attachment model (a network interface or scale set references the pool's exported ID). Public vs internal is decided per frontend, not per load balancer: one resource can carry public ingress and internal east-west traffic side by side.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Load Balancer** -- a Standard SKU (the default -- Basic was retired in September 2025) or Gateway SKU resource, Regional or Global tier, with optional edge-zone placement
-- **Frontend IP Configurations** -- the addresses that receive traffic: public (a referenced AzurePublicIp or AzurePublicIpPrefix) or internal (a subnet with an optional pinned static address, address family, and availability zones), at least one, mixable on one load balancer
-- **Backend Address Pools** -- named containers rules route to; NIC-based members join from the member side after deploy, IP-based members (and a Global tier's regional-frontend members) are declared inline
-- **Health Probes** -- TCP, HTTP, or HTTPS checks with configurable interval, failure count, and success threshold (the flap dampener)
-- **Load-Balancing Rules** -- frontend port/protocol to pool/port mappings with session persistence, idle timeout, TCP reset, floating IP (Direct Server Return), and HA-ports support
-- **Inbound NAT Rules** -- single-target port forwarding (completed by a member-side NIC association) or pool-style port ranges giving every member its own frontend port
-- **Outbound Rules** -- explicit SNAT: which public frontends carry a pool's egress and how many SNAT ports each instance gets
-- **Azure Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) merged with your `tags`
+- **Load Balancer** — a Standard SKU (the default — Basic was retired in September 2025) or Gateway SKU resource, Regional or Global tier, with optional edge-zone placement
+- **Frontend IP Configurations** — the addresses that receive traffic: public (a referenced Azure Public IP or Azure Public IP Prefix) or internal (a subnet with an optional pinned static address, address family, and availability zones), at least one, mixable on one load balancer
+- **Backend Address Pools** — named containers rules route to; NIC-based members join from the member side after deploy, IP-based members (and a Global tier's regional-frontend members) are declared inline
+- **Health Probes** — TCP, HTTP, or HTTPS checks with configurable interval, failure count, and success threshold (the flap dampener)
+- **Load-Balancing Rules** — frontend port/protocol to pool/port mappings with session persistence, idle timeout, TCP reset, floating IP (Direct Server Return), and HA-ports support
+- **Inbound NAT Rules** — single-target port forwarding (completed by a member-side NIC association) or pool-style port ranges giving every member its own frontend port
+- **Outbound Rules** — explicit SNAT: which public frontends carry a pool's egress and how many SNAT ports each instance gets
+- **Azure Tags** — resource metadata tags (organization, environment, resource kind, resource ID) merged with your `tags`
 
-Pool membership is NOT created here -- each AzureNetworkInterface or scale set references `status.outputs.backend_pool_ids.<pool-name>` to join.
+Pool membership is NOT created here — each Azure Network Interface or scale set references `status.outputs.backend_pool_ids.<pool-name>` to join.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **An Azure Resource Group** where the load balancer will be created. Provide the name directly or reference an AzureResourceGroup Infra Component via ValueFromRef.
-- **A Standard SKU public IP** (for public frontends) -- reference an AzurePublicIp Infra Component; the IP resource carries the zone posture. A public IP PREFIX (AzurePublicIpPrefix) serves egress-heavy estates that allowlist one CIDR.
-- **A subnet** (for internal frontends) within a VNet -- the frontend takes a private address there. All internal frontends of one load balancer live in the same virtual network.
-- **Region alignment** -- the load balancer only serves backends in its own region (the Global tier fronts REGIONAL load balancers instead).
-- **Gateway SKU only** -- the subscription needs the Microsoft.Network/AllowGatewayLoadBalancer feature registered (via an Azure support ticket), and every backend pool must declare tunnel interfaces.
+- **An Azure Resource Group** where the load balancer will be created. Provide the name directly or reference an Azure Resource Group Infra Component.
+- **A Standard SKU public IP** (for public frontends) — reference an Azure Public IP Infra Component; the IP resource carries the zone posture. A public IP PREFIX (Azure Public IP Prefix) serves egress-heavy estates that allowlist one CIDR.
+- **A subnet** (for internal frontends) within a VNet — the frontend takes a private address there. All internal frontends of one load balancer live in the same virtual network.
+- **Region alignment** — the load balancer only serves backends in its own region (the Global tier fronts REGIONAL load balancers instead).
+- **Gateway SKU only** — the subscription needs the Microsoft.Network/AllowGatewayLoadBalancer feature registered (via an Azure support ticket), and every backend pool must declare tunnel interfaces.
 
 ## Deploy
 
@@ -86,7 +86,7 @@ This creates a public Standard load balancer with one pool, an HTTP probe, and a
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the load balancer to its resource group and public IP -- and wire each member NIC to the pool:
+When deploying as part of a multi-resource environment, use references to wire the load balancer to its resource group and public IP — and wire each member NIC to the pool:
 
 ```yaml
 # On the AzureLoadBalancer:
@@ -120,31 +120,31 @@ The InfraPipeline resolves the dependency graph, deploys the group and public IP
 
 These are the most important decisions when configuring a load balancer. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**SKU and tier** -- `sku` unset applies STANDARD (zone redundancy, SLA, outbound rules, HA ports); GATEWAY chains network virtual appliances (every pool then declares `tunnelInterfaces`). `skuTier` unset applies REGIONAL; GLOBAL creates a cross-region load balancer whose pool members are regional load balancers' frontends (each address's `loadBalancerFrontendIpConfigurationId`) -- Standard SKU only. Both fixed at creation.
+**SKU and tier** — `sku` unset applies STANDARD (zone redundancy, SLA, outbound rules, HA ports); GATEWAY chains network virtual appliances (every pool then declares `tunnelInterfaces`). `skuTier` unset applies REGIONAL; GLOBAL creates a cross-region load balancer whose pool members are regional load balancers' frontends (each address's `loadBalancerFrontendIpConfigurationId`) — Standard SKU only. Both fixed at creation.
 
-**Frontends** -- each frontend sets exactly one address source: `subnetId` (internal, with optional `privateIpAddress` pinning, `privateIpAddressVersion`, and `zones` for zone redundancy), `publicIpAddressId`, or `publicIpPrefixId`. Rules target frontends by `name` -- optional only while exactly one frontend exists. Azure does not allow removing ALL frontends from an existing load balancer.
+**Frontends** — each frontend sets exactly one address source: `subnetId` (internal, with optional `privateIpAddress` pinning, `privateIpAddressVersion`, and `zones` for zone redundancy), `publicIpAddressId`, or `publicIpPrefixId`. Rules target frontends by `name` — optional only while exactly one frontend exists. Azure does not allow removing ALL frontends from an existing load balancer.
 
-**Probes and rules** -- HTTP/HTTPS probes require `requestPath` (TCP forbids it); rules referencing pools, probes, and frontends must name declared entries (the spec validates every reference). Protocol ALL creates an HA-ports rule -- every port, both protocols, ports fixed at 0 -- for appliance patterns on internal Standard frontends. Two pools per rule are the Gateway dual-tunnel pattern only.
+**Probes and rules** — HTTP/HTTPS probes require `requestPath` (TCP forbids it); rules referencing pools, probes, and frontends must name declared entries (the spec validates every reference). Protocol ALL creates an HA-ports rule — every port, both protocols, ports fixed at 0 — for appliance patterns on internal Standard frontends. Two pools per rule are the Gateway dual-tunnel pattern only.
 
-**Egress** -- implicit rule-level SNAT has a small, exhaustion-prone port budget. Production pools that egress declare an outbound rule (set `disableOutboundSnat` on the same pool's load-balancing rules -- Azure requires it to combine both) or attach a NAT gateway to the subnet. `allocatedOutboundPorts: 0` divides the frontend budget (64,000 ports per IP) evenly but reallocates as the pool scales; explicit sizing (budget / max instances, multiples of 8) is the production choice.
+**Egress** — implicit rule-level SNAT has a small, exhaustion-prone port budget. Production pools that egress declare an outbound rule (set `disableOutboundSnat` on the same pool's load-balancing rules — Azure requires it to combine both) or attach a NAT gateway to the subnet. `allocatedOutboundPorts: 0` divides the frontend budget (64,000 ports per IP) evenly but reallocates as the pool scales; explicit sizing (budget / max instances, multiples of 8) is the production choice.
 
-**NAT rules** -- a single-target rule (`frontendPort`) is half the attachment: the target NIC's NAT-rule association references `status.outputs.nat_rule_ids.<name>` to complete it. A pool-style rule (`backendPoolName` + `frontendPortStart`/`frontendPortEnd`) gives every pool member its own frontend port -- the modern replacement for the legacy NAT pool mechanism.
+**NAT rules** — a single-target rule (`frontendPort`) is half the attachment: the target NIC's NAT-rule association references `status.outputs.nat_rule_ids.<name>` to complete it. A pool-style rule (`backendPoolName` + `frontendPortStart`/`frontendPortEnd`) gives every pool member its own frontend port — the modern replacement for the legacy NAT pool mechanism.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
-| **AzureSubnet** (per internal frontend) | `frontendIpConfigurations[].subnetId` | `status.outputs.subnet_id` |
-| **AzurePublicIp** (per public frontend) | `frontendIpConfigurations[].publicIpAddressId` | `status.outputs.public_ip_id` |
-| **AzurePublicIpPrefix** (per prefix frontend) | `frontendIpConfigurations[].publicIpPrefixId` | `status.outputs.public_ip_prefix_id` |
-| **AzureVirtualNetwork** (per IP-member pool) | `backendPools[].virtualNetworkId` | `status.outputs.virtual_network_id` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Subnet** (per internal frontend) | `frontendIpConfigurations[].subnetId` | `status.outputs.subnet_id` |
+| **Azure Public IP** (per public frontend) | `frontendIpConfigurations[].publicIpAddressId` | `status.outputs.public_ip_id` |
+| **Azure Public IP Prefix** (per prefix frontend) | `frontendIpConfigurations[].publicIpPrefixId` | `status.outputs.public_ip_prefix_id` |
+| **Azure Virtual Network** (per IP-member pool) | `backendPools[].virtualNetworkId` | `status.outputs.virtual_network_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef. The name-keyed maps are the composition seams:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference. The name-keyed maps are the composition seams:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -160,18 +160,18 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Public web tier** -- A public frontend on a referenced Standard public IP, a `web` pool, an HTTP health probe, and TCP rules with TCP reset: the internet-facing production shape. Start from the **Public Load Balancer** preset.
+**Public web tier** — A public frontend on a referenced Standard public IP, a `web` pool, an HTTP health probe, and TCP rules with TCP reset: the internet-facing production shape. Start from the **Public Load Balancer** preset.
 
-**Internal east-west tier** -- A zone-redundant internal frontend with a pinned static address in your subnet, an `app` pool, and a raised idle timeout for long-lived connections. Start from the **Internal Load Balancer** preset.
+**Internal east-west tier** — A zone-redundant internal frontend with a pinned static address in your subnet, an `app` pool, and a raised idle timeout for long-lived connections. Start from the **Internal Load Balancer** preset.
 
-**Full traffic story** -- Inbound load balancing, explicit outbound SNAT (with implicit SNAT disabled on the rule), a single-target admin SSH NAT rule, and a pool-style per-instance SSH range -- all on one public load balancer. Start from the **Outbound SNAT + NAT Port Forwarding** preset.
+**Full traffic story** — Inbound load balancing, explicit outbound SNAT (with implicit SNAT disabled on the rule), a single-target admin SSH NAT rule, and a pool-style per-instance SSH range — all on one public load balancer. Start from the **Outbound SNAT + NAT Port Forwarding** preset.
 
 ## Works With
 
-- [**Azure Resource Group**](/infra-catalog/azure-resource-group) -- provides the resource group the load balancer is created in
-- [**Azure Public IP**](/infra-catalog/azure-public-ip) -- the addresses public frontends receive traffic on
-- [**Azure Public IP Prefix**](/infra-catalog/azure-public-ip-prefix) -- reserved ranges for prefix frontends and scalable SNAT
-- [**Azure Subnet**](/infra-catalog/azure-subnet) -- hosts internal frontends' private addresses
-- [**Azure Virtual Network**](/infra-catalog/azure-virtual-network) -- scopes pools with IP-based members
-- [**Azure Network Interface**](/infra-catalog/azure-network-interface) -- joins pools and completes single-target NAT attachments from the member side
-- [**Azure Virtual Machine**](/infra-catalog/azure-virtual-machine) -- the workload the pools front (via its network interfaces)
+- [**Azure Resource Group**](/infra-catalog/azure-resource-group) — provides the resource group the load balancer is created in
+- [**Azure Public IP**](/infra-catalog/azure-public-ip) — the addresses public frontends receive traffic on
+- [**Azure Public IP Prefix**](/infra-catalog/azure-public-ip-prefix) — reserved ranges for prefix frontends and scalable SNAT
+- [**Azure Subnet**](/infra-catalog/azure-subnet) — hosts internal frontends' private addresses
+- [**Azure Virtual Network**](/infra-catalog/azure-virtual-network) — scopes pools with IP-based members
+- [**Azure Network Interface**](/infra-catalog/azure-network-interface) — joins pools and completes single-target NAT attachments from the member side
+- [**Azure Virtual Machine**](/infra-catalog/azure-virtual-machine) — the workload the pools front (via its network interfaces)

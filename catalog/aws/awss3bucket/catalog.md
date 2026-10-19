@@ -19,9 +19,9 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **A KMS key** (optional) — for SSE-KMS default encryption or replica encryption. Reference an AwsKmsKey Infra Component or pass a key ARN.
+- **A KMS key** (optional) — for SSE-KMS default encryption or replica encryption. Reference an AWS KMS Key Infra Component or pass a key ARN.
 - **A replication role and destination buckets** (only for replication) — an IAM role trusting `s3.amazonaws.com` with read access here and replicate permissions on every destination; versioning must be Enabled on the source and every destination.
-- **Notification targets with delivery grants** (only for eventing) — SQS/SNS/Lambda targets must permit `s3.amazonaws.com` BEFORE the notification is configured (queue/topic policy or Lambda resource permission — AwsLambda's `invoke_permissions` models the Lambda side). The EventBridge arm needs no grant.
+- **Notification targets with delivery grants** (only for eventing) — SQS/SNS/Lambda targets must permit `s3.amazonaws.com` BEFORE the notification is configured (queue/topic policy or Lambda resource permission — AWS Lambda's `invoke_permissions` models the Lambda side). The EventBridge arm needs no grant.
 - **A log-delivery bucket** (only for access logging) — same region, never the bucket itself; under BucketOwnerEnforced ownership it needs a policy granting `logging.s3.amazonaws.com`.
 
 ## Deploy
@@ -54,7 +54,7 @@ This creates a fully private, versioned bucket — all four public-access guards
 
 ### InfraChart
 
-When wiring KMS encryption or replication, use ValueFromRef to reference resources deployed in the same InfraPipeline:
+When wiring KMS encryption or replication, use references to reference resources deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -110,24 +110,24 @@ These are the most important decisions when configuring a bucket. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** (optional) | `encryption.kmsKeyId` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional, per rule) | `replication.rules[].destination.replicaKmsKeyId` | `status.outputs.key_arn` |
-| **AwsIamRole** (with replication) | `replication.roleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** (optional, per rule) | `replication.rules[].destination.bucketArn` | `status.outputs.bucket_arn` |
-| **AwsS3Bucket** (with logging) | `logging.targetBucket` | `status.outputs.bucket_id` |
-| **AwsLambda** (optional, per target) | `notification.lambdaFunctions[].lambdaFunctionArn` | `status.outputs.function_arn` |
-| **AwsSqsQueue** (optional, per target) | `notification.queues[].queueArn` | `status.outputs.queue_arn` |
-| **AwsSnsTopic** (optional, per target) | `notification.topics[].topicArn` | `status.outputs.topic_arn` |
-| **AwsS3Bucket** (optional, per config) | `analyticsConfigurations[].export.bucketArn` | `status.outputs.bucket_arn` |
-| **AwsS3Bucket** (optional, per config) | `inventoryConfigurations[].destination.bucketArn` | `status.outputs.bucket_arn` |
-| **AwsKmsKey** (optional, per config) | `inventoryConfigurations[].destination.sseKmsKeyId` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional, per table) | `metadataConfiguration.*TableEncryption.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional) | `encryption.kmsKeyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional, per rule) | `replication.rules[].destination.replicaKmsKeyId` | `status.outputs.key_arn` |
+| **AWS IAM Role** (with replication) | `replication.roleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** (optional, per rule) | `replication.rules[].destination.bucketArn` | `status.outputs.bucket_arn` |
+| **AWS S3 Bucket** (with logging) | `logging.targetBucket` | `status.outputs.bucket_id` |
+| **AWS Lambda** (optional, per target) | `notification.lambdaFunctions[].lambdaFunctionArn` | `status.outputs.function_arn` |
+| **AWS SQS Queue** (optional, per target) | `notification.queues[].queueArn` | `status.outputs.queue_arn` |
+| **AWS SNS Topic** (optional, per target) | `notification.topics[].topicArn` | `status.outputs.topic_arn` |
+| **AWS S3 Bucket** (optional, per config) | `analyticsConfigurations[].export.bucketArn` | `status.outputs.bucket_arn` |
+| **AWS S3 Bucket** (optional, per config) | `inventoryConfigurations[].destination.bucketArn` | `status.outputs.bucket_arn` |
+| **AWS KMS Key** (optional, per config) | `inventoryConfigurations[].destination.sseKmsKeyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional, per table) | `metadataConfiguration.*TableEncryption.kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

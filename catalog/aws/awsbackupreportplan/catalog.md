@@ -60,7 +60,7 @@ This creates a report plan named `daily_backup_jobs` that delivers daily backup-
 
 ### InfraChart
 
-When the report plan deploys alongside its framework and bucket in one chart, wire the references via ValueFromRef:
+When the report plan deploys alongside its framework and bucket in one chart, wire the references:
 
 ```yaml
 spec:
@@ -104,14 +104,14 @@ These are the most important decisions when configuring a report plan. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsS3Bucket** | `deliveryChannel.s3BucketName` | `status.outputs.bucket_id` |
-| **AwsBackupFramework** | `reportSetting.frameworkArns[]` | `status.outputs.framework_arn` |
+| **AWS S3 Bucket** | `deliveryChannel.s3BucketName` | `status.outputs.bucket_id` |
+| **AWS Backup Framework** | `reportSetting.frameworkArns[]` | `status.outputs.framework_arn` |
 
 ### What This Kind Provides
 
-The single output, `report_plan_arn`, is an identity echo rather than a composition input — no catalog kind consumes it via ValueFromRef. It serves IAM policies that scope report administration and AWS CLI/API addressing; the report files themselves land in the delivery bucket, which is where downstream consumers (auditors, pipelines) actually read.
+The single output, `report_plan_arn`, is an identity echo rather than a composition input — no catalog kind references it. It serves IAM policies that scope report administration and AWS CLI/API addressing; the report files themselves land in the delivery bucket, which is where downstream consumers (auditors, pipelines) actually read.
 
 ## Common Patterns
 

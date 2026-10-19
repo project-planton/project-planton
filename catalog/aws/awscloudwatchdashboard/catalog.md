@@ -91,7 +91,7 @@ This kind has no foreign key dependencies. Widgets reference metrics by namespac
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` records the dashboard's identity: `dashboard_name` (the provider's import ID) and `dashboard_arn`. Nothing downstream composes on a dashboard — these outputs exist for auditing and import, not for ValueFromRef wiring.
+After provisioning, `status.outputs` records the dashboard's identity: `dashboard_name` (the provider's import ID) and `dashboard_arn`. Nothing downstream composes on a dashboard — these outputs exist for auditing and import, not for references.
 
 ## Common Patterns
 
@@ -99,7 +99,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **One dashboard per service** — a markdown header naming the service and its runbook, error-count and p95-latency graphs side by side, rows added as the service grows. Every edit applies in place, so the dashboard evolves with the service. Start from the **Service Health Dashboard** preset.
 
-**The on-call landing page** — an alarm-status strip across the top wired to the service's AwsCloudwatchAlarm ARNs, with a Logs Insights error tail beneath it. One glance answers "what is firing and what is it logging." Start from the **Alarm Overview Dashboard** preset.
+**The on-call landing page** — an alarm-status strip across the top wired to the service's AWS CloudWatch Alarm ARNs, with a Logs Insights error tail beneath it. One glance answers "what is firing and what is it logging." Start from the **Alarm Overview Dashboard** preset.
 
 **Ship the dashboard with the stack** — because metric widgets tolerate nonexistent metrics, the dashboard can deploy in the same change as the service it charts. Graphs stay empty until traffic arrives, then populate — no ordering dependency to manage.
 

@@ -19,8 +19,8 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **An execution role** — trusting `lambda.amazonaws.com`, with the canary permissions AWS documents: `s3:PutObject` on the artifact bucket, logs, and `cloudwatch:PutMetricData`. Reference an AwsIamRole's `role_arn` output.
-- **An artifact bucket and a code bucket** — often the same bucket; reference an AwsS3Bucket. The code zip must already sit in S3 in the runtime's layout (see Key Configuration) — local-path uploads are deliberately not modeled; an AwsS3ObjectSet carries small bundles inline as base64.
+- **An execution role** — trusting `lambda.amazonaws.com`, with the canary permissions AWS documents: `s3:PutObject` on the artifact bucket, logs, and `cloudwatch:PutMetricData`. Reference an AWS IAM Role's `role_arn` output.
+- **An artifact bucket and a code bucket** — often the same bucket; reference an AWS S3 Bucket. The code zip must already sit in S3 in the runtime's layout (see Key Configuration) — local-path uploads are deliberately not modeled; an AWS S3 Object Set carries small bundles inline as base64.
 - **Subnets and security groups** (only for VPC-placed canaries) — the private-endpoint probing shape.
 
 ## Deploy
@@ -76,7 +76,7 @@ This creates a five-minute heartbeat canary with one retry, trimmed success rete
 
 ### InfraChart
 
-When the canary deploys alongside its role and buckets in one chart, wire the references via ValueFromRef:
+When the canary deploys alongside its role and buckets in one chart, wire the references:
 
 ```yaml
 spec:
@@ -132,18 +132,18 @@ These are the most important decisions when configuring a Synthetics deployment.
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsS3Bucket** | `canary.artifactBucket` | `status.outputs.bucket_id` |
-| **AwsS3Bucket** | `canary.code.s3Bucket` | `status.outputs.bucket_id` |
-| **AwsIamRole** | `canary.executionRoleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** (SSE_KMS artifacts) | `canary.artifactEncryptionKmsKeyArn` | `status.outputs.key_arn` |
-| **AwsSubnet** (VPC placement) | `canary.vpcConfig.subnetIds[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** (VPC placement) | `canary.vpcConfig.securityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS S3 Bucket** | `canary.artifactBucket` | `status.outputs.bucket_id` |
+| **AWS S3 Bucket** | `canary.code.s3Bucket` | `status.outputs.bucket_id` |
+| **AWS IAM Role** | `canary.executionRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** (SSE_KMS artifacts) | `canary.artifactEncryptionKmsKeyArn` | `status.outputs.key_arn` |
+| **AWS Subnet** (VPC placement) | `canary.vpcConfig.subnetIds[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** (VPC placement) | `canary.vpcConfig.securityGroupIds[]` | `status.outputs.security_group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -161,7 +161,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Shared canary groups** — the groups-only shape: one instance owns the fleet's console groups, and every canary instance joins them by name (`groupNames: [prod-critical-flows]`). The CloudWatch console then shows the fleet's run results on one screen. Start from the **Shared Canary Groups** preset.
 
-**Alarm on the canary, not in it** — the canary emits SuccessPercent and Duration metrics per run; pair it with an AwsCloudwatchAlarm on those metrics so failures page the on-call. The script's job is to probe honestly; the alarm's job is to decide when it matters.
+**Alarm on the canary, not in it** — the canary emits SuccessPercent and Duration metrics per run; pair it with an AWS CloudWatch Alarm on those metrics so failures page the on-call. The script's job is to probe honestly; the alarm's job is to decide when it matters.
 
 ## Works With
 

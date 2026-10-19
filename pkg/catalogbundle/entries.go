@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"unicode"
 
 	"sigs.k8s.io/yaml"
 
@@ -257,7 +256,7 @@ func buildCatalogEntry(kindName, providerDir, kindDir, versionDir, title, descri
 		Kind:        kindName,
 		Title:       title,
 		Description: description,
-		Slug:        entrySlug(kindName, providerDir),
+		Slug:        catalogkindreflect.SlugOf(kindName, providerDir),
 		LogoUrl:     fmt.Sprintf("%s/%s/%s/logo.svg", logoBaseURL, providerDir, kindDir),
 	}
 
@@ -314,38 +313,6 @@ func readCatalogPage(path, kindName string) (title, description string) {
 		break
 	}
 	return title, description
-}
-
-// entrySlug derives a kind's URL slug: the provider directory name kept
-// as one atomic word, then the kind name's remaining words kebab-cased
-// (DigitalOceanDroplet -> digitalocean-droplet, AwsS3Bucket -> aws-s3-bucket).
-// A kind whose name does not start with its provider kebabs whole. One rule
-// for every kind -- uniqueness is gated at conformance.
-func entrySlug(kindName, providerDir string) string {
-	if rest, ok := strings.CutPrefix(strings.ToLower(kindName), providerDir); ok && rest != "" {
-		return providerDir + "-" + kebabCase(kindName[len(kindName)-len(rest):])
-	}
-	return kebabCase(kindName)
-}
-
-// kebabCase converts a CamelCase name (S3Bucket) to kebab (s3-bucket): a
-// hyphen lands before every uppercase rune that starts a new word -- after a
-// lowercase or digit, or before an Upper->lower transition inside an acronym
-// run.
-func kebabCase(kindName string) string {
-	runes := []rune(kindName)
-	var b strings.Builder
-	for i, r := range runes {
-		if i > 0 && unicode.IsUpper(r) {
-			prev := runes[i-1]
-			nextLower := i+1 < len(runes) && unicode.IsLower(runes[i+1])
-			if unicode.IsLower(prev) || unicode.IsDigit(prev) || (unicode.IsUpper(prev) && nextLower) {
-				b.WriteRune('-')
-			}
-		}
-		b.WriteRune(unicode.ToLower(r))
-	}
-	return b.String()
 }
 
 // parseCatalogEntries decodes and shape-checks every entry document in the

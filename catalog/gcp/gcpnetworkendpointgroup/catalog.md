@@ -1,25 +1,25 @@
 # GCP Network Endpoint Group
 
-Builds a network endpoint group (NEG) -- a named set of IP:port endpoints a backend service points at instead of an instance group. Set `zone` for a zonal group inside a VPC (VMs by instance, on-premises or other-cloud addresses reached over VPN or Interconnect, or internet endpoints for a regional external Application Load Balancer); leave it empty for a global internet group fronting an origin outside Google Cloud. The manifest's endpoint list is the group's whole membership. Serverless, Private Service Connect, and regional internet groups live in `GcpRegionNetworkEndpointGroup`.
+Builds a network endpoint group (NEG) — a named set of IP:port endpoints a backend service points at instead of an instance group. Set `zone` for a zonal group inside a VPC (VMs by instance, on-premises or other-cloud addresses reached over VPN or Interconnect, or internet endpoints for a regional external Application Load Balancer); leave it empty for a global internet group fronting an origin outside Google Cloud. The manifest's endpoint list is the group's whole membership. Serverless, Private Service Connect, and regional internet groups live in `GcpRegionNetworkEndpointGroup`.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions exactly one of:
 
-- **Zonal group** (`zone` set) -- a `compute.NetworkEndpointGroup` in that zone on your network, plus its membership written as one set through Google's bulk endpoint operation when `endpoints` is non-empty
-- **Global internet group** (`zone` empty) -- a `compute.GlobalNetworkEndpointGroup`, plus one `compute.GlobalNetworkEndpoint` per entry in `endpoints`
+- **Zonal group** (`zone` set) — a `compute.NetworkEndpointGroup` in that zone on your network, plus its membership written as one set through Google's bulk endpoint operation when `endpoints` is non-empty
+- **Global internet group** (`zone` empty) — a `compute.GlobalNetworkEndpointGroup`, plus one `compute.GlobalNetworkEndpoint` per entry in `endpoints`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with `roles/compute.networkAdmin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with `roles/compute.networkAdmin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Networks
 
-- **Zonal groups need a network** -- a `GcpVpcNetwork` (and optionally a `GcpSubnetwork`); VM endpoints reference `GcpComputeInstance` resources in the same zone.
-- **Global groups have no VPC** -- internet endpoints only.
+- **Zonal groups need a network** — a `GcpVpcNetwork` (and optionally a `GcpSubnetwork`); VM endpoints reference `GcpComputeInstance` resources in the same zone.
+- **Global groups have no VPC** — internet endpoints only.
 
 ## Deploy
 
@@ -69,32 +69,32 @@ This creates a zonal group of two VM endpoints on port 8080 (the second on 8081)
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the group to the network, subnet, and instances deployed in the same InfraPipeline; a `GcpBackendService` then names this group's `self_link` in `backends[].group`.
+When deploying as part of a multi-resource environment, use references to wire the group to the network, subnet, and instances deployed in the same InfraPipeline; a `GcpBackendService` then names this group's `self_link` in `backends[].group`.
 
 ## Key Configuration
 
 These are the most important decisions when configuring a network endpoint group. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Scope** -- `zone` set for a zonal group (VM, hybrid, or regional internet endpoints); empty for a global internet group. Immutable.
+**Scope** — `zone` set for a zonal group (VM, hybrid, or regional internet endpoints); empty for a global internet group. Immutable.
 
-**Endpoint type** -- zonal: `GCE_VM_IP_PORT` (default; Application and proxy load balancers), `GCE_VM_IP` (passthrough Network Load Balancers; no ports), `NON_GCP_PRIVATE_IP_PORT` (hybrid), `INTERNET_IP_PORT` / `INTERNET_FQDN_PORT` (regional external ALB origins), `GCE_VM_IP_DEDICATED_BACKEND`; global: `INTERNET_IP_PORT` or `INTERNET_FQDN_PORT`. Immutable.
+**Endpoint type** — zonal: `GCE_VM_IP_PORT` (default; Application and proxy load balancers), `GCE_VM_IP` (passthrough Network Load Balancers; no ports), `NON_GCP_PRIVATE_IP_PORT` (hybrid), `INTERNET_IP_PORT` / `INTERNET_FQDN_PORT` (regional external ALB origins), `GCE_VM_IP_DEDICATED_BACKEND`; global: `INTERNET_IP_PORT` or `INTERNET_FQDN_PORT`. Immutable.
 
-**Membership** -- `endpoints` is the whole list, written as one set and changed in place; leave it empty when another controller owns membership. Each endpoint carries the fields its type needs (`instance`, `ipAddress`, `fqdn`, `port`), and every mismatch is rejected before deploy.
+**Membership** — `endpoints` is the whole list, written as one set and changed in place; leave it empty when another controller owns membership. Each endpoint carries the fields its type needs (`instance`, `ipAddress`, `fqdn`, `port`), and every mismatch is rejected before deploy.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `network` | `status.outputs.network_self_link` |
-| **GcpSubnetwork** | `subnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpComputeInstance** | `endpoints[].instance` | `status.outputs.instance_name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `network` | `status.outputs.network_self_link` |
+| **GCP Subnetwork** | `subnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP Compute Instance** | `endpoints[].instance` | `status.outputs.instance_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -108,15 +108,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Zonal VM group for a regional load balancer** -- `GCE_VM_IP_PORT` VMs behind a regional or global Application Load Balancer. Start from the **Zonal VM Group for a Regional Load Balancer** preset.
+**Zonal VM group for a regional load balancer** — `GCE_VM_IP_PORT` VMs behind a regional or global Application Load Balancer. Start from the **Zonal VM Group for a Regional Load Balancer** preset.
 
-**Hybrid connectivity group** -- on-premises addresses reached over Cloud VPN or Interconnect as load-balancer backends. Start from the **Hybrid Connectivity Group** preset.
+**Hybrid connectivity group** — on-premises addresses reached over Cloud VPN or Interconnect as load-balancer backends. Start from the **Hybrid Connectivity Group** preset.
 
-**Global internet origin** -- an origin outside Google Cloud behind a global external Application Load Balancer. Start from the **Global Internet Origin** preset.
+**Global internet origin** — an origin outside Google Cloud behind a global external Application Load Balancer. Start from the **Global Internet Origin** preset.
 
 ## Works With
 
-- [**GCP Backend Service**](/infra-catalog/gcp-backend-service) -- consumes the group's `self_link` as a backend
-- [**GCP Region Network Endpoint Group**](/infra-catalog/gcp-region-network-endpoint-group) -- serverless, PSC, and regional internet groups
-- [**GCP Compute Instance**](/infra-catalog/gcp-compute-instance) -- the VMs a zonal group names
-- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network), [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- the zonal group's network placement
+- [**GCP Backend Service**](/infra-catalog/gcp-backend-service) — consumes the group's `self_link` as a backend
+- [**GCP Region Network Endpoint Group**](/infra-catalog/gcp-region-network-endpoint-group) — serverless, PSC, and regional internet groups
+- [**GCP Compute Instance**](/infra-catalog/gcp-compute-instance) — the VMs a zonal group names
+- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network), [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — the zonal group's network placement

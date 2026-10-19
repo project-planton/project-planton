@@ -71,7 +71,7 @@ This creates a dual-store group: four features served online with 30-day record 
 
 ### InfraChart
 
-When the group deploys alongside its execution role in one chart, wire the role reference via ValueFromRef:
+When the group deploys alongside its execution role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -114,14 +114,14 @@ These are the most important decisions when configuring a feature group. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `onlineStore.kmsKeyArn`, `offlineStore.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `onlineStore.kmsKeyArn`, `offlineStore.kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

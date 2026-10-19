@@ -14,6 +14,12 @@
 //     gates -- its head extraction deliberately falls back on malformed
 //     input, which is exactly why the shape is gated here.
 //
+// The prose checks hold the page to the typography and identity a reader
+// meets in every console: a dash is a real em dash, a kind is named by its
+// title (its PascalCase name is code, set in code font), a reference is
+// said in words, and the description the bundle cuts from the intro is
+// plain text, because every surface that shows it shows it as plain text.
+//
 // The head checks guard a live machine contract: the bundle derives every
 // kind's console-card title from the page's H1 and its one-line
 // description from the intro's first sentence, extracted from the FIRST
@@ -39,8 +45,10 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/plantonhq/planton/internal/manifest"
+	"github.com/plantonhq/planton/pkg/catalogkindreflect"
 )
 
 // Violation is one catalog-page rule broken at one page.
@@ -65,6 +73,10 @@ const (
 	RuleMissingAnchor        = "missing-h3-anchor"
 	RuleInfraChartArm        = "infrachart-arm-mismatch"
 	RuleInvalidManifest      = "invalid-manifest"
+	RuleDoubleHyphen         = "double-hyphen-in-prose"
+	RuleMarkedUpDescription  = "markup-in-description"
+	RuleKindNameInProse      = "kind-name-in-prose"
+	RuleValueFromRefInProse  = "valuefromref-in-prose"
 )
 
 // mandatoryH2s is the exact H2 skeleton of the standard, in order. The write
@@ -209,6 +221,87 @@ func consumesHasRows(page []byte) bool {
 	return rows > 0
 }
 
+// codeSpan is one inline code span: code, never prose.
+var codeSpan = regexp.MustCompile("`[^`]*`")
+
+// proseLines returns the words a reader reads as sentences: every line
+// outside fenced code, with its inline code spans removed. Table cells are
+// prose too -- the console renders them as text.
+func proseLines(page []byte) []string {
+	var lines []string
+	inFence := false
+	for _, line := range strings.Split(string(page), "\n") {
+		if strings.HasPrefix(strings.TrimSpace(line), "```") {
+			inFence = !inFence
+			continue
+		}
+		if !inFence {
+			lines = append(lines, codeSpan.ReplaceAllString(line, ""))
+		}
+	}
+	return lines
+}
+
+// description is the intro's first sentence, cut exactly as the bundle cuts
+// it: the first physical line, up to and including the first ". ".
+func description(introLine string) string {
+	if idx := strings.Index(introLine, ". "); idx > 0 {
+		return introLine[:idx+1]
+	}
+	return introLine
+}
+
+// markup matches Markdown a plain-text description would show raw: a code
+// tick, bold, a link, or single-star emphasis (a wildcard host such as
+// *.example.com is not emphasis).
+var markup = regexp.MustCompile("`|\\*\\*|\\]\\(|(?:^|[^\\w*])\\*[A-Za-z][^*]*\\*(?:[^\\w*]|$)")
+
+// valueFromRef is the API's message name for a reference; prose says
+// "reference" in words.
+var valueFromRef = regexp.MustCompile(`\bValueFromRef\b`)
+
+// kindName matches any registered kind's PascalCase name as a word -- an
+// identifier a reader meets as prose unless it is set in code.
+var kindName = sync.OnceValue(func() *regexp.Regexp {
+	var names []string
+	for _, kind := range catalogkindreflect.KindsList() {
+		if name := catalogkindreflect.ExtractKindNameByKind(kind); name != "" {
+			names = append(names, regexp.QuoteMeta(name))
+		}
+	}
+	// Longest first, so a kind never matches as the prefix of a longer one.
+	sort.Slice(names, func(i, j int) bool { return len(names[i]) > len(names[j]) })
+	return regexp.MustCompile(`(?:^|[^\w/.-])(` + strings.Join(names, "|") + `)(?:[^\w]|$)`)
+})
+
+// checkProse holds the page's prose to the console's typography and
+// identity rules, naming the first offending line of each.
+func checkProse(page []byte, add func(rule, detail string)) {
+	var dash, kind, ref string
+	for _, line := range proseLines(page) {
+		if dash == "" && strings.Contains(line, " -- ") {
+			dash = strings.TrimSpace(line)
+		}
+		if kind == "" {
+			if m := kindName().FindStringSubmatch(line); m != nil {
+				kind = m[1]
+			}
+		}
+		if ref == "" && valueFromRef.MatchString(line) {
+			ref = strings.TrimSpace(line)
+		}
+	}
+	if dash != "" {
+		add(RuleDoubleHyphen, fmt.Sprintf("rendered copy uses a real em dash (\u2014), never \" -- \"; first at: %q", dash))
+	}
+	if kind != "" {
+		add(RuleKindNameInProse, fmt.Sprintf("name a kind by its title in prose, or set its name in code; found %s", kind))
+	}
+	if ref != "" {
+		add(RuleValueFromRefInProse, fmt.Sprintf("say \"reference\" in words (ValueFromRef is the API's name); first at: %q", ref))
+	}
+}
+
 // CheckPage runs every catalog-page rule against one page's content. The
 // path is used only for violation reporting.
 func CheckPage(path string, page []byte) []Violation {
@@ -229,8 +322,14 @@ func CheckPage(path string, page []byte) []Violation {
 		case !completesSentence(line):
 			add(RuleIntroFragment, fmt.Sprintf(
 				"the intro's first line must complete a sentence (the bundle extracts the description from it); got a fragment: %q", line))
+		case markup.MatchString(description(line)):
+			add(RuleMarkedUpDescription, fmt.Sprintf(
+				"the intro's first sentence is the kind's description, shown as plain text everywhere: drop its Markdown; got: %q", description(line)))
 		}
 	}
+
+	// Prose -- always checked: every console renders it.
+	checkProse(page, add)
 
 	// Manifest truth -- always checked: a page whose copy-pasted manifest
 	// fails `planton apply` teaches every reader a broken shape.

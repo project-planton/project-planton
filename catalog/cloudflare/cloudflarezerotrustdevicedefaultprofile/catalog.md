@@ -103,15 +103,15 @@ These are the most important decisions when configuring the default device profi
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| CloudflareZeroTrustTunnelVirtualNetwork | `spec.virtualNetworks.allowed[]` | `status.outputs.virtual_network_id` |
-| CloudflareZeroTrustTunnelVirtualNetwork | `spec.virtualNetworks.defaultVirtualNetworkId` | `status.outputs.virtual_network_id` |
-| CloudflareDnsZone | `spec.zoneCertificates.zoneId` | `status.outputs.zone_id` |
+| Cloudflare Zero Trust Tunnel Virtual Network | `spec.virtualNetworks.allowed[]` | `status.outputs.virtual_network_id` |
+| Cloudflare Zero Trust Tunnel Virtual Network | `spec.virtualNetworks.defaultVirtualNetworkId` | `status.outputs.virtual_network_id` |
+| Cloudflare DNS Zone | `spec.zoneCertificates.zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

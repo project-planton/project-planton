@@ -6,14 +6,14 @@ Registers the Private Service Connect connections you built by hand on a Memorys
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **User-created connections** -- a `redis.ClusterUserCreatedConnections` registration on the cluster, replacing the cluster's whole user-created endpoint list with the manifest's
+- **User-created connections** — a `redis.ClusterUserCreatedConnections` registration on the cluster, replacing the cluster's whole user-created endpoint list with the manifest's
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with `roles/redis.admin` on the cluster's project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with `roles/redis.admin` on the cluster's project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### The Chain
 
@@ -66,35 +66,35 @@ This registers one consumer network's connection to the cluster's discovery endp
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, the whole chain -- cluster, addresses, forwarding rules, this set -- wires through ValueFromRef in one InfraPipeline; the set is the last block and depends on every rule.
+When deploying as part of a multi-resource environment, the whole chain — cluster, addresses, forwarding rules, this set — wires by reference in one InfraPipeline; the set is the last block and depends on every rule.
 
 ## Key Configuration
 
 These are the most important decisions when configuring an endpoint set. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**One connection per attachment, per network** -- a cluster publishes a discovery attachment, a primary attachment, and (with replicas) a reader attachment; each `endpoints[]` entry is one VPC's group and must carry a connection for each. Reference the cluster's `*_service_attachment` output on each connection.
+**One connection per attachment, per network** — a cluster publishes a discovery attachment, a primary attachment, and (with replicas) a reader attachment; each `endpoints[]` entry is one VPC's group and must carry a connection for each. Reference the cluster's `*_service_attachment` output on each connection.
 
-**The rule is named twice** -- `forwardingRule` takes its `self_link`, `pscConnectionId` takes its `psc_connection_id`; a reference names one output path, so the same rule appears on both fields.
+**The rule is named twice** — `forwardingRule` takes its `self_link`, `pscConnectionId` takes its `psc_connection_id`; a reference names one output path, so the same rule appears on both fields.
 
-**The list is the set** -- Google replaces the cluster's whole user-created endpoint list on every apply. Removing a connection here breaks its forwarding rule; delete both in one change.
+**The list is the set** — Google replaces the cluster's whole user-created endpoint list on every apply. Removing a connection here breaks its forwarding rule; delete both in one change.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId`, `endpoints[].connections[].projectId` | `status.outputs.project_id` |
-| **GcpRedisCluster** | `cluster` | `status.outputs.name` |
-| **GcpRedisCluster** | `endpoints[].connections[].serviceAttachment` | `status.outputs.discovery_service_attachment`, `primary_service_attachment`, `reader_service_attachment` |
-| **GcpGlobalForwardingRule** | `endpoints[].connections[].forwardingRule` | `status.outputs.self_link` |
-| **GcpGlobalForwardingRule** | `endpoints[].connections[].pscConnectionId` | `status.outputs.psc_connection_id` |
-| **GcpAddress** | `endpoints[].connections[].address` | `status.outputs.address` |
-| **GcpVpcNetwork** | `endpoints[].connections[].network` | `status.outputs.network_id` |
+| **GCP Project** | `projectId`, `endpoints[].connections[].projectId` | `status.outputs.project_id` |
+| **GCP Redis Cluster** | `cluster` | `status.outputs.name` |
+| **GCP Redis Cluster** | `endpoints[].connections[].serviceAttachment` | `status.outputs.discovery_service_attachment`, `primary_service_attachment`, `reader_service_attachment` |
+| **GCP Forwarding Rule** | `endpoints[].connections[].forwardingRule` | `status.outputs.self_link` |
+| **GCP Forwarding Rule** | `endpoints[].connections[].pscConnectionId` | `status.outputs.psc_connection_id` |
+| **GCP Address** | `endpoints[].connections[].address` | `status.outputs.address` |
+| **GCP VPC Network** | `endpoints[].connections[].network` | `status.outputs.network_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -107,11 +107,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**One consumer network** -- Discovery and primary connections from one VPC. Start from the **One Consumer Network** preset.
+**One consumer network** — Discovery and primary connections from one VPC. Start from the **One Consumer Network** preset.
 
 ## Works With
 
-- [**GCP Redis Cluster**](/infra-catalog/gcp-redis-cluster) -- the cluster whose attachments the connections target
-- [**GCP Forwarding Rule**](/infra-catalog/gcp-global-forwarding-rule) -- the consumer endpoints (regional arm, empty scheme)
-- [**GCP Address**](/infra-catalog/gcp-address) -- the reserved internal addresses
-- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) -- the consumer networks
+- [**GCP Redis Cluster**](/infra-catalog/gcp-redis-cluster) — the cluster whose attachments the connections target
+- [**GCP Forwarding Rule**](/infra-catalog/gcp-global-forwarding-rule) — the consumer endpoints (regional arm, empty scheme)
+- [**GCP Address**](/infra-catalog/gcp-address) — the reserved internal addresses
+- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) — the consumer networks

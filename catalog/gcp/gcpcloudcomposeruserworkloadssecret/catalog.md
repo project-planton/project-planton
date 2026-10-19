@@ -1,6 +1,6 @@
 # GCP Cloud Composer User Workloads Secret
 
-Deploys a Kubernetes Secret inside a Cloud Composer environment's GKE cluster, managed as a first-class resource: DAGs read credentials from it at runtime, and rotation flows through the same declarative review process as everything else — no `kubectl` against the environment's cluster and no ad-hoc mutation of the environment. Values are base64-encoded at the source (Kubernetes Secret semantics), marked sensitive in IaC state, and deliberately never exported in outputs.
+Deploys a Kubernetes Secret inside a Cloud Composer environment's GKE cluster, managed as a first-class resource: DAGs read credentials from it at runtime, and rotation flows through the same declarative review process as everything else — no kubectl against the environment's cluster and no ad-hoc mutation of the environment. Values are base64-encoded at the source (Kubernetes Secret semantics), marked sensitive in IaC state, and deliberately never exported in outputs.
 
 ## What Gets Created
 
@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### GCP Project
 
-- **A Cloud Composer environment** (Composer 3, or Composer 2 with user workloads support) in the target project and region — reference a GcpCloudComposerEnvironment Infra Component via ValueFromRef.
+- **A Cloud Composer environment** (Composer 3, or Composer 2 with user workloads support) in the target project and region — reference a GCP Cloud Composer Environment Infra Component.
 - **Cloud Composer API** — already enabled by the environment this Secret is delivered into; the module enables nothing itself.
 
 ## Deploy
@@ -88,14 +88,14 @@ These are the most important decisions when configuring a user workloads Secret.
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpCloudComposerEnvironment** | `environment` | `status.outputs.environment_name` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Cloud Composer Environment** | `environment` | `status.outputs.environment_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -63,7 +63,7 @@ These are the most important decisions when configuring a Zero Trust list. Explo
 
 **URL-type lists drift at provider v5.23.0** — the API normalizes URL values (trailing slashes, scheme casing) and the provider does not, so a URL list shows a perpetual plan diff. Prefer DOMAIN or IP lists for managed configuration; if you need URL, write already-normalized values and expect the diff until the provider catches up.
 
-**This is not CloudflareList** — `CloudflareList` is the older account-level list family consumed by Rulesets. This kind is the Zero Trust/Gateway list. They do not share IDs, APIs, or import formats: a Gateway policy cannot reference a Ruleset list, and a Ruleset cannot reference a Zero Trust list.
+**This is not Cloudflare List** — `CloudflareList` is the older account-level list family consumed by Rulesets. This kind is the Zero Trust/Gateway list. They do not share IDs, APIs, or import formats: a Gateway policy cannot reference a Ruleset list, and a Ruleset cannot reference a Zero Trust list.
 
 **Destroy breaks referencers** — destroy is a real delete, and policies referencing `list_id` start failing their list lookup. Update or delete those policies first. Emptying `items` while keeping the list is the reversible alternative when the ID must stay stable.
 
@@ -75,7 +75,7 @@ This kind has no foreign key dependencies. It is a leaf resource other Zero Trus
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

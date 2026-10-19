@@ -1,27 +1,27 @@
 # Cloudflare Zero Trust Access Application
 
-Deploys a Cloudflare Zero Trust Access application: the protected resource -- a self-hosted web app, a SaaS app, an SSH/VNC/RDP target, an app launcher, or an MCP endpoint -- that Cloudflare Access guards. The application binds one or more standalone Access policies (referenced by ID) to the resource and configures how users reach and authenticate to it: session lifetime, identity providers, cookie posture, CORS, and -- for SaaS types -- the SAML or OIDC federation Cloudflare provides. An application is account-scoped or zone-scoped (exactly one of `accountId` or `zoneId`); account scope is the common case and lets the app reuse account-level policies and groups.
+Deploys a Cloudflare Zero Trust Access application: the protected resource — a self-hosted web app, a SaaS app, an SSH/VNC/RDP target, an app launcher, or an MCP endpoint — that Cloudflare Access guards. The application binds one or more standalone Access policies (referenced by ID) to the resource and configures how users reach and authenticate to it: session lifetime, identity providers, cookie posture, CORS, and — for SaaS types — the SAML or OIDC federation Cloudflare provides. An application is account-scoped or zone-scoped (exactly one of `accountId` or `zoneId`); account scope is the common case and lets the app reuse account-level policies and groups.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Access Application** -- the guarded application with its type, protected `domain` and additional `destinations`, attached policies in evaluation order, session and cookie settings, and (for `saas` types) the SAML/OIDC federation configuration whose issued credentials surface as outputs
+- **Access Application** — the guarded application with its type, protected `domain` and additional `destinations`, attached policies in evaluation order, session and cookie settings, and (for `saas` types) the SAML/OIDC federation configuration whose issued credentials surface as outputs
 
-Policies themselves are separate resources -- this component attaches existing CloudflareZeroTrustAccessPolicy resources; it does not create them.
+Policies themselves are separate resources — this component attaches existing Cloudflare Zero Trust Access Policy resources; it does not create them.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Access edit permissions. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Access edit permissions. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **Zero Trust subscription** -- Access applications require a Zero Trust plan enabled on the Cloudflare account.
-- **At least one Access policy** -- create a CloudflareZeroTrustAccessPolicy first (or have an existing policy ID); an application with no attached allow policy admits no one.
-- **A zone for the protected domain (self-hosted types only)** -- `domain` must be a hostname in a zone on this account, resolving to the origin (directly or through a Cloudflare Tunnel).
+- **Zero Trust subscription** — Access applications require a Zero Trust plan enabled on the Cloudflare account.
+- **At least one Access policy** — create a Cloudflare Zero Trust Access Policy first (or have an existing policy ID); an application with no attached allow policy admits no one.
+- **A zone for the protected domain (self-hosted types only)** — `domain` must be a hostname in a zone on this account, resolving to the origin (directly or through a Cloudflare Tunnel).
 
 ## Deploy
 
@@ -63,7 +63,7 @@ This creates an account-scoped self-hosted application protecting `dashboard.exa
 
 ### InfraChart
 
-Deploy the group, policy, and application as one composition, wiring the application to the policy with ValueFromRef:
+Deploy the group, policy, and application as one composition, wiring the application to the policy with references:
 
 ```yaml
 spec:
@@ -82,34 +82,34 @@ The InfraPipeline resolves the dependency graph, provisions the policy first, th
 
 These are the most important decisions when configuring a Zero Trust Access application. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Scope (`accountId` vs `zoneId`)** -- Exactly one must be set. Account scope is the common case: the application can reuse account-level policies and Access groups. Zone scope pins the application to a single zone; `zoneId` accepts a literal or a CloudflareDnsZone reference.
+**Scope (`accountId` vs `zoneId`)** — Exactly one must be set. Account scope is the common case: the application can reuse account-level policies and Access groups. Zone scope pins the application to a single zone; `zoneId` accepts a literal or a Cloudflare DNS Zone reference.
 
-**Type (`type`)** -- Defaults to `self_hosted` and determines which other fields apply: `domain` is required for `self_hosted`/`ssh`/`vnc`/`rdp`, `saasApp` is required for `saas` and `dash_sso`, and the launcher styling fields only matter for `app_launcher`. Choosing the wrong type is not a tweak -- most of the spec silently stops applying.
+**Type (`type`)** — Defaults to `self_hosted` and determines which other fields apply: `domain` is required for `self_hosted`/`ssh`/`vnc`/`rdp`, `saasApp` is required for `saas` and `dash_sso`, and the launcher styling fields only matter for `app_launcher`. Choosing the wrong type is not a tweak — most of the spec silently stops applying.
 
-**Policies (`policies`)** -- Standalone CloudflareZeroTrustAccessPolicy resources attached in evaluation order (`precedence`, lower first; list order breaks ties). Access denies by default, so an application with no allow policy locks everyone out -- including you.
+**Policies (`policies`)** — Standalone Cloudflare Zero Trust Access Policy resources attached in evaluation order (`precedence`, lower first; list order breaks ties). Access denies by default, so an application with no allow policy locks everyone out — including you.
 
-**Session duration (`sessionDuration`)** -- A duration string like `24h`; empty uses the account default. Shorten it for sensitive applications; the `mfaConfig.sessionDuration` re-prompt is a separate, tighter clock for the second factor.
+**Session duration (`sessionDuration`)** — A duration string like `24h`; empty uses the account default. Shorten it for sensitive applications; the `mfaConfig.sessionDuration` re-prompt is a separate, tighter clock for the second factor.
 
-**Identity providers (`allowedIdps`, `autoRedirectToIdentity`)** -- Empty allows every configured IdP. Restricting to one IdP and setting `autoRedirectToIdentity` skips the chooser page, which is the polished single-IdP experience but locks sign-in to that provider's availability.
+**Identity providers (`allowedIdps`, `autoRedirectToIdentity`)** — Empty allows every configured IdP. Restricting to one IdP and setting `autoRedirectToIdentity` skips the chooser page, which is the polished single-IdP experience but locks sign-in to that provider's availability.
 
-**SaaS federation (`saasApp`)** -- For `saas` types, choose `authType` `saml` or `oidc`. OIDC issues a `client_id`/`client_secret` pair as outputs to paste into the SaaS provider's SSO settings; SAML exports the SSO endpoint, entity ID, and public key instead.
+**SaaS federation (`saasApp`)** — For `saas` types, choose `authType` `saml` or `oidc`. OIDC issues a `client_id`/`client_secret` pair as outputs to paste into the SaaS provider's SSO settings; SAML exports the SSO endpoint, entity ID, and public key instead.
 
-**CORS (`corsHeaders` vs `optionsPreflightBypass`)** -- Mutually exclusive. Bypass lets preflight requests skip Access entirely; explicit CORS headers keep Access in the path. Pick bypass only when the protected API must serve browsers from other origins that cannot carry the Access cookie.
+**CORS (`corsHeaders` vs `optionsPreflightBypass`)** — Mutually exclusive. Bypass lets preflight requests skip Access entirely; explicit CORS headers keep Access in the path. Pick bypass only when the protected API must serve browsers from other origins that cannot carry the Access cookie.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareZeroTrustAccessPolicy** | `policies[].policy` | `status.outputs.policy_id` |
-| **CloudflareDnsZone** (optional, zone scope) | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare Zero Trust Access Policy** | `policies[].policy` | `status.outputs.policy_id` |
+| **Cloudflare DNS Zone** (optional, zone scope) | `zoneId` | `status.outputs.zone_id` |
 
 `allowedIdps[]` and `scimConfig.idpUid` also accept references to identity-provider outputs alongside literal IdP IDs.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -124,14 +124,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 ## Common Patterns
 
-**Self-hosted web app behind Access** -- An account-scoped `self_hosted` application protecting an internal hostname, governed by a referenced allow policy, commonly fronting an origin published through a Cloudflare Tunnel. Start from the **Self-hosted web application** preset.
+**Self-hosted web app behind Access** — An account-scoped `self_hosted` application protecting an internal hostname, governed by a referenced allow policy, commonly fronting an origin published through a Cloudflare Tunnel. Start from the **Self-hosted web application** preset.
 
-**SaaS federation (OIDC)** -- Cloudflare acts as the identity provider for a SaaS product: the application issues the OAuth client credentials as outputs, and the SaaS provider's SSO settings consume them. Start from the **SaaS application (OIDC)** preset.
+**SaaS federation (OIDC)** — Cloudflare acts as the identity provider for a SaaS product: the application issues the OAuth client credentials as outputs, and the SaaS provider's SSO settings consume them. Start from the **SaaS application (OIDC)** preset.
 
 ## Works With
 
-- [**Cloudflare Zero Trust Access Policy**](/infra-catalog/cloudflare-zero-trust-access-policy) -- attached via `policies[]` to decide who is admitted
-- [**Cloudflare Zero Trust Access Group**](/infra-catalog/cloudflare-zero-trust-access-group) -- reusable identity groups the attached policies reference
-- [**Cloudflare Zero Trust Access Identity Provider**](/infra-catalog/cloudflare-zero-trust-access-identity-provider) -- the IdPs `allowedIdps` restricts sign-in to
-- [**Cloudflare Zero Trust Tunnel**](/infra-catalog/cloudflare-zero-trust-tunnel) -- publishes the private origin a self-hosted application protects
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) -- scopes a zone-level application and hosts the protected hostname
+- [**Cloudflare Zero Trust Access Policy**](/infra-catalog/cloudflare-zero-trust-access-policy) — attached via `policies[]` to decide who is admitted
+- [**Cloudflare Zero Trust Access Group**](/infra-catalog/cloudflare-zero-trust-access-group) — reusable identity groups the attached policies reference
+- [**Cloudflare Zero Trust Access Identity Provider**](/infra-catalog/cloudflare-zero-trust-access-identity-provider) — the IdPs `allowedIdps` restricts sign-in to
+- [**Cloudflare Zero Trust Tunnel**](/infra-catalog/cloudflare-zero-trust-tunnel) — publishes the private origin a self-hosted application protects
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — scopes a zone-level application and hosts the protected hostname

@@ -59,7 +59,7 @@ This creates a single-container model serving a scikit-learn artifact on AWS's p
 
 ### InfraChart
 
-When the model deploys alongside its execution role in one chart, wire the role reference via ValueFromRef:
+When the model deploys alongside its execution role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -98,15 +98,15 @@ These are the most important decisions when configuring a model. Explore the ful
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `executionRoleArn` | `status.outputs.role_arn` |
-| **AwsSubnet** | `vpcConfig.subnetIds[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `vpcConfig.securityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS IAM Role** | `executionRoleArn` | `status.outputs.role_arn` |
+| **AWS Subnet** | `vpcConfig.subnetIds[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `vpcConfig.securityGroupIds[]` | `status.outputs.security_group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **Zero Trust enabled on the account** — the organization (team name) must already exist (a CloudflareZeroTrustOrganization Infra Component) or every Access create fails at the API.
+- **Zero Trust enabled on the account** — the organization (team name) must already exist (a Cloudflare Zero Trust Organization Infra Component) or every Access create fails at the API.
 - **IdP application credentials** (only for OAuth/OIDC/SAML types) — a client ID and secret from the external provider, or SAML metadata. `onetimepin` needs none.
 - **A SAML certificate set** (only for `config.enableEncryption`) — created out-of-band via the Access SAML-certificate API; `samlCertificateSetId` names it.
 
@@ -53,7 +53,7 @@ This creates Cloudflare's own one-time PIN provider — users see a PIN option o
 
 ### InfraChart
 
-For a zone-scoped provider whose zone is deployed in the same InfraPipeline, wire `zoneId` with ValueFromRef:
+For a zone-scoped provider whose zone is deployed in the same InfraPipeline, wire `zoneId` with references:
 
 ```yaml
 spec:
@@ -92,13 +92,13 @@ These are the most important decisions when configuring an Access identity provi
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** (zone-scoped providers) | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** (zone-scoped providers) | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

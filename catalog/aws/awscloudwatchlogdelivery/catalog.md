@@ -70,7 +70,7 @@ This creates a vended pipeline delivering the CloudFront distribution's access l
 
 ### InfraChart
 
-When the pipeline deploys alongside its receiving bucket in one chart, wire the destination reference via ValueFromRef:
+When the pipeline deploys alongside its receiving bucket in one chart, wire the destination reference:
 
 ```yaml
 spec:
@@ -117,18 +117,18 @@ These are the most important decisions when configuring a log delivery. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsS3Bucket** (S3 destination) | `vended.destinations[].destinationResourceArn` | `status.outputs.bucket_arn` |
-| **AwsCloudwatchLogGroup** (CWL destination) | `vended.destinations[].destinationResourceArn` | `status.outputs.log_group_arn` |
-| **AwsIamRole** (cross-account arm) | `crossAccountDestination.roleArn` | `status.outputs.role_arn` |
-| **AwsKinesisStream** (cross-account arm) | `crossAccountDestination.targetArn` | `status.outputs.stream_arn` |
+| **AWS S3 Bucket** (S3 destination) | `vended.destinations[].destinationResourceArn` | `status.outputs.bucket_arn` |
+| **AWS CloudWatch Log Group** (CWL destination) | `vended.destinations[].destinationResourceArn` | `status.outputs.log_group_arn` |
+| **AWS IAM Role** (cross-account arm) | `crossAccountDestination.roleArn` | `status.outputs.role_arn` |
+| **AWS Kinesis Data Stream** (cross-account arm) | `crossAccountDestination.targetArn` | `status.outputs.stream_arn` |
 
 The source's `resourceArn` is also a reference field, but its kind is open by design — any vended-logs producer works (reference the producing kind's ARN output or pass a literal ARN). A delivery's `destinationArn` references another instance's owned destination through its `destination_arns` output.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

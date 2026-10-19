@@ -6,24 +6,24 @@ Runs Apache Kafka for your event streams without running brokers: Google operate
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `managedkafka.googleapis.com` on the project (never disabled on destroy)
-- **Kafka cluster** -- a `managed_kafka_cluster` with its capacity, networks, optional CMEK, rebalancing, and mTLS configuration, carrying the platform attribution labels
+- **API enablement** — `managedkafka.googleapis.com` on the project (never disabled on destroy)
+- **Kafka cluster** — a `managed_kafka_cluster` with its capacity, networks, optional CMEK, rebalancing, and mTLS configuration, carrying the platform attribution labels
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **`GcpSubnetwork`** -- at least one subnet in the cluster's region (`networkConfigs[].subnet`), one per VPC network; Google creates the bootstrap and broker addresses and their DNS entries in it. The subnet's project may differ (a Shared VPC host).
+- **`GcpSubnetwork`** — at least one subnet in the cluster's region (`networkConfigs[].subnet`), one per VPC network; Google creates the bootstrap and broker addresses and their DNS entries in it. The subnet's project may differ (a Shared VPC host).
 
 ### Optional Dependencies
 
-- **`GcpKmsKey`** -- a key in the cluster's region for CMEK (`kmsKey`); the Managed Kafka service agent needs `roles/cloudkms.cryptoKeyEncrypterDecrypter` on it.
-- **Certificate Authority Service CA pools** (`GcpPrivateCaPool`) -- for mTLS (`tlsConfig.caPools`), each a reference or a full resource name.
+- **`GcpKmsKey`** — a key in the cluster's region for CMEK (`kmsKey`); the Managed Kafka service agent needs `roles/cloudkms.cryptoKeyEncrypterDecrypter` on it.
+- **Certificate Authority Service CA pools** (`GcpPrivateCaPool`) — for mTLS (`tlsConfig.caPools`), each a reference or a full resource name.
 
 ## Deploy
 
@@ -66,27 +66,27 @@ Reference a `GcpSubnetwork` from `networkConfigs[].subnet` and, for CMEK, a `Gcp
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Capacity** -- `vcpuCount` and `memoryBytes` size the whole cluster and bill around the clock; both scale in place. Google spreads them across brokers in three zones.
+**Capacity** — `vcpuCount` and `memoryBytes` size the whole cluster and bill around the clock; both scale in place. Google spreads them across brokers in three zones.
 
-**Networks** -- each `networkConfigs` entry makes the cluster reachable in one VPC network, one subnet per network, up to ten. Clients anywhere in those networks resolve the brokers by name.
+**Networks** — each `networkConfigs` entry makes the cluster reachable in one VPC network, one subnet per network, up to ten. Clients anywhere in those networks resolve the brokers by name.
 
-**Authentication** -- Google IAM (`roles/managedkafka.client` plus Kafka ACLs) is always on; `tlsConfig.caPools` adds mutual TLS with certificates from Certificate Authority Service.
+**Authentication** — Google IAM (`roles/managedkafka.client` plus Kafka ACLs) is always on; `tlsConfig.caPools` adds mutual TLS with certificates from Certificate Authority Service.
 
-**Rebalancing** -- `AUTO_REBALANCE_ON_SCALE_UP` spreads partitions onto new brokers after a scale-up; the default leaves them where they are.
+**Rebalancing** — `AUTO_REBALANCE_ON_SCALE_UP` spreads partitions onto new brokers after a scale-up; the default leaves them where they are.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpSubnetwork** | `networkConfigs[].subnet` | `status.outputs.subnetwork_self_link` |
-| **GcpKmsKey** | `kmsKey` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Subnetwork** | `networkConfigs[].subnet` | `status.outputs.subnetwork_self_link` |
+| **GCP KMS Key** | `kmsKey` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -98,15 +98,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Development cluster** -- The smallest cluster Google sells -- 3 vCPU, 3 GiB -- on one subnet. Start from the **Development Cluster** preset.
+**Development cluster** — The smallest cluster Google sells — 3 vCPU, 3 GiB — on one subnet. Start from the **Development Cluster** preset.
 
-**Production** -- A larger cluster with your own encryption key, a bigger broker disk, rebalance on scale-up, and destroy protection. Start from the **Production with CMEK** preset.
+**Production** — A larger cluster with your own encryption key, a bigger broker disk, rebalance on scale-up, and destroy protection. Start from the **Production with CMEK** preset.
 
-**Certificate-based clients** -- mTLS against a Certificate Authority Service pool, with principal mapping rules for Kafka ACLs. Start from the **Mutual TLS Clients** preset.
+**Certificate-based clients** — mTLS against a Certificate Authority Service pool, with principal mapping rules for Kafka ACLs. Start from the **Mutual TLS Clients** preset.
 
 ## Works With
 
-- [**GCP Managed Kafka Topic**](/infra-catalog/gcp-managed-kafka-topic) -- the topics on this cluster
-- [**GCP Managed Kafka ACL**](/infra-catalog/gcp-managed-kafka-acl) -- who may read and write them
-- [**GCP Managed Kafka Connect Cluster**](/infra-catalog/gcp-managed-kafka-connect-cluster) -- connectors to and from other systems
-- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- where the brokers are reachable
+- [**GCP Managed Kafka Topic**](/infra-catalog/gcp-managed-kafka-topic) — the topics on this cluster
+- [**GCP Managed Kafka ACL**](/infra-catalog/gcp-managed-kafka-acl) — who may read and write them
+- [**GCP Managed Kafka Connect Cluster**](/infra-catalog/gcp-managed-kafka-connect-cluster) — connectors to and from other systems
+- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — where the brokers are reachable

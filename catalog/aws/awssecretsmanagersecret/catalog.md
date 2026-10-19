@@ -21,7 +21,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **A KMS key** (only for customer-managed encryption) — required in practice when other AWS accounts must read the secret: the AWS-managed `aws/secretsmanager` key cannot be granted cross-account. Provide the ARN directly or reference an AwsKmsKey Infra Component.
+- **A KMS key** (only for customer-managed encryption) — required in practice when other AWS accounts must read the secret: the AWS-managed `aws/secretsmanager` key cannot be granted cross-account. Provide the ARN directly or reference an AWS KMS Key Infra Component.
 - **A rotation Lambda** (only for self-managed rotation) — the function must implement the four rotation steps and grant Secrets Manager invoke permission (principal `secretsmanager.amazonaws.com`).
 
 ## Deploy
@@ -56,7 +56,7 @@ This creates a secret named `prod/payments/db` (the hierarchical AWS name lives 
 
 ### InfraChart
 
-When the secret deploys alongside its encryption key and rotation function in one chart, wire both references via ValueFromRef:
+When the secret deploys alongside its encryption key and rotation function in one chart, wire both references:
 
 ```yaml
 spec:
@@ -100,15 +100,15 @@ These are the most important decisions when configuring a secret. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `kmsKeyId` (and per-replica `replicaRegions[].kmsKeyId`) | `status.outputs.key_arn` |
-| **AwsLambda** | `rotation.rotationLambdaArn` | `status.outputs.function_arn` |
-| **AwsIamRole** | `rotation.externalRotationRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `kmsKeyId` (and per-replica `replicaRegions[].kmsKeyId`) | `status.outputs.key_arn` |
+| **AWS Lambda** | `rotation.rotationLambdaArn` | `status.outputs.function_arn` |
+| **AWS IAM Role** | `rotation.externalRotationRoleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

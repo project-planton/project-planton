@@ -6,19 +6,19 @@ Uploads a certificate to Cloudflare's account-level mTLS certificate store — t
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **mTLS Certificate** -- one `cloudflare_mtls_certificate` in the account-level store, CA or leaf per the `ca` flag, with the private key attached only when one is provided
+- **mTLS Certificate** — one `cloudflare_mtls_certificate` in the account-level store, CA or leaf per the `ca` flag, with the private key attached only when one is provided
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has SSL and Certificates Edit on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has SSL and Certificates Edit on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **The PEM material to upload** -- a CA certificate (or chain) for `ca: true`, minted by your own PKI or openssl; the CA's signing key stays outside Cloudflare entirely. The store has no plan gate — free accounts included.
-- **A private key, only for leaf uploads** -- needed only when Cloudflare must present the certificate itself (`ca: false`). Provide it as a managed-secret reference for the `privateKey` field; the API never returns it, so your secret store is the real system of record.
+- **The PEM material to upload** — a CA certificate (or chain) for `ca: true`, minted by your own PKI or openssl; the CA's signing key stays outside Cloudflare entirely. The store has no plan gate — free accounts included.
+- **A private key, only for leaf uploads** — needed only when Cloudflare must present the certificate itself (`ca: false`). Provide it as a managed-secret reference for the `privateKey` field; the API never returns it, so your secret store is the real system of record.
 
 ## Deploy
 
@@ -75,7 +75,7 @@ This kind has no foreign key dependencies. The PEM material and account ID trave
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -87,14 +87,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Origin-pull CA** -- A self-signed CA uploaded with `ca: true` and no private key — the trust anchor per-hostname Authenticated Origin Pulls and zone TLS CA associations validate client certificates against. The signing key never leaves your PKI. Start from the **Origin-pull CA upload** preset.
+**Origin-pull CA** — A self-signed CA uploaded with `ca: true` and no private key — the trust anchor per-hostname Authenticated Origin Pulls and zone TLS CA associations validate client certificates against. The signing key never leaves your PKI. Start from the **Origin-pull CA upload** preset.
 
-**Leaf certificate for Workers mTLS** -- A client certificate with `ca: false` and its `privateKey` supplied as a managed-secret reference, presented by Cloudflare when a Worker's mTLS binding calls an origin that demands client authentication.
+**Leaf certificate for Workers mTLS** — A client certificate with `ca: false` and its `privateKey` supplied as a managed-secret reference, presented by Cloudflare when a Worker's mTLS binding calls an origin that demands client authentication.
 
-**Zero-downtime rotation** -- Deploy the replacement as a second Infra Component, move consumers to its `certificate_id`, then destroy the original. Running both uploads in parallel during the switch is what makes the rotation invisible at the edge.
+**Zero-downtime rotation** — Deploy the replacement as a second Infra Component, move consumers to its `certificate_id`, then destroy the original. Running both uploads in parallel during the switch is what makes the rotation invisible at the edge.
 
 ## Works With
 
-- [**Cloudflare Zone TLS Settings**](/infra-catalog/cloudflare-zone-tls-settings) -- the CA hostname associations that scope an uploaded CA to specific hostnames.
-- [**Cloudflare Authenticated Origin Pulls**](/infra-catalog/cloudflare-authenticated-origin-pulls) -- the zone-level enablement this CA validates client certificates for.
-- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) -- mTLS bindings that present leaf uploads from this store.
+- [**Cloudflare Zone TLS Settings**](/infra-catalog/cloudflare-zone-tls-settings) — the CA hostname associations that scope an uploaded CA to specific hostnames.
+- [**Cloudflare Authenticated Origin Pulls**](/infra-catalog/cloudflare-authenticated-origin-pulls) — the zone-level enablement this CA validates client certificates for.
+- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) — mTLS bindings that present leaf uploads from this store.

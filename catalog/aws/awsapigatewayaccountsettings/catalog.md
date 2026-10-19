@@ -52,7 +52,7 @@ This adopts the region's API Gateway account object and sets the referenced role
 
 ### InfraChart
 
-When the settings deploy alongside the logging role in one chart, wire the role reference via ValueFromRef:
+When the settings deploy alongside the logging role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -84,13 +84,13 @@ These are the most important decisions when configuring API Gateway account sett
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `cloudwatchRoleArn` | `status.outputs.role_arn` |
+| **AWS IAM Role** | `cloudwatchRoleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-The outputs are AWS-reported echoes of the account object, not composition inputs — no catalog kind consumes them via ValueFromRef. `account_id` is the provider's import ID for the singleton; `api_key_version` and `features` are AWS-managed informational fields; `throttle_burst_limit` and `throttle_rate_limit` report the account-level throttle ceilings every stage in the region shares — useful when sizing per-stage throttling, but read-only here.
+The outputs are AWS-reported echoes of the account object, not composition inputs — no catalog kind references them. `account_id` is the provider's import ID for the singleton; `api_key_version` and `features` are AWS-managed informational fields; `throttle_burst_limit` and `throttle_rate_limit` report the account-level throttle ceilings every stage in the region shares — useful when sizing per-stage throttling, but read-only here.
 
 ## Common Patterns
 

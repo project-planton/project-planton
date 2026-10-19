@@ -1,6 +1,6 @@
 # GCP AlloyDB User
 
-Deploys a database user (`google_alloydb_user`) on an AlloyDB cluster. Users are first-class nodes: one per application with ALLOYDB_BUILT_IN (password) or ALLOYDB_IAM_USER (passwordless IAM database authentication).
+Deploys a database user (google_alloydb_user) on an AlloyDB cluster. Users are first-class nodes: one per application with ALLOYDB_BUILT_IN (password) or ALLOYDB_IAM_USER (passwordless IAM database authentication).
 
 ## What Gets Created
 
@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### GCP Project
 
-- **A GcpAlloydbCluster** — the cluster this user lives on. Reference its `status.outputs.cluster_id`, or pass the full cluster resource path directly.
+- **A GCP AlloyDB Cluster** — the cluster this user lives on. Reference its `status.outputs.cluster_id`, or pass the full cluster resource path directly.
 - **Password secret** — for ALLOYDB_BUILT_IN, store the password as an org secret reference (`$secret/slug`) or inline for dev only.
 
 ## Deploy
@@ -83,14 +83,14 @@ These are the most important decisions when configuring an AlloyDB user. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpAlloydbCluster** | `cluster` | `status.outputs.cluster_id` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP AlloyDB Cluster** | `cluster` | `status.outputs.cluster_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

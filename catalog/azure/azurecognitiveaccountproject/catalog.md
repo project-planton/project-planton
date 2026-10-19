@@ -1,19 +1,19 @@
 # Azure Cognitive Account Project
 
-Deploys an AI Foundry project onto an Azure AI services account -- the workspace a team organizes its AI work in (agents, evaluations, files), isolated from sibling projects on the same account. The parent account must be kind `AIServices` with project management enabled; the project carries only its own identity, naming, and description, and provisions in seconds as a free workspace object.
+Deploys an AI Foundry project onto an Azure AI services account — the workspace a team organizes its AI work in (agents, evaluations, files), isolated from sibling projects on the same account. The parent account must be kind `AIServices` with project management enabled; the project carries only its own identity, naming, and description, and provisions in seconds as a free workspace object.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **AI Foundry project** -- an ARM child of the account (`.../accounts/{account}/projects/{name}`) with its own managed identity, description, display name and tags
+- **AI Foundry project** — an ARM child of the account (`.../accounts/{account}/projects/{name}`) with its own managed identity, description, display name and tags
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **An AzureCognitiveAccount** of kind `AIServices` with `projectManagementEnabled: true` (which requires the account to carry a managed identity) -- the **AI Foundry Account** preset of that kind is exactly this shape.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **An Azure Cognitive Account** of kind `AIServices` with `projectManagementEnabled: true` (which requires the account to carry a managed identity) — the **AI Foundry Account** preset of that kind is exactly this shape.
 
 ### Azure Subscription
 
@@ -57,7 +57,7 @@ This creates a team project with its own system-assigned identity on the referen
 
 ### InfraChart
 
-In an AI-platform chart the order is: account (AIServices, project management on) → **projects** (one per team). Wire the account with ValueFromRef so the InfraPipeline deploys it first:
+In an AI-platform chart the order is: account (AIServices, project management on) → **projects** (one per team). Wire the account with references so the InfraPipeline deploys it first:
 
 ```yaml
 spec:
@@ -74,24 +74,24 @@ The InfraPipeline resolves the dependency graph, provisions the account first, t
 
 These are the most important decisions when configuring the project. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Identity** -- required. `SYSTEM_ASSIGNED` is the zero-management default; bring user-assigned identities when grants must exist before the project does.
+**Identity** — required. `SYSTEM_ASSIGNED` is the zero-management default; bring user-assigned identities when grants must exist before the project does.
 
-**Description and display name** -- set them at creation if you want them at all: ARM cannot UPDATE either to an empty value, so clearing one later replaces the project.
+**Description and display name** — set them at creation if you want them at all: ARM cannot UPDATE either to an empty value, so clearing one later replaces the project.
 
-**Naming** -- 2-64 characters, alphanumeric start; the name is the ARM child segment and replaces the project when changed.
+**Naming** — 2-64 characters, alphanumeric start; the name is the ARM child segment and replaces the project when changed.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureCognitiveAccount** | `cognitiveAccountId` | `status.outputs.cognitive_account_id` |
-| **AzureUserAssignedIdentity** (optional) | `identity.identityIds` | `status.outputs.identity_id` |
+| **Azure Cognitive Account** | `cognitiveAccountId` | `status.outputs.cognitive_account_id` |
+| **Azure User Assigned Identity** (optional) | `identity.identityIds` | `status.outputs.identity_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -105,12 +105,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Team workspace** -- a system-identity project per team. Start from the **Team Workspace** preset.
+**Team workspace** — a system-identity project per team. Start from the **Team Workspace** preset.
 
-**Pre-granted identity** -- a user-assigned identity whose storage/search grants exist before the project. Start from the **User-Assigned Identity** preset.
+**Pre-granted identity** — a user-assigned identity whose storage/search grants exist before the project. Start from the **User-Assigned Identity** preset.
 
 ## Works With
 
-- [**Azure Cognitive Account**](/infra-catalog/azure-cognitive-account) -- the parent AIServices account
-- [**Azure Cognitive Deployment**](/infra-catalog/azure-cognitive-deployment) -- the models projects consume
-- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) -- pre-granted project identities
+- [**Azure Cognitive Account**](/infra-catalog/azure-cognitive-account) — the parent AIServices account
+- [**Azure Cognitive Deployment**](/infra-catalog/azure-cognitive-deployment) — the models projects consume
+- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) — pre-granted project identities

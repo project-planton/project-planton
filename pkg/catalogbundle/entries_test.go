@@ -91,28 +91,6 @@ func TestCatalogEntriesRoundTrip(t *testing.T) {
 	}
 }
 
-// The slug rule is ONE rule for every kind -- the provider stays an atomic
-// word, the rest kebabs. These pins hold the derivation still.
-func TestEntrySlugDerivation(t *testing.T) {
-	cases := []struct {
-		kindName, providerDir, want string
-	}{
-		{"AwsS3Bucket", "aws", "aws-s3-bucket"},
-		{"AwsKmsKey", "aws", "aws-kms-key"},
-		{"AwsMemorydbCluster", "aws", "aws-memorydb-cluster"},
-		{"KubernetesDeployment", "kubernetes", "kubernetes-deployment"},
-		{"DigitalOceanDroplet", "digitalocean", "digitalocean-droplet"},
-		{"CloudflareDnsZone", "cloudflare", "cloudflare-dns-zone"},
-		// A kind not prefixed by its provider kebabs whole.
-		{"GkeCluster", "gcp", "gke-cluster"},
-	}
-	for _, c := range cases {
-		if got := entrySlug(c.kindName, c.providerDir); got != c.want {
-			t.Errorf("entrySlug(%s, %s) = %q, want %q", c.kindName, c.providerDir, got, c.want)
-		}
-	}
-}
-
 // Title comes from the catalog page's H1; the description is the intro
 // paragraph's first sentence; a kind without a page falls back to its
 // kind name.

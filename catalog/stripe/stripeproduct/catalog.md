@@ -1,20 +1,20 @@
 # Stripe Product
 
-Declares one thing your Stripe account sells -- a subscription plan, a seat, a physical good -- exactly as customers see it, and the entitlement features a purchase grants. Prices are separate Infra Components that name the product. One Infra Component per product.
+Declares one thing your Stripe account sells — a subscription plan, a seat, a physical good — exactly as customers see it, and the entitlement features a purchase grants. Prices are separate Infra Components that name the product. One Infra Component per product.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates, in the Stripe account your Stripe connection's key belongs to:
 
-- **The product** -- its name, description, images and pricing-table lines
-- **One feature link per granted feature** -- each attaches a Stripe Entitlement Feature, so subscribers hold it
+- **The product** — its name, description, images and pricing-table lines
+- **One feature link per granted feature** — each attaches a Stripe Entitlement Feature, so subscribers hold it
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -55,7 +55,7 @@ An Infra Job tracks the change in real time.
 
 ### InfraChart
 
-When the entitlement features and this product deploy together, grant the features with ValueFromRef, so the product attaches exactly the features declared beside it:
+When the entitlement features and this product deploy together, grant the features with references, so the product attaches exactly the features declared beside it:
 
 ```yaml
 spec:
@@ -72,13 +72,13 @@ The InfraPipeline deploys the features first, then this product.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**What customers read** -- `name`, `description` and `marketingFeatures` appear on Stripe-hosted pages and pricing tables.
+**What customers read** — `name`, `description` and `marketingFeatures` appear on Stripe-hosted pages and pricing tables.
 
-**What a purchase grants** -- `features` references Stripe Entitlement Features; changing the list changes every subscriber's entitlements.
+**What a purchase grants** — `features` references Stripe Entitlement Features; changing the list changes every subscriber's entitlements.
 
-**Service or good** -- `type` is set once; changing it replaces the product and every price that references it.
+**Service or good** — `type` is set once; changing it replaces the product and every price that references it.
 
-**Destroy archives** -- the product can no longer be bought, and existing subscriptions keep billing.
+**Destroy archives** — the product can no longer be bought, and existing subscriptions keep billing.
 
 ## Outputs and Dependencies
 
@@ -103,12 +103,12 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**SaaS plan** -- a subscription plan that grants entitlement features. Start from the **SaaS Plan** preset.
+**SaaS plan** — a subscription plan that grants entitlement features. Start from the **SaaS Plan** preset.
 
-**Physical good** -- a shippable product with package dimensions. Start from the **Physical Good** preset.
+**Physical good** — a shippable product with package dimensions. Start from the **Physical Good** preset.
 
 ## Works With
 
-- [**Stripe Price**](/infra-catalog/stripe-price) -- how much, how often and in which currencies the product is charged.
-- [**Stripe Entitlement Feature**](/infra-catalog/stripe-entitlement-feature) -- the capabilities the product grants.
-- [**Stripe Billing Portal Configuration**](/infra-catalog/stripe-billing-portal-configuration) -- lets customers switch between products and their prices.
+- [**Stripe Price**](/infra-catalog/stripe-price) — how much, how often and in which currencies the product is charged.
+- [**Stripe Entitlement Feature**](/infra-catalog/stripe-entitlement-feature) — the capabilities the product grants.
+- [**Stripe Billing Portal Configuration**](/infra-catalog/stripe-billing-portal-configuration) — lets customers switch between products and their prices.

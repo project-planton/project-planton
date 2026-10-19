@@ -1,25 +1,25 @@
 # Stripe Promotion Code
 
-Declares a code customers type to redeem a coupon -- `LAUNCH25` for first-time customers, `WELCOME50` on orders over 50 dollars -- with its own limits. One Infra Component per code.
+Declares a code customers type to redeem a coupon — LAUNCH25 for first-time customers, WELCOME50 on orders over 50 dollars — with its own limits. One Infra Component per code.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one promotion code on the coupon it names, in the Stripe account your Stripe connection's key belongs to:
 
-- **The code** -- what customers type, or one Stripe generates
-- **Its limits** -- first-time customers, a minimum order, one customer, a cap, an expiry
+- **The code** — what customers type, or one Stripe generates
+- **Its limits** — first-time customers, a minimum order, one customer, a cap, an expiry
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
 - **The connection's restricted key** needs **Promotion Codes: Write** (Stripe Dashboard: Developers, API keys, the key's permissions).
-- **The coupon** -- a Stripe Coupon Infra Component, or an existing coupon's id.
+- **The coupon** — a Stripe Coupon Infra Component, or an existing coupon's id.
 - **One owner**: declare a code here only if your application and the Dashboard do not also manage it.
 
 ## Deploy
@@ -55,7 +55,7 @@ An Infra Job tracks the change in real time.
 
 ### InfraChart
 
-When the coupon and this code deploy together, name the coupon with ValueFromRef:
+When the coupon and this code deploy together, name the coupon with references:
 
 ```yaml
 spec:
@@ -72,11 +72,11 @@ The InfraPipeline deploys the coupon first, then this code. When a change replac
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Letters, digits and dashes** -- a code with a space or another character is refused before anything runs.
+**Letters, digits and dashes** — a code with a space or another character is refused before anything runs.
 
-**Limits are fixed** -- changing the coupon, expiry, cap, customer or restrictions creates a new code; the same code keeps working.
+**Limits are fixed** — changing the coupon, expiry, cap, customer or restrictions creates a new code; the same code keeps working.
 
-**Destroy deactivates** -- the code stops working and can be declared again later.
+**Destroy deactivates** — the code stops working and can be declared again later.
 
 ## Outputs and Dependencies
 
@@ -100,12 +100,12 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Launch code** -- first-time customers, capped and expiring. Start from the **Launch Code** preset.
+**Launch code** — first-time customers, capped and expiring. Start from the **Launch Code** preset.
 
-**Minimum order** -- a welcome code on orders over a threshold. Start from the **First Order Minimum** preset.
+**Minimum order** — a welcome code on orders over a threshold. Start from the **First Order Minimum** preset.
 
 ## Works With
 
-- [**Stripe Coupon**](/infra-catalog/stripe-coupon) -- the discount the code redeems.
-- [**Stripe Payment Link**](/infra-catalog/stripe-payment-link) -- a hosted page where customers enter it.
-- [**Stripe Billing Portal Configuration**](/infra-catalog/stripe-billing-portal-configuration) -- lets customers apply codes to subscriptions.
+- [**Stripe Coupon**](/infra-catalog/stripe-coupon) — the discount the code redeems.
+- [**Stripe Payment Link**](/infra-catalog/stripe-payment-link) — a hosted page where customers enter it.
+- [**Stripe Billing Portal Configuration**](/infra-catalog/stripe-billing-portal-configuration) — lets customers apply codes to subscriptions.

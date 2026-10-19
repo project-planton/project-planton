@@ -1,25 +1,25 @@
 # GCP Cloud Build Connection
 
-Connects Cloud Build to your code host -- github.com, GitHub Enterprise, gitlab.com or GitLab Enterprise, Bitbucket Cloud, or Bitbucket Data Center -- so builds can be triggered by pushes and pull requests and can read your repositories. Tokens stay in Secret Manager; the connection only names the secret versions.
+Connects Cloud Build to your code host — github.com, GitHub Enterprise, gitlab.com or GitLab Enterprise, Bitbucket Cloud, or Bitbucket Data Center — so builds can be triggered by pushes and pull requests and can read your repositories. Tokens stay in Secret Manager; the connection only names the secret versions.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Cloud Build API on the connection's project
-- **Connection** -- an authorized link to one code host, the container its linked repositories live in
+- **API enablement** — the Cloud Build API on the connection's project
+- **Connection** — an authorized link to one code host, the container its linked repositories live in
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with permission to manage Cloud Build connections in the target project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with permission to manage Cloud Build connections in the target project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Code Host Account
 
-- **Credentials in Secret Manager** -- the host's access tokens (and webhook secret) stored as Secret Manager secrets, with Google's Cloud Build service agent granted `roles/secretmanager.secretAccessor` on each.
-- **For GitHub** -- Cloud Build's GitHub App installed on your account or organization; its installation ID goes into the spec.
+- **Credentials in Secret Manager** — the host's access tokens (and webhook secret) stored as Secret Manager secrets, with Google's Cloud Build service agent granted `roles/secretmanager.secretAccessor` on each.
+- **For GitHub** — Cloud Build's GitHub App installed on your account or organization; its installation ID goes into the spec.
 
 ## Deploy
 
@@ -63,24 +63,24 @@ Reference a project's `status.outputs.project_id` from `projectId`, and each `Gc
 
 These are the most important decisions when configuring a connection. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Code host** -- one block per connection: `githubConfig`, `githubEnterpriseConfig`, `gitlabConfig`, `bitbucketCloudConfig`, or `bitbucketDataCenterConfig`.
+**Code host** — one block per connection: `githubConfig`, `githubEnterpriseConfig`, `gitlabConfig`, `bitbucketCloudConfig`, or `bitbucketDataCenterConfig`.
 
-**Credentials** -- every token and secret is a Secret Manager version name; `versions/latest` follows rotation.
+**Credentials** — every token and secret is a Secret Manager version name; `versions/latest` follows rotation.
 
-**Private hosts** -- `serviceDirectoryConfig` reaches an on-premises server without the internet, and `sslCa` trusts a private certificate authority.
+**Private hosts** — `serviceDirectoryConfig` reaches an on-premises server without the internet, and `sslCa` trusts a private certificate authority.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpSecretManagerSecret** | every `*SecretVersion` field | `status.outputs.latest_version_name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Secret Manager Secret** | every `*SecretVersion` field | `status.outputs.latest_version_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -93,12 +93,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**GitHub** -- Cloud Build's GitHub App on your organization. Start from the **GitHub Connection** preset.
+**GitHub** — Cloud Build's GitHub App on your organization. Start from the **GitHub Connection** preset.
 
-**GitLab** -- gitlab.com or a GitLab Enterprise server with personal access tokens. Start from the **GitLab Connection** preset.
+**GitLab** — gitlab.com or a GitLab Enterprise server with personal access tokens. Start from the **GitLab Connection** preset.
 
 ## Works With
 
-- [**GCP Cloud Build Repository**](/infra-catalog/gcp-cloud-build-repository) -- repositories linked through the connection
-- [**GCP Cloud Build Trigger**](/infra-catalog/gcp-cloud-build-trigger) -- builds triggered by the repositories' events
-- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) -- where the tokens live
+- [**GCP Cloud Build Repository**](/infra-catalog/gcp-cloud-build-repository) — repositories linked through the connection
+- [**GCP Cloud Build Trigger**](/infra-catalog/gcp-cloud-build-trigger) — builds triggered by the repositories' events
+- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) — where the tokens live

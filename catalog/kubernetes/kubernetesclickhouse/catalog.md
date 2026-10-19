@@ -1,6 +1,6 @@
 # ClickHouse
 
-Deploys a ClickHouse cluster — the open-source columnar OLAP database — declared as a `ClickHouseInstallation` (CHI) custom resource and reconciled by the Altinity ClickHouse Operator. The operator renders every shard×replica host as its own single-pod StatefulSet with generated configuration mounted from ConfigMaps, and manages the full lifecycle: in-place version rolls, topology changes, storage edits, user provisioning, and the cluster-wide client Service. Topology is `shards × replicas`: shards split the data for parallel query processing (Distributed-engine tables fan queries out across shards); replicas within a shard hold full copies of the same data through ReplicatedMergeTree. Replication and `ON CLUSTER` DDL both need a coordination service — leave `coordination` unset and a managed 3-node ClickHouse Keeper deploys automatically exactly when the topology needs one.
+Deploys a ClickHouse cluster — the open-source columnar OLAP database — declared as a ClickHouseInstallation (CHI) custom resource and reconciled by the Altinity ClickHouse Operator. The operator renders every shard×replica host as its own single-pod StatefulSet with generated configuration mounted from ConfigMaps, and manages the full lifecycle: in-place version rolls, topology changes, storage edits, user provisioning, and the cluster-wide client Service. Topology is `shards × replicas`: shards split the data for parallel query processing (Distributed-engine tables fan queries out across shards); replicas within a shard hold full copies of the same data through ReplicatedMergeTree. Replication and `ON CLUSTER` DDL both need a coordination service — leave `coordination` unset and a managed 3-node ClickHouse Keeper deploys automatically exactly when the topology needs one.
 
 ## What Gets Created
 
@@ -108,14 +108,14 @@ These are the most important decisions when configuring a ClickHouse cluster. Ex
 
 | Field | References | Purpose |
 |-------|-----------|---------|
-| `spec.namespace` | KubernetesNamespace (`spec.name`) | Where the cluster runs |
-| `spec.storage_class` | KubernetesStorageClass (`status.outputs.storage_class_name`) | Data volume class |
-| `spec.coordination.keeper.storage_class` | KubernetesStorageClass (`status.outputs.storage_class_name`) | Managed Keeper volume class |
+| `spec.namespace` | Kubernetes Namespace (`spec.name`) | Where the cluster runs |
+| `spec.storage_class` | Kubernetes StorageClass (`status.outputs.storage_class_name`) | Data volume class |
+| `spec.coordination.keeper.storage_class` | Kubernetes StorageClass (`status.outputs.storage_class_name`) | Managed Keeper volume class |
 | `spec.users[].password` | Organization secrets or other resources' outputs | User credentials (never plaintext in the CHI) |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

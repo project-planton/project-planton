@@ -6,24 +6,24 @@ Creates a Secret Manager secret — the container for versioned secret payloads 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Secret** -- global (with replication control) or regional (payloads never leave the region)
-- **Secret Version** (optional) -- version 1 seeded from `initialVersion.data`
-- **IAM Members** (optional) -- additive secret-scoped grants
-- **Secret Manager API enablement** -- `secretmanager.googleapis.com` (never disabled on destroy)
-- **GCP Labels** -- resource metadata labels applied automatically
+- **Secret** — global (with replication control) or regional (payloads never leave the region)
+- **Secret Version** (optional) — version 1 seeded from `initialVersion.data`
+- **IAM Members** (optional) — additive secret-scoped grants
+- **Secret Manager API enablement** — `secretmanager.googleapis.com` (never disabled on destroy)
+- **GCP Labels** — resource metadata labels applied automatically
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### GCP Project
 
-- **A GCP project** (directly or via a GcpProject reference).
+- **A GCP project** (directly or via a GCP Project reference).
 - **IAM**: `roles/secretmanager.admin` for the deploying identity.
-- **For CMEK**: a GcpKmsKey with the Secret Manager service agent granted `roles/cloudkms.cryptoKeyEncrypterDecrypter`.
+- **For CMEK**: a GCP KMS Key with the Secret Manager service agent granted `roles/cloudkms.cryptoKeyEncrypterDecrypter`.
 
 ## Deploy
 
@@ -85,30 +85,30 @@ The InfraPipeline resolves the dependency graph, deploys the producing service a
 
 These are the most important decisions when configuring a secret. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Scope** -- omit `region` for a GLOBAL secret (replication control: automatic by default, or pinned `userManaged` replicas, each optionally CMEK-encrypted); set it for a REGIONAL secret whose payloads never leave the region — the data-residency posture, with CMEK attached directly.
+**Scope** — omit `region` for a GLOBAL secret (replication control: automatic by default, or pinned `userManaged` replicas, each optionally CMEK-encrypted); set it for a REGIONAL secret whose payloads never leave the region — the data-residency posture, with CMEK attached directly.
 
-**The first version** -- `initialVersion.data` seeds version 1 so consumers can read immediately. It is immutable by design: rotations add NEW versions, and `versionAliases` re-points consumers without touching them.
+**The first version** — `initialVersion.data` seeds version 1 so consumers can read immediately. It is immutable by design: rotations add NEW versions, and `versionAliases` re-points consumers without touching them.
 
-**Access** -- `iamMembers` grants are secret-SCOPED and additive: `roles/secretmanager.secretAccessor` to each consuming workload's service account, composing safely with grants made elsewhere.
+**Access** — `iamMembers` grants are secret-SCOPED and additive: `roles/secretmanager.secretAccessor` to each consuming workload's service account, composing safely with grants made elsewhere.
 
-**Version aliases have a temporal constraint** -- GCP validates `versionAliases` against EXISTING versions, so a first apply that both seeds `initialVersion` and aliases it is rejected ("Aliases cannot be assigned to versions that don't exist"). Deploy first, then add the alias on a subsequent apply once version 1 exists.
+**Version aliases have a temporal constraint** — GCP validates `versionAliases` against EXISTING versions, so a first apply that both seeds `initialVersion` and aliases it is rejected ("Aliases cannot be assigned to versions that don't exist"). Deploy first, then add the alias on a subsequent apply once version 1 exists.
 
-**Safety rails** -- `deletionProtection` (engine-side) plus `deletionPolicy: PREVENT` (API-side) for production credentials; `versionDestroyTtl` adds a restore window to version destruction; `expireTime`/`ttl` auto-delete short-lived secrets. Whole-secret deletion removes every version regardless of `versionDestroyTtl`.
+**Safety rails** — `deletionProtection` (engine-side) plus `deletionPolicy: PREVENT` (API-side) for production credentials; `versionDestroyTtl` adds a restore window to version destruction; `expireTime`/`ttl` auto-delete short-lived secrets. Whole-secret deletion removes every version regardless of `versionDestroyTtl`.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpServiceAccount** | `iamMembers[].member` | `status.outputs.member` |
-| **GcpKmsKey** (optional) | CMEK fields | `status.outputs.key_id` |
-| **GcpPubSubTopic** (optional) | `topics[]` | `status.outputs.topic_id` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Service Account** | `iamMembers[].member` | `status.outputs.member` |
+| **GCP KMS Key** (optional) | CMEK fields | `status.outputs.key_id` |
+| **GCP Pub/Sub Topic** (optional) | `topics[]` | `status.outputs.topic_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -120,15 +120,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**App secret with access** -- payload + `secretAccessor` grant in one manifest: the standard workload-credential shape. Start from the **App Secret with Access** preset.
+**App secret with access** — payload + `secretAccessor` grant in one manifest: the standard workload-credential shape. Start from the **App Secret with Access** preset.
 
-**Regional residency secret** -- a regional secret with CMEK for data-residency regimes. Start from the **Regional CMEK Secret** preset.
+**Regional residency secret** — a regional secret with CMEK for data-residency regimes. Start from the **Regional CMEK Secret** preset.
 
-**Rotated secret** -- rotation reminders through Pub/Sub driving a rotation pipeline, with the version-destroy safety window armed. Start from the **Rotated Secret** preset.
+**Rotated secret** — rotation reminders through Pub/Sub driving a rotation pipeline, with the version-destroy safety window armed. Start from the **Rotated Secret** preset.
 
 ## Works With
 
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the workload identity granted read access
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed payload encryption
-- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) -- rotation-reminder delivery
-- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) -- mounts the secret via `valueFromSecret`
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the workload identity granted read access
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed payload encryption
+- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) — rotation-reminder delivery
+- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) — mounts the secret via `valueFromSecret`

@@ -82,7 +82,7 @@ This opens a four-hour window Sundays at 02:00 Pacific, registers every instance
 
 ### InfraChart
 
-When a task runs a customer runbook deployed in the same chart, wire the task's executable via ValueFromRef:
+When a task runs a customer runbook deployed in the same chart, wire the task's executable by reference:
 
 ```yaml
 spec:
@@ -126,18 +126,18 @@ These are the most important decisions when configuring a maintenance window. Ex
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSsmDocument** | `tasks[].taskArn` (RUN_COMMAND / AUTOMATION tasks) | `status.outputs.document_name` |
-| **AwsLambda** | `tasks[].taskArn` (LAMBDA tasks) | `status.outputs.function_arn` |
-| **AwsStepFunction** | `tasks[].taskArn` (STEP_FUNCTIONS tasks) | `status.outputs.state_machine_arn` |
-| **AwsIamRole** | `tasks[].serviceRoleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** | `tasks[].invocation.runCommand.outputS3Bucket` | `status.outputs.bucket_id` |
-| **AwsSnsTopic** | `tasks[].invocation.runCommand.notificationConfig.notificationArn` | `status.outputs.topic_arn` |
+| **AWS SSM Document** | `tasks[].taskArn` (RUN_COMMAND / AUTOMATION tasks) | `status.outputs.document_name` |
+| **AWS Lambda** | `tasks[].taskArn` (LAMBDA tasks) | `status.outputs.function_arn` |
+| **AWS Step Functions** | `tasks[].taskArn` (STEP_FUNCTIONS tasks) | `status.outputs.state_machine_arn` |
+| **AWS IAM Role** | `tasks[].serviceRoleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `tasks[].invocation.runCommand.outputS3Bucket` | `status.outputs.bucket_id` |
+| **AWS SNS Topic** | `tasks[].invocation.runCommand.notificationConfig.notificationArn` | `status.outputs.topic_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -150,7 +150,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**The declared patch window** — Sunday night, four hours, cutoff one hour before close, `AWS-RunPatchBaseline` with `Operation: Install` moving 10% of the fleet at a time. This is patching as an auditable change event rather than a background process — pair it with a continuously scanning AwsSsmAssociation so you know what the window will install before it opens. Start from the **Weekly Patch Window** preset.
+**The declared patch window** — Sunday night, four hours, cutoff one hour before close, `AWS-RunPatchBaseline` with `Operation: Install` moving 10% of the fleet at a time. This is patching as an auditable change event rather than a background process — pair it with a continuously scanning AWS SSM Association so you know what the window will install before it opens. Start from the **Weekly Patch Window** preset.
 
 **Runbook once per window** — an untargeted AUTOMATION task runs your runbook's `$DEFAULT` version once per execution: snapshot rotation, resource cleanup, drift remediation. The runbook manages its own scope, and releasing a new default document version changes what runs with no window edit — the trade is that scope lives in the document, invisible to the window's target list. Start from the **Automation Runbook Window** preset.
 

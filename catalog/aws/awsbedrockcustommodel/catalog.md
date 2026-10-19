@@ -62,7 +62,7 @@ This starts a one-epoch fine-tuning job on Titan Text Lite; the deploy returns w
 
 ### InfraChart
 
-When the customization job deploys alongside its role in one chart, wire the reference via ValueFromRef:
+When the customization job deploys alongside its role in one chart, wire the reference:
 
 ```yaml
 spec:
@@ -99,26 +99,26 @@ These are the most important decisions when configuring a custom model. Explore 
 
 **Private data needs `vpcConfig`** — when training data is reachable only through private networking, set both `subnetIds` and `securityGroupIds` (required together) to run the job's data access inside your VPC. Omitted, the job uses Bedrock's managed networking.
 
-**A finished model still cannot serve** — custom models serve through Provisioned Throughput (or on-demand custom-model deployment where AWS supports it). Plan the AwsBedrockProvisionedThroughput purchase referencing `custom_model_arn` as part of the same rollout.
+**A finished model still cannot serve** — custom models serve through Provisioned Throughput (or on-demand custom-model deployment where AWS supports it). Plan the AWS Bedrock Provisioned Throughput purchase referencing `custom_model_arn` as part of the same rollout.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `customModelKmsKeyArn` | `status.outputs.key_arn` |
-| **AwsSubnet** | `vpcConfig.subnetIds[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `vpcConfig.securityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `customModelKmsKeyArn` | `status.outputs.key_arn` |
+| **AWS Subnet** | `vpcConfig.subnetIds[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `vpcConfig.securityGroupIds[]` | `status.outputs.security_group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `custom_model_arn` | ARN of the resulting custom model | An AwsBedrockProvisionedThroughput purchase's `modelArn` — the step that makes the model servable |
+| `custom_model_arn` | ARN of the resulting custom model | An AWS Bedrock Provisioned Throughput purchase's `modelArn` — the step that makes the model servable |
 | `job_status` | Job status at the end of the deploy (InProgress, Completed, Failed, Stopping, Stopped) | Deployment pipelines that gate the throughput purchase on Completed |
 
 `custom_model_name` echoes `metadata.name`, and `job_arn` is the job record's identifier — both are audit trails rather than composition inputs.
@@ -131,7 +131,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Fine-tune on private data** — the same fine-tuning shape with `vpcConfig` pinning data access to your subnets and security groups, for training sets that never traverse public networking. The trade: you now own the network path — the subnets need a route to S3 (a gateway endpoint is the usual answer). Start from the **Fine-Tune in a Private VPC** preset.
 
-**Fine-tune, buy capacity, serve** — this component produces the model, an AwsBedrockProvisionedThroughput referencing `custom_model_arn` makes it servable, and agents or applications consume the throughput's ARN. In a chart, the reference wiring orders all three.
+**Fine-tune, buy capacity, serve** — this component produces the model, an AWS Bedrock Provisioned Throughput referencing `custom_model_arn` makes it servable, and agents or applications consume the throughput's ARN. In a chart, the reference wiring orders all three.
 
 ## Works With
 

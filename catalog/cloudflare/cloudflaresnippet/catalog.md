@@ -6,20 +6,20 @@ Deploys a Cloudflare Snippet: a small JavaScript module at the zone's edge, invo
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Snippet** -- one `cloudflare_snippet` on the zone, with the inline source files and a `metadata.main_module` entry point. The snippet does nothing until a snippet rule invokes it by name
+- **Snippet** — one `cloudflare_snippet` on the zone, with the inline source files and a `metadata.main_module` entry point. The snippet does nothing until a snippet rule invokes it by name
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Snippets Edit on the target zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Snippets Edit on the target zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **A Cloudflare zone** -- provide the zone ID directly or wire `zoneId` to a Cloudflare DNS Zone resource by reference.
-- **A unique `snippetName`** -- because create is an upsert, a name that already exists in the zone is silently overwritten. Coordinate names across teams the way you coordinate Worker script names.
-- **A paid-plan zone (Pro+)** -- free zones refuse every snippet upload with "snippets are not allowed" (measured live); Pro and above include Snippets at no extra cost, with per-plan count limits the API enforces at create.
+- **A Cloudflare zone** — provide the zone ID directly or wire `zoneId` to a Cloudflare DNS Zone resource by reference.
+- **A unique `snippetName`** — because create is an upsert, a name that already exists in the zone is silently overwritten. Coordinate names across teams the way you coordinate Worker script names.
+- **A paid-plan zone (Pro+)** — free zones refuse every snippet upload with "snippets are not allowed" (measured live); Pro and above include Snippets at no extra cost, with per-plan count limits the API enforces at create.
 
 ## Deploy
 
@@ -90,13 +90,13 @@ These are the most important decisions when configuring a snippet. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -107,14 +107,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Legacy-path redirect** -- A single-file 302 snippet too small to justify a Worker, invoked by one or more rules that match the legacy paths. Start from the **Redirect snippet** preset.
+**Legacy-path redirect** — A single-file 302 snippet too small to justify a Worker, invoked by one or more rules that match the legacy paths. Start from the **Redirect snippet** preset.
 
-**Shared snippet, many rules** -- One snippet invoked by several rules with different match expressions — the rules carry the routing judgment while the snippet stays a single, testable module.
+**Shared snippet, many rules** — One snippet invoked by several rules with different match expressions — the rules carry the routing judgment while the snippet stays a single, testable module.
 
-**Header touch-up at the edge** -- A snippet that adds, strips, or rewrites headers on matched traffic; the classic case for a snippet over a Worker because there is no state and no binding, just a transform.
+**Header touch-up at the edge** — A snippet that adds, strips, or rewrites headers on matched traffic; the classic case for a snippet over a Worker because there is no state and no binding, just a transform.
 
 ## Works With
 
-- [**Cloudflare Snippet Rules**](/infra-catalog/cloudflare-snippet-rules) -- the zone's routing table that invokes this snippet by name; nothing runs without it.
-- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) -- the full Worker for logic that needs bindings, cron, or a custom domain.
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) -- the zone scope; wire `zoneId` via ValueFromRef.
+- [**Cloudflare Snippet Rules**](/infra-catalog/cloudflare-snippet-rules) — the zone's routing table that invokes this snippet by name; nothing runs without it.
+- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) — the full Worker for logic that needs bindings, cron, or a custom domain.
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone scope; wire `zoneId` by reference.

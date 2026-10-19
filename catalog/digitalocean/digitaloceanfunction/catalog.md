@@ -6,9 +6,9 @@ Deploys serverless functions as an App Platform app with a single functions comp
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **App Platform Application** -- a `digitalocean_app` named `spec.appName`
-- **Functions component** -- one functions component named `spec.functionName`, sourced from the Git remote you declared
-- **Environment variables** -- from `spec.envs`; `secret` values are stored in App Platform's secret store
+- **App Platform Application** — a `digitalocean_app` named `spec.appName`
+- **Functions component** — one functions component named `spec.functionName`, sourced from the Git remote you declared
+- **Environment variables** — from `spec.envs`; `secret` values are stored in App Platform's secret store
 
 App Platform reads `project.yml` from the repository root (or from `sourceDirectory` when set) to set runtime, memory, timeout, entrypoint, and any cron triggers.
 
@@ -16,14 +16,14 @@ App Platform reads `project.yml` from the repository root (or from `sourceDirect
 
 ### Planton Setup
 
-- **DigitalOcean Provider Connection** -- an active connection in the Connect module with a DigitalOcean API token. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **DigitalOcean Provider Connection** — an active connection in the Connect module with a DigitalOcean API token. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### DigitalOcean Account
 
 - **A Git repository** in DigitalOcean Functions layout: a `project.yml` and a packages tree. Provide a public clone URL (`git`), or a linked GitHub/GitLab/Bitbucket repo.
 - **An app name** that is 2-32 characters, starts with a letter, and is not already used by another app in the account.
-- **An App Platform region group** (for example `nyc` -- a datacenter group, not a droplet slug like `nyc3`).
+- **An App Platform region group** (for example `nyc` — a datacenter group, not a droplet slug like `nyc3`).
 
 ## Deploy
 
@@ -59,7 +59,7 @@ This clones the public hello-world sample and deploys it as an HTTP function; no
 
 ### InfraChart
 
-When the functions app belongs in a project Planton manages, use ValueFromRef to reference the project deployed in the same InfraPipeline:
+When the functions app belongs in a project Planton manages, use references to reference the project deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -74,31 +74,31 @@ spec:
 
 These are the most important decisions when configuring a functions app. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**App name vs function name** -- `appName` names the App Platform app; `functionName` names the functions component inside it. Both follow the API's rule (2-32 characters, `^[a-z][a-z0-9-]{0,30}[a-z0-9]$`), and `appName` must be unique across every app in the account. Renaming the app updates it in place, but the default `<name>-<hash>.ondigitalocean.app` URL changes with the name. Import and verification key off the app UUID (`function_id`), not either name.
+**App name vs function name** — `appName` names the App Platform app; `functionName` names the functions component inside it. Both follow the API's rule (2-32 characters, `^[a-z][a-z0-9-]{0,30}[a-z0-9]$`), and `appName` must be unique across every app in the account. Renaming the app updates it in place, but the default `<name>-<hash>.ondigitalocean.app` URL changes with the name. Import and verification key off the app UUID (`function_id`), not either name.
 
-**Source** -- exactly one of `git`, `github`, `gitlab`, or `bitbucket`; there is no container-image source for functions. The VCS-linked sources need the matching connection in the DigitalOcean control panel -- `deployOnPush` fails without it -- so `git` with a public clone URL is the right default for new accounts.
+**Source** — exactly one of `git`, `github`, `gitlab`, or `bitbucket`; there is no container-image source for functions. The VCS-linked sources need the matching connection in the DigitalOcean control panel — `deployOnPush` fails without it — so `git` with a public clone URL is the right default for new accounts.
 
-**Source directory** -- `sourceDirectory` is the directory containing `project.yml`. Leave it unset when `project.yml` is at the repository root (DigitalOcean's hello-world sample is laid out that way); set it, for example `functions/api`, only when `project.yml` lives in a subdirectory. A wrong directory produces a failed App Platform build, not a spec-validation error, so it surfaces minutes into the deploy rather than at apply time.
+**Source directory** — `sourceDirectory` is the directory containing `project.yml`. Leave it unset when `project.yml` is at the repository root (DigitalOcean's hello-world sample is laid out that way); set it, for example `functions/api`, only when `project.yml` lives in a subdirectory. A wrong directory produces a failed App Platform build, not a spec-validation error, so it surfaces minutes into the deploy rather than at apply time.
 
-**Project** -- `projectId` is create-only: changing it destroys and recreates the app. Leave it unset to use the account's default project.
+**Project** — `projectId` is create-only: changing it destroys and recreates the app. Leave it unset to use the account's default project.
 
-**Runtime, memory, timeout, schedules** -- edit `project.yml` in the repo. They are deliberately not fields on this spec: Terraform and Pulumi cannot set those knobs on `digitalocean_app`, so a spec field for them would look configurable and do nothing. To change runtime or add a cron schedule, edit `project.yml` and redeploy.
+**Runtime, memory, timeout, schedules** — edit `project.yml` in the repo. They are deliberately not fields on this spec: Terraform and Pulumi cannot set those knobs on `digitalocean_app`, so a spec field for them would look configurable and do nothing. To change runtime or add a cron schedule, edit `project.yml` and redeploy.
 
-**Environment variables** -- use `envs[].plaintext` for ordinary values and `envs[].secret` for credentials; secrets are stored in App Platform's secret store.
+**Environment variables** — use `envs[].plaintext` for ordinary values and `envs[].secret` for credentials; secrets are stored in App Platform's secret store.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **DigitalOceanProject** (optional) | `projectId` | `status.outputs.project_id` |
+| **DigitalOcean Project** (optional) | `projectId` | `status.outputs.project_id` |
 
 Sources are Git coordinates, not references; the project is the one Planton-managed resource a functions app names.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -110,9 +110,9 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Hello-world from public git** -- DigitalOcean's Node.js sample deployed from its public clone URL, no GitHub connection. The shape for proving the pipeline before pointing at your own repo. Start from the **Hello-World Function** preset.
+**Hello-world from public git** — DigitalOcean's Node.js sample deployed from its public clone URL, no GitHub connection. The shape for proving the pipeline before pointing at your own repo. Start from the **Hello-World Function** preset.
 
-**Linked GitHub with deploy-on-push** -- switch the source to `github` with `repo: owner/repo` and `deployOnPush: true` after connecting GitHub in the DigitalOcean control panel; every push to the branch redeploys the functions app.
+**Linked GitHub with deploy-on-push** — switch the source to `github` with `repo: owner/repo` and `deployOnPush: true` after connecting GitHub in the DigitalOcean control panel; every push to the branch redeploys the functions app.
 
 ## Works With
 

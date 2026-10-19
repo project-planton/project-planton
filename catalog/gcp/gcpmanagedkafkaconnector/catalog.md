@@ -1,28 +1,28 @@
 # GCP Managed Kafka Connector
 
-Declares one data pipeline between Kafka and another system -- Pub/Sub, BigQuery, Cloud Storage, or another Kafka cluster -- in the manifest of the team whose data it moves, running on a shared Connect cluster with automatic task restarts.
+Declares one data pipeline between Kafka and another system — Pub/Sub, BigQuery, Cloud Storage, or another Kafka cluster — in the manifest of the team whose data it moves, running on a shared Connect cluster with automatic task restarts.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Connector** -- a `managed_kafka_connector` on the referenced Connect cluster
+- **Connector** — a `managed_kafka_connector` on the referenced Connect cluster
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **`GcpManagedKafkaConnectCluster`** -- the Connect cluster that runs the connector (`connectCluster`).
+- **`GcpManagedKafkaConnectCluster`** — the Connect cluster that runs the connector (`connectCluster`).
 
 ### Optional Dependencies
 
-- **`GcpManagedKafkaTopic`** -- the topics a sink reads or a source writes, named in `configs`.
-- **The destination or source** -- a Pub/Sub topic, BigQuery dataset, or bucket, with the Managed Kafka service agent granted access to it.
+- **`GcpManagedKafkaTopic`** — the topics a sink reads or a source writes, named in `configs`.
+- **The destination or source** — a Pub/Sub topic, BigQuery dataset, or bucket, with the Managed Kafka service agent granted access to it.
 
 ## Deploy
 
@@ -70,24 +70,24 @@ Reference the `GcpManagedKafkaConnectCluster` from `connectCluster`; name the `G
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The plugin** -- `configs.connector.class` picks what the connector does; the rest of `configs` is that plugin's own configuration.
+**The plugin** — `configs.connector.class` picks what the connector does; the rest of `configs` is that plugin's own configuration.
 
-**Parallelism** -- `tasks.max` spreads the connector across Connect workers; a sink can use at most one task per partition.
+**Parallelism** — `tasks.max` spreads the connector across Connect workers; a sink can use at most one task per partition.
 
-**Recovery** -- `taskRestartPolicy` restarts failed tasks with exponential backoff between the two durations.
+**Recovery** — `taskRestartPolicy` restarts failed tasks with exponential backoff between the two durations.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpManagedKafkaConnectCluster** | `connectCluster` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Managed Kafka Connect Cluster** | `connectCluster` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -98,14 +98,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Kafka to Pub/Sub** -- Google's Pub/Sub sink connector publishing a topic's messages. Start from the **Pub/Sub Sink** preset.
+**Kafka to Pub/Sub** — Google's Pub/Sub sink connector publishing a topic's messages. Start from the **Pub/Sub Sink** preset.
 
-**Kafka to BigQuery** -- JSON messages streamed into BigQuery tables. Start from the **BigQuery Sink** preset.
+**Kafka to BigQuery** — JSON messages streamed into BigQuery tables. Start from the **BigQuery Sink** preset.
 
-**Cluster replication** -- Topics replicated from another Kafka cluster. Start from the **MirrorMaker 2 Source** preset.
+**Cluster replication** — Topics replicated from another Kafka cluster. Start from the **MirrorMaker 2 Source** preset.
 
 ## Works With
 
-- [**GCP Managed Kafka Connect Cluster**](/infra-catalog/gcp-managed-kafka-connect-cluster) -- the workers that run it
-- [**GCP Managed Kafka Topic**](/infra-catalog/gcp-managed-kafka-topic) -- the topics it reads or writes
-- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) -- a sink or source destination
+- [**GCP Managed Kafka Connect Cluster**](/infra-catalog/gcp-managed-kafka-connect-cluster) — the workers that run it
+- [**GCP Managed Kafka Topic**](/infra-catalog/gcp-managed-kafka-topic) — the topics it reads or writes
+- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) — a sink or source destination

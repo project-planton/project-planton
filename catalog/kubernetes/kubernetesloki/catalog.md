@@ -1,8 +1,8 @@
 # Grafana Loki
 
-Deploys Grafana Loki — horizontally scalable, cost-efficient log aggregation — from the official `loki` Helm chart. Loki indexes only the *labels* of your logs and stores the compressed content in object storage, so it stays cheap at high volume: the logs half of a complete observability stack alongside metrics (Prometheus) and traces (Tempo).
+Deploys Grafana Loki — horizontally scalable, cost-efficient log aggregation — from the official loki Helm chart. Loki indexes only the *labels* of your logs and stores the compressed content in object storage, so it stays cheap at high volume: the logs half of a complete observability stack alongside metrics (Prometheus) and traces (Tempo).
 
-The grain is deliberate: **Loki stores logs; something must ship them.** Deploy a KubernetesOtelCollector in daemonset mode with the cluster-logs pipeline (its presets carry it) pointed at this component's exported `gateway_endpoint` — and read them back by pointing a KubernetesGrafana datasource of type `loki` at the same endpoint. Everything stays ClusterIP; the nginx gateway is the one front door.
+The grain is deliberate: **Loki stores logs; something must ship them.** Deploy a OpenTelemetry Collector in daemonset mode with the cluster-logs pipeline (its presets carry it) pointed at this component's exported `gateway_endpoint` — and read them back by pointing a Grafana datasource of type `loki` at the same endpoint. Everything stays ClusterIP; the nginx gateway is the one front door.
 
 ## What Gets Created
 
@@ -60,7 +60,7 @@ This near-empty spec is a complete log store: a single-replica monolithic Loki o
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to compose Loki behind a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to compose Loki behind a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -80,7 +80,7 @@ These are the most important decisions when configuring a Loki log store. Explor
 
 **Two honest topologies — and the storage doctrine that binds them.** `monolithic` (the default when nothing is declared) runs every Loki target in one StatefulSet: right for single-node clusters, dev environments and small production volumes. `simpleScalable` splits into write/read/backend tiers that scale independently and REQUIRES object storage — the tiers rendezvous in the object store, not on a shared disk. Filesystem storage is honest ONLY for a single monolithic replica; more than one replica, or any scalable tier, requires s3/r2/gcs/azure (mirroring the chart's own validation). The chart's microservices mode is deliberately not modeled.
 
-**Object storage is keyless first.** On EKS leave the S3 credentials empty for ambient IRSA identity; on GKE the missing key Secret means workload identity; on AKS the missing account key means federated identity. Declared credentials are name+key REFERENCES to existing Secrets — the modules inject them as environment variables (S3) or a mounted key file (GCS); they never land in the rendered Loki config. The s3-compatible arm (`endpoint` + `forcePathStyle`) composes with an in-cluster KubernetesSeaweedFs. The chart's bundled MinIO subchart is deprecated by the chart itself and is never enabled by this component.
+**Object storage is keyless first.** On EKS leave the S3 credentials empty for ambient IRSA identity; on GKE the missing key Secret means workload identity; on AKS the missing account key means federated identity. Declared credentials are name+key REFERENCES to existing Secrets — the modules inject them as environment variables (S3) or a mounted key file (GCS); they never land in the rendered Loki config. The s3-compatible arm (`endpoint` + `forcePathStyle`) composes with an in-cluster SeaweedFS. The chart's bundled MinIO subchart is deprecated by the chart itself and is never enabled by this component.
 
 **THE CACHE-SIZING TRAP (verified live):** the caching defaults are production-scale. Unset, the chunks cache allocates 8192MB and the chart requests container memory at 1.2× — a **9830Mi request that never schedules** on a node with less than ~10Gi allocatable. The pod stays Pending and, because the install is atomic, the WHOLE release rolls back after its timeout. Set `chunksCacheMemoryMb` explicitly on any small or dev cluster (128–1024 is plenty for light query loads; the dev preset carries 256).
 
@@ -88,9 +88,9 @@ These are the most important decisions when configuring a Loki log store. Explor
 
 **Single-tenant by default — one line of wiring.** This kind diverges from the chart's multi-tenant-on default so pushes and queries need no `X-Scope-OrgID` header. Enable `multiTenancy` for isolation: every client then sends its tenant header, and the gateway enforces HTTP basic auth for the declared tenants (name + bcrypt htpasswd hash — one-way material, safe in a manifest; generate with `htpasswd -nbBC10`) or an existing htpasswd Secret. Basic auth AUTHENTICATES clients; each client still declares its own tenant header.
 
-**The gateway is the one front door.** It routes pushes and queries to the right internal target in every mode, and the exported endpoints assume it — disable it only when clients address the internal services directly (single-tenant monolithic only). Expose it via KubernetesIngress or Gateway API kinds over the exported handles; Loki never opens its own doors.
+**The gateway is the one front door.** It routes pushes and queries to the right internal target in every mode, and the exported endpoints assume it — disable it only when clients address the internal services directly (single-tenant monolithic only). Expose it via Kubernetes Ingress or Gateway API kinds over the exported handles; Loki never opens its own doors.
 
-**Alerting on logs** — the ruler evaluates LogQL alerting/recording rules discovered from ConfigMaps labeled `loki_rule: "1"` (the same sidecar contract Grafana dashboards use) and fires at `alertmanagerUrl` — a literal URL or a KubernetesKubePrometheusStack reference (its Alertmanager endpoint), the one-line wiring into the cluster's alerting.
+**Alerting on logs** — the ruler evaluates LogQL alerting/recording rules discovered from ConfigMaps labeled `loki_rule: "1"` (the same sidecar contract Grafana dashboards use) and fires at `alertmanagerUrl` — a literal URL or a kube-prometheus-stack reference (its Alertmanager endpoint), the one-line wiring into the cluster's alerting.
 
 **`helmValues` merges last** — the escape hatch for chart surface beyond the typed fields (bloom filters, the pattern ingester, zone-aware rollouts, per-component overrides, ruler storage tuning). Anything here silently overrides the typed fields on every deploy; never put secrets in it, and leave `fullnameOverride` alone — the naming contract the outputs derive from depends on it.
 
@@ -98,17 +98,17 @@ These are the most important decisions when configuring a Loki log store. Explor
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `monolithic.storageClass` / `simpleScalable.storageClass` | `metadata.name` |
-| **KubernetesKubePrometheusStack** | `ruler.alertmanagerUrl` | `status.outputs.alertmanager_endpoint` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `monolithic.storageClass` / `simpleScalable.storageClass` | `metadata.name` |
+| **kube-prometheus-stack** | `ruler.alertmanagerUrl` | `status.outputs.alertmanager_endpoint` |
 
 Object-store credentials (`storage.s3.credentials`, `storage.gcs.serviceAccountKeySecret`, `storage.azure.accountKeySecret`), the bring-your-own htpasswd Secret (`multiTenancy.existingHtpasswdSecret`), and `imagePullSecrets` are name+key references to EXISTING Secrets in the install namespace — not foreign keys; declare them only when ambient keyless identity (IRSA / GKE workload identity / AKS federated identity) is unavailable.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -116,7 +116,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 | `release_name` | Helm release name (= metadata.name); every child name derives from it | Operational tooling |
 | `gateway_service` | The gateway Service (`<name>-gateway`, port 80). Empty when the gateway is disabled | Ingress/Gateway exposure |
 | `gateway_endpoint` | In-cluster gateway URL — log shippers push here and Grafana `loki` datasources read here | Collector pipelines, Grafana datasources |
-| `otlp_push_endpoint` | The gateway's `/otlp` route — point a KubernetesOtelCollector otlphttp exporter here | OTLP log ingest |
+| `otlp_push_endpoint` | The gateway's `/otlp` route — point a OpenTelemetry Collector otlphttp exporter here | OTLP log ingest |
 | `loki_service` | The Loki HTTP Service (`<name>`, port 3100) — the direct internal API behind the gateway | Diagnostics, direct API clients |
 | `port_forward_command` | Copy-paste `kubectl port-forward` for the gateway | Local development access |
 

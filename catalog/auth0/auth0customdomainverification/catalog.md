@@ -6,18 +6,18 @@ Completes an Auth0 custom domain. It asks Auth0 to check the domain's DNS record
 
 When you deploy this Infra Component, the IaC module:
 
-- **Verifies the custom domain** -- Auth0 checks its DNS record and, for an Auth0-managed domain, issues its certificate
-- **Waits until the domain is ready** -- and fails naming the last status Auth0 reported if it is not ready in time
-- **Reads the verified domain back** -- its name and origin host, and the proxy key of a self-managed domain
+- **Verifies the custom domain** — Auth0 checks its DNS record and, for an Auth0-managed domain, issues its certificate
+- **Waits until the domain is ready** — and fails naming the last status Auth0 reported if it is not ready in time
+- **Reads the verified domain back** — its name and origin host, and the proxy key of a self-managed domain
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Auth0 Provider Connection** -- an active connection in the Connect module with the tenant's domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **An Auth0 Custom Domain** -- the domain to verify, referenced by `customDomainId`.
-- **The DNS record that proves it** -- for example a Cloudflare DNS Record reading the domain's `dns_record_*` outputs, declared as a `depends_on` relationship of this Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Auth0 Provider Connection** — an active connection in the Connect module with the tenant's domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **An Auth0 Custom Domain** — the domain to verify, referenced by `customDomainId`.
+- **The DNS record that proves it** — for example a Cloudflare DNS Record reading the domain's `dns_record_*` outputs, declared as a `depends_on` relationship of this Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Auth0 Account
 
@@ -60,7 +60,7 @@ When the Infra Job succeeds, the domain is ready and people can sign in on it.
 
 ### InfraChart
 
-When the custom domain, its DNS record and this verification deploy together, wire the verification to the domain with ValueFromRef and have it wait for the record, so Auth0 checks the name only once it resolves:
+When the custom domain, its DNS record and this verification deploy together, wire the verification to the domain with references and have it wait for the record, so Auth0 checks the name only once it resolves:
 
 ```yaml
 metadata:
@@ -83,11 +83,11 @@ The InfraPipeline deploys the domain first, then the DNS record whose content re
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Order it after the record** -- Auth0 can verify only a record that already resolves publicly, so declare the DNS record as a `depends_on` relationship. Keep the record DNS-only: a CDN proxy or CNAME flattening hides it from Auth0.
+**Order it after the record** — Auth0 can verify only a record that already resolves publicly, so declare the DNS record as a `depends_on` relationship. Keep the record DNS-only: a CDN proxy or CNAME flattening hides it from Auth0.
 
-**A one-time action** -- There is nothing to update. Destroying this Infra Component leaves the domain verified; destroy the Auth0 Custom Domain to remove the domain.
+**A one-time action** — There is nothing to update. Destroying this Infra Component leaves the domain verified; destroy the Auth0 Custom Domain to remove the domain.
 
-**The proxy key** -- For a self-managed domain, `cname_api_key` is the key your proxy sends to Auth0 in the `cname-api-key` header. Auth0 returns it once; Planton keeps it as a secret output.
+**The proxy key** — For a self-managed domain, `cname_api_key` is the key your proxy sends to Auth0 in the `cname-api-key` header. Auth0 returns it once; Planton keeps it as a secret output.
 
 ## Outputs and Dependencies
 
@@ -112,12 +112,12 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Verify after the record** -- The verification of an Auth0-managed domain, ordered after its Cloudflare CNAME. Start from the **Verify After the Record** preset.
+**Verify after the record** — The verification of an Auth0-managed domain, ordered after its Cloudflare CNAME. Start from the **Verify After the Record** preset.
 
-**A self-managed domain** -- The verification that hands your proxy its key. Start from the **Self-Managed Domain** preset.
+**A self-managed domain** — The verification that hands your proxy its key. Start from the **Self-Managed Domain** preset.
 
 ## Works With
 
-- [**Auth0 Custom Domain**](/infra-catalog/auth0-custom-domain) -- the domain this verifies.
-- [**Cloudflare DNS Record**](/infra-catalog/cloudflare-dns-record) -- publishes the record Auth0 checks.
-- [**Auth0 Tenant Settings**](/infra-catalog/auth0-tenant-settings) -- makes the verified domain the tenant's default.
+- [**Auth0 Custom Domain**](/infra-catalog/auth0-custom-domain) — the domain this verifies.
+- [**Cloudflare DNS Record**](/infra-catalog/cloudflare-dns-record) — publishes the record Auth0 checks.
+- [**Auth0 Tenant Settings**](/infra-catalog/auth0-tenant-settings) — makes the verified domain the tenant's default.

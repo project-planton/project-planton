@@ -1,25 +1,25 @@
 # Istio Authorization Policy
 
-Defines an Istio AuthorizationPolicy: a namespaced resource that enforces request-level access control on your mesh workloads. It decides whether a request is allowed, denied, or audited based on who the request is from, what it is doing, and additional conditions -- or hands the decision to an external authorizer. The spec is 100% faithful to the upstream `security.istio.io/v1` AuthorizationPolicy (pinned to the Istio 1.30 line), flattened directly after the Planton namespace envelope -- this is how you express zero-trust access rules inside the mesh.
+Defines an Istio AuthorizationPolicy: a namespaced resource that enforces request-level access control on your mesh workloads. It decides whether a request is allowed, denied, or audited based on who the request is from, what it is doing, and additional conditions — or hands the decision to an external authorizer. The spec is 100% faithful to the upstream `security.istio.io/v1` AuthorizationPolicy (pinned to the Istio 1.30 line), flattened directly after the Planton namespace envelope — this is how you express zero-trust access rules inside the mesh.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **An AuthorizationPolicy** -- a namespaced Istio policy that applies an action (Allow, Deny, Audit, or Custom) to the requests matched by its rules, scoped to selected workloads or to the whole namespace.
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking.
+- **An AuthorizationPolicy** — a namespaced Istio policy that applies an action (Allow, Deny, Audit, or Custom) to the requests matched by its rules, scoped to selected workloads or to the whole namespace.
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Istio installed** -- the Istio CRDs (**Istio Base CRDs**) must be present and the Istio control plane (istiod) running. The policy is only enforced where istiod is active.
-- **Target namespace exists** -- the policy is created in a specific namespace; reference an existing one or create it first.
+- **Istio installed** — the Istio CRDs (**Istio Base CRDs**) must be present and the Istio control plane (istiod) running. The policy is only enforced where istiod is active.
+- **Target namespace exists** — the policy is created in a specific namespace; reference an existing one or create it first.
 
 ## Deploy
 
@@ -76,21 +76,21 @@ spec:
   action: ALLOW
 ```
 
-The InfraPipeline creates the namespace first, then registers the policy in it. The workload selector is a plain label match resolved by istiod at runtime, not a foreign key -- to order the policy after the workload it protects, express the dependency through `metadata.relationships`.
+The InfraPipeline creates the namespace first, then registers the policy in it. The workload selector is a plain label match resolved by istiod at runtime, not a foreign key — to order the policy after the workload it protects, express the dependency through `metadata.relationships`.
 
 ## Key Configuration
 
 These are the most important decisions when configuring an authorization policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Empty rules are a verdict, not a no-op.** The action and the rules work together, and the empty cases are consequential: with **ALLOW**, once any allow policy applies to a workload, only requests that match a rule are permitted -- so an ALLOW policy with **no rules denies all traffic** to the selected workloads. With **DENY**, a policy with no rules does nothing.
+**Empty rules are a verdict, not a no-op.** The action and the rules work together, and the empty cases are consequential: with **ALLOW**, once any allow policy applies to a workload, only requests that match a rule are permitted — so an ALLOW policy with **no rules denies all traffic** to the selected workloads. With **DENY**, a policy with no rules does nothing.
 
-**Evaluation order is fixed and Deny always wins.** Across all policies on a workload, CUSTOM is evaluated first, then DENY, then ALLOW -- a Deny overrides an Allow no matter the order they were created in. Design deny rules as guardrails and allow rules as grants; they compose predictably because of this ordering.
+**Evaluation order is fixed and Deny always wins.** Across all policies on a workload, CUSTOM is evaluated first, then DENY, then ALLOW — a Deny overrides an Allow no matter the order they were created in. Design deny rules as guardrails and allow rules as grants; they compose predictably because of this ordering.
 
-**Scope: selector XOR target references.** At most one of a workload `selector` (pod labels) and `targetRefs` (Gateway, Service, ServiceEntry -- up to 16) may be set; both omitted means namespace-wide, or mesh-wide when the policy lives in the Istio root namespace. Waypoint proxies IGNORE label-selector policies -- attaching to a waypoint requires `targetRefs`.
+**Scope: selector XOR target references.** At most one of a workload `selector` (pod labels) and `targetRefs` (Gateway, Service, ServiceEntry — up to 16) may be set; both omitted means namespace-wide, or mesh-wide when the policy lives in the Istio root namespace. Waypoint proxies IGNORE label-selector policies — attaching to a waypoint requires `targetRefs`.
 
-**Rule matching is any-source, any-operation, ALL conditions.** A request matches the policy if it matches any rule; within a rule it must match at least one `from` source, at least one `to` operation, and every `when` condition. A rule that should match every request says `matchAll: true` (the empty rule on the Istio wire) -- with DENY that is a total lockout of the selected workloads; a rule that names neither a matcher nor `matchAll` is refused, so matching everything is always a written choice.
+**Rule matching is any-source, any-operation, ALL conditions.** A request matches the policy if it matches any rule; within a rule it must match at least one `from` source, at least one `to` operation, and every `when` condition. A rule that should match every request says `matchAll: true` (the empty rule on the Istio wire) — with DENY that is a total lockout of the selected workloads; a rule that names neither a matcher nor `matchAll` is refused, so matching everything is always a written choice.
 
-**CUSTOM needs a provider that already exists.** The CUSTOM action delegates to an extension provider named in the mesh's MeshConfig (`provider.name`). istiod enforces the CUSTOM-provider coupling at runtime, not at admission -- a typo in the provider name surfaces as failing requests, not a rejected manifest.
+**CUSTOM needs a provider that already exists.** The CUSTOM action delegates to an extension provider named in the mesh's MeshConfig (`provider.name`). istiod enforces the CUSTOM-provider coupling at runtime, not at admission — a typo in the provider name surfaces as failing requests, not a rejected manifest.
 
 **Identity-based rules need authentication in place.** Rules matching `principals` require mTLS (compose an **Istio Peer Authentication**); rules matching `requestPrincipals` or JWT-claim conditions require an **Istio Request Authentication** that validates the token. Without the authentication layer, identity fields never populate and identity rules never match.
 
@@ -98,13 +98,13 @@ These are the most important decisions when configuring an authorization policy.
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -115,14 +115,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Require a valid JWT principal** -- allow only requests that carry a validated request principal, locking down a workload to authenticated callers. Pair with a Request Authentication that validates the token. Start from the **Require an Authenticated JWT Principal** preset.
+**Require a valid JWT principal** — allow only requests that carry a validated request principal, locking down a workload to authenticated callers. Pair with a Request Authentication that validates the token. Start from the **Require an Authenticated JWT Principal** preset.
 
-**Front a workload with external authorization** -- use the CUSTOM action to delegate the decision to an external authorizer (for example, an ext-authz service) on ingress traffic. Start from the **Delegate to an External Authorizer (CUSTOM) on the Ingress Gateway** preset.
+**Front a workload with external authorization** — use the CUSTOM action to delegate the decision to an external authorizer (for example, an ext-authz service) on ingress traffic. Start from the **Delegate to an External Authorizer (CUSTOM) on the Ingress Gateway** preset.
 
 ## Works With
 
-- [**Istio Base CRDs**](/infra-catalog/kubernetes-istio-base-crds) -- the CRD prerequisite; the policy kind must exist before this resource can be applied.
-- [**Istio**](/infra-catalog/kubernetes-istio) -- the control plane that enforces the policy; nothing is enforced where istiod is not active.
-- [**Istio Request Authentication**](/infra-catalog/kubernetes-request-authentication) -- validates JWTs so rules can match `requestPrincipals` and JWT-claim conditions.
-- [**Istio Peer Authentication**](/infra-catalog/kubernetes-peer-authentication) -- enforces mTLS so rules can match peer `principals` and `namespaces`.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target the policy is registered in.
+- [**Istio Base CRDs**](/infra-catalog/kubernetes-istio-base-crds) — the CRD prerequisite; the policy kind must exist before this resource can be applied.
+- [**Istio**](/infra-catalog/kubernetes-istio) — the control plane that enforces the policy; nothing is enforced where istiod is not active.
+- [**Istio Request Authentication**](/infra-catalog/kubernetes-request-authentication) — validates JWTs so rules can match `requestPrincipals` and JWT-claim conditions.
+- [**Istio Peer Authentication**](/infra-catalog/kubernetes-peer-authentication) — enforces mTLS so rules can match peer `principals` and `namespaces`.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target the policy is registered in.

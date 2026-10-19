@@ -1,21 +1,21 @@
 # Stripe Tax Rate
 
-Declares a manual tax rate -- German VAT at 19%, New York sales tax -- that invoices, subscriptions, Checkout sessions and payment links apply. One Infra Component per rate.
+Declares a manual tax rate — German VAT at 19%, New York sales tax — that invoices, subscriptions, Checkout sessions and payment links apply. One Infra Component per rate.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one tax rate in the Stripe account your Stripe connection's key belongs to:
 
-- **The rate** -- a percentage, included in the amount or added on top
-- **Where it applies** -- a country, a state, a jurisdiction
-- **How it reads on invoices** -- its display name and tax type
+- **The rate** — a percentage, included in the amount or added on top
+- **Where it applies** — a country, a state, a jurisdiction
+- **How it reads on invoices** — its display name and tax type
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -56,11 +56,11 @@ An Infra Job tracks the change in real time.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The rate is fixed** -- changing the percentage or inclusiveness creates a new tax rate; subscriptions keep the old one until you move them.
+**The rate is fixed** — changing the percentage or inclusiveness creates a new tax rate; subscriptions keep the old one until you move them.
 
-**Everything else changes in place** -- name, description, country, state, jurisdiction and tax type.
+**Everything else changes in place** — name, description, country, state, jurisdiction and tax type.
 
-**Destroy deactivates** -- the rate still applies wherever it is already used.
+**Destroy deactivates** — the rate still applies wherever it is already used.
 
 ## Outputs and Dependencies
 
@@ -81,11 +81,11 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**EU VAT** -- a country's standard VAT rate, added on top. Start from the **EU VAT, Exclusive** preset.
+**EU VAT** — a country's standard VAT rate, added on top. Start from the **EU VAT, Exclusive** preset.
 
-**US sales tax** -- a state and city rate. Start from the **US Sales Tax** preset.
+**US sales tax** — a state and city rate. Start from the **US Sales Tax** preset.
 
 ## Works With
 
-- [**Stripe Price**](/infra-catalog/stripe-price) -- the prices the rate is applied to.
-- [**Stripe Shipping Rate**](/infra-catalog/stripe-shipping-rate) -- shipping that may be taxed too.
+- [**Stripe Price**](/infra-catalog/stripe-price) — the prices the rate is applied to.
+- [**Stripe Shipping Rate**](/infra-catalog/stripe-shipping-rate) — shipping that may be taxed too.

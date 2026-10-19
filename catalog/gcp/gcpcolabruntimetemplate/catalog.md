@@ -1,25 +1,25 @@
 # GCP Colab Runtime Template
 
-Gives your data scientists pre-approved notebook machines. A Colab Enterprise runtime template captures everything a notebook runtime needs -- the machine and GPU, the disk, a private network, encryption, the Colab image, and an idle shutdown that stops forgotten notebooks from running up the bill -- so every runtime your team starts from it follows the rules without anyone configuring a VM.
+Gives your data scientists pre-approved notebook machines. A Colab Enterprise runtime template captures everything a notebook runtime needs — the machine and GPU, the disk, a private network, encryption, the Colab image, and an idle shutdown that stops forgotten notebooks from running up the bill — so every runtime your team starts from it follows the rules without anyone configuring a VM.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **Runtime template** -- a `colab.RuntimeTemplate` with the declared settings
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **Runtime template** — a `colab.RuntimeTemplate` with the declared settings
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpVpcNetwork** / **GcpSubnetwork** -- private networking for runtimes.
-- **GcpKmsKey** -- customer-managed encryption for runtime disks.
+- **GCP VPC Network** / **GCP Subnetwork** — private networking for runtimes.
+- **GCP KMS Key** — customer-managed encryption for runtime disks.
 
 ## Deploy
 
@@ -62,28 +62,28 @@ Reference the template's `name` output from a `GcpColabRuntime` or a `GcpColabSc
 
 These are the most important decisions when configuring a template. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The machine** -- `machineSpec` picks the machine type and any GPU. It is fixed; publish a second template for a second size.
+**The machine** — `machineSpec` picks the machine type and any GPU. It is fixed; publish a second template for a second size.
 
-**Idle shutdown** -- `idleTimeout` stops runtimes nobody is using. It is the biggest lever on notebook spend.
+**Idle shutdown** — `idleTimeout` stops runtimes nobody is using. It is the biggest lever on notebook spend.
 
-**Network posture** -- `networkSpec` decides whether runtimes get a public internet path or live on your private subnetwork.
+**Network posture** — `networkSpec` decides whether runtimes get a public internet path or live on your private subnetwork.
 
-**Security** -- `eucDisabled` keeps users' own credentials out of the runtime, `enableSecureBoot` turns on Shielded VM Secure Boot, and `kmsKeyName` encrypts disks under your key.
+**Security** — `eucDisabled` keeps users' own credentials out of the runtime, `enableSecureBoot` turns on Shielded VM Secure Boot, and `kmsKeyName` encrypts disks under your key.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `networkSpec.network` | `status.outputs.network_id` |
-| **GcpSubnetwork** | `networkSpec.subnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `networkSpec.network` | `status.outputs.network_id` |
+| **GCP Subnetwork** | `networkSpec.subnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -95,13 +95,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Standard CPU** -- a mid-size CPU machine with a one-hour idle shutdown, for everyday notebooks. Start from the **Standard CPU** preset.
+**Standard CPU** — a mid-size CPU machine with a one-hour idle shutdown, for everyday notebooks. Start from the **Standard CPU** preset.
 
-**Private GPU** -- a T4 GPU on your private subnetwork with no internet path, user credentials blocked, Secure Boot, and CMEK. Start from the **Private GPU** preset.
+**Private GPU** — a T4 GPU on your private subnetwork with no internet path, user credentials blocked, Secure Boot, and CMEK. Start from the **Private GPU** preset.
 
 ## Works With
 
-- [**GCP Colab Runtime**](/infra-catalog/gcp-colab-runtime) -- runtimes assigned from the template
-- [**GCP Colab Schedule**](/infra-catalog/gcp-colab-schedule) -- scheduled notebook runs
-- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- private networking
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
+- [**GCP Colab Runtime**](/infra-catalog/gcp-colab-runtime) — runtimes assigned from the template
+- [**GCP Colab Schedule**](/infra-catalog/gcp-colab-schedule) — scheduled notebook runs
+- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — private networking
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption

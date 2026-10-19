@@ -6,15 +6,15 @@ Installs the Karpenter node-provisioning controller from the official OCI-served
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **CRD Helm Release** (`karpenter-crd`) -- the NodePool, NodeClaim, and EC2NodeClass definitions as their own release — upstream's supported path for keeping CRDs upgradable — annotated to survive uninstall by default, so removing the release does not cascade-delete every fleet declaration in the cluster
-- **Controller Helm Release** (`karpenter`) -- the controller Deployment (chart default 2 replicas: leader plus warm standby), RBAC, and the `karpenter` service account; the chart pins controller pods away from Karpenter-provisioned nodes so the controller never disrupts its own machine
-- **Namespace** (optional) -- created with standard governance labels when `createNamespace` is true; a pre-existing `kube-system` is upstream's recommended home
+- **CRD Helm Release** (`karpenter-crd`) — the NodePool, NodeClaim, and EC2NodeClass definitions as their own release — upstream's supported path for keeping CRDs upgradable — annotated to survive uninstall by default, so removing the release does not cascade-delete every fleet declaration in the cluster
+- **Controller Helm Release** (`karpenter`) — the controller Deployment (chart default 2 replicas: leader plus warm standby), RBAC, and the `karpenter` service account; the chart pins controller pods away from Karpenter-provisioned nodes so the controller never disrupts its own machine
+- **Namespace** (optional) — created with standard governance labels when `createNamespace` is true; a pre-existing `kube-system` is upstream's recommended home
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### AWS / Cluster
 
@@ -83,30 +83,30 @@ The InfraPipeline creates the IAM role first, then installs the controller with 
 
 These are the most important decisions when configuring Karpenter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The controller needs unmanaged capacity** -- Karpenter cannot run on nodes it provisions (it would disrupt its own machine). Keep a small managed node group or Fargate profile for the controller pods.
+**The controller needs unmanaged capacity** — Karpenter cannot run on nodes it provisions (it would disrupt its own machine). Keep a small managed node group or Fargate profile for the controller pods.
 
-**Cluster identity** -- the cluster name (and the EKS control-plane flag) tell the controller which cluster to provision for; the AWS arm carries the IRSA role and the interruption queue.
+**Cluster identity** — the cluster name (and the EKS control-plane flag) tell the controller which cluster to provision for; the AWS arm carries the IRSA role and the interruption queue.
 
-**CRDs are their own release** -- the `karpenter-crd` chart keeps the fleet definitions upgradable independently of the controller, and kept CRDs mean uninstalling the controller never deletes the cluster's NodePool and EC2NodeClass declarations.
+**CRDs are their own release** — the `karpenter-crd` chart keeps the fleet definitions upgradable independently of the controller, and kept CRDs mean uninstalling the controller never deletes the cluster's NodePool and EC2NodeClass declarations.
 
-**Pick one fleet controller** -- Karpenter and Cluster Autoscaler must not manage the same capacity. Karpenter suits clusters that want just-in-time, right-sized nodes; Cluster Autoscaler suits pre-defined node groups.
+**Pick one fleet controller** — Karpenter and Cluster Autoscaler must not manage the same capacity. Karpenter suits clusters that want just-in-time, right-sized nodes; Cluster Autoscaler suits pre-defined node groups.
 
-**Interruption handling before spot at scale** -- the SQS queue lets the controller drain nodes ahead of spot reclaims and scheduled maintenance instead of losing them mid-flight.
+**Interruption handling before spot at scale** — the SQS queue lets the controller drain nodes ahead of spot reclaims and scheduled maintenance instead of losing them mid-flight.
 
-**The escape hatch** -- `helmValues` carries additional chart values as a YAML document, merged LAST over everything the typed fields render — never the substitute for typed fields, never a place for secrets.
+**The escape hatch** — `helmValues` carries additional chart values as a YAML document, merged LAST over everything the typed fields render — never the substitute for typed fields, never a place for secrets.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **AwsIamRole** | `aws.irsaRoleArn` | `status.outputs.role_arn` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **AWS IAM Role** | `aws.irsaRoleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -119,16 +119,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**EKS standard** -- `kube-system` home, IRSA identity, interruption queue wired. Start from the **EKS Standard** preset.
+**EKS standard** — `kube-system` home, IRSA identity, interruption queue wired. Start from the **EKS Standard** preset.
 
-**Isolated VPC** -- private clusters that pull images through a mirror and reach AWS APIs through VPC endpoints. Start from the **EKS Isolated VPC** preset.
+**Isolated VPC** — private clusters that pull images through a mirror and reach AWS APIs through VPC endpoints. Start from the **EKS Isolated VPC** preset.
 
-**Load-bearing provisioning** -- explicit controller sizing, priority, and Prometheus telemetry for provisioning-latency and disruption-decision visibility. Start from the **HA Tuned** preset.
+**Load-bearing provisioning** — explicit controller sizing, priority, and Prometheus telemetry for provisioning-latency and disruption-decision visibility. Start from the **HA Tuned** preset.
 
 ## Works With
 
-- [**Karpenter EC2 Node Class**](/infra-catalog/kubernetes-karpenter-ec2-node-class) -- the machine template (AMI, networking, storage, IAM) the fleet launches from; declare it right after the controller
-- [**Karpenter Node Pool**](/infra-catalog/kubernetes-karpenter-node-pool) -- the fleet constraints (instance families, capacity types, limits, disruption policy); one class typically serves several pools
-- [**AWS IAM Role**](/infra-catalog/aws-iam-role) -- the controller's IRSA identity; wire `irsaRoleArn` from its `role_arn` output
-- [**Cluster Autoscaler**](/infra-catalog/kubernetes-cluster-autoscaler) -- the alternative fleet controller for pre-defined node groups; never both on the same capacity
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- pending pods from any workload trigger provisioning; no per-workload wiring needed
+- [**Karpenter EC2 Node Class**](/infra-catalog/kubernetes-karpenter-ec2-node-class) — the machine template (AMI, networking, storage, IAM) the fleet launches from; declare it right after the controller
+- [**Karpenter Node Pool**](/infra-catalog/kubernetes-karpenter-node-pool) — the fleet constraints (instance families, capacity types, limits, disruption policy); one class typically serves several pools
+- [**AWS IAM Role**](/infra-catalog/aws-iam-role) — the controller's IRSA identity; wire `irsaRoleArn` from its `role_arn` output
+- [**Cluster Autoscaler**](/infra-catalog/kubernetes-cluster-autoscaler) — the alternative fleet controller for pre-defined node groups; never both on the same capacity
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — pending pods from any workload trigger provisioning; no per-workload wiring needed

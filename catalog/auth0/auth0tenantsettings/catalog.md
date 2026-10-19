@@ -6,17 +6,17 @@ Sets how an existing Auth0 tenant presents itself and behaves: the name Universa
 
 Nothing new: a tenant can't be created or deleted through Auth0's Management API. When you deploy this Infra Component, the IaC module sets the settings of the tenant your Auth0 connection's credential belongs to:
 
-- **Friendly name** -- the name in "Log in to *friendly name* to continue to *application*", and in the emails Auth0 sends for the tenant
-- **Logo** -- shown on the login and consent pages instead of Auth0's
-- **Support email and page** -- offered to people who can't sign in
-- **Languages** -- the languages its pages and emails are offered in, the default first
-- **Sessions** -- how long a login lasts, how long it survives unused, and whether it outlives the browser
-- **OAuth and OpenID Connect** -- Client ID Metadata Document registration, the `resource` parameter, pushed authorization requests, accepted ACR values, the login route, logout URLs and logout discovery, mTLS
-- **Defaults** -- the API every token is for and the connection the password grant uses, when a request names none, and default token quotas
-- **Sign-in and MFA** -- MFA factor choice in Actions, the unified phone provider, a phone country filter
-- **Error page** -- your own page, or Auth0's with or without a log link
-- **Flags** -- Dynamic Client Registration, application connections, legacy grant types, and the tenant's other switches
-- **Default domain** -- the domain the tenant's emails link to, when you set one
+- **Friendly name** — the name in "Log in to *friendly name* to continue to *application*", and in the emails Auth0 sends for the tenant
+- **Logo** — shown on the login and consent pages instead of Auth0's
+- **Support email and page** — offered to people who can't sign in
+- **Languages** — the languages its pages and emails are offered in, the default first
+- **Sessions** — how long a login lasts, how long it survives unused, and whether it outlives the browser
+- **OAuth and OpenID Connect** — Client ID Metadata Document registration, the `resource` parameter, pushed authorization requests, accepted ACR values, the login route, logout URLs and logout discovery, mTLS
+- **Defaults** — the API every token is for and the connection the password grant uses, when a request names none, and default token quotas
+- **Sign-in and MFA** — MFA factor choice in Actions, the unified phone provider, a phone country filter
+- **Error page** — your own page, or Auth0's with or without a log link
+- **Flags** — Dynamic Client Registration, application connections, legacy grant types, and the tenant's other switches
+- **Default domain** — the domain the tenant's emails link to, when you set one
 
 Only what you set is changed; every other setting keeps its value.
 
@@ -24,8 +24,8 @@ Only what you set is changed; every other setting keeps its value.
 
 ### Planton Setup
 
-- **Auth0 Provider Connection** -- an active connection in the Connect module with the tenant's domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Auth0 Provider Connection** — an active connection in the Connect module with the tenant's domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Auth0 Account
 
@@ -64,7 +64,7 @@ The tenant's login page reads "Log in to Acme to continue to *application*" with
 
 ### InfraChart
 
-When the tenant's settings deploy beside the API, the connection and the custom domain they name, wire each by ValueFromRef so the pipeline applies the settings after what they point at:
+When the tenant's settings deploy beside the API, the connection and the custom domain they name, wire each by reference so the pipeline applies the settings after what they point at:
 
 ```yaml
 spec:
@@ -92,19 +92,19 @@ The InfraPipeline resolves the graph, deploys the API, the connection and the ve
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Unset is unmanaged** -- Every field is optional; a field you leave out is never sent, and the tenant keeps its current value. Set at least one.
+**Unset is unmanaged** — Every field is optional; a field you leave out is never sent, and the tenant keeps its current value. Set at least one.
 
-**Declare what the provider resets** -- Six settings are the exception: on the first deploy the provider clears the tenant's error page, default token quotas, phone country filter, non-verifiable callback prompt and mTLS aliases when you leave them unset, and keeps planning to remove a login route (`defaultRedirectionUri`) you leave unset. Read the tenant's live values and declare them first.
+**Declare what the provider resets** — Six settings are the exception: on the first deploy the provider clears the tenant's error page, default token quotas, phone country filter, non-verifiable callback prompt and mTLS aliases when you leave them unset, and keeps planning to remove a login route (`defaultRedirectionUri`) you leave unset. Read the tenant's live values and declare them first.
 
-**Sessions** -- `idleSessionLifetime` (hours unused) and `sessionLifetime` (hours in all) decide how often people sign in again; `sessionCookie.mode` whether closing the browser ends the session. Auth0 caps both lifetimes lower outside the Enterprise plan.
+**Sessions** — `idleSessionLifetime` (hours unused) and `sessionLifetime` (hours in all) decide how often people sign in again; `sessionCookie.mode` whether closing the browser ends the session. Auth0 caps both lifetimes lower outside the Enterprise plan.
 
-**Opening the tenant to MCP clients** -- `clientIdMetadataDocumentSupported`, `resourceParameterProfile: compatibility` and `flags.enableDynamicClientRegistration` let an MCP client register itself and ask for a token for your API. Dynamic registration is open to anyone: configure the tenant's default third-party permissions first.
+**Opening the tenant to MCP clients** — `clientIdMetadataDocumentSupported`, `resourceParameterProfile: compatibility` and `flags.enableDynamicClientRegistration` let an MCP client register itself and ask for a token for your API. Dynamic registration is open to anyone: configure the tenant's default third-party permissions first.
 
-**The other half of the sentence** -- Universal Login names the application after the Auth0 client. Give each client a people-facing name with the Auth0 Client kind's `name`, so the page reads "Log in to Acme to continue to Acme Console".
+**The other half of the sentence** — Universal Login names the application after the Auth0 client. Give each client a people-facing name with the Auth0 Client kind's `name`, so the page reads "Log in to Acme to continue to Acme Console".
 
-**Email links on your domain** -- Set `defaultCustomDomain` to a verified custom domain (reference the Auth0 Custom Domain Verification's `domain` output), so verification and password-reset emails link to your domain. The credential then also needs `read:custom_domains` and `update:custom_domains`.
+**Email links on your domain** — Set `defaultCustomDomain` to a verified custom domain (reference the Auth0 Custom Domain Verification's `domain` output), so verification and password-reset emails link to your domain. The credential then also needs `read:custom_domains` and `update:custom_domains`.
 
-**Destroy leaves the settings in place** -- Auth0 has no delete for tenant settings, so destroying this Infra Component stops managing them and keeps their last-applied values. To return a setting to a specific value, set that value before removing the field or the resource.
+**Destroy leaves the settings in place** — Auth0 has no delete for tenant settings, so destroying this Infra Component stops managing them and keeps their last-applied values. To return a setting to a specific value, set that value before removing the field or the resource.
 
 ## Outputs and Dependencies
 
@@ -144,15 +144,15 @@ After provisioning, `status.outputs` contains the settings as the tenant carries
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Product-branded login** -- The tenant introduces itself as your product, with your logo and your support contacts. Start from the **Product-Branded Login** preset.
+**Product-branded login** — The tenant introduces itself as your product, with your logo and your support contacts. Start from the **Product-Branded Login** preset.
 
-**MCP-ready tenant** -- MCP clients register themselves and ask for tokens with the `resource` parameter. Start from the **MCP-Ready Tenant** preset.
+**MCP-ready tenant** — MCP clients register themselves and ask for tokens with the `resource` parameter. Start from the **MCP-Ready Tenant** preset.
 
-**Short idle sessions** -- A session left unused for an hour ends; every session ends after a day. Start from the **Short Idle Sessions** preset.
+**Short idle sessions** — A session left unused for an hour ends; every session ends after a day. Start from the **Short Idle Sessions** preset.
 
 ## Works With
 
-- [**Auth0 Client (Application)**](/infra-catalog/auth0-client) -- names the application in the login page's sentence.
-- [**Auth0 Connection**](/infra-catalog/auth0-connection) -- the sign-in methods the branded page offers, and the tenant's default directory.
-- [**Auth0 Resource Server**](/infra-catalog/auth0-resource-server) -- the API the tenant's default audience names.
-- [**Auth0 Custom Domain Verification**](/infra-catalog/auth0-custom-domain-verification) -- the verified domain the tenant's emails link to.
+- [**Auth0 Client (Application)**](/infra-catalog/auth0-client) — names the application in the login page's sentence.
+- [**Auth0 Connection**](/infra-catalog/auth0-connection) — the sign-in methods the branded page offers, and the tenant's default directory.
+- [**Auth0 Resource Server**](/infra-catalog/auth0-resource-server) — the API the tenant's default audience names.
+- [**Auth0 Custom Domain Verification**](/infra-catalog/auth0-custom-domain-verification) — the verified domain the tenant's emails link to.

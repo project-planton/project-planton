@@ -6,8 +6,8 @@ Deploys an Azure Application Security Group (ASG) — a named, logical grouping 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Application Security Group** -- the named grouping anchor, holding no members and no rules of its own
-- **Azure Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
+- **Application Security Group** — the named grouping anchor, holding no members and no rules of its own
+- **Azure Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
 
 Memberships and rules are NOT created here — a NIC joins from its own spec (`applicationSecurityGroupIds`), and NSG rules target the group from theirs. That inversion is what makes the ASG a stable composition anchor: created once, referenced by many, each with its own lifecycle.
 
@@ -15,12 +15,12 @@ Memberships and rules are NOT created here — a NIC joins from its own spec (`a
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **An Azure Resource Group** where the group will be created. Provide the name directly or reference an AzureResourceGroup Infra Component via ValueFromRef.
+- **An Azure Resource Group** where the group will be created. Provide the name directly or reference an Azure Resource Group Infra Component.
 - **A naming plan**: one group per workload ROLE (web, app-tier, db) — the names become the vocabulary your NSG rules are written in.
 
 ## Deploy
@@ -57,7 +57,7 @@ This creates one empty role-named group ready for NICs to join and NSG rules to 
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the group to its dependencies:
+When deploying as part of a multi-resource environment, use references to wire the group to its dependencies:
 
 ```yaml
 spec:
@@ -74,40 +74,40 @@ The InfraPipeline resolves the dependency graph, deploys the resource group firs
 
 These are the most important decisions when configuring an Application Security Group. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Name** -- the workload role's identity ("web", "app-tier", "db"), unique within the resource group, up to 80 characters following ARM's Microsoft.Network naming contract. The name IS the security vocabulary — NSG rules read it as intent — so name the role, never a machine. Renaming replaces the group, and every rule and NIC that referenced it must be re-pointed.
+**Name** — the workload role's identity ("web", "app-tier", "db"), unique within the resource group, up to 80 characters following ARM's Microsoft.Network naming contract. The name IS the security vocabulary — NSG rules read it as intent — so name the role, never a machine. Renaming replaces the group, and every rule and NIC that referenced it must be re-pointed.
 
-**Region** -- an ASG can only be joined by network interfaces in the same region. A multi-region application stamps the same tier groups per region so the rule vocabulary stays identical everywhere.
+**Region** — an ASG can only be joined by network interfaces in the same region. A multi-region application stamps the same tier groups per region so the rule vocabulary stays identical everywhere.
 
-**Tags** -- the ONLY field on an ASG that updates in place; everything else is fixed at creation.
+**Tags** — the ONLY field on an ASG that updates in place; everything else is fixed at creation.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `application_security_group_id` | Azure Resource Manager ID of the group | AzureNetworkInterface `applicationSecurityGroupIds` (membership), NSG rule source/destination groups (targeting) |
+| `application_security_group_id` | Azure Resource Manager ID of the group | Azure Network Interface `applicationSecurityGroupIds` (membership), NSG rule source/destination groups (targeting) |
 | `application_security_group_name` | Name of the group | Automation scripts, inventory |
 
 ## Common Patterns
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Workload tier** -- one group per application tier ("web", "app-tier", "db"); each tier's NICs join their group and the NSG rules read as an architecture diagram. Start from the **Workload Tier Group** preset.
+**Workload tier** — one group per application tier ("web", "app-tier", "db"); each tier's NICs join their group and the NSG rules read as an architecture diagram. Start from the **Workload Tier Group** preset.
 
-**Tagged governance** -- the same role-named group with the ownership tags your Azure Policy regime enforces, for organizations that gate deployments on tag compliance. Start from the **Governed Data-Tier Group** preset.
+**Tagged governance** — the same role-named group with the ownership tags your Azure Policy regime enforces, for organizations that gate deployments on tag compliance. Start from the **Governed Data-Tier Group** preset.
 
 ## Works With
 
-- [**Azure Resource Group**](/infra-catalog/azure-resource-group) -- provides the resource group where the ASG is created
-- [**Azure Network Interface**](/infra-catalog/azure-network-interface) -- joins the group by referencing its `application_security_group_id` output (membership lives on the NIC)
-- [**Azure Network Security Group**](/infra-catalog/azure-network-security-group) -- targets the group in security rules as source/destination, turning CIDR rules into role rules
-- [**Azure Virtual Machine**](/infra-catalog/azure-virtual-machine) -- the workload whose NICs carry the memberships that make the group mean something
+- [**Azure Resource Group**](/infra-catalog/azure-resource-group) — provides the resource group where the ASG is created
+- [**Azure Network Interface**](/infra-catalog/azure-network-interface) — joins the group by referencing its `application_security_group_id` output (membership lives on the NIC)
+- [**Azure Network Security Group**](/infra-catalog/azure-network-security-group) — targets the group in security rules as source/destination, turning CIDR rules into role rules
+- [**Azure Virtual Machine**](/infra-catalog/azure-virtual-machine) — the workload whose NICs carry the memberships that make the group mean something

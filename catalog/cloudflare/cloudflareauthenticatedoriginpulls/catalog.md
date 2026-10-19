@@ -53,7 +53,7 @@ This enables Authenticated Origin Pulls for the whole zone using the zone-level 
 
 ### InfraChart
 
-When composing the zone and per-hostname certificates in one InfraPipeline, wire the references with ValueFromRef:
+When composing the zone and per-hostname certificates in one InfraPipeline, wire the references:
 
 ```yaml
 spec:
@@ -94,10 +94,10 @@ These are the most important decisions when configuring Authenticated Origin Pul
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
-| **CloudflareAuthenticatedOriginPullsCertificate** (required per association row) | `hostnameAssociations[].certificateId` | `status.outputs.certificate_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare Authenticated Origin Pulls Certificate** (required per association row) | `hostnameAssociations[].certificateId` | `status.outputs.certificate_id` |
 
 ### What This Kind Provides
 
@@ -109,12 +109,12 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Zone-wide enablement** — the first step of locking the origin down to Cloudflare-only traffic: one toggle, the zone-level client certificate, every hostname covered. Start from the **Zone-wide toggle** preset.
 
-**Per-hostname pinning** — associations pinning each hostname to its own uploaded certificate, for zones where different origins validate against different client certificates. Wire `certificateId` from the certificate upload via ValueFromRef.
+**Per-hostname pinning** — associations pinning each hostname to its own uploaded certificate, for zones where different origins validate against different client certificates. Wire `certificateId` from the certificate upload by reference.
 
 **Staged disablement** — keep a hostname's row present with `enabled: false` while the origin's validation is being reworked, then flip it back — the association survives without being active.
 
 ## Works With
 
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone whose AOP surface this manages; wire `zoneId` via ValueFromRef
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone whose AOP surface this manages; wire `zoneId` by reference
 - [**Cloudflare Authenticated Origin Pulls Certificate**](/infra-catalog/cloudflare-authenticated-origin-pulls-certificate) — the uploaded client certificates association rows pin
 - [**Cloudflare mTLS Certificate**](/infra-catalog/cloudflare-mtls-certificate) — account-level CA material for validating per-hostname client certificates

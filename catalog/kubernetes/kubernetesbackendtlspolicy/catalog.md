@@ -112,11 +112,11 @@ These are the most important decisions when configuring a backend TLS policy. Ex
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesService** | `targetRefs[].name` | `status.outputs.service_name` |
-| **KubernetesConfigMap** | `validation.caCertificateRefs[].name` | `status.outputs.configmap_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes Service** | `targetRefs[].name` | `status.outputs.service_name` |
+| **Kubernetes ConfigMap** | `validation.caCertificateRefs[].name` | `status.outputs.configmap_name` |
 
 ### What This Kind Provides
 

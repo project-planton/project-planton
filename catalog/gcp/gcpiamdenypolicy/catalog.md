@@ -6,7 +6,7 @@ Creates an IAM deny policy — rules that BLOCK principals from using specific p
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Deny Policy** -- a `google_iam_deny_policy` attached to the configured parent, carrying the deny rules (denied principals, denied permissions, exceptions, and optional tag-based conditions)
+- **Deny Policy** — a `google_iam_deny_policy` attached to the configured parent, carrying the deny rules (denied principals, denied permissions, exceptions, and optional tag-based conditions)
 
 No API-enablement resource — deny policies live on the always-on IAM v2 surface.
 
@@ -14,8 +14,8 @@ No API-enablement resource — deny policies live on the always-on IAM v2 surfac
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target attach point.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target attach point.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Project
 
@@ -78,26 +78,26 @@ The InfraPipeline creates the project first, then attaches the guardrail to it.
 
 These are the most important decisions when configuring a deny policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Attach point** -- `parent` takes exactly one of `projectId`, `folderId`, or `organizationId`; empty means the provider's default project. The module renders the URL-ENCODED full resource name GCP's API expects (e.g. `cloudresourcemanager.googleapis.com%2Fprojects%2Fmy-project`) so manifests never hand-assemble it.
+**Attach point** — `parent` takes exactly one of `projectId`, `folderId`, or `organizationId`; empty means the provider's default project. The module renders the URL-ENCODED full resource name GCP's API expects (e.g. `cloudresourcemanager.googleapis.com%2Fprojects%2Fmy-project`) so manifests never hand-assemble it.
 
-**Rules** -- each rule names the denied principals (v2 principal formats like `principalSet://goog/public:all`), the denied permissions (`{service-fqdn}/{resource}.{verb}`, from Google's supported list), exception lists for both, and an optional CEL `denialCondition` evaluated on resource tags.
+**Rules** — each rule names the denied principals (v2 principal formats like `principalSet://goog/public:all`), the denied permissions (`{service-fqdn}/{resource}.{verb}`, from Google's supported list), exception lists for both, and an optional CEL `denialCondition` evaluated on resource tags.
 
-**Exceptions are the break-glass path** -- `exceptionPrincipals` carves identities out of the denial even when `deniedPrincipals` covers them; a permission in both `deniedPermissions` and `exceptionPermissions` is NOT denied.
+**Exceptions are the break-glass path** — `exceptionPrincipals` carves identities out of the denial even when `deniedPrincipals` covers them; a permission in both `deniedPermissions` and `exceptionPermissions` is NOT denied.
 
-**Deletion policy** -- prefer `PREVENT` for production guardrails: silently removing a deny policy re-opens the surface it guards.
+**Deletion policy** — prefer `PREVENT` for production guardrails: silently removing a deny policy re-opens the surface it guards.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `parent.projectId` | `status.outputs.project_id` |
-| **GcpFolder** (optional) | `parent.folderId` | `status.outputs.folder_id` |
+| **GCP Project** (optional) | `parent.projectId` | `status.outputs.project_id` |
+| **GCP Folder** (optional) | `parent.folderId` | `status.outputs.folder_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -108,12 +108,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Guard break-glass secrets** -- deny secret-version access to everyone except the break-glass account, with `PREVENT` so the guardrail cannot vanish silently. Start from the **Guard Secret Access** preset.
+**Guard break-glass secrets** — deny secret-version access to everyone except the break-glass account, with `PREVENT` so the guardrail cannot vanish silently. Start from the **Guard Secret Access** preset.
 
-**Block destructive APIs org-wide** -- deny project deletion across the organization, with a tag condition exempting sandbox resources. Start from the **Block Destructive APIs** preset.
+**Block destructive APIs org-wide** — deny project deletion across the organization, with a tag condition exempting sandbox resources. Start from the **Block Destructive APIs** preset.
 
 ## Works With
 
-- [**GCP Project**](/infra-catalog/gcp-project) -- provides a project attach point
-- [**GCP Project IAM Member**](/infra-catalog/gcp-project-iam-member) -- the allow side of IAM; deny policies override its grants
-- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) -- the break-glass secrets deny policies typically guard
+- [**GCP Project**](/infra-catalog/gcp-project) — provides a project attach point
+- [**GCP Project IAM Member**](/infra-catalog/gcp-project-iam-member) — the allow side of IAM; deny policies override its grants
+- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) — the break-glass secrets deny policies typically guard

@@ -89,7 +89,7 @@ This creates a web-tier ACL on both public subnets: HTTPS and ephemeral-port rep
 
 ### InfraChart
 
-When the ACL deploys alongside its VPC and subnets in one chart, wire the references via ValueFromRef:
+When the ACL deploys alongside its VPC and subnets in one chart, wire the references:
 
 ```yaml
 spec:
@@ -135,14 +135,14 @@ These are the most important decisions when configuring a network ACL. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsVpc** | `vpcId` | `status.outputs.vpc_id` |
-| **AwsSubnet** | `subnetIds` | `status.outputs.subnet_id` |
+| **AWS VPC** | `vpcId` | `status.outputs.vpc_id` |
+| **AWS Subnet** | `subnetIds` | `status.outputs.subnet_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

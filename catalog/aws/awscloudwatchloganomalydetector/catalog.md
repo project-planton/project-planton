@@ -17,8 +17,8 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **The log group to train on** — reference an AwsCloudwatchLogGroup's `log_group_arn` output or pass a literal group ARN (the bare ARN, no `:*` suffix).
-- **A KMS key** (only for encrypted findings) — a customer-managed key for `kmsKeyId`; reference an AwsKmsKey or pass a key ARN.
+- **The log group to train on** — reference an AWS CloudWatch Log Group's `log_group_arn` output or pass a literal group ARN (the bare ARN, no `:*` suffix).
+- **A KMS key** (only for encrypted findings) — a customer-managed key for `kmsKeyId`; reference an AWS KMS Key or pass a key ARN.
 
 ## Deploy
 
@@ -55,7 +55,7 @@ This creates an active detector over the `/app/api` log group, evaluating every 
 
 ### InfraChart
 
-When the detector deploys alongside its log group in one chart, wire the group reference via ValueFromRef:
+When the detector deploys alongside its log group in one chart, wire the group reference:
 
 ```yaml
 spec:
@@ -93,14 +93,14 @@ These are the most important decisions when configuring an anomaly detector. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCloudwatchLogGroup** | `logGroupArns[]` | `status.outputs.log_group_arn` |
-| **AwsKmsKey** (optional) | `kmsKeyId` | `status.outputs.key_arn` |
+| **AWS CloudWatch Log Group** | `logGroupArns[]` | `status.outputs.log_group_arn` |
+| **AWS KMS Key** (optional) | `kmsKeyId` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains one value: `anomaly_detector_arn`, the detector's identity and the provider's import ID. Nothing downstream composes on a detector via ValueFromRef — the output exists for auditing and import.
+After provisioning, `status.outputs` contains one value: `anomaly_detector_arn`, the detector's identity and the provider's import ID. Nothing downstream composes on a detector by reference — the output exists for auditing and import.
 
 ## Common Patterns
 

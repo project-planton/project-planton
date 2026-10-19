@@ -60,7 +60,7 @@ This uploads a hostname-scoped client certificate and returns its `certificate_i
 
 ### InfraChart
 
-When composing the zone and the upload in one InfraPipeline, wire the zone reference with ValueFromRef:
+When composing the zone and the upload in one InfraPipeline, wire the zone reference:
 
 ```yaml
 spec:
@@ -98,13 +98,13 @@ These are the most important decisions when configuring an Authenticated Origin 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -127,5 +127,5 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 ## Works With
 
 - [**Cloudflare Authenticated Origin Pulls**](/infra-catalog/cloudflare-authenticated-origin-pulls) — the enablement whose association rows pin hostnames to this upload's `certificate_id`
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone the certificate is uploaded to; wire `zoneId` via ValueFromRef
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone the certificate is uploaded to; wire `zoneId` by reference
 - [**Cloudflare mTLS Certificate**](/infra-catalog/cloudflare-mtls-certificate) — the account-level CA side of per-hostname client-certificate validation

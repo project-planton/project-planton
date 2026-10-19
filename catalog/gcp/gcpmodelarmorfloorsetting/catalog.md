@@ -1,20 +1,20 @@
 # GCP Model Armor Floor Setting
 
-Sets the minimum AI safety screening for a whole project, folder, or organization -- and turns it on for Google's own AI services. With a floor in place, every Gemini call made through Vertex AI in that scope (and Google-hosted MCP server traffic, if you choose) is checked for prompt injection, harmful content, sensitive data, and malicious links without changing a line of application code, and no team can publish a Model Armor template weaker than the floor.
+Sets the minimum AI safety screening for a whole project, folder, or organization — and turns it on for Google's own AI services. With a floor in place, every Gemini call made through Vertex AI in that scope (and Google-hosted MCP server traffic, if you choose) is checked for prompt injection, harmful content, sensitive data, and malicious links without changing a line of application code, and no team can publish a Model Armor template weaker than the floor.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `modelarmor.googleapis.com` on the floor's project (project floors)
-- **Floor setting** -- the scope's `modelarmor.Floorsetting`
+- **API enablement** — `modelarmor.googleapis.com` on the floor's project (project floors)
+- **Floor setting** — the scope's `modelarmor.Floorsetting`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Model Armor floor-setting admin permissions at the floor's scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Model Armor floor-setting admin permissions at the floor's scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -60,26 +60,26 @@ Reference a `GcpFolder` from `scope.folderId` to set one floor for every project
 
 These are the most important decisions when configuring a floor. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Whose floor** -- a project, a folder (inherited by everything beneath it), or the organization. Empty means the connection's project.
+**Whose floor** — a project, a folder (inherited by everything beneath it), or the organization. Empty means the connection's project.
 
-**Which services it screens** -- `integratedServices` puts Vertex AI model calls (`AI_PLATFORM`) and Google MCP server traffic (`GOOGLE_MCP_SERVER`) behind the floor directly. Leave it empty to only govern templates.
+**Which services it screens** — `integratedServices` puts Vertex AI model calls (`AI_PLATFORM`) and Google MCP server traffic (`GOOGLE_MCP_SERVER`) behind the floor directly. Leave it empty to only govern templates.
 
-**Report or block** -- each integrated service's `enforcementType` decides whether a hit is recorded (`INSPECT_ONLY`) or blocked (`INSPECT_AND_BLOCK`). Roll out by reporting first.
+**Report or block** — each integrated service's `enforcementType` decides whether a hit is recorded (`INSPECT_ONLY`) or blocked (`INSPECT_AND_BLOCK`). Roll out by reporting first.
 
-**The minimum** -- `filterConfig` is the weakest filter set any template in scope may carry.
+**The minimum** — `filterConfig` is the weakest filter set any template in scope may carry.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `scope.projectId` | `status.outputs.project_id` |
-| **GcpFolder** | `scope.folderId` | `status.outputs.folder_id` |
+| **GCP Project** | `scope.projectId` | `status.outputs.project_id` |
+| **GCP Folder** | `scope.folderId` | `status.outputs.folder_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -90,12 +90,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Project rollout** -- a project floor screening Vertex AI traffic inspect-only with logging, the safe first step. Start from the **Project Rollout** preset.
+**Project rollout** — a project floor screening Vertex AI traffic inspect-only with logging, the safe first step. Start from the **Project Rollout** preset.
 
-**Organization baseline** -- an organization-wide floor that blocks on Vertex AI and Google MCP servers. Start from the **Organization Baseline** preset.
+**Organization baseline** — an organization-wide floor that blocks on Vertex AI and Google MCP servers. Start from the **Organization Baseline** preset.
 
 ## Works With
 
-- [**GCP Model Armor Template**](/infra-catalog/gcp-model-armor-template) -- the templates the floor governs
-- [**GCP Folder**](/infra-catalog/gcp-folder) -- a floor inherited by every project in the folder
-- [**GCP Project**](/infra-catalog/gcp-project) -- a project floor
+- [**GCP Model Armor Template**](/infra-catalog/gcp-model-armor-template) — the templates the floor governs
+- [**GCP Folder**](/infra-catalog/gcp-folder) — a floor inherited by every project in the folder
+- [**GCP Project**](/infra-catalog/gcp-project) — a project floor

@@ -69,7 +69,7 @@ This creates a monthly cost budget with a fixed 1000 USD ceiling, alerting the F
 
 ### InfraChart
 
-When alerts should fan out through an SNS topic deployed in the same chart, wire the subscriber via ValueFromRef:
+When alerts should fan out through an SNS topic deployed in the same chart, wire the subscriber by reference:
 
 ```yaml
 spec:
@@ -118,19 +118,19 @@ These are the most important decisions when configuring a budget. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSnsTopic** | `notifications[].subscriberSnsTopicArns` | `status.outputs.topic_arn` |
-| **AwsIamRole** | `actions[].executionRoleArn` | `status.outputs.role_arn` |
-| **AwsIamPolicy** | `actions[].iamActionDefinition.policyArn` | `status.outputs.policy_arn` |
-| **AwsOrganizationPolicy** | `actions[].scpActionDefinition.policyId` | `status.outputs.policy_id` |
-| **AwsEc2Instance** | `actions[].ssmActionDefinition.instanceIds` | `status.outputs.instance_id` |
+| **AWS SNS Topic** | `notifications[].subscriberSnsTopicArns` | `status.outputs.topic_arn` |
+| **AWS IAM Role** | `actions[].executionRoleArn` | `status.outputs.role_arn` |
+| **AWS IAM Policy** | `actions[].iamActionDefinition.policyArn` | `status.outputs.policy_arn` |
+| **AWS Organization Policy** | `actions[].scpActionDefinition.policyId` | `status.outputs.policy_id` |
+| **AWS EC2 Instance** | `actions[].ssmActionDefinition.instanceIds` | `status.outputs.instance_id` |
 
 The IAM action arm's principal lists (`groups`, `roles`, `users`) and action subscribers also accept references to the matching IAM and SNS kinds.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

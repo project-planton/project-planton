@@ -1,6 +1,6 @@
 # AWS Private Certificate Authority
 
-Deploys an AWS Private CA — the managed certificate authority behind internal TLS: mTLS services, MSK and EKS client auth, service meshes, and device fleets — with activation, issued certificates, the ACM renewal permission, and the cross-account resource policy managed in-line. Activation is composed, never user-choreographed: a root CA self-signs at apply and comes up ACTIVE and issuing in one deploy, and a subordinate activates from a parent AwsPrivateCa by reference. The CA bills a flat monthly fee from creation until deletion, prorated hourly, so an idle CA is a real cost decision — and the mode, algorithms, subject, and type are all fixed for life.
+Deploys an AWS Private CA — the managed certificate authority behind internal TLS: mTLS services, MSK and EKS client auth, service meshes, and device fleets — with activation, issued certificates, the ACM renewal permission, and the cross-account resource policy managed in-line. Activation is composed, never user-choreographed: a root CA self-signs at apply and comes up ACTIVE and issuing in one deploy, and a subordinate activates from a parent AWS Private Certificate Authority by reference. The CA bills a flat monthly fee from creation until deletion, prorated hourly, so an idle CA is a real cost decision — and the mode, algorithms, subject, and type are all fixed for life.
 
 ## What Gets Created
 
@@ -64,7 +64,7 @@ This creates a self-activated 10-year root CA, ACTIVE and issuing, with ACM pre-
 
 ### InfraChart
 
-When a subordinate deploys alongside its root in one chart, wire the parent via ValueFromRef:
+When a subordinate deploys alongside its root in one chart, wire the parent by reference:
 
 ```yaml
 spec:
@@ -101,7 +101,7 @@ These are the most important decisions when configuring a private CA. Explore th
 
 **Certificates are born, not edited** — every issue request's parameters (CSR, signing algorithm, validity, template, API passthrough) are the certificate's birth certificate: AWS reads them once and never reports them back, so both engines deliberately ignore later edits. The same applies to `rootCaValidity` and `subordinateActivation.validity`. To reissue with different parameters, add a new `issuedCertificates` entry (the name keys the certificate) and retire the old one when consumers have moved.
 
-**ACM renewal needs the permission, and failures are silent** — AwsCertManagerCert certificates issued from this CA auto-renew only while acm.amazonaws.com holds the full three-action grant. Without `acmRenewalPermission` there is no deploy-time symptom — the certificate just expires months later. Set it on any CA that issues ACM certificates, always.
+**ACM renewal needs the permission, and failures are silent** — AWS ACM Certificate certificates issued from this CA auto-renew only while acm.amazonaws.com holds the full three-action grant. Without `acmRenewalPermission` there is no deploy-time symptom — the certificate just expires months later. Set it on any CA that issues ACM certificates, always.
 
 **Templates decide what a certificate can do** — `templateArn` picks the X.509 profile: plain TLS (the default EndEntityCertificate/V1), mTLS client auth, code signing, or the CA-path-length templates that mint sub-CAs. The CSR asks; the template decides — a CSR with CA:TRUE extensions issued under an end-entity template comes out a plain leaf.
 
@@ -113,18 +113,18 @@ These are the most important decisions when configuring a private CA. Explore th
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsPrivateCa** | `subordinateActivation.parentCaArn` | `status.outputs.certificate_authority_arn` |
-| **AwsS3Bucket** | `revocation.crl.s3BucketName` | `status.outputs.bucket_id` |
+| **AWS Private Certificate Authority** | `subordinateActivation.parentCaArn` | `status.outputs.certificate_authority_arn` |
+| **AWS S3 Bucket** | `revocation.crl.s3BucketName` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `certificate_authority_arn` | The CA's ARN — the join key every consumer uses | AwsCertManagerCert's issuing CA, MSK's TLS client-auth CA list, a subordinate's `parentCaArn` |
+| `certificate_authority_arn` | The CA's ARN — the join key every consumer uses | AWS ACM Certificate's issuing CA, MSK's TLS client-auth CA list, a subordinate's `parentCaArn` |
 | `ca_certificate` | The CA's certificate, PEM | Relying parties' trust stores |
 | `ca_certificate_chain` | The chain up to the root, PEM (empty for a root — it IS the anchor) | Trust-store distribution for subordinate-issued certificates |
 | `ca_csr` | The CA's own CSR, PEM | What an external parent signs when activating a subordinate out of band |
@@ -135,7 +135,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**One-deploy trust anchor** — a self-activating 10-year root with the ACM renewal permission granted, issuing internal TLS through AwsCertManagerCert against `certificate_authority_arn` while trust stores carry `ca_certificate`. One root serves the whole organization. Start from the **Internal Root CA** preset.
+**One-deploy trust anchor** — a self-activating 10-year root with the ACM renewal permission granted, issuing internal TLS through AWS ACM Certificate against `certificate_authority_arn` while trust stores carry `ca_certificate`. One root serves the whole organization. Start from the **Internal Root CA** preset.
 
 **Two-tier hierarchy with a cheap working tier** — an EC subordinate signed by your root by reference, both in one chart, issuing 7-day workload certificates in SHORT_LIVED_CERTIFICATE mode with path length 0. Meshes and batch workloads rotate through the subordinate while the root stays cold. Start from the **Short-Lived Workload mTLS CA** preset.
 

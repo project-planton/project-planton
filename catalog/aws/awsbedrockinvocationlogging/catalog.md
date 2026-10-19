@@ -77,7 +77,7 @@ This configures full-fidelity logging for us-west-2: CloudWatch for querying, S3
 
 ### InfraChart
 
-When the logging configuration deploys alongside its log group, role, and bucket in one chart, wire the references via ValueFromRef:
+When the logging configuration deploys alongside its log group, role, and bucket in one chart, wire the references:
 
 ```yaml
 spec:
@@ -119,11 +119,11 @@ These are the most important decisions when configuring invocation logging. Expl
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCloudwatchLogGroup** | `cloudwatch.logGroupName` | `status.outputs.log_group_name` |
-| **AwsIamRole** | `cloudwatch.roleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** | `s3.bucketName`, `cloudwatch.largeDataDeliveryS3.bucketName` | `status.outputs.bucket_id` |
+| **AWS CloudWatch Log Group** | `cloudwatch.logGroupName` | `status.outputs.log_group_name` |
+| **AWS IAM Role** | `cloudwatch.roleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `s3.bucketName`, `cloudwatch.largeDataDeliveryS3.bucketName` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 

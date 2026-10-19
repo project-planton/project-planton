@@ -89,18 +89,18 @@ These are the most important decisions when configuring a Karapace registry. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesKafka** | `kafka.bootstrapServers` | `status.outputs.internal_bootstrap_endpoint` |
-| **KubernetesKafka** | `kafka.tls.caSecretName` | `status.outputs.cluster_ca_cert_secret_name` |
-| **KubernetesKafkaUser** | `kafka.sasl.passwordSecret.secretName` | `status.outputs.secret_name` |
-| **KubernetesCertificate** | `serverTls.secretName` | `status.outputs.secret_name` |
-| **KubernetesSecret** | `httpAuthentication.basic.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Apache Kafka** | `kafka.bootstrapServers` | `status.outputs.internal_bootstrap_endpoint` |
+| **Apache Kafka** | `kafka.tls.caSecretName` | `status.outputs.cluster_ca_cert_secret_name` |
+| **Kafka User** | `kafka.sasl.passwordSecret.secretName` | `status.outputs.secret_name` |
+| **Cert Manager Certificate** | `serverTls.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Secret** | `httpAuthentication.basic.secretName` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

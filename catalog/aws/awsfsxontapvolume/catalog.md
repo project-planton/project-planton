@@ -6,22 +6,22 @@ Deploys a data volume within an FSx for NetApp ONTAP Storage Virtual Machine, wi
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **ONTAP Volume** -- a data container within the specified SVM, mounted at the configured junction path, with the chosen volume style (FlexVol or FlexGroup) and security style
-- **Tiering Policy** -- created only when `tieringPolicy` is provided; controls automatic data movement between primary SSD and capacity pool storage based on access patterns
-- **SnapLock Configuration** -- created only when `snaplockConfiguration` is provided; enables WORM (Write Once Read Many) immutable storage with configurable retention periods, autocommit, and privileged delete settings
-- **Aggregate Configuration** -- created only when `aggregateConfiguration` is provided and `volumeStyle` is FLEXGROUP; distributes the volume across multiple aggregates for parallel throughput
-- **AWS Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically
+- **ONTAP Volume** — a data container within the specified SVM, mounted at the configured junction path, with the chosen volume style (FlexVol or FlexGroup) and security style
+- **Tiering Policy** — created only when `tieringPolicy` is provided; controls automatic data movement between primary SSD and capacity pool storage based on access patterns
+- **SnapLock Configuration** — created only when `snaplockConfiguration` is provided; enables WORM (Write Once Read Many) immutable storage with configurable retention periods, autocommit, and privileged delete settings
+- **Aggregate Configuration** — created only when `aggregateConfiguration` is provided and `volumeStyle` is FLEXGROUP; distributes the volume across multiple aggregates for parallel throughput
+- **AWS Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
 
 ### AWS Account
 
-- **An FSx ONTAP Storage Virtual Machine** -- the volume's parent SVM must be provisioned first. Provide the SVM ID directly or reference an AwsFsxOntapStorageVirtualMachine Infra Component via ValueFromRef.
+- **An FSx ONTAP Storage Virtual Machine** — the volume's parent SVM must be provisioned first. Provide the SVM ID directly or reference an AWS FSx ONTAP Storage Virtual Machine Infra Component.
 
 ## Deploy
 
@@ -58,7 +58,7 @@ This creates a 100 GB FlexVol volume mounted at `/data` with ONTAP storage effic
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the volume to an SVM deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire the volume to an SVM deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -75,31 +75,31 @@ The InfraPipeline resolves the dependency graph, deploys the SVM first, then pro
 
 These are the most important decisions when configuring an ONTAP volume. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Volume size** -- Exactly one of two sizing arms: `sizeInMegabytes` (the everyday arm, minimum 20 MB) or `sizeInBytes` (byte-precise, up to ~20 PiB -- the only arm that reaches past int32 megabytes). ONTAP supports thin provisioning, so logical size can exceed physical capacity. Size grows in place.
+**Volume size** — Exactly one of two sizing arms: `sizeInMegabytes` (the everyday arm, minimum 20 MB) or `sizeInBytes` (byte-precise, up to ~20 PiB — the only arm that reaches past int32 megabytes). ONTAP supports thin provisioning, so logical size can exceed physical capacity. Size grows in place.
 
-**Volume style** -- Defaults to FLEXVOL (single aggregate). Choose FLEXGROUP for high-throughput workloads (data lakes, genomics, media rendering) that benefit from striping across multiple aggregates. FlexGroup requires `aggregateConfiguration`. ForceNew -- cannot change after creation.
+**Volume style** — Defaults to FLEXVOL (single aggregate). Choose FLEXGROUP for high-throughput workloads (data lakes, genomics, media rendering) that benefit from striping across multiple aggregates. FlexGroup requires `aggregateConfiguration`. ForceNew — cannot change after creation.
 
-**Tiering policy** -- Controls cost optimization by moving infrequently accessed data to capacity pool storage. AUTO tiers data not accessed for the configured cooling period. SNAPSHOT_ONLY tiers only snapshot data. NONE keeps all data on SSD. ALL stores everything on capacity pool for lowest cost.
+**Tiering policy** — Controls cost optimization by moving infrequently accessed data to capacity pool storage. AUTO tiers data not accessed for the configured cooling period. SNAPSHOT_ONLY tiers only snapshot data. NONE keeps all data on SSD. ALL stores everything on capacity pool for lowest cost.
 
-**SnapLock** -- Enables WORM immutable storage for regulatory compliance. COMPLIANCE mode is irrevocable -- no one can delete files before retention expires. ENTERPRISE mode allows privileged deletion. ForceNew for `snaplockType` -- choosing the wrong mode requires volume recreation.
+**SnapLock** — Enables WORM immutable storage for regulatory compliance. COMPLIANCE mode is irrevocable — no one can delete files before retention expires. ENTERPRISE mode allows privileged deletion. ForceNew for `snaplockType` — choosing the wrong mode requires volume recreation.
 
-**Junction path** -- The mount point in the SVM namespace (e.g., `/data`). Without a junction path, the volume exists but is not accessible via NFS/SMB. Must start with `/` and be unique within the SVM.
+**Junction path** — The mount point in the SVM namespace (e.g., `/data`). Without a junction path, the volume exists but is not accessible via NFS/SMB. Must start with `/` and be unique within the SVM.
 
-**Storage efficiency** -- Enable `storageEfficiencyEnabled` for most workloads. ONTAP deduplication, compression, and compaction reduce physical storage consumption. Disable only for pre-compressed or encrypted data where the CPU overhead provides no benefit.
+**Storage efficiency** — Enable `storageEfficiencyEnabled` for most workloads. ONTAP deduplication, compression, and compaction reduce physical storage consumption. Disable only for pre-compressed or encrypted data where the CPU overhead provides no benefit.
 
-**Final backup tags** -- When `skipFinalBackup` is off, `finalBackupTags` are applied to the backup taken on deletion, so cost-allocation and retention markers survive the volume itself.
+**Final backup tags** — When `skipFinalBackup` is off, `finalBackupTags` are applied to the backup taken on deletion, so cost-allocation and retention markers survive the volume itself.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsFsxOntapStorageVirtualMachine** | `storageVirtualMachineId` | `status.outputs.svm_id` |
+| **AWS FSx ONTAP Storage Virtual Machine** | `storageVirtualMachineId` | `status.outputs.svm_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -114,12 +114,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**General purpose volume** -- 100 GB FlexVol with UNIX security style, storage efficiency enabled, and AUTO tiering with a 31-day cooling period. The standard configuration for NFS application data volumes. Start from the **General Purpose ONTAP Volume** preset.
+**General purpose volume** — 100 GB FlexVol with UNIX security style, storage efficiency enabled, and AUTO tiering with a 31-day cooling period. The standard configuration for NFS application data volumes. Start from the **General Purpose ONTAP Volume** preset.
 
-**Compliance SnapLock volume** -- 500 GB volume with SnapLock COMPLIANCE for immutable record retention (SEC 17a-4, HIPAA, FINRA). 5-year default retention, 1-day autocommit, SNAPSHOT_ONLY tiering. Start from the **Compliance SnapLock Volume** preset.
+**Compliance SnapLock volume** — 500 GB volume with SnapLock COMPLIANCE for immutable record retention (SEC 17a-4, HIPAA, FINRA). 5-year default retention, 1-day autocommit, SNAPSHOT_ONLY tiering. Start from the **Compliance SnapLock Volume** preset.
 
-**High-performance FlexGroup volume** -- 1 TB FlexGroup distributed across 2 aggregates with 8 constituents each for parallel I/O. No tiering -- all data on SSD for consistent latency. Designed for data lakes, genomics, and media workflows. Start from the **High-Performance FlexGroup Volume** preset.
+**High-performance FlexGroup volume** — 1 TB FlexGroup distributed across 2 aggregates with 8 constituents each for parallel I/O. No tiering — all data on SSD for consistent latency. Designed for data lakes, genomics, and media workflows. Start from the **High-Performance FlexGroup Volume** preset.
 
 ## Works With
 
-- [**AWS FSx ONTAP Storage Virtual Machine**](/infra-catalog/aws-fsx-ontap-storage-virtual-machine) -- provides the parent SVM that hosts this volume's protocol endpoints and namespace
+- [**AWS FSx ONTAP Storage Virtual Machine**](/infra-catalog/aws-fsx-ontap-storage-virtual-machine) — provides the parent SVM that hosts this volume's protocol endpoints and namespace

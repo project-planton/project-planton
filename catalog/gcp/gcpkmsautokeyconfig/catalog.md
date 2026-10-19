@@ -6,15 +6,15 @@ Turns on Cloud KMS Autokey for a folder or a project, so every team gets custome
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `cloudkms.googleapis.com` on the configured project and on a folder's key project
-- **Autokey configuration** -- the folder's or project's `kms.AutokeyConfig` / `kms.ProjectAutokeyConfig`
+- **API enablement** — `cloudkms.googleapis.com` on the configured project and on a folder's key project
+- **Autokey configuration** — the folder's or project's `kms.AutokeyConfig` / `kms.ProjectAutokeyConfig`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Cloud KMS Autokey admin permissions at the folder or project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Cloud KMS Autokey admin permissions at the folder or project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -54,25 +54,25 @@ Reference a `GcpFolder` from `scope.folderId` and a `GcpProject` from `keyProjec
 
 These are the most important decisions when configuring Autokey. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Where keys live** -- `RESOURCE_PROJECT` keeps each key beside the resource it protects (works on a folder or a project); `DEDICATED_KEY_PROJECT` puts every key for a folder in one key project, the separation-of-duties model.
+**Where keys live** — `RESOURCE_PROJECT` keeps each key beside the resource it protects (works on a folder or a project); `DEDICATED_KEY_PROJECT` puts every key for a folder in one key project, the separation-of-duties model.
 
-**Folder or project** -- a folder configuration covers every project beneath it; a project configuration overrides its folder, including switching Autokey off with `DISABLED`.
+**Folder or project** — a folder configuration covers every project beneath it; a project configuration overrides its folder, including switching Autokey off with `DISABLED`.
 
-**What destroy means** -- by default destroy clears the configuration and turns Autokey off; existing keys stay.
+**What destroy means** — by default destroy clears the configuration and turns Autokey off; existing keys stay.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `scope.projectId` | `status.outputs.project_id` |
-| **GcpFolder** | `scope.folderId` | `status.outputs.folder_id` |
-| **GcpProject** | `keyProject` | `status.outputs.project_id` |
+| **GCP Project** | `scope.projectId` | `status.outputs.project_id` |
+| **GCP Folder** | `scope.folderId` | `status.outputs.folder_id` |
+| **GCP Project** | `keyProject` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -83,13 +83,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Project same-project storage** -- Autokey for one project, keys beside the resources. Start from the **Project Same-Project Storage** preset.
+**Project same-project storage** — Autokey for one project, keys beside the resources. Start from the **Project Same-Project Storage** preset.
 
-**Folder dedicated key project** -- one key project for a whole folder of workloads. Start from the **Folder Dedicated Key Project** preset.
+**Folder dedicated key project** — one key project for a whole folder of workloads. Start from the **Folder Dedicated Key Project** preset.
 
 ## Works With
 
-- [**GCP KMS Key Handle**](/infra-catalog/gcp-kms-key-handle) -- requests a key from Autokey
-- [**GCP Folder**](/infra-catalog/gcp-folder) -- a configuration inherited by every project in the folder
-- [**GCP Project**](/infra-catalog/gcp-project) -- a project configuration or the key project
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- hand-designed keys
+- [**GCP KMS Key Handle**](/infra-catalog/gcp-kms-key-handle) — requests a key from Autokey
+- [**GCP Folder**](/infra-catalog/gcp-folder) — a configuration inherited by every project in the folder
+- [**GCP Project**](/infra-catalog/gcp-project) — a project configuration or the key project
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — hand-designed keys

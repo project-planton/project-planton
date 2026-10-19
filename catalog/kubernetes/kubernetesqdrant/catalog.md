@@ -1,6 +1,6 @@
 # Qdrant
 
-Deploys a Qdrant vector database — the engine behind semantic search, RAG retrieval and recommendation workloads — on any Kubernetes cluster from the official `qdrant` Helm chart (qdrant.github.io/qdrant-helm). Distributed mode is always on: every install is a Raft cluster, even at one member, so growing later is only a `replicas` change — the new pods join the existing consensus, no migration. Collections replicate per their OWN `replication_factor` (a data operation through the Qdrant API); pods make room for replicas, they do not create them.
+Deploys a Qdrant vector database — the engine behind semantic search, RAG retrieval and recommendation workloads — on any Kubernetes cluster from the official qdrant Helm chart (qdrant.github.io/qdrant-helm). Distributed mode is always on: every install is a Raft cluster, even at one member, so growing later is only a `replicas` change — the new pods join the existing consensus, no migration. Collections replicate per their OWN `replication_factor` (a data operation through the Qdrant API); pods make room for replicas, they do not create them.
 
 ## What Gets Created
 
@@ -9,7 +9,7 @@ When you deploy this Infra Component, the IaC module provisions:
 - **Kubernetes Namespace** — created (with the standard Planton governance labels) only when `createNamespace` is `true`; otherwise the namespace must already exist
 - **Qdrant Helm Release** — the official chart at the pinned `chartVersion` (default 1.18.2), which creates:
   - a StatefulSet of `replicas` pods (default 1) with your CPU/memory resources; pod 0 bootstraps Raft consensus, every further pod joins over the p2p port (6335)
-  - a **ClusterIP Service** carrying REST 6333 and gRPC 6334 — what in-cluster clients use, and what the exported endpoints point at; exposure beyond the cluster composes from first-class kinds (KubernetesIngress, Gateway API) over the exported service handle
+  - a **ClusterIP Service** carrying REST 6333 and gRPC 6334 — what in-cluster clients use, and what the exported endpoints point at; exposure beyond the cluster composes from first-class kinds (Kubernetes Ingress, Gateway API) over the exported service handle
   - a **PersistentVolumeClaim per pod** for the data volume (10Gi on the cluster's default StorageClass unless configured) — vectors, payloads, and the write-ahead log
   - a **separate snapshots PVC per pod** — only when the `snapshots` block is declared; otherwise snapshots land on the data volume and can fill it
 - **API-key Secret** — when a key uses the `generate` arm, the chart mints it ONCE at first install (stable across upgrades) and keeps it in the chart-owned Secret; key material never enters a manifest, and the Secret name is exported in the outputs
@@ -78,7 +78,7 @@ This creates a production-shaped 3-node cluster: the quorum posture (Raft surviv
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the cluster to a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to wire the cluster to a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -100,9 +100,9 @@ These are the most important decisions when configuring Qdrant. Explore the full
 
 **API keys** — `apiKey` (read-write) and `readOnlyApiKey` each take at most one arm: `generate` (the chart mints the key once at first install and keeps it in the chart-owned Secret — key material never enters a manifest) or `existingSecret` (name + key coordinates of a Secret that exists before the install). Empty means **unauthenticated** — the upstream default; the listeners accept any request, acceptable only on a private dev cluster inside a namespace boundary. A read-only key requires a read-write key (the spec enforces the pair): with no read-write key the listeners are open anyway, so a read-only key would protect nothing. Hand the read-only key to query-side consumers so a leaked retrieval credential cannot mutate collections.
 
-**Storage and snapshots** — `storage.size` defaults to 10Gi PER POD on the cluster's default StorageClass; `storage.storageClass` accepts a literal class name or a KubernetesStorageClass reference. The separate `snapshots` block is upstream's recommendation for anything real: snapshots (backups, snapshot shard transfers) written onto the data volume can fill it and crash the node. Size it like `storage` — a snapshot is roughly a copy of the data. Growing a PVC later depends on the class allowing expansion.
+**Storage and snapshots** — `storage.size` defaults to 10Gi PER POD on the cluster's default StorageClass; `storage.storageClass` accepts a literal class name or a Kubernetes StorageClass reference. The separate `snapshots` block is upstream's recommendation for anything real: snapshots (backups, snapshot shard transfers) written onto the data volume can fill it and crash the node. Size it like `storage` — a snapshot is roughly a copy of the data. Growing a PVC later depends on the class allowing expansion.
 
-**TLS** — the `tls` block has one field: `secret`, an existing TLS Secret (`tls.crt`/`tls.key`, the shape cert-manager produces; a KubernetesCertificate reference resolves to its Secret name). Both client listeners (REST 6333, gRPC 6334) switch to TLS together. Empty means plaintext in-cluster — compose TLS at the exposure layer instead. Inter-node p2p TLS is a separate upstream surface (`config.cluster.p2p`) that rides `helmValues`.
+**TLS** — the `tls` block has one field: `secret`, an existing TLS Secret (`tls.crt`/`tls.key`, the shape cert-manager produces; a Cert Manager Certificate reference resolves to its Secret name). Both client listeners (REST 6333, gRPC 6334) switch to TLS together. Empty means plaintext in-cluster — compose TLS at the exposure layer instead. Inter-node p2p TLS is a separate upstream surface (`config.cluster.p2p`) that rides `helmValues`.
 
 **Scheduling** — `scheduling.podAntiAffinity` renders REQUIRED anti-affinity across hostnames: every member on a different node, so one node loss takes one member instead of the quorum. Chart default is none; from 2 replicas up this is the production posture — but required means unschedulable pods when nodes run short, so keep node count ≥ replicas. `nodeSelector`, `tolerations` and `priorityClassName` carry the standard placement dials.
 
@@ -114,15 +114,15 @@ These are the most important decisions when configuring Qdrant. Explore the full
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `storage.storageClass`, `snapshots.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesCertificate** | `tls.secret` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `storage.storageClass`, `snapshots.storageClass` | `status.outputs.storage_class_name` |
+| **Cert Manager Certificate** | `tls.secret` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

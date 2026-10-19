@@ -6,20 +6,20 @@ Deploys a Cloudflare D1 serverless SQLite database with configurable region plac
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **D1 Database** -- a serverless SQLite database created in the specified Cloudflare account, with an optional primary location hint (or data-residency jurisdiction) fixing where the primary instance lives
-- **Read Replication** -- configured only when `readReplication` is set; enables D1 Read Replication to place read-only replicas across multiple regions for lower global read latency
+- **D1 Database** — a serverless SQLite database created in the specified Cloudflare account, with an optional primary location hint (or data-residency jurisdiction) fixing where the primary instance lives
+- **Read Replication** — configured only when `readReplication` is set; enables D1 Read Replication to place read-only replicas across multiple regions for lower global read latency
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has D1 permissions. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has D1 permissions. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
 - **A Cloudflare account** with D1 access enabled. The `accountId` field identifies which Cloudflare account owns the database.
-- **Schema management** -- D1 tables, indexes, and migrations are managed via the Wrangler CLI, not at the resource level. Deploy the database first, then run migrations against the `database_id` it outputs.
+- **Schema management** — D1 tables, indexes, and migrations are managed via the Wrangler CLI, not at the resource level. Deploy the database first, then run migrations against the `database_id` it outputs.
 
 ## Deploy
 
@@ -53,25 +53,25 @@ This creates a D1 database named `app-cache` with Cloudflare selecting the defau
 
 These are the most important decisions when configuring a D1 database. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Placement is fixed at creation** -- both `region` and `jurisdiction` are creation-time decisions; changing either replaces the database, which destroys its data. Pick placement before the database holds anything real, and treat a placement change in a plan as the destructive event it is.
+**Placement is fixed at creation** — both `region` and `jurisdiction` are creation-time decisions; changing either replaces the database, which destroys its data. Pick placement before the database holds anything real, and treat a placement change in a plan as the destructive event it is.
 
-**Region (`region`)** -- the primary location hint: `weur` (Western Europe), `eeur` (Eastern Europe), `apac` (Asia Pacific), `oc` (Oceania), `wnam` (Western North America), or `enam` (Eastern North America). Omit to let Cloudflare choose. Place the primary close to the Workers that write to it -- reads can be replicated later, writes cannot.
+**Region (`region`)** — the primary location hint: `weur` (Western Europe), `eeur` (Eastern Europe), `apac` (Asia Pacific), `oc` (Oceania), `wnam` (Western North America), or `enam` (Eastern North America). Omit to let Cloudflare choose. Place the primary close to the Workers that write to it — reads can be replicated later, writes cannot.
 
-**Jurisdiction (`jurisdiction`)** -- a data-residency constraint: `eu` or `fedramp`. Mutually exclusive with `region` -- both answer the same "where does the primary live" question, so the spec rejects manifests that set both. If a residency regime applies, jurisdiction wins and the exact location belongs to Cloudflare within that boundary.
+**Jurisdiction (`jurisdiction`)** — a data-residency constraint: `eu` or `fedramp`. Mutually exclusive with `region` — both answer the same "where does the primary live" question, so the spec rejects manifests that set both. If a residency regime applies, jurisdiction wins and the exact location belongs to Cloudflare within that boundary.
 
-**Read replication (`readReplication.mode`)** -- `auto` places read-only replicas across regions for lower global read latency, but it changes the Worker's contract: a Worker reading a replicated database must use the D1 Sessions API for sequential consistency. Enable it together with the application change, not ahead of it. Set `disabled` or omit for a single primary.
+**Read replication (`readReplication.mode`)** — `auto` places read-only replicas across regions for lower global read latency, but it changes the Worker's contract: a Worker reading a replicated database must use the D1 Sessions API for sequential consistency. Enable it together with the application change, not ahead of it. Set `disabled` or omit for a single primary.
 
-**Database naming (`databaseName`)** -- unique within the account, 64 characters max. It appears in Wrangler commands and Worker binding configuration, so choose a name you want to type.
+**Database naming (`databaseName`)** — unique within the account, 64 characters max. It appears in Wrangler commands and Worker binding configuration, so choose a name you want to type.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-This kind has no foreign key dependencies -- the Cloudflare account is identified by the `accountId` string.
+This kind has no foreign key dependencies — the Cloudflare account is identified by the `accountId` string.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -81,12 +81,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 ## Common Patterns
 
-**Standard database** -- a single-primary D1 database with an optional region hint, backing a Worker or lightweight relational workload. Start from the **Standard D1 Database** preset.
+**Standard database** — a single-primary D1 database with an optional region hint, backing a Worker or lightweight relational workload. Start from the **Standard D1 Database** preset.
 
-**Residency-pinned database** -- set `jurisdiction: eu` (or `fedramp`) instead of a region when compliance dictates where data lives; leave the exact placement to Cloudflare inside that boundary.
+**Residency-pinned database** — set `jurisdiction: eu` (or `fedramp`) instead of a region when compliance dictates where data lives; leave the exact placement to Cloudflare inside that boundary.
 
-**Globally replicated reads** -- set `readReplication.mode: auto` for read-heavy, globally distributed Workers -- and ship the D1 Sessions API change in the Worker in the same release, because replication without it breaks read consistency assumptions.
+**Globally replicated reads** — set `readReplication.mode: auto` for read-heavy, globally distributed Workers — and ship the D1 Sessions API change in the Worker in the same release, because replication without it breaks read consistency assumptions.
 
 ## Works With
 
-- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) -- the primary consumer; a Worker's `d1` binding references the `database_id` output
+- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) — the primary consumer; a Worker's `d1` binding references the `database_id` output

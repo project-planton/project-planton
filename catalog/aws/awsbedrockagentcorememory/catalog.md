@@ -63,7 +63,7 @@ This creates a memory with a 30-day event window and two built-in extraction str
 
 ### InfraChart
 
-When the memory streams records to a Kinesis stream deployed in the same chart, wire the stream reference via ValueFromRef:
+When the memory streams records to a Kinesis stream deployed in the same chart, wire the stream reference:
 
 ```yaml
 spec:
@@ -108,15 +108,15 @@ These are the most important decisions when configuring a memory. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `encryptionKeyArn` | `status.outputs.key_arn` |
-| **AwsIamRole** | `executionRoleArn` | `status.outputs.role_arn` |
-| **AwsKinesisStream** | `kinesisDelivery.dataStreamArn` | `status.outputs.stream_arn` |
+| **AWS KMS Key** | `encryptionKeyArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** | `executionRoleArn` | `status.outputs.role_arn` |
+| **AWS Kinesis Data Stream** | `kinesisDelivery.dataStreamArn` | `status.outputs.stream_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

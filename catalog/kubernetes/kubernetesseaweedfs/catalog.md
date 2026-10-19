@@ -94,17 +94,17 @@ These are the most important decisions when configuring a SeaweedFS store. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `master.dataVolume.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesStorageClass** | `volume.dataVolume.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesStorageClass** | `filer.dataVolume.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesStorageClass** | `admin.dataVolume.storageClass` | `status.outputs.storage_class_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `master.dataVolume.storageClass` | `status.outputs.storage_class_name` |
+| **Kubernetes StorageClass** | `volume.dataVolume.storageClass` | `status.outputs.storage_class_name` |
+| **Kubernetes StorageClass** | `filer.dataVolume.storageClass` | `status.outputs.storage_class_name` |
+| **Kubernetes StorageClass** | `admin.dataVolume.storageClass` | `status.outputs.storage_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

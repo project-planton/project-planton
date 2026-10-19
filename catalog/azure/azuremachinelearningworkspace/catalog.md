@@ -1,27 +1,27 @@
 # Azure Machine Learning Workspace
 
-Deploys an Azure Machine Learning workspace -- the central home a data-science team keeps its experiments, models, endpoints, datastores, and compute in. The workspace plugs into a storage account, a key vault, and an application-insights component (all required, all referenced by typed refs), plus an optional container registry.
+Deploys an Azure Machine Learning workspace — the central home a data-science team keeps its experiments, models, endpoints, datastores, and compute in. The workspace plugs into a storage account, a key vault, and an application-insights component (all required, all referenced by typed refs), plus an optional container registry.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Machine Learning workspace** -- the ARM workspace object with its identity, companion-service attachments, optional CMK encryption, managed virtual network, and serverless-compute settings
-- **FQDN outbound rules** (optional) -- one ARM child per entry allowing outbound traffic by domain name under approved-outbound isolation
-- **Private-endpoint outbound rules** (optional) -- one ARM child per entry; the managed VNet creates a private endpoint to the referenced Azure resource
-- **Service-tag outbound rules** (optional) -- one ARM child per entry allowing outbound traffic to an Azure service tag on given protocol/ports
+- **Machine Learning workspace** — the ARM workspace object with its identity, companion-service attachments, optional CMK encryption, managed virtual network, and serverless-compute settings
+- **FQDN outbound rules** (optional) — one ARM child per entry allowing outbound traffic by domain name under approved-outbound isolation
+- **Private-endpoint outbound rules** (optional) — one ARM child per entry; the managed VNet creates a private endpoint to the referenced Azure resource
+- **Service-tag outbound rules** (optional) — one ARM child per entry allowing outbound traffic to an Azure service tag on given protocol/ports
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **The three companion services** -- an AzureStorageAccount (general-purpose, hierarchical namespace OFF), an AzureKeyVault, and an AzureApplicationInsights to reference. An AzureContainerRegistry is optional.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **The three companion services** — an Azure Storage Account (general-purpose, hierarchical namespace OFF), an Azure Key Vault, and an Azure Application Insights to reference. An Azure Container Registry is optional.
 
 ### Azure Subscription
 
-- **The default storage account must not have hierarchical namespace enabled** -- ARM rejects Data Lake Gen2 accounts as workspace default storage.
-- **Deletion is a soft delete** -- a deleted workspace holds its name until purged; recreating under the same name fails until then.
+- **The default storage account must not have hierarchical namespace enabled** — ARM rejects Data Lake Gen2 accounts as workspace default storage.
+- **Deletion is a soft delete** — a deleted workspace holds its name until purged; recreating under the same name fails until then.
 
 ## Deploy
 
@@ -99,32 +99,32 @@ The InfraPipeline resolves the dependency graph and deploys the companion servic
 
 These are the most important decisions when configuring the workspace. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The companion services are forever** -- `applicationInsightsId`, `keyVaultId`, `storageAccountId`, and `containerRegistryId` are all fixed at creation; re-pointing any of them replaces the workspace. Choose accounts sized for the workspace's lifetime.
+**The companion services are forever** — `applicationInsightsId`, `keyVaultId`, `storageAccountId`, and `containerRegistryId` are all fixed at creation; re-pointing any of them replaces the workspace. Choose accounts sized for the workspace's lifetime.
 
-**Identity** -- required. `SYSTEM_ASSIGNED` is the simple path; `USER_ASSIGNED` (with `primaryUserAssignedIdentity`) lets you grant storage/vault access before the workspace exists.
+**Identity** — required. `SYSTEM_ASSIGNED` is the simple path; `USER_ASSIGNED` (with `primaryUserAssignedIdentity`) lets you grant storage/vault access before the workspace exists.
 
-**Managed network isolation** -- `DISABLED` (default), `ALLOW_INTERNET_OUTBOUND`, or `ALLOW_ONLY_APPROVED_OUTBOUND`. Under approved-outbound, the three outbound-rule lists define what is reachable; rule names share one namespace across all three types.
+**Managed network isolation** — `DISABLED` (default), `ALLOW_INTERNET_OUTBOUND`, or `ALLOW_ONLY_APPROVED_OUTBOUND`. Under approved-outbound, the three outbound-rule lists define what is reachable; rule names share one namespace across all three types.
 
-**Public network access** -- leave enabled (the default) unless you have private endpoints in place; a private workspace with no-public-IP serverless compute also needs a serverless subnet.
+**Public network access** — leave enabled (the default) unless you have private endpoints in place; a private workspace with no-public-IP serverless compute also needs a serverless subnet.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
-| **AzureApplicationInsights** | `applicationInsightsId` | `status.outputs.application_insights_id` |
-| **AzureKeyVault** | `keyVaultId` | `status.outputs.key_vault_id` |
-| **AzureStorageAccount** | `storageAccountId` | `status.outputs.storage_account_id` |
-| **AzureContainerRegistry** | `containerRegistryId` (optional) | `status.outputs.container_registry_id` |
-| **AzureUserAssignedIdentity** | `identity.identityIds`, `primaryUserAssignedIdentity` (optional) | `status.outputs.identity_id` |
-| **AzureSubnet** | `serverlessCompute.subnetId` (optional) | `status.outputs.subnet_id` |
-| **AzureKeyVaultKey** | `encryption.keyId` (optional) | `status.outputs.versionless_id` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Application Insights** | `applicationInsightsId` | `status.outputs.application_insights_id` |
+| **Azure Key Vault** | `keyVaultId` | `status.outputs.key_vault_id` |
+| **Azure Storage Account** | `storageAccountId` | `status.outputs.storage_account_id` |
+| **Azure Container Registry** | `containerRegistryId` (optional) | `status.outputs.container_registry_id` |
+| **Azure User Assigned Identity** | `identity.identityIds`, `primaryUserAssignedIdentity` (optional) | `status.outputs.identity_id` |
+| **Azure Subnet** | `serverlessCompute.subnetId` (optional) | `status.outputs.subnet_id` |
+| **Azure Key Vault Key** | `encryption.keyId` (optional) | `status.outputs.versionless_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -139,16 +139,16 @@ The outbound-rule ID maps (`fqdn_outbound_rule_ids`, `private_endpoint_outbound_
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Team workspace** -- system identity on the standard companion trio. Start from the **Team Workspace** preset.
+**Team workspace** — system identity on the standard companion trio. Start from the **Team Workspace** preset.
 
-**Feature store** -- a `FEATURE_STORE`-flavor workspace (with the required `featureStore` block) backing online/offline feature serving. Deployed alongside, not instead of, the regular training workspace. Start from the **Feature Store** preset.
+**Feature store** — a `FEATURE_STORE`-flavor workspace (with the required `featureStore` block) backing online/offline feature serving. Deployed alongside, not instead of, the regular training workspace. Start from the **Feature Store** preset.
 
-**Private hardened workspace** -- public access off, approved-outbound isolation, explicit outbound rules. Start from the **Private Hardened Workspace** preset.
+**Private hardened workspace** — public access off, approved-outbound isolation, explicit outbound rules. Start from the **Private Hardened Workspace** preset.
 
 ## Works With
 
-- [**Azure Machine Learning Datastore**](/infra-catalog/azure-machine-learning-datastore) -- saved data connections on the workspace
-- [**Azure Storage Account**](/infra-catalog/azure-storage-account) -- the default artifact storage
-- [**Azure Key Vault**](/infra-catalog/azure-key-vault) -- the workspace's secret store
-- [**Azure Application Insights**](/infra-catalog/azure-application-insights) -- workspace telemetry
-- [**Azure Container Registry**](/infra-catalog/azure-container-registry) -- environment images
+- [**Azure Machine Learning Datastore**](/infra-catalog/azure-machine-learning-datastore) — saved data connections on the workspace
+- [**Azure Storage Account**](/infra-catalog/azure-storage-account) — the default artifact storage
+- [**Azure Key Vault**](/infra-catalog/azure-key-vault) — the workspace's secret store
+- [**Azure Application Insights**](/infra-catalog/azure-application-insights) — workspace telemetry
+- [**Azure Container Registry**](/infra-catalog/azure-container-registry) — environment images

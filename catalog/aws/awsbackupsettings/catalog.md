@@ -91,7 +91,7 @@ This kind has no foreign key dependencies — it configures account- and region-
 
 ### What This Kind Provides
 
-The outputs, `account_id` and `region`, echo the identities of the two settings objects (the account the global arm manages, the region the region arm manages). They are audit echoes, not composition inputs — no catalog kind consumes them via ValueFromRef.
+The outputs, `account_id` and `region`, echo the identities of the two settings objects (the account the global arm manages, the region the region arm manages). They are audit echoes, not composition inputs — no catalog kind references them.
 
 ## Common Patterns
 

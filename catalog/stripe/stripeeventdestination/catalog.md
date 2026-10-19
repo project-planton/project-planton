@@ -1,21 +1,21 @@
 # Stripe Event Destination
 
-Declares where your Stripe account sends events through Stripe's v2 event destinations -- a webhook URL, an Amazon EventBridge event bus, or an Azure Event Grid partner topic -- as thin or snapshot events. One Infra Component per destination.
+Declares where your Stripe account sends events through Stripe's v2 event destinations — a webhook URL, an Amazon EventBridge event bus, or an Azure Event Grid partner topic — as thin or snapshot events. One Infra Component per destination.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one event destination in the Stripe account your Stripe connection's key belongs to:
 
-- **The destination** -- a webhook URL, or a partner event source in your AWS account, or a partner topic in your Azure subscription
-- **The events** -- exactly the event types you list, thin or snapshot
-- **A webhook's signing secret** -- returned by Stripe only now, and kept in `status.outputs.signing_secret`
+- **The destination** — a webhook URL, or a partner event source in your AWS account, or a partner topic in your Azure subscription
+- **The events** — exactly the event types you list, thin or snapshot
+- **A webhook's signing secret** — returned by Stripe only now, and kept in `status.outputs.signing_secret`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -58,13 +58,13 @@ An Infra Job tracks the change in real time.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Thin or snapshot** -- thin events carry a notification your service fetches details for; snapshot events carry the whole object. Changing it replaces the destination.
+**Thin or snapshot** — thin events carry a notification your service fetches details for; snapshot events carry the whole object. Changing it replaces the destination.
 
-**One destination block** -- `webhookEndpoint`, `amazonEventbridge` or `azureEventGrid`; the block you set is the destination's type.
+**One destination block** — `webhookEndpoint`, `amazonEventbridge` or `azureEventGrid`; the block you set is the destination's type.
 
-**Verify every webhook delivery** -- your service checks each `Stripe-Signature` header with `status.outputs.signing_secret`, by reference.
+**Verify every webhook delivery** — your service checks each `Stripe-Signature` header with `status.outputs.signing_secret`, by reference.
 
-**Destroy deletes** -- the destination, and a webhook's secret with it.
+**Destroy deletes** — the destination, and a webhook's secret with it.
 
 ## Outputs and Dependencies
 
@@ -88,11 +88,11 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Thin events webhook** -- meter errors to a billing service. Start from the **Thin Events Webhook** preset.
+**Thin events webhook** — meter errors to a billing service. Start from the **Thin Events Webhook** preset.
 
-**Amazon EventBridge** -- billing events into an AWS event bus. Start from the **Amazon EventBridge** preset.
+**Amazon EventBridge** — billing events into an AWS event bus. Start from the **Amazon EventBridge** preset.
 
 ## Works With
 
-- [**Stripe Webhook Endpoint**](/infra-catalog/stripe-webhook-endpoint) -- the simpler kind for classic snapshot webhooks.
-- [**AWS EventBridge Bus**](/infra-catalog/aws-event-bridge-bus) -- the bus that associates with an EventBridge destination's partner source.
+- [**Stripe Webhook Endpoint**](/infra-catalog/stripe-webhook-endpoint) — the simpler kind for classic snapshot webhooks.
+- [**AWS EventBridge Bus**](/infra-catalog/aws-event-bridge-bus) — the bus that associates with an EventBridge destination's partner source.

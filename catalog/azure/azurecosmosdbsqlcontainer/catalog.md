@@ -6,20 +6,20 @@ Deploys a SQL (NoSQL) API container inside a Cosmos DB database — the unit of 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Cosmos DB SQL Container** -- a named container inside the referenced SQL database, with its partition key definition (single or hierarchical), optional unique key constraints, indexing policy, TTL settings, and conflict-resolution policy
-- **Dedicated Throughput** (optional) -- fixed RU/s or an autoscale ceiling owned by this container alone, when either is declared; omit both to share the database's provisioned budget (or on serverless accounts)
+- **Cosmos DB SQL Container** — a named container inside the referenced SQL database, with its partition key definition (single or hierarchical), optional unique key constraints, indexing policy, TTL settings, and conflict-resolution policy
+- **Dedicated Throughput** (optional) — fixed RU/s or an autoscale ceiling owned by this container alone, when either is declared; omit both to share the database's provisioned budget (or on serverless accounts)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **A Cosmos DB SQL database** to attach to. Reference an AzureCosmosdbSqlDatabase Infra Component via ValueFromRef, or provide the database's ARM ID directly.
-- **A partition key design** -- the single most consequential decision for Cosmos DB performance and cost. Pick a property with high cardinality, even request distribution, and frequent use in query filters (tenantId, userId, deviceId). It is fixed at creation.
+- **A Cosmos DB SQL database** to attach to. Reference an Azure Cosmos DB SQL Database Infra Component, or provide the database's ARM ID directly.
+- **A partition key design** — the single most consequential decision for Cosmos DB performance and cost. Pick a property with high cardinality, even request distribution, and frequent use in query filters (tenantId, userId, deviceId). It is fixed at creation.
 
 ## Deploy
 
@@ -64,36 +64,36 @@ When deploying as part of a multi-resource environment, the whole chain composes
 
 These are the most important decisions when configuring a SQL container. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Partition key** -- `partitionKeyPaths` (1-3 paths starting with `/`) plus `partitionKeyKind`: unset/`HASH` for the normal single-path key, `MULTI_HASH` for a hierarchical key of up to three levels (e.g. `/tenantId`, `/userId`) that routes queries carrying any prefix efficiently — hierarchical keys require `partitionKeyVersion: 2`. All fixed at creation: changing the key means a new container and a data migration.
+**Partition key** — `partitionKeyPaths` (1-3 paths starting with `/`) plus `partitionKeyKind`: unset/`HASH` for the normal single-path key, `MULTI_HASH` for a hierarchical key of up to three levels (e.g. `/tenantId`, `/userId`) that routes queries carrying any prefix efficiently — hierarchical keys require `partitionKeyVersion: 2`. All fixed at creation: changing the key means a new container and a data migration.
 
-**Throughput model** -- Leave both fields unset to share the database's provisioned budget (or on serverless accounts); set `throughput` (minimum 400 RU/s, increments of 100) for dedicated fixed capacity; or set `autoscaleMaxThroughput` (minimum 1000, increments of 1000). The two are mutually exclusive. Edits in place.
+**Throughput model** — Leave both fields unset to share the database's provisioned budget (or on serverless accounts); set `throughput` (minimum 400 RU/s, increments of 100) for dedicated fixed capacity; or set `autoscaleMaxThroughput` (minimum 1000, increments of 1000). The two are mutually exclusive. Edits in place.
 
-**TTL** -- `defaultTtl`: unset leaves TTL off; `-1` turns it on with no default expiry (documents opt in with their own ttl property); a positive value expires documents that many seconds after their last write. `analyticalStorageTtl` governs the analytical-store copy and requires analytical storage on the ACCOUNT; clearing a set value forces a replacement.
+**TTL** — `defaultTtl`: unset leaves TTL off; `-1` turns it on with no default expiry (documents opt in with their own ttl property); a positive value expires documents that many seconds after their last write. `analyticalStorageTtl` governs the analytical-store copy and requires analytical storage on the ACCOUNT; clearing a set value forces a replacement.
 
-**Indexing policy** -- Unset applies Azure's default (consistent indexing of every path). A declared policy replaces the default wholesale — the root path `/*` must then appear in exactly one of `includedPaths`/`excludedPaths`. Excluding bulky payload paths is the main write-RU saver; composite indexes serve multi-property ORDER BY. Updates in place.
+**Indexing policy** — Unset applies Azure's default (consistent indexing of every path). A declared policy replaces the default wholesale — the root path `/*` must then appear in exactly one of `includedPaths`/`excludedPaths`. Excluding bulky payload paths is the main write-RU saver; composite indexes serve multi-property ORDER BY. Updates in place.
 
-**Unique keys and conflict resolution** -- `uniqueKeys` constrain combined path values within each LOGICAL PARTITION (never the whole container). `conflictResolutionPolicy` matters on multi-region-write accounts: last-writer-wins on a numeric path (default `/_ts`) or a custom stored procedure. Both fixed at creation.
+**Unique keys and conflict resolution** — `uniqueKeys` constrain combined path values within each LOGICAL PARTITION (never the whole container). `conflictResolutionPolicy` matters on multi-region-write accounts: last-writer-wins on a numeric path (default `/_ts`) or a custom stored procedure. Both fixed at creation.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| AzureCosmosdbSqlDatabase | `sqlDatabaseId` | `status.outputs.sql_database_id` |
+| Azure Cosmos DB SQL Database | `sqlDatabaseId` | `status.outputs.sql_database_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `sql_container_id` | The ARM ID of the container | The scope for container-level data-plane RBAC (AzureCosmosdbSqlRoleAssignment) |
+| `sql_container_id` | The ARM ID of the container | The scope for container-level data-plane RBAC (Azure Cosmos DB SQL Role Assignment) |
 | `sql_container_name` | The container's name | Application configuration |
 | `sql_database_name` | The parent database's name | SDK addressing (`{database}/{container}`) |
 | `cosmosdb_account_name` | The account's name | Connection string composition |
 
-There are deliberately no endpoint or credential outputs here: connectivity and keys live on the account (AzureCosmosdbAccount's endpoint and key outputs); the container is addressed inside that connection by database and container name.
+There are deliberately no endpoint or credential outputs here: connectivity and keys live on the account (Azure Cosmos DB Account's endpoint and key outputs); the container is addressed inside that connection by database and container name.
 
 ## Common Patterns
 

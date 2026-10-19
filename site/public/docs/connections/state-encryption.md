@@ -32,7 +32,7 @@ You choose the key when you create a state backend (the **Key** step of the conn
 | Planton's key (default) | Yes | Yes | Planton. On Planton-managed storage, a key derived for your organization alone; on your own storage, a passphrase Planton creates in your organization's secrets |
 | A passphrase you hold | Yes | Yes | You, as a secret in your organization |
 | AWS KMS | Yes | Yes | Your AWS account, through an AWS connection |
-| Google Cloud KMS | Yes | Yes, with the limits below | Your Google Cloud project, through a Google Cloud connection |
+| Google Cloud KMS | Yes | Yes, with the limits below | Your Google Cloud project, through a GCP connection |
 | Azure Key Vault | Yes, Managed HSM included | Yes, key vault keys only | Your Azure subscription, through an Azure connection |
 | Vault or OpenBao transit | Yes | Yes | Your Vault or OpenBao, through a connection |
 | Pulumi Cloud's keys | No | Yes, for state in Pulumi Cloud | Pulumi Cloud |

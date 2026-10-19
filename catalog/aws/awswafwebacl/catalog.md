@@ -1,6 +1,6 @@
 # AWS WAF Web ACL
 
-Deploys a WAFv2 Web ACL — the ordered rule set that decides which requests reach your application. Rules evaluate managed rule groups, rate limits, geo and ASN matches, IP-set and regex-pattern-set references, and match statements (byte / SQLi / XSS / size / label), with AND / OR / NOT composition for multi-condition logic. REGIONAL scope protects ALB, API Gateway, AppSync, Cognito, and App Runner; CLOUDFRONT scope protects CloudFront distributions and must live in `us-east-1`. Optional logging, custom block responses, CAPTCHA/challenge immunity, body-inspection ceilings, and field-masking data protection round out a production posture. Its `web_acl_arn` output is what CloudFront and load balancers associate via ValueFromRef.
+Deploys a WAFv2 Web ACL — the ordered rule set that decides which requests reach your application. Rules evaluate managed rule groups, rate limits, geo and ASN matches, IP-set and regex-pattern-set references, and match statements (byte / SQLi / XSS / size / label), with AND / OR / NOT composition for multi-condition logic. REGIONAL scope protects ALB, API Gateway, AppSync, Cognito, and App Runner; CLOUDFRONT scope protects CloudFront distributions and must live in `us-east-1`. Optional logging, custom block responses, CAPTCHA/challenge immunity, body-inspection ceilings, and field-masking data protection round out a production posture. Its `web_acl_arn` output is what CloudFront and load balancers associate by reference.
 
 ## What Gets Created
 
@@ -66,7 +66,7 @@ This creates a REGIONAL web ACL with the AWS Common Rule Set enforced and all ot
 
 ### InfraChart
 
-When the web ACL deploys alongside its IP sets and pattern sets in one chart, wire the rule references via ValueFromRef:
+When the web ACL deploys alongside its IP sets and pattern sets in one chart, wire the rule references:
 
 ```yaml
 spec:
@@ -107,15 +107,15 @@ These are the most important decisions when configuring a WAF Web ACL. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsWafIpSet** | `rules[].statement.ipSetReference.arn` | `status.outputs.ip_set_arn` |
-| **AwsWafRegexPatternSet** | `rules[].statement.regexPatternSetReference.arn` | `status.outputs.regex_pattern_set_arn` |
+| **AWS WAF IP Set** | `rules[].statement.ipSetReference.arn` | `status.outputs.ip_set_arn` |
+| **AWS WAF Regex Pattern Set** | `rules[].statement.regexPatternSetReference.arn` | `status.outputs.regex_pattern_set_arn` |
 | **CloudWatch Log Group / S3 / Firehose** | `logging.destinationArn` | literal ARN or explicit-kind reference (three destination types, so no default kind) |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

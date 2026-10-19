@@ -6,16 +6,16 @@ Installs Velero — cluster backup and disaster recovery — from the official H
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Helm Release** (`velero`) -- the Velero server Deployment with the backend's provider plugin as an init container, the default BackupStorageLocation (named `default`), the default VolumeSnapshotLocation (unless snapshots are disabled), and any declared Schedule resources
-- **CRDs** -- Backup, Restore, Schedule, and companions — surviving uninstall by Helm's own contract for `crds/`-directory CRDs, so backup records outlive the release
-- **Node-agent DaemonSet** (optional) -- when file-system backup or CSI snapshot data movement is enabled; runs privileged with host-path mounts of the kubelet pod directory — that is how it reads volume data
-- **Namespace** (optional) -- created with standard governance labels when `createNamespace` is true (`velero` is the upstream convention)
+- **Helm Release** (`velero`) — the Velero server Deployment with the backend's provider plugin as an init container, the default BackupStorageLocation (named `default`), the default VolumeSnapshotLocation (unless snapshots are disabled), and any declared Schedule resources
+- **CRDs** — Backup, Restore, Schedule, and companions — surviving uninstall by Helm's own contract for `crds/`-directory CRDs, so backup records outlive the release
+- **Node-agent DaemonSet** (optional) — when file-system backup or CSI snapshot data movement is enabled; runs privileged with host-path mounts of the kubelet pod directory — that is how it reads volume data
+- **Namespace** (optional) — created with standard governance labels when `createNamespace` is true (`velero` is the upstream convention)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### Kubernetes Cluster
 
@@ -91,27 +91,27 @@ The InfraPipeline deploys the referenced IAM role first, then installs Velero ag
 
 These are the most important decisions when configuring Velero. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The store is the source of truth** -- deleting a Backup resource from the cluster does not remove its records from the bucket, and Velero's location sync re-imports whatever the store holds. A backup name can never be reused against a prefix that still holds a prior backup's records, and two clusters must never share a prefix unless one is deliberately restoring from the other.
+**The store is the source of truth** — deleting a Backup resource from the cluster does not remove its records from the bucket, and Velero's location sync re-imports whatever the store holds. A backup name can never be reused against a prefix that still holds a prior backup's records, and two clusters must never share a prefix unless one is deliberately restoring from the other.
 
-**Prefix per cluster** -- when several clusters share one bucket, `prefix` is what keeps their records apart. It is the single most consequential string in the spec.
+**Prefix per cluster** — when several clusters share one bucket, `prefix` is what keeps their records apart. It is the single most consequential string in the spec.
 
-**Credential posture per backend** -- each backend offers keyless (IRSA / GCP Workload Identity / Azure Workload Identity), declared keys (stored as managed secrets), or NEITHER — ambient node credentials. S3-compatible endpoints (MinIO, Ceph RGW) cannot use IRSA; they authenticate with access keys.
+**Credential posture per backend** — each backend offers keyless (IRSA / GCP Workload Identity / Azure Workload Identity), declared keys (stored as managed secrets), or NEITHER — ambient node credentials. S3-compatible endpoints (MinIO, Ceph RGW) cannot use IRSA; they authenticate with access keys.
 
-**The volume-data path** -- CSI snapshots on clusters with snapshot-capable drivers (add snapshot data movement to make backups portable across clusters), or file-system backup via the node agent for everything else. Verify volume snapshots appear in a backup's own resource list before trusting it — a missing VolumeSnapshotClass label fails silently.
+**The volume-data path** — CSI snapshots on clusters with snapshot-capable drivers (add snapshot data movement to make backups portable across clusters), or file-system backup via the node agent for everything else. Verify volume snapshots appear in a backup's own resource list before trusting it — a missing VolumeSnapshotClass label fails silently.
 
-**CRDs and records survive removal** -- Helm never deletes `crds/`-directory CRDs on uninstall, and bucket objects are never touched either way. The cleanup-on-uninstall dial is DESTRUCTIVE and reserved by upstream for CI — never production.
+**CRDs and records survive removal** — Helm never deletes `crds/`-directory CRDs on uninstall, and bucket objects are never touched either way. The cleanup-on-uninstall dial is DESTRUCTIVE and reserved by upstream for CI — never production.
 
-**Restore-only standby** -- a DR-standby cluster reads the same store with restore-only mode when recovery time matters.
+**Restore-only standby** — a DR-standby cluster reads the same store with restore-only mode when recovery time matters.
 
-**Observability you can trust** -- DR you cannot observe is DR you cannot trust; the ServiceMonitor exposes backup success/failure for alerting.
+**Observability you can trust** — DR you cannot observe is DR you cannot trust; the ServiceMonitor exposes backup success/failure for alerting.
 
-**The escape hatch** -- `helmValues` carries additional chart values as a YAML document, merged LAST — never the substitute for typed fields, and never a place for secrets.
+**The escape hatch** — `helmValues` carries additional chart values as a YAML document, merged LAST — never the substitute for typed fields, and never a place for secrets.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |---|---|---|
 | Kubernetes Namespace | `spec.namespace` | `spec.name` |
 | AWS IAM Role | `spec.backupStorage.s3.irsaRoleArn` | `status.outputs.role_arn` |
@@ -122,7 +122,7 @@ Each credential reference is also the deploy-ordering edge: the identity (and th
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -135,17 +135,17 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**EKS with S3 and IRSA** -- keyless backups to S3, CSI snapshots via the EBS driver, a nightly 30-day schedule. Start from the **EKS S3 IRSA** preset.
+**EKS with S3 and IRSA** — keyless backups to S3, CSI snapshots via the EBS driver, a nightly 30-day schedule. Start from the **EKS S3 IRSA** preset.
 
-**GKE with GCS Workload Identity** -- keyless backups to a GCS bucket. Start from the **GKE GCS Workload Identity** preset.
+**GKE with GCS Workload Identity** — keyless backups to a GCS bucket. Start from the **GKE GCS Workload Identity** preset.
 
-**Self-contained MinIO** -- an in-cluster S3-compatible store with access keys and file-system backup — the air-gapped/dev posture. Start from the **MinIO Self-Contained** preset.
+**Self-contained MinIO** — an in-cluster S3-compatible store with access keys and file-system backup — the air-gapped/dev posture. Start from the **MinIO Self-Contained** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target; also the unit most restores operate on.
-- [**AWS IAM Role**](/infra-catalog/aws-iam-role) -- the IRSA role behind keyless S3 backups (`irsaRoleArn`).
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the Workload Identity subject behind keyless GCS backups.
-- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) -- the federated identity behind keyless Azure Blob backups.
-- [**Kubernetes StatefulSet**](/infra-catalog/kubernetes-stateful-set) -- the stateful workloads whose volume data CSI snapshots or file-system backup capture.
-- [**kube-prometheus-stack**](/infra-catalog/kubernetes-kube-prometheus-stack) -- provides the Prometheus operator CRDs the ServiceMonitor needs and turns backup health into alerts.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target; also the unit most restores operate on.
+- [**AWS IAM Role**](/infra-catalog/aws-iam-role) — the IRSA role behind keyless S3 backups (`irsaRoleArn`).
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the Workload Identity subject behind keyless GCS backups.
+- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) — the federated identity behind keyless Azure Blob backups.
+- [**Kubernetes StatefulSet**](/infra-catalog/kubernetes-stateful-set) — the stateful workloads whose volume data CSI snapshots or file-system backup capture.
+- [**kube-prometheus-stack**](/infra-catalog/kubernetes-kube-prometheus-stack) — provides the Prometheus operator CRDs the ServiceMonitor needs and turns backup health into alerts.
