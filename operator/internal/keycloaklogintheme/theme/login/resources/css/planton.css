@@ -52,7 +52,11 @@
   /* keycloak.v2's own hooks */
   --keycloak-card-top-color: transparent;
   --keycloak-bg-logo-url: none;
-  --keycloak-logo-url: url('../img/planton-logo.svg');
+  /* The installation's own logo, served by the control plane behind the same
+   * front door (its version for the dark theme, else the logo, else Planton's
+   * mark -- this page is dark by design). A logo change reaches this page with
+   * no theme change and no identity-server restart. */
+  --keycloak-logo-url: url('/storage/v1/branding/sign-in.png');
   --keycloak-logo-height: 64px;
   --keycloak-logo-width: 64px;
 }
@@ -64,8 +68,8 @@ body {
   color: var(--planton-text);
 }
 
-/* The realm-name banner: replace the uppercase text with the P mark.
- * 40px mark, 48px credential-zone gap -- without the removed sign-in title
+/* The realm-name banner: replace the uppercase text with the installation's logo.
+ * 40px logo, 48px credential-zone gap -- without the removed sign-in title
  * the logo must carry the whole brand beat; 32px read as cramped in review. */
 #kc-header-wrapper {
   font-size: 0;
@@ -76,7 +80,7 @@ body {
   margin: 0 auto 48px;
 }
 
-/* The card: the CONTAINER carries the surface so the P mark sits inside the
+/* The card: the CONTAINER carries the surface so the logo sits inside the
  * card with the form (the parent theme floats the logo above it on the page
  * background). The inner main panel goes transparent -- including its shadow,
  * whose bottom edge otherwise renders as a phantom hairline inside the card. */

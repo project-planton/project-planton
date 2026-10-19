@@ -434,3 +434,29 @@ questions:
       - skill: planton
         file: references/service.reading-a-run.md
         pattern: 'Name the run by its id for them'
+
+  - id: admin-puts-the-company-logo-on-self-hosted
+    persona: platform engineer
+    question: >
+      We run Planton on our own cluster. Put our logo (acme.png, and a white
+      version, acme-white.png) on it, sign-in page included. Do I add it to
+      the PlantonPlatform?
+    answer: >
+      No -- the installation's logo is held by the product, not the
+      declaration. As an installation administrator run
+      `planton branding set-logo acme.png --dark-theme acme-white.png`: one
+      change sets the logo and its version for the dark theme, and every
+      surface of the installation draws it in place of Planton's mark. The
+      sign-in page is dark by design, so it shows the dark-theme version,
+      else the logo, else Planton's mark, read from the installation itself
+      -- no operator change and no identity-server restart.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: 'What the product itself holds is changed through the product instead, never the declaration'
+      - skill: planton
+        file: references/self-hosted.branding.md
+        pattern: 'planton branding set-logo logo\.png --dark-theme light\.png'
+      - skill: planton
+        file: references/self-hosted.branding.md
+        pattern: '(?s)version\s+for\s+the\s+dark\s+theme,\s+else\s+the\s+logo,\s+else\s+Planton''s\s+mark'

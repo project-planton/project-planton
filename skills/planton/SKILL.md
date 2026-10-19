@@ -402,7 +402,7 @@ repository identity (`references/service.external-ci.md`). Every door needs a Gi
 
 Some people run Planton on their own cluster: a **PlantonPlatform** resource the **Planton operator** converges everything from, with a **PlantonIdentityProvider** beside it when a company directory is connected. You will know from `planton instance show` (`deployment_kind: self_hosted`) or their words ("our Planton", "the operator"). Hold these:
 
-- **The declaration is the only handle.** Every fact is on the platform's status and every change is an edit to its spec, applied through the same read-then-confirm protocol as any mutation (`references/cloud.exploration.md`). Never edit, scale, or delete an object the operator rendered; it converges it back within a pass.
+- **The declaration is the handle for what the operator runs.** Every fact about the running install is on the platform's status and every change to it is an edit to its spec, applied through the same read-then-confirm protocol as any mutation (`references/cloud.exploration.md`). Never edit, scale, or delete an object the operator rendered; it converges it back within a pass. What the product itself holds is changed through the product instead, never the declaration: who a directory group maps to (`planton directory map`) and the installation's logo (`planton branding set-logo`, `references/self-hosted.branding.md`).
 - **Refusals are sentences.** A version below the operator's floor, a contradictory `spec.email`, a failed directory check: the operator names the field and nothing running changes. Relay the sentence; never guess.
 - **The local administrator is the break-glass.** It stays local, never mapped, reachable at `kc_idp_hint=local` on every surface when the directory is primary.
 - **Membership follows the directory.** Access is a mapping from a group to a role; nobody edits a mirrored team by hand; offboarding is the arm's window, never an admin's action.
@@ -484,6 +484,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/self-hosted.identity-primary-and-break-glass.md` | Making the directory the only sign-in; `/login?local=1`, `planton login --local`; "what if Entra is down" |
 | `references/self-hosted.identity-mapping.md` | Giving a directory group access; `planton directory` and the MCP tools; the blast-radius preview; reading sync health |
 | `references/self-hosted.identity-offboarding.md` | How fast a departed person is out, per arm; the sync's laws; the email-less refusal; invited directory users; alert email |
+| `references/self-hosted.branding.md` | Putting the company's logo on a self-hosted Planton (`planton branding show\|set-logo\|clear-logo`); the version for the dark theme; why the sign-in page still shows Planton's mark; an organization's own logo on planton.ai |
 
 ### Working craft (`craft.*`, `catalog.*`)
 

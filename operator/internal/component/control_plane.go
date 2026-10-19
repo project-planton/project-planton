@@ -302,7 +302,7 @@ func (cp *ControlPlane) buildConfig(planton *v1.PlantonPlatform, ownerRef *metav
 		// the console), runner-facing ones on the in-cluster Service.
 		cfg.Storage = &resources.StorageBinding{
 			RelayPublicBaseURL:   publicURL,
-			RelayInternalBaseURL: resources.ControlPlaneRelayInternalBaseURL(planton.Name, planton.Namespace),
+			RelayInternalBaseURL: resources.ControlPlaneBrowserAPIInternalOrigin(planton.Name, planton.Namespace),
 		}
 
 		// The front door is the keyless identity issuer, and every posture

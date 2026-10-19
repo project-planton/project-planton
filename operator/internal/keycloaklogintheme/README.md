@@ -7,7 +7,7 @@ The Planton design system translated to the self-hosted identity server: the sig
 Keycloak renders every user-facing screen server-side from a **theme**: a named directory of static files under `/opt/keycloak/themes/<name>/`, split by type (`login/`, `account/`, `email/`). A theme is **not code** -- it is:
 
 1. **`theme.properties`** per type -- the manifest. Its `parent=` line is the core mechanism: a theme extends a built-in one and overrides only what it wants. Everything not overridden keeps the parent's templates and styling. Any other key in the manifest is a **theme property** the type's FreeMarker templates can read as `properties.<key>`.
-2. **CSS + images + fonts** under `resources/` -- for a visual reskin of the pages, all that is needed.
+2. **CSS + fonts** under `resources/` (images too, though this theme ships none) -- for a visual reskin of the pages, all that is needed.
 3. **FreeMarker templates** (`html/*.ftl`, `text/*.ftl`, `messages/*.properties`) -- the emails have no stylesheet to reskin, so they are templates by nature; the login pages deliberately override none (overridden page templates rot when Keycloak upgrades, and CSS reached everything).
 
 One realm setting -- `loginTheme` -- selects the theme for the login pages; the server-wide `--spi-theme--default=planton` flag the operator passes selects it for every other type, email included. Without an `email` type in this theme the server would fail to render any message at all, which is why the type exists even where it inherits.
@@ -33,9 +33,13 @@ Every color in `theme/login/resources/css/planton.css` is a **deliberate, docume
 
 One value flows the other way on purpose: `--planton-focus-border` (`#696741`) is the design system's single non-monochrome accent, defined in the console theme as the focused-input border and reused here so "you are typing here" looks identical on both surfaces.
 
+## The logo is the installation's, not the theme's
+
+The sign-in page draws `/storage/v1/branding/sign-in.png`, a path-absolute address on the same front door that serves this page: the control plane answers it with the installation's own logo (its version for the dark theme, else the logo itself, else Planton's mark -- the page is dark by design). The theme ships no image. An administrator who changes the logo from the console or `planton branding set-logo` changes this page within a minute, with no theme change and no identity-server restart, and the page still fetches nothing from a third party. Planton's own mark lives in the control plane, beside the image it serves in its place.
+
 ## Layout rule: a real directory, embedded whole
 
-`theme/` is the theme exactly as Keycloak lays it out on disk, embedded with `go:embed`. Every file under it ships; there is no allowlist to keep in sync, each file is edited in its own language (CSS, SVG, FreeMarker, properties), and the platform's generator writes a file, not a Go constant. **The directory listing is the manifest of what ships into Keycloak.** Bundling the font (`inter-latin.woff2`, licensed under the [SIL Open Font License 1.1](https://github.com/rsms/inter/blob/master/LICENSE.txt)) keeps the sign-in page fetching **nothing** from third parties -- no font-CDN call from a credential screen, identical rendering air-gapped; the email layout likewise carries no image and no remote font.
+`theme/` is the theme exactly as Keycloak lays it out on disk, embedded with `go:embed`. Every file under it ships; there is no allowlist to keep in sync, each file is edited in its own language (CSS, FreeMarker, properties), and the platform's generator writes a file, not a Go constant. **The directory listing is the manifest of what ships into Keycloak.** Bundling the font (`inter-latin.woff2`, licensed under the [SIL Open Font License 1.1](https://github.com/rsms/inter/blob/master/LICENSE.txt)) keeps the sign-in page fetching **nothing** from third parties -- no font-CDN call from a credential screen, identical rendering air-gapped; the email layout likewise carries no image and no remote font.
 
 ## API
 

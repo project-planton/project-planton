@@ -96,11 +96,11 @@ func TestControlPlaneDeployment_AwsConnectionMethodEnvVars(t *testing.T) {
 	}
 }
 
-func TestControlPlaneRelayInternalBaseURL(t *testing.T) {
-	got := ControlPlaneRelayInternalBaseURL("planton", "planton-ns")
+func TestControlPlaneBrowserAPIInternalOrigin(t *testing.T) {
+	got := ControlPlaneBrowserAPIInternalOrigin("planton", "planton-ns")
 	want := "http://planton-control-plane.planton-ns.svc.cluster.local:8081"
 	if got != want {
-		t.Errorf("relay internal base URL = %q, want %q", got, want)
+		t.Errorf("browser-API internal origin = %q, want %q", got, want)
 	}
 }
 

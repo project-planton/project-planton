@@ -560,10 +560,13 @@ func ControlPlaneServiceFQDN(crName, namespace string) string {
 	return fmt.Sprintf("%s.%s.svc.cluster.local", ControlPlaneServiceName(crName), namespace)
 }
 
-// ControlPlaneRelayInternalBaseURL returns the in-cluster base URL for the
-// storage relay: the control plane's Service on the browser-API port, where
-// the relay endpoint is mounted alongside gRPC-Web.
-func ControlPlaneRelayInternalBaseURL(crName, namespace string) string {
+// ControlPlaneBrowserAPIInternalOrigin returns the control plane's browser-API
+// door as seen from inside the cluster: its Service on the gRPC-Web port,
+// where the storage relay and the console-facing gRPC-Web API are served
+// side by side. Anything in the cluster that talks to that door -- the
+// storage relay's own address, the console's server -- uses this one origin,
+// so the in-cluster spelling of the door lives in one place.
+func ControlPlaneBrowserAPIInternalOrigin(crName, namespace string) string {
 	return fmt.Sprintf("http://%s:%d", ControlPlaneServiceFQDN(crName, namespace), controlPlaneGrpcWebPort)
 }
 

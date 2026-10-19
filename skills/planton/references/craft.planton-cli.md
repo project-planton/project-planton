@@ -465,6 +465,23 @@ front doors and `login --local` (`self-hosted.front-doors-and-the-cli.md`,
 `self-hosted.identity-primary-and-break-glass.md`), mapping
 (`self-hosted.identity-mapping.md`).
 
+## The company's logo
+
+```
+planton branding show                                       # the logo shown, its served addresses, who set it
+planton branding set-logo logo.png [--dark-theme light.png] # one change sets both versions
+planton branding clear-logo [--dark-theme]                  # back to Planton's mark, or drop only the dark-theme version
+```
+
+The scope follows the instance: on a self-hosted install one logo covers the
+whole installation (installation administration access; `--org` is refused),
+and on planton.ai each organization carries its own (`--org` or the current
+context; Owner or Infrastructure Admin; the console's Settings → General →
+Logo). `set-logo` and `clear-logo` are mutations: confirm first. When a logo
+would be hard to see on the dark theme, `set-logo` and `show` say so and print
+the `--dark-theme` command to run. The craft is
+`self-hosted.branding.md`.
+
 ## Generic escape hatches
 
 Any resource, any kind: `planton get <kind> <id> -o json` (e.g.
