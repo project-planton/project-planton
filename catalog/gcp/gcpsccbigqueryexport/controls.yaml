@@ -37,7 +37,7 @@ spec:
       status: enforced_by_default
       evidence:
         type: provider_default
-        reference: Changing the export needs securitycenter.BigQueryExports.* at the scope (roles/securitycenter.bigQueryExportsEditor); writing needs the export's own principal to hold roles/bigquery.dataEditor on the dataset, and reading the findings is governed by the dataset's own IAM.
+        reference: Changing the export needs securitycenter.bigQueryExports.* at the scope (roles/securitycenter.bigQueryExportsEditor); writing needs the export's own principal to hold roles/bigquery.dataEditor on the dataset, and reading the findings is governed by the dataset's own IAM.
     - control_id: workload-identity
       status: not_applicable
       notes: The configuration authenticates nothing itself; Security Command Center acts through its own Google-managed service account.

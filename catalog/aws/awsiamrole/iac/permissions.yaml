@@ -26,6 +26,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: grants_access
         notes: Covers aws_iam_role / iam.Role -- creation with name, path, trust document (free-form or composed OIDC form), description, session-duration ceiling, and boundary; in-place updates of every mutable argument; tagging; and deletion. IAM ARNs carry no region, and role/* spans custom paths because '*' matches path separators. All role APIs authorize on the role ARN alone.
       - sid: ManageRolePolicyWiring
         actions:
@@ -39,4 +41,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: grants_access
         notes: Covers aws_iam_role_policy_attachment / iam.RolePolicyAttachment (managed-policy attach and detach, reconciled per entry) and aws_iam_role_policy / iam.RolePolicy (inline policies embedded in the role). The List actions are the read-side during plan/refresh, and force_detach_policies deletion sweeps attachments and inline policies through the same List/Detach/Delete calls. Every action here authorizes on the ROLE ARN, not the policy ARN -- attaching an AWS-managed or foreign policy needs no grant on the policy itself.

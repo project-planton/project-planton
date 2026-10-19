@@ -16,6 +16,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Creation for aws_memorydb_user. Unlike every other user-lifecycle action, memorydb:CreateUser declares NO resource types in the MemoryDB service reference -- it cannot be resource-scoped, so the wildcard is the narrowest possible scope (it does support the memorydb:UserAuthenticationMode and tagging condition keys for policies that want to constrain it further).
       - sid: ManageUser
         actions:
@@ -28,4 +30,6 @@ spec:
         resources:
           - arn:aws:memorydb:*:*:user/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The rest of the aws_memorydb_user lifecycle -- in-place updates to the access string and authentication mode (UpdateUser), reads during plan/refresh (DescribeUsers and ListTags are resource-scoped to the user ARN format arn:...:user/{UserName}), tagging, and deletion. Both modules create the same single resource (tf aws_memorydb_user; pulumi memorydb.NewUser) with tags.

@@ -19,9 +19,11 @@ spec:
           - Microsoft.Cache/redisEnterprise/databases/write
           - Microsoft.Cache/redisEnterprise/databases/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_managed_redis -- Azure Managed Redis is the Redis Enterprise resource family, so the cluster and its default database are created, refreshed, updated, and destroyed through Microsoft.Cache/redisEnterprise operations.
       - purpose: ListAccessKeys
         actions:
           - Microsoft.Cache/redisEnterprise/databases/listKeys/action
         provenance: derived
+        privilege: ordinary
         notes: Required only when access_keys_authentication_enabled is true and outputs export the keys -- keyless (Entra) instances never need it.

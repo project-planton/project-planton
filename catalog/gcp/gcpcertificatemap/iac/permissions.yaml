@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling certificatemanager.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageCertificateMap
         permissions:
@@ -25,6 +27,8 @@ spec:
           - certificatemanager.certmaps.delete
           - certificatemanager.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_certificate_manager_certificate_map -- create, read/refresh, in-place updates (description, labels), and destroy. Certificate Manager mutations return long-running operations the provider polls under certificatemanager.operations.get; the entry mutations below poll under the same permission.
       - purpose: ManageMapEntries
         permissions:
@@ -33,4 +37,6 @@ spec:
           - certificatemanager.certmapentries.update
           - certificatemanager.certmapentries.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the google_certificate_manager_certificate_map_entry fan-out -- entry create/destroy (hostname, matcher, and name are ForceNew) and the in-place certificate-list rotation that is the entries' one mutable surface.

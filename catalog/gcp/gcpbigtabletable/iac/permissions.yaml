@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling bigtableadmin.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
       - purpose: ManageTable
         permissions:
@@ -24,10 +26,14 @@ spec:
           - bigtable.tables.get
           - bigtable.tables.update
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_bigtable_table -- create with column families, pre-splits, change streams, automated backups, and deletion protection; get for read/refresh; update for mutable fields (families, change-stream retention, backup policy, deletion protection); delete on destroy once deletion_protection is UNPROTECTED. The predefined roles/bigtable.admin carries all of these.
       - purpose: ManageGcPolicies
         permissions:
           - bigtable.tables.get
           - bigtable.tables.update
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_bigtable_gc_policy (one per column family that declares a policy). GC policies are column-family metadata -- the provider applies them through the Admin API's ModifyColumnFamilies call, which authorizes as a table update, and reads them back through the table's get.

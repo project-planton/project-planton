@@ -17,6 +17,8 @@ spec:
           - arn:aws:eks:*:*:cluster/*
           - arn:aws:aps:*:*:workspace/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: CreateScraper authorizes against the SOURCE and DESTINATION, not the scraper (its id does not exist yet) -- the service reference scopes it to the EKS cluster and AMP workspace resource types. VPC sources and CloudWatch-dataset destinations have no scopable ARN on this action, so those arms ride the same grant.
       - sid: ManageScraper
         actions:
@@ -27,6 +29,8 @@ spec:
           - arn:aws:aps:*:*:scraper/*
           - arn:aws:aps:*:*:workspace/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_prometheus_scraper after create -- DescribeScraper on every plan/refresh and as the long create/delete waiter (creates run up to 30 minutes, deletes drain up to 20), UpdateScraper for in-place alias/destination/configuration changes (it also authorizes against the workspace ARN when the destination changes), DeleteScraper on destroy.
       - sid: ManageScraperLogging
         actions:
@@ -36,6 +40,8 @@ spec:
         resources:
           - arn:aws:aps:*:*:scraper/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Needed only when logging is set -- covers aws_prometheus_scraper_logging_configuration (create and update both land on UpdateScraperLoggingConfiguration; the service reference lists no separate create action). All three scope to the scraper ARN.
       - sid: ResolveDefaultConfiguration
         actions:
@@ -43,6 +49,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Needed only for EKS sources with scrape_configuration unset -- the modules resolve AWS's published default configuration at deploy time. NON-SCOPABLE per the service reference, so the wildcard is the narrowest possible scope.
       - sid: TagScraper
         actions:
@@ -52,6 +60,8 @@ spec:
         resources:
           - arn:aws:aps:*:*:scraper/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Tag-on-create plus later tag reconciliation and the tag read on every refresh, scoped to the scraper ARN per the service reference.
       - sid: CreateScraperServiceLinkedRole
         actions:
@@ -59,4 +69,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/aws-service-role/scraper.aps.amazonaws.com/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The account's FIRST scraper triggers automatic creation of the AWSServiceRoleForAmazonPrometheusScraper service-linked role the collector operates under; later scrapers reuse it. Scoped to the SLR path. For EKS sources the service also self-manages the cluster access entry it scrapes through -- that is service-side, not a runner grant.

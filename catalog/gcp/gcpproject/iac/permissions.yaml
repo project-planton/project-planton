@@ -10,34 +10,57 @@ metadata:
 spec:
   gcp:
     groups:
-      - purpose: ManageProject
+      - purpose: CreateProject
         permissions:
           - resourcemanager.projects.create
+        provenance: derived
+        reach: organization
+        privilege: ordinary
+        notes: Covers creating the google_project. resourcemanager.projects.create authorizes on the PARENT node (the organization or folder named by parent_type/parent_id), never on the project itself -- it lives in IAM's org/folder-scoped inventory and is the grant inside roles/resourcemanager.projectCreator -- so it is granted to the deploying principal on the destination parent.
+      - purpose: ManageProject
+        permissions:
           - resourcemanager.projects.get
           - resourcemanager.projects.update
           - resourcemanager.projects.delete
         provenance: derived
-        notes: Covers the whole google_project lifecycle -- create, read/refresh, in-place updates (display name, labels), and destroy. delete performs the shutdown that starts the 30-day pending-deletion window; deletion_policy PREVENT and ABANDON are client-side stances that never call the API. Grant placement for create differs from its siblings -- resourcemanager.projects.create authorizes on the PARENT node (the organization or folder named by parent_type/parent_id), never on the project itself (it lives in IAM's org/folder-scoped inventory and is the grant inside roles/resourcemanager.projectCreator), so grant it to the deploying principal on the destination parent.
+        reach: target
+        privilege: ordinary
+        notes: Covers the rest of the google_project lifecycle -- read/refresh, in-place updates (display name, labels), and destroy. delete performs the shutdown that starts the 30-day pending-deletion window; deletion_policy PREVENT and ABANDON are client-side stances that never call the API.
       - purpose: MoveProjectParent
         permissions:
           - resourcemanager.projects.move
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when a plan changes parent_type/parent_id -- migrating the project within the hierarchy authorizes as a move on the project itself, paired with CreateProject's permission on the destination parent.
       - purpose: LinkBillingAccount
         permissions:
           - resourcemanager.projects.createBillingAssignment
           - resourcemanager.projects.deleteBillingAssignment
-          - billing.resourceAssociations.create
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: billing_account_id
-        notes: The link is authorized on BOTH sides -- the project-side assignments, and billing.resourceAssociations.create on the billing account itself (it lives in IAM's billing-account-scoped inventory and is the heart of roles/billing.user), so grant that one to the deploying principal ON the billing account, not the project. deleteBillingAssignment covers unlinking or switching accounts on update.
+        notes: The project side of the billing link -- the link is authorized on both sides, and this is the half the project answers for. deleteBillingAssignment covers unlinking or switching accounts on update.
+      - purpose: AssociateBillingAccount
+        permissions:
+          - billing.resourceAssociations.create
+        provenance: derived
+        reach: billing_account
+        privilege: ordinary
+        predefined_role: roles/billing.user
+        condition:
+          spec_field_set: billing_account_id
+        notes: The billing-account side of the link -- billing.resourceAssociations.create lives in IAM's billing-account-scoped inventory, so it is granted ON the billing account, never the project, through roles/billing.user (its home; a billing account takes custom roles only from its own organization).
       - purpose: EnableApis
         permissions:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service for every enabled_apis entry, plus the provider's own enablement of compute.googleapis.com when auto_create_network is false (the module default) -- the provider documents that it enables the Compute API on the new project to delete the default network. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: DeleteDefaultNetwork
         permissions:
@@ -45,4 +68,6 @@ spec:
           - compute.networks.delete
           - compute.globalOperations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Exercised on the module's DEFAULT path -- with auto_create_network false, GCP still creates the default VPC momentarily and the provider deletes it immediately after project creation, polling the global operation the delete returns. Not needed only when a spec opts INTO keeping the default network (auto_create_network true).

@@ -21,4 +21,6 @@ spec:
         resources:
           - arn:aws:apprunner:*:*:observabilityconfiguration/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_apprunner_observability_configuration, the only resource either module registers (the Pulumi module drives the same provider through the pulumi-aws bridge). Create registers the configuration with its optional trace block and the platform's identity tags; Describe and ListTagsForResource serve plan/refresh; the provider's only real update path is tag reconciliation via Tag/Untag (trace changes are a documented upstream no-op); Delete removes the revision. The service reference authorizes all six actions on the observabilityconfiguration ARN format (name/version/id path -- the single trailing wildcard covers all revisions).

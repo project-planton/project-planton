@@ -24,6 +24,8 @@ spec:
           - arn:aws:ec2:*:*:security-group/*
           - arn:aws:ec2:*:*:route-table/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_vpc_endpoint / ec2.VpcEndpoint -- the single resource both modules manage. The service reference authorizes CreateVpcEndpoint on the endpoint ARN AND the referenced vpc, subnet, security-group, and route-table ARNs (create-time multi-ARN scoping -- an endpoint-only grant denies provisioning), and ModifyVpcEndpoint on the endpoint plus whichever attachment resources a change touches (route tables on Gateway, subnets and security groups on Interface, all updatable in place). DeleteVpcEndpoints scopes to the endpoint ARN alone. CreateTags rides the create call; DeleteTags serves tag reconciliation.
       - sid: ReadEndpointState
         actions:
@@ -33,4 +35,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Plan/refresh reads and the create/delete wait loops (the provider polls DescribeVpcEndpoints until available, then until deleted). DescribePrefixLists populates the Gateway-relevant prefix_list_id and cidr_blocks attributes on every endpoint that targets a service_name, and DescribeNetworkInterfaces reads the endpoint ENIs to reconstruct subnet_configuration state -- both are unconditional reads in the provider's read path. EC2 Describe APIs support no resource-level scoping (the service reference lists no resource types for any of the three), so the wildcard is the narrowest possible scope.

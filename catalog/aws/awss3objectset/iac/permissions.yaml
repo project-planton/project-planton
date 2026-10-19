@@ -18,6 +18,8 @@ spec:
         resources:
           - arn:aws:s3:::*/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_s3_object uploads and aws_s3_object_copy destinations -- CopyObject authorizes as s3:PutObject on the DESTINATION object. Placement headers (storage class, SSE settings, website redirect) ride the same PutObject call and can be narrowed with their s3:x-amz-* condition keys. PutObjectTagging serves tag-only reconciliation; PutObjectAcl serves acl changes on existing objects (only functional on buckets whose ownership controls permit ACLs). All three scope to the object ARN (bucket/key).
       - sid: ReadObjects
         actions:
@@ -28,6 +30,8 @@ spec:
         resources:
           - arn:aws:s3:::*/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Plan/refresh reads (the providers HEAD each managed object -- authorized as s3:GetObject -- and read tags back), plus the SOURCE-side read of every copy_from: CopyObject authorizes s3:GetObject on the source object, the one permission the copy needs outside the destination bucket. The lock reads let refresh see retention and legal-hold state on Object Lock buckets. All scope to object ARNs."
       - sid: DeleteObjects
         actions:
@@ -37,6 +41,8 @@ spec:
         resources:
           - arn:aws:s3:::*/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Destroy and replace (a key change is delete + create). On a versioning-enabled bucket, destroying a managed object removes ALL of its versions -- that is DeleteObjectVersion, a separate action from DeleteObject. BypassGovernanceRetention is exercised only when an object sets force_destroy: the delete then carries the governance-bypass flag, which S3 rejects on non-Object-Lock buckets. COMPLIANCE-mode retention is not bypassable by any grant."
       - sid: ListVersions
         actions:
@@ -44,6 +50,8 @@ spec:
         resources:
           - arn:aws:s3:::*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The version enumeration behind all-version deletes on versioning-enabled buckets. Unlike the object actions, this authorizes on the BUCKET ARN (no trailing /key) -- granting it on object ARNs never matches.
       - sid: UseKmsForSseKms
         actions:
@@ -52,4 +60,6 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Exercised only around SSE-KMS. Writing an object with the aws:kms override (or into a bucket whose default encryption is SSE-KMS) needs kms:GenerateDataKey on the key -- the spec calls this out on the kms_key field. kms:Decrypt covers copy sources that are themselves SSE-KMS-encrypted: the copy decrypts the source before re-encrypting at the destination. With SSE-S3 on both ends this statement is never used."

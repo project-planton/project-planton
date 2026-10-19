@@ -16,10 +16,12 @@ spec:
           - Microsoft.Insights/DataCollectionRuleAssociations/Write
           - Microsoft.Insights/DataCollectionRuleAssociations/Delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_monitor_data_collection_rule_association -- create, read/refresh, description updates, and destroy. The association is an extension resource living ON the target machine ({target_id}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{name}), so these must be held at the TARGET machine's scope, not the rule's resource group. ARM's inventory spells these operations with PascalCase verbs (Read/Write/Delete). Monitoring Contributor carries all three.
       - purpose: ReadLinkedRuleOrEndpoint
         actions:
           - Microsoft.Insights/DataCollectionRules/Read
           - Microsoft.Insights/DataCollectionEndpoints/Read
         provenance: derived
+        privilege: ordinary
         notes: ARM enforces linked authorization at association PUT -- the caller must hold read on the scope of whichever resource the binding names, or the deploy fails with LinkedAuthorizationFailed even though the association write itself was permitted (the classic symptom when the rule lives in another subscription or resource group). DataCollectionRules/Read applies to rule bindings (data_collection_rule_id), DataCollectionEndpoints/Read to endpoint bindings (data_collection_endpoint_id); each is needed only for its binding form. The module itself performs no read of the linked resource -- this is ARM's server-side check.

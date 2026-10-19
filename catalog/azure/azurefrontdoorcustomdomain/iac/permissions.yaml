@@ -16,4 +16,5 @@ spec:
           - Microsoft.Cdn/profiles/customdomains/write
           - Microsoft.Cdn/profiles/customdomains/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_cdn_frontdoor_custom_domain -- create, read/refresh, in-place TLS and dns_zone_id updates, and destroy. The parent profile is addressed by its ARM ID parsed from the profile_id reference, and the module performs no other API calls. Held via CDN Profile Contributor, Contributor, or narrower custom roles.

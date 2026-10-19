@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/ipGroups/write
           - Microsoft.Network/ipGroups/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_ip_group -- create, read/refresh, in-place updates (cidrs, tags), and destroy. Held via Network Contributor, Contributor, or narrower custom roles.

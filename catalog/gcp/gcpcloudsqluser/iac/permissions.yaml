@@ -9,6 +9,8 @@ metadata:
   name: gcpcloudsqluser
 spec:
   gcp:
+    api_enabled_by:
+      - GcpCloudSql
     groups:
       - purpose: ManageUser
         permissions:
@@ -17,4 +19,6 @@ spec:
           - cloudsql.users.update
           - cloudsql.users.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_sql_user -- create, refresh, in-place updates (password rotation, password policy), and the drop at destroy (deletion_policy PREVENT and ABANDON are client-side and never call the API). The list permission, not get, backs refresh -- the SQL Admin API has no per-user GET method, so the provider reads a user by listing the instance's users; cloudsql.users.get exists in GCP's IAM inventory but the module never issues a call that needs it. No serviceusage group either -- the module deliberately enables no API (the parent instance's module already enabled sqladmin.googleapis.com).

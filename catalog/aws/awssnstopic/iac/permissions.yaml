@@ -22,6 +22,8 @@ spec:
         resources:
           - arn:aws:sns:*:*:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_sns_topic -- the access policy, delivery policy, encryption, archive policy, signature version, and delivery-feedback settings are all attributes written through SetTopicAttributes. The topic-name wildcard is the ARN's variable part.
       - sid: ManageDataProtectionPolicy
         actions:
@@ -30,6 +32,8 @@ spec:
         resources:
           - arn:aws:sns:*:*:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_sns_topic_data_protection_policy, created only when spec.data_protection_policy is set.
       - sid: PassDeliveryFeedbackRoles
         actions:
@@ -37,6 +41,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Required only when delivery_feedback references success/failure feedback roles -- SNS assumes them to write delivery status logs, and configuring the topic passes them. Scope to the actual role ARNs in a hardened deployment.
       - sid: UseCustomerManagedKey
         actions:
@@ -44,4 +50,6 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when kms_key_id references a customer-managed key -- the provider validates the key on topic configuration. Publish-path KMS calls are made by publishers with their own identities, never by the runner. Scope to the actual key ARN in a hardened deployment.

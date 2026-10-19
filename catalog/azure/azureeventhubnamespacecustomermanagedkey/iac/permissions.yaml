@@ -15,4 +15,5 @@ spec:
           - Microsoft.EventHub/namespaces/read
           - Microsoft.EventHub/namespaces/write
         provenance: derived
+        privilege: ordinary
         notes: azurerm_eventhub_namespace_customer_managed_key is not its own ARM resource -- it PATCHES the encryption block of the existing namespace (eventhub_namespace_id), so the runner reads and writes the namespace itself. No delete action is needed because the provider's delete is a deliberate no-op (Azure's add-only CMK contract). The runner never touches Key Vault -- Azure's service performs wrap/unwrap with the namespace's managed identity, whose vault access is granted separately via AzureRoleAssignment.

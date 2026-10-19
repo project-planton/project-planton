@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling clouddeploy.googleapis.com on the pipeline's project. disable_on_destroy is false, so the disable permission is never needed.
       - purpose: ManageDeliveryPipeline
         permissions:
@@ -25,6 +27,8 @@ spec:
           - clouddeploy.deliveryPipelines.delete
           - clouddeploy.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_clouddeploy_delivery_pipeline (Pulumi clouddeploy.DeliveryPipeline) -- create, read on every refresh, in-place updates (stages, strategies, labels, suspended), and delete under deletion_policy DELETE (ABANDON and PREVENT call no delete API; the delete always sends force=true). Create, update, and delete return long-running operations the provider polls with clouddeploy.operations.get.
       - purpose: ManageAutomations
         permissions:
@@ -34,6 +38,8 @@ spec:
           - clouddeploy.automations.delete
           - clouddeploy.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: automations
         notes: Only when automations is set -- covers one google_clouddeploy_automation (Pulumi clouddeploy.Automation) per entry, with create, refresh reads, in-place updates, and delete returning long-running operations polled with clouddeploy.operations.get.
@@ -41,6 +47,8 @@ spec:
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: automations
         notes: Only when automations is set -- Cloud Deploy requires the caller creating or updating an automation to act as the service account the automation runs as (roles/iam.serviceAccountUser carries this permission). Grant it on that service account rather than project-wide.

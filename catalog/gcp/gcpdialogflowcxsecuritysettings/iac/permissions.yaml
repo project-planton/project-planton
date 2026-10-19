@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling dialogflow.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageSecuritySettings
         permissions:
@@ -24,11 +26,15 @@ spec:
           - dialogflow.securitySettings.update
           - dialogflow.securitySettings.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_dialogflow_cx_security_settings (Pulumi diagflow.CxSecuritySettings) -- created, patched with a field mask, read on every refresh, deleted. roles/dialogflow.admin contains all four.
       - purpose: GrantAudioBucketToDialogflow
         permissions:
           - storage.buckets.setIamPolicy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: audio_export_settings
         notes: Setting audio_export_settings.gcs_bucket makes Google grant the Dialogflow service agent roles/storage.objectCreator on the bucket on the caller's behalf, which Google's provider documents as requiring storage.buckets.setIamPolicy on that bucket.

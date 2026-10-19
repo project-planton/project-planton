@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling storage.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageBucket
         permissions:
@@ -24,12 +26,16 @@ spec:
           - storage.buckets.update
           - storage.buckets.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_storage_bucket and google_storage_notification -- bucket create/read/update/delete, lifecycle and website configuration, and notification configuration, all bucket-scoped operations.
       - purpose: GrantBucketIam
         permissions:
           - storage.buckets.getIamPolicy
           - storage.buckets.setIamPolicy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: iam_members
         notes: Covers google_storage_bucket_iam_member, which reads and rewrites the bucket policy for each iam_members grant (the 02-static-website preset's allUsers objectViewer).
@@ -39,6 +45,8 @@ spec:
           - storage.folders.get
           - storage.folders.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: folders
         notes: Covers google_storage_folder, one per folders entry -- hierarchical-namespace buckets manage folders as their own resources.
@@ -48,6 +56,8 @@ spec:
           - storage.managedFolders.get
           - storage.managedFolders.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: managed_folders
         notes: Covers google_storage_managed_folder, one per managed_folders entry, managed as its own resource.
@@ -55,6 +65,8 @@ spec:
         permissions:
           - pubsub.topics.getIamPolicy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: notifications
         notes: Notifications (the 04-event-driven-pipeline preset) publish from the project's Cloud Storage service agent, which must hold pubsub.topics.publish on the target topic -- a grant made on the topic (a separate component), not by this module; the provider only verifies the topic. Listed for visibility, not held by this module's apply.

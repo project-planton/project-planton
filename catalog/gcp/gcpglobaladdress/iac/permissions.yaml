@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageGlobalAddress
         permissions:
@@ -23,16 +25,22 @@ spec:
           - compute.globalAddresses.setLabels
           - compute.globalOperations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_compute_global_address reads, label changes (labels are the reservation's one mutable surface -- everything else forces replacement), and polling the global operation every mutation returns.
       - purpose: ReserveExternalAddress
         permissions:
           - compute.globalAddresses.create
           - compute.globalAddresses.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Reserving and releasing an EXTERNAL global address (address_type unset or EXTERNAL -- the default).
       - purpose: ReserveInternalAddress
         permissions:
           - compute.globalAddresses.createInternal
           - compute.globalAddresses.deleteInternal
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: INTERNAL reservations (VPC_PEERING ranges, PRIVATE_SERVICE_CONNECT endpoints) authorize under the dedicated *Internal permission variants, NOT the external create/delete (both pairs verified against IAM's testable-permissions inventory).

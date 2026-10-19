@@ -17,6 +17,7 @@ spec:
           - Microsoft.ContainerService/managedClusters/agentPools/write
           - Microsoft.ContainerService/managedClusters/agentPools/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_kubernetes_cluster_node_pool -- the provider reads the parent cluster, then creates/reads/updates/deletes the agent pool. Held via Azure Kubernetes Service Contributor, Contributor, or Owner on the cluster's resource group, matching the module README's prose.
       - purpose: JoinPoolSubnet
         actions:
@@ -24,4 +25,5 @@ spec:
           - Microsoft.Network/virtualNetworks/subnets/read
           - Microsoft.Network/virtualNetworks/read
         provenance: derived
+        privilege: ordinary
         notes: Required only when vnet_subnet_id (or pod_subnet_id) places the pool on a BYO subnet -- creating NICs in a subnet the pool does not own demands join on it, and after creating the pool the provider polls BOTH the subnet and its parent virtual network until their provisioning states return to Succeeded (Get on each), which is where the two read actions are exercised. Not needed with AKS-managed networking.

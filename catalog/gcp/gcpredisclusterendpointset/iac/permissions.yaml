@@ -9,6 +9,8 @@ metadata:
   name: gcpredisclusterendpointset
 spec:
   gcp:
+    api_enabled_by:
+      - GcpRedisCluster
     groups:
       - purpose: ManageClusterConnections
         permissions:
@@ -16,4 +18,6 @@ spec:
           - redis.clusters.update
           - redis.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers google_redis_cluster_user_created_connections (Pulumi redis.ClusterUserCreatedConnections): the registration is an update of the cluster's clusterEndpoints (create, in-place change, and destroy under deletion_policy DELETE are all cluster updates; ABANDON and PREVENT call no API), read on every refresh, and the long-running operation the provider polls as redis.operations.get. roles/redis.admin contains all three."

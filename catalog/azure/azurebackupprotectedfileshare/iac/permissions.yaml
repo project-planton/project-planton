@@ -16,21 +16,25 @@ spec:
           - Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/write
           - Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_backup_protected_file_share / backup.NewProtectedFileShare -- register the share under the policy (write on the vault-scoped protected item), refresh, the one in-place update the spec allows (policy re-point), and destroy (which stops protection AND deletes backup data -- the modules keep the engines' default). Typically held via Backup Contributor or Contributor on the VAULT's resource group.
       - purpose: DiscoverProtectableShares
         actions:
           - Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/items/read
           - Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/inquire/action
         provenance: derived
+        privilege: ordinary
         notes: Azure discovers protectable shares only inside a storage account already registered with the vault (the AzureBackupContainerStorageAccount component's job) -- the provider lists the registered container's items to locate the named share and can trigger an inquiry when discovery is stale, both on the vault's scope.
       - purpose: ReadVaultAndPolicy
         actions:
           - Microsoft.RecoveryServices/Vaults/read
           - Microsoft.RecoveryServices/Vaults/backupPolicies/read
         provenance: derived
+        privilege: ordinary
         notes: The providers address the protected item as a child of the named vault and validate the referenced backup_policy_id against it at plan and apply time.
       - purpose: ReadStorageAccount
         actions:
           - Microsoft.Storage/storageAccounts/read
         provenance: derived
+        privilege: ordinary
         notes: The modules never call the storage API -- the resolved source_storage_account_id rides the payload -- but ARM validates the account (and that the named share lives in it) on the ACCOUNT's own scope at create time (service-side). Accounts in other resource groups need this read there.

@@ -22,6 +22,8 @@ spec:
           - arn:aws:ec2:*:*:internet-gateway/*
           - arn:aws:ec2:*:*:vpc/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_internet_gateway / ec2.InternetGateway, the only resource either module manages -- creation, the VPC attachment (setting vpc_id attaches; changing it detaches and re-attaches without replacing the gateway), tagging, and deletion. The service reference authorizes AttachInternetGateway and DetachInternetGateway on BOTH the internet-gateway and vpc ARN formats (an under-scoped grant on just the gateway denies the attach that every create performs). CreateTags rides the create call and later tag reconciliation on the gateway ARN.
       - sid: DescribeInternetGateways
         actions:
@@ -29,4 +31,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side during plan/refresh. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

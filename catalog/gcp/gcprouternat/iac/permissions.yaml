@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageRouterAndNat
         permissions:
@@ -26,12 +28,16 @@ spec:
           - compute.networks.get
           - compute.regionOperations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_compute_router and google_compute_router_nat -- the NAT configuration is written and destroyed through router updates, the provider reads the router's network, and every mutation returns a region operation the provider polls.
       - purpose: UseStaticNatAddresses
         permissions:
           - compute.addresses.use
           - compute.addresses.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: nat_ips
         notes: Assigning the reserved GcpAddress reservations nat_ips names to the gateway demands use on each -- attaching an address a resource does not own demands use on it.

@@ -21,6 +21,8 @@ spec:
         resources:
           - arn:aws:ssm:*:*:document/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_ssm_document / ssm.Document. Create carries the content, type, format, target type, version label, and attachment sources; a content change flows through UpdateDocument and the provider then promotes the new version with UpdateDocumentDefaultVersion. DescribeDocument and GetDocument together serve every plan/refresh (Describe for metadata, Get for the body). All six actions scope to the document ARN per the service reference.
       - sid: ShareDocument
         actions:
@@ -29,6 +31,8 @@ spec:
         resources:
           - arn:aws:ssm:*:*:document/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers the share_with_account_ids arm: ModifyDocumentPermission adds and removes account shares (AWS applies them in batches of 20; the \"All\" entry publishes the document publicly), and DescribeDocumentPermission reads the share list back on refresh. Both scope to the document ARN. AWS refuses DeleteDocument while shares remain, so destroy of a shared document unshares first through this same permission."
       - sid: TagDocument
         actions:
@@ -38,4 +42,6 @@ spec:
         resources:
           - arn:aws:ssm:*:*:document/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Tag-on-create plus later tag reconciliation and the tag read on every refresh. The service reference scopes all three tagging actions to many SSM resource types; only the document ARN format is needed here.

@@ -17,6 +17,8 @@ spec:
         resources:
           - arn:aws:apigateway:*::/account
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_api_gateway_account (tf) and apigateway.Account (pulumi) -- API Gateway authorizes by HTTP verb against resource paths, and the service reference maps the Account resource to exactly GET and PATCH. Create and update PATCH /cloudwatchRoleArn on the region's singleton /account object; read GETs it; destroy PATCHes the role away rather than deleting anything. The /account ARN carries no account-id segment.
       - sid: PassCloudWatchRoleToApiGateway
         actions:
@@ -24,4 +26,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Setting cloudwatch_role_arn passes the named role to the API Gateway service (which must trust apigateway.amazonaws.com); AWS validates the trust policy and the role's log-delivery permissions at apply time and rejects the PATCH otherwise. Needed only when the spec sets a role. Hardened deployments should scope this to the specific logging role's ARN.

@@ -16,6 +16,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the create side of aws_bedrockagentcore_memory / bedrock.AgentcoreMemory. CreateMemory is NON-SCOPABLE -- the bedrock-agentcore service reference lists no resource types for it, so an ARN-scoped grant would be a runtime DENY; the wildcard is the narrowest possible scope, and AWS derives the memory ID at create so no ARN is pre-knowable anyway.
       - sid: ManageMemory
         actions:
@@ -25,6 +27,8 @@ spec:
         resources:
           - arn:aws:bedrock-agentcore:*:*:memory/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_bedrockagentcore_memory / bedrock.AgentcoreMemory AND aws_bedrockagentcore_memory_strategy / bedrock.AgentcoreMemoryStrategy -- strategies have no Create/Delete actions of their own; every strategy add, change, and remove is an UpdateMemory on the parent (which AWS serializes; strategy operations can take tens of minutes). GetMemory serves every plan/refresh and the CREATING/UPDATING state waits. All three actions scope to the memory ARN per the service reference.
       - sid: TagMemory
         actions:
@@ -34,6 +38,8 @@ spec:
         resources:
           - arn:aws:bedrock-agentcore:*:*:memory/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Both modules tag the memory with the Planton identity tags (local.aws_tags / the shared tags map) -- tag-on-create, later reconciliation, and the tag read on every refresh. The service reference scopes all three tagging actions to the memory ARN format (they also accept the other AgentCore resource families this component never touches).
       - sid: PassExecutionRole
         actions:
@@ -41,4 +47,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: CreateMemory/UpdateMemory pass the optional execution_role_arn (memory_execution_role_arn in the provider) to bedrock-agentcore, which assumes it for operations touching your resources -- custom-strategy model invocation and Kinesis record delivery. Only exercised when the spec sets the role (required in practice for CUSTOM strategies and kinesis_delivery). Add an iam:PassedToService=bedrock-agentcore.amazonaws.com condition and narrow to the actual role ARN in a hardened deployment. Kinesis write access belongs to that EXECUTION role, not the runner; the KMS key grant for encryption_key_arn is the referenced AwsKmsKey's key-policy contract.

@@ -22,6 +22,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_zone -- creation (with the first VPC association baked into CreateHostedZone for private zones), tagging, and teardown; GetChange polls propagation. CreateHostedZone acts on a not-yet-existing resource and GetChange acts on change ids, so the wildcard is the narrowest workable scope.
       - sid: ManageVpcAssociations
         actions:
@@ -31,6 +33,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the additional private-zone VPC associations beyond the first; Route 53 validates the VPC via EC2 describe calls, which support no resource-level scoping.
       - sid: ManageZoneRecordsOnDestroy
         actions:
@@ -39,6 +43,8 @@ spec:
         resources:
           - arn:aws:route53:::hostedzone/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: force_destroy teardown lists and deletes every remaining record before the zone itself; without force_destroy the provider still lists records to verify the zone is empty.
       - sid: ManageDnssec
         actions:
@@ -52,6 +58,8 @@ spec:
         resources:
           - arn:aws:route53:::hostedzone/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_key_signing_key and aws_route53_hosted_zone_dnssec -- created only when spec.dnssec is set. The KMS side is a key-policy grant to dnssec-route53.amazonaws.com (kms:DescribeKey, kms:GetPublicKey, kms:Sign, kms:CreateGrant) on the referenced key, owned by the AwsKmsKey component -- not a runner permission here.
       - sid: ManageQueryLogging
         actions:
@@ -62,4 +70,6 @@ spec:
           - arn:aws:route53:::hostedzone/*
           - arn:aws:route53:::queryloggingconfig/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_query_log -- created only when spec.query_logging is set. Every action here scopes -- CreateQueryLoggingConfig authorizes on the hosted zone and Get/Delete on the queryloggingconfig ARN (whose id exists only after create, hence the pattern) -- so the statement carries both resource types instead of a wildcard. The destination log group's account-level CloudWatch Logs resource policy for route53.amazonaws.com is a documented prerequisite, deliberately not created per zone.

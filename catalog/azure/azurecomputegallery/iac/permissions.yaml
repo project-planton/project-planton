@@ -16,4 +16,5 @@ spec:
           - Microsoft.Compute/galleries/write
           - Microsoft.Compute/galleries/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_shared_image_gallery -- create, read/refresh, in-place updates (description, tags; the entire sharing tree is create-only and forces replacement), and destroy. The sharing profile, including Community publishing, travels in the same gallery write -- no separate share action is invoked by the module. Held via Contributor or narrower custom roles.

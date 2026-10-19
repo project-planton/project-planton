@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:pipes:*:*:pipe/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_pipes_pipe / pipes.Pipe -- the module's single resource. UpdatePipe carries every in-place change INCLUDING desired_state flips (RUNNING/STOPPED ride the field, so no StartPipe/StopPipe grant is needed), and DescribePipe is both the plan/refresh read and the poll the provider runs while creates, updates, and deletes walk their state machines (up to 30 minutes). All four actions scope to the pipe ARN per the service reference.
       - sid: TagPipe
         actions:
@@ -28,6 +30,8 @@ spec:
         resources:
           - arn:aws:pipes:*:*:pipe/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The module tags the pipe with the platform's standard tag set -- tag-on-create plus later reconciliation and the tag read on every refresh. All three tagging actions scope to the pipe ARN per the service reference.
       - sid: PassExecutionRoleToPipes
         actions:
@@ -35,4 +39,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: "CreatePipe and UpdatePipe hand the pipe its REQUIRED execution role (role_arn) -- and, for ECS targets, optionally the task-override execution/task roles -- so the configuring principal must hold iam:PassRole on those roles (IAM's platform-wide pass-role rule). Tighten the resource to the specific role ARNs the manifests reference. What the EXECUTION ROLE itself may do (read the source, call the enrichment, write the target) is that AwsIamRole's policy -- subject-matter content, never a runner grant here."

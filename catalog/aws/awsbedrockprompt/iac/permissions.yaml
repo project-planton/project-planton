@@ -16,6 +16,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_bedrockagent_prompt / bedrock.AgentPrompt creation -- the module's single resource (the mutable DRAFT). CreatePrompt is NON-SCOPABLE -- the bedrock service reference lists no resource types for it (the prompt ID does not exist until the call returns) -- so the wildcard is the narrowest possible scope; an ARN-scoped grant would be a runtime DENY.
       - sid: ManagePrompt
         actions:
@@ -25,6 +27,8 @@ spec:
         resources:
           - arn:aws:bedrock:*:*:prompt/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-back, in-place DRAFT updates (description, variants, default variant), and destroy. Get runs on every plan/refresh. All three actions take the prompt resource type per the service reference (Get and Delete also accept prompt-version, which this module never touches -- it manages the DRAFT only); narrow the region and account segments in a hardened deployment.
       - sid: TagPrompt
         actions:
@@ -34,4 +38,6 @@ spec:
         resources:
           - arn:aws:bedrock:*:*:prompt/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The module applies the platform tag set to the prompt (tags = local.aws_tags); ListTagsForResource is read back on every refresh. Tagging actions cover the prompt resource type per the service reference. No iam:PassRole is needed anywhere -- the spec carries no execution role.

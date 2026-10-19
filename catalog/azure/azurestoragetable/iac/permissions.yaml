@@ -16,10 +16,12 @@ spec:
           - Microsoft.Storage/storageAccounts/tableServices/tables/write
           - Microsoft.Storage/storageAccounts/tableServices/tables/delete
         provenance: derived
+        privilege: ordinary
         notes: "Covers the Terraform module's azurerm_storage_table, which addresses the table by the parent account's ARM ID (the resource-manager path) -- create, refresh, and destroy on the account's tableServices/tables child endpoint. The Pulumi module cannot use this path yet (a documented parity exception: pulumi-azure v6 has not bridged the table's storage_account_id input, so it addresses by account NAME, entirely data-plane -- see the group below)."
       - purpose: TableDataPlaneSharedKey
         actions:
           - Microsoft.Storage/storageAccounts/read
           - Microsoft.Storage/storageAccounts/listkeys/action
         provenance: derived
+        privilege: ordinary
         notes: "Both engines drive table creation and stored access policies (acls) through the table DATA plane with shared-key authorization -- the provider fetches the account's keys with listkeys and reads account properties to resolve the table endpoint. Shared key bypasses Azure RBAC data actions entirely, so no tableServices dataActions are needed. Two operational consequences: the parent account must keep shared_access_key_enabled true (Azure's default), and the account's data-plane firewall must admit the runner -- a network rule that blocks it blocks deploys even though ARM would allow them."

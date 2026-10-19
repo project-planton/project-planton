@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the module's two google_project_service resources enabling networkconnectivity.googleapis.com (the control plane that owns the policy) and compute.googleapis.com (where the referenced network and subnets live). disable_on_destroy is false on both, so the disable permission is never needed.
       - purpose: ManagePolicy
         permissions:
@@ -25,4 +27,6 @@ spec:
           - networkconnectivity.serviceConnectionPolicies.delete
           - networkconnectivity.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_network_connectivity_service_connection_policy -- create, read/refresh, in-place updates (psc_config contents, description, labels; location, network, service_class, and name are ForceNew), and destroy. Network Connectivity mutations return long-running operations the provider polls under networkconnectivity.operations.get. All five permissions verified present in IAM's testable-permissions inventory. The subnets and network are passed as resource paths, never mutated -- the endpoints later created in them are the connectivity automation's doing under Google-managed service agents, not this principal.

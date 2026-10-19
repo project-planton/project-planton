@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling bigquery.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
       - purpose: ManageDataset
         permissions:
@@ -24,11 +26,15 @@ spec:
           - bigquery.datasets.get
           - bigquery.datasets.update
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_bigquery_dataset -- create with location, defaults, CMEK, and the authoritative ACL; get for read/refresh; update for every mutable field including the access list (dataset ACL entries are dataset metadata, written through datasets.update, not IAM policy calls); delete on destroy. The predefined roles/bigquery.dataOwner (or the broader roles/bigquery.admin) carries all of these. The committed action-inventory snapshot (pkg/iac/actioninventory/gcp.yaml) carries the bigquery service prefix and lists every permission here; the list was also verified against Google's own BigQuery access-control reference (cloud.google.com/bigquery/docs/access-control) live.
       - purpose: DeleteContainedTables
         permissions:
           - bigquery.tables.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: delete_contents_on_destroy
         notes: Deleting a non-empty dataset also deletes every table in it, which BigQuery authorizes per table. With the default false, destroy refuses on a non-empty dataset and this permission is never exercised. Verified against Google's BigQuery access-control reference live; the committed inventory snapshot carries the bigquery service prefix and lists this permission.

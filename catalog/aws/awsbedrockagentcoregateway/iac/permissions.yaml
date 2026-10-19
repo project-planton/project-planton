@@ -16,6 +16,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_bedrockagentcore_gateway / bedrock.AgentcoreGateway at create. NON-SCOPABLE -- the service reference lists no resource types for CreateGateway (the gateway id does not exist until the call returns), so an ARN-scoped grant would be a runtime DENY; the wildcard is the narrowest possible scope for this one action.
       - sid: ManageGateway
         actions:
@@ -25,6 +27,8 @@ spec:
         resources:
           - arn:aws:bedrock-agentcore:*:*:gateway/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the rest of aws_bedrockagentcore_gateway / bedrock.AgentcoreGateway. GetGateway runs on every plan/refresh; UpdateGateway reconciles description, role, MCP tuning, interceptors, and the policy-engine attachment in place; changing authorizer_type replaces the gateway. All three scope to the gateway ARN per the service reference.
       - sid: ManageGatewayTargets
         actions:
@@ -35,6 +39,8 @@ spec:
         resources:
           - arn:aws:bedrock-agentcore:*:*:gateway/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_bedrockagentcore_gateway_target / bedrock.AgentcoreGatewayTarget -- one per targets entry. Targets have no ARN format of their own; the service reference scopes all four actions (including CreateGatewayTarget, unlike the gateway's own create) to the parent gateway ARN. AWS reads schema documents and reaches backends through the gateway's execution role, not the runner -- the referenced AwsIamRole's contract carries the s3/lambda/execute-api grants, so the runner needs none of them.
       - sid: TagGateway
         actions:
@@ -44,6 +50,8 @@ spec:
         resources:
           - arn:aws:bedrock-agentcore:*:*:gateway/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Tag-on-create plus later tag reconciliation and the tag read on every refresh. The modules tag the gateway resource only (targets carry no tags argument), so the grant scopes to the gateway ARN format alone.
       - sid: PassGatewayExecutionRole
         actions:
@@ -51,4 +59,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: "The runner passes the spec's required role_arn to the service at gateway create and on role changes. Tightening path: pin the resource to the specific role ARN and add the condition iam:PassedToService = bedrock-agentcore.amazonaws.com so the grant cannot leak the role to any other service."

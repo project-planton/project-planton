@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:sns:*:*:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_sns_topic_subscription (and its Pulumi twin) -- create, refresh, in-place attribute updates (filter policy, raw delivery, redrive, delivery/replay policies), and destroy. SNS's only IAM resource type is the topic, and subscription ARNs extend the topic ARN with a subscription id, so the single sns:*:*:* pattern scopes every call; narrow the final segment to the actual topic names in a hardened deployment. The service reference offers sns:Endpoint and sns:Protocol condition keys on Subscribe for pinning what may be subscribed. Note the subscription cannot deliver to SQS or Lambda until THOSE components' resource policies admit sns.amazonaws.com -- an endpoint-side grant the runner does not make here.
       - sid: PassFirehoseDeliveryRole
         actions:
@@ -26,4 +28,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Required only when protocol is "firehose" -- subscribing passes subscription_role_arn (required by spec validation for that protocol) to SNS, which assumes it to write into the delivery stream. Add an iam:PassedToService=sns.amazonaws.com condition and narrow to the actual role ARN in a hardened deployment.

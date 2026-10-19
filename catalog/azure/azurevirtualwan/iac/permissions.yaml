@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/virtualWans/write
           - Microsoft.Network/virtualWans/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_virtual_wan -- create, read/refresh, in-place policy updates (branch-to-branch, Office 365 breakout, type upgrade, tags), and destroy. Held via Network Contributor, Contributor, or narrower custom roles.

@@ -2,7 +2,10 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "actioninventory",
-    srcs = ["actioninventory.go"],
+    srcs = [
+        "actioninventory.go",
+        "privileged.go",
+    ],
     importpath = "github.com/plantonhq/planton/pkg/iac/actioninventory",
     visibility = ["//visibility:public"],
     deps = [
@@ -15,5 +18,8 @@ go_test(
     name = "actioninventory_test",
     srcs = ["conformance_test.go"],
     embed = [":actioninventory"],
-    deps = ["//pkg/iac/permissions"],
+    deps = [
+        "//iac/catalogkindpermissions/v1:catalogkindpermissions",
+        "//pkg/iac/permissions",
+    ],
 )

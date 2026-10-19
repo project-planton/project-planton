@@ -16,6 +16,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the create call of aws_bedrockagent_flow / bedrock.AgentFlow. CreateFlow is NON-SCOPABLE -- the bedrock service reference lists no resource types for it (the flow ID does not exist until the call returns), so an ARN-scoped grant would be a runtime DENY; the wildcard is the narrowest possible scope.
       - sid: ManageFlow
         actions:
@@ -25,6 +27,8 @@ spec:
         resources:
           - arn:aws:bedrock:*:*:flow/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_bedrockagent_flow / bedrock.AgentFlow after creation -- the module manages the single flow resource (the mutable DRAFT definition; no version or alias resources). GetFlow serves every plan/refresh; UpdateFlow carries graph edits; all three scope to the flow ARN per the service reference. AWS validates the graph server-side inside these same calls, so no extra validation action is needed.
       - sid: TagFlow
         actions:
@@ -34,6 +38,8 @@ spec:
         resources:
           - arn:aws:bedrock:*:*:flow/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Tag-on-create plus later tag reconciliation and the tag read on every refresh. The service reference scopes all three tagging actions to the flow ARN format among others; only the flow pattern this module tags is granted.
       - sid: PassFlowExecutionRole
         actions:
@@ -41,4 +47,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: CreateFlow and UpdateFlow pass the referenced execution_role_arn (required by the spec) to Bedrock, which assumes it to invoke the models, agents, knowledge bases, and Lambdas the nodes reference. Add an iam:PassedToService=bedrock.amazonaws.com condition and narrow to the actual role ARN in a hardened deployment.

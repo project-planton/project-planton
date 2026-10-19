@@ -22,6 +22,8 @@ spec:
           - arn:aws:s3vectors:*:*:bucket/*
           - arn:aws:s3vectors:*:*:bucket/*/index/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers aws_s3vectors_vector_bucket / s3vectors.VectorBucket with its create-time encryption configuration (fixed for life -- changes replace the bucket). Vector buckets authorize in the s3vectors namespace, NOT s3. GetVectorBucket runs on every plan/refresh. Bucket lifecycle actions scope to the VectorBucket ARN format per the service reference; the tag trio also authorizes on the Index format (both modules tag bucket AND indexes), which is why both ARN formats appear."
       - sid: ManageBucketPolicy
         actions:
@@ -31,6 +33,8 @@ spec:
         resources:
           - arn:aws:s3vectors:*:*:bucket/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_s3vectors_vector_bucket_policy (rendered only when spec.policy is set). Get runs on plan/refresh; Delete on removal. Scoped to the VectorBucket ARN format per the service reference.
       - sid: ManageIndexes
         actions:
@@ -40,6 +44,8 @@ spec:
         resources:
           - arn:aws:s3vectors:*:*:bucket/*/index/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_s3vectors_index / s3vectors.Index -- one per indexes entry, with dimension, distance metric, per-index encryption, and the non-filterable-metadata configuration all create-only (every change replaces the index). GetIndex runs on plan/refresh. All three actions scope to the Index ARN format per the service reference.
       - sid: EmptyBucketOnForceDestroy
         actions:
@@ -47,4 +53,6 @@ spec:
         resources:
           - arn:aws:s3vectors:*:*:bucket/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Needed when force_destroy empties the bucket at destroy: the provider must enumerate surviving indexes to remove them (ListIndexes is the only published enumeration action, scoped to the VectorBucket format), and the deletions themselves ride the ManageIndexes grant -- an index's vectors are deleted with it. No vector-level actions (PutVectors, DeleteVectors) are granted: the modules never touch vector data."

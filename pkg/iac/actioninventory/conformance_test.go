@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	permissionsv1 "github.com/plantonhq/planton/iac/catalogkindpermissions/v1"
 	"github.com/plantonhq/planton/pkg/iac/permissions"
 )
 
@@ -214,8 +215,13 @@ func TestGcpPermissionsExist(t *testing.T) {
 						t.Errorf("%s/%s: permission %q names service %q which the inventory snapshot does not cover -- run `make generate-action-inventory`", provider, kind, permission, service)
 						continue
 					}
-					if MatchAction(published, name) == 0 {
-						t.Errorf("%s/%s: permission %q does not exist in GCP's IAM inventory for %q -- the name is invented or misspelled", provider, kind, permission, service)
+					// Exact, case included: unlike IAM action names, a GCP
+					// permission is matched by its exact spelling -- a custom
+					// role refuses "securitycenter.BigQueryExports.create" and
+					// testIamPermissions rejects it -- and GCP permissions
+					// take no wildcards.
+					if !containsExact(published, name) {
+						t.Errorf("%s/%s: permission %q does not exist in GCP's IAM inventory for %q -- the name is invented or misspelled (GCP names are case-sensitive)", provider, kind, permission, service)
 					}
 				}
 			}
@@ -405,6 +411,179 @@ func TestCloudflareGroupsExist(t *testing.T) {
 	}
 }
 
+// TestGcpPermissionReach holds every GCP permission group's reach to
+// Google's own scope-typed inventory: a group's permissions share one
+// reach, and it is the reach the snapshot records for each of them. A
+// connection's project role can never hold an organization or billing
+// permission, so a wrong reach is a role that fails at creation or a check
+// that asks the project about something it cannot answer for.
+func TestGcpPermissionReach(t *testing.T) {
+	inv, err := LoadGcp(packageDir(t))
+	if err != nil {
+		t.Fatalf("loading inventory: %v", err)
+	}
+	forEachManifest(t, func(provider, kind string, manifest *permissionsv1.CatalogKindPermissions) {
+		for _, group := range manifest.GetSpec().GetGcp().GetGroups() {
+			declared := group.GetReach().String()
+			for _, permission := range group.GetPermissions() {
+				reach, ok := inv.Reach(permission)
+				if !ok {
+					continue // the existence gate names it
+				}
+				if reach != declared {
+					t.Errorf("%s/%s group %q: %s is granted at %s, but the group's reach is %s -- split the group or correct its reach", provider, kind, group.GetPurpose(), permission, reach, declared)
+				}
+			}
+		}
+	})
+}
+
+// TestPermissionPrivilege holds every AWS statement's, GCP group's and
+// Azure group's privilege to the authored privileged-permission list: an
+// entry's privilege is the highest of its permissions'. A connection grants
+// ordinary and identity-using entries by default and access-granting ones
+// only when asked, so a wrong value either withholds what a kind needs or
+// grants what nobody asked for.
+func TestPermissionPrivilege(t *testing.T) {
+	privileged, err := LoadPrivileged(packageDir(t))
+	if err != nil {
+		t.Fatalf("loading privileged list: %v", err)
+	}
+	check := func(where, provider string, declared permissionsv1.PermissionPrivilege, permissions []string) {
+		list := privileged.For(provider)
+		if list == nil {
+			t.Fatalf("%s: no privileged list for %s", PrivilegedFileName, provider)
+		}
+		if want := list.Of(permissions); declared.String() != want {
+			t.Errorf("%s: privilege is %s, but its permissions make it %s (%s)", where, declared, want, PrivilegedFileName)
+		}
+	}
+	forEachManifest(t, func(provider, kind string, manifest *permissionsv1.CatalogKindPermissions) {
+		spec := manifest.GetSpec()
+		for _, statement := range spec.GetAws().GetStatements() {
+			check(provider+"/"+kind+" "+statement.GetSid(), "aws", statement.GetPrivilege(), statement.GetActions())
+		}
+		for _, group := range spec.GetGcp().GetGroups() {
+			check(provider+"/"+kind+" "+group.GetPurpose(), "gcp", group.GetPrivilege(), group.GetPermissions())
+		}
+		for _, group := range spec.GetAzure().GetGroups() {
+			all := append(append([]string{}, group.GetActions()...), group.GetDataActions()...)
+			check(provider+"/"+kind+" "+group.GetPurpose(), "azure", group.GetPrivilege(), all)
+		}
+	})
+}
+
+// TestGcpPredefinedRoles holds predefined_role to the cases a custom role
+// cannot carry a group -- a permission Google publishes as unsupported in
+// custom roles, or a billing-account reach -- and proves the named role
+// holds every permission of the group, from the snapshot's record of it.
+func TestGcpPredefinedRoles(t *testing.T) {
+	inv, err := LoadGcp(packageDir(t))
+	if err != nil {
+		t.Fatalf("loading inventory: %v", err)
+	}
+	named := map[string]bool{}
+	forEachManifest(t, func(provider, kind string, manifest *permissionsv1.CatalogKindPermissions) {
+		for _, group := range manifest.GetSpec().GetGcp().GetGroups() {
+			where := provider + "/" + kind + " group " + group.GetPurpose()
+			needsRole := group.GetReach() == permissionsv1.PermissionReach_billing_account
+			for _, permission := range group.GetPermissions() {
+				needsRole = needsRole || inv.CustomRoleUnsupported(permission)
+			}
+			role := group.GetPredefinedRole()
+			switch {
+			case needsRole && role == "":
+				t.Errorf("%s: a custom role cannot carry this group (a billing-account reach, or a permission Google does not support in custom roles) -- name its predefined_role", where)
+				continue
+			case !needsRole && role != "":
+				t.Errorf("%s: names predefined_role %s, but a custom role carries every permission of the group -- a predefined role grants more than the catalog needs", where, role)
+				continue
+			case role == "":
+				continue
+			}
+			named[role] = true
+			record := inv.PredefinedRole(role)
+			if record == nil {
+				t.Errorf("%s: predefined_role %s is not in the snapshot -- run `make generate-action-inventory`", where, role)
+				continue
+			}
+			for _, permission := range group.GetPermissions() {
+				if !containsExact(record.Permissions, permission) {
+					t.Errorf("%s: predefined_role %s does not hold %s", where, role, permission)
+				}
+			}
+		}
+	})
+	for _, role := range inv.PredefinedRoles {
+		if !named[role.Name] {
+			t.Errorf("snapshot records predefined role %s which no manifest names -- run `make generate-action-inventory`", role.Name)
+		}
+	}
+}
+
+// TestPrivilegedPermissionsExist proves every name on the authored
+// privileged list exists in its provider's inventory snapshot: a misspelled
+// entry would silently classify nothing.
+func TestPrivilegedPermissionsExist(t *testing.T) {
+	privileged, err := LoadPrivileged(packageDir(t))
+	if err != nil {
+		t.Fatalf("loading privileged list: %v", err)
+	}
+	loaders := map[string]func(string) (*Inventory, error){"aws": LoadAws, "azure": LoadAzure, "gcp": LoadGcp}
+	for _, provider := range privileged.Providers {
+		load, ok := loaders[provider.Provider]
+		if !ok {
+			t.Errorf("%s: provider %q has no inventory arm to check against", PrivilegedFileName, provider.Provider)
+			continue
+		}
+		inv, err := load(packageDir(t))
+		if err != nil {
+			t.Fatalf("loading %s inventory: %v", provider.Provider, err)
+		}
+		for _, name := range append(append([]string{}, provider.UsesIdentity...), provider.GrantsAccess...) {
+			separator := ":"
+			switch provider.Provider {
+			case "gcp":
+				separator = "."
+			case "azure":
+				separator = "/"
+			}
+			service, action, found := strings.Cut(name, separator)
+			svc := inv.Lookup(service)
+			if !found || svc == nil {
+				t.Errorf("%s: %s %q names a service the %s snapshot does not cover", PrivilegedFileName, provider.Provider, name, provider.Provider)
+				continue
+			}
+			exists := containsExact(svc.Actions, action)
+			if provider.Provider != "gcp" {
+				exists = MatchAction(svc.Actions, action) > 0
+			}
+			if !exists {
+				t.Errorf("%s: %s %q does not exist in the provider's inventory", PrivilegedFileName, provider.Provider, name)
+			}
+		}
+	}
+}
+
+// forEachManifest loads every committed permissions manifest.
+func forEachManifest(t *testing.T, visit func(provider, kind string, manifest *permissionsv1.CatalogKindPermissions)) {
+	t.Helper()
+	root := repoRoot(t)
+	discovered, err := permissions.Discover(root)
+	if err != nil {
+		t.Fatalf("discovering permissions manifests: %v", err)
+	}
+	for provider, kinds := range discovered {
+		for _, kind := range kinds {
+			manifest, err := permissions.Load(root, provider, kind)
+			if err != nil {
+				t.Fatalf("loading %s/%s: %v", provider, kind, err)
+			}
+			visit(provider, kind, manifest)
+		}
+	}
+}
+
 // containsExact reports exact string membership -- the matching semantics
 // of providers that do not evaluate wildcards.
 func containsExact(published []string, name string) bool {
@@ -553,6 +732,165 @@ func TestLoadAwsRefusals(t *testing.T) {
 			_, err := LoadAws(dir)
 			if err == nil || !strings.Contains(err.Error(), c.wantErr) {
 				t.Errorf("LoadAws error = %v, want it to contain %q", err, c.wantErr)
+			}
+		})
+	}
+}
+
+// TestLoadGcpScopeAndRoleRefusals pins the GCP snapshot's scope, custom-role
+// and predefined-role invariants: a subset entry must be a published
+// action, a permission has one reach, and roles are sorted and non-empty.
+func TestLoadGcpScopeAndRoleRefusals(t *testing.T) {
+	base := func() *Inventory {
+		return &Inventory{
+			Provider: "gcp",
+			Services: []Service{{
+				Prefix:      "billing",
+				SourceURL:   "https://example.invalid/query",
+				RetrievedOn: "2026-10-19",
+				Actions:     []string{"budgets.create", "resourceAssociations.create"},
+			}},
+		}
+	}
+	cases := []struct {
+		name    string
+		mutate  func(*Inventory)
+		wantErr string
+	}{
+		{"organization entry not published", func(i *Inventory) { i.Services[0].OrganizationActions = []string{"accounts.close"} }, "not in actions"},
+		{"billing entry not published", func(i *Inventory) { i.Services[0].BillingAccountActions = []string{"accounts.close"} }, "not in actions"},
+		{"unsupported entry not published", func(i *Inventory) { i.Services[0].CustomRoleUnsupportedActions = []string{"accounts.close"} }, "not in actions"},
+		{"two reaches for one permission", func(i *Inventory) {
+			i.Services[0].OrganizationActions = []string{"budgets.create"}
+			i.Services[0].BillingAccountActions = []string{"budgets.create"}
+		}, "is in both"},
+		{"role without permissions", func(i *Inventory) {
+			i.PredefinedRoles = []PredefinedRole{{Name: "roles/billing.user"}}
+		}, "required"},
+		{"roles unsorted", func(i *Inventory) {
+			i.PredefinedRoles = []PredefinedRole{
+				{Name: "roles/billing.user", Permissions: []string{"billing.resourceAssociations.create"}},
+				{Name: "roles/billing.costsManager", Permissions: []string{"billing.budgets.create"}},
+			}
+		}, "not sorted"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			inv := base()
+			c.mutate(inv)
+			dir := t.TempDir()
+			if err := writeFile(t, filepath.Join(dir, GcpFileName), renderRaw(inv)); err != nil {
+				t.Fatal(err)
+			}
+			_, err := LoadGcp(dir)
+			if err == nil || !strings.Contains(err.Error(), c.wantErr) {
+				t.Errorf("LoadGcp error = %v, want it to contain %q", err, c.wantErr)
+			}
+		})
+	}
+}
+
+// TestRenderLoadRoundTripGcp proves the renderer writes the scope lists and
+// predefined roles the strict loader reads back unchanged, and that Reach,
+// CustomRoleUnsupported and PredefinedRole answer from them.
+func TestRenderLoadRoundTripGcp(t *testing.T) {
+	inv := &Inventory{
+		Provider: "gcp",
+		Services: []Service{{
+			Prefix:                       "billing",
+			SourceURL:                    "https://example.invalid/query",
+			RetrievedOn:                  "2026-10-19",
+			Actions:                      []string{"budgets.create", "resourceAssociations.create"},
+			BillingAccountActions:        []string{"budgets.create", "resourceAssociations.create"},
+			CustomRoleUnsupportedActions: []string{"budgets.create"},
+		}, {
+			Prefix:              "resourcemanager",
+			SourceURL:           "https://example.invalid/query",
+			RetrievedOn:         "2026-10-19",
+			Actions:             []string{"folders.create", "projects.get"},
+			OrganizationActions: []string{"folders.create"},
+		}},
+		PredefinedRoles: []PredefinedRole{{Name: "roles/billing.user", Permissions: []string{"billing.resourceAssociations.create"}}},
+	}
+	dir := t.TempDir()
+	if err := writeFile(t, filepath.Join(dir, GcpFileName), Render(inv)); err != nil {
+		t.Fatal(err)
+	}
+	loaded, err := LoadGcp(dir)
+	if err != nil {
+		t.Fatalf("LoadGcp: %v", err)
+	}
+	for permission, want := range map[string]string{
+		"billing.budgets.create":         "billing_account",
+		"resourcemanager.folders.create": "organization",
+		"resourcemanager.projects.get":   "target",
+	} {
+		if got, ok := loaded.Reach(permission); !ok || got != want {
+			t.Errorf("Reach(%s) = %q, %v; want %q", permission, got, ok, want)
+		}
+	}
+	if _, ok := loaded.Reach("billing.budgets.frobnicate"); ok {
+		t.Error("Reach of an unpublished permission must report not found")
+	}
+	if !loaded.CustomRoleUnsupported("billing.budgets.create") || loaded.CustomRoleUnsupported("billing.resourceAssociations.create") {
+		t.Error("CustomRoleUnsupported does not answer from custom_role_unsupported_actions")
+	}
+	if role := loaded.PredefinedRole("roles/billing.user"); role == nil || role.Permissions[0] != "billing.resourceAssociations.create" {
+		t.Errorf("PredefinedRole = %+v", role)
+	}
+}
+
+// TestPrivilegedOf pins how an entry's privilege is derived: the highest
+// of its permissions', with IAM's case-insensitive wildcard semantics on
+// AWS and Azure and exact names on GCP.
+func TestPrivilegedOf(t *testing.T) {
+	list, err := LoadPrivileged(packageDir(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cases := []struct {
+		provider    string
+		permissions []string
+		want        string
+	}{
+		{"gcp", []string{"run.services.create"}, PrivilegeOrdinary},
+		{"gcp", []string{"run.services.create", "iam.serviceAccounts.actAs"}, PrivilegeUsesIdentity},
+		{"gcp", []string{"iam.serviceAccounts.actAs", "resourcemanager.projects.setIamPolicy"}, PrivilegeGrantsAccess},
+		{"gcp", []string{"secretmanager.secrets.setIamPolicy"}, PrivilegeOrdinary},
+		{"gcp", []string{"IAM.serviceAccounts.actAs"}, PrivilegeOrdinary},
+		{"aws", []string{"iam:passrole"}, PrivilegeUsesIdentity},
+		{"aws", []string{"iam:Put*"}, PrivilegeGrantsAccess},
+		{"aws", []string{"s3:PutBucketPolicy"}, PrivilegeOrdinary},
+		{"azure", []string{"Microsoft.Authorization/roleAssignments/write"}, PrivilegeGrantsAccess},
+	}
+	for _, c := range cases {
+		if got := list.For(c.provider).Of(c.permissions); got != c.want {
+			t.Errorf("%s %v: privilege %s, want %s", c.provider, c.permissions, got, c.want)
+		}
+	}
+}
+
+// TestLoadPrivilegedRefusals pins the authored list's invariants.
+func TestLoadPrivilegedRefusals(t *testing.T) {
+	cases := []struct {
+		name    string
+		raw     string
+		wantErr string
+	}{
+		{"unsorted providers", "providers:\n  - provider: gcp\n    uses_identity: []\n    grants_access: []\n  - provider: aws\n    uses_identity: []\n    grants_access: []\n", "not sorted"},
+		{"on both lists", "providers:\n  - provider: aws\n    uses_identity: [iam:PassRole]\n    grants_access: [iam:PassRole]\n", "both lists"},
+		{"unsorted list", "providers:\n  - provider: aws\n    uses_identity: []\n    grants_access: [iam:PutRolePolicy, iam:CreateRole]\n", "not sorted"},
+		{"unknown field", "providers:\n  - provider: aws\n    grants: []\n", "not found"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			dir := t.TempDir()
+			if err := writeFile(t, filepath.Join(dir, PrivilegedFileName), c.raw); err != nil {
+				t.Fatal(err)
+			}
+			_, err := LoadPrivileged(dir)
+			if err == nil || !strings.Contains(err.Error(), c.wantErr) {
+				t.Errorf("LoadPrivileged error = %v, want it to contain %q", err, c.wantErr)
 			}
 		})
 	}
@@ -827,10 +1165,34 @@ func renderRaw(inv *Inventory) string {
 				b.WriteString("      - " + action + "\n")
 			}
 		}
-		if len(svc.DataActions) > 0 {
-			b.WriteString("    data_actions:\n")
-			for _, action := range svc.DataActions {
-				b.WriteString("      - " + action + "\n")
+		for _, list := range []struct {
+			key     string
+			actions []string
+		}{
+			{"data_actions", svc.DataActions},
+			{"organization_actions", svc.OrganizationActions},
+			{"billing_account_actions", svc.BillingAccountActions},
+			{"custom_role_unsupported_actions", svc.CustomRoleUnsupportedActions},
+		} {
+			if len(list.actions) > 0 {
+				b.WriteString("    " + list.key + ":\n")
+				for _, action := range list.actions {
+					b.WriteString("      - " + action + "\n")
+				}
+			}
+		}
+	}
+	if len(inv.PredefinedRoles) > 0 {
+		b.WriteString("predefined_roles:\n")
+		for _, role := range inv.PredefinedRoles {
+			b.WriteString("  - name: " + role.Name + "\n")
+			if len(role.Permissions) == 0 {
+				b.WriteString("    permissions: []\n")
+				continue
+			}
+			b.WriteString("    permissions:\n")
+			for _, permission := range role.Permissions {
+				b.WriteString("      - " + permission + "\n")
 			}
 		}
 	}

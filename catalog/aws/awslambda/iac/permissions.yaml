@@ -36,6 +36,8 @@ spec:
         resources:
           - arn:aws:lambda:*:*:function:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_lambda_function plus its attribute satellites (aws_lambda_function_recursion_config, aws_lambda_runtime_management_config) and reserved_concurrent_executions. Action names verified against the AWS service reference; the function-name wildcard is the ARN's variable part.
       - sid: ManageInvocationSatellites
         actions:
@@ -63,6 +65,8 @@ spec:
           - arn:aws:lambda:*:*:function:*
           - arn:aws:lambda:*:*:function:*:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the per-feature satellites -- aws_lambda_alias, aws_lambda_provisioned_concurrency_config, aws_lambda_function_scaling_config, aws_lambda_function_url, aws_lambda_permission, aws_lambda_function_event_invoke_config -- each created only when its spec block is set. The qualified-function ARN form covers alias- and version-scoped calls; no DeleteFunctionScalingConfig action exists in the service reference (scaling configs are removed by re-put).
       - sid: PassExecutionRole
         actions:
@@ -70,6 +74,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: CreateFunction and UpdateFunctionConfiguration pass the referenced execution role (role_arn) to the Lambda service. Narrow to the actual role ARN in a hardened deployment.
       - sid: FetchCodeArtifacts
         actions:
@@ -80,6 +86,8 @@ spec:
           - arn:aws:s3:::*/*
           - arn:aws:ecr:*:*:repository/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only for the code source the manifest uses -- Lambda fetches the s3 object (spec.s3) or pulls the container image (image_uri) with the caller's permissions at CreateFunction/UpdateFunctionCode time. Scope to the actual bucket or repository in a hardened deployment.
       - sid: UseCustomerManagedKey
         actions:
@@ -90,4 +98,6 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when kms_key_arn or source_kms_key_arn references a customer-managed key -- configuring the function encrypts environment variables and packages under it. Scope to the actual key ARN in a hardened deployment.

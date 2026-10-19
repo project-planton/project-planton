@@ -20,6 +20,8 @@ spec:
         resources:
           - arn:aws:ec2:*:*:vpc/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_vpc -- creation with tenancy and CIDR settings, the DNS and NAU attribute toggles (each a ModifyVpcAttribute call), tagging, and teardown.
       - sid: DescribeVpcs
         actions:
@@ -30,6 +32,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_vpc during plan/refresh; the provider also reads the VPC's default security group and network ACL it adopts into state. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: ManageCidrAssociations
         actions:
@@ -39,6 +43,8 @@ spec:
           - arn:aws:ec2:*:*:vpc/*
           - arn:aws:ec2:*:*:ipv6pool-ec2/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_vpc_ipv4_cidr_block_association and aws_vpc_ipv6_cidr_block_association -- the secondary CIDR growth path, including IPAM-sourced and BYOIP IPv6 pool blocks.
       - sid: ManageEncryptionControl
         actions:
@@ -49,4 +55,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_vpc_encryption_control -- created only when spec.encryption_control is set. Action names verified against the AWS Service Authorization Reference for EC2; the resource type carries no documented ARN scoping, so the wildcard is the narrowest expressible scope.

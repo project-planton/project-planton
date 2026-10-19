@@ -14,6 +14,7 @@ spec:
         actions:
           - Microsoft.KeyVault/vaults/read
         provenance: derived
+        privilege: ordinary
         notes: "The modules receive the vault as an ARM resource ID (key_vault_id) and resolve its data-plane URI with an ARM read before any key call -- the only management-plane touch this component makes."
       - purpose: ManageKeyDataPlane
         data_actions:
@@ -24,10 +25,12 @@ spec:
           - Microsoft.KeyVault/vaults/keys/recover/action
           - Microsoft.KeyVault/vaults/keys/purge/action
         provenance: derived
+        privilege: ordinary
         notes: "A Key Vault key is a data-plane object -- azurerm_key_vault_key / keyvault.NewKey talk to {name}.vault.azure.net, not ARM, which is why creation fails with a 403 when the principal lacks these grants even if it owns the subscription. create/action covers CreateKey (generation happens vault-side; the private half never travels); read covers refresh; update/action covers attribute changes (key_opts, expiry, not-before, tags) without minting a version; delete covers destroy. The azurerm provider's default features add the last two: a name-colliding create against a soft-deleted key auto-RECOVERS it (recover_soft_deleted_keys, default true), and destroy PURGES the soft-deleted key so the name frees immediately (purge_soft_deleted_keys_on_destroy, default true -- inert when the vault's purge protection is on). Held via the Key Vault Administrator or Key Vault Crypto Officer role on the vault, or equivalent key permissions in a legacy access policy. All actions present in the committed inventory (Microsoft.KeyVault data actions)."
       - purpose: ManageRotationPolicy
         data_actions:
           - Microsoft.KeyVault/vaults/keyrotationpolicies/read
           - Microsoft.KeyVault/vaults/keyrotationpolicies/write
         provenance: derived
+        privilege: ordinary
         notes: "Required only when rotation_policy is set -- the provider writes it through the data plane's SetRotationPolicy alongside key creation and reads it back on every refresh (azurerm reads the rotation policy unconditionally on Read, tolerating a 403 with a warning only on legacy access-policy vaults). Present in the committed inventory (inventory naming keyrotationpolicies/read|write)."

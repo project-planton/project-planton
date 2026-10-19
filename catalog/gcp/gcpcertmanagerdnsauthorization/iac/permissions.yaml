@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling certificatemanager.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageDnsAuthorization
         permissions:
@@ -25,4 +27,6 @@ spec:
           - certificatemanager.dnsauthorizations.delete
           - certificatemanager.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_certificate_manager_dns_authorization -- create, read/refresh (including the exported dns_resource_record outputs), in-place updates (description, labels), and destroy. Certificate Manager mutations return long-running operations the provider polls under certificatemanager.operations.get. All five permissions verified present in IAM's testable-permissions inventory.

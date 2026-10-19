@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:athena:*:*:workgroup/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_athena_workgroup / athena.Workgroup end to end -- the single provider resource carries the whole configuration surface (result storage, cost controls, engine version, Spark role, Identity Center, monitoring), so create, the read on every plan/refresh, in-place updates, and destroy are these four calls. All four -- INCLUDING the create, because the caller names the workgroup so its ARN is known up front -- authorize on the workgroup ARN per the service reference; nothing here needs a wildcard. force_destroy rides DeleteWorkGroup's recursive-delete option, no extra action.
       - sid: TagWorkgroup
         actions:
@@ -28,6 +30,8 @@ spec:
         resources:
           - arn:aws:athena:*:*:workgroup/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Tag-on-create plus later tag reconciliation and the tag read on every refresh. The service reference scopes all three tagging actions to the workgroup ARN format (they also accept capacity-reservation, datacatalog, and session ARNs, none of which this component touches).
       - sid: PassSparkExecutionRole
         actions:
@@ -35,4 +39,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Exercised only when the spec sets execution_role (Spark and Identity Center-enabled workgroups) -- the workgroup configuration hands the referenced role to Athena, which requires iam:PassRole on the role being passed. Harden per environment by pinning the resource to the actual execution role's ARN and adding an iam:PassedToService condition for athena.amazonaws.com. The role's own permissions (S3 data sources, result writes, Glue Data Catalog) are the referenced AwsIamRole's contract, not runner grants. Plain SQL workgroups never trigger this statement.

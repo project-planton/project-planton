@@ -16,9 +16,11 @@ spec:
           - Microsoft.EventGrid/domains/write
           - Microsoft.EventGrid/domains/delete
         provenance: derived
+        privilege: ordinary
         notes: "Covers azurerm_eventgrid_domain / eventgrid.NewDomain -- create (schema, input mappings, topic auto-management switches, network posture, identity, tags ride the domain payload), refresh, in-place updates of the mutable fields, and destroy. Domain topics are NOT touched by this module: auto-managed ones are Azure's own doing, pinned ones are a separate AzureEventgridDomainTopic component with its own manifest. Typically held via EventGrid Contributor, Contributor, or Owner on the resource group. Migrated from the module READMEs, which stated the requirement as Microsoft.EventGrid/domains/* -- the three CRUD verbs are the actual footprint."
       - purpose: ReadAccessKeys
         actions:
           - Microsoft.EventGrid/domains/listKeys/action
         provenance: derived
+        privilege: ordinary
         notes: "Both modules export primary_access_key / secondary_access_key as outputs, so every refresh calls the domain's listKeys API -- a separate action from domains/read by Azure's design, and the reason read-only observers cannot see keys. Migrated from the module READMEs."

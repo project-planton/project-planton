@@ -22,6 +22,8 @@ spec:
         resources:
           - arn:aws:s3:::*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_s3_bucket and aws_s3_bucket_object_lock_configuration -- bucket lifecycle, identity tags, and object-lock setup. S3 bucket ARNs carry no account or region segment, so the bucket-name wildcard is the ARN's only variable part.
       - sid: ManageAccessPosture
         actions:
@@ -37,6 +39,8 @@ spec:
         resources:
           - arn:aws:s3:::*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the two always-materialized posture satellites (public access block, ownership controls) plus the optional ACL and bucket policy resources -- the module orders policy changes after guard changes deliberately.
       - sid: ManageDataConfiguration
         actions:
@@ -64,6 +68,8 @@ spec:
         resources:
           - arn:aws:s3:::*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the conditional per-feature satellites (versioning, encryption, lifecycle, replication, website, logging, CORS, notification, acceleration, request payment) -- each created only when its spec block is set, but update paths need both Get and Put.
       - sid: ManageInsightConfigurations
         actions:
@@ -83,6 +89,8 @@ spec:
         resources:
           - arn:aws:s3:::*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the analytics-family satellites (Intelligent-Tiering, analytics, inventory, request metrics), ABAC status, and the S3 Metadata table configuration. The metadata-table and ABAC action names are verified against the AWS Service Authorization reference data.
       - sid: PassReplicationRole
         actions:
@@ -90,6 +98,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Required only when spec.replication is set -- S3 assumes the referenced replication role, and configuring replication passes it. Narrow to the actual role ARN in a hardened deployment.
       - sid: PurgeObjectsOnForceDestroy
         actions:
@@ -100,4 +110,6 @@ spec:
           - arn:aws:s3:::*
           - arn:aws:s3:::*/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Used only by force_destroy teardown, which lists and deletes every remaining object and version before deleting the bucket.

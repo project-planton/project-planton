@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling privateca.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageCaPool
         permissions:
@@ -25,4 +27,6 @@ spec:
           - privateca.caPools.delete
           - privateca.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_privateca_ca_pool (Pulumi certificateauthority.CaPool) -- created, read on every refresh, updated in place (issuance policy, publishing options, encryption key, labels), deleted, and its long-running operations polled. Names grounded in Google's CA Service permissions-and-roles page; roles/privateca.caManager contains all five.

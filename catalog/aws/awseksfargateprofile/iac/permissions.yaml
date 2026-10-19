@@ -21,6 +21,8 @@ spec:
           - arn:aws:eks:*:*:cluster/*
           - arn:aws:eks:*:*:fargateprofile/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The module is a single aws_eks_fargate_profile resource. CreateFargateProfile authorizes against the cluster ARN (the profile does not exist yet); describe/delete/tag act on the fargateprofile ARN -- both scopes are required.
       - sid: PassPodExecutionRole
         actions:
@@ -28,4 +30,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: CreateFargateProfile passes the referenced pod_execution_role_arn to EKS; the module never modifies the role it references. Scope to the actual role ARN in a hardened deployment.

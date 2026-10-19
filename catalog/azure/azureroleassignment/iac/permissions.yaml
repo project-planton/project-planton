@@ -16,9 +16,11 @@ spec:
           - Microsoft.Authorization/roleAssignments/write
           - Microsoft.Authorization/roleAssignments/delete
         provenance: derived
+        privilege: grants_access
         notes: Covers azurerm_role_assignment -- create, read/refresh, and destroy (every field is immutable, so updates are replacements). The write must be held AT THE TARGET SCOPE, typically via Owner, User Access Administrator, or Role Based Access Control Administrator; Contributor alone is NOT sufficient -- it manages resources, not authorization, and a deploy failing with AuthorizationFailed almost always means the runner holds Contributor-level rights but no authorization-plane rights at that scope.
       - purpose: ResolveRoleDefinition
         actions:
           - Microsoft.Authorization/roleDefinitions/read
         provenance: derived
+        privilege: ordinary
         notes: When the spec sets role_definition_name, the provider lists role definitions at the target scope to resolve the built-in name to its definition ID before creating the assignment; the same read refreshes a pinned role_definition_id. Included in the same administrator roles that carry the write.

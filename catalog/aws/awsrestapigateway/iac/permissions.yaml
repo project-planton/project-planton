@@ -22,6 +22,8 @@ spec:
           - arn:aws:apigateway:*::/restapis/*
           - arn:aws:apigateway:*::/tags/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: API Gateway v1 authorizes by HTTP verb against resource paths (no account id in the ARN), not per-entity action names -- these five verbs cover every module resource on the API subtree (aws_api_gateway_rest_api, resource, method, integration, method_response, integration_response, model, request_validator, authorizer, gateway_response, documentation_part/_version, deployment, stage, method_settings). PUT additionally serves the OpenAPI arm (PutRestApi re-imports the document on update) and documentation imports; the /restapis collection path authorizes creation, and /tags/* carries tagging (TagResource is apigateway:PATCH, UntagResource apigateway:DELETE, on the tags path of the API and stage ARNs).
       - sid: ManageRestApiPolicy
         actions:
@@ -29,6 +31,8 @@ spec:
         resources:
           - arn:aws:apigateway:*::/restapis/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The service reference gates resource-policy writes behind this additional permissions-management action on top of the plain verbs -- CreateRestApi, PutRestApi, and UpdateRestApi all require it whenever a policy rides along. The module manages the policy as its own object (aws_api_gateway_rest_api_policy -- clean PATCH updates, delete resets to empty), so any manifest that sets spec.policy exercises this action; without it the apply is denied at the policy step.
       - sid: ManageClientCertificates
         actions:
@@ -41,6 +45,8 @@ spec:
           - arn:aws:apigateway:*::/clientcertificates
           - arn:aws:apigateway:*::/clientcertificates/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when stage.client_certificate.generate is set -- the module's aws_api_gateway_client_certificate calls GenerateClientCertificate (POST on the collection path) and manages the certificate's lifecycle on its own /clientcertificates/* subtree, outside the API's ARN space. Referencing an existing certificate by id needs only the read.
       - sid: PassAuthorizerAndIntegrationRoles
         actions:
@@ -48,4 +54,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Required only when authorizers.credentials_arn or routes.integration.credentials_arn references a role -- configuring the authorizer or integration passes it to API Gateway, which assumes it at request time. Add an iam:PassedToService=apigateway.amazonaws.com condition and narrow to the actual role ARNs in a hardened deployment.

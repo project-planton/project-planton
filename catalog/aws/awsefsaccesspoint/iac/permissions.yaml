@@ -22,4 +22,6 @@ spec:
           - arn:aws:elasticfilesystem:*:*:access-point/*
           - arn:aws:elasticfilesystem:*:*:file-system/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_efs_access_point (tf) / efs.AccessPoint (pulumi) -- creation with the posix_user and root_directory blocks, read during plan/refresh, tagging, and deletion. Both ARN formats are required by the service reference -- CreateAccessPoint authorizes on the parent file-system ARN, DeleteAccessPoint on the access-point ARN, and the describe/tag actions on either. All access-point fields are immutable, so updates are replacements and no update action exists.

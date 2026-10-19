@@ -24,6 +24,8 @@ spec:
           - arn:aws:elasticloadbalancing:*:*:listener/app/*
           - arn:aws:elasticloadbalancing:*:*:listener/net/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_lb_listener -- creation with the default-action chain, TLS material, and tags; in-place updates of port, protocol, certificates, and actions (ModifyListener); and listener attributes (ModifyListenerAttributes carries tcp_idle_timeout_seconds and the routing_http_* request/response header handling). The service reference authorizes CreateListener on the LOAD BALANCER ARN formats (app and net; an under-scoped create denies provisioning), while modify, attribute, delete, and tag actions authorize on the listener ARN formats.
       - sid: ManageListenerCertificates
         actions:
@@ -33,6 +35,8 @@ spec:
           - arn:aws:elasticloadbalancing:*:*:listener/app/*
           - arn:aws:elasticloadbalancing:*:*:listener/net/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_lb_listener_certificate -- one attachment per entry of spec.additional_certificate_arns (the SNI certificates beyond the default). Both actions authorize on the listener ARN formats in the service reference.
       - sid: DescribeListeners
         actions:
@@ -43,4 +47,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_lb_listener and aws_lb_listener_certificate during plan/refresh. Elastic Load Balancing Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

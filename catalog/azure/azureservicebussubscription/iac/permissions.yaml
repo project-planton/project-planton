@@ -16,6 +16,7 @@ spec:
           - Microsoft.ServiceBus/namespaces/topics/subscriptions/write
           - Microsoft.ServiceBus/namespaces/topics/subscriptions/Delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_servicebus_subscription -- create, read/refresh, in-place updates, and destroy, addressed under the parent topic resolved from topic_id (the namespace and topic names are parsed from the ARM ID, so no separate resolution reads happen). Azure's operation inventory spells the delete action with a capital D.
       - purpose: ManageSubscriptionRules
         actions:
@@ -23,4 +24,5 @@ spec:
           - Microsoft.ServiceBus/namespaces/topics/subscriptions/rules/write
           - Microsoft.ServiceBus/namespaces/topics/subscriptions/rules/Delete
         provenance: derived
+        privilege: ordinary
         notes: Covers the azurerm_servicebus_subscription_rule resources folded in from the spec's rules list -- one create/read/update/delete cycle per declared SQL or correlation filter rule, as children of the subscription. Exercised only when rules are declared; the service-created "$Default" catch-all is never touched.

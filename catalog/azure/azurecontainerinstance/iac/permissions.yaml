@@ -16,14 +16,17 @@ spec:
           - Microsoft.ContainerInstance/containerGroups/write
           - Microsoft.ContainerInstance/containerGroups/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_container_group (tf main.tf) and containerservice.NewGroup (pulumi module/main.go) -- create, refresh, tag/identity updates, and destroy. The container group API is create-only for most properties, so spec changes replace the group through the same three actions. Spellings follow Microsoft.ContainerInstance's official operation list; the committed ARM action-inventory snapshot (pkg/iac/actioninventory/azure.yaml) carries the Microsoft.ContainerInstance namespace and confirms the casing of every action here.
       - purpose: JoinDelegatedSubnet
         actions:
           - Microsoft.Network/virtualNetworks/subnets/join/action
         provenance: derived
+        privilege: ordinary
         notes: Required only for Private groups -- ARM authorizes placing the group into the referenced delegated subnet (subnet_id) with join/action on the subnet's scope at create, a service-side check the modules never call directly. The subnet must be delegated to Microsoft.ContainerInstance/containerGroups, which is the subnet's own configuration.
       - purpose: AssignUserManagedIdentities
         actions:
           - Microsoft.ManagedIdentity/userAssignedIdentities/assign/action
         provenance: derived
+        privilege: uses_identity
         notes: Required only when identity carries USER_ASSIGNED / SYSTEM_AND_USER_ASSIGNED identities (including the identity-form registry credential and the CMK key_vault_user_assigned_identity_id) -- ARM checks assign/action on every identity referenced in the group payload, service-side.

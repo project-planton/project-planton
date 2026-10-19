@@ -16,4 +16,5 @@ spec:
           - Microsoft.Network/applicationSecurityGroups/write
           - Microsoft.Network/applicationSecurityGroups/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_application_security_group -- create, read/refresh, tag updates (the only in-place change), and destroy. Held via Network Contributor, Contributor, or narrower custom roles.

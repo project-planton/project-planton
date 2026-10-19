@@ -24,4 +24,6 @@ spec:
         resources:
           - arn:aws:iam::*:oidc-provider/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_iam_openid_connect_provider / iam.OpenIdConnectProvider, the only resource either module manages -- creation with issuer URL, client-id list, and optional thumbprints; the in-place updates the provider supports (thumbprint replacement, client-id add/remove); tagging; and deletion. The URL is create-only, so a URL change is delete-plus-create under the same grants. IAM ARNs carry no region; the oidc-provider ARN embeds the issuer host and path, which the wildcard spans. All OIDC-provider APIs authorize on this single ARN format.

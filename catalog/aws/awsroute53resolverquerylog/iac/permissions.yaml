@@ -21,6 +21,8 @@ spec:
         resources:
           - arn:aws:route53resolver:*:*:resolver-query-log-config/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_resolver_query_log_config / route53.ResolverQueryLogConfig. GetResolverQueryLogConfig and ListTagsForResource run on every plan/refresh; TagResource serves tag-on-create and UntagResource later reconciliation (tags are the config's ONLY mutable attribute -- name and destination are ForceNew). All six actions take resource-level scoping on the resolver-query-log-config ARN per the service reference. The runner needs no logs or s3 grants for destination wiring -- delivery rides the delivery.logs.amazonaws.com service principal, a same-account S3 destination's bucket policy is updated automatically at create per the Route 53 developer guide, and a destination the resolver cannot write to fails ASYNCHRONOUSLY after a clean apply (the provider's waiter surfaces the association error), proving the API never demands destination permissions from the caller; AWS's own AmazonRoute53ResolverFullAccess managed policy carries no logs or s3 actions either. Destination writability is the referenced destination component's contract.
       - sid: AssociateVpcs
         actions:
@@ -29,6 +31,8 @@ spec:
         resources:
           - arn:aws:route53resolver:*:*:resolver-query-log-config/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_resolver_query_log_config_association / route53.ResolverQueryLogConfigAssociation -- one join per vpc_ids entry, every argument ForceNew (an association changes only by replacement). Both actions scope to the resolver-query-log-config ARN per the service reference.
       - sid: ReadAssociations
         actions:
@@ -36,4 +40,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side during plan/refresh for each association's status, and the create-time waiter polls it to surface asynchronous delivery failures. The service reference lists no resource types for this action (non-scopable), so an ARN-scoped grant would be a runtime deny -- the wildcard is the narrowest possible scope.
