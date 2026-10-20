@@ -61,9 +61,10 @@ spec:
         actions:
           - ec2:DescribeSubnets
           - ec2:DescribeRouteTables
+          - ec2:DescribeNetworkInterfaces
         resources:
           - "*"
         provenance: derived
         reach: target
         privilege: ordinary
-        notes: Read-side during plan/refresh for the subnet, the owned table, and the association state. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.
+        notes: Read-side during plan/refresh for the subnet, the owned table, and the association state. Destroying a subnet first lists the network interfaces left in it (the provider waits out the ones AWS services leave behind before DeleteSubnet), so a destroy is refused without DescribeNetworkInterfaces, observed on a live teardown. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

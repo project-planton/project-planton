@@ -15,20 +15,20 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling secretmanager.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
+        notes: "Covers google_project_service enabling secretmanager.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageSecret
         permissions:
           - secretmanager.secrets.create
           - secretmanager.secrets.get
           - secretmanager.secrets.update
           - secretmanager.secrets.delete
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_secret_manager_secret and google_secret_manager_regional_secret (exactly one deploys, from the region discriminator) -- create, read/refresh, in-place updates (labels, annotations, aliases, rotation, expiry, version_destroy_ttl), and destroy under deletion_policy DELETE.
+        notes: "Covers google_secret_manager_secret and google_secret_manager_regional_secret (exactly one deploys, from the region discriminator) -- create, read/refresh, in-place updates (labels, annotations, aliases, rotation, expiry, version_destroy_ttl), and destroy under deletion_policy DELETE. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: SeedInitialVersion
         permissions:
           - secretmanager.versions.add

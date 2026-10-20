@@ -15,10 +15,10 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
+        notes: "Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageNetwork
         permissions:
           - compute.networks.create
@@ -26,10 +26,10 @@ spec:
           - compute.networks.update
           - compute.networks.delete
           - compute.globalOperations.get
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_compute_network -- create, read/refresh, in-place updates (routing mode, MTU), and destroy, plus polling the global operations every network mutation returns.
+        notes: "Covers google_compute_network -- create, read/refresh, in-place updates (routing mode, MTU), and destroy, plus polling the global operations every network mutation returns. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: DeleteDefaultRoutes
         permissions:
           - compute.routes.list

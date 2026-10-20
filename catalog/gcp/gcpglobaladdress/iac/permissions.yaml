@@ -40,7 +40,8 @@ spec:
         permissions:
           - compute.globalAddresses.createInternal
           - compute.globalAddresses.deleteInternal
+          - compute.networks.use
         provenance: derived
         reach: target
         privilege: ordinary
-        notes: INTERNAL reservations (VPC_PEERING ranges, PRIVATE_SERVICE_CONNECT endpoints) authorize under the dedicated *Internal permission variants, NOT the external create/delete (both pairs verified against IAM's testable-permissions inventory).
+        notes: INTERNAL reservations (VPC_PEERING ranges, PRIVATE_SERVICE_CONNECT endpoints) authorize under the dedicated *Internal permission variants, NOT the external create/delete (both pairs verified against IAM's testable-permissions inventory). An internal reservation names the VPC network it reserves in, and Google authorizes that reference as compute.networks.use on the network ("Required 'compute.networks.use' permission", observed on a live VPC_PEERING reservation).
