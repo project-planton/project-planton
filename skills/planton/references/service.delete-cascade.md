@@ -9,7 +9,7 @@ Deleting a service deletes it genuinely: the platform stops the service's in-fli
 
 ## What delete actually does
 
-`planton service delete <service>` confirms, starts the cascade, and follows the narrated timeline by default (`--no-wait` starts it and returns; `--force` skips the confirmation). Before anything starts, the delete asks of every resource it would destroy whether it can go (next section), and refuses the whole delete if one cannot. Then the order is the order a careful operator would use:
+`planton service delete <service>` confirms, starts the cascade, and follows the narrated timeline by default (`--no-wait` starts it and returns; `--yes` answers the question ahead, and without a terminal the delete refuses and prints itself with `--yes` added). Before anything starts, the delete asks of every resource it would destroy whether it can go (next section), and refuses the whole delete if one cannot. Then the order is the order a careful operator would use:
 
 1. **Stop in-flight runs** — every queued, running, or approval-parked run of the service is cancelled through the same cancel a person uses, and the cascade waits for each run to really end (bounded at fifteen minutes) — destroying while a deploy still applies would race the two.
 2. **Destroy resources, per environment** — in REVERSE promotion order (production-like environments first, the reverse of how releases roll out). Within an environment a resource is destroyed only after everything that depends on it (a consumer is gone before the producer it depends on), and independent resources are destroyed side by side, each through a real destroy job whose real ending the cascade waits for. Each resource's record settles as its own destroy ends.

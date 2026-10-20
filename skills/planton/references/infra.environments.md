@@ -48,8 +48,9 @@ So `planton env delete <env>` is REFUSED while anything in the environment is
 still deployed; the refusal names each resource and the command that destroys
 it (`planton infra stack undeploy <stack> --env <env> --yes` for an Infra
 Stack's components, `planton purge <Kind> <slug> --yes` for anything else --
-`--yes` only after the user agreed, since nothing in your session can answer
-the CLI's question). Relay the refusal; destroy
+`--yes` only after the user agreed, or told you to carry on without asking,
+since nothing in your session can answer the CLI's question; then say exactly
+what was destroyed). Relay the refusal; destroy
 first when the user wants the infrastructure gone. When they want it kept
 running outside Planton, `--retain-infra-components` deletes the environment
 and leaves the infrastructure alone -- refused while a running resource keeps
@@ -57,6 +58,10 @@ its state in Planton-managed storage, until
 `planton infra state-backend move-off-planton` has moved that state to a backend
 they own. Never pass the flag on your own judgment: it is the user's choice to
 stop Planton managing live infrastructure.
+
+The delete itself asks, naming what goes with the environment, and `--yes`
+answers ahead; without a terminal it refuses and prints itself with `--yes`
+added. Pass it only once the user agreed to lose the environment.
 
 ## One cluster serves multiple environments (the default recommendation)
 

@@ -143,7 +143,7 @@ order, each with its reason:
 |-----|---------|
 | **Blocked** | It cannot apply as declared; the row says why and the way out. |
 | **Destroy** | No longer in the templates: destroyed on its provider once everything the plan applies has applied. |
-| **Replace** | Still in the templates, but its preview found a setting its provider cannot change in place: it is destroyed and created again, so what it holds does not carry over. Only a request's review reads it (a preview finds it, below); it needs the requester's destroy rights in the environment, or the row is Blocked, and one that holds data is approved only when named (`--replace Kind/name`). |
+| **Replace** | Still in the templates, but its preview found a setting its provider cannot change in place: it is destroyed and created again, so what it holds does not carry over. Only a request's review reads it (a preview finds it, below); it needs the requester's destroy rights in the environment, or the row is Blocked. |
 | **Update** | Its settings, a secret's version, a value it reads or its module moved — or a drift check found it changed outside Planton ("Drifted: 3 changes made outside Planton"), and applying puts the declaration back. |
 | **Update Record** | Only Planton's record changes; nothing in the cloud (an annotation like `planton.dev/prevent-destroy` added). |
 | **Create** | New. |
@@ -236,20 +236,20 @@ something. `-o markdown` prints the plan for a pull request or an answer;
 `-o json` for a program.
 
 **2. Show.** Put the plan in front of the user in their words: what is
-created, updated and destroyed — **every Destroy row by name** — what
-it costs them if a resource holds data, what the stack's monthly cost
-becomes, and any permissions it adds, security settings it changes or
-resources over budget. A plan of the declaration the
-stack already holds also has a page in the console (the plan prints its
-link); a plan of an edited folder lives only in your output.
+created, updated, replaced and destroyed — **every Destroy and Replace row
+by name**, and that what a destroyed or replaced resource holds does not
+come back — what the stack's monthly cost becomes, and any permissions it
+adds, security settings it changes or resources over budget. A plan of the
+declaration the stack already holds also has a page in the console (the
+plan prints its link); a plan of an edited folder lives only in your
+output.
 
-**3. Consent.** Ask, and name each destroy. Consent to destroy is per
-resource: the user agrees to destroy THIS bucket, not "whatever the plan
-says". A resource that holds data a destroy cannot give back — its catalog
-kind marks backup and recovery applicable — is marked in the plan
-(`needs_named_consent`) and is destroyed only when named
-(`--destroy Kind/name`); read the mark from the plan, never guess it from
-the kind.
+**3. Consent.** Ask, naming each destroy and replace. The user's yes
+covers every Destroy and Replace row the plan shows, so say each one
+before they answer; nobody types or names a resource to consent to it.
+If the user has told you to carry on without asking (for this task), that
+is their agreement: apply, and afterwards tell them exactly what was
+destroyed or replaced. Otherwise ask first.
 Anything the user wants kept goes `--keep Kind/name`; an existing
 resource the stack should take over goes `--adopt Kind/name` — a stack
 never takes over a resource nobody chose to hand it. A kept resource keeps
@@ -257,7 +257,10 @@ what it depends on: keep a deployment and its namespace must be kept too,
 because destroying the namespace would take the deployment along. Each
 removed row lists the removed resources that depend on it
 (`removed_dependents`); the apply refuses a keep without what it depends on,
-naming every `--keep` it needs in one sentence.
+naming every `--keep` it needs in one sentence. A Blocked removal applies
+only with `--keep`. `--destroy Kind/name` does one thing: it turns a Keep
+carried from an earlier revision back into a Destroy; on any other row it
+is refused.
 
 Two annotations on a resource's `metadata` settle the question before any
 plan asks it; adding or removing either plans Update Record and runs no job:
@@ -275,7 +278,7 @@ metadata:
 planton infra stack apply <stackName> . --env <env> --org <org> \
   -m "one line saying WHY, like a commit message" \
   --plan-digest <digest from the plan you showed> \
-  --destroy AwsS3Bucket/old-logs --keep AwsRoute53Zone/legacy --plain
+  --keep AwsRoute53Zone/legacy --plain
 ```
 
 The digest is on the plan itself: its "Apply it:" line already carries
@@ -284,11 +287,14 @@ The digest is on the plan itself: its "Apply it:" line already carries
 request and apply with the digest of the plan a person approved there.
 The apply plans again and goes ahead only while the fresh plan is the one
 named by `--plan-digest` — otherwise it refuses, saying the plan is out of
-date; plan again and show the new plan. Without a terminal (your session,
-CI), a destroy happens only when named with `--destroy` or covered by the
-digest of a plan a person reviewed; a data-bearing destroy is always
-named. `--plan-digest` or any `--destroy` also answers the final question;
-`--yes` alone answers it but consents to no destroy. The `-m` message is
+date; plan again and show the new plan. `--plan-digest` and `--yes` are
+both consent given in advance to every Destroy and Replace row at its
+default; the digest also pins the exact plan the user read, so pass it.
+At a terminal with neither, the apply shows the plan and asks once.
+Without a terminal (your session, CI) and with neither, it refuses — "Add
+--yes to Proceed Without Asking" — saying what the plan destroys and
+replaces, with the command to run. Every consented apply prints what it
+destroys and replaces before its run starts; relay it. The `-m` message is
 mandatory practice: it names the revision and its run ("r13 · Raise
 replicas"), where the whole team reads why it happened.
 
@@ -309,7 +315,7 @@ the chart's files itself and records the chart and its version; onto a
 stack already following that chart it is an upgrade
 (`infra.stack-promotion.md`). A local chart folder records no chart. `planton apply -f <stack manifest>` applies a plan only
 when nothing in it is destroyed, adopted or blocked; otherwise it refuses
-and names the `planton infra stack apply` command to review it with.
+and names the `planton infra stack apply … --yes` command to review it with.
 
 A stack has one run at a time. A plan of a stack whose run is in flight
 answers with that run instead of rows, and an apply is refused naming it
@@ -352,7 +358,7 @@ planton infra stack apply <stackName> . --env prod -m "<the user's words>" --pla
   sentence. Undeploy, purge, `chart install|uninstall` and `infra pipeline
   rerun` into a protected environment are requests too, and end the same way.
   The one-call `planton apply -f` never files a request: it refuses and
-  names `planton infra stack apply`.
+  names `planton infra stack apply … --yes`.
 - **Reading a waiting request** is free: `planton infra stack review
   <stackName> --env prod` (MCP: `get_infra_stack_review`). It lists what is
   destroyed and replaced first, with what each resource's preview found,
@@ -362,24 +368,32 @@ planton infra stack apply <stackName> . --env prod -m "<the user's words>" --pla
   name, and that a **Replace** destroys and recreates the resource, so what
   it holds does not carry over.
 - **Deciding is the user's act, never yours.** Never approve because a
-  request is waiting, because the user wrote it, or on anyone's behalf. Only
-  when the user, having read the review, tells you to approve or reject,
-  carry out exactly that decision:
+  request is waiting, because the user wrote it, or on your own judgment.
+  Carry out a decision when the user, having read the review, tells you to
+  approve or reject — or approve when an approver told you to carry on
+  without asking (for this task): that is their consent given in advance,
+  and afterwards you tell them exactly what the approval destroyed or
+  replaced. **Never approve a run your own person started**, even when
+  they are its only approver: the platform refuses it through the agent
+  stamp every call carries, and the refusal says the person can approve it
+  themselves. Relay that.
 
   ```
-  planton infra stack approve <stackName> --env prod --review-digest <d> --replace AwsRedisElasticache/orders-cache
-  planton infra stack approve <stackName> --env prod --review-digest <d> --destroy AwsRdsInstance/orders-db
+  planton infra stack approve <stackName> --env prod --review-digest <d>
   planton infra stack reject <stackName> --env prod --review-digest <d> --reason "<the user's words>"
   ```
 
-  (MCP: `decide_infra_stack_review` with `review_digest`, `destroy[]` /
-  `replace[]`, `reason`.) Each resource that holds data and that the plan
-  destroys or replaces must be named — ask the user to name each one and
-  pass only the names they gave. A rejection always carries the user's
-  reason; the requester reads it. The platform refuses a review that moved
-  since it was read ("This review changed since you read it. Read it
-  again …"), a missing name, a blocked row, and the person who asked for
-  the change while another approver exists — relay its sentence as it is.
+  (MCP: `decide_infra_stack_review` with `review_digest`, `confirm`, and a
+  rejection's `reason`.) Approving approves exactly the review read, with
+  every Destroy and Replace in it: nobody types or names a resource. At a
+  terminal `approve` shows the review and asks; `--yes` alone prints the
+  current review, then approves its digest; with neither and no terminal it
+  refuses with the command carrying the current digest. A rejection always
+  carries the user's reason; the requester reads it. The platform refuses
+  a review that moved since it was read
+  ("This review changed since you read it. Read it again …"), a blocked
+  row, and the person who asked for the change while another approver
+  exists — relay its sentence as it is.
 - **After an approval**, `approve` follows the run: exit 0 when it
   succeeds, 1 when it fails, and **3** when a resource stopped before
   changing anything because its plan moved since the approval — the line
@@ -564,8 +578,9 @@ planton infra component cleanup <ic_id>                   # clear the failed sta
 Then rerun the run (`planton infra pipeline rerun <infpipe_id>`, or Rerun
 on its page in the console): a rerun repeats the same revision, so what
 applied stays Unchanged and what failed runs again. It asks first only when
-the rerun still destroys something (`--yes` answers, after the user agreed);
-agents use `rerun_infra_pipeline`, with `confirm` on the same condition. A
+the rerun still destroys or replaces something (`--yes` answers, once the
+user agreed); agents use `rerun_infra_pipeline`, with `confirm` on the same
+condition. A
 rerun is refused once a newer revision exists or the stack was undeployed
 since — plan again and apply instead; the refusal names the plan command.
 A followed run that fails ends by naming the way out that fits it. Cleanup only clears the failed
@@ -586,14 +601,18 @@ sets the collaboration mode for the rest of the session:
 > "Want me to keep iterating until this deploys green — showing you each
 > plan before I apply it — or check in with you after every diagnosis?"
 
-Honor the answer. Even in keep-iterating mode, EVERY apply still gets its
-own explicit consent on its plan (what will change and why, one line each,
-every destroy by name); what the mode changes is whether you pause after
-each diagnosis or proceed to the proposed fix's plan directly.
+Honor the answer. Even in keep-iterating mode, every apply still shows its
+plan (what will change and why, one line each, every destroy and replace by
+name) and gets its own yes, unless the user told you to carry on without
+asking: that is their agreement, so apply, and afterwards tell them exactly
+what was destroyed or replaced. What the mode changes is whether you pause
+after each diagnosis or proceed to the proposed fix's plan directly.
 
 ## Boundaries
 
-- Never apply without the user's go-ahead for that specific plan.
+- Never apply without the user's go-ahead for that specific plan, or their
+  word to carry on without asking (for this task); after a carried-on apply,
+  say exactly what was destroyed or replaced.
 - Never change the target env/org to "make it work" — a failure that smells
   like wrong-environment is a finding to report, not to route around.
 - Undeploying, purging, or deleting the stack is the user's to drive in the
@@ -610,4 +629,5 @@ each diagnosis or proceed to the proposed fix's plan directly.
   Purge is undeploy, then delete, only if the undeploy succeeded. Delete
   alone is refused while the stack still owns components or has a run in
   flight. From a session, each of these runs only with `--yes`, and only
-  after the user said yes.
+  after the user said yes or told you to carry on without asking; then say
+  exactly what was destroyed.

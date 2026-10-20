@@ -71,12 +71,14 @@ questions:
       Destroy and Replace rows first (a Replace destroys and recreates the
       resource, so what it holds does not carry over), its impact,
       warnings, readers, who can approve and when it lapses, and the
-      review's digest last. Approving is a person's decision, never the
-      agent's: `planton infra stack approve app-infra --env prod
-      --review-digest <d>`, naming each data-bearing destroy or replace
-      with `--destroy` / `--replace Kind/name`. The platform refuses an
-      approval when the review changed since it was read, a data-bearing
-      resource is not named, a row is Blocked (including a Replace the
+      review's digest last. Approving is a person's decision: `planton
+      infra stack approve app-infra --env prod --review-digest <d>`
+      approves exactly the review read, every Destroy and Replace in it,
+      and nobody types or names a resource. At a terminal it shows the
+      review and asks; `--yes` alone approves the current review. An agent
+      approves only on its person's word, and never a run its own person
+      started. The platform refuses an approval when the review changed
+      since it was read, a row is Blocked (including a Replace the
       requester has no destroy rights for), or the approver is the person
       who asked while another approver exists. A request nobody decides
       within 7 days lapses and closes Lapsed, having applied nothing.
@@ -86,10 +88,16 @@ questions:
         pattern: '(?s)planton infra stack review\s+<stackName> --env prod'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: 'planton infra stack approve <stackName> --env prod --review-digest <d> --destroy AwsRdsInstance/orders-db'
+        pattern: 'planton infra stack approve <stackName> --env prod --review-digest <d>\n'
       - skill: planton
         file: references/infra.deployed-stacks.md
         pattern: 'Deciding is the user''s act, never yours'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)every\s+Destroy\s+and\s+Replace\s+in\s+it:\s+nobody\s+types\s+or\s+names\s+a\s+resource'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)\*\*Never\s+approve\s+a\s+run\s+your\s+own\s+person\s+started\*\*'
       - skill: planton
         file: references/infra.deployed-stacks.md
         pattern: 'This review changed since you read it'
@@ -172,10 +180,10 @@ questions:
       bucket when I apply, and how do I keep it running instead?
     answer: >
       The plan reads it Destroy: it is destroyed on its provider, only
-      after everything the plan applies has applied, and only with the
-      person's consent named per resource; one that holds data (its
-      catalog kind marks backup and recovery applicable; the plan marks it)
-      is destroyed only when named with `--destroy Kind/name`. To keep it,
+      after everything the plan applies has applied. The person's yes to
+      the plan (at a terminal, or `--plan-digest` / `--yes` without one)
+      covers every Destroy and Replace row, so each is said by name before
+      they answer; nobody types or names a resource to consent. To keep it,
       apply with `--keep Kind/name` (the stack lets go of it and it keeps
       running and billing on its provider), or mark it
       `planton.dev/keep-on-provider: "true"` under the resource's
@@ -189,10 +197,10 @@ questions:
         pattern: 'No longer in the templates: destroyed on its provider once everything the plan applies has applied'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: '(?s)destroyed only when named\s+\(`--destroy Kind/name`\)'
+        pattern: '(?s)The user''s yes\s+covers every Destroy and Replace row the plan shows'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: 'its catalog\s+kind marks backup and recovery applicable'
+        pattern: '(?s)nobody types or names a resource to consent to it'
       - skill: planton
         file: references/infra.deployed-stacks.md
         pattern: 'planton\.dev/keep-on-provider: "true"   # never destroyed'
@@ -243,32 +251,35 @@ questions:
     answer: >
       Both are removals of the run: listed from the start, carried out at
       the very end, after everything declared applied, the rollout
-      verified and the deployment record was written. The cache, holding
-      no data, is destroyed by default. The database holds data, so the run
-      waits for a person: destroy it by typing its name, or keep it on its
-      provider (`planton service removal destroy|keep <service> <number>
-      <env> <Kind/name>`). In a protected environment the approver decides
-      every removal at the gate. A failed apply or verification removes
-      nothing; a mistake is fixed by restoring the resource and pushing.
+      verified and the deployment record was written. In an unprotected
+      environment the push is the declaration itself, so both are
+      destroyed without asking, the database too; marking one
+      `planton.dev/keep-on-provider: "true"` before removing it keeps it
+      running. In a protected environment the approver decides every
+      removal at the gate: each is destroyed unless kept
+      (`planton service resolve-env-manual-gate … approve --keep
+      Kind/name`), and a removal that appears after the approval asks on
+      its own (`planton service removal destroy|keep <service> <number>
+      <env> <Kind/name>`). A failed apply or verification removes nothing.
     checks:
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: 'carries out each one at the very end, after everything declared applied'
       - skill: planton
         file: references/service.delivery-verbs.md
-        pattern: '\*\*Destroyed\*\* — the default for a resource that holds no data'
+        pattern: '\*\*Destroyed\*\* — the default, a database included'
       - skill: planton
         file: references/service.delivery-verbs.md
-        pattern: 'A resource that holds data always waits for a person'
+        pattern: 'In an unprotected environment nothing asks'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'In a protected environment, the approver decides every removal'
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: 'planton service removal keep checkout-api 131 prod AwsRdsInstance/orders-db'
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: 'A failed apply or a failed verification removes nothing'
-      - skill: planton
-        file: references/service.delivery-verbs.md
-        pattern: 'A mistake is fixed by pushing the fix'
 
   - id: developer-delete-keeping-database
     persona: developer
@@ -309,10 +320,12 @@ questions:
       JSON). Apply with `planton infra stack apply <stack> . --env <env>
       -m "<why>" --plan-digest <d>`: it plans again and applies only while
       the fresh plan is that one, otherwise it refuses saying the plan is
-      out of date. The digest consents to that plan's ordinary destroys;
-      a data-bearing destroy is still named with `--destroy`; `--yes` alone
-      consents to no destroy. Into a protected environment the apply files
-      a request and ends with exit 0 and the review lines.
+      out of date. The digest is consent given in advance to every Destroy
+      and Replace in that plan; `--yes` consents too, without pinning the
+      plan. With neither and no terminal, the apply refuses with the
+      command plus `--yes`, saying what the plan destroys and replaces.
+      Into a protected environment the apply files a request and ends with
+      exit 0 and the review lines.
     checks:
       - skill: planton
         file: references/infra.deployed-stacks.md
@@ -325,7 +338,10 @@ questions:
         pattern: '(?s)saying the plan is out of\s+date'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: '`--yes` alone answers it but consents to no destroy'
+        pattern: '(?s)`--plan-digest` and `--yes` are\s+both consent given in advance to every Destroy and Replace row'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)"Add\s+--yes to Proceed Without Asking"'
       - skill: planton
         file: references/infra.stack-promotion.md
         pattern: '--dry-run -o markdown'
@@ -370,8 +386,8 @@ questions:
     answer: >
       `planton rerun <run-id>` takes any run's id (ij_, infpipe_,
       svcpipe_, extrun_) and follows the new run (`--no-follow` returns).
-      It is a mutation: confirm first; when it still destroys something it
-      asks, and `--yes` answers only after the person agreed. Exit 0 done
+      It is a mutation: confirm first; when it still destroys or replaces
+      something it asks, and `--yes` answers once the person agreed. Exit 0 done
       (or a request waiting for its approver), 1 failed or refused, 3 a
       person must decide. A stack run's rerun repeats its revision and is
       refused once a newer revision exists or the stack was undeployed;

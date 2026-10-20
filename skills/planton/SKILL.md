@@ -1,6 +1,6 @@
 ---
 name: planton
-description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; put an organization's console at its own address (planton.<company>); or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, never approve a deployment gate, never leave the workspace given. Not for authoring kind schemas.
+description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; put an organization's console at its own address (planton.<company>); or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, approve only on the person's word and never a run they started, never leave the workspace given. Not for authoring kind schemas.
 ---
 
 # Planton
@@ -22,11 +22,14 @@ These are law, not craft. Craft rules -- the ones that prevent build-failure cla
   or Desktop fires the operating system's privacy prompts against the host
   app -- which reads as spying and destroys the trust the product runs on.
 - **Never mutate running infrastructure uninvited.** Cloud state, cluster
-  contents, and platform records change only on the user's explicit ask, one
-  confirmation per mutation -- `references/cloud.exploration.md` governs both.
-- **Never approve a deployment gate, anywhere, for anyone.** Approval is a
-  human decision; you only carry out a stack request's decision the person
-  stated after reading its plan (`references/infra.deployed-stacks.md`).
+  contents, and platform records change only on the user's explicit ask and
+  yes; their word to carry on without asking (for this task) is that yes,
+  and afterwards you say exactly what was destroyed or replaced --
+  `references/cloud.exploration.md` governs both.
+- **Approve only on the person's word, never a run they started.** Carry out
+  the decision they stated, or approve under their word to carry on; never
+  on your own judgment, and never a run your own person started, even as its
+  only approver -- the platform refuses it (`references/infra.deployed-stacks.md`).
   Never work around a refusal -- every refusal names its path, so relay it.
 
 ## Choose the work
@@ -440,7 +443,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/service.reading-a-run.md` | Reading one run and reporting it in the user's words: build vs delivery shapes, status vocabulary, per-task errors, gates, mirrored external CI runs |
 | `references/service.briefing-a-service.md` | "Brief me" on a service the person is looking at (standing context says `Surface: a service's detail page`), or "how is my service doing": the room's facts and what they save, the read order, attention-first shape, calibration, when to leave the records for the repository, and what each surface can do with the files |
 | `references/service.build-failures.md` | A build failed or is stuck: the six failure classes by where they surface (compile verdicts, a connection before any pod, no runner, a task that ran, never finalized), who fixes each, the exact edit, when a rerun is wrong |
-| `references/service.fixing-a-failed-run.md` | "Help me fix it" on a run's page (standing context says `Surface: a service run's page`): the failure the visible turn carries, the fix-it read order, the consequence before the cause, a GitHub Actions run read through Planton, the fix's shape, the quiet brief on a run that did not fail -- a parked run's brief never approves |
+| `references/service.fixing-a-failed-run.md` | "Help me fix it" on a run's page (standing context says `Surface: a service run's page`): the failure the visible turn carries, the fix-it read order, the consequence before the cause, a GitHub Actions run read through Planton, the fix's shape, the quiet brief on a run that did not fail -- reading a parked run never approves it |
 | `references/service.reading-a-repository.md` | Reading the service's actual files: the platform-mediated read (list/read files at a commit, validate the pipeline from the repository), the sandbox clone at the run's commit with a one-time token, which commit to read when explaining a failure, finding a repository before it is registered, every refusal's next step |
 | `references/service.opening-a-pull-request.md` | A fix is known and the person wants it applied ("open the PR", "merge it"): the one write door -- show the exact files and the pull request's text, ask, then open it on a platform branch with the receipt; whether it builds on its own; merging only on the explicit ask, pinned to the head they saw; every refusal's next step |
 | `references/service.managed-pipelines.md` | What a Planton-managed build runs: the platform tracks, the catalog tasks a repository pipeline reuses by plain name, the param contract and bindable workspaces, the `platform-content` pin, the compile verdicts, the images a build cluster pulls |

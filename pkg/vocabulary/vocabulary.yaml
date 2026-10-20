@@ -187,6 +187,26 @@ phrases:
     anchors: ['keep in cloud', 'kept in cloud', 'in the cloud']
     use: planton.dev/keep-on-provider; Keep and Kept, named by the provider ("Keep in Stripe", "Kept in AWS")
 
+  # No name is ever typed, ticked or passed to destroy, replace or approve
+  # infrastructure: one consent rule covers every destroy (asked at a
+  # terminal; --yes, confirm or a reviewed digest ahead). Typing a name stays
+  # only for deleting an organization, an environment or a service account.
+  - pattern: '(?i)\btyp(e|es|ed|ing)\s+(its|each|their)\s+names?\s+to\s+(destroy|approve|replace)\b'
+    anchors: ['its name', 'each name', 'their name']
+    use: one consent rule (asks at a terminal; --yes, confirm or a reviewed digest answers ahead)
+  - pattern: '(?i)<type [A-Za-z0-9]+/'
+    anchors: ['<type ']
+    use: Kind/name with --keep, or --yes for every Destroy and Replace
+  - pattern: '(?i)named[ _-]?consent'
+    anchors: ['named consent']
+    use: consent (--yes, confirm, or a reviewed digest)
+  - pattern: '(?i)holds data a (destroy|replace)'
+    anchors: ['holds data a']
+    use: what a destroyed or replaced resource holds does not come back
+  - pattern: '(?i)consents? to no destroy'
+    anchors: ['to no destroy']
+    use: --yes consents to every Destroy and Replace
+
 allow:
   # Dated changelog entries keep the words of their day; history is never
   # rewritten. Every newer entry speaks "platform module".

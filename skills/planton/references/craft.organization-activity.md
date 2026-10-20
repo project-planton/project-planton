@@ -17,8 +17,10 @@ reads and your answer:
 A failure is not an approval. Read means this authenticated account inspected
 that failure; it means neither fixed nor acknowledged by the team. A newer
 failure can be Unread again. Listing, investigating, and summarizing never
-mark anything Read. Never approve, reject, retry, cancel, or deploy as a side
-effect of reviewing.
+mark anything Read. Reading never approves: never approve, reject, retry,
+cancel, or deploy as a side effect of reviewing. A decision you carry out is
+the person's (their stated decision, or their word to carry on without
+asking), never on a run they started themselves.
 
 ## Establish One Scope and a Working Instrument
 
