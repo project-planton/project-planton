@@ -29,6 +29,20 @@ spec:
         reach: target
         privilege: ordinary
         notes: Covers google_sql_database_instance for primaries, read replicas, and read pools alike -- create, read/refresh, in-place updates (tier, disk, backup, network), and destroy. The provider polls the operations each mutation returns under the same instance-scoped authorization.
+      - purpose: ReadDefaultUsers
+        permissions:
+          - cloudsql.users.list
+        provenance: derived
+        reach: target
+        privilege: ordinary
+        notes: Right after creating a primary, the provider lists its users to find a default root user with a wildcard host; the create fails without this read (cloudsql.users.list was refused on a live create). Replicas inherit their primary's users and skip the read.
+      - purpose: RemoveWildcardRootUser
+        permissions:
+          - cloudsql.users.delete
+        provenance: derived
+        reach: target
+        privilege: ordinary
+        notes: Used only when a new primary carries a root user with a wildcard host, which MySQL creates and PostgreSQL and SQL Server do not -- the provider deletes that user immediately after create.
       - purpose: PeerPrivateNetwork
         permissions:
           - servicenetworking.services.get
