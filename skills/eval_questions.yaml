@@ -495,9 +495,11 @@ questions:
       a CloudflareDnsRecord -- a CNAME from planton.acme.com to the
       organization's label under plantonedge.com, proxied false, its zoneId
       wired with valueFrom to the zone component -- show it, and apply it
-      through Planton on the person's yes. Add the record, then verify
-      (`planton custom-domain verify --wait -o json`), act on
-      reading.diagnosis, and repeat until exit 0, the recorded state Live.
+      through Planton on the person's yes. Then verify (`planton
+      custom-domain verify --wait -o json`), never looking the name up
+      through a public resolver before it is Live; act on reading.diagnosis
+      (record_missing and record_not_yet_public mean wait), and repeat until
+      exit 0, the recorded state Live.
     checks:
       - skill: planton
         file: SKILL.md
@@ -519,7 +521,7 @@ questions:
         pattern: 'kind: CloudflareDnsRecord'
       - skill: planton
         file: references/organization.custom-domain.md
-        pattern: 'Add the record, then verify'
+        pattern: 'never look the name up yourself'
       - skill: planton
         file: references/organization.custom-domain.md
         pattern: 'planton custom-domain verify --wait -o json'

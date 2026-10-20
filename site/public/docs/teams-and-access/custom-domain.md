@@ -49,7 +49,7 @@ The exact value is shown in Settings and by the CLI. Keep the record **DNS only*
 
 If your own Cloudflare must keep proxying the name, keep the CNAME (proxied) and add a **TXT** record beside it: `_planton-verification.planton.acme.com` holding your organization's label. A proxied record hides where the name points; the TXT proves it is yours. Settings and the CLI show both.
 
-Add the record first, then check. A check made before the record exists can make DNS resolvers remember "no record" for a few minutes.
+Save the name and add the record in either order: Planton asks your zone's own name servers before it asks public DNS, so the domain goes Live about a minute and a half after the record is in. Don't open the address or look it up before then. A public resolver asked about a name before its record exists remembers "no such name" for your zone's negative TTL, often 30 minutes or more. If that happens, Settings says so, with the time it clears, and nothing needs changing.
 
 ### When Planton Already Manages Your DNS
 
@@ -70,7 +70,8 @@ planton custom-domain verify    # check DNS, the certificate and the console now
 
 | What Planton Says | The Fix |
 |---|---|
-| No record for the name | Add the CNAME |
+| Your zone doesn't serve a record for the name yet | Add the CNAME |
+| Your zone serves the record, but public DNS still remembers there was none, until a time it names | Nothing: it goes Live once public DNS catches up |
 | The CNAME points somewhere else | Change its value to your organization's label |
 | An address record stands where the CNAME belongs | Remove the A/AAAA record and add the CNAME |
 | The name answers with Cloudflare's addresses | Set the record to DNS only with CNAME flattening off, or keep it proxied and add the TXT record beside the CNAME |

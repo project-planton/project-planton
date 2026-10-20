@@ -42,7 +42,7 @@ spec:
   hostname: planton.acme.com
 ```
 
-**Exit codes** (`set` that waits, `verify`): **0** the recorded state is Live; **1** refused or failed; **2** not Live yet -- with `reading.diagnosis`, act on it; without one, it is still on its way or the wait timed out; **3** the organization has no custom domain. `get` exits 0 whenever a domain exists, whatever its state.
+**Exit codes** (`set` that waits, `verify`): **0** the recorded state is Live; **1** refused or failed; **2** not Live yet -- with a `reading.diagnosis` other than `record_missing` or `record_not_yet_public`, act on it; with one of those two, or none, it is still on its way or the wait timed out; **3** the organization has no custom domain. `get` exits 0 whenever a domain exists, whatever its state.
 
 **The key an agent uses** needs the Organization & Members area: `planton api-key new --name <agent> --scope organization_members=read-write` (`=read` for get, verify and the guide alone). A refusal has two causes, worded as such: the key's scope, or the person is not an owner of the organization.
 
@@ -52,7 +52,8 @@ The recorded state is `custom_domain.status.observation.state`: **`pending`** (o
 
 | Cause | What it means | The fix |
 |---|---|---|
-| `record_missing` | Public DNS has no record for the name | Add the CNAME |
+| `record_missing` | The name's own DNS zone does not serve a record for it yet | Add the CNAME |
+| `record_not_yet_public` | The zone serves the record, but public DNS still remembers the name had none: someone looked it up before the record existed. `diagnosis.clears_at` says when that memory ends | Nothing: Planton keeps checking, and it goes Live once public DNS catches up |
 | `record_points_elsewhere` | The name's CNAME points somewhere else | Change the CNAME's value to the organization's label |
 | `record_conflicts` | An A or AAAA record stands where the CNAME belongs | Remove the address records (`records_to_remove`), add the CNAME |
 | `record_proxied` | The name answers with Cloudflare's addresses: the organization's own Cloudflare proxies it or flattens its CNAME | Set the record to DNS only with CNAME flattening off, or keep it proxied and add the TXT beside the CNAME (`records_to_add` holds the TXT; the CNAME stays) |
@@ -68,7 +69,7 @@ The recorded state is `custom_domain.status.observation.state`: **`pending`** (o
 2. **Set it:** `planton custom-domain set planton.acme.com --no-wait -o json` (or `apply_custom_domain`).
 3. **Read the guide:** `planton custom-domain prompt -o json` (or `get_custom_domain_setup_guide`): the record, the TXT for a name that stays proxied, and `dns_host.zone`, the zone the name lives in.
 4. **Planton-managed DNS first** (below), else the DNS host's own tooling -- either way, show the exact change and add it on the person's yes. The guide's `dns_host.command` names the host's identifiers as `$`-variables; at Cloudflare, `$ZONE_ID` is `curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/zones?name=<dns_host.zone>" | jq -r '.result[0].id'`.
-5. **Add the record, then verify.** Checking before the record exists makes resolvers remember "no record" for a few minutes, so verify only after the record is in: `planton custom-domain verify --wait -o json`, or `verify_custom_domain` every ~30 seconds for up to 15 minutes.
+5. **Verify:** `planton custom-domain verify --wait -o json`, or `verify_custom_domain` every ~30 seconds for up to 15 minutes. Setting the domain and adding the record work in either order: Planton asks the name's own DNS zone before it asks public DNS, so a name set first is Live about a minute and a half after its record is in. What delays it is a lookup made elsewhere: a public resolver asked about the name before its record exists remembers "no such name" for the zone's negative TTL, often 30 minutes or more. So never look the name up yourself (`dig` through your own resolver, `curl`, a browser) before it is Live: `verify` reads it for you.
 6. **Act on `reading.diagnosis`:** add `records_to_add`, remove `records_to_remove` (each its own confirmed change), and verify again. Done at exit 0 (the recorded state is `live`): tell the person their console answers at `https://planton.acme.com`.
 
 ## Planton-managed DNS first
@@ -118,5 +119,5 @@ Apply it with `planton apply -f <file>` (one confirmation), wait for its deploy 
 ## What not to do
 
 - Never proxy or flatten the record, never touch any other record, and never add a CAA record that leaves out `letsencrypt.org` and `pki.goog`.
-- Never verify before the record is in. `verify` already hurries Planton along once the reading is ahead of the record.
+- Never look the name up through a public resolver, or open it, before it is Live (`dig NS <zone>` asks about the zone, which exists, and is fine). Waiting on `record_missing` or `record_not_yet_public` means waiting; never add the record twice.
 - Never retry a `capability_required` refusal, and never offer the TXT as a way to take a name another organization still stands behind: it claims only a free name.
