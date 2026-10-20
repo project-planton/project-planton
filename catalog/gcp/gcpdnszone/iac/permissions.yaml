@@ -15,20 +15,20 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling dns.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
+        notes: "Covers google_project_service enabling dns.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageZone
         permissions:
           - dns.managedZones.create
           - dns.managedZones.get
           - dns.managedZones.update
           - dns.managedZones.delete
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_dns_managed_zone -- create, read/refresh, in-place updates (DNSSEC, logging, forwarding), and destroy.
+        notes: "Covers google_dns_managed_zone -- create, read/refresh, in-place updates (DNSSEC, logging, forwarding), and destroy. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: BindPrivateZoneNetworks
         permissions:
           - dns.networks.bindPrivateDNSZone

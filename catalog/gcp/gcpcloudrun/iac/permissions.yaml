@@ -15,10 +15,10 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling run.googleapis.com on the target project so a fresh project works on the first deploy. disable_on_destroy is false in both modules -- tearing down one service must never disable the API for everything else -- so the disable permission is never needed.
+        notes: "Covers google_project_service enabling run.googleapis.com on the target project so a fresh project works on the first deploy. disable_on_destroy is false in both modules -- tearing down one service must never disable the API for everything else -- so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageService
         permissions:
           - run.services.create
@@ -26,10 +26,10 @@ spec:
           - run.services.update
           - run.services.delete
           - run.operations.get
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_cloud_run_v2_service -- create, read/refresh, in-place updates (revision template, containers, scaling, traffic splits, ingress, IAP, deletion protection), and destroy. Service mutations on the Cloud Run Admin API v2 return long-running operations the provider polls, which authorize as run.operations.get.
+        notes: "Covers google_cloud_run_v2_service -- create, read/refresh, in-place updates (revision template, containers, scaling, traffic splits, ingress, IAP, deletion protection), and destroy. Service mutations on the Cloud Run Admin API v2 return long-running operations the provider polls, which authorize as run.operations.get. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: GrantPublicInvoker
         permissions:
           - run.services.setIamPolicy
@@ -53,10 +53,10 @@ spec:
       - purpose: ActAsRuntimeServiceAccount
         permissions:
           - iam.serviceAccounts.actAs
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: uses_identity
-        notes: Cloud Run's deployment-permissions contract requires iam.serviceAccounts.actAs on the service identity for every create or update of google_cloud_run_v2_service -- on the referenced spec.service_account when one is named, or on the project's Compute Engine default service account when it is not. There is no shape of this component that escapes the requirement.
+        notes: "Cloud Run's deployment-permissions contract requires iam.serviceAccounts.actAs on the service identity for every create or update of google_cloud_run_v2_service -- on the referenced spec.service_account when one is named, or on the project's Compute Engine default service account when it is not. There is no shape of this component that escapes the requirement. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageEnvSecrets
         permissions:
           - serviceusage.services.enable
@@ -92,7 +92,7 @@ spec:
       - purpose: ReadDeployedImage
         permissions:
           - artifactregistry.repositories.downloadArtifacts
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Google's Cloud Run deploy guide requires the deploying identity to hold Artifact Registry Reader (roles/artifactregistry.reader) on the repository of the deployed image, separate from the Cloud Run service agent that pulls it when a revision starts; downloadArtifacts is the permission behind that role that the deploy exercises. Needed whenever the image lives in Artifact Registry (the manifest cannot express that as a field condition); scope it to the image's repository in a hardened deployment. Images from other registries do not exercise it.
+        notes: "Google's Cloud Run deploy guide requires the deploying identity to hold Artifact Registry Reader (roles/artifactregistry.reader) on the repository of the deployed image, separate from the Cloud Run service agent that pulls it when a revision starts; downloadArtifacts is the permission behind that role that the deploy exercises. Needed whenever the image lives in Artifact Registry (the manifest cannot express that as a field condition); scope it to the image's repository in a hardened deployment. Images from other registries do not exercise it. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."

@@ -15,20 +15,20 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling storage.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
+        notes: "Covers google_project_service enabling storage.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageBucket
         permissions:
           - storage.buckets.create
           - storage.buckets.get
           - storage.buckets.update
           - storage.buckets.delete
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_storage_bucket and google_storage_notification -- bucket create/read/update/delete, lifecycle and website configuration, and notification configuration, all bucket-scoped operations.
+        notes: "Covers google_storage_bucket and google_storage_notification -- bucket create/read/update/delete, lifecycle and website configuration, and notification configuration, all bucket-scoped operations. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: GrantBucketIam
         permissions:
           - storage.buckets.getIamPolicy

@@ -21,10 +21,10 @@ spec:
           - s3:PutBucketObjectLockConfiguration
         resources:
           - arn:aws:s3:::*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_s3_bucket and aws_s3_bucket_object_lock_configuration -- bucket lifecycle, identity tags, and object-lock setup. S3 bucket ARNs carry no account or region segment, so the bucket-name wildcard is the ARN's only variable part.
+        notes: "Covers aws_s3_bucket and aws_s3_bucket_object_lock_configuration -- bucket lifecycle, identity tags, and object-lock setup. S3 bucket ARNs carry no account or region segment, so the bucket-name wildcard is the ARN's only variable part. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageAccessPosture
         actions:
           - s3:GetBucketPublicAccessBlock
@@ -38,10 +38,10 @@ spec:
           - s3:DeleteBucketPolicy
         resources:
           - arn:aws:s3:::*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers the two always-materialized posture satellites (public access block, ownership controls) plus the optional ACL and bucket policy resources -- the module orders policy changes after guard changes deliberately.
+        notes: "Covers the two always-materialized posture satellites (public access block, ownership controls) plus the optional ACL and bucket policy resources -- the module orders policy changes after guard changes deliberately. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageDataConfiguration
         actions:
           - s3:GetBucketVersioning
@@ -88,10 +88,10 @@ spec:
           - s3:DeleteBucketMetadataTableConfiguration
         resources:
           - arn:aws:s3:::*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers the analytics-family satellites (Intelligent-Tiering, analytics, inventory, request metrics), ABAC status, and the S3 Metadata table configuration. The metadata-table and ABAC action names are verified against the AWS Service Authorization reference data.
+        notes: "Covers the analytics-family satellites (Intelligent-Tiering, analytics, inventory, request metrics), ABAC status, and the S3 Metadata table configuration. The metadata-table and ABAC action names are verified against the AWS Service Authorization reference data. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: PassReplicationRole
         actions:
           - iam:PassRole
@@ -109,7 +109,7 @@ spec:
         resources:
           - arn:aws:s3:::*
           - arn:aws:s3:::*/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Used only by force_destroy teardown, which lists and deletes every remaining object and version before deleting the bucket.
+        notes: "Used only by force_destroy teardown, which lists and deletes every remaining object and version before deleting the bucket. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."

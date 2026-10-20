@@ -15,9 +15,9 @@ spec:
           - Microsoft.Network/virtualNetworks/read
           - Microsoft.Network/virtualNetworks/write
           - Microsoft.Network/virtualNetworks/delete
-        provenance: derived
+        provenance: proven
         privilege: ordinary
-        notes: Covers azurerm_virtual_network -- create, read/refresh, in-place updates (address spaces, DNS, encryption), and destroy. Held via Network Contributor, Contributor, or narrower custom roles, matching the module README's prose.
+        notes: "Covers azurerm_virtual_network -- create, read/refresh, in-place updates (address spaces, DNS, encryption), and destroy. Held via Network Contributor, Contributor, or narrower custom roles, matching the module README's prose. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: AttachDdosPlan
         actions:
           - Microsoft.Network/ddosProtectionPlans/join/action

@@ -19,10 +19,10 @@ spec:
           - ec2:DeleteTags
         resources:
           - arn:aws:ec2:*:*:vpc/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_vpc -- creation with tenancy and CIDR settings, the DNS and NAU attribute toggles (each a ModifyVpcAttribute call), tagging, and teardown.
+        notes: "Covers aws_vpc -- creation with tenancy and CIDR settings, the DNS and NAU attribute toggles (each a ModifyVpcAttribute call), tagging, and teardown. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: DescribeVpcs
         actions:
           - ec2:DescribeVpcs
@@ -31,10 +31,10 @@ spec:
           - ec2:DescribeNetworkAcls
         resources:
           - "*"
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Read-side of aws_vpc during plan/refresh; the provider also reads the VPC's default security group and network ACL it adopts into state. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
+        notes: "Read-side of aws_vpc during plan/refresh; the provider also reads the VPC's default security group and network ACL it adopts into state. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageCidrAssociations
         actions:
           - ec2:AssociateVpcCidrBlock
@@ -42,10 +42,10 @@ spec:
         resources:
           - arn:aws:ec2:*:*:vpc/*
           - arn:aws:ec2:*:*:ipv6pool-ec2/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_vpc_ipv4_cidr_block_association and aws_vpc_ipv6_cidr_block_association -- the secondary CIDR growth path, including IPAM-sourced and BYOIP IPv6 pool blocks.
+        notes: "Covers aws_vpc_ipv4_cidr_block_association and aws_vpc_ipv6_cidr_block_association -- the secondary CIDR growth path, including IPAM-sourced and BYOIP IPv6 pool blocks. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageEncryptionControl
         actions:
           - ec2:CreateVpcEncryptionControl

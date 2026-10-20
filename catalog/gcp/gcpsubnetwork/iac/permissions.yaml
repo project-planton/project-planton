@@ -27,11 +27,12 @@ spec:
           - compute.subnetworks.delete
           - compute.subnetworks.expandIpCidrRange
           - compute.subnetworks.setPrivateIpGoogleAccess
+          - compute.networks.updatePolicy
           - compute.regionOperations.get
         provenance: derived
         reach: target
         privilege: ordinary
-        notes: "Covers google_compute_subnetwork -- create, read/refresh, in-place updates, and destroy. The provider splits mutations across dedicated API methods with their own permissions -- growing ip_cidr_range calls expandIpCidrRange (the one-way expansion; shrinking recreates), toggling private_ip_google_access calls setPrivateIpGoogleAccess, and everything else mutable (role, secondary ranges, stack_type, flow-log config) patches the subnetwork under compute.subnetworks.update. Every mutation returns a region operation the provider polls. The kind's READMEs previously recommended roles/compute.networkAdmin -- this manifest is the narrower truth (and networkAdmin alone was also insufficient: it lacks the serviceusage enablement grant the module needs)."
+        notes: "Covers google_compute_subnetwork -- create, read/refresh, in-place updates, and destroy. The provider splits mutations across dedicated API methods with their own permissions -- growing ip_cidr_range calls expandIpCidrRange (the one-way expansion; shrinking recreates), toggling private_ip_google_access calls setPrivateIpGoogleAccess, and everything else mutable (role, secondary ranges, stack_type, flow-log config) patches the subnetwork under compute.subnetworks.update. Every mutation returns a region operation the provider polls. Creating a subnetwork changes its parent network, and Google authorizes that as compute.networks.updatePolicy on the network (\"Required 'compute.networks.updatePolicy' permission\", observed on a live create). The kind's READMEs previously recommended roles/compute.networkAdmin -- this manifest is the narrower truth (and networkAdmin alone was also insufficient: it lacks the serviceusage enablement grant the module needs)."
       - purpose: ApplyResourceManagerTags
         permissions:
           - compute.subnetworks.createTagBinding
