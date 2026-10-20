@@ -71,5 +71,6 @@ The same action serves the whole journey. When you want pipelines, approval gate
 - **Half-states refuse before any network call**: `org` without `audience` (or the reverse) fails naming the exact line to add or remove — all problems at once.
 - **Image injection is blank-fill**: containers whose image you authored explicitly (sidecars) are never touched; only blank image slots receive the built reference. The `set` input (`<kind>/<name>:<fieldPath>=<value>`, one per line) is the field-exact escape hatch.
 - **Runtime secrets never enter git**: manifests carry provider-native secret references (Secret Manager, ECS `valueFrom` ARNs, Key Vault) — references, not values, resolved by your cloud at runtime.
+- **A connected deploy runs like a push**: the job's short-lived credential belongs to the service's own repository, so when the configuration no longer declares something in the environment, the log prints what the run removes and the run starts, with nothing to answer. A protected environment's approver still decides every removal at its gate.
 - **Verify locally before the first push**: `PLANTON_BACKEND=none planton service deploy --env prod --preflight-only` prints the same preflight report the runner will see, without deploying anything.
 - **Runners**: Linux and macOS, x64 and arm64; the CLI download is checksum-verified before it is ever executed.
