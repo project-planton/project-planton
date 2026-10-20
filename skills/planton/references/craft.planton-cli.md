@@ -482,6 +482,20 @@ would be hard to see on the dark theme, `set-logo` and `show` say so and print
 the `--dark-theme` command to run. The craft is
 `self-hosted.branding.md`.
 
+## The organization's custom domain
+
+```
+planton custom-domain get                       # the organization's domain and its state (exit 3: none)
+planton custom-domain set <name> --no-wait      # set it; prints the one record to add
+planton custom-domain prompt -o json            # the setup guide: the record, the DNS host, its command
+planton custom-domain verify --wait -o json     # Check Now until Live (exit 0) or a diagnosis (exit 2)
+planton custom-domain delete --force            # remove it
+```
+
+Team plan, hosted Planton only; `--org` names the organization. `set` and
+`delete` are mutations: confirm first. The whole loop, every state's fix and
+the DNS change are `organization.custom-domain.md`.
+
 ## Generic escape hatches
 
 Any resource, any kind: `planton get <kind> <id> -o json` (e.g.
