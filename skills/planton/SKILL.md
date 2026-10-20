@@ -1,25 +1,16 @@
 ---
 name: planton
-description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, never approve a deployment gate, never leave the workspace given. Not for authoring kind schemas.
+description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; put an organization's console at its own address (planton.<company>); or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, never approve a deployment gate, never leave the workspace given. Not for authoring kind schemas.
 ---
 
 # Planton
 
-You hold both of the platform's product domains in one craft.
-**Infrastructure**: an Infra Chart is to cloud infrastructure what a Helm
-chart is to Kubernetes -- a reusable, parameterized blueprint bundling many
-catalog objects (each one of a catalog kind -- an atomic unit like a VPC,
-cluster, or database, defined by a strict schema) into one architecture users deploy
-with their own values. **Service delivery**: a Service is the unit of
-push-to-deploy -- a git repository becomes a running workload on the user's
-own cloud (see "Service delivery" below). You compose as plain files, and
-you verify with compilers and reports -- you never have to be right on the
-first try; you have to run the loop until it is green.
+You hold both of the platform's product domains in one craft. **Infrastructure**: an Infra Chart is to cloud infrastructure what a Helm chart is to Kubernetes -- a reusable, parameterized blueprint bundling many catalog objects (each one of a catalog kind -- an atomic unit like a VPC, cluster, or database, defined by a strict schema) into one architecture users deploy with their own values. **Service delivery**: a Service is the unit of push-to-deploy -- a git repository becomes a running workload on the user's own cloud (see "Service delivery" below).
+You compose as plain files and verify with compilers and reports -- you never have to be right on the first try; you have to run the loop until it is green.
 
 ## Hard boundaries (never)
 
-These are law, not craft. Craft rules -- the ones that prevent build-failure
-classes -- live in "Rules that prevent whole failure classes" below.
+These are law, not craft. Craft rules -- the ones that prevent build-failure classes -- live in "Rules that prevent whole failure classes" below.
 
 - **The workspace you were given is the entire filesystem** -- the
   attached folder on a Planton surface, the repository in a coding agent.
@@ -84,9 +75,7 @@ missing instrument is a fact you adapt to, not a problem you report.
    Never block, never refuse to compose: an unverified chart built from
    grounded schemas is worth far more than no chart.
 
-Whichever arm you are on, the arm is YOUR concern: the user never hears
-tool inventories, and when a step is genuinely impossible where you run,
-say what you DID and where the step happens -- never what you lack.
+Whichever arm you are on, the arm is YOUR concern: the user never hears tool inventories, and when a step is genuinely impossible where you run, say what you DID and where the step happens -- never what you lack.
 
 ## Chart anatomy and the folder check
 
@@ -308,8 +297,7 @@ explain-after -- short, plain, in the PERSON's register
 4. **The refinement questions** -- two or three at most, chosen by what
    would most change the architecture (`references/craft.discovery.md`).
 
-Refinements loop through Phases 2-4. An assumption the user confirms stops
-being an assumption; a new one gets named.
+Refinements loop through Phases 2-4. An assumption the user confirms stops being an assumption; a new one gets named.
 
 ### Phase 5 -- Handoff (mutations; require human approval)
 
@@ -464,7 +452,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/service.pulling-private-images.md` | A pod in `ImagePullBackOff`, "do I need a pull secret", a run's pull sentence, a GHCR registry connected through a sign-in, or a Cloud Run / App Runner / Lambda target: the three ways a workload pulls, what the deploy fills from the registry connection and when it fills nothing, the GHCR pull token, the own-registry-only runtimes, the refusal and remedy sentences, previews and rotation, what never to suggest |
 | `references/service.serving-domains.md` | A service on the customer's own domain: the environment's serving-domain declaration, the hostname label, fill-blank injection, the `domain_serving` check |
 | `references/service.serving-domains-targets.md` | Per-target carrier truths (worker, ingress, HTTPRoute, Cloud Run domain mapping, ECS/ALB) and the remediation ladder for a failed `domain_serving` check |
-| `references/service.serving-domains-custom.md` | Anything outside `{label}.{env-domain}`: apex, arbitrary FQDNs, multi-host, CDN fronting -- composed-infrastructure recipes with `valueFrom` bridges |
+| `references/service.serving-domains-custom.md` | Anything outside `{label}.{env-domain}`: apex, arbitrary FQDNs, multi-host, CDN fronting -- composed-infrastructure recipes with `valueFrom` bridges. Not this: the organization's console address → `organization.custom-domain.md` |
 | `references/service.local-env-vars.md` | Running a service locally with real config (`planton service env run\|pull\|check`), dev flavors, `.env.local` layering |
 | `references/service.configuring-deployments.md` | Reading and changing what a service is DECLARED to deploy: the two writers, the surgical get-then-apply loop, which resources sit on the service and which on an Infra Stack ("if this service were deleted, should it go too?" -- its route, workload, and own ConfigMaps yes; the shared gateway, zone, and namespace no), the three-step move of a route out of an Infra Stack, target environments, the deployments switch |
 | `references/service.kustomize-authoring.md` | Moving a service's configuration into its repository (eject/init/checkout), the `_kustomize` tree conventions |
@@ -485,6 +473,12 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/self-hosted.identity-mapping.md` | Giving a directory group access; `planton directory` and the MCP tools; the blast-radius preview; reading sync health |
 | `references/self-hosted.identity-offboarding.md` | How fast a departed person is out, per arm; the sync's laws; the email-less refusal; invited directory users; alert email |
 | `references/self-hosted.branding.md` | Putting the company's logo on a self-hosted Planton (`planton branding show\|set-logo\|clear-logo`); the version for the dark theme; why the sign-in page still shows Planton's mark; an organization's own logo on planton.ai |
+
+### Organization (`organization.*`)
+
+| File | Read when |
+|---|---|
+| `references/organization.custom-domain.md` | The organization's console at its own address (planton.acme.com): setting, checking, fixing or removing its custom domain (`planton custom-domain`, the MCP twins), a pending or needs-attention cause and its fix, adding the record through a Planton-managed DNS zone first, the key scope. Not this: a service's own hostname → `service.serving-domains-custom.md` |
 
 ### Working craft (`craft.*`, `catalog.*`)
 

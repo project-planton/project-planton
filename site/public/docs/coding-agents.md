@@ -113,6 +113,8 @@ Then connect your agent:
 
 API keys carry your own permissions, scoped to the product areas you name; see [Authentication and Authorization](/docs/security/authentication-and-authorization).
 
+Add a scope for each area you want the agent to work in. Setting up your organization's [custom domain](/docs/teams-and-access/custom-domain) needs `--scope organization_members=read-write` (an organization owner's key); checking one needs `organization_members=read`.
+
 ## Versions and updates
 
 Every commit in [plantonhq/skills](https://github.com/plantonhq/skills) is a Planton release, tagged with the release's tag. The skill files are byte-identical to the checksummed archives that release published, and they are what Planton Desktop and the hosted assistant run at that version. Update with:

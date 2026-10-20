@@ -61,6 +61,7 @@ const REGISTERED_KEYS = new Set([
   'access_transparency',
   'custom_roles',
   'impact_analysis',
+  'custom_domain',
 ]);
 
 function fail(message) {

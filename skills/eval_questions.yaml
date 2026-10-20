@@ -460,3 +460,116 @@ questions:
       - skill: planton
         file: references/self-hosted.branding.md
         pattern: '(?s)version\s+for\s+the\s+dark\s+theme,\s+else\s+the\s+logo,\s+else\s+Planton''s\s+mark'
+
+  - id: owner-puts-the-console-at-planton-acme-com
+    persona: platform engineer
+    question: >
+      We're on the Team plan. Put our Planton console at planton.acme.com.
+      Our acme.com zone is a Cloudflare zone we deployed through Planton.
+      What do you do?
+    answer: >
+      Confirm the organization by name and the change first, then
+      `planton custom-domain set planton.acme.com --no-wait -o json` (or
+      apply_custom_domain) and read the setup guide (`planton custom-domain
+      prompt -o json`) for the record and the zone. Before touching DNS,
+      look up whether Planton already manages that zone: list the
+      organization's infra components (`planton search infra-components
+      --all-envs -o json`, or list_infra_components) and find the
+      CloudflareDnsZone whose spec.zoneName is acme.com. It does, so propose
+      a CloudflareDnsRecord -- a CNAME from planton.acme.com to the
+      organization's label under plantonedge.com, proxied false, its zoneId
+      wired with valueFrom to the zone component -- show it, and apply it
+      through Planton on the person's yes. Add the record, then verify
+      (`planton custom-domain verify --wait -o json`), act on
+      reading.diagnosis, and repeat until exit 0, the recorded state Live.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: 'references/organization\.custom-domain\.md'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'planton custom-domain set planton\.acme\.com --no-wait -o json'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '## Planton-managed DNS first'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'planton search infra-components --all-envs -o json'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '\| `CloudflareDnsZone` \| `spec\.zoneName` \|'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'kind: CloudflareDnsRecord'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'Add the record, then verify'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'planton custom-domain verify --wait -o json'
+
+  - id: custom-domain-record-proxied
+    persona: coding agent
+    question: >
+      `planton custom-domain verify --wait -o json` exits 2 with cause
+      record_proxied for planton.acme.com. Our Cloudflare proxies that name.
+      What now?
+    answer: >
+      The name answers with Cloudflare's addresses, so public DNS can't see
+      where it points. Either set the record to DNS only with CNAME
+      flattening off, or, when the name must stay proxied, keep the CNAME
+      and add the TXT beside it (reading.diagnosis.records_to_add holds the
+      TXT, _planton-verification.planton.acme.com holding the organization's
+      label) -- through Planton when Planton manages the zone -- then verify
+      again. Nothing is removed.
+    checks:
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '\| `record_proxied` \|.*DNS only with CNAME flattening off, or keep it proxied and add the TXT beside the CNAME'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'Act on `reading\.diagnosis`'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '\*\*2\*\* not Live yet'
+
+  - id: custom-domain-blocked-by-caa
+    persona: platform engineer
+    question: >
+      Our custom domain says the certificate is blocked by a CAA record.
+      What do we change?
+    answer: >
+      Cause certificate_blocked_by_caa: a CAA record on the domain forbids
+      the certificate authorities Planton uses. Add CAA records allowing
+      letsencrypt.org and pki.goog (or remove the CAA record) -- as a
+      Planton change when the zone is a Planton-managed infra component --
+      then verify again. Never add a CAA record that leaves either out.
+    checks:
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'Add CAA records allowing `letsencrypt\.org` and `pki\.goog`, or remove the CAA record'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'never add a CAA record that leaves out `letsencrypt\.org` and `pki\.goog`'
+
+  - id: app-at-app-acme-com-is-a-service-domain
+    persona: developer
+    question: >
+      Put my app at app.acme.com.
+    answer: >
+      That is a service's own hostname, not the organization's console
+      address, so the custom-domain verbs do not apply. A name outside the
+      environment's {label}.{env-domain} convention is composed as real
+      infra-catalog resources beside the service (the carrier with the
+      hostname authored, the DNS record, the certificate), wired with
+      valueFrom onto the service's deployed outputs.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: 'Not this: the organization''s console address → `organization\.custom-domain\.md`'
+      - skill: planton
+        file: SKILL.md
+        pattern: 'Not this: a service''s own hostname → `service\.serving-domains-custom\.md`'
+      - skill: planton
+        file: references/service.serving-domains-custom.md
+        pattern: 'never as switches on the service record'

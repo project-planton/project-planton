@@ -36,6 +36,8 @@ The invitation follows a simple lifecycle:
 
 If the invitee already has a Planton account, they join the organization immediately upon accepting. If they are new to the platform, they create an account first and are then added to the organization with the roles specified in the invitation.
 
+When you work at your organization's [custom domain](/docs/teams-and-access/custom-domain), inviting members opens at planton.ai, where invitations work exactly as described here.
+
 <!-- SCREENSHOT: Invite member modal
   Page: /orgs/{org}/settings/members
   Action: Click "Invite Member" button to show the invitation modal
@@ -173,6 +175,7 @@ API keys display their fingerprint, creation date, last-used date, and expiratio
 ## Related Documentation
 
 - [Billing](/docs/teams-and-access/billing) — Subscription plans and billing management
+- [Custom Domain](/docs/teams-and-access/custom-domain) — Serve your organization's console at your own address
 - [Authentication and Authorization](/docs/security/authentication-and-authorization) — How the permission model works under the hood
 - [Security Overview](/docs/security) — Platform security architecture
 - [Connections](/docs/connections) — Credential and integration management

@@ -50,6 +50,10 @@ planton auth switch other@example.com
 planton auth use <instance>
 ```
 
+### Signing In at a Custom Domain
+
+An organization on the Team plan can serve its console at its own address, such as `planton.acme.com` (see [Custom Domain](/docs/teams-and-access/custom-domain)). Signing in there is a hand-off: the address sends you to planton.ai, you sign in as usual, and planton.ai hands you back into a session confined to that organization. The session reaches only that organization, so a page on a customer's address never holds a sign-in that works anywhere else. Inviting people and creating credentials, such as API keys, open at planton.ai, where your sign-in is the full one.
+
 ### API Keys
 
 For automation, CI/CD pipelines, and scripts that cannot use a browser-based login, Planton supports API keys.
@@ -345,5 +349,6 @@ The `get` command supports multiple output formats (`--output-format table`, `js
 - [Security Overview](/docs/security) — Platform security model and architecture
 - [Audit Trails](/docs/security/audit-trails) — Immutable change tracking
 - [Teams and Access](/docs/teams-and-access) — Member management, team structure, and billing
+- [Custom Domain](/docs/teams-and-access/custom-domain) — Your organization's console at its own address
 - [Connections](/docs/connections) — Credential management and environment authorization
 - [Runner Security Model](/docs/runner/security-model) — Credential isolation and mTLS

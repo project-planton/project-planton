@@ -138,6 +138,20 @@ export const VALUE_MATRIX: MatrixCategory[] = [
         entitlementKey: 'deployment_safety',
         cells: { free: NO, team: YES, community: NO, license: YES, enterprise: YES },
       },
+      {
+        // A hosted Team capability only: a self-hosted install already runs
+        // on its own domain, so its cells say that rather than "not included".
+        feature: 'Custom Domain',
+        description: 'Your organization\u2019s console at your own address, such as planton.acme.com',
+        entitlementKey: 'custom_domain',
+        cells: {
+          free: NO,
+          team: YES,
+          community: text('Runs on your own domain'),
+          license: text('Runs on your own domain'),
+          enterprise: text('Runs on your own domain'),
+        },
+      },
     ],
   },
   {
