@@ -93,12 +93,14 @@ by id/name is the direct read.
 ## Changing a deployed stack (mutations)
 
 Every change to a stack is a plan you show first, then apply on the user's
-yes for THAT plan; none of these runs uninvited:
+yes for THAT plan (or under their word to carry on without asking, then say
+exactly what was destroyed or replaced); none of these runs uninvited:
 
 ```
 planton infra stack apply <name> [folder] --env <env> -m "<why>" --plan-digest <d>
                               # applies exactly the plan shown and follows its run;
-                              # --destroy / --keep / --adopt Kind/name name choices
+                              # the digest or --yes consents to its destroys and replaces;
+                              # --keep / --adopt Kind/name name choices
 planton infra stack reconcile <name> --env <env>      # plans putting back what drifted; applies
                               # like apply (-m, --plan-digest; --dry-run stops at the plan)
 planton infra stack withdraw <name> --env <env>       # takes a waiting request back
@@ -108,7 +110,11 @@ planton infra stack upgrade <name> --env <env>
 ```
 
 A request waiting in a protected environment is decided by a PERSON who
-read its review; you only carry out the decision they stated:
+read its review: you carry out the decision they stated, or approve under
+their word to carry on without asking -- never a run your own person
+started (the platform refuses it). Approving approves every Destroy and
+Replace the review shows; at a terminal it asks, and `--yes` alone approves
+the current review:
 
 ```
 planton infra stack approve <name> --env <env> --review-digest <d>
@@ -136,18 +142,21 @@ Each delivery verb takes `--dry-run` (what the run would apply, whether it
 waits at a gate, and every removal; nothing saved, no run number taken),
 `--reapply-all` and `--follow`; each answers with a run ("Run #129") to
 follow. A run removes what the service no longer declares once everything
-declared applied; a removal that holds data, or one a protected gate
-approved before it appeared, waits for a person, and so does the
-environment's gate:
+declared applied. In an unprotected environment a push destroys it unasked;
+the other verbs name it and ask at a terminal (`--yes` answers ahead). A
+protected environment's gate decides every removal it shows (each is
+destroyed unless kept), and a removal that appears after the approval
+asks on its own:
 
 ```
-planton service removal destroy <service> <number> <env> <Kind/name>   # naming it is the consent
+planton service removal destroy <service> <number> <env> <Kind/name>   # asks; --yes answers ahead
 planton service removal keep <service> <number> <env> <Kind/name>      # keeps it on its provider
-planton service resolve-env-manual-gate <service> <number> <env> approve --keep <Kind/name> --destroy <Kind/name>
+planton service resolve-env-manual-gate <service> <number> <env> approve --keep <Kind/name>   # the rest is destroyed
 ```
 
-These decisions are a person's, never yours: relay the question and the
-command. `references/service.delivery-verbs.md` carries the verbs, the
+These decisions are a person's: relay the question and the command, and
+answer only on their word (never on a run your own person started), then
+say exactly what was destroyed. `references/service.delivery-verbs.md` carries the verbs, the
 removals and drift; `references/service.reading-a-run.md` the gates.
 
 ## Checking out real files (charts and deployed stacks)
@@ -193,7 +202,7 @@ planton infra pipeline logs <infpipe_id>              # auto-targets the failed 
 planton infra pipeline logs <infpipe_id> --node <slug> # a specific node (slug from status)
 
 # 3b. A passing failure (a timeout, a quota)? Run it again, as it was reviewed:
-planton infra pipeline rerun <infpipe_id>              # same revision; asks when it destroys (--yes)
+planton infra pipeline rerun <infpipe_id>              # same revision; asks when it destroys or replaces (--yes)
 
 # 4. Deeper: the Infra Job record carries the full error detail:
 planton infra job list <infra-component-id> -o json
@@ -421,8 +430,9 @@ planton rerun <run-id> --no-follow          # starts it and returns
 and read its kind from the prefix: `ij_` an Infra Job, `infpipe_` a stack
 run, `svcpipe_` a service run, `extrun_` an external CI run. Any other id
 exits 1 naming the four. A rerun is a platform mutation: say what it runs
-again and confirm first. When the rerun still destroys something it asks;
-`--yes` answers, only after the user agreed. `--failed-only`, `--job` and
+again and confirm first. When the rerun still destroys or replaces
+something it asks; `--yes` answers, once the user agreed (or told you to
+carry on without asking). `--failed-only`, `--job` and
 `--debug-logging` work only for an external CI run and are refused
 elsewhere. Exit codes: `0` done, or a request is waiting for its approver
 (relay the review link); `1` it failed or was refused; `3` a person must

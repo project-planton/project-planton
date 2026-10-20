@@ -67,7 +67,7 @@ The annotation is not the only thing that blocks a destroy: the resource's own d
 
 A [Service](/docs/ci-cd/what-is-a-service) reads both marks when a run removes a resource it no longer declares: a resource marked keep-on-provider reads **Kept** (Kept in AWS) and keeps running, and one marked prevent-destroy reads **Left in Place**, naming the mark, until it is lifted and the next run destroys it ([Removing a Resource](/docs/ci-cd/what-is-a-service#removing-a-resource)). It honours both the same way when it is deleted: a resource marked keep-on-provider is released and keeps running, and one marked prevent-destroy refuses the delete before anything starts, naming the resource ("checkout-api can't be deleted: orders-db in prod is marked prevent-destroy. Remove the mark, or delete with Keep Resources.").
 
-Keep answers "this resource outlives its owner"; prevent-destroy answers "stop anyone from tearing this down by mistake". A removed resource without either is destroyed when its plan says Destroy and you agreed — a resource that holds data only when you named it.
+Keep answers "this resource outlives its owner"; prevent-destroy answers "stop anyone from tearing this down by mistake". A removed resource without either is destroyed when its plan says Destroy and you agreed to that plan.
 
 ## Common Patterns
 

@@ -85,6 +85,13 @@ func TestRetiredSpellingsAreFound(t *testing.T) {
 		"# Least-privilege permissions for the official kubernetestrino modules",
 		"This kind supports both Pulumi (default) and Terraform:",
 		"Pulumi is the default engine on every instance",
+		"or the person types its name to destroy it",
+		"the person approving types each name to approve the removals",
+		"--destroy <type AwsRdsInstance/orders-db>",
+		"needs_named_consent: true",
+		"a NamedConsent on the submission",
+		"Holds data a destroy cannot give back",
+		"`--yes` alone answers it but consents to no destroy",
 	} {
 		if len(matches(t, s, "README.md", line)) == 0 {
 			t.Errorf("no finding in %q", line)
@@ -151,6 +158,9 @@ func TestOtherPeoplesWordsAreAllowed(t *testing.T) {
 		{"docs/x.md", "the official Docker image for Postgres"},
 		{"catalog/aws/awsvpc/logo.svg", "<desc>Official AWS product icon</desc>"},
 		{"docs/x.md", "it deploys with OpenTofu unless the organization chose Pulumi"},
+		{"docs/x.md", "type its namespace in the wizard"},
+		{"docs/x.md", "type its name to delete the organization"},
+		{"docs/x.md", "what the destroyed resource holds does not come back"},
 	} {
 		if got := matches(t, s, c.path, c.line); len(got) != 0 {
 			t.Errorf("%s: %q flagged %v", c.path, c.line, got)

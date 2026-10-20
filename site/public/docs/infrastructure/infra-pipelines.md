@@ -85,7 +85,7 @@ See [Infra Stacks](/docs/infrastructure/infra-stacks#in-a-protected-environment-
 
 ### Node-Level Gates
 
-Individual resources within the dependency graph can have their own gates: annotate the resource with `planton.dev/gate.type: manual`. The resource pauses before it runs or after it succeeds (`planton.dev/gate.position`, after by default) until someone approves or rejects, while the rest of the graph carries on. A gate after a resource lets you verify its deployment before its dependents start; a rejection fails the resource. Only a deploy pauses at a resource's gate.
+Individual resources within the dependency graph can have their own gates: annotate the resource with `planton.dev/gate.type: manual`. The resource pauses before it runs or after it succeeds (`planton.dev/gate.position`, after by default) until someone approves or rejects, while the rest of the graph carries on. A gate after a resource lets you verify its deployment before its dependents start; a rejection fails the resource. Only a deploy pauses at a resource's gate. An approval that lets the resource destroy or replace something says what goes and asks at a terminal; `--yes` answers ahead, and a rejection asks nothing.
 
 ```bash
 planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-id> yes
@@ -96,7 +96,7 @@ planton infra pipeline resolve-node-manual-gate <pipeline-id> <env-name> <node-i
 Approving or rejecting answers at once with what became of the decision:
 
 - **Applied** — the run continues, the request applies exactly the plan read, or the rejected resource fails.
-- **Refused, with the reason** — it was already decided by someone else (the first decision stands), it is not waiting for a decision yet (a request still previewing), the review changed since it was read, a resource that holds data was not named, or the run is being cancelled.
+- **Refused, with the reason** — it was already decided by someone else (the first decision stands), it is not waiting for a decision yet (a request still previewing), the review changed since it was read, or the run is being cancelled.
 - **The run has ended** — there is nothing left to decide.
 - **Not confirmed in time** — the decision may still apply; check the run before trying again.
 
@@ -145,7 +145,7 @@ Use direct deployment for standalone resources. Use Infra Pipelines (via [Infra 
 # Cancel a running pipeline
 planton infra pipeline cancel <pipeline-id>
 
-# Run a finished run again: the same revision; asks when it destroys (--yes)
+# Run a finished run again: the same revision; asks when it destroys or replaces (--yes)
 planton infra pipeline rerun <pipeline-id>
 
 # Approve a resource-level gate (yes or no)

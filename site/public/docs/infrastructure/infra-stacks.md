@@ -49,7 +49,7 @@ Every change to an Infra Stack — an edit in the console, `planton infra stack 
 |-----|--------------------|
 | **Blocked** | Nothing, until it is resolved; the row says why and the way out. |
 | **Destroy** | The resource is no longer in the templates: it is destroyed on its provider once everything the plan applies has applied. |
-| **Replace** | The resource stays in the templates, but its provider can't change it in place: it is destroyed and created again, and what it holds does not carry over. A request's preview finds it; it needs the requester's destroy rights, or the row reads Blocked, and an approver names each one that holds data. |
+| **Replace** | The resource stays in the templates, but its provider can't change it in place: it is destroyed and created again, and what it holds does not carry over. A request's preview finds it; it needs the requester's destroy rights, or the row reads Blocked. |
 | **Update** | Something that decides its deployment moved: its settings, a secret's version, a value it reads, its module. |
 | **Update Record** | Only Planton's record changes; nothing on the provider (for example, an annotation added). |
 | **Create** | The resource is new. |
@@ -66,7 +66,7 @@ An apply records a numbered **revision** named by its message ("r13 · Raise rep
 
 ### Choosing What Happens to Each Resource
 
-- **Destroy or Keep.** A removed resource is destroyed unless you keep it. A resource that holds data a destroy cannot give back is destroyed only when you name it: type its name in the console, `--destroy Kind/name` on the CLI. A removed resource whose destroy is blocked — `planton.dev/prevent-destroy`, its own deletion protection, or something that still reads it — blocks only its destroy: choose Keep and the plan applies.
+- **Destroy or Keep.** A removed resource is destroyed unless you keep it (**Keep** in the console, `--keep Kind/name` on the CLI). Nothing is typed to destroy it: applying the plan you read is the consent. A removed resource whose destroy is blocked — `planton.dev/prevent-destroy`, its own deletion protection, or something that still reads it — blocks only its destroy: choose Keep and the plan applies.
 - **Adopt.** A stack never takes over a resource it found; you choose Adopt for it, or remove it from the templates.
 - **Re-apply.** Run an unchanged resource's job anyway, or every resource's (`--reapply Kind/name`, `--reapply-all`).
 
@@ -83,7 +83,7 @@ In the console the plan's summary shows the cost and two chips, **Added Permissi
 
 **View Architecture** (`F`) draws the plan as the architecture it changes: the stack's graph exactly as the run will walk it, each resource marked with what the plan does to it, the unchanged ones dimmed and the destroyed or kept ones drawn as ghosts. It is the run's own graph, so the picture is what applies. Click a resource to go to its row.
 
-`planton apply -f` applies a plan only when nothing in it is destroyed, adopted or blocked; otherwise it refuses and names the `planton infra stack apply` command to review the plan with. It never files a request: in a protected environment it refuses and names that command.
+`planton apply -f` applies a plan only when nothing in it is destroyed, adopted or blocked; otherwise it refuses and names the `planton infra stack apply … --yes` command to review the plan with. It never files a request: in a protected environment it refuses and names that command.
 
 ### In a Protected Environment, a Change Is a Request
 
@@ -97,15 +97,15 @@ The request's run previews what the change reaches — each preview shows its en
 
 ```bash
 planton infra stack review app-infra --env prod
-planton infra stack approve app-infra --env prod --replace AwsRedisElasticache/orders-cache
+planton infra stack approve app-infra --env prod
 planton infra stack reject app-infra --env prod --reason "Not during the freeze"
 planton infra stack withdraw app-infra --env prod   # the requester takes it back
 ```
 
 - **Nothing applies until an approval**, and the stack's declaration does not move: a rejected request leaves only its revision in history.
 - **The approver approves exactly the plan they read.** Each resource plans again and applies only when its plan matches its preview; one that moved since — a setting edited in the cloud, a secret's new version — stops before changing anything, shows its new plan and waits for a person. A resource that could only be previewed once an earlier change applied (May Change) applies under the approval unless its plan destroys or replaces something.
-- **What holds data is named.** Approving a plan that destroys or replaces a resource holding data asks the approver to type each name (`--destroy` / `--replace Kind/name` in CI, with the `--review-digest` of the review read).
-- **A second pair of eyes.** The person who asked cannot approve their own change while another approver exists.
+- **One approval decides the whole plan.** Approving applies every Destroy and Replace the review shows. At a terminal, `approve` shows the review and asks; without one, `--review-digest <digest>` approves exactly the review read, and `--yes` prints the current review, then approves it.
+- **A second pair of eyes.** The person who asked cannot approve their own change while another approver exists. An agent acting for an approver may approve when the person told it to carry on without asking, and then says what the approval destroyed or replaced; it never approves a change its own person asked for, even when that person is the only approver.
 - **A request nobody decides lapses.** While it waits it reads "Lapses at Oct 21, 14:30 IST, in 6 days"; after 7 days undecided it closes **Lapsed**: no one decided within 7 days, so nothing was applied, and the stack is free for the next change.
 - **A terminal never waits on a person.** The apply follows while the request previews, then ends with where to review it and the commands that decide it; `-o json` prints `{run_id, review_url, state, lapses_at, revision, source, from_env}`.
 
@@ -115,7 +115,7 @@ A request that is rejected, withdrawn or lapsed, cannot be previewed or goes out
 
 Each applied plan is a revision: its number, message, author, where its declaration came from (an edit, a re-apply, "Promoted from staging r6", "Rolled back to r8", "Upgraded to app-infra v5", "Reconciled drift on orders-db and cache"), the chart version it took, the declaration it applied, the plan's rows as reviewed and chosen, and how its run ended — **Applying**, **Applied**, **Applied With Removal Failures** (what the stack declares applied; a removal failed), **Failed** or **Cancelled**. A request reads **Awaiting Approval** until someone decides it, and closes **Rejected**, **Withdrawn**, **Lapsed**, **Preview Failed** or **Out of Date** when it applies nothing. The stack's **live revision** is the newest that applied; an undeploy clears it. The stack page's **Revisions** tab and `planton infra stack history <name> --env <env>` list them, newest first, with each one's source and who requested and who approved it; from a revision you can [Roll Back](#roll-back) to it or [Compare](#compare) it with what is live.
 
-A run's Rerun (`planton infra pipeline rerun <pipeline-id>` in a terminal) repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. It asks first when the rerun still destroys something. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
+A run's Rerun (`planton infra pipeline rerun <pipeline-id>` in a terminal) repeats its revision — the same reviewed plan — so what applied stays Unchanged and what failed runs again. It asks first when the rerun still destroys or replaces something; `--yes` answers ahead. A rerun is refused once a newer revision exists, or after an undeploy: plan again instead.
 
 ### One Run at a Time
 
@@ -247,7 +247,7 @@ planton infra stack apply my-stack ./my-chart --env <env> -f values-prod.yaml -m
 
 A values file lists only the values it sets; every other value keeps the chart's default (see [how values resolve](/docs/infrastructure/infra-charts)). With no chart, the plan is of the stack's own declaration — what moved underneath it — and `--set name=value` alone changes one value. `planton chart install my-stack ./my-chart --env <env>` takes the same path and creates the stack when the name is new; `--dry-run` stops at the plan.
 
-At a terminal, the apply shows the plan and asks once, and asks for the name of anything that holds data before destroying it. Without a terminal (CI), name each destroy with `--destroy Kind/name`, or pass `--plan-digest` from a plan a person reviewed — it consents to that plan's ordinary destroys; a resource that holds data is still named. `--yes` answers the question but consents to no destroy.
+At a terminal, the apply shows the plan, says what it destroys and replaces, and asks once. Without a terminal (CI, a script, an agent), `--plan-digest` from a plan a person reviewed applies exactly that plan, and `--yes` applies the fresh plan; either consents to every Destroy and Replace it shows, and the apply prints what it destroyed and replaced. `--keep Kind/name` keeps a removed resource and `--adopt Kind/name` takes one over; `--destroy Kind/name` only turns a Keep carried from an earlier revision back into a Destroy. With none of them and no terminal, the apply refuses, says what the plan destroys and replaces, and prints the same command with `--yes` added.
 
 `planton infra stack plan` exits `0` when planned, `1` when the declaration does not build, a declared resource is blocked or a run is in flight, and `2` when the plan could not be made; `--detailed-exitcode` adds `4` for a plan that would change something. `-o markdown` prints the plan for a pull request.
 
@@ -273,7 +273,7 @@ An undeploy is refused before anything starts when:
 - anything else still reads one of its resources — another stack, a service, or a resource deployed on its own, through a reference to it or with workloads placed in its namespace. The refusal names the reader and how to let go of the reference;
 - the stack owns no Infra Components: it "owns no infra components, so there is nothing to undeploy".
 
-In a protected environment an undeploy is a request an approver decides, as an apply is: nothing is destroyed until then. The CLI asks before undeploying or purging; `--yes` answers ahead. Applying the stack again later plans each resource anew: any resource the undeploy released plans Adopt.
+In a protected environment an undeploy is a request an approver decides, as an apply is: nothing is destroyed until then. The CLI says what goes and asks before undeploying or purging; `--yes` answers ahead, and without a terminal the command refuses and prints itself with `--yes` added. Applying the stack again later plans each resource anew: any resource the undeploy released plans Adopt.
 
 ### Purge
 

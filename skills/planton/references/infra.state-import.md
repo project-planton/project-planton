@@ -101,8 +101,11 @@ to show the user exactly what would run before committing.
 ## Consent and boundaries
 
 - An import is a **platform mutation** (it changes the stack's recorded
-  state): explain what it imports and get a yes — one confirmation per
-  import. `--dry-run` and every lookup above run freely.
+  state): explain what it imports and get a yes — one yes per import,
+  unless the user told you to carry on without asking (for this task).
+  The state verbs that change state (`state rm`, `state replace`, `state
+  upload`, a targeted `state destroy`) ask at a terminal; `--yes` answers
+  ahead. `--dry-run` and every lookup above run freely.
 - Never repair by deleting the provider resource so the rerun "works" unless
   the user explicitly chooses that instead — deletion destroys whatever the
   resource already holds and is a cloud mutation with its own confirmation.

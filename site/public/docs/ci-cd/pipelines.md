@@ -166,12 +166,12 @@ planton service resolve-env-manual-gate my-service 130 prod yes
 planton service resolve-env-manual-gate my-service 130 prod no
 ```
 
-When the run no longer declares resources the service deployed to that environment, the gate lists each removal, and approving decides them all: each one is destroyed unless you keep it. A resource that holds data must be kept or named before the approval goes through. A removal that appears after the approval, or whose resource was replaced since, asks on its own. See [Removing a Resource](/docs/ci-cd/what-is-a-service#removing-a-resource).
+When the run no longer declares resources the service deployed to that environment, the gate lists each removal, and approving decides them all: each one is destroyed unless you keep it. At a terminal the approval says what it destroys and asks; `--yes` answers ahead. A removal that appears after the approval, or whose resource was replaced since, asks on its own. See [Removing a Resource](/docs/ci-cd/what-is-a-service#removing-a-resource).
 
 ```bash
-# Approve, keeping the cache on its provider and naming the database to destroy
+# Approve, keeping the cache on its provider; the database is destroyed
 planton service resolve-env-manual-gate my-service 130 prod approve \
-  --keep AwsElasticacheCluster/orders-cache --destroy AwsRdsInstance/orders-db
+  --keep AwsElasticacheCluster/orders-cache
 ```
 
 ## Cancelling a Pipeline
