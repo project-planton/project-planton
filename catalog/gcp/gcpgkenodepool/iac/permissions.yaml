@@ -24,10 +24,12 @@ spec:
           - container.clusters.get
           - container.clusters.update
           - container.operations.get
+          - compute.instanceGroupManagers.get
+          - compute.instanceGroupManagers.list
         provenance: derived
         reach: target
         privilege: ordinary
-        notes: Covers google_container_node_pool -- the provider reads the parent cluster and polls the long-running operation every mutation returns. GCP defines NO container.nodePools.* IAM permissions (verified against IAM's testable-permissions inventory and the published container roles reference); node pool create/update/delete all authorize as container.clusters.update on the parent cluster.
+        notes: Covers google_container_node_pool -- the provider reads the parent cluster and polls the long-running operation every mutation returns. GCP defines NO container.nodePools.* IAM permissions (verified against IAM's testable-permissions inventory and the published container roles reference); node pool create/update/delete all authorize as container.clusters.update on the parent cluster. The provider also reads the pool's managed instance groups (its size and instance template) on create, refresh and destroy, which Google authorizes as compute.instanceGroupManagers.list and get on the project -- a live create was refused without them.
       - purpose: ActAsNodeServiceAccount
         permissions:
           - iam.serviceAccounts.actAs

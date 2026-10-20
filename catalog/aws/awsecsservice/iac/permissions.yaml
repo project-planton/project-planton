@@ -21,10 +21,10 @@ spec:
           - ecs:ListTagsForResource
         resources:
           - arn:aws:ecs:*:*:service/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_ecs_service -- creation, convergence of every declared block (deployment configuration, Service Connect, volume configuration), and the scale-to-zero-then-delete teardown.
+        notes: "Covers aws_ecs_service -- creation, convergence of every declared block (deployment configuration, Service Connect, volume configuration), and the scale-to-zero-then-delete teardown. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageAutoscaling
         actions:
           - application-autoscaling:RegisterScalableTarget
@@ -44,16 +44,16 @@ spec:
           - iam:PassRole
         resources:
           - arn:aws:iam::*:role/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: uses_identity
-        notes: CreateService and UpdateService pass the referenced task definition's execution and task roles (and the infrastructure role for managed EBS volumes) to ECS. Scope to the actual role ARNs in a hardened deployment.
+        notes: "CreateService and UpdateService pass the referenced task definition's execution and task roles (and the infrastructure role for managed EBS volumes) to ECS. Scope to the actual role ARNs in a hardened deployment. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: CreateServiceLinkedRole
         actions:
           - iam:CreateServiceLinkedRole
         resources:
           - arn:aws:iam::*:role/aws-service-role/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: First use of ECS (and of Application Auto Scaling's ECS integration) in an account creates their service-linked roles implicitly -- required once per account, then dormant.
+        notes: "First use of ECS (and of Application Auto Scaling's ECS integration) in an account creates their service-linked roles implicitly -- required once per account, then dormant. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."

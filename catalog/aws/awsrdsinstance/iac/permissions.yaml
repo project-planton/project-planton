@@ -55,6 +55,9 @@ spec:
           - rds:DeleteOptionGroup
           - rds:ModifyOptionGroup
           - rds:DescribeOptionGroups
+          - rds:AddTagsToResource
+          - rds:RemoveTagsFromResource
+          - rds:ListTagsForResource
         resources:
           - arn:aws:rds:*:*:subgrp:*
           - arn:aws:rds:*:*:pg:*
@@ -62,7 +65,7 @@ spec:
         provenance: derived
         reach: target
         privilege: ordinary
-        notes: Covers the conditional aws_db_subnet_group, aws_db_parameter_group, and aws_db_option_group satellites -- each created only when the spec provides subnets, parameters, or options inline.
+        notes: "Covers the conditional aws_db_subnet_group, aws_db_parameter_group, and aws_db_option_group satellites -- each created only when the spec provides subnets, parameters, or options inline. Each is tagged as it is created and its tags are read and changed afterwards, and RDS authorizes those tag calls on the satellite's own ARN (rds:AddTagsToResource on a subgrp ARN was refused on a live create without it), so the tag actions sit here beside the instance's own."
       - sid: DescribeVpcContext
         actions:
           - ec2:DescribeSubnets

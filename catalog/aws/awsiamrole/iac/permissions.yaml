@@ -23,12 +23,13 @@ spec:
           - iam:TagRole
           - iam:UntagRole
           - iam:ListRoleTags
+          - iam:ListInstanceProfilesForRole
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
         reach: target
         privilege: grants_access
-        notes: Covers aws_iam_role / iam.Role -- creation with name, path, trust document (free-form or composed OIDC form), description, session-duration ceiling, and boundary; in-place updates of every mutable argument; tagging; and deletion. IAM ARNs carry no region, and role/* spans custom paths because '*' matches path separators. All role APIs authorize on the role ARN alone.
+        notes: "Covers aws_iam_role / iam.Role -- creation with name, path, trust document (free-form or composed OIDC form), description, session-duration ceiling, and boundary; in-place updates of every mutable argument; tagging; and deletion. IAM ARNs carry no region, and role/* spans custom paths because '*' matches path separators. All role APIs authorize on the role ARN alone. Deleting a role first lists the instance profiles it belongs to (the provider removes it from each before DeleteRole), so a destroy is refused without ListInstanceProfilesForRole -- observed on a live teardown."
       - sid: ManageRolePolicyWiring
         actions:
           - iam:AttachRolePolicy
