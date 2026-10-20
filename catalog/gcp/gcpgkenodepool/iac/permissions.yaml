@@ -15,10 +15,10 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling container.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
+        notes: "Covers google_project_service enabling container.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageNodePool
         permissions:
           - container.clusters.get
@@ -26,10 +26,10 @@ spec:
           - container.operations.get
           - compute.instanceGroupManagers.get
           - compute.instanceGroupManagers.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_container_node_pool -- the provider reads the parent cluster and polls the long-running operation every mutation returns. GCP defines NO container.nodePools.* IAM permissions (verified against IAM's testable-permissions inventory and the published container roles reference); node pool create/update/delete all authorize as container.clusters.update on the parent cluster. The provider also reads the pool's managed instance groups (its size and instance template) on create, refresh and destroy, which Google authorizes as compute.instanceGroupManagers.list and get on the project -- a live create was refused without them.
+        notes: "Covers google_container_node_pool -- the provider reads the parent cluster and polls the long-running operation every mutation returns. GCP defines NO container.nodePools.* IAM permissions (verified against IAM's testable-permissions inventory and the published container roles reference); node pool create/update/delete all authorize as container.clusters.update on the parent cluster. The provider also reads the pool's managed instance groups (its size and instance template) on create, refresh and destroy, which Google authorizes as compute.instanceGroupManagers.list and get on the project -- a live create was refused without them. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ActAsNodeServiceAccount
         permissions:
           - iam.serviceAccounts.actAs

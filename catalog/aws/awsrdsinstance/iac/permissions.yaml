@@ -66,6 +66,21 @@ spec:
         reach: target
         privilege: ordinary
         notes: "Covers the conditional aws_db_subnet_group, aws_db_parameter_group, and aws_db_option_group satellites -- each created only when the spec provides subnets, parameters, or options inline. Each is tagged as it is created and its tags are read and changed afterwards, and RDS authorizes those tag calls on the satellite's own ARN (rds:AddTagsToResource on a subgrp ARN was refused on a live create without it), so the tag actions sit here beside the instance's own."
+      - sid: ReferenceGroupsFromInstance
+        actions:
+          - rds:CreateDBInstance
+          - rds:ModifyDBInstance
+          - rds:CreateDBInstanceReadReplica
+          - rds:RestoreDBInstanceFromDBSnapshot
+          - rds:RestoreDBInstanceToPointInTime
+        resources:
+          - arn:aws:rds:*:*:subgrp:*
+          - arn:aws:rds:*:*:pg:*
+          - arn:aws:rds:*:*:og:*
+        provenance: derived
+        reach: target
+        privilege: ordinary
+        notes: RDS authorizes an instance's create, modify, and restore calls on the ARN of every subnet, parameter, and option group the instance names, as well as on the instance's own ARN (rds:CreateDBInstance on a pg ARN was refused on a live create without it). A default parameter or option group is covered by the same wildcards.
       - sid: DescribeVpcContext
         actions:
           - ec2:DescribeSubnets
