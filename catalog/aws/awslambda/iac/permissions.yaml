@@ -35,10 +35,10 @@ spec:
           - lambda:ListTags
         resources:
           - arn:aws:lambda:*:*:function:*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_lambda_function plus its attribute satellites (aws_lambda_function_recursion_config, aws_lambda_runtime_management_config) and reserved_concurrent_executions. Action names verified against the AWS service reference; the function-name wildcard is the ARN's variable part.
+        notes: "Covers aws_lambda_function plus its attribute satellites (aws_lambda_function_recursion_config, aws_lambda_runtime_management_config) and reserved_concurrent_executions. Action names verified against the AWS service reference; the function-name wildcard is the ARN's variable part. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageInvocationSatellites
         actions:
           - lambda:CreateAlias
@@ -73,10 +73,10 @@ spec:
           - iam:PassRole
         resources:
           - arn:aws:iam::*:role/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: uses_identity
-        notes: CreateFunction and UpdateFunctionConfiguration pass the referenced execution role (role_arn) to the Lambda service. Narrow to the actual role ARN in a hardened deployment.
+        notes: "CreateFunction and UpdateFunctionConfiguration pass the referenced execution role (role_arn) to the Lambda service. Narrow to the actual role ARN in a hardened deployment. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: FetchCodeArtifacts
         actions:
           - s3:GetObject
@@ -85,10 +85,10 @@ spec:
         resources:
           - arn:aws:s3:::*/*
           - arn:aws:ecr:*:*:repository/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Required only for the code source the manifest uses -- Lambda fetches the s3 object (spec.s3) or pulls the container image (image_uri) with the caller's permissions at CreateFunction/UpdateFunctionCode time. Scope to the actual bucket or repository in a hardened deployment.
+        notes: "Required only for the code source the manifest uses -- Lambda fetches the s3 object (spec.s3) or pulls the container image (image_uri) with the caller's permissions at CreateFunction/UpdateFunctionCode time. Scope to the actual bucket or repository in a hardened deployment. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: UseCustomerManagedKey
         actions:
           - kms:DescribeKey

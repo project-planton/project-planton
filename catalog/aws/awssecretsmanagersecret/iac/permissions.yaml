@@ -22,10 +22,10 @@ spec:
           - secretsmanager:RemoveRegionsFromReplication
         resources:
           - arn:aws:secretsmanager:*:*:secret:*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_secretsmanager_secret -- creation (with tags and replica blocks), reads during plan/refresh, in-place updates (description, KMS key), replica add/remove after creation, and teardown (DeleteSecret honoring spec.recovery_window_in_days, including the modules' create-retry through AWS's "scheduled for deletion" window). Every Secrets Manager action authorizes against the secret ARN -- the service reference's only ARN format.
+        notes: "Covers aws_secretsmanager_secret -- creation (with tags and replica blocks), reads during plan/refresh, in-place updates (description, KMS key), replica add/remove after creation, and teardown (DeleteSecret honoring spec.recovery_window_in_days, including the modules' create-retry through AWS's \"scheduled for deletion\" window). Every Secrets Manager action authorizes against the secret ARN -- the service reference's only ARN format. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageResourcePolicy
         actions:
           - secretsmanager:GetResourcePolicy
