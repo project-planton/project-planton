@@ -16,7 +16,9 @@
 #     requires; linux_arm64 is every ARM runner the platform ships: Graviton,
 #     and kind on an Apple Silicon Mac)
 #   - Modules: `modulebuild list`, the tracked catalog/{provider}/{kind}/iac/pulumi
-#     directories
+#     directories, built and published several at a time by
+#     tools/ci/release/publish_pulumi_module.sh (one run per module, each with
+#     its own scratch directory and part file)
 #   - Each leg records what it published (module dir, artifact, the published
 #     sha256 publish_once.sh reports) and uploads that list as a workflow
 #     artifact; release.yaml's pulumi-module-manifest job merges every
@@ -124,88 +126,60 @@ jobs:
           AWS_ENDPOINT_URL: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
           PROVIDER: ${{ matrix.provider }}
           PLATFORM: ${{ matrix.platform.goos }}_${{ matrix.platform.goarch }}
+          # Modules built side by side. Linking a Pulumi binary is mostly
+          # one core's work, so one module at a time left three of the
+          # runner's four cores idle; three at a time keeps them busy within
+          # its memory, and takes the largest providers' legs from about 50
+          # minutes to about 20.
+          PARALLEL_BUILDS: "3"
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          MB="${RUNNER_TEMP}/modulebuild"
-          PART="${RUNNER_TEMP}/published.tsv"
-          : > "${PART}"
+          set -euo pipefail
+          export TAG="${GITHUB_REF#refs/tags/}"
+          export MODULEBUILD="${RUNNER_TEMP}/modulebuild"
+          export PARTS_DIR="${RUNNER_TEMP}/parts"
+          mkdir -p "${PARTS_DIR}"
 
-          if [ "${PLATFORM#windows}" != "${PLATFORM}" ]; then
-            ARTIFACT_NAME="${PLATFORM}.exe.gz"
-          else
-            ARTIFACT_NAME="${PLATFORM}.gz"
-          fi
-
-          mapfile -t MODULES < <("${MB}" list -engine pulumi -provider "${PROVIDER}")
+          mapfile -t MODULES < <("${MODULEBUILD}" list -engine pulumi -provider "${PROVIDER}")
           TOTAL=${#MODULES[@]}
 
           echo "========================================"
           echo "PROVIDER: ${PROVIDER}"
           echo "PLATFORM: ${PLATFORM}"
-          echo "MODULES: ${TOTAL}"
+          echo "MODULES: ${TOTAL} (${PARALLEL_BUILDS} at a time)"
           echo "========================================"
 
           if [ $TOTAL -eq 0 ]; then
             echo "WARNING: No Pulumi modules found for provider ${PROVIDER}"
+            : > "${RUNNER_TEMP}/published.tsv"
             exit 0
           fi
 
-          COMPLETED=0
+          # Each module builds and publishes in its own run of the script
+          # (tools/ci/release/publish_pulumi_module.sh), which writes its
+          # own part file; xargs exits non-zero when any of them failed, and
+          # every failure has already said which module it was.
           FAILED=0
+          printf '%s\n' "${MODULES[@]}" \
+            | xargs -P "${PARALLEL_BUILDS}" -I{} tools/ci/release/publish_pulumi_module.sh {} \
+            || FAILED=1
+          cat "${PARTS_DIR}"/*.tsv > "${RUNNER_TEMP}/published.tsv" 2>/dev/null || : > "${RUNNER_TEMP}/published.tsv"
+          PUBLISHED=$(( $(wc -l < "${RUNNER_TEMP}/published.tsv") ))
 
-          for MODULE_DIR in "${MODULES[@]}"; do
-            COMPLETED=$((COMPLETED + 1))
-            kind="$(echo "${MODULE_DIR}" | cut -d/ -f3)"
-            R2_KEY="releases/${TAG}/modules/pulumi/${kind}/${ARTIFACT_NAME}"
-
-            echo ""
-            echo "----------------------------------------"
-            echo "BUILDING: ${kind} (${PLATFORM})  ${COMPLETED}/${TOTAL}"
-            echo "----------------------------------------"
-
-            if "${MB}" pulumi -module "${MODULE_DIR}" -platform "${PLATFORM}" -out "${ARTIFACT_NAME}"; then
-              # Upload once (a tag's artifacts never change) and record the
-              # checksum of the bytes the key holds.
-              if SHA=$(tools/ci/release/publish_once.sh "${ARTIFACT_NAME}" "${R2_KEY}" \
-                --cache-control "public, max-age=31536000, immutable"); then
-                printf '%s\t%s\t%s\n' "${MODULE_DIR}" "${ARTIFACT_NAME}" "${SHA}" >> "${PART}"
-                LAST_UPLOADED_KEY="${R2_KEY}"
-              else
-                echo "✗ ERROR: Failed to upload ${ARTIFACT_NAME} to R2"
-                FAILED=$((FAILED + 1))
-              fi
-              rm -f "${ARTIFACT_NAME}"
-            else
-              echo "✗ ERROR: Failed to build ${kind} for ${PLATFORM}"
-              FAILED=$((FAILED + 1))
-            fi
-
-            # The module source, once per kind (the linux_amd64 leg writes it).
-            # LICENSE and NOTICE land at its root (Apache-2.0 section 4(d)).
+          # Probe one uploaded artifact (and, on linux_amd64, its source)
+          # through the public URL. The CLI and runners compose these URLs
+          # from a shape pinned in pkg/downloads; this probe pins the OTHER
+          # half of the contract -- that what CI just uploaded actually
+          # serves at that shape.
+          PROBE_KIND="$(head -n1 "${RUNNER_TEMP}/published.tsv" | cut -f1 | cut -d/ -f3)"
+          PROBE_ARTIFACT="$(head -n1 "${RUNNER_TEMP}/published.tsv" | cut -f2)"
+          PROBE_KEYS=()
+          if [ -n "${PROBE_KIND}" ]; then
+            PROBE_KEYS+=("releases/${TAG}/modules/pulumi/${PROBE_KIND}/${PROBE_ARTIFACT}")
             if [ "${PLATFORM}" = "linux_amd64" ]; then
-              SOURCE_R2_KEY="releases/${TAG}/modules/pulumi/${kind}/source.zip"
-              if "${MB}" source -module "${MODULE_DIR}" -out source.zip; then
-                if tools/ci/release/publish_once.sh source.zip "${SOURCE_R2_KEY}" \
-                  --cache-control "public, max-age=31536000, immutable" >/dev/null; then
-                  LAST_UPLOADED_SOURCE_KEY="${SOURCE_R2_KEY}"
-                else
-                  echo "✗ ERROR: Failed to upload the source of ${kind} to R2"
-                  FAILED=$((FAILED + 1))
-                fi
-                rm -f source.zip
-              else
-                echo "✗ ERROR: Failed to pack the source of ${kind}"
-                FAILED=$((FAILED + 1))
-              fi
+              PROBE_KEYS+=("releases/${TAG}/modules/pulumi/${PROBE_KIND}/source.zip")
             fi
-          done
-
-          # Probe one uploaded artifact through the public URL. The CLI and
-          # runners compose these URLs from a shape pinned in pkg/downloads;
-          # this probe pins the OTHER half of the contract -- that what CI
-          # just uploaded actually serves at that shape.
-          for PROBE_KEY in "${LAST_UPLOADED_KEY:-}" "${LAST_UPLOADED_SOURCE_KEY:-}"; do
-            [ -n "${PROBE_KEY}" ] || continue
+          fi
+          for PROBE_KEY in "${PROBE_KEYS[@]}"; do
             PROBE_URL="https://downloads.planton.ai/${PROBE_KEY}"
             PROBE_CODE=$(curl -sf -I -o /dev/null -w "%{http_code}" \
               --retry 3 --retry-delay 5 --retry-all-errors "${PROBE_URL}" || true)
@@ -213,18 +187,18 @@ jobs:
               echo "✓ Public URL probe passed: ${PROBE_URL}"
             else
               echo "✗ ERROR: uploaded artifact does not serve at its public URL (HTTP ${PROBE_CODE}): ${PROBE_URL}"
-              FAILED=$((FAILED + 1))
+              FAILED=1
             fi
           done
 
           echo ""
           echo "========================================"
           echo "JOB SUMMARY: ${PROVIDER} / ${PLATFORM}"
-          echo "Modules: ${TOTAL}  Failed: ${FAILED}"
+          echo "Modules: ${TOTAL}  Published: ${PUBLISHED}  Failed: $((TOTAL - PUBLISHED))"
           echo "========================================"
 
-          if [ $FAILED -gt 0 ]; then
-            echo "ERROR: ${FAILED} module(s) failed"
+          if [ $FAILED -ne 0 ] || [ "${PUBLISHED}" -ne "${TOTAL}" ]; then
+            echo "ERROR: not every module was built, published and served"
             exit 1
           fi
 

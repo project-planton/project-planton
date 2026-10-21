@@ -18,10 +18,12 @@
 #      a module that reads a sibling path works in the working tree and in
 #      no release. See hack/guards/ensure_modules_are_self_contained.sh.
 #   4. The module release tooling holds: tools/modulebuild (what a module
-#      ships, how it is built and the module manifest), the deterministic zip
-#      writer, the module manifest's grammar, publish_once.sh's recorded
-#      checksums, and the release matrices covering every module's provider
-#      and platform. Byte-for-byte reproducibility has its own, slower gate:
+#      ships, how it is built and each engine's module manifest), the
+#      deterministic zip writer, the module manifests' grammar,
+#      publish_once.sh's recorded checksums, the Pulumi lane's per-module
+#      publishing (publish_pulumi_module.sh), the release matrices covering
+#      every module's provider and platform, and each engine's manifest job
+#      waiting only for its own lane. Byte-for-byte reproducibility has its own, slower gate:
 #      lint.reproducible-modules.yaml.
 # =============================================================================
 
@@ -85,4 +87,4 @@ jobs:
       - name: Module release tooling
         run: |
           go test ./tools/modulebuild ./pkg/detzip ./pkg/downloads/...
-          python3 -m unittest discover -s tools/ci/release -p 'publish_once_test.py'
+          python3 -m unittest discover -s tools/ci/release -p 'publish_*_test.py'
