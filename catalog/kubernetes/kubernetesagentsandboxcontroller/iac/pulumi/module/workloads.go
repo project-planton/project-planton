@@ -330,16 +330,17 @@ func firstPort(rule interface{}) float64 {
 
 // patchRouterNetworkPolicy fills the placeholders upstream's policy leaves
 // for each cluster: who may call the router, which namespace scrapes it,
-// which sandbox ports it may open. The rules it does not name (DNS, the
-// OpenTelemetry collector, the API server) stay upstream's.
+// which sandbox ports it may open, and the API-server rule without its peer
+// (below). The DNS and OpenTelemetry collector rules stay upstream's.
 func patchRouterNetworkPolicy(np document, s *settings) error {
 	r := s.router
 	spec := child(np, "spec")
 	ingress, _ := spec["ingress"].([]interface{})
 	egress, _ := spec["egress"].([]interface{})
 	if len(ingress) != 3 || len(egress) != 4 ||
-		firstPort(ingress[0]) != 8080 || firstPort(ingress[1]) != 9090 || firstPort(ingress[2]) != 8081 || firstPort(egress[1]) != defaultSandboxPort {
-		return errors.Errorf("upstream's router NetworkPolicy at %s no longer has the proxy, metrics and probe ingress rules and the sandbox egress rule where the module expects them; the module's pin needs a catalog fix", vars.Release)
+		firstPort(ingress[0]) != 8080 || firstPort(ingress[1]) != 9090 || firstPort(ingress[2]) != 8081 ||
+		firstPort(egress[1]) != defaultSandboxPort || firstPort(egress[3]) != 443 {
+		return errors.Errorf("upstream's router NetworkPolicy at %s no longer has the proxy, metrics and probe ingress rules and the sandbox and API-server egress rules where the module expects them; the module's pin needs a catalog fix", vars.Release)
 	}
 
 	proxyRule, _ := ingress[0].(map[string]interface{})
@@ -376,5 +377,18 @@ func patchRouterNetworkPolicy(np document, s *settings) error {
 		sandboxPorts = append(sandboxPorts, document{"protocol": "TCP", "port": int64(p)})
 	}
 	sandboxRule["ports"] = sandboxPorts
+
+	// The API-server rule keeps upstream's ports and drops its peer.
+	// Upstream allows the API through a pod selector on the default
+	// namespace, which matches the API server only where it runs as a pod
+	// there. On Cilium (GKE Dataplane V2, most EKS clusters) and on any
+	// cluster whose API server sits on a node or a load balancer, no pod
+	// selector names it, so the router's pod cache never syncs and the
+	// router crash-loops behind its own policy. A NetworkPolicy cannot name
+	// the API server, so the rule allows its ports to any destination: the
+	// router reaches upstreams over plain HTTP only, so a TLS endpoint on
+	// these ports refuses it.
+	apiRule, _ := egress[3].(map[string]interface{})
+	delete(apiRule, "to")
 	return nil
 }

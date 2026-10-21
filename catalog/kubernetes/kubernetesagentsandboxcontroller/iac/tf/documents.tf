@@ -147,8 +147,9 @@ locals {
   })
 
   # The router's NetworkPolicy: who may call it, which namespace scrapes it,
-  # which sandbox ports it may open. The DNS, collector and API-server rules
-  # stay upstream's.
+  # which sandbox ports it may open, and the API-server rule without its peer
+  # (patchRouterNetworkPolicy, workloads.go, says why). The DNS and collector
+  # rules stay upstream's.
   router_netpol_patched = local.router_netpol_upstream == null ? null : merge(local.router_netpol_upstream, {
     spec = merge(local.router_netpol_upstream.spec, {
       ingress = [
@@ -173,7 +174,7 @@ locals {
           ports = [for p in local.r_sandbox_ports : { protocol = "TCP", port = p }]
         }),
         local.router_netpol_upstream.spec.egress[2],
-        local.router_netpol_upstream.spec.egress[3],
+        { ports = local.router_netpol_upstream.spec.egress[3].ports },
       ]
     })
   })

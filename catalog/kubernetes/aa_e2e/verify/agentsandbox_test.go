@@ -31,6 +31,8 @@ func TestAgentSandboxVerifierReadsTheScenarios(t *testing.T) {
 			router: &agentSandboxRouter{URL: "http://sandbox-router-svc.agent-sandbox-system.svc.cluster.local:8080", ClientNamespaceLabels: map[string]string{}}},
 		"full-surface.yaml": {extensions: true, labelDomain: "example.com", crds: all,
 			router: &agentSandboxRouter{URL: "https://sandbox-router-svc.agent-sandbox-system.svc.cluster.local:8443", TokenReview: true, RequireToken: true, ClientNamespaceLabels: map[string]string{}}},
+		"router-enforcing-cni.yaml": {extensions: true, createNamespace: true, labelDomain: "sandbox.users.io", crds: all,
+			router: &agentSandboxRouter{URL: "http://sandbox-router-svc.agent-sandbox-system.svc.cluster.local:8080", TokenReview: true, RequireToken: true, ClientNamespaceLabels: map[string]string{}}},
 		"upgrade.yaml": {extensions: true, createNamespace: true, labelDomain: "example.com", crds: all},
 		"upgrade.to.yaml": {createNamespace: true, labelDomain: "example.com", crds: core,
 			router: &agentSandboxRouter{URL: "http://sandbox-router-svc.agent-sandbox-system.svc.cluster.local:8080", ClientNamespaceLabels: map[string]string{}}},

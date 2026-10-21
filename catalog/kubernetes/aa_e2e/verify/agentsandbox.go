@@ -31,6 +31,7 @@ const (
 	// proves the route end to end.
 	agentSandboxProbeNamespace = "e2e-asbx-probe"
 	agentSandboxProbeSandbox   = "e2e-asbx-sandbox"
+	agentSandboxProbePool      = "e2e-asbx-pool"
 	agentSandboxProbeClaim     = "e2e-asbx-claim"
 	agentSandboxProbeClient    = "e2e-asbx-client"
 	agentSandboxProbePort      = 8888
@@ -185,11 +186,9 @@ func (v *AgentSandboxControllerVerifier) VerifyExists(ctx context.Context, kubec
 	fmt.Printf("  [verify] a Sandbox became Ready: the controller serves\n")
 
 	if v.Extensions {
-		if err := kubectlWait(ctx, kubeconfig, "sandboxclaims.extensions.agents.x-k8s.io", agentSandboxProbeClaim, agentSandboxProbeNamespace,
-			"condition=Ready", 5*time.Minute); err != nil {
-			return errors.Wrap(err, "the probe SandboxClaim never became Ready -- the extension controllers do not bind claims")
+		if err := v.proveWarmClaim(ctx, kubeconfig); err != nil {
+			return err
 		}
-		fmt.Printf("  [verify] a SandboxClaim bound a warm pool member, with a %s pod label\n", v.LabelDomain)
 	}
 
 	if v.Router != nil {
@@ -214,8 +213,46 @@ func (v *AgentSandboxControllerVerifier) verifyNamespaceOwner(ctx context.Contex
 	return nil
 }
 
-// applyProbe creates the probe objects; applying them again on a reinstall is
-// a no-op.
+// proveWarmClaim proves the extension controllers hand a claim a warm
+// sandbox: once the pool holds a ready member, a claim asking for nothing a
+// running pod cannot take binds that member, and the member's pod gains the
+// claim's label from the declared label domain. The claim is applied only
+// after the pool fills, because a claim made while no member is ready starts
+// a sandbox cold.
+func (v *AgentSandboxControllerVerifier) proveWarmClaim(ctx context.Context, kubeconfig string) error {
+	if err := pollJSONPath(ctx, kubeconfig, agentSandboxWarmPoolResource, agentSandboxProbePool, agentSandboxProbeNamespace,
+		"{.status.readyReplicas}", "1", 5*time.Minute); err != nil {
+		return errors.Wrap(err, "the probe warm pool never held a ready member -- the extension controllers do not fill pools")
+	}
+	label := v.LabelDomain + "/e2e"
+	if err := kubectlApplyStdin(ctx, kubeconfig, fmt.Sprintf(`apiVersion: extensions.agents.x-k8s.io/v1beta1
+kind: SandboxClaim
+metadata:
+  name: %s
+  namespace: %s
+spec:
+  warmPoolRef:
+    name: %s
+  additionalPodMetadata:
+    labels:
+      %s: probe
+`, agentSandboxProbeClaim, agentSandboxProbeNamespace, agentSandboxProbePool, label)); err != nil {
+		return errors.Wrap(err, "creating the probe claim")
+	}
+	if err := kubectlWait(ctx, kubeconfig, agentSandboxClaimResource, agentSandboxProbeClaim, agentSandboxProbeNamespace,
+		"condition=Ready", 5*time.Minute); err != nil {
+		return errors.Wrap(err, "the probe SandboxClaim never became Ready -- the extension controllers do not bind claims")
+	}
+	if _, err := proveClaimBinding(ctx, kubeconfig, agentSandboxProbeClaim, agentSandboxProbeNamespace, agentSandboxProbePool,
+		false, map[string]string{label: "probe"}); err != nil {
+		return err
+	}
+	fmt.Printf("  [verify] a SandboxClaim bound a warm pool member, with a %s pod label\n", v.LabelDomain)
+	return nil
+}
+
+// applyProbe creates the probe objects (the claim comes later, once the pool
+// is full); applying them again on a reinstall is a no-op.
 func (v *AgentSandboxControllerVerifier) applyProbe(ctx context.Context, kubeconfig string) error {
 	labels := ""
 	if v.Router != nil {
@@ -267,25 +304,13 @@ spec:
 apiVersion: extensions.agents.x-k8s.io/v1beta1
 kind: SandboxWarmPool
 metadata:
-  name: e2e-asbx-pool
+  name: %[3]s
   namespace: %[1]s
 spec:
   replicas: 1
   sandboxTemplateRef:
     name: e2e-asbx-template
----
-apiVersion: extensions.agents.x-k8s.io/v1beta1
-kind: SandboxClaim
-metadata:
-  name: %[3]s
-  namespace: %[1]s
-spec:
-  warmPoolRef:
-    name: e2e-asbx-pool
-  additionalPodMetadata:
-    labels:
-      %[4]s/e2e: probe
-`, agentSandboxProbeNamespace, container, agentSandboxProbeClaim, v.LabelDomain)
+`, agentSandboxProbeNamespace, container, agentSandboxProbePool)
 	}
 	if v.Router != nil {
 		manifest += fmt.Sprintf(`---
@@ -362,7 +387,13 @@ func (v *AgentSandboxControllerVerifier) pollRouter(ctx context.Context, kubecon
 
 func (v *AgentSandboxControllerVerifier) VerifyAbsent(ctx context.Context, kubeconfig string) error {
 	for _, name := range []string{agentSandboxControllerName, agentSandboxRouterName} {
-		if err := KubectlResourceAbsent(ctx, kubeconfig, "deployment", name, agentSandboxNamespace); err != nil {
+		absent := KubectlResourceAbsent
+		if v.DeployRefused {
+			absent = func(ctx context.Context, kubeconfig, kind, name, namespace string) error {
+				return KubectlResourceNotOwnedBy(ctx, kubeconfig, kind, name, namespace, agentSandboxKind)
+			}
+		}
+		if err := absent(ctx, kubeconfig, "deployment", name, agentSandboxNamespace); err != nil {
 			return err
 		}
 	}

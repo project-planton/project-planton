@@ -109,7 +109,7 @@ resource "terraform_data" "preflight" {
     }
     precondition {
       condition     = local.router_netpol_shape_as_expected
-      error_message = "observed: upstream's router NetworkPolicy at ${local.release} no longer has the proxy, metrics and probe ingress rules and the sandbox egress rule where the module expects them\nmeaning: upstream changed the policy's shape\nnext step: the module's pin needs a catalog fix"
+      error_message = "observed: upstream's router NetworkPolicy at ${local.release} no longer has the proxy, metrics and probe ingress rules and the sandbox and API-server egress rules where the module expects them\nmeaning: upstream changed the policy's shape\nnext step: the module's pin needs a catalog fix"
     }
   }
 }

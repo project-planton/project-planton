@@ -29,22 +29,60 @@ const (
 	agentSandboxMarkerFile      = "/workspace/e2e-marker"
 	agentSandboxMarkerContent   = "kept-across-suspend"
 	agentSandboxClaimMark       = "e2e.planton.dev/first-act-uid"
+
+	// agentSandboxTemplateRefHashLabel is the label upstream's template
+	// controller stamps on every SandboxTemplate it reconciles, first thing.
+	agentSandboxTemplateRefHashLabel = "agents.x-k8s.io/sandbox-template-ref-hash"
 )
 
 // AgentSandboxVerifier proves a Sandbox: its fields read back, it becomes
-// Ready when Running, and destroy removes it with its pod and claims. The
-// suspend lane (two acts) proves the promise behind operatingMode: suspending
-// deletes the pod and keeps the same claim, and resuming brings the files
-// back.
+// Ready when Running with each declared claim at its declared size mounted in
+// its pod (and, with service on, a headless Service whose endpoints are that
+// pod), and destroy removes it with its pod and claims. The suspend lane (two
+// acts) proves the promise behind operatingMode: suspending deletes the pod
+// and keeps the same claim, and resuming brings the files back.
 type AgentSandboxVerifier struct {
 	Name, Namespace, ManifestPath string
 	Suspended                     bool
 	// SuspendLane is the behavioral-suspend scenario: act one writes the
 	// marker, act two (Suspended) proves it survives.
 	SuspendLane bool
-	// ClaimTemplates are the volume claim template names; each claim is
+	// Claims are the declared volume claim templates; each claim is
 	// `<template>-<sandbox>`.
-	ClaimTemplates []string
+	Claims []agentSandboxVolumeClaim
+	// Service is spec.service: the Sandbox asks for its headless Service.
+	Service bool
+}
+
+// agentSandboxVolumeClaim is one declared volume claim template: its name and
+// the storage it requests.
+type agentSandboxVolumeClaim struct {
+	Name, Storage string
+}
+
+// readVolumeClaimTemplates reads the volume claim templates a Sandbox or a
+// claim declares.
+func readVolumeClaimTemplates(spec map[string]interface{}) []agentSandboxVolumeClaim {
+	var claims []agentSandboxVolumeClaim
+	templates, _ := specField(spec, "volumeClaimTemplates").([]interface{})
+	for _, t := range templates {
+		tm, _ := t.(map[string]interface{})
+		meta, _ := specField(tm, "metadata").(map[string]interface{})
+		name, ok := specField(meta, "name").(string)
+		if !ok {
+			continue
+		}
+		claim := agentSandboxVolumeClaim{Name: name}
+		if claimSpec, ok := specField(tm, "spec").(map[string]interface{}); ok {
+			if resources, ok := specField(claimSpec, "resources").(map[string]interface{}); ok {
+				if requests, ok := specField(resources, "requests").(map[string]interface{}); ok {
+					claim.Storage = stringOr(specField(requests, "storage"), "")
+				}
+			}
+		}
+		claims = append(claims, claim)
+	}
+	return claims
 }
 
 func newAgentSandboxVerifier(manifestPath, name, namespace string) *AgentSandboxVerifier {
@@ -53,15 +91,9 @@ func newAgentSandboxVerifier(manifestPath, name, namespace string) *AgentSandbox
 		Name: name, Namespace: namespace, ManifestPath: manifestPath,
 		Suspended:   stringOr(specField(spec, "operatingMode"), "Running") == "Suspended",
 		SuspendLane: strings.Contains(manifestPath, "behavioral-suspend"),
+		Claims:      readVolumeClaimTemplates(spec),
 	}
-	templates, _ := specField(spec, "volumeClaimTemplates").([]interface{})
-	for _, t := range templates {
-		tm, _ := t.(map[string]interface{})
-		meta, _ := specField(tm, "metadata").(map[string]interface{})
-		if n, ok := specField(meta, "name").(string); ok {
-			v.ClaimTemplates = append(v.ClaimTemplates, n)
-		}
-	}
+	v.Service, _ = specField(spec, "service").(bool)
 	return v
 }
 
@@ -77,18 +109,24 @@ func (v *AgentSandboxVerifier) VerifyExists(ctx context.Context, kubeconfig stri
 	if err := proveProjectionReadback(ctx, kubeconfig, agentSandboxResource, v.Name, v.Namespace, v.ManifestPath); err != nil {
 		return err
 	}
-	for _, template := range v.ClaimTemplates {
-		if err := KubectlResourceExists(ctx, kubeconfig, "pvc", v.claimName(template), v.Namespace); err != nil {
-			return errors.Wrapf(err, "the controller did not create the claim for volume claim template %q", template)
-		}
-	}
 	if v.Suspended {
+		if err := proveVolumeClaims(ctx, kubeconfig, v.Namespace, v.Name, v.Claims, false); err != nil {
+			return err
+		}
 		return v.proveSuspended(ctx, kubeconfig)
 	}
 	if err := kubectlWait(ctx, kubeconfig, agentSandboxResource, v.Name, v.Namespace, "condition=Ready", 5*time.Minute); err != nil {
 		return errors.Wrap(err, "the Sandbox never became Ready -- the controller did not bring its pod up")
 	}
 	fmt.Printf("  [verify] the Sandbox is Ready: its pod %q runs\n", v.Name)
+	if err := proveVolumeClaims(ctx, kubeconfig, v.Namespace, v.Name, v.Claims, true); err != nil {
+		return err
+	}
+	if v.Service {
+		if err := proveHeadlessService(ctx, kubeconfig, v.Namespace, v.Name); err != nil {
+			return err
+		}
+	}
 	if v.SuspendLane {
 		return v.markWorkspace(ctx, kubeconfig)
 	}
@@ -165,11 +203,84 @@ func (v *AgentSandboxVerifier) VerifyAbsent(ctx context.Context, kubeconfig stri
 	if err := KubectlResourceAbsent(ctx, kubeconfig, "pod", v.Name, v.Namespace); err != nil {
 		return errors.Wrap(err, "the Sandbox is gone but its pod remains")
 	}
-	for _, template := range v.ClaimTemplates {
-		if err := KubectlResourceAbsent(ctx, kubeconfig, "pvc", v.claimName(template), v.Namespace); err != nil {
-			return errors.Wrapf(err, "the Sandbox is gone but its claim for %q remains", template)
+	for _, claim := range v.Claims {
+		if err := KubectlResourceAbsent(ctx, kubeconfig, "pvc", v.claimName(claim.Name), v.Namespace); err != nil {
+			return errors.Wrapf(err, "the Sandbox is gone but its claim for %q remains", claim.Name)
 		}
 	}
+	return nil
+}
+
+// proveVolumeClaims proves each declared claim of a sandbox exists at its
+// declared size and, when the sandbox runs, is mounted in its pod: the
+// workspace the agent writes to is the one asked for, not a default.
+func proveVolumeClaims(ctx context.Context, kubeconfig, namespace, sandbox string, claims []agentSandboxVolumeClaim, running bool) error {
+	if len(claims) == 0 {
+		return nil
+	}
+	mounted := ""
+	if running {
+		out, err := kubectlGetJSONPath(ctx, kubeconfig, "pod", sandbox, namespace, "{.spec.volumes[*].persistentVolumeClaim.claimName}")
+		if err != nil {
+			return errors.Wrapf(err, "reading the claims sandbox %q's pod mounts", sandbox)
+		}
+		mounted = " " + strings.TrimSpace(out) + " "
+	}
+	for _, claim := range claims {
+		pvc := claim.Name + "-" + sandbox
+		size, err := kubectlGetJSONPath(ctx, kubeconfig, "pvc", pvc, namespace, "{.spec.resources.requests.storage}")
+		if err != nil {
+			return errors.Wrapf(err, "the controller did not create the claim %q for volume claim template %q", pvc, claim.Name)
+		}
+		if claim.Storage != "" && strings.TrimSpace(size) != claim.Storage {
+			return errors.Errorf("claim %q requests %s, but its volume claim template declares %s", pvc, strings.TrimSpace(size), claim.Storage)
+		}
+		if running && !strings.Contains(mounted, " "+pvc+" ") {
+			return errors.Errorf("claim %q exists, but sandbox %q's pod does not mount it (it mounts:%s)", pvc, sandbox, mounted)
+		}
+		fmt.Printf("  [verify] CLAIM: %q holds %s and is mounted in the sandbox's pod\n", pvc, strings.TrimSpace(size))
+	}
+	return nil
+}
+
+// proveHeadlessService proves the Service a Sandbox asks for: the Sandbox's
+// status names it, it is headless (each sandbox is addressed by its own pod),
+// and its endpoints are the sandbox's pod.
+func proveHeadlessService(ctx context.Context, kubeconfig, namespace, sandbox string) error {
+	service, err := awaitJSONPath(ctx, kubeconfig, agentSandboxResource, sandbox, namespace, "{.status.service}", 2*time.Minute)
+	if err != nil {
+		return errors.Wrap(err, "the Sandbox asks for a Service, but its status names none")
+	}
+	service = strings.TrimSpace(service)
+	clusterIP, err := kubectlGetJSONPath(ctx, kubeconfig, "service", service, namespace, "{.spec.clusterIP}")
+	if err != nil {
+		return errors.Wrapf(err, "the Sandbox's status names Service %q, which does not exist", service)
+	}
+	if strings.TrimSpace(clusterIP) != "None" {
+		return errors.Errorf("Service %q has cluster IP %q; a sandbox's Service must be headless", service, strings.TrimSpace(clusterIP))
+	}
+	podIP, err := kubectlGetJSONPath(ctx, kubeconfig, "pod", sandbox, namespace, "{.status.podIP}")
+	if err != nil || strings.TrimSpace(podIP) == "" {
+		return errors.Wrapf(err, "reading sandbox %q's pod IP", sandbox)
+	}
+	podIP = strings.TrimSpace(podIP)
+	deadline := time.Now().Add(2 * time.Minute)
+	for {
+		addresses, err := kubectlGetJSONPathList(ctx, kubeconfig, "endpointslice", namespace,
+			"kubernetes.io/service-name="+service, `{range .items[*].endpoints[*].addresses[*]}{@}{"\n"}{end}`)
+		if err == nil && containsLine(strings.Join(addresses, "\n"), podIP) {
+			break
+		}
+		if time.Now().After(deadline) {
+			return errors.Errorf("headless Service %q never listed the sandbox's pod %s among its endpoints (has %v, %v)", service, podIP, addresses, err)
+		}
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(3 * time.Second):
+		}
+	}
+	fmt.Printf("  [verify] SERVICE: headless Service %q resolves to the sandbox's pod %s\n", service, podIP)
 	return nil
 }
 
@@ -206,16 +317,17 @@ func (v *AgentSandboxTemplateVerifier) VerifyExists(ctx context.Context, kubecon
 		return err
 	}
 	if !v.Managed {
-		// Give the controller a reconcile to create one, then require none.
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(20 * time.Second):
+		// Every reconcile stamps the template with its ref-hash label before
+		// it decides whether to manage a policy, so the label is the evidence
+		// the controller has seen this template and chosen not to create one.
+		if _, err := awaitJSONPath(ctx, kubeconfig, agentSandboxTemplateResource, v.Name, v.Namespace,
+			"{.metadata.labels."+strings.ReplaceAll(agentSandboxTemplateRefHashLabel, ".", "\\.")+"}", 3*time.Minute); err != nil {
+			return errors.Wrap(err, "the controller never reconciled the template (no "+agentSandboxTemplateRefHashLabel+" label)")
 		}
 		if err := KubectlResourceAbsent(ctx, kubeconfig, "networkpolicy", v.policyName(), v.Namespace); err != nil {
 			return errors.Wrap(err, "the template is Unmanaged, but the controller created its NetworkPolicy")
 		}
-		fmt.Printf("  [verify] UNMANAGED: the controller created no NetworkPolicy for the template\n")
+		fmt.Printf("  [verify] UNMANAGED: the controller reconciled the template and created no NetworkPolicy for it\n")
 		return nil
 	}
 	policy, err := awaitJSONPath(ctx, kubeconfig, "networkpolicy", v.policyName(), v.Namespace, "{.spec}", 3*time.Minute)
@@ -338,6 +450,9 @@ type AgentSandboxClaimVerifier struct {
 	RefusedReason string
 	PodLabels     map[string]string
 	EnvNames      []string
+	// Claims are the claim's own volume claim templates, which replace the
+	// template's.
+	Claims []agentSandboxVolumeClaim
 }
 
 func newAgentSandboxClaimVerifier(manifestPath, name, namespace string) *AgentSandboxClaimVerifier {
@@ -363,8 +478,8 @@ func newAgentSandboxClaimVerifier(manifestPath, name, namespace string) *AgentSa
 			v.EnvNames = append(v.EnvNames, n)
 		}
 	}
-	vcts, _ := specField(spec, "volumeClaimTemplates").([]interface{})
-	v.Cold = len(env) > 0 || len(vcts) > 0
+	v.Claims = readVolumeClaimTemplates(spec)
+	v.Cold = len(env) > 0 || len(v.Claims) > 0
 	if meta, ok := specField(spec, "additionalPodMetadata").(map[string]interface{}); ok {
 		if labels, ok := specField(meta, "labels").(map[string]interface{}); ok {
 			for k, val := range labels {
@@ -397,31 +512,9 @@ func (v *AgentSandboxClaimVerifier) VerifyExists(ctx context.Context, kubeconfig
 	if err := kubectlWait(ctx, kubeconfig, agentSandboxClaimResource, v.Name, v.Namespace, "condition=Ready", 6*time.Minute); err != nil {
 		return errors.Wrap(err, "the claim never became Ready -- the controller did not bind it to a sandbox")
 	}
-	sandbox, err := kubectlGetJSONPath(ctx, kubeconfig, agentSandboxClaimResource, v.Name, v.Namespace, "{.status.sandbox.name}")
-	if err != nil || strings.TrimSpace(sandbox) == "" {
-		return errors.Wrap(err, "the claim is Ready but names no sandbox")
-	}
-	sandbox = strings.TrimSpace(sandbox)
-	launch, err := kubectlGetJSONPath(ctx, kubeconfig, agentSandboxResource, sandbox, v.Namespace,
-		"{.metadata.labels.agents\\.x-k8s\\.io/launch-type}")
+	sandbox, err := proveClaimBinding(ctx, kubeconfig, v.Name, v.Namespace, v.Pool, v.Cold, v.PodLabels)
 	if err != nil {
-		return errors.Wrapf(err, "reading the claimed sandbox %q", sandbox)
-	}
-	launch = strings.TrimSpace(launch)
-	switch {
-	case v.Cold && (launch != "cold" || sandbox != v.Name):
-		return errors.Errorf("the claim sets variables or volumes, so it must start a sandbox of its own (cold, named %q); it got %q, launched %q", v.Name, sandbox, launch)
-	case !v.Cold && (launch != "warm" || !strings.HasPrefix(sandbox, v.Pool+"-")):
-		return errors.Errorf("the claim asks for nothing a running pod cannot take, so it must bind a ready member of pool %q (warm, named %s-...); it got %q, launched %q -- it started cold, the pool did not hand over a member in time", v.Pool, v.Pool, sandbox, launch)
-	}
-	fmt.Printf("  [verify] BIND: the claim holds sandbox %q, launched %s\n", sandbox, launch)
-
-	for key, val := range v.PodLabels {
-		got, err := kubectlGetJSONPath(ctx, kubeconfig, "pod", sandbox, v.Namespace,
-			"{.metadata.labels."+strings.ReplaceAll(key, ".", "\\.")+"}")
-		if err != nil || strings.TrimSpace(got) != val {
-			return errors.Errorf("the claimed sandbox's pod lacks the claim's label %s=%s (got %q)", key, val, got)
-		}
+		return err
 	}
 	if len(v.EnvNames) > 0 {
 		env, err := kubectlGetJSONPath(ctx, kubeconfig, "pod", sandbox, v.Namespace, "{.spec.containers[*].env[*].name}")
@@ -437,7 +530,42 @@ func (v *AgentSandboxClaimVerifier) VerifyExists(ctx context.Context, kubeconfig
 	if len(v.PodLabels) > 0 || len(v.EnvNames) > 0 {
 		fmt.Printf("  [verify] BIND: the sandbox's pod carries the claim's labels and variables\n")
 	}
-	return nil
+	return proveVolumeClaims(ctx, kubeconfig, v.Namespace, sandbox, v.Claims, true)
+}
+
+// proveClaimBinding proves a Ready claim holds the sandbox it should: a ready
+// member of its pool (warm, named after the pool) when it asks for nothing a
+// running pod cannot take, or one started for it (cold, named after the
+// claim); and that the sandbox's pod carries the claim's pod labels. It
+// returns the claimed sandbox's name.
+func proveClaimBinding(ctx context.Context, kubeconfig, claim, namespace, pool string, cold bool, podLabels map[string]string) (string, error) {
+	sandbox, err := kubectlGetJSONPath(ctx, kubeconfig, agentSandboxClaimResource, claim, namespace, "{.status.sandbox.name}")
+	if err != nil || strings.TrimSpace(sandbox) == "" {
+		return "", errors.Wrap(err, "the claim is Ready but names no sandbox")
+	}
+	sandbox = strings.TrimSpace(sandbox)
+	launch, err := kubectlGetJSONPath(ctx, kubeconfig, agentSandboxResource, sandbox, namespace,
+		"{.metadata.labels.agents\\.x-k8s\\.io/launch-type}")
+	if err != nil {
+		return "", errors.Wrapf(err, "reading the claimed sandbox %q", sandbox)
+	}
+	launch = strings.TrimSpace(launch)
+	switch {
+	case cold && (launch != "cold" || sandbox != claim):
+		return "", errors.Errorf("the claim sets variables or volumes, so it must start a sandbox of its own (cold, named %q); it got %q, launched %q", claim, sandbox, launch)
+	case !cold && (launch != "warm" || !strings.HasPrefix(sandbox, pool+"-")):
+		return "", errors.Errorf("the claim asks for nothing a running pod cannot take, so it must bind a ready member of pool %q (warm, named %s-...); it got %q, launched %q -- it started cold, the pool did not hand over a member in time", pool, pool, sandbox, launch)
+	}
+	fmt.Printf("  [verify] BIND: claim %q holds sandbox %q, launched %s\n", claim, sandbox, launch)
+
+	for key, val := range podLabels {
+		got, err := kubectlGetJSONPath(ctx, kubeconfig, "pod", sandbox, namespace,
+			"{.metadata.labels."+strings.ReplaceAll(key, ".", "\\.")+"}")
+		if err != nil || strings.TrimSpace(got) != val {
+			return "", errors.Errorf("the claimed sandbox's pod lacks the claim's label %s=%s (got %q)", key, val, got)
+		}
+	}
+	return sandbox, nil
 }
 
 func (v *AgentSandboxClaimVerifier) VerifyAbsent(ctx context.Context, kubeconfig string) error {

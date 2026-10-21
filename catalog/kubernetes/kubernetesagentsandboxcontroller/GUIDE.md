@@ -113,6 +113,7 @@ Built for 100% parity with every setting upstream's controller and router offer 
 - Liveness and readiness probes on the controller, on its own health endpoints (the router's deployment file has them already).
 - The `planton.ai/kind` label on the workloads, which is how a later deploy knows the installation is this kind's.
 - The `planton.ai/config-sha256` pod annotation on the controller, so a change to the allowed label domains restarts it.
+- An API-server rule in the router's NetworkPolicy that every cluster honors. Upstream's file allows the router's API traffic (its pod cache, and TokenReview) only toward pods in the `default` namespace, which no API server is on Cilium (GKE Dataplane V2, most EKS clusters) or on any cluster whose API server sits on a node or behind a load balancer. There the router could never sync its cache, and would crash-loop behind its own policy. The module keeps upstream's ports (443 and 6443) and allows them to any destination, because a NetworkPolicy cannot name the API server. The router reaches its upstreams over plain HTTP only, so a TLS endpoint on those ports refuses it.
 
 ### Not modeled, and why
 

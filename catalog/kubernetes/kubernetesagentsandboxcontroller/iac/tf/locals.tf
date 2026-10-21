@@ -364,7 +364,7 @@ locals {
   router_upstream_container       = try(one([for c in local.router_upstream.spec.template.spec.containers : c if c.name == local.router_container_name]), null)
   router_upstream_image_repo      = local.router_upstream_container == null ? "" : split(":", local.router_upstream_container.image)[0]
   router_netpol_upstream          = try(local.documents[local.router_netpol_id], null)
-  router_netpol_shape_as_expected = local.router_netpol_upstream == null ? true : (length(local.router_netpol_upstream.spec.ingress) == 3 && length(local.router_netpol_upstream.spec.egress) == 4 && try(local.router_netpol_upstream.spec.ingress[0].ports[0].port, 0) == 8080 && try(local.router_netpol_upstream.spec.ingress[1].ports[0].port, 0) == 9090 && try(local.router_netpol_upstream.spec.ingress[2].ports[0].port, 0) == 8081 && try(local.router_netpol_upstream.spec.egress[1].ports[0].port, 0) == 8888)
+  router_netpol_shape_as_expected = local.router_netpol_upstream == null ? true : (length(local.router_netpol_upstream.spec.ingress) == 3 && length(local.router_netpol_upstream.spec.egress) == 4 && try(local.router_netpol_upstream.spec.ingress[0].ports[0].port, 0) == 8080 && try(local.router_netpol_upstream.spec.ingress[1].ports[0].port, 0) == 9090 && try(local.router_netpol_upstream.spec.ingress[2].ports[0].port, 0) == 8081 && try(local.router_netpol_upstream.spec.egress[1].ports[0].port, 0) == 8888 && try(local.router_netpol_upstream.spec.egress[3].ports[0].port, 0) == 443)
 
   # resolveImage (workloads.go): an override wins, then the mirror moves an
   # upstream image, else upstream's stays.

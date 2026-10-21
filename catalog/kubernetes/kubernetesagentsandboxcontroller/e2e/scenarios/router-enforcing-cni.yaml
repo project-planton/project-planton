@@ -1,0 +1,31 @@
+# The router behind its own NetworkPolicy on a CNI that evaluates every
+# packet a pod sends: Cilium, the CNI of GKE's Dataplane V2 and of many EKS
+# and self-managed clusters. The router's NetworkPolicy is on by default,
+# and the router reaches the cluster API twice on every path a product
+# uses: its pod-IP cache lists and watches pods, and TokenReview posts each
+# caller's token. On the default kind cluster that traffic is delivered on
+# the node itself and never meets a policy, so only this cluster can show
+# whether the policy lets the router reach the API.
+#
+# The verifier proves what sdk-ready proves, under the enforced policy: a
+# claim binds a warm pool member, a request without a token is refused
+# (401), and a ServiceAccount token reaches the sandbox by name (200).
+# keepOnUninstall is off, so the destroy takes the definitions.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSandboxController
+metadata:
+  name: e2e-asbx-cni
+  annotations:
+    planton.dev/e2e-cluster-profile: "cilium-cni"
+    planton.dev/e2e-prerequisites: "KubernetesCilium"
+spec:
+  namespace:
+    value: agent-sandbox-system
+  createNamespace: true
+  crds:
+    keepOnUninstall: false
+  extensions: {}
+  router:
+    authorization:
+      tokenReview:
+        requireToken: true

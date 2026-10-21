@@ -525,7 +525,13 @@ func (v *AgentSubstrateVerifier) verifyRouter(ctx context.Context, kubeconfig, e
 
 func (v *AgentSubstrateVerifier) VerifyAbsent(ctx context.Context, kubeconfig string) error {
 	for _, d := range agentSubstrateDeployments {
-		if err := KubectlResourceAbsent(ctx, kubeconfig, "deployment", d[1], d[0]); err != nil {
+		absent := KubectlResourceAbsent
+		if v.DeployRefused {
+			absent = func(ctx context.Context, kubeconfig, kind, name, namespace string) error {
+				return KubectlResourceNotOwnedBy(ctx, kubeconfig, kind, name, namespace, agentSubstrateKind)
+			}
+		}
+		if err := absent(ctx, kubeconfig, "deployment", d[1], d[0]); err != nil {
 			return err
 		}
 	}

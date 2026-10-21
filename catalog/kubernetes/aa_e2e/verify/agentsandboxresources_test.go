@@ -16,14 +16,15 @@ import (
 const agentSandboxResourceScenarios = "../../kubernetesagentsandbox/e2e/scenarios"
 
 func TestAgentSandboxResourceVerifierReadsTheScenarios(t *testing.T) {
+	workspace := []agentSandboxVolumeClaim{{Name: "workspace", Storage: "1Gi"}}
 	cases := map[string]struct {
-		suspended, suspendLane bool
-		claims                 []string
+		suspended, suspendLane, service bool
+		claims                          []agentSandboxVolumeClaim
 	}{
 		"minimal.yaml":               {},
-		"full-surface.yaml":          {claims: []string{"workspace"}},
-		"behavioral-suspend.yaml":    {suspendLane: true, claims: []string{"workspace"}},
-		"behavioral-suspend.to.yaml": {suspended: true, suspendLane: true, claims: []string{"workspace"}},
+		"full-surface.yaml":          {service: true, claims: workspace},
+		"behavioral-suspend.yaml":    {suspendLane: true, claims: workspace},
+		"behavioral-suspend.to.yaml": {suspended: true, suspendLane: true, claims: workspace},
 	}
 	if _, err := os.Stat(agentSandboxResourceScenarios); err != nil {
 		t.Skip("catalog source tree not present (bazel sandbox); runs under go test")
@@ -35,8 +36,8 @@ func TestAgentSandboxResourceVerifierReadsTheScenarios(t *testing.T) {
 	for name, want := range cases {
 		t.Run(name, func(t *testing.T) {
 			v := newAgentSandboxVerifier(filepath.Join(agentSandboxResourceScenarios, name), "s", "ns")
-			if v.Suspended != want.suspended || v.SuspendLane != want.suspendLane || !reflect.DeepEqual(v.ClaimTemplates, want.claims) {
-				t.Errorf("suspended=%t suspendLane=%t claims=%v, want %t %t %v", v.Suspended, v.SuspendLane, v.ClaimTemplates, want.suspended, want.suspendLane, want.claims)
+			if v.Suspended != want.suspended || v.SuspendLane != want.suspendLane || v.Service != want.service || !reflect.DeepEqual(v.Claims, want.claims) {
+				t.Errorf("suspended=%t suspendLane=%t service=%t claims=%v, want %t %t %t %v", v.Suspended, v.SuspendLane, v.Service, v.Claims, want.suspended, want.suspendLane, want.service, want.claims)
 			}
 		})
 	}
@@ -99,9 +100,11 @@ func TestAgentSandboxClaimVerifierReadsTheScenarios(t *testing.T) {
 		cold          bool
 		labels        map[string]string
 		env           []string
+		claims        []agentSandboxVolumeClaim
 	}{
-		"minimal.yaml":      {pool: "e2e-asbx-cl-pool", labels: map[string]string{}},
-		"full-surface.yaml": {pool: "e2e-asbx-cl-pool-open", cold: true, labels: map[string]string{"sandbox.users.io/task": "e2e-full"}, env: []string{"SANDBOX_TASK"}},
+		"minimal.yaml": {pool: "e2e-asbx-cl-pool", labels: map[string]string{}},
+		"full-surface.yaml": {pool: "e2e-asbx-cl-pool-open", cold: true, labels: map[string]string{"sandbox.users.io/task": "e2e-full"}, env: []string{"SANDBOX_TASK"},
+			claims: []agentSandboxVolumeClaim{{Name: "workspace", Storage: "2Gi"}}},
 		"behavioral-policy-refusal.yaml": {pool: "e2e-asbx-cl-pool", cold: true, refused: "EnvVarsInjectionRejected",
 			labels: map[string]string{}, env: []string{"SANDBOX_TASK"}},
 	}
@@ -113,8 +116,8 @@ func TestAgentSandboxClaimVerifierReadsTheScenarios(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			v := newAgentSandboxClaimVerifier(filepath.Join(agentSandboxClaimScenarios, name), "c", "ns")
 			if v.Pool != want.pool || v.Cold != want.cold || v.RefusedReason != want.refused ||
-				!reflect.DeepEqual(v.PodLabels, want.labels) || !reflect.DeepEqual(v.EnvNames, want.env) {
-				t.Errorf("got pool=%q cold=%t refused=%q labels=%v env=%v, want %+v", v.Pool, v.Cold, v.RefusedReason, v.PodLabels, v.EnvNames, want)
+				!reflect.DeepEqual(v.PodLabels, want.labels) || !reflect.DeepEqual(v.EnvNames, want.env) || !reflect.DeepEqual(v.Claims, want.claims) {
+				t.Errorf("got pool=%q cold=%t refused=%q labels=%v env=%v claims=%v, want %+v", v.Pool, v.Cold, v.RefusedReason, v.PodLabels, v.EnvNames, v.Claims, want)
 			}
 		})
 	}

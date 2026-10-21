@@ -445,10 +445,21 @@ func TestEveryRouterSettingReachesItsArgumentPortMountAndRule(t *testing.T) {
 		t.Errorf("sandbox egress ports: %s", got)
 	}
 	upstreamPolicy, _ := splitDocuments(fixture(t, "router/networkpolicy.yaml"))
-	for _, i := range []int{0, 2, 3} {
-		if asJSON(egress[i]) != asJSON(lookup(upstreamPolicy[0], "spec", "egress").([]interface{})[i]) {
+	upstreamEgress := lookup(upstreamPolicy[0], "spec", "egress").([]interface{})
+	for _, i := range []int{0, 2} {
+		if asJSON(egress[i]) != asJSON(upstreamEgress[i]) {
 			t.Errorf("egress rule %d is not the module's to change", i)
 		}
+	}
+	// The API-server rule keeps upstream's ports and has no peer: a pod
+	// selector cannot name an API server on a node or a load balancer, and a
+	// router that cannot reach the API never syncs its pod cache.
+	apiRule := egress[3].(map[string]interface{})
+	if _, hasPeer := apiRule["to"]; hasPeer {
+		t.Errorf("the API-server egress rule must have no peer: %s", asJSON(apiRule))
+	}
+	if asJSON(apiRule["ports"]) != asJSON(upstreamEgress[3].(map[string]interface{})["ports"]) {
+		t.Errorf("the API-server egress rule must keep upstream's ports: %s", asJSON(apiRule["ports"]))
 	}
 }
 
